@@ -1,0 +1,31 @@
+name: bible
+description: "A new Flutter project."
+publish_to: 'none'
+
+version: 0.0.1+1
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_hooks: ^0.21.3+1
+  hooks_riverpod: ^3.0.3
+  riverpod_annotation: ^3.0.3
+  xml: ^6.6.1
+  collection: ^1.19.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+  riverpod_generator: ^3.0.3
+  build_runner: ^2.7.1
+  custom_lint: ^0.8.0
+  riverpod_lint: ^3.0.3
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/
