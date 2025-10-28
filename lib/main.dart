@@ -1,6 +1,6 @@
 import 'package:bible/providers/bible_provider.dart';
 import 'package:bible/services/bible_importer.dart';
-import 'package:bible/ui/bible_page.dart';
+import 'package:bible/ui/pages/bible_overview_page.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -17,7 +17,7 @@ Future<void> main() async {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.brown),
         ),
-        home: BiblePage(),
+        home: BibleOverviewPage(),
       ),
     ),
   );
