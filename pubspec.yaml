@@ -29,3 +29,9 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: fonts/Inter-Regular.ttf
+        - asset: fonts/Inter-Italic.ttf
+          style: italic
