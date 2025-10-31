@@ -5,4 +5,4 @@ analyzer:
     - custom_lint
 
 formatter:
-  page_width: 80
+  page_width: 90
