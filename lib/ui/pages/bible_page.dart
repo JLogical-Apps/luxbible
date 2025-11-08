@@ -1,7 +1,10 @@
 import 'package:bible/extensions/collection_extensions.dart';
+import 'package:bible/extensions/controller_extensions.dart';
 import 'package:bible/providers/bible_provider.dart';
 import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
+import 'package:bible/style/styled_shadow.dart';
+import 'package:bible/style/widgets/styled_material.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -18,35 +21,27 @@ class BiblePage extends HookConsumerWidget {
     final pageController = useListenable(usePageController(initialPage: 0));
     final selectedVersesState = useState(<int>[]);
 
-    final currentPage = pageController.hasClients ? pageController.page?.round() : null;
+    final currentPage = pageController.pageOrNull?.round();
     final currentChapterReference = currentPage == null
         ? null
         : bible.getChapterReferenceByPageIndex(currentPage);
 
     final scrollController = useListenable(useScrollController());
-    final isScrollingDownState = useState(false);
-    useEffect(
-      () {
-        if (!scrollController.hasClients) {
-          return;
-        }
+    final scrollPosition = scrollController.positionsOrNull?.firstOrNull;
+    final isScrollingDownState = useState(true);
 
-        if (scrollController.position.userScrollDirection == ScrollDirection.idle) {
-          return null;
-        }
-        isScrollingDownState.value =
-            scrollController.position.userScrollDirection == ScrollDirection.forward;
+    useEffect(() {
+      if (scrollPosition == null ||
+          scrollPosition.userScrollDirection == ScrollDirection.idle) {
         return null;
-      },
-      [
-        scrollController.hasClients
-            ? scrollController.position.userScrollDirection
-            : null,
-      ],
-    );
-    final showBottomBar =
-        isScrollingDownState.value ||
-        (scrollController.hasClients && scrollController.position.atEdge);
+      }
+
+      isScrollingDownState.value =
+          scrollPosition.userScrollDirection == ScrollDirection.forward;
+      return null;
+    }, [scrollPosition?.userScrollDirection]);
+
+    final showBottomBar = isScrollingDownState.value || scrollPosition?.atEdge == true;
 
     return Scaffold(
       backgroundColor: context.colors.backgroundPrimary,
@@ -54,7 +49,10 @@ class BiblePage extends HookConsumerWidget {
         children: [
           PageView.builder(
             controller: pageController,
-            onPageChanged: (_) => selectedVersesState.value = [],
+            onPageChanged: (_) {
+              selectedVersesState.value = [];
+              isScrollingDownState.value = true;
+            },
             itemBuilder: (context, pageIndex) {
               final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
               final chapter = bible.getChapterByReference(chapterReference);
@@ -115,46 +113,30 @@ class BiblePage extends HookConsumerWidget {
             left: 0,
             child: Container(
               width: double.infinity,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: context.brightness == Brightness.light
-                        ? Colors.black.withValues(alpha: 0.12)
-                        : Colors.black.withValues(alpha: 0.5),
-                    offset: Offset(0, 4),
-                    spreadRadius: 0,
-                    blurRadius: 16,
-                  ),
-                ],
-              ),
+              decoration: BoxDecoration(boxShadow: [StyledShadow(context)]),
               padding:
                   EdgeInsets.symmetric(horizontal: 16) +
                   EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom + 16),
-              child: Material(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
+              child: StyledMaterial(
                 color: context.colors.surfacePrimary,
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(999),
-                  onTap: () {},
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 24, right: 12),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 16),
-                            child: Text(
-                              currentChapterReference == null
-                                  ? '---'
-                                  : '${currentChapterReference.book.title()} ${currentChapterReference.chapterNum}',
-                              style: context.textStyle.labelLarge,
-                            ),
-                          ),
+                borderRadius: BorderRadius.circular(999),
+                padding: EdgeInsets.only(left: 24, right: 12),
+                onPressed: () {},
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Text(
+                          currentChapterReference == null
+                              ? '---'
+                              : '${currentChapterReference.book.title()} ${currentChapterReference.chapterNum}',
+                          style: context.textStyle.labelLarge,
                         ),
-                        IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
-                      ],
+                      ),
                     ),
-                  ),
+                    IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
+                  ],
                 ),
               ),
             ),
