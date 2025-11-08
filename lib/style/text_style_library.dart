@@ -6,36 +6,47 @@ class TextStyleLibrary {
 
   const TextStyleLibrary({required this.colorLibrary});
 
-  TextStyle get bibleChapter => TextStyle(
+  TextStyle get base => TextStyle(
+    color: colorLibrary.contentPrimary,
+    decorationColor: colorLibrary.contentPrimary,
+    decorationStyle: TextDecorationStyle.dotted,
+  );
+
+  TextStyle get labelLarge => base.copyWith(
+    fontFamily: 'Inter',
+    fontSize: 18,
+    height: 24 / 18,
+    fontWeight: FontWeight.w600,
+  );
+
+  TextStyle get labelMedium => base.copyWith(
+    fontFamily: 'Inter',
+    fontSize: 16,
+    height: 20 / 16,
+    fontWeight: FontWeight.w600,
+  );
+
+  TextStyle get bibleChapter => base.copyWith(
     fontFamily: 'Inter',
     fontSize: 24,
     fontWeight: FontWeight.w700,
     letterSpacing: 0.25,
     height: 36 / 24,
-    color: colorLibrary.contentPrimary,
-    decorationColor: colorLibrary.contentPrimary,
-    decorationStyle: TextDecorationStyle.dotted,
   );
 
-  TextStyle get bibleVerseNumber => TextStyle(
+  TextStyle get bibleVerseNumber => base.copyWith(
     fontFamily: 'Inter',
     fontSize: 12,
     fontWeight: FontWeight.w700,
     letterSpacing: 0.25,
     height: 0,
-    color: colorLibrary.contentPrimary,
-    decorationColor: colorLibrary.contentPrimary,
-    decorationStyle: TextDecorationStyle.dotted,
   );
 
-  TextStyle get bibleBody => TextStyle(
+  TextStyle get bibleBody => base.copyWith(
     fontFamily: 'Inter',
     fontSize: 19,
     fontWeight: FontWeight.w300,
     letterSpacing: 0.25,
     height: 36 / 18,
-    color: colorLibrary.contentPrimary,
-    decorationColor: colorLibrary.contentPrimary,
-    decorationStyle: TextDecorationStyle.dotted,
   );
 }
