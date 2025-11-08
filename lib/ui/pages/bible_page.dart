@@ -1,6 +1,7 @@
 import 'package:bible/extensions/collection_extensions.dart';
 import 'package:bible/extensions/controller_extensions.dart';
 import 'package:bible/providers/bible_provider.dart';
+import 'package:bible/services/shared_preferences_service.dart';
 import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
@@ -18,7 +19,18 @@ class BiblePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bible = ref.watch(bibleProvider);
 
-    final pageController = useListenable(usePageController(initialPage: 0));
+    final initialReference = ref
+        .watch(sharedPreferenceServiceProvider)
+        .getLastChapterReference();
+
+    final pageController = useListenable(
+      usePageController(
+        initialPage: initialReference == null
+            ? 0
+            : bible.getPageIndexByChapterReference(initialReference),
+      ),
+    );
+
     final selectedVersesState = useState(<int>[]);
 
     final currentPage = pageController.pageOrNull?.round();
@@ -49,9 +61,14 @@ class BiblePage extends HookConsumerWidget {
         children: [
           PageView.builder(
             controller: pageController,
-            onPageChanged: (_) {
+            onPageChanged: (pageIndex) {
               selectedVersesState.value = [];
               isScrollingDownState.value = true;
+
+              final reference = bible.getChapterReferenceByPageIndex(pageIndex);
+              ref
+                  .read(sharedPreferenceServiceProvider)
+                  .setLastChapterReference(reference);
             },
             itemBuilder: (context, pageIndex) {
               final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
@@ -63,13 +80,10 @@ class BiblePage extends HookConsumerWidget {
                     EdgeInsets.symmetric(horizontal: 20, vertical: 8) +
                     EdgeInsets.only(
                       top: MediaQuery.paddingOf(context).top + 24,
-                      bottom: MediaQuery.paddingOf(context).bottom + 64,
+                      bottom: MediaQuery.paddingOf(context).bottom + 72,
                     ),
                 children: [
-                  Text(
-                    '${chapterReference.book.title()} ${chapterReference.chapterNum}',
-                    style: context.textStyle.bibleChapter,
-                  ),
+                  Text(chapterReference.format(), style: context.textStyle.bibleChapter),
                   gapH8,
                   ...chapter.verses.mapIndexed(
                     (i, verse) => GestureDetector(
@@ -128,9 +142,7 @@ class BiblePage extends HookConsumerWidget {
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 16),
                         child: Text(
-                          currentChapterReference == null
-                              ? '---'
-                              : '${currentChapterReference.book.title()} ${currentChapterReference.chapterNum}',
+                          currentChapterReference?.format() ?? '',
                           style: context.textStyle.labelLarge,
                         ),
                       ),
