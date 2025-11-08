@@ -13,6 +13,8 @@ class TextStyleLibrary {
     letterSpacing: 0.25,
     height: 36 / 24,
     color: colorLibrary.contentPrimary,
+    decorationColor: colorLibrary.contentPrimary,
+    decorationStyle: TextDecorationStyle.dotted,
   );
 
   TextStyle get bibleVerseNumber => TextStyle(
@@ -22,6 +24,8 @@ class TextStyleLibrary {
     letterSpacing: 0.25,
     height: 0,
     color: colorLibrary.contentPrimary,
+    decorationColor: colorLibrary.contentPrimary,
+    decorationStyle: TextDecorationStyle.dotted,
   );
 
   TextStyle get bibleBody => TextStyle(
@@ -31,5 +35,7 @@ class TextStyleLibrary {
     letterSpacing: 0.25,
     height: 36 / 18,
     color: colorLibrary.contentPrimary,
+    decorationColor: colorLibrary.contentPrimary,
+    decorationStyle: TextDecorationStyle.dotted,
   );
 }
