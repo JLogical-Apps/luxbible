@@ -15,12 +15,12 @@ Future<void> main() async {
       child: MaterialApp(
         title: 'Bible',
         theme: ThemeData(
-          colorScheme: ColorScheme.highContrastLight(
-            brightness: Brightness.light,
-          ),
+          colorScheme: ColorScheme.highContrastLight(brightness: Brightness.light),
+          cardColor: Colors.transparent,
         ),
         darkTheme: ThemeData(
           colorScheme: ColorScheme.dark(brightness: Brightness.dark),
+          cardColor: Colors.transparent,
         ),
         debugShowCheckedModeBanner: false,
         home: BiblePage(),
