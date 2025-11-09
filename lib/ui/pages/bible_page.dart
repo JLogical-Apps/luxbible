@@ -22,9 +22,10 @@ class BiblePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bible = ref.watch(bibleProvider);
-
+    final bibles = ref.watch(biblesProvider);
     final userProfile = ref.watch(userProfileProvider);
+    final bible = userProfile.getBible(bibles);
+
     final initialReference = userProfile.tabs.firstOrNull;
 
     final pageController = useListenable(

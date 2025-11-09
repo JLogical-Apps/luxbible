@@ -1,12 +1,14 @@
+import 'package:bible/models/bible_translation.dart';
 import 'package:bible/models/book.dart';
 import 'package:bible/models/book_type.dart';
 import 'package:bible/models/chapter.dart';
 import 'package:bible/models/chapter_reference.dart';
 
 class Bible {
+  final BibleTranslation translation;
   final List<Book> books;
 
-  const Bible({required this.books});
+  const Bible({required this.translation, required this.books});
 
   List<ChapterReference> get chapterReferences => books
       .expand(

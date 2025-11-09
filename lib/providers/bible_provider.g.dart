@@ -9,42 +9,43 @@ part of 'bible_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(bible)
-const bibleProvider = BibleProvider._();
+@ProviderFor(bibles)
+const biblesProvider = BiblesProvider._();
 
-final class BibleProvider extends $FunctionalProvider<Bible, Bible, Bible>
-    with $Provider<Bible> {
-  const BibleProvider._()
+final class BiblesProvider
+    extends $FunctionalProvider<List<Bible>, List<Bible>, List<Bible>>
+    with $Provider<List<Bible>> {
+  const BiblesProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'bibleProvider',
+        name: r'biblesProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$bibleHash();
+  String debugGetCreateSourceHash() => _$biblesHash();
 
   @$internal
   @override
-  $ProviderElement<Bible> $createElement($ProviderPointer pointer) =>
+  $ProviderElement<List<Bible>> $createElement($ProviderPointer pointer) =>
       $ProviderElement(pointer);
 
   @override
-  Bible create(Ref ref) {
-    return bible(ref);
+  List<Bible> create(Ref ref) {
+    return bibles(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(Bible value) {
+  Override overrideWithValue(List<Bible> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<Bible>(value),
+      providerOverride: $SyncValueProvider<List<Bible>>(value),
     );
   }
 }
 
-String _$bibleHash() => r'c5d41a89d774e04910365be858aa91c054acf1c5';
+String _$biblesHash() => r'd9b5f3b04a77a7a337c9394fc946d2fba0e2f388';

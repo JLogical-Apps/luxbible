@@ -1,5 +1,10 @@
-class Verse {
-  final String text;
+import 'package:bible/models/verse_fragment.dart';
 
-  const Verse({required this.text});
+class Verse {
+  final List<VerseFragment> fragments;
+
+  const Verse({required this.fragments});
+
+  String get text =>
+      fragments.map((fragment) => fragment.text.replaceAll(RegExp(r'[\[\]]'), '')).join();
 }
