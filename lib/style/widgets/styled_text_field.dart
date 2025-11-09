@@ -56,7 +56,9 @@ class StyledTextField extends HookWidget {
 
     useOnListenableChange(
       controller,
-      () => onTextEditValueChanged?.call(controller.value),
+      () => WidgetsBinding.instance.addPostFrameCallback(
+        (_) => onTextEditValueChanged?.call(controller.value),
+      ),
     );
 
     if (text != controller.text) {
