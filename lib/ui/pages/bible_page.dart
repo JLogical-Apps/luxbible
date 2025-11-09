@@ -49,7 +49,7 @@ class BiblePage extends HookConsumerWidget {
     final scrollPosition = scrollController.positionsOrNull?.firstOrNull;
     final isScrollingDownState = useState(true);
     useOnStickyScrollDirectionChanged(
-      scrollPosition,
+      scrollController,
       (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
     );
 

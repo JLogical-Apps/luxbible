@@ -10,7 +10,6 @@ import 'package:bible/style/widgets/styled_section.dart';
 import 'package:bible/style/widgets/styled_swipeable.dart';
 import 'package:bible/style/widgets/styled_text_field.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
-import 'package:bible/utils/extensions/controller_extensions.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:bible/utils/input_formatters.dart';
 import 'package:flutter/material.dart';
@@ -69,10 +68,10 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
       }
     });
 
-    final scrollController = useListenable(useScrollController());
+    final scrollController = useScrollController();
     final isScrollingDownState = useState(true);
     useOnStickyScrollDirectionChanged(
-      scrollController.positionOrNull,
+      scrollController,
       (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
     );
 

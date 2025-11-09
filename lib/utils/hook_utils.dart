@@ -1,3 +1,4 @@
+import 'package:bible/utils/extensions/controller_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -20,17 +21,21 @@ ScrollController useUnfocusOnScrollDown(ScrollController scrollController) {
 }
 
 void useOnStickyScrollDirectionChanged(
-  ScrollPosition? position,
+  ScrollController scrollController,
   Function(ScrollDirection) onScrollDirectionChanged,
 ) {
-  useEffect(() {
-    if (position == null || position.userScrollDirection == ScrollDirection.idle) {
-      return null;
+  final previousScrollDirectionRef = useRef(ScrollDirection.idle);
+  useOnListenableChange(scrollController, () {
+    final direction = scrollController.positionsOrNull?.firstOrNull?.userScrollDirection;
+    if (direction == null ||
+        direction == ScrollDirection.idle ||
+        direction == previousScrollDirectionRef.value) {
+      return;
     }
 
-    onScrollDirectionChanged(position.userScrollDirection);
-    return null;
-  }, [position?.userScrollDirection]);
+    previousScrollDirectionRef.value = direction;
+    onScrollDirectionChanged(direction);
+  });
 }
 
 void usePostFrameEffect(Function() effect, [List<Object?>? keys]) {
