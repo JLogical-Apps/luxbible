@@ -16,6 +16,7 @@ dependencies:
   xml: ^6.6.1
   collection: ^1.19.1
   shared_preferences: ^2.5.3
+  recase: ^4.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

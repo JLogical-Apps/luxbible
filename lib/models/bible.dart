@@ -1,4 +1,5 @@
 import 'package:bible/models/book.dart';
+import 'package:bible/models/book_type.dart';
 import 'package:bible/models/chapter.dart';
 import 'package:bible/models/chapter_reference.dart';
 
@@ -16,9 +17,8 @@ class Bible {
       )
       .toList();
 
-  Chapter getChapterByReference(ChapterReference reference) => books
-      .firstWhere((book) => book.bookType == reference.book)
-      .chapters[reference.chapterNum - 1];
+  Chapter getChapterByReference(ChapterReference reference) =>
+      getBookByType(reference.book).chapters[reference.chapterNum - 1];
 
   ChapterReference getChapterReferenceByPageIndex(int pageIndex) =>
       chapterReferences[pageIndex];
@@ -27,4 +27,7 @@ class Bible {
       chapterReferences.indexWhere(
         (r) => r.book == reference.book && r.chapterNum == reference.chapterNum,
       );
+
+  Book getBookByType(BookType bookType) =>
+      books.firstWhere((book) => book.bookType == bookType);
 }

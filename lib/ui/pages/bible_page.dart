@@ -1,6 +1,7 @@
 import 'package:bible/extensions/build_context_extensions.dart';
 import 'package:bible/extensions/collection_extensions.dart';
 import 'package:bible/extensions/controller_extensions.dart';
+import 'package:bible/models/chapter_reference.dart';
 import 'package:bible/providers/bible_provider.dart';
 import 'package:bible/services/shared_preferences_service.dart';
 import 'package:bible/style/gap.dart';
@@ -139,12 +140,21 @@ class BiblePage extends HookConsumerWidget {
                 padding: EdgeInsets.only(left: 24, right: 12),
                 onPressed: currentChapterReference == null
                     ? null
-                    : () => context.push(
-                        ChapterReferenceSearchPage(
-                          initialReference: currentChapterReference,
-                        ),
-                        isDialog: true,
-                      ),
+                    : () async {
+                        final newReference =
+                            await context.pushDialog(
+                                  ChapterReferenceSearchPage(
+                                    initialReference: currentChapterReference,
+                                  ),
+                                )
+                                as ChapterReference?;
+                        if (newReference != null) {
+                          final pageIndex = bible.getPageIndexByChapterReference(
+                            newReference,
+                          );
+                          pageController.jumpToPage(pageIndex);
+                        }
+                      },
                 child: Row(
                   children: [
                     Expanded(

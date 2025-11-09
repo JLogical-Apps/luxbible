@@ -16,34 +16,34 @@ class TextStyleLibrary {
     fontFamily: 'Inter',
     fontSize: 18,
     height: 24 / 18,
-    fontWeight: FontWeight.w600,
+    fontVariations: [FontVariation('wght', 500)],
   );
 
   TextStyle get labelMedium => base.copyWith(
     fontFamily: 'Inter',
     fontSize: 16,
     height: 20 / 16,
-    fontWeight: FontWeight.w600,
+    fontVariations: [FontVariation('wght', 500)],
   );
 
   TextStyle get paragraphLarge => base.copyWith(
     fontFamily: 'Inter',
     fontSize: 18,
     height: 28 / 18,
-    fontWeight: FontWeight.w400,
+    fontVariations: [FontVariation('wght', 400)],
   );
 
   TextStyle get paragraphMedium => base.copyWith(
     fontFamily: 'Inter',
     fontSize: 16,
     height: 24 / 16,
-    fontWeight: FontWeight.w400,
+    fontVariations: [FontVariation('wght', 400)],
   );
 
   TextStyle get bibleChapter => base.copyWith(
     fontFamily: 'Inter',
     fontSize: 24,
-    fontWeight: FontWeight.w700,
+    fontVariations: [FontVariation('wght', 700)],
     letterSpacing: 0.25,
     height: 36 / 24,
   );
@@ -51,7 +51,7 @@ class TextStyleLibrary {
   TextStyle get bibleVerseNumber => base.copyWith(
     fontFamily: 'Inter',
     fontSize: 12,
-    fontWeight: FontWeight.w700,
+    fontVariations: [FontVariation('wght', 700)],
     letterSpacing: 0.25,
     height: 0,
   );
@@ -59,7 +59,7 @@ class TextStyleLibrary {
   TextStyle get bibleBody => base.copyWith(
     fontFamily: 'Inter',
     fontSize: 19,
-    fontWeight: FontWeight.w300,
+    fontVariations: [FontVariation('wght', 400)],
     letterSpacing: 0.25,
     height: 36 / 18,
   );
