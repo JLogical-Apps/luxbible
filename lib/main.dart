@@ -53,6 +53,7 @@ class BibleApp extends StatelessWidget {
           theme: ThemeData(
             colorScheme: ColorScheme.highContrastLight(brightness: Brightness.light),
             cardColor: Colors.transparent,
+            appBarTheme: AppBarThemeData(scrolledUnderElevation: 0),
             textSelectionTheme: TextSelectionThemeData(
               cursorColor: Colors.black,
               selectionColor: Colors.black.withValues(alpha: 0.2),
@@ -62,6 +63,7 @@ class BibleApp extends StatelessWidget {
           darkTheme: ThemeData(
             colorScheme: ColorScheme.dark(brightness: Brightness.dark),
             cardColor: Colors.transparent,
+            appBarTheme: AppBarThemeData(scrolledUnderElevation: 0),
             textSelectionTheme: TextSelectionThemeData(
               cursorColor: Colors.white,
               selectionColor: Colors.white.withValues(alpha: 0.2),

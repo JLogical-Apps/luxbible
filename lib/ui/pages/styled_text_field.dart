@@ -9,6 +9,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 class StyledTextField extends HookWidget {
   final String text;
+  final Function(TextEditingValue)? onTextEditValueChanged;
   final Function(String)? onChanged;
   final Function(String)? onSubmit;
 
@@ -29,6 +30,7 @@ class StyledTextField extends HookWidget {
   const StyledTextField({
     super.key,
     required this.text,
+    this.onTextEditValueChanged,
     this.onChanged,
     this.onSubmit,
     this.hintText,
@@ -94,7 +96,10 @@ class StyledTextField extends HookWidget {
         TextField(
           controller: controller,
           focusNode: focusNode,
-          onChanged: (text) => onChanged?.call(text),
+          onChanged: (text) {
+            onTextEditValueChanged?.call(controller.value);
+            onChanged?.call(text);
+          },
           enabled: onChanged != null,
           autofocus: autofocus,
           style: textStyle.disabled(context, isDisabled: onChanged == null),

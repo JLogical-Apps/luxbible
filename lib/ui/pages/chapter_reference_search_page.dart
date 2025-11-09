@@ -21,18 +21,28 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
     final bible = ref.watch(bibleProvider);
 
     final bookTextState = useState(initialReference.book.title());
+    final bookTextSelectionState = useState<TextSelection>(
+      TextSelection(baseOffset: 0, extentOffset: 0),
+    );
+    final isBookFullySelected =
+        bookTextSelectionState.value.baseOffset == 0 &&
+        bookTextSelectionState.value.extentOffset == 0;
+
     final chapterTextState = useState<int?>(initialReference.chapterNum);
 
-    final bookFocusNode = useFocusNode();
+    final bookFocusNode = useListenable(useFocusNode());
+    final chapterFocusNode = useListenable(useFocusNode());
 
-    final matchingBooks = BookType.values
+    BookType? getBook() => BookType.values
         .where(
           (book) =>
               book.title().toUpperCase().startsWith(bookTextState.value.toUpperCase()),
         )
-        .toList();
-    final book = matchingBooks.length == 1 ? matchingBooks.first : null;
-    final previousBook = usePrevious(book);
+        .singleOrNull;
+
+    final book = getBook();
+    final previousBook = usePrevious(getBook());
+
     useEffect(() {
       if (book != previousBook) {
         WidgetsBinding.instance.addPostFrameCallback(
@@ -43,6 +53,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
     }, [book, previousBook]);
 
     useOnListenableChange(bookFocusNode, () {
+      final book = getBook();
       if (!bookFocusNode.hasPrimaryFocus && book != null) {
         bookTextState.value = book.title().titleCase;
       }
@@ -73,6 +84,8 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                     child: StyledTextField(
                       text: bookTextState.value,
                       onChanged: (text) => bookTextState.value = text,
+                      onTextEditValueChanged: (value) =>
+                          bookTextSelectionState.value = value.selection,
                       autofocus: true,
                       suggestedText: book?.title(),
                       hintText: 'Book',
@@ -93,6 +106,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                       hintText: 'Chapter',
                       textStyle: context.textStyle.paragraphLarge,
                       textInputType: TextInputType.number,
+                      focusNode: chapterFocusNode,
                       onSubmit: (text) {
                         final chapterNum = int.tryParse(text);
                         if (book == null || chapterNum == null) {
@@ -117,7 +131,45 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
               ),
             ),
           ),
-          Expanded(child: ListView(children: [])),
+          Expanded(
+            child: ListView(
+              children: book == null || bookFocusNode.hasPrimaryFocus
+                  ? BookType.values
+                        .where(
+                          (book) =>
+                              isBookFullySelected ||
+                              book.title().toUpperCase().startsWith(
+                                bookTextState.value.toUpperCase(),
+                              ),
+                        )
+                        .map(
+                          (book) => ListTile(
+                            key: ValueKey(book),
+                            title: Text(book.title()),
+                            onTap: () {
+                              bookTextState.value = book.title();
+                              WidgetsBinding.instance.addPostFrameCallback(
+                                (_) => chapterFocusNode.requestFocus(),
+                              );
+                            },
+                          ),
+                        )
+                        .toList()
+                  : List.generate(
+                          bible.getBookByType(book).chapters.length,
+                          (chapterIndex) =>
+                              ChapterReference(book: book, chapterNum: chapterIndex + 1),
+                        )
+                        .map(
+                          (chapterReference) => ListTile(
+                            key: ValueKey(chapterReference.chapterNum),
+                            title: Text(chapterReference.format()),
+                            onTap: () => Navigator.of(context).pop(chapterReference),
+                          ),
+                        )
+                        .toList(),
+            ),
+          ),
         ],
       ),
     );
