@@ -17,6 +17,7 @@ class StyledTextField extends HookWidget {
   final String? hintText;
 
   final bool autofocus;
+  final bool readOnly;
   final TextInputType textInputType;
   final TextCapitalization textCapitalization;
   final TextInputAction? action;
@@ -36,6 +37,7 @@ class StyledTextField extends HookWidget {
     this.hintText,
     this.suggestedText,
     this.autofocus = false,
+    this.readOnly = false,
     this.textInputType = TextInputType.text,
     this.textCapitalization = TextCapitalization.sentences,
     this.action,
@@ -96,6 +98,7 @@ class StyledTextField extends HookWidget {
         TextField(
           controller: controller,
           focusNode: focusNode,
+          readOnly: readOnly,
           onChanged: (text) {
             onTextEditValueChanged?.call(controller.value);
             onChanged?.call(text);
