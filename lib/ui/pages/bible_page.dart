@@ -5,6 +5,7 @@ import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/styled_material.dart';
+import 'package:bible/style/widgets/styled_tag.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
@@ -162,11 +163,20 @@ class BiblePage extends HookConsumerWidget {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        child: Text(
-                          currentChapterReference.format(),
-                          style: context.textStyle.labelLg,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          child: Row(
+                            spacing: 8,
+                            children: [
+                              Text(
+                                currentChapterReference.format(),
+                                style: context.textStyle.labelLg,
+                              ),
+                              StyledTag(text: userProfile.translation.title()),
+                            ],
+                          ),
                         ),
                       ),
                     ),

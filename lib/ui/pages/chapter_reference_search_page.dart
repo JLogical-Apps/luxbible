@@ -127,7 +127,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                     ),
                   ),
                   SizedBox(
-                    width: 120,
+                    width: 80,
                     child: StyledTextField(
                       text: chapterNumState.value?.toString() ?? '',
                       onChanged: book == null

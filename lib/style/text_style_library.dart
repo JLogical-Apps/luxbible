@@ -19,6 +19,8 @@ class TextStyleLibrary {
 
   TextStyle get labelLg => base.medium.copyWith(fontSize: 18, height: 24 / 18);
   TextStyle get labelMd => base.medium.copyWith(fontSize: 16, height: 20 / 16);
+  TextStyle get labelSm => base.medium.copyWith(fontSize: 14, height: 20 / 14);
+  TextStyle get labelXs => base.medium.copyWith(fontSize: 12, height: 16 / 12);
 
   TextStyle get paragraphLg => base.regular.copyWith(fontSize: 18, height: 28 / 18);
   TextStyle get paragraphMd => base.copyWith(fontSize: 16, height: 24 / 16);
