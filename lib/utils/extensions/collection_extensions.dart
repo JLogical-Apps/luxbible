@@ -6,3 +6,8 @@ extension ListExtensions<T> on List<T> {
 
   List<T> get distinct => toSet().toList();
 }
+
+extension MapExtensions<K, V> on Map<K, V> {
+  Iterable<T> mapToIterable<T>(T Function(K, V) mapper) =>
+      entries.map((entry) => mapper(entry.key, entry.value));
+}

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/bible_importer.dart';
+import 'package:bible/models/bible_translation.dart';
 import 'package:bible/providers/bible_provider.dart';
 import 'package:bible/services/shared_preferences_service.dart';
 import 'package:bible/ui/pages/bible_page.dart';
@@ -17,7 +18,11 @@ Future<void> main() async {
 
       runApp(
         BibleApp(
-          bible: await BibleImporter().import(name: 'rsv'),
+          bibles: await Future.wait(
+            BibleTranslation.values.map(
+              (translation) => BibleImporter().import(translation: translation),
+            ),
+          ),
           sharedPreferences: await SharedPreferences.getInstance(),
         ),
       );
@@ -32,16 +37,16 @@ Future<void> main() async {
 }
 
 class BibleApp extends StatelessWidget {
-  final Bible bible;
+  final List<Bible> bibles;
   final SharedPreferences sharedPreferences;
 
-  const BibleApp({super.key, required this.bible, required this.sharedPreferences});
+  const BibleApp({super.key, required this.bibles, required this.sharedPreferences});
 
   @override
   Widget build(BuildContext context) {
     return ProviderScope(
       overrides: [
-        bibleProvider.overrideWith((ref) => bible),
+        biblesProvider.overrideWith((ref) => bibles),
         sharedPreferenceServiceProvider.overrideWith(
           (ref) => SharedPreferencesService(sharedPreferences),
         ),

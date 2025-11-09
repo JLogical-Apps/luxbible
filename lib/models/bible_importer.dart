@@ -1,31 +1,44 @@
+import 'dart:convert';
+
 import 'package:bible/models/bible.dart';
+import 'package:bible/models/bible_translation.dart';
 import 'package:bible/models/book.dart';
 import 'package:bible/models/book_type.dart';
 import 'package:bible/models/chapter.dart';
 import 'package:bible/models/verse.dart';
+import 'package:bible/models/verse_fragment.dart';
+import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
-import 'package:xml/xml.dart';
 
 class BibleImporter {
-  Future<Bible> import({required String name}) async {
-    final rawXml = await rootBundle.loadString('assets/$name.xml');
-    final document = XmlDocument.parse(rawXml);
+  Future<Bible> import({required BibleTranslation translation}) async {
+    final rawJson = await rootBundle.loadString('assets/${translation.name}.json');
+    final json = jsonDecode(rawJson);
+
+    final verses = (json['verses'] as Iterable)
+        .map(
+          (verse) => (
+            book: verse['book'] as int,
+            chapter: verse['chapter'] as int,
+            verse: verse['verse'] as int,
+            text: verse['text'],
+          ),
+        )
+        .toList();
+
     return Bible(
-      books: document
-          .findAllElements('div')
-          .where((div) => div.getAttribute('type') == 'book')
-          .mapIndexed(
-            (i, div) => Book(
-              bookType: BookType.values[i],
-              chapters: div
-                  .findAllElements('chapter')
-                  .map(
-                    (chapter) => Chapter(
-                      verses: chapter
-                          .findAllElements('verse')
-                          .map((verse) => Verse(text: verse.innerText))
-                          .toList(),
+      translation: translation,
+      books: verses
+          .groupListsBy((verse) => verse.book)
+          .mapToIterable(
+            (book, verses) => Book(
+              bookType: BookType.values[book - 1],
+              chapters: verses
+                  .groupListsBy((verse) => verse.chapter)
+                  .mapToIterable(
+                    (chapter, verses) => Chapter(
+                      verses: verses.map((verse) => parseVerse(verse.text)).toList(),
                     ),
                   )
                   .toList(),
@@ -34,4 +47,49 @@ class BibleImporter {
           .toList(),
     );
   }
+}
+
+Verse parseVerse(String raw) {
+  final tokenRegExp = RegExp(r'\{.*?\}'); // minimally match {...}
+
+  // 1) Tokenize into text and {...} strongs chunks
+  final tokens = <String>[];
+  int lastEnd = 0;
+
+  for (final match in tokenRegExp.allMatches(raw)) {
+    if (match.start > lastEnd) {
+      tokens.add(raw.substring(lastEnd, match.start)); // text chunk
+    }
+    tokens.add(raw.substring(match.start, match.end)); // strongs chunk
+    lastEnd = match.end;
+  }
+  if (lastEnd < raw.length) {
+    tokens.add(raw.substring(lastEnd)); // trailing text
+  }
+
+  // 2) Now fold tokens into fragments.
+  //    Each time we hit text, start a new fragment.
+  //    Each time we hit {H...}, append to the last fragment’s strongs.
+  final fragments = <VerseFragment>[];
+  for (final token in tokens) {
+    if (token.startsWith('{') && token.endsWith('}')) {
+      final code = token.substring(1, token.length - 1);
+      if (fragments.isEmpty) {
+        // If doc starts with a strongs tag, inject empty text
+        fragments.add(VerseFragment(text: '', strongs: [code]));
+      } else {
+        // Add to the last fragment's strongs
+        final last = fragments.last;
+        fragments[fragments.length - 1] = VerseFragment(
+          text: last.text,
+          strongs: [...last.strongs, code],
+        );
+      }
+    } else {
+      // Plain text → start a fresh fragment
+      fragments.add(VerseFragment(text: token, strongs: const []));
+    }
+  }
+
+  return Verse(fragments: fragments);
 }
