@@ -191,6 +191,13 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                 chapterNum: chapterIndex + 1,
                               ),
                             )
+                            .where(
+                              (chapterReference) =>
+                                  chapterTextState.value == null ||
+                                  chapterReference.chapterNum.toString().startsWith(
+                                    chapterTextState.value.toString(),
+                                  ),
+                            )
                             .map(
                               (chapterReference) => ListTile(
                                 title: Text(chapterReference.format()),
