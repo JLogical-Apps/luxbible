@@ -132,9 +132,10 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
             ),
           ),
           Expanded(
-            child: ListView(
-              children: book == null || bookFocusNode.hasPrimaryFocus
-                  ? BookType.values
+            child: book == null || bookFocusNode.hasPrimaryFocus
+                ? ListView(
+                    key: ValueKey(BookType),
+                    children: BookType.values
                         .where(
                           (book) =>
                               isBookFullySelected ||
@@ -144,7 +145,6 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                         )
                         .map(
                           (book) => ListTile(
-                            key: ValueKey(book),
                             title: Text(book.title()),
                             onTap: () {
                               bookTextState.value = book.title();
@@ -154,21 +154,26 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                             },
                           ),
                         )
-                        .toList()
-                  : List.generate(
-                          bible.getBookByType(book).chapters.length,
-                          (chapterIndex) =>
-                              ChapterReference(book: book, chapterNum: chapterIndex + 1),
-                        )
-                        .map(
-                          (chapterReference) => ListTile(
-                            key: ValueKey(chapterReference.chapterNum),
-                            title: Text(chapterReference.format()),
-                            onTap: () => Navigator.of(context).pop(chapterReference),
-                          ),
-                        )
                         .toList(),
-            ),
+                  )
+                : ListView(
+                    key: ValueKey(ChapterReference),
+                    children:
+                        List.generate(
+                              bible.getBookByType(book).chapters.length,
+                              (chapterIndex) => ChapterReference(
+                                book: book,
+                                chapterNum: chapterIndex + 1,
+                              ),
+                            )
+                            .map(
+                              (chapterReference) => ListTile(
+                                title: Text(chapterReference.format()),
+                                onTap: () => Navigator.of(context).pop(chapterReference),
+                              ),
+                            )
+                            .toList(),
+                  ),
           ),
         ],
       ),
