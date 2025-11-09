@@ -49,7 +49,7 @@ class StyledTextField extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = this.textStyle ?? context.textStyle.paragraphMedium;
+    final textStyle = this.textStyle ?? context.textStyle.paragraphMd;
 
     final focusNode = useListenable(this.focusNode ?? useFocusNode());
     final controller = useTextEditingController(text: text);
@@ -126,7 +126,7 @@ class StyledTextField extends HookWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             hintText: hintText,
-            hintStyle: context.textStyle.paragraphMedium
+            hintStyle: context.textStyle.paragraphMd
                 .subtle(context)
                 .disabled(context, isDisabled: onChanged == null),
             focusedBorder: OutlineInputBorder(

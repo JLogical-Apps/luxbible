@@ -11,6 +11,16 @@ extension TextStyleExtensions on TextStyle {
   TextStyle disabled(BuildContext context, {bool isDisabled = true}) =>
       isDisabled ? copyWith(color: context.colors.contentDisabled) : this;
 
+  TextStyle get thin => copyWith(fontVariations: [FontVariation('wght', 100)]);
+  TextStyle get extraLight => copyWith(fontVariations: [FontVariation('wght', 200)]);
+  TextStyle get light => copyWith(fontVariations: [FontVariation('wght', 300)]);
+  TextStyle get regular => copyWith(fontVariations: [FontVariation('wght', 400)]);
+  TextStyle get medium => copyWith(fontVariations: [FontVariation('wght', 520)]);
+  TextStyle get semiBold => copyWith(fontVariations: [FontVariation('wght', 600)]);
+  TextStyle get bold => copyWith(fontVariations: [FontVariation('wght', 700)]);
+  TextStyle get extraBold => copyWith(fontVariations: [FontVariation('wght', 800)]);
+  TextStyle get black => copyWith(fontVariations: [FontVariation('wght', 900)]);
+
   double getWidth(String text) => (TextPainter(
     text: TextSpan(text: text, style: this),
     textDirection: TextDirection.ltr,

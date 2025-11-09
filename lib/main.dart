@@ -58,7 +58,7 @@ class BibleApp extends StatelessWidget {
               fill: 1,
               weight: 600,
               color: Colors.black,
-              opticalSize: 24,
+              opticalSize: 36,
             ),
             textSelectionTheme: TextSelectionThemeData(
               cursorColor: Colors.black,
@@ -74,7 +74,7 @@ class BibleApp extends StatelessWidget {
               fill: 1,
               weight: 600,
               color: Colors.white,
-              opticalSize: 24,
+              opticalSize: 36,
             ),
             textSelectionTheme: TextSelectionThemeData(
               cursorColor: Colors.white,

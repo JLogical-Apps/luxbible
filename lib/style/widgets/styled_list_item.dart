@@ -2,6 +2,7 @@ import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/styled_list_item_context.dart';
 import 'package:bible/style/widgets/styled_material.dart';
+import 'package:bible/utils/extensions/map_if_non_null.dart';
 import 'package:flutter/material.dart';
 
 class StyledListItem extends StatelessWidget {
@@ -10,7 +11,15 @@ class StyledListItem extends StatelessWidget {
 
   final Function()? onPressed;
 
-  const StyledListItem({super.key, this.title, this.trailing, this.onPressed});
+  StyledListItem({
+    super.key,
+    Widget? title,
+    String? titleText,
+    Widget? trailing,
+    IconData? trailingIcon,
+    this.onPressed,
+  }) : title = title ?? titleText?.mapIfNonNull(Text.new),
+       trailing = trailing ?? trailingIcon?.mapIfNonNull(Icon.new);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +45,7 @@ class StyledListItem extends StatelessWidget {
                           children: [
                             if (title case final title?)
                               DefaultTextStyle(
-                                style: context.textStyle.labelMedium,
+                                style: context.textStyle.labelMd,
                                 child: title,
                               ),
                           ],
