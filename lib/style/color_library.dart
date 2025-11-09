@@ -26,5 +26,7 @@ class ColorLibrary {
   Color get contentDisabled =>
       brightness.when(light: Color(0xFFA1A1AA), dark: Color(0xFF52525B));
 
+  Color get borderOpaque =>
+      brightness.when(light: Color(0xFFE4E4E7), dark: Color(0xFF3F3F46));
   Color get borderSelected => brightness.when(light: Colors.black, dark: Colors.white);
 }

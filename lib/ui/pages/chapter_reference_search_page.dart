@@ -4,6 +4,8 @@ import 'package:bible/models/chapter_reference.dart';
 import 'package:bible/providers/bible_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
+import 'package:bible/style/widgets/styled_list.dart';
+import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_text_field.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:bible/utils/input_formatters.dart';
@@ -156,55 +158,62 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
           ),
           Expanded(
             child: book == null || bookFocusNode.hasPrimaryFocus
-                ? ListView(
+                ? SingleChildScrollView(
                     key: ValueKey(BookType),
                     controller: scrollController,
-                    children: BookType.values
-                        .where(
-                          (book) =>
-                              isBookFullySelected ||
-                              book.title().toUpperCase().startsWith(
-                                bookTextState.value.toUpperCase(),
-                              ),
-                        )
-                        .map(
-                          (book) => ListTile(
-                            title: Text(book.title()),
-                            onTap: () {
-                              bookTextState.value = book.title();
-                              WidgetsBinding.instance.addPostFrameCallback(
-                                (_) => chapterFocusNode.requestFocus(),
-                              );
-                            },
-                          ),
-                        )
-                        .toList(),
+                    child: StyledList(
+                      children: BookType.values
+                          .where(
+                            (book) =>
+                                isBookFullySelected ||
+                                book.title().toUpperCase().startsWith(
+                                  bookTextState.value.toUpperCase(),
+                                ),
+                          )
+                          .map(
+                            (book) => StyledListItem(
+                              title: Text(book.title()),
+                              trailing: Icon(Icons.chevron_right),
+                              onPressed: () {
+                                bookTextState.value = book.title();
+                                WidgetsBinding.instance.addPostFrameCallback(
+                                  (_) => chapterFocusNode.requestFocus(),
+                                );
+                              },
+                            ),
+                          )
+                          .toList(),
+                    ),
                   )
-                : ListView(
+                : SingleChildScrollView(
                     key: ValueKey(ChapterReference),
                     controller: scrollController,
-                    children:
-                        List.generate(
-                              bible.getBookByType(book).chapters.length,
-                              (chapterIndex) => ChapterReference(
-                                book: book,
-                                chapterNum: chapterIndex + 1,
-                              ),
-                            )
-                            .where(
-                              (chapterReference) =>
-                                  chapterTextState.value == null ||
-                                  chapterReference.chapterNum.toString().startsWith(
-                                    chapterTextState.value.toString(),
-                                  ),
-                            )
-                            .map(
-                              (chapterReference) => ListTile(
-                                title: Text(chapterReference.format()),
-                                onTap: () => Navigator.of(context).pop(chapterReference),
-                              ),
-                            )
-                            .toList(),
+                    child: StyledList(
+                      children:
+                          List.generate(
+                                bible.getBookByType(book).chapters.length,
+                                (chapterIndex) => ChapterReference(
+                                  book: book,
+                                  chapterNum: chapterIndex + 1,
+                                ),
+                              )
+                              .where(
+                                (chapterReference) =>
+                                    chapterTextState.value == null ||
+                                    chapterReference.chapterNum.toString().startsWith(
+                                      chapterTextState.value.toString(),
+                                    ),
+                              )
+                              .map(
+                                (chapterReference) => StyledListItem(
+                                  title: Text(chapterReference.format()),
+                                  trailing: Icon(Icons.chevron_right),
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(chapterReference),
+                                ),
+                              )
+                              .toList(),
+                    ),
                   ),
           ),
         ],
