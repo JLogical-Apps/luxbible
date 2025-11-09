@@ -1,12 +1,14 @@
-import 'package:bible/extensions/controller_extensions.dart';
 import 'package:bible/models/book_type.dart';
 import 'package:bible/models/chapter_reference.dart';
 import 'package:bible/providers/bible_provider.dart';
+import 'package:bible/providers/user_profile_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/styled_list.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
+import 'package:bible/style/widgets/styled_section.dart';
 import 'package:bible/style/widgets/styled_text_field.dart';
+import 'package:bible/utils/extensions/controller_extensions.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:bible/utils/input_formatters.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +27,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bible = ref.watch(bibleProvider);
+    final userProfile = ref.watch(userProfileProvider);
 
     final bookTextState = useState(initialReference.book.title());
     final bookTextSelectionState = useState<TextSelection>(
@@ -104,7 +107,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                           autofocus: true,
                           suggestedText: book?.title(),
                           hintText: 'Book',
-                          textStyle: context.textStyle.paragraphLarge,
+                          textStyle: context.textStyle.paragraphLg,
                           textCapitalization: TextCapitalization.words,
                           action: TextInputAction.next,
                           textInputType: TextInputType.text,
@@ -129,7 +132,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                           ? null
                           : (text) => chapterNumState.value = int.tryParse(text),
                       hintText: 'Chapter',
-                      textStyle: context.textStyle.paragraphLarge,
+                      textStyle: context.textStyle.paragraphLg,
                       textInputType: TextInputType.number,
                       focusNode: chapterFocusNode,
                       onSubmit: (text) {
@@ -158,32 +161,51 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
           ),
           Expanded(
             child: book == null || bookFocusNode.hasPrimaryFocus
-                ? SingleChildScrollView(
+                ? ListView(
                     key: ValueKey(BookType),
                     controller: scrollController,
-                    child: StyledList(
-                      children: BookType.values
-                          .where(
-                            (book) =>
-                                isBookFullySelected ||
-                                book.title().toUpperCase().startsWith(
-                                  bookTextState.value.toUpperCase(),
+                    children: [
+                      if (userProfile.previouslyViewed.isNotEmpty &&
+                          (isBookFullySelected || bookTextState.value.isEmpty))
+                        StyledSection.list(
+                          titleText: 'Recents',
+                          children: userProfile.previouslyViewed
+                              .map(
+                                (chapterReference) => StyledListItem(
+                                  titleText: chapterReference.format(),
+                                  trailingIcon: Symbols.expand_circle_right,
+                                  onPressed: () =>
+                                      Navigator.of(context).pop(chapterReference),
                                 ),
-                          )
-                          .map(
-                            (book) => StyledListItem(
-                              title: Text(book.title()),
-                              trailing: Icon(Symbols.chevron_right),
-                              onPressed: () {
-                                bookTextState.value = book.title();
-                                WidgetsBinding.instance.addPostFrameCallback(
-                                  (_) => chapterFocusNode.requestFocus(),
-                                );
-                              },
-                            ),
-                          )
-                          .toList(),
-                    ),
+                              )
+                              .toList(),
+                        ),
+                      StyledSection.list(
+                        titleText: 'Books',
+                        padding: EdgeInsets.only(top: 24),
+                        children: BookType.values
+                            .where(
+                              (book) =>
+                                  isBookFullySelected ||
+                                  book.title().toUpperCase().startsWith(
+                                    bookTextState.value.toUpperCase(),
+                                  ),
+                            )
+                            .map(
+                              (book) => StyledListItem(
+                                titleText: book.title(),
+                                trailingIcon: Symbols.chevron_right,
+                                onPressed: () {
+                                  bookTextState.value = book.title();
+                                  WidgetsBinding.instance.addPostFrameCallback(
+                                    (_) => chapterFocusNode.requestFocus(),
+                                  );
+                                },
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ],
                   )
                 : SingleChildScrollView(
                     key: ValueKey(ChapterReference),
@@ -206,8 +228,8 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                               )
                               .map(
                                 (chapterReference) => StyledListItem(
-                                  title: Text(chapterReference.format()),
-                                  trailing: Icon(Symbols.chevron_right),
+                                  titleText: chapterReference.format(),
+                                  trailingIcon: Symbols.expand_circle_right,
                                   onPressed: () =>
                                       Navigator.of(context).pop(chapterReference),
                                 ),

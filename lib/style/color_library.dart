@@ -1,4 +1,4 @@
-import 'package:bible/extensions/brightness_extensions.dart';
+import 'package:bible/utils/extensions/brightness_extensions.dart';
 import 'package:flutter/material.dart';
 
 class ColorLibrary {

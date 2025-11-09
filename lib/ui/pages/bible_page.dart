@@ -1,6 +1,3 @@
-import 'package:bible/extensions/build_context_extensions.dart';
-import 'package:bible/extensions/collection_extensions.dart';
-import 'package:bible/extensions/controller_extensions.dart';
 import 'package:bible/models/chapter_reference.dart';
 import 'package:bible/providers/bible_provider.dart';
 import 'package:bible/providers/user_profile_provider.dart';
@@ -10,6 +7,9 @@ import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/styled_material.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
 import 'package:bible/utils/collection_extensions.dart';
+import 'package:bible/utils/extensions/build_context_extensions.dart';
+import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/controller_extensions.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -166,7 +166,7 @@ class BiblePage extends HookConsumerWidget {
                         padding: EdgeInsets.symmetric(vertical: 16),
                         child: Text(
                           currentChapterReference.format(),
-                          style: context.textStyle.labelLarge,
+                          style: context.textStyle.labelLg,
                         ),
                       ),
                     ),
