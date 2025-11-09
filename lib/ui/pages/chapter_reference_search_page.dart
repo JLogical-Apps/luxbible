@@ -74,6 +74,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                       text: bookTextState.value,
                       onChanged: (text) => bookTextState.value = text,
                       autofocus: true,
+                      suggestedText: book?.title(),
                       hintText: 'Book',
                       textStyle: context.textStyle.paragraphLarge,
                       textCapitalization: TextCapitalization.words,

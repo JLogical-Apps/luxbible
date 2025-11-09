@@ -21,6 +21,8 @@ class ColorLibrary {
   Color get contentPrimary => brightness.when(light: Colors.black, dark: Colors.white);
   Color get contentSecondary =>
       brightness.when(light: Color(0XFF3F3F46), dark: Color(0XFFD4D4D8));
+  Color get contentTertiary =>
+      brightness.when(light: Color(0xFF52525B), dark: Color(0xFFA1A1AA));
   Color get contentDisabled =>
       brightness.when(light: Color(0xFFA1A1AA), dark: Color(0xFF52525B));
 

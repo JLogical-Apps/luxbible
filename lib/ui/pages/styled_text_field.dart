@@ -12,6 +12,7 @@ class StyledTextField extends HookWidget {
   final Function(String)? onChanged;
   final Function(String)? onSubmit;
 
+  final String? suggestedText;
   final String? hintText;
 
   final bool autofocus;
@@ -31,6 +32,7 @@ class StyledTextField extends HookWidget {
     this.onChanged,
     this.onSubmit,
     this.hintText,
+    this.suggestedText,
     this.autofocus = false,
     this.textInputType = TextInputType.text,
     this.textCapitalization = TextCapitalization.sentences,
@@ -70,33 +72,58 @@ class StyledTextField extends HookWidget {
       ),
     );
 
-    return TextField(
-      controller: controller,
-      focusNode: focusNode,
-      onChanged: (text) => onChanged?.call(text),
-      enabled: onChanged != null,
-      autofocus: autofocus,
-      style: textStyle.disabled(context, isDisabled: onChanged == null),
-      keyboardType: textInputType,
-      textInputAction: action,
-      textCapitalization: textCapitalization,
-      inputFormatters: inputFormatters,
-      onSubmitted: onSubmit,
-      decoration: InputDecoration(
-        fillColor: onChanged == null
-            ? context.colors.surfaceDisabled
-            : context.colors.surfaceSecondary,
-        filled: !focusNode.hasPrimaryFocus,
-        border: OutlineInputBorder(borderSide: BorderSide.none),
-        hintText: hintText,
-        hintStyle: context.textStyle.paragraphMedium
-            .subtle(context)
-            .disabled(context, isDisabled: onChanged == null),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: context.colors.borderSelected, width: 2),
-          borderRadius: BorderRadius.circular(8),
+    final suggestedText = this.suggestedText;
+    final remainingSuggestedText =
+        suggestedText == null || text.length > suggestedText.length
+        ? null
+        : suggestedText.substring(text.length);
+
+    return Stack(
+      children: [
+        if (focusNode.hasPrimaryFocus &&
+            onChanged != null &&
+            remainingSuggestedText != null)
+          Positioned.fill(
+            child: Padding(
+              padding:
+                  EdgeInsets.all(12) +
+                  EdgeInsets.only(left: 6 + textStyle.getWidth(text)),
+              child: Text(remainingSuggestedText, style: textStyle.subtle(context)),
+            ),
+          ),
+        TextField(
+          controller: controller,
+          focusNode: focusNode,
+          onChanged: (text) => onChanged?.call(text),
+          enabled: onChanged != null,
+          autofocus: autofocus,
+          style: textStyle.disabled(context, isDisabled: onChanged == null),
+          keyboardType: textInputType,
+          textInputAction: action,
+          textCapitalization: textCapitalization,
+          inputFormatters: inputFormatters,
+          onSubmitted: onSubmit,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.all(12),
+            fillColor: onChanged == null
+                ? context.colors.surfaceDisabled
+                : context.colors.surfaceSecondary,
+            filled: !focusNode.hasPrimaryFocus,
+            border: OutlineInputBorder(
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            hintText: hintText,
+            hintStyle: context.textStyle.paragraphMedium
+                .subtle(context)
+                .disabled(context, isDisabled: onChanged == null),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: context.colors.borderSelected, width: 2),
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
         ),
-      ),
+      ],
     );
   }
 }
