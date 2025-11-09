@@ -6,8 +6,13 @@ class ColorLibrary {
 
   const ColorLibrary({required this.brightness});
 
+  factory ColorLibrary.fromBackground(Color color) =>
+      ColorLibrary(brightness: ThemeData.estimateBrightnessForColor(color));
+
   Color get backgroundPrimary =>
       brightness.when(light: Color(0xFFF4F4F5), dark: Color(0xFF09090B));
+  Color get backgroundCritical =>
+      brightness.when(light: Color(0xFFDC2626), dark: Color(0xFFB91C1C));
 
   Color get surfacePrimary =>
       brightness.when(light: Colors.white, dark: Color(0xFF18181B));

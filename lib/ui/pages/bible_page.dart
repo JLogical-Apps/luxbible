@@ -6,7 +6,6 @@ import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/styled_material.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
-import 'package:bible/utils/collection_extensions.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/controller_extensions.dart';

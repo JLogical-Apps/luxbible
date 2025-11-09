@@ -7,7 +7,9 @@ import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/styled_list.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_section.dart';
+import 'package:bible/style/widgets/styled_swipeable.dart';
 import 'package:bible/style/widgets/styled_text_field.dart';
+import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/controller_extensions.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:bible/utils/input_formatters.dart';
@@ -171,11 +173,27 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                           titleText: 'Recents',
                           children: userProfile.previouslyViewed
                               .map(
-                                (chapterReference) => StyledListItem(
-                                  titleText: chapterReference.format(),
-                                  trailingIcon: Symbols.expand_circle_right,
-                                  onPressed: () =>
-                                      Navigator.of(context).pop(chapterReference),
+                                (chapterReference) => StyledSwipeable(
+                                  key: ValueKey(chapterReference),
+                                  actions: [
+                                    StyledSwipeableAction.delete(
+                                      onPressed: () => ref
+                                          .read(userProfileProvider.notifier)
+                                          .set(
+                                            userProfile.copyWith(
+                                              previouslyViewed: userProfile
+                                                  .previouslyViewed
+                                                  .withRemoved(chapterReference),
+                                            ),
+                                          ),
+                                    ),
+                                  ],
+                                  child: StyledListItem(
+                                    titleText: chapterReference.format(),
+                                    trailingIcon: Symbols.expand_circle_right,
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(chapterReference),
+                                  ),
                                 ),
                               )
                               .toList(),
