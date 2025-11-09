@@ -4,7 +4,7 @@ import 'package:bible/models/chapter_reference.dart';
 import 'package:bible/providers/bible_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
-import 'package:bible/ui/pages/styled_text_field.dart';
+import 'package:bible/style/widgets/styled_text_field.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:bible/utils/input_formatters.dart';
 import 'package:flutter/material.dart';
