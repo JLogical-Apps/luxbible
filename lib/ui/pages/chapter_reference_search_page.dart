@@ -1,10 +1,15 @@
+import 'package:bible/models/book_type.dart';
 import 'package:bible/models/chapter_reference.dart';
+import 'package:bible/providers/bible_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
+import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/ui/pages/styled_text_field.dart';
+import 'package:bible/utils/input_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:recase/recase.dart';
 
 class ChapterReferenceSearchPage extends HookConsumerWidget {
   final ChapterReference initialReference;
@@ -13,8 +18,35 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final bible = ref.watch(bibleProvider);
+
     final bookTextState = useState(initialReference.book.title());
     final chapterTextState = useState<int?>(initialReference.chapterNum);
+
+    final bookFocusNode = useFocusNode();
+
+    final matchingBooks = BookType.values
+        .where(
+          (book) =>
+              book.title().toUpperCase().startsWith(bookTextState.value.toUpperCase()),
+        )
+        .toList();
+    final book = matchingBooks.length == 1 ? matchingBooks.first : null;
+    final previousBook = usePrevious(book);
+    useEffect(() {
+      if (book != previousBook) {
+        WidgetsBinding.instance.addPostFrameCallback(
+          (_) => chapterTextState.value = null,
+        );
+      }
+      return null;
+    }, [book, previousBook]);
+
+    useOnListenableChange(bookFocusNode, () {
+      if (!bookFocusNode.hasPrimaryFocus && book != null) {
+        bookTextState.value = book.title().titleCase;
+      }
+    });
 
     return Scaffold(
       backgroundColor: context.colors.surfacePrimary,
@@ -25,41 +57,66 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: ListView(
+      body: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              spacing: 8,
-              children: [
-                Expanded(
-                  child: StyledTextField(
-                    text: bookTextState.value,
-                    onChanged: (text) => bookTextState.value = text,
-                    autofocus: true,
-                    hintText: 'Book',
-                    textStyle: context.textStyle.paragraphLarge,
-                    textCapitalization: TextCapitalization.words,
-                    action: TextInputAction.next,
-                    textInputType: TextInputType.text,
+          DecoratedBox(
+            decoration: BoxDecoration(
+              boxShadow: [StyledShadow(context)],
+              color: context.colors.surfacePrimary,
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(16).copyWith(top: 0),
+              child: Row(
+                spacing: 8,
+                children: [
+                  Expanded(
+                    child: StyledTextField(
+                      text: bookTextState.value,
+                      onChanged: (text) => bookTextState.value = text,
+                      autofocus: true,
+                      hintText: 'Book',
+                      textStyle: context.textStyle.paragraphLarge,
+                      textCapitalization: TextCapitalization.words,
+                      action: TextInputAction.next,
+                      textInputType: TextInputType.text,
+                      focusNode: bookFocusNode,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 120,
-                  child: StyledTextField(
-                    text: chapterTextState.value?.toString() ?? '',
-                    onChanged: bookTextState.value.isEmpty
-                        ? null
-                        : (text) => chapterTextState.value = int.tryParse(text),
-                    hintText: 'Chapter',
-                    textStyle: context.textStyle.paragraphLarge,
-                    textInputType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  SizedBox(
+                    width: 120,
+                    child: StyledTextField(
+                      text: chapterTextState.value?.toString() ?? '',
+                      onChanged: book == null
+                          ? null
+                          : (text) => chapterTextState.value = int.tryParse(text),
+                      hintText: 'Chapter',
+                      textStyle: context.textStyle.paragraphLarge,
+                      textInputType: TextInputType.number,
+                      onSubmit: (text) {
+                        final chapterNum = int.tryParse(text);
+                        if (book == null || chapterNum == null) {
+                          return;
+                        }
+
+                        Navigator.of(
+                          context,
+                        ).pop(ChapterReference(book: book, chapterNum: chapterNum));
+                      },
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        if (book != null)
+                          RangeTextInputFormatter(
+                            min: 1,
+                            max: bible.getBookByType(book).chapters.length,
+                          ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
+          Expanded(child: ListView(children: [])),
         ],
       ),
     );

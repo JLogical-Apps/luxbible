@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/text_style_extensions.dart';
+import 'package:bible/utils/hook_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 class StyledTextField extends HookWidget {
   final String text;
   final Function(String)? onChanged;
+  final Function(String)? onSubmit;
 
   final String? hintText;
 
@@ -19,12 +21,15 @@ class StyledTextField extends HookWidget {
   final List<String>? autofillHints;
   final List<TextInputFormatter> inputFormatters;
 
+  final FocusNode? focusNode;
+
   final TextStyle? textStyle;
 
   const StyledTextField({
     super.key,
     required this.text,
     this.onChanged,
+    this.onSubmit,
     this.hintText,
     this.autofocus = false,
     this.textInputType = TextInputType.text,
@@ -32,6 +37,7 @@ class StyledTextField extends HookWidget {
     this.action,
     this.autofillHints,
     this.inputFormatters = const [],
+    this.focusNode,
     this.textStyle,
   });
 
@@ -39,7 +45,7 @@ class StyledTextField extends HookWidget {
   Widget build(BuildContext context) {
     final textStyle = this.textStyle ?? context.textStyle.paragraphMedium;
 
-    final focusNode = useListenable(useFocusNode());
+    final focusNode = useListenable(this.focusNode ?? useFocusNode());
     final controller = useTextEditingController(text: text);
 
     if (text != controller.text) {
@@ -56,14 +62,13 @@ class StyledTextField extends HookWidget {
       );
     }
 
-    useOnListenableChange(focusNode, () {
-      if (focusNode.hasPrimaryFocus) {
-        controller.selection = TextSelection(
-          baseOffset: 0,
-          extentOffset: controller.value.text.length,
-        );
-      }
-    });
+    useOnFocusNodeFocused(
+      focusNode,
+      () => controller.selection = TextSelection(
+        baseOffset: 0,
+        extentOffset: controller.value.text.length,
+      ),
+    );
 
     return TextField(
       controller: controller,
@@ -76,8 +81,11 @@ class StyledTextField extends HookWidget {
       textInputAction: action,
       textCapitalization: textCapitalization,
       inputFormatters: inputFormatters,
+      onSubmitted: onSubmit,
       decoration: InputDecoration(
-        fillColor: context.colors.surfaceSecondary,
+        fillColor: onChanged == null
+            ? context.colors.surfaceDisabled
+            : context.colors.surfaceSecondary,
         filled: !focusNode.hasPrimaryFocus,
         border: OutlineInputBorder(borderSide: BorderSide.none),
         hintText: hintText,
