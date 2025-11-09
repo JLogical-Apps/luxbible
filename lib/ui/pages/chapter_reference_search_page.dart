@@ -29,7 +29,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
     );
     final isBookFullySelected =
         bookTextSelectionState.value.baseOffset == 0 &&
-        bookTextSelectionState.value.extentOffset == 0;
+        bookTextSelectionState.value.extentOffset == bookTextState.value.length;
 
     final chapterTextState = useState<int?>(initialReference.chapterNum);
 

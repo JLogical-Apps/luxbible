@@ -54,6 +54,11 @@ class StyledTextField extends HookWidget {
     final focusNode = useListenable(this.focusNode ?? useFocusNode());
     final controller = useTextEditingController(text: text);
 
+    useOnListenableChange(
+      controller,
+      () => onTextEditValueChanged?.call(controller.value),
+    );
+
     if (text != controller.text) {
       final isAtEnd =
           controller.text.length + 1 == text.length &&
@@ -99,10 +104,7 @@ class StyledTextField extends HookWidget {
           controller: controller,
           focusNode: focusNode,
           readOnly: readOnly,
-          onChanged: (text) {
-            onTextEditValueChanged?.call(controller.value);
-            onChanged?.call(text);
-          },
+          onChanged: (text) => onChanged?.call(text),
           enabled: onChanged != null,
           autofocus: autofocus,
           style: textStyle.disabled(context, isDisabled: onChanged == null),
