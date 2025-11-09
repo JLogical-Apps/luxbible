@@ -1,11 +1,14 @@
+import 'package:bible/extensions/controller_extensions.dart';
 import 'package:bible/models/book_type.dart';
 import 'package:bible/models/chapter_reference.dart';
 import 'package:bible/providers/bible_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/ui/pages/styled_text_field.dart';
+import 'package:bible/utils/hook_utils.dart';
 import 'package:bible/utils/input_formatters.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -59,6 +62,13 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
       }
     });
 
+    final scrollController = useListenable(useScrollController());
+    final isScrollingDownState = useState(true);
+    useOnStickyScrollDirectionChanged(
+      scrollController.positionOrNull,
+      (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
+    );
+
     return Scaffold(
       backgroundColor: context.colors.surfacePrimary,
       appBar: AppBar(
@@ -81,19 +91,32 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                 spacing: 8,
                 children: [
                   Expanded(
-                    child: StyledTextField(
-                      text: bookTextState.value,
-                      onChanged: (text) => bookTextState.value = text,
-                      onTextEditValueChanged: (value) =>
-                          bookTextSelectionState.value = value.selection,
-                      autofocus: true,
-                      suggestedText: book?.title(),
-                      hintText: 'Book',
-                      textStyle: context.textStyle.paragraphLarge,
-                      textCapitalization: TextCapitalization.words,
-                      action: TextInputAction.next,
-                      textInputType: TextInputType.text,
-                      focusNode: bookFocusNode,
+                    child: Stack(
+                      children: [
+                        StyledTextField(
+                          text: bookTextState.value,
+                          readOnly: !isScrollingDownState.value,
+                          onChanged: (text) => bookTextState.value = text,
+                          onTextEditValueChanged: (value) =>
+                              bookTextSelectionState.value = value.selection,
+                          autofocus: true,
+                          suggestedText: book?.title(),
+                          hintText: 'Book',
+                          textStyle: context.textStyle.paragraphLarge,
+                          textCapitalization: TextCapitalization.words,
+                          action: TextInputAction.next,
+                          textInputType: TextInputType.text,
+                          focusNode: bookFocusNode,
+                        ),
+                        Positioned.fill(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.translucent,
+                            onTap: !isScrollingDownState.value
+                                ? () => isScrollingDownState.value = true
+                                : null,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(
@@ -135,6 +158,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
             child: book == null || bookFocusNode.hasPrimaryFocus
                 ? ListView(
                     key: ValueKey(BookType),
+                    controller: scrollController,
                     children: BookType.values
                         .where(
                           (book) =>
@@ -158,6 +182,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                   )
                 : ListView(
                     key: ValueKey(ChapterReference),
+                    controller: scrollController,
                     children:
                         List.generate(
                               bible.getBookByType(book).chapters.length,

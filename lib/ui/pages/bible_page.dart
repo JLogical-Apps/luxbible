@@ -9,6 +9,7 @@ import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/styled_material.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
+import 'package:bible/utils/hook_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -44,17 +45,10 @@ class BiblePage extends HookConsumerWidget {
     final scrollController = useListenable(useScrollController());
     final scrollPosition = scrollController.positionsOrNull?.firstOrNull;
     final isScrollingDownState = useState(true);
-
-    useEffect(() {
-      if (scrollPosition == null ||
-          scrollPosition.userScrollDirection == ScrollDirection.idle) {
-        return null;
-      }
-
-      isScrollingDownState.value =
-          scrollPosition.userScrollDirection == ScrollDirection.forward;
-      return null;
-    }, [scrollPosition?.userScrollDirection]);
+    useOnStickyScrollDirectionChanged(
+      scrollPosition,
+      (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
+    );
 
     final showBottomBar = isScrollingDownState.value || scrollPosition?.atEdge == true;
 
