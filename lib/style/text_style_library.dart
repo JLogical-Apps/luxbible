@@ -26,6 +26,20 @@ class TextStyleLibrary {
     fontWeight: FontWeight.w600,
   );
 
+  TextStyle get paragraphLarge => base.copyWith(
+    fontFamily: 'Inter',
+    fontSize: 18,
+    height: 28 / 18,
+    fontWeight: FontWeight.w400,
+  );
+
+  TextStyle get paragraphMedium => base.copyWith(
+    fontFamily: 'Inter',
+    fontSize: 16,
+    height: 24 / 16,
+    fontWeight: FontWeight.w400,
+  );
+
   TextStyle get bibleChapter => base.copyWith(
     fontFamily: 'Inter',
     fontSize: 24,

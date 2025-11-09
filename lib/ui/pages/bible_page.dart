@@ -1,3 +1,4 @@
+import 'package:bible/extensions/build_context_extensions.dart';
 import 'package:bible/extensions/collection_extensions.dart';
 import 'package:bible/extensions/controller_extensions.dart';
 import 'package:bible/providers/bible_provider.dart';
@@ -6,6 +7,7 @@ import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/styled_material.dart';
+import 'package:bible/ui/pages/chapter_reference_search_page.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -135,7 +137,14 @@ class BiblePage extends HookConsumerWidget {
                 color: context.colors.surfacePrimary,
                 borderRadius: BorderRadius.circular(999),
                 padding: EdgeInsets.only(left: 24, right: 12),
-                onPressed: () {},
+                onPressed: currentChapterReference == null
+                    ? null
+                    : () => context.push(
+                        ChapterReferenceSearchPage(
+                          initialReference: currentChapterReference,
+                        ),
+                        isDialog: true,
+                      ),
                 child: Row(
                   children: [
                     Expanded(

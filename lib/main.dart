@@ -46,18 +46,31 @@ class BibleApp extends StatelessWidget {
           (ref) => SharedPreferencesService(sharedPreferences),
         ),
       ],
-      child: MaterialApp(
-        title: 'Bible',
-        theme: ThemeData(
-          colorScheme: ColorScheme.highContrastLight(brightness: Brightness.light),
-          cardColor: Colors.transparent,
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: MaterialApp(
+          title: 'Bible',
+          theme: ThemeData(
+            colorScheme: ColorScheme.highContrastLight(brightness: Brightness.light),
+            cardColor: Colors.transparent,
+            textSelectionTheme: TextSelectionThemeData(
+              cursorColor: Colors.black,
+              selectionColor: Colors.black.withValues(alpha: 0.2),
+              selectionHandleColor: Colors.black,
+            ),
+          ),
+          darkTheme: ThemeData(
+            colorScheme: ColorScheme.dark(brightness: Brightness.dark),
+            cardColor: Colors.transparent,
+            textSelectionTheme: TextSelectionThemeData(
+              cursorColor: Colors.white,
+              selectionColor: Colors.white.withValues(alpha: 0.2),
+              selectionHandleColor: Colors.white,
+            ),
+          ),
+          debugShowCheckedModeBanner: false,
+          home: BiblePage(),
         ),
-        darkTheme: ThemeData(
-          colorScheme: ColorScheme.dark(brightness: Brightness.dark),
-          cardColor: Colors.transparent,
-        ),
-        debugShowCheckedModeBanner: false,
-        home: BiblePage(),
       ),
     );
   }
