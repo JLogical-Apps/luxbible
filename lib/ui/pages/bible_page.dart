@@ -9,12 +9,14 @@ import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/styled_material.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
+import 'package:bible/utils/collection_extensions.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 class BiblePage extends HookConsumerWidget {
   const BiblePage({super.key});
@@ -145,6 +147,16 @@ class BiblePage extends HookConsumerWidget {
                   if (newReference != null) {
                     final pageIndex = bible.getPageIndexByChapterReference(newReference);
                     pageController.jumpToPage(pageIndex);
+                    ref
+                        .read(userProfileProvider.notifier)
+                        .set(
+                          userProfile.copyWith(
+                            previouslyViewed: [
+                              newReference,
+                              ...userProfile.previouslyViewed,
+                            ].distinct.take(5).toList(),
+                          ),
+                        );
                   }
                 },
                 child: Row(
@@ -158,7 +170,7 @@ class BiblePage extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                    IconButton(icon: Icon(Icons.more_vert), onPressed: () {}),
+                    IconButton(icon: Icon(Symbols.more_vert), onPressed: () {}),
                   ],
                 ),
               ),
