@@ -14,6 +14,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:recase/recase.dart';
 
 class ChapterReferenceSearchPage extends HookConsumerWidget {
@@ -75,7 +76,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
       appBar: AppBar(
         backgroundColor: context.colors.surfacePrimary,
         leading: IconButton(
-          icon: Icon(Icons.close),
+          icon: Icon(Symbols.close),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -172,7 +173,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                           .map(
                             (book) => StyledListItem(
                               title: Text(book.title()),
-                              trailing: Icon(Icons.chevron_right),
+                              trailing: Icon(Symbols.chevron_right),
                               onPressed: () {
                                 bookTextState.value = book.title();
                                 WidgetsBinding.instance.addPostFrameCallback(
@@ -206,7 +207,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                               .map(
                                 (chapterReference) => StyledListItem(
                                   title: Text(chapterReference.format()),
-                                  trailing: Icon(Icons.chevron_right),
+                                  trailing: Icon(Symbols.chevron_right),
                                   onPressed: () =>
                                       Navigator.of(context).pop(chapterReference),
                                 ),
