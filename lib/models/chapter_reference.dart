@@ -1,10 +1,19 @@
 import 'package:bible/models/book_type.dart';
+import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class ChapterReference {
-  final BookType book;
-  final int chapterNum;
+part 'chapter_reference.freezed.dart';
+part 'chapter_reference.g.dart';
 
-  const ChapterReference({required this.book, required this.chapterNum});
+@freezed
+sealed class ChapterReference with _$ChapterReference {
+  const ChapterReference._();
+
+  const factory ChapterReference({required BookType book, required int chapterNum}) =
+      _ChapterReference;
+
+  factory ChapterReference.fromJson(Map<String, dynamic> json) =>
+      _$ChapterReferenceFromJson(json);
 
   String format() => '${book.title()} $chapterNum';
 }

@@ -3,7 +3,7 @@ import 'package:bible/extensions/collection_extensions.dart';
 import 'package:bible/extensions/controller_extensions.dart';
 import 'package:bible/models/chapter_reference.dart';
 import 'package:bible/providers/bible_provider.dart';
-import 'package:bible/services/shared_preferences_service.dart';
+import 'package:bible/providers/user_profile_provider.dart';
 import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
@@ -23,9 +23,8 @@ class BiblePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bible = ref.watch(bibleProvider);
 
-    final initialReference = ref
-        .watch(sharedPreferenceServiceProvider)
-        .getLastChapterReference();
+    final userProfile = ref.watch(userProfileProvider);
+    final initialReference = userProfile.tabs.firstOrNull;
 
     final pageController = useListenable(
       usePageController(
@@ -37,10 +36,13 @@ class BiblePage extends HookConsumerWidget {
 
     final selectedVersesState = useState(<int>[]);
 
-    final currentPage = pageController.pageOrNull?.round();
-    final currentChapterReference = currentPage == null
-        ? null
-        : bible.getChapterReferenceByPageIndex(currentPage);
+    final currentPage =
+        (pageController.pageOrNull ??
+                (initialReference == null
+                    ? 0
+                    : bible.getPageIndexByChapterReference(initialReference)))
+            .round();
+    final currentChapterReference = bible.getChapterReferenceByPageIndex(currentPage);
 
     final scrollController = useListenable(useScrollController());
     final scrollPosition = scrollController.positionsOrNull?.firstOrNull;
@@ -64,8 +66,8 @@ class BiblePage extends HookConsumerWidget {
 
               final reference = bible.getChapterReferenceByPageIndex(pageIndex);
               ref
-                  .read(sharedPreferenceServiceProvider)
-                  .setLastChapterReference(reference);
+                  .read(userProfileProvider.notifier)
+                  .set(userProfile.copyWith(tabs: [reference]));
             },
             itemBuilder: (context, pageIndex) {
               final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
@@ -132,30 +134,26 @@ class BiblePage extends HookConsumerWidget {
                 color: context.colors.surfacePrimary,
                 borderRadius: BorderRadius.circular(999),
                 padding: EdgeInsets.only(left: 24, right: 12),
-                onPressed: currentChapterReference == null
-                    ? null
-                    : () async {
-                        final newReference =
-                            await context.pushDialog(
-                                  ChapterReferenceSearchPage(
-                                    initialReference: currentChapterReference,
-                                  ),
-                                )
-                                as ChapterReference?;
-                        if (newReference != null) {
-                          final pageIndex = bible.getPageIndexByChapterReference(
-                            newReference,
-                          );
-                          pageController.jumpToPage(pageIndex);
-                        }
-                      },
+                onPressed: () async {
+                  final newReference =
+                      await context.pushDialog(
+                            ChapterReferenceSearchPage(
+                              initialReference: currentChapterReference,
+                            ),
+                          )
+                          as ChapterReference?;
+                  if (newReference != null) {
+                    final pageIndex = bible.getPageIndexByChapterReference(newReference);
+                    pageController.jumpToPage(pageIndex);
+                  }
+                },
                 child: Row(
                   children: [
                     Expanded(
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 16),
                         child: Text(
-                          currentChapterReference?.format() ?? '',
+                          currentChapterReference.format(),
                           style: context.textStyle.labelLarge,
                         ),
                       ),

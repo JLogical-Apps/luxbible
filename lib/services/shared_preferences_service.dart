@@ -1,5 +1,7 @@
-import 'package:bible/models/book_type.dart';
-import 'package:bible/models/chapter_reference.dart';
+import 'dart:convert';
+
+import 'package:bible/models/user_profile.dart';
+import 'package:bible/utils/guard.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,22 +12,16 @@ class SharedPreferencesService {
 
   const SharedPreferencesService(this.sharedPreferences);
 
-  ChapterReference? getLastChapterReference() {
-    final bookTypeRaw = sharedPreferences.getString('referenceBookType');
-    final chapterNum = sharedPreferences.getInt('referenceChapterNum');
-
-    return bookTypeRaw == null || chapterNum == null
+  UserProfile? getUserProfile() {
+    final userProfileRaw = sharedPreferences.getString('userProfile');
+    final userProfileJson = userProfileRaw == null
         ? null
-        : ChapterReference(
-            book: BookType.values.firstWhere((book) => book.name == bookTypeRaw),
-            chapterNum: chapterNum,
-          );
+        : guard(() => jsonDecode(userProfileRaw));
+    return userProfileJson == null ? null : UserProfile.fromJson(userProfileJson);
   }
 
-  Future<void> setLastChapterReference(ChapterReference reference) async {
-    await sharedPreferences.setString('referenceBookType', reference.book.name);
-    await sharedPreferences.setInt('referenceChapterNum', reference.chapterNum);
-  }
+  Future<void> setUserProfile(UserProfile userProfile) async =>
+      await sharedPreferences.setString('userProfile', jsonEncode(userProfile.toJson()));
 }
 
 @riverpod
