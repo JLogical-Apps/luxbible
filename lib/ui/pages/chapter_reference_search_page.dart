@@ -27,13 +27,13 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
 
     final bookTextState = useState(initialReference.book.title());
     final bookTextSelectionState = useState<TextSelection>(
-      TextSelection(baseOffset: 0, extentOffset: 0),
+      TextSelection(baseOffset: 0, extentOffset: bookTextState.value.length),
     );
     final isBookFullySelected =
         bookTextSelectionState.value.baseOffset == 0 &&
         bookTextSelectionState.value.extentOffset == bookTextState.value.length;
 
-    final chapterTextState = useState<int?>(initialReference.chapterNum);
+    final chapterNumState = useState<int?>(initialReference.chapterNum);
 
     final bookFocusNode = useListenable(useFocusNode());
     final chapterFocusNode = useListenable(useFocusNode());
@@ -48,11 +48,10 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
     final book = getBook();
     final previousBook = usePrevious(getBook());
 
-    useEffect(() {
-      if (book != previousBook) {
-        WidgetsBinding.instance.addPostFrameCallback(
-          (_) => chapterTextState.value = null,
-        );
+    final isFirstFrame = useIsFirstFrame();
+    usePostFrameEffect(() {
+      if (book != previousBook && !isFirstFrame) {
+        chapterNumState.value = null;
       }
       return null;
     }, [book, previousBook]);
@@ -124,10 +123,10 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                   SizedBox(
                     width: 120,
                     child: StyledTextField(
-                      text: chapterTextState.value?.toString() ?? '',
+                      text: chapterNumState.value?.toString() ?? '',
                       onChanged: book == null
                           ? null
-                          : (text) => chapterTextState.value = int.tryParse(text),
+                          : (text) => chapterNumState.value = int.tryParse(text),
                       hintText: 'Chapter',
                       textStyle: context.textStyle.paragraphLarge,
                       textInputType: TextInputType.number,
@@ -199,9 +198,9 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                               )
                               .where(
                                 (chapterReference) =>
-                                    chapterTextState.value == null ||
+                                    chapterNumState.value == null ||
                                     chapterReference.chapterNum.toString().startsWith(
-                                      chapterTextState.value.toString(),
+                                      chapterNumState.value.toString(),
                                     ),
                               )
                               .map(

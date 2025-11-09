@@ -32,3 +32,16 @@ void useOnStickyScrollDirectionChanged(
     return null;
   }, [position?.userScrollDirection]);
 }
+
+void usePostFrameEffect(Function() effect, [List<Object?>? keys]) {
+  useEffect(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) => effect());
+    return null;
+  }, keys ?? []);
+}
+
+bool useIsFirstFrame() {
+  final isFirstFrameState = useState(true);
+  usePostFrameEffect(() => isFirstFrameState.value = false);
+  return isFirstFrameState.value;
+}
