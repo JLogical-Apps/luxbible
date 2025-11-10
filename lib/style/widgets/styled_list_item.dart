@@ -1,9 +1,12 @@
 import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
+import 'package:bible/style/widgets/styled_divider.dart';
 import 'package:bible/style/widgets/styled_list_item_context.dart';
 import 'package:bible/style/widgets/styled_material.dart';
+import 'package:bible/style/widgets/styled_radio.dart';
 import 'package:bible/utils/extensions/map_if_non_null.dart';
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 class StyledListItem extends StatelessWidget {
   final Widget? title;
@@ -20,6 +23,20 @@ class StyledListItem extends StatelessWidget {
     this.onPressed,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new),
        trailing = trailing ?? trailingIcon?.mapIfNonNull(Icon.new);
+
+  StyledListItem.navigation({super.key, Widget? title, String? titleText, this.onPressed})
+    : title = title ?? titleText?.mapIfNonNull(Text.new),
+      trailing = Icon(Symbols.chevron_right);
+
+  StyledListItem.radio({
+    super.key,
+    Widget? title,
+    String? titleText,
+    required bool selected,
+    required Function() onSelected,
+  }) : title = title ?? titleText?.mapIfNonNull(Text.new),
+       onPressed = onSelected,
+       trailing = StyledRadio(selected: selected);
 
   @override
   Widget build(BuildContext context) {
@@ -66,12 +83,7 @@ class StyledListItem extends StatelessWidget {
                   ],
                 ),
                 if (itemContext?.hideDivider != true)
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: Divider(height: 1, color: context.colors.borderOpaque),
-                  ),
+                  Positioned(left: 0, right: 0, bottom: 0, child: StyledDivider()),
               ],
             ),
           ),

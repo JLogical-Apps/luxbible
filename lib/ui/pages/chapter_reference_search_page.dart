@@ -1,3 +1,4 @@
+import 'package:bible/models/bible_translation.dart';
 import 'package:bible/models/book_type.dart';
 import 'package:bible/models/chapter_reference.dart';
 import 'package:bible/providers/bible_provider.dart';
@@ -7,6 +8,7 @@ import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/styled_list.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_section.dart';
+import 'package:bible/style/widgets/styled_select.dart';
 import 'package:bible/style/widgets/styled_swipeable.dart';
 import 'package:bible/style/widgets/styled_text_field.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
@@ -89,7 +91,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
         children: [
           DecoratedBox(
             decoration: BoxDecoration(
-              boxShadow: [StyledShadow(context)],
+              boxShadow: [StyledShadow.down(context)],
               color: context.colors.surfacePrimary,
             ),
             child: Padding(
@@ -127,7 +129,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                     ),
                   ),
                   SizedBox(
-                    width: 80,
+                    width: 60,
                     child: StyledTextField(
                       text: chapterNumState.value?.toString() ?? '',
                       onChanged: book == null
@@ -155,6 +157,19 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                             max: bible.getBookByType(book).chapters.length,
                           ),
                       ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 96,
+                    child: StyledSelect(
+                      options: BibleTranslation.values,
+                      selectedOption: userProfile.translation,
+                      onSelected: (translation) => ref
+                          .read(userProfileProvider.notifier)
+                          .set(userProfile.copyWith(translation: translation)),
+                      optionMapper: (translation) =>
+                          StyledSelectOption(titleText: translation.title()),
+                      dialogTitle: 'Select Bible Translation',
                     ),
                   ),
                 ],
