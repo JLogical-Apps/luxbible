@@ -129,7 +129,7 @@ class BiblePage extends HookConsumerWidget {
             left: 0,
             child: Container(
               width: double.infinity,
-              decoration: BoxDecoration(boxShadow: [StyledShadow(context)]),
+              decoration: BoxDecoration(boxShadow: [StyledShadow.down(context)]),
               padding:
                   EdgeInsets.symmetric(horizontal: 16) +
                   EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom + 16),
