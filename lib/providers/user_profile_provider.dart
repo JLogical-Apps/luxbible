@@ -11,8 +11,8 @@ class UserProfileNotifier extends _$UserProfileNotifier {
     return ref.watch(sharedPreferenceServiceProvider).getUserProfile() ?? UserProfile();
   }
 
-  Future<void> set(UserProfile profile) async {
-    state = profile;
-    await ref.read(sharedPreferenceServiceProvider).setUserProfile(profile);
+  Future<void> update(UserProfile Function(UserProfile) updater) async {
+    state = updater(state);
+    await ref.read(sharedPreferenceServiceProvider).setUserProfile(state);
   }
 }

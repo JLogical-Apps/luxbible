@@ -10,6 +10,7 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 class StyledListItem extends StatelessWidget {
   final Widget? title;
+  final Widget? leading;
   final Widget? trailing;
 
   final Function()? onPressed;
@@ -18,23 +19,36 @@ class StyledListItem extends StatelessWidget {
     super.key,
     Widget? title,
     String? titleText,
+    Widget? leading,
+    IconData? leadingIcon,
     Widget? trailing,
     IconData? trailingIcon,
     this.onPressed,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new),
+       leading = leading ?? leadingIcon?.mapIfNonNull(Icon.new),
        trailing = trailing ?? trailingIcon?.mapIfNonNull(Icon.new);
 
-  StyledListItem.navigation({super.key, Widget? title, String? titleText, this.onPressed})
-    : title = title ?? titleText?.mapIfNonNull(Text.new),
-      trailing = Icon(Symbols.chevron_right);
+  StyledListItem.navigation({
+    super.key,
+    Widget? title,
+    String? titleText,
+    Widget? leading,
+    IconData? leadingIcon,
+    this.onPressed,
+  }) : title = title ?? titleText?.mapIfNonNull(Text.new),
+       leading = leading ?? leadingIcon?.mapIfNonNull(Icon.new),
+       trailing = Icon(Symbols.chevron_right);
 
   StyledListItem.radio({
     super.key,
     Widget? title,
     String? titleText,
+    Widget? leading,
+    IconData? leadingIcon,
     required bool selected,
     required Function() onSelected,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new),
+       leading = leading ?? leadingIcon?.mapIfNonNull(Icon.new),
        onPressed = onSelected,
        trailing = StyledRadio(selected: selected);
 
@@ -47,7 +61,16 @@ class StyledListItem extends StatelessWidget {
       onPressed: onPressed,
       child: Row(
         children: [
-          gapW16,
+          if (leading case final leading?)
+            SizedBox(
+              width: 64,
+              child: IconTheme.merge(
+                data: IconThemeData(color: context.colors.contentDisabled, size: 24),
+                child: leading,
+              ),
+            )
+          else
+            gapW16,
           Expanded(
             child: Stack(
               children: [

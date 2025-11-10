@@ -166,7 +166,9 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                       selectedOption: userProfile.translation,
                       onSelected: (translation) => ref
                           .read(userProfileProvider.notifier)
-                          .set(userProfile.copyWith(translation: translation)),
+                          .update(
+                            (profile) => profile.copyWith(translation: translation),
+                          ),
                       optionMapper: (translation) =>
                           StyledSelectOption(titleText: translation.title()),
                       dialogTitle: 'Select Bible Translation',
@@ -194,8 +196,8 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                     StyledSwipeableAction.delete(
                                       onPressed: () => ref
                                           .read(userProfileProvider.notifier)
-                                          .set(
-                                            userProfile.copyWith(
+                                          .update(
+                                            (profile) => profile.copyWith(
                                               previouslyViewed: userProfile
                                                   .previouslyViewed
                                                   .withRemoved(chapterReference),
@@ -204,6 +206,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                     ),
                                   ],
                                   child: StyledListItem(
+                                    leadingIcon: Symbols.history,
                                     titleText: chapterReference.format(),
                                     trailingIcon: Symbols.expand_circle_right,
                                     onPressed: () =>
