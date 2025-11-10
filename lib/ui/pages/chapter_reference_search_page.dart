@@ -5,6 +5,7 @@ import 'package:bible/providers/bible_provider.dart';
 import 'package:bible/providers/user_profile_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
+import 'package:bible/style/widgets/styled_banner.dart';
 import 'package:bible/style/widgets/styled_list.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_section.dart';
@@ -46,12 +47,13 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
     final bookFocusNode = useListenable(useFocusNode());
     final chapterFocusNode = useListenable(useFocusNode());
 
-    BookType? getBook() => BookType.values
+    List<BookType> getMatchingBooks() => BookType.values
         .where(
           (book) =>
               book.title().toUpperCase().startsWith(bookTextState.value.toUpperCase()),
         )
-        .singleOrNull;
+        .toList();
+    BookType? getBook() => getMatchingBooks().singleOrNull;
 
     final book = getBook();
     final previousBook = usePrevious(getBook());
@@ -185,6 +187,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                     controller: scrollController,
                     children: [
                       if (userProfile.previouslyViewed.isNotEmpty &&
+                          getMatchingBooks().isNotEmpty &&
                           (isBookFullySelected || bookTextState.value.isEmpty))
                         StyledSection.list(
                           titleText: 'Recents',
@@ -216,31 +219,31 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                               )
                               .toList(),
                         ),
-                      StyledSection.list(
-                        titleText: 'Books',
-                        padding: EdgeInsets.only(top: 24),
-                        children: BookType.values
-                            .where(
-                              (book) =>
-                                  isBookFullySelected ||
-                                  book.title().toUpperCase().startsWith(
-                                    bookTextState.value.toUpperCase(),
-                                  ),
-                            )
-                            .map(
-                              (book) => StyledListItem(
-                                titleText: book.title(),
-                                trailingIcon: Symbols.chevron_right,
-                                onPressed: () {
-                                  bookTextState.value = book.title();
-                                  WidgetsBinding.instance.addPostFrameCallback(
-                                    (_) => chapterFocusNode.requestFocus(),
-                                  );
-                                },
-                              ),
-                            )
-                            .toList(),
-                      ),
+                      if (getMatchingBooks().isEmpty)
+                        Padding(
+                          padding: EdgeInsets.all(16),
+                          child: StyledBanner(messageText: 'No Matches'),
+                        )
+                      else
+                        StyledSection.list(
+                          titleText: 'Books',
+                          padding: EdgeInsets.only(top: 24),
+                          children:
+                              (isBookFullySelected ? BookType.values : getMatchingBooks())
+                                  .map(
+                                    (book) => StyledListItem(
+                                      titleText: book.title(),
+                                      trailingIcon: Symbols.chevron_right,
+                                      onPressed: () {
+                                        bookTextState.value = book.title();
+                                        WidgetsBinding.instance.addPostFrameCallback(
+                                          (_) => chapterFocusNode.requestFocus(),
+                                        );
+                                      },
+                                    ),
+                                  )
+                                  .toList(),
+                        ),
                     ],
                   )
                 : SingleChildScrollView(
