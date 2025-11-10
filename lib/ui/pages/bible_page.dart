@@ -70,7 +70,7 @@ class BiblePage extends HookConsumerWidget {
               final reference = bible.getChapterReferenceByPageIndex(pageIndex);
               ref
                   .read(userProfileProvider.notifier)
-                  .set(userProfile.copyWith(tabs: [reference]));
+                  .update((profile) => profile.copyWith(tabs: [reference]));
             },
             itemBuilder: (context, pageIndex) {
               final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
@@ -150,11 +150,11 @@ class BiblePage extends HookConsumerWidget {
                     pageController.jumpToPage(pageIndex);
                     ref
                         .read(userProfileProvider.notifier)
-                        .set(
-                          userProfile.copyWith(
+                        .update(
+                          (profile) => profile.copyWith(
                             previouslyViewed: [
                               newReference,
-                              ...userProfile.previouslyViewed,
+                              ...profile.previouslyViewed,
                             ].distinct.take(5).toList(),
                           ),
                         );

@@ -31,8 +31,6 @@ class StyledSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final buttons = buttonsBuilder?.call(context) ?? [];
-
     return Container(
       decoration: BoxDecoration(
         color: context.colors.surfacePrimary,
