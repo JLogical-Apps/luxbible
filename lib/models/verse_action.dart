@@ -3,7 +3,9 @@ import 'package:bible/models/user.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_color_sheet.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
+import 'package:bible/ui/pages/compare_page.dart';
 import 'package:bible/ui/widgets/colored_circle.dart';
+import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,7 +13,8 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 enum VerseAction {
   highlight,
-  highlightColor;
+  highlightColor,
+  compare;
 
   Widget buildIcon(
     BuildContext context, {
@@ -30,6 +33,7 @@ enum VerseAction {
       color: user.highlightColor.toHue(context.colors).primary,
       isSelected: true,
     ),
+    compare => Icon(Symbols.text_compare),
   };
 
   Future<void> onPressed(
@@ -75,6 +79,8 @@ enum VerseAction {
                 .copyWith(highlightColor: newColor),
           );
         }
+      case compare:
+        context.push(ComparePage(passage: selectedPassage));
     }
   }
 }

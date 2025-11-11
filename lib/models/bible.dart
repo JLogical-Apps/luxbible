@@ -3,6 +3,8 @@ import 'package:bible/models/book.dart';
 import 'package:bible/models/book_type.dart';
 import 'package:bible/models/chapter.dart';
 import 'package:bible/models/chapter_reference.dart';
+import 'package:bible/models/reference.dart';
+import 'package:bible/models/verse.dart';
 
 class Bible {
   final BibleTranslation translation;
@@ -21,6 +23,10 @@ class Bible {
 
   Chapter getChapterByReference(ChapterReference reference) =>
       getBookByType(reference.book).chapters[reference.chapterNum - 1];
+
+  Verse getVerseByReference(Reference reference) => getBookByType(
+    reference.book,
+  ).chapters[reference.chapterNum - 1].verses[reference.verseNum - 1];
 
   ChapterReference getChapterReferenceByPageIndex(int pageIndex) =>
       chapterReferences[pageIndex];

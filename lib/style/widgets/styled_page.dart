@@ -15,7 +15,7 @@ class StyledPage extends StatelessWidget {
     Widget? title,
     String? titleText,
     required this.body,
-  }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
+  }) : title = title ?? titleText?.mapIfNonNull(Text.new);
 
   @override
   Widget build(BuildContext context) {

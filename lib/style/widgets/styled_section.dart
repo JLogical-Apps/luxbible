@@ -9,6 +9,7 @@ class StyledSection extends StatelessWidget {
   final Widget child;
 
   final EdgeInsets padding;
+  final EdgeInsets childPadding;
 
   StyledSection({
     super.key,
@@ -16,6 +17,7 @@ class StyledSection extends StatelessWidget {
     Widget? title,
     required this.child,
     this.padding = const EdgeInsets.only(top: 36),
+    this.childPadding = const EdgeInsets.symmetric(horizontal: 16),
   }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
 
   StyledSection.list({
@@ -24,6 +26,7 @@ class StyledSection extends StatelessWidget {
     Widget? title,
     required List<Widget> children,
     this.padding = const EdgeInsets.only(top: 36),
+    this.childPadding = EdgeInsets.zero,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
        child = StyledList(children: children);
 
@@ -39,7 +42,7 @@ class StyledSection extends StatelessWidget {
             child: DefaultTextStyle(style: context.textStyle.headingXs, child: title),
           ),
           gapH12,
-          child,
+          Padding(padding: childPadding, child: child),
         ],
       ),
     );

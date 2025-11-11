@@ -1,6 +1,7 @@
 import 'package:bible/models/book_type.dart';
+import 'package:equatable/equatable.dart';
 
-class Reference implements Comparable<Reference> {
+class Reference extends Equatable implements Comparable<Reference> {
   final BookType book;
   final int chapterNum;
   final int verseNum;
@@ -19,6 +20,9 @@ class Reference implements Comparable<Reference> {
   String toKey() => [book.osisId(), chapterNum, verseNum].join('.');
 
   String format() => '${book.title()} $chapterNum:$verseNum';
+
+  @override
+  List<Object?> get props => [book, chapterNum, verseNum];
 
   @override
   int compareTo(Reference other) {
