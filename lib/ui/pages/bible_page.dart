@@ -1,6 +1,7 @@
 import 'package:bible/models/chapter_reference.dart';
 import 'package:bible/models/passage.dart';
 import 'package:bible/models/reference.dart';
+import 'package:bible/models/toolbar_action.dart';
 import 'package:bible/models/verse_action.dart';
 import 'package:bible/providers/bible_provider.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -201,7 +202,21 @@ class BiblePage extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                    StyledCircleButton(icon: Symbols.more_vert, onPressed: () {}),
+                    ...ToolbarAction.values.map(
+                      (action) => StyledCircleButton(
+                        onPressed: () => action.onPressed(
+                          context,
+                          ref,
+                          user: user,
+                          reference: currentChapterReference,
+                        ),
+                        child: action.buildIcon(
+                          context,
+                          user: user,
+                          reference: currentChapterReference,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -234,7 +249,7 @@ class BiblePage extends HookConsumerWidget {
                           onPressed: () => selectedVersesState.value = [],
                         ),
                         trailing: Row(
-                          children: [VerseAction.highlight, VerseAction.highlightColor]
+                          children: VerseAction.values
                               .map(
                                 (action) => StyledCircleButton(
                                   child: action.buildIcon(
@@ -242,15 +257,13 @@ class BiblePage extends HookConsumerWidget {
                                     user: user,
                                     selectedPassage: selectedPassage,
                                   ),
-                                  onPressed: () {
-                                    action.onPressed(
-                                      context,
-                                      ref,
-                                      user: user,
-                                      selectedPassage: selectedPassage,
-                                    );
-                                    selectedVersesState.value = [];
-                                  },
+                                  onPressed: () => action.onPressed(
+                                    context,
+                                    ref,
+                                    user: user,
+                                    selectedPassage: selectedPassage,
+                                    deselectVerses: () => selectedVersesState.value = [],
+                                  ),
                                 ),
                               )
                               .toList(),

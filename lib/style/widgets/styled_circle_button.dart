@@ -6,7 +6,7 @@ class StyledCircleButton extends StatelessWidget {
   final Widget child;
   final Function()? onPressed;
 
-  StyledCircleButton({super.key, Widget? child, IconData? icon, this.onPressed})
+  StyledCircleButton({super.key, Widget? child, IconData? icon, required this.onPressed})
     : child = child ?? icon?.mapIfNonNull(Icon.new) ?? SizedBox.shrink();
 
   @override
