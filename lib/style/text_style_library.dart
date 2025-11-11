@@ -24,6 +24,7 @@ class TextStyleLibrary {
 
   TextStyle get paragraphLg => base.regular.copyWith(fontSize: 18, height: 28 / 18);
   TextStyle get paragraphMd => base.copyWith(fontSize: 16, height: 24 / 16);
+  TextStyle get paragraphSm => base.copyWith(fontSize: 14, height: 20 / 14);
 
   TextStyle get bibleChapter =>
       base.bold.copyWith(fontSize: 24, letterSpacing: 0.25, height: 36 / 24);
