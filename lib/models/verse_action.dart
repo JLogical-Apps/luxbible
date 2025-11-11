@@ -1,10 +1,10 @@
 import 'package:bible/models/passage.dart';
 import 'package:bible/models/user.dart';
-import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_color_sheet.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/ui/widgets/colored_circle.dart';
+import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
@@ -40,14 +40,12 @@ enum VerseAction {
   }) async {
     switch (this) {
       case highlight:
-        ref
-            .read(userProvider.notifier)
-            .update(
-              (user) => user.withToggledHighlight(
-                passage: selectedPassage,
-                color: user.highlightColor,
-              ),
-            );
+        ref.updateUser(
+          (user) => user.withToggledHighlight(
+            passage: selectedPassage,
+            color: user.highlightColor,
+          ),
+        );
       case highlightColor:
         final newColor = await context.showStyledSheet(
           StyledColorSheet(
@@ -58,24 +56,20 @@ enum VerseAction {
                     icon: Symbols.ink_eraser,
                     onPressed: () {
                       Navigator.of(context).pop();
-                      ref
-                          .read(userProvider.notifier)
-                          .update(
-                            (user) => user.withRemovedHighlight(passage: selectedPassage),
-                          );
+                      ref.updateUser(
+                        (user) => user.withRemovedHighlight(passage: selectedPassage),
+                      );
                     },
                   )
                 : null,
           ),
         );
         if (newColor != null) {
-          ref
-              .read(userProvider.notifier)
-              .update(
-                (user) => user
-                    .withHighlight(passage: selectedPassage, color: newColor)
-                    .copyWith(highlightColor: newColor),
-              );
+          ref.updateUser(
+            (user) => user
+                .withHighlight(passage: selectedPassage, color: newColor)
+                .copyWith(highlightColor: newColor),
+          );
         }
     }
   }

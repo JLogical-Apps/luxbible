@@ -14,6 +14,7 @@ import 'package:bible/style/widgets/styled_select.dart';
 import 'package:bible/style/widgets/styled_swipeable.dart';
 import 'package:bible/style/widgets/styled_text_field.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:bible/utils/input_formatters.dart';
 import 'package:flutter/material.dart';
@@ -177,9 +178,9 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                     child: StyledSelect(
                       options: BibleTranslation.values,
                       selectedOption: user.translation,
-                      onSelected: (translation) => ref
-                          .read(userProvider.notifier)
-                          .update((user) => user.copyWith(translation: translation)),
+                      onSelected: (translation) => ref.updateUser(
+                        (user) => user.copyWith(translation: translation),
+                      ),
                       optionMapper: (translation) =>
                           StyledSelectOption(titleText: translation.title()),
                       dialogTitle: 'Select Bible Translation',
@@ -206,14 +207,12 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                   key: ValueKey(chapterReference),
                                   actions: [
                                     StyledSwipeableAction.delete(
-                                      onPressed: () => ref
-                                          .read(userProvider.notifier)
-                                          .update(
-                                            (user) => user.copyWith(
-                                              previouslyViewed: user.previouslyViewed
-                                                  .withRemoved(chapterReference),
-                                            ),
-                                          ),
+                                      onPressed: () => ref.updateUser(
+                                        (user) => user.copyWith(
+                                          previouslyViewed: user.previouslyViewed
+                                              .withRemoved(chapterReference),
+                                        ),
+                                      ),
                                     ),
                                   ],
                                   child: StyledListItem(
