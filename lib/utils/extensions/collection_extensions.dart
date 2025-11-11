@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 extension ListExtensions<T> on List<T> {
   List<T> withToggle(T item) =>
       contains(item) ? ([...this]..remove(item)) : [...this, item];
@@ -5,9 +7,39 @@ extension ListExtensions<T> on List<T> {
   List<T> withRemoved(T item) => [...this]..remove(item);
 
   List<T> get distinct => toSet().toList();
+
+  int? indexOfOrNull(T? item) {
+    if (item == null) {
+      return null;
+    }
+
+    final index = indexOf(item);
+    return index == -1 ? null : index;
+  }
+
+  int? indexWhereOrNull(bool Function(T) predicate) {
+    final index = indexWhere(predicate);
+    return index == -1 ? null : index;
+  }
+
+  int? lastIndexWhereOrNull(bool Function(T) predicate) {
+    final index = lastIndexWhere(predicate);
+    return index == -1 ? null : index;
+  }
+
+  List<T> sortedByIndexIn<T2>(List<T2> source, [T2 Function(T)? mapper]) => sortedBy(
+    (e) => source.indexOfOrNull(mapper == null ? e as T2 : mapper(e)) ?? double.infinity,
+  );
+}
+
+extension MapEntryIterableExtensions<K, V> on Iterable<MapEntry<K, V>> {
+  Map<K, V> toMap() => Map.fromEntries(this);
 }
 
 extension MapExtensions<K, V> on Map<K, V> {
   Iterable<T> mapToIterable<T>(T Function(K, V) mapper) =>
       entries.map((entry) => mapper(entry.key, entry.value));
+
+  Map<K, V> sortedBy<E extends Comparable<E>>(E Function(K, V) elementGetter) =>
+      entries.sortedBy((entry) => elementGetter(entry.key, entry.value)).toMap();
 }

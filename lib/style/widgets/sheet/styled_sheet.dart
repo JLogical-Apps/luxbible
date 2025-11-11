@@ -1,5 +1,6 @@
 import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
+import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/style/widgets/styled_divider.dart';
 import 'package:bible/style/widgets/styled_dock.dart';
 import 'package:bible/style/widgets/styled_list.dart';
@@ -65,8 +66,8 @@ class StyledSheet extends StatelessWidget {
                   SizedBox(
                     width: 48,
                     child: Center(
-                      child: IconButton(
-                        icon: Icon(Symbols.close),
+                      child: StyledCircleButton(
+                        icon: Symbols.close,
                         onPressed: () => Navigator.of(context).pop(),
                       ),
                     ),

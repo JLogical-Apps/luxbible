@@ -5,5 +5,9 @@ analyzer:
   plugins:
     - custom_lint
 
+linter:
+  rules:
+    - always_use_package_imports
+
 formatter:
   page_width: 90

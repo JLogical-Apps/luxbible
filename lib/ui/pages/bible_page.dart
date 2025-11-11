@@ -1,9 +1,13 @@
 import 'package:bible/models/chapter_reference.dart';
+import 'package:bible/models/passage.dart';
+import 'package:bible/models/reference.dart';
 import 'package:bible/providers/bible_provider.dart';
 import 'package:bible/providers/user_profile_provider.dart';
 import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
+import 'package:bible/style/widgets/styled_circle_button.dart';
+import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_material.dart';
 import 'package:bible/style/widgets/styled_tag.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
@@ -37,8 +41,6 @@ class BiblePage extends HookConsumerWidget {
       ),
     );
 
-    final selectedVersesState = useState(<int>[]);
-
     final currentPage =
         (pageController.pageOrNull ??
                 (initialReference == null
@@ -46,6 +48,21 @@ class BiblePage extends HookConsumerWidget {
                     : bible.getPageIndexByChapterReference(initialReference)))
             .round();
     final currentChapterReference = bible.getChapterReferenceByPageIndex(currentPage);
+
+    final selectedVersesState = useState(<int>[]);
+    final selectedPassage = selectedVersesState.value.isEmpty
+        ? null
+        : Passage(
+            references: selectedVersesState.value
+                .map(
+                  (verseIndex) => Reference(
+                    book: currentChapterReference.book,
+                    chapterNum: currentChapterReference.chapterNum,
+                    verseNum: verseIndex + 1,
+                  ),
+                )
+                .toList(),
+          );
 
     final scrollController = useListenable(useScrollController());
     final scrollPosition = scrollController.positionsOrNull?.firstOrNull;
@@ -55,7 +72,9 @@ class BiblePage extends HookConsumerWidget {
       (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
     );
 
-    final showBottomBar = isScrollingDownState.value || scrollPosition?.atEdge == true;
+    final showBottomBar =
+        (isScrollingDownState.value || scrollPosition?.atEdge == true) &&
+        selectedVersesState.value.isEmpty;
 
     return Scaffold(
       backgroundColor: context.colors.backgroundPrimary,
@@ -180,7 +199,40 @@ class BiblePage extends HookConsumerWidget {
                         ),
                       ),
                     ),
-                    IconButton(icon: Icon(Symbols.more_vert), onPressed: () {}),
+                    StyledCircleButton(icon: Symbols.more_vert, onPressed: () {}),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOutCubic,
+            bottom: selectedPassage == null ? -100 : 0,
+            right: 0,
+            left: 0,
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                boxShadow: [StyledShadow.up(context)],
+                color: context.colors.surfacePrimary,
+              ),
+              padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
+              child: StyledListItem(
+                title: Text(
+                  selectedPassage == null ? '' : selectedPassage.format(),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                leading: StyledCircleButton(
+                  icon: Symbols.close,
+                  onPressed: () => selectedVersesState.value = [],
+                ),
+                trailing: Row(
+                  children: [
+                    StyledCircleButton(icon: Symbols.share, onPressed: () {}),
+                    StyledCircleButton(icon: Symbols.copy_all, onPressed: () {}),
+                    StyledCircleButton(icon: Symbols.more_vert, onPressed: () {}),
                   ],
                 ),
               ),

@@ -6,6 +6,7 @@ import 'package:bible/providers/user_profile_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/styled_banner.dart';
+import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/style/widgets/styled_list.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_section.dart';
@@ -94,8 +95,8 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
       backgroundColor: context.colors.surfacePrimary,
       appBar: AppBar(
         backgroundColor: context.colors.surfacePrimary,
-        leading: IconButton(
-          icon: Icon(Symbols.close),
+        leading: StyledCircleButton(
+          icon: Symbols.close,
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),

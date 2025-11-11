@@ -20,8 +20,8 @@ class BibleImporter {
         .map(
           (verse) => (
             book: verse['book'] as int,
-            chapter: verse['chapter'] as int,
-            verse: verse['verse'] as int,
+            chapterNum: verse['chapter'] as int,
+            verseNum: verse['verse'] as int,
             text: verse['text'],
           ),
         )
@@ -35,7 +35,7 @@ class BibleImporter {
             (book, verses) => Book(
               bookType: BookType.values[book - 1],
               chapters: verses
-                  .groupListsBy((verse) => verse.chapter)
+                  .groupListsBy((verse) => verse.chapterNum)
                   .mapToIterable(
                     (chapter, verses) => Chapter(
                       verses: verses.map((verse) => parseVerse(verse.text)).toList(),

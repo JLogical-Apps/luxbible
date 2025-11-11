@@ -93,14 +93,17 @@ class StyledListItem extends StatelessWidget {
                       ),
                     ),
                     if (trailing case final trailing?)
-                      SizedBox(
-                        width: 64,
-                        child: IconTheme.merge(
-                          data: IconThemeData(
-                            color: context.colors.contentDisabled,
-                            size: 24,
+                      ConstrainedBox(
+                        constraints: BoxConstraints(minWidth: 56),
+                        child: Padding(
+                          padding: EdgeInsets.only(right: 8),
+                          child: IconTheme.merge(
+                            data: IconThemeData(
+                              color: context.colors.contentDisabled,
+                              size: 24,
+                            ),
+                            child: trailing,
                           ),
-                          child: trailing,
                         ),
                       ),
                   ],
