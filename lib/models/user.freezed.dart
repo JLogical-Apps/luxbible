@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$User {
 
- BibleTranslation get translation; List<ChapterReference> get tabs; List<ChapterReference> get previouslyViewed; List<Reference> get highlightedReferences;
+ BibleTranslation get translation; List<ChapterReference> get tabs; List<ChapterReference> get previouslyViewed; Map<String, ColorEnum> get highlightByKey; ColorEnum get highlightColor;
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserCopyWith<User> get copyWith => _$UserCopyWithImpl<User>(this as User, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.translation, translation) || other.translation == translation)&&const DeepCollectionEquality().equals(other.tabs, tabs)&&const DeepCollectionEquality().equals(other.previouslyViewed, previouslyViewed)&&const DeepCollectionEquality().equals(other.highlightedReferences, highlightedReferences));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.translation, translation) || other.translation == translation)&&const DeepCollectionEquality().equals(other.tabs, tabs)&&const DeepCollectionEquality().equals(other.previouslyViewed, previouslyViewed)&&const DeepCollectionEquality().equals(other.highlightByKey, highlightByKey)&&(identical(other.highlightColor, highlightColor) || other.highlightColor == highlightColor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,translation,const DeepCollectionEquality().hash(tabs),const DeepCollectionEquality().hash(previouslyViewed),const DeepCollectionEquality().hash(highlightedReferences));
+int get hashCode => Object.hash(runtimeType,translation,const DeepCollectionEquality().hash(tabs),const DeepCollectionEquality().hash(previouslyViewed),const DeepCollectionEquality().hash(highlightByKey),highlightColor);
 
 @override
 String toString() {
-  return 'User(translation: $translation, tabs: $tabs, previouslyViewed: $previouslyViewed, highlightedReferences: $highlightedReferences)';
+  return 'User(translation: $translation, tabs: $tabs, previouslyViewed: $previouslyViewed, highlightByKey: $highlightByKey, highlightColor: $highlightColor)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserCopyWith<$Res>  {
   factory $UserCopyWith(User value, $Res Function(User) _then) = _$UserCopyWithImpl;
 @useResult
 $Res call({
- BibleTranslation translation, List<ChapterReference> tabs, List<ChapterReference> previouslyViewed, List<Reference> highlightedReferences
+ BibleTranslation translation, List<ChapterReference> tabs, List<ChapterReference> previouslyViewed, Map<String, ColorEnum> highlightByKey, ColorEnum highlightColor
 });
 
 
@@ -65,13 +65,14 @@ class _$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? translation = null,Object? tabs = null,Object? previouslyViewed = null,Object? highlightedReferences = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? translation = null,Object? tabs = null,Object? previouslyViewed = null,Object? highlightByKey = null,Object? highlightColor = null,}) {
   return _then(_self.copyWith(
 translation: null == translation ? _self.translation : translation // ignore: cast_nullable_to_non_nullable
 as BibleTranslation,tabs: null == tabs ? _self.tabs : tabs // ignore: cast_nullable_to_non_nullable
 as List<ChapterReference>,previouslyViewed: null == previouslyViewed ? _self.previouslyViewed : previouslyViewed // ignore: cast_nullable_to_non_nullable
-as List<ChapterReference>,highlightedReferences: null == highlightedReferences ? _self.highlightedReferences : highlightedReferences // ignore: cast_nullable_to_non_nullable
-as List<Reference>,
+as List<ChapterReference>,highlightByKey: null == highlightByKey ? _self.highlightByKey : highlightByKey // ignore: cast_nullable_to_non_nullable
+as Map<String, ColorEnum>,highlightColor: null == highlightColor ? _self.highlightColor : highlightColor // ignore: cast_nullable_to_non_nullable
+as ColorEnum,
   ));
 }
 
@@ -153,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BibleTranslation translation,  List<ChapterReference> tabs,  List<ChapterReference> previouslyViewed,  List<Reference> highlightedReferences)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BibleTranslation translation,  List<ChapterReference> tabs,  List<ChapterReference> previouslyViewed,  Map<String, ColorEnum> highlightByKey,  ColorEnum highlightColor)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.translation,_that.tabs,_that.previouslyViewed,_that.highlightedReferences);case _:
+return $default(_that.translation,_that.tabs,_that.previouslyViewed,_that.highlightByKey,_that.highlightColor);case _:
   return orElse();
 
 }
@@ -174,10 +175,10 @@ return $default(_that.translation,_that.tabs,_that.previouslyViewed,_that.highli
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BibleTranslation translation,  List<ChapterReference> tabs,  List<ChapterReference> previouslyViewed,  List<Reference> highlightedReferences)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BibleTranslation translation,  List<ChapterReference> tabs,  List<ChapterReference> previouslyViewed,  Map<String, ColorEnum> highlightByKey,  ColorEnum highlightColor)  $default,) {final _that = this;
 switch (_that) {
 case _User():
-return $default(_that.translation,_that.tabs,_that.previouslyViewed,_that.highlightedReferences);}
+return $default(_that.translation,_that.tabs,_that.previouslyViewed,_that.highlightByKey,_that.highlightColor);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -191,10 +192,10 @@ return $default(_that.translation,_that.tabs,_that.previouslyViewed,_that.highli
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BibleTranslation translation,  List<ChapterReference> tabs,  List<ChapterReference> previouslyViewed,  List<Reference> highlightedReferences)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BibleTranslation translation,  List<ChapterReference> tabs,  List<ChapterReference> previouslyViewed,  Map<String, ColorEnum> highlightByKey,  ColorEnum highlightColor)?  $default,) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.translation,_that.tabs,_that.previouslyViewed,_that.highlightedReferences);case _:
+return $default(_that.translation,_that.tabs,_that.previouslyViewed,_that.highlightByKey,_that.highlightColor);case _:
   return null;
 
 }
@@ -206,7 +207,7 @@ return $default(_that.translation,_that.tabs,_that.previouslyViewed,_that.highli
 @JsonSerializable()
 
 class _User extends User {
-  const _User({this.translation = BibleTranslation.asv, final  List<ChapterReference> tabs = const [], final  List<ChapterReference> previouslyViewed = const [], final  List<Reference> highlightedReferences = const []}): _tabs = tabs,_previouslyViewed = previouslyViewed,_highlightedReferences = highlightedReferences,super._();
+  const _User({this.translation = BibleTranslation.asv, final  List<ChapterReference> tabs = const [], final  List<ChapterReference> previouslyViewed = const [], final  Map<String, ColorEnum> highlightByKey = const {}, this.highlightColor = ColorEnum.yellow}): _tabs = tabs,_previouslyViewed = previouslyViewed,_highlightByKey = highlightByKey,super._();
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
 @override@JsonKey() final  BibleTranslation translation;
@@ -224,13 +225,14 @@ class _User extends User {
   return EqualUnmodifiableListView(_previouslyViewed);
 }
 
- final  List<Reference> _highlightedReferences;
-@override@JsonKey() List<Reference> get highlightedReferences {
-  if (_highlightedReferences is EqualUnmodifiableListView) return _highlightedReferences;
+ final  Map<String, ColorEnum> _highlightByKey;
+@override@JsonKey() Map<String, ColorEnum> get highlightByKey {
+  if (_highlightByKey is EqualUnmodifiableMapView) return _highlightByKey;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_highlightedReferences);
+  return EqualUnmodifiableMapView(_highlightByKey);
 }
 
+@override@JsonKey() final  ColorEnum highlightColor;
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
@@ -245,16 +247,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.translation, translation) || other.translation == translation)&&const DeepCollectionEquality().equals(other._tabs, _tabs)&&const DeepCollectionEquality().equals(other._previouslyViewed, _previouslyViewed)&&const DeepCollectionEquality().equals(other._highlightedReferences, _highlightedReferences));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.translation, translation) || other.translation == translation)&&const DeepCollectionEquality().equals(other._tabs, _tabs)&&const DeepCollectionEquality().equals(other._previouslyViewed, _previouslyViewed)&&const DeepCollectionEquality().equals(other._highlightByKey, _highlightByKey)&&(identical(other.highlightColor, highlightColor) || other.highlightColor == highlightColor));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,translation,const DeepCollectionEquality().hash(_tabs),const DeepCollectionEquality().hash(_previouslyViewed),const DeepCollectionEquality().hash(_highlightedReferences));
+int get hashCode => Object.hash(runtimeType,translation,const DeepCollectionEquality().hash(_tabs),const DeepCollectionEquality().hash(_previouslyViewed),const DeepCollectionEquality().hash(_highlightByKey),highlightColor);
 
 @override
 String toString() {
-  return 'User(translation: $translation, tabs: $tabs, previouslyViewed: $previouslyViewed, highlightedReferences: $highlightedReferences)';
+  return 'User(translation: $translation, tabs: $tabs, previouslyViewed: $previouslyViewed, highlightByKey: $highlightByKey, highlightColor: $highlightColor)';
 }
 
 
@@ -265,7 +267,7 @@ abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$UserCopyWith(_User value, $Res Function(_User) _then) = __$UserCopyWithImpl;
 @override @useResult
 $Res call({
- BibleTranslation translation, List<ChapterReference> tabs, List<ChapterReference> previouslyViewed, List<Reference> highlightedReferences
+ BibleTranslation translation, List<ChapterReference> tabs, List<ChapterReference> previouslyViewed, Map<String, ColorEnum> highlightByKey, ColorEnum highlightColor
 });
 
 
@@ -282,13 +284,14 @@ class __$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? translation = null,Object? tabs = null,Object? previouslyViewed = null,Object? highlightedReferences = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? translation = null,Object? tabs = null,Object? previouslyViewed = null,Object? highlightByKey = null,Object? highlightColor = null,}) {
   return _then(_User(
 translation: null == translation ? _self.translation : translation // ignore: cast_nullable_to_non_nullable
 as BibleTranslation,tabs: null == tabs ? _self._tabs : tabs // ignore: cast_nullable_to_non_nullable
 as List<ChapterReference>,previouslyViewed: null == previouslyViewed ? _self._previouslyViewed : previouslyViewed // ignore: cast_nullable_to_non_nullable
-as List<ChapterReference>,highlightedReferences: null == highlightedReferences ? _self._highlightedReferences : highlightedReferences // ignore: cast_nullable_to_non_nullable
-as List<Reference>,
+as List<ChapterReference>,highlightByKey: null == highlightByKey ? _self._highlightByKey : highlightByKey // ignore: cast_nullable_to_non_nullable
+as Map<String, ColorEnum>,highlightColor: null == highlightColor ? _self.highlightColor : highlightColor // ignore: cast_nullable_to_non_nullable
+as ColorEnum,
   ));
 }
 

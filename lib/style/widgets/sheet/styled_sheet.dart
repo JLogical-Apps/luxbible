@@ -10,6 +10,8 @@ import 'package:material_symbols_icons/symbols.dart';
 
 class StyledSheet extends StatelessWidget {
   final Widget title;
+  final Widget? trailing;
+
   final Widget body;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
 
@@ -17,6 +19,7 @@ class StyledSheet extends StatelessWidget {
     super.key,
     Widget? title,
     String? titleText,
+    this.trailing,
     required this.body,
     this.buttonsBuilder,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
@@ -25,6 +28,7 @@ class StyledSheet extends StatelessWidget {
     super.key,
     Widget? title,
     String? titleText,
+    this.trailing,
     required List<Widget> children,
     this.buttonsBuilder,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
@@ -85,7 +89,10 @@ class StyledSheet extends StatelessWidget {
                       ],
                     ),
                   ),
-                  gapW48,
+                  if (trailing case final trailing?)
+                    SizedBox(width: 48, child: trailing)
+                  else
+                    gapW48,
                 ],
               ),
             ),

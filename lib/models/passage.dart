@@ -8,6 +8,11 @@ class Passage {
 
   List<Reference> get sortedReferences => references.sorted().toList();
 
+  List<String> get referenceKeys =>
+      references.map((reference) => reference.toKey()).toList();
+
+  bool hasReference(Reference reference) => references.contains(reference);
+
   String format() {
     // Book → Chapter → List<Reference>
     final grouped = sortedReferences

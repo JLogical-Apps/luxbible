@@ -326,6 +326,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.3"
+  flutter_tailwind_colors:
+    dependency: "direct main"
+    description:
+      name: flutter_tailwind_colors
+      sha256: "237f5fd086c5eecba5ef920fbdc2d87646016b5d0c0b00846e2250ded2cd1227"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.3"
   flutter_test:
     dependency: "direct dev"
     description: flutter

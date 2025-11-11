@@ -1,21 +1,22 @@
 import 'package:bible/models/book_type.dart';
-import 'package:flutter/foundation.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'reference.freezed.dart';
-part 'reference.g.dart';
+class Reference implements Comparable<Reference> {
+  final BookType book;
+  final int chapterNum;
+  final int verseNum;
 
-@freezed
-sealed class Reference with _$Reference implements Comparable<Reference> {
-  const Reference._();
+  const Reference({required this.book, required this.chapterNum, required this.verseNum});
 
-  const factory Reference({
-    required BookType book,
-    required int chapterNum,
-    required int verseNum,
-  }) = _Reference;
+  static Reference fromKey(String key) {
+    final items = key.split('.');
+    return Reference(
+      book: BookType.values.firstWhere((book) => book.osisId() == items[0]),
+      chapterNum: int.parse(items[1]),
+      verseNum: int.parse(items[2]),
+    );
+  }
 
-  factory Reference.fromJson(Map<String, dynamic> json) => _$ReferenceFromJson(json);
+  String toKey() => [book.osisId(), chapterNum, verseNum].join('.');
 
   String format() => '${book.title()} $chapterNum:$verseNum';
 

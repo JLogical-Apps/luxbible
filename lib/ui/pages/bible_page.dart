@@ -111,25 +111,27 @@ class BiblePage extends HookConsumerWidget {
                   gapH8,
                   ...chapter.verses.mapIndexed((i, verse) {
                     final reference = chapterReference.getReference(i + 1);
+                    final highlightColor = user.highlightByKey[reference.toKey()];
                     return GestureDetector(
                       onTap: () => selectedVersesState.value = selectedVersesState.value
                           .withToggle(i),
                       child: Stack(
                         children: [
                           HighlightedParagraph(
-                            text: '  ${verse.text}',
+                            text: '   ${verse.text}',
                             style: context.textStyle.bibleBody.copyWith(
                               decoration: selectedVersesState.value.contains(i)
                                   ? TextDecoration.underline
                                   : null,
                             ),
-                            lineColor: user.highlightedReferences.contains(reference)
-                                ? Colors.yellow
-                                : null,
+                            lineColor: highlightColor
+                                ?.toHue(context.colors)
+                                .primary
+                                .withValues(alpha: 0.5),
                           ),
                           Positioned(
-                            top: 8,
-                            left: 0,
+                            top: 12,
+                            left: 2,
                             child: Text(
                               (i + 1).toString(),
                               style: context.textStyle.bibleVerseNumber,
@@ -235,7 +237,7 @@ class BiblePage extends HookConsumerWidget {
                           onPressed: () => selectedVersesState.value = [],
                         ),
                         trailing: Row(
-                          children: [VerseAction.highlight]
+                          children: [VerseAction.highlight, VerseAction.highlightColor]
                               .map(
                                 (action) => StyledCircleButton(
                                   child: action.buildIcon(
