@@ -7,14 +7,16 @@ import 'package:bible/providers/bible_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/animated_grow.dart';
 import 'package:bible/style/gap.dart';
-import 'package:bible/style/highlighted_paragraph.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_material.dart';
+import 'package:bible/style/widgets/styled_page.dart';
+import 'package:bible/style/widgets/styled_scrollbar.dart';
 import 'package:bible/style/widgets/styled_tag.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
+import 'package:bible/ui/widgets/passage_builder.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/controller_extensions.dart';
@@ -54,20 +56,10 @@ class BiblePage extends HookConsumerWidget {
             .round();
     final currentChapterReference = bible.getChapterReferenceByPageIndex(currentPage);
 
-    final selectedVersesState = useState(<int>[]);
-    final selectedPassage = selectedVersesState.value.isEmpty
+    final selectedReferencesState = useState(<Reference>[]);
+    final selectedPassage = selectedReferencesState.value.isEmpty
         ? null
-        : Passage(
-            references: selectedVersesState.value
-                .map(
-                  (verseIndex) => Reference(
-                    book: currentChapterReference.book,
-                    chapterNum: currentChapterReference.chapterNum,
-                    verseNum: verseIndex + 1,
-                  ),
-                )
-                .toList(),
-          );
+        : Passage(references: selectedReferencesState.value);
 
     final scrollController = useListenable(useScrollController());
     final scrollPosition = scrollController.positionsOrNull?.firstOrNull;
@@ -79,16 +71,15 @@ class BiblePage extends HookConsumerWidget {
 
     final showBottomBar =
         (isScrollingDownState.value || scrollPosition?.atEdge == true) &&
-        selectedVersesState.value.isEmpty;
+        selectedReferencesState.value.isEmpty;
 
-    return Scaffold(
-      backgroundColor: context.colors.backgroundPrimary,
+    return StyledPage(
       body: Stack(
         children: [
           PageView.builder(
             controller: pageController,
             onPageChanged: (pageIndex) {
-              selectedVersesState.value = [];
+              selectedReferencesState.value = [];
               isScrollingDownState.value = true;
 
               final reference = bible.getChapterReferenceByPageIndex(pageIndex);
@@ -98,50 +89,36 @@ class BiblePage extends HookConsumerWidget {
               final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
               final chapter = bible.getChapterByReference(chapterReference);
 
-              return ListView(
-                controller: scrollController,
-                padding:
-                    EdgeInsets.symmetric(horizontal: 20, vertical: 8) +
-                    EdgeInsets.only(
-                      top: MediaQuery.paddingOf(context).top + 24,
-                      bottom: MediaQuery.paddingOf(context).bottom + 72,
-                    ),
-                children: [
-                  Text(chapterReference.format(), style: context.textStyle.bibleChapter),
-                  gapH8,
-                  ...chapter.verses.mapIndexed((i, verse) {
-                    final reference = chapterReference.getReference(i + 1);
-                    final highlightColor = user.highlightByKey[reference.toKey()];
-                    return GestureDetector(
-                      onTap: () => selectedVersesState.value = selectedVersesState.value
-                          .withToggle(i),
-                      child: Stack(
-                        children: [
-                          HighlightedParagraph(
-                            text: '   ${verse.text}',
-                            style: context.textStyle.bibleBody.copyWith(
-                              decoration: selectedVersesState.value.contains(i)
-                                  ? TextDecoration.underline
-                                  : null,
-                            ),
-                            lineColor: highlightColor
-                                ?.toHue(context.colors)
-                                .primary
-                                .withValues(alpha: 0.5),
-                          ),
-                          Positioned(
-                            top: 12,
-                            left: 2,
-                            child: Text(
-                              (i + 1).toString(),
-                              style: context.textStyle.bibleVerseNumber,
-                            ),
-                          ),
-                        ],
+              return StyledScrollbar(
+                child: ListView(
+                  controller: scrollController,
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20, vertical: 8) +
+                      EdgeInsets.only(
+                        top: MediaQuery.paddingOf(context).top + 24,
+                        bottom: MediaQuery.paddingOf(context).bottom + 72,
                       ),
-                    );
-                  }),
-                ],
+                  children: [
+                    Text(
+                      chapterReference.format(),
+                      style: context.textStyle.bibleChapter,
+                    ),
+                    gapH8,
+                    PassageBuilder(
+                      bible: bible,
+                      passage: Passage(
+                        references: chapter.verses
+                            .mapIndexed(
+                              (i, verse) => chapterReference.getReference(i + 1),
+                            )
+                            .toList(),
+                      ),
+                      underlinedReferences: selectedReferencesState.value,
+                      onReferencePressed: (reference) => selectedReferencesState.value =
+                          selectedReferencesState.value.withToggle(reference),
+                    ),
+                  ],
+                ),
               );
             },
           ),
@@ -246,7 +223,7 @@ class BiblePage extends HookConsumerWidget {
                         ),
                         leading: StyledCircleButton(
                           icon: Symbols.close,
-                          onPressed: () => selectedVersesState.value = [],
+                          onPressed: () => selectedReferencesState.value = [],
                         ),
                         trailing: Row(
                           children: VerseAction.values
@@ -262,7 +239,8 @@ class BiblePage extends HookConsumerWidget {
                                     ref,
                                     user: user,
                                     selectedPassage: selectedPassage,
-                                    deselectVerses: () => selectedVersesState.value = [],
+                                    deselectVerses: () =>
+                                        selectedReferencesState.value = [],
                                   ),
                                 ),
                               )
