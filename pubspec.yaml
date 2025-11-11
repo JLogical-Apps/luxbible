@@ -21,6 +21,7 @@ dependencies:
   json_annotation: ^4.9.0
   material_symbols_icons: ^4.2874.0
   flutter_slidable: ^4.0.3
+  rounded_background_text: ^0.6.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

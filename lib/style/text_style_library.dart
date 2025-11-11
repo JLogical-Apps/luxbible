@@ -30,8 +30,8 @@ class TextStyleLibrary {
       base.bold.copyWith(fontSize: 24, letterSpacing: 0.25, height: 36 / 24);
 
   TextStyle get bibleVerseNumber =>
-      base.bold.copyWith(fontSize: 12, letterSpacing: 0.25, height: 0);
+      base.bold.copyWith(fontSize: 12, letterSpacing: 0.25, height: 1);
 
   TextStyle get bibleBody =>
-      base.regular.copyWith(fontSize: 19, letterSpacing: 0.25, height: 36 / 18);
+      base.regular.copyWith(fontSize: 18, letterSpacing: 0.25, height: 36 / 18);
 }
