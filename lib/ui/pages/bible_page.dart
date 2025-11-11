@@ -1,8 +1,8 @@
 import 'package:bible/models/chapter_reference.dart';
 import 'package:bible/models/passage.dart';
+import 'package:bible/models/passage_action.dart';
 import 'package:bible/models/reference.dart';
 import 'package:bible/models/toolbar_action.dart';
-import 'package:bible/models/verse_action.dart';
 import 'package:bible/providers/bible_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/animated_grow.dart';
@@ -226,7 +226,7 @@ class BiblePage extends HookConsumerWidget {
                           onPressed: () => selectedReferencesState.value = [],
                         ),
                         trailing: Row(
-                          children: VerseAction.values
+                          children: PassageAction.values
                               .map(
                                 (action) => StyledCircleButton(
                                   child: action.buildIcon(
