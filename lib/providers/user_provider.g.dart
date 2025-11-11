@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_profile_provider.dart';
+part of 'user_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,53 +9,51 @@ part of 'user_profile_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(UserProfileNotifier)
-const userProfileProvider = UserProfileNotifierProvider._();
+@ProviderFor(UserNotifier)
+const userProvider = UserNotifierProvider._();
 
-final class UserProfileNotifierProvider
-    extends $NotifierProvider<UserProfileNotifier, UserProfile> {
-  const UserProfileNotifierProvider._()
+final class UserNotifierProvider extends $NotifierProvider<UserNotifier, User> {
+  const UserNotifierProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'userProfileProvider',
+        name: r'userProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$userProfileNotifierHash();
+  String debugGetCreateSourceHash() => _$userNotifierHash();
 
   @$internal
   @override
-  UserProfileNotifier create() => UserProfileNotifier();
+  UserNotifier create() => UserNotifier();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(UserProfile value) {
+  Override overrideWithValue(User value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<UserProfile>(value),
+      providerOverride: $SyncValueProvider<User>(value),
     );
   }
 }
 
-String _$userProfileNotifierHash() =>
-    r'6568d9c2ba1e89738db70e2135bca78d6dbbe53f';
+String _$userNotifierHash() => r'f570f51e6548e321b307c47600b6f8550d8964f5';
 
-abstract class _$UserProfileNotifier extends $Notifier<UserProfile> {
-  UserProfile build();
+abstract class _$UserNotifier extends $Notifier<User> {
+  User build();
   @$mustCallSuper
   @override
   void runBuild() {
     final created = build();
-    final ref = this.ref as $Ref<UserProfile, UserProfile>;
+    final ref = this.ref as $Ref<User, User>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<UserProfile, UserProfile>,
-              UserProfile,
+              AnyNotifier<User, User>,
+              User,
               Object?,
               Object?
             >;

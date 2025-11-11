@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_profile.dart';
+part of 'user.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => _UserProfile(
+_User _$UserFromJson(Map<String, dynamic> json) => _User(
   translation:
       $enumDecodeNullable(_$BibleTranslationEnumMap, json['translation']) ??
       BibleTranslation.asv,
@@ -22,12 +22,11 @@ _UserProfile _$UserProfileFromJson(Map<String, dynamic> json) => _UserProfile(
       const [],
 );
 
-Map<String, dynamic> _$UserProfileToJson(_UserProfile instance) =>
-    <String, dynamic>{
-      'translation': _$BibleTranslationEnumMap[instance.translation]!,
-      'tabs': instance.tabs,
-      'previouslyViewed': instance.previouslyViewed,
-    };
+Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
+  'translation': _$BibleTranslationEnumMap[instance.translation]!,
+  'tabs': instance.tabs,
+  'previouslyViewed': instance.previouslyViewed,
+};
 
 const _$BibleTranslationEnumMap = {
   BibleTranslation.kjv: 'kjv',
