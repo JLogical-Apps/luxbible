@@ -1,9 +1,10 @@
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/bible_translation.dart';
 import 'package:bible/models/chapter_reference.dart';
+import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/passage.dart';
-import 'package:bible/models/reference.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user.freezed.dart';
@@ -17,27 +18,36 @@ sealed class User with _$User {
     @Default(BibleTranslation.asv) BibleTranslation translation,
     @Default([]) List<ChapterReference> tabs,
     @Default([]) List<ChapterReference> previouslyViewed,
-    @Default([]) List<Reference> highlightedReferences,
+    @Default({}) Map<String, ColorEnum> highlightByKey,
+    @Default(ColorEnum.yellow) ColorEnum highlightColor,
   }) = _User;
 
   Bible getBible(List<Bible> bibles) =>
       bibles.firstWhere((bible) => bible.translation == translation);
 
   bool isPassageHighlighted(Passage passage) =>
-      highlightedReferences.containsAny(passage.references);
+      highlightByKey.keys.containsAny(passage.referenceKeys);
 
-  User withToggledHighlight(Passage passage) => isPassageHighlighted(passage)
-      ? copyWith(
-          highlightedReferences: highlightedReferences
-              .where((ref) => !passage.references.contains(ref))
-              .toList(),
-        )
-      : copyWith(
-          highlightedReferences: [
-            ...highlightedReferences,
-            ...passage.references,
-          ].distinct,
-        );
+  ColorEnum? getPassageHighlight(Passage passage) => highlightByKey.entries
+      .firstWhereOrNull((entry) => passage.referenceKeys.contains(entry.key))
+      ?.value;
+
+  User withToggledHighlight({required Passage passage, required ColorEnum color}) =>
+      isPassageHighlighted(passage)
+      ? withRemovedHighlight(passage: passage)
+      : withHighlight(color: color, passage: passage);
+
+  User withRemovedHighlight({required Passage passage}) => copyWith(
+    highlightByKey: {...highlightByKey}
+      ..removeWhere((key, highlight) => passage.referenceKeys.contains(key)),
+  );
+
+  User withHighlight({required Passage passage, required ColorEnum color}) => copyWith(
+    highlightByKey: {
+      ...highlightByKey,
+      ...passage.referenceKeys.mapToMap((key) => MapEntry(key, color)),
+    },
+  );
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
