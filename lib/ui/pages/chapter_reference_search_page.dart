@@ -46,6 +46,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
 
     final bookFocusNode = useListenable(useFocusNode());
     final chapterFocusNode = useListenable(useFocusNode());
+    final viewModeState = useState(_ViewMode.book);
 
     List<BookType> getMatchingBooks() => BookType.values
         .where(
@@ -68,10 +69,19 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
 
     useOnListenableChange(bookFocusNode, () {
       final book = getBook();
+      if (bookFocusNode.hasPrimaryFocus) {
+        viewModeState.value = _ViewMode.book;
+      }
+
       if (!bookFocusNode.hasPrimaryFocus && book != null) {
         bookTextState.value = book.title().titleCase;
       }
     });
+
+    useOnFocusNodeFocused(
+      chapterFocusNode,
+      () => viewModeState.value = _ViewMode.chapter,
+    );
 
     final scrollController = useScrollController();
     final isScrollingDownState = useState(true);
@@ -181,7 +191,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
             ),
           ),
           Expanded(
-            child: book == null || bookFocusNode.hasPrimaryFocus
+            child: viewModeState.value == _ViewMode.book || book == null
                 ? ListView(
                     key: ValueKey(BookType),
                     controller: scrollController,
@@ -282,3 +292,5 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
     );
   }
 }
+
+enum _ViewMode { book, chapter }
