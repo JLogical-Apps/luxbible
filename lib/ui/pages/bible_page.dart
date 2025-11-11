@@ -2,7 +2,7 @@ import 'package:bible/models/chapter_reference.dart';
 import 'package:bible/models/passage.dart';
 import 'package:bible/models/reference.dart';
 import 'package:bible/providers/bible_provider.dart';
-import 'package:bible/providers/user_profile_provider.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
@@ -28,10 +28,10 @@ class BiblePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bibles = ref.watch(biblesProvider);
-    final userProfile = ref.watch(userProfileProvider);
-    final bible = userProfile.getBible(bibles);
+    final user = ref.watch(userProvider);
+    final bible = user.getBible(bibles);
 
-    final initialReference = userProfile.tabs.firstOrNull;
+    final initialReference = user.tabs.firstOrNull;
 
     final pageController = useListenable(
       usePageController(
@@ -88,8 +88,8 @@ class BiblePage extends HookConsumerWidget {
 
               final reference = bible.getChapterReferenceByPageIndex(pageIndex);
               ref
-                  .read(userProfileProvider.notifier)
-                  .update((profile) => profile.copyWith(tabs: [reference]));
+                  .read(userProvider.notifier)
+                  .update((user) => user.copyWith(tabs: [reference]));
             },
             itemBuilder: (context, pageIndex) {
               final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
@@ -168,12 +168,12 @@ class BiblePage extends HookConsumerWidget {
                     final pageIndex = bible.getPageIndexByChapterReference(newReference);
                     pageController.jumpToPage(pageIndex);
                     ref
-                        .read(userProfileProvider.notifier)
+                        .read(userProvider.notifier)
                         .update(
-                          (profile) => profile.copyWith(
+                          (user) => user.copyWith(
                             previouslyViewed: [
                               newReference,
-                              ...profile.previouslyViewed,
+                              ...user.previouslyViewed,
                             ].distinct.take(5).toList(),
                           ),
                         );
@@ -193,7 +193,7 @@ class BiblePage extends HookConsumerWidget {
                                 currentChapterReference.format(),
                                 style: context.textStyle.labelLg,
                               ),
-                              StyledTag(text: userProfile.translation.title()),
+                              StyledTag(text: user.translation.title()),
                             ],
                           ),
                         ),

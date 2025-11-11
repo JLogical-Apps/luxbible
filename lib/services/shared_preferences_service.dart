@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:bible/models/user_profile.dart';
+import 'package:bible/models/user.dart';
 import 'package:bible/utils/guard.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,16 +12,14 @@ class SharedPreferencesService {
 
   const SharedPreferencesService(this.sharedPreferences);
 
-  UserProfile? getUserProfile() {
-    final userProfileRaw = sharedPreferences.getString('userProfile');
-    final userProfileJson = userProfileRaw == null
-        ? null
-        : guard(() => jsonDecode(userProfileRaw));
-    return userProfileJson == null ? null : UserProfile.fromJson(userProfileJson);
+  User? getUser() {
+    final userRaw = sharedPreferences.getString('user');
+    final userJson = userRaw == null ? null : guard(() => jsonDecode(userRaw));
+    return userJson == null ? null : User.fromJson(userJson);
   }
 
-  Future<void> setUserProfile(UserProfile userProfile) async =>
-      await sharedPreferences.setString('userProfile', jsonEncode(userProfile.toJson()));
+  Future<void> setUser(User user) async =>
+      await sharedPreferences.setString('user', jsonEncode(user.toJson()));
 }
 
 @riverpod

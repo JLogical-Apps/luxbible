@@ -2,7 +2,7 @@ import 'package:bible/models/bible_translation.dart';
 import 'package:bible/models/book_type.dart';
 import 'package:bible/models/chapter_reference.dart';
 import 'package:bible/providers/bible_provider.dart';
-import 'package:bible/providers/user_profile_provider.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/styled_banner.dart';
@@ -32,8 +32,8 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bibles = ref.watch(biblesProvider);
-    final userProfile = ref.watch(userProfileProvider);
-    final bible = userProfile.getBible(bibles);
+    final user = ref.watch(userProvider);
+    final bible = user.getBible(bibles);
 
     final bookTextState = useState(initialReference.book.title());
     final bookTextSelectionState = useState<TextSelection>(
@@ -176,12 +176,10 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                     width: 96,
                     child: StyledSelect(
                       options: BibleTranslation.values,
-                      selectedOption: userProfile.translation,
+                      selectedOption: user.translation,
                       onSelected: (translation) => ref
-                          .read(userProfileProvider.notifier)
-                          .update(
-                            (profile) => profile.copyWith(translation: translation),
-                          ),
+                          .read(userProvider.notifier)
+                          .update((user) => user.copyWith(translation: translation)),
                       optionMapper: (translation) =>
                           StyledSelectOption(titleText: translation.title()),
                       dialogTitle: 'Select Bible Translation',
@@ -197,23 +195,22 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                     key: ValueKey(BookType),
                     controller: scrollController,
                     children: [
-                      if (userProfile.previouslyViewed.isNotEmpty &&
+                      if (user.previouslyViewed.isNotEmpty &&
                           getMatchingBooks().isNotEmpty &&
                           (isBookFullySelected || bookTextState.value.isEmpty))
                         StyledSection.list(
                           titleText: 'Recents',
-                          children: userProfile.previouslyViewed
+                          children: user.previouslyViewed
                               .map(
                                 (chapterReference) => StyledSwipeable(
                                   key: ValueKey(chapterReference),
                                   actions: [
                                     StyledSwipeableAction.delete(
                                       onPressed: () => ref
-                                          .read(userProfileProvider.notifier)
+                                          .read(userProvider.notifier)
                                           .update(
-                                            (profile) => profile.copyWith(
-                                              previouslyViewed: userProfile
-                                                  .previouslyViewed
+                                            (user) => user.copyWith(
+                                              previouslyViewed: user.previouslyViewed
                                                   .withRemoved(chapterReference),
                                             ),
                                           ),
