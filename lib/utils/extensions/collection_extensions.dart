@@ -30,6 +30,9 @@ extension ListExtensions<T> on List<T> {
   List<T> sortedByIndexIn<T2>(List<T2> source, [T2 Function(T)? mapper]) => sortedBy(
     (e) => source.indexOfOrNull(mapper == null ? e as T2 : mapper(e)) ?? double.infinity,
   );
+
+  bool containsAll(Iterable<T> list) => list.every((item) => contains(item));
+  bool containsAny(Iterable<T> list) => list.any((item) => contains(item));
 }
 
 extension MapEntryIterableExtensions<K, V> on Iterable<MapEntry<K, V>> {

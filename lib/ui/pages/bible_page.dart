@@ -1,9 +1,12 @@
 import 'package:bible/models/chapter_reference.dart';
 import 'package:bible/models/passage.dart';
 import 'package:bible/models/reference.dart';
+import 'package:bible/models/verse_action.dart';
 import 'package:bible/providers/bible_provider.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/style/animated_grow.dart';
 import 'package:bible/style/gap.dart';
+import 'package:bible/style/highlighted_paragraph.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
@@ -106,36 +109,36 @@ class BiblePage extends HookConsumerWidget {
                 children: [
                   Text(chapterReference.format(), style: context.textStyle.bibleChapter),
                   gapH8,
-                  ...chapter.verses.mapIndexed(
-                    (i, verse) => GestureDetector(
+                  ...chapter.verses.mapIndexed((i, verse) {
+                    final reference = chapterReference.getReference(i + 1);
+                    return GestureDetector(
                       onTap: () => selectedVersesState.value = selectedVersesState.value
                           .withToggle(i),
-                      child: Text.rich(
-                        TextSpan(
-                          children: [
-                            WidgetSpan(
-                              child: Transform.translate(
-                                offset: Offset(0, -3),
-                                child: Text(
-                                  (i + 1).toString(),
-                                  style: context.textStyle.bibleVerseNumber,
-                                ),
-                              ),
-                              alignment: PlaceholderAlignment.top,
+                      child: Stack(
+                        children: [
+                          HighlightedParagraph(
+                            text: '  ${verse.text}',
+                            style: context.textStyle.bibleBody.copyWith(
+                              decoration: selectedVersesState.value.contains(i)
+                                  ? TextDecoration.underline
+                                  : null,
                             ),
-                            TextSpan(
-                              text: ' ${verse.text}',
-                              style: context.textStyle.bibleBody.copyWith(
-                                decoration: selectedVersesState.value.contains(i)
-                                    ? TextDecoration.underline
-                                    : null,
-                              ),
+                            lineColor: user.highlightedReferences.contains(reference)
+                                ? Colors.yellow
+                                : null,
+                          ),
+                          Positioned(
+                            top: 8,
+                            left: 0,
+                            child: Text(
+                              (i + 1).toString(),
+                              style: context.textStyle.bibleVerseNumber,
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                 ],
               );
             },
@@ -205,37 +208,56 @@ class BiblePage extends HookConsumerWidget {
               ),
             ),
           ),
-          AnimatedPositioned(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeInOutCubic,
-            bottom: selectedPassage == null ? -100 : 0,
+          Positioned(
+            bottom: 0,
             right: 0,
             left: 0,
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                boxShadow: [StyledShadow.up(context)],
-                color: context.colors.surfacePrimary,
-              ),
-              padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
-              child: StyledListItem(
-                title: Text(
-                  selectedPassage == null ? '' : selectedPassage.format(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                leading: StyledCircleButton(
-                  icon: Symbols.close,
-                  onPressed: () => selectedVersesState.value = [],
-                ),
-                trailing: Row(
-                  children: [
-                    StyledCircleButton(icon: Symbols.share, onPressed: () {}),
-                    StyledCircleButton(icon: Symbols.copy_all, onPressed: () {}),
-                    StyledCircleButton(icon: Symbols.more_vert, onPressed: () {}),
-                  ],
-                ),
-              ),
+            child: AnimatedGrow(
+              child: selectedPassage == null
+                  ? SizedBox.shrink(key: ValueKey('empty'))
+                  : Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        boxShadow: [StyledShadow.up(context)],
+                        color: context.colors.surfacePrimary,
+                      ),
+                      padding: EdgeInsets.only(
+                        bottom: MediaQuery.paddingOf(context).bottom,
+                      ),
+                      child: StyledListItem(
+                        title: Text(
+                          selectedPassage.format(),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        leading: StyledCircleButton(
+                          icon: Symbols.close,
+                          onPressed: () => selectedVersesState.value = [],
+                        ),
+                        trailing: Row(
+                          children: [VerseAction.highlight]
+                              .map(
+                                (action) => StyledCircleButton(
+                                  child: action.buildIcon(
+                                    context,
+                                    user: user,
+                                    selectedPassage: selectedPassage,
+                                  ),
+                                  onPressed: () {
+                                    action.onPressed(
+                                      context,
+                                      ref,
+                                      user: user,
+                                      selectedPassage: selectedPassage,
+                                    );
+                                    selectedVersesState.value = [];
+                                  },
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ),
+                    ),
             ),
           ),
         ],

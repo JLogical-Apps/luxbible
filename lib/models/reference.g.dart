@@ -1,0 +1,89 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'reference.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_Reference _$ReferenceFromJson(Map<String, dynamic> json) => _Reference(
+  book: $enumDecode(_$BookTypeEnumMap, json['book']),
+  chapterNum: (json['chapterNum'] as num).toInt(),
+  verseNum: (json['verseNum'] as num).toInt(),
+);
+
+Map<String, dynamic> _$ReferenceToJson(_Reference instance) =>
+    <String, dynamic>{
+      'book': _$BookTypeEnumMap[instance.book]!,
+      'chapterNum': instance.chapterNum,
+      'verseNum': instance.verseNum,
+    };
+
+const _$BookTypeEnumMap = {
+  BookType.genesis: 'genesis',
+  BookType.exodus: 'exodus',
+  BookType.leviticus: 'leviticus',
+  BookType.numbers: 'numbers',
+  BookType.deuteronomy: 'deuteronomy',
+  BookType.joshua: 'joshua',
+  BookType.judges: 'judges',
+  BookType.ruth: 'ruth',
+  BookType.samuel1: 'samuel1',
+  BookType.samuel2: 'samuel2',
+  BookType.kings1: 'kings1',
+  BookType.kings2: 'kings2',
+  BookType.chronicles1: 'chronicles1',
+  BookType.chronicles2: 'chronicles2',
+  BookType.ezra: 'ezra',
+  BookType.nehemiah: 'nehemiah',
+  BookType.esther: 'esther',
+  BookType.job: 'job',
+  BookType.psalms: 'psalms',
+  BookType.proverbs: 'proverbs',
+  BookType.ecclesiastes: 'ecclesiastes',
+  BookType.songOfSolomon: 'songOfSolomon',
+  BookType.isaiah: 'isaiah',
+  BookType.jeremiah: 'jeremiah',
+  BookType.lamentations: 'lamentations',
+  BookType.ezekiel: 'ezekiel',
+  BookType.daniel: 'daniel',
+  BookType.hosea: 'hosea',
+  BookType.joel: 'joel',
+  BookType.amos: 'amos',
+  BookType.obadiah: 'obadiah',
+  BookType.jonah: 'jonah',
+  BookType.micah: 'micah',
+  BookType.nahum: 'nahum',
+  BookType.habakkuk: 'habakkuk',
+  BookType.zephaniah: 'zephaniah',
+  BookType.haggai: 'haggai',
+  BookType.zechariah: 'zechariah',
+  BookType.malachi: 'malachi',
+  BookType.matthew: 'matthew',
+  BookType.mark: 'mark',
+  BookType.luke: 'luke',
+  BookType.john: 'john',
+  BookType.acts: 'acts',
+  BookType.romans: 'romans',
+  BookType.corinthians1: 'corinthians1',
+  BookType.corinthians2: 'corinthians2',
+  BookType.galatians: 'galatians',
+  BookType.ephesians: 'ephesians',
+  BookType.philippians: 'philippians',
+  BookType.colossians: 'colossians',
+  BookType.thessalonians1: 'thessalonians1',
+  BookType.thessalonians2: 'thessalonians2',
+  BookType.timothy1: 'timothy1',
+  BookType.timothy2: 'timothy2',
+  BookType.titus: 'titus',
+  BookType.philemon: 'philemon',
+  BookType.hebrews: 'hebrews',
+  BookType.james: 'james',
+  BookType.peter1: 'peter1',
+  BookType.peter2: 'peter2',
+  BookType.john1: 'john1',
+  BookType.john2: 'john2',
+  BookType.john3: 'john3',
+  BookType.jude: 'jude',
+  BookType.revelation: 'revelation',
+};

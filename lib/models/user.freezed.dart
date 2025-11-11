@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$User {
 
- BibleTranslation get translation; List<ChapterReference> get tabs; List<ChapterReference> get previouslyViewed;
+ BibleTranslation get translation; List<ChapterReference> get tabs; List<ChapterReference> get previouslyViewed; List<Reference> get highlightedReferences;
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserCopyWith<User> get copyWith => _$UserCopyWithImpl<User>(this as User, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.translation, translation) || other.translation == translation)&&const DeepCollectionEquality().equals(other.tabs, tabs)&&const DeepCollectionEquality().equals(other.previouslyViewed, previouslyViewed));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.translation, translation) || other.translation == translation)&&const DeepCollectionEquality().equals(other.tabs, tabs)&&const DeepCollectionEquality().equals(other.previouslyViewed, previouslyViewed)&&const DeepCollectionEquality().equals(other.highlightedReferences, highlightedReferences));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,translation,const DeepCollectionEquality().hash(tabs),const DeepCollectionEquality().hash(previouslyViewed));
+int get hashCode => Object.hash(runtimeType,translation,const DeepCollectionEquality().hash(tabs),const DeepCollectionEquality().hash(previouslyViewed),const DeepCollectionEquality().hash(highlightedReferences));
 
 @override
 String toString() {
-  return 'User(translation: $translation, tabs: $tabs, previouslyViewed: $previouslyViewed)';
+  return 'User(translation: $translation, tabs: $tabs, previouslyViewed: $previouslyViewed, highlightedReferences: $highlightedReferences)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserCopyWith<$Res>  {
   factory $UserCopyWith(User value, $Res Function(User) _then) = _$UserCopyWithImpl;
 @useResult
 $Res call({
- BibleTranslation translation, List<ChapterReference> tabs, List<ChapterReference> previouslyViewed
+ BibleTranslation translation, List<ChapterReference> tabs, List<ChapterReference> previouslyViewed, List<Reference> highlightedReferences
 });
 
 
@@ -65,12 +65,13 @@ class _$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? translation = null,Object? tabs = null,Object? previouslyViewed = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? translation = null,Object? tabs = null,Object? previouslyViewed = null,Object? highlightedReferences = null,}) {
   return _then(_self.copyWith(
 translation: null == translation ? _self.translation : translation // ignore: cast_nullable_to_non_nullable
 as BibleTranslation,tabs: null == tabs ? _self.tabs : tabs // ignore: cast_nullable_to_non_nullable
 as List<ChapterReference>,previouslyViewed: null == previouslyViewed ? _self.previouslyViewed : previouslyViewed // ignore: cast_nullable_to_non_nullable
-as List<ChapterReference>,
+as List<ChapterReference>,highlightedReferences: null == highlightedReferences ? _self.highlightedReferences : highlightedReferences // ignore: cast_nullable_to_non_nullable
+as List<Reference>,
   ));
 }
 
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BibleTranslation translation,  List<ChapterReference> tabs,  List<ChapterReference> previouslyViewed)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BibleTranslation translation,  List<ChapterReference> tabs,  List<ChapterReference> previouslyViewed,  List<Reference> highlightedReferences)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.translation,_that.tabs,_that.previouslyViewed);case _:
+return $default(_that.translation,_that.tabs,_that.previouslyViewed,_that.highlightedReferences);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.translation,_that.tabs,_that.previouslyViewed);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BibleTranslation translation,  List<ChapterReference> tabs,  List<ChapterReference> previouslyViewed)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BibleTranslation translation,  List<ChapterReference> tabs,  List<ChapterReference> previouslyViewed,  List<Reference> highlightedReferences)  $default,) {final _that = this;
 switch (_that) {
 case _User():
-return $default(_that.translation,_that.tabs,_that.previouslyViewed);}
+return $default(_that.translation,_that.tabs,_that.previouslyViewed,_that.highlightedReferences);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -190,10 +191,10 @@ return $default(_that.translation,_that.tabs,_that.previouslyViewed);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BibleTranslation translation,  List<ChapterReference> tabs,  List<ChapterReference> previouslyViewed)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BibleTranslation translation,  List<ChapterReference> tabs,  List<ChapterReference> previouslyViewed,  List<Reference> highlightedReferences)?  $default,) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.translation,_that.tabs,_that.previouslyViewed);case _:
+return $default(_that.translation,_that.tabs,_that.previouslyViewed,_that.highlightedReferences);case _:
   return null;
 
 }
@@ -205,7 +206,7 @@ return $default(_that.translation,_that.tabs,_that.previouslyViewed);case _:
 @JsonSerializable()
 
 class _User extends User {
-  const _User({this.translation = BibleTranslation.asv, final  List<ChapterReference> tabs = const [], final  List<ChapterReference> previouslyViewed = const []}): _tabs = tabs,_previouslyViewed = previouslyViewed,super._();
+  const _User({this.translation = BibleTranslation.asv, final  List<ChapterReference> tabs = const [], final  List<ChapterReference> previouslyViewed = const [], final  List<Reference> highlightedReferences = const []}): _tabs = tabs,_previouslyViewed = previouslyViewed,_highlightedReferences = highlightedReferences,super._();
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
 @override@JsonKey() final  BibleTranslation translation;
@@ -223,6 +224,13 @@ class _User extends User {
   return EqualUnmodifiableListView(_previouslyViewed);
 }
 
+ final  List<Reference> _highlightedReferences;
+@override@JsonKey() List<Reference> get highlightedReferences {
+  if (_highlightedReferences is EqualUnmodifiableListView) return _highlightedReferences;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_highlightedReferences);
+}
+
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
@@ -237,16 +245,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.translation, translation) || other.translation == translation)&&const DeepCollectionEquality().equals(other._tabs, _tabs)&&const DeepCollectionEquality().equals(other._previouslyViewed, _previouslyViewed));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.translation, translation) || other.translation == translation)&&const DeepCollectionEquality().equals(other._tabs, _tabs)&&const DeepCollectionEquality().equals(other._previouslyViewed, _previouslyViewed)&&const DeepCollectionEquality().equals(other._highlightedReferences, _highlightedReferences));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,translation,const DeepCollectionEquality().hash(_tabs),const DeepCollectionEquality().hash(_previouslyViewed));
+int get hashCode => Object.hash(runtimeType,translation,const DeepCollectionEquality().hash(_tabs),const DeepCollectionEquality().hash(_previouslyViewed),const DeepCollectionEquality().hash(_highlightedReferences));
 
 @override
 String toString() {
-  return 'User(translation: $translation, tabs: $tabs, previouslyViewed: $previouslyViewed)';
+  return 'User(translation: $translation, tabs: $tabs, previouslyViewed: $previouslyViewed, highlightedReferences: $highlightedReferences)';
 }
 
 
@@ -257,7 +265,7 @@ abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$UserCopyWith(_User value, $Res Function(_User) _then) = __$UserCopyWithImpl;
 @override @useResult
 $Res call({
- BibleTranslation translation, List<ChapterReference> tabs, List<ChapterReference> previouslyViewed
+ BibleTranslation translation, List<ChapterReference> tabs, List<ChapterReference> previouslyViewed, List<Reference> highlightedReferences
 });
 
 
@@ -274,12 +282,13 @@ class __$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? translation = null,Object? tabs = null,Object? previouslyViewed = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? translation = null,Object? tabs = null,Object? previouslyViewed = null,Object? highlightedReferences = null,}) {
   return _then(_User(
 translation: null == translation ? _self.translation : translation // ignore: cast_nullable_to_non_nullable
 as BibleTranslation,tabs: null == tabs ? _self._tabs : tabs // ignore: cast_nullable_to_non_nullable
 as List<ChapterReference>,previouslyViewed: null == previouslyViewed ? _self._previouslyViewed : previouslyViewed // ignore: cast_nullable_to_non_nullable
-as List<ChapterReference>,
+as List<ChapterReference>,highlightedReferences: null == highlightedReferences ? _self._highlightedReferences : highlightedReferences // ignore: cast_nullable_to_non_nullable
+as List<Reference>,
   ));
 }
 
