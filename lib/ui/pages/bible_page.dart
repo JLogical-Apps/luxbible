@@ -17,6 +17,7 @@ import 'package:bible/ui/pages/chapter_reference_search_page.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/controller_extensions.dart';
+import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -90,9 +91,7 @@ class BiblePage extends HookConsumerWidget {
               isScrollingDownState.value = true;
 
               final reference = bible.getChapterReferenceByPageIndex(pageIndex);
-              ref
-                  .read(userProvider.notifier)
-                  .update((user) => user.copyWith(tabs: [reference]));
+              ref.updateUser((user) => user.copyWith(tabs: [reference]));
             },
             itemBuilder: (context, pageIndex) {
               final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
@@ -172,16 +171,14 @@ class BiblePage extends HookConsumerWidget {
                   if (newReference != null) {
                     final pageIndex = bible.getPageIndexByChapterReference(newReference);
                     pageController.jumpToPage(pageIndex);
-                    ref
-                        .read(userProvider.notifier)
-                        .update(
-                          (user) => user.copyWith(
-                            previouslyViewed: [
-                              newReference,
-                              ...user.previouslyViewed,
-                            ].distinct.take(5).toList(),
-                          ),
-                        );
+                    ref.updateUser(
+                      (user) => user.copyWith(
+                        previouslyViewed: [
+                          newReference,
+                          ...user.previouslyViewed,
+                        ].distinct.take(5).toList(),
+                      ),
+                    );
                   }
                 },
                 child: Row(
