@@ -20,7 +20,7 @@ class StyledMaterial extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: color,
+      color: color ?? Colors.transparent,
       borderRadius: borderRadius,
       child: InkWell(
         borderRadius: borderRadius,

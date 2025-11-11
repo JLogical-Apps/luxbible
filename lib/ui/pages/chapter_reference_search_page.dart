@@ -9,10 +9,12 @@ import 'package:bible/style/widgets/styled_banner.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/style/widgets/styled_list.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
+import 'package:bible/style/widgets/styled_page.dart';
 import 'package:bible/style/widgets/styled_section.dart';
 import 'package:bible/style/widgets/styled_select.dart';
 import 'package:bible/style/widgets/styled_swipeable.dart';
 import 'package:bible/style/widgets/styled_text_field.dart';
+import 'package:bible/style/widgets/styled_tile.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/hook_utils.dart';
@@ -92,14 +94,10 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
       (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
     );
 
-    return Scaffold(
-      backgroundColor: context.colors.surfacePrimary,
-      appBar: AppBar(
-        backgroundColor: context.colors.surfacePrimary,
-        leading: StyledCircleButton(
-          icon: Symbols.close,
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+    return StyledPage(
+      leading: StyledCircleButton(
+        icon: Symbols.close,
+        onPressed: () => Navigator.of(context).pop(),
       ),
       body: Column(
         children: [
@@ -196,36 +194,78 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                     key: ValueKey(BookType),
                     controller: scrollController,
                     children: [
-                      if (user.previouslyViewed.isNotEmpty &&
-                          getMatchingBooks().isNotEmpty &&
-                          (isBookFullySelected || bookTextState.value.isEmpty))
-                        StyledSection.list(
-                          titleText: 'Recents',
-                          children: user.previouslyViewed
-                              .map(
-                                (chapterReference) => StyledSwipeable(
-                                  key: ValueKey(chapterReference),
-                                  actions: [
-                                    StyledSwipeableAction.delete(
-                                      onPressed: () => ref.updateUser(
-                                        (user) => user.copyWith(
-                                          previouslyViewed: user.previouslyViewed
-                                              .withRemoved(chapterReference),
+                      if (getMatchingBooks().isNotEmpty &&
+                          (isBookFullySelected || bookTextState.value.isEmpty)) ...[
+                        if (user.bookmarks.isNotEmpty)
+                          StyledSection.list(
+                            titleText: 'Bookmarks',
+                            padding: EdgeInsets.only(top: 24),
+                            children: [
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                padding: EdgeInsets.symmetric(horizontal: 16),
+                                child: Row(
+                                  spacing: 16,
+                                  children: user.bookmarks.map((bookmark) {
+                                    final chapterReference = ChapterReference.fromKey(
+                                      bookmark.key,
+                                    );
+                                    return StyledTile(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(chapterReference),
+                                      child: Row(
+                                        spacing: 8,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Symbols.bookmark,
+                                            color: bookmark.color
+                                                .toHue(context.colors)
+                                                .medium,
+                                          ),
+                                          Text(
+                                            chapterReference.format(),
+                                            style: context.textStyle.labelMd,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        if (user.previouslyViewed.isNotEmpty)
+                          StyledSection.list(
+                            titleText: 'Recents',
+                            padding: EdgeInsets.only(top: 24),
+                            children: user.previouslyViewed
+                                .map(
+                                  (chapterReference) => StyledSwipeable(
+                                    key: ValueKey(chapterReference),
+                                    actions: [
+                                      StyledSwipeableAction.delete(
+                                        onPressed: () => ref.updateUser(
+                                          (user) => user.copyWith(
+                                            previouslyViewed: user.previouslyViewed
+                                                .withRemoved(chapterReference),
+                                          ),
                                         ),
                                       ),
+                                    ],
+                                    child: StyledListItem(
+                                      leadingIcon: Symbols.history,
+                                      titleText: chapterReference.format(),
+                                      trailingIcon: Symbols.expand_circle_right,
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(chapterReference),
                                     ),
-                                  ],
-                                  child: StyledListItem(
-                                    leadingIcon: Symbols.history,
-                                    titleText: chapterReference.format(),
-                                    trailingIcon: Symbols.expand_circle_right,
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(chapterReference),
                                   ),
-                                ),
-                              )
-                              .toList(),
-                        ),
+                                )
+                                .toList(),
+                          ),
+                      ],
+
                       if (getMatchingBooks().isEmpty)
                         Padding(
                           padding: EdgeInsets.all(16),

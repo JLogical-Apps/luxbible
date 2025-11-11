@@ -37,9 +37,11 @@ enum VerseAction {
     WidgetRef ref, {
     required User user,
     required Passage selectedPassage,
+    required Function() deselectVerses,
   }) async {
     switch (this) {
       case highlight:
+        deselectVerses();
         ref.updateUser(
           (user) => user.withToggledHighlight(
             passage: selectedPassage,
@@ -56,6 +58,7 @@ enum VerseAction {
                     icon: Symbols.ink_eraser,
                     onPressed: () {
                       Navigator.of(context).pop();
+                      deselectVerses();
                       ref.updateUser(
                         (user) => user.withRemovedHighlight(passage: selectedPassage),
                       );
@@ -65,6 +68,7 @@ enum VerseAction {
           ),
         );
         if (newColor != null) {
+          deselectVerses();
           ref.updateUser(
             (user) => user
                 .withHighlight(passage: selectedPassage, color: newColor)

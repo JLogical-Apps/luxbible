@@ -1,5 +1,6 @@
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/bible_translation.dart';
+import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/chapter_reference.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/passage.dart';
@@ -20,6 +21,7 @@ sealed class User with _$User {
     @Default([]) List<ChapterReference> previouslyViewed,
     @Default({}) Map<String, ColorEnum> highlightByKey,
     @Default(ColorEnum.yellow) ColorEnum highlightColor,
+    @Default([]) List<Bookmark> bookmarks,
   }) = _User;
 
   Bible getBible(List<Bible> bibles) =>
@@ -31,6 +33,9 @@ sealed class User with _$User {
   ColorEnum? getPassageHighlight(Passage passage) => highlightByKey.entries
       .firstWhereOrNull((entry) => passage.referenceKeys.contains(entry.key))
       ?.value;
+
+  Bookmark? getBookmark(ChapterReference reference) =>
+      bookmarks.firstWhereOrNull((bookmark) => bookmark.key == reference.toKey());
 
   User withToggledHighlight({required Passage passage, required ColorEnum color}) =>
       isPassageHighlighted(passage)
@@ -48,6 +53,10 @@ sealed class User with _$User {
       ...passage.referenceKeys.mapToMap((key) => MapEntry(key, color)),
     },
   );
+
+  User withBookmark(Bookmark bookmark) => copyWith(bookmarks: [...bookmarks, bookmark]);
+  User withRemovedBookmark(Bookmark bookmark) =>
+      copyWith(bookmarks: bookmarks.withRemoved(bookmark));
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
