@@ -11,6 +11,19 @@ import 'package:material_symbols_icons/symbols.dart';
 enum ToolbarAction {
   bookmark;
 
+  String title({required User user, required ChapterReference reference}) =>
+      switch (this) {
+        bookmark => user.getBookmark(reference) == null ? 'Bookmark' : 'Remove Bookmark',
+      };
+
+  String description({required User user, required ChapterReference reference}) =>
+      switch (this) {
+        bookmark =>
+          user.getBookmark(reference) == null
+              ? 'Bookmark this chapter to easily access it from the search page.'
+              : 'Remove this bookmark.',
+      };
+
   Widget buildIcon(
     BuildContext context, {
     required User user,

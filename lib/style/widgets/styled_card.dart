@@ -1,4 +1,5 @@
 import 'package:bible/style/style_context_extensions.dart';
+import 'package:bible/style/widgets/styled_list.dart';
 import 'package:flutter/material.dart';
 
 class StyledCard extends StatelessWidget {
@@ -7,6 +8,9 @@ class StyledCard extends StatelessWidget {
   final Color? color;
 
   const StyledCard({super.key, required this.child, this.color});
+
+  StyledCard.list({super.key, required List<Widget> children, this.color})
+    : child = StyledList(children: children);
 
   @override
   Widget build(BuildContext context) {
