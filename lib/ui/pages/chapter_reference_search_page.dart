@@ -95,6 +95,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
     );
 
     return StyledPage(
+      backgroundColor: context.colors.surfacePrimary,
       leading: StyledCircleButton(
         icon: Symbols.close,
         onPressed: () => Navigator.of(context).pop(),

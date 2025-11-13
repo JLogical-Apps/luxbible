@@ -8,6 +8,7 @@ class StyledPage extends StatelessWidget {
   final Widget? leading;
   final Widget? title;
   final Widget body;
+  final Color? backgroundColor;
 
   StyledPage({
     super.key,
@@ -15,6 +16,7 @@ class StyledPage extends StatelessWidget {
     Widget? title,
     String? titleText,
     required this.body,
+    this.backgroundColor,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new);
 
   @override
@@ -28,7 +30,7 @@ class StyledPage extends StatelessWidget {
               )
             : null);
     return Scaffold(
-      backgroundColor: context.colors.surfacePrimary,
+      backgroundColor: backgroundColor ?? context.colors.backgroundPrimary,
       appBar: leading != null || title != null
           ? AppBar(
               backgroundColor: context.colors.surfacePrimary,
