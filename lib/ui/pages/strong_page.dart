@@ -25,6 +25,8 @@ class StrongPage extends ConsumerWidget {
       );
     }
 
+    final seeMoreStrongs = strong.glossary.map((glossary) => strongs[glossary]).nonNulls.toList();
+
     return StyledPage(
       titleText: strong.languageText,
       body: StyledScrollbar(
@@ -41,13 +43,11 @@ class StrongPage extends ConsumerWidget {
                 ],
               ),
             ),
-            if (strong.glossary.isNotEmpty)
+            if (seeMoreStrongs.isNotEmpty)
               StyledSection(
                 titleText: 'See More',
                 child: StyledCard.list(
-                  children: strong.glossary
-                      .map((glossary) => strongs[glossary])
-                      .nonNulls
+                  children: seeMoreStrongs
                       .map(
                         (strong) => StyledListItem.navigation(
                           titleText: strong.id,
