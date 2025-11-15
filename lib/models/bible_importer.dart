@@ -13,7 +13,9 @@ import 'package:flutter/services.dart';
 
 class BibleImporter {
   Future<Bible> import({required BibleTranslation translation}) async {
-    final rawJson = await rootBundle.loadString('assets/${translation.name}.json');
+    final rawJson = await rootBundle.loadString(
+      'assets/translations/${translation.name}.json',
+    );
     final json = jsonDecode(rawJson);
 
     final verses = (json['verses'] as Iterable)
