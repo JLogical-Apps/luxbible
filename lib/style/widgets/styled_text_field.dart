@@ -17,6 +17,7 @@ class StyledTextField extends HookWidget {
   final String? hintText;
 
   final bool autofocus;
+  final bool autocorrect;
   final bool readOnly;
   final TextInputType textInputType;
   final TextCapitalization textCapitalization;
@@ -37,6 +38,7 @@ class StyledTextField extends HookWidget {
     this.hintText,
     this.suggestedText,
     this.autofocus = false,
+    this.autocorrect = true,
     this.readOnly = false,
     this.textInputType = TextInputType.text,
     this.textCapitalization = TextCapitalization.sentences,
@@ -93,6 +95,7 @@ class StyledTextField extends HookWidget {
           focusNode: focusNode,
           readOnly: readOnly,
           onChanged: (text) => onChanged?.call(text),
+          autocorrect: autocorrect,
           enabled: onChanged != null,
           autofocus: autofocus,
           style: textStyle.disabled(context, isDisabled: onChanged == null),

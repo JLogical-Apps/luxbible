@@ -52,10 +52,10 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
     final chapterFocusNode = useListenable(useFocusNode());
     final viewModeState = useState(_ViewMode.book);
 
-    List<BookType> getMatchingBooks() => BookType.values
-        .where((book) => book.title().toUpperCase().startsWith(bookTextState.value.toUpperCase()))
+    List<BookType> getMatchingBooks({String? text}) => BookType.values
+        .where((book) => book.title().toUpperCase().startsWith((text ?? bookTextState.value).toUpperCase()))
         .toList();
-    BookType? getBook() => getMatchingBooks().singleOrNull;
+    BookType? getBook({String? text}) => getMatchingBooks(text: text).singleOrNull;
 
     final book = getBook();
     final previousBook = usePrevious(getBook());
@@ -106,11 +106,19 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                         StyledTextField(
                           text: bookTextState.value,
                           readOnly: !isScrollingDownState.value,
-                          onChanged: (text) => bookTextState.value = text,
+                          onChanged: (text) {
+                            if (text.endsWith(' ') && getBook(text: text.trim()) != null) {
+                              bookTextState.value = text.trim();
+                              chapterFocusNode.requestFocus();
+                            } else {
+                              bookTextState.value = text;
+                            }
+                          },
                           onTextEditValueChanged: (value) => bookTextSelectionState.value = value.selection,
                           autofocus: true,
                           suggestedText: book?.title(),
                           hintText: 'Book',
+                          autocorrect: false,
                           textStyle: context.textStyle.paragraphLg,
                           textCapitalization: TextCapitalization.words,
                           action: TextInputAction.next,
@@ -133,7 +141,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                       onChanged: book == null ? null : (text) => chapterNumState.value = int.tryParse(text),
                       hintText: 'Chapter',
                       textStyle: context.textStyle.paragraphLg,
-                      textInputType: TextInputType.number,
+                      textInputType: TextInputType.numberWithOptions(signed: true),
                       focusNode: chapterFocusNode,
                       onSubmit: (text) {
                         final chapterNum = int.tryParse(text);
