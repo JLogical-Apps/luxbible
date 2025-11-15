@@ -1,3 +1,4 @@
+import 'package:bible/models/bible.dart';
 import 'package:bible/models/passage.dart';
 import 'package:bible/models/user.dart';
 import 'package:bible/style/style_context_extensions.dart';
@@ -10,12 +11,15 @@ import 'package:bible/ui/widgets/colored_circle.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 enum PassageAction {
   highlight,
   highlightColor,
+  note,
+  copy,
   compare,
   interlinear,
   commentary;
@@ -23,6 +27,8 @@ enum PassageAction {
   String title({required User user, required Passage selectedPassage}) => switch (this) {
     highlight => user.isPassageHighlighted(selectedPassage) ? 'Remove Highlight' : 'Quick Highlight',
     highlightColor => 'Highlight',
+    note => 'Note',
+    copy => 'Copy',
     compare => 'Translation Compare',
     interlinear => 'Interlinear',
     commentary => 'Commentary',
@@ -34,6 +40,8 @@ enum PassageAction {
           ? 'Remove highlights from the selected passage.'
           : 'Highlight the selected passage with the last highlight color you used.',
     highlightColor => 'Choose a color to highlight for the selected passage.',
+    note => 'Add a note for the selected passage.',
+    copy => 'Copy the selected passage to your clipboard.',
     compare => 'Compare the selected passage across a variety of translations.',
     interlinear => 'View a lexical breakdown of the selected passage using Strong\'s lexicon.',
     commentary => 'View commentary of the selected passage.',
@@ -45,6 +53,8 @@ enum PassageAction {
       color: user.isPassageHighlighted(selectedPassage) ? null : user.highlightColor.toHue(context.colors).primary,
     ),
     highlightColor => ColoredCircle(color: user.highlightColor.toHue(context.colors).primary, isSelected: true),
+    note => Icon(Symbols.note_add),
+    copy => Icon(Symbols.copy_all),
     compare => Icon(Symbols.text_compare),
     interlinear => Icon(Symbols.translate),
     commentary => Icon(Symbols.school),
@@ -55,6 +65,7 @@ enum PassageAction {
     WidgetRef ref, {
     required User user,
     required Passage selectedPassage,
+    required Bible bible,
     required Function() deselectVerses,
   }) async {
     switch (this) {
@@ -84,6 +95,15 @@ enum PassageAction {
             (user) => user.withHighlight(passage: selectedPassage, color: newColor).copyWith(highlightColor: newColor),
           );
         }
+      case note:
+        break;
+      case copy:
+        context.showStyledSnackbar(messageText: '${selectedPassage.format()} copied to clipboard.');
+        await Clipboard.setData(
+          ClipboardData(
+            text: selectedPassage.sortedReferences.map((reference) => bible.getVerseByReference(reference).text).join(),
+          ),
+        );
       case compare:
         context.push(ComparePage(passage: selectedPassage));
       case interlinear:

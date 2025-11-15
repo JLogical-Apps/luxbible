@@ -245,6 +245,7 @@ class BiblePage extends HookConsumerWidget {
                                       ref,
                                       user: user,
                                       selectedPassage: selectedPassage,
+                                      bible: bible,
                                       deselectVerses: () => selectedReferencesState.value = [],
                                     ),
                                   ),
@@ -272,6 +273,7 @@ class BiblePage extends HookConsumerWidget {
                                               ref,
                                               user: user,
                                               selectedPassage: selectedPassage,
+                                              bible: bible,
                                               deselectVerses: () => selectedReferencesState.value = [],
                                             );
                                           },

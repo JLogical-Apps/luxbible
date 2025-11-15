@@ -11,6 +11,8 @@ class ColorLibrary {
   factory ColorLibrary.fromBackground(Color color) =>
       ColorLibrary(brightness: ThemeData.estimateBrightnessForColor(color));
 
+  ColorLibrary get inverted => ColorLibrary(brightness: brightness.inverted);
+
   Hue get zinc => TWColors.zinc.asHue(brightness);
   Hue get stone => TWColors.stone.asHue(brightness);
   Hue get red => TWColors.red.asHue(brightness);

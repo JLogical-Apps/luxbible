@@ -5,4 +5,6 @@ extension BrightnessExtensions on Brightness {
     Brightness.light => light,
     Brightness.dark => dark,
   };
+
+  Brightness get inverted => when(light: Brightness.dark, dark: Brightness.light);
 }
