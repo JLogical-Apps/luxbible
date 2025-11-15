@@ -1,4 +1,5 @@
 import 'package:bible/providers/strongs_provider.dart';
+import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/styled_card.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_page.dart';
@@ -19,7 +20,11 @@ class StrongPage extends ConsumerWidget {
     final strong = strongs[strongId];
 
     if (strong == null) {
-      return SizedBox.shrink();
+      return StyledPage(
+        body: Center(
+          child: Text('No info found for $strongId', style: context.textStyle.headingXs),
+        ),
+      );
     }
 
     return StyledPage(
