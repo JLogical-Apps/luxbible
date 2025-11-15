@@ -2,7 +2,9 @@ import 'package:bible/models/passage.dart';
 import 'package:bible/providers/bible_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/widgets/styled_list.dart';
+import 'package:bible/style/style_context_extensions.dart';
+import 'package:bible/style/widgets/sliver/styled_sliver_list.dart';
+import 'package:bible/style/widgets/sliver/styled_sticky_sliver_header.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_page.dart';
 import 'package:bible/style/widgets/styled_scrollbar.dart';
@@ -27,32 +29,41 @@ class InterlinearPage extends ConsumerWidget {
 
     return StyledPage(
       titleText: 'Interlinear ${passage.format()}',
+      backgroundColor: context.colors.surfacePrimary,
       body: StyledScrollbar(
-        child: SingleChildScrollView(
-          child: StyledList(
-            children: passage.references
-                .map((reference) => bible.getVerseByReference(reference))
-                .expand((verse) => verse.fragments)
-                .mapToMap(
-                  (fragment) => MapEntry(fragment, fragment.strongIds.firstOrNull),
-                )
-                .withoutNullValues
-                .mapToIterable(
-                  (fragment, strongId) => StyledListItem.navigation(
-                    titleText: fragment.text.trim(),
-                    subtitle: Row(
-                      spacing: 4,
-                      children: [
-                        StyledTag(text: strongId),
-                        if (strongs[strongId] case final strong?)
-                          Text(strong.languageText),
-                      ],
-                    ),
-                    onPressed: () => context.push(StrongPage(strongId: strongId)),
+        child: CustomScrollView(
+          slivers: passage.sortedReferences
+              .map(
+                (reference) => StyledSliverStickyHeader(
+                  titleText: reference.format(),
+                  sliver: StyledSliverList(
+                    children: bible
+                        .getVerseByReference(reference)
+                        .fragments
+                        .mapToMap(
+                          (fragment) =>
+                              MapEntry(fragment, fragment.strongIds.firstOrNull),
+                        )
+                        .withoutNullValues
+                        .mapToIterable(
+                          (fragment, strongId) => StyledListItem.navigation(
+                            titleText: fragment.text.trim(),
+                            subtitle: Row(
+                              spacing: 4,
+                              children: [
+                                StyledTag(text: strongId),
+                                if (strongs[strongId] case final strong?)
+                                  Text(strong.languageText),
+                              ],
+                            ),
+                            onPressed: () => context.push(StrongPage(strongId: strongId)),
+                          ),
+                        )
+                        .toList(),
                   ),
-                )
-                .toList(),
-          ),
+                ),
+              )
+              .toList(),
         ),
       ),
     );
