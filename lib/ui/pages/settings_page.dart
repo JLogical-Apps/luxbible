@@ -22,28 +22,25 @@ class SettingsPage extends StatelessWidget {
                 children: [
                   StyledListItem.navigation(
                     titleText: 'Toolbar Actions',
-                    subtitleText: 'Configure the actions on your toolbar.',
                     leadingIcon: Symbols.toolbar,
                     onPressed: () {},
                   ),
                   StyledListItem.navigation(
                     titleText: 'Passage Actions',
-                    subtitleText: 'Configure the actions when you select a passage.',
                     leadingIcon: Symbols.article,
                     onPressed: () {},
                   ),
                   StyledListItem.navigation(
-                    titleText: 'Search',
-                    subtitleText: 'Configure your search experience.',
-                    leadingIcon: Symbols.search,
+                    titleText: 'Reference Search',
+                    leadingIcon: Symbols.auto_stories,
                     onPressed: () {},
                   ),
                   StyledListItem.navigation(
                     titleText: 'Highlights',
-                    subtitleText: 'Customize highlight tags.',
                     leadingIcon: Symbols.format_ink_highlighter,
                     onPressed: () {},
                   ),
+                  StyledListItem.navigation(titleText: 'Bookmarks', leadingIcon: Symbols.bookmark, onPressed: () {}),
                 ],
               ),
             ),

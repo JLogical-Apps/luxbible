@@ -21,7 +21,7 @@ class Passage {
         : ref1Items.length == 2
         ? List.generate(
             bible.getChapterByReference(ChapterReference(book: book, chapterNum: chapterNum)).verses.length,
-            (i) => i,
+            (i) => i + 1,
           )
         : [int.parse(ref1Items[2])];
     return Passage(
