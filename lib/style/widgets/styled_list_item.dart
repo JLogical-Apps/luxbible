@@ -1,6 +1,7 @@
 import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/text_style_extensions.dart';
+import 'package:bible/style/widgets/component_size.dart';
 import 'package:bible/style/widgets/styled_divider.dart';
 import 'package:bible/style/widgets/styled_list_item_context.dart';
 import 'package:bible/style/widgets/styled_material.dart';
@@ -17,6 +18,8 @@ class StyledListItem extends StatelessWidget {
 
   final Function()? onPressed;
 
+  final ComponentSize size;
+
   StyledListItem({
     super.key,
     Widget? title,
@@ -28,6 +31,7 @@ class StyledListItem extends StatelessWidget {
     Widget? trailing,
     IconData? trailingIcon,
     this.onPressed,
+    this.size = ComponentSize.md,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new),
        subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new),
        leading = leading ?? leadingIcon?.mapIfNonNull(Icon.new),
@@ -42,6 +46,7 @@ class StyledListItem extends StatelessWidget {
     Widget? leading,
     IconData? leadingIcon,
     this.onPressed,
+    this.size = ComponentSize.md,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new),
        subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new),
        leading = leading ?? leadingIcon?.mapIfNonNull(Icon.new),
@@ -57,6 +62,7 @@ class StyledListItem extends StatelessWidget {
     IconData? leadingIcon,
     required bool selected,
     required Function() onSelected,
+    this.size = ComponentSize.md,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new),
        subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new),
        leading = leading ?? leadingIcon?.mapIfNonNull(Icon.new),
@@ -71,7 +77,13 @@ class StyledListItem extends StatelessWidget {
       color: Colors.transparent,
       onPressed: onPressed,
       child: ConstrainedBox(
-        constraints: BoxConstraints(minHeight: 64),
+        constraints: BoxConstraints(
+          minHeight: switch (size) {
+            ComponentSize.sm => 56,
+            ComponentSize.md => 64,
+            ComponentSize.lg => 80,
+          },
+        ),
         child: IntrinsicHeight(
           child: Row(
             children: [
@@ -89,7 +101,6 @@ class StyledListItem extends StatelessWidget {
                 child: Stack(
                   children: [
                     Row(
-                      spacing: 16,
                       children: [
                         Expanded(
                           child: Padding(
@@ -112,7 +123,7 @@ class StyledListItem extends StatelessWidget {
                         ),
                         if (trailing case final trailing?)
                           ConstrainedBox(
-                            constraints: BoxConstraints(minWidth: 56),
+                            constraints: BoxConstraints(minWidth: 64),
                             child: Padding(
                               padding: EdgeInsets.only(right: 8),
                               child: IconTheme.merge(
