@@ -1,3 +1,4 @@
+import 'package:bible/utils/extensions/map_if_non_null.dart';
 import 'package:collection/collection.dart';
 
 extension ListExtensions<T> on List<T> {
@@ -51,4 +52,11 @@ extension MapExtensions<K, V> on Map<K, V> {
 
   Map<K, V> sortedBy<E extends Comparable<E>>(E Function(K, V) elementGetter) =>
       entries.sortedBy((entry) => elementGetter(entry.key, entry.value)).toMap();
+}
+
+extension NullValueMapExtensions<K, V> on Map<K, V?> {
+  Map<K, V> get withoutNullValues => entries
+      .map((entry) => entry.value?.mapIfNonNull((value) => MapEntry(entry.key, value)))
+      .nonNulls
+      .toMap();
 }

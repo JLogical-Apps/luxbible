@@ -1,6 +1,6 @@
 class VerseFragment {
   final String text;
-  final List<String> strongs;
+  final List<String> strongIds;
 
-  const VerseFragment({required this.text, required this.strongs});
+  const VerseFragment({required this.text, required this.strongIds});
 }
