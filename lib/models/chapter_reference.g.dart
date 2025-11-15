@@ -6,15 +6,17 @@ part of 'chapter_reference.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_ChapterReference _$ChapterReferenceFromJson(Map<String, dynamic> json) => _ChapterReference(
-  book: $enumDecode(_$BookTypeEnumMap, json['book']),
-  chapterNum: (json['chapterNum'] as num).toInt(),
-);
+_ChapterReference _$ChapterReferenceFromJson(Map<String, dynamic> json) =>
+    _ChapterReference(
+      book: $enumDecode(_$BookTypeEnumMap, json['book']),
+      chapterNum: (json['chapterNum'] as num).toInt(),
+    );
 
-Map<String, dynamic> _$ChapterReferenceToJson(_ChapterReference instance) => <String, dynamic>{
-  'book': _$BookTypeEnumMap[instance.book]!,
-  'chapterNum': instance.chapterNum,
-};
+Map<String, dynamic> _$ChapterReferenceToJson(_ChapterReference instance) =>
+    <String, dynamic>{
+      'book': _$BookTypeEnumMap[instance.book]!,
+      'chapterNum': instance.chapterNum,
+    };
 
 const _$BookTypeEnumMap = {
   BookType.genesis: 'genesis',

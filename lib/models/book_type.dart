@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 enum BookType {
   genesis,
   exodus,
@@ -65,6 +67,9 @@ enum BookType {
   john3,
   jude,
   revelation;
+
+  static BookType fromOsisId(String id) =>
+      values.firstWhereOrNull((book) => book.osisId() == id) ?? (throw Exception('Could not find book with ID: $id'));
 
   String title() => switch (this) {
     genesis => 'Genesis',

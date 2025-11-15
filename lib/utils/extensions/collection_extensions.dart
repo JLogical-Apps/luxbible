@@ -39,12 +39,38 @@ extension IterableExtensions<T> on Iterable<T> {
   Map<K, V> mapToMap<K, V>(MapEntry<K, V> Function(T) mapper) => Map.fromEntries(map(mapper));
 }
 
+extension IntIterableExtensions on Iterable<int> {
+  List<List<int>> batchedByRuns() {
+    if (isEmpty) {
+      return [];
+    }
+
+    final out = <List<int>>[
+      [first],
+    ];
+
+    for (var num in skip(1)) {
+      final lastNum = out.last.last;
+      if (lastNum + 1 == num) {
+        out.last.add(num);
+      } else {
+        out.add([num]);
+      }
+    }
+
+    return out;
+  }
+}
+
 extension MapEntryIterableExtensions<K, V> on Iterable<MapEntry<K, V>> {
   Map<K, V> toMap() => Map.fromEntries(this);
 }
 
 extension MapExtensions<K, V> on Map<K, V> {
   Iterable<T> mapToIterable<T>(T Function(K, V) mapper) => entries.map((entry) => mapper(entry.key, entry.value));
+
+  Map<K, V> where(bool Function(K, V) predicate) =>
+      Map.fromEntries(entries.where((entry) => predicate(entry.key, entry.value)));
 
   Map<K, V> sortedBy<E extends Comparable<E>>(E Function(K, V) elementGetter) =>
       entries.sortedBy((entry) => elementGetter(entry.key, entry.value)).toMap();

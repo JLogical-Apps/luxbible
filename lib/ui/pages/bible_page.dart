@@ -3,7 +3,7 @@ import 'package:bible/models/passage.dart';
 import 'package:bible/models/passage_action.dart';
 import 'package:bible/models/reference.dart';
 import 'package:bible/models/toolbar_action.dart';
-import 'package:bible/providers/bible_provider.dart';
+import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/animated_grow.dart';
 import 'package:bible/style/gap.dart';

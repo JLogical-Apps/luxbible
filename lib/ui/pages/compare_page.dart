@@ -1,5 +1,5 @@
 import 'package:bible/models/passage.dart';
-import 'package:bible/providers/bible_provider.dart';
+import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/style/widgets/styled_divider.dart';
 import 'package:bible/style/widgets/styled_page.dart';
 import 'package:bible/style/widgets/styled_scrollbar.dart';

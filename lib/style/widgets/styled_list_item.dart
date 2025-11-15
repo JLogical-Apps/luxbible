@@ -120,7 +120,9 @@ class StyledListItem extends StatelessWidget {
                                 child: trailing,
                               ),
                             ),
-                          ),
+                          )
+                        else
+                          gapW16,
                       ],
                     ),
                     if (itemContext?.hideDivider == false)
