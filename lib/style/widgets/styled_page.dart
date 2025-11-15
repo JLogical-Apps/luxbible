@@ -1,3 +1,4 @@
+import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/utils/extensions/map_if_non_null.dart';
@@ -26,8 +27,15 @@ class StyledPage extends StatelessWidget {
           ? AppBar(
               backgroundColor: context.colors.surfacePrimary,
               leading: leading,
+              leadingWidth: 48,
               centerTitle: true,
-              title: DefaultTextStyle(style: context.textStyle.headingXs, child: title ?? SizedBox.shrink()),
+              title: DefaultTextStyle(
+                style: context.textStyle.headingXs,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                child: title ?? SizedBox.shrink(),
+              ),
+              actions: [gapW48],
             )
           : null,
       body: body,

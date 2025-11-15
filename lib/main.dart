@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:bible/functions/bible_importer.dart';
+import 'package:bible/functions/commentary_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/bible_translation.dart';
+import 'package:bible/models/commentary.dart';
 import 'package:bible/models/strong.dart';
-import 'package:bible/providers/bible_provider.dart';
+import 'package:bible/providers/bibles_provider.dart';
+import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/services/shared_preferences_service.dart';
 import 'package:bible/ui/pages/bible_page.dart';
@@ -19,11 +22,14 @@ Future<void> main() async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
+      final bibles = await Future.wait(
+        BibleTranslation.values.map((translation) => BibleImporter().import(translation: translation)),
+      );
+
       runApp(
         BibleApp(
-          bibles: await Future.wait(
-            BibleTranslation.values.map((translation) => BibleImporter().import(translation: translation)),
-          ),
+          bibles: bibles,
+          commentaries: [await CommentaryImporter().import(bible: bibles.first)],
           strongs: await StrongImporter().import(),
           sharedPreferences: await SharedPreferences.getInstance(),
         ),
@@ -41,9 +47,17 @@ Future<void> main() async {
 class BibleApp extends StatelessWidget {
   final List<Bible> bibles;
   final Map<String, Strong> strongs;
+  final List<Commentary> commentaries;
+
   final SharedPreferences sharedPreferences;
 
-  const BibleApp({super.key, required this.bibles, required this.strongs, required this.sharedPreferences});
+  const BibleApp({
+    super.key,
+    required this.bibles,
+    required this.strongs,
+    required this.commentaries,
+    required this.sharedPreferences,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +65,7 @@ class BibleApp extends StatelessWidget {
       overrides: [
         biblesProvider.overrideWith((ref) => bibles),
         strongsProvider.overrideWith((ref) => strongs),
+        commentariesProvider.overrideWith((ref) => commentaries),
         sharedPreferenceServiceProvider.overrideWith((ref) => SharedPreferencesService(sharedPreferences)),
       ],
       child: GestureDetector(

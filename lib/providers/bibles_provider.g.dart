@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'bible_provider.dart';
+part of 'bibles_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -12,7 +12,8 @@ part of 'bible_provider.dart';
 @ProviderFor(bibles)
 const biblesProvider = BiblesProvider._();
 
-final class BiblesProvider extends $FunctionalProvider<List<Bible>, List<Bible>, List<Bible>>
+final class BiblesProvider
+    extends $FunctionalProvider<List<Bible>, List<Bible>, List<Bible>>
     with $Provider<List<Bible>> {
   const BiblesProvider._()
     : super(
@@ -30,7 +31,8 @@ final class BiblesProvider extends $FunctionalProvider<List<Bible>, List<Bible>,
 
   @$internal
   @override
-  $ProviderElement<List<Bible>> $createElement($ProviderPointer pointer) => $ProviderElement(pointer);
+  $ProviderElement<List<Bible>> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
   List<Bible> create(Ref ref) {
@@ -39,7 +41,10 @@ final class BiblesProvider extends $FunctionalProvider<List<Bible>, List<Bible>,
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(List<Bible> value) {
-    return $ProviderOverride(origin: this, providerOverride: $SyncValueProvider<List<Bible>>(value));
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<List<Bible>>(value),
+    );
   }
 }
 

@@ -1,7 +1,7 @@
 import 'package:bible/models/bible_translation.dart';
 import 'package:bible/models/book_type.dart';
 import 'package:bible/models/chapter_reference.dart';
-import 'package:bible/providers/bible_provider.dart';
+import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';

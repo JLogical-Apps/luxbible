@@ -42,6 +42,7 @@ flutter:
   assets:
     - assets/translations/
     - assets/strongs/
+    - assets/commentary/
   fonts:
     - family: Inter
       fonts:
