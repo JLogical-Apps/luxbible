@@ -234,20 +234,55 @@ class BiblePage extends HookConsumerWidget {
                           onPressed: () => selectedReferencesState.value = [],
                         ),
                         trailing: Row(
-                          children: PassageAction.values
-                              .map(
-                                (action) => StyledCircleButton(
-                                  child: action.buildIcon(context, user: user, selectedPassage: selectedPassage),
-                                  onPressed: () => action.onPressed(
-                                    context,
-                                    ref,
-                                    user: user,
-                                    selectedPassage: selectedPassage,
-                                    deselectVerses: () => selectedReferencesState.value = [],
+                          children: [
+                            ...PassageAction.values
+                                .take(3)
+                                .map(
+                                  (action) => StyledCircleButton(
+                                    child: action.buildIcon(context, user: user, selectedPassage: selectedPassage),
+                                    onPressed: () => action.onPressed(
+                                      context,
+                                      ref,
+                                      user: user,
+                                      selectedPassage: selectedPassage,
+                                      deselectVerses: () => selectedReferencesState.value = [],
+                                    ),
                                   ),
                                 ),
-                              )
-                              .toList(),
+                            StyledCircleButton(
+                              onPressed: () => context.showStyledSheet(
+                                StyledSheet.list(
+                                  children: PassageAction.values
+                                      .map(
+                                        (action) => StyledListItem(
+                                          titleText: action.title(user: user, selectedPassage: selectedPassage),
+                                          subtitleText: action.description(
+                                            user: user,
+                                            selectedPassage: selectedPassage,
+                                          ),
+                                          leading: action.buildIcon(
+                                            context,
+                                            user: user,
+                                            selectedPassage: selectedPassage,
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                            action.onPressed(
+                                              context,
+                                              ref,
+                                              user: user,
+                                              selectedPassage: selectedPassage,
+                                              deselectVerses: () => selectedReferencesState.value = [],
+                                            );
+                                          },
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
+                              ),
+                              icon: Symbols.more_vert,
+                            ),
+                          ],
                         ),
                       ),
                     ),

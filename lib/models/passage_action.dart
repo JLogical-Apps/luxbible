@@ -20,6 +20,25 @@ enum PassageAction {
   interlinear,
   commentary;
 
+  String title({required User user, required Passage selectedPassage}) => switch (this) {
+    highlight => user.isPassageHighlighted(selectedPassage) ? 'Remove Highlight' : 'Quick Highlight',
+    highlightColor => 'Highlight',
+    compare => 'Translation Compare',
+    interlinear => 'Interlinear',
+    commentary => 'Commentary',
+  };
+
+  String description({required User user, required Passage selectedPassage}) => switch (this) {
+    highlight =>
+      user.isPassageHighlighted(selectedPassage)
+          ? 'Remove highlights from the selected passage.'
+          : 'Highlight the selected passage with the last highlight color you used.',
+    highlightColor => 'Choose a color to highlight for the selected passage.',
+    compare => 'Compare the selected passage across a variety of translations.',
+    interlinear => 'View a lexical breakdown of the selected passage using Strong\'s lexicon.',
+    commentary => 'View commentary of the selected passage.',
+  };
+
   Widget buildIcon(BuildContext context, {required User user, required Passage selectedPassage}) => switch (this) {
     highlight => Icon(
       user.isPassageHighlighted(selectedPassage) ? Symbols.ink_eraser : Symbols.format_ink_highlighter,
