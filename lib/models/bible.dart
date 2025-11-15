@@ -14,28 +14,20 @@ class Bible {
 
   List<ChapterReference> get chapterReferences => books
       .expand(
-        (book) => List.generate(
-          book.chapters.length,
-          (i) => ChapterReference(book: book.bookType, chapterNum: i + 1),
-        ),
+        (book) => List.generate(book.chapters.length, (i) => ChapterReference(book: book.bookType, chapterNum: i + 1)),
       )
       .toList();
 
   Chapter getChapterByReference(ChapterReference reference) =>
       getBookByType(reference.book).chapters[reference.chapterNum - 1];
 
-  Verse getVerseByReference(Reference reference) => getBookByType(
-    reference.book,
-  ).chapters[reference.chapterNum - 1].verses[reference.verseNum - 1];
+  Verse getVerseByReference(Reference reference) =>
+      getBookByType(reference.book).chapters[reference.chapterNum - 1].verses[reference.verseNum - 1];
 
-  ChapterReference getChapterReferenceByPageIndex(int pageIndex) =>
-      chapterReferences[pageIndex];
+  ChapterReference getChapterReferenceByPageIndex(int pageIndex) => chapterReferences[pageIndex];
 
   int getPageIndexByChapterReference(ChapterReference reference) =>
-      chapterReferences.indexWhere(
-        (r) => r.book == reference.book && r.chapterNum == reference.chapterNum,
-      );
+      chapterReferences.indexWhere((r) => r.book == reference.book && r.chapterNum == reference.chapterNum);
 
-  Book getBookByType(BookType bookType) =>
-      books.firstWhere((book) => book.bookType == bookType);
+  Book getBookByType(BookType bookType) => books.firstWhere((book) => book.bookType == bookType);
 }

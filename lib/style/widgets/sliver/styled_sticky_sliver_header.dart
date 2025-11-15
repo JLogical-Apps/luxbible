@@ -10,13 +10,8 @@ class StyledSliverStickyHeader extends StatelessWidget {
 
   final Widget sliver;
 
-  StyledSliverStickyHeader({
-    super.key,
-    Widget? title,
-    String? titleText,
-    this.trailing,
-    required this.sliver,
-  }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
+  StyledSliverStickyHeader({super.key, Widget? title, String? titleText, this.trailing, required this.sliver})
+    : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +26,7 @@ class StyledSliverStickyHeader extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: DefaultTextStyle(
-                      style: context.textStyle.labelMd,
-                      child: title,
-                    ),
+                    child: DefaultTextStyle(style: context.textStyle.labelMd, child: title),
                   ),
                   ?trailing,
                 ],

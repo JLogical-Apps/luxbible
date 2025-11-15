@@ -40,10 +40,7 @@ class InterlinearPage extends ConsumerWidget {
                     children: bible
                         .getVerseByReference(reference)
                         .fragments
-                        .mapToMap(
-                          (fragment) =>
-                              MapEntry(fragment, fragment.strongIds.firstOrNull),
-                        )
+                        .mapToMap((fragment) => MapEntry(fragment, fragment.strongIds.firstOrNull))
                         .withoutNullValues
                         .mapToIterable(
                           (fragment, strongId) => StyledListItem.navigation(
@@ -52,8 +49,7 @@ class InterlinearPage extends ConsumerWidget {
                               spacing: 4,
                               children: [
                                 StyledTag(text: strongId),
-                                if (strongs[strongId] case final strong?)
-                                  Text(strong.languageText),
+                                if (strongs[strongId] case final strong?) Text(strong.languageText),
                               ],
                             ),
                             onPressed: () => context.push(StrongPage(strongId: strongId)),

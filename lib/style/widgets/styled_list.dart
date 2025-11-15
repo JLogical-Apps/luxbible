@@ -14,12 +14,7 @@ class StyledList extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: children
-            .mapIndexed(
-              (i, child) => StyledListItemContext(
-                hideDivider: i + 1 == children.length,
-                child: child,
-              ),
-            )
+            .mapIndexed((i, child) => StyledListItemContext(hideDivider: i + 1 == children.length, child: child))
             .toList(),
       ),
     );

@@ -15,14 +15,8 @@ class StyledSheet extends StatelessWidget {
   final Widget body;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
 
-  StyledSheet({
-    super.key,
-    Widget? title,
-    String? titleText,
-    this.trailing,
-    required this.body,
-    this.buttonsBuilder,
-  }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
+  StyledSheet({super.key, Widget? title, String? titleText, this.trailing, required this.body, this.buttonsBuilder})
+    : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
 
   StyledSheet.list({
     super.key,
@@ -52,10 +46,7 @@ class StyledSheet extends StatelessWidget {
               child: Container(
                 width: 48,
                 height: 4,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(999),
-                  color: context.colors.borderOpaque,
-                ),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(999), color: context.colors.borderOpaque),
               ),
             ),
           ),
@@ -70,10 +61,7 @@ class StyledSheet extends StatelessWidget {
                   SizedBox(
                     width: 48,
                     child: Center(
-                      child: StyledCircleButton(
-                        icon: Symbols.close,
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
+                      child: StyledCircleButton(icon: Symbols.close, onPressed: () => Navigator.of(context).pop()),
                     ),
                   ),
                   Expanded(
@@ -89,10 +77,7 @@ class StyledSheet extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (trailing case final trailing?)
-                    SizedBox(width: 48, child: trailing)
-                  else
-                    gapW48,
+                  if (trailing case final trailing?) SizedBox(width: 48, child: trailing) else gapW48,
                 ],
               ),
             ),

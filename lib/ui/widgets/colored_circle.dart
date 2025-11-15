@@ -6,12 +6,7 @@ class ColoredCircle extends StatelessWidget {
   final Color color;
   final bool isSelected;
 
-  const ColoredCircle({
-    super.key,
-    this.size,
-    required this.color,
-    this.isSelected = false,
-  });
+  const ColoredCircle({super.key, this.size, required this.color, this.isSelected = false});
 
   @override
   Widget build(BuildContext context) {

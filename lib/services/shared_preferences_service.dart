@@ -18,8 +18,7 @@ class SharedPreferencesService {
     return userJson == null ? null : User.fromJson(userJson);
   }
 
-  Future<void> setUser(User user) async =>
-      await sharedPreferences.setString('user', jsonEncode(user.toJson()));
+  Future<void> setUser(User user) async => await sharedPreferences.setString('user', jsonEncode(user.toJson()));
 }
 
 @riverpod

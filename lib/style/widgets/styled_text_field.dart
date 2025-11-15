@@ -56,18 +56,12 @@ class StyledTextField extends HookWidget {
 
     useOnListenableChange(
       controller,
-      () => WidgetsBinding.instance.addPostFrameCallback(
-        (_) => onTextEditValueChanged?.call(controller.value),
-      ),
+      () => WidgetsBinding.instance.addPostFrameCallback((_) => onTextEditValueChanged?.call(controller.value)),
     );
 
     if (text != controller.text) {
-      final isAtEnd =
-          controller.text.length + 1 == text.length &&
-          controller.selection.baseOffset + 1 == text.length;
-      final offset = isAtEnd
-          ? text.length
-          : min(text.length, controller.selection.baseOffset);
+      final isAtEnd = controller.text.length + 1 == text.length && controller.selection.baseOffset + 1 == text.length;
+      final offset = isAtEnd ? text.length : min(text.length, controller.selection.baseOffset);
 
       controller.value = controller.value.copyWith(
         text: text,
@@ -77,28 +71,20 @@ class StyledTextField extends HookWidget {
 
     useOnFocusNodeFocused(
       focusNode,
-      () => controller.selection = TextSelection(
-        baseOffset: 0,
-        extentOffset: controller.value.text.length,
-      ),
+      () => controller.selection = TextSelection(baseOffset: 0, extentOffset: controller.value.text.length),
     );
 
     final suggestedText = this.suggestedText;
-    final remainingSuggestedText =
-        suggestedText == null || text.length > suggestedText.length
+    final remainingSuggestedText = suggestedText == null || text.length > suggestedText.length
         ? null
         : suggestedText.substring(text.length);
 
     return Stack(
       children: [
-        if (focusNode.hasPrimaryFocus &&
-            onChanged != null &&
-            remainingSuggestedText != null)
+        if (focusNode.hasPrimaryFocus && onChanged != null && remainingSuggestedText != null)
           Positioned.fill(
             child: Padding(
-              padding:
-                  EdgeInsets.all(12) +
-                  EdgeInsets.only(left: 6 + textStyle.getWidth(text)),
+              padding: EdgeInsets.all(12) + EdgeInsets.only(left: 6 + textStyle.getWidth(text)),
               child: Text(remainingSuggestedText, style: textStyle.subtle(context)),
             ),
           ),
@@ -117,18 +103,11 @@ class StyledTextField extends HookWidget {
           onSubmitted: onSubmit,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.all(12),
-            fillColor: onChanged == null
-                ? context.colors.surfaceDisabled
-                : context.colors.surfaceSecondary,
+            fillColor: onChanged == null ? context.colors.surfaceDisabled : context.colors.surfaceSecondary,
             filled: !focusNode.hasPrimaryFocus,
-            border: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(8),
-            ),
+            border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(8)),
             hintText: hintText,
-            hintStyle: context.textStyle.paragraphMd
-                .subtle(context)
-                .disabled(context, isDisabled: onChanged == null),
+            hintStyle: context.textStyle.paragraphMd.subtle(context).disabled(context, isDisabled: onChanged == null),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: context.colors.borderSelected, width: 2),
               borderRadius: BorderRadius.circular(8),

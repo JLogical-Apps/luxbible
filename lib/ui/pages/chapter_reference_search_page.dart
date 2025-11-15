@@ -53,10 +53,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
     final viewModeState = useState(_ViewMode.book);
 
     List<BookType> getMatchingBooks() => BookType.values
-        .where(
-          (book) =>
-              book.title().toUpperCase().startsWith(bookTextState.value.toUpperCase()),
-        )
+        .where((book) => book.title().toUpperCase().startsWith(bookTextState.value.toUpperCase()))
         .toList();
     BookType? getBook() => getMatchingBooks().singleOrNull;
 
@@ -82,10 +79,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
       }
     });
 
-    useOnFocusNodeFocused(
-      chapterFocusNode,
-      () => viewModeState.value = _ViewMode.chapter,
-    );
+    useOnFocusNodeFocused(chapterFocusNode, () => viewModeState.value = _ViewMode.chapter);
 
     final scrollController = useScrollController();
     final isScrollingDownState = useState(true);
@@ -96,17 +90,11 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
 
     return StyledPage(
       backgroundColor: context.colors.surfacePrimary,
-      leading: StyledCircleButton(
-        icon: Symbols.close,
-        onPressed: () => Navigator.of(context).pop(),
-      ),
+      leading: StyledCircleButton(icon: Symbols.close, onPressed: () => Navigator.of(context).pop()),
       body: Column(
         children: [
           DecoratedBox(
-            decoration: BoxDecoration(
-              boxShadow: [StyledShadow.down(context)],
-              color: context.colors.surfacePrimary,
-            ),
+            decoration: BoxDecoration(boxShadow: [StyledShadow.down(context)], color: context.colors.surfacePrimary),
             child: Padding(
               padding: EdgeInsets.all(16).copyWith(top: 0),
               child: Row(
@@ -119,8 +107,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                           text: bookTextState.value,
                           readOnly: !isScrollingDownState.value,
                           onChanged: (text) => bookTextState.value = text,
-                          onTextEditValueChanged: (value) =>
-                              bookTextSelectionState.value = value.selection,
+                          onTextEditValueChanged: (value) => bookTextSelectionState.value = value.selection,
                           autofocus: true,
                           suggestedText: book?.title(),
                           hintText: 'Book',
@@ -133,9 +120,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                         Positioned.fill(
                           child: GestureDetector(
                             behavior: HitTestBehavior.translucent,
-                            onTap: !isScrollingDownState.value
-                                ? () => isScrollingDownState.value = true
-                                : null,
+                            onTap: !isScrollingDownState.value ? () => isScrollingDownState.value = true : null,
                           ),
                         ),
                       ],
@@ -145,9 +130,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                     width: 60,
                     child: StyledTextField(
                       text: chapterNumState.value?.toString() ?? '',
-                      onChanged: book == null
-                          ? null
-                          : (text) => chapterNumState.value = int.tryParse(text),
+                      onChanged: book == null ? null : (text) => chapterNumState.value = int.tryParse(text),
                       hintText: 'Chapter',
                       textStyle: context.textStyle.paragraphLg,
                       textInputType: TextInputType.number,
@@ -158,17 +141,12 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                           return;
                         }
 
-                        Navigator.of(
-                          context,
-                        ).pop(ChapterReference(book: book, chapterNum: chapterNum));
+                        Navigator.of(context).pop(ChapterReference(book: book, chapterNum: chapterNum));
                       },
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
                         if (book != null)
-                          RangeTextInputFormatter(
-                            min: 1,
-                            max: bible.getBookByType(book).chapters.length,
-                          ),
+                          RangeTextInputFormatter(min: 1, max: bible.getBookByType(book).chapters.length),
                       ],
                     ),
                   ),
@@ -177,11 +155,8 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                     child: StyledSelect(
                       options: BibleTranslation.values,
                       selectedOption: user.translation,
-                      onSelected: (translation) => ref.updateUser(
-                        (user) => user.copyWith(translation: translation),
-                      ),
-                      optionMapper: (translation) =>
-                          StyledSelectOption(titleText: translation.title()),
+                      onSelected: (translation) => ref.updateUser((user) => user.copyWith(translation: translation)),
+                      optionMapper: (translation) => StyledSelectOption(titleText: translation.title()),
                       dialogTitle: 'Select Bible Translation',
                     ),
                   ),
@@ -195,8 +170,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                     key: ValueKey(BookType),
                     controller: scrollController,
                     children: [
-                      if (getMatchingBooks().isNotEmpty &&
-                          (isBookFullySelected || bookTextState.value.isEmpty)) ...[
+                      if (getMatchingBooks().isNotEmpty && (isBookFullySelected || bookTextState.value.isEmpty)) ...[
                         if (user.bookmarks.isNotEmpty)
                           StyledSection.list(
                             titleText: 'Bookmarks',
@@ -208,26 +182,15 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                 child: Row(
                                   spacing: 16,
                                   children: user.bookmarks.map((bookmark) {
-                                    final chapterReference = ChapterReference.fromKey(
-                                      bookmark.key,
-                                    );
+                                    final chapterReference = ChapterReference.fromKey(bookmark.key);
                                     return StyledTile(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(chapterReference),
+                                      onPressed: () => Navigator.of(context).pop(chapterReference),
                                       child: Row(
                                         spacing: 8,
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: [
-                                          Icon(
-                                            Symbols.bookmark,
-                                            color: bookmark.color
-                                                .toHue(context.colors)
-                                                .medium,
-                                          ),
-                                          Text(
-                                            chapterReference.format(),
-                                            style: context.textStyle.labelMd,
-                                          ),
+                                          Icon(Symbols.bookmark, color: bookmark.color.toHue(context.colors).medium),
+                                          Text(chapterReference.format(), style: context.textStyle.labelMd),
                                         ],
                                       ),
                                     );
@@ -248,8 +211,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                       StyledSwipeableAction.delete(
                                         onPressed: () => ref.updateUser(
                                           (user) => user.copyWith(
-                                            previouslyViewed: user.previouslyViewed
-                                                .withRemoved(chapterReference),
+                                            previouslyViewed: user.previouslyViewed.withRemoved(chapterReference),
                                           ),
                                         ),
                                       ),
@@ -258,8 +220,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                       leadingIcon: Symbols.history,
                                       titleText: chapterReference.format(),
                                       trailingIcon: Symbols.expand_circle_right,
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(chapterReference),
+                                      onPressed: () => Navigator.of(context).pop(chapterReference),
                                     ),
                                   ),
                                 )
@@ -276,21 +237,20 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                         StyledSection.list(
                           titleText: 'Books',
                           padding: EdgeInsets.only(top: 24),
-                          children:
-                              (isBookFullySelected ? BookType.values : getMatchingBooks())
-                                  .map(
-                                    (book) => StyledListItem(
-                                      titleText: book.title(),
-                                      trailingIcon: Symbols.chevron_right,
-                                      onPressed: () {
-                                        bookTextState.value = book.title();
-                                        WidgetsBinding.instance.addPostFrameCallback(
-                                          (_) => chapterFocusNode.requestFocus(),
-                                        );
-                                      },
-                                    ),
-                                  )
-                                  .toList(),
+                          children: (isBookFullySelected ? BookType.values : getMatchingBooks())
+                              .map(
+                                (book) => StyledListItem(
+                                  titleText: book.title(),
+                                  trailingIcon: Symbols.chevron_right,
+                                  onPressed: () {
+                                    bookTextState.value = book.title();
+                                    WidgetsBinding.instance.addPostFrameCallback(
+                                      (_) => chapterFocusNode.requestFocus(),
+                                    );
+                                  },
+                                ),
+                              )
+                              .toList(),
                         ),
                     ],
                   )
@@ -301,24 +261,18 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                       children:
                           List.generate(
                                 bible.getBookByType(book).chapters.length,
-                                (chapterIndex) => ChapterReference(
-                                  book: book,
-                                  chapterNum: chapterIndex + 1,
-                                ),
+                                (chapterIndex) => ChapterReference(book: book, chapterNum: chapterIndex + 1),
                               )
                               .where(
                                 (chapterReference) =>
                                     chapterNumState.value == null ||
-                                    chapterReference.chapterNum.toString().startsWith(
-                                      chapterNumState.value.toString(),
-                                    ),
+                                    chapterReference.chapterNum.toString().startsWith(chapterNumState.value.toString()),
                               )
                               .map(
                                 (chapterReference) => StyledListItem(
                                   titleText: chapterReference.format(),
                                   trailingIcon: Symbols.expand_circle_right,
-                                  onPressed: () =>
-                                      Navigator.of(context).pop(chapterReference),
+                                  onPressed: () => Navigator.of(context).pop(chapterReference),
                                 ),
                               )
                               .toList(),

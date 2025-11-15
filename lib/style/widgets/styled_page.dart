@@ -10,24 +10,15 @@ class StyledPage extends StatelessWidget {
   final Widget body;
   final Color? backgroundColor;
 
-  StyledPage({
-    super.key,
-    this.leading,
-    Widget? title,
-    String? titleText,
-    required this.body,
-    this.backgroundColor,
-  }) : title = title ?? titleText?.mapIfNonNull(Text.new);
+  StyledPage({super.key, this.leading, Widget? title, String? titleText, required this.body, this.backgroundColor})
+    : title = title ?? titleText?.mapIfNonNull(Text.new);
 
   @override
   Widget build(BuildContext context) {
     final leading =
         this.leading ??
         (ModalRoute.of(context)?.canPop == true
-            ? StyledCircleButton(
-                icon: Symbols.chevron_left,
-                onPressed: () => Navigator.of(context).pop(),
-              )
+            ? StyledCircleButton(icon: Symbols.chevron_left, onPressed: () => Navigator.of(context).pop())
             : null);
     return Scaffold(
       backgroundColor: backgroundColor ?? context.colors.backgroundPrimary,
@@ -36,10 +27,7 @@ class StyledPage extends StatelessWidget {
               backgroundColor: context.colors.surfacePrimary,
               leading: leading,
               centerTitle: true,
-              title: DefaultTextStyle(
-                style: context.textStyle.headingXs,
-                child: title ?? SizedBox.shrink(),
-              ),
+              title: DefaultTextStyle(style: context.textStyle.headingXs, child: title ?? SizedBox.shrink()),
             )
           : null,
       body: body,

@@ -27,9 +27,7 @@ void useOnStickyScrollDirectionChanged(
   final previousScrollDirectionRef = useRef(ScrollDirection.idle);
   useOnListenableChange(scrollController, () {
     final direction = scrollController.positionsOrNull?.firstOrNull?.userScrollDirection;
-    if (direction == null ||
-        direction == ScrollDirection.idle ||
-        direction == previousScrollDirectionRef.value) {
+    if (direction == null || direction == ScrollDirection.idle || direction == previousScrollDirectionRef.value) {
       return;
     }
 

@@ -13,12 +13,7 @@ part of 'shared_preferences_service.dart';
 const sharedPreferenceServiceProvider = SharedPreferenceServiceProvider._();
 
 final class SharedPreferenceServiceProvider
-    extends
-        $FunctionalProvider<
-          SharedPreferencesService,
-          SharedPreferencesService,
-          SharedPreferencesService
-        >
+    extends $FunctionalProvider<SharedPreferencesService, SharedPreferencesService, SharedPreferencesService>
     with $Provider<SharedPreferencesService> {
   const SharedPreferenceServiceProvider._()
     : super(
@@ -36,9 +31,7 @@ final class SharedPreferenceServiceProvider
 
   @$internal
   @override
-  $ProviderElement<SharedPreferencesService> $createElement(
-    $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  $ProviderElement<SharedPreferencesService> $createElement($ProviderPointer pointer) => $ProviderElement(pointer);
 
   @override
   SharedPreferencesService create(Ref ref) {
@@ -47,12 +40,8 @@ final class SharedPreferenceServiceProvider
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(SharedPreferencesService value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<SharedPreferencesService>(value),
-    );
+    return $ProviderOverride(origin: this, providerOverride: $SyncValueProvider<SharedPreferencesService>(value));
   }
 }
 
-String _$sharedPreferenceServiceHash() =>
-    r'f44fb508fcc2325b136b98b008cd93696dc91920';
+String _$sharedPreferenceServiceHash() => r'f44fb508fcc2325b136b98b008cd93696dc91920';

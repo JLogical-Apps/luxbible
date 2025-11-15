@@ -9,8 +9,7 @@ class StyledCard extends StatelessWidget {
 
   const StyledCard({super.key, required this.child, this.color});
 
-  StyledCard.list({super.key, required List<Widget> children, this.color})
-    : child = StyledList(children: children);
+  StyledCard.list({super.key, required List<Widget> children, this.color}) : child = StyledList(children: children);
 
   @override
   Widget build(BuildContext context) {

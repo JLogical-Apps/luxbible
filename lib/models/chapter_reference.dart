@@ -10,8 +10,7 @@ part 'chapter_reference.g.dart';
 sealed class ChapterReference with _$ChapterReference {
   const ChapterReference._();
 
-  const factory ChapterReference({required BookType book, required int chapterNum}) =
-      _ChapterReference;
+  const factory ChapterReference({required BookType book, required int chapterNum}) = _ChapterReference;
 
   static ChapterReference fromKey(String key) {
     final items = key.split('.');
@@ -21,11 +20,9 @@ sealed class ChapterReference with _$ChapterReference {
     );
   }
 
-  factory ChapterReference.fromJson(Map<String, dynamic> json) =>
-      _$ChapterReferenceFromJson(json);
+  factory ChapterReference.fromJson(Map<String, dynamic> json) => _$ChapterReferenceFromJson(json);
 
-  Reference getReference(int verseNum) =>
-      Reference(book: book, chapterNum: chapterNum, verseNum: verseNum);
+  Reference getReference(int verseNum) => Reference(book: book, chapterNum: chapterNum, verseNum: verseNum);
 
   String toKey() => '${book.osisId()}.$chapterNum';
 

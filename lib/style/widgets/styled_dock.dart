@@ -28,11 +28,7 @@ class StyledDock extends HookWidget {
             gapH16,
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                spacing: 8,
-                mainAxisSize: MainAxisSize.min,
-                children: buttons,
-              ),
+              child: Column(spacing: 8, mainAxisSize: MainAxisSize.min, children: buttons),
             ),
             if (kIsWeb || !Platform.isIOS || MediaQuery.paddingOf(context).bottom <= 28)
               buttons.isNotEmpty ? gapH16 : gapH8,
@@ -41,9 +37,7 @@ class StyledDock extends HookWidget {
     final metricsState = useState<ScrollMetrics?>(null);
     final metrics = metricsState.value;
 
-    final showBottomShadow = metrics == null
-        ? false
-        : metrics.pixels + 10 < metrics.maxScrollExtent;
+    final showBottomShadow = metrics == null ? false : metrics.pixels + 10 < metrics.maxScrollExtent;
     final showTopShadow = metrics == null ? false : metrics.pixels > 10;
 
     return Padding(
@@ -72,8 +66,7 @@ class StyledDock extends HookWidget {
                   return false;
                 },
                 child: ScrollAbsorber(
-                  allowPropagate: (e, metrics) =>
-                      e.depth == 0 && metrics.axis == Axis.vertical,
+                  allowPropagate: (e, metrics) => e.depth == 0 && metrics.axis == Axis.vertical,
                   child: Stack(
                     children: [
                       Column(
@@ -97,9 +90,7 @@ class StyledDock extends HookWidget {
                                       curve: Curves.easeInOutCubic,
                                       width: double.infinity,
                                       decoration: BoxDecoration(
-                                        boxShadow: [
-                                          if (showBottomShadow) StyledShadow.up(context),
-                                        ],
+                                        boxShadow: [if (showBottomShadow) StyledShadow.up(context)],
                                       ),
                                     ),
                                   ),
@@ -111,17 +102,10 @@ class StyledDock extends HookWidget {
                             color: context.colors.surfacePrimary,
                             child: ClipRect(
                               child: ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  maxHeight: constraints.maxHeight,
-                                ),
+                                constraints: BoxConstraints(maxHeight: constraints.maxHeight),
                                 child: Padding(
-                                  padding: EdgeInsets.only(
-                                    bottom: MediaQuery.paddingOf(context).bottom,
-                                  ),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: bottomChildren,
-                                  ),
+                                  padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
+                                  child: Column(mainAxisSize: MainAxisSize.min, children: bottomChildren),
                                 ),
                               ),
                             ),
@@ -137,9 +121,7 @@ class StyledDock extends HookWidget {
                           duration: Duration(milliseconds: 100),
                           curve: Curves.easeInOutCubic,
                           width: double.infinity,
-                          decoration: BoxDecoration(
-                            boxShadow: [if (showTopShadow) StyledShadow.down(context)],
-                          ),
+                          decoration: BoxDecoration(boxShadow: [if (showTopShadow) StyledShadow.down(context)]),
                         ),
                       ),
                     ],

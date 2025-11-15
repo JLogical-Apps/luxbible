@@ -10,4 +10,4 @@ linter:
     - always_use_package_imports
 
 formatter:
-  page_width: 90
+  page_width: 120

@@ -7,10 +7,7 @@ class RangeTextInputFormatter extends TextInputFormatter {
   RangeTextInputFormatter({required this.min, required this.max});
 
   @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     if (newValue.text.isEmpty) {
       return newValue;
     }

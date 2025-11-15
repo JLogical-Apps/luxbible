@@ -10,10 +10,7 @@ class StyledRadio extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(
-          width: 3,
-          color: selected ? context.colors.contentPrimary : Color(0xFF5E5E5E),
-        ),
+        border: Border.all(width: 3, color: selected ? context.colors.contentPrimary : Color(0xFF5E5E5E)),
         color: selected ? context.colors.contentPrimary : Colors.transparent,
         shape: BoxShape.circle,
       ),

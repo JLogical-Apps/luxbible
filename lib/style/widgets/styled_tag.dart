@@ -9,10 +9,7 @@ class StyledTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: context.colors.surfaceSecondary,
-        borderRadius: BorderRadius.circular(999),
-      ),
+      decoration: BoxDecoration(color: context.colors.surfaceSecondary, borderRadius: BorderRadius.circular(999)),
       padding: EdgeInsets.symmetric(horizontal: 4),
       child: Text(text, style: context.textStyle.labelXs),
     );

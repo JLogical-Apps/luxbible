@@ -3,11 +3,7 @@ import 'package:flutter/material.dart';
 class StyledListItemContext extends InheritedWidget {
   final bool hideDivider;
 
-  const StyledListItemContext({
-    super.key,
-    required this.hideDivider,
-    required super.child,
-  });
+  const StyledListItemContext({super.key, required this.hideDivider, required super.child});
 
   static StyledListItemContext? maybeOf(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<StyledListItemContext>();
@@ -19,6 +15,5 @@ class StyledListItemContext extends InheritedWidget {
   }
 
   @override
-  bool updateShouldNotify(StyledListItemContext oldWidget) =>
-      oldWidget.hideDivider != hideDivider;
+  bool updateShouldNotify(StyledListItemContext oldWidget) => oldWidget.hideDivider != hideDivider;
 }

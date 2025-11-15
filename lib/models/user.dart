@@ -24,39 +24,29 @@ sealed class User with _$User {
     @Default([]) List<Bookmark> bookmarks,
   }) = _User;
 
-  Bible getBible(List<Bible> bibles) =>
-      bibles.firstWhere((bible) => bible.translation == translation);
+  Bible getBible(List<Bible> bibles) => bibles.firstWhere((bible) => bible.translation == translation);
 
-  bool isPassageHighlighted(Passage passage) =>
-      highlightByKey.keys.containsAny(passage.referenceKeys);
+  bool isPassageHighlighted(Passage passage) => highlightByKey.keys.containsAny(passage.referenceKeys);
 
-  ColorEnum? getPassageHighlight(Passage passage) => highlightByKey.entries
-      .firstWhereOrNull((entry) => passage.referenceKeys.contains(entry.key))
-      ?.value;
+  ColorEnum? getPassageHighlight(Passage passage) =>
+      highlightByKey.entries.firstWhereOrNull((entry) => passage.referenceKeys.contains(entry.key))?.value;
 
   Bookmark? getBookmark(ChapterReference reference) =>
       bookmarks.firstWhereOrNull((bookmark) => bookmark.key == reference.toKey());
 
-  User withToggledHighlight({required Passage passage, required ColorEnum color}) =>
-      isPassageHighlighted(passage)
+  User withToggledHighlight({required Passage passage, required ColorEnum color}) => isPassageHighlighted(passage)
       ? withRemovedHighlight(passage: passage)
       : withHighlight(color: color, passage: passage);
 
   User withRemovedHighlight({required Passage passage}) => copyWith(
-    highlightByKey: {...highlightByKey}
-      ..removeWhere((key, highlight) => passage.referenceKeys.contains(key)),
+    highlightByKey: {...highlightByKey}..removeWhere((key, highlight) => passage.referenceKeys.contains(key)),
   );
 
-  User withHighlight({required Passage passage, required ColorEnum color}) => copyWith(
-    highlightByKey: {
-      ...highlightByKey,
-      ...passage.referenceKeys.mapToMap((key) => MapEntry(key, color)),
-    },
-  );
+  User withHighlight({required Passage passage, required ColorEnum color}) =>
+      copyWith(highlightByKey: {...highlightByKey, ...passage.referenceKeys.mapToMap((key) => MapEntry(key, color))});
 
   User withBookmark(Bookmark bookmark) => copyWith(bookmarks: [...bookmarks, bookmark]);
-  User withRemovedBookmark(Bookmark bookmark) =>
-      copyWith(bookmarks: bookmarks.withRemoved(bookmark));
+  User withRemovedBookmark(Bookmark bookmark) => copyWith(bookmarks: bookmarks.withRemoved(bookmark));
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }

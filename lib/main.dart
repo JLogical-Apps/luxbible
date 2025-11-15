@@ -22,9 +22,7 @@ Future<void> main() async {
       runApp(
         BibleApp(
           bibles: await Future.wait(
-            BibleTranslation.values.map(
-              (translation) => BibleImporter().import(translation: translation),
-            ),
+            BibleTranslation.values.map((translation) => BibleImporter().import(translation: translation)),
           ),
           strongs: await StrongImporter().import(),
           sharedPreferences: await SharedPreferences.getInstance(),
@@ -45,12 +43,7 @@ class BibleApp extends StatelessWidget {
   final Map<String, Strong> strongs;
   final SharedPreferences sharedPreferences;
 
-  const BibleApp({
-    super.key,
-    required this.bibles,
-    required this.strongs,
-    required this.sharedPreferences,
-  });
+  const BibleApp({super.key, required this.bibles, required this.strongs, required this.sharedPreferences});
 
   @override
   Widget build(BuildContext context) {
@@ -58,9 +51,7 @@ class BibleApp extends StatelessWidget {
       overrides: [
         biblesProvider.overrideWith((ref) => bibles),
         strongsProvider.overrideWith((ref) => strongs),
-        sharedPreferenceServiceProvider.overrideWith(
-          (ref) => SharedPreferencesService(sharedPreferences),
-        ),
+        sharedPreferenceServiceProvider.overrideWith((ref) => SharedPreferencesService(sharedPreferences)),
       ],
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -70,12 +61,7 @@ class BibleApp extends StatelessWidget {
             colorScheme: ColorScheme.highContrastLight(brightness: Brightness.light),
             cardColor: Colors.transparent,
             appBarTheme: AppBarThemeData(scrolledUnderElevation: 0),
-            iconTheme: IconThemeData(
-              fill: 1,
-              weight: 600,
-              color: Colors.black,
-              opticalSize: 36,
-            ),
+            iconTheme: IconThemeData(fill: 1, weight: 600, color: Colors.black, opticalSize: 36),
             textSelectionTheme: TextSelectionThemeData(
               cursorColor: Colors.black,
               selectionColor: Colors.black.withValues(alpha: 0.2),
@@ -86,12 +72,7 @@ class BibleApp extends StatelessWidget {
             colorScheme: ColorScheme.dark(brightness: Brightness.dark),
             cardColor: Colors.transparent,
             appBarTheme: AppBarThemeData(scrolledUnderElevation: 0),
-            iconTheme: IconThemeData(
-              fill: 1,
-              weight: 600,
-              color: Colors.white,
-              opticalSize: 36,
-            ),
+            iconTheme: IconThemeData(fill: 1, weight: 600, color: Colors.white, opticalSize: 36),
             textSelectionTheme: TextSelectionThemeData(
               cursorColor: Colors.white,
               selectionColor: Colors.white.withValues(alpha: 0.2),
