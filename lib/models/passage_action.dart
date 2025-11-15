@@ -4,6 +4,7 @@ import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_color_sheet.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/ui/pages/compare_page.dart';
+import 'package:bible/ui/pages/interlinear_page.dart';
 import 'package:bible/ui/widgets/colored_circle.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -14,7 +15,8 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 enum PassageAction {
   highlight,
   highlightColor,
-  compare;
+  compare,
+  interlinear;
 
   Widget buildIcon(
     BuildContext context, {
@@ -34,6 +36,7 @@ enum PassageAction {
       isSelected: true,
     ),
     compare => Icon(Symbols.text_compare),
+    interlinear => Icon(Symbols.translate),
   };
 
   Future<void> onPressed(
@@ -81,6 +84,8 @@ enum PassageAction {
         }
       case compare:
         context.push(ComparePage(passage: selectedPassage));
+      case interlinear:
+        context.push(InterlinearPage(passage: selectedPassage));
     }
   }
 }

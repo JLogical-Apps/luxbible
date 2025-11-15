@@ -78,18 +78,18 @@ Verse parseVerse(String raw) {
       final code = token.substring(1, token.length - 1);
       if (fragments.isEmpty) {
         // If doc starts with a strongs tag, inject empty text
-        fragments.add(VerseFragment(text: '', strongs: [code]));
+        fragments.add(VerseFragment(text: '', strongIds: [code]));
       } else {
         // Add to the last fragment's strongs
         final last = fragments.last;
         fragments[fragments.length - 1] = VerseFragment(
           text: last.text,
-          strongs: [...last.strongs, code],
+          strongIds: [...last.strongIds, code],
         );
       }
     } else {
       // Plain text → start a fresh fragment
-      fragments.add(VerseFragment(text: token, strongs: const []));
+      fragments.add(VerseFragment(text: token, strongIds: const []));
     }
   }
 

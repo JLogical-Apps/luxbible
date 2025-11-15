@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:bible/functions/bible_importer.dart';
+import 'package:bible/functions/strong_importer.dart';
 import 'package:bible/models/bible.dart';
-import 'package:bible/models/bible_importer.dart';
 import 'package:bible/models/bible_translation.dart';
+import 'package:bible/models/strong.dart';
 import 'package:bible/providers/bible_provider.dart';
+import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/services/shared_preferences_service.dart';
 import 'package:bible/ui/pages/bible_page.dart';
 import 'package:flutter/foundation.dart';
@@ -23,6 +26,7 @@ Future<void> main() async {
               (translation) => BibleImporter().import(translation: translation),
             ),
           ),
+          strongs: await StrongImporter().import(),
           sharedPreferences: await SharedPreferences.getInstance(),
         ),
       );
@@ -38,15 +42,22 @@ Future<void> main() async {
 
 class BibleApp extends StatelessWidget {
   final List<Bible> bibles;
+  final Map<String, Strong> strongs;
   final SharedPreferences sharedPreferences;
 
-  const BibleApp({super.key, required this.bibles, required this.sharedPreferences});
+  const BibleApp({
+    super.key,
+    required this.bibles,
+    required this.strongs,
+    required this.sharedPreferences,
+  });
 
   @override
   Widget build(BuildContext context) {
     return ProviderScope(
       overrides: [
         biblesProvider.overrideWith((ref) => bibles),
+        strongsProvider.overrideWith((ref) => strongs),
         sharedPreferenceServiceProvider.overrideWith(
           (ref) => SharedPreferencesService(sharedPreferences),
         ),
