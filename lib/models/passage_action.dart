@@ -18,23 +18,12 @@ enum PassageAction {
   compare,
   interlinear;
 
-  Widget buildIcon(
-    BuildContext context, {
-    required User user,
-    required Passage selectedPassage,
-  }) => switch (this) {
+  Widget buildIcon(BuildContext context, {required User user, required Passage selectedPassage}) => switch (this) {
     highlight => Icon(
-      user.isPassageHighlighted(selectedPassage)
-          ? Symbols.ink_eraser
-          : Symbols.format_ink_highlighter,
-      color: user.isPassageHighlighted(selectedPassage)
-          ? null
-          : user.highlightColor.toHue(context.colors).primary,
+      user.isPassageHighlighted(selectedPassage) ? Symbols.ink_eraser : Symbols.format_ink_highlighter,
+      color: user.isPassageHighlighted(selectedPassage) ? null : user.highlightColor.toHue(context.colors).primary,
     ),
-    highlightColor => ColoredCircle(
-      color: user.highlightColor.toHue(context.colors).primary,
-      isSelected: true,
-    ),
+    highlightColor => ColoredCircle(color: user.highlightColor.toHue(context.colors).primary, isSelected: true),
     compare => Icon(Symbols.text_compare),
     interlinear => Icon(Symbols.translate),
   };
@@ -49,12 +38,7 @@ enum PassageAction {
     switch (this) {
       case highlight:
         deselectVerses();
-        ref.updateUser(
-          (user) => user.withToggledHighlight(
-            passage: selectedPassage,
-            color: user.highlightColor,
-          ),
-        );
+        ref.updateUser((user) => user.withToggledHighlight(passage: selectedPassage, color: user.highlightColor));
       case highlightColor:
         final newColor = await context.showStyledSheet(
           StyledColorSheet(
@@ -66,9 +50,7 @@ enum PassageAction {
                     onPressed: () {
                       Navigator.of(context).pop();
                       deselectVerses();
-                      ref.updateUser(
-                        (user) => user.withRemovedHighlight(passage: selectedPassage),
-                      );
+                      ref.updateUser((user) => user.withRemovedHighlight(passage: selectedPassage));
                     },
                   )
                 : null,
@@ -77,9 +59,7 @@ enum PassageAction {
         if (newColor != null) {
           deselectVerses();
           ref.updateUser(
-            (user) => user
-                .withHighlight(passage: selectedPassage, color: newColor)
-                .copyWith(highlightColor: newColor),
+            (user) => user.withHighlight(passage: selectedPassage, color: newColor).copyWith(highlightColor: newColor),
           );
         }
       case compare:

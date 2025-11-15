@@ -44,17 +44,13 @@ class BiblePage extends HookConsumerWidget {
 
     final pageController = useListenable(
       usePageController(
-        initialPage: initialReference == null
-            ? 0
-            : bible.getPageIndexByChapterReference(initialReference),
+        initialPage: initialReference == null ? 0 : bible.getPageIndexByChapterReference(initialReference),
       ),
     );
 
     final currentPage =
         (pageController.pageOrNull ??
-                (initialReference == null
-                    ? 0
-                    : bible.getPageIndexByChapterReference(initialReference)))
+                (initialReference == null ? 0 : bible.getPageIndexByChapterReference(initialReference)))
             .round();
     final currentChapterReference = bible.getChapterReferenceByPageIndex(currentPage);
 
@@ -72,8 +68,7 @@ class BiblePage extends HookConsumerWidget {
     );
 
     final showBottomBar =
-        (isScrollingDownState.value || scrollPosition?.atEdge == true) &&
-        selectedReferencesState.value.isEmpty;
+        (isScrollingDownState.value || scrollPosition?.atEdge == true) && selectedReferencesState.value.isEmpty;
 
     return StyledPage(
       body: Stack(
@@ -101,23 +96,18 @@ class BiblePage extends HookConsumerWidget {
                         bottom: MediaQuery.paddingOf(context).bottom + 72,
                       ),
                   children: [
-                    Text(
-                      chapterReference.format(),
-                      style: context.textStyle.bibleChapter,
-                    ),
+                    Text(chapterReference.format(), style: context.textStyle.bibleChapter),
                     gapH8,
                     PassageBuilder(
                       bible: bible,
                       passage: Passage(
                         references: chapter.verses
-                            .mapIndexed(
-                              (i, verse) => chapterReference.getReference(i + 1),
-                            )
+                            .mapIndexed((i, verse) => chapterReference.getReference(i + 1))
                             .toList(),
                       ),
                       underlinedReferences: selectedReferencesState.value,
-                      onReferencePressed: (reference) => selectedReferencesState.value =
-                          selectedReferencesState.value.withToggle(reference),
+                      onReferencePressed: (reference) =>
+                          selectedReferencesState.value = selectedReferencesState.value.withToggle(reference),
                     ),
                   ],
                 ),
@@ -142,21 +132,14 @@ class BiblePage extends HookConsumerWidget {
                 padding: EdgeInsets.only(left: 24, right: 12),
                 onPressed: () async {
                   final newReference =
-                      await context.pushDialog(
-                            ChapterReferenceSearchPage(
-                              initialReference: currentChapterReference,
-                            ),
-                          )
+                      await context.pushDialog(ChapterReferenceSearchPage(initialReference: currentChapterReference))
                           as ChapterReference?;
                   if (newReference != null) {
                     final pageIndex = bible.getPageIndexByChapterReference(newReference);
                     pageController.jumpToPage(pageIndex);
                     ref.updateUser(
                       (user) => user.copyWith(
-                        previouslyViewed: [
-                          newReference,
-                          ...user.previouslyViewed,
-                        ].distinct.take(5).toList(),
+                        previouslyViewed: [newReference, ...user.previouslyViewed].distinct.take(5).toList(),
                       ),
                     );
                   }
@@ -171,10 +154,7 @@ class BiblePage extends HookConsumerWidget {
                           child: Row(
                             spacing: 8,
                             children: [
-                              Text(
-                                currentChapterReference.format(),
-                                style: context.textStyle.labelLg,
-                              ),
+                              Text(currentChapterReference.format(), style: context.textStyle.labelLg),
                               StyledTag(text: user.translation.title()),
                             ],
                           ),
@@ -183,17 +163,8 @@ class BiblePage extends HookConsumerWidget {
                     ),
                     ...ToolbarAction.values.map(
                       (action) => StyledCircleButton(
-                        onPressed: () => action.onPressed(
-                          context,
-                          ref,
-                          user: user,
-                          reference: currentChapterReference,
-                        ),
-                        child: action.buildIcon(
-                          context,
-                          user: user,
-                          reference: currentChapterReference,
-                        ),
+                        onPressed: () => action.onPressed(context, ref, user: user, reference: currentChapterReference),
+                        child: action.buildIcon(context, user: user, reference: currentChapterReference),
                       ),
                     ),
                     StyledCircleButton(
@@ -203,27 +174,12 @@ class BiblePage extends HookConsumerWidget {
                           children: [
                             ...ToolbarAction.values.map(
                               (action) => StyledListItem(
-                                titleText: action.title(
-                                  user: user,
-                                  reference: currentChapterReference,
-                                ),
-                                subtitleText: action.description(
-                                  user: user,
-                                  reference: currentChapterReference,
-                                ),
-                                leading: action.buildIcon(
-                                  context,
-                                  user: user,
-                                  reference: currentChapterReference,
-                                ),
+                                titleText: action.title(user: user, reference: currentChapterReference),
+                                subtitleText: action.description(user: user, reference: currentChapterReference),
+                                leading: action.buildIcon(context, user: user, reference: currentChapterReference),
                                 onPressed: () {
                                   Navigator.of(context).pop();
-                                  action.onPressed(
-                                    context,
-                                    ref,
-                                    user: user,
-                                    reference: currentChapterReference,
-                                  );
+                                  action.onPressed(context, ref, user: user, reference: currentChapterReference);
                                 },
                               ),
                             ),
@@ -258,15 +214,9 @@ class BiblePage extends HookConsumerWidget {
                         boxShadow: [StyledShadow.up(context)],
                         color: context.colors.surfacePrimary,
                       ),
-                      padding: EdgeInsets.only(
-                        bottom: MediaQuery.paddingOf(context).bottom,
-                      ),
+                      padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
                       child: StyledListItem(
-                        title: Text(
-                          selectedPassage.format(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        title: Text(selectedPassage.format(), maxLines: 1, overflow: TextOverflow.ellipsis),
                         leading: StyledCircleButton(
                           icon: Symbols.close,
                           onPressed: () => selectedReferencesState.value = [],
@@ -275,18 +225,13 @@ class BiblePage extends HookConsumerWidget {
                           children: PassageAction.values
                               .map(
                                 (action) => StyledCircleButton(
-                                  child: action.buildIcon(
-                                    context,
-                                    user: user,
-                                    selectedPassage: selectedPassage,
-                                  ),
+                                  child: action.buildIcon(context, user: user, selectedPassage: selectedPassage),
                                   onPressed: () => action.onPressed(
                                     context,
                                     ref,
                                     user: user,
                                     selectedPassage: selectedPassage,
-                                    deselectVerses: () =>
-                                        selectedReferencesState.value = [],
+                                    deselectVerses: () => selectedReferencesState.value = [],
                                   ),
                                 ),
                               )

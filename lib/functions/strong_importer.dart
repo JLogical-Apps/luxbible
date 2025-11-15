@@ -6,9 +6,7 @@ import 'package:xml/xml.dart';
 
 class StrongImporter {
   Future<Map<String, Strong>> import() async => {
-    ...importHebrew(
-      rawHebrewXml: await rootBundle.loadString('assets/strongs/hebrew.xml'),
-    ),
+    ...importHebrew(rawHebrewXml: await rootBundle.loadString('assets/strongs/hebrew.xml')),
     ...importGreek(rawGreekXml: await rootBundle.loadString('assets/strongs/greek.xml')),
   };
 
@@ -54,9 +52,7 @@ class StrongImporter {
                 id: 'G${entry.getElement('strongs')!.innerText}',
                 languageText: entry.getElement('greek')!.getAttribute('unicode')!,
                 transliteration: entry.getElement('greek')!.getAttribute('translit')!,
-                pronunciation: entry
-                    .getElement('pronunciation')!
-                    .getAttribute('strongs')!,
+                pronunciation: entry.getElement('pronunciation')!.getAttribute('strongs')!,
                 glossary: entry
                     .findAllElements('see')
                     .map(

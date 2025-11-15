@@ -13,9 +13,7 @@ import 'package:flutter/services.dart';
 
 class BibleImporter {
   Future<Bible> import({required BibleTranslation translation}) async {
-    final rawJson = await rootBundle.loadString(
-      'assets/translations/${translation.name}.json',
-    );
+    final rawJson = await rootBundle.loadString('assets/translations/${translation.name}.json');
     final json = jsonDecode(rawJson);
 
     final verses = (json['verses'] as Iterable)
@@ -39,9 +37,7 @@ class BibleImporter {
               chapters: verses
                   .groupListsBy((verse) => verse.chapterNum)
                   .mapToIterable(
-                    (chapter, verses) => Chapter(
-                      verses: verses.map((verse) => parseVerse(verse.text)).toList(),
-                    ),
+                    (chapter, verses) => Chapter(verses: verses.map((verse) => parseVerse(verse.text)).toList()),
                   )
                   .toList(),
             ),
@@ -82,10 +78,7 @@ Verse parseVerse(String raw) {
       } else {
         // Add to the last fragment's strongs
         final last = fragments.last;
-        fragments[fragments.length - 1] = VerseFragment(
-          text: last.text,
-          strongIds: [...last.strongIds, code],
-        );
+        fragments[fragments.length - 1] = VerseFragment(text: last.text, strongIds: [...last.strongIds, code]);
       }
     } else {
       // Plain text → start a fresh fragment

@@ -24,20 +24,12 @@ class StyledTile extends StatelessWidget {
           children: [
             Padding(
               padding: EdgeInsets.all(16),
-              child: DefaultTextStyle(
-                style: context.textStyle.paragraphMd,
-                textAlign: TextAlign.start,
-                child: child,
-              ),
+              child: DefaultTextStyle(style: context.textStyle.paragraphMd, textAlign: TextAlign.start, child: child),
             ),
             Positioned.fill(
               child: IgnorePointer(
                 ignoring: onPressed == null,
-                child: StyledMaterial(
-                  onPressed: onPressed,
-                  padding: EdgeInsets.all(16),
-                  child: SizedBox.expand(),
-                ),
+                child: StyledMaterial(onPressed: onPressed, padding: EdgeInsets.all(16), child: SizedBox.expand()),
               ),
             ),
           ],

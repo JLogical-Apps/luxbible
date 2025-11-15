@@ -36,22 +36,14 @@ class PassageBuilder extends ConsumerWidget {
               HighlightedParagraph(
                 text: ' ' * reference.verseNum.toString().length + '  ${verse.text}',
                 style: context.textStyle.bibleBody.copyWith(
-                  decoration: underlinedReferences.contains(reference)
-                      ? TextDecoration.underline
-                      : null,
+                  decoration: underlinedReferences.contains(reference) ? TextDecoration.underline : null,
                 ),
-                lineColor: highlightColor
-                    ?.toHue(context.colors)
-                    .primary
-                    .withValues(alpha: 0.5),
+                lineColor: highlightColor?.toHue(context.colors).primary.withValues(alpha: 0.5),
               ),
               Positioned(
                 top: 12,
                 left: 2,
-                child: Text(
-                  reference.verseNum.toString(),
-                  style: context.textStyle.bibleVerseNumber,
-                ),
+                child: Text(reference.verseNum.toString(), style: context.textStyle.bibleVerseNumber),
               ),
             ],
           ),

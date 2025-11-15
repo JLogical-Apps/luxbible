@@ -21,9 +21,7 @@ class StrongPage extends ConsumerWidget {
 
     if (strong == null) {
       return StyledPage(
-        body: Center(
-          child: Text('No info found for $strongId', style: context.textStyle.headingXs),
-        ),
+        body: Center(child: Text('No info found for $strongId', style: context.textStyle.headingXs)),
       );
     }
 
@@ -37,18 +35,9 @@ class StrongPage extends ConsumerWidget {
               child: StyledCard.list(
                 children: [
                   StyledListItem(titleText: 'ID', subtitleText: strongId),
-                  StyledListItem(
-                    titleText: 'Pronunciation',
-                    subtitleText: strong.pronunciation,
-                  ),
-                  StyledListItem(
-                    titleText: 'Transliteration',
-                    subtitleText: strong.transliteration,
-                  ),
-                  StyledListItem(
-                    titleText: 'Definition',
-                    subtitleText: strong.definition,
-                  ),
+                  StyledListItem(titleText: 'Pronunciation', subtitleText: strong.pronunciation),
+                  StyledListItem(titleText: 'Transliteration', subtitleText: strong.transliteration),
+                  StyledListItem(titleText: 'Definition', subtitleText: strong.definition),
                 ],
               ),
             ),

@@ -12,13 +12,7 @@ part of 'strongs_provider.dart';
 @ProviderFor(strongs)
 const strongsProvider = StrongsProvider._();
 
-final class StrongsProvider
-    extends
-        $FunctionalProvider<
-          Map<String, Strong>,
-          Map<String, Strong>,
-          Map<String, Strong>
-        >
+final class StrongsProvider extends $FunctionalProvider<Map<String, Strong>, Map<String, Strong>, Map<String, Strong>>
     with $Provider<Map<String, Strong>> {
   const StrongsProvider._()
     : super(
@@ -36,9 +30,7 @@ final class StrongsProvider
 
   @$internal
   @override
-  $ProviderElement<Map<String, Strong>> $createElement(
-    $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  $ProviderElement<Map<String, Strong>> $createElement($ProviderPointer pointer) => $ProviderElement(pointer);
 
   @override
   Map<String, Strong> create(Ref ref) {
@@ -47,10 +39,7 @@ final class StrongsProvider
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(Map<String, Strong> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<Map<String, Strong>>(value),
-    );
+    return $ProviderOverride(origin: this, providerOverride: $SyncValueProvider<Map<String, Strong>>(value));
   }
 }
 

@@ -100,10 +100,7 @@ class StyledListItem extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 if (title case final title?)
-                                  DefaultTextStyle(
-                                    style: context.textStyle.labelMd,
-                                    child: title,
-                                  ),
+                                  DefaultTextStyle(style: context.textStyle.labelMd, child: title),
                                 if (subtitle case final subtitle?)
                                   DefaultTextStyle(
                                     style: context.textStyle.paragraphSm.subtle(context),
@@ -119,10 +116,7 @@ class StyledListItem extends StatelessWidget {
                             child: Padding(
                               padding: EdgeInsets.only(right: 8),
                               child: IconTheme.merge(
-                                data: IconThemeData(
-                                  color: context.colors.contentDisabled,
-                                  size: 24,
-                                ),
+                                data: IconThemeData(color: context.colors.contentDisabled, size: 24),
                                 child: trailing,
                               ),
                             ),

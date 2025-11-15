@@ -8,8 +8,7 @@ part 'bookmark.g.dart';
 sealed class Bookmark with _$Bookmark {
   const Bookmark._();
 
-  const factory Bookmark({required String key, @Default(ColorEnum.red) ColorEnum color}) =
-      _Bookmark;
+  const factory Bookmark({required String key, @Default(ColorEnum.red) ColorEnum color}) = _Bookmark;
 
   factory Bookmark.fromJson(Map<String, dynamic> json) => _$BookmarkFromJson(json);
 }

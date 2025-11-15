@@ -20,10 +20,7 @@ extension StyleContextExtensions on BuildContext {
       backgroundColor: Colors.transparent,
       constraints: BoxConstraints(
         maxWidth: MediaQuery.sizeOf(this).width,
-        maxHeight:
-            MediaQuery.sizeOf(rootContext).height -
-            MediaQuery.paddingOf(rootContext).top -
-            8,
+        maxHeight: MediaQuery.sizeOf(rootContext).height - MediaQuery.paddingOf(rootContext).top - 8,
       ),
       useRootNavigator: true,
       builder: (context) => sheet,

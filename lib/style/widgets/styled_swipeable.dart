@@ -30,10 +30,7 @@ class StyledSwipeable extends StatelessWidget {
                   onPressed: action.onPressed,
                   color: color,
                   child: SizedBox.expand(
-                    child: Icon(
-                      action.icon,
-                      color: ColorLibrary.fromBackground(color).contentPrimary,
-                    ),
+                    child: Icon(action.icon, color: ColorLibrary.fromBackground(color).contentPrimary),
                   ),
                 ),
               );
@@ -51,11 +48,7 @@ class StyledSwipeableAction {
   final IconData icon;
   final Function() onPressed;
 
-  const StyledSwipeableAction({
-    required this.icon,
-    required this.colorMapper,
-    required this.onPressed,
-  });
+  const StyledSwipeableAction({required this.icon, required this.colorMapper, required this.onPressed});
 
   StyledSwipeableAction.delete({required this.onPressed})
     : colorMapper = ((colors) => colors.backgroundCritical),

@@ -14,12 +14,7 @@ class StyledSliverList extends StatelessWidget {
       child: SliverList(
         delegate: SliverChildListDelegate(
           children
-              .mapIndexed(
-                (i, child) => StyledListItemContext(
-                  hideDivider: i + 1 == children.length,
-                  child: child,
-                ),
-              )
+              .mapIndexed((i, child) => StyledListItemContext(hideDivider: i + 1 == children.length, child: child))
               .toList(),
         ),
       ),

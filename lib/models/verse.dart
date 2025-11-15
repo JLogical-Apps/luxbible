@@ -5,6 +5,5 @@ class Verse {
 
   const Verse({required this.fragments});
 
-  String get text =>
-      fragments.map((fragment) => fragment.text.replaceAll(RegExp(r'[\[\]]'), '')).join();
+  String get text => fragments.map((fragment) => fragment.text.replaceAll(RegExp(r'[\[\]]'), '')).join();
 }

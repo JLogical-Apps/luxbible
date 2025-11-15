@@ -12,13 +12,8 @@ class StyledColorSheet extends StatelessWidget {
 
   final ColorEnum? initialColor;
 
-  StyledColorSheet({
-    super.key,
-    Widget? title,
-    String? titleText,
-    this.trailing,
-    this.initialColor,
-  }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
+  StyledColorSheet({super.key, Widget? title, String? titleText, this.trailing, this.initialColor})
+    : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
 
   @override
   Widget build(BuildContext context) {
@@ -32,10 +27,7 @@ class StyledColorSheet extends StatelessWidget {
           children: ColorEnum.values
               .map(
                 (color) => StyledCircleButton(
-                  child: ColoredCircle(
-                    color: color.toHue(context.colors).primary,
-                    isSelected: initialColor == color,
-                  ),
+                  child: ColoredCircle(color: color.toHue(context.colors).primary, isSelected: initialColor == color),
                   onPressed: () => Navigator.of(context).pop(color),
                 ),
               )
