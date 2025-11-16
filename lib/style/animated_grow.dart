@@ -36,7 +36,7 @@ class AnimatedGrow extends StatelessWidget {
       duration: Duration(milliseconds: 300),
       curve: Curves.easeInOutCubic,
       alignment: alignment,
-      clipBehavior: Clip.none,
+      clipBehavior: clip,
       child: AnimatedSwitcher(
         duration: Duration(milliseconds: 300),
         reverseDuration: Duration(milliseconds: 300),

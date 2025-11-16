@@ -1,0 +1,62 @@
+import 'package:bible/style/style_context_extensions.dart';
+import 'package:bible/style/widgets/sheet/styled_sheet.dart';
+import 'package:bible/style/widgets/styled_rect_button.dart';
+import 'package:bible/utils/extensions/map_if_non_null.dart';
+import 'package:bible/utils/extensions/port_extensions.dart';
+import 'package:flutter/material.dart';
+import 'package:port/port.dart';
+
+class StyledPortSheet<T> extends StatelessWidget {
+  final Port<T> port;
+
+  final Widget title;
+  final List<Widget> Function(BuildContext) childrenBuilder;
+
+  StyledPortSheet({super.key, required this.port, Widget? title, String? titleText, required this.childrenBuilder})
+    : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
+
+  static Future<T?> show<T>(
+    BuildContext context, {
+    required Port<T> port,
+    Widget? title,
+    String? titleText,
+    required List<Widget> Function(BuildContext) childrenBuilder,
+  }) => context.showStyledSheet(
+    StyledPortSheet(port: port, title: title, titleText: titleText, childrenBuilder: childrenBuilder),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return StyledSheet(
+      title: title,
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16) + EdgeInsets.only(top: 16),
+        child: PortBuilder(
+          port: port,
+          builder: (context, port) {
+            return Column(
+              spacing: 16,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: childrenBuilder(context),
+            );
+          },
+        ),
+      ),
+      buttonsBuilder: (context) => [
+        StyledRectButton.primary(
+          labelText: 'Save',
+          onPressed: () async {
+            final result = await port.submitIfNoErrors();
+            if (!result.isValid) {
+              return;
+            }
+
+            if (context.mounted) {
+              Navigator.of(context).pop(result.data);
+            }
+          },
+        ),
+      ],
+    );
+  }
+}

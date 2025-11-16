@@ -163,13 +163,7 @@ class BiblePage extends HookConsumerWidget {
                     ),
                     ...ToolbarAction.values.map(
                       (action) => StyledCircleButton(
-                        onPressed: () => action.onPressed(
-                          context,
-                          ref,
-                          user: user,
-                          reference: currentChapterReference,
-                          bible: bible,
-                        ),
+                        onPressed: () => action.onPressed(context, ref, user: user, reference: currentChapterReference),
                         child: action.buildIcon(context, user: user, reference: currentChapterReference),
                       ),
                     ),
@@ -185,13 +179,7 @@ class BiblePage extends HookConsumerWidget {
                                 leading: action.buildIcon(context, user: user, reference: currentChapterReference),
                                 onPressed: () {
                                   Navigator.of(context).pop();
-                                  action.onPressed(
-                                    context,
-                                    ref,
-                                    user: user,
-                                    reference: currentChapterReference,
-                                    bible: bible,
-                                  );
+                                  action.onPressed(context, ref, user: user, reference: currentChapterReference);
                                 },
                               ),
                             ),

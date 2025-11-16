@@ -1,11 +1,13 @@
 import 'dart:math';
 
+import 'package:bible/style/animated_grow.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/text_style_extensions.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 class StyledTextField extends HookWidget {
   final String text;
@@ -13,8 +15,10 @@ class StyledTextField extends HookWidget {
   final Function(String)? onChanged;
   final Function(String)? onSubmit;
 
+  final String? labelText;
   final String? suggestedText;
   final String? hintText;
+  final String? errorText;
 
   final bool autofocus;
   final bool autocorrect;
@@ -35,8 +39,10 @@ class StyledTextField extends HookWidget {
     this.onTextEditValueChanged,
     this.onChanged,
     this.onSubmit,
+    this.labelText,
     this.hintText,
     this.suggestedText,
+    this.errorText,
     this.autofocus = false,
     this.autocorrect = true,
     this.readOnly = false,
@@ -81,41 +87,80 @@ class StyledTextField extends HookWidget {
         ? null
         : suggestedText.substring(text.length);
 
-    return Stack(
+    final errorText = this.errorText;
+    final hasError = errorText != null;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (focusNode.hasPrimaryFocus && onChanged != null && remainingSuggestedText != null)
-          Positioned.fill(
-            child: Padding(
-              padding: EdgeInsets.all(12) + EdgeInsets.only(left: 6 + textStyle.getWidth(text)),
-              child: Text(remainingSuggestedText, style: textStyle.subtle(context)),
-            ),
+        if (labelText case final labelText?)
+          Padding(
+            padding: EdgeInsets.only(bottom: 8),
+            child: Text(labelText, style: context.textStyle.labelMd),
           ),
-        TextField(
-          controller: controller,
-          focusNode: focusNode,
-          readOnly: readOnly,
-          onChanged: (text) => onChanged?.call(text),
-          autocorrect: autocorrect,
-          enabled: onChanged != null,
-          autofocus: autofocus,
-          style: textStyle.disabled(context, isDisabled: onChanged == null),
-          keyboardType: textInputType,
-          textInputAction: action,
-          textCapitalization: textCapitalization,
-          inputFormatters: inputFormatters,
-          onSubmitted: onSubmit,
-          decoration: InputDecoration(
-            contentPadding: EdgeInsets.all(12),
-            fillColor: onChanged == null ? context.colors.surfaceDisabled : context.colors.surfaceSecondary,
-            filled: !focusNode.hasPrimaryFocus,
-            border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(8)),
-            hintText: hintText,
-            hintStyle: context.textStyle.paragraphMd.subtle(context).disabled(context, isDisabled: onChanged == null),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.colors.borderSelected, width: 2),
-              borderRadius: BorderRadius.circular(8),
+        Stack(
+          children: [
+            if (focusNode.hasPrimaryFocus && onChanged != null && remainingSuggestedText != null)
+              Positioned.fill(
+                child: Padding(
+                  padding: EdgeInsets.all(12) + EdgeInsets.only(left: 6 + textStyle.getWidth(text)),
+                  child: Text(remainingSuggestedText, style: textStyle.subtle(context)),
+                ),
+              ),
+            TextField(
+              controller: controller,
+              focusNode: focusNode,
+              readOnly: readOnly,
+              onChanged: (text) => onChanged?.call(text),
+              autocorrect: autocorrect,
+              enabled: onChanged != null,
+              autofocus: autofocus,
+              style: textStyle.disabled(context, isDisabled: onChanged == null),
+              keyboardType: textInputType,
+              textInputAction: action,
+              textCapitalization: textCapitalization,
+              inputFormatters: inputFormatters,
+              onSubmitted: onSubmit,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(12),
+                fillColor: onChanged == null
+                    ? context.colors.surfaceDisabled
+                    : hasError
+                    ? context.colors.surfaceError
+                    : context.colors.surfaceSecondary,
+                filled: !focusNode.hasPrimaryFocus,
+                border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(8)),
+                hintText: hintText,
+                hintStyle: context.textStyle.paragraphMd
+                    .subtle(context)
+                    .disabled(context, isDisabled: onChanged == null),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: hasError ? context.colors.borderError : context.colors.borderSelected,
+                    width: 3,
+                  ),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
             ),
-          ),
+          ],
+        ),
+        AnimatedGrow(
+          alignment: Alignment.bottomLeft,
+          clip: Clip.hardEdge,
+          child: errorText == null
+              ? SizedBox(key: ValueKey('empty'), width: double.infinity)
+              : Padding(
+                  padding: EdgeInsets.only(top: 8),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    spacing: 4,
+                    children: [
+                      Icon(Symbols.error, size: 14, color: context.colors.contentError),
+                      Text(errorText, style: context.textStyle.labelSm.regular.error(context)),
+                    ],
+                  ),
+                ),
         ),
       ],
     );

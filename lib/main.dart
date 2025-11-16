@@ -22,14 +22,12 @@ Future<void> main() async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      final bibles = await Future.wait(
-        BibleTranslation.values.map((translation) => BibleImporter().import(translation: translation)),
-      );
-
       runApp(
         BibleApp(
-          bibles: bibles,
-          commentaries: [await CommentaryImporter().import(bible: bibles.first)],
+          bibles: await Future.wait(
+            BibleTranslation.values.map((translation) => BibleImporter().import(translation: translation)),
+          ),
+          commentaries: [await CommentaryImporter().import()],
           strongs: await StrongImporter().import(),
           sharedPreferences: await SharedPreferences.getInstance(),
         ),

@@ -1,6 +1,4 @@
-import 'package:bible/models/bible.dart';
 import 'package:bible/models/book_type.dart';
-import 'package:bible/models/chapter_reference.dart';
 import 'package:bible/models/reference.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/range.dart';
@@ -11,25 +9,43 @@ class Passage {
 
   const Passage({required this.references});
 
-  static Passage fromKey(String key, {required Bible bible}) {
-    final items = key.split('-');
-    final ref1Items = items.first.split('.');
-    final book = BookType.fromOsisId(ref1Items.first);
-    final chapterNum = int.parse(ref1Items[1]);
-    final allVerses = items.length >= 2
-        ? Range.generate(int.parse(ref1Items[2]), int.parse(items.last.split('.').last))
-        : ref1Items.length == 2
-        ? List.generate(
-            bible.getChapterByReference(ChapterReference(book: book, chapterNum: chapterNum)).verses.length,
-            (i) => i + 1,
-          )
-        : [int.parse(ref1Items[2])];
-    return Passage(
-      references: allVerses
-          .map((verseNum) => Reference(book: book, chapterNum: chapterNum, verseNum: verseNum))
-          .toList(),
-    );
-  }
+  static Passage fromOsisId(String key) => Passage(
+    references: key
+        .split(' ')
+        .expand((span) {
+          final items = key.split('-');
+          final ref1Items = items.first.split('.');
+          final book = BookType.fromOsisId(ref1Items.first);
+          final chapterNum = int.parse(ref1Items[1]);
+          final allVerses = items.length >= 2
+              ? Range.generate(int.parse(ref1Items[2]), int.parse(items.last.split('.').last))
+              : ref1Items.length == 2
+              ? List.generate(book.bookInfo.getNumVerses(chapterNum), (i) => i + 1)
+              : [int.parse(ref1Items[2])];
+          return allVerses
+              .map((verseNum) => Reference(book: book, chapterNum: chapterNum, verseNum: verseNum))
+              .toList();
+        })
+        .sortedBy((e) => e)
+        .toList(),
+  );
+
+  String osisId() => sortedReferences
+      .groupListsBy((ref) => ref.book)
+      .mapToIterable(
+        (book, bookRefs) => bookRefs
+            .groupListsBy((ref) => ref.chapterNum)
+            .mapToIterable(
+              (chapter, verseRefs) => verseRefs
+                  .map((ref) => ref.verseNum)
+                  .batchedByRuns()
+                  .map((run) => run.length == 1 ? [run.first] : [run.first, run.last])
+                  .map((verses) => verses.map((verse) => '${book.osisId()}.$chapter.$verse').join('-'))
+                  .join(' '),
+            )
+            .join(' '),
+      )
+      .join(' ');
 
   List<Reference> get sortedReferences => references.sorted().toList();
 
@@ -39,9 +55,9 @@ class Passage {
 
   String format() => sortedReferences
       .groupListsBy((ref) => ref.book)
-      .map(
-        (book, bookRefs) => MapEntry(
-          book,
+      .mapToIterable(
+        (book, bookRefs) => [
+          book.title(),
           bookRefs
               .groupListsBy((ref) => ref.chapterNum)
               .mapToIterable(
@@ -57,9 +73,8 @@ class Passage {
                       .join(', '),
                 ].join(':'),
               )
-              .join('; '),
-        ),
+              .join(' '),
+        ].join(' '),
       )
-      .mapToIterable((book, chapterText) => '${book.title()} $chapterText')
       .join('; ');
 }

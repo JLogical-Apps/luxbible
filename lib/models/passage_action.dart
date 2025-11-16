@@ -1,9 +1,13 @@
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/passage.dart';
+import 'package:bible/models/passage_note.dart';
 import 'package:bible/models/user.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_color_sheet.dart';
+import 'package:bible/style/widgets/sheet/styled_port_sheet.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
+import 'package:bible/style/widgets/styled_port_field_builder.dart';
+import 'package:bible/style/widgets/styled_text_field.dart';
 import 'package:bible/ui/pages/commentaries_page.dart';
 import 'package:bible/ui/pages/compare_page.dart';
 import 'package:bible/ui/pages/interlinear_page.dart';
@@ -14,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:port/port.dart';
 
 enum PassageAction {
   highlight,
@@ -96,7 +101,22 @@ enum PassageAction {
           );
         }
       case note:
-        break;
+        final note = await StyledPortSheet.show(
+          context,
+          titleText: 'Add Note',
+          port: Port.of({'note': PortField.string().isNotBlank()}).map((values, port) => values['note'] as String),
+          childrenBuilder: (context) => [
+            StyledPortFieldBuilder<String>(
+              fieldPath: 'note',
+              builder: (context, value, errorText, onChanged) =>
+                  StyledTextField(text: value, labelText: 'Note', errorText: errorText, onChanged: onChanged),
+            ),
+          ],
+        );
+        if (note != null) {
+          print(selectedPassage.osisId());
+          ref.updateUser((user) => user.withPassageNote(PassageNote(passageKey: selectedPassage.osisId(), note: note)));
+        }
       case copy:
         context.showStyledSnackbar(messageText: '${selectedPassage.format()} copied to clipboard.');
         await Clipboard.setData(

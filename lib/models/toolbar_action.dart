@@ -1,4 +1,3 @@
-import 'package:bible/models/bible.dart';
 import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/chapter_reference.dart';
 import 'package:bible/models/user.dart';
@@ -43,7 +42,6 @@ enum ToolbarAction {
     WidgetRef ref, {
     required User user,
     required ChapterReference reference,
-    required Bible bible,
   }) async {
     switch (this) {
       case bookmark:
@@ -57,7 +55,7 @@ enum ToolbarAction {
           ref.updateUser((user) => user.withRemovedBookmark(bookmark));
         }
       case commentary:
-        context.push(CommentariesPage(passage: reference.toPassage(bible)));
+        context.push(CommentariesPage(passage: reference.toPassage()));
     }
   }
 }

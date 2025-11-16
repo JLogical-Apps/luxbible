@@ -1,4 +1,3 @@
-import 'package:bible/models/bible.dart';
 import 'package:bible/models/book_type.dart';
 import 'package:bible/models/passage.dart';
 import 'package:bible/models/reference.dart';
@@ -26,9 +25,9 @@ sealed class ChapterReference with _$ChapterReference {
 
   Reference getReference(int verseNum) => Reference(book: book, chapterNum: chapterNum, verseNum: verseNum);
 
-  Passage toPassage(Bible bible) => Passage(
+  Passage toPassage() => Passage(
     references: List.generate(
-      bible.getChapterByReference(this).verses.length,
+      book.bookInfo.getNumVerses(chapterNum),
       (i) => Reference(book: book, chapterNum: chapterNum, verseNum: i + 1),
     ),
   );

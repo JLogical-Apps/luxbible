@@ -23,10 +23,24 @@ dependencies:
   flutter_slidable: ^4.0.3
   rounded_background_text: ^0.6.0
   flutter_tailwind_colors: ^0.0.3
-  equatable: ^2.0.7
+  equatable: ^2.0.5
   intersperse: ^2.0.0
   flutter_sticky_header: ^0.8.0
   another_flushbar: ^1.12.32
+  provider: ^6.1.5+1
+
+  port:
+    git:
+      url: https://github.com/JLogical-Apps/flood.git
+      ref: "89a170167523e52354afe3646841e28216b9210a"
+      path: packages/port/port
+  utils_core:
+    git:
+      url: https://github.com/JLogical-Apps/flood.git
+      ref: "89a170167523e52354afe3646841e28216b9210a"
+      path: packages/utils/utils_core
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

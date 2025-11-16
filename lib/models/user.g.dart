@@ -33,6 +33,11 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
           ?.map((e) => Bookmark.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
+  passageNotes:
+      (json['passageNotes'] as List<dynamic>?)
+          ?.map((e) => PassageNote.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -44,6 +49,7 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   ),
   'highlightColor': _$ColorEnumEnumMap[instance.highlightColor]!,
   'bookmarks': instance.bookmarks,
+  'passageNotes': instance.passageNotes,
 };
 
 const _$BibleTranslationEnumMap = {

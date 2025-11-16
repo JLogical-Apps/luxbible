@@ -1,3 +1,5 @@
+import 'package:bible/style/style_context_extensions.dart';
+import 'package:bible/style/text_style_extensions.dart';
 import 'package:flutter/material.dart';
 
 class StyledMaterial extends StatelessWidget {
@@ -25,7 +27,10 @@ class StyledMaterial extends StatelessWidget {
       child: InkWell(
         borderRadius: borderRadius,
         onTap: onPressed,
-        child: Padding(padding: padding, child: child),
+        child: Padding(
+          padding: padding,
+          child: DefaultTextStyle(style: context.textStyle.labelLg.onColor(color), child: child),
+        ),
       ),
     );
   }

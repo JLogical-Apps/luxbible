@@ -1,3 +1,4 @@
+import 'package:bible/style/color_library.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,12 @@ extension TextStyleExtensions on TextStyle {
 
   TextStyle disabled(BuildContext context, {bool isDisabled = true}) =>
       isDisabled ? copyWith(color: context.colors.contentDisabled) : this;
+
+  TextStyle error(BuildContext context, {bool isError = true}) =>
+      isError ? copyWith(color: context.colors.contentError) : this;
+
+  TextStyle onColor(Color? color) =>
+      color == null ? this : copyWith(color: ColorLibrary.fromBackground(color).contentPrimary);
 
   TextStyle get thin => copyWith(fontVariations: [FontVariation('wght', 100)]);
   TextStyle get extraLight => copyWith(fontVariations: [FontVariation('wght', 200)]);

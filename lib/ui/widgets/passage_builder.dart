@@ -28,6 +28,7 @@ class PassageBuilder extends ConsumerWidget {
     return Column(
       children: passage.references.map((reference) {
         final highlightColor = user.highlightByKey[reference.toKey()];
+        final hasNote = user.passageNotes.any((note) => Passage.fromOsisId(note.passageKey).hasReference(reference));
         final verse = bible.getVerseByReference(reference);
         return GestureDetector(
           onTap: () => onReferencePressed?.call(reference),
@@ -38,7 +39,9 @@ class PassageBuilder extends ConsumerWidget {
                 style: context.textStyle.bibleBody.copyWith(
                   decoration: underlinedReferences.contains(reference) ? TextDecoration.underline : null,
                 ),
-                lineColor: highlightColor?.toHue(context.colors).primary.withValues(alpha: 0.5),
+                lineColor:
+                    highlightColor?.toHue(context.colors).primary.withValues(alpha: 0.5) ??
+                    (hasNote ? context.colors.contentTertiary.withValues(alpha: 0.5) : null),
               ),
               Positioned(
                 top: 12,
