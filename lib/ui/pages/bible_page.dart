@@ -42,10 +42,8 @@ class BiblePage extends HookConsumerWidget {
 
     final initialReference = user.tabs.firstOrNull;
 
-    final pageController = useListenable(
-      usePageController(
-        initialPage: initialReference == null ? 0 : bible.getPageIndexByChapterReference(initialReference),
-      ),
+    final pageController = usePageController(
+      initialPage: initialReference == null ? 0 : bible.getPageIndexByChapterReference(initialReference),
     );
 
     final currentPage =
@@ -55,20 +53,11 @@ class BiblePage extends HookConsumerWidget {
     final currentChapterReference = bible.getChapterReferenceByPageIndex(currentPage);
 
     final selectedReferencesState = useState(<Reference>[]);
-    final selectedPassage = selectedReferencesState.value.isEmpty
-        ? null
-        : Passage(references: selectedReferencesState.value);
 
-    final scrollController = useListenable(useScrollController());
-    final scrollPosition = scrollController.positionsOrNull?.firstOrNull;
-    final isScrollingDownState = useState(true);
-    useOnStickyScrollDirectionChanged(
-      scrollController,
-      (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
-    );
+    final scrollController = useScrollController();
+    final isScrollingDownState = useMemoized(() => ValueNotifier(true));
 
-    final showBottomBar =
-        (isScrollingDownState.value || scrollPosition?.atEdge == true) && selectedReferencesState.value.isEmpty;
+    final selectedRangeState = useMemoized(() => ValueNotifier(<int, (int, int)>{}));
 
     return StyledPage(
       body: Stack(
@@ -78,6 +67,7 @@ class BiblePage extends HookConsumerWidget {
             onPageChanged: (pageIndex) {
               selectedReferencesState.value = [];
               isScrollingDownState.value = true;
+              selectedRangeState.value = {};
 
               final reference = bible.getChapterReferenceByPageIndex(pageIndex);
               ref.updateUser((user) => user.copyWith(tabs: [reference]));
@@ -86,200 +76,277 @@ class BiblePage extends HookConsumerWidget {
               final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
               final chapter = bible.getChapterByReference(chapterReference);
 
-              return StyledScrollbar(
-                child: ListView(
-                  controller: scrollController,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20, vertical: 8) +
-                      EdgeInsets.only(
-                        top: MediaQuery.paddingOf(context).top + 24,
-                        bottom: MediaQuery.paddingOf(context).bottom + 72,
-                      ),
-                  children: [
-                    Text(chapterReference.format(), style: context.textStyle.bibleChapter),
-                    gapH8,
-                    PassageBuilder(
-                      bible: bible,
-                      passage: Passage(
-                        references: chapter.verses
-                            .mapIndexed((i, verse) => chapterReference.getReference(i + 1))
-                            .toList(),
-                      ),
-                      underlinedReferences: selectedReferencesState.value,
-                      onReferencePressed: (reference) =>
-                          selectedReferencesState.value = selectedReferencesState.value.withToggle(reference),
+              return HookBuilder(
+                builder: (context) {
+                  final selectionKey = useMemoized(() => GlobalKey<SelectionAreaState>());
+
+                  return StyledScrollbar(
+                    child: ListView(
+                      controller: scrollController,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 8) +
+                          EdgeInsets.only(
+                            top: MediaQuery.paddingOf(context).top + 24,
+                            bottom: MediaQuery.paddingOf(context).bottom + 72,
+                          ),
+                      children: [
+                        Text(chapterReference.format(), style: context.textStyle.bibleChapter),
+                        gapH8,
+                        SelectionArea(
+                          key: selectionKey,
+                          contextMenuBuilder: (context, state) => AdaptiveTextSelectionToolbar.buttonItems(
+                            anchors: state.contextMenuAnchors,
+                            buttonItems: [],
+                          ),
+                          child: PassageBuilder(
+                            bible: bible,
+                            passage: Passage(
+                              references: chapter.verses
+                                  .mapIndexed((i, verse) => chapterReference.getReference(i + 1))
+                                  .toList(),
+                            ),
+                            underlinedReferences: selectedReferencesState.value,
+                            onReferencePressed: (reference) {
+                              final region = selectionKey.currentState?.selectableRegion;
+                              if (region == null || region.textEditingValue.selection.isCollapsed) {
+                                selectedReferencesState.value = selectedReferencesState.value.withToggle(reference);
+                              } else {
+                                region.clearSelection();
+                              }
+                            },
+                            onSelectionUpdated: (reference, range) {
+                              final newRange = range == null
+                                  ? ({...selectedRangeState.value}..remove(reference.verseNum))
+                                  : {...selectedRangeState.value, reference.verseNum: range};
+                              selectedRangeState.value = newRange;
+
+                              print(
+                                'selected text: ${selectedRangeState.value.sortedBy((verseNum, range) => verseNum).mapToIterable((verseNum, range) => bible.getVerseByReference(currentChapterReference.getReference(verseNum)).text.substring(range.$1 - 1, range.$2 - 1)).join()}',
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
               );
             },
           ),
-          AnimatedPositioned(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeInOutCubic,
-            bottom: showBottomBar ? 0 : -72 - MediaQuery.paddingOf(context).bottom,
-            right: 0,
-            left: 0,
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(boxShadow: [StyledShadow.down(context)]),
-              padding:
-                  EdgeInsets.symmetric(horizontal: 16) +
-                  EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom + 16),
-              child: StyledMaterial(
-                color: context.colors.surfacePrimary,
-                borderRadius: BorderRadius.circular(999),
-                padding: EdgeInsets.only(left: 24, right: 12),
-                onPressed: () async {
-                  final newReference =
-                      await context.pushDialog(ChapterReferenceSearchPage(initialReference: currentChapterReference))
-                          as ChapterReference?;
-                  if (newReference != null) {
-                    final pageIndex = bible.getPageIndexByChapterReference(newReference);
-                    pageController.jumpToPage(pageIndex);
-                    ref.updateUser(
-                      (user) => user.copyWith(
-                        previouslyViewed: [newReference, ...user.previouslyViewed].distinct.take(5).toList(),
-                      ),
-                    );
-                  }
-                },
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          child: Row(
-                            spacing: 8,
-                            children: [
-                              Text(currentChapterReference.format(), style: context.textStyle.labelLg),
-                              StyledTag(text: user.translation.title()),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    ...ToolbarAction.values.map(
-                      (action) => StyledCircleButton(
-                        onPressed: () => action.onPressed(context, ref, user: user, reference: currentChapterReference),
-                        child: action.buildIcon(context, user: user, reference: currentChapterReference),
-                      ),
-                    ),
-                    StyledCircleButton(
-                      icon: Symbols.more_vert,
-                      onPressed: () => context.showStyledSheet(
-                        StyledSheet.list(
-                          children: [
-                            ...ToolbarAction.values.map(
-                              (action) => StyledListItem(
-                                titleText: action.title(user: user, reference: currentChapterReference),
-                                subtitleText: action.description(user: user, reference: currentChapterReference),
-                                leading: action.buildIcon(context, user: user, reference: currentChapterReference),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  action.onPressed(context, ref, user: user, reference: currentChapterReference);
-                                },
-                              ),
-                            ),
-                            StyledListItem.navigation(
-                              titleText: 'Settings',
-                              subtitleText: 'Configure the Bible app',
-                              leadingIcon: Symbols.tune,
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                context.push(SettingsPage());
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            left: 0,
-            child: AnimatedGrow(
-              child: selectedPassage == null
-                  ? SizedBox.shrink(key: ValueKey('empty'))
-                  : Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        boxShadow: [StyledShadow.up(context)],
-                        color: context.colors.surfacePrimary,
-                      ),
-                      padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
-                      child: StyledListItem(
-                        title: Text(selectedPassage.format(), maxLines: 1, overflow: TextOverflow.ellipsis),
-                        leading: StyledCircleButton(
-                          icon: Symbols.close,
-                          onPressed: () => selectedReferencesState.value = [],
-                        ),
-                        trailing: Row(
-                          children: [
-                            ...PassageAction.values
-                                .take(3)
-                                .map(
-                                  (action) => StyledCircleButton(
-                                    child: action.buildIcon(context, user: user, selectedPassage: selectedPassage),
-                                    onPressed: () => action.onPressed(
-                                      context,
-                                      ref,
-                                      user: user,
-                                      selectedPassage: selectedPassage,
-                                      bible: bible,
-                                      deselectVerses: () => selectedReferencesState.value = [],
-                                    ),
-                                  ),
-                                ),
-                            StyledCircleButton(
-                              onPressed: () => context.showStyledSheet(
-                                StyledSheet.list(
-                                  children: PassageAction.values
-                                      .map(
-                                        (action) => StyledListItem(
-                                          titleText: action.title(user: user, selectedPassage: selectedPassage),
-                                          subtitleText: action.description(
-                                            user: user,
-                                            selectedPassage: selectedPassage,
-                                          ),
-                                          leading: action.buildIcon(
-                                            context,
-                                            user: user,
-                                            selectedPassage: selectedPassage,
-                                          ),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                            action.onPressed(
-                                              context,
-                                              ref,
-                                              user: user,
-                                              selectedPassage: selectedPassage,
-                                              bible: bible,
-                                              deselectVerses: () => selectedReferencesState.value = [],
-                                            );
-                                          },
-                                        ),
-                                      )
-                                      .toList(),
-                                ),
-                              ),
-                              icon: Symbols.more_vert,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-            ),
+          _BottomBar(
+            currentChapterReference: currentChapterReference,
+            scrollController: scrollController,
+            pageController: pageController,
+            selectedReferencesState: selectedReferencesState,
+            isScrollingDownState: isScrollingDownState,
           ),
         ],
       ),
+    );
+  }
+}
+
+class _BottomBar extends HookConsumerWidget {
+  final ChapterReference currentChapterReference;
+  final PageController pageController;
+  final ValueNotifier<List<Reference>> selectedReferencesState;
+  final ScrollController scrollController;
+  final ValueNotifier<bool> isScrollingDownState;
+
+  const _BottomBar({
+    required this.currentChapterReference,
+    required this.pageController,
+    required this.selectedReferencesState,
+    required this.scrollController,
+    required this.isScrollingDownState,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bibles = ref.watch(biblesProvider);
+    final user = ref.watch(userProvider);
+    final bible = user.getBible(bibles);
+
+    final selectedPassage = selectedReferencesState.value.isEmpty
+        ? null
+        : Passage(references: selectedReferencesState.value);
+
+    useListenable(isScrollingDownState);
+    useListenable(scrollController);
+
+    final scrollPosition = scrollController.positionsOrNull?.firstOrNull;
+    useOnStickyScrollDirectionChanged(
+      scrollController,
+      (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
+    );
+
+    final showBottomBar =
+        (isScrollingDownState.value || scrollPosition?.atEdge == true) && selectedReferencesState.value.isEmpty;
+
+    return Stack(
+      children: [
+        AnimatedPositioned(
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeInOutCubic,
+          bottom: showBottomBar ? 0 : -72 - MediaQuery.paddingOf(context).bottom,
+          right: 0,
+          left: 0,
+          child: Container(
+            width: double.infinity,
+            decoration: BoxDecoration(boxShadow: [StyledShadow.down(context)]),
+            padding:
+                EdgeInsets.symmetric(horizontal: 16) +
+                EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom + 16),
+            child: StyledMaterial(
+              color: context.colors.surfacePrimary,
+              borderRadius: BorderRadius.circular(999),
+              padding: EdgeInsets.only(left: 24, right: 12),
+              onPressed: () async {
+                final newReference =
+                    await context.pushDialog(ChapterReferenceSearchPage(initialReference: currentChapterReference))
+                        as ChapterReference?;
+                if (newReference != null) {
+                  final pageIndex = bible.getPageIndexByChapterReference(newReference);
+                  pageController.jumpToPage(pageIndex);
+                  ref.updateUser(
+                    (user) => user.copyWith(
+                      previouslyViewed: [newReference, ...user.previouslyViewed].distinct.take(5).toList(),
+                    ),
+                  );
+                }
+              },
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Row(
+                          spacing: 8,
+                          children: [
+                            Text(currentChapterReference.format(), style: context.textStyle.labelLg),
+                            StyledTag(text: user.translation.title()),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  ...ToolbarAction.values.map(
+                    (action) => StyledCircleButton(
+                      onPressed: () => action.onPressed(context, ref, user: user, reference: currentChapterReference),
+                      child: action.buildIcon(context, user: user, reference: currentChapterReference),
+                    ),
+                  ),
+                  StyledCircleButton(
+                    icon: Symbols.more_vert,
+                    onPressed: () => context.showStyledSheet(
+                      StyledSheet.list(
+                        children: [
+                          ...ToolbarAction.values.map(
+                            (action) => StyledListItem(
+                              titleText: action.title(user: user, reference: currentChapterReference),
+                              subtitleText: action.description(user: user, reference: currentChapterReference),
+                              leading: action.buildIcon(context, user: user, reference: currentChapterReference),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                                action.onPressed(context, ref, user: user, reference: currentChapterReference);
+                              },
+                            ),
+                          ),
+                          StyledListItem.navigation(
+                            titleText: 'Settings',
+                            subtitleText: 'Configure the Bible app',
+                            leadingIcon: Symbols.tune,
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              context.push(SettingsPage());
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          left: 0,
+          child: AnimatedGrow(
+            child: selectedPassage == null
+                ? SizedBox.shrink(key: ValueKey('empty'))
+                : Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      boxShadow: [StyledShadow.up(context)],
+                      color: context.colors.surfacePrimary,
+                    ),
+                    padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
+                    child: StyledListItem(
+                      title: Text(selectedPassage.format(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      leading: StyledCircleButton(
+                        icon: Symbols.close,
+                        onPressed: () => selectedReferencesState.value = [],
+                      ),
+                      trailing: Row(
+                        children: [
+                          ...PassageAction.values
+                              .take(3)
+                              .map(
+                                (action) => StyledCircleButton(
+                                  child: action.buildIcon(context, user: user, selectedPassage: selectedPassage),
+                                  onPressed: () => action.onPressed(
+                                    context,
+                                    ref,
+                                    user: user,
+                                    selectedPassage: selectedPassage,
+                                    bible: bible,
+                                    deselectVerses: () => selectedReferencesState.value = [],
+                                  ),
+                                ),
+                              ),
+                          StyledCircleButton(
+                            onPressed: () => context.showStyledSheet(
+                              StyledSheet.list(
+                                children: PassageAction.values
+                                    .map(
+                                      (action) => StyledListItem(
+                                        titleText: action.title(user: user, selectedPassage: selectedPassage),
+                                        subtitleText: action.description(user: user, selectedPassage: selectedPassage),
+                                        leading: action.buildIcon(
+                                          context,
+                                          user: user,
+                                          selectedPassage: selectedPassage,
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          action.onPressed(
+                                            context,
+                                            ref,
+                                            user: user,
+                                            selectedPassage: selectedPassage,
+                                            bible: bible,
+                                            deselectVerses: () => selectedReferencesState.value = [],
+                                          );
+                                        },
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                            icon: Symbols.more_vert,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+          ),
+        ),
+      ],
     );
   }
 }

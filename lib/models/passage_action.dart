@@ -114,7 +114,6 @@ enum PassageAction {
           ],
         );
         if (note != null) {
-          print(selectedPassage.osisId());
           ref.updateUser((user) => user.withPassageNote(PassageNote(passageKey: selectedPassage.osisId(), note: note)));
         }
       case copy:
