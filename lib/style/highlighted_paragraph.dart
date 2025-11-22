@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 class HighlightedParagraph extends StatelessWidget {
   final InlineSpan span;
   final Color? lineColor;
+  final double verseNumberWidth;
 
-  const HighlightedParagraph(this.span, {super.key, this.lineColor});
+  const HighlightedParagraph(this.span, {super.key, this.lineColor, required this.verseNumberWidth});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class HighlightedParagraph extends StatelessWidget {
         final paragraphBuilder = ui.ParagraphBuilder(ui.ParagraphStyle());
         span.build(
           paragraphBuilder,
-          dimensions: [PlaceholderDimensions(size: Size(16, 8), alignment: PlaceholderAlignment.bottom)],
+          dimensions: [PlaceholderDimensions(size: Size(verseNumberWidth, 8), alignment: PlaceholderAlignment.bottom)],
         );
 
         final paragraph = paragraphBuilder.build();

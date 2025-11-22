@@ -115,14 +115,13 @@ class BiblePage extends HookConsumerWidget {
                               }
                             },
                             onSelectionUpdated: (reference, range) {
+                              if (selectedReferencesState.value.isNotEmpty) {
+                                selectedReferencesState.value = [];
+                              }
                               final newRange = range == null
                                   ? ({...selectedRangeState.value}..remove(reference.verseNum))
                                   : {...selectedRangeState.value, reference.verseNum: range};
                               selectedRangeState.value = newRange;
-
-                              print(
-                                'selected text: ${selectedRangeState.value.sortedBy((verseNum, range) => verseNum).mapToIterable((verseNum, range) => bible.getVerseByReference(currentChapterReference.getReference(verseNum)).text.substring(range.$1 - 1, range.$2 - 1)).join()}',
-                              );
                             },
                           ),
                         ),
@@ -139,6 +138,7 @@ class BiblePage extends HookConsumerWidget {
             pageController: pageController,
             selectedReferencesState: selectedReferencesState,
             isScrollingDownState: isScrollingDownState,
+            selectedRangeState: selectedRangeState,
           ),
         ],
       ),
@@ -152,6 +152,7 @@ class _BottomBar extends HookConsumerWidget {
   final ValueNotifier<List<Reference>> selectedReferencesState;
   final ScrollController scrollController;
   final ValueNotifier<bool> isScrollingDownState;
+  final ValueNotifier<Map<int, (int, int)>> selectedRangeState;
 
   const _BottomBar({
     required this.currentChapterReference,
@@ -159,6 +160,7 @@ class _BottomBar extends HookConsumerWidget {
     required this.selectedReferencesState,
     required this.scrollController,
     required this.isScrollingDownState,
+    required this.selectedRangeState,
   });
 
   @override
@@ -173,6 +175,7 @@ class _BottomBar extends HookConsumerWidget {
 
     useListenable(isScrollingDownState);
     useListenable(scrollController);
+    useListenable(selectedRangeState);
 
     final scrollPosition = scrollController.positionsOrNull?.firstOrNull;
     useOnStickyScrollDirectionChanged(
@@ -181,7 +184,9 @@ class _BottomBar extends HookConsumerWidget {
     );
 
     final showBottomBar =
-        (isScrollingDownState.value || scrollPosition?.atEdge == true) && selectedReferencesState.value.isEmpty;
+        (isScrollingDownState.value || scrollPosition?.atEdge == true) &&
+        selectedReferencesState.value.isEmpty &&
+        selectedRangeState.value.isEmpty;
 
     return Stack(
       children: [
@@ -277,7 +282,7 @@ class _BottomBar extends HookConsumerWidget {
           right: 0,
           left: 0,
           child: AnimatedGrow(
-            child: selectedPassage == null
+            child: selectedPassage == null && selectedRangeState.value.isEmpty
                 ? SizedBox.shrink(key: ValueKey('empty'))
                 : Container(
                     width: double.infinity,
@@ -287,61 +292,71 @@ class _BottomBar extends HookConsumerWidget {
                     ),
                     padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
                     child: StyledListItem(
-                      title: Text(selectedPassage.format(), maxLines: 1, overflow: TextOverflow.ellipsis),
+                      title: Text(
+                        selectedPassage?.format() ??
+                            '"${selectedRangeState.value.sortedBy((verseNum, range) => verseNum).mapToIterable((verseNum, range) => bible.getVerseByReference(currentChapterReference.getReference(verseNum)).text.substring(range.$1 - 1, range.$2 - 1)).join()}"',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                       leading: StyledCircleButton(
                         icon: Symbols.close,
                         onPressed: () => selectedReferencesState.value = [],
                       ),
-                      trailing: Row(
-                        children: [
-                          ...PassageAction.values
-                              .take(3)
-                              .map(
-                                (action) => StyledCircleButton(
-                                  child: action.buildIcon(context, user: user, selectedPassage: selectedPassage),
-                                  onPressed: () => action.onPressed(
-                                    context,
-                                    ref,
-                                    user: user,
-                                    selectedPassage: selectedPassage,
-                                    bible: bible,
-                                    deselectVerses: () => selectedReferencesState.value = [],
-                                  ),
-                                ),
-                              ),
-                          StyledCircleButton(
-                            onPressed: () => context.showStyledSheet(
-                              StyledSheet.list(
-                                children: PassageAction.values
+                      trailing: selectedPassage == null
+                          ? null
+                          : Row(
+                              children: [
+                                ...PassageAction.values
+                                    .take(3)
                                     .map(
-                                      (action) => StyledListItem(
-                                        titleText: action.title(user: user, selectedPassage: selectedPassage),
-                                        subtitleText: action.description(user: user, selectedPassage: selectedPassage),
-                                        leading: action.buildIcon(
+                                      (action) => StyledCircleButton(
+                                        child: action.buildIcon(context, user: user, selectedPassage: selectedPassage),
+                                        onPressed: () => action.onPressed(
                                           context,
+                                          ref,
                                           user: user,
                                           selectedPassage: selectedPassage,
+                                          bible: bible,
+                                          deselectVerses: () => selectedReferencesState.value = [],
                                         ),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                          action.onPressed(
-                                            context,
-                                            ref,
-                                            user: user,
-                                            selectedPassage: selectedPassage,
-                                            bible: bible,
-                                            deselectVerses: () => selectedReferencesState.value = [],
-                                          );
-                                        },
                                       ),
-                                    )
-                                    .toList(),
-                              ),
+                                    ),
+                                StyledCircleButton(
+                                  onPressed: () => context.showStyledSheet(
+                                    StyledSheet.list(
+                                      children: PassageAction.values
+                                          .map(
+                                            (action) => StyledListItem(
+                                              titleText: action.title(user: user, selectedPassage: selectedPassage),
+                                              subtitleText: action.description(
+                                                user: user,
+                                                selectedPassage: selectedPassage,
+                                              ),
+                                              leading: action.buildIcon(
+                                                context,
+                                                user: user,
+                                                selectedPassage: selectedPassage,
+                                              ),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                action.onPressed(
+                                                  context,
+                                                  ref,
+                                                  user: user,
+                                                  selectedPassage: selectedPassage,
+                                                  bible: bible,
+                                                  deselectVerses: () => selectedReferencesState.value = [],
+                                                );
+                                              },
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ),
+                                  icon: Symbols.more_vert,
+                                ),
+                              ],
                             ),
-                            icon: Symbols.more_vert,
-                          ),
-                        ],
-                      ),
                     ),
                   ),
           ),

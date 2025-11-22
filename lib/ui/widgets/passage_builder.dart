@@ -59,6 +59,7 @@ class PassageBuilder extends HookConsumerWidget {
                   return SelectionListener(
                     selectionNotifier: selectionListener,
                     child: HighlightedParagraph(
+                      verseNumberWidth: context.textStyle.bibleVerseNumber.getWidth(reference.verseNum.toString()) + 8,
                       TextSpan(
                         children: [
                           WidgetSpan(
