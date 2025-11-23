@@ -1,5 +1,6 @@
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/bible_translation.dart';
+import 'package:bible/models/book_type.dart';
 import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/chapter_reference.dart';
 import 'package:bible/models/color_enum.dart';
@@ -19,13 +20,15 @@ sealed class User with _$User {
 
   const factory User({
     @Default(BibleTranslation.asv) BibleTranslation translation,
-    @Default([]) List<ChapterReference> tabs,
+    @Default(ChapterReference(chapterNum: 1, book: BookType.genesis)) ChapterReference lastReference,
     @Default([]) List<ChapterReference> previouslyViewed,
     @Default({}) Map<String, ColorEnum> highlightByKey,
     @Default(ColorEnum.yellow) ColorEnum highlightColor,
     @Default([]) List<Bookmark> bookmarks,
     @Default([]) List<PassageNote> passageNotes,
   }) = _User;
+
+  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   Bible getBible(List<Bible> bibles) => bibles.firstWhere((bible) => bible.translation == translation);
 
@@ -54,6 +57,4 @@ sealed class User with _$User {
   User withRemovedBookmark(Bookmark bookmark) => copyWith(bookmarks: bookmarks.withRemoved(bookmark));
 
   User withPassageNote(PassageNote note) => copyWith(passageNotes: [...passageNotes, note]);
-
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 }
