@@ -99,7 +99,6 @@ class BiblePage extends HookConsumerWidget {
                             buttonItems: [],
                           ),
                           child: PassageBuilder(
-                            bible: bible,
                             passage: Passage(
                               references: chapter.verses
                                   .mapIndexed((i, verse) => chapterReference.getReference(i + 1))

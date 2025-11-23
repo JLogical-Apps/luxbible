@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/passage.dart';
 import 'package:bible/models/reference.dart';
+import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/highlighted_paragraph.dart';
 import 'package:bible/style/style_context_extensions.dart';
@@ -15,7 +16,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class PassageBuilder extends HookConsumerWidget {
   final Passage passage;
-  final Bible bible;
+  final Bible? bible;
   final Function(Reference)? onReferencePressed;
   final Function(Reference, (int startOffset, int endOffset)?)? onSelectionUpdated;
 
@@ -24,7 +25,7 @@ class PassageBuilder extends HookConsumerWidget {
   const PassageBuilder({
     super.key,
     required this.passage,
-    required this.bible,
+    this.bible,
     this.onReferencePressed,
     this.underlinedReferences = const [],
     this.onSelectionUpdated,
@@ -32,7 +33,9 @@ class PassageBuilder extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final bibles = ref.watch(biblesProvider);
     final user = ref.watch(userProvider);
+    final bible = this.bible ?? user.getBible(bibles);
     return Column(
       children: passage.references.map((reference) {
         final highlightColor = user.highlightByKey[reference.toKey()];
