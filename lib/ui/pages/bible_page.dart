@@ -40,16 +40,11 @@ class BiblePage extends HookConsumerWidget {
     final user = ref.watch(userProvider);
     final bible = user.getBible(bibles);
 
-    final initialReference = user.tabs.firstOrNull;
+    final initialReference = user.lastReference;
 
-    final pageController = usePageController(
-      initialPage: initialReference == null ? 0 : bible.getPageIndexByChapterReference(initialReference),
-    );
+    final pageController = usePageController(initialPage: bible.getPageIndexByChapterReference(initialReference));
 
-    final currentPage =
-        (pageController.pageOrNull ??
-                (initialReference == null ? 0 : bible.getPageIndexByChapterReference(initialReference)))
-            .round();
+    final currentPage = (pageController.pageOrNull ?? bible.getPageIndexByChapterReference(initialReference)).round();
     final currentChapterReference = bible.getChapterReferenceByPageIndex(currentPage);
 
     final selectedReferencesState = useState(<Reference>[]);
@@ -70,7 +65,7 @@ class BiblePage extends HookConsumerWidget {
               selectedRangeState.value = {};
 
               final reference = bible.getChapterReferenceByPageIndex(pageIndex);
-              ref.updateUser((user) => user.copyWith(tabs: [reference]));
+              ref.updateUser((user) => user.copyWith(lastReference: reference));
             },
             itemBuilder: (context, pageIndex) {
               final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
