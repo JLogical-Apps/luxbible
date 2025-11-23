@@ -1,5 +1,5 @@
 import 'package:bible/models/commentary.dart';
-import 'package:bible/models/passage.dart';
+import 'package:bible/models/reference/passage.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:flutter/services.dart';
 import 'package:xml/xml.dart';

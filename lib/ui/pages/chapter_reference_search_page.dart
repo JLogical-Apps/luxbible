@@ -1,6 +1,6 @@
 import 'package:bible/models/bible_translation.dart';
 import 'package:bible/models/book_type.dart';
-import 'package:bible/models/chapter_reference.dart';
+import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
@@ -190,7 +190,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                 child: Row(
                                   spacing: 16,
                                   children: user.bookmarks.map((bookmark) {
-                                    final chapterReference = ChapterReference.fromKey(bookmark.key);
+                                    final chapterReference = ChapterReference.fromOsisId(bookmark.key);
                                     return StyledTile(
                                       onPressed: () => Navigator.of(context).pop(chapterReference),
                                       child: Row(

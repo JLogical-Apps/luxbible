@@ -71,6 +71,8 @@ enum BookType {
   static BookType fromOsisId(String id) =>
       values.firstWhereOrNull((book) => book.osisId() == id) ?? (throw Exception('Could not find book with ID: $id'));
 
+  BookType get next => values[index + 1];
+
   String title() => switch (this) {
     genesis => 'Genesis',
     exodus => 'Exodus',

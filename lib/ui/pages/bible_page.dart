@@ -1,7 +1,8 @@
-import 'package:bible/models/chapter_reference.dart';
-import 'package:bible/models/passage.dart';
 import 'package:bible/models/passage_action.dart';
-import 'package:bible/models/reference.dart';
+import 'package:bible/models/reference/chapter_reference.dart';
+import 'package:bible/models/reference/passage.dart';
+import 'package:bible/models/reference/reference.dart';
+import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:bible/models/toolbar_action.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -60,7 +61,6 @@ class BiblePage extends HookConsumerWidget {
           PageView.builder(
             controller: pageController,
             onPageChanged: (pageIndex) {
-              selectedReferencesState.value = [];
               isScrollingDownState.value = true;
               selectedRangeState.value = {};
 
@@ -69,7 +69,6 @@ class BiblePage extends HookConsumerWidget {
             },
             itemBuilder: (context, pageIndex) {
               final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
-              final chapter = bible.getChapterByReference(chapterReference);
 
               return HookBuilder(
                 builder: (context) {
@@ -94,11 +93,7 @@ class BiblePage extends HookConsumerWidget {
                             buttonItems: [],
                           ),
                           child: PassageBuilder(
-                            passage: Passage(
-                              references: chapter.verses
-                                  .mapIndexed((i, verse) => chapterReference.getReference(i + 1))
-                                  .toList(),
-                            ),
+                            passage: chapterReference.toPassage(),
                             underlinedReferences: selectedReferencesState.value,
                             onReferencePressed: (reference) {
                               final region = selectionKey.currentState?.selectableRegion;
@@ -165,7 +160,9 @@ class _BottomBar extends HookConsumerWidget {
 
     final selectedPassage = selectedReferencesState.value.isEmpty
         ? null
-        : Passage(references: selectedReferencesState.value);
+        : Passage(
+            spans: VerseSpanReference.listFromReferences(selectedReferencesState.value.sortedBy((e) => e).toList()),
+          );
 
     useListenable(isScrollingDownState);
     useListenable(scrollController);

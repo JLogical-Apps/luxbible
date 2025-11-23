@@ -1,4 +1,4 @@
-import 'package:bible/models/passage.dart';
+import 'package:bible/models/reference/passage.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 
 class Commentary {

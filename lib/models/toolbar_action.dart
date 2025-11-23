@@ -1,5 +1,5 @@
 import 'package:bible/models/bookmark.dart';
-import 'package:bible/models/chapter_reference.dart';
+import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/user.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_color_sheet.dart';
@@ -49,7 +49,7 @@ enum ToolbarAction {
         if (bookmark == null) {
           final color = await context.showStyledSheet(StyledColorSheet(titleText: 'Bookmark Color'));
           if (color != null) {
-            ref.updateUser((user) => user.withBookmark(Bookmark(key: reference.toKey(), color: color)));
+            ref.updateUser((user) => user.withBookmark(Bookmark(key: reference.osisId(), color: color)));
           }
         } else {
           ref.updateUser((user) => user.withRemovedBookmark(bookmark));

@@ -1,4 +1,4 @@
-import 'package:bible/models/passage.dart';
+import 'package:bible/models/reference/passage.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -32,7 +32,7 @@ class InterlinearPage extends ConsumerWidget {
       backgroundColor: context.colors.surfacePrimary,
       body: StyledScrollbar(
         child: CustomScrollView(
-          slivers: passage.sortedReferences
+          slivers: passage.references
               .map(
                 (reference) => StyledSliverStickyHeader(
                   titleText: reference.format(),

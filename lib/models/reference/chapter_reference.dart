@@ -1,6 +1,7 @@
 import 'package:bible/models/book_type.dart';
-import 'package:bible/models/passage.dart';
-import 'package:bible/models/reference.dart';
+import 'package:bible/models/reference/passage.dart';
+import 'package:bible/models/reference/reference.dart';
+import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -13,7 +14,7 @@ sealed class ChapterReference with _$ChapterReference {
 
   const factory ChapterReference({required BookType book, required int chapterNum}) = _ChapterReference;
 
-  static ChapterReference fromKey(String key) {
+  static ChapterReference fromOsisId(String key) {
     final items = key.split('.');
     return ChapterReference(
       book: BookType.values.firstWhere((book) => book.osisId() == items[0]),
@@ -25,14 +26,15 @@ sealed class ChapterReference with _$ChapterReference {
 
   Reference getReference(int verseNum) => Reference(book: book, chapterNum: chapterNum, verseNum: verseNum);
 
-  Passage toPassage() => Passage(
-    references: List.generate(
-      book.bookInfo.getNumVerses(chapterNum),
-      (i) => Reference(book: book, chapterNum: chapterNum, verseNum: i + 1),
-    ),
-  );
+  Passage toPassage() => Passage(spans: [VerseSpanReference(start: asPointer())]);
 
-  String toKey() => '${book.osisId()}.$chapterNum';
+  String osisId() => '${book.osisId()}.$chapterNum';
 
   String format() => '${book.title()} $chapterNum';
+
+  List<Reference> get references => List.generate(numVerses, (i) => getReference(i + 1));
+
+  int get numVerses => book.bookInfo.getNumVerses(chapterNum);
+
+  BiblePointer asPointer() => ChapterBiblePointer(reference: this);
 }

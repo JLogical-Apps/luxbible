@@ -7,8 +7,6 @@ extension ListExtensions<T> on List<T> {
   List<T> withRemoved(T item) => [...this]..remove(item);
   List<T> withRemovedAt(int index) => [...this]..removeAt(index);
 
-  List<T> get distinct => toSet().toList();
-
   int? indexOfOrNull(T? item) {
     if (item == null) {
       return null;
@@ -37,6 +35,8 @@ extension IterableExtensions<T> on Iterable<T> {
   bool containsAny(Iterable<T> list) => list.any((item) => contains(item));
 
   Map<K, V> mapToMap<K, V>(MapEntry<K, V> Function(T) mapper) => Map.fromEntries(map(mapper));
+
+  List<T> get distinct => toSet().toList();
 }
 
 extension IntIterableExtensions on Iterable<int> {

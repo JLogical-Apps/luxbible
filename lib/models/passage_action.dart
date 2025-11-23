@@ -1,6 +1,6 @@
 import 'package:bible/models/bible.dart';
-import 'package:bible/models/passage.dart';
 import 'package:bible/models/passage_note.dart';
+import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/user.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_color_sheet.dart';
@@ -120,7 +120,7 @@ enum PassageAction {
         context.showStyledSnackbar(messageText: '${selectedPassage.format()} copied to clipboard.');
         await Clipboard.setData(
           ClipboardData(
-            text: selectedPassage.sortedReferences.map((reference) => bible.getVerseByReference(reference).text).join(),
+            text: selectedPassage.references.map((reference) => bible.getVerseByReference(reference).text).join(),
           ),
         );
       case compare:

@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:bible/models/bible.dart';
-import 'package:bible/models/passage.dart';
-import 'package:bible/models/reference.dart';
+import 'package:bible/models/reference/passage.dart';
+import 'package:bible/models/reference/reference.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/highlighted_paragraph.dart';
@@ -38,8 +38,9 @@ class PassageBuilder extends HookConsumerWidget {
     final bible = this.bible ?? user.getBible(bibles);
     return Column(
       children: passage.references.map((reference) {
-        final highlightColor = user.highlightByKey[reference.toKey()];
-        final hasNote = user.passageNotes.any((note) => Passage.fromOsisId(note.passageKey).hasReference(reference));
+        final highlightColor = null; // user.highlightByKey[reference.toKey()];
+        final hasNote =
+            false; // user.passageNotes.any((note) => Passage.fromOsisId(note.passageKey).hasReference(reference));
         final verse = bible.getVerseByReference(reference);
         return GestureDetector(
           onTap: () => onReferencePressed?.call(reference),
