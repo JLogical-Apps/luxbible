@@ -1,7 +1,7 @@
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_select.dart';
-import 'package:bible/utils/extensions/map_if_non_null.dart';
+import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:flutter/material.dart';
 
 class StyledSelectionSheet<T> extends StatelessWidget {

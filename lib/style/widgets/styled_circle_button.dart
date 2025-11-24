@@ -1,5 +1,5 @@
 import 'package:bible/style/style_context_extensions.dart';
-import 'package:bible/utils/extensions/map_if_non_null.dart';
+import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:flutter/material.dart';
 
 class StyledCircleButton extends StatelessWidget {

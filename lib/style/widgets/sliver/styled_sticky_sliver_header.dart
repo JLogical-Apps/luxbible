@@ -1,6 +1,6 @@
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/styled_divider.dart';
-import 'package:bible/utils/extensions/map_if_non_null.dart';
+import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 

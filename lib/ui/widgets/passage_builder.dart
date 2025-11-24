@@ -8,7 +8,7 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/highlighted_paragraph.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/text_style_extensions.dart';
-import 'package:bible/utils/extensions/map_if_non_null.dart';
+import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/guard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -38,9 +38,7 @@ class PassageBuilder extends HookConsumerWidget {
     final bible = this.bible ?? user.getBible(bibles);
     return Column(
       children: passage.references.map((reference) {
-        final highlightColor = null; // user.highlightByKey[reference.toKey()];
-        final hasNote =
-            false; // user.passageNotes.any((note) => Passage.fromOsisId(note.passageKey).hasReference(reference));
+        final annotations = user.getReferenceAnnotations(Passage.reference(reference));
         final verse = bible.getVerseByReference(reference);
         return GestureDetector(
           onTap: () => onReferencePressed?.call(reference),
@@ -77,9 +75,7 @@ class PassageBuilder extends HookConsumerWidget {
                           decoration: underlinedReferences.contains(reference) ? TextDecoration.underline : null,
                         ),
                       ),
-                      lineColor:
-                          highlightColor?.toHue(context.colors).primary.withValues(alpha: 0.5) ??
-                          (hasNote ? context.colors.contentTertiary.withValues(alpha: 0.5) : null),
+                      lineColor: annotations.firstOrNull?.color.toHue(context.colors).primary.withValues(alpha: 0.5),
                     ),
                   );
                 },

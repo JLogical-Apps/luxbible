@@ -21,7 +21,9 @@ class VerseSpanReference {
   static List<VerseSpanReference> listFromReferences(List<Reference> references) {
     references.sort();
 
-    if (references.length == 1) {
+    if (references.isEmpty) {
+      return [];
+    } else if (references.length == 1) {
       return [VerseSpanReference(start: VerseBiblePointer(reference: references.first), end: null)];
     }
 
@@ -72,6 +74,8 @@ class VerseSpanReference {
   }
 
   String osisId() => [start, end].nonNulls.map((pointer) => pointer.osisId()).join('-');
+
+  bool containsReference(Reference reference) => references.contains(reference);
 }
 
 sealed class BiblePointer {

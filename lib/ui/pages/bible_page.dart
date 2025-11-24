@@ -2,7 +2,6 @@ import 'package:bible/models/passage_action.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:bible/models/toolbar_action.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -160,9 +159,7 @@ class _BottomBar extends HookConsumerWidget {
 
     final selectedPassage = selectedReferencesState.value.isEmpty
         ? null
-        : Passage(
-            spans: VerseSpanReference.listFromReferences(selectedReferencesState.value.sortedBy((e) => e).toList()),
-          );
+        : Passage.fromReferences(selectedReferencesState.value);
 
     useListenable(isScrollingDownState);
     useListenable(scrollController);

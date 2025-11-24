@@ -1,4 +1,4 @@
-import 'package:bible/utils/extensions/map_if_non_null.dart';
+import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:collection/collection.dart';
 
 extension ListExtensions<T> on List<T> {

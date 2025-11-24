@@ -11,6 +11,13 @@ class Passage {
   factory Passage.fromOsisId(String key) =>
       Passage(spans: key.split(' ').map((span) => VerseSpanReference.fromOsisId(span)).toList());
 
+  factory Passage.fromReferences(List<Reference> references) =>
+      Passage(spans: VerseSpanReference.listFromReferences(references));
+
+  factory Passage.reference(Reference reference) => Passage(
+    spans: [VerseSpanReference(start: VerseBiblePointer(reference: reference))],
+  );
+
   factory Passage.fromJson(String json) = Passage.fromOsisId;
   String toJson() => osisId();
 
@@ -19,7 +26,10 @@ class Passage {
   List<Reference> get references =>
       spans.expand((span) => span.references).distinct.sortedBy((reference) => reference).toList();
 
-  bool hasReference(Reference reference) => references.contains(reference);
+  bool get isEmpty => spans.isEmpty;
+
+  bool hasReference(Reference reference) => spans.any((span) => span.containsReference(reference));
+  bool hasAnyOf(Passage passage) => passage.references.any((reference) => hasReference(reference));
 
   String format() => spans.mapIndexed((spanIndex, span) {
     final previousSpan = spanIndex == 0 ? null : spans[spanIndex - 1];
@@ -36,4 +46,10 @@ class Passage {
       ].join('-'),
     ].join(' ');
   }).join();
+
+  Passage withReference(Reference reference) =>
+      hasReference(reference) ? this : Passage.fromReferences(references + [reference]);
+
+  Passage withRemovedPassage(Passage passage) =>
+      Passage.fromReferences(references.where((reference) => !passage.hasReference(reference)).toList());
 }

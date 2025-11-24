@@ -1,6 +1,8 @@
+import 'package:bible/models/annotation.dart';
 import 'package:bible/models/bible.dart';
-import 'package:bible/models/passage_note.dart';
+import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/reference/passage.dart';
+import 'package:bible/models/reference/selection.dart';
 import 'package:bible/models/user.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_color_sheet.dart';
@@ -30,7 +32,7 @@ enum PassageAction {
   commentary;
 
   String title({required User user, required Passage selectedPassage}) => switch (this) {
-    highlight => user.isPassageHighlighted(selectedPassage) ? 'Remove Highlight' : 'Quick Highlight',
+    highlight => user.isPassageAnnotated(selectedPassage) ? 'Remove Highlight' : 'Quick Highlight',
     highlightColor => 'Highlight',
     note => 'Note',
     copy => 'Copy',
@@ -41,7 +43,7 @@ enum PassageAction {
 
   String description({required User user, required Passage selectedPassage}) => switch (this) {
     highlight =>
-      user.isPassageHighlighted(selectedPassage)
+      user.isPassageAnnotated(selectedPassage)
           ? 'Remove highlights from the selected passage.'
           : 'Highlight the selected passage with the last highlight color you used.',
     highlightColor => 'Choose a color to highlight for the selected passage.',
@@ -54,8 +56,8 @@ enum PassageAction {
 
   Widget buildIcon(BuildContext context, {required User user, required Passage selectedPassage}) => switch (this) {
     highlight => Icon(
-      user.isPassageHighlighted(selectedPassage) ? Symbols.ink_eraser : Symbols.format_ink_highlighter,
-      color: user.isPassageHighlighted(selectedPassage) ? null : user.highlightColor.toHue(context.colors).primary,
+      user.isPassageAnnotated(selectedPassage) ? Symbols.ink_eraser : Symbols.format_ink_highlighter,
+      color: user.isPassageAnnotated(selectedPassage) ? null : user.highlightColor.toHue(context.colors).primary,
     ),
     highlightColor => ColoredCircle(color: user.highlightColor.toHue(context.colors).primary, isSelected: true),
     note => Icon(Symbols.note_add),
@@ -76,19 +78,31 @@ enum PassageAction {
     switch (this) {
       case highlight:
         deselectVerses();
-        ref.updateUser((user) => user.withToggledHighlight(passage: selectedPassage, color: user.highlightColor));
+        if (user.isPassageAnnotated(selectedPassage)) {
+          ref.updateUser((user) => user.withRemovedPassageAnnotations(selectedPassage));
+        } else {
+          ref.updateUser(
+            (user) => user.withAnnotation(
+              Annotation(
+                createdAt: DateTime.now(),
+                selection: Selection.passage(passage: selectedPassage),
+                color: user.highlightColor,
+              ),
+            ),
+          );
+        }
       case highlightColor:
         final newColor = await context.showStyledSheet(
           StyledColorSheet(
             titleText: 'Highlight Color',
             initialColor: user.highlightColor,
-            trailing: user.isPassageHighlighted(selectedPassage)
+            trailing: user.isPassageAnnotated(selectedPassage)
                 ? StyledCircleButton(
                     icon: Symbols.ink_eraser,
                     onPressed: () {
                       Navigator.of(context).pop();
                       deselectVerses();
-                      ref.updateUser((user) => user.withRemovedHighlight(passage: selectedPassage));
+                      ref.updateUser((user) => user.withRemovedPassageAnnotations(selectedPassage));
                     },
                   )
                 : null,
@@ -97,7 +111,15 @@ enum PassageAction {
         if (newColor != null) {
           deselectVerses();
           ref.updateUser(
-            (user) => user.withHighlight(passage: selectedPassage, color: newColor).copyWith(highlightColor: newColor),
+            (user) => user
+                .withAnnotation(
+                  Annotation(
+                    color: newColor,
+                    selection: Selection.passage(passage: selectedPassage),
+                    createdAt: DateTime.now(),
+                  ),
+                )
+                .copyWith(highlightColor: newColor),
           );
         }
       case note:
@@ -114,7 +136,16 @@ enum PassageAction {
           ],
         );
         if (note != null) {
-          ref.updateUser((user) => user.withPassageNote(PassageNote(passageKey: selectedPassage.osisId(), note: note)));
+          ref.updateUser(
+            (user) => user.withAnnotation(
+              Annotation(
+                selection: Selection.passage(passage: selectedPassage),
+                createdAt: DateTime.now(),
+                color: ColorEnum.stone,
+                note: note,
+              ),
+            ),
+          );
         }
       case copy:
         context.showStyledSnackbar(messageText: '${selectedPassage.format()} copied to clipboard.');
