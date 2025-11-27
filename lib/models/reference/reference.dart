@@ -1,7 +1,9 @@
 import 'package:bible/models/book_type.dart';
+import 'package:bible/utils/comparable_operators.dart';
+import 'package:bible/utils/extensions/num_extensions.dart';
 import 'package:equatable/equatable.dart';
 
-class Reference extends Equatable implements Comparable<Reference> {
+class Reference extends Equatable with ComparableOperators<Reference> {
   final BookType book;
   final int chapterNum;
   final int verseNum;
@@ -38,19 +40,21 @@ class Reference extends Equatable implements Comparable<Reference> {
     return Reference(book: book.next, chapterNum: 1, verseNum: 1);
   }
 
-  bool operator <(Reference reference) => compareTo(reference) < 0;
+  static Iterable<Reference> getReferencesBetween(Reference start, Reference end) sync* {
+    var reference = start;
+    yield reference;
+    while (reference != end) {
+      reference = reference.next;
+      yield reference;
+    }
+  }
 
   @override
   List<Object?> get props => [book, chapterNum, verseNum];
 
   @override
-  int compareTo(Reference other) {
-    final byBook = book.index.compareTo(other.book.index);
-    if (byBook != 0) return byBook;
-
-    final byChapter = chapterNum.compareTo(other.chapterNum);
-    if (byChapter != 0) return byChapter;
-
-    return verseNum.compareTo(other.verseNum);
-  }
+  int compareTo(Reference other) =>
+      book.index.compareTo(other.book.index).nullIfZero ??
+      chapterNum.compareTo(other.chapterNum).nullIfZero ??
+      verseNum.compareTo(other.verseNum);
 }

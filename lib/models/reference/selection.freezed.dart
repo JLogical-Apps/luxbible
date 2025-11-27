@@ -11,34 +11,16 @@ part of 'selection.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
-Selection _$SelectionFromJson(
-  Map<String, dynamic> json
-) {
-        switch (json['runtimeType']) {
-                  case 'passage':
-          return PassageSelection.fromJson(
-            json
-          );
-                case 'words':
-          return WordsSelection.fromJson(
-            json
-          );
-        
-          default:
-            throw CheckedFromJsonException(
-  json,
-  'runtimeType',
-  'Selection',
-  'Invalid union type "${json['runtimeType']}"!'
-);
-        }
-      
-}
 
 /// @nodoc
 mixin _$Selection {
 
-
+ SelectionWordAnchor get start; SelectionWordAnchor get end; BibleTranslation get translation;
+/// Create a copy of Selection
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SelectionCopyWith<Selection> get copyWith => _$SelectionCopyWithImpl<Selection>(this as Selection, _$identity);
 
   /// Serializes this Selection to a JSON map.
   Map<String, dynamic> toJson();
@@ -46,24 +28,52 @@ mixin _$Selection {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Selection);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Selection&&(identical(other.start, start) || other.start == start)&&(identical(other.end, end) || other.end == end)&&(identical(other.translation, translation) || other.translation == translation));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,start,end,translation);
 
 @override
 String toString() {
-  return 'Selection()';
+  return 'Selection(start: $start, end: $end, translation: $translation)';
 }
 
 
 }
 
 /// @nodoc
-class $SelectionCopyWith<$Res>  {
-$SelectionCopyWith(Selection _, $Res Function(Selection) __);
+abstract mixin class $SelectionCopyWith<$Res>  {
+  factory $SelectionCopyWith(Selection value, $Res Function(Selection) _then) = _$SelectionCopyWithImpl;
+@useResult
+$Res call({
+ SelectionWordAnchor start, SelectionWordAnchor end, BibleTranslation translation
+});
+
+
+
+
+}
+/// @nodoc
+class _$SelectionCopyWithImpl<$Res>
+    implements $SelectionCopyWith<$Res> {
+  _$SelectionCopyWithImpl(this._self, this._then);
+
+  final Selection _self;
+  final $Res Function(Selection) _then;
+
+/// Create a copy of Selection
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? start = null,Object? end = null,Object? translation = null,}) {
+  return _then(_self.copyWith(
+start: null == start ? _self.start : start // ignore: cast_nullable_to_non_nullable
+as SelectionWordAnchor,end: null == end ? _self.end : end // ignore: cast_nullable_to_non_nullable
+as SelectionWordAnchor,translation: null == translation ? _self.translation : translation // ignore: cast_nullable_to_non_nullable
+as BibleTranslation,
+  ));
+}
+
 }
 
 
@@ -81,12 +91,11 @@ extension SelectionPatterns on Selection {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( PassageSelection value)?  passage,TResult Function( WordsSelection value)?  words,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _Selection value)?  $default,{required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case PassageSelection() when passage != null:
-return passage(_that);case WordsSelection() when words != null:
-return words(_that);case _:
+case _Selection() when $default != null:
+return $default(_that);case _:
   return orElse();
 
 }
@@ -104,12 +113,11 @@ return words(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( PassageSelection value)  passage,required TResult Function( WordsSelection value)  words,}){
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _Selection value)  $default,){
 final _that = this;
 switch (_that) {
-case PassageSelection():
-return passage(_that);case WordsSelection():
-return words(_that);}
+case _Selection():
+return $default(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -123,12 +131,11 @@ return words(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( PassageSelection value)?  passage,TResult? Function( WordsSelection value)?  words,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _Selection value)?  $default,){
 final _that = this;
 switch (_that) {
-case PassageSelection() when passage != null:
-return passage(_that);case WordsSelection() when words != null:
-return words(_that);case _:
+case _Selection() when $default != null:
+return $default(_that);case _:
   return null;
 
 }
@@ -145,11 +152,10 @@ return words(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( Passage passage)?  passage,TResult Function( SelectionWordAnchor start,  SelectionWordAnchor end,  BibleTranslation translation)?  words,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( SelectionWordAnchor start,  SelectionWordAnchor end,  BibleTranslation translation)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case PassageSelection() when passage != null:
-return passage(_that.passage);case WordsSelection() when words != null:
-return words(_that.start,_that.end,_that.translation);case _:
+case _Selection() when $default != null:
+return $default(_that.start,_that.end,_that.translation);case _:
   return orElse();
 
 }
@@ -167,11 +173,10 @@ return words(_that.start,_that.end,_that.translation);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( Passage passage)  passage,required TResult Function( SelectionWordAnchor start,  SelectionWordAnchor end,  BibleTranslation translation)  words,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( SelectionWordAnchor start,  SelectionWordAnchor end,  BibleTranslation translation)  $default,) {final _that = this;
 switch (_that) {
-case PassageSelection():
-return passage(_that.passage);case WordsSelection():
-return words(_that.start,_that.end,_that.translation);}
+case _Selection():
+return $default(_that.start,_that.end,_that.translation);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -185,11 +190,10 @@ return words(_that.start,_that.end,_that.translation);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( Passage passage)?  passage,TResult? Function( SelectionWordAnchor start,  SelectionWordAnchor end,  BibleTranslation translation)?  words,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( SelectionWordAnchor start,  SelectionWordAnchor end,  BibleTranslation translation)?  $default,) {final _that = this;
 switch (_that) {
-case PassageSelection() when passage != null:
-return passage(_that.passage);case WordsSelection() when words != null:
-return words(_that.start,_that.end,_that.translation);case _:
+case _Selection() when $default != null:
+return $default(_that.start,_that.end,_that.translation);case _:
   return null;
 
 }
@@ -200,105 +204,28 @@ return words(_that.start,_that.end,_that.translation);case _:
 /// @nodoc
 @JsonSerializable()
 
-class PassageSelection extends Selection {
-  const PassageSelection({required this.passage, final  String? $type}): $type = $type ?? 'passage',super._();
-  factory PassageSelection.fromJson(Map<String, dynamic> json) => _$PassageSelectionFromJson(json);
+class _Selection extends Selection {
+  const _Selection({required this.start, required this.end, required this.translation}): super._();
+  factory _Selection.fromJson(Map<String, dynamic> json) => _$SelectionFromJson(json);
 
- final  Passage passage;
-
-@JsonKey(name: 'runtimeType')
-final String $type;
-
+@override final  SelectionWordAnchor start;
+@override final  SelectionWordAnchor end;
+@override final  BibleTranslation translation;
 
 /// Create a copy of Selection
 /// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
+@override @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$PassageSelectionCopyWith<PassageSelection> get copyWith => _$PassageSelectionCopyWithImpl<PassageSelection>(this, _$identity);
+_$SelectionCopyWith<_Selection> get copyWith => __$SelectionCopyWithImpl<_Selection>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$PassageSelectionToJson(this, );
+  return _$SelectionToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PassageSelection&&(identical(other.passage, passage) || other.passage == passage));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,passage);
-
-@override
-String toString() {
-  return 'Selection.passage(passage: $passage)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $PassageSelectionCopyWith<$Res> implements $SelectionCopyWith<$Res> {
-  factory $PassageSelectionCopyWith(PassageSelection value, $Res Function(PassageSelection) _then) = _$PassageSelectionCopyWithImpl;
-@useResult
-$Res call({
- Passage passage
-});
-
-
-
-
-}
-/// @nodoc
-class _$PassageSelectionCopyWithImpl<$Res>
-    implements $PassageSelectionCopyWith<$Res> {
-  _$PassageSelectionCopyWithImpl(this._self, this._then);
-
-  final PassageSelection _self;
-  final $Res Function(PassageSelection) _then;
-
-/// Create a copy of Selection
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? passage = null,}) {
-  return _then(PassageSelection(
-passage: null == passage ? _self.passage : passage // ignore: cast_nullable_to_non_nullable
-as Passage,
-  ));
-}
-
-
-}
-
-/// @nodoc
-@JsonSerializable()
-
-class WordsSelection extends Selection {
-  const WordsSelection({required this.start, required this.end, required this.translation, final  String? $type}): $type = $type ?? 'words',super._();
-  factory WordsSelection.fromJson(Map<String, dynamic> json) => _$WordsSelectionFromJson(json);
-
- final  SelectionWordAnchor start;
- final  SelectionWordAnchor end;
- final  BibleTranslation translation;
-
-@JsonKey(name: 'runtimeType')
-final String $type;
-
-
-/// Create a copy of Selection
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$WordsSelectionCopyWith<WordsSelection> get copyWith => _$WordsSelectionCopyWithImpl<WordsSelection>(this, _$identity);
-
-@override
-Map<String, dynamic> toJson() {
-  return _$WordsSelectionToJson(this, );
-}
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is WordsSelection&&(identical(other.start, start) || other.start == start)&&(identical(other.end, end) || other.end == end)&&(identical(other.translation, translation) || other.translation == translation));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Selection&&(identical(other.start, start) || other.start == start)&&(identical(other.end, end) || other.end == end)&&(identical(other.translation, translation) || other.translation == translation));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -307,16 +234,16 @@ int get hashCode => Object.hash(runtimeType,start,end,translation);
 
 @override
 String toString() {
-  return 'Selection.words(start: $start, end: $end, translation: $translation)';
+  return 'Selection(start: $start, end: $end, translation: $translation)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $WordsSelectionCopyWith<$Res> implements $SelectionCopyWith<$Res> {
-  factory $WordsSelectionCopyWith(WordsSelection value, $Res Function(WordsSelection) _then) = _$WordsSelectionCopyWithImpl;
-@useResult
+abstract mixin class _$SelectionCopyWith<$Res> implements $SelectionCopyWith<$Res> {
+  factory _$SelectionCopyWith(_Selection value, $Res Function(_Selection) _then) = __$SelectionCopyWithImpl;
+@override @useResult
 $Res call({
  SelectionWordAnchor start, SelectionWordAnchor end, BibleTranslation translation
 });
@@ -326,17 +253,17 @@ $Res call({
 
 }
 /// @nodoc
-class _$WordsSelectionCopyWithImpl<$Res>
-    implements $WordsSelectionCopyWith<$Res> {
-  _$WordsSelectionCopyWithImpl(this._self, this._then);
+class __$SelectionCopyWithImpl<$Res>
+    implements _$SelectionCopyWith<$Res> {
+  __$SelectionCopyWithImpl(this._self, this._then);
 
-  final WordsSelection _self;
-  final $Res Function(WordsSelection) _then;
+  final _Selection _self;
+  final $Res Function(_Selection) _then;
 
 /// Create a copy of Selection
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? start = null,Object? end = null,Object? translation = null,}) {
-  return _then(WordsSelection(
+@override @pragma('vm:prefer-inline') $Res call({Object? start = null,Object? end = null,Object? translation = null,}) {
+  return _then(_Selection(
 start: null == start ? _self.start : start // ignore: cast_nullable_to_non_nullable
 as SelectionWordAnchor,end: null == end ? _self.end : end // ignore: cast_nullable_to_non_nullable
 as SelectionWordAnchor,translation: null == translation ? _self.translation : translation // ignore: cast_nullable_to_non_nullable

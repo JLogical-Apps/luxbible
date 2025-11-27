@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Annotation {
 
- Selection get selection; ColorEnum get color; String? get note; DateTime get createdAt;
+ List<Selection> get selections; List<Passage> get passages; ColorEnum get color; String? get note; DateTime get createdAt;
 /// Create a copy of Annotation
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $AnnotationCopyWith<Annotation> get copyWith => _$AnnotationCopyWithImpl<Annotat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Annotation&&(identical(other.selection, selection) || other.selection == selection)&&(identical(other.color, color) || other.color == color)&&(identical(other.note, note) || other.note == note)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Annotation&&const DeepCollectionEquality().equals(other.selections, selections)&&const DeepCollectionEquality().equals(other.passages, passages)&&(identical(other.color, color) || other.color == color)&&(identical(other.note, note) || other.note == note)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,selection,color,note,createdAt);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(selections),const DeepCollectionEquality().hash(passages),color,note,createdAt);
 
 @override
 String toString() {
-  return 'Annotation(selection: $selection, color: $color, note: $note, createdAt: $createdAt)';
+  return 'Annotation(selections: $selections, passages: $passages, color: $color, note: $note, createdAt: $createdAt)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $AnnotationCopyWith<$Res>  {
   factory $AnnotationCopyWith(Annotation value, $Res Function(Annotation) _then) = _$AnnotationCopyWithImpl;
 @useResult
 $Res call({
- Selection selection, ColorEnum color, String? note, DateTime createdAt
+ List<Selection> selections, List<Passage> passages, ColorEnum color, String? note, DateTime createdAt
 });
 
 
-$SelectionCopyWith<$Res> get selection;
+
 
 }
 /// @nodoc
@@ -65,25 +65,17 @@ class _$AnnotationCopyWithImpl<$Res>
 
 /// Create a copy of Annotation
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? selection = null,Object? color = null,Object? note = freezed,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? selections = null,Object? passages = null,Object? color = null,Object? note = freezed,Object? createdAt = null,}) {
   return _then(_self.copyWith(
-selection: null == selection ? _self.selection : selection // ignore: cast_nullable_to_non_nullable
-as Selection,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
+selections: null == selections ? _self.selections : selections // ignore: cast_nullable_to_non_nullable
+as List<Selection>,passages: null == passages ? _self.passages : passages // ignore: cast_nullable_to_non_nullable
+as List<Passage>,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
 as ColorEnum,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
 }
-/// Create a copy of Annotation
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$SelectionCopyWith<$Res> get selection {
-  
-  return $SelectionCopyWith<$Res>(_self.selection, (value) {
-    return _then(_self.copyWith(selection: value));
-  });
-}
+
 }
 
 
@@ -162,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Selection selection,  ColorEnum color,  String? note,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<Selection> selections,  List<Passage> passages,  ColorEnum color,  String? note,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Annotation() when $default != null:
-return $default(_that.selection,_that.color,_that.note,_that.createdAt);case _:
+return $default(_that.selections,_that.passages,_that.color,_that.note,_that.createdAt);case _:
   return orElse();
 
 }
@@ -183,10 +175,10 @@ return $default(_that.selection,_that.color,_that.note,_that.createdAt);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Selection selection,  ColorEnum color,  String? note,  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<Selection> selections,  List<Passage> passages,  ColorEnum color,  String? note,  DateTime createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _Annotation():
-return $default(_that.selection,_that.color,_that.note,_that.createdAt);}
+return $default(_that.selections,_that.passages,_that.color,_that.note,_that.createdAt);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -200,10 +192,10 @@ return $default(_that.selection,_that.color,_that.note,_that.createdAt);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Selection selection,  ColorEnum color,  String? note,  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<Selection> selections,  List<Passage> passages,  ColorEnum color,  String? note,  DateTime createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Annotation() when $default != null:
-return $default(_that.selection,_that.color,_that.note,_that.createdAt);case _:
+return $default(_that.selections,_that.passages,_that.color,_that.note,_that.createdAt);case _:
   return null;
 
 }
@@ -215,10 +207,23 @@ return $default(_that.selection,_that.color,_that.note,_that.createdAt);case _:
 @JsonSerializable()
 
 class _Annotation extends Annotation {
-  const _Annotation({required this.selection, this.color = ColorEnum.stone, this.note, required this.createdAt}): super._();
+  const _Annotation({final  List<Selection> selections = const [], final  List<Passage> passages = const [], this.color = ColorEnum.stone, this.note, required this.createdAt}): _selections = selections,_passages = passages,super._();
   factory _Annotation.fromJson(Map<String, dynamic> json) => _$AnnotationFromJson(json);
 
-@override final  Selection selection;
+ final  List<Selection> _selections;
+@override@JsonKey() List<Selection> get selections {
+  if (_selections is EqualUnmodifiableListView) return _selections;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_selections);
+}
+
+ final  List<Passage> _passages;
+@override@JsonKey() List<Passage> get passages {
+  if (_passages is EqualUnmodifiableListView) return _passages;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_passages);
+}
+
 @override@JsonKey() final  ColorEnum color;
 @override final  String? note;
 @override final  DateTime createdAt;
@@ -236,16 +241,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Annotation&&(identical(other.selection, selection) || other.selection == selection)&&(identical(other.color, color) || other.color == color)&&(identical(other.note, note) || other.note == note)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Annotation&&const DeepCollectionEquality().equals(other._selections, _selections)&&const DeepCollectionEquality().equals(other._passages, _passages)&&(identical(other.color, color) || other.color == color)&&(identical(other.note, note) || other.note == note)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,selection,color,note,createdAt);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_selections),const DeepCollectionEquality().hash(_passages),color,note,createdAt);
 
 @override
 String toString() {
-  return 'Annotation(selection: $selection, color: $color, note: $note, createdAt: $createdAt)';
+  return 'Annotation(selections: $selections, passages: $passages, color: $color, note: $note, createdAt: $createdAt)';
 }
 
 
@@ -256,11 +261,11 @@ abstract mixin class _$AnnotationCopyWith<$Res> implements $AnnotationCopyWith<$
   factory _$AnnotationCopyWith(_Annotation value, $Res Function(_Annotation) _then) = __$AnnotationCopyWithImpl;
 @override @useResult
 $Res call({
- Selection selection, ColorEnum color, String? note, DateTime createdAt
+ List<Selection> selections, List<Passage> passages, ColorEnum color, String? note, DateTime createdAt
 });
 
 
-@override $SelectionCopyWith<$Res> get selection;
+
 
 }
 /// @nodoc
@@ -273,26 +278,18 @@ class __$AnnotationCopyWithImpl<$Res>
 
 /// Create a copy of Annotation
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? selection = null,Object? color = null,Object? note = freezed,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? selections = null,Object? passages = null,Object? color = null,Object? note = freezed,Object? createdAt = null,}) {
   return _then(_Annotation(
-selection: null == selection ? _self.selection : selection // ignore: cast_nullable_to_non_nullable
-as Selection,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
+selections: null == selections ? _self._selections : selections // ignore: cast_nullable_to_non_nullable
+as List<Selection>,passages: null == passages ? _self._passages : passages // ignore: cast_nullable_to_non_nullable
+as List<Passage>,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
 as ColorEnum,note: freezed == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
 }
 
-/// Create a copy of Annotation
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$SelectionCopyWith<$Res> get selection {
-  
-  return $SelectionCopyWith<$Res>(_self.selection, (value) {
-    return _then(_self.copyWith(selection: value));
-  });
-}
+
 }
 
 // dart format on

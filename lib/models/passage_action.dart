@@ -2,7 +2,6 @@ import 'package:bible/models/annotation.dart';
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/reference/passage.dart';
-import 'package:bible/models/reference/selection.dart';
 import 'package:bible/models/user.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_color_sheet.dart';
@@ -47,7 +46,7 @@ enum PassageAction {
           ? 'Remove highlights from the selected passage.'
           : 'Highlight the selected passage with the last highlight color you used.',
     highlightColor => 'Choose a color to highlight for the selected passage.',
-    note => 'Add a note for the selected passage.',
+    note => 'Add a note to the selected passage.',
     copy => 'Copy the selected passage to your clipboard.',
     compare => 'Compare the selected passage across a variety of translations.',
     interlinear => 'View a lexical breakdown of the selected passage using Strong\'s lexicon.',
@@ -73,21 +72,17 @@ enum PassageAction {
     required User user,
     required Passage selectedPassage,
     required Bible bible,
-    required Function() deselectVerses,
+    required Function() onDeselect,
   }) async {
     switch (this) {
       case highlight:
-        deselectVerses();
+        onDeselect();
         if (user.isPassageAnnotated(selectedPassage)) {
           ref.updateUser((user) => user.withRemovedPassageAnnotations(selectedPassage));
         } else {
           ref.updateUser(
             (user) => user.withAnnotation(
-              Annotation(
-                createdAt: DateTime.now(),
-                selection: Selection.passage(passage: selectedPassage),
-                color: user.highlightColor,
-              ),
+              Annotation(createdAt: DateTime.now(), passages: [selectedPassage], color: user.highlightColor),
             ),
           );
         }
@@ -101,7 +96,7 @@ enum PassageAction {
                     icon: Symbols.ink_eraser,
                     onPressed: () {
                       Navigator.of(context).pop();
-                      deselectVerses();
+                      onDeselect();
                       ref.updateUser((user) => user.withRemovedPassageAnnotations(selectedPassage));
                     },
                   )
@@ -109,16 +104,10 @@ enum PassageAction {
           ),
         );
         if (newColor != null) {
-          deselectVerses();
+          onDeselect();
           ref.updateUser(
             (user) => user
-                .withAnnotation(
-                  Annotation(
-                    color: newColor,
-                    selection: Selection.passage(passage: selectedPassage),
-                    createdAt: DateTime.now(),
-                  ),
-                )
+                .withAnnotation(Annotation(color: newColor, passages: [selectedPassage], createdAt: DateTime.now()))
                 .copyWith(highlightColor: newColor),
           );
         }
@@ -138,12 +127,7 @@ enum PassageAction {
         if (note != null) {
           ref.updateUser(
             (user) => user.withAnnotation(
-              Annotation(
-                selection: Selection.passage(passage: selectedPassage),
-                createdAt: DateTime.now(),
-                color: ColorEnum.stone,
-                note: note,
-              ),
+              Annotation(passages: [selectedPassage], createdAt: DateTime.now(), color: ColorEnum.stone, note: note),
             ),
           );
         }

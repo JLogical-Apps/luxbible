@@ -48,3 +48,10 @@ bool useIsFirstFrame() {
   usePostFrameEffect(() => isFirstFrameState.value = false);
   return isFirstFrameState.value;
 }
+
+void useOnDispose(Function() disposer, [List<Object?>? keys]) => useEffect(() => disposer, keys ?? []);
+
+T useDisposable<T>(T object, Function(T) onDispose) {
+  useOnDispose(() => onDispose(object), [object]);
+  return object;
+}

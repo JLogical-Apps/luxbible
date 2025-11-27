@@ -2,6 +2,8 @@ import 'package:bible/models/passage_action.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
+import 'package:bible/models/reference/selection.dart';
+import 'package:bible/models/selection_action.dart';
 import 'package:bible/models/toolbar_action.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -52,7 +54,8 @@ class BiblePage extends HookConsumerWidget {
     final scrollController = useScrollController();
     final isScrollingDownState = useMemoized(() => ValueNotifier(true));
 
-    final selectedRangeState = useMemoized(() => ValueNotifier(<int, (int, int)>{}));
+    final selectionState = useMemoized(() => ValueNotifier<Selection?>(null));
+    final selectionKeyByPageIndexRef = useRef(<int, GlobalKey<SelectionAreaState>>{});
 
     return StyledPage(
       body: Stack(
@@ -61,7 +64,7 @@ class BiblePage extends HookConsumerWidget {
             controller: pageController,
             onPageChanged: (pageIndex) {
               isScrollingDownState.value = true;
-              selectedRangeState.value = {};
+              selectionState.value = null;
 
               final reference = bible.getChapterReferenceByPageIndex(pageIndex);
               ref.updateUser((user) => user.copyWith(lastReference: reference));
@@ -72,6 +75,21 @@ class BiblePage extends HookConsumerWidget {
               return HookBuilder(
                 builder: (context) {
                   final selectionKey = useMemoized(() => GlobalKey<SelectionAreaState>());
+                  useEffect(() {
+                    WidgetsBinding.instance.addPostFrameCallback(
+                      (_) => selectionKeyByPageIndexRef.value = {
+                        ...selectionKeyByPageIndexRef.value,
+                        pageIndex: selectionKey,
+                      },
+                    );
+                    return () {
+                      selectionKey.currentState?.selectableRegion.clearSelection();
+                      WidgetsBinding.instance.addPostFrameCallback(
+                        (_) =>
+                            selectionKeyByPageIndexRef.value = {...selectionKeyByPageIndexRef.value}..remove(pageIndex),
+                      );
+                    };
+                  });
 
                   return StyledScrollbar(
                     child: ListView(
@@ -102,15 +120,12 @@ class BiblePage extends HookConsumerWidget {
                                 region.clearSelection();
                               }
                             },
-                            onSelectionUpdated: (reference, range) {
+                            onSelectionUpdated: (selection) => WidgetsBinding.instance.addPostFrameCallback((_) {
                               if (selectedReferencesState.value.isNotEmpty) {
                                 selectedReferencesState.value = [];
                               }
-                              final newRange = range == null
-                                  ? ({...selectedRangeState.value}..remove(reference.verseNum))
-                                  : {...selectedRangeState.value, reference.verseNum: range};
-                              selectedRangeState.value = newRange;
-                            },
+                              selectionState.value = selection;
+                            }),
                           ),
                         ),
                       ],
@@ -126,7 +141,8 @@ class BiblePage extends HookConsumerWidget {
             pageController: pageController,
             selectedReferencesState: selectedReferencesState,
             isScrollingDownState: isScrollingDownState,
-            selectedRangeState: selectedRangeState,
+            selectionState: selectionState,
+            selectionKey: selectionKeyByPageIndexRef.value[currentPage],
           ),
         ],
       ),
@@ -140,7 +156,8 @@ class _BottomBar extends HookConsumerWidget {
   final ValueNotifier<List<Reference>> selectedReferencesState;
   final ScrollController scrollController;
   final ValueNotifier<bool> isScrollingDownState;
-  final ValueNotifier<Map<int, (int, int)>> selectedRangeState;
+  final ValueNotifier<Selection?> selectionState;
+  final GlobalKey<SelectionAreaState>? selectionKey;
 
   const _BottomBar({
     required this.currentChapterReference,
@@ -148,7 +165,8 @@ class _BottomBar extends HookConsumerWidget {
     required this.selectedReferencesState,
     required this.scrollController,
     required this.isScrollingDownState,
-    required this.selectedRangeState,
+    required this.selectionState,
+    required this.selectionKey,
   });
 
   @override
@@ -157,13 +175,15 @@ class _BottomBar extends HookConsumerWidget {
     final user = ref.watch(userProvider);
     final bible = user.getBible(bibles);
 
+    useListenable(isScrollingDownState);
+    useListenable(scrollController);
+    final selection = useListenable(selectionState).value;
+
     final selectedPassage = selectedReferencesState.value.isEmpty
         ? null
         : Passage.fromReferences(selectedReferencesState.value);
 
-    useListenable(isScrollingDownState);
-    useListenable(scrollController);
-    useListenable(selectedRangeState);
+    final selectedText = selection == null ? null : bible.getSelectionText(selection);
 
     final scrollPosition = scrollController.positionsOrNull?.firstOrNull;
     useOnStickyScrollDirectionChanged(
@@ -172,9 +192,7 @@ class _BottomBar extends HookConsumerWidget {
     );
 
     final showBottomBar =
-        (isScrollingDownState.value || scrollPosition?.atEdge == true) &&
-        selectedReferencesState.value.isEmpty &&
-        selectedRangeState.value.isEmpty;
+        (isScrollingDownState.value || scrollPosition?.atEdge == true) && selectedPassage == null && selection == null;
 
     return Stack(
       children: [
@@ -270,7 +288,7 @@ class _BottomBar extends HookConsumerWidget {
           right: 0,
           left: 0,
           child: AnimatedGrow(
-            child: selectedPassage == null && selectedRangeState.value.isEmpty
+            child: selectedPassage == null && selection == null
                 ? SizedBox.shrink(key: ValueKey('empty'))
                 : Container(
                     width: double.infinity,
@@ -281,18 +299,19 @@ class _BottomBar extends HookConsumerWidget {
                     padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
                     child: StyledListItem(
                       title: Text(
-                        selectedPassage?.format() ??
-                            '"${selectedRangeState.value.sortedBy((verseNum, range) => verseNum).mapToIterable((verseNum, range) => bible.getVerseByReference(currentChapterReference.getReference(verseNum)).text.substring(range.$1 - 1, range.$2 - 1)).join()}"',
+                        selectedPassage?.format() ?? '"$selectedText"',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                       leading: StyledCircleButton(
                         icon: Symbols.close,
-                        onPressed: () => selectedReferencesState.value = [],
+                        onPressed: () {
+                          selectionKey?.currentState?.selectableRegion.clearSelection();
+                          selectedReferencesState.value = [];
+                        },
                       ),
-                      trailing: selectedPassage == null
-                          ? null
-                          : Row(
+                      trailing: selectedPassage != null
+                          ? Row(
                               children: [
                                 ...PassageAction.values
                                     .take(3)
@@ -305,7 +324,7 @@ class _BottomBar extends HookConsumerWidget {
                                           user: user,
                                           selectedPassage: selectedPassage,
                                           bible: bible,
-                                          deselectVerses: () => selectedReferencesState.value = [],
+                                          onDeselect: () => selectedReferencesState.value = [],
                                         ),
                                       ),
                                     ),
@@ -333,7 +352,7 @@ class _BottomBar extends HookConsumerWidget {
                                                   user: user,
                                                   selectedPassage: selectedPassage,
                                                   bible: bible,
-                                                  deselectVerses: () => selectedReferencesState.value = [],
+                                                  onDeselect: () => selectedReferencesState.value = [],
                                                 );
                                               },
                                             ),
@@ -344,7 +363,57 @@ class _BottomBar extends HookConsumerWidget {
                                   icon: Symbols.more_vert,
                                 ),
                               ],
-                            ),
+                            )
+                          : selection != null
+                          ? Row(
+                              children: [
+                                ...SelectionAction.values
+                                    .take(3)
+                                    .map(
+                                      (action) => StyledCircleButton(
+                                        child: action.buildIcon(context, user: user, selection: selection),
+                                        onPressed: () => action.onPressed(
+                                          context,
+                                          ref,
+                                          user: user,
+                                          selection: selection,
+                                          bible: bible,
+                                          onDeselect: () =>
+                                              selectionKey?.currentState?.selectableRegion.clearSelection(),
+                                        ),
+                                      ),
+                                    ),
+                                StyledCircleButton(
+                                  onPressed: () => context.showStyledSheet(
+                                    StyledSheet.list(
+                                      children: SelectionAction.values
+                                          .map(
+                                            (action) => StyledListItem(
+                                              titleText: action.title(user: user, selection: selection),
+                                              subtitleText: action.description(user: user, selection: selection),
+                                              leading: action.buildIcon(context, user: user, selection: selection),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                action.onPressed(
+                                                  context,
+                                                  ref,
+                                                  user: user,
+                                                  selection: selection,
+                                                  bible: bible,
+                                                  onDeselect: () =>
+                                                      selectionKey?.currentState?.selectableRegion.clearSelection(),
+                                                );
+                                              },
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ),
+                                  icon: Symbols.more_vert,
+                                ),
+                              ],
+                            )
+                          : null,
                     ),
                   ),
           ),

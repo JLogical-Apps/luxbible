@@ -27,6 +27,7 @@ class Passage {
       spans.expand((span) => span.references).distinct.sortedBy((reference) => reference).toList();
 
   bool get isEmpty => spans.isEmpty;
+  bool get isNotEmpty => spans.isNotEmpty;
 
   bool hasReference(Reference reference) => spans.any((span) => span.containsReference(reference));
   bool hasAnyOf(Passage passage) => passage.references.any((reference) => hasReference(reference));
@@ -49,7 +50,4 @@ class Passage {
 
   Passage withReference(Reference reference) =>
       hasReference(reference) ? this : Passage.fromReferences(references + [reference]);
-
-  Passage withRemovedPassage(Passage passage) =>
-      Passage.fromReferences(references.where((reference) => !passage.hasReference(reference)).toList());
 }

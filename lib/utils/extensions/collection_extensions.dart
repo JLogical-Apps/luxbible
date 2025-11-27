@@ -37,6 +37,11 @@ extension IterableExtensions<T> on Iterable<T> {
   Map<K, V> mapToMap<K, V>(MapEntry<K, V> Function(T) mapper) => Map.fromEntries(map(mapper));
 
   List<T> get distinct => toSet().toList();
+
+  T maxBy(num Function(T) numMapper) => reduce((a, b) => numMapper(a) > numMapper(b) ? a : b);
+  T minBy(num Function(T) numMapper) => reduce((a, b) => numMapper(a) < numMapper(b) ? a : b);
+  T? maxByOrNull(num Function(T) numMapper) => isEmpty ? null : reduce((a, b) => numMapper(a) > numMapper(b) ? a : b);
+  T? minByOrNull(num Function(T) numMapper) => isEmpty ? null : reduce((a, b) => numMapper(a) < numMapper(b) ? a : b);
 }
 
 extension IntIterableExtensions on Iterable<int> {

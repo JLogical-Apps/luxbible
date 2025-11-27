@@ -36,7 +36,7 @@ class HighlightedParagraph extends StatelessWidget {
                 painter: _LineHighlightPainter(
                   paragraph: paragraph,
                   lineColor: lineColor,
-                  radius: 8,
+                  radius: 4,
                   horizontalInset: 4,
                   verticalInset: -3,
                 ),

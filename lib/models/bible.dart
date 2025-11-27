@@ -4,6 +4,7 @@ import 'package:bible/models/book_type.dart';
 import 'package:bible/models/chapter.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
+import 'package:bible/models/reference/selection.dart';
 import 'package:bible/models/verse.dart';
 
 class Bible {
@@ -30,4 +31,18 @@ class Bible {
       chapterReferences.indexWhere((r) => r.book == reference.book && r.chapterNum == reference.chapterNum);
 
   Book getBookByType(BookType bookType) => books.firstWhere((book) => book.bookType == bookType);
+
+  String getSelectionText(Selection selection) {
+    final verseTexts = Reference.getReferencesBetween(
+      selection.start.toReference(),
+      selection.end.toReference(),
+    ).map((reference) => getVerseByReference(reference).text).toList();
+    verseTexts[verseTexts.length - 1] = verseTexts[verseTexts.length - 1].substring(
+      0,
+      selection.end.characterOffset + 1,
+    );
+    verseTexts[0] = verseTexts[0].substring(selection.start.characterOffset);
+
+    return verseTexts.join(' ');
+  }
 }

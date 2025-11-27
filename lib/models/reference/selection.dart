@@ -1,6 +1,8 @@
 import 'package:bible/models/bible_translation.dart';
 import 'package:bible/models/book_type.dart';
-import 'package:bible/models/reference/passage.dart';
+import 'package:bible/models/reference/reference.dart';
+import 'package:bible/utils/comparable_operators.dart';
+import 'package:bible/utils/extensions/num_extensions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'selection.freezed.dart';
@@ -10,17 +12,22 @@ part 'selection.g.dart';
 sealed class Selection with _$Selection {
   const Selection._();
 
-  const factory Selection.passage({required Passage passage}) = PassageSelection;
-  const factory Selection.words({
+  const factory Selection({
     required SelectionWordAnchor start,
     required SelectionWordAnchor end,
     required BibleTranslation translation,
-  }) = WordsSelection;
+  }) = _Selection;
+
+  factory Selection.character({required SelectionWordAnchor anchor, required BibleTranslation translation}) =>
+      Selection(start: anchor, end: anchor, translation: translation);
 
   factory Selection.fromJson(Map<String, dynamic> json) => _$SelectionFromJson(json);
+
+  bool intersects(Selection selection) => end >= selection.start && selection.end >= start;
+  bool isInReference(Reference reference) => reference >= start.toReference() && reference <= end.toReference();
 }
 
-class SelectionWordAnchor {
+class SelectionWordAnchor with ComparableOperators<SelectionWordAnchor> {
   final BookType book;
   final int chapterNum;
   final int verseNum;
@@ -32,6 +39,14 @@ class SelectionWordAnchor {
     required this.verseNum,
     required this.characterOffset,
   });
+
+  factory SelectionWordAnchor.fromReference({required Reference reference, required int characterOffset}) =>
+      SelectionWordAnchor(
+        book: reference.book,
+        chapterNum: reference.chapterNum,
+        verseNum: reference.verseNum,
+        characterOffset: characterOffset,
+      );
 
   factory SelectionWordAnchor.fromKey(String key) {
     final items = key.split('.');
@@ -47,4 +62,13 @@ class SelectionWordAnchor {
   String toJson() => toKey();
 
   String toKey() => [book.osisId(), chapterNum, verseNum, characterOffset].join('.');
+
+  Reference toReference() => Reference(book: book, chapterNum: chapterNum, verseNum: verseNum);
+
+  @override
+  int compareTo(SelectionWordAnchor other) =>
+      book.index.compareTo(other.book.index).nullIfZero ??
+      chapterNum.compareTo(other.chapterNum).nullIfZero ??
+      verseNum.compareTo(other.verseNum).nullIfZero ??
+      characterOffset.compareTo(other.characterOffset);
 }
