@@ -100,8 +100,8 @@ class PassageBuilder extends HookConsumerWidget {
         return;
       }
 
-      final minOffset = min(range.startOffset, range.endOffset) - 1;
-      final maxOffset = max(range.startOffset, range.endOffset) - 2;
+      final minOffset = min(range.startOffset, range.endOffset);
+      final maxOffset = max(range.startOffset, range.endOffset) - 1;
 
       final startAnchor = getOffsetAnchor(characterOffset: minOffset, bible: bible);
       final endAnchor = getOffsetAnchor(characterOffset: maxOffset, bible: bible);
@@ -136,13 +136,18 @@ class PassageBuilder extends HookConsumerWidget {
   }
 
   SelectionWordAnchor? getOffsetAnchor({required int characterOffset, required Bible bible}) {
-    var offsetCount = 0;
+    var offsetCount = 1;
     for (final reference in passage.references) {
       final referenceLength = bible.getVerseByReference(reference).text.length;
       if (characterOffset < offsetCount + referenceLength) {
         return SelectionWordAnchor.fromReference(reference: reference, characterOffset: characterOffset - offsetCount);
       }
-      offsetCount += referenceLength;
+
+      // For some weird reason, the first verse has a different offset than every other verse.
+      if (reference == passage.references.first) {
+        offsetCount--;
+      }
+      offsetCount += referenceLength + 1;
     }
     return null;
   }
