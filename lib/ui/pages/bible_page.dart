@@ -135,6 +135,12 @@ class BiblePage extends HookConsumerWidget {
               );
             },
           ),
+          Positioned(
+            top: 0,
+            right: 0,
+            left: 0,
+            child: Container(height: MediaQuery.paddingOf(context).top, color: context.colors.backgroundPrimary),
+          ),
           _BottomBar(
             currentChapterReference: currentChapterReference,
             scrollController: scrollController,
