@@ -26,7 +26,7 @@ class StyledColorSheet extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: ColorEnum.values
               .map(
-                (color) => StyledCircleButton(
+                (color) => StyledCircleButton.lg(
                   child: ColoredCircle(color: color.toHue(context.colors).primary, isSelected: initialColor == color),
                   onPressed: () => Navigator.of(context).pop(color),
                 ),

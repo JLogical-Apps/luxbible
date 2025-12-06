@@ -250,12 +250,12 @@ class _BottomBar extends HookConsumerWidget {
                     ),
                   ),
                   ...ToolbarAction.values.map(
-                    (action) => StyledCircleButton(
+                    (action) => StyledCircleButton.lg(
                       onPressed: () => action.onPressed(context, ref, user: user, reference: currentChapterReference),
                       child: action.buildIcon(context, user: user, reference: currentChapterReference),
                     ),
                   ),
-                  StyledCircleButton(
+                  StyledCircleButton.lg(
                     icon: Symbols.more_vert,
                     onPressed: () => context.showStyledSheet(
                       StyledSheet.list(
@@ -309,7 +309,7 @@ class _BottomBar extends HookConsumerWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      leading: StyledCircleButton(
+                      leading: StyledCircleButton.lg(
                         icon: Symbols.close,
                         onPressed: () {
                           selectionKey?.currentState?.selectableRegion.clearSelection();
@@ -322,7 +322,7 @@ class _BottomBar extends HookConsumerWidget {
                                 ...PassageAction.values
                                     .take(3)
                                     .map(
-                                      (action) => StyledCircleButton(
+                                      (action) => StyledCircleButton.lg(
                                         child: action.buildIcon(context, user: user, selectedPassage: selectedPassage),
                                         onPressed: () => action.onPressed(
                                           context,
@@ -334,7 +334,7 @@ class _BottomBar extends HookConsumerWidget {
                                         ),
                                       ),
                                     ),
-                                StyledCircleButton(
+                                StyledCircleButton.lg(
                                   onPressed: () => context.showStyledSheet(
                                     StyledSheet.list(
                                       children: PassageAction.values
@@ -376,7 +376,7 @@ class _BottomBar extends HookConsumerWidget {
                                 ...SelectionAction.values
                                     .take(3)
                                     .map(
-                                      (action) => StyledCircleButton(
+                                      (action) => StyledCircleButton.lg(
                                         child: action.buildIcon(context, user: user, selection: selection),
                                         onPressed: () => action.onPressed(
                                           context,
@@ -389,7 +389,7 @@ class _BottomBar extends HookConsumerWidget {
                                         ),
                                       ),
                                     ),
-                                StyledCircleButton(
+                                StyledCircleButton.lg(
                                   onPressed: () => context.showStyledSheet(
                                     StyledSheet.list(
                                       children: SelectionAction.values

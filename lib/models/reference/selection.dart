@@ -3,6 +3,7 @@ import 'package:bible/models/book_type.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/utils/comparable_operators.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
+import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'selection.freezed.dart';
@@ -27,7 +28,7 @@ sealed class Selection with _$Selection {
   bool isInReference(Reference reference) => reference >= start.toReference() && reference <= end.toReference();
 }
 
-class SelectionWordAnchor with ComparableOperators<SelectionWordAnchor> {
+class SelectionWordAnchor extends Equatable with ComparableOperators<SelectionWordAnchor> {
   final BookType book;
   final int chapterNum;
   final int verseNum;
@@ -60,6 +61,9 @@ class SelectionWordAnchor with ComparableOperators<SelectionWordAnchor> {
 
   factory SelectionWordAnchor.fromJson(String json) = SelectionWordAnchor.fromKey;
   String toJson() => toKey();
+
+  @override
+  List<Object> get props => [book, chapterNum, verseNum, characterOffset];
 
   String toKey() => [book.osisId(), chapterNum, verseNum, characterOffset].join('.');
 

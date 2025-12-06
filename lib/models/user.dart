@@ -56,6 +56,7 @@ sealed class User with _$User {
             (selection.end, [selection.end.characterOffset, selection.end.characterOffset + 1]),
           ].where((record) => record.$1.toReference() == reference).expand((record) => record.$2),
         )
+        .distinct
         .sortedBy((e) => e)
         .toList();
     if (!anchors.contains(0)) {

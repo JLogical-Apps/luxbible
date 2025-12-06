@@ -92,7 +92,7 @@ enum PassageAction {
             titleText: 'Highlight Color',
             initialColor: user.highlightColor,
             trailing: user.isPassageAnnotated(selectedPassage)
-                ? StyledCircleButton(
+                ? StyledCircleButton.lg(
                     icon: Symbols.ink_eraser,
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -125,6 +125,7 @@ enum PassageAction {
           ],
         );
         if (note != null) {
+          onDeselect();
           ref.updateUser(
             (user) => user.withAnnotation(
               Annotation(passages: [selectedPassage], createdAt: DateTime.now(), color: ColorEnum.stone, note: note),

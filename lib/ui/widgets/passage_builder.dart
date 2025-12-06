@@ -8,7 +8,11 @@ import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/text_style_extensions.dart';
+import 'package:bible/style/widgets/sheet/styled_sheet.dart';
+import 'package:bible/style/widgets/styled_circle_button.dart';
+import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/ui/widgets/sized_widget_span.dart';
+import 'package:bible/ui/widgets/underline.dart';
 import 'package:bible/utils/extensions/color_extensions.dart';
 import 'package:bible/utils/extensions/span_extensions.dart';
 import 'package:bible/utils/guard.dart';
@@ -16,6 +20,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 class PassageBuilder extends HookConsumerWidget {
   final Passage passage;
@@ -43,7 +48,17 @@ class PassageBuilder extends HookConsumerWidget {
     final spans = passage.references.expandIndexed((referenceIndex, reference) {
       final verse = bible.getVerseByReference(reference);
       final passageAnnotations = user.getPassageAnnotations(Passage.reference(reference));
+      final passageAnnotationsWithNote = passageAnnotations
+          .where(
+            (annotation) =>
+                annotation.note != null &&
+                annotation.passages.any((passage) => passage.references.firstOrNull == reference),
+          )
+          .toList();
       final verseSelectionAnchors = user.getSelectionAnchors(reference);
+      final verseAnnotationColor = passageAnnotations
+          .map((annotation) => annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5))
+          .mixOrNull;
       return [
         SizedWidgetSpan(
           size: Size(
@@ -53,9 +68,7 @@ class PassageBuilder extends HookConsumerWidget {
           alignment: PlaceholderAlignment.middle,
           child: SelectionContainer.disabled(
             child: Container(
-              color: passageAnnotations
-                  .map((annotation) => annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5))
-                  .mixOrNull,
+              color: verseAnnotationColor,
               child: Padding(
                 padding: EdgeInsets.only(right: 6, top: 12),
                 child: Text(
@@ -68,23 +81,81 @@ class PassageBuilder extends HookConsumerWidget {
             ),
           ),
         ),
-        ...verseSelectionAnchors.mapIndexed((verseIndex, offset) {
-          final selectionAnnotations = user.getSelectionAnnotations(
-            Selection.character(
-              anchor: SelectionWordAnchor.fromReference(reference: reference, characterOffset: offset),
-              translation: bible.translation,
+        if (passageAnnotationsWithNote.isNotEmpty)
+          SizedWidgetSpan(
+            size: Size(30, context.textStyle.bibleBody.height! * context.textStyle.bibleBody.fontSize!),
+            alignment: PlaceholderAlignment.middle,
+            child: SelectionContainer.disabled(
+              child: Underline(
+                isUnderlined: underlinedReferences.contains(reference),
+                child: Container(
+                  color: verseAnnotationColor,
+                  child: StyledCircleButton.sm(
+                    onPressed: () => context.showStyledSheet(
+                      StyledSheet.list(
+                        titleText: 'Notes',
+                        children: passageAnnotationsWithNote
+                            .map((annotation) => StyledListItem(titleText: annotation.note ?? ''))
+                            .toList(),
+                      ),
+                    ),
+                    child: Icon(Symbols.note_stack, color: context.colors.contentTertiary),
+                  ),
+                ),
+              ),
             ),
+          ),
+        ...verseSelectionAnchors.expandIndexed((verseIndex, offset) {
+          final selectionAnchor = SelectionWordAnchor.fromReference(reference: reference, characterOffset: offset);
+          final selectionAnnotations = user.getSelectionAnnotations(
+            Selection.character(anchor: selectionAnchor, translation: bible.translation),
           );
           final annotations = passageAnnotations + selectionAnnotations;
-          return TextSpan(
-            text: verse.text.substring(offset, verseSelectionAnchors.elementAtOrNull(verseIndex + 1)),
-            style: context.textStyle.bibleBody.copyWith(
-              decoration: underlinedReferences.contains(reference) ? TextDecoration.underline : null,
-              backgroundColor: annotations
-                  .map((annotation) => annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5))
-                  .mixOrNull,
+          final selectionAnnotationColor = annotations
+              .map((annotation) => annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5))
+              .mixOrNull;
+          final selectionAnnotationsWithNote = selectionAnnotations
+              .where(
+                (annotation) =>
+                    annotation.note != null &&
+                    annotation.selections.any((selection) => selection.start == selectionAnchor),
+              )
+              .toList();
+          return [
+            if (selectionAnnotationsWithNote.isNotEmpty)
+              SizedWidgetSpan(
+                size: Size(30, context.textStyle.bibleBody.height! * context.textStyle.bibleBody.fontSize!),
+                alignment: PlaceholderAlignment.middle,
+                child: SelectionContainer.disabled(
+                  child: Underline(
+                    isUnderlined: underlinedReferences.contains(reference),
+                    child: Container(
+                      color: selectionAnnotationColor,
+                      child: StyledCircleButton.sm(
+                        onPressed: () {
+                          context.showStyledSheet(
+                            StyledSheet.list(
+                              titleText: 'Notes',
+                              children: selectionAnnotationsWithNote
+                                  .map((annotation) => StyledListItem(titleText: annotation.note ?? ''))
+                                  .toList(),
+                            ),
+                          );
+                        },
+                        child: Icon(Symbols.note_stack, color: context.colors.contentTertiary),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            TextSpan(
+              text: verse.text.substring(offset, verseSelectionAnchors.elementAtOrNull(verseIndex + 1)),
+              style: context.textStyle.bibleBody.copyWith(
+                decoration: underlinedReferences.contains(reference) ? TextDecoration.underline : null,
+                backgroundColor: selectionAnnotationColor,
+              ),
             ),
-          );
+          ];
         }),
         TextSpan(text: '\n'),
       ];

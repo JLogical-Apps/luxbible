@@ -76,7 +76,7 @@ enum SelectionAction {
             titleText: 'Highlight Color',
             initialColor: user.highlightColor,
             trailing: user.isSelectionAnnotated(selection)
-                ? StyledCircleButton(
+                ? StyledCircleButton.lg(
                     icon: Symbols.ink_eraser,
                     onPressed: () {
                       Navigator.of(context).pop();

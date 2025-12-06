@@ -19,7 +19,7 @@ class StyledPage extends StatelessWidget {
     final leading =
         this.leading ??
         (ModalRoute.of(context)?.canPop == true
-            ? StyledCircleButton(icon: Symbols.chevron_left, onPressed: () => Navigator.of(context).pop())
+            ? StyledCircleButton.lg(icon: Symbols.chevron_left, onPressed: () => Navigator.of(context).pop())
             : null);
     return Scaffold(
       backgroundColor: backgroundColor ?? context.colors.backgroundPrimary,

@@ -61,7 +61,7 @@ class StyledSheet extends StatelessWidget {
                   SizedBox(
                     width: 48,
                     child: Center(
-                      child: StyledCircleButton(icon: Symbols.close, onPressed: () => Navigator.of(context).pop()),
+                      child: StyledCircleButton.lg(icon: Symbols.close, onPressed: () => Navigator.of(context).pop()),
                     ),
                   ),
                   Expanded(
