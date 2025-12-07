@@ -30,4 +30,6 @@ extension TextStyleExtensions on TextStyle {
     text: TextSpan(text: text, style: this),
     textDirection: TextDirection.ltr,
   )..layout()).width;
+
+  double get totalHeight => fontSize! * height!;
 }

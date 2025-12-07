@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:collection/collection.dart';
 
@@ -28,6 +30,8 @@ extension ListExtensions<T> on List<T> {
 
   List<T> sortedByIndexIn<T2>(List<T2> source, [T2 Function(T)? mapper]) =>
       sortedBy((e) => source.indexOfOrNull(mapper == null ? e as T2 : mapper(e)) ?? double.infinity);
+
+  T get random => this[Random().nextInt(length)];
 }
 
 extension IterableExtensions<T> on Iterable<T> {

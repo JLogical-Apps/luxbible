@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:bible/models/annotation.dart';
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
@@ -13,7 +14,9 @@ import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/ui/widgets/sized_widget_span.dart';
 import 'package:bible/ui/widgets/underline.dart';
+import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/color_extensions.dart';
+import 'package:bible/utils/extensions/rect_extensions.dart';
 import 'package:bible/utils/extensions/span_extensions.dart';
 import 'package:bible/utils/guard.dart';
 import 'package:collection/collection.dart';
@@ -45,7 +48,7 @@ class PassageBuilder extends HookConsumerWidget {
     final user = ref.watch(userProvider);
     final bible = this.bible ?? user.getBible(bibles);
 
-    final spans = passage.references.expandIndexed((referenceIndex, reference) {
+    final spansByReference = passage.references.mapToMap((reference) {
       final verse = bible.getVerseByReference(reference);
       final passageAnnotations = user.getPassageAnnotations(Passage.reference(reference));
       final passageAnnotationsWithNote = passageAnnotations
@@ -56,62 +59,37 @@ class PassageBuilder extends HookConsumerWidget {
           )
           .toList();
       final verseSelectionAnchors = user.getSelectionAnchors(reference);
-      final verseAnnotationColor = passageAnnotations
-          .map((annotation) => annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5))
-          .mixOrNull;
-      return [
+      return MapEntry(reference, [
         SizedWidgetSpan(
           size: Size(
             context.textStyle.bibleVerseNumber.getWidth(reference.verseNum.toString()) + 6,
-            context.textStyle.bibleBody.height! * context.textStyle.bibleBody.fontSize!,
+            context.textStyle.bibleBody.fontSize!,
           ),
           alignment: PlaceholderAlignment.middle,
           child: SelectionContainer.disabled(
-            child: Container(
-              color: verseAnnotationColor,
-              child: Padding(
-                padding: EdgeInsets.only(right: 6, top: 12),
-                child: Text(
-                  reference.verseNum.toString(),
-                  style: context.textStyle.bibleVerseNumber.copyWith(
-                    decoration: underlinedReferences.contains(reference) ? TextDecoration.underline : null,
-                  ),
+            child: Padding(
+              padding: EdgeInsets.only(right: 6),
+              child: Text(
+                reference.verseNum.toString(),
+                style: context.textStyle.bibleVerseNumber.copyWith(
+                  decoration: underlinedReferences.contains(reference) ? TextDecoration.underline : null,
                 ),
               ),
             ),
           ),
         ),
         if (passageAnnotationsWithNote.isNotEmpty)
-          SizedWidgetSpan(
-            size: Size(30, context.textStyle.bibleBody.height! * context.textStyle.bibleBody.fontSize!),
-            alignment: PlaceholderAlignment.middle,
-            child: SelectionContainer.disabled(
-              child: Underline(
-                isUnderlined: underlinedReferences.contains(reference),
-                child: Container(
-                  color: verseAnnotationColor,
-                  child: StyledCircleButton.sm(
-                    onPressed: () => context.showStyledSheet(
-                      StyledSheet.list(
-                        titleText: 'Notes',
-                        children: passageAnnotationsWithNote
-                            .map((annotation) => StyledListItem(titleText: annotation.note ?? ''))
-                            .toList(),
-                      ),
-                    ),
-                    child: Icon(Symbols.note_stack, color: context.colors.contentTertiary),
-                  ),
-                ),
-              ),
-            ),
+          notesButtonSpan(
+            context,
+            annotations: passageAnnotationsWithNote,
+            isUnderlined: underlinedReferences.contains(reference),
           ),
         ...verseSelectionAnchors.expandIndexed((verseIndex, offset) {
           final selectionAnchor = SelectionWordAnchor.fromReference(reference: reference, characterOffset: offset);
           final selectionAnnotations = user.getSelectionAnnotations(
             Selection.character(anchor: selectionAnchor, translation: bible.translation),
           );
-          final annotations = passageAnnotations + selectionAnnotations;
-          final selectionAnnotationColor = annotations
+          final selectionAnnotationColor = selectionAnnotations
               .map((annotation) => annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5))
               .mixOrNull;
           final selectionAnnotationsWithNote = selectionAnnotations
@@ -123,30 +101,11 @@ class PassageBuilder extends HookConsumerWidget {
               .toList();
           return [
             if (selectionAnnotationsWithNote.isNotEmpty)
-              SizedWidgetSpan(
-                size: Size(30, context.textStyle.bibleBody.height! * context.textStyle.bibleBody.fontSize!),
-                alignment: PlaceholderAlignment.middle,
-                child: SelectionContainer.disabled(
-                  child: Underline(
-                    isUnderlined: underlinedReferences.contains(reference),
-                    child: Container(
-                      color: selectionAnnotationColor,
-                      child: StyledCircleButton.sm(
-                        onPressed: () {
-                          context.showStyledSheet(
-                            StyledSheet.list(
-                              titleText: 'Notes',
-                              children: selectionAnnotationsWithNote
-                                  .map((annotation) => StyledListItem(titleText: annotation.note ?? ''))
-                                  .toList(),
-                            ),
-                          );
-                        },
-                        child: Icon(Symbols.note_stack, color: context.colors.contentTertiary),
-                      ),
-                    ),
-                  ),
-                ),
+              notesButtonSpan(
+                context,
+                annotations: selectionAnnotationsWithNote,
+                isUnderlined: underlinedReferences.contains(reference),
+                color: selectionAnnotationColor,
               ),
             TextSpan(
               text: verse.text.substring(offset, verseSelectionAnchors.elementAtOrNull(verseIndex + 1)),
@@ -157,9 +116,10 @@ class PassageBuilder extends HookConsumerWidget {
             ),
           ];
         }),
-        TextSpan(text: '\n'),
-      ];
-    }).toList();
+        TextSpan(text: '\n', style: context.textStyle.bibleBody),
+      ]);
+    });
+    final spans = spansByReference.values.flattenedToList;
 
     final textKey = useMemoized(() => GlobalKey());
 
@@ -182,28 +142,116 @@ class PassageBuilder extends HookConsumerWidget {
       }
     });
 
-    return SelectionListener(
-      selectionNotifier: selectionListener,
-      child: GestureDetector(
-        onTapUp: (details) {
-          final renderBox = textKey.currentContext!.findRenderObject() as RenderBox;
-          final offset = spans.getCharacterOffsetFromPosition(
-            width: renderBox.size.width,
-            localPosition: renderBox.globalToLocal(details.globalPosition),
-          );
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Stack(
+          clipBehavior: Clip.none,
+          children: [
+            ...passage.references
+                .mapToMap(
+                  (reference) => MapEntry(
+                    reference,
+                    user.annotations.where(
+                      (annotation) => annotation.passages.any((passage) => passage.hasReference(reference)),
+                    ),
+                  ),
+                )
+                .where((reference, annotations) => annotations.isNotEmpty)
+                .mapToIterable((reference, annotations) {
+                  final verseColor = annotations
+                      .map((annotation) => annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5))
+                      .mixOrNull;
+                  final (base, extent) = getCharacterOffsets(reference: reference, spansByReference: spansByReference);
+                  return spans
+                      .getBoxesForSelection(baseOffset: base, extentOffset: extent, width: constraints.maxWidth)
+                      .map((box) => box.toRect())
+                      .withMergedLines()
+                      .map(
+                        (box) => Positioned.fromRect(
+                          rect: Rect.fromLTWH(box.left - 4, box.top + 2, box.width + 4, min(32, box.height)),
+                          child: IgnorePointer(
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: verseColor),
+                            ),
+                          ),
+                        ),
+                      );
+                })
+                .flattened,
+            SelectionListener(
+              selectionNotifier: selectionListener,
+              child: GestureDetector(
+                onTapUp: (details) {
+                  final renderBox = textKey.currentContext!.findRenderObject() as RenderBox;
+                  final offset = spans.getCharacterOffsetFromPosition(
+                    width: constraints.maxWidth,
+                    localPosition: renderBox.globalToLocal(details.globalPosition),
+                  );
 
-          final anchor = getOffsetAnchor(characterOffset: offset, bible: bible);
-          if (anchor != null) {
-            onReferencePressed?.call(anchor.toReference());
-          }
-        },
-        child: Text.rich(
-          key: textKey,
-          TextSpan(children: spans),
-          style: context.textStyle.bibleBody,
+                  final anchor = getOffsetAnchor(characterOffset: offset, bible: bible);
+                  if (anchor != null) {
+                    onReferencePressed?.call(anchor.toReference());
+                  }
+                },
+                child: Text.rich(key: textKey, TextSpan(children: spans)),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  WidgetSpan notesButtonSpan(
+    BuildContext context, {
+    required List<Annotation> annotations,
+    required bool isUnderlined,
+    Color? color,
+  }) {
+    return SizedWidgetSpan(
+      size: Size(30, context.textStyle.bibleBody.fontSize!),
+      alignment: PlaceholderAlignment.middle,
+      child: SelectionContainer.disabled(
+        child: OverflowBox(
+          maxHeight: context.textStyle.bibleBody.totalHeight + 4,
+          maxWidth: 30,
+          child: Underline(
+            isUnderlined: isUnderlined,
+            child: Container(
+              color: color,
+              margin: EdgeInsets.only(bottom: 4),
+              child: StyledCircleButton.sm(
+                onPressed: () => context.showStyledSheet(
+                  StyledSheet.list(
+                    titleText: 'Notes',
+                    children: annotations
+                        .map((annotation) => StyledListItem(titleText: annotation.note ?? ''))
+                        .toList(),
+                  ),
+                ),
+                child: Icon(Symbols.note_stack, color: context.colors.contentTertiary),
+              ),
+            ),
+          ),
         ),
       ),
     );
+  }
+
+  (int, int) getCharacterOffsets({
+    required Reference reference,
+    required Map<Reference, List<InlineSpan>> spansByReference,
+  }) {
+    var start = 0;
+    for (final MapEntry(:key, :value) in spansByReference.entries) {
+      final verseLength = value.characterLength;
+      if (key == reference) {
+        return (start, start + verseLength);
+      } else {
+        start += verseLength;
+      }
+    }
+    return (0, 0);
   }
 
   SelectionWordAnchor? getOffsetAnchor({required int characterOffset, required Bible bible}) {
