@@ -126,6 +126,7 @@ class BiblePage extends HookConsumerWidget {
                               }
                               selectionState.value = selection;
                             }),
+                            selectionState: selectionState,
                           ),
                         ),
                       ],
