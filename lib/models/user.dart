@@ -39,6 +39,10 @@ sealed class User with _$User {
       annotations.where((annotation) => annotation.passages.any((p) => p.hasAnyOf(passage))).toList();
   bool isPassageAnnotated(Passage passage) => getPassageAnnotations(passage).isNotEmpty;
 
+  List<(Annotation, Selection)> getSelectionAnnotationsInPassage(Passage passage) => annotations
+      .expand((annotation) => annotation.selections.where((s) => s.isInPassage(passage)).map((s) => (annotation, s)))
+      .toList();
+
   List<Annotation> getSelectionAnnotations(Selection selection) => annotations
       .where(
         (annotation) =>
@@ -47,23 +51,18 @@ sealed class User with _$User {
       .toList();
   bool isSelectionAnnotated(Selection selection) => getSelectionAnnotations(selection).isNotEmpty;
 
-  List<int> getSelectionAnchors(Reference reference) {
-    final anchors = annotations
-        .expand((annotation) => annotation.selections)
-        .expand(
-          (selection) => [
-            (selection.start, [selection.start.characterOffset]),
-            (selection.end, [selection.end.characterOffset, selection.end.characterOffset + 1]),
-          ].where((record) => record.$1.toReference() == reference).expand((record) => record.$2),
-        )
-        .distinct
-        .sortedBy((e) => e)
-        .toList();
-    if (!anchors.contains(0)) {
-      anchors.insert(0, 0);
-    }
-    return anchors;
-  }
+  Map<int, List<Annotation>> getSelectionAnnotationsWithNotesByOffset({
+    required Reference reference,
+    required BibleTranslation translation,
+  }) => annotations
+      .expand(
+        (annotation) => annotation.selections
+            .where((selection) => selection.translation == translation)
+            .where((selection) => selection.start.toReference() == reference)
+            .map((selection) => (annotation, selection)),
+      )
+      .groupListsBy((records) => records.$2.start.characterOffset)
+      .map((offset, records) => MapEntry(offset, records.map((record) => record.$1).toList()));
 
   User withBookmark(Bookmark bookmark) => copyWith(bookmarks: [...bookmarks, bookmark]);
   User withRemovedBookmark(Bookmark bookmark) => copyWith(bookmarks: bookmarks.withRemoved(bookmark));

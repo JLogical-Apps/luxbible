@@ -1,5 +1,6 @@
 import 'package:bible/models/bible_translation.dart';
 import 'package:bible/models/book_type.dart';
+import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/utils/comparable_operators.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
@@ -26,6 +27,7 @@ sealed class Selection with _$Selection {
 
   bool intersects(Selection selection) => end >= selection.start && selection.end >= start;
   bool isInReference(Reference reference) => reference >= start.toReference() && reference <= end.toReference();
+  bool isInPassage(Passage passage) => passage.references.any((reference) => isInReference(reference));
 }
 
 class SelectionWordAnchor extends Equatable with ComparableOperators<SelectionWordAnchor> {

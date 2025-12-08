@@ -16,6 +16,7 @@ import 'package:bible/ui/widgets/sized_widget_span.dart';
 import 'package:bible/ui/widgets/underline.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/color_extensions.dart';
+import 'package:bible/utils/extensions/num_extensions.dart';
 import 'package:bible/utils/extensions/rect_extensions.dart';
 import 'package:bible/utils/extensions/span_extensions.dart';
 import 'package:bible/utils/guard.dart';
@@ -58,7 +59,6 @@ class PassageBuilder extends HookConsumerWidget {
                 annotation.passages.any((passage) => passage.references.firstOrNull == reference),
           )
           .toList();
-      final verseSelectionAnchors = user.getSelectionAnchors(reference);
       return MapEntry(reference, [
         SizedWidgetSpan(
           size: Size(
@@ -84,38 +84,25 @@ class PassageBuilder extends HookConsumerWidget {
             annotations: passageAnnotationsWithNote,
             isUnderlined: underlinedReferences.contains(reference),
           ),
-        ...verseSelectionAnchors.expandIndexed((verseIndex, offset) {
-          final selectionAnchor = SelectionWordAnchor.fromReference(reference: reference, characterOffset: offset);
-          final selectionAnnotations = user.getSelectionAnnotations(
-            Selection.character(anchor: selectionAnchor, translation: bible.translation),
-          );
-          final selectionAnnotationColor = selectionAnnotations
-              .map((annotation) => annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5))
-              .mixOrNull;
-          final selectionAnnotationsWithNote = selectionAnnotations
-              .where(
-                (annotation) =>
-                    annotation.note != null &&
-                    annotation.selections.any((selection) => selection.start == selectionAnchor),
-              )
-              .toList();
-          return [
-            if (selectionAnnotationsWithNote.isNotEmpty)
-              notesButtonSpan(
-                context,
-                annotations: selectionAnnotationsWithNote,
-                isUnderlined: underlinedReferences.contains(reference),
-                color: selectionAnnotationColor,
+        ...TextSpan(
+          text: verse.text,
+          style: context.textStyle.bibleBody.copyWith(
+            decoration: underlinedReferences.contains(reference) ? TextDecoration.underline : null,
+          ),
+        ).withInjectedSpans(
+          user
+              .getSelectionAnnotationsWithNotesByOffset(reference: reference, translation: bible.translation)
+              .map(
+                (offset, annotations) => MapEntry(
+                  offset,
+                  notesButtonSpan(
+                    context,
+                    annotations: annotations,
+                    isUnderlined: underlinedReferences.contains(reference),
+                  ),
+                ),
               ),
-            TextSpan(
-              text: verse.text.substring(offset, verseSelectionAnchors.elementAtOrNull(verseIndex + 1)),
-              style: context.textStyle.bibleBody.copyWith(
-                decoration: underlinedReferences.contains(reference) ? TextDecoration.underline : null,
-                backgroundColor: selectionAnnotationColor,
-              ),
-            ),
-          ];
-        }),
+        ),
         TextSpan(text: '\n', style: context.textStyle.bibleBody),
       ]);
     });
@@ -143,62 +130,87 @@ class PassageBuilder extends HookConsumerWidget {
     });
 
     return LayoutBuilder(
-      builder: (context, constraints) {
-        return Stack(
-          clipBehavior: Clip.none,
-          children: [
-            ...passage.references
-                .mapToMap(
-                  (reference) => MapEntry(
-                    reference,
-                    user.annotations.where(
-                      (annotation) => annotation.passages.any((passage) => passage.hasReference(reference)),
-                    ),
+      builder: (context, constraints) => Stack(
+        clipBehavior: Clip.none,
+        children: [
+          ...passage.references
+              .mapToMap(
+                (reference) => MapEntry(
+                  reference,
+                  user.annotations.where(
+                    (annotation) => annotation.passages.any((passage) => passage.hasReference(reference)),
                   ),
-                )
-                .where((reference, annotations) => annotations.isNotEmpty)
-                .mapToIterable((reference, annotations) {
-                  final verseColor = annotations
-                      .map((annotation) => annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5))
-                      .mixOrNull;
-                  final (base, extent) = getCharacterOffsets(reference: reference, spansByReference: spansByReference);
-                  return spans
-                      .getBoxesForSelection(baseOffset: base, extentOffset: extent, width: constraints.maxWidth)
-                      .map((box) => box.toRect())
-                      .withMergedLines()
-                      .map(
-                        (box) => Positioned.fromRect(
-                          rect: Rect.fromLTWH(box.left - 4, box.top + 2, box.width + 4, min(32, box.height)),
-                          child: IgnorePointer(
-                            child: DecoratedBox(
-                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: verseColor),
-                            ),
+                ),
+              )
+              .where((reference, annotations) => annotations.isNotEmpty)
+              .mapToIterable((reference, annotations) {
+                final verseColor = annotations
+                    .map((annotation) => annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5))
+                    .mixOrNull;
+                final (base, extent) = getReferenceCharacterOffsets(
+                  reference: reference,
+                  spansByReference: spansByReference,
+                );
+                return spans
+                    .getBoxesForSelection(baseOffset: base, extentOffset: extent, width: constraints.maxWidth)
+                    .map((box) => box.toRect())
+                    .withMergedLines()
+                    .map(
+                      (box) => Positioned.fromRect(
+                        rect: Rect.fromLTWH(box.left - 4, box.top + 2, box.width + 4, min(32, box.height)),
+                        child: IgnorePointer(
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: verseColor),
                           ),
                         ),
-                      );
-                })
-                .flattened,
-            SelectionListener(
-              selectionNotifier: selectionListener,
-              child: GestureDetector(
-                onTapUp: (details) {
-                  final renderBox = textKey.currentContext!.findRenderObject() as RenderBox;
-                  final offset = spans.getCharacterOffsetFromPosition(
-                    width: constraints.maxWidth,
-                    localPosition: renderBox.globalToLocal(details.globalPosition),
-                  );
+                      ),
+                    );
+              })
+              .flattened,
+          ...user.getSelectionAnnotationsInPassage(passage).map((record) {
+            final (annotation, selection) = record;
+            final (base, extent) = getSelectionCharacterOffsets(
+              selection: selection,
+              spansByReference: spansByReference,
+            );
+            return spans
+                .getBoxesForSelection(baseOffset: base, extentOffset: extent, width: constraints.maxWidth)
+                .map((box) => box.toRect())
+                .withMergedLines()
+                .map(
+                  (box) => Positioned.fromRect(
+                    rect: Rect.fromLTWH(box.left, box.top + 4, box.width + 2, min(28, box.height)),
+                    child: IgnorePointer(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+          }).flattened,
+          SelectionListener(
+            selectionNotifier: selectionListener,
+            child: GestureDetector(
+              onTapUp: (details) {
+                final renderBox = textKey.currentContext!.findRenderObject() as RenderBox;
+                final offset = spans.getCharacterOffsetFromPosition(
+                  width: constraints.maxWidth,
+                  localPosition: renderBox.globalToLocal(details.globalPosition),
+                );
 
-                  final anchor = getOffsetAnchor(characterOffset: offset, bible: bible);
-                  if (anchor != null) {
-                    onReferencePressed?.call(anchor.toReference());
-                  }
-                },
-                child: Text.rich(key: textKey, TextSpan(children: spans)),
-              ),
+                final anchor = getOffsetAnchor(characterOffset: offset, bible: bible);
+                if (anchor != null) {
+                  onReferencePressed?.call(anchor.toReference());
+                }
+              },
+              child: Text.rich(key: textKey, TextSpan(children: spans)),
             ),
-          ],
-        );
-      },
+          ),
+        ],
+      ),
     );
   }
 
@@ -238,7 +250,7 @@ class PassageBuilder extends HookConsumerWidget {
     );
   }
 
-  (int, int) getCharacterOffsets({
+  (int, int) getReferenceCharacterOffsets({
     required Reference reference,
     required Map<Reference, List<InlineSpan>> spansByReference,
   }) {
@@ -254,18 +266,28 @@ class PassageBuilder extends HookConsumerWidget {
     return (0, 0);
   }
 
+  (int, int) getSelectionCharacterOffsets({
+    required Selection selection,
+    required Map<Reference, List<InlineSpan>> spansByReference,
+  }) {
+    int getSelectionAnchorOffset(SelectionWordAnchor anchor) =>
+        getReferenceCharacterOffsets(reference: anchor.toReference(), spansByReference: spansByReference).$1 +
+        (spansByReference[anchor.toReference()]?.getActualOffset(anchor.characterOffset) ?? 0);
+
+    return (getSelectionAnchorOffset(selection.start), getSelectionAnchorOffset(selection.end) + 1);
+  }
+
   SelectionWordAnchor? getOffsetAnchor({required int characterOffset, required Bible bible}) {
-    var offsetCount = 1;
+    var offsetCount = 0;
     for (final reference in passage.references) {
       final referenceLength = bible.getVerseByReference(reference).text.length;
       if (characterOffset < offsetCount + referenceLength) {
-        return SelectionWordAnchor.fromReference(reference: reference, characterOffset: characterOffset - offsetCount);
+        return SelectionWordAnchor.fromReference(
+          reference: reference,
+          characterOffset: (characterOffset - offsetCount).clampZero,
+        );
       }
 
-      // For some weird reason, the first verse has a different offset than every other verse.
-      if (reference == passage.references.first) {
-        offsetCount--;
-      }
       offsetCount += referenceLength + 1;
     }
     return null;
