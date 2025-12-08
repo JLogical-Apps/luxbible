@@ -34,6 +34,8 @@ class PassageBuilder extends HookConsumerWidget {
 
   final List<Reference> underlinedReferences;
 
+  final ValueNotifier<Selection?>? selectionState;
+
   const PassageBuilder({
     super.key,
     required this.passage,
@@ -41,10 +43,13 @@ class PassageBuilder extends HookConsumerWidget {
     this.onReferencePressed,
     this.onSelectionUpdated,
     this.underlinedReferences = const [],
+    this.selectionState,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final selectionState = this.selectionState;
+
     final bibles = ref.watch(biblesProvider);
     final user = ref.watch(userProvider);
     final bible = this.bible ?? user.getBible(bibles);
@@ -145,7 +150,7 @@ class PassageBuilder extends HookConsumerWidget {
               .where((reference, annotations) => annotations.isNotEmpty)
               .mapToIterable((reference, annotations) {
                 final verseColor = annotations
-                    .map((annotation) => annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5))
+                    .map((annotation) => annotation.color.toHue(context.colors).primary)
                     .mixOrNull;
                 final (base, extent) = getReferenceCharacterOffsets(
                   reference: reference,
@@ -159,8 +164,18 @@ class PassageBuilder extends HookConsumerWidget {
                       (box) => Positioned.fromRect(
                         rect: Rect.fromLTWH(box.left - 4, box.top + 2, box.width + 4, min(32, box.height)),
                         child: IgnorePointer(
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(4), color: verseColor),
+                          child: HookBuilder(
+                            builder: (context) {
+                              final selection = selectionState == null ? null : useValueListenable(selectionState);
+                              return AnimatedContainer(
+                                duration: Duration(milliseconds: 300),
+                                curve: Curves.easeInOutCubic,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(4),
+                                  color: verseColor?.withValues(alpha: selection == null ? 0.5 : 0.2),
+                                ),
+                              );
+                            },
                           ),
                         ),
                       ),
@@ -181,10 +196,15 @@ class PassageBuilder extends HookConsumerWidget {
                   (box) => Positioned.fromRect(
                     rect: Rect.fromLTWH(box.left, box.top + 4, box.width + 2, min(28, box.height)),
                     child: IgnorePointer(
-                      child: DecoratedBox(
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeInOutCubic,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
-                          color: annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5),
+                          color: annotation.color
+                              .toHue(context.colors)
+                              .primary
+                              .withValues(alpha: underlinedReferences.isEmpty ? 0.5 : 0.2),
                         ),
                       ),
                     ),
