@@ -19,6 +19,7 @@ import 'package:bible/utils/extensions/color_extensions.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
 import 'package:bible/utils/extensions/rect_extensions.dart';
 import 'package:bible/utils/extensions/span_extensions.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:bible/utils/guard.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -86,8 +87,10 @@ class PassageBuilder extends HookConsumerWidget {
         if (passageAnnotationsWithNote.isNotEmpty)
           notesButtonSpan(
             context,
+            ref,
             annotations: passageAnnotationsWithNote,
             isUnderlined: underlinedReferences.contains(reference),
+            bible: bible,
           ),
         ...TextSpan(
           text: verse.text,
@@ -102,8 +105,10 @@ class PassageBuilder extends HookConsumerWidget {
                   offset,
                   notesButtonSpan(
                     context,
+                    ref,
                     annotations: annotations,
                     isUnderlined: underlinedReferences.contains(reference),
+                    bible: bible,
                   ),
                 ),
               ),
@@ -235,10 +240,12 @@ class PassageBuilder extends HookConsumerWidget {
   }
 
   WidgetSpan notesButtonSpan(
-    BuildContext context, {
+    BuildContext context,
+    WidgetRef ref, {
     required List<Annotation> annotations,
     required bool isUnderlined,
     Color? color,
+    required Bible bible,
   }) {
     return SizedWidgetSpan(
       size: Size(30, context.textStyle.bibleBody.fontSize!),
@@ -257,7 +264,22 @@ class PassageBuilder extends HookConsumerWidget {
                   StyledSheet.list(
                     titleText: 'Notes',
                     children: annotations
-                        .map((annotation) => StyledListItem(titleText: annotation.note ?? ''))
+                        .map(
+                          (annotation) => StyledListItem(
+                            titleText: annotation.note ?? '',
+                            subtitle: Column(
+                              children:
+                                  [
+                                        annotation.passages.map((passage) => passage.format()).join('; ').nullIfBlank,
+                                        ...annotation.selections.map(
+                                          (selection) => '"${bible.getSelectionText(selection)}"',
+                                        ),
+                                      ].nonNulls
+                                      .map((text) => Text(text, maxLines: 1, overflow: TextOverflow.ellipsis))
+                                      .toList(),
+                            ),
+                          ),
+                        )
                         .toList(),
                   ),
                 ),

@@ -104,14 +104,14 @@ enum SelectionAction {
             StyledPortFieldBuilder<String>(
               fieldPath: 'note',
               builder: (context, value, errorText, onChanged) =>
-                  StyledTextField(text: value, labelText: 'Note', errorText: errorText, onChanged: onChanged),
+                  StyledTextField.multiline(text: value, labelText: 'Note', errorText: errorText, onChanged: onChanged),
             ),
           ],
         );
         if (note != null) {
           ref.updateUser(
             (user) => user.withAnnotation(
-              Annotation(selections: [selection], createdAt: DateTime.now(), color: ColorEnum.stone, note: note),
+              Annotation(selections: [selection], createdAt: DateTime.now(), color: ColorEnum.stone, note: note.trim()),
             ),
           );
         }

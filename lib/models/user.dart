@@ -55,6 +55,7 @@ sealed class User with _$User {
     required Reference reference,
     required BibleTranslation translation,
   }) => annotations
+      .where((annotation) => annotation.note != null)
       .expand(
         (annotation) => annotation.selections
             .where((selection) => selection.translation == translation)
@@ -86,4 +87,5 @@ sealed class User with _$User {
         .where((annotation) => annotation.isNotEmpty)
         .toList(),
   );
+  User withRemovedAnnotation(Annotation annotation) => copyWith(annotations: annotations.withRemoved(annotation));
 }

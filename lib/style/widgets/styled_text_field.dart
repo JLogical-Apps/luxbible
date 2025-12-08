@@ -20,6 +20,8 @@ class StyledTextField extends HookWidget {
   final String? hintText;
   final String? errorText;
 
+  final int? maxLines;
+
   final bool autofocus;
   final bool autocorrect;
   final bool readOnly;
@@ -53,7 +55,29 @@ class StyledTextField extends HookWidget {
     this.inputFormatters = const [],
     this.focusNode,
     this.textStyle,
-  });
+  }) : maxLines = 1;
+
+  const StyledTextField.multiline({
+    super.key,
+    required this.text,
+    this.onTextEditValueChanged,
+    this.onChanged,
+    this.onSubmit,
+    this.labelText,
+    this.hintText,
+    this.suggestedText,
+    this.errorText,
+    this.autofocus = false,
+    this.autocorrect = true,
+    this.readOnly = false,
+    this.textInputType = TextInputType.multiline,
+    this.textCapitalization = TextCapitalization.sentences,
+    this.action,
+    this.autofillHints,
+    this.inputFormatters = const [],
+    this.focusNode,
+    this.textStyle,
+  }) : maxLines = 4;
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +138,7 @@ class StyledTextField extends HookWidget {
               onChanged: (text) => onChanged?.call(text),
               autocorrect: autocorrect,
               enabled: onChanged != null,
+              maxLines: maxLines,
               autofocus: autofocus,
               style: textStyle.disabled(context, isDisabled: onChanged == null),
               keyboardType: textInputType,
