@@ -1,32 +1,28 @@
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/bible.dart';
-import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/reference/selection.dart';
 import 'package:bible/models/user.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_color_sheet.dart';
-import 'package:bible/style/widgets/sheet/styled_port_sheet.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
-import 'package:bible/style/widgets/styled_port_field_builder.dart';
-import 'package:bible/style/widgets/styled_text_field.dart';
+import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/widgets/colored_circle.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:port/port.dart';
 
 enum SelectionAction {
   highlight,
   highlightColor,
-  note,
+  annotate,
   copy;
 
   String title({required User user, required Selection selection}) => switch (this) {
     highlight => user.isSelectionAnnotated(selection) ? 'Remove Highlight' : 'Quick Highlight',
     highlightColor => 'Highlight',
-    note => 'Note',
+    annotate => 'Annotate',
     copy => 'Copy',
   };
 
@@ -36,7 +32,7 @@ enum SelectionAction {
           ? 'Remove highlights from the selection.'
           : 'Highlight the selection with the last highlight color you used.',
     highlightColor => 'Choose a color to highlight for the selection.',
-    note => 'Add a note to the selection.',
+    annotate => 'Annotate the selection.',
     copy => 'Copy the selection to your clipboard.',
   };
 
@@ -46,7 +42,7 @@ enum SelectionAction {
       color: user.isSelectionAnnotated(selection) ? null : user.highlightColor.toHue(context.colors).primary,
     ),
     highlightColor => ColoredCircle(color: user.highlightColor.toHue(context.colors).primary, isSelected: true),
-    note => Icon(Symbols.note_add),
+    annotate => Icon(Symbols.note_stack),
     copy => Icon(Symbols.copy_all),
   };
 
@@ -95,25 +91,10 @@ enum SelectionAction {
                 .copyWith(highlightColor: newColor),
           );
         }
-      case note:
-        final note = await StyledPortSheet.show(
-          context,
-          titleText: 'Add Note',
-          port: Port.of({'note': PortField.string().isNotBlank()}).map((values, port) => values['note'] as String),
-          childrenBuilder: (context) => [
-            StyledPortFieldBuilder<String>(
-              fieldPath: 'note',
-              builder: (context, value, errorText, onChanged) =>
-                  StyledTextField.multiline(text: value, labelText: 'Note', errorText: errorText, onChanged: onChanged),
-            ),
-          ],
-        );
-        if (note != null) {
-          ref.updateUser(
-            (user) => user.withAnnotation(
-              Annotation(selections: [selection], createdAt: DateTime.now(), color: ColorEnum.stone, note: note.trim()),
-            ),
-          );
+      case annotate:
+        final annotation = await AnnotationSheet.show(context, selections: [selection]);
+        if (annotation != null) {
+          ref.updateUser((user) => user.withAnnotation(annotation));
         }
       case copy:
         context.showStyledSnackbar(messageText: 'Selection copied to clipboard.');

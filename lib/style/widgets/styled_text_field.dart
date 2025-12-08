@@ -1,13 +1,12 @@
 import 'dart:math';
 
-import 'package:bible/style/animated_grow.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/text_style_extensions.dart';
+import 'package:bible/style/widgets/styled_form_input.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:material_symbols_icons/symbols.dart';
 
 class StyledTextField extends HookWidget {
   final String text;
@@ -114,80 +113,55 @@ class StyledTextField extends HookWidget {
     final errorText = this.errorText;
     final hasError = errorText != null;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (labelText case final labelText?)
-          Padding(
-            padding: EdgeInsets.only(bottom: 8),
-            child: Text(labelText, style: context.textStyle.labelMd),
-          ),
-        Stack(
-          children: [
-            if (focusNode.hasPrimaryFocus && onChanged != null && remainingSuggestedText != null)
-              Positioned.fill(
-                child: Padding(
-                  padding: EdgeInsets.all(12) + EdgeInsets.only(left: 6 + textStyle.getWidth(text)),
-                  child: Text(remainingSuggestedText, style: textStyle.subtle(context)),
-                ),
-              ),
-            TextField(
-              controller: controller,
-              focusNode: focusNode,
-              readOnly: readOnly,
-              onChanged: (text) => onChanged?.call(text),
-              autocorrect: autocorrect,
-              enabled: onChanged != null,
-              maxLines: maxLines,
-              autofocus: autofocus,
-              style: textStyle.disabled(context, isDisabled: onChanged == null),
-              keyboardType: textInputType,
-              textInputAction: action,
-              textCapitalization: textCapitalization,
-              inputFormatters: inputFormatters,
-              onSubmitted: onSubmit,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.all(12),
-                fillColor: onChanged == null
-                    ? context.colors.surfaceDisabled
-                    : hasError
-                    ? context.colors.surfaceError
-                    : context.colors.surfaceSecondary,
-                filled: !focusNode.hasPrimaryFocus,
-                border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(8)),
-                hintText: hintText,
-                hintStyle: context.textStyle.paragraphMd
-                    .subtle(context)
-                    .disabled(context, isDisabled: onChanged == null),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: hasError ? context.colors.borderError : context.colors.borderSelected,
-                    width: 3,
-                  ),
-                  borderRadius: BorderRadius.circular(8),
-                ),
+    return StyledFormInput(
+      labelText: labelText,
+      errorText: errorText,
+      child: Stack(
+        children: [
+          if (focusNode.hasPrimaryFocus && onChanged != null && remainingSuggestedText != null)
+            Positioned.fill(
+              child: Padding(
+                padding: EdgeInsets.all(12) + EdgeInsets.only(left: 6 + textStyle.getWidth(text)),
+                child: Text(remainingSuggestedText, style: textStyle.subtle(context)),
               ),
             ),
-          ],
-        ),
-        AnimatedGrow(
-          alignment: Alignment.bottomLeft,
-          clip: Clip.hardEdge,
-          child: errorText == null
-              ? SizedBox(key: ValueKey('empty'), width: double.infinity)
-              : Padding(
-                  padding: EdgeInsets.only(top: 8),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    spacing: 4,
-                    children: [
-                      Icon(Symbols.error, size: 14, color: context.colors.contentError),
-                      Text(errorText, style: context.textStyle.labelSm.regular.error(context)),
-                    ],
-                  ),
+          TextField(
+            controller: controller,
+            focusNode: focusNode,
+            readOnly: readOnly,
+            onChanged: (text) => onChanged?.call(text),
+            autocorrect: autocorrect,
+            enabled: onChanged != null,
+            maxLines: maxLines,
+            autofocus: autofocus,
+            style: textStyle.disabled(context, isDisabled: onChanged == null),
+            keyboardType: textInputType,
+            textInputAction: action,
+            textCapitalization: textCapitalization,
+            inputFormatters: inputFormatters,
+            onSubmitted: onSubmit,
+            decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(12),
+              fillColor: onChanged == null
+                  ? context.colors.surfaceDisabled
+                  : hasError
+                  ? context.colors.surfaceError
+                  : context.colors.surfaceSecondary,
+              filled: !focusNode.hasPrimaryFocus,
+              border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(8)),
+              hintText: hintText,
+              hintStyle: context.textStyle.paragraphMd.subtle(context).disabled(context, isDisabled: onChanged == null),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: hasError ? context.colors.borderError : context.colors.borderSelected,
+                  width: 3,
                 ),
-        ),
-      ],
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
