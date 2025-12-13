@@ -10,25 +10,44 @@ class StyledPortSheet<T> extends StatelessWidget {
   final Port<T> port;
 
   final Widget title;
+  final Widget? subtitle;
   final List<Widget> Function(BuildContext) childrenBuilder;
 
-  StyledPortSheet({super.key, required this.port, Widget? title, String? titleText, required this.childrenBuilder})
-    : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
+  StyledPortSheet({
+    super.key,
+    required this.port,
+    Widget? title,
+    String? titleText,
+    Widget? subtitle,
+    String? subtitleText,
+    required this.childrenBuilder,
+  }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
+       subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new);
 
   static Future<T?> show<T>(
     BuildContext context, {
     required Port<T> port,
     Widget? title,
     String? titleText,
+    Widget? subtitle,
+    String? subtitleText,
     required List<Widget> Function(BuildContext) childrenBuilder,
   }) => context.showStyledSheet(
-    StyledPortSheet(port: port, title: title, titleText: titleText, childrenBuilder: childrenBuilder),
+    StyledPortSheet(
+      port: port,
+      title: title,
+      titleText: titleText,
+      subtitle: subtitle,
+      subtitleText: subtitleText,
+      childrenBuilder: childrenBuilder,
+    ),
   );
 
   @override
   Widget build(BuildContext context) {
     return StyledSheet(
       title: title,
+      subtitle: subtitle,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16) + EdgeInsets.only(top: 16),
         child: PortBuilder(

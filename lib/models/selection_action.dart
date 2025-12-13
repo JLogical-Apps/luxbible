@@ -92,7 +92,7 @@ enum SelectionAction {
           );
         }
       case annotate:
-        final annotation = await AnnotationSheet.show(context, selections: [selection]);
+        final annotation = await AnnotationSheet.show(context, selections: [selection], bible: bible);
         if (annotation != null) {
           ref.updateUser((user) => user.withAnnotation(annotation));
         }

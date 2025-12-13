@@ -338,6 +338,8 @@ class _BottomBar extends HookConsumerWidget {
                                 StyledCircleButton.lg(
                                   onPressed: () => context.showStyledSheet(
                                     StyledSheet.list(
+                                      titleText: 'Passage Actions',
+                                      subtitleText: selectedPassage.format(),
                                       children: PassageAction.values
                                           .map(
                                             (action) => StyledListItem(
@@ -393,6 +395,8 @@ class _BottomBar extends HookConsumerWidget {
                                 StyledCircleButton.lg(
                                   onPressed: () => context.showStyledSheet(
                                     StyledSheet.list(
+                                      titleText: 'Selection Actions',
+                                      subtitleText: '"${bible.getSelectionText(selection)}"',
                                       children: SelectionAction.values
                                           .map(
                                             (action) => StyledListItem(

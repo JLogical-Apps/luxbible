@@ -108,7 +108,7 @@ enum PassageAction {
           );
         }
       case annotate:
-        final annotation = await AnnotationSheet.show(context, passages: [selectedPassage]);
+        final annotation = await AnnotationSheet.show(context, passages: [selectedPassage], bible: bible);
         if (annotation != null) {
           onDeselect();
           ref.updateUser((user) => user.withAnnotation(annotation));

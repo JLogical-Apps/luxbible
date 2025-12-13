@@ -1,4 +1,5 @@
 import 'package:bible/models/annotation.dart';
+import 'package:bible/models/bible.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/selection.dart';
@@ -17,9 +18,14 @@ class AnnotationSheet {
     BuildContext context, {
     List<Selection> selections = const [],
     List<Passage> passages = const [],
+    required Bible bible,
   }) => StyledPortSheet.show(
     context,
     titleText: 'Annotate',
+    subtitleText: [
+      ...selections.map((selection) => '"${bible.getSelectionText(selection)}"'),
+      ...passages.map((passage) => passage.format()),
+    ].join('; '),
     port:
         Port.of({
           'color': SimplePortField<ColorEnum>(value: ColorEnum.stone),

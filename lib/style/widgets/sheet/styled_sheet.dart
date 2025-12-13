@@ -1,5 +1,6 @@
 import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
+import 'package:bible/style/text_style_extensions.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/style/widgets/styled_divider.dart';
 import 'package:bible/style/widgets/styled_dock.dart';
@@ -10,22 +11,35 @@ import 'package:material_symbols_icons/symbols.dart';
 
 class StyledSheet extends StatelessWidget {
   final Widget title;
+  final Widget? subtitle;
   final Widget? trailing;
 
   final Widget body;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
 
-  StyledSheet({super.key, Widget? title, String? titleText, this.trailing, required this.body, this.buttonsBuilder})
-    : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
+  StyledSheet({
+    super.key,
+    Widget? title,
+    String? titleText,
+    Widget? subtitle,
+    String? subtitleText,
+    this.trailing,
+    required this.body,
+    this.buttonsBuilder,
+  }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
+       subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new);
 
   StyledSheet.list({
     super.key,
     Widget? title,
     String? titleText,
+    Widget? subtitle,
+    String? subtitleText,
     this.trailing,
     required List<Widget> children,
     this.buttonsBuilder,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
+       subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new),
        body = StyledList(children: children);
 
   @override
@@ -52,7 +66,7 @@ class StyledSheet extends StatelessWidget {
           ),
           gapH8,
           SizedBox(
-            height: 48,
+            height: subtitle == null ? 48 : 52,
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 8),
               child: Row(
@@ -74,6 +88,13 @@ class StyledSheet extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           child: title,
                         ),
+                        if (subtitle case final subtitle?)
+                          DefaultTextStyle(
+                            style: context.textStyle.paragraphMd.subtle(context),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            child: subtitle,
+                          ),
                       ],
                     ),
                   ),
