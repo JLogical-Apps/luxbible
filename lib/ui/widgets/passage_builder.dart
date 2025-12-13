@@ -57,6 +57,10 @@ class PassageBuilder extends HookConsumerWidget {
 
     final spansByReference = passage.references.mapToMap((reference) {
       final verse = bible.getVerseByReference(reference);
+      if (verse == null) {
+        return MapEntry(reference, null);
+      }
+
       final passageAnnotations = user.getPassageAnnotations(Passage.reference(reference));
       final passageAnnotationsWithNote = passageAnnotations
           .where(
@@ -115,7 +119,7 @@ class PassageBuilder extends HookConsumerWidget {
         ),
         TextSpan(text: '\n', style: context.textStyle.bibleBody),
       ]);
-    });
+    }).withoutNullValues;
     final spans = spansByReference.values.flattenedToList;
 
     final textKey = useMemoized(() => GlobalKey());
@@ -322,7 +326,11 @@ class PassageBuilder extends HookConsumerWidget {
   SelectionWordAnchor? getOffsetAnchor({required int characterOffset, required Bible bible}) {
     var offsetCount = 0;
     for (final reference in passage.references) {
-      final referenceLength = bible.getVerseByReference(reference).text.length;
+      final referenceLength = bible.getVerseByReference(reference)?.text.length;
+      if (referenceLength == null) {
+        continue;
+      }
+
       if (characterOffset < offsetCount + referenceLength) {
         return SelectionWordAnchor.fromReference(
           reference: reference,

@@ -33,13 +33,16 @@ class InterlinearPage extends ConsumerWidget {
       body: StyledScrollbar(
         child: CustomScrollView(
           slivers: passage.references
-              .map(
-                (reference) => StyledSliverStickyHeader(
+              .map((reference) {
+                final verse = bible.getVerseByReference(reference);
+                if (verse == null) {
+                  return null;
+                }
+
+                return StyledSliverStickyHeader(
                   titleText: reference.format(),
                   sliver: StyledSliverList(
-                    children: bible
-                        .getVerseByReference(reference)
-                        .fragments
+                    children: verse.fragments
                         .mapToMap((fragment) => MapEntry(fragment, fragment.strongIds.firstOrNull))
                         .withoutNullValues
                         .mapToIterable(
@@ -57,8 +60,9 @@ class InterlinearPage extends ConsumerWidget {
                         )
                         .toList(),
                   ),
-                ),
-              )
+                );
+              })
+              .nonNulls
               .toList(),
         ),
       ),
