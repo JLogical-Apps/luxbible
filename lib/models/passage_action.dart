@@ -117,7 +117,10 @@ enum PassageAction {
         context.showStyledSnackbar(messageText: '${selectedPassage.format()} copied to clipboard.');
         await Clipboard.setData(
           ClipboardData(
-            text: selectedPassage.references.map((reference) => bible.getVerseByReference(reference).text).join(),
+            text: selectedPassage.references
+                .map((reference) => bible.getVerseByReference(reference)?.text)
+                .nonNulls
+                .join(),
           ),
         );
       case compare:

@@ -22,8 +22,8 @@ class Bible {
   Chapter getChapterByReference(ChapterReference reference) =>
       getBookByType(reference.book).chapters[reference.chapterNum - 1];
 
-  Verse getVerseByReference(Reference reference) =>
-      getBookByType(reference.book).chapters[reference.chapterNum - 1].verses[reference.verseNum - 1];
+  Verse? getVerseByReference(Reference reference) =>
+      getBookByType(reference.book).chapters[reference.chapterNum - 1].verses[reference.verseNum];
 
   ChapterReference getChapterReferenceByPageIndex(int pageIndex) => chapterReferences[pageIndex];
 
@@ -36,7 +36,7 @@ class Bible {
     final verseTexts = Reference.getReferencesBetween(
       selection.start.toReference(),
       selection.end.toReference(),
-    ).map((reference) => getVerseByReference(reference).text).toList();
+    ).map((reference) => getVerseByReference(reference)?.text).nonNulls.toList();
     verseTexts[verseTexts.length - 1] = verseTexts[verseTexts.length - 1].substring(
       0,
       selection.end.characterOffset + 1,

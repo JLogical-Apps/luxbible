@@ -37,7 +37,8 @@ class BibleImporter {
               chapters: verses
                   .groupListsBy((verse) => verse.chapterNum)
                   .mapToIterable(
-                    (chapter, verses) => Chapter(verses: verses.map((verse) => parseVerse(verse.text)).toList()),
+                    (chapter, verses) =>
+                        Chapter(verses: verses.mapToMap((verse) => MapEntry(verse.verseNum, parseVerse(verse.text)))),
                   )
                   .toList(),
             ),
