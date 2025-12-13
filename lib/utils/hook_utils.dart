@@ -25,14 +25,31 @@ void useOnStickyScrollDirectionChanged(
   Function(ScrollDirection) onScrollDirectionChanged,
 ) {
   final previousScrollDirectionRef = useRef(ScrollDirection.idle);
+  final directionChangeStartRef = useRef<double?>(null);
   useOnListenableChange(scrollController, () {
-    final direction = scrollController.positionsOrNull?.firstOrNull?.userScrollDirection;
-    if (direction == null || direction == ScrollDirection.idle || direction == previousScrollDirectionRef.value) {
+    final position = scrollController.positionsOrNull?.firstOrNull;
+    final direction = position?.userScrollDirection;
+    if (position == null || direction == null || direction == ScrollDirection.idle) {
       return;
     }
 
-    previousScrollDirectionRef.value = direction;
-    onScrollDirectionChanged(direction);
+    if (direction == previousScrollDirectionRef.value) {
+      directionChangeStartRef.value = null;
+      return;
+    }
+
+    final directionChangeStart = directionChangeStartRef.value;
+    if (directionChangeStart == null) {
+      directionChangeStartRef.value = position.pixels;
+      return;
+    }
+
+    if ((direction == ScrollDirection.reverse && position.pixels > directionChangeStart + 10) ||
+        (direction == ScrollDirection.forward && position.pixels < directionChangeStart - 10)) {
+      previousScrollDirectionRef.value = direction;
+      onScrollDirectionChanged(direction);
+      directionChangeStartRef.value = null;
+    }
   });
 }
 
