@@ -294,139 +294,146 @@ class _BottomBar extends HookConsumerWidget {
           bottom: 0,
           right: 0,
           left: 0,
-          child: AnimatedGrow(
-            child: selectedPassage == null && selection == null
-                ? SizedBox.shrink(key: ValueKey('empty'))
-                : Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      boxShadow: [StyledShadow.up(context)],
-                      color: context.colors.surfacePrimary,
-                    ),
-                    padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
-                    child: StyledListItem(
-                      title: Text(
-                        selectedPassage?.format() ?? '"$selectedText"',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+          child: GestureDetector(
+            onTap: () {},
+            child: AnimatedGrow(
+              child: selectedPassage == null && selection == null
+                  ? SizedBox.shrink(key: ValueKey('empty'))
+                  : Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        boxShadow: [StyledShadow.up(context)],
+                        color: context.colors.surfacePrimary,
                       ),
-                      leading: StyledCircleButton.lg(
-                        icon: Symbols.close,
-                        onPressed: () {
-                          selectionKey?.currentState?.selectableRegion.clearSelection();
-                          selectedReferencesState.value = [];
-                        },
-                      ),
-                      trailing: selectedPassage != null
-                          ? Row(
-                              children: [
-                                ...PassageAction.values
-                                    .take(3)
-                                    .map(
-                                      (action) => StyledCircleButton.lg(
-                                        child: action.buildIcon(context, user: user, selectedPassage: selectedPassage),
-                                        onPressed: () => action.onPressed(
-                                          context,
-                                          ref,
-                                          user: user,
-                                          selectedPassage: selectedPassage,
-                                          bible: bible,
-                                          onDeselect: () => selectedReferencesState.value = [],
+                      padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
+                      child: StyledListItem(
+                        title: Text(
+                          selectedPassage?.format() ?? '"$selectedText"',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        leading: StyledCircleButton.lg(
+                          icon: Symbols.close,
+                          onPressed: () {
+                            selectionKey?.currentState?.selectableRegion.clearSelection();
+                            selectedReferencesState.value = [];
+                          },
+                        ),
+                        trailing: selectedPassage != null
+                            ? Row(
+                                children: [
+                                  ...PassageAction.values
+                                      .take(3)
+                                      .map(
+                                        (action) => StyledCircleButton.lg(
+                                          child: action.buildIcon(
+                                            context,
+                                            user: user,
+                                            selectedPassage: selectedPassage,
+                                          ),
+                                          onPressed: () => action.onPressed(
+                                            context,
+                                            ref,
+                                            user: user,
+                                            selectedPassage: selectedPassage,
+                                            bible: bible,
+                                            onDeselect: () => selectedReferencesState.value = [],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                StyledCircleButton.lg(
-                                  onPressed: () => context.showStyledSheet(
-                                    StyledSheet.list(
-                                      titleText: 'Passage Actions',
-                                      subtitleText: selectedPassage.format(),
-                                      children: PassageAction.values
-                                          .map(
-                                            (action) => StyledListItem(
-                                              titleText: action.title(user: user, selectedPassage: selectedPassage),
-                                              subtitleText: action.description(
-                                                user: user,
-                                                selectedPassage: selectedPassage,
-                                              ),
-                                              leading: action.buildIcon(
-                                                context,
-                                                user: user,
-                                                selectedPassage: selectedPassage,
-                                              ),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                                action.onPressed(
-                                                  context,
-                                                  ref,
+                                  StyledCircleButton.lg(
+                                    onPressed: () => context.showStyledSheet(
+                                      StyledSheet.list(
+                                        titleText: 'Passage Actions',
+                                        subtitleText: selectedPassage.format(),
+                                        children: PassageAction.values
+                                            .map(
+                                              (action) => StyledListItem(
+                                                titleText: action.title(user: user, selectedPassage: selectedPassage),
+                                                subtitleText: action.description(
                                                   user: user,
                                                   selectedPassage: selectedPassage,
-                                                  bible: bible,
-                                                  onDeselect: () => selectedReferencesState.value = [],
-                                                );
-                                              },
-                                            ),
-                                          )
-                                          .toList(),
-                                    ),
-                                  ),
-                                  icon: Symbols.more_vert,
-                                ),
-                              ],
-                            )
-                          : selection != null
-                          ? Row(
-                              children: [
-                                ...SelectionAction.values
-                                    .take(3)
-                                    .map(
-                                      (action) => StyledCircleButton.lg(
-                                        child: action.buildIcon(context, user: user, selection: selection),
-                                        onPressed: () => action.onPressed(
-                                          context,
-                                          ref,
-                                          user: user,
-                                          selection: selection,
-                                          bible: bible,
-                                          onDeselect: () =>
-                                              selectionKey?.currentState?.selectableRegion.clearSelection(),
-                                        ),
+                                                ),
+                                                leading: action.buildIcon(
+                                                  context,
+                                                  user: user,
+                                                  selectedPassage: selectedPassage,
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  action.onPressed(
+                                                    context,
+                                                    ref,
+                                                    user: user,
+                                                    selectedPassage: selectedPassage,
+                                                    bible: bible,
+                                                    onDeselect: () => selectedReferencesState.value = [],
+                                                  );
+                                                },
+                                              ),
+                                            )
+                                            .toList(),
                                       ),
                                     ),
-                                StyledCircleButton.lg(
-                                  onPressed: () => context.showStyledSheet(
-                                    StyledSheet.list(
-                                      titleText: 'Selection Actions',
-                                      subtitleText: '"${bible.getSelectionText(selection)}"',
-                                      children: SelectionAction.values
-                                          .map(
-                                            (action) => StyledListItem(
-                                              titleText: action.title(user: user, selection: selection),
-                                              subtitleText: action.description(user: user, selection: selection),
-                                              leading: action.buildIcon(context, user: user, selection: selection),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                                action.onPressed(
-                                                  context,
-                                                  ref,
-                                                  user: user,
-                                                  selection: selection,
-                                                  bible: bible,
-                                                  onDeselect: () =>
-                                                      selectionKey?.currentState?.selectableRegion.clearSelection(),
-                                                );
-                                              },
-                                            ),
-                                          )
-                                          .toList(),
-                                    ),
+                                    icon: Symbols.more_vert,
                                   ),
-                                  icon: Symbols.more_vert,
-                                ),
-                              ],
-                            )
-                          : null,
+                                ],
+                              )
+                            : selection != null
+                            ? Row(
+                                children: [
+                                  ...SelectionAction.values
+                                      .take(3)
+                                      .map(
+                                        (action) => StyledCircleButton.lg(
+                                          child: action.buildIcon(context, user: user, selection: selection),
+                                          onPressed: () => action.onPressed(
+                                            context,
+                                            ref,
+                                            user: user,
+                                            selection: selection,
+                                            bible: bible,
+                                            onDeselect: () =>
+                                                selectionKey?.currentState?.selectableRegion.clearSelection(),
+                                          ),
+                                        ),
+                                      ),
+                                  StyledCircleButton.lg(
+                                    onPressed: () => context.showStyledSheet(
+                                      StyledSheet.list(
+                                        titleText: 'Selection Actions',
+                                        subtitleText: '"${bible.getSelectionText(selection)}"',
+                                        children: SelectionAction.values
+                                            .map(
+                                              (action) => StyledListItem(
+                                                titleText: action.title(user: user, selection: selection),
+                                                subtitleText: action.description(user: user, selection: selection),
+                                                leading: action.buildIcon(context, user: user, selection: selection),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  action.onPressed(
+                                                    context,
+                                                    ref,
+                                                    user: user,
+                                                    selection: selection,
+                                                    bible: bible,
+                                                    onDeselect: () =>
+                                                        selectionKey?.currentState?.selectableRegion.clearSelection(),
+                                                  );
+                                                },
+                                              ),
+                                            )
+                                            .toList(),
+                                      ),
+                                    ),
+                                    icon: Symbols.more_vert,
+                                  ),
+                                ],
+                              )
+                            : null,
+                      ),
                     ),
-                  ),
+            ),
           ),
         ),
       ],
