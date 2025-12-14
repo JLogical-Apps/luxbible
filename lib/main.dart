@@ -3,33 +3,38 @@ import 'dart:async';
 import 'package:bible/functions/bible_importer.dart';
 import 'package:bible/functions/commentary_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
-import 'package:bible/models/bible.dart';
 import 'package:bible/models/bible_translation.dart';
-import 'package:bible/models/commentary.dart';
-import 'package:bible/models/strong.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
-import 'package:bible/services/shared_preferences_service.dart';
+import 'package:bible/services/path_service.dart';
 import 'package:bible/ui/pages/bible_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 Future<void> main() async {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
+      final bibles = await Future.wait(
+        BibleTranslation.values.map((translation) => BibleImporter().import(translation: translation)),
+      );
+      final commentaries = await CommentaryImporter().import();
+      final strongs = await StrongImporter().import();
+
+      final paths = await getPaths();
+
       runApp(
         BibleApp(
-          bibles: await Future.wait(
-            BibleTranslation.values.map((translation) => BibleImporter().import(translation: translation)),
-          ),
-          commentaries: [await CommentaryImporter().import()],
-          strongs: await StrongImporter().import(),
-          sharedPreferences: await SharedPreferences.getInstance(),
+          overrides: [
+            biblesProvider.overrideWith((ref) => bibles),
+            strongsProvider.overrideWith((ref) => strongs),
+            commentariesProvider.overrideWith((ref) => [commentaries]),
+            pathServiceProvider.overrideWith((ref) => paths),
+          ],
         ),
       );
     },
@@ -43,29 +48,14 @@ Future<void> main() async {
 }
 
 class BibleApp extends StatelessWidget {
-  final List<Bible> bibles;
-  final Map<String, Strong> strongs;
-  final List<Commentary> commentaries;
+  final List<Override> overrides;
 
-  final SharedPreferences sharedPreferences;
-
-  const BibleApp({
-    super.key,
-    required this.bibles,
-    required this.strongs,
-    required this.commentaries,
-    required this.sharedPreferences,
-  });
+  const BibleApp({super.key, required this.overrides});
 
   @override
   Widget build(BuildContext context) {
     return ProviderScope(
-      overrides: [
-        biblesProvider.overrideWith((ref) => bibles),
-        strongsProvider.overrideWith((ref) => strongs),
-        commentariesProvider.overrideWith((ref) => commentaries),
-        sharedPreferenceServiceProvider.overrideWith((ref) => SharedPreferencesService(sharedPreferences)),
-      ],
+      overrides: overrides,
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: MaterialApp(
