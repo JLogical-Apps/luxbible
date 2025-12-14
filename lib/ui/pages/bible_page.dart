@@ -19,6 +19,7 @@ import 'package:bible/style/widgets/styled_page.dart';
 import 'package:bible/style/widgets/styled_scrollbar.dart';
 import 'package:bible/style/widgets/styled_tag.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
+import 'package:bible/ui/utils/text_selection_controls.dart';
 import 'package:bible/ui/widgets/passage_builder.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
@@ -104,6 +105,9 @@ class BiblePage extends HookConsumerWidget {
                         gapH8,
                         SelectionArea(
                           key: selectionKey,
+                          selectionControls: Theme.of(context).platform == TargetPlatform.android
+                              ? CustomMaterialTextSelectionControls()
+                              : CustomCupertinoTextSelectionControls(),
                           contextMenuBuilder: (context, state) => AdaptiveTextSelectionToolbar.buttonItems(
                             anchors: state.contextMenuAnchors,
                             buttonItems: [],
