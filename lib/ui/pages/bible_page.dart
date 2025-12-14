@@ -19,7 +19,6 @@ import 'package:bible/style/widgets/styled_page.dart';
 import 'package:bible/style/widgets/styled_scrollbar.dart';
 import 'package:bible/style/widgets/styled_tag.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
-import 'package:bible/ui/pages/settings_page.dart';
 import 'package:bible/ui/widgets/passage_builder.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
@@ -260,28 +259,19 @@ class _BottomBar extends HookConsumerWidget {
                     icon: Symbols.more_vert,
                     onPressed: () => context.showStyledSheet(
                       StyledSheet.list(
-                        children: [
-                          ...ToolbarAction.values.map(
-                            (action) => StyledListItem(
-                              titleText: action.title(user: user, reference: currentChapterReference),
-                              subtitleText: action.description(user: user, reference: currentChapterReference),
-                              leading: action.buildIcon(context, user: user, reference: currentChapterReference),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                action.onPressed(context, ref, user: user, reference: currentChapterReference);
-                              },
-                            ),
-                          ),
-                          StyledListItem.navigation(
-                            titleText: 'Settings',
-                            subtitleText: 'Configure the Bible app',
-                            leadingIcon: Symbols.tune,
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                              context.push(SettingsPage());
-                            },
-                          ),
-                        ],
+                        children: ToolbarAction.values
+                            .map(
+                              (action) => StyledListItem(
+                                titleText: action.title(user: user, reference: currentChapterReference),
+                                subtitleText: action.description(user: user, reference: currentChapterReference),
+                                leading: action.buildIcon(context, user: user, reference: currentChapterReference),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  action.onPressed(context, ref, user: user, reference: currentChapterReference);
+                                },
+                              ),
+                            )
+                            .toList(),
                       ),
                     ),
                   ),
