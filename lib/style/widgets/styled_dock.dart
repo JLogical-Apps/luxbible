@@ -38,7 +38,6 @@ class StyledDock extends HookWidget {
     final metrics = metricsState.value;
 
     final showBottomShadow = metrics == null ? false : metrics.pixels + 10 < metrics.maxScrollExtent;
-    final showTopShadow = metrics == null ? false : metrics.pixels > 10;
 
     return Padding(
       padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
@@ -67,63 +66,55 @@ class StyledDock extends HookWidget {
                 },
                 child: ScrollAbsorber(
                   allowPropagate: (e, metrics) => e.depth == 0 && metrics.axis == Axis.vertical,
-                  child: Stack(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          MediaQuery.removePadding(
-                            context: context,
-                            removeBottom: buttons.isNotEmpty,
-                            child: Flexible(
-                              fit: FlexFit.loose,
-                              child: Stack(
-                                children: [
-                                  SingleChildScrollView(child: body),
-                                  Positioned(
-                                    bottom: -16,
-                                    left: 0,
-                                    right: 0,
-                                    height: 16,
-                                    child: AnimatedContainer(
-                                      duration: Duration(milliseconds: 100),
-                                      curve: Curves.easeInOutCubic,
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                        boxShadow: [if (showBottomShadow) StyledShadow.up(context)],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          ColoredBox(
-                            color: context.colors.surfacePrimary,
-                            child: ClipRect(
-                              child: ConstrainedBox(
-                                constraints: BoxConstraints(maxHeight: constraints.maxHeight),
+                      MediaQuery.removePadding(
+                        context: context,
+                        removeBottom: buttons.isNotEmpty,
+                        child: Flexible(
+                          fit: FlexFit.loose,
+                          child: Stack(
+                            children: [
+                              SingleChildScrollView(
                                 child: Padding(
-                                  padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
-                                  child: Column(mainAxisSize: MainAxisSize.min, children: bottomChildren),
+                                  padding: EdgeInsets.only(
+                                    bottom: bottomChildren.isEmpty ? MediaQuery.paddingOf(context).bottom : 0,
+                                  ),
+                                  child: body,
                                 ),
                               ),
-                            ),
+                              Positioned(
+                                bottom: -16,
+                                left: 0,
+                                right: 0,
+                                height: 16,
+                                child: AnimatedContainer(
+                                  duration: Duration(milliseconds: 100),
+                                  curve: Curves.easeInOutCubic,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    boxShadow: [if (showBottomShadow) StyledShadow.up(context)],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      Positioned(
-                        top: -16,
-                        left: 0,
-                        right: 0,
-                        height: 16,
-                        child: AnimatedContainer(
-                          duration: Duration(milliseconds: 100),
-                          curve: Curves.easeInOutCubic,
-                          width: double.infinity,
-                          decoration: BoxDecoration(boxShadow: [if (showTopShadow) StyledShadow.down(context)]),
                         ),
                       ),
+                      if (bottomChildren.isNotEmpty)
+                        ColoredBox(
+                          color: context.colors.surfacePrimary,
+                          child: ClipRect(
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(maxHeight: constraints.maxHeight),
+                              child: Padding(
+                                padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
+                                child: Column(mainAxisSize: MainAxisSize.min, children: bottomChildren),
+                              ),
+                            ),
+                          ),
+                        ),
                     ],
                   ),
                 ),

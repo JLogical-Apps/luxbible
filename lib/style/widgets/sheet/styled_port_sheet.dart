@@ -11,6 +11,7 @@ class StyledPortSheet<T> extends StatelessWidget {
 
   final Widget title;
   final Widget? subtitle;
+  final Widget? trailing;
   final List<Widget> Function(BuildContext) childrenBuilder;
 
   StyledPortSheet({
@@ -20,6 +21,7 @@ class StyledPortSheet<T> extends StatelessWidget {
     String? titleText,
     Widget? subtitle,
     String? subtitleText,
+    this.trailing,
     required this.childrenBuilder,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
        subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new);
@@ -31,6 +33,7 @@ class StyledPortSheet<T> extends StatelessWidget {
     String? titleText,
     Widget? subtitle,
     String? subtitleText,
+    Widget? trailing,
     required List<Widget> Function(BuildContext) childrenBuilder,
   }) => context.showStyledSheet(
     StyledPortSheet(
@@ -39,6 +42,7 @@ class StyledPortSheet<T> extends StatelessWidget {
       titleText: titleText,
       subtitle: subtitle,
       subtitleText: subtitleText,
+      trailing: trailing,
       childrenBuilder: childrenBuilder,
     ),
   );
@@ -48,6 +52,7 @@ class StyledPortSheet<T> extends StatelessWidget {
     return StyledSheet(
       title: title,
       subtitle: subtitle,
+      trailing: trailing,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16) + EdgeInsets.only(top: 16),
         child: PortBuilder(

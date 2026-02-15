@@ -1,10 +1,10 @@
+import 'package:bible/models/bible.dart';
 import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/user.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_color_sheet.dart';
-import 'package:bible/ui/pages/commentaries_page.dart';
-import 'package:bible/utils/extensions/build_context_extensions.dart';
+import 'package:bible/ui/sheets/study_sheet.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,11 +12,11 @@ import 'package:material_symbols_icons/symbols.dart';
 
 enum ToolbarAction {
   bookmark,
-  commentary;
+  study;
 
   String title({required User user, required ChapterReference reference}) => switch (this) {
     bookmark => user.getBookmark(reference) == null ? 'Bookmark' : 'Remove Bookmark',
-    commentary => 'Chapter Commentary',
+    study => 'Study',
   };
 
   String description({required User user, required ChapterReference reference}) => switch (this) {
@@ -24,7 +24,7 @@ enum ToolbarAction {
       user.getBookmark(reference) == null
           ? 'Bookmark this chapter to easily access it from the search page.'
           : 'Remove this bookmark.',
-    commentary => 'View Commentary on this chapter.',
+    study => 'Study this chapter.',
   };
 
   Widget buildIcon(BuildContext context, {required User user, required ChapterReference reference}) => switch (this) {
@@ -34,14 +34,17 @@ enum ToolbarAction {
           ? Icon(Symbols.bookmark, fill: 0)
           : Icon(Symbols.bookmark, color: bookmark.color.toHue(context.colors).medium);
     }(),
-    commentary => Icon(Symbols.school),
+    study => Icon(Symbols.school),
   };
+
+  bool get isNavigation => [study].contains(this);
 
   Future<void> onPressed(
     BuildContext context,
     WidgetRef ref, {
     required User user,
     required ChapterReference reference,
+    required Bible bible,
   }) async {
     switch (this) {
       case bookmark:
@@ -54,8 +57,8 @@ enum ToolbarAction {
         } else {
           ref.updateUser((user) => user.withRemovedBookmark(bookmark));
         }
-      case commentary:
-        context.push(CommentariesPage(passage: reference.toPassage()));
+      case study:
+        StudySheet.show(context, ref, region: reference);
     }
   }
 }

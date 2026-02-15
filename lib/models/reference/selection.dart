@@ -2,6 +2,7 @@ import 'package:bible/models/bible_translation.dart';
 import 'package:bible/models/book_type.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
+import 'package:bible/models/reference/region.dart';
 import 'package:bible/utils/comparable_operators.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
 import 'package:equatable/equatable.dart';
@@ -11,7 +12,7 @@ part 'selection.freezed.dart';
 part 'selection.g.dart';
 
 @freezed
-sealed class Selection with _$Selection {
+sealed class Selection with _$Selection implements Region {
   const Selection._();
 
   const factory Selection({

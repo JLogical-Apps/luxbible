@@ -8,6 +8,6 @@ class StyledDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Divider(height: height, color: context.colors.borderOpaque);
+    return Divider(height: height, color: context.colors.borderOpaque, thickness: height);
   }
 }

@@ -102,7 +102,7 @@ class BiblePage extends HookConsumerWidget {
                           ),
                       children: [
                         Text(chapterReference.format(), style: context.textStyle.bibleChapter),
-                        gapH8,
+                        gapH16,
                         SelectionArea(
                           key: selectionKey,
                           selectionControls: Theme.of(context).platform == TargetPlatform.android
@@ -132,6 +132,7 @@ class BiblePage extends HookConsumerWidget {
                             selectionState: selectionState,
                           ),
                         ),
+                        gapH16,
                       ],
                     ),
                   );
@@ -255,7 +256,8 @@ class _BottomBar extends HookConsumerWidget {
                   ),
                   ...ToolbarAction.values.map(
                     (action) => StyledCircleButton.lg(
-                      onPressed: () => action.onPressed(context, ref, user: user, reference: currentChapterReference),
+                      onPressed: () =>
+                          action.onPressed(context, ref, user: user, reference: currentChapterReference, bible: bible),
                       child: action.buildIcon(context, user: user, reference: currentChapterReference),
                     ),
                   ),
@@ -269,9 +271,16 @@ class _BottomBar extends HookConsumerWidget {
                                 titleText: action.title(user: user, reference: currentChapterReference),
                                 subtitleText: action.description(user: user, reference: currentChapterReference),
                                 leading: action.buildIcon(context, user: user, reference: currentChapterReference),
+                                trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
                                 onPressed: () {
                                   Navigator.of(context).pop();
-                                  action.onPressed(context, ref, user: user, reference: currentChapterReference);
+                                  action.onPressed(
+                                    context,
+                                    ref,
+                                    user: user,
+                                    reference: currentChapterReference,
+                                    bible: bible,
+                                  );
                                 },
                               ),
                             )
@@ -320,11 +329,7 @@ class _BottomBar extends HookConsumerWidget {
                                       .take(3)
                                       .map(
                                         (action) => StyledCircleButton.lg(
-                                          child: action.buildIcon(
-                                            context,
-                                            user: user,
-                                            selectedPassage: selectedPassage,
-                                          ),
+                                          child: Icon(action.icon),
                                           onPressed: () => action.onPressed(
                                             context,
                                             ref,
@@ -343,16 +348,10 @@ class _BottomBar extends HookConsumerWidget {
                                         children: PassageAction.values
                                             .map(
                                               (action) => StyledListItem(
-                                                titleText: action.title(user: user, selectedPassage: selectedPassage),
-                                                subtitleText: action.description(
-                                                  user: user,
-                                                  selectedPassage: selectedPassage,
-                                                ),
-                                                leading: action.buildIcon(
-                                                  context,
-                                                  user: user,
-                                                  selectedPassage: selectedPassage,
-                                                ),
+                                                titleText: action.title(),
+                                                subtitleText: action.description(),
+                                                leadingIcon: action.icon,
+                                                trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
                                                   action.onPressed(
@@ -380,7 +379,7 @@ class _BottomBar extends HookConsumerWidget {
                                       .take(3)
                                       .map(
                                         (action) => StyledCircleButton.lg(
-                                          child: action.buildIcon(context, user: user, selection: selection),
+                                          child: action.buildIcon(),
                                           onPressed: () => action.onPressed(
                                             context,
                                             ref,
@@ -400,9 +399,10 @@ class _BottomBar extends HookConsumerWidget {
                                         children: SelectionAction.values
                                             .map(
                                               (action) => StyledListItem(
-                                                titleText: action.title(user: user, selection: selection),
-                                                subtitleText: action.description(user: user, selection: selection),
-                                                leading: action.buildIcon(context, user: user, selection: selection),
+                                                titleText: action.title(),
+                                                subtitleText: action.description(),
+                                                leading: action.buildIcon(),
+                                                trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
                                                   action.onPressed(

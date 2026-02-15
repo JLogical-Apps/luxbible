@@ -7,6 +7,7 @@ import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
+import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/selection.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:collection/collection.dart';
@@ -39,8 +40,15 @@ sealed class User with _$User {
       annotations.where((annotation) => annotation.passages.any((p) => p.hasAnyOf(passage))).toList();
   bool isPassageAnnotated(Passage passage) => getPassageAnnotations(passage).isNotEmpty;
 
-  List<(Annotation, Selection)> getSelectionAnnotationsInPassage(Passage passage) => annotations
-      .expand((annotation) => annotation.selections.where((s) => s.isInPassage(passage)).map((s) => (annotation, s)))
+  List<(Annotation, Selection)> getSelectionAnnotationsInPassage(
+    Passage passage, {
+    required BibleTranslation translation,
+  }) => annotations
+      .expand(
+        (annotation) => annotation.selections
+            .where((s) => s.translation == translation && s.isInPassage(passage))
+            .map((s) => (annotation, s)),
+      )
       .toList();
 
   List<Annotation> getSelectionAnnotations(Selection selection) => annotations
@@ -69,6 +77,12 @@ sealed class User with _$User {
   User withRemovedBookmark(Bookmark bookmark) => copyWith(bookmarks: bookmarks.withRemoved(bookmark));
 
   User withAnnotation(Annotation annotation) => copyWith(annotations: [...annotations, annotation]);
+  User withRemovedRegionAnnotations(Region region) => region.when(
+    passage: (passage) => withRemovedPassageAnnotations(passage),
+    selection: (selection) => withRemovedSelectionAnnotations(selection),
+    chapterReference: (reference) => throw UnimplementedError(),
+  );
+
   User withRemovedPassageAnnotations(Passage passage) => copyWith(
     annotations: annotations
         .map(

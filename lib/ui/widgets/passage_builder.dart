@@ -55,7 +55,8 @@ class PassageBuilder extends HookConsumerWidget {
     final user = ref.watch(userProvider);
     final bible = this.bible ?? user.getBible(bibles);
 
-    final spansByReference = passage.references.mapToMap((reference) {
+    final references = passage.references;
+    final spansByReference = references.mapToMap((reference) {
       final verse = bible.getVerseByReference(reference);
       if (verse == null) {
         return MapEntry(reference, null);
@@ -117,7 +118,7 @@ class PassageBuilder extends HookConsumerWidget {
                 ),
               ),
         ),
-        TextSpan(text: '\n', style: context.textStyle.bibleBody),
+        if (reference != references.last) TextSpan(text: '\n', style: context.textStyle.bibleBody),
       ]);
     }).withoutNullValues;
     final spans = spansByReference.values.flattenedToList;
@@ -171,7 +172,7 @@ class PassageBuilder extends HookConsumerWidget {
                     .withMergedLines()
                     .map(
                       (box) => Positioned.fromRect(
-                        rect: Rect.fromLTWH(box.left - 4, box.top + 2, box.width + 4, min(32, box.height)),
+                        rect: Rect.fromLTWH(box.left - 4, box.top, box.width + 4, min(32, box.height)),
                         child: IgnorePointer(
                           child: HookBuilder(
                             builder: (context) {
@@ -191,7 +192,7 @@ class PassageBuilder extends HookConsumerWidget {
                     );
               })
               .flattened,
-          ...user.getSelectionAnnotationsInPassage(passage).map((record) {
+          ...user.getSelectionAnnotationsInPassage(passage, translation: bible.translation).map((record) {
             final (annotation, selection) = record;
             final (base, extent) = getSelectionCharacterOffsets(
               selection: selection,
@@ -203,7 +204,7 @@ class PassageBuilder extends HookConsumerWidget {
                 .withMergedLines()
                 .map(
                   (box) => Positioned.fromRect(
-                    rect: Rect.fromLTWH(box.left, box.top + 4, box.width + 2, min(28, box.height)),
+                    rect: Rect.fromLTWH(box.left, box.top + 2, box.width + 2, min(28, box.height)),
                     child: IgnorePointer(
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 300),
@@ -235,7 +236,16 @@ class PassageBuilder extends HookConsumerWidget {
                   onReferencePressed?.call(anchor.toReference());
                 }
               },
-              child: Text.rich(key: textKey, TextSpan(children: spans)),
+              child: Text.rich(
+                key: textKey,
+                TextSpan(children: spans),
+                strutStyle: StrutStyle.fromTextStyle(context.textStyle.bibleBody),
+                textHeightBehavior: TextHeightBehavior(
+                  applyHeightToFirstAscent: true,
+                  applyHeightToLastDescent: true,
+                  leadingDistribution: TextLeadingDistribution.even,
+                ),
+              ),
             ),
           ),
         ],
