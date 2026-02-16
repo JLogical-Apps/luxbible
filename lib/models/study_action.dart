@@ -53,7 +53,7 @@ enum StudyAction {
     switch (this) {
       case compare:
         context.showStyledSheet(
-          StyledSheet.list(
+          StyledSheet(
             titleText: 'Compare ${region.format()}',
             children: bibles
                 .mapIndexed<Widget>(
@@ -78,7 +78,7 @@ enum StudyAction {
         final strongs = ref.watch(strongsProvider);
         context.showStyledSheetWithContext(
           breadcrumbText: region.format(),
-          (context) => StyledSheet.list(
+          (context) => StyledSheet(
             titleText: 'Interlinear ${region.format()}',
             children: region.references
                 .mapIndexed((i, reference) {

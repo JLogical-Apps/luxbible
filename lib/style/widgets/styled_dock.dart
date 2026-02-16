@@ -4,19 +4,16 @@ import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/scroll_absorber.dart';
-import 'package:bible/style/widgets/styled_list.dart';
+import 'package:bible/style/widgets/styled_list_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 class StyledDock extends HookWidget {
-  final Widget body;
+  final List<Widget> children;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
 
-  const StyledDock({super.key, required this.body, this.buttonsBuilder});
-
-  StyledDock.list({super.key, required List<Widget> children, this.buttonsBuilder})
-    : body = StyledList(children: children);
+  const StyledDock({super.key, required this.children, this.buttonsBuilder});
 
   @override
   Widget build(BuildContext context) {
@@ -76,13 +73,11 @@ class StyledDock extends HookWidget {
                           fit: FlexFit.loose,
                           child: Stack(
                             children: [
-                              SingleChildScrollView(
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                    bottom: bottomChildren.isEmpty ? MediaQuery.paddingOf(context).bottom : 0,
-                                  ),
-                                  child: body,
+                              Padding(
+                                padding: EdgeInsets.only(
+                                  bottom: bottomChildren.isEmpty ? MediaQuery.paddingOf(context).bottom : 0,
                                 ),
+                                child: StyledListView(shrinkWrap: true, children: children),
                               ),
                               Positioned(
                                 bottom: -16,

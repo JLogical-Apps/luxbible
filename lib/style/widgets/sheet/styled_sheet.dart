@@ -6,7 +6,6 @@ import 'package:bible/style/widgets/styled_chip.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/style/widgets/styled_divider.dart';
 import 'package:bible/style/widgets/styled_dock.dart';
-import 'package:bible/style/widgets/styled_list.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:collection/collection.dart';
@@ -19,7 +18,7 @@ class StyledSheet extends StatelessWidget {
   final Widget? subtitle;
   final Widget? trailing;
 
-  final Widget body;
+  final List<Widget> children;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
 
   StyledSheet({
@@ -29,23 +28,23 @@ class StyledSheet extends StatelessWidget {
     Widget? subtitle,
     String? subtitleText,
     this.trailing,
-    required this.body,
+    required this.children,
     this.buttonsBuilder,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
        subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new);
 
-  StyledSheet.list({
+  StyledSheet.child({
     super.key,
     Widget? title,
     String? titleText,
     Widget? subtitle,
     String? subtitleText,
     this.trailing,
-    required List<Widget> children,
+    required Widget child,
     this.buttonsBuilder,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
        subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new),
-       body = StyledList(children: children);
+       children = [child];
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +146,7 @@ class StyledSheet extends StatelessWidget {
           Flexible(
             child: DefaultTextStyle(
               style: context.textStyle.paragraphMd,
-              child: StyledDock(body: body, buttonsBuilder: buttonsBuilder),
+              child: StyledDock(buttonsBuilder: buttonsBuilder, children: children),
             ),
           ),
         ],

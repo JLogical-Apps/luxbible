@@ -49,11 +49,11 @@ class StyledPortSheet<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StyledSheet(
+    return StyledSheet.child(
       title: title,
       subtitle: subtitle,
       trailing: trailing,
-      body: Padding(
+      child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16) + EdgeInsets.only(top: 16),
         child: PortBuilder(
           port: port,

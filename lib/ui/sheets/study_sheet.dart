@@ -15,7 +15,7 @@ class StudySheet {
     required ReferencesRegion region,
     required Bible bible,
   }) => context.showStyledSheet(
-    StyledSheet.list(
+    StyledSheet(
       titleText: 'Study ${region.format()}',
       children: StudyAction.values
           .map(
