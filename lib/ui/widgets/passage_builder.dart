@@ -275,7 +275,7 @@ class PassageBuilder extends HookConsumerWidget {
               margin: EdgeInsets.only(bottom: 4),
               child: StyledCircleButton.sm(
                 onPressed: () => context.showStyledSheet(
-                  StyledSheet.list(
+                  StyledSheet(
                     titleText: 'Notes',
                     children: annotations
                         .map(

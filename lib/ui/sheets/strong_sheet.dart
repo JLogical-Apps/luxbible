@@ -19,7 +19,7 @@ class StrongSheet {
 
     await context.showStyledSheetWithContext(
       breadcrumbText: strong.languageText,
-      (context) => StyledSheet.list(
+      (context) => StyledSheet(
         titleText: strong.languageText,
         children: [
           StyledSection.list(

@@ -117,6 +117,7 @@ class BiblePage extends HookConsumerWidget {
                             underlinedReferences: selectedReferencesState.value,
                             onReferencePressed: (reference) {
                               final region = selectionKey.currentState?.selectableRegion;
+                              // ignore: deprecated_member_use
                               if (region == null || region.textEditingValue.selection.isCollapsed) {
                                 selectedReferencesState.value = selectedReferencesState.value.withToggle(reference);
                               } else {
@@ -264,7 +265,7 @@ class _BottomBar extends HookConsumerWidget {
                   StyledCircleButton.lg(
                     icon: Symbols.more_vert,
                     onPressed: () => context.showStyledSheet(
-                      StyledSheet.list(
+                      StyledSheet(
                         children: ToolbarAction.values
                             .map(
                               (action) => StyledListItem(
@@ -342,7 +343,7 @@ class _BottomBar extends HookConsumerWidget {
                                       ),
                                   StyledCircleButton.lg(
                                     onPressed: () => context.showStyledSheet(
-                                      StyledSheet.list(
+                                      StyledSheet(
                                         titleText: 'Passage Actions',
                                         subtitleText: selectedPassage.format(),
                                         children: PassageAction.values
@@ -393,7 +394,7 @@ class _BottomBar extends HookConsumerWidget {
                                       ),
                                   StyledCircleButton.lg(
                                     onPressed: () => context.showStyledSheet(
-                                      StyledSheet.list(
+                                      StyledSheet(
                                         titleText: 'Selection Actions',
                                         subtitleText: '"${bible.getSelectionText(selection)}"',
                                         children: SelectionAction.values

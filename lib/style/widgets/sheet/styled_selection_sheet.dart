@@ -22,7 +22,7 @@ class StyledSelectionSheet<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StyledSheet.list(
+    return StyledSheet(
       title: title,
       children: options
           .map(

@@ -17,10 +17,10 @@ class StyledColorSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StyledSheet(
+    return StyledSheet.child(
       title: title,
       trailing: trailing,
-      body: Padding(
+      child: Padding(
         padding: EdgeInsets.symmetric(vertical: 8),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
