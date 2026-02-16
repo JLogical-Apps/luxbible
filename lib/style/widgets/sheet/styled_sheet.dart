@@ -1,12 +1,17 @@
 import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/text_style_extensions.dart';
+import 'package:bible/style/widgets/sheet/styled_sheet_navigation_context.dart';
+import 'package:bible/style/widgets/styled_chip.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/style/widgets/styled_divider.dart';
 import 'package:bible/style/widgets/styled_dock.dart';
 import 'package:bible/style/widgets/styled_list.dart';
+import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:intersperse/intersperse.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 class StyledSheet extends StatelessWidget {
@@ -44,6 +49,8 @@ class StyledSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sheetNavigationContext = SheetNavigationContextProvider.maybeOf(context)?.context;
+
     return Container(
       decoration: BoxDecoration(
         color: context.colors.surfacePrimary,
@@ -104,6 +111,38 @@ class StyledSheet extends StatelessWidget {
             ),
           ),
           gapH8,
+          if (sheetNavigationContext != null && sheetNavigationContext.breadcrumbs.length > 1) ...[
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              reverse: true,
+              child: Row(
+                spacing: 4,
+                children: sheetNavigationContext.breadcrumbs
+                    .mapIndexed<Widget>(
+                      (i, breadcrumb) => StyledChip(
+                        text: breadcrumb.text,
+                        onPressed: i + 1 == sheetNavigationContext.breadcrumbs.length
+                            ? null
+                            : () {
+                                context.pop();
+                                context.showStyledSheet(
+                                  SheetNavigationContextProvider(
+                                    context: SheetNavigationContext(
+                                      breadcrumbs: sheetNavigationContext.breadcrumbs.take(i + 1).toList(),
+                                    ),
+                                    child: Builder(builder: (context) => breadcrumb.sheetBuilder(context)),
+                                  ),
+                                );
+                              },
+                      ),
+                    )
+                    .intersperse(Icon(Symbols.chevron_right, color: context.colors.contentTertiary, size: 16))
+                    .toList(),
+              ),
+            ),
+            gapH8,
+          ],
           StyledDivider(height: 2),
           Flexible(
             child: DefaultTextStyle(

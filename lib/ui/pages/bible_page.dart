@@ -12,12 +12,12 @@ import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
+import 'package:bible/style/widgets/styled_badge.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_material.dart';
 import 'package:bible/style/widgets/styled_page.dart';
 import 'package:bible/style/widgets/styled_scrollbar.dart';
-import 'package:bible/style/widgets/styled_tag.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
 import 'package:bible/ui/utils/text_selection_controls.dart';
 import 'package:bible/ui/widgets/passage_builder.dart';
@@ -248,7 +248,7 @@ class _BottomBar extends HookConsumerWidget {
                           spacing: 8,
                           children: [
                             Text(currentChapterReference.format(), style: context.textStyle.labelLg),
-                            StyledTag(text: user.translation.title()),
+                            StyledBadge(text: user.translation.title()),
                           ],
                         ),
                       ),
