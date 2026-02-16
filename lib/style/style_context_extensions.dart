@@ -2,6 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:bible/style/color_library.dart';
 import 'package:bible/style/text_style_library.dart';
 import 'package:bible/style/widgets/component_size.dart';
+import 'package:bible/style/widgets/sheet/styled_sheet_navigation_context.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -28,6 +29,35 @@ extension StyleContextExtensions on BuildContext {
       ),
       useRootNavigator: true,
       builder: (context) => sheet,
+    );
+  }
+
+  Future<T?> showStyledSheetWithContext<T>(
+    Widget Function(BuildContext) sheetBuilder, {
+    required String breadcrumbText,
+  }) async {
+    final rootContext = ScaffoldMessenger.of(this).context;
+    final sheetContext =
+        SheetNavigationContextProvider.maybeOf(this)?.context ?? SheetNavigationContext(breadcrumbs: []);
+
+    return await showModalBottomSheet(
+      context: this,
+      isScrollControlled: true,
+      isDismissible: true,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      enableDrag: true,
+      backgroundColor: Colors.transparent,
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.sizeOf(this).width,
+        maxHeight: MediaQuery.sizeOf(rootContext).height - MediaQuery.paddingOf(rootContext).top - 8,
+      ),
+      useRootNavigator: true,
+      builder: (context) => SheetNavigationContextProvider(
+        context: sheetContext.withBreadcrumb(
+          SheetNavigationBreadcrumb(text: breadcrumbText, sheetBuilder: sheetBuilder),
+        ),
+        child: Builder(builder: sheetBuilder),
+      ),
     );
   }
 

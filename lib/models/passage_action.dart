@@ -69,7 +69,7 @@ enum PassageAction {
           ),
         );
       case study:
-        StudySheet.show(context, ref, region: selectedPassage);
+        StudySheet.show(context, ref, region: selectedPassage, bible: bible);
     }
   }
 }

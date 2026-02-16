@@ -26,6 +26,8 @@ extension TextStyleExtensions on TextStyle {
   TextStyle get extraBold => copyWith(fontVariations: [FontVariation('wght', 800)]);
   TextStyle get black => copyWith(fontVariations: [FontVariation('wght', 900)]);
 
+  TextStyle get underlined => copyWith(decoration: TextDecoration.underline);
+
   double getWidth(String text) => (TextPainter(
     text: TextSpan(text: text, style: this),
     textDirection: TextDirection.ltr,

@@ -58,7 +58,7 @@ enum ToolbarAction {
           ref.updateUser((user) => user.withRemovedBookmark(bookmark));
         }
       case study:
-        StudySheet.show(context, ref, region: reference);
+        StudySheet.show(context, ref, region: reference, bible: bible);
     }
   }
 }
