@@ -73,11 +73,13 @@ class StyledDock extends HookWidget {
                           fit: FlexFit.loose,
                           child: Stack(
                             children: [
-                              Padding(
+                              StyledListView(
+                                shrinkWrap: true,
+                                physics: ClampingScrollPhysics(),
                                 padding: EdgeInsets.only(
                                   bottom: bottomChildren.isEmpty ? MediaQuery.paddingOf(context).bottom : 0,
                                 ),
-                                child: StyledListView(shrinkWrap: true, children: children),
+                                children: children,
                               ),
                               Positioned(
                                 bottom: -16,
