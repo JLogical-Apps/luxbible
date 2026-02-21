@@ -1,4 +1,4 @@
-package com.example.bible
+package app.luxbible.app
 
 import io.flutter.embedding.android.FlutterActivity
 
