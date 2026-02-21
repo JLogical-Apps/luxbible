@@ -51,7 +51,7 @@ class BiblePage extends HookConsumerWidget {
 
     final selectedReferencesState = useState(<Reference>[]);
 
-    final scrollController = useScrollController();
+    final scrollController = PrimaryScrollController.of(context);
     final isScrollingDownState = useMemoized(() => ValueNotifier(true));
 
     final selectionState = useMemoized(() => ValueNotifier<Selection?>(null));
@@ -93,7 +93,6 @@ class BiblePage extends HookConsumerWidget {
 
                   return StyledScrollbar(
                     child: ListView(
-                      controller: scrollController,
                       padding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 8) +
                           EdgeInsets.only(
