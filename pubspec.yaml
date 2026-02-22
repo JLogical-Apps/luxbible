@@ -53,6 +53,7 @@ dev_dependencies:
   riverpod_lint: ^3.0.3
   freezed: ^3.2.3
   json_serializable: ^6.11.1
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
