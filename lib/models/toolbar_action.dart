@@ -52,7 +52,7 @@ enum ToolbarAction {
         if (bookmark == null) {
           final color = await context.showStyledSheet(StyledColorSheet(titleText: 'Bookmark Color'));
           if (color != null) {
-            ref.updateUser((user) => user.withBookmark(Bookmark(key: reference.osisId(), color: color)));
+            ref.updateUser((user) => user.withBookmark(Bookmark(chapter: reference, color: color)));
           }
         } else {
           ref.updateUser((user) => user.withRemovedBookmark(bookmark));
