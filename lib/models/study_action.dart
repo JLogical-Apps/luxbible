@@ -9,7 +9,6 @@ import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/styled_badge.dart';
 import 'package:bible/style/widgets/styled_divider.dart';
-import 'package:bible/style/widgets/styled_list.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_sticky_header.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
@@ -131,15 +130,13 @@ enum StudyAction {
                 .mapToMap((commentary) => MapEntry(commentary, commentary.getNotesFor(region.toPassage())))
                 .where((commentary, notes) => notes.isNotEmpty)
                 .mapToIterable(
-                  (commentary, notes) => StyledStickyHeader(
+                  (commentary, notes) => StyledStickyHeader.list(
                     titleText: commentary.name,
-                    child: StyledList(
-                      children: notes
-                          .mapToIterable(
-                            (passage, note) => StyledListItem(titleText: passage.format(), subtitleText: note),
-                          )
-                          .toList(),
-                    ),
+                    children: notes
+                        .mapToIterable(
+                          (passage, note) => StyledListItem(titleText: passage.format(), subtitleText: note),
+                        )
+                        .toList(),
                   ),
                 )
                 .toList(),
