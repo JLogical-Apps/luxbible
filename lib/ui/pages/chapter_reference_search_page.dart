@@ -190,7 +190,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                 child: Row(
                                   spacing: 16,
                                   children: user.bookmarks.map((bookmark) {
-                                    final chapterReference = ChapterReference.fromOsisId(bookmark.key);
+                                    final chapterReference = bookmark.chapter;
                                     return StyledTile(
                                       onPressed: () => Navigator.of(context).pop(chapterReference),
                                       child: Row(

@@ -34,7 +34,7 @@ sealed class User with _$User {
   Bible getBible(List<Bible> bibles) => bibles.firstWhere((bible) => bible.translation == translation);
 
   Bookmark? getBookmark(ChapterReference reference) =>
-      bookmarks.firstWhereOrNull((bookmark) => bookmark.key == reference.osisId());
+      bookmarks.firstWhereOrNull((bookmark) => bookmark.chapter == reference);
 
   List<Annotation> getPassageAnnotations(Passage passage) =>
       annotations.where((annotation) => annotation.passages.any((p) => p.hasAnyOf(passage))).toList();

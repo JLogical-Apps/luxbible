@@ -12,12 +12,10 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
       BibleTranslation.asv,
   lastReference: json['lastReference'] == null
       ? const ChapterReference(chapterNum: 1, book: BookType.genesis)
-      : ChapterReference.fromJson(
-          json['lastReference'] as Map<String, dynamic>,
-        ),
+      : ChapterReference.fromJson(json['lastReference'] as String),
   previouslyViewed:
       (json['previouslyViewed'] as List<dynamic>?)
-          ?.map((e) => ChapterReference.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => ChapterReference.fromJson(e as String))
           .toList() ??
       const [],
   highlightColor:

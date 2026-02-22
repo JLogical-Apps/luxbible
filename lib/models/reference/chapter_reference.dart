@@ -3,19 +3,17 @@ import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/verse_span_reference.dart';
-import 'package:flutter/foundation.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:bible/utils/comparable_operators.dart';
+import 'package:bible/utils/extensions/num_extensions.dart';
+import 'package:equatable/equatable.dart';
 
-part 'chapter_reference.freezed.dart';
-part 'chapter_reference.g.dart';
+class ChapterReference extends Equatable with ComparableOperators<ChapterReference> implements ReferencesRegion {
+  final BookType book;
+  final int chapterNum;
 
-@freezed
-sealed class ChapterReference with _$ChapterReference implements ReferencesRegion {
-  const ChapterReference._();
+  const ChapterReference({required this.book, required this.chapterNum});
 
-  const factory ChapterReference({required BookType book, required int chapterNum}) = _ChapterReference;
-
-  static ChapterReference fromOsisId(String key) {
+  factory ChapterReference.fromOsisId(String key) {
     final items = key.split('.');
     return ChapterReference(
       book: BookType.values.firstWhere((book) => book.osisId() == items[0]),
@@ -23,9 +21,17 @@ sealed class ChapterReference with _$ChapterReference implements ReferencesRegio
     );
   }
 
-  factory ChapterReference.fromJson(Map<String, dynamic> json) => _$ChapterReferenceFromJson(json);
+  factory ChapterReference.fromJson(String json) = ChapterReference.fromOsisId;
+  String toJson() => osisId();
 
-  Reference getReference(int verseNum) => Reference(book: book, chapterNum: chapterNum, verseNum: verseNum);
+  @override
+  List<Object> get props => [book, chapterNum];
+
+  @override
+  int compareTo(ChapterReference other) =>
+      book.index.compareTo(other.book.index).nullIfZero ?? chapterNum.compareTo(other.chapterNum).nullIfZero ?? 0;
+
+  getReference(int verseNum) => Reference(book: book, chapterNum: chapterNum, verseNum: verseNum);
 
   Passage toPassage() => Passage(spans: [VerseSpanReference(start: asPointer())]);
 

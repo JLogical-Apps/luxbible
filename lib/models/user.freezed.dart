@@ -52,7 +52,7 @@ $Res call({
 });
 
 
-$ChapterReferenceCopyWith<$Res> get lastReference;
+
 
 }
 /// @nodoc
@@ -76,16 +76,7 @@ as List<Bookmark>,annotations: null == annotations ? _self.annotations : annotat
 as List<Annotation>,
   ));
 }
-/// Create a copy of User
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ChapterReferenceCopyWith<$Res> get lastReference {
-  
-  return $ChapterReferenceCopyWith<$Res>(_self.lastReference, (value) {
-    return _then(_self.copyWith(lastReference: value));
-  });
-}
+
 }
 
 
@@ -282,7 +273,7 @@ $Res call({
 });
 
 
-@override $ChapterReferenceCopyWith<$Res> get lastReference;
+
 
 }
 /// @nodoc
@@ -307,16 +298,7 @@ as List<Annotation>,
   ));
 }
 
-/// Create a copy of User
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$ChapterReferenceCopyWith<$Res> get lastReference {
-  
-  return $ChapterReferenceCopyWith<$Res>(_self.lastReference, (value) {
-    return _then(_self.copyWith(lastReference: value));
-  });
-}
+
 }
 
 // dart format on
