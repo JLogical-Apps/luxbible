@@ -1,7 +1,7 @@
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/reference/selection.dart';
 import 'package:bible/models/user.dart';
-import 'package:bible/style/style_context_extensions.dart';
+import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';

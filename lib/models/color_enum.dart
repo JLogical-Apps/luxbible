@@ -1,5 +1,4 @@
-import 'package:bible/style/color_library.dart';
-import 'package:bible/style/hue.dart';
+import 'package:bible/style/style.dart';
 
 enum ColorEnum {
   red,
