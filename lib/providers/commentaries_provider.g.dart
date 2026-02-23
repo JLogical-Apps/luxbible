@@ -10,7 +10,7 @@ part of 'commentaries_provider.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(commentaries)
-const commentariesProvider = CommentariesProvider._();
+final commentariesProvider = CommentariesProvider._();
 
 final class CommentariesProvider
     extends
@@ -20,7 +20,7 @@ final class CommentariesProvider
           List<Commentary>
         >
     with $Provider<List<Commentary>> {
-  const CommentariesProvider._()
+  CommentariesProvider._()
     : super(
         from: null,
         argument: null,

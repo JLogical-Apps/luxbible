@@ -10,11 +10,11 @@ part of 'path_service.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(pathService)
-const pathServiceProvider = PathServiceProvider._();
+final pathServiceProvider = PathServiceProvider._();
 
 final class PathServiceProvider extends $FunctionalProvider<Paths, Paths, Paths>
     with $Provider<Paths> {
-  const PathServiceProvider._()
+  PathServiceProvider._()
     : super(
         from: null,
         argument: null,
