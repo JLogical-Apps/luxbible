@@ -15,6 +15,12 @@ _ToolbarConfiguration _$ToolbarConfigurationFromJson(
   pinnedShortcut2:
       $enumDecodeNullable(_$ToolbarShortcutEnumMap, json['pinnedShortcut2']) ??
       ToolbarShortcut.interlinear,
+  longPressShortcut:
+      $enumDecodeNullable(
+        _$ToolbarShortcutEnumMap,
+        json['longPressShortcut'],
+      ) ??
+      ToolbarShortcut.study,
 );
 
 Map<String, dynamic> _$ToolbarConfigurationToJson(
@@ -22,6 +28,7 @@ Map<String, dynamic> _$ToolbarConfigurationToJson(
 ) => <String, dynamic>{
   'pinnedShortcut1': _$ToolbarShortcutEnumMap[instance.pinnedShortcut1]!,
   'pinnedShortcut2': _$ToolbarShortcutEnumMap[instance.pinnedShortcut2]!,
+  'longPressShortcut': _$ToolbarShortcutEnumMap[instance.longPressShortcut]!,
 };
 
 const _$ToolbarShortcutEnumMap = {

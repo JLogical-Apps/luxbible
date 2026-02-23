@@ -238,6 +238,13 @@ class _BottomBar extends HookConsumerWidget {
                   );
                 }
               },
+              onLongPressed: () => user.toolbar.longPressShortcut.onPressed(
+                context,
+                ref,
+                reference: currentChapterReference,
+                user: user,
+                bible: bible,
+              ),
               onShorcutPressed: (shortcutIndex, shortcut) =>
                   shortcut.onPressed(context, ref, reference: currentChapterReference, bible: bible, user: user),
               onMorePressed: () => context.showStyledSheet(

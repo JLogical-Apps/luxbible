@@ -25,7 +25,7 @@ enum ToolbarAction {
       reference == null || user.getBookmark(reference) == null
           ? 'Bookmark this chapter to easily access it from the search page.'
           : 'Remove this bookmark.',
-    study => 'Study this chapter.',
+    study => 'View study tools for this chapter.',
   };
 
   Widget buildIcon(BuildContext context, {required User user, required ChapterReference? reference}) => switch (this) {
