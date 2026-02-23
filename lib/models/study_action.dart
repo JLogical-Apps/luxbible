@@ -31,11 +31,14 @@ enum StudyAction {
     commentary => 'Commentary',
   };
 
-  String description({required ReferencesRegion region}) => switch (this) {
-    compare => 'Compare ${region.format()} across a variety of translations.',
-    interlinear => 'View a lexical breakdown of ${region.format()} using Strongs.',
-    commentary => 'View commentaries of ${region.format()}.',
-  };
+  String description({required ReferencesRegion? region, required RegionType regionType}) {
+    final regionText = region?.format() ?? regionType.formatThis();
+    return switch (this) {
+      compare => 'Compare $regionText across a variety of translations.',
+      interlinear => 'View a lexical breakdown of $regionText using Strongs.',
+      commentary => 'View commentaries of $regionText.',
+    };
+  }
 
   IconData get icon => switch (this) {
     compare => Symbols.text_compare,

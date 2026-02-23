@@ -14,6 +14,7 @@ class StudySheet {
     WidgetRef ref, {
     required ReferencesRegion region,
     required Bible bible,
+    required RegionType regionType,
   }) => context.showStyledSheet(
     StyledSheet(
       titleText: 'Study ${region.format()}',
@@ -21,7 +22,7 @@ class StudySheet {
           .map(
             (action) => StyledListItem.navigation(
               titleText: action.title(),
-              subtitleText: action.description(region: region),
+              subtitleText: action.description(region: region, regionType: regionType),
               leadingIcon: action.icon,
               onPressed: () {
                 context.pop();

@@ -28,6 +28,8 @@ class StyledSelectionSheet<T> extends StatelessWidget {
           .map(
             (option) => StyledListItem.radio(
               title: optionMapper(option).title,
+              subtitle: optionMapper(option).subtitle,
+              leading: optionMapper(option).leading,
               selected: option == initialOption,
               onSelected: () => Navigator.of(context).pop(option),
             ),

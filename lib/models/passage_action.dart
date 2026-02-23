@@ -1,5 +1,6 @@
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/reference/passage.dart';
+import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/user.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
@@ -69,7 +70,7 @@ enum PassageAction {
           ),
         );
       case study:
-        StudySheet.show(context, ref, region: selectedPassage, bible: bible);
+        StudySheet.show(context, ref, region: selectedPassage, bible: bible, regionType: RegionType.passage);
     }
   }
 }
