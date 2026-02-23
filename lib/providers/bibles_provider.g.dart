@@ -10,12 +10,12 @@ part of 'bibles_provider.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(bibles)
-const biblesProvider = BiblesProvider._();
+final biblesProvider = BiblesProvider._();
 
 final class BiblesProvider
     extends $FunctionalProvider<List<Bible>, List<Bible>, List<Bible>>
     with $Provider<List<Bible>> {
-  const BiblesProvider._()
+  BiblesProvider._()
     : super(
         from: null,
         argument: null,

@@ -10,7 +10,7 @@ part of 'strongs_provider.dart';
 // ignore_for_file: type=lint, type=warning
 
 @ProviderFor(strongs)
-const strongsProvider = StrongsProvider._();
+final strongsProvider = StrongsProvider._();
 
 final class StrongsProvider
     extends
@@ -20,7 +20,7 @@ final class StrongsProvider
           Map<String, Strong>
         >
     with $Provider<Map<String, Strong>> {
-  const StrongsProvider._()
+  StrongsProvider._()
     : super(
         from: null,
         argument: null,
