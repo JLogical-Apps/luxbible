@@ -12,7 +12,7 @@ class StyledBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StyledCard(
+    return StyledCard.child(
       color: context.colors.surfaceDisabled,
       child: StyledListItem(title: message),
     );

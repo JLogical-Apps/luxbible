@@ -22,7 +22,7 @@ class StrongSheet {
       (context) => StyledSheet(
         titleText: strong.languageText,
         children: [
-          StyledSection.list(
+          StyledSection(
             titleText: 'Info',
             padding: EdgeInsets.only(top: 24),
             children: [
@@ -33,7 +33,7 @@ class StrongSheet {
             ],
           ),
           if (seeMoreStrongs.isNotEmpty)
-            StyledSection.list(
+            StyledSection(
               titleText: 'See More',
               padding: EdgeInsets.only(top: 24),
               children: seeMoreStrongs
