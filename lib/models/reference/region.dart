@@ -41,3 +41,15 @@ extension ReferencesRegionExtensions on ReferencesRegion {
 
   String format() => when(passage: (passage) => passage.format(), chapterReference: (reference) => reference.format());
 }
+
+enum RegionType {
+  chapter,
+  passage,
+  selection;
+
+  String formatThis() => switch (this) {
+    chapter => 'this chapter',
+    passage => 'this passage',
+    selection => 'this selection',
+  };
+}

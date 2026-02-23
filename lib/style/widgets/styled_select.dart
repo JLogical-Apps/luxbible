@@ -61,7 +61,17 @@ class StyledSelect<T> extends StatelessWidget {
 
 class StyledSelectOption<T> {
   final Widget title;
+  final Widget? subtitle;
+  final Widget? leading;
 
-  StyledSelectOption({Widget? title, String? titleText})
-    : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
+  StyledSelectOption({
+    Widget? title,
+    String? titleText,
+    Widget? subtitle,
+    String? subtitleText,
+    Widget? leading,
+    IconData? leadingIcon,
+  }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
+       subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new),
+       leading = leading ?? leadingIcon?.mapIfNonNull(Icon.new);
 }

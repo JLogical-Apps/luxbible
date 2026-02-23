@@ -12,15 +12,15 @@ import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
-import 'package:bible/style/widgets/styled_badge.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
-import 'package:bible/style/widgets/styled_material.dart';
 import 'package:bible/style/widgets/styled_page.dart';
 import 'package:bible/style/widgets/styled_scrollbar.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
+import 'package:bible/ui/pages/toolbar_settings_page.dart';
 import 'package:bible/ui/utils/text_selection_controls.dart';
 import 'package:bible/ui/widgets/passage_builder.dart';
+import 'package:bible/ui/widgets/toolbar.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/controller_extensions.dart';
@@ -219,10 +219,11 @@ class _BottomBar extends HookConsumerWidget {
             padding:
                 EdgeInsets.symmetric(horizontal: 16) +
                 EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom + 16),
-            child: StyledMaterial(
-              color: context.colors.surfacePrimary,
-              borderRadius: BorderRadius.circular(999),
-              padding: EdgeInsets.only(left: 24, right: 12),
+            child: Toolbar(
+              chapterReference: currentChapterReference,
+              toolbar: user.toolbar,
+              translation: user.translation,
+              user: user,
               onPressed: () async {
                 final newReference =
                     await context.pushDialog(ChapterReferenceSearchPage(initialReference: currentChapterReference))
@@ -237,58 +238,39 @@ class _BottomBar extends HookConsumerWidget {
                   );
                 }
               },
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 16),
-                        child: Row(
-                          spacing: 8,
-                          children: [
-                            Text(currentChapterReference.format(), style: context.textStyle.labelLg),
-                            StyledBadge(text: user.translation.title()),
-                          ],
+              onShorcutPressed: (shortcutIndex, shortcut) =>
+                  shortcut.onPressed(context, ref, reference: currentChapterReference, bible: bible, user: user),
+              onMorePressed: () => context.showStyledSheet(
+                StyledSheet(
+                  titleText: 'Toolbar Actions',
+                  trailing: StyledCircleButton.lg(
+                    icon: Symbols.tune,
+                    onPressed: () {
+                      context.pop();
+                      context.push(ToolbarSettingsPage());
+                    },
+                  ),
+                  children: ToolbarAction.values
+                      .map(
+                        (action) => StyledListItem(
+                          titleText: action.title(user: user, reference: currentChapterReference),
+                          subtitleText: action.description(user: user, reference: currentChapterReference),
+                          leading: action.buildIcon(context, user: user, reference: currentChapterReference),
+                          trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            action.onPressed(
+                              context,
+                              ref,
+                              user: user,
+                              reference: currentChapterReference,
+                              bible: bible,
+                            );
+                          },
                         ),
-                      ),
-                    ),
-                  ),
-                  ...ToolbarAction.values.map(
-                    (action) => StyledCircleButton.lg(
-                      onPressed: () =>
-                          action.onPressed(context, ref, user: user, reference: currentChapterReference, bible: bible),
-                      child: action.buildIcon(context, user: user, reference: currentChapterReference),
-                    ),
-                  ),
-                  StyledCircleButton.lg(
-                    icon: Symbols.more_vert,
-                    onPressed: () => context.showStyledSheet(
-                      StyledSheet(
-                        children: ToolbarAction.values
-                            .map(
-                              (action) => StyledListItem(
-                                titleText: action.title(user: user, reference: currentChapterReference),
-                                subtitleText: action.description(user: user, reference: currentChapterReference),
-                                leading: action.buildIcon(context, user: user, reference: currentChapterReference),
-                                trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  action.onPressed(
-                                    context,
-                                    ref,
-                                    user: user,
-                                    reference: currentChapterReference,
-                                    bible: bible,
-                                  );
-                                },
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    ),
-                  ),
-                ],
+                      )
+                      .toList(),
+                ),
               ),
             ),
           ),

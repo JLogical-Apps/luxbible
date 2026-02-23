@@ -31,6 +31,9 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
           ?.map((e) => Annotation.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
+  toolbar: json['toolbar'] == null
+      ? const ToolbarConfiguration()
+      : ToolbarConfiguration.fromJson(json['toolbar'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -40,6 +43,7 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'highlightColor': _$ColorEnumEnumMap[instance.highlightColor]!,
   'bookmarks': instance.bookmarks,
   'annotations': instance.annotations,
+  'toolbar': instance.toolbar,
 };
 
 const _$BibleTranslationEnumMap = {
