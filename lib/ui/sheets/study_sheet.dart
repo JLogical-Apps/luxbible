@@ -17,7 +17,8 @@ class StudySheet {
     required RegionType regionType,
   }) => context.showStyledSheet(
     StyledSheet(
-      titleText: 'Study ${region.format()}',
+      titleText: 'Study',
+      subtitleText: region.format(),
       children: StudyAction.values
           .map(
             (action) => StyledListItem.navigation(
