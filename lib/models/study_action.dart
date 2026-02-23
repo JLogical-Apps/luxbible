@@ -52,7 +52,8 @@ enum StudyAction {
       case compare:
         context.showStyledSheet(
           StyledSheet(
-            titleText: 'Compare ${region.format()}',
+            titleText: 'Compare',
+            subtitleText: region.format(),
             children: bibles
                 .mapIndexed<Widget>(
                   (i, bible) => Stack(
@@ -77,7 +78,8 @@ enum StudyAction {
         context.showStyledSheetWithContext(
           breadcrumbText: region.format(),
           (context) => StyledSheet(
-            titleText: 'Interlinear ${region.format()}',
+            titleText: 'Interlinear',
+            subtitleText: region.format(),
             children: region.references
                 .mapIndexed((i, reference) {
                   final verse = bible.getVerseByReference(reference);
@@ -123,7 +125,8 @@ enum StudyAction {
         final commentaries = ref.watch(commentariesProvider);
         context.showStyledSheet(
           StyledSheet(
-            titleText: 'Commentary of ${region.format()}',
+            titleText: 'Commentary',
+            subtitleText: region.format(),
             children: commentaries
                 .mapToMap((commentary) => MapEntry(commentary, commentary.getNotesFor(region.toPassage())))
                 .where((commentary, notes) => notes.isNotEmpty)
