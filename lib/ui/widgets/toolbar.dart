@@ -7,6 +7,7 @@ import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/styled_badge.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/style/widgets/styled_material.dart';
+import 'package:bible/ui/pages/styled_edit_badge.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -18,6 +19,7 @@ class Toolbar extends StatelessWidget {
   final User user;
 
   final Function() onPressed;
+  final Function()? onLongPressed;
   final Function(int shortcutIndex, ToolbarShortcut) onShorcutPressed;
   final Function() onMorePressed;
 
@@ -31,6 +33,7 @@ class Toolbar extends StatelessWidget {
     required this.translation,
     required this.user,
     required this.onPressed,
+    this.onLongPressed,
     required this.onShorcutPressed,
     required this.onMorePressed,
     this.isEdit = false,
@@ -44,6 +47,7 @@ class Toolbar extends StatelessWidget {
       borderRadius: BorderRadius.circular(999),
       padding: EdgeInsets.only(left: 24, right: 12),
       onPressed: onPressed,
+      onLongPressed: onLongPressed,
       child: Row(
         children: [
           Expanded(
@@ -62,22 +66,15 @@ class Toolbar extends StatelessWidget {
             ),
           ),
           ...toolbar.pinnedShortcuts.mapIndexed(
-            (i, shortcut) => Stack(
-              children: [
-                Tooltip(
-                  message: shortcut.title(user: user, reference: chapterReference),
-                  child: StyledCircleButton.lg(
-                    onPressed: () => onShorcutPressed(i, shortcut),
-                    child: shortcut.buildIcon(context, user: user, reference: chapterReference),
-                  ),
+            (i, shortcut) => StyledEditBadge(
+              isEdit: isEdit,
+              child: Tooltip(
+                message: shortcut.title(user: user, reference: chapterReference),
+                child: StyledCircleButton.lg(
+                  onPressed: () => onShorcutPressed(i, shortcut),
+                  child: shortcut.buildIcon(context, user: user, reference: chapterReference),
                 ),
-                if (isEdit)
-                  Positioned(
-                    right: 0,
-                    bottom: 0,
-                    child: StyledBadge(icon: Symbols.edit, color: context.colors.inverted.surfacePrimary),
-                  ),
-              ],
+              ),
             ),
           ),
           StyledCircleButton.lg(icon: Symbols.more_vert, onPressed: onMorePressed),

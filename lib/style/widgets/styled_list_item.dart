@@ -128,7 +128,7 @@ class StyledListItem extends StatelessWidget {
                               padding: EdgeInsets.only(right: 8),
                               child: IconTheme.merge(
                                 data: IconThemeData(color: context.colors.contentDisabled, size: 24),
-                                child: trailing,
+                                child: IntrinsicWidth(child: IntrinsicHeight(child: trailing)),
                               ),
                             ),
                           )

@@ -11,6 +11,7 @@ sealed class ToolbarConfiguration with _$ToolbarConfiguration {
   const factory ToolbarConfiguration({
     @Default(ToolbarShortcut.bookmark) ToolbarShortcut pinnedShortcut1,
     @Default(ToolbarShortcut.interlinear) ToolbarShortcut pinnedShortcut2,
+    @Default(ToolbarShortcut.study) ToolbarShortcut longPressShortcut,
   }) = _ToolbarConfiguration;
 
   factory ToolbarConfiguration.fromJson(Map<String, dynamic> json) => _$ToolbarConfigurationFromJson(json);
