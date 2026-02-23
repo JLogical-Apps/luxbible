@@ -180,7 +180,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                     children: [
                       if (getMatchingBooks().isNotEmpty && (isBookFullySelected || bookTextState.value.isEmpty)) ...[
                         if (user.bookmarks.isNotEmpty)
-                          StyledSection.list(
+                          StyledSection(
                             titleText: 'Bookmarks',
                             padding: EdgeInsets.only(top: 24),
                             children: [
@@ -208,7 +208,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                             ],
                           ),
                         if (user.previouslyViewed.isNotEmpty)
-                          StyledSection.list(
+                          StyledSection(
                             titleText: 'Recents',
                             padding: EdgeInsets.only(top: 24),
                             children: user.previouslyViewed
@@ -242,7 +242,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                           child: StyledBanner(messageText: 'No Matches'),
                         )
                       else
-                        StyledSection.list(
+                        StyledSection(
                           titleText: 'Books',
                           padding: EdgeInsets.only(top: 24),
                           children: (isBookFullySelected ? BookType.values : getMatchingBooks())

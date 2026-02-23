@@ -62,7 +62,7 @@ class AnimatedGrow extends StatelessWidget {
             bottom: axis == Axis.horizontal ? 0 : null,
             child: previousChild,
           ),
-        if (currentChild != null) currentChild,
+        ?currentChild,
       ],
     );
   }

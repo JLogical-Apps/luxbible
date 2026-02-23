@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class StyledSection extends StatelessWidget {
   final Widget title;
-  final Widget child;
+  final List<Widget> children;
 
   final EdgeInsets padding;
   final EdgeInsets childPadding;
@@ -15,20 +15,20 @@ class StyledSection extends StatelessWidget {
     super.key,
     String? titleText,
     Widget? title,
-    required this.child,
+    required this.children,
     this.padding = const EdgeInsets.only(top: 36),
-    this.childPadding = const EdgeInsets.symmetric(horizontal: 16),
+    this.childPadding = EdgeInsets.zero,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
 
-  StyledSection.list({
+  StyledSection.child({
     super.key,
     String? titleText,
     Widget? title,
-    required List<Widget> children,
+    required Widget child,
     this.padding = const EdgeInsets.only(top: 36),
-    this.childPadding = EdgeInsets.zero,
+    this.childPadding = const EdgeInsets.symmetric(horizontal: 16),
   }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
-       child = StyledList(children: children);
+       children = [child];
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,10 @@ class StyledSection extends StatelessWidget {
             child: DefaultTextStyle(style: context.textStyle.headingXs, child: title),
           ),
           gapH12,
-          Padding(padding: childPadding, child: child),
+          Padding(
+            padding: childPadding,
+            child: StyledList(children: children),
+          ),
         ],
       ),
     );

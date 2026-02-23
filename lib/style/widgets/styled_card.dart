@@ -3,19 +3,21 @@ import 'package:bible/style/widgets/styled_list.dart';
 import 'package:flutter/material.dart';
 
 class StyledCard extends StatelessWidget {
-  final Widget child;
+  final List<Widget> children;
 
   final Color? color;
 
-  const StyledCard({super.key, required this.child, this.color});
-
-  StyledCard.list({super.key, required List<Widget> children, this.color}) : child = StyledList(children: children);
+  const StyledCard({super.key, required this.children, this.color});
+  StyledCard.child({super.key, required Widget child, this.color}) : children = [child];
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
-      child: ColoredBox(color: color ?? context.colors.surfacePrimary, child: child),
+      child: ColoredBox(
+        color: color ?? context.colors.surfacePrimary,
+        child: StyledList(children: children),
+      ),
     );
   }
 }

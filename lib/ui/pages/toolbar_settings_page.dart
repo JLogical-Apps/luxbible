@@ -32,7 +32,7 @@ class ToolbarSettingsPage extends ConsumerWidget {
         children: [
           ColoredBox(
             color: context.colors.surfacePrimary,
-            child: StyledSection(
+            child: StyledSection.child(
               titleText: 'Toolbar',
               padding: EdgeInsets.symmetric(vertical: 16),
               child: Toolbar(
@@ -58,9 +58,9 @@ class ToolbarSettingsPage extends ConsumerWidget {
           Expanded(
             child: ListView(
               children: [
-                StyledSection(
+                StyledSection.child(
                   titleText: 'Gestures',
-                  child: StyledCard.list(
+                  child: StyledCard(
                     children: [
                       StyledListItem(
                         titleText: 'Long Press',

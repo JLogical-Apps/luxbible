@@ -31,7 +31,7 @@ class ChapterReference extends Equatable with ComparableOperators<ChapterReferen
   int compareTo(ChapterReference other) =>
       book.index.compareTo(other.book.index).nullIfZero ?? chapterNum.compareTo(other.chapterNum).nullIfZero ?? 0;
 
-  getReference(int verseNum) => Reference(book: book, chapterNum: chapterNum, verseNum: verseNum);
+  Reference getReference(int verseNum) => Reference(book: book, chapterNum: chapterNum, verseNum: verseNum);
 
   Passage toPassage() => Passage(spans: [VerseSpanReference(start: asPointer())]);
 

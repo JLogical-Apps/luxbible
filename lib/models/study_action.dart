@@ -62,7 +62,7 @@ enum StudyAction {
                 .mapIndexed<Widget>(
                   (i, bible) => Stack(
                     children: [
-                      StyledStickyHeader(
+                      StyledStickyHeader.child(
                         titleText: bible.translation.title(),
                         child: Padding(
                           padding: EdgeInsets.only(bottom: 16),
@@ -92,7 +92,7 @@ enum StudyAction {
 
                   return Stack(
                     children: [
-                      StyledStickyHeader.list(
+                      StyledStickyHeader(
                         titleText: reference.format(),
                         children: verse.fragments
                             .mapToMap((fragment) => MapEntry(fragment, fragment.strongIds.firstOrNull))
@@ -133,7 +133,7 @@ enum StudyAction {
                 .mapToMap((commentary) => MapEntry(commentary, commentary.getNotesFor(region.toPassage())))
                 .where((commentary, notes) => notes.isNotEmpty)
                 .mapToIterable(
-                  (commentary, notes) => StyledStickyHeader.list(
+                  (commentary, notes) => StyledStickyHeader(
                     titleText: commentary.name,
                     children: notes
                         .mapToIterable(

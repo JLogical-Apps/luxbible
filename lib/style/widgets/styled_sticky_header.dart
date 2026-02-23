@@ -10,15 +10,14 @@ class StyledStickyHeader extends StatelessWidget {
 
   final Widget? trailing;
 
-  final Widget child;
+  final List<Widget> children;
 
-  StyledStickyHeader({super.key, Widget? title, String? titleText, this.trailing, required Widget child})
-    : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
-      child = Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: child);
+  StyledStickyHeader({super.key, Widget? title, String? titleText, this.trailing, required this.children})
+    : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
 
-  StyledStickyHeader.list({super.key, Widget? title, String? titleText, this.trailing, required List<Widget> children})
+  StyledStickyHeader.child({super.key, Widget? title, String? titleText, this.trailing, required Widget child})
     : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
-      child = StyledList(children: children);
+      children = [Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: child)];
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +47,7 @@ class StyledStickyHeader extends StatelessWidget {
           ],
         );
       },
-      content: child,
+      content: StyledList(children: children),
     );
   }
 }
