@@ -32,7 +32,7 @@ class StyledStickyHeader extends StatelessWidget {
               child: Row(
                 children: [
                   Flexible(
-                    child: DefaultTextStyle(style: context.textStyle.labelMd, child: title),
+                    child: DefaultTextStyle(style: context.textStyle.headingXxs, child: title),
                   ),
                   ?trailing,
                 ],
