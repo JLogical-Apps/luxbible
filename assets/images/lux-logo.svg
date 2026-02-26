@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_2" data-name="Layer 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 689.63 687.98">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #facc14;
+      }
+
+      .cls-4 {
+        clip-path: url(#clippath-1);
+      }
+
+      .cls-3 {
+        opacity: .3;
+      }
+
+      .cls-5 {
+        fill: #fff;
+      }
+
+      .cls-6 {
+        fill: #050507;
+      }
+
+      .cls-7 {
+        fill: #a76000;
+      }
+
+      .cls-8 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="cls-1" y="0" width="689.63" height="687.98" rx="165.17" ry="165.17"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <rect class="cls-1" x="-5.62" y="-5.61" width="699.2" height="699.2"/>
+    </clipPath>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g class="cls-8">
+      <g>
+        <rect class="cls-7" x="-5.62" y="-5.61" width="699.2" height="699.2"/>
+        <g class="cls-4">
+          <g>
+            <circle class="cls-3" cx="343.98" cy="505.14" r="424.96"/>
+            <circle class="cls-3" cx="343.98" cy="505.14" r="329.11"/>
+            <circle class="cls-2" cx="343.98" cy="505.14" r="216.29"/>
+          </g>
+        </g>
+        <g>
+          <ellipse class="cls-5" cx="718.51" cy="779.72" rx="484.54" ry="369.59"/>
+          <ellipse class="cls-5" cx="-30.55" cy="779.72" rx="484.54" ry="369.59"/>
+        </g>
+        <g>
+          <path class="cls-6" d="M726.53,687.98v-207.29c-188.15,6.78-350.48,88.7-436.64,207.29h436.64Z"/>
+          <path class="cls-6" d="M397.8,687.98c-85.64-117.86-246.52-199.5-433.21-207.15v207.15h433.21Z"/>
+        </g>
+        <path class="cls-5" d="M461.16,293.79h0s0,0,0,0c-54.29,20.09-97.09,62.89-117.18,117.18h0s0,0,0,0c-20.09-54.29-62.89-97.09-117.18-117.18h0s0,0,0,0c54.29-20.09,97.09-62.89,117.18-117.18h0s0,0,0,0c20.09,54.29,62.89,97.09,117.18,117.18Z"/>
+      </g>
+    </g>
+  </g>
+</svg>
