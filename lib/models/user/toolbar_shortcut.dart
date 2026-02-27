@@ -3,7 +3,7 @@ import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/models/toolbar_action.dart';
-import 'package:bible/models/user.dart';
+import 'package:bible/models/user/user.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

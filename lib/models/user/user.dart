@@ -9,7 +9,9 @@ import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/selection.dart';
-import 'package:bible/models/toolbar_configuration.dart';
+import 'package:bible/models/user/passage_configuration.dart';
+import 'package:bible/models/user/selection_configuration.dart';
+import 'package:bible/models/user/toolbar_configuration.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -29,6 +31,8 @@ sealed class User with _$User {
     @Default([]) List<Bookmark> bookmarks,
     @Default([]) List<Annotation> annotations,
     @Default(ToolbarConfiguration()) ToolbarConfiguration toolbar,
+    @Default(PassageConfiguration()) PassageConfiguration passage,
+    @Default(SelectionConfiguration()) SelectionConfiguration selection,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

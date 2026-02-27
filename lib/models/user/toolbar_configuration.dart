@@ -1,4 +1,4 @@
-import 'package:bible/models/toolbar_shortcut.dart';
+import 'package:bible/models/user/toolbar_shortcut.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'toolbar_configuration.freezed.dart';

@@ -17,9 +17,13 @@ import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_page.dart';
 import 'package:bible/style/widgets/styled_scrollbar.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
+import 'package:bible/ui/pages/passage_settings_page.dart';
+import 'package:bible/ui/pages/selection_settings_page.dart';
 import 'package:bible/ui/pages/toolbar_settings_page.dart';
 import 'package:bible/ui/utils/text_selection_controls.dart';
+import 'package:bible/ui/widgets/passage_bottom_bar.dart';
 import 'package:bible/ui/widgets/passage_builder.dart';
+import 'package:bible/ui/widgets/selection_bottom_bar.dart';
 import 'package:bible/ui/widgets/toolbar.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
@@ -148,7 +152,7 @@ class BiblePage extends HookConsumerWidget {
             left: 0,
             child: Container(height: MediaQuery.paddingOf(context).top, color: context.colors.backgroundPrimary),
           ),
-          _BottomBar(
+          _Bottom(
             currentChapterReference: currentChapterReference,
             pageController: pageController,
             selectedReferencesState: selectedReferencesState,
@@ -162,7 +166,7 @@ class BiblePage extends HookConsumerWidget {
   }
 }
 
-class _BottomBar extends HookConsumerWidget {
+class _Bottom extends HookConsumerWidget {
   final ChapterReference currentChapterReference;
   final PageController pageController;
   final ValueNotifier<List<Reference>> selectedReferencesState;
@@ -170,7 +174,7 @@ class _BottomBar extends HookConsumerWidget {
   final ValueNotifier<Selection?> selectionState;
   final GlobalKey<SelectionAreaState>? selectionKey;
 
-  const _BottomBar({
+  const _Bottom({
     required this.currentChapterReference,
     required this.pageController,
     required this.selectedReferencesState,
@@ -194,8 +198,6 @@ class _BottomBar extends HookConsumerWidget {
         ? null
         : Passage.fromReferences(selectedReferencesState.value);
 
-    final selectedText = selection == null ? null : bible.getSelectionText(selection);
-
     final scrollPosition = scrollController.positionsOrNull?.firstOrNull;
     useOnStickyScrollDirectionChanged(
       scrollController,
@@ -205,6 +207,11 @@ class _BottomBar extends HookConsumerWidget {
 
     final isAtBottom = scrollPosition == null ? false : scrollPosition.pixels >= scrollPosition.maxScrollExtent;
     final showBottomBar = (isScrollingDownState.value || isAtBottom) && selectedPassage == null && selection == null;
+
+    void onClosePressed() {
+      selectionKey?.currentState?.selectableRegion.clearSelection();
+      selectedReferencesState.value = [];
+    }
 
     return Stack(
       children: [
@@ -288,90 +295,100 @@ class _BottomBar extends HookConsumerWidget {
           bottom: 0,
           right: 0,
           left: 0,
-          child: GestureDetector(
-            onTap: () {},
-            child: AnimatedGrow(
-              child: selectedPassage == null && selection == null
-                  ? SizedBox.shrink(key: ValueKey('empty'))
-                  : Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        boxShadow: [StyledShadow.up(context)],
-                        color: context.colors.surfacePrimary,
-                      ),
-                      padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
-                      child: StyledListItem(
-                        title: Text(
-                          selectedPassage?.format() ?? '"$selectedText"',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                        leading: StyledCircleButton.lg(
-                          icon: Symbols.close,
-                          onPressed: () {
-                            selectionKey?.currentState?.selectableRegion.clearSelection();
-                            selectedReferencesState.value = [];
-                          },
-                        ),
-                        trailing: selectedPassage != null
-                            ? Row(
-                                children: [
-                                  ...PassageAction.values
-                                      .take(3)
-                                      .map(
-                                        (action) => StyledCircleButton.lg(
-                                          child: Icon(action.icon),
-                                          onPressed: () => action.onPressed(
+          child: AnimatedGrow(
+            child: selectedPassage == null && selection == null
+                ? SizedBox.shrink(key: ValueKey('empty'))
+                : Container(
+                    decoration: BoxDecoration(
+                      boxShadow: [StyledShadow.up(context)],
+                      color: context.colors.surfacePrimary,
+                    ),
+                    padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
+                    child: selectedPassage != null
+                        ? PassageBottomBar(
+                            passage: selectedPassage,
+                            configuration: user.passage,
+                            user: user,
+                            onClosePressed: onClosePressed,
+                            onMorePressed: () => context.showStyledSheet(
+                              StyledSheet(
+                                titleText: 'Passage Actions',
+                                subtitleText: selectedPassage.format(),
+                                trailing: StyledCircleButton.lg(
+                                  icon: Symbols.tune,
+                                  onPressed: () {
+                                    context.pop();
+                                    context.push(PassageSettingsPage());
+                                  },
+                                ),
+                                children: PassageAction.values
+                                    .map(
+                                      (action) => StyledListItem(
+                                        titleText: action.title(),
+                                        subtitleText: action.description(),
+                                        leadingIcon: action.icon,
+                                        trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          action.onPressed(
                                             context,
                                             ref,
                                             user: user,
                                             selectedPassage: selectedPassage,
                                             bible: bible,
                                             onDeselect: () => selectedReferencesState.value = [],
-                                          ),
-                                        ),
+                                          );
+                                        },
                                       ),
-                                  StyledCircleButton.lg(
-                                    onPressed: () => context.showStyledSheet(
-                                      StyledSheet(
-                                        titleText: 'Passage Actions',
-                                        subtitleText: selectedPassage.format(),
-                                        children: PassageAction.values
-                                            .map(
-                                              (action) => StyledListItem(
-                                                titleText: action.title(),
-                                                subtitleText: action.description(),
-                                                leadingIcon: action.icon,
-                                                trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                  action.onPressed(
-                                                    context,
-                                                    ref,
-                                                    user: user,
-                                                    selectedPassage: selectedPassage,
-                                                    bible: bible,
-                                                    onDeselect: () => selectedReferencesState.value = [],
-                                                  );
-                                                },
-                                              ),
-                                            )
-                                            .toList(),
-                                      ),
-                                    ),
-                                    icon: Symbols.more_vert,
-                                  ),
-                                ],
-                              )
-                            : selection != null
-                            ? Row(
-                                children: [
-                                  ...SelectionAction.values
-                                      .take(3)
-                                      .map(
-                                        (action) => StyledCircleButton.lg(
-                                          child: action.buildIcon(),
-                                          onPressed: () => action.onPressed(
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                            onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
+                              context,
+                              ref,
+                              user: user,
+                              passage: selectedPassage,
+                              bible: bible,
+                              onDeselect: () => selectedReferencesState.value = [],
+                            ),
+                          )
+                        : selection != null
+                        ? SelectionBottomBar(
+                            selection: selection,
+                            configuration: user.selection,
+                            user: user,
+                            bible: bible,
+                            onClosePressed: onClosePressed,
+                            onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
+                              context,
+                              ref,
+                              user: user,
+                              selection: selection,
+                              bible: bible,
+                              onDeselect: () => selectedReferencesState.value = [],
+                            ),
+                            onMorePressed: () => context.showStyledSheet(
+                              StyledSheet(
+                                titleText: 'Selection Actions',
+                                subtitleText: '"${bible.getSelectionText(selection)}"',
+                                trailing: StyledCircleButton.lg(
+                                  icon: Symbols.tune,
+                                  onPressed: () {
+                                    context.pop();
+                                    context.push(SelectionSettingsPage());
+                                  },
+                                ),
+                                children: SelectionAction.values
+                                    .map(
+                                      (action) => StyledListItem(
+                                        titleText: action.title(),
+                                        subtitleText: action.description(),
+                                        leadingIcon: action.icon,
+                                        trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                          action.onPressed(
                                             context,
                                             ref,
                                             user: user,
@@ -379,46 +396,16 @@ class _BottomBar extends HookConsumerWidget {
                                             bible: bible,
                                             onDeselect: () =>
                                                 selectionKey?.currentState?.selectableRegion.clearSelection(),
-                                          ),
-                                        ),
+                                          );
+                                        },
                                       ),
-                                  StyledCircleButton.lg(
-                                    onPressed: () => context.showStyledSheet(
-                                      StyledSheet(
-                                        titleText: 'Selection Actions',
-                                        subtitleText: '"${bible.getSelectionText(selection)}"',
-                                        children: SelectionAction.values
-                                            .map(
-                                              (action) => StyledListItem(
-                                                titleText: action.title(),
-                                                subtitleText: action.description(),
-                                                leading: action.buildIcon(),
-                                                trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                  action.onPressed(
-                                                    context,
-                                                    ref,
-                                                    user: user,
-                                                    selection: selection,
-                                                    bible: bible,
-                                                    onDeselect: () =>
-                                                        selectionKey?.currentState?.selectableRegion.clearSelection(),
-                                                  );
-                                                },
-                                              ),
-                                            )
-                                            .toList(),
-                                      ),
-                                    ),
-                                    icon: Symbols.more_vert,
-                                  ),
-                                ],
-                              )
-                            : null,
-                      ),
-                    ),
-            ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                          )
+                        : null,
+                  ),
           ),
         ),
       ],

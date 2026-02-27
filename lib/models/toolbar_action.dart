@@ -2,7 +2,7 @@ import 'package:bible/models/bible.dart';
 import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/region.dart';
-import 'package:bible/models/user.dart';
+import 'package:bible/models/user/user.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/study_sheet.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';

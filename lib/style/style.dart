@@ -23,6 +23,7 @@ export 'widgets/styled_chip.dart';
 export 'widgets/styled_circle_button.dart';
 export 'widgets/styled_divider.dart';
 export 'widgets/styled_dock.dart';
+export 'widgets/styled_edit_badge.dart';
 export 'widgets/styled_form_input.dart';
 export 'widgets/styled_link.dart';
 export 'widgets/styled_list.dart';

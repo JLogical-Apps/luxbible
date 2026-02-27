@@ -34,6 +34,14 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   toolbar: json['toolbar'] == null
       ? const ToolbarConfiguration()
       : ToolbarConfiguration.fromJson(json['toolbar'] as Map<String, dynamic>),
+  passage: json['passage'] == null
+      ? const PassageConfiguration()
+      : PassageConfiguration.fromJson(json['passage'] as Map<String, dynamic>),
+  selection: json['selection'] == null
+      ? const SelectionConfiguration()
+      : SelectionConfiguration.fromJson(
+          json['selection'] as Map<String, dynamic>,
+        ),
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -44,6 +52,8 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'bookmarks': instance.bookmarks,
   'annotations': instance.annotations,
   'toolbar': instance.toolbar,
+  'passage': instance.passage,
+  'selection': instance.selection,
 };
 
 const _$BibleTranslationEnumMap = {
