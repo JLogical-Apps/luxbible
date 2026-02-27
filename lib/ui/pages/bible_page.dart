@@ -51,7 +51,6 @@ class BiblePage extends HookConsumerWidget {
 
     final selectedReferencesState = useState(<Reference>[]);
 
-    final scrollController = PrimaryScrollController.of(context);
     final isScrollingDownState = useMemoized(() => ValueNotifier(true));
 
     final selectionState = useMemoized(() => ValueNotifier<Selection?>(null));
@@ -151,7 +150,6 @@ class BiblePage extends HookConsumerWidget {
           ),
           _BottomBar(
             currentChapterReference: currentChapterReference,
-            scrollController: scrollController,
             pageController: pageController,
             selectedReferencesState: selectedReferencesState,
             isScrollingDownState: isScrollingDownState,
@@ -168,7 +166,6 @@ class _BottomBar extends HookConsumerWidget {
   final ChapterReference currentChapterReference;
   final PageController pageController;
   final ValueNotifier<List<Reference>> selectedReferencesState;
-  final ScrollController scrollController;
   final ValueNotifier<bool> isScrollingDownState;
   final ValueNotifier<Selection?> selectionState;
   final GlobalKey<SelectionAreaState>? selectionKey;
@@ -177,7 +174,6 @@ class _BottomBar extends HookConsumerWidget {
     required this.currentChapterReference,
     required this.pageController,
     required this.selectedReferencesState,
-    required this.scrollController,
     required this.isScrollingDownState,
     required this.selectionState,
     required this.selectionKey,
@@ -189,8 +185,8 @@ class _BottomBar extends HookConsumerWidget {
     final user = ref.watch(userProvider);
     final bible = user.getBible(bibles);
 
+    final scrollController = useListenable(PrimaryScrollController.of(context));
     useListenable(isScrollingDownState);
-    useListenable(scrollController);
     useListenable(pageController);
     final selection = useListenable(selectionState).value;
 
