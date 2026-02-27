@@ -1,4 +1,4 @@
-import 'package:bible/models/user.dart';
+import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:bible/models/user.dart';
+import 'package:bible/models/user/user.dart';
 import 'package:bible/services/path_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:utils_core/utils_core.dart';

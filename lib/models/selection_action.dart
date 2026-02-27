@@ -1,6 +1,6 @@
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/reference/selection.dart';
-import 'package:bible/models/user.dart';
+import 'package:bible/models/user/user.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -23,9 +23,9 @@ enum SelectionAction {
     copy => 'Copy the selection to your clipboard.',
   };
 
-  Widget buildIcon() => switch (this) {
-    annotate => Icon(Symbols.note_stack),
-    copy => Icon(Symbols.copy_all),
+  IconData get icon => switch (this) {
+    annotate => Symbols.note_stack,
+    copy => Symbols.copy_all,
   };
 
   bool get isNavigation => [annotate].contains(this);

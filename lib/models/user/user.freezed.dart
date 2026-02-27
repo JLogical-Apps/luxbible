@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$User {
 
- BibleTranslation get translation; ChapterReference get lastReference; List<ChapterReference> get previouslyViewed; ColorEnum get highlightColor; List<Bookmark> get bookmarks; List<Annotation> get annotations; ToolbarConfiguration get toolbar;
+ BibleTranslation get translation; ChapterReference get lastReference; List<ChapterReference> get previouslyViewed; ColorEnum get highlightColor; List<Bookmark> get bookmarks; List<Annotation> get annotations; ToolbarConfiguration get toolbar; PassageConfiguration get passage; SelectionConfiguration get selection;
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserCopyWith<User> get copyWith => _$UserCopyWithImpl<User>(this as User, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.translation, translation) || other.translation == translation)&&(identical(other.lastReference, lastReference) || other.lastReference == lastReference)&&const DeepCollectionEquality().equals(other.previouslyViewed, previouslyViewed)&&(identical(other.highlightColor, highlightColor) || other.highlightColor == highlightColor)&&const DeepCollectionEquality().equals(other.bookmarks, bookmarks)&&const DeepCollectionEquality().equals(other.annotations, annotations)&&(identical(other.toolbar, toolbar) || other.toolbar == toolbar));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.translation, translation) || other.translation == translation)&&(identical(other.lastReference, lastReference) || other.lastReference == lastReference)&&const DeepCollectionEquality().equals(other.previouslyViewed, previouslyViewed)&&(identical(other.highlightColor, highlightColor) || other.highlightColor == highlightColor)&&const DeepCollectionEquality().equals(other.bookmarks, bookmarks)&&const DeepCollectionEquality().equals(other.annotations, annotations)&&(identical(other.toolbar, toolbar) || other.toolbar == toolbar)&&(identical(other.passage, passage) || other.passage == passage)&&(identical(other.selection, selection) || other.selection == selection));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,translation,lastReference,const DeepCollectionEquality().hash(previouslyViewed),highlightColor,const DeepCollectionEquality().hash(bookmarks),const DeepCollectionEquality().hash(annotations),toolbar);
+int get hashCode => Object.hash(runtimeType,translation,lastReference,const DeepCollectionEquality().hash(previouslyViewed),highlightColor,const DeepCollectionEquality().hash(bookmarks),const DeepCollectionEquality().hash(annotations),toolbar,passage,selection);
 
 @override
 String toString() {
-  return 'User(translation: $translation, lastReference: $lastReference, previouslyViewed: $previouslyViewed, highlightColor: $highlightColor, bookmarks: $bookmarks, annotations: $annotations, toolbar: $toolbar)';
+  return 'User(translation: $translation, lastReference: $lastReference, previouslyViewed: $previouslyViewed, highlightColor: $highlightColor, bookmarks: $bookmarks, annotations: $annotations, toolbar: $toolbar, passage: $passage, selection: $selection)';
 }
 
 
@@ -48,11 +48,11 @@ abstract mixin class $UserCopyWith<$Res>  {
   factory $UserCopyWith(User value, $Res Function(User) _then) = _$UserCopyWithImpl;
 @useResult
 $Res call({
- BibleTranslation translation, ChapterReference lastReference, List<ChapterReference> previouslyViewed, ColorEnum highlightColor, List<Bookmark> bookmarks, List<Annotation> annotations, ToolbarConfiguration toolbar
+ BibleTranslation translation, ChapterReference lastReference, List<ChapterReference> previouslyViewed, ColorEnum highlightColor, List<Bookmark> bookmarks, List<Annotation> annotations, ToolbarConfiguration toolbar, PassageConfiguration passage, SelectionConfiguration selection
 });
 
 
-$ToolbarConfigurationCopyWith<$Res> get toolbar;
+$ToolbarConfigurationCopyWith<$Res> get toolbar;$PassageConfigurationCopyWith<$Res> get passage;$SelectionConfigurationCopyWith<$Res> get selection;
 
 }
 /// @nodoc
@@ -65,7 +65,7 @@ class _$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? translation = null,Object? lastReference = null,Object? previouslyViewed = null,Object? highlightColor = null,Object? bookmarks = null,Object? annotations = null,Object? toolbar = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? translation = null,Object? lastReference = null,Object? previouslyViewed = null,Object? highlightColor = null,Object? bookmarks = null,Object? annotations = null,Object? toolbar = null,Object? passage = null,Object? selection = null,}) {
   return _then(_self.copyWith(
 translation: null == translation ? _self.translation : translation // ignore: cast_nullable_to_non_nullable
 as BibleTranslation,lastReference: null == lastReference ? _self.lastReference : lastReference // ignore: cast_nullable_to_non_nullable
@@ -74,7 +74,9 @@ as List<ChapterReference>,highlightColor: null == highlightColor ? _self.highlig
 as ColorEnum,bookmarks: null == bookmarks ? _self.bookmarks : bookmarks // ignore: cast_nullable_to_non_nullable
 as List<Bookmark>,annotations: null == annotations ? _self.annotations : annotations // ignore: cast_nullable_to_non_nullable
 as List<Annotation>,toolbar: null == toolbar ? _self.toolbar : toolbar // ignore: cast_nullable_to_non_nullable
-as ToolbarConfiguration,
+as ToolbarConfiguration,passage: null == passage ? _self.passage : passage // ignore: cast_nullable_to_non_nullable
+as PassageConfiguration,selection: null == selection ? _self.selection : selection // ignore: cast_nullable_to_non_nullable
+as SelectionConfiguration,
   ));
 }
 /// Create a copy of User
@@ -85,6 +87,24 @@ $ToolbarConfigurationCopyWith<$Res> get toolbar {
   
   return $ToolbarConfigurationCopyWith<$Res>(_self.toolbar, (value) {
     return _then(_self.copyWith(toolbar: value));
+  });
+}/// Create a copy of User
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PassageConfigurationCopyWith<$Res> get passage {
+  
+  return $PassageConfigurationCopyWith<$Res>(_self.passage, (value) {
+    return _then(_self.copyWith(passage: value));
+  });
+}/// Create a copy of User
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SelectionConfigurationCopyWith<$Res> get selection {
+  
+  return $SelectionConfigurationCopyWith<$Res>(_self.selection, (value) {
+    return _then(_self.copyWith(selection: value));
   });
 }
 }
@@ -165,10 +185,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BibleTranslation translation,  ChapterReference lastReference,  List<ChapterReference> previouslyViewed,  ColorEnum highlightColor,  List<Bookmark> bookmarks,  List<Annotation> annotations,  ToolbarConfiguration toolbar)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BibleTranslation translation,  ChapterReference lastReference,  List<ChapterReference> previouslyViewed,  ColorEnum highlightColor,  List<Bookmark> bookmarks,  List<Annotation> annotations,  ToolbarConfiguration toolbar,  PassageConfiguration passage,  SelectionConfiguration selection)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.translation,_that.lastReference,_that.previouslyViewed,_that.highlightColor,_that.bookmarks,_that.annotations,_that.toolbar);case _:
+return $default(_that.translation,_that.lastReference,_that.previouslyViewed,_that.highlightColor,_that.bookmarks,_that.annotations,_that.toolbar,_that.passage,_that.selection);case _:
   return orElse();
 
 }
@@ -186,10 +206,10 @@ return $default(_that.translation,_that.lastReference,_that.previouslyViewed,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BibleTranslation translation,  ChapterReference lastReference,  List<ChapterReference> previouslyViewed,  ColorEnum highlightColor,  List<Bookmark> bookmarks,  List<Annotation> annotations,  ToolbarConfiguration toolbar)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BibleTranslation translation,  ChapterReference lastReference,  List<ChapterReference> previouslyViewed,  ColorEnum highlightColor,  List<Bookmark> bookmarks,  List<Annotation> annotations,  ToolbarConfiguration toolbar,  PassageConfiguration passage,  SelectionConfiguration selection)  $default,) {final _that = this;
 switch (_that) {
 case _User():
-return $default(_that.translation,_that.lastReference,_that.previouslyViewed,_that.highlightColor,_that.bookmarks,_that.annotations,_that.toolbar);}
+return $default(_that.translation,_that.lastReference,_that.previouslyViewed,_that.highlightColor,_that.bookmarks,_that.annotations,_that.toolbar,_that.passage,_that.selection);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -203,10 +223,10 @@ return $default(_that.translation,_that.lastReference,_that.previouslyViewed,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BibleTranslation translation,  ChapterReference lastReference,  List<ChapterReference> previouslyViewed,  ColorEnum highlightColor,  List<Bookmark> bookmarks,  List<Annotation> annotations,  ToolbarConfiguration toolbar)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BibleTranslation translation,  ChapterReference lastReference,  List<ChapterReference> previouslyViewed,  ColorEnum highlightColor,  List<Bookmark> bookmarks,  List<Annotation> annotations,  ToolbarConfiguration toolbar,  PassageConfiguration passage,  SelectionConfiguration selection)?  $default,) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.translation,_that.lastReference,_that.previouslyViewed,_that.highlightColor,_that.bookmarks,_that.annotations,_that.toolbar);case _:
+return $default(_that.translation,_that.lastReference,_that.previouslyViewed,_that.highlightColor,_that.bookmarks,_that.annotations,_that.toolbar,_that.passage,_that.selection);case _:
   return null;
 
 }
@@ -218,7 +238,7 @@ return $default(_that.translation,_that.lastReference,_that.previouslyViewed,_th
 @JsonSerializable()
 
 class _User extends User {
-  const _User({this.translation = BibleTranslation.asv, this.lastReference = const ChapterReference(chapterNum: 1, book: BookType.genesis), final  List<ChapterReference> previouslyViewed = const [], this.highlightColor = ColorEnum.yellow, final  List<Bookmark> bookmarks = const [], final  List<Annotation> annotations = const [], this.toolbar = const ToolbarConfiguration()}): _previouslyViewed = previouslyViewed,_bookmarks = bookmarks,_annotations = annotations,super._();
+  const _User({this.translation = BibleTranslation.asv, this.lastReference = const ChapterReference(chapterNum: 1, book: BookType.genesis), final  List<ChapterReference> previouslyViewed = const [], this.highlightColor = ColorEnum.yellow, final  List<Bookmark> bookmarks = const [], final  List<Annotation> annotations = const [], this.toolbar = const ToolbarConfiguration(), this.passage = const PassageConfiguration(), this.selection = const SelectionConfiguration()}): _previouslyViewed = previouslyViewed,_bookmarks = bookmarks,_annotations = annotations,super._();
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
 @override@JsonKey() final  BibleTranslation translation;
@@ -246,6 +266,8 @@ class _User extends User {
 }
 
 @override@JsonKey() final  ToolbarConfiguration toolbar;
+@override@JsonKey() final  PassageConfiguration passage;
+@override@JsonKey() final  SelectionConfiguration selection;
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
@@ -260,16 +282,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.translation, translation) || other.translation == translation)&&(identical(other.lastReference, lastReference) || other.lastReference == lastReference)&&const DeepCollectionEquality().equals(other._previouslyViewed, _previouslyViewed)&&(identical(other.highlightColor, highlightColor) || other.highlightColor == highlightColor)&&const DeepCollectionEquality().equals(other._bookmarks, _bookmarks)&&const DeepCollectionEquality().equals(other._annotations, _annotations)&&(identical(other.toolbar, toolbar) || other.toolbar == toolbar));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.translation, translation) || other.translation == translation)&&(identical(other.lastReference, lastReference) || other.lastReference == lastReference)&&const DeepCollectionEquality().equals(other._previouslyViewed, _previouslyViewed)&&(identical(other.highlightColor, highlightColor) || other.highlightColor == highlightColor)&&const DeepCollectionEquality().equals(other._bookmarks, _bookmarks)&&const DeepCollectionEquality().equals(other._annotations, _annotations)&&(identical(other.toolbar, toolbar) || other.toolbar == toolbar)&&(identical(other.passage, passage) || other.passage == passage)&&(identical(other.selection, selection) || other.selection == selection));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,translation,lastReference,const DeepCollectionEquality().hash(_previouslyViewed),highlightColor,const DeepCollectionEquality().hash(_bookmarks),const DeepCollectionEquality().hash(_annotations),toolbar);
+int get hashCode => Object.hash(runtimeType,translation,lastReference,const DeepCollectionEquality().hash(_previouslyViewed),highlightColor,const DeepCollectionEquality().hash(_bookmarks),const DeepCollectionEquality().hash(_annotations),toolbar,passage,selection);
 
 @override
 String toString() {
-  return 'User(translation: $translation, lastReference: $lastReference, previouslyViewed: $previouslyViewed, highlightColor: $highlightColor, bookmarks: $bookmarks, annotations: $annotations, toolbar: $toolbar)';
+  return 'User(translation: $translation, lastReference: $lastReference, previouslyViewed: $previouslyViewed, highlightColor: $highlightColor, bookmarks: $bookmarks, annotations: $annotations, toolbar: $toolbar, passage: $passage, selection: $selection)';
 }
 
 
@@ -280,11 +302,11 @@ abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$UserCopyWith(_User value, $Res Function(_User) _then) = __$UserCopyWithImpl;
 @override @useResult
 $Res call({
- BibleTranslation translation, ChapterReference lastReference, List<ChapterReference> previouslyViewed, ColorEnum highlightColor, List<Bookmark> bookmarks, List<Annotation> annotations, ToolbarConfiguration toolbar
+ BibleTranslation translation, ChapterReference lastReference, List<ChapterReference> previouslyViewed, ColorEnum highlightColor, List<Bookmark> bookmarks, List<Annotation> annotations, ToolbarConfiguration toolbar, PassageConfiguration passage, SelectionConfiguration selection
 });
 
 
-@override $ToolbarConfigurationCopyWith<$Res> get toolbar;
+@override $ToolbarConfigurationCopyWith<$Res> get toolbar;@override $PassageConfigurationCopyWith<$Res> get passage;@override $SelectionConfigurationCopyWith<$Res> get selection;
 
 }
 /// @nodoc
@@ -297,7 +319,7 @@ class __$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? translation = null,Object? lastReference = null,Object? previouslyViewed = null,Object? highlightColor = null,Object? bookmarks = null,Object? annotations = null,Object? toolbar = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? translation = null,Object? lastReference = null,Object? previouslyViewed = null,Object? highlightColor = null,Object? bookmarks = null,Object? annotations = null,Object? toolbar = null,Object? passage = null,Object? selection = null,}) {
   return _then(_User(
 translation: null == translation ? _self.translation : translation // ignore: cast_nullable_to_non_nullable
 as BibleTranslation,lastReference: null == lastReference ? _self.lastReference : lastReference // ignore: cast_nullable_to_non_nullable
@@ -306,7 +328,9 @@ as List<ChapterReference>,highlightColor: null == highlightColor ? _self.highlig
 as ColorEnum,bookmarks: null == bookmarks ? _self._bookmarks : bookmarks // ignore: cast_nullable_to_non_nullable
 as List<Bookmark>,annotations: null == annotations ? _self._annotations : annotations // ignore: cast_nullable_to_non_nullable
 as List<Annotation>,toolbar: null == toolbar ? _self.toolbar : toolbar // ignore: cast_nullable_to_non_nullable
-as ToolbarConfiguration,
+as ToolbarConfiguration,passage: null == passage ? _self.passage : passage // ignore: cast_nullable_to_non_nullable
+as PassageConfiguration,selection: null == selection ? _self.selection : selection // ignore: cast_nullable_to_non_nullable
+as SelectionConfiguration,
   ));
 }
 
@@ -318,6 +342,24 @@ $ToolbarConfigurationCopyWith<$Res> get toolbar {
   
   return $ToolbarConfigurationCopyWith<$Res>(_self.toolbar, (value) {
     return _then(_self.copyWith(toolbar: value));
+  });
+}/// Create a copy of User
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PassageConfigurationCopyWith<$Res> get passage {
+  
+  return $PassageConfigurationCopyWith<$Res>(_self.passage, (value) {
+    return _then(_self.copyWith(passage: value));
+  });
+}/// Create a copy of User
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SelectionConfigurationCopyWith<$Res> get selection {
+  
+  return $SelectionConfigurationCopyWith<$Res>(_self.selection, (value) {
+    return _then(_self.copyWith(selection: value));
   });
 }
 }

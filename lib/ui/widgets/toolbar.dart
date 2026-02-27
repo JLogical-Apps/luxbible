@@ -1,13 +1,13 @@
 import 'package:bible/models/bible_translation.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/toolbar_configuration.dart';
-import 'package:bible/models/toolbar_shortcut.dart';
-import 'package:bible/models/user.dart';
+import 'package:bible/models/user/toolbar_configuration.dart';
+import 'package:bible/models/user/toolbar_shortcut.dart';
+import 'package:bible/models/user/user.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/styled_badge.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
+import 'package:bible/style/widgets/styled_edit_badge.dart';
 import 'package:bible/style/widgets/styled_material.dart';
-import 'package:bible/ui/pages/styled_edit_badge.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
