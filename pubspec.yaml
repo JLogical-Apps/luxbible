@@ -30,6 +30,7 @@ dependencies:
   provider: ^6.1.5+1
   path_provider: ^2.1.5
   sticky_headers: ^0.3.0+2
+  flutter_native_splash: ^2.4.7
 
   port:
     git:

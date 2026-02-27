@@ -1,0 +1,11 @@
+flutter_native_splash:
+  # dart run flutter_native_splash:create -p flutter_native_splash.yaml
+
+  color: "#f4f4f5"
+  color_dark: "#09090b"
+
+  image: ios/Runner/Assets.xcassets/AppIcon.appiconset/lux_logo.png
+
+  android_12:
+    color: "#f4f4f5"
+    color_dark: "#09090b"
