@@ -92,7 +92,7 @@ enum BookType {
     nehemiah => 'Nehemiah',
     esther => 'Esther',
     job => 'Job',
-    psalms => 'Psalms',
+    psalms => 'Psalm',
     proverbs => 'Proverbs',
     ecclesiastes => 'Ecclesiastes',
     songOfSolomon => 'Song of Solomon',
