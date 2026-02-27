@@ -202,8 +202,8 @@ class _BottomBar extends HookConsumerWidget {
       (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
     );
 
-    final showBottomBar =
-        (isScrollingDownState.value || scrollPosition?.atEdge == true) && selectedPassage == null && selection == null;
+    final isAtBottom = scrollPosition == null ? false : scrollPosition.pixels >= scrollPosition.maxScrollExtent;
+    final showBottomBar = (isScrollingDownState.value || isAtBottom) && selectedPassage == null && selection == null;
 
     return Stack(
       children: [
