@@ -191,6 +191,7 @@ class _BottomBar extends HookConsumerWidget {
 
     useListenable(isScrollingDownState);
     useListenable(scrollController);
+    useListenable(pageController);
     final selection = useListenable(selectionState).value;
 
     final selectedPassage = selectedReferencesState.value.isEmpty
@@ -203,6 +204,7 @@ class _BottomBar extends HookConsumerWidget {
     useOnStickyScrollDirectionChanged(
       scrollController,
       (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
+      [pageController.page],
     );
 
     final isAtBottom = scrollPosition == null ? false : scrollPosition.pixels >= scrollPosition.maxScrollExtent;
