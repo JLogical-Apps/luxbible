@@ -22,7 +22,7 @@ class ColorLibrary {
   Hue get blue => TWColors.blue.asHue(brightness);
   Hue get violet => TWColors.violet.asHue(brightness);
 
-  Color get backgroundPrimary => brightness.when(light: zinc.shade100, dark: zinc.shade950);
+  Color get backgroundPrimary => brightness.when(light: zinc.shade100, dark: zinc.shade900);
   Color get backgroundError => brightness.when(light: red.shade600, dark: red.shade700);
 
   Color get surfacePrimary => brightness.when(light: Colors.white, dark: zinc.shade800);
