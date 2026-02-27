@@ -92,48 +92,51 @@ class BiblePage extends HookConsumerWidget {
                   });
 
                   return StyledScrollbar(
-                    child: ListView(
+                    child: SingleChildScrollView(
                       padding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 8) +
                           EdgeInsets.only(
                             top: MediaQuery.paddingOf(context).top + 24,
                             bottom: MediaQuery.paddingOf(context).bottom + 72,
                           ),
-                      children: [
-                        Text(chapterReference.format(), style: context.textStyle.bibleChapter),
-                        gapH16,
-                        SelectionArea(
-                          key: selectionKey,
-                          selectionControls: Theme.of(context).platform == TargetPlatform.android
-                              ? CustomMaterialTextSelectionControls()
-                              : CustomCupertinoTextSelectionControls(),
-                          contextMenuBuilder: (context, state) => AdaptiveTextSelectionToolbar.buttonItems(
-                            anchors: state.contextMenuAnchors,
-                            buttonItems: [],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(chapterReference.format(), style: context.textStyle.bibleChapter),
+                          gapH16,
+                          SelectionArea(
+                            key: selectionKey,
+                            selectionControls: Theme.of(context).platform == TargetPlatform.android
+                                ? CustomMaterialTextSelectionControls()
+                                : CustomCupertinoTextSelectionControls(),
+                            contextMenuBuilder: (context, state) => AdaptiveTextSelectionToolbar.buttonItems(
+                              anchors: state.contextMenuAnchors,
+                              buttonItems: [],
+                            ),
+                            child: PassageBuilder(
+                              passage: chapterReference.toPassage(),
+                              underlinedReferences: selectedReferencesState.value,
+                              onReferencePressed: (reference) {
+                                final region = selectionKey.currentState?.selectableRegion;
+                                // ignore: deprecated_member_use
+                                if (region == null || region.textEditingValue.selection.isCollapsed) {
+                                  selectedReferencesState.value = selectedReferencesState.value.withToggle(reference);
+                                } else {
+                                  region.clearSelection();
+                                }
+                              },
+                              onSelectionUpdated: (selection) => WidgetsBinding.instance.addPostFrameCallback((_) {
+                                if (selectedReferencesState.value.isNotEmpty) {
+                                  selectedReferencesState.value = [];
+                                }
+                                selectionState.value = selection;
+                              }),
+                              selectionState: selectionState,
+                            ),
                           ),
-                          child: PassageBuilder(
-                            passage: chapterReference.toPassage(),
-                            underlinedReferences: selectedReferencesState.value,
-                            onReferencePressed: (reference) {
-                              final region = selectionKey.currentState?.selectableRegion;
-                              // ignore: deprecated_member_use
-                              if (region == null || region.textEditingValue.selection.isCollapsed) {
-                                selectedReferencesState.value = selectedReferencesState.value.withToggle(reference);
-                              } else {
-                                region.clearSelection();
-                              }
-                            },
-                            onSelectionUpdated: (selection) => WidgetsBinding.instance.addPostFrameCallback((_) {
-                              if (selectedReferencesState.value.isNotEmpty) {
-                                selectedReferencesState.value = [];
-                              }
-                              selectionState.value = selection;
-                            }),
-                            selectionState: selectionState,
-                          ),
-                        ),
-                        gapH16,
-                      ],
+                          gapH16,
+                        ],
+                      ),
                     ),
                   );
                 },
