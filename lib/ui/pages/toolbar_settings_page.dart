@@ -18,8 +18,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-class ChapterToolbarSettingsPage extends ConsumerWidget {
-  const ChapterToolbarSettingsPage({super.key});
+class ToolbarSettingsPage extends ConsumerWidget {
+  const ToolbarSettingsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -27,7 +27,7 @@ class ChapterToolbarSettingsPage extends ConsumerWidget {
     final toolbar = user.toolbar;
 
     return StyledPage(
-      titleText: 'Chapter Toolbar Settings',
+      titleText: 'Toolbar Settings',
       body: Column(
         children: [
           ColoredBox(

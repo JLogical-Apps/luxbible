@@ -17,7 +17,7 @@ import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_page.dart';
 import 'package:bible/style/widgets/styled_scrollbar.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
-import 'package:bible/ui/pages/chapter_toolbar_settings_page.dart';
+import 'package:bible/ui/pages/toolbar_settings_page.dart';
 import 'package:bible/ui/utils/text_selection_controls.dart';
 import 'package:bible/ui/widgets/passage_builder.dart';
 import 'package:bible/ui/widgets/toolbar.dart';
@@ -251,11 +251,12 @@ class _BottomBar extends HookConsumerWidget {
               onMorePressed: () => context.showStyledSheet(
                 StyledSheet(
                   titleText: 'Chapter Actions',
+                  subtitleText: currentChapterReference.format(),
                   trailing: StyledCircleButton.lg(
                     icon: Symbols.tune,
                     onPressed: () {
                       context.pop();
-                      context.push(ChapterToolbarSettingsPage());
+                      context.push(ToolbarSettingsPage());
                     },
                   ),
                   children: ToolbarAction.values
