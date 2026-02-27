@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "lux_logo.png",
+      "filename" : "lux_full_background.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -13,7 +13,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "lux_background.png",
+      "filename" : "background_mono.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -25,7 +25,7 @@
           "value" : "tinted"
         }
       ],
-      "filename" : "lux_background 1.png",
+      "filename" : "background_mono 1.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
