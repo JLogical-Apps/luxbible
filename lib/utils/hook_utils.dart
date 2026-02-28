@@ -21,7 +21,7 @@ ScrollController useUnfocusOnScrollDown(ScrollController scrollController) {
 }
 
 void useOnStickyScrollDirectionChanged(
-  ScrollController scrollController,
+  ScrollController? scrollController,
   Function(ScrollDirection) onScrollDirectionChanged, [
   List<Object?> keys = const [],
 ]) {
@@ -32,7 +32,7 @@ void useOnStickyScrollDirectionChanged(
     return null;
   }, keys);
   useOnListenableChange(scrollController, () {
-    final position = scrollController.positionsOrNull?.firstOrNull;
+    final position = scrollController?.positionsOrNull?.firstOrNull;
     final direction = position?.userScrollDirection;
     if (position == null || direction == null || direction == ScrollDirection.idle) {
       return;

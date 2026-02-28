@@ -12,8 +12,9 @@ part of 'path_service.dart';
 @ProviderFor(pathService)
 final pathServiceProvider = PathServiceProvider._();
 
-final class PathServiceProvider extends $FunctionalProvider<Paths, Paths, Paths>
-    with $Provider<Paths> {
+final class PathServiceProvider
+    extends $FunctionalProvider<Paths?, Paths?, Paths?>
+    with $Provider<Paths?> {
   PathServiceProvider._()
     : super(
         from: null,
@@ -30,21 +31,21 @@ final class PathServiceProvider extends $FunctionalProvider<Paths, Paths, Paths>
 
   @$internal
   @override
-  $ProviderElement<Paths> $createElement($ProviderPointer pointer) =>
+  $ProviderElement<Paths?> $createElement($ProviderPointer pointer) =>
       $ProviderElement(pointer);
 
   @override
-  Paths create(Ref ref) {
+  Paths? create(Ref ref) {
     return pathService(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(Paths value) {
+  Override overrideWithValue(Paths? value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<Paths>(value),
+      providerOverride: $SyncValueProvider<Paths?>(value),
     );
   }
 }
 
-String _$pathServiceHash() => r'5bd5762484a9febc71c9b7038f2c013e6247c80a';
+String _$pathServiceHash() => r'18370dc6e104c74ab013db68e63d11d18c74e304';
