@@ -1,11 +1,16 @@
+import 'package:bible/models/annotation.dart';
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/passage_action.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/models/user/user.dart';
+import 'package:bible/style/style.dart';
+import 'package:bible/utils/extensions/object_extensions.dart';
+import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 enum PassageShortcut {
   study,
@@ -13,16 +18,32 @@ enum PassageShortcut {
   interlinear,
   commentary,
   annotate,
+  highlight,
   copy;
 
-  String title() => toStudyAction()?.title() ?? toPassageAction()?.title() ?? (throw UnimplementedError());
+  String title() =>
+      toStudyAction()?.title() ??
+      toPassageAction()?.title() ??
+      switch (this) {
+        highlight => 'Highlight',
+        _ => throw UnimplementedError(),
+      };
 
   String description() =>
       toStudyAction()?.description(region: null, regionType: RegionType.passage) ??
       toPassageAction()?.description() ??
-      (throw UnimplementedError());
+      switch (this) {
+        highlight => 'Highlight ${RegionType.passage.formatThis()} with the last color you used.',
+        _ => throw UnimplementedError(),
+      };
 
-  IconData get icon => toStudyAction()?.icon ?? toPassageAction()?.icon ?? (throw UnimplementedError());
+  Widget buildIcon(BuildContext context, {User? user}) =>
+      toStudyAction()?.icon.mapIfNonNull(Icon.new) ??
+      toPassageAction()?.icon.mapIfNonNull(Icon.new) ??
+      switch (this) {
+        highlight => Icon(Symbols.highlighter_size_3, color: user?.highlightColor.toHue(context.colors).primary),
+        _ => throw UnimplementedError(),
+      };
 
   Future<void> onPressed(
     BuildContext context,
@@ -41,7 +62,17 @@ enum PassageShortcut {
         bible: bible,
         onDeselect: onDeselect,
       ) ??
-      (throw UnimplementedError());
+      switch (this) {
+        highlight => () async {
+          onDeselect();
+          ref.updateUser(
+            (user) => user.withAnnotation(
+              Annotation(createdAt: DateTime.now(), color: user.highlightColor, passages: [passage]),
+            ),
+          );
+        }(),
+        _ => throw UnimplementedError(),
+      };
 
   PassageAction? toPassageAction() => switch (this) {
     study => PassageAction.study,

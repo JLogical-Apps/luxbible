@@ -42,7 +42,10 @@ class PassageBottomBar extends StatelessWidget {
               isEdit: isEdit,
               child: Tooltip(
                 message: shortcut.title(),
-                child: StyledCircleButton.lg(icon: shortcut.icon, onPressed: () => onShorcutPressed(i, shortcut)),
+                child: StyledCircleButton.lg(
+                  child: shortcut.buildIcon(context, user: user),
+                  onPressed: () => onShorcutPressed(i, shortcut),
+                ),
               ),
             ),
           )

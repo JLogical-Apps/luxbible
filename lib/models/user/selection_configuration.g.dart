@@ -32,5 +32,6 @@ Map<String, dynamic> _$SelectionConfigurationToJson(
 
 const _$SelectionShortcutEnumMap = {
   SelectionShortcut.annotate: 'annotate',
+  SelectionShortcut.highlight: 'highlight',
   SelectionShortcut.copy: 'copy',
 };
