@@ -61,7 +61,7 @@ class BibleApp extends StatelessWidget {
         child: MaterialApp(
           title: 'Bible',
           theme: ThemeData(
-            colorScheme: ColorScheme.highContrastLight(brightness: Brightness.light),
+            colorScheme: ColorScheme.highContrastLight(brightness: Brightness.light, primary: Colors.black),
             cardColor: Colors.transparent,
             appBarTheme: AppBarThemeData(scrolledUnderElevation: 0),
             iconTheme: IconThemeData(fill: 1, weight: 400, size: 25, color: Colors.black, opticalSize: 24),
@@ -72,7 +72,7 @@ class BibleApp extends StatelessWidget {
             ),
           ),
           darkTheme: ThemeData(
-            colorScheme: ColorScheme.dark(brightness: Brightness.dark),
+            colorScheme: ColorScheme.dark(brightness: Brightness.dark, primary: Colors.white),
             cardColor: Colors.transparent,
             appBarTheme: AppBarThemeData(scrolledUnderElevation: 0),
             iconTheme: IconThemeData(fill: 1, weight: 400, size: 25, color: Colors.white, opticalSize: 24),
