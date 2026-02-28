@@ -1,7 +1,4 @@
-import 'package:bible/models/book_type.dart';
-import 'package:bible/models/reference/selection.dart';
 import 'package:bible/models/user/selection_shortcut.dart';
-import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
@@ -39,15 +36,11 @@ class SelectionSettingsPage extends ConsumerWidget {
                 configuration: selectionConfiguration,
                 user: user,
                 bible: bible,
-                selection: Selection(
-                  start: SelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 0),
-                  end: SelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 30),
-                  translation: user.translation,
-                ),
+                selection: null,
                 onMorePressed: () {},
                 onClosePressed: () {},
                 onShorcutPressed: (shortcutIndex, shortcut) async {
-                  final newShortcut = await showSelectToolbarSheet(context, initialShortcut: shortcut, user: user);
+                  final newShortcut = await showSelectToolbarSheet(context, initialShortcut: shortcut);
                   if (newShortcut != null) {
                     ref.updateUser(
                       (user) => user.copyWith(
@@ -69,16 +62,15 @@ class SelectionSettingsPage extends ConsumerWidget {
   Future<SelectionShortcut?> showSelectToolbarSheet(
     BuildContext context, {
     required SelectionShortcut initialShortcut,
-    required User user,
   }) => context.showStyledSheet(
     StyledSelectionSheet(
       titleText: 'Selection Shortcut',
       options: SelectionShortcut.values,
       initialOption: initialShortcut,
       optionMapper: (shortcut) => StyledSelectOption(
-        titleText: shortcut.title(),
-        subtitleText: shortcut.description(),
-        leading: shortcut.buildIcon(context),
+        titleText: shortcut.title(user: null, selection: null),
+        subtitleText: shortcut.description(user: null, selection: null),
+        leading: shortcut.buildIcon(context, user: null, selection: null),
       ),
     ),
   );

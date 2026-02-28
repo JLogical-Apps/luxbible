@@ -1,8 +1,4 @@
-import 'package:bible/models/book_type.dart';
-import 'package:bible/models/reference/passage.dart';
-import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/user/passage_shortcut.dart';
-import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_selection_sheet.dart';
@@ -35,11 +31,11 @@ class PassageSettingsPage extends ConsumerWidget {
               child: PassageBottomBar(
                 configuration: passageConfiguration,
                 user: user,
-                passage: Passage.reference(Reference(book: BookType.genesis, chapterNum: 1, verseNum: 1)),
+                passage: null,
                 onMorePressed: () {},
                 onClosePressed: () {},
                 onShorcutPressed: (shortcutIndex, shortcut) async {
-                  final newShortcut = await showSelectToolbarSheet(context, initialShortcut: shortcut, user: user);
+                  final newShortcut = await showSelectToolbarSheet(context, initialShortcut: shortcut);
                   if (newShortcut != null) {
                     ref.updateUser(
                       (user) =>
@@ -57,20 +53,17 @@ class PassageSettingsPage extends ConsumerWidget {
     );
   }
 
-  Future<PassageShortcut?> showSelectToolbarSheet(
-    BuildContext context, {
-    required PassageShortcut initialShortcut,
-    required User user,
-  }) => context.showStyledSheet(
-    StyledSelectionSheet(
-      titleText: 'Passage Shortcut',
-      options: PassageShortcut.values,
-      initialOption: initialShortcut,
-      optionMapper: (shortcut) => StyledSelectOption(
-        titleText: shortcut.title(),
-        subtitleText: shortcut.description(),
-        leading: shortcut.buildIcon(context),
-      ),
-    ),
-  );
+  Future<PassageShortcut?> showSelectToolbarSheet(BuildContext context, {required PassageShortcut initialShortcut}) =>
+      context.showStyledSheet(
+        StyledSelectionSheet(
+          titleText: 'Passage Shortcut',
+          options: PassageShortcut.values,
+          initialOption: initialShortcut,
+          optionMapper: (shortcut) => StyledSelectOption(
+            titleText: shortcut.title(user: null, passage: null),
+            subtitleText: shortcut.description(user: null, passage: null),
+            leading: shortcut.buildIcon(context, user: null, passage: null),
+          ),
+        ),
+      );
 }

@@ -16,24 +16,30 @@ enum SelectionShortcut {
   highlight,
   copy;
 
-  String title() =>
+  String title({required User? user, required Selection? selection}) =>
       toSelectionAction()?.title() ??
       switch (this) {
-        highlight => 'Highlight',
+        highlight => _isAnnotated(user: user, selection: selection) ? 'Remove Annotations' : 'Highlight',
         _ => throw UnimplementedError(),
       };
 
-  String description() =>
+  String description({required User? user, required Selection? selection}) =>
       toSelectionAction()?.description() ??
       switch (this) {
-        highlight => 'Highlight ${RegionType.passage.formatThis()} with the last color you used.',
+        highlight =>
+          _isAnnotated(user: user, selection: selection)
+              ? 'Remove selection annotations from ${RegionType.selection.formatThis()}.'
+              : 'Highlight ${RegionType.selection.formatThis()} with the last color you used.',
         _ => throw UnimplementedError(),
       };
 
-  Widget buildIcon(BuildContext context, {User? user}) =>
+  Widget buildIcon(BuildContext context, {required User? user, required Selection? selection}) =>
       toSelectionAction()?.icon.mapIfNonNull(Icon.new) ??
       switch (this) {
-        highlight => Icon(Symbols.highlighter_size_3, color: user?.highlightColor.toHue(context.colors).primary),
+        highlight =>
+          _isAnnotated(user: user, selection: selection)
+              ? Icon(Symbols.ink_eraser)
+              : Icon(Symbols.highlighter_size_3, color: user?.highlightColor.toHue(context.colors).primary),
         _ => throw UnimplementedError(),
       };
 
@@ -56,11 +62,16 @@ enum SelectionShortcut {
       switch (this) {
         highlight => () async {
           onDeselect();
-          ref.updateUser(
-            (user) => user.withAnnotation(
-              Annotation(createdAt: DateTime.now(), color: user.highlightColor, selections: [selection]),
-            ),
-          );
+
+          if (user.isSelectionAnnotated(selection)) {
+            ref.updateUser((user) => user.withRemovedSelectionAnnotations(selection));
+          } else {
+            ref.updateUser(
+              (user) => user.withAnnotation(
+                Annotation(createdAt: DateTime.now(), color: user.highlightColor, selections: [selection]),
+              ),
+            );
+          }
         }(),
         _ => throw UnimplementedError(),
       };
@@ -70,4 +81,7 @@ enum SelectionShortcut {
     copy => SelectionAction.copy,
     _ => null,
   };
+
+  bool _isAnnotated({User? user, Selection? selection}) =>
+      selection != null && user != null && user.isSelectionAnnotated(selection);
 }

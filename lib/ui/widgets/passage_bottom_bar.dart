@@ -1,4 +1,6 @@
+import 'package:bible/models/book_type.dart';
 import 'package:bible/models/reference/passage.dart';
+import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/user/passage_configuration.dart';
 import 'package:bible/models/user/passage_shortcut.dart';
 import 'package:bible/models/user/user.dart';
@@ -8,7 +10,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 class PassageBottomBar extends StatelessWidget {
-  final Passage passage;
+  final Passage? passage;
   final PassageConfiguration configuration;
 
   final User user;
@@ -35,15 +37,15 @@ class PassageBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomBar(
-      text: passage.format(),
+      text: (passage ?? Passage.reference(Reference(book: BookType.genesis, chapterNum: 1, verseNum: 1))).format(),
       buttons: configuration.pinnedShortcuts
           .mapIndexed(
             (i, shortcut) => StyledEditBadge(
               isEdit: isEdit,
               child: Tooltip(
-                message: shortcut.title(),
+                message: shortcut.title(user: user, passage: passage),
                 child: StyledCircleButton.lg(
-                  child: shortcut.buildIcon(context, user: user),
+                  child: shortcut.buildIcon(context, user: user, passage: passage),
                   onPressed: () => onShorcutPressed(i, shortcut),
                 ),
               ),
