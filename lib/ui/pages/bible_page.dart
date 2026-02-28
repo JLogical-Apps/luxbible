@@ -96,6 +96,7 @@ class BiblePage extends HookConsumerWidget {
 
                   return StyledScrollbar(
                     child: SingleChildScrollView(
+                      primary: pageController.page?.round() == pageIndex,
                       padding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 8) +
                           EdgeInsets.only(
@@ -189,7 +190,7 @@ class _Bottom extends HookConsumerWidget {
     final user = ref.watch(userProvider);
     final bible = user.getBible(bibles);
 
-    final scrollController = useListenable(PrimaryScrollController.of(context));
+    final scrollController = useListenable(PrimaryScrollController.maybeOf(context));
     useListenable(isScrollingDownState);
     useListenable(pageController);
     final selection = useListenable(selectionState).value;
@@ -198,14 +199,16 @@ class _Bottom extends HookConsumerWidget {
         ? null
         : Passage.fromReferences(selectedReferencesState.value);
 
-    final scrollPosition = scrollController.positionsOrNull?.firstOrNull;
+    final scrollPosition = scrollController?.positionsOrNull?.firstOrNull;
     useOnStickyScrollDirectionChanged(
       scrollController,
       (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
       [pageController.page],
     );
 
-    final isAtBottom = scrollPosition == null ? false : scrollPosition.pixels >= scrollPosition.maxScrollExtent;
+    final isAtBottom = scrollPosition == null || !scrollPosition.hasContentDimensions
+        ? false
+        : scrollPosition.pixels >= scrollPosition.maxScrollExtent;
     final showBottomBar = (isScrollingDownState.value || isAtBottom) && selectedPassage == null && selection == null;
 
     void onClosePressed() {

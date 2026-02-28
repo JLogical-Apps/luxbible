@@ -1,11 +1,11 @@
 {
-    "name": "bible",
-    "short_name": "bible",
+    "name": "Lux Bible",
+    "short_name": "Lux Bible",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#713f12",
     "theme_color": "#facc15",
-    "description": "A new Flutter project.",
+    "description": "Illuminating the Word",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

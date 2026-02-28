@@ -8,11 +8,13 @@ import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/services/path_service.dart';
+import 'package:bible/services/shared_preferences_service.dart';
 import 'package:bible/ui/pages/bible_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   runZonedGuarded(
@@ -26,6 +28,7 @@ Future<void> main() async {
       final strongs = await StrongImporter().import();
 
       final paths = await getPaths();
+      final sharedPreferences = await SharedPreferences.getInstance();
 
       runApp(
         BibleApp(
@@ -34,6 +37,7 @@ Future<void> main() async {
             strongsProvider.overrideWith((ref) => strongs),
             commentariesProvider.overrideWith((ref) => [commentaries]),
             pathServiceProvider.overrideWith((ref) => paths),
+            sharedPreferencesServiceProvider.overrideWith((ref) => sharedPreferences),
           ],
         ),
       );
