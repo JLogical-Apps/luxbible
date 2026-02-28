@@ -82,7 +82,9 @@ sealed class User with _$User {
   User withBookmark(Bookmark bookmark) => copyWith(bookmarks: [...bookmarks, bookmark]);
   User withRemovedBookmark(Bookmark bookmark) => copyWith(bookmarks: bookmarks.withRemoved(bookmark));
 
-  User withAnnotation(Annotation annotation) => copyWith(annotations: [...annotations, annotation]);
+  User withAnnotation(Annotation annotation) =>
+      copyWith(annotations: [...annotations, annotation], highlightColor: annotation.color);
+
   User withRemovedRegionAnnotations(Region region) => region.when(
     passage: (passage) => withRemovedPassageAnnotations(passage),
     selection: (selection) => withRemovedSelectionAnnotations(selection),

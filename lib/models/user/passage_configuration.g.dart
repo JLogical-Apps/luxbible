@@ -34,5 +34,6 @@ const _$PassageShortcutEnumMap = {
   PassageShortcut.interlinear: 'interlinear',
   PassageShortcut.commentary: 'commentary',
   PassageShortcut.annotate: 'annotate',
+  PassageShortcut.highlight: 'highlight',
   PassageShortcut.copy: 'copy',
 };
