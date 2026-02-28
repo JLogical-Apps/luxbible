@@ -21,27 +21,33 @@ enum PassageShortcut {
   highlight,
   copy;
 
-  String title() =>
+  String title({required User? user, required Passage? passage}) =>
       toStudyAction()?.title() ??
       toPassageAction()?.title() ??
       switch (this) {
-        highlight => 'Highlight',
+        highlight => _isAnnotated(user: user, passage: passage) ? 'Remove Annotations' : 'Highlight',
         _ => throw UnimplementedError(),
       };
 
-  String description() =>
+  String description({required User? user, required Passage? passage}) =>
       toStudyAction()?.description(region: null, regionType: RegionType.passage) ??
       toPassageAction()?.description() ??
       switch (this) {
-        highlight => 'Highlight ${RegionType.passage.formatThis()} with the last color you used.',
+        highlight =>
+          _isAnnotated(user: user, passage: passage)
+              ? 'Remove passage annotations from ${RegionType.passage.formatThis()}.'
+              : 'Highlight ${RegionType.passage.formatThis()} with the last color you used.',
         _ => throw UnimplementedError(),
       };
 
-  Widget buildIcon(BuildContext context, {User? user}) =>
+  Widget buildIcon(BuildContext context, {required User? user, required Passage? passage}) =>
       toStudyAction()?.icon.mapIfNonNull(Icon.new) ??
       toPassageAction()?.icon.mapIfNonNull(Icon.new) ??
       switch (this) {
-        highlight => Icon(Symbols.highlighter_size_3, color: user?.highlightColor.toHue(context.colors).primary),
+        highlight =>
+          _isAnnotated(user: user, passage: passage)
+              ? Icon(Symbols.ink_eraser)
+              : Icon(Symbols.highlighter_size_3, color: user?.highlightColor.toHue(context.colors).primary),
         _ => throw UnimplementedError(),
       };
 
@@ -65,11 +71,16 @@ enum PassageShortcut {
       switch (this) {
         highlight => () async {
           onDeselect();
-          ref.updateUser(
-            (user) => user.withAnnotation(
-              Annotation(createdAt: DateTime.now(), color: user.highlightColor, passages: [passage]),
-            ),
-          );
+
+          if (user.isPassageAnnotated(passage)) {
+            ref.updateUser((user) => user.withRemovedPassageAnnotations(passage));
+          } else {
+            ref.updateUser(
+              (user) => user.withAnnotation(
+                Annotation(createdAt: DateTime.now(), color: user.highlightColor, passages: [passage]),
+              ),
+            );
+          }
         }(),
         _ => throw UnimplementedError(),
       };
@@ -87,4 +98,7 @@ enum PassageShortcut {
     commentary => StudyAction.commentary,
     _ => null,
   };
+
+  bool _isAnnotated({User? user, Passage? passage}) =>
+      passage != null && user != null && user.isPassageAnnotated(passage);
 }

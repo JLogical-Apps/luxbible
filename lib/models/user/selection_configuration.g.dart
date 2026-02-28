@@ -20,6 +20,12 @@ _SelectionConfiguration _$SelectionConfigurationFromJson(
         _$SelectionShortcutEnumMap,
         json['pinnedShortcut2'],
       ) ??
+      SelectionShortcut.highlight,
+  pinnedShortcut3:
+      $enumDecodeNullable(
+        _$SelectionShortcutEnumMap,
+        json['pinnedShortcut3'],
+      ) ??
       SelectionShortcut.copy,
 );
 
@@ -28,6 +34,7 @@ Map<String, dynamic> _$SelectionConfigurationToJson(
 ) => <String, dynamic>{
   'pinnedShortcut1': _$SelectionShortcutEnumMap[instance.pinnedShortcut1]!,
   'pinnedShortcut2': _$SelectionShortcutEnumMap[instance.pinnedShortcut2]!,
+  'pinnedShortcut3': _$SelectionShortcutEnumMap[instance.pinnedShortcut3]!,
 };
 
 const _$SelectionShortcutEnumMap = {

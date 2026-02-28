@@ -1,4 +1,5 @@
 import 'package:bible/models/bible.dart';
+import 'package:bible/models/book_type.dart';
 import 'package:bible/models/reference/selection.dart';
 import 'package:bible/models/user/selection_configuration.dart';
 import 'package:bible/models/user/selection_shortcut.dart';
@@ -9,7 +10,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 class SelectionBottomBar extends StatelessWidget {
-  final Selection selection;
+  final Selection? selection;
   final SelectionConfiguration configuration;
 
   final User user;
@@ -38,15 +39,20 @@ class SelectionBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomBar(
-      text: '"${bible.getSelectionText(selection)}"',
+      text:
+          '"${bible.getSelectionText(selection ?? Selection(
+                start: SelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 0),
+                end: SelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 30),
+                translation: user.translation,
+              ))}"',
       buttons: configuration.pinnedShortcuts
           .mapIndexed(
             (i, shortcut) => StyledEditBadge(
               isEdit: isEdit,
               child: Tooltip(
-                message: shortcut.title(),
+                message: shortcut.title(user: user, selection: selection),
                 child: StyledCircleButton.lg(
-                  child: shortcut.buildIcon(context, user: user),
+                  child: shortcut.buildIcon(context, user: user, selection: selection),
                   onPressed: () => onShorcutPressed(i, shortcut),
                 ),
               ),
