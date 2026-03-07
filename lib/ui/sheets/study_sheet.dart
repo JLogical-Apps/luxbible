@@ -16,7 +16,7 @@ class StudySheet {
     required Bible bible,
     required RegionType regionType,
   }) => context.showStyledSheet(
-    StyledSheet(
+    (context) => StyledSheet(
       titleText: 'Study',
       subtitleText: region.format(),
       children: StudyAction.values

@@ -56,7 +56,7 @@ enum ToolbarAction {
       case bookmark:
         final bookmark = user.getBookmark(reference);
         if (bookmark == null) {
-          final color = await context.showStyledSheet(StyledColorSheet(titleText: 'Bookmark Color'));
+          final color = await context.showStyledSheet((context) => StyledColorSheet(titleText: 'Bookmark Color'));
           if (color != null) {
             ref.updateUser((user) => user.withBookmark(Bookmark(chapter: reference, color: color)));
           }

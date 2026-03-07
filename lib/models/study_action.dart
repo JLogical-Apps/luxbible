@@ -51,7 +51,7 @@ enum StudyAction {
     switch (this) {
       case compare:
         context.showStyledSheet(
-          StyledSheet(
+          (context) => StyledSheet(
             titleText: 'Compare',
             subtitleText: region.format(),
             children: bibles
@@ -124,7 +124,7 @@ enum StudyAction {
       case commentary:
         final commentaries = ref.watch(commentariesProvider);
         context.showStyledSheet(
-          StyledSheet(
+          (context) => StyledSheet(
             titleText: 'Commentary',
             subtitleText: region.format(),
             children: commentaries

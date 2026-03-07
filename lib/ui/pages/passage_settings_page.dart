@@ -55,7 +55,7 @@ class PassageSettingsPage extends ConsumerWidget {
 
   Future<PassageShortcut?> showSelectToolbarSheet(BuildContext context, {required PassageShortcut initialShortcut}) =>
       context.showStyledSheet(
-        StyledSelectionSheet(
+        (context) => StyledSelectionSheet(
           titleText: 'Passage Shortcut',
           options: PassageShortcut.values,
           initialOption: initialShortcut,

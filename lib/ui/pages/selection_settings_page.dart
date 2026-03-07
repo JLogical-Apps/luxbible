@@ -63,7 +63,7 @@ class SelectionSettingsPage extends ConsumerWidget {
     BuildContext context, {
     required SelectionShortcut initialShortcut,
   }) => context.showStyledSheet(
-    StyledSelectionSheet(
+    (context) => StyledSelectionSheet(
       titleText: 'Selection Shortcut',
       options: SelectionShortcut.values,
       initialOption: initialShortcut,
