@@ -14,7 +14,7 @@ extension StyleContextExtensions on BuildContext {
 
   TextStyleLibrary get textStyle => TextStyleLibrary(colorLibrary: colors);
 
-  Future<T?> showStyledSheet<T>(Widget sheet) async {
+  Future<T?> showStyledSheet<T>(Widget Function(BuildContext context) sheetBuilder) async {
     final rootContext = ScaffoldMessenger.of(this).context;
     return await showModalBottomSheet(
       context: this,
@@ -28,7 +28,7 @@ extension StyleContextExtensions on BuildContext {
         maxHeight: MediaQuery.sizeOf(rootContext).height - MediaQuery.paddingOf(rootContext).top - 8,
       ),
       useRootNavigator: true,
-      builder: (context) => sheet,
+      builder: sheetBuilder,
     );
   }
 

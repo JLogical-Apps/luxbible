@@ -7,7 +7,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 class StyledMultiSelectionSheet<T> extends HookWidget {
   final Widget title;
-  final Widget Function(BuildContext)? trailingBuilder;
+  final Widget? trailing;
 
   final List<T> options;
   final List<T> initialOptions;
@@ -17,7 +17,7 @@ class StyledMultiSelectionSheet<T> extends HookWidget {
     super.key,
     Widget? title,
     String? titleText,
-    this.trailingBuilder,
+    this.trailing,
     required this.options,
     this.initialOptions = const [],
     required this.optionMapper,
@@ -28,7 +28,7 @@ class StyledMultiSelectionSheet<T> extends HookWidget {
     final selectedOptionsState = useState(initialOptions);
     return StyledSheet(
       title: title,
-      trailing: trailingBuilder?.call(context),
+      trailing: trailing,
       children: options
           .map(
             (option) => StyledListItem.checkbox(

@@ -86,11 +86,11 @@ class SearchPage extends HookConsumerWidget {
                   color: locations.isEmpty ? null : context.colors.contentPrimary,
                   onPressed: () async {
                     final newLocations = await context.showStyledSheet(
-                      StyledMultiSelectionSheet<SearchLocationFilter>(
+                      (context) => StyledMultiSelectionSheet<SearchLocationFilter>(
                         titleText: 'Locations',
-                        trailingBuilder: locations.isEmpty
+                        trailing: locations.isEmpty
                             ? null
-                            : (context) => StyledCircleButton.lg(
+                            : StyledCircleButton.lg(
                                 onPressed: () => context.pop(<SearchLocationFilter>[]),
                                 icon: Symbols.reset_settings,
                               ),

@@ -30,7 +30,7 @@ class StyledSelect<T> extends StatelessWidget {
       borderRadius: BorderRadius.circular(8),
       onPressed: () async {
         final newSelection = await context.showStyledSheet(
-          StyledSelectionSheet(
+          (context) => StyledSelectionSheet(
             titleText: dialogTitle,
             options: options,
             optionMapper: optionMapper,

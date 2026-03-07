@@ -101,7 +101,7 @@ class ToolbarSettingsPage extends ConsumerWidget {
     required ToolbarShortcut initialShortcut,
     required User user,
   }) => context.showStyledSheet(
-    StyledSelectionSheet(
+    (context) => StyledSelectionSheet(
       titleText: 'Toolbar Shortcut',
       options: ToolbarShortcut.values,
       initialOption: initialShortcut,

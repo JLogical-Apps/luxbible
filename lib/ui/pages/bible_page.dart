@@ -259,7 +259,7 @@ class _Bottom extends HookConsumerWidget {
               onShorcutPressed: (shortcutIndex, shortcut) =>
                   shortcut.onPressed(context, ref, reference: currentChapterReference, bible: bible, user: user),
               onMorePressed: () => context.showStyledSheet(
-                StyledSheet(
+                (context) => StyledSheet(
                   titleText: 'Chapter Actions',
                   subtitleText: currentChapterReference.format(),
                   trailing: StyledCircleButton.lg(
@@ -314,7 +314,7 @@ class _Bottom extends HookConsumerWidget {
                             user: user,
                             onClosePressed: onClosePressed,
                             onMorePressed: () => context.showStyledSheet(
-                              StyledSheet(
+                              (context) => StyledSheet(
                                 titleText: 'Passage Actions',
                                 subtitleText: selectedPassage.format(),
                                 trailing: StyledCircleButton.lg(
@@ -372,7 +372,7 @@ class _Bottom extends HookConsumerWidget {
                               onDeselect: () => selectedReferencesState.value = [],
                             ),
                             onMorePressed: () => context.showStyledSheet(
-                              StyledSheet(
+                              (context) => StyledSheet(
                                 titleText: 'Selection Actions',
                                 subtitleText: '"${bible.getSelectionText(selection)}"',
                                 trailing: StyledCircleButton.lg(

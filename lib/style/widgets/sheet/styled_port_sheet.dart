@@ -36,7 +36,7 @@ class StyledPortSheet<T> extends StatelessWidget {
     Widget? trailing,
     required List<Widget> Function(BuildContext) childrenBuilder,
   }) => context.showStyledSheet(
-    StyledPortSheet(
+    (context) => StyledPortSheet(
       port: port,
       title: title,
       titleText: titleText,

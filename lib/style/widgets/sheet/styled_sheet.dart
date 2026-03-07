@@ -126,7 +126,7 @@ class StyledSheet extends StatelessWidget {
                             : () {
                                 context.pop();
                                 context.showStyledSheet(
-                                  SheetNavigationContextProvider(
+                                  (context) => SheetNavigationContextProvider(
                                     context: SheetNavigationContext(
                                       breadcrumbs: sheetNavigationContext.breadcrumbs.take(i + 1).toList(),
                                     ),
