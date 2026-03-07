@@ -8,6 +8,7 @@ import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/sheets/study_sheet.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -56,7 +57,7 @@ enum ToolbarAction {
       case bookmark:
         final bookmark = user.getBookmark(reference);
         if (bookmark == null) {
-          final color = await context.showStyledSheet((context) => StyledColorSheet(titleText: 'Bookmark Color'));
+          final color = await context.showStyledSheet((context) => StyledColorSheet(title: 'Bookmark Color'.toText()));
           if (color != null) {
             ref.updateUser((user) => user.withBookmark(Bookmark(chapter: reference, color: color)));
           }

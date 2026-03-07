@@ -3,7 +3,6 @@ import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/ui/widgets/colored_circle.dart';
-import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:flutter/material.dart';
 
 class StyledColorSheet extends StatelessWidget {
@@ -12,8 +11,7 @@ class StyledColorSheet extends StatelessWidget {
 
   final ColorEnum? initialColor;
 
-  StyledColorSheet({super.key, Widget? title, String? titleText, this.trailing, this.initialColor})
-    : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
+  const StyledColorSheet({super.key, required this.title, this.trailing, this.initialColor});
 
   @override
   Widget build(BuildContext context) {

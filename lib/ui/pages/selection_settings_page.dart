@@ -8,6 +8,7 @@ import 'package:bible/style/widgets/styled_section.dart';
 import 'package:bible/style/widgets/styled_select.dart';
 import 'package:bible/ui/widgets/selection_bottom_bar.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -23,13 +24,13 @@ class SelectionSettingsPage extends ConsumerWidget {
     final selectionConfiguration = user.selection;
 
     return StyledPage(
-      titleText: 'Selection Settings',
+      title: 'Selection Settings'.toText(),
       body: Column(
         children: [
           ColoredBox(
             color: context.colors.surfacePrimary,
             child: StyledSection.child(
-              titleText: 'Toolbar',
+              title: 'Toolbar'.toText(),
               padding: EdgeInsets.symmetric(vertical: 16),
               childPadding: EdgeInsets.symmetric(horizontal: 8),
               child: SelectionBottomBar(
@@ -64,7 +65,7 @@ class SelectionSettingsPage extends ConsumerWidget {
     required SelectionShortcut initialShortcut,
   }) => context.showStyledSheet(
     (context) => StyledSelectionSheet(
-      titleText: 'Selection Shortcut',
+      title: 'Selection Shortcut'.toText(),
       options: SelectionShortcut.values,
       initialOption: initialShortcut,
       optionMapper: (shortcut) => StyledSelectOption(

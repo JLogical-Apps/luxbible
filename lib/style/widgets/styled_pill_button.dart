@@ -1,5 +1,4 @@
 import 'package:bible/style/style.dart';
-import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:flutter/material.dart';
 
 class StyledPillButton extends StatelessWidget {
@@ -11,19 +10,7 @@ class StyledPillButton extends StatelessWidget {
 
   final Color? color;
 
-  StyledPillButton({
-    super.key,
-    Widget? label,
-    String? labelText,
-    Widget? leading,
-    IconData? leadingIcon,
-    Widget? trailing,
-    IconData? trailingIcon,
-    this.onPressed,
-    this.color,
-  }) : label = label ?? labelText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
-       leading = leading ?? leadingIcon?.mapIfNonNull(Icon.new),
-       trailing = trailing ?? trailingIcon?.mapIfNonNull(Icon.new);
+  const StyledPillButton({super.key, required this.label, this.leading, this.trailing, this.onPressed, this.color});
 
   @override
   Widget build(BuildContext context) {

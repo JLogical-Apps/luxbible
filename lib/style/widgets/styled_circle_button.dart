@@ -1,5 +1,4 @@
 import 'package:bible/style/style_context_extensions.dart';
-import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:flutter/material.dart';
 
 class StyledCircleButton extends StatelessWidget {
@@ -11,14 +10,12 @@ class StyledCircleButton extends StatelessWidget {
   final double iconSize;
   final double dimension;
 
-  StyledCircleButton.lg({super.key, Widget? child, IconData? icon, required this.onPressed, this.color})
-    : child = child ?? icon?.mapIfNonNull(Icon.new) ?? SizedBox.shrink(),
-      iconSize = 24,
+  const StyledCircleButton.lg({super.key, required this.child, required this.onPressed, this.color})
+    : iconSize = 24,
       dimension = 40;
 
-  StyledCircleButton.sm({super.key, Widget? child, IconData? icon, required this.onPressed, this.color})
-    : child = child ?? icon?.mapIfNonNull(Icon.new) ?? SizedBox.shrink(),
-      iconSize = 16,
+  const StyledCircleButton.sm({super.key, required this.child, required this.onPressed, this.color})
+    : iconSize = 16,
       dimension = 32;
 
   @override

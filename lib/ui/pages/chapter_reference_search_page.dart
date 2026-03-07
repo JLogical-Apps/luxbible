@@ -16,7 +16,9 @@ import 'package:bible/style/widgets/styled_swipeable.dart';
 import 'package:bible/style/widgets/styled_text_field.dart';
 import 'package:bible/style/widgets/styled_tile.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:bible/utils/input_formatters.dart';
 import 'package:flutter/material.dart';
@@ -90,7 +92,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
 
     return StyledPage(
       backgroundColor: context.colors.surfacePrimary,
-      leading: StyledCircleButton.lg(icon: Symbols.close, onPressed: () => Navigator.of(context).pop()),
+      leading: StyledCircleButton.lg(child: Symbols.close.toIcon(), onPressed: () => Navigator.of(context).pop()),
       body: Column(
         children: [
           DecoratedBox(
@@ -181,7 +183,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                       if (getMatchingBooks().isNotEmpty && (isBookFullySelected || bookTextState.value.isEmpty)) ...[
                         if (user.bookmarks.isNotEmpty)
                           StyledSection(
-                            titleText: 'Bookmarks',
+                            title: 'Bookmarks'.toText(),
                             padding: EdgeInsets.only(top: 24),
                             children: [
                               SingleChildScrollView(
@@ -210,7 +212,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                           ),
                         if (user.previouslyViewed.isNotEmpty)
                           StyledSection(
-                            titleText: 'Recents',
+                            title: 'Recents'.toText(),
                             padding: EdgeInsets.only(top: 24),
                             children: user.previouslyViewed
                                 .map(
@@ -226,9 +228,9 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                       ),
                                     ],
                                     child: StyledListItem(
-                                      leadingIcon: Symbols.history,
-                                      titleText: chapterReference.format(),
-                                      trailingIcon: Symbols.expand_circle_right,
+                                      leading: Symbols.history.toIcon(),
+                                      title: chapterReference.format().toText(),
+                                      trailing: Symbols.expand_circle_right.toIcon(),
                                       onPressed: () => Navigator.of(context).pop(chapterReference),
                                     ),
                                   ),
@@ -240,17 +242,17 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                       if (getMatchingBooks().isEmpty)
                         Padding(
                           padding: EdgeInsets.all(16),
-                          child: StyledBanner(messageText: 'No Matches'),
+                          child: StyledBanner(message: 'No Matches'.toText()),
                         )
                       else
                         StyledSection(
-                          titleText: 'Books',
+                          title: 'Books'.toText(),
                           padding: EdgeInsets.only(top: 24),
                           children: (isBookFullySelected ? BookType.values : getMatchingBooks())
                               .map(
                                 (book) => StyledListItem(
-                                  titleText: book.title(),
-                                  trailingIcon: Symbols.chevron_right,
+                                  title: book.title().toText(),
+                                  trailing: Symbols.chevron_right.toIcon(),
                                   onPressed: () {
                                     bookTextState.value = book.title();
                                     WidgetsBinding.instance.addPostFrameCallback(
@@ -279,8 +281,8 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                               )
                               .map(
                                 (chapterReference) => StyledListItem(
-                                  titleText: chapterReference.format(),
-                                  trailingIcon: Symbols.expand_circle_right,
+                                  title: chapterReference.format().toText(),
+                                  trailing: Symbols.expand_circle_right.toIcon(),
                                   onPressed: () => Navigator.of(context).pop(chapterReference),
                                 ),
                               )

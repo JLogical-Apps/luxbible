@@ -1,5 +1,4 @@
 import 'package:bible/style/style.dart';
-import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
@@ -14,74 +13,49 @@ class StyledListItem extends StatelessWidget {
   final bool enabled;
   final ComponentSize size;
 
-  StyledListItem({
+  const StyledListItem({
     super.key,
-    Widget? title,
-    String? titleText,
-    Widget? subtitle,
-    String? subtitleText,
-    Widget? leading,
-    IconData? leadingIcon,
-    Widget? trailing,
-    IconData? trailingIcon,
+    this.title,
+    this.subtitle,
+    this.leading,
+    this.trailing,
     this.onPressed,
     this.size = ComponentSize.md,
     this.enabled = true,
-  }) : title = title ?? titleText?.mapIfNonNull(Text.new),
-       subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new),
-       leading = leading ?? leadingIcon?.mapIfNonNull(Icon.new),
-       trailing = trailing ?? trailingIcon?.mapIfNonNull(Icon.new);
+  });
 
   StyledListItem.navigation({
     super.key,
-    Widget? title,
-    String? titleText,
-    Widget? subtitle,
-    String? subtitleText,
-    Widget? leading,
-    IconData? leadingIcon,
+    this.title,
+    this.subtitle,
+    this.leading,
     this.onPressed,
     this.size = ComponentSize.md,
     this.enabled = true,
-  }) : title = title ?? titleText?.mapIfNonNull(Text.new),
-       subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new),
-       leading = leading ?? leadingIcon?.mapIfNonNull(Icon.new),
-       trailing = Icon(Symbols.chevron_right);
+  }) : trailing = Icon(Symbols.chevron_right);
 
   StyledListItem.radio({
     super.key,
-    Widget? title,
-    String? titleText,
-    Widget? subtitle,
-    String? subtitleText,
-    Widget? leading,
-    IconData? leadingIcon,
+    this.title,
+    this.subtitle,
+    this.leading,
     required bool selected,
     required Function() onSelected,
     this.size = ComponentSize.md,
     this.enabled = true,
-  }) : title = title ?? titleText?.mapIfNonNull(Text.new),
-       subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new),
-       leading = leading ?? leadingIcon?.mapIfNonNull(Icon.new),
-       onPressed = onSelected,
+  }) : onPressed = onSelected,
        trailing = StyledRadio(selected: selected);
 
   StyledListItem.checkbox({
     super.key,
-    Widget? title,
-    String? titleText,
-    Widget? subtitle,
-    String? subtitleText,
-    Widget? leading,
-    IconData? leadingIcon,
+    this.title,
+    this.subtitle,
+    this.leading,
     required bool selected,
     required Function(bool newValue) onSelected,
     this.size = ComponentSize.md,
     this.enabled = true,
-  }) : title = title ?? titleText?.mapIfNonNull(Text.new),
-       subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new),
-       leading = leading ?? leadingIcon?.mapIfNonNull(Icon.new),
-       onPressed = (() => onSelected(!selected)),
+  }) : onPressed = (() => onSelected(!selected)),
        trailing = StyledCheckbox(selected: selected);
 
   @override

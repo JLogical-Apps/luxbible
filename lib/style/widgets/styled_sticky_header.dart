@@ -1,7 +1,6 @@
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/styled_divider.dart';
 import 'package:bible/style/widgets/styled_list.dart';
-import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
 
@@ -12,12 +11,10 @@ class StyledStickyHeader extends StatelessWidget {
 
   final List<Widget> children;
 
-  StyledStickyHeader({super.key, Widget? title, String? titleText, this.trailing, required this.children})
-    : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
+  const StyledStickyHeader({super.key, required this.title, this.trailing, required this.children});
 
-  StyledStickyHeader.child({super.key, Widget? title, String? titleText, this.trailing, required Widget child})
-    : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
-      children = [Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: child)];
+  StyledStickyHeader.child({super.key, required this.title, this.trailing, required Widget child})
+    : children = [Padding(padding: EdgeInsets.symmetric(horizontal: 16), child: child)];
 
   @override
   Widget build(BuildContext context) {

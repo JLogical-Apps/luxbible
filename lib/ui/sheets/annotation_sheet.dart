@@ -12,6 +12,7 @@ import 'package:bible/style/widgets/styled_form_input.dart';
 import 'package:bible/style/widgets/styled_port_field_builder.dart';
 import 'package:bible/style/widgets/styled_text_field.dart';
 import 'package:bible/ui/widgets/colored_circle.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
@@ -35,11 +36,11 @@ class AnnotationSheet {
     );
     return StyledPortSheet.show(
       context,
-      titleText: 'Annotate',
-      subtitleText: region.format(bible),
+      title: 'Annotate'.toText(),
+      subtitle: region.format(bible).toText(),
       trailing: hasAnnotation
           ? StyledCircleButton.lg(
-              icon: Symbols.ink_eraser,
+              child: Symbols.ink_eraser.toIcon(),
               onPressed: () {
                 ref.updateUser((user) => user.withRemovedRegionAnnotations(region));
                 onAnnotationsRemoved?.call();

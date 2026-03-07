@@ -1,7 +1,6 @@
 import 'package:bible/style/color_library.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/styled_material.dart';
-import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:flutter/material.dart';
 
 class StyledRectButton extends StatelessWidget {
@@ -10,9 +9,8 @@ class StyledRectButton extends StatelessWidget {
 
   final Color Function(ColorLibrary) colorBuilder;
 
-  StyledRectButton.primary({super.key, Widget? label, String? labelText, required this.onPressed})
-    : label = label ?? labelText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
-      colorBuilder = ((colors) => colors.contentPrimary);
+  StyledRectButton.primary({super.key, required this.label, required this.onPressed})
+    : colorBuilder = ((colors) => colors.contentPrimary);
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:bible/style/style.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
-import 'package:bible/utils/extensions/object_extensions.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -13,15 +13,14 @@ class StyledMultiSelectionSheet<T> extends HookWidget {
   final List<T> initialOptions;
   final StyledSelectOption<T> Function(T) optionMapper;
 
-  StyledMultiSelectionSheet({
+  const StyledMultiSelectionSheet({
     super.key,
-    Widget? title,
-    String? titleText,
+    required this.title,
     this.trailing,
     required this.options,
     this.initialOptions = const [],
     required this.optionMapper,
-  }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +40,7 @@ class StyledMultiSelectionSheet<T> extends HookWidget {
           )
           .toList(),
       buttonsBuilder: (context) => [
-        StyledRectButton.primary(onPressed: () => context.pop(selectedOptionsState.value), labelText: 'Save'),
+        StyledRectButton.primary(onPressed: () => context.pop(selectedOptionsState.value), label: 'Save'.toText()),
       ],
     );
   }

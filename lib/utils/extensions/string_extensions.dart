@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:utils_core/utils_core.dart';
 
 extension StringExtensions on String {
@@ -5,4 +6,6 @@ extension StringExtensions on String {
   String? get nullIfBlank => isBlank ? null : this;
 
   String get onlyLetters => replaceAll(RegExp(r"[^a-zA-Z ]"), "");
+
+  Text toText() => Text(this);
 }

@@ -10,6 +10,7 @@ import 'package:bible/ui/sheets/strong_sheet.dart';
 import 'package:bible/ui/widgets/passage_builder.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -52,14 +53,14 @@ enum StudyAction {
       case compare:
         context.showStyledSheet(
           (context) => StyledSheet(
-            titleText: 'Compare',
-            subtitleText: region.format(),
+            title: 'Compare'.toText(),
+            subtitle: region.format().toText(),
             children: bibles
                 .mapIndexed<Widget>(
                   (i, bible) => Stack(
                     children: [
                       StyledStickyHeader.child(
-                        titleText: bible.translation.title(),
+                        title: bible.translation.title().toText(),
                         child: Padding(
                           padding: EdgeInsets.only(bottom: 16),
                           child: PassageBuilder(passage: region.toPassage(), bible: bible),
@@ -78,8 +79,8 @@ enum StudyAction {
         context.showStyledSheetWithContext(
           breadcrumbText: region.format(),
           (context) => StyledSheet(
-            titleText: 'Interlinear',
-            subtitleText: region.format(),
+            title: 'Interlinear'.toText(),
+            subtitle: region.format().toText(),
             children: region.references
                 .mapIndexed((i, reference) {
                   final verse = bible.getVerseByReference(reference);
@@ -90,13 +91,13 @@ enum StudyAction {
                   return Stack(
                     children: [
                       StyledStickyHeader(
-                        titleText: reference.format(),
+                        title: reference.format().toText(),
                         children: verse.fragments
                             .mapToMap((fragment) => MapEntry(fragment, fragment.strongIds.firstOrNull))
                             .withoutNullValues
                             .mapToIterable(
                               (fragment, strongId) => StyledListItem.navigation(
-                                titleText: fragment.text.trim(),
+                                title: fragment.text.trim().toText(),
                                 subtitle: Row(
                                   spacing: 4,
                                   children: [
@@ -125,17 +126,17 @@ enum StudyAction {
         final commentaries = ref.watch(commentariesProvider);
         context.showStyledSheet(
           (context) => StyledSheet(
-            titleText: 'Commentary',
-            subtitleText: region.format(),
+            title: 'Commentary'.toText(),
+            subtitle: region.format().toText(),
             children: commentaries
                 .mapToMap((commentary) => MapEntry(commentary, commentary.getNotesFor(region.toPassage())))
                 .where((commentary, notes) => notes.isNotEmpty)
                 .mapToIterable(
                   (commentary, notes) => StyledStickyHeader(
-                    titleText: commentary.name,
+                    title: commentary.name.toText(),
                     children: notes
                         .mapToIterable(
-                          (passage, note) => StyledListItem(titleText: passage.format(), subtitleText: note),
+                          (passage, note) => StyledListItem(title: passage.format().toText(), subtitle: note.toText()),
                         )
                         .toList(),
                   ),
