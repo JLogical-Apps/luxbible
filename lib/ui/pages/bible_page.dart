@@ -28,7 +28,9 @@ import 'package:bible/ui/widgets/toolbar.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/controller_extensions.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -260,10 +262,10 @@ class _Bottom extends HookConsumerWidget {
                   shortcut.onPressed(context, ref, reference: currentChapterReference, bible: bible, user: user),
               onMorePressed: () => context.showStyledSheet(
                 (context) => StyledSheet(
-                  titleText: 'Chapter Actions',
-                  subtitleText: currentChapterReference.format(),
+                  title: 'Chapter Actions'.toText(),
+                  subtitle: currentChapterReference.format().toText(),
                   trailing: StyledCircleButton.lg(
-                    icon: Symbols.tune,
+                    child: Symbols.tune.toIcon(),
                     onPressed: () {
                       context.pop();
                       context.push(ToolbarSettingsPage());
@@ -272,8 +274,8 @@ class _Bottom extends HookConsumerWidget {
                   children: ToolbarAction.values
                       .map(
                         (action) => StyledListItem(
-                          titleText: action.title(user: user, reference: currentChapterReference),
-                          subtitleText: action.description(user: user, reference: currentChapterReference),
+                          title: action.title(user: user, reference: currentChapterReference).toText(),
+                          subtitle: action.description(user: user, reference: currentChapterReference).toText(),
                           leading: action.buildIcon(context, user: user, reference: currentChapterReference),
                           trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
                           onPressed: () {
@@ -315,10 +317,10 @@ class _Bottom extends HookConsumerWidget {
                             onClosePressed: onClosePressed,
                             onMorePressed: () => context.showStyledSheet(
                               (context) => StyledSheet(
-                                titleText: 'Passage Actions',
-                                subtitleText: selectedPassage.format(),
+                                title: 'Passage Actions'.toText(),
+                                subtitle: selectedPassage.format().toText(),
                                 trailing: StyledCircleButton.lg(
-                                  icon: Symbols.tune,
+                                  child: Symbols.tune.toIcon(),
                                   onPressed: () {
                                     context.pop();
                                     context.push(PassageSettingsPage());
@@ -327,9 +329,9 @@ class _Bottom extends HookConsumerWidget {
                                 children: PassageAction.values
                                     .map(
                                       (action) => StyledListItem(
-                                        titleText: action.title(),
-                                        subtitleText: action.description(),
-                                        leadingIcon: action.icon,
+                                        title: action.title().toText(),
+                                        subtitle: action.description().toText(),
+                                        leading: action.icon.toIcon(),
                                         trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
                                         onPressed: () {
                                           Navigator.of(context).pop();
@@ -373,10 +375,10 @@ class _Bottom extends HookConsumerWidget {
                             ),
                             onMorePressed: () => context.showStyledSheet(
                               (context) => StyledSheet(
-                                titleText: 'Selection Actions',
-                                subtitleText: '"${bible.getSelectionText(selection)}"',
+                                title: 'Selection Actions'.toText(),
+                                subtitle: '"${bible.getSelectionText(selection)}"'.toText(),
                                 trailing: StyledCircleButton.lg(
-                                  icon: Symbols.tune,
+                                  child: Symbols.tune.toIcon(),
                                   onPressed: () {
                                     context.pop();
                                     context.push(SelectionSettingsPage());
@@ -385,9 +387,9 @@ class _Bottom extends HookConsumerWidget {
                                 children: SelectionAction.values
                                     .map(
                                       (action) => StyledListItem(
-                                        titleText: action.title(),
-                                        subtitleText: action.description(),
-                                        leadingIcon: action.icon,
+                                        title: action.title().toText(),
+                                        subtitle: action.description().toText(),
+                                        leading: action.icon.toIcon(),
                                         trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
                                         onPressed: () {
                                           Navigator.of(context).pop();

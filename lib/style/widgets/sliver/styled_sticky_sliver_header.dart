@@ -1,6 +1,5 @@
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/styled_divider.dart';
-import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
@@ -10,8 +9,7 @@ class StyledSliverStickyHeader extends StatelessWidget {
 
   final Widget sliver;
 
-  StyledSliverStickyHeader({super.key, Widget? title, String? titleText, this.trailing, required this.sliver})
-    : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
+  const StyledSliverStickyHeader({super.key, required this.title, this.trailing, required this.sliver});
 
   @override
   Widget build(BuildContext context) {

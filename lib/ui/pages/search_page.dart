@@ -6,6 +6,7 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +55,7 @@ class SearchPage extends HookConsumerWidget {
     }
 
     return StyledPage(
-      titleText: 'Search',
+      title: 'Search'.toText(),
       backgroundColor: context.colors.surfacePrimary,
       body: Column(
         children: [
@@ -80,19 +81,20 @@ class SearchPage extends HookConsumerWidget {
                   },
                 ),
                 StyledPillButton(
-                  leadingIcon: Symbols.book,
-                  trailingIcon: Symbols.keyboard_arrow_down,
-                  labelText: locations.isEmpty ? 'Locations' : locations.map((location) => location.title()).join(', '),
+                  leading: Symbols.book.toIcon(),
+                  trailing: Symbols.keyboard_arrow_down.toIcon(),
+                  label: (locations.isEmpty ? 'Locations' : locations.map((location) => location.title()).join(', '))
+                      .toText(),
                   color: locations.isEmpty ? null : context.colors.contentPrimary,
                   onPressed: () async {
                     final newLocations = await context.showStyledSheet(
                       (context) => StyledMultiSelectionSheet<SearchLocationFilter>(
-                        titleText: 'Locations',
+                        title: 'Locations'.toText(),
                         trailing: locations.isEmpty
                             ? null
                             : StyledCircleButton.lg(
                                 onPressed: () => context.pop(<SearchLocationFilter>[]),
-                                icon: Symbols.reset_settings,
+                                child: Symbols.reset_settings.toIcon(),
                               ),
                         options: [
                           ...Testament.values.map((testament) => TestamentSearchLocationFilter(testament: testament)),
@@ -137,7 +139,7 @@ class SearchPage extends HookConsumerWidget {
                   else
                     ...searchResults.map(
                       (result) => StyledListItem(
-                        titleText: result.format(),
+                        title: result.format().toText(),
                         subtitle: SubstringHighlight(
                           text: bible.getVerseByReference(result)?.text ?? '',
                           term: searchState.value,

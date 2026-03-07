@@ -1,7 +1,6 @@
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_select.dart';
-import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:flutter/material.dart';
 
 class StyledSelectionSheet<T> extends StatelessWidget {
@@ -11,14 +10,13 @@ class StyledSelectionSheet<T> extends StatelessWidget {
   final T? initialOption;
   final StyledSelectOption<T> Function(T) optionMapper;
 
-  StyledSelectionSheet({
+  const StyledSelectionSheet({
     super.key,
-    Widget? title,
-    String? titleText,
+    required this.title,
     required this.options,
     this.initialOption,
     required this.optionMapper,
-  }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
+  });
 
   @override
   Widget build(BuildContext context) {

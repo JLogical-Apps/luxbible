@@ -13,7 +13,9 @@ import 'package:bible/style/widgets/styled_page.dart';
 import 'package:bible/style/widgets/styled_section.dart';
 import 'package:bible/style/widgets/styled_select.dart';
 import 'package:bible/ui/widgets/toolbar.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -27,13 +29,13 @@ class ToolbarSettingsPage extends ConsumerWidget {
     final toolbar = user.toolbar;
 
     return StyledPage(
-      titleText: 'Toolbar Settings',
+      title: 'Toolbar Settings'.toText(),
       body: Column(
         children: [
           ColoredBox(
             color: context.colors.surfacePrimary,
             child: StyledSection.child(
-              titleText: 'Toolbar',
+              title: 'Toolbar'.toText(),
               padding: EdgeInsets.symmetric(vertical: 16),
               child: Toolbar(
                 toolbar: toolbar,
@@ -59,13 +61,13 @@ class ToolbarSettingsPage extends ConsumerWidget {
             child: ListView(
               children: [
                 StyledSection.child(
-                  titleText: 'Gestures',
+                  title: 'Gestures'.toText(),
                   child: StyledCard(
                     children: [
                       StyledListItem(
-                        titleText: 'Long Press',
-                        subtitleText: 'Shortcut when the toolbar is long-pressed.',
-                        leadingIcon: Symbols.touch_long,
+                        title: 'Long Press'.toText(),
+                        subtitle: 'Shortcut when the toolbar is long-pressed.'.toText(),
+                        leading: Symbols.touch_long.toIcon(),
                         trailing: StyledEditBadge(
                           child: StyledCircleButton.lg(
                             color: context.colors.surfaceSecondary,
@@ -102,7 +104,7 @@ class ToolbarSettingsPage extends ConsumerWidget {
     required User user,
   }) => context.showStyledSheet(
     (context) => StyledSelectionSheet(
-      titleText: 'Toolbar Shortcut',
+      title: 'Toolbar Shortcut'.toText(),
       options: ToolbarShortcut.values,
       initialOption: initialShortcut,
       optionMapper: (shortcut) => StyledSelectOption(

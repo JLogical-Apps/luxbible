@@ -276,11 +276,11 @@ class PassageBuilder extends HookConsumerWidget {
               child: StyledCircleButton.sm(
                 onPressed: () => context.showStyledSheet(
                   (context) => StyledSheet(
-                    titleText: 'Notes',
+                    title: 'Notes'.toText(),
                     children: annotations
                         .map(
                           (annotation) => StyledListItem(
-                            titleText: annotation.note ?? '',
+                            title: (annotation.note ?? '').toText(),
                             subtitle: Column(
                               children:
                                   [

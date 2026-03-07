@@ -1,4 +1,5 @@
 import 'package:bible/style/style.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
@@ -32,11 +33,11 @@ class BottomBar extends StatelessWidget {
         ),
         child: StyledListItem(
           title: Text(text, maxLines: 1, overflow: TextOverflow.ellipsis),
-          leading: StyledCircleButton.lg(icon: Symbols.close, onPressed: onClosePressed),
+          leading: StyledCircleButton.lg(onPressed: onClosePressed, child: Symbols.close.toIcon()),
           trailing: Row(
             children: [
               ...buttons,
-              StyledCircleButton.lg(icon: Symbols.more_vert, onPressed: onMorePressed),
+              StyledCircleButton.lg(onPressed: onMorePressed, child: Symbols.more_vert.toIcon()),
             ],
           ),
         ),

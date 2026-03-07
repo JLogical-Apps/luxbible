@@ -5,6 +5,8 @@ import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -17,14 +19,14 @@ class StudySheet {
     required RegionType regionType,
   }) => context.showStyledSheet(
     (context) => StyledSheet(
-      titleText: 'Study',
-      subtitleText: region.format(),
+      title: 'Study'.toText(),
+      subtitle: region.format().toText(),
       children: StudyAction.values
           .map(
             (action) => StyledListItem.navigation(
-              titleText: action.title(),
-              subtitleText: action.description(region: region, regionType: regionType),
-              leadingIcon: action.icon,
+              title: action.title().toText(),
+              subtitle: action.description(region: region, regionType: regionType).toText(),
+              leading: action.icon.toIcon(),
               onPressed: () {
                 context.pop();
                 action.onPressed(context, ref, region: region, bible: bible);

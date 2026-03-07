@@ -7,6 +7,7 @@ import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/style/widgets/styled_divider.dart';
 import 'package:bible/style/widgets/styled_dock.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -21,17 +22,14 @@ class StyledSheet extends StatelessWidget {
   final List<Widget> children;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
 
-  StyledSheet({
+  const StyledSheet({
     super.key,
-    Widget? title,
-    String? titleText,
-    Widget? subtitle,
-    String? subtitleText,
+    required this.title,
+    this.subtitle,
     this.trailing,
     required this.children,
     this.buttonsBuilder,
-  }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
-       subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new);
+  });
 
   StyledSheet.child({
     super.key,
@@ -81,7 +79,10 @@ class StyledSheet extends StatelessWidget {
                   SizedBox(
                     width: 48,
                     child: Center(
-                      child: StyledCircleButton.lg(icon: Symbols.close, onPressed: () => Navigator.of(context).pop()),
+                      child: StyledCircleButton.lg(
+                        child: Symbols.close.toIcon(),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
                     ),
                   ),
                   Expanded(
@@ -120,7 +121,6 @@ class StyledSheet extends StatelessWidget {
                 children: sheetNavigationContext.breadcrumbs
                     .mapIndexed<Widget>(
                       (i, breadcrumb) => StyledChip(
-                        text: breadcrumb.text,
                         onPressed: i + 1 == sheetNavigationContext.breadcrumbs.length
                             ? null
                             : () {
@@ -134,6 +134,7 @@ class StyledSheet extends StatelessWidget {
                                   ),
                                 );
                               },
+                        child: Text(breadcrumb.text),
                       ),
                     )
                     .intersperse(Icon(Symbols.chevron_right, color: context.colors.contentTertiary, size: 16))

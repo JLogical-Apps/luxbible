@@ -1,8 +1,8 @@
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/styled_rect_button.dart';
-import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/extensions/port_extensions.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:port/port.dart';
 
@@ -14,34 +14,27 @@ class StyledPortSheet<T> extends StatelessWidget {
   final Widget? trailing;
   final List<Widget> Function(BuildContext) childrenBuilder;
 
-  StyledPortSheet({
+  const StyledPortSheet({
     super.key,
     required this.port,
-    Widget? title,
-    String? titleText,
-    Widget? subtitle,
-    String? subtitleText,
+    required this.title,
+    this.subtitle,
     this.trailing,
     required this.childrenBuilder,
-  }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
-       subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new);
+  });
 
   static Future<T?> show<T>(
     BuildContext context, {
     required Port<T> port,
-    Widget? title,
-    String? titleText,
+    required Widget title,
     Widget? subtitle,
-    String? subtitleText,
     Widget? trailing,
     required List<Widget> Function(BuildContext) childrenBuilder,
   }) => context.showStyledSheet(
     (context) => StyledPortSheet(
       port: port,
       title: title,
-      titleText: titleText,
       subtitle: subtitle,
-      subtitleText: subtitleText,
       trailing: trailing,
       childrenBuilder: childrenBuilder,
     ),
@@ -68,7 +61,7 @@ class StyledPortSheet<T> extends StatelessWidget {
       ),
       buttonsBuilder: (context) => [
         StyledRectButton.primary(
-          labelText: 'Save',
+          label: 'Save'.toText(),
           onPressed: () async {
             final result = await port.submitIfNoErrors();
             if (!result.isValid) {

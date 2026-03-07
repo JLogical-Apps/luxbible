@@ -4,6 +4,7 @@ import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_section.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -20,26 +21,26 @@ class StrongSheet {
     await context.showStyledSheetWithContext(
       breadcrumbText: strong.languageText,
       (context) => StyledSheet(
-        titleText: strong.languageText,
+        title: strong.languageText.toText(),
         children: [
           StyledSection(
-            titleText: 'Info',
+            title: 'Info'.toText(),
             padding: EdgeInsets.only(top: 24),
             children: [
-              StyledListItem(titleText: 'ID', subtitleText: strongId),
-              StyledListItem(titleText: 'Pronunciation', subtitleText: strong.pronunciation),
-              StyledListItem(titleText: 'Transliteration', subtitleText: strong.transliteration),
-              StyledListItem(titleText: 'Definition', subtitleText: strong.definition),
+              StyledListItem(title: 'ID'.toText(), subtitle: strongId.toText()),
+              StyledListItem(title: 'Pronunciation'.toText(), subtitle: strong.pronunciation.toText()),
+              StyledListItem(title: 'Transliteration'.toText(), subtitle: strong.transliteration.toText()),
+              StyledListItem(title: 'Definition'.toText(), subtitle: strong.definition.toText()),
             ],
           ),
           if (seeMoreStrongs.isNotEmpty)
             StyledSection(
-              titleText: 'See More',
+              title: 'See More'.toText(),
               padding: EdgeInsets.only(top: 24),
               children: seeMoreStrongs
                   .map(
                     (strong) => StyledListItem.navigation(
-                      titleText: strong.id,
+                      title: strong.id.toText(),
                       subtitle: Text(
                         '${strong.languageText}: ${strong.definition}',
                         maxLines: 1,
