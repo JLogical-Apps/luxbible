@@ -205,7 +205,7 @@ return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut
 @JsonSerializable()
 
 class _SelectionConfiguration extends SelectionConfiguration {
-  const _SelectionConfiguration({this.pinnedShortcut1 = SelectionShortcut.annotate, this.pinnedShortcut2 = SelectionShortcut.highlight, this.pinnedShortcut3 = SelectionShortcut.copy}): super._();
+  const _SelectionConfiguration({this.pinnedShortcut1 = SelectionShortcut.annotate, this.pinnedShortcut2 = SelectionShortcut.search, this.pinnedShortcut3 = SelectionShortcut.copy}): super._();
   factory _SelectionConfiguration.fromJson(Map<String, dynamic> json) => _$SelectionConfigurationFromJson(json);
 
 @override@JsonKey() final  SelectionShortcut pinnedShortcut1;

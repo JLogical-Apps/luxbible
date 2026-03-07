@@ -1,3 +1,4 @@
+import 'package:bible/models/testament.dart';
 import 'package:collection/collection.dart';
 
 enum BookType {
@@ -72,6 +73,8 @@ enum BookType {
       values.firstWhereOrNull((book) => book.osisId() == id) ?? (throw Exception('Could not find book with ID: $id'));
 
   BookType get next => values[index + 1];
+
+  Testament get testament => index < matthew.index ? Testament.oldTestament : Testament.newTestament;
 
   String title() => switch (this) {
     genesis => 'Genesis',

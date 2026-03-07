@@ -1,11 +1,4 @@
-import 'package:bible/style/gap.dart';
-import 'package:bible/style/style_context_extensions.dart';
-import 'package:bible/style/text_style_extensions.dart';
-import 'package:bible/style/widgets/component_size.dart';
-import 'package:bible/style/widgets/styled_divider.dart';
-import 'package:bible/style/widgets/styled_list_item_context.dart';
-import 'package:bible/style/widgets/styled_material.dart';
-import 'package:bible/style/widgets/styled_radio.dart';
+import 'package:bible/style/style.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
@@ -18,6 +11,7 @@ class StyledListItem extends StatelessWidget {
 
   final Function()? onPressed;
 
+  final bool enabled;
   final ComponentSize size;
 
   StyledListItem({
@@ -32,6 +26,7 @@ class StyledListItem extends StatelessWidget {
     IconData? trailingIcon,
     this.onPressed,
     this.size = ComponentSize.md,
+    this.enabled = true,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new),
        subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new),
        leading = leading ?? leadingIcon?.mapIfNonNull(Icon.new),
@@ -47,6 +42,7 @@ class StyledListItem extends StatelessWidget {
     IconData? leadingIcon,
     this.onPressed,
     this.size = ComponentSize.md,
+    this.enabled = true,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new),
        subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new),
        leading = leading ?? leadingIcon?.mapIfNonNull(Icon.new),
@@ -63,11 +59,30 @@ class StyledListItem extends StatelessWidget {
     required bool selected,
     required Function() onSelected,
     this.size = ComponentSize.md,
+    this.enabled = true,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new),
        subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new),
        leading = leading ?? leadingIcon?.mapIfNonNull(Icon.new),
        onPressed = onSelected,
        trailing = StyledRadio(selected: selected);
+
+  StyledListItem.checkbox({
+    super.key,
+    Widget? title,
+    String? titleText,
+    Widget? subtitle,
+    String? subtitleText,
+    Widget? leading,
+    IconData? leadingIcon,
+    required bool selected,
+    required Function(bool newValue) onSelected,
+    this.size = ComponentSize.md,
+    this.enabled = true,
+  }) : title = title ?? titleText?.mapIfNonNull(Text.new),
+       subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new),
+       leading = leading ?? leadingIcon?.mapIfNonNull(Icon.new),
+       onPressed = (() => onSelected(!selected)),
+       trailing = StyledCheckbox(selected: selected);
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +106,7 @@ class StyledListItem extends StatelessWidget {
                 SizedBox(
                   width: 64,
                   child: IconTheme.merge(
-                    data: IconThemeData(color: context.colors.contentPrimary, size: 24),
+                    data: IconThemeData(color: context.colors.contentPrimary.disabled(disabled: !enabled), size: 24),
                     child: leading,
                   ),
                 )
@@ -111,10 +126,15 @@ class StyledListItem extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 if (title case final title?)
-                                  DefaultTextStyle(style: context.textStyle.labelMd, child: title),
+                                  DefaultTextStyle(
+                                    style: context.textStyle.labelMd.disabled(context, disabled: !enabled),
+                                    child: title,
+                                  ),
                                 if (subtitle case final subtitle?)
                                   DefaultTextStyle(
-                                    style: context.textStyle.paragraphSm.subtle(context),
+                                    style: context.textStyle.paragraphSm
+                                        .subtle(context)
+                                        .disabled(context, disabled: !enabled),
                                     child: subtitle,
                                   ),
                               ],

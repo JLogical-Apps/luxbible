@@ -14,6 +14,7 @@ import 'package:material_symbols_icons/symbols.dart';
 enum SelectionShortcut {
   annotate,
   highlight,
+  search,
   copy;
 
   String title({required User? user, required Selection? selection}) =>
@@ -78,6 +79,7 @@ enum SelectionShortcut {
 
   SelectionAction? toSelectionAction() => switch (this) {
     annotate => SelectionAction.annotate,
+    search => SelectionAction.search,
     copy => SelectionAction.copy,
     _ => null,
   };

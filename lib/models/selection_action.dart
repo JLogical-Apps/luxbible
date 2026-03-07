@@ -2,7 +2,9 @@ import 'package:bible/models/bible.dart';
 import 'package:bible/models/reference/selection.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
+import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,24 +13,28 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 enum SelectionAction {
   annotate,
+  search,
   copy;
 
   String title() => switch (this) {
     annotate => 'Annotate',
+    search => 'Search',
     copy => 'Copy',
   };
 
   String description() => switch (this) {
     annotate => 'Annotate the selection.',
+    search => 'Search for other usages of the selection in the Bible.',
     copy => 'Copy the selection to your clipboard.',
   };
 
   IconData get icon => switch (this) {
     annotate => Symbols.note_stack,
+    search => Symbols.search,
     copy => Symbols.copy_all,
   };
 
-  bool get isNavigation => [annotate].contains(this);
+  bool get isNavigation => [annotate, search].contains(this);
 
   Future<void> onPressed(
     BuildContext context,
@@ -44,6 +50,8 @@ enum SelectionAction {
         if (annotation != null) {
           ref.updateUser((user) => user.withAnnotation(annotation));
         }
+      case search:
+        context.push(SearchPage(initialSearch: bible.getSelectionText(selection)));
       case copy:
         onDeselect();
         context.showStyledSnackbar(messageText: 'Selection copied to clipboard.');

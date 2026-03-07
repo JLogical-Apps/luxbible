@@ -1,12 +1,31 @@
-import 'package:bible/style/style_context_extensions.dart';
-import 'package:bible/style/widgets/styled_material.dart';
+import 'package:bible/style/style.dart';
+import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:flutter/material.dart';
 
 class StyledTile extends StatelessWidget {
   final Widget child;
   final Function()? onPressed;
 
-  const StyledTile({super.key, required this.child, this.onPressed});
+  final EdgeInsets padding;
+
+  const StyledTile({super.key, required this.child, this.onPressed, this.padding = EdgeInsets.zero});
+
+  StyledTile.message({
+    super.key,
+    required IconData icon,
+    required String titleText,
+    String? subtitleText,
+    this.onPressed,
+    this.padding = EdgeInsets.zero,
+  }) : child = Builder(
+         builder: (context) => StyledListItem(
+           leading: Icon(icon, color: context.colors.contentTertiary),
+           title: Text(titleText, style: TextStyle(color: context.colors.contentTertiary)),
+           subtitle: subtitleText?.mapIfNonNull(
+             (text) => Text(text, style: TextStyle(color: context.colors.contentTertiary)),
+           ),
+         ),
+       );
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +42,7 @@ class StyledTile extends StatelessWidget {
           fit: StackFit.passthrough,
           children: [
             Padding(
-              padding: EdgeInsets.all(16),
+              padding: padding,
               child: DefaultTextStyle(style: context.textStyle.paragraphMd, textAlign: TextAlign.start, child: child),
             ),
             Positioned.fill(

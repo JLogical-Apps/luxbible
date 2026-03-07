@@ -37,4 +37,5 @@ const _$ToolbarShortcutEnumMap = {
   ToolbarShortcut.compare: 'compare',
   ToolbarShortcut.interlinear: 'interlinear',
   ToolbarShortcut.commentary: 'commentary',
+  ToolbarShortcut.search: 'search',
 };

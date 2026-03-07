@@ -19,6 +19,8 @@ class Bible {
       )
       .toList();
 
+  List<Reference> get references => chapterReferences.expand((chapter) => chapter.references).toList();
+
   Chapter getChapterByReference(ChapterReference reference) =>
       getBookByType(reference.book).chapters[reference.chapterNum - 1];
 

@@ -3,12 +3,14 @@ import 'package:bible/style/style_context_extensions.dart';
 import 'package:flutter/material.dart';
 
 extension TextStyleExtensions on TextStyle {
-  TextStyle subtle(BuildContext context) => copyWith(color: context.colors.contentSecondary);
+  TextStyle subtle(BuildContext context, {bool subtle = true}) =>
+      subtle ? copyWith(color: context.colors.contentSecondary) : this;
 
-  TextStyle subtleTertiary(BuildContext context) => copyWith(color: context.colors.contentTertiary);
+  TextStyle subtleTertiary(BuildContext context, {bool subtle = true}) =>
+      subtle ? copyWith(color: context.colors.contentTertiary) : this;
 
-  TextStyle disabled(BuildContext context, {bool isDisabled = true}) =>
-      isDisabled ? copyWith(color: context.colors.contentDisabled) : this;
+  TextStyle disabled(BuildContext context, {bool disabled = true}) =>
+      disabled ? copyWith(color: context.colors.contentDisabled) : this;
 
   TextStyle error(BuildContext context, {bool isError = true}) =>
       isError ? copyWith(color: context.colors.contentError) : this;

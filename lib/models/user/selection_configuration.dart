@@ -10,7 +10,7 @@ sealed class SelectionConfiguration with _$SelectionConfiguration {
 
   const factory SelectionConfiguration({
     @Default(SelectionShortcut.annotate) SelectionShortcut pinnedShortcut1,
-    @Default(SelectionShortcut.highlight) SelectionShortcut pinnedShortcut2,
+    @Default(SelectionShortcut.search) SelectionShortcut pinnedShortcut2,
     @Default(SelectionShortcut.copy) SelectionShortcut pinnedShortcut3,
   }) = _SelectionConfiguration;
 

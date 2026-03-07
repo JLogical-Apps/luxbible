@@ -6,14 +6,15 @@ import 'package:flutter/material.dart';
 
 class StyledBanner extends StatelessWidget {
   final Widget? message;
+  final Color? color;
 
-  StyledBanner({super.key, Widget? message, String? messageText})
+  StyledBanner({super.key, Widget? message, String? messageText, this.color})
     : message = message ?? messageText?.mapIfNonNull(Text.new) ?? SizedBox.shrink();
 
   @override
   Widget build(BuildContext context) {
     return StyledCard.child(
-      color: context.colors.surfaceDisabled,
+      color: color ?? context.colors.surfaceTertiary,
       child: StyledListItem(title: message),
     );
   }
