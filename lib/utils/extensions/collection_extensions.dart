@@ -32,11 +32,34 @@ extension ListExtensions<T> on List<T> {
       sortedBy((e) => source.indexOfOrNull(mapper == null ? e as T2 : mapper(e)) ?? double.infinity);
 
   T get random => this[Random().nextInt(length)];
+
+  bool containsInOrder(List<T> list) => Iterable.generate(
+    max(0, length - list.length + 1),
+    (i) => i,
+  ).any((i0) => list.everyIndexed((i1, item) => this[i0 + i1] == item));
 }
 
 extension IterableExtensions<T> on Iterable<T> {
   bool containsAll(Iterable<T> list) => list.every((item) => contains(item));
   bool containsAny(Iterable<T> list) => list.any((item) => contains(item));
+
+  bool anyIndexed(bool Function(int index, T) predicate) {
+    for (var i = 0; i < length; i++) {
+      if (predicate(i, elementAt(i))) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool everyIndexed(bool Function(int index, T) predicate) {
+    for (var i = 0; i < length; i++) {
+      if (!predicate(i, elementAt(i))) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   Map<K, V> mapToMap<K, V>(MapEntry<K, V> Function(T) mapper) => Map.fromEntries(map(mapper));
 
@@ -77,6 +100,9 @@ extension MapEntryIterableExtensions<K, V> on Iterable<MapEntry<K, V>> {
 
 extension MapExtensions<K, V> on Map<K, V> {
   Iterable<T> mapToIterable<T>(T Function(K, V) mapper) => entries.map((entry) => mapper(entry.key, entry.value));
+
+  bool any(bool Function(K, V) predicate) => entries.any((entry) => predicate(entry.key, entry.value));
+  bool every(bool Function(K, V) predicate) => entries.every((entry) => predicate(entry.key, entry.value));
 
   Map<K, V> where(bool Function(K, V) predicate) =>
       Map.fromEntries(entries.where((entry) => predicate(entry.key, entry.value)));

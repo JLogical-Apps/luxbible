@@ -9,7 +9,7 @@ extension BuildContextExtensions on BuildContext {
   Future<T?> pushDialog<T>(Widget page) =>
       Navigator.of(this).push(MaterialPageRoute(builder: (_) => page, fullscreenDialog: true));
 
-  void pop() => Navigator.of(this).pop();
+  void pop<T>([T? result]) => Navigator.of(this).pop(result);
 
   String? getValidationError(Object? error) => switch (error) {
     IsNotBlankValidationError() => 'Cannot be blank',

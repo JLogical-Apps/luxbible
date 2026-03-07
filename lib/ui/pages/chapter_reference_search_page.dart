@@ -193,6 +193,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                     final chapterReference = bookmark.chapter;
                                     return StyledTile(
                                       onPressed: () => Navigator.of(context).pop(chapterReference),
+                                      padding: EdgeInsets.all(16),
                                       child: Row(
                                         spacing: 8,
                                         crossAxisAlignment: CrossAxisAlignment.center,

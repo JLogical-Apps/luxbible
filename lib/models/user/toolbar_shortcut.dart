@@ -13,7 +13,8 @@ enum ToolbarShortcut {
   study,
   compare,
   interlinear,
-  commentary;
+  commentary,
+  search;
 
   String title({required User user, required ChapterReference? reference}) =>
       toStudyAction()?.title() ??
@@ -44,6 +45,7 @@ enum ToolbarShortcut {
   ToolbarAction? toToolbarAction() => switch (this) {
     bookmark => ToolbarAction.bookmark,
     study => ToolbarAction.study,
+    search => ToolbarAction.search,
     _ => null,
   };
 

@@ -4,7 +4,9 @@ import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/sheets/study_sheet.dart';
+import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -12,11 +14,13 @@ import 'package:material_symbols_icons/symbols.dart';
 
 enum ToolbarAction {
   bookmark,
-  study;
+  study,
+  search;
 
   String title({required User user, required ChapterReference? reference}) => switch (this) {
     bookmark => reference == null || user.getBookmark(reference) == null ? 'Bookmark' : 'Remove Bookmark',
     study => 'Study',
+    search => 'Search',
   };
 
   String description({required User user, required ChapterReference? reference}) => switch (this) {
@@ -25,6 +29,7 @@ enum ToolbarAction {
           ? 'Bookmark this chapter to easily access it from the search page.'
           : 'Remove this bookmark.',
     study => 'View study tools for this chapter.',
+    search => 'Search for words across the Bible',
   };
 
   Widget buildIcon(BuildContext context, {required User user, required ChapterReference? reference}) => switch (this) {
@@ -35,9 +40,10 @@ enum ToolbarAction {
           : Icon(Symbols.bookmark, color: bookmark.color.toHue(context.colors).medium);
     }(),
     study => Icon(Symbols.school),
+    search => Icon(Symbols.search),
   };
 
-  bool get isNavigation => [study].contains(this);
+  bool get isNavigation => [study, search].contains(this);
 
   Future<void> onPressed(
     BuildContext context,
@@ -59,6 +65,8 @@ enum ToolbarAction {
         }
       case study:
         StudySheet.show(context, ref, region: reference, bible: bible, regionType: RegionType.chapter);
+      case search:
+        context.push(SearchPage());
     }
   }
 }
