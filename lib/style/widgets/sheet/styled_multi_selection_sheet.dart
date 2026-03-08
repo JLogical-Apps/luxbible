@@ -5,18 +5,15 @@ import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class StyledMultiSelectionSheet<T> extends HookWidget {
-  final Widget title;
-  final Widget? trailing;
-
+class StyledMultiSelectionSheet<T> extends StyledSheet<List<T>> {
   final List<T> options;
   final List<T> initialOptions;
   final StyledSelectOption<T> Function(T) optionMapper;
 
   const StyledMultiSelectionSheet({
     super.key,
-    required this.title,
-    this.trailing,
+    required super.title,
+    super.trailing,
     required this.options,
     this.initialOptions = const [],
     required this.optionMapper,

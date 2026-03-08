@@ -34,54 +34,55 @@ class AnnotationSheet {
       selection: (selection) => user.isSelectionAnnotated(selection),
       chapterReference: (reference) => throw UnimplementedError(),
     );
-    return StyledPortSheet.show(
-      context,
-      title: 'Annotate'.toText(),
-      subtitle: region.format(bible).toText(),
-      trailing: hasAnnotation
-          ? StyledCircleButton.lg(
-              child: Symbols.ink_eraser.toIcon(),
-              onPressed: () {
-                ref.updateUser((user) => user.withRemovedRegionAnnotations(region));
-                onAnnotationsRemoved?.call();
-                Navigator.of(context).pop();
-              },
-            )
-          : null,
-      port: Port.of({'color': SimplePortField<ColorEnum>(value: ColorEnum.stone), 'note': PortField.string()}).map(
-        (values, port) => Annotation(
-          passages: [if (region is Passage) region],
-          selections: [if (region is Selection) region],
-          createdAt: DateTime.now(),
-          color: values['color'],
-          note: (values['note'] as String).trim().nullIfBlank,
-        ),
-      ),
-      childrenBuilder: (context) => [
-        StyledPortFieldBuilder<ColorEnum>(
-          fieldPath: 'color',
-          builder: (context, value, errorText, onChanged) => StyledFormInput(
-            labelText: 'Color',
-            errorText: errorText,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: ColorEnum.values
-                  .map(
-                    (color) => StyledCircleButton.lg(
-                      child: ColoredCircle(color: color.toHue(context.colors).primary, isSelected: value == color),
-                      onPressed: () => onChanged(color),
-                    ),
-                  )
-                  .toList(),
-            ),
+    return context.showStyledSheet(
+      (context) => StyledPortSheet(
+        title: 'Annotate'.toText(),
+        subtitle: region.format(bible).toText(),
+        trailing: hasAnnotation
+            ? StyledCircleButton.lg(
+                child: Symbols.ink_eraser.toIcon(),
+                onPressed: () {
+                  ref.updateUser((user) => user.withRemovedRegionAnnotations(region));
+                  onAnnotationsRemoved?.call();
+                  Navigator.of(context).pop();
+                },
+              )
+            : null,
+        port: Port.of({'color': SimplePortField<ColorEnum>(value: ColorEnum.stone), 'note': PortField.string()}).map(
+          (values, port) => Annotation(
+            passages: [if (region is Passage) region],
+            selections: [if (region is Selection) region],
+            createdAt: DateTime.now(),
+            color: values['color'],
+            note: (values['note'] as String).trim().nullIfBlank,
           ),
         ),
-        StyledPortFieldBuilder<String>(
-          fieldPath: 'note',
-          builder: (context, value, errorText, onChanged) =>
-              StyledTextField.multiline(text: value, labelText: 'Note', errorText: errorText, onChanged: onChanged),
-        ),
-      ],
+        childrenBuilder: (context) => [
+          StyledPortFieldBuilder<ColorEnum>(
+            fieldPath: 'color',
+            builder: (context, value, errorText, onChanged) => StyledFormInput(
+              labelText: 'Color',
+              errorText: errorText,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: ColorEnum.values
+                    .map(
+                      (color) => StyledCircleButton.lg(
+                        child: ColoredCircle(color: color.toHue(context.colors).primary, isSelected: value == color),
+                        onPressed: () => onChanged(color),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+          ),
+          StyledPortFieldBuilder<String>(
+            fieldPath: 'note',
+            builder: (context, value, errorText, onChanged) =>
+                StyledTextField.multiline(text: value, labelText: 'Note', errorText: errorText, onChanged: onChanged),
+          ),
+        ],
+      ),
     );
   }
 }

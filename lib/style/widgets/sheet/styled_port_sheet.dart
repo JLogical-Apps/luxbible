@@ -1,4 +1,3 @@
-import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/styled_rect_button.dart';
 import 'package:bible/utils/extensions/port_extensions.dart';
@@ -6,39 +5,19 @@ import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:port/port.dart';
 
-class StyledPortSheet<T> extends StatelessWidget {
+class StyledPortSheet<T> extends StyledSheet<T> {
   final Port<T> port;
 
-  final Widget title;
-  final Widget? subtitle;
-  final Widget? trailing;
   final List<Widget> Function(BuildContext) childrenBuilder;
 
   const StyledPortSheet({
     super.key,
     required this.port,
-    required this.title,
-    this.subtitle,
-    this.trailing,
+    required super.title,
+    super.subtitle,
+    super.trailing,
     required this.childrenBuilder,
   });
-
-  static Future<T?> show<T>(
-    BuildContext context, {
-    required Port<T> port,
-    required Widget title,
-    Widget? subtitle,
-    Widget? trailing,
-    required List<Widget> Function(BuildContext) childrenBuilder,
-  }) => context.showStyledSheet(
-    (context) => StyledPortSheet(
-      port: port,
-      title: title,
-      subtitle: subtitle,
-      trailing: trailing,
-      childrenBuilder: childrenBuilder,
-    ),
-  );
 
   @override
   Widget build(BuildContext context) {

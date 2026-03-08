@@ -11,10 +11,11 @@ import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intersperse/intersperse.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-class StyledSheet extends StatelessWidget {
+class StyledSheet<T> extends HookWidget {
   final Widget title;
   final Widget? subtitle;
   final Widget? trailing;
@@ -27,7 +28,7 @@ class StyledSheet extends StatelessWidget {
     required this.title,
     this.subtitle,
     this.trailing,
-    required this.children,
+    this.children = const [],
     this.buttonsBuilder,
   });
 
@@ -126,11 +127,12 @@ class StyledSheet extends StatelessWidget {
                             : () {
                                 context.pop();
                                 context.showStyledSheet(
-                                  (context) => SheetNavigationContextProvider(
+                                  (context) => breadcrumb.sheetBuilder(context),
+                                  wrapper: (sheet) => SheetNavigationContextProvider(
                                     context: SheetNavigationContext(
                                       breadcrumbs: sheetNavigationContext.breadcrumbs.take(i + 1).toList(),
                                     ),
-                                    child: Builder(builder: (context) => breadcrumb.sheetBuilder(context)),
+                                    child: sheet,
                                   ),
                                 );
                               },

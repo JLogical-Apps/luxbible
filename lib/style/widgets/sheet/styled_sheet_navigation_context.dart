@@ -1,3 +1,4 @@
+import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:flutter/material.dart';
 
 class SheetNavigationContext {
@@ -11,7 +12,7 @@ class SheetNavigationContext {
 
 class SheetNavigationBreadcrumb {
   final String text;
-  final Widget Function(BuildContext) sheetBuilder;
+  final StyledSheet Function(BuildContext) sheetBuilder;
 
   const SheetNavigationBreadcrumb({required this.text, required this.sheetBuilder});
 }
