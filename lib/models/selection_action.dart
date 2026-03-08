@@ -1,4 +1,5 @@
 import 'package:bible/models/bible.dart';
+import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/selection.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/style/style.dart';
@@ -43,6 +44,7 @@ enum SelectionAction {
     required Selection selection,
     required Bible bible,
     required Function() onDeselect,
+    required Function(Reference) onNavigateToReference,
   }) async {
     switch (this) {
       case annotate:
@@ -51,7 +53,11 @@ enum SelectionAction {
           ref.updateUser((user) => user.withAnnotation(annotation));
         }
       case search:
-        context.push(SearchPage(initialSearch: bible.getSelectionText(selection)));
+        final result =
+            await context.push(SearchPage(initialSearch: bible.getSelectionText(selection))) as SearchPageResult?;
+        if (result?.reference case final reference?) {
+          onNavigateToReference(reference);
+        }
       case copy:
         onDeselect();
         context.showStyledSnackbar(messageText: 'Selection copied to clipboard.');

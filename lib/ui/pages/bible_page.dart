@@ -60,6 +60,7 @@ class BiblePage extends HookConsumerWidget {
     final isScrollingDownState = useMemoized(() => ValueNotifier(true));
 
     final selectionState = useMemoized(() => ValueNotifier<Selection?>(null));
+    final keyByReferenceRef = useRef(<Reference, GlobalKey>{});
     final selectionKeyByPageIndexRef = useRef(<int, GlobalKey<SelectionAreaState>>{});
 
     return StyledPage(
@@ -137,6 +138,7 @@ class BiblePage extends HookConsumerWidget {
                                 }
                                 selectionState.value = selection;
                               }),
+                              keyByReferenceRef: keyByReferenceRef,
                               selectionState: selectionState,
                             ),
                           ),
@@ -161,6 +163,7 @@ class BiblePage extends HookConsumerWidget {
             selectedReferencesState: selectedReferencesState,
             isScrollingDownState: isScrollingDownState,
             selectionState: selectionState,
+            keyByReferenceRef: keyByReferenceRef,
             selectionKey: selectionKeyByPageIndexRef.value[currentPage],
           ),
         ],
@@ -175,6 +178,7 @@ class _Bottom extends HookConsumerWidget {
   final ValueNotifier<List<Reference>> selectedReferencesState;
   final ValueNotifier<bool> isScrollingDownState;
   final ValueNotifier<Selection?> selectionState;
+  final ObjectRef<Map<Reference, GlobalKey>> keyByReferenceRef;
   final GlobalKey<SelectionAreaState>? selectionKey;
 
   const _Bottom({
@@ -183,6 +187,7 @@ class _Bottom extends HookConsumerWidget {
     required this.selectedReferencesState,
     required this.isScrollingDownState,
     required this.selectionState,
+    required this.keyByReferenceRef,
     required this.selectionKey,
   });
 
@@ -218,6 +223,25 @@ class _Bottom extends HookConsumerWidget {
       selectedReferencesState.value = [];
     }
 
+    void navigateToReference(Reference reference) async {
+      final chapterReference = reference.toChapterReference();
+      ref.updateUser((user) => user.withPreviouslyViewed(chapterReference));
+      pageController.jumpToPage(bible.getPageIndexByChapterReference(chapterReference));
+      selectedReferencesState.value = [reference];
+
+      await Future.delayed(Duration(milliseconds: 200));
+
+      final verseContext = keyByReferenceRef.value[reference]?.currentContext;
+      if (verseContext != null && verseContext.mounted) {
+        Scrollable.ensureVisible(
+          verseContext,
+          alignment: 0.35,
+          curve: Curves.easeInOutCubic,
+          duration: Duration(milliseconds: 500),
+        );
+      }
+    }
+
     return Stack(
       children: [
         AnimatedPositioned(
@@ -242,11 +266,7 @@ class _Bottom extends HookConsumerWidget {
                 if (newReference != null) {
                   final pageIndex = bible.getPageIndexByChapterReference(newReference);
                   pageController.jumpToPage(pageIndex);
-                  ref.updateUser(
-                    (user) => user.copyWith(
-                      previouslyViewed: [newReference, ...user.previouslyViewed].distinct.take(5).toList(),
-                    ),
-                  );
+                  ref.updateUser((user) => user.withPreviouslyViewed(newReference));
                 }
               },
               onLongPressed: () => user.toolbar.longPressShortcut.onPressed(
@@ -255,9 +275,16 @@ class _Bottom extends HookConsumerWidget {
                 reference: currentChapterReference,
                 user: user,
                 bible: bible,
+                onNavigateToReference: navigateToReference,
               ),
-              onShorcutPressed: (shortcutIndex, shortcut) =>
-                  shortcut.onPressed(context, ref, reference: currentChapterReference, bible: bible, user: user),
+              onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
+                context,
+                ref,
+                reference: currentChapterReference,
+                bible: bible,
+                user: user,
+                onNavigateToReference: navigateToReference,
+              ),
               onMorePressed: () => context.showStyledSheet(
                 (context) => StyledSheet(
                   title: 'Chapter Actions'.toText(),
@@ -284,6 +311,7 @@ class _Bottom extends HookConsumerWidget {
                               user: user,
                               reference: currentChapterReference,
                               bible: bible,
+                              onNavigateToReference: navigateToReference,
                             );
                           },
                         ),
@@ -370,6 +398,7 @@ class _Bottom extends HookConsumerWidget {
                               selection: selection,
                               bible: bible,
                               onDeselect: () => selectedReferencesState.value = [],
+                              onNavigateToReference: navigateToReference,
                             ),
                             onMorePressed: () => context.showStyledSheet(
                               (context) => StyledSheet(
@@ -399,6 +428,7 @@ class _Bottom extends HookConsumerWidget {
                                             bible: bible,
                                             onDeselect: () =>
                                                 selectionKey?.currentState?.selectableRegion.clearSelection(),
+                                            onNavigateToReference: navigateToReference,
                                           );
                                         },
                                       ),

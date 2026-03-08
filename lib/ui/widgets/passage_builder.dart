@@ -35,6 +35,8 @@ class PassageBuilder extends HookConsumerWidget {
 
   final List<Reference> underlinedReferences;
 
+  final ObjectRef<Map<Reference, GlobalKey>>? keyByReferenceRef;
+
   final ValueNotifier<Selection?>? selectionState;
 
   const PassageBuilder({
@@ -44,18 +46,28 @@ class PassageBuilder extends HookConsumerWidget {
     this.onReferencePressed,
     this.onSelectionUpdated,
     this.underlinedReferences = const [],
+    this.keyByReferenceRef,
     this.selectionState,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectionState = this.selectionState;
+    final keyByReferenceRef = this.keyByReferenceRef;
 
     final bibles = ref.watch(biblesProvider);
     final user = ref.watch(userProvider);
     final bible = this.bible ?? user.getBible(bibles);
 
     final references = passage.references;
+
+    final keyByReference = references.mapToMap(
+      (reference) => MapEntry(reference, keyByReferenceRef?.value[reference] ?? GlobalKey()),
+    );
+    if (keyByReferenceRef != null && passage.references.any((ref) => !keyByReferenceRef.value.containsKey(ref))) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => keyByReferenceRef.value = keyByReference);
+    }
+
     final spansByReference = references.mapToMap((reference) {
       final verse = bible.getVerseByReference(reference);
       if (verse == null) {
@@ -78,6 +90,7 @@ class PassageBuilder extends HookConsumerWidget {
           ),
           alignment: PlaceholderAlignment.middle,
           child: SelectionContainer.disabled(
+            key: keyByReference[reference],
             child: Padding(
               padding: .only(right: 6),
               child: Text(

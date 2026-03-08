@@ -15,6 +15,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:substring_highlight/substring_highlight.dart';
 
+class SearchPageResult {
+  final Reference? reference;
+
+  const SearchPageResult({required this.reference});
+}
+
 class SearchPage extends HookConsumerWidget {
   final String? initialSearch;
 
@@ -138,14 +144,16 @@ class SearchPage extends HookConsumerWidget {
                     )
                   else
                     ...searchResults.map(
-                      (result) => StyledListItem(
+                      (result) => StyledListItem.navigation(
                         title: result.format().toText(),
                         subtitle: SubstringHighlight(
                           text: bible.getVerseByReference(result)?.text ?? '',
                           term: searchState.value,
+                          words: true,
                           textStyle: context.textStyle.paragraphSm.subtle(context),
                           textStyleHighlight: context.textStyle.paragraphSm.subtle(context).bold,
                         ),
+                        onPressed: () => context.pop(SearchPageResult(reference: result)),
                       ),
                     ),
                 ],

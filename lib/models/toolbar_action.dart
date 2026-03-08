@@ -1,6 +1,7 @@
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
+import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/style/style.dart';
@@ -52,6 +53,7 @@ enum ToolbarAction {
     required User user,
     required ChapterReference reference,
     required Bible bible,
+    required Function(Reference) onNavigateToReference,
   }) async {
     switch (this) {
       case bookmark:
@@ -67,7 +69,10 @@ enum ToolbarAction {
       case study:
         StudySheet.show(context, ref, region: reference, bible: bible, regionType: RegionType.chapter);
       case search:
-        context.push(SearchPage());
+        final result = await context.push(SearchPage()) as SearchPageResult?;
+        if (result?.reference case final reference?) {
+          onNavigateToReference(reference);
+        }
     }
   }
 }

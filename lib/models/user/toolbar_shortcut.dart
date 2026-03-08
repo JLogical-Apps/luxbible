@@ -1,5 +1,6 @@
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
+import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/models/toolbar_action.dart';
@@ -37,9 +38,17 @@ enum ToolbarShortcut {
     required ChapterReference reference,
     required User user,
     required Bible bible,
+    required Function(Reference) onNavigateToReference,
   }) =>
       toStudyAction()?.onPressed(context, ref, region: reference, bible: bible) ??
-      toToolbarAction()?.onPressed(context, ref, user: user, reference: reference, bible: bible) ??
+      toToolbarAction()?.onPressed(
+        context,
+        ref,
+        user: user,
+        reference: reference,
+        bible: bible,
+        onNavigateToReference: onNavigateToReference,
+      ) ??
       (throw UnimplementedError());
 
   ToolbarAction? toToolbarAction() => switch (this) {

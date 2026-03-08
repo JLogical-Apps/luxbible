@@ -1,4 +1,5 @@
 import 'package:bible/models/book_type.dart';
+import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/utils/comparable_operators.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
 import 'package:equatable/equatable.dart';
@@ -57,4 +58,6 @@ class Reference extends Equatable with ComparableOperators<Reference> {
       book.index.compareTo(other.book.index).nullIfZero ??
       chapterNum.compareTo(other.chapterNum).nullIfZero ??
       verseNum.compareTo(other.verseNum);
+
+  ChapterReference toChapterReference() => ChapterReference(book: book, chapterNum: chapterNum);
 }

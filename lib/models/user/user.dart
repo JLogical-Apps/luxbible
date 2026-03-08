@@ -110,4 +110,7 @@ sealed class User with _$User {
         .toList(),
   );
   User withRemovedAnnotation(Annotation annotation) => copyWith(annotations: annotations.withRemoved(annotation));
+
+  User withPreviouslyViewed(ChapterReference reference) =>
+      copyWith(previouslyViewed: [reference, ...previouslyViewed].distinct.take(5).toList());
 }
