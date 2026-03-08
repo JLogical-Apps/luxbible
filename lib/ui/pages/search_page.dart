@@ -60,7 +60,7 @@ class SearchPage extends HookConsumerWidget {
       body: Column(
         children: [
           Container(
-            padding: EdgeInsets.all(16),
+            padding: .all(16),
             decoration: BoxDecoration(color: context.colors.surfacePrimary, boxShadow: [StyledShadow.down(context)]),
             child: Column(
               spacing: 12,
@@ -116,11 +116,11 @@ class SearchPage extends HookConsumerWidget {
           Expanded(
             child: Scrollbar(
               child: StyledListView(
-                padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
+                padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
                 children: [
                   if (searchState.value.isEmpty)
                     Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: .all(16),
                       child: StyledTile.message(
                         titleText: 'Start a search',
                         subtitleText: 'Enter a keyword like light, word, or wisdom, then hit enter on the keyboard.',
@@ -129,7 +129,7 @@ class SearchPage extends HookConsumerWidget {
                     )
                   else if (searchResults.isEmpty)
                     Padding(
-                      padding: EdgeInsets.all(16),
+                      padding: .all(16),
                       child: StyledTile.message(
                         titleText: 'No Search Results Found',
                         subtitleText: 'Try another search',

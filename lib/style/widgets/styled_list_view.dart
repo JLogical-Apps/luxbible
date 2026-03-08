@@ -13,7 +13,7 @@ class StyledListView extends StatelessWidget {
     super.key,
     required this.children,
     this.shrinkWrap = false,
-    this.padding = EdgeInsets.zero,
+    this.padding = .zero,
     this.physics,
   });
 

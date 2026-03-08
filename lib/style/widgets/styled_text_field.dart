@@ -121,7 +121,7 @@ class StyledTextField extends HookWidget {
           if (focusNode.hasPrimaryFocus && onChanged != null && remainingSuggestedText != null)
             Positioned.fill(
               child: Padding(
-                padding: EdgeInsets.all(12) + EdgeInsets.only(left: 6 + textStyle.getWidth(text)),
+                padding: EdgeInsets.all(12) + .only(left: 6 + textStyle.getWidth(text)),
                 child: Text(remainingSuggestedText, style: textStyle.subtle(context)),
               ),
             ),
@@ -141,14 +141,14 @@ class StyledTextField extends HookWidget {
             inputFormatters: inputFormatters,
             onSubmitted: onSubmit,
             decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(12),
+              contentPadding: .all(12),
               fillColor: onChanged == null
                   ? context.colors.surfaceDisabled
                   : hasError
                   ? context.colors.surfaceError
                   : context.colors.surfaceSecondary,
               filled: !focusNode.hasPrimaryFocus,
-              border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: BorderRadius.circular(8)),
+              border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: .circular(8)),
               hintText: hintText,
               hintStyle: context.textStyle.paragraphMd.subtle(context).disabled(context, disabled: onChanged == null),
               focusedBorder: OutlineInputBorder(
@@ -156,7 +156,7 @@ class StyledTextField extends HookWidget {
                   color: hasError ? context.colors.borderError : context.colors.borderSelected,
                   width: 3,
                 ),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: .circular(8),
               ),
             ),
           ),

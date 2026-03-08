@@ -24,7 +24,7 @@ class StyledDock extends HookWidget {
         : [
             gapH16,
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: .symmetric(horizontal: 16),
               child: Column(spacing: 8, mainAxisSize: .min, children: buttons),
             ),
             if (kIsWeb || !Platform.isIOS || MediaQuery.paddingOf(context).bottom <= 28)
@@ -37,7 +37,7 @@ class StyledDock extends HookWidget {
     final showBottomShadow = metrics == null ? false : metrics.pixels + 10 < metrics.maxScrollExtent;
 
     return Padding(
-      padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
+      padding: .only(bottom: MediaQuery.viewInsetsOf(context).bottom),
       child: MediaQuery.removeViewInsets(
         removeBottom: true,
         context: context,
@@ -76,7 +76,7 @@ class StyledDock extends HookWidget {
                               StyledListView(
                                 shrinkWrap: true,
                                 physics: ClampingScrollPhysics(),
-                                padding: EdgeInsets.only(
+                                padding: .only(
                                   bottom: bottomChildren.isEmpty ? MediaQuery.paddingOf(context).bottom : 0,
                                 ),
                                 children: children,
@@ -106,7 +106,7 @@ class StyledDock extends HookWidget {
                             child: ConstrainedBox(
                               constraints: BoxConstraints(maxHeight: constraints.maxHeight),
                               child: Padding(
-                                padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
+                                padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
                                 child: Column(mainAxisSize: .min, children: bottomChildren),
                               ),
                             ),

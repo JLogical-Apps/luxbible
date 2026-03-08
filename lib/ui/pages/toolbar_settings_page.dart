@@ -36,7 +36,7 @@ class ToolbarSettingsPage extends ConsumerWidget {
             color: context.colors.surfacePrimary,
             child: StyledSection.child(
               title: 'Toolbar'.toText(),
-              padding: EdgeInsets.symmetric(vertical: 16),
+              padding: .symmetric(vertical: 16),
               child: Toolbar(
                 toolbar: toolbar,
                 chapterReference: ChapterReference(book: BookType.genesis, chapterNum: 1),

@@ -25,9 +25,9 @@ class StyledSelect<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StyledMaterial(
-      padding: EdgeInsets.all(12),
+      padding: .all(12),
       colorBuilder: .surfaceSecondary,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: .circular(8),
       onPressed: () async {
         final newSelection = await context.showStyledSheet(
           (context) => StyledSelectionSheet(

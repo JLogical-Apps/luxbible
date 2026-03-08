@@ -25,7 +25,7 @@ class StrongSheet {
         children: [
           StyledSection(
             title: 'Info'.toText(),
-            padding: EdgeInsets.only(top: 24),
+            padding: .only(top: 24),
             children: [
               StyledListItem(title: 'ID'.toText(), subtitle: strongId.toText()),
               StyledListItem(title: 'Pronunciation'.toText(), subtitle: strong.pronunciation.toText()),
@@ -36,7 +36,7 @@ class StrongSheet {
           if (seeMoreStrongs.isNotEmpty)
             StyledSection(
               title: 'See More'.toText(),
-              padding: EdgeInsets.only(top: 24),
+              padding: .only(top: 24),
               children: seeMoreStrongs
                   .map(
                     (strong) => StyledListItem.navigation(

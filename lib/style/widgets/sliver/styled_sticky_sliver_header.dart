@@ -19,7 +19,7 @@ class StyledSliverStickyHeader extends StatelessWidget {
         return Column(
           children: [
             Container(
-              padding: EdgeInsets.all(16),
+              padding: .all(16),
               color: context.colors.surfacePrimary,
               child: Row(
                 children: [

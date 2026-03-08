@@ -101,7 +101,7 @@ class BiblePage extends HookConsumerWidget {
                       primary: pageController.page?.round() == pageIndex,
                       padding:
                           EdgeInsets.symmetric(horizontal: 20, vertical: 8) +
-                          EdgeInsets.only(
+                          .only(
                             top: MediaQuery.paddingOf(context).top + 24,
                             bottom: MediaQuery.paddingOf(context).bottom + 72,
                           ),
@@ -229,9 +229,7 @@ class _Bottom extends HookConsumerWidget {
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(boxShadow: [StyledShadow.down(context)]),
-            padding:
-                EdgeInsets.symmetric(horizontal: 16) +
-                EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom + 16),
+            padding: EdgeInsets.symmetric(horizontal: 16) + .only(bottom: MediaQuery.paddingOf(context).bottom + 16),
             child: Toolbar(
               chapterReference: currentChapterReference,
               toolbar: user.toolbar,
@@ -308,7 +306,7 @@ class _Bottom extends HookConsumerWidget {
                       boxShadow: [StyledShadow.up(context)],
                       color: context.colors.surfacePrimary,
                     ),
-                    padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
+                    padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
                     child: selectedPassage != null
                         ? PassageBottomBar(
                             passage: selectedPassage,

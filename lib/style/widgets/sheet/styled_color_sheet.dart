@@ -16,7 +16,7 @@ class StyledColorSheet extends StyledSheet<ColorEnum> {
       title: title,
       trailing: trailing,
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 8),
+        padding: .symmetric(vertical: 8),
         child: Row(
           mainAxisAlignment: .spaceEvenly,
           children: ColorEnum.values

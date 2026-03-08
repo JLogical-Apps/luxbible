@@ -27,10 +27,7 @@ class BottomBar extends StatelessWidget {
       onTap: () {},
       child: Container(
         width: double.infinity,
-        decoration: BoxDecoration(
-          color: color ?? context.colors.surfacePrimary,
-          borderRadius: BorderRadius.circular(8),
-        ),
+        decoration: BoxDecoration(color: color ?? context.colors.surfacePrimary, borderRadius: .circular(8)),
         child: StyledListItem(
           title: Text(text, maxLines: 1, overflow: .ellipsis),
           leading: StyledCircleButton.lg(onPressed: onClosePressed, child: Symbols.close.toIcon()),

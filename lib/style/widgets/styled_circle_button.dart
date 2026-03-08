@@ -25,7 +25,7 @@ class StyledCircleButton extends StatelessWidget {
       child: IconButton(
         icon: child,
         onPressed: onPressed,
-        padding: EdgeInsets.zero,
+        padding: .zero,
         constraints: BoxConstraints(maxWidth: 48, maxHeight: 48),
         style: IconButton.styleFrom(
           foregroundColor: colorBuilder?.call(context.colors).foreground() ?? context.colors.contentPrimary,

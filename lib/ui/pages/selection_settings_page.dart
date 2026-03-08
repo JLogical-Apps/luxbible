@@ -31,8 +31,8 @@ class SelectionSettingsPage extends ConsumerWidget {
             color: context.colors.surfacePrimary,
             child: StyledSection.child(
               title: 'Toolbar'.toText(),
-              padding: EdgeInsets.symmetric(vertical: 16),
-              childPadding: EdgeInsets.symmetric(horizontal: 8),
+              padding: .symmetric(vertical: 16),
+              childPadding: .symmetric(horizontal: 8),
               child: SelectionBottomBar(
                 configuration: selectionConfiguration,
                 user: user,

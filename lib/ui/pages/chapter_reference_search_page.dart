@@ -184,18 +184,18 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                         if (user.bookmarks.isNotEmpty)
                           StyledSection(
                             title: 'Bookmarks'.toText(),
-                            padding: EdgeInsets.only(top: 24),
+                            padding: .only(top: 24),
                             children: [
                               SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
-                                padding: EdgeInsets.symmetric(horizontal: 16),
+                                padding: .symmetric(horizontal: 16),
                                 child: Row(
                                   spacing: 16,
                                   children: user.bookmarks.map((bookmark) {
                                     final chapterReference = bookmark.chapter;
                                     return StyledTile(
                                       onPressed: () => Navigator.of(context).pop(chapterReference),
-                                      padding: EdgeInsets.all(16),
+                                      padding: .all(16),
                                       child: Row(
                                         spacing: 8,
                                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -213,7 +213,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                         if (user.previouslyViewed.isNotEmpty)
                           StyledSection(
                             title: 'Recents'.toText(),
-                            padding: EdgeInsets.only(top: 24),
+                            padding: .only(top: 24),
                             children: user.previouslyViewed
                                 .map(
                                   (chapterReference) => StyledSwipeable(
@@ -241,13 +241,13 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
 
                       if (getMatchingBooks().isEmpty)
                         Padding(
-                          padding: EdgeInsets.all(16),
+                          padding: .all(16),
                           child: StyledBanner(message: 'No Matches'.toText()),
                         )
                       else
                         StyledSection(
                           title: 'Books'.toText(),
-                          padding: EdgeInsets.only(top: 24),
+                          padding: .only(top: 24),
                           children: (isBookFullySelected ? BookType.values : getMatchingBooks())
                               .map(
                                 (book) => StyledListItem(

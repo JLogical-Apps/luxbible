@@ -46,8 +46,8 @@ class Toolbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return StyledMaterial(
       colorBuilder: colorBuilder ?? .surfacePrimary,
-      borderRadius: BorderRadius.circular(999),
-      padding: EdgeInsets.only(left: 24, right: 12),
+      borderRadius: .circular(999),
+      padding: .only(left: 24, right: 12),
       onPressed: onPressed,
       onLongPressed: onLongPressed,
       child: Row(
@@ -56,7 +56,7 @@ class Toolbar extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 16),
+                padding: .symmetric(vertical: 16),
                 child: Row(
                   spacing: 8,
                   children: [

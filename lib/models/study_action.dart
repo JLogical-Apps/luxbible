@@ -62,7 +62,7 @@ enum StudyAction {
                       StyledStickyHeader.child(
                         title: bible.translation.title().toText(),
                         child: Padding(
-                          padding: EdgeInsets.only(bottom: 16),
+                          padding: .only(bottom: 16),
                           child: PassageBuilder(passage: region.toPassage(), bible: bible),
                         ),
                       ),

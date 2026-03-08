@@ -52,7 +52,7 @@ class StyledSheet<T> extends HookWidget {
     return Container(
       decoration: BoxDecoration(
         color: context.colors.surfacePrimary,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+        borderRadius: .vertical(top: Radius.circular(16)),
       ),
       child: Column(
         crossAxisAlignment: .start,
@@ -65,7 +65,7 @@ class StyledSheet<T> extends HookWidget {
               child: Container(
                 width: 48,
                 height: 4,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(999), color: context.colors.borderOpaque),
+                decoration: BoxDecoration(borderRadius: .circular(999), color: context.colors.borderOpaque),
               ),
             ),
           ),
@@ -73,7 +73,7 @@ class StyledSheet<T> extends HookWidget {
           SizedBox(
             height: subtitle == null ? 48 : 52,
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8),
+              padding: .symmetric(horizontal: 8),
               child: Row(
                 spacing: 8,
                 children: [
@@ -115,7 +115,7 @@ class StyledSheet<T> extends HookWidget {
           if (sheetNavigationContext != null && sheetNavigationContext.breadcrumbs.length > 1) ...[
             SingleChildScrollView(
               scrollDirection: .horizontal,
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              padding: .symmetric(horizontal: 16),
               reverse: true,
               child: Row(
                 spacing: 4,

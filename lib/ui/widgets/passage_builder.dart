@@ -79,7 +79,7 @@ class PassageBuilder extends HookConsumerWidget {
           alignment: PlaceholderAlignment.middle,
           child: SelectionContainer.disabled(
             child: Padding(
-              padding: EdgeInsets.only(right: 6),
+              padding: .only(right: 6),
               child: Text(
                 reference.verseNum.toString(),
                 style: context.textStyle.bibleVerseNumber.copyWith(
@@ -181,7 +181,7 @@ class PassageBuilder extends HookConsumerWidget {
                                 duration: Duration(milliseconds: 300),
                                 curve: Curves.easeInOutCubic,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(4),
+                                  borderRadius: .circular(4),
                                   color: verseColor?.withValues(alpha: selection == null ? 0.5 : 0.2),
                                 ),
                               );
@@ -210,7 +210,7 @@ class PassageBuilder extends HookConsumerWidget {
                         duration: Duration(milliseconds: 300),
                         curve: Curves.easeInOutCubic,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: .circular(4),
                           color: annotation.color
                               .toHue(context.colors)
                               .primary
@@ -272,7 +272,7 @@ class PassageBuilder extends HookConsumerWidget {
             isUnderlined: isUnderlined,
             child: Container(
               color: color,
-              margin: EdgeInsets.only(bottom: 4),
+              margin: .only(bottom: 4),
               child: StyledCircleButton.sm(
                 onPressed: () => context.showStyledSheet(
                   (context) => StyledSheet(

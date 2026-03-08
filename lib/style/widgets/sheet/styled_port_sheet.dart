@@ -26,7 +26,7 @@ class StyledPortSheet<T> extends StyledSheet<T> {
       subtitle: subtitle,
       trailing: trailing,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16) + EdgeInsets.only(top: 16),
+        padding: EdgeInsets.symmetric(horizontal: 16) + .only(top: 16),
         child: PortBuilder(
           port: port,
           builder: (context, port) =>

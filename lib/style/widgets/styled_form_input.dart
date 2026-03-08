@@ -21,7 +21,7 @@ class StyledFormInput extends StatelessWidget {
       children: [
         if (labelText case final labelText?)
           Padding(
-            padding: EdgeInsets.only(bottom: 8),
+            padding: .only(bottom: 8),
             child: Text(labelText, style: context.textStyle.labelMd),
           ),
         child,
@@ -31,7 +31,7 @@ class StyledFormInput extends StatelessWidget {
           child: errorText == null
               ? SizedBox(key: ValueKey('empty'), width: double.infinity)
               : Padding(
-                  padding: EdgeInsets.only(top: 8),
+                  padding: .only(top: 8),
                   child: Row(
                     crossAxisAlignment: .center,
                     spacing: 4,

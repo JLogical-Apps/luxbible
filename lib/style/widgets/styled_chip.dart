@@ -14,8 +14,8 @@ class StyledChip extends StatelessWidget {
 
     return StyledMaterial(
       colorBuilder: enabled ? .surfaceSecondary : null,
-      borderRadius: BorderRadius.circular(8),
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      borderRadius: .circular(8),
+      padding: .symmetric(horizontal: 8, vertical: 8),
       onPressed: onPressed,
       child: DefaultTextStyle(style: context.textStyle.labelSm, child: child),
     );

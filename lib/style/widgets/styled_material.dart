@@ -18,8 +18,8 @@ class StyledMaterial extends StatelessWidget {
     this.onPressed,
     this.onLongPressed,
     this.colorBuilder,
-    this.borderRadius = BorderRadius.zero,
-    this.padding = EdgeInsets.zero,
+    this.borderRadius = .zero,
+    this.padding = .zero,
   });
 
   @override

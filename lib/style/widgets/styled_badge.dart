@@ -19,8 +19,8 @@ class StyledBadge extends StatelessWidget {
 
     return IgnorePointer(
       child: Container(
-        decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(999)),
-        padding: EdgeInsets.symmetric(horizontal: 4),
+        decoration: BoxDecoration(color: color, borderRadius: .circular(999)),
+        padding: .symmetric(horizontal: 4),
         constraints: BoxConstraints(minHeight: 18),
         alignment: Alignment.center,
         child:

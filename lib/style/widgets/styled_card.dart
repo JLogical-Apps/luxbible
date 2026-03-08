@@ -14,7 +14,7 @@ class StyledCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: .circular(16),
       child: ColoredBox(
         color: colorBuilder?.call(context.colors) ?? context.colors.surfacePrimary,
         child: StyledList(children: children),

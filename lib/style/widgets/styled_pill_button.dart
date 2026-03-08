@@ -24,8 +24,8 @@ class StyledPillButton extends StatelessWidget {
     final colorBuilder = this.colorBuilder ?? .surfaceSecondary;
     return StyledMaterial(
       colorBuilder: colorBuilder,
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      borderRadius: BorderRadius.circular(999),
+      padding: .symmetric(horizontal: 12, vertical: 10),
+      borderRadius: .circular(999),
       onPressed: onPressed,
       child: Row(
         mainAxisSize: .min,

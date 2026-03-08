@@ -92,7 +92,7 @@ class StyledListItem extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 16),
+                            padding: .symmetric(vertical: 16),
                             child: Column(
                               spacing: 4,
                               crossAxisAlignment: .start,
@@ -118,7 +118,7 @@ class StyledListItem extends StatelessWidget {
                           ConstrainedBox(
                             constraints: BoxConstraints(minWidth: 64),
                             child: Padding(
-                              padding: EdgeInsets.only(right: 8),
+                              padding: .only(right: 8),
                               child: IconTheme.merge(
                                 data: IconThemeData(color: context.colors.contentDisabled, size: 24),
                                 child: IntrinsicWidth(child: IntrinsicHeight(child: trailing)),

@@ -18,7 +18,7 @@ class StyledRectButton extends StatelessWidget {
       child: StyledMaterial(
         onPressed: onPressed,
         colorBuilder: colorBuilder,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: .circular(8),
         child: Center(child: label),
       ),
     );

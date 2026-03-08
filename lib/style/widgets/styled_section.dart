@@ -14,16 +14,16 @@ class StyledSection extends StatelessWidget {
     super.key,
     required this.title,
     required this.children,
-    this.padding = const EdgeInsets.only(top: 36),
-    this.childPadding = EdgeInsets.zero,
+    this.padding = const .only(top: 36),
+    this.childPadding = .zero,
   });
 
   StyledSection.child({
     super.key,
     required this.title,
     required Widget child,
-    this.padding = const EdgeInsets.only(top: 36),
-    this.childPadding = const EdgeInsets.symmetric(horizontal: 16),
+    this.padding = const .only(top: 36),
+    this.childPadding = const .symmetric(horizontal: 16),
   }) : children = [child];
 
   @override
@@ -34,7 +34,7 @@ class StyledSection extends StatelessWidget {
         crossAxisAlignment: .start,
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+            padding: .symmetric(horizontal: 16),
             child: DefaultTextStyle(style: context.textStyle.headingXs, child: title),
           ),
           gapH12,

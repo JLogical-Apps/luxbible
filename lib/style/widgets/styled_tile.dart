@@ -8,7 +8,7 @@ class StyledTile extends StatelessWidget {
 
   final EdgeInsets padding;
 
-  const StyledTile({super.key, required this.child, this.onPressed, this.padding = EdgeInsets.zero});
+  const StyledTile({super.key, required this.child, this.onPressed, this.padding = .zero});
 
   StyledTile.message({
     super.key,
@@ -16,7 +16,7 @@ class StyledTile extends StatelessWidget {
     required String titleText,
     String? subtitleText,
     this.onPressed,
-    this.padding = EdgeInsets.zero,
+    this.padding = .zero,
   }) : child = Builder(
          builder: (context) => StyledListItem(
            leading: Icon(icon, color: context.colors.contentTertiary),
@@ -30,12 +30,12 @@ class StyledTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: .circular(12),
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOutCubic,
         foregroundDecoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: .circular(12),
           border: Border.all(color: context.colors.borderOpaque, width: 2),
         ),
         child: Stack(
@@ -48,7 +48,7 @@ class StyledTile extends StatelessWidget {
             Positioned.fill(
               child: IgnorePointer(
                 ignoring: onPressed == null,
-                child: StyledMaterial(onPressed: onPressed, padding: EdgeInsets.all(16), child: SizedBox.expand()),
+                child: StyledMaterial(onPressed: onPressed, padding: .all(16), child: SizedBox.expand()),
               ),
             ),
           ],
