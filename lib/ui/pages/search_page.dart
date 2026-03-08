@@ -7,7 +7,9 @@ import 'package:bible/style/style.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
+import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -125,13 +127,47 @@ class SearchPage extends HookConsumerWidget {
                 padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
                 children: [
                   if (searchState.value.isEmpty)
-                    Padding(
-                      padding: .all(16),
-                      child: StyledTile.message(
-                        titleText: 'Start a search',
-                        subtitleText: 'Enter a keyword like light, word, or wisdom, then hit enter on the keyboard.',
-                        icon: Symbols.search,
-                      ),
+                    Column(
+                      crossAxisAlignment: .start,
+                      children: [
+                        Padding(
+                          padding: .all(16),
+                          child: StyledTile.message(
+                            titleText: 'Start a search',
+                            subtitleText:
+                                'Enter a keyword like light, word, or wisdom, then hit enter on the keyboard.',
+                            icon: Symbols.search,
+                          ),
+                        ),
+                        if (user.searchHistory.isNotEmpty)
+                          StyledSection(
+                            title: Text('Recents'),
+                            children: user.searchHistory
+                                .mapIndexed(
+                                  (i, searchResult) => StyledSwipeable(
+                                    key: ValueKey(searchResult),
+                                    actions: [
+                                      StyledSwipeableAction.delete(
+                                        onPressed: () => ref.updateUser(
+                                          (user) => user.copyWith(searchHistory: user.searchHistory.withRemovedAt(i)),
+                                        ),
+                                      ),
+                                    ],
+                                    child: StyledListItem(
+                                      leading: Symbols.history.toIcon(),
+                                      title: Text(searchResult),
+                                      trailing: Symbols.search.toIcon(),
+                                      onPressed: () {
+                                        textState.value = searchResult;
+                                        searchState.value = searchResult;
+                                        search();
+                                      },
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                      ],
                     )
                   else if (searchResults.isEmpty)
                     Padding(
@@ -153,7 +189,10 @@ class SearchPage extends HookConsumerWidget {
                           textStyle: context.textStyle.paragraphSm.subtle(context),
                           textStyleHighlight: context.textStyle.paragraphSm.subtle(context).bold,
                         ),
-                        onPressed: () => context.pop(SearchPageResult(reference: result)),
+                        onPressed: () {
+                          ref.updateUser((user) => user.withSearchHistory(searchState.value));
+                          context.pop(SearchPageResult(reference: result));
+                        },
                       ),
                     ),
                 ],

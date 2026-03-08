@@ -26,13 +26,14 @@ sealed class User with _$User {
   const factory User({
     @Default(BibleTranslation.asv) BibleTranslation translation,
     @Default(ChapterReference(chapterNum: 1, book: BookType.genesis)) ChapterReference lastReference,
-    @Default([]) List<ChapterReference> previouslyViewed,
+    @Default([]) List<ChapterReference> viewHistory,
     @Default(ColorEnum.yellow) ColorEnum highlightColor,
     @Default([]) List<Bookmark> bookmarks,
     @Default([]) List<Annotation> annotations,
     @Default(ToolbarConfiguration()) ToolbarConfiguration toolbar,
     @Default(PassageConfiguration()) PassageConfiguration passage,
     @Default(SelectionConfiguration()) SelectionConfiguration selection,
+    @Default([]) List<String> searchHistory,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -111,6 +112,8 @@ sealed class User with _$User {
   );
   User withRemovedAnnotation(Annotation annotation) => copyWith(annotations: annotations.withRemoved(annotation));
 
-  User withPreviouslyViewed(ChapterReference reference) =>
-      copyWith(previouslyViewed: [reference, ...previouslyViewed].distinct.take(5).toList());
+  User withViewHistory(ChapterReference reference) =>
+      copyWith(viewHistory: [reference, ...viewHistory].distinct.take(5).toList());
+  User withSearchHistory(String search) =>
+      copyWith(searchHistory: [search, ...searchHistory].distinct.take(5).toList());
 }

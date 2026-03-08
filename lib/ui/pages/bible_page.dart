@@ -225,7 +225,7 @@ class _Bottom extends HookConsumerWidget {
 
     void navigateToReference(Reference reference) async {
       final chapterReference = reference.toChapterReference();
-      ref.updateUser((user) => user.withPreviouslyViewed(chapterReference));
+      ref.updateUser((user) => user.withViewHistory(chapterReference));
       pageController.jumpToPage(bible.getPageIndexByChapterReference(chapterReference));
       selectedReferencesState.value = [reference];
 
@@ -266,7 +266,7 @@ class _Bottom extends HookConsumerWidget {
                 if (newReference != null) {
                   final pageIndex = bible.getPageIndexByChapterReference(newReference);
                   pageController.jumpToPage(pageIndex);
-                  ref.updateUser((user) => user.withPreviouslyViewed(newReference));
+                  ref.updateUser((user) => user.withViewHistory(newReference));
                 }
               },
               onLongPressed: () => user.toolbar.longPressShortcut.onPressed(

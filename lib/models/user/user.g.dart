@@ -13,8 +13,8 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   lastReference: json['lastReference'] == null
       ? const ChapterReference(chapterNum: 1, book: BookType.genesis)
       : ChapterReference.fromJson(json['lastReference'] as String),
-  previouslyViewed:
-      (json['previouslyViewed'] as List<dynamic>?)
+  viewHistory:
+      (json['viewHistory'] as List<dynamic>?)
           ?.map((e) => ChapterReference.fromJson(e as String))
           .toList() ??
       const [],
@@ -42,18 +42,24 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
       : SelectionConfiguration.fromJson(
           json['selection'] as Map<String, dynamic>,
         ),
+  searchHistory:
+      (json['searchHistory'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ??
+      const [],
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'translation': _$BibleTranslationEnumMap[instance.translation]!,
   'lastReference': instance.lastReference,
-  'previouslyViewed': instance.previouslyViewed,
+  'viewHistory': instance.viewHistory,
   'highlightColor': _$ColorEnumEnumMap[instance.highlightColor]!,
   'bookmarks': instance.bookmarks,
   'annotations': instance.annotations,
   'toolbar': instance.toolbar,
   'passage': instance.passage,
   'selection': instance.selection,
+  'searchHistory': instance.searchHistory,
 };
 
 const _$BibleTranslationEnumMap = {

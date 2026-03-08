@@ -210,11 +210,11 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                               ),
                             ],
                           ),
-                        if (user.previouslyViewed.isNotEmpty)
+                        if (user.viewHistory.isNotEmpty)
                           StyledSection(
                             title: 'Recents'.toText(),
                             padding: .only(top: 24),
-                            children: user.previouslyViewed
+                            children: user.viewHistory
                                 .map(
                                   (chapterReference) => StyledSwipeable(
                                     key: ValueKey(chapterReference),
@@ -222,7 +222,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                       StyledSwipeableAction.delete(
                                         onPressed: () => ref.updateUser(
                                           (user) => user.copyWith(
-                                            previouslyViewed: user.previouslyViewed.withRemoved(chapterReference),
+                                            viewHistory: user.viewHistory.withRemoved(chapterReference),
                                           ),
                                         ),
                                       ),
