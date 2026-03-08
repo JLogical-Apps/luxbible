@@ -5,13 +5,10 @@ import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/ui/widgets/colored_circle.dart';
 import 'package:flutter/material.dart';
 
-class StyledColorSheet extends StatelessWidget {
-  final Widget title;
-  final Widget? trailing;
-
+class StyledColorSheet extends StyledSheet<ColorEnum> {
   final ColorEnum? initialColor;
 
-  const StyledColorSheet({super.key, required this.title, this.trailing, this.initialColor});
+  const StyledColorSheet({super.key, required super.title, super.trailing, this.initialColor});
 
   @override
   Widget build(BuildContext context) {

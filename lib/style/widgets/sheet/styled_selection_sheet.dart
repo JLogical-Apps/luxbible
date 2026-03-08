@@ -3,16 +3,14 @@ import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_select.dart';
 import 'package:flutter/material.dart';
 
-class StyledSelectionSheet<T> extends StatelessWidget {
-  final Widget title;
-
+class StyledSelectionSheet<T> extends StyledSheet<T> {
   final List<T> options;
   final T? initialOption;
   final StyledSelectOption<T> Function(T) optionMapper;
 
   const StyledSelectionSheet({
     super.key,
-    required this.title,
+    required super.title,
     required this.options,
     this.initialOption,
     required this.optionMapper,

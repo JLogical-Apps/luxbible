@@ -2,6 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:bible/style/color_library.dart';
 import 'package:bible/style/text_style_library.dart';
 import 'package:bible/style/widgets/component_size.dart';
+import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/sheet/styled_sheet_navigation_context.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,10 @@ extension StyleContextExtensions on BuildContext {
 
   TextStyleLibrary get textStyle => TextStyleLibrary(colorLibrary: colors);
 
-  Future<T?> showStyledSheet<T>(Widget Function(BuildContext context) sheetBuilder) async {
+  Future<T?> showStyledSheet<T>(
+    StyledSheet<T> Function(BuildContext context) sheetBuilder, {
+    Widget Function(StyledSheet)? wrapper,
+  }) async {
     final rootContext = ScaffoldMessenger.of(this).context;
     return await showModalBottomSheet(
       context: this,
@@ -28,12 +32,12 @@ extension StyleContextExtensions on BuildContext {
         maxHeight: MediaQuery.sizeOf(rootContext).height - MediaQuery.paddingOf(rootContext).top - 8,
       ),
       useRootNavigator: true,
-      builder: sheetBuilder,
+      builder: wrapper == null ? sheetBuilder : (context) => wrapper(sheetBuilder(context)),
     );
   }
 
   Future<T?> showStyledSheetWithContext<T>(
-    Widget Function(BuildContext) sheetBuilder, {
+    StyledSheet<T> Function(BuildContext) sheetBuilder, {
     required String breadcrumbText,
   }) async {
     final rootContext = ScaffoldMessenger.of(this).context;
