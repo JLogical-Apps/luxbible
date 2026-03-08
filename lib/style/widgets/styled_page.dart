@@ -30,7 +30,7 @@ class StyledPage extends StatelessWidget {
               title: DefaultTextStyle(
                 style: context.textStyle.headingXs,
                 maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+                overflow: .ellipsis,
                 child: title ?? SizedBox.shrink(),
               ),
               actions: [gapW48],

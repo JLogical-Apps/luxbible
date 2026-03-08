@@ -50,13 +50,8 @@ class StyledPortSheet<T> extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16) + EdgeInsets.only(top: 16),
         child: PortBuilder(
           port: port,
-          builder: (context, port) {
-            return Column(
-              spacing: 16,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: childrenBuilder(context),
-            );
-          },
+          builder: (context, port) =>
+              Column(spacing: 16, crossAxisAlignment: .start, children: childrenBuilder(context)),
         ),
       ),
       buttonsBuilder: (context) => [

@@ -96,8 +96,8 @@ class StyledListItem extends StatelessWidget {
                             padding: EdgeInsets.symmetric(vertical: 16),
                             child: Column(
                               spacing: 4,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: .start,
+                              mainAxisAlignment: .center,
                               children: [
                                 if (title case final title?)
                                   DefaultTextStyle(

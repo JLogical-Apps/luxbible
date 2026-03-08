@@ -54,8 +54,8 @@ class StyledSheet extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: .start,
+        mainAxisSize: .min,
         children: [
           SizedBox(
             height: 12,
@@ -87,19 +87,19 @@ class StyledSheet extends StatelessWidget {
                   ),
                   Expanded(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: .center,
                       children: [
                         DefaultTextStyle(
                           style: context.textStyle.headingXs,
                           maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                          overflow: .ellipsis,
                           child: title,
                         ),
                         if (subtitle case final subtitle?)
                           DefaultTextStyle(
                             style: context.textStyle.paragraphMd.subtle(context),
                             maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                            overflow: .ellipsis,
                             child: subtitle,
                           ),
                       ],
@@ -113,7 +113,7 @@ class StyledSheet extends StatelessWidget {
           gapH8,
           if (sheetNavigationContext != null && sheetNavigationContext.breadcrumbs.length > 1) ...[
             SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
+              scrollDirection: .horizontal,
               padding: EdgeInsets.symmetric(horizontal: 16),
               reverse: true,
               child: Row(

@@ -25,7 +25,7 @@ class StyledDock extends HookWidget {
             gapH16,
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 16),
-              child: Column(spacing: 8, mainAxisSize: MainAxisSize.min, children: buttons),
+              child: Column(spacing: 8, mainAxisSize: .min, children: buttons),
             ),
             if (kIsWeb || !Platform.isIOS || MediaQuery.paddingOf(context).bottom <= 28)
               buttons.isNotEmpty ? gapH16 : gapH8,
@@ -62,9 +62,9 @@ class StyledDock extends HookWidget {
                   return false;
                 },
                 child: ScrollAbsorber(
-                  allowPropagate: (e, metrics) => e.depth == 0 && metrics.axis == Axis.vertical,
+                  allowPropagate: (e, metrics) => e.depth == 0 && metrics.axis == .vertical,
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisSize: .min,
                     children: [
                       MediaQuery.removePadding(
                         context: context,
@@ -107,7 +107,7 @@ class StyledDock extends HookWidget {
                               constraints: BoxConstraints(maxHeight: constraints.maxHeight),
                               child: Padding(
                                 padding: EdgeInsets.only(bottom: MediaQuery.paddingOf(context).bottom),
-                                child: Column(mainAxisSize: MainAxisSize.min, children: bottomChildren),
+                                child: Column(mainAxisSize: .min, children: bottomChildren),
                               ),
                             ),
                           ),
