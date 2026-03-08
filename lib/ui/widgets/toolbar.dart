@@ -3,12 +3,7 @@ import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/user/toolbar_configuration.dart';
 import 'package:bible/models/user/toolbar_shortcut.dart';
 import 'package:bible/models/user/user.dart';
-import 'package:bible/style/color_builder.dart';
-import 'package:bible/style/style_context_extensions.dart';
-import 'package:bible/style/widgets/styled_badge.dart';
-import 'package:bible/style/widgets/styled_circle_button.dart';
-import 'package:bible/style/widgets/styled_edit_badge.dart';
-import 'package:bible/style/widgets/styled_material.dart';
+import 'package:bible/style/style.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -60,8 +55,16 @@ class Toolbar extends StatelessWidget {
                 child: Row(
                   spacing: 8,
                   children: [
-                    Text(chapterReference.format(), style: context.textStyle.labelLg),
+                    Flexible(
+                      child: Text(
+                        chapterReference.format(),
+                        style: context.textStyle.labelLg,
+                        maxLines: 1,
+                        overflow: .ellipsis,
+                      ),
+                    ),
                     StyledBadge(text: translation.title()),
+                    gapW12,
                   ],
                 ),
               ),
