@@ -61,8 +61,8 @@ class PassageSettingsPage extends ConsumerWidget {
           options: PassageShortcut.values,
           initialOption: initialShortcut,
           optionMapper: (shortcut) => StyledSelectOption(
-            titleText: shortcut.title(user: null, passage: null),
-            subtitleText: shortcut.description(user: null, passage: null),
+            title: shortcut.title(user: null, passage: null).toText(),
+            subtitle: shortcut.description(user: null, passage: null).toText(),
             leading: shortcut.buildIcon(context, user: null, passage: null),
           ),
         ),

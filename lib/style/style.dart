@@ -1,4 +1,5 @@
 export 'animated_grow.dart';
+export 'color_builder.dart';
 export 'color_library.dart';
 export 'gap.dart';
 export 'highlighted_paragraph.dart';

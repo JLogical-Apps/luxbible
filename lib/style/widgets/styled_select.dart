@@ -1,7 +1,6 @@
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_selection_sheet.dart';
 import 'package:bible/style/widgets/styled_material.dart';
-import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -27,7 +26,7 @@ class StyledSelect<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     return StyledMaterial(
       padding: EdgeInsets.all(12),
-      color: context.colors.surfaceSecondary,
+      colorBuilder: .surfaceSecondary,
       borderRadius: BorderRadius.circular(8),
       onPressed: () async {
         final newSelection = await context.showStyledSheet(
@@ -65,14 +64,5 @@ class StyledSelectOption<T> {
   final Widget? subtitle;
   final Widget? leading;
 
-  StyledSelectOption({
-    Widget? title,
-    String? titleText,
-    Widget? subtitle,
-    String? subtitleText,
-    Widget? leading,
-    IconData? leadingIcon,
-  }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
-       subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new),
-       leading = leading ?? leadingIcon?.mapIfNonNull(Icon.new);
+  StyledSelectOption({required this.title, this.subtitle, this.leading});
 }

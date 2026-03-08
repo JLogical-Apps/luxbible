@@ -3,6 +3,7 @@ import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/user/toolbar_configuration.dart';
 import 'package:bible/models/user/toolbar_shortcut.dart';
 import 'package:bible/models/user/user.dart';
+import 'package:bible/style/color_builder.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/styled_badge.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
@@ -25,7 +26,7 @@ class Toolbar extends StatelessWidget {
   final Function() onMorePressed;
 
   final bool isEdit;
-  final Color? color;
+  final ColorBuilder? colorBuilder;
 
   const Toolbar({
     super.key,
@@ -38,13 +39,13 @@ class Toolbar extends StatelessWidget {
     required this.onShorcutPressed,
     required this.onMorePressed,
     this.isEdit = false,
-    this.color,
+    this.colorBuilder,
   });
 
   @override
   Widget build(BuildContext context) {
     return StyledMaterial(
-      color: color ?? context.colors.surfacePrimary,
+      colorBuilder: colorBuilder ?? .surfacePrimary,
       borderRadius: BorderRadius.circular(999),
       padding: EdgeInsets.only(left: 24, right: 12),
       onPressed: onPressed,

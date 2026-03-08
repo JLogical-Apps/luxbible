@@ -53,7 +53,7 @@ class ToolbarSettingsPage extends ConsumerWidget {
                   }
                 },
                 isEdit: true,
-                color: context.colors.surfaceTertiary,
+                colorBuilder: .surfaceTertiary,
               ),
             ),
           ),
@@ -70,7 +70,7 @@ class ToolbarSettingsPage extends ConsumerWidget {
                         leading: Symbols.touch_long.toIcon(),
                         trailing: StyledEditBadge(
                           child: StyledCircleButton.lg(
-                            color: context.colors.surfaceSecondary,
+                            colorBuilder: .surfaceSecondary,
                             onPressed: () async {
                               final newShortcut = await showSelectToolbarSheet(
                                 context,
@@ -108,8 +108,8 @@ class ToolbarSettingsPage extends ConsumerWidget {
       options: ToolbarShortcut.values,
       initialOption: initialShortcut,
       optionMapper: (shortcut) => StyledSelectOption(
-        titleText: shortcut.title(user: user, reference: null),
-        subtitleText: shortcut.description(user: user, reference: null),
+        title: shortcut.title(user: user, reference: null).toText(),
+        subtitle: shortcut.description(user: user, reference: null).toText(),
         leading: shortcut.buildIcon(context, user: user, reference: null),
       ),
     ),

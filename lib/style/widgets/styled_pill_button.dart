@@ -8,16 +8,22 @@ class StyledPillButton extends StatelessWidget {
 
   final Function()? onPressed;
 
-  final Color? color;
+  final ColorBuilder? colorBuilder;
 
-  const StyledPillButton({super.key, required this.label, this.leading, this.trailing, this.onPressed, this.color});
+  const StyledPillButton({
+    super.key,
+    required this.label,
+    this.leading,
+    this.trailing,
+    this.onPressed,
+    this.colorBuilder,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final color = this.color ?? context.colors.surfaceSecondary;
-    final colorLibrary = ColorLibrary.fromBackground(color);
+    final colorBuilder = this.colorBuilder ?? .surfaceSecondary;
     return StyledMaterial(
-      color: color,
+      colorBuilder: colorBuilder,
       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
       borderRadius: BorderRadius.circular(999),
       onPressed: onPressed,
@@ -25,17 +31,9 @@ class StyledPillButton extends StatelessWidget {
         mainAxisSize: .min,
         spacing: 8,
         children: [
-          if (leading case final leading?)
-            IconTheme.merge(
-              data: IconThemeData(color: colorLibrary.contentPrimary, size: 16),
-              child: leading,
-            ),
-          DefaultTextStyle(style: context.textStyle.labelSm.onColor(color), child: label),
-          if (trailing case final trailing?)
-            IconTheme.merge(
-              data: IconThemeData(color: colorLibrary.contentPrimary, size: 16),
-              child: trailing,
-            ),
+          if (leading case final leading?) IconTheme.merge(data: IconThemeData(size: 16), child: leading),
+          DefaultTextStyle(style: context.textStyle.labelSm.onColor(colorBuilder(context.colors)), child: label),
+          if (trailing case final trailing?) IconTheme.merge(data: IconThemeData(size: 16), child: trailing),
         ],
       ),
     );

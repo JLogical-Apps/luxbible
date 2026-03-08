@@ -23,12 +23,12 @@ class ColorLibrary {
   Hue get blue => TWColors.blue.asHue(brightness);
   Hue get violet => TWColors.violet.asHue(brightness);
 
-  Color get backgroundPrimary => brightness.when(light: zinc.shade100, dark: zinc.shade900);
-  Color get backgroundError => brightness.when(light: red.shade600, dark: red.shade700);
+  ColorPalette get backgroundPrimary => toColorPalette(brightness.when(light: zinc.shade100, dark: zinc.shade900));
+  ColorPalette get backgroundError => toColorPalette(brightness.when(light: red.shade600, dark: red.shade700));
 
-  Color get surfacePrimary => brightness.when(light: Colors.white, dark: zinc.shade800);
-  Color get surfaceSecondary => brightness.when(light: zinc.shade200, dark: zinc.shade600);
-  Color get surfaceTertiary => brightness.when(light: zinc.shade100, dark: zinc.shade700);
+  ColorPalette get surfacePrimary => toColorPalette(brightness.when(light: Colors.white, dark: zinc.shade800));
+  ColorPalette get surfaceSecondary => toColorPalette(brightness.when(light: zinc.shade200, dark: zinc.shade600));
+  ColorPalette get surfaceTertiary => toColorPalette(brightness.when(light: zinc.shade100, dark: zinc.shade700));
   Color get surfaceDisabled => brightness.when(light: zinc.shade100, dark: zinc.shade700);
   Color get surfaceError => brightness.when(light: red.shade100, dark: red.shade950);
 

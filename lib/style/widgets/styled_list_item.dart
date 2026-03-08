@@ -63,7 +63,6 @@ class StyledListItem extends StatelessWidget {
     final itemContext = StyledListItemContext.maybeOf(context);
 
     return StyledMaterial(
-      color: Colors.transparent,
       onPressed: onPressed,
       child: ConstrainedBox(
         constraints: BoxConstraints(

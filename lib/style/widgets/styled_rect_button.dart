@@ -1,5 +1,4 @@
-import 'package:bible/style/color_library.dart';
-import 'package:bible/style/style_context_extensions.dart';
+import 'package:bible/style/color_builder.dart';
 import 'package:bible/style/widgets/styled_material.dart';
 import 'package:flutter/material.dart';
 
@@ -7,10 +6,9 @@ class StyledRectButton extends StatelessWidget {
   final Widget label;
   final Function()? onPressed;
 
-  final Color Function(ColorLibrary) colorBuilder;
+  final ColorBuilder? colorBuilder;
 
-  StyledRectButton.primary({super.key, required this.label, required this.onPressed})
-    : colorBuilder = ((colors) => colors.contentPrimary);
+  StyledRectButton.primary({super.key, required this.label, required this.onPressed}) : colorBuilder = .primary;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +17,7 @@ class StyledRectButton extends StatelessWidget {
       height: 56,
       child: StyledMaterial(
         onPressed: onPressed,
-        color: colorBuilder(context.colors),
+        colorBuilder: colorBuilder,
         borderRadius: BorderRadius.circular(8),
         child: Center(child: label),
       ),

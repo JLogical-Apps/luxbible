@@ -69,8 +69,8 @@ class SelectionSettingsPage extends ConsumerWidget {
       options: SelectionShortcut.values,
       initialOption: initialShortcut,
       optionMapper: (shortcut) => StyledSelectOption(
-        titleText: shortcut.title(user: null, selection: null),
-        subtitleText: shortcut.description(user: null, selection: null),
+        title: shortcut.title(user: null, selection: null).toText(),
+        subtitle: shortcut.description(user: null, selection: null).toText(),
         leading: shortcut.buildIcon(context, user: null, selection: null),
       ),
     ),

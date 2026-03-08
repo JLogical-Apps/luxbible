@@ -1,3 +1,4 @@
+import 'package:bible/style/color_builder.dart';
 import 'package:bible/style/color_library.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
@@ -7,13 +8,13 @@ class StyledBadge extends StatelessWidget {
   final String? text;
   final IconData? icon;
 
-  final Color? color;
+  final ColorBuilder? colorBuilder;
 
-  const StyledBadge({super.key, this.text, this.icon, this.color});
+  const StyledBadge({super.key, this.text, this.icon, this.colorBuilder});
 
   @override
   Widget build(BuildContext context) {
-    final color = this.color ?? context.colors.surfaceSecondary;
+    final color = colorBuilder?.call(context.colors) ?? context.colors.surfaceSecondary;
     final foregroundColor = ColorLibrary.fromBackground(color).contentPrimary;
 
     return IgnorePointer(

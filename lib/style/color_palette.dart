@@ -1,4 +1,4 @@
-import 'package:flutter/painting.dart';
+import 'package:flutter/material.dart';
 
 class ColorPalette extends Color {
   final Color _disabled;
@@ -7,6 +7,7 @@ class ColorPalette extends Color {
     : _disabled = disabled,
       super.from(alpha: a, red: r, green: g, blue: b);
 
+  Color foreground() => ThemeData.estimateBrightnessForColor(this) == Brightness.light ? Colors.black : Colors.white;
   Color disabled({bool disabled = true}) => disabled ? _disabled : this;
 }
 

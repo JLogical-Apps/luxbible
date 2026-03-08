@@ -85,7 +85,7 @@ class SearchPage extends HookConsumerWidget {
                   trailing: Symbols.keyboard_arrow_down.toIcon(),
                   label: (locations.isEmpty ? 'Locations' : locations.map((location) => location.title()).join(', '))
                       .toText(),
-                  color: locations.isEmpty ? null : context.colors.contentPrimary,
+                  colorBuilder: locations.isEmpty ? null : .primary,
                   onPressed: () async {
                     final newLocations = await context.showStyledSheet(
                       (context) => StyledMultiSelectionSheet<SearchLocationFilter>(
@@ -101,7 +101,7 @@ class SearchPage extends HookConsumerWidget {
                           ...BookType.values.map((book) => BookSearchLocationFilter(book: book)),
                         ],
                         initialOptions: locations,
-                        optionMapper: (option) => StyledSelectOption(titleText: option.title()),
+                        optionMapper: (option) => StyledSelectOption(title: option.title().toText()),
                       ),
                     );
                     if (newLocations != null) {

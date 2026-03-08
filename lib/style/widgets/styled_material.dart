@@ -1,3 +1,4 @@
+import 'package:bible/style/color_builder.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/text_style_extensions.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ class StyledMaterial extends StatelessWidget {
   final Function()? onPressed;
   final Function()? onLongPressed;
 
-  final Color? color;
+  final ColorBuilder? colorBuilder;
   final BorderRadius borderRadius;
   final EdgeInsets padding;
 
@@ -16,13 +17,14 @@ class StyledMaterial extends StatelessWidget {
     required this.child,
     this.onPressed,
     this.onLongPressed,
-    this.color,
+    this.colorBuilder,
     this.borderRadius = BorderRadius.zero,
     this.padding = EdgeInsets.zero,
   });
 
   @override
   Widget build(BuildContext context) {
+    final color = colorBuilder?.call(context.colors);
     return Material(
       color: color ?? Colors.transparent,
       borderRadius: borderRadius,
@@ -32,7 +34,13 @@ class StyledMaterial extends StatelessWidget {
         onLongPress: onLongPressed,
         child: Padding(
           padding: padding,
-          child: DefaultTextStyle(style: context.textStyle.labelLg.onColor(color), child: child),
+          child: DefaultTextStyle(
+            style: context.textStyle.labelLg.onColor(color),
+            child: IconTheme.merge(
+              data: IconThemeData(color: color?.foreground()),
+              child: child,
+            ),
+          ),
         ),
       ),
     );

@@ -1,4 +1,4 @@
-import 'package:bible/style/color_library.dart';
+import 'package:bible/style/color_builder.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/styled_material.dart';
 import 'package:flutter/material.dart';
@@ -24,14 +24,12 @@ class StyledSwipeable extends StatelessWidget {
             motion: ScrollMotion(),
             extentRatio: 64 * actions.length / constraints.maxWidth,
             children: actions.map((action) {
-              final color = action.colorMapper(context.colors);
+              final color = action.colorBuilder(context.colors);
               return Flexible(
                 child: StyledMaterial(
                   onPressed: action.onPressed,
-                  color: color,
-                  child: SizedBox.expand(
-                    child: Icon(action.icon, color: ColorLibrary.fromBackground(color).contentPrimary),
-                  ),
+                  colorBuilder: action.colorBuilder,
+                  child: SizedBox.expand(child: Icon(action.icon, color: color.foreground())),
                 ),
               );
             }).toList(),
@@ -44,13 +42,11 @@ class StyledSwipeable extends StatelessWidget {
 }
 
 class StyledSwipeableAction {
-  final Color Function(ColorLibrary) colorMapper;
+  final ColorBuilder colorBuilder;
   final IconData icon;
   final Function() onPressed;
 
-  const StyledSwipeableAction({required this.icon, required this.colorMapper, required this.onPressed});
+  const StyledSwipeableAction({required this.icon, required this.colorBuilder, required this.onPressed});
 
-  StyledSwipeableAction.delete({required this.onPressed})
-    : colorMapper = ((colors) => colors.backgroundError),
-      icon = Symbols.delete;
+  StyledSwipeableAction.delete({required this.onPressed}) : colorBuilder = .backgroundError, icon = Symbols.delete;
 }

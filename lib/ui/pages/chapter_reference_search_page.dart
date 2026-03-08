@@ -166,7 +166,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                       options: BibleTranslation.values,
                       selectedOption: user.translation,
                       onSelected: (translation) => ref.updateUser((user) => user.copyWith(translation: translation)),
-                      optionMapper: (translation) => StyledSelectOption(titleText: translation.title()),
+                      optionMapper: (translation) => StyledSelectOption(title: translation.title().toText()),
                       dialogTitle: 'Bible Translation',
                     ),
                   ),

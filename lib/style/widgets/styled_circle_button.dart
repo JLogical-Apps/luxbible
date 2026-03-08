@@ -1,3 +1,4 @@
+import 'package:bible/style/color_builder.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:flutter/material.dart';
 
@@ -5,18 +6,18 @@ class StyledCircleButton extends StatelessWidget {
   final Widget child;
   final Function()? onPressed;
 
-  final Color? color;
+  final ColorBuilder? colorBuilder;
 
-  final double iconSize;
-  final double dimension;
+  final double _iconSize;
+  final double _dimension;
 
-  const StyledCircleButton.lg({super.key, required this.child, required this.onPressed, this.color})
-    : iconSize = 24,
-      dimension = 40;
+  const StyledCircleButton.lg({super.key, required this.child, required this.onPressed, this.colorBuilder})
+    : _iconSize = 24,
+      _dimension = 40;
 
-  const StyledCircleButton.sm({super.key, required this.child, required this.onPressed, this.color})
-    : iconSize = 16,
-      dimension = 32;
+  const StyledCircleButton.sm({super.key, required this.child, required this.onPressed, this.colorBuilder})
+    : _iconSize = 16,
+      _dimension = 32;
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +28,12 @@ class StyledCircleButton extends StatelessWidget {
         padding: EdgeInsets.zero,
         constraints: BoxConstraints(maxWidth: 48, maxHeight: 48),
         style: IconButton.styleFrom(
-          foregroundColor: context.colors.contentPrimary,
-          backgroundColor: color,
-          iconSize: iconSize,
-          fixedSize: Size.square(dimension),
-          maximumSize: Size.square(dimension),
-          minimumSize: Size.square(dimension),
+          foregroundColor: colorBuilder?.call(context.colors).foreground() ?? context.colors.contentPrimary,
+          backgroundColor: colorBuilder?.call(context.colors),
+          iconSize: _iconSize,
+          fixedSize: Size.square(_dimension),
+          maximumSize: Size.square(_dimension),
+          minimumSize: Size.square(_dimension),
         ),
       ),
     );

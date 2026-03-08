@@ -13,7 +13,7 @@ class StyledChip extends StatelessWidget {
     final enabled = onPressed != null;
 
     return StyledMaterial(
-      color: enabled ? context.colors.surfaceSecondary : Colors.transparent,
+      colorBuilder: enabled ? .surfaceSecondary : null,
       borderRadius: BorderRadius.circular(8),
       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       onPressed: onPressed,
