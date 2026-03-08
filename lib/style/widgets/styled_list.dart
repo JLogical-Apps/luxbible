@@ -12,7 +12,7 @@ class StyledList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SlidableAutoCloseBehavior(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: .stretch,
         children: children
             .mapIndexed((i, child) => StyledListItemContext(hideDivider: i + 1 == children.length, child: child))
             .toList(),

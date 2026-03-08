@@ -17,7 +17,7 @@ class StyledFormInput extends StatelessWidget {
     final errorText = this.errorText;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: .start,
       children: [
         if (labelText case final labelText?)
           Padding(
@@ -33,7 +33,7 @@ class StyledFormInput extends StatelessWidget {
               : Padding(
                   padding: EdgeInsets.only(top: 8),
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                    crossAxisAlignment: .center,
                     spacing: 4,
                     children: [
                       Icon(Symbols.error, size: 14, color: context.colors.contentError),

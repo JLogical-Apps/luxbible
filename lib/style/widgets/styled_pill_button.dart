@@ -22,7 +22,7 @@ class StyledPillButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(999),
       onPressed: onPressed,
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: .min,
         spacing: 8,
         children: [
           if (leading case final leading?)

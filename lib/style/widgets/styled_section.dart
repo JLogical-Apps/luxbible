@@ -31,7 +31,7 @@ class StyledSection extends StatelessWidget {
     return Padding(
       padding: padding,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: .start,
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),

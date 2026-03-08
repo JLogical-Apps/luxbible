@@ -41,11 +41,7 @@ class StrongSheet {
                   .map(
                     (strong) => StyledListItem.navigation(
                       title: strong.id.toText(),
-                      subtitle: Text(
-                        '${strong.languageText}: ${strong.definition}',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                      subtitle: Text('${strong.languageText}: ${strong.definition}', maxLines: 1, overflow: .ellipsis),
                       onPressed: () {
                         context.pop();
                         StrongSheet.showWithContext(context, ref, strongId: strong.id);

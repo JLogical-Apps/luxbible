@@ -32,7 +32,7 @@ class BottomBar extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
         ),
         child: StyledListItem(
-          title: Text(text, maxLines: 1, overflow: TextOverflow.ellipsis),
+          title: Text(text, maxLines: 1, overflow: .ellipsis),
           leading: StyledCircleButton.lg(onPressed: onClosePressed, child: Symbols.close.toIcon()),
           trailing: Row(
             children: [

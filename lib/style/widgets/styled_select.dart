@@ -49,7 +49,7 @@ class StyledSelect<T> extends StatelessWidget {
             child: DefaultTextStyle(
               style: context.textStyle.paragraphLg,
               maxLines: 1,
-              overflow: TextOverflow.fade,
+              overflow: .fade,
               child: optionMapper(selectedOption).title,
             ),
           ),

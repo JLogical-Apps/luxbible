@@ -282,15 +282,10 @@ class PassageBuilder extends HookConsumerWidget {
                           (annotation) => StyledListItem(
                             title: (annotation.note ?? '').toText(),
                             subtitle: Column(
-                              children:
-                                  [
-                                        annotation.passages.map((passage) => passage.format()).join('; ').nullIfBlank,
-                                        ...annotation.selections.map(
-                                          (selection) => '"${bible.getSelectionText(selection)}"',
-                                        ),
-                                      ].nonNulls
-                                      .map((text) => Text(text, maxLines: 1, overflow: TextOverflow.ellipsis))
-                                      .toList(),
+                              children: [
+                                annotation.passages.map((passage) => passage.format()).join('; ').nullIfBlank,
+                                ...annotation.selections.map((selection) => '"${bible.getSelectionText(selection)}"'),
+                              ].nonNulls.map((text) => Text(text, maxLines: 1, overflow: .ellipsis)).toList(),
                             ),
                           ),
                         )
