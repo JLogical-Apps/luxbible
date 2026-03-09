@@ -57,11 +57,17 @@ class Toolbar extends StatelessWidget {
                   children: [
                     Flexible(
                       child: Text(
-                        chapterReference.format(),
+                        chapterReference.book.title(),
                         style: context.textStyle.labelLg,
                         maxLines: 1,
                         overflow: .ellipsis,
                       ),
+                    ),
+                    Text(
+                      chapterReference.chapterNum.toString(),
+                      style: context.textStyle.labelLg,
+                      maxLines: 1,
+                      overflow: .ellipsis,
                     ),
                     StyledBadge(text: translation.title()),
                     gapW12,
