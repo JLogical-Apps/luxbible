@@ -11,22 +11,25 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 class StyledDock extends HookWidget {
   final List<Widget> children;
+
+  final Widget? aboveButtons;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
 
-  const StyledDock({super.key, required this.children, this.buttonsBuilder});
+  const StyledDock({super.key, required this.children, this.aboveButtons, this.buttonsBuilder});
 
   @override
   Widget build(BuildContext context) {
     final buttons = buttonsBuilder?.call(context) ?? [];
 
-    final bottomChildren = buttons.isEmpty
+    final bottomChildren = buttons.isEmpty && aboveButtons == null
         ? <Widget>[]
         : [
-            gapH16,
-            Padding(
-              padding: .symmetric(horizontal: 16),
-              child: Column(spacing: 8, mainAxisSize: .min, children: buttons),
-            ),
+            if (aboveButtons case final aboveButtons?) aboveButtons else gapH16,
+            if (buttons.isNotEmpty)
+              Padding(
+                padding: .symmetric(horizontal: 16),
+                child: Column(spacing: 8, mainAxisSize: .min, children: buttons),
+              ),
             if (kIsWeb || !Platform.isIOS || MediaQuery.paddingOf(context).bottom <= 28)
               buttons.isNotEmpty ? gapH16 : gapH8,
           ];
@@ -34,7 +37,8 @@ class StyledDock extends HookWidget {
     final metricsState = useState<ScrollMetrics?>(null);
     final metrics = metricsState.value;
 
-    final showBottomShadow = metrics == null ? false : metrics.pixels + 10 < metrics.maxScrollExtent;
+    final showBottomShadow =
+        aboveButtons != null || (metrics == null ? false : metrics.pixels + 10 < metrics.maxScrollExtent);
 
     return Padding(
       padding: .only(bottom: MediaQuery.viewInsetsOf(context).bottom),

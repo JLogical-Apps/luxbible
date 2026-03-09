@@ -12,17 +12,26 @@ class StyledTile extends StatelessWidget {
 
   StyledTile.message({
     super.key,
-    required IconData icon,
-    required String titleText,
-    String? subtitleText,
+    required Widget leading,
+    required Widget title,
+    Widget? subtitle,
     this.onPressed,
     this.padding = .zero,
   }) : child = Builder(
          builder: (context) => StyledListItem(
-           leading: Icon(icon, color: context.colors.contentTertiary),
-           title: Text(titleText, style: TextStyle(color: context.colors.contentTertiary)),
-           subtitle: subtitleText?.mapIfNonNull(
-             (text) => Text(text, style: TextStyle(color: context.colors.contentTertiary)),
+           leading: IconTheme.merge(
+             data: IconThemeData(color: context.colors.contentTertiary),
+             child: leading,
+           ),
+           title: DefaultTextStyle.merge(
+             style: TextStyle(color: context.colors.contentTertiary),
+             child: title,
+           ),
+           subtitle: subtitle?.mapIfNonNull(
+             (subtitle) => DefaultTextStyle.merge(
+               child: subtitle,
+               style: TextStyle(color: context.colors.contentTertiary),
+             ),
            ),
          ),
        );

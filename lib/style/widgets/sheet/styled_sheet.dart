@@ -21,6 +21,8 @@ class StyledSheet<T> extends HookWidget {
   final Widget? trailing;
 
   final List<Widget> children;
+
+  final Widget? aboveButtons;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
 
   const StyledSheet({
@@ -29,6 +31,7 @@ class StyledSheet<T> extends HookWidget {
     this.subtitle,
     this.trailing,
     this.children = const [],
+    this.aboveButtons,
     this.buttonsBuilder,
   });
 
@@ -40,6 +43,7 @@ class StyledSheet<T> extends HookWidget {
     String? subtitleText,
     this.trailing,
     required Widget child,
+    this.aboveButtons,
     this.buttonsBuilder,
   }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
        subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new),
@@ -149,7 +153,7 @@ class StyledSheet<T> extends HookWidget {
           Flexible(
             child: DefaultTextStyle(
               style: context.textStyle.paragraphMd,
-              child: StyledDock(buttonsBuilder: buttonsBuilder, children: children),
+              child: StyledDock(aboveButtons: aboveButtons, buttonsBuilder: buttonsBuilder, children: children),
             ),
           ),
         ],

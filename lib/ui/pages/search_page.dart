@@ -91,25 +91,46 @@ class SearchPage extends HookConsumerWidget {
                 StyledPillButton(
                   leading: Symbols.book.toIcon(),
                   trailing: Symbols.keyboard_arrow_down.toIcon(),
-                  label: (locations.isEmpty ? 'Locations' : locations.map((location) => location.title()).join(', '))
-                      .toText(),
+                  label:
+                      (locations.isEmpty
+                              ? 'Locations'
+                              : locations
+                                    .sortedByIndexIn(SearchLocationFilter.values)
+                                    .map((location) => location.title())
+                                    .join(', '))
+                          .toText(),
                   colorBuilder: locations.isEmpty ? null : .primary,
                   onPressed: () async {
                     final newLocations = await context.showStyledSheet(
                       (context) => StyledMultiSelectionSheet<SearchLocationFilter>(
                         title: 'Locations'.toText(),
-                        trailing: locations.isEmpty
-                            ? null
-                            : StyledCircleButton.lg(
-                                onPressed: () => context.pop(<SearchLocationFilter>[]),
-                                child: Symbols.reset_settings.toIcon(),
-                              ),
-                        options: [
-                          ...Testament.values.map((testament) => TestamentSearchLocationFilter(testament: testament)),
-                          ...BookType.values.map((book) => BookSearchLocationFilter(book: book)),
-                        ],
+                        options: SearchLocationFilter.values,
                         initialOptions: locations,
                         optionMapper: (option) => StyledSelectOption(title: option.title().toText()),
+                        aboveButtonsBuilder: (context, selectedOptions, updateSelectedOptions) => Column(
+                          children: [
+                            StyledListItem(
+                              title: Text(
+                                [
+                                  'Selected: ',
+                                  selectedOptions.isEmpty
+                                      ? 'None'
+                                      : selectedOptions
+                                            .sortedByIndexIn(SearchLocationFilter.values)
+                                            .map((option) => option.title())
+                                            .join(', '),
+                                ].join(),
+                                maxLines: 1,
+                                overflow: .ellipsis,
+                              ),
+                              trailing: selectedOptions.isEmpty
+                                  ? null
+                                  : StyledLink('Clear', onPressed: () => updateSelectedOptions([])),
+                            ),
+                            StyledDivider(height: 2),
+                          ],
+                        ),
+                        searchKeywordsMapper: (option) => option.title().keywords,
                       ),
                     );
                     if (newLocations != null) {
@@ -133,10 +154,10 @@ class SearchPage extends HookConsumerWidget {
                         Padding(
                           padding: .all(16),
                           child: StyledTile.message(
-                            titleText: 'Start a search',
-                            subtitleText:
-                                'Enter a keyword like light, word, or wisdom, then hit enter on the keyboard.',
-                            icon: Symbols.search,
+                            title: 'Start a search'.toText(),
+                            subtitle: 'Enter a keyword like light, word, or wisdom, then hit enter on the keyboard.'
+                                .toText(),
+                            leading: Symbols.search.toIcon(),
                           ),
                         ),
                         if (user.searchHistory.isNotEmpty)
@@ -173,9 +194,9 @@ class SearchPage extends HookConsumerWidget {
                     Padding(
                       padding: .all(16),
                       child: StyledTile.message(
-                        titleText: 'No Search Results Found',
-                        subtitleText: 'Try another search',
-                        icon: Symbols.search,
+                        title: 'No Search Results Found'.toText(),
+                        subtitle: 'Try another search'.toText(),
+                        leading: Symbols.search.toIcon(),
                       ),
                     )
                   else
@@ -207,6 +228,11 @@ class SearchPage extends HookConsumerWidget {
 
 sealed class SearchLocationFilter {
   const SearchLocationFilter();
+
+  static List<SearchLocationFilter> get values => [
+    ...Testament.values.map((testament) => TestamentSearchLocationFilter(testament: testament)),
+    ...BookType.values.map((book) => BookSearchLocationFilter(book: book)),
+  ];
 
   bool passes(Reference reference);
 

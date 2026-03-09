@@ -118,7 +118,7 @@ class StyledListItem extends StatelessWidget {
                           ConstrainedBox(
                             constraints: BoxConstraints(minWidth: 64),
                             child: Padding(
-                              padding: .only(right: 8),
+                              padding: .symmetric(horizontal: 8),
                               child: IconTheme.merge(
                                 data: IconThemeData(color: context.colors.contentDisabled, size: 24),
                                 child: IntrinsicWidth(child: IntrinsicHeight(child: trailing)),
