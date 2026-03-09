@@ -107,6 +107,7 @@ class SearchPage extends HookConsumerWidget {
                         options: SearchLocationFilter.values,
                         initialOptions: locations,
                         optionMapper: (option) => StyledSelectOption(title: option.title().toText()),
+                        groupMapper: (option) => option.groupTitle(),
                         aboveButtonsBuilder: (context, selectedOptions, updateSelectedOptions) => Column(
                           children: [
                             StyledListItem(
@@ -237,6 +238,8 @@ sealed class SearchLocationFilter {
   bool passes(Reference reference);
 
   String title();
+
+  String groupTitle();
 }
 
 class TestamentSearchLocationFilter extends SearchLocationFilter with EquatableMixin {
@@ -252,6 +255,9 @@ class TestamentSearchLocationFilter extends SearchLocationFilter with EquatableM
 
   @override
   String title() => testament.title();
+
+  @override
+  String groupTitle() => 'Testaments';
 }
 
 class BookSearchLocationFilter extends SearchLocationFilter with EquatableMixin {
@@ -267,4 +273,7 @@ class BookSearchLocationFilter extends SearchLocationFilter with EquatableMixin 
 
   @override
   String title() => book.title();
+
+  @override
+  String groupTitle() => 'Books';
 }

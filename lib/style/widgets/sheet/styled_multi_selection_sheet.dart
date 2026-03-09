@@ -3,10 +3,11 @@ import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:utils_core/utils_core.dart';
+import 'package:utils_core/utils_core.dart' hide MapExtensions;
 
 class StyledMultiSelectionSheet<T> extends StyledSheet<List<T>> {
   final List<T> options;
@@ -17,6 +18,7 @@ class StyledMultiSelectionSheet<T> extends StyledSheet<List<T>> {
   aboveButtonsBuilder;
 
   final List<String> Function(T)? searchKeywordsMapper;
+  final String Function(T)? groupMapper;
 
   const StyledMultiSelectionSheet({
     super.key,
@@ -27,13 +29,15 @@ class StyledMultiSelectionSheet<T> extends StyledSheet<List<T>> {
     required this.optionMapper,
     this.aboveButtonsBuilder,
     this.searchKeywordsMapper,
+    this.groupMapper,
   });
 
   @override
   Widget build(BuildContext context) {
-    final selectedOptionsState = useState(initialOptions);
-
     final searchKeywordsMapper = this.searchKeywordsMapper;
+    final groupMapper = this.groupMapper;
+
+    final selectedOptionsState = useState(initialOptions);
     final searchState = useState('');
 
     return StyledSheet(
@@ -65,15 +69,24 @@ class StyledMultiSelectionSheet<T> extends StyledSheet<List<T>> {
                     searchState.value.isEmpty ||
                     searchState.value.passesSearch(searchKeywordsMapper(option)),
               )
-              .map(
-                (option) => StyledListItem.checkbox(
-                  title: optionMapper(option).title,
-                  subtitle: optionMapper(option).subtitle,
-                  leading: optionMapper(option).leading,
-                  selected: selectedOptionsState.value.contains(option),
-                  onSelected: (selected) => selectedOptionsState.value = selectedOptionsState.value.withToggle(option),
-                ),
-              )
+              .groupListsBy((option) => groupMapper == null ? null : groupMapper(option))
+              .mapToIterable((group, options) {
+                final children = options
+                    .map(
+                      (option) => StyledListItem.checkbox(
+                        title: optionMapper(option).title,
+                        subtitle: optionMapper(option).subtitle,
+                        leading: optionMapper(option).leading,
+                        selected: selectedOptionsState.value.contains(option),
+                        onSelected: (selected) =>
+                            selectedOptionsState.value = selectedOptionsState.value.withToggle(option),
+                      ),
+                    )
+                    .toList();
+                return group == null
+                    ? StyledList(children: children)
+                    : StyledSection(title: Text(group), padding: .only(top: 24), children: children);
+              })
               .nullIfEmpty
               ?.toList() ??
           [
