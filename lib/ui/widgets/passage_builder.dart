@@ -20,7 +20,6 @@ import 'package:bible/utils/extensions/num_extensions.dart';
 import 'package:bible/utils/extensions/rect_extensions.dart';
 import 'package:bible/utils/extensions/span_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
-import 'package:bible/utils/guard.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -37,7 +36,7 @@ class PassageBuilder extends HookConsumerWidget {
 
   final ObjectRef<Map<Reference, GlobalKey>>? keyByReferenceRef;
 
-  final ValueNotifier<Selection?>? selectionState;
+  final Selection? selection;
 
   const PassageBuilder({
     super.key,
@@ -47,12 +46,11 @@ class PassageBuilder extends HookConsumerWidget {
     this.onSelectionUpdated,
     this.underlinedReferences = const [],
     this.keyByReferenceRef,
-    this.selectionState,
+    this.selection,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectionState = this.selectionState;
     final keyByReferenceRef = this.keyByReferenceRef;
 
     final bibles = ref.watch(biblesProvider);
@@ -67,6 +65,8 @@ class PassageBuilder extends HookConsumerWidget {
     if (keyByReferenceRef != null && passage.references.any((ref) => !keyByReferenceRef.value.containsKey(ref))) {
       WidgetsBinding.instance.addPostFrameCallback((_) => keyByReferenceRef.value = keyByReference);
     }
+
+    final selectionStartAnchorState = useState<SelectionWordAnchor?>(null);
 
     final spansByReference = references.mapToMap((reference) {
       final verse = bible.getVerseByReference(reference);
@@ -89,15 +89,13 @@ class PassageBuilder extends HookConsumerWidget {
             context.textStyle.bibleBody.fontSize!,
           ),
           alignment: PlaceholderAlignment.middle,
-          child: SelectionContainer.disabled(
+          child: Padding(
             key: keyByReference[reference],
-            child: Padding(
-              padding: .only(right: 6),
-              child: Text(
-                reference.verseNum.toString(),
-                style: context.textStyle.bibleVerseNumber.copyWith(
-                  decoration: underlinedReferences.contains(reference) ? TextDecoration.underline : null,
-                ),
+            padding: .only(right: 6),
+            child: Text(
+              reference.verseNum.toString(),
+              style: context.textStyle.bibleVerseNumber.copyWith(
+                decoration: underlinedReferences.contains(reference) ? TextDecoration.underline : null,
               ),
             ),
           ),
@@ -138,25 +136,6 @@ class PassageBuilder extends HookConsumerWidget {
 
     final textKey = useMemoized(() => GlobalKey());
 
-    final selectionListener = useMemoized(() => SelectionListenerNotifier());
-    useOnListenableChange(selectionListener, () {
-      final range = guard(() => selectionListener.selection.range);
-      if (range == null) {
-        onSelectionUpdated?.call(null);
-        return;
-      }
-
-      final minOffset = min(range.startOffset, range.endOffset);
-      final maxOffset = max(range.startOffset, range.endOffset) - 1;
-
-      final startAnchor = getOffsetAnchor(characterOffset: minOffset, bible: bible);
-      final endAnchor = getOffsetAnchor(characterOffset: maxOffset, bible: bible);
-
-      if (startAnchor != null && endAnchor != null) {
-        onSelectionUpdated?.call(Selection(start: startAnchor, end: endAnchor, translation: bible.translation));
-      }
-    });
-
     return LayoutBuilder(
       builder: (context, constraints) => Stack(
         clipBehavior: Clip.none,
@@ -187,18 +166,13 @@ class PassageBuilder extends HookConsumerWidget {
                       (box) => Positioned.fromRect(
                         rect: Rect.fromLTWH(box.left - 4, box.top, box.width + 4, min(32, box.height)),
                         child: IgnorePointer(
-                          child: HookBuilder(
-                            builder: (context) {
-                              final selection = selectionState == null ? null : useValueListenable(selectionState);
-                              return AnimatedContainer(
-                                duration: Duration(milliseconds: 300),
-                                curve: Curves.easeInOutCubic,
-                                decoration: BoxDecoration(
-                                  borderRadius: .circular(4),
-                                  color: verseColor?.withValues(alpha: selection == null ? 0.5 : 0.2),
-                                ),
-                              );
-                            },
+                          child: AnimatedContainer(
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.easeInOutCubic,
+                            decoration: BoxDecoration(
+                              borderRadius: .circular(4),
+                              color: verseColor?.withValues(alpha: selection == null ? 0.5 : 0.2),
+                            ),
                           ),
                         ),
                       ),
@@ -234,30 +208,90 @@ class PassageBuilder extends HookConsumerWidget {
                   ),
                 );
           }).flattened,
-          SelectionListener(
-            selectionNotifier: selectionListener,
-            child: GestureDetector(
-              onTapUp: (details) {
-                final renderBox = textKey.currentContext!.findRenderObject() as RenderBox;
-                final offset = spans.getCharacterOffsetFromPosition(
-                  width: constraints.maxWidth,
-                  localPosition: renderBox.globalToLocal(details.globalPosition),
-                );
+          if (selection case final selection?)
+            ...() {
+              final (base, extent) = getSelectionCharacterOffsets(
+                selection: selection,
+                spansByReference: spansByReference,
+              );
+              return spans
+                  .getBoxesForSelection(baseOffset: base, extentOffset: extent, width: constraints.maxWidth)
+                  .map((box) => box.toRect())
+                  .withMergedLines()
+                  .map(
+                    (box) => Positioned.fromRect(
+                      rect: Rect.fromLTWH(box.left, box.top + 4, box.width + 2, min(28, box.height)),
+                      child: IgnorePointer(
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeInOutCubic,
+                          decoration: BoxDecoration(
+                            borderRadius: .circular(4),
+                            color: context.colors.contentPrimary.withValues(alpha: 0.2),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+            }(),
+          GestureDetector(
+            onLongPressStart: (details) {
+              final renderBox = textKey.currentContext!.findRenderObject() as RenderBox;
+              final offset = spans.getCharacterOffsetFromPosition(
+                width: constraints.maxWidth,
+                localPosition: renderBox.globalToLocal(details.globalPosition),
+              );
 
-                final anchor = getOffsetAnchor(characterOffset: offset, bible: bible);
-                if (anchor != null) {
-                  onReferencePressed?.call(anchor.toReference());
-                }
-              },
-              child: Text.rich(
-                key: textKey,
-                TextSpan(children: spans),
-                strutStyle: StrutStyle.fromTextStyle(context.textStyle.bibleBody),
-                textHeightBehavior: TextHeightBehavior(
-                  applyHeightToFirstAscent: true,
-                  applyHeightToLastDescent: true,
-                  leadingDistribution: TextLeadingDistribution.even,
-                ),
+              final anchor = getOffsetAnchor(characterOffset: offset, bible: bible);
+              if (anchor == null) {
+                return;
+              }
+
+              final wordSelection = bible.getWordsSelection(
+                Selection.character(anchor: anchor, translation: bible.translation),
+              );
+              onSelectionUpdated?.call(wordSelection);
+              selectionStartAnchorState.value = anchor;
+            },
+            onLongPressMoveUpdate: (details) {
+              final renderBox = textKey.currentContext!.findRenderObject() as RenderBox;
+              final offset = spans.getCharacterOffsetFromPosition(
+                width: constraints.maxWidth,
+                localPosition: renderBox.globalToLocal(details.globalPosition),
+              );
+
+              final anchor = getOffsetAnchor(characterOffset: offset, bible: bible);
+              if (anchor == null) {
+                return;
+              }
+
+              final anchors = [?selectionStartAnchorState.value, anchor]..sort();
+
+              final wordsSelection = bible.getWordsSelection(
+                Selection(start: anchors.first, end: anchors.last, translation: bible.translation),
+              );
+              onSelectionUpdated?.call(wordsSelection);
+            },
+            onTapUp: (details) {
+              final renderBox = textKey.currentContext!.findRenderObject() as RenderBox;
+              final offset = spans.getCharacterOffsetFromPosition(
+                width: constraints.maxWidth,
+                localPosition: renderBox.globalToLocal(details.globalPosition),
+              );
+
+              final anchor = getOffsetAnchor(characterOffset: offset, bible: bible);
+              if (anchor != null) {
+                onReferencePressed?.call(anchor.toReference());
+              }
+            },
+            child: Text.rich(
+              key: textKey,
+              TextSpan(children: spans),
+              strutStyle: StrutStyle.fromTextStyle(context.textStyle.bibleBody),
+              textHeightBehavior: TextHeightBehavior(
+                applyHeightToFirstAscent: true,
+                applyHeightToLastDescent: true,
+                leadingDistribution: TextLeadingDistribution.even,
               ),
             ),
           ),
@@ -277,36 +311,34 @@ class PassageBuilder extends HookConsumerWidget {
     return SizedWidgetSpan(
       size: Size(30, context.textStyle.bibleBody.fontSize!),
       alignment: PlaceholderAlignment.middle,
-      child: SelectionContainer.disabled(
-        child: OverflowBox(
-          maxHeight: context.textStyle.bibleBody.totalHeight + 4,
-          maxWidth: 30,
-          child: Underline(
-            isUnderlined: isUnderlined,
-            child: Container(
-              color: color,
-              margin: .only(bottom: 4),
-              child: StyledCircleButton.sm(
-                onPressed: () => context.showStyledSheet(
-                  (context) => StyledSheet(
-                    title: 'Notes'.toText(),
-                    children: annotations
-                        .map(
-                          (annotation) => StyledListItem(
-                            title: (annotation.note ?? '').toText(),
-                            subtitle: Column(
-                              children: [
-                                annotation.passages.map((passage) => passage.format()).join('; ').nullIfBlank,
-                                ...annotation.selections.map((selection) => '"${bible.getSelectionText(selection)}"'),
-                              ].nonNulls.map((text) => Text(text, maxLines: 1, overflow: .ellipsis)).toList(),
-                            ),
+      child: OverflowBox(
+        maxHeight: context.textStyle.bibleBody.totalHeight + 4,
+        maxWidth: 30,
+        child: Underline(
+          isUnderlined: isUnderlined,
+          child: Container(
+            color: color,
+            margin: .only(bottom: 4),
+            child: StyledCircleButton.sm(
+              onPressed: () => context.showStyledSheet(
+                (context) => StyledSheet(
+                  title: 'Notes'.toText(),
+                  children: annotations
+                      .map(
+                        (annotation) => StyledListItem(
+                          title: (annotation.note ?? '').toText(),
+                          subtitle: Column(
+                            children: [
+                              annotation.passages.map((passage) => passage.format()).join('; ').nullIfBlank,
+                              ...annotation.selections.map((selection) => '"${bible.getSelectionText(selection)}"'),
+                            ].nonNulls.map((text) => Text(text, maxLines: 1, overflow: .ellipsis)).toList(),
                           ),
-                        )
-                        .toList(),
-                  ),
+                        ),
+                      )
+                      .toList(),
                 ),
-                child: Icon(Symbols.note_stack, color: context.colors.contentTertiary),
               ),
+              child: Icon(Symbols.note_stack, color: context.colors.contentTertiary),
             ),
           ),
         ),

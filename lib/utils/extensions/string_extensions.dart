@@ -7,6 +7,7 @@ extension StringExtensions on String {
   String? get nullIfBlank => isBlank ? null : this;
 
   String get onlyLetters => replaceAll(RegExp(r"[^a-zA-Z ]"), "");
+  bool get isLetterOnly => contains(RegExp(r"[^a-zA-Z'\-]"));
 
   Text toText() => Text(this);
 

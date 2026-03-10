@@ -20,7 +20,6 @@ import 'package:bible/ui/pages/chapter_reference_search_page.dart';
 import 'package:bible/ui/pages/passage_settings_page.dart';
 import 'package:bible/ui/pages/selection_settings_page.dart';
 import 'package:bible/ui/pages/toolbar_settings_page.dart';
-import 'package:bible/ui/utils/text_selection_controls.dart';
 import 'package:bible/ui/widgets/passage_bottom_bar.dart';
 import 'package:bible/ui/widgets/passage_builder.dart';
 import 'package:bible/ui/widgets/selection_bottom_bar.dart';
@@ -55,13 +54,11 @@ class BiblePage extends HookConsumerWidget {
     final currentPage = (pageController.pageOrNull ?? bible.getPageIndexByChapterReference(initialReference)).round();
     final currentChapterReference = bible.getChapterReferenceByPageIndex(currentPage);
 
+    final isScrollingDownState = useState(true);
+
     final selectedReferencesState = useState(<Reference>[]);
-
-    final isScrollingDownState = useMemoized(() => ValueNotifier(true));
-
-    final selectionState = useMemoized(() => ValueNotifier<Selection?>(null));
+    final selectionState = useState<Selection?>(null);
     final keyByReferenceRef = useRef(<Reference, GlobalKey>{});
-    final selectionKeyByPageIndexRef = useRef(<int, GlobalKey<SelectionAreaState>>{});
 
     return StyledPage(
       body: Stack(
@@ -78,76 +75,41 @@ class BiblePage extends HookConsumerWidget {
             itemBuilder: (context, pageIndex) {
               final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
 
-              return HookBuilder(
-                builder: (context) {
-                  final selectionKey = useMemoized(() => GlobalKey<SelectionAreaState>());
-                  useEffect(() {
-                    WidgetsBinding.instance.addPostFrameCallback(
-                      (_) => selectionKeyByPageIndexRef.value = {
-                        ...selectionKeyByPageIndexRef.value,
-                        pageIndex: selectionKey,
-                      },
-                    );
-                    return () {
-                      selectionKey.currentState?.selectableRegion.clearSelection();
-                      WidgetsBinding.instance.addPostFrameCallback(
-                        (_) =>
-                            selectionKeyByPageIndexRef.value = {...selectionKeyByPageIndexRef.value}..remove(pageIndex),
-                      );
-                    };
-                  });
-
-                  return StyledScrollbar(
-                    child: SingleChildScrollView(
-                      primary: pageController.page?.round() == pageIndex,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 8) +
-                          .only(
-                            top: MediaQuery.paddingOf(context).top + 24,
-                            bottom: MediaQuery.paddingOf(context).bottom + 72,
-                          ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(chapterReference.format(), style: context.textStyle.bibleChapter),
-                          gapH16,
-                          SelectionArea(
-                            key: selectionKey,
-                            selectionControls: Theme.of(context).platform == TargetPlatform.android
-                                ? CustomMaterialTextSelectionControls()
-                                : CustomCupertinoTextSelectionControls(),
-                            contextMenuBuilder: (context, state) => AdaptiveTextSelectionToolbar.buttonItems(
-                              anchors: state.contextMenuAnchors,
-                              buttonItems: [],
-                            ),
-                            child: PassageBuilder(
-                              passage: chapterReference.toPassage(),
-                              underlinedReferences: selectedReferencesState.value,
-                              onReferencePressed: (reference) {
-                                final region = selectionKey.currentState?.selectableRegion;
-                                // ignore: deprecated_member_use
-                                if (region == null || region.textEditingValue.selection.isCollapsed) {
-                                  selectedReferencesState.value = selectedReferencesState.value.withToggle(reference);
-                                } else {
-                                  region.clearSelection();
-                                }
-                              },
-                              onSelectionUpdated: (selection) => WidgetsBinding.instance.addPostFrameCallback((_) {
-                                if (selectedReferencesState.value.isNotEmpty) {
-                                  selectedReferencesState.value = [];
-                                }
-                                selectionState.value = selection;
-                              }),
-                              keyByReferenceRef: keyByReferenceRef,
-                              selectionState: selectionState,
-                            ),
-                          ),
-                          gapH16,
-                        ],
+              return StyledScrollbar(
+                child: SingleChildScrollView(
+                  primary: pageController.page?.round() == pageIndex,
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20, vertical: 8) +
+                      .only(
+                        top: MediaQuery.paddingOf(context).top + 24,
+                        bottom: MediaQuery.paddingOf(context).bottom + 72,
                       ),
-                    ),
-                  );
-                },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(chapterReference.format(), style: context.textStyle.bibleChapter),
+                      gapH16,
+                      PassageBuilder(
+                        passage: chapterReference.toPassage(),
+                        underlinedReferences: selectedReferencesState.value,
+                        onReferencePressed: (reference) {
+                          if (selectionState.value == null) {
+                            selectedReferencesState.value = selectedReferencesState.value.withToggle(reference);
+                          } else {
+                            selectionState.value = null;
+                          }
+                        },
+                        onSelectionUpdated: (selection) {
+                          selectedReferencesState.value = [];
+                          selectionState.value = selection;
+                        },
+                        keyByReferenceRef: keyByReferenceRef,
+                        selection: selectionState.value,
+                      ),
+                      gapH16,
+                    ],
+                  ),
+                ),
               );
             },
           ),
@@ -164,7 +126,6 @@ class BiblePage extends HookConsumerWidget {
             isScrollingDownState: isScrollingDownState,
             selectionState: selectionState,
             keyByReferenceRef: keyByReferenceRef,
-            selectionKey: selectionKeyByPageIndexRef.value[currentPage],
           ),
         ],
       ),
@@ -175,20 +136,18 @@ class BiblePage extends HookConsumerWidget {
 class _Bottom extends HookConsumerWidget {
   final ChapterReference currentChapterReference;
   final PageController pageController;
-  final ValueNotifier<List<Reference>> selectedReferencesState;
   final ValueNotifier<bool> isScrollingDownState;
+  final ValueNotifier<List<Reference>> selectedReferencesState;
   final ValueNotifier<Selection?> selectionState;
   final ObjectRef<Map<Reference, GlobalKey>> keyByReferenceRef;
-  final GlobalKey<SelectionAreaState>? selectionKey;
 
   const _Bottom({
     required this.currentChapterReference,
     required this.pageController,
-    required this.selectedReferencesState,
     required this.isScrollingDownState,
+    required this.selectedReferencesState,
     required this.selectionState,
     required this.keyByReferenceRef,
-    required this.selectionKey,
   });
 
   @override
@@ -219,7 +178,7 @@ class _Bottom extends HookConsumerWidget {
     final showBottomBar = (isScrollingDownState.value || isAtBottom) && selectedPassage == null && selection == null;
 
     void onClosePressed() {
-      selectionKey?.currentState?.selectableRegion.clearSelection();
+      selectionState.value = null;
       selectedReferencesState.value = [];
     }
 
@@ -397,7 +356,7 @@ class _Bottom extends HookConsumerWidget {
                               user: user,
                               selection: selection,
                               bible: bible,
-                              onDeselect: () => selectedReferencesState.value = [],
+                              onDeselect: () => selectionState.value = null,
                               onNavigateToReference: navigateToReference,
                             ),
                             onMorePressed: () => context.showStyledSheet(
@@ -426,8 +385,7 @@ class _Bottom extends HookConsumerWidget {
                                             user: user,
                                             selection: selection,
                                             bible: bible,
-                                            onDeselect: () =>
-                                                selectionKey?.currentState?.selectableRegion.clearSelection(),
+                                            onDeselect: () => selectionState.value = null,
                                             onNavigateToReference: navigateToReference,
                                           );
                                         },

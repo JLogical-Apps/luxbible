@@ -48,11 +48,20 @@ enum SelectionAction {
   }) async {
     switch (this) {
       case annotate:
-        final annotation = await AnnotationSheet.show(context, ref, region: selection, bible: bible, user: user);
+        final annotation = await AnnotationSheet.show(
+          context,
+          ref,
+          region: selection,
+          bible: bible,
+          user: user,
+          onAnnotationsRemoved: onDeselect,
+        );
         if (annotation != null) {
+          onDeselect();
           ref.updateUser((user) => user.withAnnotation(annotation));
         }
       case search:
+        onDeselect();
         final result =
             await context.push(SearchPage(initialSearch: bible.getSelectionText(selection))) as SearchPageResult?;
         if (result?.reference case final reference?) {

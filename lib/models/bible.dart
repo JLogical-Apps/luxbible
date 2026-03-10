@@ -6,6 +6,9 @@ import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/selection.dart';
 import 'package:bible/models/verse.dart';
+import 'package:bible/utils/extensions/object_extensions.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
+import 'package:bible/utils/range.dart';
 
 class Bible {
   final BibleTranslation translation;
@@ -46,5 +49,31 @@ class Bible {
     verseTexts[0] = verseTexts[0].substring(selection.start.characterOffset);
 
     return verseTexts.join(' ');
+  }
+
+  Selection getWordsSelection(Selection selection) {
+    final startVerseText = getVerseByReference(selection.start.toReference())!.text;
+    final endVerseText = getVerseByReference(selection.end.toReference())!.text;
+    return Selection(
+      translation: translation,
+      start: SelectionWordAnchor.fromReference(
+        reference: selection.start.toReference(),
+        characterOffset:
+            List.generate(
+              selection.start.characterOffset,
+              (i) => i,
+            ).where((offset) => startVerseText[offset] == ' ').lastOrNull?.mapIfNonNull((offset) => offset + 1) ??
+            0,
+      ),
+      end: SelectionWordAnchor.fromReference(
+        reference: selection.end.toReference(),
+        characterOffset:
+            Range.generate(
+              selection.end.characterOffset,
+              endVerseText.length - 1,
+            ).where((offset) => endVerseText[offset].isLetterOnly).firstOrNull?.mapIfNonNull((offset) => offset - 1) ??
+            endVerseText.length - 1,
+      ),
+    );
   }
 }
