@@ -1,11 +1,10 @@
 import { toPlainText } from '@portabletext/react';
 import { PortableTextBlock } from '@portabletext/types';
 import { groq } from 'next-sanity';
-import SVG from 'react-inlinesvg';
 import { defineType } from 'sanity';
 
-import { Icon, iconQueryPart } from '@/lib/types/icon';
-import { iconField } from '@/schema/fields/icon-field';
+import { Media, mediaRecord } from '@/schema/documents/media/media';
+import { mediaField } from '@/schema/fields/media-field';
 import { bodyRichTextQueryPart } from '@/schema/richtext/body-rich-text';
 import {
   inlineRichText,
@@ -14,9 +13,9 @@ import {
 import { record } from '@/schema/sanity-type';
 
 export type Description = {
-  name: PortableTextBlock[];
-  body: PortableTextBlock[];
-  icon: Icon;
+  title: PortableTextBlock[];
+  subtitle: PortableTextBlock[];
+  media: Media;
 };
 
 export const descriptionRecord = record<Description>({
@@ -27,46 +26,38 @@ export const descriptionRecord = record<Description>({
       title: 'Description',
       fields: [
         {
-          name: 'name',
-          title: 'Name',
+          name: 'title',
+          title: 'Title',
           ...inlineRichText,
           validation: (Rule) => Rule.required(),
         },
         {
-          name: 'body',
-          title: 'Body',
+          name: 'subtitle',
+          title: 'Subtitle',
           ...inlineRichText,
           validation: (Rule) => Rule.required(),
         },
         {
-          ...iconField,
+          ...mediaField,
           validation: (Rule) => Rule.required(),
         },
       ],
       preview: {
         select: {
-          title: 'name',
-          icon: 'icon.svg',
+          title: 'title',
+          subtitle: 'subtitle',
         },
-        prepare({ title, icon }) {
+        prepare({ title, subtitle }) {
           return {
             title: toPlainText(title),
-            media: icon && (
-              <SVG
-                src={icon}
-                style={{
-                  width: '1em',
-                  height: '1em',
-                }}
-              />
-            ),
+            subtitle: toPlainText(subtitle),
           };
         },
       },
     }),
   groqQueryPart: () => groq`
-      name[]{${inlineRichTextQueryPart}},
-      body[]{${bodyRichTextQueryPart}},
-      icon{${iconQueryPart}},
+      title[]{${inlineRichTextQueryPart}},
+      subtitle[]{${bodyRichTextQueryPart}},
+      media->{${mediaRecord.getGroqQueryPart()}},
   `,
 });
