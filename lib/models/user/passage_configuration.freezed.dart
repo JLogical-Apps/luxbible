@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$PassageConfiguration {
 
- PassageShortcut get pinnedShortcut1; PassageShortcut get pinnedShortcut2; PassageShortcut get pinnedShortcut3;
+ PassageShortcut get pinnedShortcut1; PassageShortcut get pinnedShortcut2; PassageShortcut get pinnedShortcut3; bool get expandToAnnotation;
 /// Create a copy of PassageConfiguration
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $PassageConfigurationCopyWith<PassageConfiguration> get copyWith => _$PassageCon
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PassageConfiguration&&(identical(other.pinnedShortcut1, pinnedShortcut1) || other.pinnedShortcut1 == pinnedShortcut1)&&(identical(other.pinnedShortcut2, pinnedShortcut2) || other.pinnedShortcut2 == pinnedShortcut2)&&(identical(other.pinnedShortcut3, pinnedShortcut3) || other.pinnedShortcut3 == pinnedShortcut3));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PassageConfiguration&&(identical(other.pinnedShortcut1, pinnedShortcut1) || other.pinnedShortcut1 == pinnedShortcut1)&&(identical(other.pinnedShortcut2, pinnedShortcut2) || other.pinnedShortcut2 == pinnedShortcut2)&&(identical(other.pinnedShortcut3, pinnedShortcut3) || other.pinnedShortcut3 == pinnedShortcut3)&&(identical(other.expandToAnnotation, expandToAnnotation) || other.expandToAnnotation == expandToAnnotation));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,pinnedShortcut1,pinnedShortcut2,pinnedShortcut3);
+int get hashCode => Object.hash(runtimeType,pinnedShortcut1,pinnedShortcut2,pinnedShortcut3,expandToAnnotation);
 
 @override
 String toString() {
-  return 'PassageConfiguration(pinnedShortcut1: $pinnedShortcut1, pinnedShortcut2: $pinnedShortcut2, pinnedShortcut3: $pinnedShortcut3)';
+  return 'PassageConfiguration(pinnedShortcut1: $pinnedShortcut1, pinnedShortcut2: $pinnedShortcut2, pinnedShortcut3: $pinnedShortcut3, expandToAnnotation: $expandToAnnotation)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $PassageConfigurationCopyWith<$Res>  {
   factory $PassageConfigurationCopyWith(PassageConfiguration value, $Res Function(PassageConfiguration) _then) = _$PassageConfigurationCopyWithImpl;
 @useResult
 $Res call({
- PassageShortcut pinnedShortcut1, PassageShortcut pinnedShortcut2, PassageShortcut pinnedShortcut3
+ PassageShortcut pinnedShortcut1, PassageShortcut pinnedShortcut2, PassageShortcut pinnedShortcut3, bool expandToAnnotation
 });
 
 
@@ -65,12 +65,13 @@ class _$PassageConfigurationCopyWithImpl<$Res>
 
 /// Create a copy of PassageConfiguration
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? pinnedShortcut1 = null,Object? pinnedShortcut2 = null,Object? pinnedShortcut3 = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? pinnedShortcut1 = null,Object? pinnedShortcut2 = null,Object? pinnedShortcut3 = null,Object? expandToAnnotation = null,}) {
   return _then(_self.copyWith(
 pinnedShortcut1: null == pinnedShortcut1 ? _self.pinnedShortcut1 : pinnedShortcut1 // ignore: cast_nullable_to_non_nullable
 as PassageShortcut,pinnedShortcut2: null == pinnedShortcut2 ? _self.pinnedShortcut2 : pinnedShortcut2 // ignore: cast_nullable_to_non_nullable
 as PassageShortcut,pinnedShortcut3: null == pinnedShortcut3 ? _self.pinnedShortcut3 : pinnedShortcut3 // ignore: cast_nullable_to_non_nullable
-as PassageShortcut,
+as PassageShortcut,expandToAnnotation: null == expandToAnnotation ? _self.expandToAnnotation : expandToAnnotation // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( PassageShortcut pinnedShortcut1,  PassageShortcut pinnedShortcut2,  PassageShortcut pinnedShortcut3)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( PassageShortcut pinnedShortcut1,  PassageShortcut pinnedShortcut2,  PassageShortcut pinnedShortcut3,  bool expandToAnnotation)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PassageConfiguration() when $default != null:
-return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut3);case _:
+return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut3,_that.expandToAnnotation);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( PassageShortcut pinnedShortcut1,  PassageShortcut pinnedShortcut2,  PassageShortcut pinnedShortcut3)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( PassageShortcut pinnedShortcut1,  PassageShortcut pinnedShortcut2,  PassageShortcut pinnedShortcut3,  bool expandToAnnotation)  $default,) {final _that = this;
 switch (_that) {
 case _PassageConfiguration():
-return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut3);}
+return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut3,_that.expandToAnnotation);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -190,10 +191,10 @@ return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( PassageShortcut pinnedShortcut1,  PassageShortcut pinnedShortcut2,  PassageShortcut pinnedShortcut3)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( PassageShortcut pinnedShortcut1,  PassageShortcut pinnedShortcut2,  PassageShortcut pinnedShortcut3,  bool expandToAnnotation)?  $default,) {final _that = this;
 switch (_that) {
 case _PassageConfiguration() when $default != null:
-return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut3);case _:
+return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut3,_that.expandToAnnotation);case _:
   return null;
 
 }
@@ -205,12 +206,13 @@ return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut
 @JsonSerializable()
 
 class _PassageConfiguration extends PassageConfiguration {
-  const _PassageConfiguration({this.pinnedShortcut1 = PassageShortcut.annotate, this.pinnedShortcut2 = PassageShortcut.commentary, this.pinnedShortcut3 = PassageShortcut.interlinear}): super._();
+  const _PassageConfiguration({this.pinnedShortcut1 = PassageShortcut.annotate, this.pinnedShortcut2 = PassageShortcut.commentary, this.pinnedShortcut3 = PassageShortcut.interlinear, this.expandToAnnotation = false}): super._();
   factory _PassageConfiguration.fromJson(Map<String, dynamic> json) => _$PassageConfigurationFromJson(json);
 
 @override@JsonKey() final  PassageShortcut pinnedShortcut1;
 @override@JsonKey() final  PassageShortcut pinnedShortcut2;
 @override@JsonKey() final  PassageShortcut pinnedShortcut3;
+@override@JsonKey() final  bool expandToAnnotation;
 
 /// Create a copy of PassageConfiguration
 /// with the given fields replaced by the non-null parameter values.
@@ -225,16 +227,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PassageConfiguration&&(identical(other.pinnedShortcut1, pinnedShortcut1) || other.pinnedShortcut1 == pinnedShortcut1)&&(identical(other.pinnedShortcut2, pinnedShortcut2) || other.pinnedShortcut2 == pinnedShortcut2)&&(identical(other.pinnedShortcut3, pinnedShortcut3) || other.pinnedShortcut3 == pinnedShortcut3));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PassageConfiguration&&(identical(other.pinnedShortcut1, pinnedShortcut1) || other.pinnedShortcut1 == pinnedShortcut1)&&(identical(other.pinnedShortcut2, pinnedShortcut2) || other.pinnedShortcut2 == pinnedShortcut2)&&(identical(other.pinnedShortcut3, pinnedShortcut3) || other.pinnedShortcut3 == pinnedShortcut3)&&(identical(other.expandToAnnotation, expandToAnnotation) || other.expandToAnnotation == expandToAnnotation));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,pinnedShortcut1,pinnedShortcut2,pinnedShortcut3);
+int get hashCode => Object.hash(runtimeType,pinnedShortcut1,pinnedShortcut2,pinnedShortcut3,expandToAnnotation);
 
 @override
 String toString() {
-  return 'PassageConfiguration(pinnedShortcut1: $pinnedShortcut1, pinnedShortcut2: $pinnedShortcut2, pinnedShortcut3: $pinnedShortcut3)';
+  return 'PassageConfiguration(pinnedShortcut1: $pinnedShortcut1, pinnedShortcut2: $pinnedShortcut2, pinnedShortcut3: $pinnedShortcut3, expandToAnnotation: $expandToAnnotation)';
 }
 
 
@@ -245,7 +247,7 @@ abstract mixin class _$PassageConfigurationCopyWith<$Res> implements $PassageCon
   factory _$PassageConfigurationCopyWith(_PassageConfiguration value, $Res Function(_PassageConfiguration) _then) = __$PassageConfigurationCopyWithImpl;
 @override @useResult
 $Res call({
- PassageShortcut pinnedShortcut1, PassageShortcut pinnedShortcut2, PassageShortcut pinnedShortcut3
+ PassageShortcut pinnedShortcut1, PassageShortcut pinnedShortcut2, PassageShortcut pinnedShortcut3, bool expandToAnnotation
 });
 
 
@@ -262,12 +264,13 @@ class __$PassageConfigurationCopyWithImpl<$Res>
 
 /// Create a copy of PassageConfiguration
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? pinnedShortcut1 = null,Object? pinnedShortcut2 = null,Object? pinnedShortcut3 = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? pinnedShortcut1 = null,Object? pinnedShortcut2 = null,Object? pinnedShortcut3 = null,Object? expandToAnnotation = null,}) {
   return _then(_PassageConfiguration(
 pinnedShortcut1: null == pinnedShortcut1 ? _self.pinnedShortcut1 : pinnedShortcut1 // ignore: cast_nullable_to_non_nullable
 as PassageShortcut,pinnedShortcut2: null == pinnedShortcut2 ? _self.pinnedShortcut2 : pinnedShortcut2 // ignore: cast_nullable_to_non_nullable
 as PassageShortcut,pinnedShortcut3: null == pinnedShortcut3 ? _self.pinnedShortcut3 : pinnedShortcut3 // ignore: cast_nullable_to_non_nullable
-as PassageShortcut,
+as PassageShortcut,expandToAnnotation: null == expandToAnnotation ? _self.expandToAnnotation : expandToAnnotation // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

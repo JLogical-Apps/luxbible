@@ -80,6 +80,17 @@ sealed class User with _$User {
       .groupListsBy((records) => records.$2.start.characterOffset)
       .map((offset, records) => MapEntry(offset, records.map((record) => record.$1).toList()));
 
+  List<Reference> getExpandedReferences(Reference reference) =>
+      annotations
+          .expand((annotation) => annotation.passages.where((passage) => passage.references.contains(reference)))
+          .lastOrNull
+          ?.references ??
+      [reference];
+
+  Selection getExpandedSelection(Selection selection) =>
+      annotations.expand((annotation) => annotation.selections.where((s) => s.intersects(selection))).lastOrNull ??
+      selection;
+
   User withBookmark(Bookmark bookmark) => copyWith(bookmarks: [...bookmarks, bookmark]);
   User withRemovedBookmark(Bookmark bookmark) => copyWith(bookmarks: bookmarks.withRemoved(bookmark));
 

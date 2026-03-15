@@ -27,6 +27,7 @@ _SelectionConfiguration _$SelectionConfigurationFromJson(
         json['pinnedShortcut3'],
       ) ??
       SelectionShortcut.copy,
+  expandToAnnotation: json['expandToAnnotation'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$SelectionConfigurationToJson(
@@ -35,6 +36,7 @@ Map<String, dynamic> _$SelectionConfigurationToJson(
   'pinnedShortcut1': _$SelectionShortcutEnumMap[instance.pinnedShortcut1]!,
   'pinnedShortcut2': _$SelectionShortcutEnumMap[instance.pinnedShortcut2]!,
   'pinnedShortcut3': _$SelectionShortcutEnumMap[instance.pinnedShortcut3]!,
+  'expandToAnnotation': instance.expandToAnnotation,
 };
 
 const _$SelectionShortcutEnumMap = {

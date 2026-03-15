@@ -77,7 +77,7 @@ class StyledMultiSelectionSheet<T> extends StyledSheet<List<T>> {
                         title: optionMapper(option).title,
                         subtitle: optionMapper(option).subtitle,
                         leading: optionMapper(option).leading,
-                        selected: selectedOptionsState.value.contains(option),
+                        isSelected: selectedOptionsState.value.contains(option),
                         onSelected: (selected) =>
                             selectedOptionsState.value = selectedOptionsState.value.withToggle(option),
                       ),

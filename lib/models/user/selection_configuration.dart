@@ -12,6 +12,7 @@ sealed class SelectionConfiguration with _$SelectionConfiguration {
     @Default(SelectionShortcut.annotate) SelectionShortcut pinnedShortcut1,
     @Default(SelectionShortcut.search) SelectionShortcut pinnedShortcut2,
     @Default(SelectionShortcut.copy) SelectionShortcut pinnedShortcut3,
+    @Default(false) bool expandToAnnotation,
   }) = _SelectionConfiguration;
 
   factory SelectionConfiguration.fromJson(Map<String, dynamic> json) => _$SelectionConfigurationFromJson(json);

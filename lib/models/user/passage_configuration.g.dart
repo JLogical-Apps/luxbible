@@ -18,6 +18,7 @@ _PassageConfiguration _$PassageConfigurationFromJson(
   pinnedShortcut3:
       $enumDecodeNullable(_$PassageShortcutEnumMap, json['pinnedShortcut3']) ??
       PassageShortcut.interlinear,
+  expandToAnnotation: json['expandToAnnotation'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$PassageConfigurationToJson(
@@ -26,6 +27,7 @@ Map<String, dynamic> _$PassageConfigurationToJson(
   'pinnedShortcut1': _$PassageShortcutEnumMap[instance.pinnedShortcut1]!,
   'pinnedShortcut2': _$PassageShortcutEnumMap[instance.pinnedShortcut2]!,
   'pinnedShortcut3': _$PassageShortcutEnumMap[instance.pinnedShortcut3]!,
+  'expandToAnnotation': instance.expandToAnnotation,
 };
 
 const _$PassageShortcutEnumMap = {

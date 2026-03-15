@@ -152,7 +152,7 @@ class PassageBuilder extends HookConsumerWidget {
               .where((reference, annotations) => annotations.isNotEmpty)
               .mapToIterable((reference, annotations) {
                 final verseColor = annotations
-                    .map((annotation) => annotation.color.toHue(context.colors).primary)
+                    .map((annotation) => annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5))
                     .mixOrNull;
                 final (base, extent) = getReferenceCharacterOffsets(
                   reference: reference,

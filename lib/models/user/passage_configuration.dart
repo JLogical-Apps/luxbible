@@ -12,6 +12,7 @@ sealed class PassageConfiguration with _$PassageConfiguration {
     @Default(PassageShortcut.annotate) PassageShortcut pinnedShortcut1,
     @Default(PassageShortcut.commentary) PassageShortcut pinnedShortcut2,
     @Default(PassageShortcut.interlinear) PassageShortcut pinnedShortcut3,
+    @Default(false) bool expandToAnnotation,
   }) = _PassageConfiguration;
 
   factory PassageConfiguration.fromJson(Map<String, dynamic> json) => _$PassageConfigurationFromJson(json);

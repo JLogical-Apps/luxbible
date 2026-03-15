@@ -44,9 +44,21 @@ class StyledListItem extends StatelessWidget {
     this.size = ComponentSize.md,
     this.enabled = true,
   }) : onPressed = onSelected,
-       trailing = StyledRadio(selected: selected);
+       trailing = StyledRadio(isSelected: selected);
 
   StyledListItem.checkbox({
+    super.key,
+    this.title,
+    this.subtitle,
+    this.leading,
+    required bool isSelected,
+    required Function(bool newValue) onSelected,
+    this.size = ComponentSize.md,
+    this.enabled = true,
+  }) : onPressed = (() => onSelected(!isSelected)),
+       trailing = StyledCheckbox(isSelected: isSelected);
+
+  StyledListItem.switchControl({
     super.key,
     this.title,
     this.subtitle,
@@ -55,8 +67,8 @@ class StyledListItem extends StatelessWidget {
     required Function(bool newValue) onSelected,
     this.size = ComponentSize.md,
     this.enabled = true,
-  }) : onPressed = (() => onSelected(!selected)),
-       trailing = StyledCheckbox(selected: selected);
+  }) : onPressed = null,
+       trailing = StyledSwitch(isSelected: selected, onSelected: onSelected);
 
   @override
   Widget build(BuildContext context) {

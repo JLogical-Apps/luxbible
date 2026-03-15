@@ -93,15 +93,21 @@ class BiblePage extends HookConsumerWidget {
                         passage: chapterReference.toPassage(),
                         underlinedReferences: selectedReferencesState.value,
                         onReferencePressed: (reference) {
-                          if (selectionState.value == null) {
-                            selectedReferencesState.value = selectedReferencesState.value.withToggle(reference);
-                          } else {
+                          if (selectionState.value != null) {
                             selectionState.value = null;
+                          } else if (selectedReferencesState.value.isEmpty && user.passage.expandToAnnotation) {
+                            selectedReferencesState.value = user.getExpandedReferences(reference);
+                          } else {
+                            selectedReferencesState.value = selectedReferencesState.value.withToggle(reference);
                           }
                         },
                         onSelectionUpdated: (selection) {
                           selectedReferencesState.value = [];
-                          selectionState.value = selection;
+                          if (selectionState.value == null && user.selection.expandToAnnotation && selection != null) {
+                            selectionState.value = user.getExpandedSelection(selection);
+                          } else {
+                            selectionState.value = selection;
+                          }
                         },
                         keyByReferenceRef: keyByReferenceRef,
                         selection: selectionState.value,
