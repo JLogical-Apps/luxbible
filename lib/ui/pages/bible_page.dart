@@ -7,15 +7,7 @@ import 'package:bible/models/selection_action.dart';
 import 'package:bible/models/toolbar_action.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/animated_grow.dart';
-import 'package:bible/style/gap.dart';
-import 'package:bible/style/style_context_extensions.dart';
-import 'package:bible/style/styled_shadow.dart';
-import 'package:bible/style/widgets/sheet/styled_sheet.dart';
-import 'package:bible/style/widgets/styled_circle_button.dart';
-import 'package:bible/style/widgets/styled_list_item.dart';
-import 'package:bible/style/widgets/styled_page.dart';
-import 'package:bible/style/widgets/styled_scrollbar.dart';
+import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
 import 'package:bible/ui/pages/passage_settings_page.dart';
 import 'package:bible/ui/pages/selection_settings_page.dart';
@@ -55,6 +47,7 @@ class BiblePage extends HookConsumerWidget {
     final currentChapterReference = bible.getChapterReferenceByPageIndex(currentPage);
 
     final isScrollingDownState = useState(true);
+    final scrollControllerByReferenceRef = useRef(<ChapterReference, ScrollController>{});
 
     final selectedReferencesState = useState(<Reference>[]);
     final selectionState = useState<Selection?>(null);
@@ -75,47 +68,100 @@ class BiblePage extends HookConsumerWidget {
             itemBuilder: (context, pageIndex) {
               final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
 
-              return StyledScrollbar(
-                child: SingleChildScrollView(
-                  primary: pageController.page?.round() == pageIndex,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20, vertical: 8) +
-                      .only(
-                        top: MediaQuery.paddingOf(context).top + 24,
-                        bottom: MediaQuery.paddingOf(context).bottom + 72,
-                      ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              return HookBuilder(
+                builder: (context) {
+                  final scrollController = useDisposable(
+                    useScrollController(),
+                    (controller) =>
+                        scrollControllerByReferenceRef.value = {...scrollControllerByReferenceRef.value}
+                          ..remove(chapterReference),
+                  );
+                  if (!scrollControllerByReferenceRef.value.containsKey(chapterReference)) {
+                    WidgetsBinding.instance.addPostFrameCallback(
+                      (_) => scrollControllerByReferenceRef.value = {
+                        ...scrollControllerByReferenceRef.value,
+                        chapterReference: scrollController,
+                      },
+                    );
+                  }
+
+                  final showTopBar = useListenableSelector(
+                    scrollController,
+                    () => scrollController.hasClients && scrollController.position.pixels > 60,
+                  );
+
+                  return Stack(
                     children: [
-                      Text(chapterReference.format(), style: context.textStyle.bibleChapter),
-                      gapH16,
-                      PassageBuilder(
-                        passage: chapterReference.toPassage(),
-                        underlinedReferences: selectedReferencesState.value,
-                        onReferencePressed: (reference) {
-                          if (selectionState.value != null) {
-                            selectionState.value = null;
-                          } else if (selectedReferencesState.value.isEmpty && user.passage.expandToAnnotation) {
-                            selectedReferencesState.value = user.getExpandedReferences(reference);
-                          } else {
-                            selectedReferencesState.value = selectedReferencesState.value.withToggle(reference);
-                          }
-                        },
-                        onSelectionUpdated: (selection) {
-                          selectedReferencesState.value = [];
-                          if (selectionState.value == null && user.selection.expandToAnnotation && selection != null) {
-                            selectionState.value = user.getExpandedSelection(selection);
-                          } else {
-                            selectionState.value = selection;
-                          }
-                        },
-                        keyByReferenceRef: keyByReferenceRef,
-                        selection: selectionState.value,
+                      StyledScrollbar(
+                        child: SingleChildScrollView(
+                          controller: scrollController,
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 20, vertical: 8) +
+                              .only(
+                                top: MediaQuery.paddingOf(context).top + 24,
+                                bottom: MediaQuery.paddingOf(context).bottom + 72,
+                              ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(chapterReference.format(), style: context.textStyle.bibleChapter),
+                              gapH16,
+                              PassageBuilder(
+                                passage: chapterReference.toPassage(),
+                                underlinedReferences: selectedReferencesState.value,
+                                onReferencePressed: (reference) {
+                                  if (selectionState.value != null) {
+                                    selectionState.value = null;
+                                  } else if (selectedReferencesState.value.isEmpty && user.passage.expandToAnnotation) {
+                                    selectedReferencesState.value = user.getExpandedReferences(reference);
+                                  } else {
+                                    selectedReferencesState.value = selectedReferencesState.value.withToggle(reference);
+                                  }
+                                },
+                                onSelectionUpdated: (selection) {
+                                  selectedReferencesState.value = [];
+                                  if (selectionState.value == null &&
+                                      user.selection.expandToAnnotation &&
+                                      selection != null) {
+                                    selectionState.value = user.getExpandedSelection(selection);
+                                  } else {
+                                    selectionState.value = selection;
+                                  }
+                                },
+                                keyByReferenceRef: keyByReferenceRef,
+                                selection: selectionState.value,
+                              ),
+                              gapH16,
+                            ],
+                          ),
+                        ),
                       ),
-                      gapH16,
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        left: 0,
+                        child: AnimatedOpacity(
+                          opacity: showTopBar ? 1 : 0,
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeInOutCubic,
+                          child: Container(
+                            color: context.colors.backgroundPrimary,
+                            padding:
+                                EdgeInsets.only(top: MediaQuery.paddingOf(context).top) + .symmetric(horizontal: 16),
+                            alignment: .centerLeft,
+                            child: Column(
+                              crossAxisAlignment: .start,
+                              children: [
+                                Text(chapterReference.format(), style: context.textStyle.labelSm.subtle(context)),
+                                StyledDivider(),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
-                  ),
-                ),
+                  );
+                },
               );
             },
           ),
@@ -129,6 +175,7 @@ class BiblePage extends HookConsumerWidget {
             currentChapterReference: currentChapterReference,
             pageController: pageController,
             selectedReferencesState: selectedReferencesState,
+            scrollController: scrollControllerByReferenceRef.value[currentChapterReference],
             isScrollingDownState: isScrollingDownState,
             selectionState: selectionState,
             keyByReferenceRef: keyByReferenceRef,
@@ -143,6 +190,7 @@ class _Bottom extends HookConsumerWidget {
   final ChapterReference currentChapterReference;
   final PageController pageController;
   final ValueNotifier<bool> isScrollingDownState;
+  final ScrollController? scrollController;
   final ValueNotifier<List<Reference>> selectedReferencesState;
   final ValueNotifier<Selection?> selectionState;
   final ObjectRef<Map<Reference, GlobalKey>> keyByReferenceRef;
@@ -151,6 +199,7 @@ class _Bottom extends HookConsumerWidget {
     required this.currentChapterReference,
     required this.pageController,
     required this.isScrollingDownState,
+    required this.scrollController,
     required this.selectedReferencesState,
     required this.selectionState,
     required this.keyByReferenceRef,
@@ -162,7 +211,7 @@ class _Bottom extends HookConsumerWidget {
     final user = ref.watch(userProvider);
     final bible = user.getBible(bibles);
 
-    final scrollController = useListenable(PrimaryScrollController.maybeOf(context));
+    useListenable(scrollController);
     useListenable(isScrollingDownState);
     useListenable(pageController);
     final selection = useListenable(selectionState).value;
