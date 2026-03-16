@@ -93,6 +93,7 @@ class BiblePage extends HookConsumerWidget {
                   return Stack(
                     children: [
                       StyledScrollbar(
+                        controller: scrollController,
                         child: SingleChildScrollView(
                           controller: scrollController,
                           padding:

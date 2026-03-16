@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 class StyledScrollbar extends StatelessWidget {
   final Widget child;
 
-  const StyledScrollbar({super.key, required this.child});
+  final ScrollController? controller;
+
+  const StyledScrollbar({super.key, required this.child, this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class StyledScrollbar extends StatelessWidget {
         mainAxisMargin: 8,
         crossAxisMargin: 4,
       ),
-      child: Scrollbar(child: child),
+      child: Scrollbar(controller: controller, child: child),
     );
   }
 }
