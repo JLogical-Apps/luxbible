@@ -36,13 +36,13 @@ export default function DescriptionListPageBlockRenderer({
   }
 
   return (
-    <div className="flex flex-col lg:flex-row lg:items-center gap-4">
-      <ul className="hidden lg:block space-y-4 w-[35rem]">
+    <div className="flex flex-col md:flex-row md:items-center gap-4 max-w-screen-md w-full mx-auto">
+      <ul className="hidden md:block space-y-4 w-[42rem]">
         {pageBlock.descriptions.map((description, i) => (
           <li
             key={i}
             className={clsx(
-              'flex flex-col gap-2 p-6 cursor-pointer items-stretch rounded-2xl hover:brightness-95 active:bg-background-soft',
+              'flex flex-col gap-2 p-6 cursor-pointer items-stretch rounded-2xl hover:brightness-150 active:bg-background-soft',
               selectedIndex === i ? 'bg-background-soft' : 'bg-background',
             )}
             onClick={() => setSelectedIndex(i)}
@@ -62,14 +62,14 @@ export default function DescriptionListPageBlockRenderer({
             key={i}
             media={description.media}
             className={clsx(
-              'w-full h-auto',
+              'w-auto h-full max-h-[36rem] mx-auto',
               selectedIndex === i ? 'block' : 'hidden',
             )}
             hidden={selectedIndex !== i}
           />
         ))}
       </div>
-      <Carousel className="block lg:hidden w-full" setApi={setApi}>
+      <Carousel className="block md:hidden w-full" setApi={setApi}>
         <CarouselContent className="space-x-2">
           {pageBlock.descriptions.map((description, i) => (
             <CarouselItem
