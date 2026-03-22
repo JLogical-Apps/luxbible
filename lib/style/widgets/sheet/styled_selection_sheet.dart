@@ -1,6 +1,7 @@
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_select.dart';
+import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:flutter/material.dart';
 
 class StyledSelectionSheet<T> extends StyledSheet<T> {
@@ -27,7 +28,7 @@ class StyledSelectionSheet<T> extends StyledSheet<T> {
               subtitle: optionMapper(option).subtitle,
               leading: optionMapper(option).leading,
               selected: option == initialOption,
-              onSelected: () => Navigator.of(context).pop(option),
+              onSelected: () => context.pop(option),
             ),
           )
           .toList(),

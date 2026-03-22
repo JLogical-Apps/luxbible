@@ -84,10 +84,7 @@ class StyledSheet<T> extends HookWidget {
                   SizedBox(
                     width: 48,
                     child: Center(
-                      child: StyledCircleButton.lg(
-                        child: Symbols.close.toIcon(),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
+                      child: StyledCircleButton.lg(child: Symbols.close.toIcon(), onPressed: () => context.pop()),
                     ),
                   ),
                   Expanded(

@@ -12,6 +12,7 @@ import 'package:bible/style/widgets/styled_form_input.dart';
 import 'package:bible/style/widgets/styled_port_field_builder.dart';
 import 'package:bible/style/widgets/styled_text_field.dart';
 import 'package:bible/ui/widgets/colored_circle.dart';
+import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
@@ -44,7 +45,7 @@ class AnnotationSheet {
                 onPressed: () {
                   ref.updateUser((user) => user.withRemovedRegionAnnotations(region));
                   onAnnotationsRemoved?.call();
-                  Navigator.of(context).pop();
+                  context.pop();
                 },
               )
             : null,

@@ -3,6 +3,7 @@ import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/ui/widgets/colored_circle.dart';
+import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:flutter/material.dart';
 
 class StyledColorSheet extends StyledSheet<ColorEnum> {
@@ -23,7 +24,7 @@ class StyledColorSheet extends StyledSheet<ColorEnum> {
               .map(
                 (color) => StyledCircleButton.lg(
                   child: ColoredCircle(color: color.toHue(context.colors).primary, isSelected: initialColor == color),
-                  onPressed: () => Navigator.of(context).pop(color),
+                  onPressed: () => context.pop(color),
                 ),
               )
               .toList(),

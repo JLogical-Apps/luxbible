@@ -1,6 +1,7 @@
 import 'package:bible/style/gap.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
+import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
@@ -17,7 +18,7 @@ class StyledPage extends StatelessWidget {
     final leading =
         this.leading ??
         (ModalRoute.of(context)?.canPop == true
-            ? StyledCircleButton.lg(child: Icon(Symbols.chevron_left), onPressed: () => Navigator.of(context).pop())
+            ? StyledCircleButton.lg(child: Icon(Symbols.chevron_left), onPressed: () => context.pop())
             : null);
     return Scaffold(
       backgroundColor: backgroundColor ?? context.colors.backgroundPrimary,

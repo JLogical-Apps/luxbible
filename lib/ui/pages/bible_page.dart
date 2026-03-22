@@ -319,7 +319,7 @@ class _Bottom extends HookConsumerWidget {
                           leading: action.buildIcon(context, user: user, reference: currentChapterReference),
                           trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
                           onPressed: () {
-                            Navigator.of(context).pop();
+                            context.pop();
                             action.onPressed(
                               context,
                               ref,

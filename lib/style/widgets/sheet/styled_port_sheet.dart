@@ -1,5 +1,6 @@
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/styled_rect_button.dart';
+import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/port_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ class StyledPortSheet<T> extends StyledSheet<T> {
             }
 
             if (context.mounted) {
-              Navigator.of(context).pop(result.data);
+              context.pop(result.data);
             }
           },
         ),
