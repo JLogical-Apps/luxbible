@@ -115,7 +115,13 @@ enum StudyAction {
                                 ),
                                 onPressed: () {
                                   context.pop();
-                                  StrongSheet.showWithContext(context, ref, strongId: strongId);
+                                  StrongSheet.showWithContext(
+                                    context,
+                                    ref,
+                                    strongId: strongId,
+                                    bible: bible,
+                                    onNavigateToReference: onNavigateToReference,
+                                  );
                                 },
                               ),
                             )

@@ -19,14 +19,22 @@ class StyledListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final separatedChildren = children
+        .mapIndexed((i, child) => StyledListItemContext(hideDivider: i + 1 == children.length, child: child))
+        .toList();
     return SlidableAutoCloseBehavior(
-      child: ListView(
+      child: CustomScrollView(
         shrinkWrap: shrinkWrap,
-        padding: padding,
         physics: physics,
-        children: children
-            .mapIndexed((i, child) => StyledListItemContext(hideDivider: i + 1 == children.length, child: child))
-            .toList(),
+        slivers: [
+          SliverPadding(
+            padding: padding,
+            sliver: SliverList.builder(
+              itemCount: separatedChildren.length,
+              itemBuilder: (context, index) => separatedChildren[index],
+            ),
+          ),
+        ],
       ),
     );
   }

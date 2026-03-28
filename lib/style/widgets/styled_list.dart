@@ -8,14 +8,16 @@ class StyledList extends StatelessWidget {
 
   const StyledList({super.key, required this.children});
 
+  static List<Widget> dividedItems({required List<Widget> children}) => children
+      .mapIndexed((i, child) => StyledListItemContext(hideDivider: i + 1 == children.length, child: child))
+      .toList();
+
   @override
   Widget build(BuildContext context) {
     return SlidableAutoCloseBehavior(
       child: Column(
         crossAxisAlignment: .stretch,
-        children: children
-            .mapIndexed((i, child) => StyledListItemContext(hideDivider: i + 1 == children.length, child: child))
-            .toList(),
+        children: dividedItems(children: children),
       ),
     );
   }

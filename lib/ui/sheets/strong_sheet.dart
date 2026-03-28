@@ -1,15 +1,25 @@
+import 'package:bible/models/bible.dart';
+import 'package:bible/models/reference/reference.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_section.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 class StrongSheet {
-  static Future<void> showWithContext(BuildContext context, WidgetRef ref, {required String strongId}) async {
+  static Future<void> showWithContext(
+    BuildContext context,
+    WidgetRef ref, {
+    required Bible bible,
+    required String strongId,
+    required Function(Reference) onNavigateToReference,
+  }) async {
     final strongs = ref.watch(strongsProvider);
     final strong = strongs[strongId];
     if (strong == null) {
@@ -17,6 +27,9 @@ class StrongSheet {
     }
 
     final seeMoreStrongs = strong.glossary.map((glossary) => strongs[glossary]).nonNulls.toList();
+    final otherReferences = bible.references
+        .where((reference) => bible.getVerseByReference(reference)?.strongIds.contains(strongId) ?? false)
+        .toList();
 
     await context.showStyledSheetWithContext(
       breadcrumbText: strong.languageText,
@@ -35,7 +48,7 @@ class StrongSheet {
           ),
           if (seeMoreStrongs.isNotEmpty)
             StyledSection(
-              title: 'See More'.toText(),
+              title: 'Related Terms'.toText(),
               padding: .only(top: 24),
               children: seeMoreStrongs
                   .map(
@@ -44,12 +57,36 @@ class StrongSheet {
                       subtitle: Text('${strong.languageText}: ${strong.definition}', maxLines: 1, overflow: .ellipsis),
                       onPressed: () {
                         context.pop();
-                        StrongSheet.showWithContext(context, ref, strongId: strong.id);
+                        StrongSheet.showWithContext(
+                          context,
+                          ref,
+                          strongId: strong.id,
+                          bible: bible,
+                          onNavigateToReference: onNavigateToReference,
+                        );
                       },
                     ),
                   )
                   .toList(),
             ),
+          if (otherReferences.isNotEmpty)
+            ...StyledSection(
+              title: 'Concordance'.toText(),
+              padding: .only(top: 24),
+              children: otherReferences
+                  .map(
+                    (reference) => StyledListItem(
+                      title: reference.format().toText(),
+                      subtitle: bible.getVerseByReference(reference)?.text.toText(),
+                      trailing: Symbols.expand_circle_right.toIcon(),
+                      onPressed: () {
+                        context.pop();
+                        onNavigateToReference(reference);
+                      },
+                    ),
+                  )
+                  .toList(),
+            ).buildChildren(context),
         ],
       ),
     );

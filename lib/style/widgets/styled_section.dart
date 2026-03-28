@@ -26,24 +26,24 @@ class StyledSection extends StatelessWidget {
     this.childPadding = const .symmetric(horizontal: 16),
   }) : children = [child];
 
+  List<Widget> buildChildren(BuildContext context) => [
+    SizedBox(height: padding.top),
+    Padding(
+      padding: .symmetric(horizontal: 16),
+      child: DefaultTextStyle(style: context.textStyle.headingXs, child: title),
+    ),
+    gapH12,
+    SizedBox(height: childPadding.top),
+    ...StyledList.dividedItems(
+      children: children
+          .map((child) => Padding(padding: childPadding.copyWith(top: 0, bottom: 0), child: child))
+          .toList(),
+    ),
+    SizedBox(height: childPadding.bottom + padding.bottom),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: padding,
-      child: Column(
-        crossAxisAlignment: .start,
-        children: [
-          Padding(
-            padding: .symmetric(horizontal: 16),
-            child: DefaultTextStyle(style: context.textStyle.headingXs, child: title),
-          ),
-          gapH12,
-          Padding(
-            padding: childPadding,
-            child: StyledList(children: children),
-          ),
-        ],
-      ),
-    );
+    return Column(crossAxisAlignment: .start, children: buildChildren(context));
   }
 }

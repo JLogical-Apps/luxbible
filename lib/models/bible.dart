@@ -7,6 +7,7 @@ import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/selection.dart';
 import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:bible/models/verse.dart';
+import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:bible/utils/range.dart';
@@ -15,7 +16,7 @@ class Bible {
   final BibleTranslation translation;
   final List<Book> books;
 
-  const Bible({required this.translation, required this.books});
+  Bible({required this.translation, required this.books});
 
   List<ChapterReference> get chapterReferences => books
       .expand(
@@ -23,13 +24,22 @@ class Bible {
       )
       .toList();
 
-  List<Reference> get references => chapterReferences.expand((chapter) => chapter.references).toList();
+  late final List<Reference> references = chapterReferences.expand((chapter) => chapter.references).toList();
+  late final List<Verse> verses = references.map((reference) => getVerseByReference(reference)).nonNulls.toList();
+
+  late final Map<Reference, Verse> _verseByReference = references
+      .mapToMap(
+        (reference) => MapEntry(
+          reference,
+          getBookByType(reference.book).chapters[reference.chapterNum - 1].verses[reference.verseNum],
+        ),
+      )
+      .withoutNullValues;
 
   Chapter getChapterByReference(ChapterReference reference) =>
       getBookByType(reference.book).chapters[reference.chapterNum - 1];
 
-  Verse? getVerseByReference(Reference reference) =>
-      getBookByType(reference.book).chapters[reference.chapterNum - 1].verses[reference.verseNum];
+  Verse? getVerseByReference(Reference reference) => _verseByReference[reference];
 
   List<Verse> getVersesBySpan(VerseSpanReference reference) =>
       reference.references.map((reference) => getVerseByReference(reference)).nonNulls.toList();
@@ -39,7 +49,10 @@ class Bible {
   int getPageIndexByChapterReference(ChapterReference reference) =>
       chapterReferences.indexWhere((r) => r.book == reference.book && r.chapterNum == reference.chapterNum);
 
-  Book getBookByType(BookType bookType) => books.firstWhere((book) => book.bookType == bookType);
+  late final Map<BookType, Book> _bookByType = BookType.values.mapToMap(
+    (bookType) => MapEntry(bookType, books.firstWhere((book) => book.bookType == bookType)),
+  );
+  Book getBookByType(BookType bookType) => _bookByType[bookType]!;
 
   String getSelectionText(Selection selection) {
     final verseTexts = Reference.getReferencesBetween(
