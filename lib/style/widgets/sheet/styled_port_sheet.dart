@@ -4,6 +4,7 @@ import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/port_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:port/port.dart';
 
 class StyledPortSheet<T> extends StyledSheet<T> {
@@ -22,6 +23,7 @@ class StyledPortSheet<T> extends StyledSheet<T> {
 
   @override
   Widget build(BuildContext context) {
+    final port = useMemoized(() => this.port);
     return StyledSheet.child(
       title: title,
       subtitle: subtitle,
