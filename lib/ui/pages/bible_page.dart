@@ -383,6 +383,7 @@ class _Bottom extends HookConsumerWidget {
                                             selectedPassage: selectedPassage,
                                             bible: bible,
                                             onDeselect: () => selectedReferencesState.value = [],
+                                            onNavigateToReference: navigateToReference,
                                           );
                                         },
                                       ),
@@ -397,6 +398,7 @@ class _Bottom extends HookConsumerWidget {
                               passage: selectedPassage,
                               bible: bible,
                               onDeselect: () => selectedReferencesState.value = [],
+                              onNavigateToReference: navigateToReference,
                             ),
                           )
                         : selection != null

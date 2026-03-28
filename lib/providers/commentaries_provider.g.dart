@@ -26,7 +26,7 @@ final class CommentariesProvider
         argument: null,
         retry: null,
         name: r'commentariesProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -53,4 +53,4 @@ final class CommentariesProvider
   }
 }
 
-String _$commentariesHash() => r'3092bd90cfd2a86c3d3147cbf5fb08befd7b3d6d';
+String _$commentariesHash() => r'c04ffcec14c7226b89f46a23ad86963a8140bb11';

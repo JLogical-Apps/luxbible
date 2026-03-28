@@ -1,5 +1,5 @@
 import 'package:bible/models/testament.dart';
-import 'package:collection/collection.dart';
+import 'package:bible/utils/extensions/collection_extensions.dart';
 
 enum BookType {
   genesis,
@@ -69,8 +69,10 @@ enum BookType {
   jude,
   revelation;
 
+  static Map<String, BookType> _bookTypeByOsisId = values.mapToMap((bookType) => MapEntry(bookType.osisId(), bookType));
+
   static BookType fromOsisId(String id) =>
-      values.firstWhereOrNull((book) => book.osisId() == id) ?? (throw Exception('Could not find book with ID: $id'));
+      _bookTypeByOsisId[id] ?? (throw Exception('Could not find book with ID: $id'));
 
   BookType get next => values[index + 1];
 

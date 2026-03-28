@@ -1,15 +1,18 @@
 import 'dart:collection';
 
 import 'package:bible/models/bible.dart';
+import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
+import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
 import 'package:bible/ui/widgets/passage_builder.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,12 +22,14 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 enum StudyAction {
   compare,
   interlinear,
-  commentary;
+  commentary,
+  crossReferences;
 
   String title() => switch (this) {
     compare => 'Compare',
     interlinear => 'Interlinear',
     commentary => 'Commentary',
+    crossReferences => 'Cross References',
   };
 
   String description({required ReferencesRegion? region, required RegionType regionType}) {
@@ -33,6 +38,7 @@ enum StudyAction {
       compare => 'Compare $regionText across a variety of translations.',
       interlinear => 'View a lexical breakdown of $regionText using Strongs.',
       commentary => 'View commentaries of $regionText.',
+      crossReferences => 'View cross references of $regionText.',
     };
   }
 
@@ -40,6 +46,7 @@ enum StudyAction {
     compare => Symbols.text_compare,
     interlinear => Symbols.dictionary,
     commentary => Symbols.tooltip_2,
+    crossReferences => Symbols.graph_4,
   };
 
   Future<void> onPressed(
@@ -47,6 +54,7 @@ enum StudyAction {
     WidgetRef ref, {
     required ReferencesRegion region,
     required Bible bible,
+    required Function(Reference) onNavigateToReference,
   }) async {
     final bibles = ref.read(biblesProvider);
     switch (this) {
@@ -146,6 +154,48 @@ enum StudyAction {
                               .mapToIterable(
                                 (passage, note) =>
                                     StyledListItem(title: passage.format().toText(), subtitle: note.toText()),
+                              )
+                              .toList(),
+                        ),
+                      )
+                      .toList(),
+          ),
+        );
+      case crossReferences:
+        final crossReferences = ref.watch(crossReferencesProvider);
+        final relatedCrossReferences = crossReferences.where(
+          (reference, crossReferences) => region.references.contains(reference),
+        );
+        context.showStyledSheet(
+          (context) => StyledSheet(
+            title: 'Cross References'.toText(),
+            subtitle: region.format().toText(),
+            children: relatedCrossReferences.isEmpty
+                ? [
+                    Padding(
+                      padding: .all(16),
+                      child: StyledBanner(message: 'No Cross References Found'.toText()),
+                    ),
+                  ]
+                : relatedCrossReferences
+                      .mapToIterable(
+                        (reference, crossReferences) => StyledStickyHeader(
+                          title: reference.format().toText(),
+                          children: crossReferences
+                              .map(
+                                (references) => StyledListItem(
+                                  title: references.toPassage().format().toText(),
+                                  subtitle: bible
+                                      .getVersesBySpan(references)
+                                      .map((verse) => verse.text)
+                                      .join(' ')
+                                      .toText(),
+                                  onPressed: () {
+                                    context.pop();
+                                    onNavigateToReference(references.references.first);
+                                  },
+                                  trailing: Symbols.expand_circle_right.toIcon(),
+                                ),
                               )
                               .toList(),
                         ),

@@ -26,7 +26,7 @@ final class StrongsProvider
         argument: null,
         retry: null,
         name: r'strongsProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -54,4 +54,4 @@ final class StrongsProvider
   }
 }
 
-String _$strongsHash() => r'fdeaed10bcf0b318d27f0f3516bd4af4d8e93256';
+String _$strongsHash() => r'edb10ae9ae3191aeb638dc6d4cada2f432852e08';

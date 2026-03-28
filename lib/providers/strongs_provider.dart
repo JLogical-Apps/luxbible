@@ -3,5 +3,5 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'strongs_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 Map<String, Strong> strongs(Ref ref) => throw UnimplementedError();

@@ -15,10 +15,7 @@ class ChapterReference extends Equatable with ComparableOperators<ChapterReferen
 
   factory ChapterReference.fromOsisId(String key) {
     final items = key.split('.');
-    return ChapterReference(
-      book: BookType.values.firstWhere((book) => book.osisId() == items[0]),
-      chapterNum: int.parse(items[1]),
-    );
+    return ChapterReference(book: BookType.fromOsisId(items[0]), chapterNum: int.parse(items[1]));
   }
 
   factory ChapterReference.fromJson(String json) = ChapterReference.fromOsisId;

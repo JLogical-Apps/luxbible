@@ -31,6 +31,9 @@ extension ListExtensions<T> on List<T> {
   List<T> sortedByIndexIn<T2>(List<T2> source, [T2 Function(T)? mapper]) =>
       sortedBy((e) => source.indexOfOrNull(mapper == null ? e as T2 : mapper(e)) ?? double.infinity);
 
+  List<T> sortedByDescending<K extends Comparable>(K Function(T) mapper) =>
+      [...this]..sortByCompare(mapper, (a, b) => b.compareTo(a));
+
   T get random => this[Random().nextInt(length)];
 
   bool containsInOrder(List<T> list) => Iterable.generate(

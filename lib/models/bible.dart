@@ -5,6 +5,7 @@ import 'package:bible/models/chapter.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/selection.dart';
+import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:bible/models/verse.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
@@ -29,6 +30,9 @@ class Bible {
 
   Verse? getVerseByReference(Reference reference) =>
       getBookByType(reference.book).chapters[reference.chapterNum - 1].verses[reference.verseNum];
+
+  List<Verse> getVersesBySpan(VerseSpanReference reference) =>
+      reference.references.map((reference) => getVerseByReference(reference)).nonNulls.toList();
 
   ChapterReference getChapterReferenceByPageIndex(int pageIndex) => chapterReferences[pageIndex];
 

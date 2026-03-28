@@ -15,6 +15,7 @@ enum ToolbarShortcut {
   compare,
   interlinear,
   commentary,
+  crossReferences,
   search;
 
   String title({required User user, required ChapterReference? reference}) =>
@@ -40,7 +41,13 @@ enum ToolbarShortcut {
     required Bible bible,
     required Function(Reference) onNavigateToReference,
   }) =>
-      toStudyAction()?.onPressed(context, ref, region: reference, bible: bible) ??
+      toStudyAction()?.onPressed(
+        context,
+        ref,
+        region: reference,
+        bible: bible,
+        onNavigateToReference: onNavigateToReference,
+      ) ??
       toToolbarAction()?.onPressed(
         context,
         ref,
@@ -62,6 +69,7 @@ enum ToolbarShortcut {
     compare => StudyAction.compare,
     interlinear => StudyAction.interlinear,
     commentary => StudyAction.commentary,
+    crossReferences => StudyAction.crossReferences,
     _ => null,
   };
 }

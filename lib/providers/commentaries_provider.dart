@@ -3,5 +3,5 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'commentaries_provider.g.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 List<Commentary> commentaries(Ref ref) => throw UnimplementedError();

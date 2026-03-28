@@ -206,7 +206,7 @@ class SearchPage extends HookConsumerWidget {
                     )
                   else
                     ...searchResults.map(
-                      (result) => StyledListItem.navigation(
+                      (result) => StyledListItem(
                         title: result.format().toText(),
                         subtitle: SubstringHighlight(
                           text: bible.getVerseByReference(result)?.text ?? '',
@@ -215,6 +215,7 @@ class SearchPage extends HookConsumerWidget {
                           textStyle: context.textStyle.paragraphSm.subtle(context),
                           textStyleHighlight: context.textStyle.paragraphSm.subtle(context).bold,
                         ),
+                        trailing: Symbols.expand_circle_right.toIcon(),
                         onPressed: () {
                           ref.updateUser((user) => user.withSearchHistory(searchState.value));
                           context.pop(SearchPageResult(reference: result));

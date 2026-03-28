@@ -2,10 +2,12 @@ import 'dart:async';
 
 import 'package:bible/functions/bible_importer.dart';
 import 'package:bible/functions/commentary_importer.dart';
+import 'package:bible/functions/cross_references_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
 import 'package:bible/models/bible_translation.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
+import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/services/path_service.dart';
 import 'package:bible/services/shared_preferences_service.dart';
@@ -26,6 +28,7 @@ Future<void> main() async {
       );
       final commentaries = await CommentaryImporter().import();
       final strongs = await StrongImporter().import();
+      final crossReferences = await CrossReferencesImporter().import();
 
       final paths = await getPaths();
       final sharedPreferences = await SharedPreferences.getInstance();
@@ -35,6 +38,7 @@ Future<void> main() async {
           overrides: [
             biblesProvider.overrideWith((ref) => bibles),
             strongsProvider.overrideWith((ref) => strongs),
+            crossReferencesProvider.overrideWith((ref) => crossReferences),
             commentariesProvider.overrideWith((ref) => [commentaries]),
             pathServiceProvider.overrideWith((ref) => paths),
             sharedPreferencesServiceProvider.overrideWith((ref) => sharedPreferences),

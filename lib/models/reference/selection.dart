@@ -56,7 +56,7 @@ class SelectionWordAnchor extends Equatable with ComparableOperators<SelectionWo
   factory SelectionWordAnchor.fromKey(String key) {
     final items = key.split('.');
     return SelectionWordAnchor(
-      book: BookType.values.firstWhere((book) => book.osisId() == items[0]),
+      book: BookType.fromOsisId(items[0]),
       chapterNum: int.parse(items[1]),
       verseNum: int.parse(items[2]),
       characterOffset: int.parse(items[3]),

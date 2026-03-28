@@ -63,6 +63,7 @@ flutter:
     - assets/translations/
     - assets/strongs/
     - assets/commentary/
+    - assets/cross_references/
   fonts:
     - family: Inter
       fonts:

@@ -67,7 +67,14 @@ enum ToolbarAction {
           ref.updateUser((user) => user.withRemovedBookmark(bookmark));
         }
       case study:
-        StudySheet.show(context, ref, region: reference, bible: bible, regionType: RegionType.chapter);
+        StudySheet.show(
+          context,
+          ref,
+          region: reference,
+          bible: bible,
+          regionType: RegionType.chapter,
+          onNavigateToReference: onNavigateToReference,
+        );
       case search:
         final result = await context.push(SearchPage(currentChapterReference: reference)) as SearchPageResult?;
         if (result?.reference case final reference?) {

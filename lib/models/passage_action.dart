@@ -1,5 +1,6 @@
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/reference/passage.dart';
+import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/style/style.dart';
@@ -43,6 +44,7 @@ enum PassageAction {
     required Passage selectedPassage,
     required Bible bible,
     required Function() onDeselect,
+    required Function(Reference) onNavigateToReference,
   }) async {
     switch (this) {
       case annotate:
@@ -70,7 +72,14 @@ enum PassageAction {
           ),
         );
       case study:
-        StudySheet.show(context, ref, region: selectedPassage, bible: bible, regionType: RegionType.passage);
+        StudySheet.show(
+          context,
+          ref,
+          region: selectedPassage,
+          bible: bible,
+          regionType: RegionType.passage,
+          onNavigateToReference: onNavigateToReference,
+        );
     }
   }
 }
