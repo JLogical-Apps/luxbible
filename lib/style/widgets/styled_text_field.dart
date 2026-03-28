@@ -139,7 +139,7 @@ class StyledTextField extends HookWidget {
             textInputAction: action,
             textCapitalization: textCapitalization,
             inputFormatters: inputFormatters,
-            onSubmitted: onSubmit,
+            onSubmitted: (_) => onSubmit?.call(text),
             decoration: InputDecoration(
               contentPadding: .all(12),
               fillColor: onChanged == null

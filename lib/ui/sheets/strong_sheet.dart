@@ -1,10 +1,8 @@
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/providers/strongs_provider.dart';
-import 'package:bible/style/style_context_extensions.dart';
-import 'package:bible/style/widgets/sheet/styled_sheet.dart';
-import 'package:bible/style/widgets/styled_list_item.dart';
-import 'package:bible/style/widgets/styled_section.dart';
+import 'package:bible/style/style.dart';
+import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
@@ -73,6 +71,13 @@ class StrongSheet {
             ...StyledSection(
               title: 'Concordance'.toText(),
               padding: .only(top: 24),
+              trailing: StyledLink(
+                'Open In Search',
+                onPressed: () {
+                  context.pop();
+                  context.push(SearchPage(initialSearch: strongId));
+                },
+              ),
               children: otherReferences
                   .map(
                     (reference) => StyledListItem(

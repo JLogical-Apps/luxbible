@@ -26,9 +26,9 @@ class SearchPageResult {
 
 class SearchPage extends HookConsumerWidget {
   final String? initialSearch;
-  final ChapterReference currentChapterReference;
+  final ChapterReference? currentChapterReference;
 
-  const SearchPage({super.key, this.initialSearch, required this.currentChapterReference});
+  const SearchPage({super.key, this.initialSearch, this.currentChapterReference});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,11 +45,22 @@ class SearchPage extends HookConsumerWidget {
 
     List<Reference> getSearchedReferences() {
       final locations = locationsState.value;
-      final searchTerms = searchState.value.trim().onlyLetters.toLowerCase().split(' ');
+      final search = searchState.value.trim();
+
+      final validReferences = bible.references
+          .where((reference) => locations.isEmpty || locations.any((filter) => filter.passes(reference)))
+          .toList();
+
+      if (search.isStrongId) {
+        return validReferences
+            .where((reference) => bible.getVerseByReference(reference)?.strongIds.contains(search) ?? false)
+            .toList();
+      }
+
+      final searchTerms = search.onlyLetters.toLowerCase().split(' ');
       return searchTerms.isEmpty
           ? <Reference>[]
-          : bible.references
-                .where((reference) => locations.isEmpty || locations.any((filter) => filter.passes(reference)))
+          : validReferences
                 .where(
                   (reference) =>
                       bible.getVerseByReference(reference)?.searchTerms.containsInOrder(searchTerms) ?? false,
@@ -86,6 +97,7 @@ class SearchPage extends HookConsumerWidget {
                   },
                   hintText: 'Search for a word or phrase',
                   onSubmit: (newText) {
+                    textState.value = newText;
                     searchState.value = newText;
                     search();
                   },
@@ -108,7 +120,7 @@ class SearchPage extends HookConsumerWidget {
                         title: 'Locations'.toText(),
                         optionsByCategory: SearchLocationFilterGroup.values.mapToMap(
                           (group) =>
-                              MapEntry(group.title(), group.getFilters(currentBook: currentChapterReference.book)),
+                              MapEntry(group.title(), group.getFilters(currentBook: currentChapterReference?.book)),
                         ),
                         initialOptions: locations,
                         optionMapper: (option) => StyledSelectOption(title: option.title().toText()),
@@ -280,8 +292,8 @@ enum SearchLocationFilterGroup {
   testaments,
   books;
 
-  List<SearchLocationFilter> getFilters({required BookType currentBook}) => switch (this) {
-    .currentBook => [BookSearchLocationFilter(book: currentBook)],
+  List<SearchLocationFilter> getFilters({required BookType? currentBook}) => switch (this) {
+    .currentBook => [if (currentBook != null) BookSearchLocationFilter(book: currentBook)],
     testaments => Testament.values.map((testament) => TestamentSearchLocationFilter(testament: testament)).toList(),
     books => BookType.values.map((book) => BookSearchLocationFilter(book: book)).toList(),
   };

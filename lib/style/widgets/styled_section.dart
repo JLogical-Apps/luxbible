@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 class StyledSection extends StatelessWidget {
   final Widget title;
+  final Widget? trailing;
+
   final List<Widget> children;
 
   final EdgeInsets padding;
@@ -13,6 +15,7 @@ class StyledSection extends StatelessWidget {
   const StyledSection({
     super.key,
     required this.title,
+    this.trailing,
     required this.children,
     this.padding = const .only(top: 36),
     this.childPadding = .zero,
@@ -21,6 +24,7 @@ class StyledSection extends StatelessWidget {
   StyledSection.child({
     super.key,
     required this.title,
+    this.trailing,
     required Widget child,
     this.padding = const .only(top: 36),
     this.childPadding = const .symmetric(horizontal: 16),
@@ -30,7 +34,15 @@ class StyledSection extends StatelessWidget {
     SizedBox(height: padding.top),
     Padding(
       padding: .symmetric(horizontal: 16),
-      child: DefaultTextStyle(style: context.textStyle.headingXs, child: title),
+      child: Row(
+        spacing: 8,
+        children: [
+          Expanded(
+            child: DefaultTextStyle(style: context.textStyle.headingXs, child: title),
+          ),
+          ?trailing,
+        ],
+      ),
     ),
     gapH12,
     SizedBox(height: childPadding.top),
