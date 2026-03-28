@@ -45,6 +45,8 @@ dependencies:
       path: packages/utils/utils_core
   fuzzywuzzy: ^1.2.0
 
+dependency_overrides:
+  path_provider_foundation: 2.5.1 # https://stackoverflow.com/questions/79893370/ios-transporter-executable-references-an-unsupported-platform-in-the-arm64-s
 
 dev_dependencies:
   flutter_test:
