@@ -74,7 +74,7 @@ class SearchPage extends HookConsumerWidget {
             decoration: BoxDecoration(color: context.colors.surfacePrimary, boxShadow: [StyledShadow.down(context)]),
             child: Column(
               spacing: 12,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: .start,
               children: [
                 StyledTextField(
                   labelText: 'Search',

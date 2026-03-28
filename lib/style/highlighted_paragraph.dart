@@ -18,7 +18,7 @@ class HighlightedParagraph extends StatelessWidget {
         final paragraphBuilder = ui.ParagraphBuilder(ui.ParagraphStyle());
         span.build(
           paragraphBuilder,
-          dimensions: [PlaceholderDimensions(size: Size(verseNumberWidth, 8), alignment: PlaceholderAlignment.bottom)],
+          dimensions: [PlaceholderDimensions(size: Size(verseNumberWidth, 8), alignment: .bottom)],
         );
 
         final paragraph = paragraphBuilder.build();
@@ -86,7 +86,7 @@ class _LineHighlightPainter extends CustomPainter {
         top.clamp(0.0, double.infinity),
         right,
         bottom,
-        Radius.circular(radius),
+        .circular(radius),
       );
       canvas.drawRRect(rect, paint);
     }

@@ -22,7 +22,7 @@ class StyledBadge extends StatelessWidget {
         decoration: BoxDecoration(color: color, borderRadius: .circular(999)),
         padding: .symmetric(horizontal: 4),
         constraints: BoxConstraints(minHeight: 18),
-        alignment: Alignment.center,
+        alignment: .center,
         child:
             text?.mapIfNonNull(
               (text) => Text(text, style: context.textStyle.labelXs.copyWith(color: foregroundColor)),

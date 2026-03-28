@@ -77,7 +77,7 @@ extension ListSpanExtensions on List<InlineSpan> {
         ))
         ..setPlaceholderDimensions(
           whereType<SizedWidgetSpan>()
-              .map((span) => PlaceholderDimensions(size: span.size, alignment: PlaceholderAlignment.middle))
+              .map((span) => PlaceholderDimensions(size: span.size, alignment: .middle))
               .toList(),
         )
         ..layout(maxWidth: width);

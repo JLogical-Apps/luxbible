@@ -56,7 +56,7 @@ class StyledSheet<T> extends HookWidget {
     return Container(
       decoration: BoxDecoration(
         color: context.colors.surfacePrimary,
-        borderRadius: .vertical(top: Radius.circular(16)),
+        borderRadius: .vertical(top: .circular(16)),
       ),
       child: Column(
         crossAxisAlignment: .start,
@@ -65,7 +65,7 @@ class StyledSheet<T> extends HookWidget {
           SizedBox(
             height: 12,
             child: Align(
-              alignment: Alignment.bottomCenter,
+              alignment: .bottomCenter,
               child: Container(
                 width: 48,
                 height: 4,

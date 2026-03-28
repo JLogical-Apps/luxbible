@@ -49,7 +49,7 @@ class Toolbar extends StatelessWidget {
         children: [
           Expanded(
             child: Align(
-              alignment: Alignment.centerLeft,
+              alignment: .centerLeft,
               child: Padding(
                 padding: .symmetric(vertical: 16),
                 child: Row(

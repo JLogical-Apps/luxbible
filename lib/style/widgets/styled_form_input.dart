@@ -26,8 +26,8 @@ class StyledFormInput extends StatelessWidget {
           ),
         child,
         AnimatedGrow(
-          alignment: Alignment.bottomLeft,
-          clip: Clip.hardEdge,
+          alignment: .bottomLeft,
+          clip: .hardEdge,
           child: errorText == null
               ? SizedBox(key: ValueKey('empty'), width: double.infinity)
               : Padding(

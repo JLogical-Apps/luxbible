@@ -10,24 +10,24 @@ class AnimatedGrow extends StatelessWidget {
   const AnimatedGrow({
     super.key,
     required this.child,
-    this.clip = Clip.none,
-    this.alignment = Alignment.topCenter,
-    this.axis = Axis.vertical,
+    this.clip = .none,
+    this.alignment = .topCenter,
+    this.axis = .vertical,
   });
 
   AnimatedGrow.showHide({
     super.key,
     required Widget child,
     required bool show,
-    this.clip = Clip.none,
-    this.alignment = Alignment.topCenter,
-    this.axis = Axis.vertical,
+    this.clip = .none,
+    this.alignment = .topCenter,
+    this.axis = .vertical,
   }) : child = show
            ? child
            : SizedBox(
                key: ValueKey('empty'),
-               width: axis == Axis.vertical ? double.infinity : 0,
-               height: axis == Axis.vertical ? 0 : double.infinity,
+               width: axis == .vertical ? double.infinity : 0,
+               height: axis == .vertical ? 0 : double.infinity,
              );
 
   @override
@@ -56,10 +56,10 @@ class AnimatedGrow extends StatelessWidget {
       children: [
         if (previousChildren.firstOrNull case final previousChild?)
           Positioned(
-            left: axis == Axis.vertical ? 0 : null,
-            right: axis == Axis.vertical ? 0 : null,
-            top: axis == Axis.horizontal ? 0 : null,
-            bottom: axis == Axis.horizontal ? 0 : null,
+            left: axis == .vertical ? 0 : null,
+            right: axis == .vertical ? 0 : null,
+            top: axis == .horizontal ? 0 : null,
+            bottom: axis == .horizontal ? 0 : null,
             child: previousChild,
           ),
         ?currentChild,

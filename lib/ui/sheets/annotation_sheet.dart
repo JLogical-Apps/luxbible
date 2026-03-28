@@ -65,7 +65,7 @@ class AnnotationSheet {
               labelText: 'Color',
               errorText: errorText,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: .spaceBetween,
                 children: ColorEnum.values
                     .map(
                       (color) => StyledCircleButton.lg(

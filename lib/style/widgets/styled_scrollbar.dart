@@ -12,7 +12,7 @@ class StyledScrollbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScrollbarTheme(
       data: ScrollbarThemeData(
-        radius: Radius.circular(999),
+        radius: .circular(999),
         thumbColor: WidgetStateProperty.all(context.colors.borderOpaque),
         thickness: WidgetStateProperty.all(4),
         mainAxisMargin: 8,

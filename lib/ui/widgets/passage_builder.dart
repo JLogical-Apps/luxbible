@@ -88,7 +88,7 @@ class PassageBuilder extends HookConsumerWidget {
             context.textStyle.bibleVerseNumber.getWidth(reference.verseNum.toString()) + 6,
             context.textStyle.bibleBody.fontSize!,
           ),
-          alignment: PlaceholderAlignment.middle,
+          alignment: .middle,
           child: Padding(
             key: keyByReference[reference],
             padding: .only(right: 6),
@@ -138,7 +138,7 @@ class PassageBuilder extends HookConsumerWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) => Stack(
-        clipBehavior: Clip.none,
+        clipBehavior: .none,
         children: [
           ...passage.references
               .mapToMap(
@@ -310,7 +310,7 @@ class PassageBuilder extends HookConsumerWidget {
   }) {
     return SizedWidgetSpan(
       size: Size(30, context.textStyle.bibleBody.fontSize!),
-      alignment: PlaceholderAlignment.middle,
+      alignment: .middle,
       child: OverflowBox(
         maxHeight: context.textStyle.bibleBody.totalHeight + 4,
         maxWidth: 30,

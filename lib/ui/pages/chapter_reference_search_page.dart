@@ -198,7 +198,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                       padding: .all(16),
                                       child: Row(
                                         spacing: 8,
-                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        crossAxisAlignment: .center,
                                         children: [
                                           Icon(Symbols.bookmark, color: bookmark.color.toHue(context.colors).medium),
                                           Text(chapterReference.format(), style: context.textStyle.labelMd),

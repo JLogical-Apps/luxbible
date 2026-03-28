@@ -103,7 +103,7 @@ class BiblePage extends HookConsumerWidget {
                                 bottom: MediaQuery.paddingOf(context).bottom + 72,
                               ),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: .start,
                             children: [
                               Text(chapterReference.format(), style: context.textStyle.bibleChapter),
                               gapH16,
