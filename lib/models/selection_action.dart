@@ -70,8 +70,8 @@ enum SelectionAction {
                   ),
                 )
                 as SearchPageResult?;
-        if (result?.reference case final reference?) {
-          onNavigateToPassage(Passage.reference(reference));
+        if (result != null) {
+          onNavigateToPassage(Passage.reference(result.reference));
         }
       case copy:
         onDeselect();

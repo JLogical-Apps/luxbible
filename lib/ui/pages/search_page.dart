@@ -19,7 +19,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:substring_highlight/substring_highlight.dart';
 
 class SearchPageResult {
-  final Reference? reference;
+  final Reference reference;
 
   const SearchPageResult({required this.reference});
 }

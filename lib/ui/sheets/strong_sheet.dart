@@ -73,9 +73,12 @@ class StrongSheet {
               padding: .only(top: 24),
               trailing: StyledLink(
                 'Open In Search',
-                onPressed: () {
+                onPressed: () async {
                   context.pop();
-                  context.push(SearchPage(initialSearch: strongId));
+                  final result = await context.push(SearchPage(initialSearch: strongId)) as SearchPageResult?;
+                  if (result != null) {
+                    onNavigateToPassage(Passage.reference(result.reference));
+                  }
                 },
               ),
               children: otherReferences

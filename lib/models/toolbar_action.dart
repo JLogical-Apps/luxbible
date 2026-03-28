@@ -77,8 +77,8 @@ enum ToolbarAction {
         );
       case search:
         final result = await context.push(SearchPage(currentChapterReference: reference)) as SearchPageResult?;
-        if (result?.reference case final reference?) {
-          onNavigateToPassage(Passage.reference(reference));
+        if (result != null) {
+          onNavigateToPassage(Passage.reference(result.reference));
         }
     }
   }
