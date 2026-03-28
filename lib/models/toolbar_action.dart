@@ -1,7 +1,7 @@
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/reference/reference.dart';
+import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/style/style.dart';
@@ -53,7 +53,7 @@ enum ToolbarAction {
     required User user,
     required ChapterReference reference,
     required Bible bible,
-    required Function(Reference) onNavigateToReference,
+    required Function(Passage) onNavigateToPassage,
   }) async {
     switch (this) {
       case bookmark:
@@ -73,12 +73,12 @@ enum ToolbarAction {
           region: reference,
           bible: bible,
           regionType: RegionType.chapter,
-          onNavigateToReference: onNavigateToReference,
+          onNavigateToPassage: onNavigateToPassage,
         );
       case search:
         final result = await context.push(SearchPage(currentChapterReference: reference)) as SearchPageResult?;
         if (result?.reference case final reference?) {
-          onNavigateToReference(reference);
+          onNavigateToPassage(Passage.reference(reference));
         }
     }
   }

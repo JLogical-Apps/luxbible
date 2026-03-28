@@ -1,5 +1,5 @@
 import 'package:bible/models/bible.dart';
-import 'package:bible/models/reference/reference.dart';
+import 'package:bible/models/reference/passage.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
@@ -18,7 +18,7 @@ class StrongSheet {
     WidgetRef ref, {
     required Bible bible,
     required String strongId,
-    required Function(Reference) onNavigateToReference,
+    required Function(Passage) onNavigateToPassage,
   }) async {
     final strongs = ref.watch(strongsProvider);
     final strong = strongs[strongId];
@@ -62,7 +62,7 @@ class StrongSheet {
                           ref,
                           strongId: strong.id,
                           bible: bible,
-                          onNavigateToReference: onNavigateToReference,
+                          onNavigateToPassage: onNavigateToPassage,
                         );
                       },
                     ),
@@ -81,7 +81,7 @@ class StrongSheet {
                       trailing: Symbols.expand_circle_right.toIcon(),
                       onPressed: () {
                         context.pop();
-                        onNavigateToReference(reference);
+                        onNavigateToPassage(Passage.reference(reference));
                       },
                     ),
                   )

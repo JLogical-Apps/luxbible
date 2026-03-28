@@ -1,6 +1,6 @@
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/bible.dart';
-import 'package:bible/models/reference/reference.dart';
+import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/selection.dart';
 import 'package:bible/models/selection_action.dart';
@@ -52,7 +52,7 @@ enum SelectionShortcut {
     required User user,
     required Bible bible,
     required Function() onDeselect,
-    required Function(Reference) onNavigateToReference,
+    required Function(Passage) onNavigateToPassage,
   }) =>
       toSelectionAction()?.onPressed(
         context,
@@ -61,7 +61,7 @@ enum SelectionShortcut {
         bible: bible,
         user: user,
         onDeselect: onDeselect,
-        onNavigateToReference: onNavigateToReference,
+        onNavigateToPassage: onNavigateToPassage,
       ) ??
       switch (this) {
         highlight => () async {

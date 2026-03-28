@@ -238,15 +238,15 @@ class _Bottom extends HookConsumerWidget {
       selectedReferencesState.value = [];
     }
 
-    void navigateToReference(Reference reference) async {
-      final chapterReference = reference.toChapterReference();
+    void navigateToPassage(Passage passage) async {
+      final chapterReference = passage.references.first.toChapterReference();
       ref.updateUser((user) => user.withViewHistory(chapterReference));
       pageController.jumpToPage(bible.getPageIndexByChapterReference(chapterReference));
-      selectedReferencesState.value = [reference];
+      selectedReferencesState.value = passage.references;
 
       await Future.delayed(Duration(milliseconds: 200));
 
-      final verseContext = keyByReferenceRef.value[reference]?.currentContext;
+      final verseContext = keyByReferenceRef.value[passage.references.first]?.currentContext;
       if (verseContext != null && verseContext.mounted) {
         Scrollable.ensureVisible(
           verseContext,
@@ -290,7 +290,7 @@ class _Bottom extends HookConsumerWidget {
                 reference: currentChapterReference,
                 user: user,
                 bible: bible,
-                onNavigateToReference: navigateToReference,
+                onNavigateToPassage: navigateToPassage,
               ),
               onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
                 context,
@@ -298,7 +298,7 @@ class _Bottom extends HookConsumerWidget {
                 reference: currentChapterReference,
                 bible: bible,
                 user: user,
-                onNavigateToReference: navigateToReference,
+                onNavigateToPassage: navigateToPassage,
               ),
               onMorePressed: () => context.showStyledSheet(
                 (context) => StyledSheet(
@@ -326,7 +326,7 @@ class _Bottom extends HookConsumerWidget {
                               user: user,
                               reference: currentChapterReference,
                               bible: bible,
-                              onNavigateToReference: navigateToReference,
+                              onNavigateToPassage: navigateToPassage,
                             );
                           },
                         ),
@@ -383,7 +383,7 @@ class _Bottom extends HookConsumerWidget {
                                             selectedPassage: selectedPassage,
                                             bible: bible,
                                             onDeselect: () => selectedReferencesState.value = [],
-                                            onNavigateToReference: navigateToReference,
+                                            onNavigateToPassage: navigateToPassage,
                                           );
                                         },
                                       ),
@@ -398,7 +398,7 @@ class _Bottom extends HookConsumerWidget {
                               passage: selectedPassage,
                               bible: bible,
                               onDeselect: () => selectedReferencesState.value = [],
-                              onNavigateToReference: navigateToReference,
+                              onNavigateToPassage: navigateToPassage,
                             ),
                           )
                         : selection != null
@@ -415,7 +415,7 @@ class _Bottom extends HookConsumerWidget {
                               selection: selection,
                               bible: bible,
                               onDeselect: () => selectionState.value = null,
-                              onNavigateToReference: navigateToReference,
+                              onNavigateToPassage: navigateToPassage,
                             ),
                             onMorePressed: () => context.showStyledSheet(
                               (context) => StyledSheet(
@@ -444,7 +444,7 @@ class _Bottom extends HookConsumerWidget {
                                             selection: selection,
                                             bible: bible,
                                             onDeselect: () => selectionState.value = null,
-                                            onNavigateToReference: navigateToReference,
+                                            onNavigateToPassage: navigateToPassage,
                                           );
                                         },
                                       ),

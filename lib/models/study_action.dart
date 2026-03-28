@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:bible/models/bible.dart';
-import 'package:bible/models/reference/reference.dart';
+import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
@@ -54,7 +54,7 @@ enum StudyAction {
     WidgetRef ref, {
     required ReferencesRegion region,
     required Bible bible,
-    required Function(Reference) onNavigateToReference,
+    required Function(Passage) onNavigateToPassage,
   }) async {
     final bibles = ref.read(biblesProvider);
     switch (this) {
@@ -120,7 +120,7 @@ enum StudyAction {
                                     ref,
                                     strongId: strongId,
                                     bible: bible,
-                                    onNavigateToReference: onNavigateToReference,
+                                    onNavigateToPassage: onNavigateToPassage,
                                   );
                                 },
                               ),
@@ -198,7 +198,7 @@ enum StudyAction {
                                       .toText(),
                                   onPressed: () {
                                     context.pop();
-                                    onNavigateToReference(references.references.first);
+                                    onNavigateToPassage(references.toPassage());
                                   },
                                   trailing: Symbols.expand_circle_right.toIcon(),
                                 ),

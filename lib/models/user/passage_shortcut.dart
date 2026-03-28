@@ -2,7 +2,6 @@ import 'package:bible/models/annotation.dart';
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/passage_action.dart';
 import 'package:bible/models/reference/passage.dart';
-import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/models/user/user.dart';
@@ -60,14 +59,14 @@ enum PassageShortcut {
     required User user,
     required Bible bible,
     required Function() onDeselect,
-    required Function(Reference) onNavigateToReference,
+    required Function(Passage) onNavigateToPassage,
   }) =>
       toStudyAction()?.onPressed(
         context,
         ref,
         region: passage,
         bible: bible,
-        onNavigateToReference: onNavigateToReference,
+        onNavigateToPassage: onNavigateToPassage,
       ) ??
       toPassageAction()?.onPressed(
         context,
@@ -76,7 +75,7 @@ enum PassageShortcut {
         selectedPassage: passage,
         bible: bible,
         onDeselect: onDeselect,
-        onNavigateToReference: onNavigateToReference,
+        onNavigateToPassage: onNavigateToPassage,
       ) ??
       switch (this) {
         highlight => () async {
