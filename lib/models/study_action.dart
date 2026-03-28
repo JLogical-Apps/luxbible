@@ -124,24 +124,33 @@ enum StudyAction {
         );
       case commentary:
         final commentaries = ref.watch(commentariesProvider);
+        final relatedCommentaries = commentaries
+            .mapToMap((commentary) => MapEntry(commentary, commentary.getNotesFor(region.toPassage())))
+            .where((commentary, notes) => notes.isNotEmpty);
         context.showStyledSheet(
           (context) => StyledSheet(
             title: 'Commentary'.toText(),
             subtitle: region.format().toText(),
-            children: commentaries
-                .mapToMap((commentary) => MapEntry(commentary, commentary.getNotesFor(region.toPassage())))
-                .where((commentary, notes) => notes.isNotEmpty)
-                .mapToIterable(
-                  (commentary, notes) => StyledStickyHeader(
-                    title: commentary.name.toText(),
-                    children: notes
-                        .mapToIterable(
-                          (passage, note) => StyledListItem(title: passage.format().toText(), subtitle: note.toText()),
-                        )
-                        .toList(),
-                  ),
-                )
-                .toList(),
+            children: relatedCommentaries.isEmpty
+                ? [
+                    Padding(
+                      padding: .all(16),
+                      child: StyledBanner(message: 'No Commentaries Found'.toText()),
+                    ),
+                  ]
+                : relatedCommentaries
+                      .mapToIterable(
+                        (commentary, notes) => StyledStickyHeader(
+                          title: commentary.name.toText(),
+                          children: notes
+                              .mapToIterable(
+                                (passage, note) =>
+                                    StyledListItem(title: passage.format().toText(), subtitle: note.toText()),
+                              )
+                              .toList(),
+                        ),
+                      )
+                      .toList(),
           ),
         );
     }
