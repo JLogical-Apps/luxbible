@@ -1,4 +1,5 @@
 import 'package:bible/models/book_type.dart';
+import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/testament.dart';
 import 'package:bible/providers/bibles_provider.dart';
@@ -25,8 +26,9 @@ class SearchPageResult {
 
 class SearchPage extends HookConsumerWidget {
   final String? initialSearch;
+  final ChapterReference currentChapterReference;
 
-  const SearchPage({super.key, this.initialSearch});
+  const SearchPage({super.key, this.initialSearch, required this.currentChapterReference});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -104,10 +106,12 @@ class SearchPage extends HookConsumerWidget {
                     final newLocations = await context.showStyledSheet(
                       (context) => StyledMultiSelectionSheet<SearchLocationFilter>(
                         title: 'Locations'.toText(),
-                        options: SearchLocationFilter.values,
+                        optionsByCategory: SearchLocationFilterGroup.values.mapToMap(
+                          (group) =>
+                              MapEntry(group.title(), group.getFilters(currentBook: currentChapterReference.book)),
+                        ),
                         initialOptions: locations,
                         optionMapper: (option) => StyledSelectOption(title: option.title().toText()),
-                        groupMapper: (option) => option.groupTitle(),
                         aboveButtonsBuilder: (context, selectedOptions, updateSelectedOptions) => Column(
                           children: [
                             StyledListItem(
@@ -238,8 +242,6 @@ sealed class SearchLocationFilter {
   bool passes(Reference reference);
 
   String title();
-
-  String groupTitle();
 }
 
 class TestamentSearchLocationFilter extends SearchLocationFilter with EquatableMixin {
@@ -255,9 +257,6 @@ class TestamentSearchLocationFilter extends SearchLocationFilter with EquatableM
 
   @override
   String title() => testament.title();
-
-  @override
-  String groupTitle() => 'Testaments';
 }
 
 class BookSearchLocationFilter extends SearchLocationFilter with EquatableMixin {
@@ -273,7 +272,22 @@ class BookSearchLocationFilter extends SearchLocationFilter with EquatableMixin 
 
   @override
   String title() => book.title();
+}
 
-  @override
-  String groupTitle() => 'Books';
+enum SearchLocationFilterGroup {
+  currentBook,
+  testaments,
+  books;
+
+  List<SearchLocationFilter> getFilters({required BookType currentBook}) => switch (this) {
+    .currentBook => [BookSearchLocationFilter(book: currentBook)],
+    testaments => Testament.values.map((testament) => TestamentSearchLocationFilter(testament: testament)).toList(),
+    books => BookType.values.map((book) => BookSearchLocationFilter(book: book)).toList(),
+  };
+
+  String title() => switch (this) {
+    currentBook => 'Current Book',
+    testaments => 'Testaments',
+    books => 'Books',
+  };
 }

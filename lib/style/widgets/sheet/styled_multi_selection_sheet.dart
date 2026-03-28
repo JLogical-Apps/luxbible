@@ -1,16 +1,15 @@
 import 'package:bible/style/style.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/collection_extensions.dart' hide MapExtensions;
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:utils_core/utils_core.dart' hide MapExtensions;
+import 'package:utils_core/utils_core.dart';
 
 class StyledMultiSelectionSheet<T> extends StyledSheet<List<T>> {
-  final List<T> options;
+  final Map<String?, List<T>> optionsByCategory;
   final List<T> initialOptions;
   final StyledSelectOption<T> Function(T) optionMapper;
 
@@ -18,24 +17,21 @@ class StyledMultiSelectionSheet<T> extends StyledSheet<List<T>> {
   aboveButtonsBuilder;
 
   final List<String> Function(T)? searchKeywordsMapper;
-  final String Function(T)? groupMapper;
 
   const StyledMultiSelectionSheet({
     super.key,
     required super.title,
     super.trailing,
-    required this.options,
+    required this.optionsByCategory,
     this.initialOptions = const [],
     required this.optionMapper,
     this.aboveButtonsBuilder,
     this.searchKeywordsMapper,
-    this.groupMapper,
   });
 
   @override
   Widget build(BuildContext context) {
     final searchKeywordsMapper = this.searchKeywordsMapper;
-    final groupMapper = this.groupMapper;
 
     final selectedOptionsState = useState(initialOptions);
     final searchState = useState('');
@@ -62,14 +58,18 @@ class StyledMultiSelectionSheet<T> extends StyledSheet<List<T>> {
         StyledRectButton.primary(onPressed: () => context.pop(selectedOptionsState.value), label: 'Save'.toText()),
       ],
       children:
-          options
-              .where(
-                (option) =>
-                    searchKeywordsMapper == null ||
-                    searchState.value.isEmpty ||
-                    searchState.value.passesSearch(searchKeywordsMapper(option)),
+          optionsByCategory
+              .mapValues(
+                (category, options) => options
+                    .where(
+                      (option) =>
+                          searchKeywordsMapper == null ||
+                          searchState.value.isEmpty ||
+                          searchState.value.passesSearch(searchKeywordsMapper(option)),
+                    )
+                    .toList(),
               )
-              .groupListsBy((option) => groupMapper == null ? null : groupMapper(option))
+              .where((category, options) => options.isNotEmpty)
               .mapToIterable((group, options) {
                 final children = options
                     .map(

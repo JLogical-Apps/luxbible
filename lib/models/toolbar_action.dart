@@ -69,7 +69,7 @@ enum ToolbarAction {
       case study:
         StudySheet.show(context, ref, region: reference, bible: bible, regionType: RegionType.chapter);
       case search:
-        final result = await context.push(SearchPage()) as SearchPageResult?;
+        final result = await context.push(SearchPage(currentChapterReference: reference)) as SearchPageResult?;
         if (result?.reference case final reference?) {
           onNavigateToReference(reference);
         }

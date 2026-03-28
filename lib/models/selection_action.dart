@@ -63,7 +63,13 @@ enum SelectionAction {
       case search:
         onDeselect();
         final result =
-            await context.push(SearchPage(initialSearch: bible.getSelectionText(selection))) as SearchPageResult?;
+            await context.push(
+                  SearchPage(
+                    initialSearch: bible.getSelectionText(selection),
+                    currentChapterReference: selection.start.toChapterReference(),
+                  ),
+                )
+                as SearchPageResult?;
         if (result?.reference case final reference?) {
           onNavigateToReference(reference);
         }

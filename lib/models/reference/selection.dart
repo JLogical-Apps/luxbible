@@ -1,5 +1,6 @@
 import 'package:bible/models/bible_translation.dart';
 import 'package:bible/models/book_type.dart';
+import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/region.dart';
@@ -71,6 +72,7 @@ class SelectionWordAnchor extends Equatable with ComparableOperators<SelectionWo
   String toKey() => [book.osisId(), chapterNum, verseNum, characterOffset].join('.');
 
   Reference toReference() => Reference(book: book, chapterNum: chapterNum, verseNum: verseNum);
+  ChapterReference toChapterReference() => toReference().toChapterReference();
 
   @override
   int compareTo(SelectionWordAnchor other) =>
