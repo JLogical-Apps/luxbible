@@ -67,6 +67,10 @@ extension IterableExtensions<T> on Iterable<T> {
   Map<K, V> mapToMap<K, V>(MapEntry<K, V> Function(T) mapper) => Map.fromEntries(map(mapper));
 
   List<T> get distinct => toSet().toList();
+  Iterable<T> distinctBy<R>(R Function(T) mapper) {
+    final seen = <R>{};
+    return toList()..retainWhere((e) => seen.add(mapper(e)));
+  }
 
   T maxBy(num Function(T) numMapper) => reduce((a, b) => numMapper(a) > numMapper(b) ? a : b);
   T minBy(num Function(T) numMapper) => reduce((a, b) => numMapper(a) < numMapper(b) ? a : b);
@@ -112,6 +116,12 @@ extension MapExtensions<K, V> on Map<K, V> {
 
   Map<K, V> sortedBy<E extends Comparable<E>>(E Function(K, V) elementGetter) =>
       entries.sortedBy((entry) => elementGetter(entry.key, entry.value)).toMap();
+
+  Map<K, V> take(int amount) => entries.take(amount).toMap();
+
+  Map<K, V> withRemoved(K key) => {...this}..remove(key);
+
+  Map<K, V> get withDistinctValues => entries.distinctBy((entry) => entry.value).toMap();
 }
 
 extension NullValueMapExtensions<K, V> on Map<K, V?> {

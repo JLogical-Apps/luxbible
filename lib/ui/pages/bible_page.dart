@@ -82,7 +82,7 @@ class BiblePage extends HookConsumerWidget {
                 selectionState.value = null;
 
                 final reference = bible.getChapterReferenceByPageIndex(pageIndex);
-                ref.updateUser((user) => user.copyWith(lastReference: reference));
+                ref.updateUser((user) => user.withUpdatedSession(reference));
               },
               itemBuilder: (context, pageIndex) {
                 final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
@@ -266,7 +266,7 @@ class _Bottom extends HookConsumerWidget {
 
     void navigateToPassage(Passage passage) async {
       final chapterReference = passage.references.first.toChapterReference();
-      ref.updateUser((user) => user.withViewHistory(chapterReference));
+      ref.updateUser((user) => user.withNewSession(chapterReference));
       pageController.jumpToPage(bible.getPageIndexByChapterReference(chapterReference));
       selectedReferencesState.value = passage.references;
 
@@ -305,9 +305,9 @@ class _Bottom extends HookConsumerWidget {
                     await context.pushDialog(ChapterReferenceSearchPage(initialReference: currentChapterReference))
                         as ChapterReference?;
                 if (newReference != null) {
+                  ref.updateUser((user) => user.withNewSession(newReference));
                   final pageIndex = bible.getPageIndexByChapterReference(newReference);
                   pageController.jumpToPage(pageIndex);
-                  ref.updateUser((user) => user.withViewHistory(newReference));
                 }
               },
               onLongPressed: () => user.toolbar.longPressShortcut.onPressed(

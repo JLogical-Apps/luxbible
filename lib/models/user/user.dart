@@ -15,6 +15,7 @@ import 'package:bible/models/user/toolbar_configuration.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';
@@ -26,7 +27,8 @@ sealed class User with _$User {
   const factory User({
     @Default(BibleTranslation.asv) BibleTranslation translation,
     @Default(ChapterReference(chapterNum: 1, book: BookType.genesis)) ChapterReference lastReference,
-    @Default([]) List<ChapterReference> viewHistory,
+    String? currentSessionId,
+    @Default({}) Map<String, ChapterReference> sessionById,
     @Default(ColorEnum.yellow) ColorEnum highlightColor,
     @Default([]) List<Bookmark> bookmarks,
     @Default([]) List<Annotation> annotations,
@@ -123,8 +125,23 @@ sealed class User with _$User {
   );
   User withRemovedAnnotation(Annotation annotation) => copyWith(annotations: annotations.withRemoved(annotation));
 
-  User withViewHistory(ChapterReference reference) =>
-      copyWith(viewHistory: [reference, ...viewHistory].distinct.take(5).toList());
+  User withNewSession(ChapterReference reference) {
+    final sessionId = Uuid().v4();
+    return copyWith(
+      lastReference: reference,
+      currentSessionId: sessionId,
+      sessionById: {sessionId: reference, ...sessionById}.withDistinctValues.take(5),
+    );
+  }
+
+  User withUpdatedSession(ChapterReference reference) {
+    final currentSessionId = this.currentSessionId;
+    return copyWith(
+      lastReference: reference,
+      sessionById: currentSessionId == null ? sessionById : ({...sessionById}..[currentSessionId] = reference),
+    );
+  }
+
   User withSearchHistory(String search) =>
       copyWith(searchHistory: [search, ...searchHistory].distinct.take(5).toList());
 }

@@ -13,11 +13,12 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   lastReference: json['lastReference'] == null
       ? const ChapterReference(chapterNum: 1, book: BookType.genesis)
       : ChapterReference.fromJson(json['lastReference'] as String),
-  viewHistory:
-      (json['viewHistory'] as List<dynamic>?)
-          ?.map((e) => ChapterReference.fromJson(e as String))
-          .toList() ??
-      const [],
+  currentSessionId: json['currentSessionId'] as String?,
+  sessionById:
+      (json['sessionById'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, ChapterReference.fromJson(e as String)),
+      ) ??
+      const {},
   highlightColor:
       $enumDecodeNullable(_$ColorEnumEnumMap, json['highlightColor']) ??
       ColorEnum.yellow,
@@ -52,7 +53,8 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'translation': _$BibleTranslationEnumMap[instance.translation]!,
   'lastReference': instance.lastReference,
-  'viewHistory': instance.viewHistory,
+  'currentSessionId': instance.currentSessionId,
+  'sessionById': instance.sessionById,
   'highlightColor': _$ColorEnumEnumMap[instance.highlightColor]!,
   'bookmarks': instance.bookmarks,
   'annotations': instance.annotations,

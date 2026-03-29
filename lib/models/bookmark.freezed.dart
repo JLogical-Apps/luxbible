@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Bookmark {
 
- ChapterReference get chapter; ColorEnum get color;
+ String get id; ChapterReference get chapter; ColorEnum get color;
 /// Create a copy of Bookmark
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $BookmarkCopyWith<Bookmark> get copyWith => _$BookmarkCopyWithImpl<Bookmark>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Bookmark&&(identical(other.chapter, chapter) || other.chapter == chapter)&&(identical(other.color, color) || other.color == color));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Bookmark&&(identical(other.id, id) || other.id == id)&&(identical(other.chapter, chapter) || other.chapter == chapter)&&(identical(other.color, color) || other.color == color));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,chapter,color);
+int get hashCode => Object.hash(runtimeType,id,chapter,color);
 
 @override
 String toString() {
-  return 'Bookmark(chapter: $chapter, color: $color)';
+  return 'Bookmark(id: $id, chapter: $chapter, color: $color)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $BookmarkCopyWith<$Res>  {
   factory $BookmarkCopyWith(Bookmark value, $Res Function(Bookmark) _then) = _$BookmarkCopyWithImpl;
 @useResult
 $Res call({
- ChapterReference chapter, ColorEnum color
+ String? id, ChapterReference chapter, ColorEnum color
 });
 
 
@@ -65,9 +65,10 @@ class _$BookmarkCopyWithImpl<$Res>
 
 /// Create a copy of Bookmark
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? chapter = null,Object? color = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = freezed,Object? chapter = null,Object? color = null,}) {
   return _then(_self.copyWith(
-chapter: null == chapter ? _self.chapter : chapter // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id! : id // ignore: cast_nullable_to_non_nullable
+as String?,chapter: null == chapter ? _self.chapter : chapter // ignore: cast_nullable_to_non_nullable
 as ChapterReference,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
 as ColorEnum,
   ));
@@ -151,10 +152,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ChapterReference chapter,  ColorEnum color)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? id,  ChapterReference chapter,  ColorEnum color)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Bookmark() when $default != null:
-return $default(_that.chapter,_that.color);case _:
+return $default(_that.id,_that.chapter,_that.color);case _:
   return orElse();
 
 }
@@ -172,10 +173,10 @@ return $default(_that.chapter,_that.color);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ChapterReference chapter,  ColorEnum color)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? id,  ChapterReference chapter,  ColorEnum color)  $default,) {final _that = this;
 switch (_that) {
 case _Bookmark():
-return $default(_that.chapter,_that.color);}
+return $default(_that.id,_that.chapter,_that.color);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -189,10 +190,10 @@ return $default(_that.chapter,_that.color);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ChapterReference chapter,  ColorEnum color)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? id,  ChapterReference chapter,  ColorEnum color)?  $default,) {final _that = this;
 switch (_that) {
 case _Bookmark() when $default != null:
-return $default(_that.chapter,_that.color);case _:
+return $default(_that.id,_that.chapter,_that.color);case _:
   return null;
 
 }
@@ -204,7 +205,7 @@ return $default(_that.chapter,_that.color);case _:
 @JsonSerializable()
 
 class _Bookmark extends Bookmark {
-  const _Bookmark({required this.chapter, this.color = ColorEnum.red}): super._();
+   _Bookmark({final  String? id, required this.chapter, this.color = ColorEnum.red}): super._(id: id);
   factory _Bookmark.fromJson(Map<String, dynamic> json) => _$BookmarkFromJson(json);
 
 @override final  ChapterReference chapter;
@@ -223,16 +224,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Bookmark&&(identical(other.chapter, chapter) || other.chapter == chapter)&&(identical(other.color, color) || other.color == color));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Bookmark&&(identical(other.id, id) || other.id == id)&&(identical(other.chapter, chapter) || other.chapter == chapter)&&(identical(other.color, color) || other.color == color));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,chapter,color);
+int get hashCode => Object.hash(runtimeType,id,chapter,color);
 
 @override
 String toString() {
-  return 'Bookmark(chapter: $chapter, color: $color)';
+  return 'Bookmark(id: $id, chapter: $chapter, color: $color)';
 }
 
 
@@ -243,7 +244,7 @@ abstract mixin class _$BookmarkCopyWith<$Res> implements $BookmarkCopyWith<$Res>
   factory _$BookmarkCopyWith(_Bookmark value, $Res Function(_Bookmark) _then) = __$BookmarkCopyWithImpl;
 @override @useResult
 $Res call({
- ChapterReference chapter, ColorEnum color
+ String? id, ChapterReference chapter, ColorEnum color
 });
 
 
@@ -260,9 +261,10 @@ class __$BookmarkCopyWithImpl<$Res>
 
 /// Create a copy of Bookmark
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? chapter = null,Object? color = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = freezed,Object? chapter = null,Object? color = null,}) {
   return _then(_Bookmark(
-chapter: null == chapter ? _self.chapter : chapter // ignore: cast_nullable_to_non_nullable
+id: freezed == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String?,chapter: null == chapter ? _self.chapter : chapter // ignore: cast_nullable_to_non_nullable
 as ChapterReference,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
 as ColorEnum,
   ));

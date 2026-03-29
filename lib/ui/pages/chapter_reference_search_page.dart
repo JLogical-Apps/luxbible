@@ -90,6 +90,8 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
       (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
     );
 
+    final jumpBackInSessionById = user.sessionById.where((id, reference) => reference != initialReference);
+
     return StyledPage(
       backgroundColor: context.colors.surfacePrimary,
       leading: StyledCircleButton.lg(child: Symbols.close.toIcon(), onPressed: () => Navigator.of(context).pop()),
@@ -210,20 +212,18 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                               ),
                             ],
                           ),
-                        if (user.viewHistory.isNotEmpty)
+                        if (jumpBackInSessionById.isNotEmpty)
                           StyledSection(
-                            title: 'Recents'.toText(),
+                            title: 'Jump Back In'.toText(),
                             padding: .only(top: 24),
-                            children: user.viewHistory
-                                .map(
-                                  (chapterReference) => StyledSwipeable(
+                            children: jumpBackInSessionById
+                                .mapToIterable(
+                                  (id, chapterReference) => StyledSwipeable(
                                     key: ValueKey(chapterReference),
                                     actions: [
                                       StyledSwipeableAction.delete(
                                         onPressed: () => ref.updateUser(
-                                          (user) => user.copyWith(
-                                            viewHistory: user.viewHistory.withRemoved(chapterReference),
-                                          ),
+                                          (user) => user.copyWith(sessionById: user.sessionById.withRemoved(id)),
                                         ),
                                       ),
                                     ],
