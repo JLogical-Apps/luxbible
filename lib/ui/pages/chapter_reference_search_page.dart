@@ -131,9 +131,9 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                           hintText: 'Book',
                           autocorrect: false,
                           textStyle: context.textStyle.paragraphLg,
-                          textCapitalization: TextCapitalization.words,
-                          action: TextInputAction.next,
-                          textInputType: TextInputType.text,
+                          textCapitalization: .words,
+                          action: .next,
+                          textInputType: .text,
                           focusNode: bookFocusNode,
                         ),
                         Positioned.fill(
@@ -152,7 +152,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                       onChanged: book == null ? null : (text) => chapterNumState.value = int.tryParse(text),
                       hintText: 'Chapter',
                       textStyle: context.textStyle.paragraphLg,
-                      textInputType: TextInputType.numberWithOptions(signed: true),
+                      textInputType: .numberWithOptions(signed: true),
                       focusNode: chapterFocusNode,
                       onSubmit: (text) {
                         final chapterNum = int.tryParse(text);
