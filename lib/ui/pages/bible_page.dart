@@ -56,115 +56,138 @@ class BiblePage extends HookConsumerWidget {
     return StyledPage(
       body: Stack(
         children: [
-          PageView.builder(
-            controller: pageController,
-            onPageChanged: (pageIndex) {
-              isScrollingDownState.value = true;
-              selectionState.value = null;
-
-              final reference = bible.getChapterReferenceByPageIndex(pageIndex);
-              ref.updateUser((user) => user.copyWith(lastReference: reference));
+          GestureDetector(
+            onHorizontalDragUpdate: (details) {
+              const sensitivity = 8;
+              if (details.delta.dx > sensitivity) {
+                pageController.animateToPage(
+                  pageController.page!.round() - 1,
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.easeInOutCubic,
+                );
+              } else if (details.delta.dx < -sensitivity) {
+                pageController.animateToPage(
+                  pageController.page!.round() + 1,
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.easeInOutCubic,
+                );
+              }
             },
-            itemBuilder: (context, pageIndex) {
-              final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
+            child: PageView.builder(
+              controller: pageController,
+              allowImplicitScrolling: false,
+              physics: NeverScrollableScrollPhysics(),
+              onPageChanged: (pageIndex) {
+                isScrollingDownState.value = true;
+                selectionState.value = null;
 
-              return HookBuilder(
-                builder: (context) {
-                  final scrollController = useDisposable(
-                    useScrollController(),
-                    (controller) =>
-                        scrollControllerByReferenceRef.value = {...scrollControllerByReferenceRef.value}
-                          ..remove(chapterReference),
-                  );
-                  if (!scrollControllerByReferenceRef.value.containsKey(chapterReference)) {
-                    WidgetsBinding.instance.addPostFrameCallback(
-                      (_) => scrollControllerByReferenceRef.value = {
-                        ...scrollControllerByReferenceRef.value,
-                        chapterReference: scrollController,
-                      },
+                final reference = bible.getChapterReferenceByPageIndex(pageIndex);
+                ref.updateUser((user) => user.copyWith(lastReference: reference));
+              },
+              itemBuilder: (context, pageIndex) {
+                final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
+
+                return HookBuilder(
+                  builder: (context) {
+                    final scrollController = useDisposable(
+                      useScrollController(),
+                      (controller) =>
+                          scrollControllerByReferenceRef.value = {...scrollControllerByReferenceRef.value}
+                            ..remove(chapterReference),
                     );
-                  }
+                    if (!scrollControllerByReferenceRef.value.containsKey(chapterReference)) {
+                      WidgetsBinding.instance.addPostFrameCallback(
+                        (_) => scrollControllerByReferenceRef.value = {
+                          ...scrollControllerByReferenceRef.value,
+                          chapterReference: scrollController,
+                        },
+                      );
+                    }
 
-                  final showTopBar = useListenableSelector(
-                    scrollController,
-                    () => scrollController.hasClients && scrollController.position.pixels > 60,
-                  );
+                    final showTopBar = useListenableSelector(
+                      scrollController,
+                      () => scrollController.hasClients && scrollController.position.pixels > 60,
+                    );
 
-                  return Stack(
-                    children: [
-                      StyledScrollbar(
-                        controller: scrollController,
-                        child: SingleChildScrollView(
+                    return Stack(
+                      children: [
+                        StyledScrollbar(
                           controller: scrollController,
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 20, vertical: 8) +
-                              .only(
-                                top: MediaQuery.paddingOf(context).top + 24,
-                                bottom: MediaQuery.paddingOf(context).bottom + 72,
-                              ),
-                          child: Column(
-                            crossAxisAlignment: .start,
-                            children: [
-                              Text(chapterReference.format(), style: context.textStyle.bibleChapter),
-                              gapH16,
-                              PassageBuilder(
-                                passage: chapterReference.toPassage(),
-                                underlinedReferences: selectedReferencesState.value,
-                                onReferencePressed: (reference) {
-                                  if (selectionState.value != null) {
-                                    selectionState.value = null;
-                                  } else if (selectedReferencesState.value.isEmpty && user.passage.expandToAnnotation) {
-                                    selectedReferencesState.value = user.getExpandedReferences(reference);
-                                  } else {
-                                    selectedReferencesState.value = selectedReferencesState.value.withToggle(reference);
-                                  }
-                                },
-                                onSelectionUpdated: (selection) {
-                                  selectedReferencesState.value = [];
-                                  if (selectionState.value == null &&
-                                      user.selection.expandToAnnotation &&
-                                      selection != null) {
-                                    selectionState.value = user.getExpandedSelection(selection);
-                                  } else {
-                                    selectionState.value = selection;
-                                  }
-                                },
-                                keyByReferenceRef: keyByReferenceRef,
-                                selection: selectionState.value,
-                              ),
-                              gapH16,
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        left: 0,
-                        child: AnimatedOpacity(
-                          opacity: showTopBar ? 1 : 0,
-                          duration: Duration(milliseconds: 300),
-                          curve: Curves.easeInOutCubic,
-                          child: Container(
-                            color: context.colors.backgroundPrimary,
+                          child: SingleChildScrollView(
+                            controller: scrollController,
                             padding:
-                                EdgeInsets.only(top: MediaQuery.paddingOf(context).top) + .symmetric(horizontal: 16),
-                            alignment: .centerLeft,
+                                EdgeInsets.symmetric(horizontal: 20, vertical: 8) +
+                                .only(
+                                  top: MediaQuery.paddingOf(context).top + 24,
+                                  bottom: MediaQuery.paddingOf(context).bottom + 72,
+                                ),
                             child: Column(
                               crossAxisAlignment: .start,
                               children: [
-                                Text(chapterReference.format(), style: context.textStyle.labelSm.subtle(context)),
-                                StyledDivider(),
+                                Text(chapterReference.format(), style: context.textStyle.bibleChapter),
+                                gapH16,
+                                PassageBuilder(
+                                  passage: chapterReference.toPassage(),
+                                  underlinedReferences: selectedReferencesState.value,
+                                  onReferencePressed: (reference) {
+                                    if (selectionState.value != null) {
+                                      selectionState.value = null;
+                                    } else if (selectedReferencesState.value.isEmpty &&
+                                        user.passage.expandToAnnotation) {
+                                      selectedReferencesState.value = user.getExpandedReferences(reference);
+                                    } else {
+                                      selectedReferencesState.value = selectedReferencesState.value.withToggle(
+                                        reference,
+                                      );
+                                    }
+                                  },
+                                  onSelectionUpdated: (selection) {
+                                    selectedReferencesState.value = [];
+                                    if (selectionState.value == null &&
+                                        user.selection.expandToAnnotation &&
+                                        selection != null) {
+                                      selectionState.value = user.getExpandedSelection(selection);
+                                    } else {
+                                      selectionState.value = selection;
+                                    }
+                                  },
+                                  keyByReferenceRef: keyByReferenceRef,
+                                  selection: selectionState.value,
+                                ),
+                                gapH16,
                               ],
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
+                        Positioned(
+                          top: 0,
+                          right: 0,
+                          left: 0,
+                          child: AnimatedOpacity(
+                            opacity: showTopBar ? 1 : 0,
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.easeInOutCubic,
+                            child: Container(
+                              color: context.colors.backgroundPrimary,
+                              padding:
+                                  EdgeInsets.only(top: MediaQuery.paddingOf(context).top) + .symmetric(horizontal: 16),
+                              alignment: .centerLeft,
+                              child: Column(
+                                crossAxisAlignment: .start,
+                                children: [
+                                  Text(chapterReference.format(), style: context.textStyle.labelSm.subtle(context)),
+                                  StyledDivider(),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
           ),
           Positioned(
             top: 0,
