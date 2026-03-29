@@ -91,7 +91,10 @@ class BibleApp extends StatelessWidget {
             ),
           ),
           debugShowCheckedModeBanner: false,
-          home: BiblePage(),
+          home: MediaQuery(
+            data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1)),
+            child: BiblePage(),
+          ),
         ),
       ),
     );
