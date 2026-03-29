@@ -21,6 +21,7 @@ _ToolbarConfiguration _$ToolbarConfigurationFromJson(
         json['longPressShortcut'],
       ) ??
       ToolbarShortcut.study,
+  pinToBottom: json['pinToBottom'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$ToolbarConfigurationToJson(
@@ -29,6 +30,7 @@ Map<String, dynamic> _$ToolbarConfigurationToJson(
   'pinnedShortcut1': _$ToolbarShortcutEnumMap[instance.pinnedShortcut1]!,
   'pinnedShortcut2': _$ToolbarShortcutEnumMap[instance.pinnedShortcut2]!,
   'longPressShortcut': _$ToolbarShortcutEnumMap[instance.longPressShortcut]!,
+  'pinToBottom': instance.pinToBottom,
 };
 
 const _$ToolbarShortcutEnumMap = {

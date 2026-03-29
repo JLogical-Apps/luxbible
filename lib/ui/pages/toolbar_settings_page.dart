@@ -90,6 +90,27 @@ class ToolbarSettingsPage extends ConsumerWidget {
                     ],
                   ),
                 ),
+                StyledSection.child(
+                  title: 'Visibility'.toText(),
+                  child: StyledCard(
+                    children: [
+                      StyledListItem.radio(
+                        title: 'Hide'.toText(),
+                        subtitle: 'Hide the toolbar while scrolling down for an immersive view of the Bible.'.toText(),
+                        leading: Symbols.bottom_panel_close.toIcon(),
+                        selected: toolbar.pinToBottom == false,
+                        onSelected: () => ref.updateUser((user) => user.copyWith.toolbar(pinToBottom: false)),
+                      ),
+                      StyledListItem.radio(
+                        title: 'Pin'.toText(),
+                        subtitle: 'Pin the toolbar to the bottom of the page.'.toText(),
+                        leading: Symbols.pin_drop.toIcon(),
+                        selected: toolbar.pinToBottom == true,
+                        onSelected: () => ref.updateUser((user) => user.copyWith.toolbar(pinToBottom: true)),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

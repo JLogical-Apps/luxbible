@@ -254,7 +254,10 @@ class _Bottom extends HookConsumerWidget {
     final isAtBottom = scrollPosition == null || !scrollPosition.hasContentDimensions
         ? false
         : scrollPosition.pixels >= scrollPosition.maxScrollExtent;
-    final showBottomBar = (isScrollingDownState.value || isAtBottom) && selectedPassage == null && selection == null;
+    final showBottomBar =
+        (isScrollingDownState.value || user.toolbar.pinToBottom || isAtBottom) &&
+        selectedPassage == null &&
+        selection == null;
 
     void onClosePressed() {
       selectionState.value = null;
