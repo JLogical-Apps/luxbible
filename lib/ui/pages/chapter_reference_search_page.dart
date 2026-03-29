@@ -29,6 +29,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:recase/recase.dart';
 
+class ChapterReferenceSearchPageResult {
+  final ChapterReference chapterReference;
+  final String? sessionId;
+
+  const ChapterReferenceSearchPageResult({required this.chapterReference, this.sessionId});
+}
+
 class ChapterReferenceSearchPage extends HookConsumerWidget {
   final ChapterReference initialReference;
 
@@ -153,7 +160,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                           return;
                         }
 
-                        Navigator.of(context).pop(ChapterReference(book: book, chapterNum: chapterNum));
+                        Navigator.of(context).pop(ChapterReference(book: book, chapterNum: chapterNum).toResult());
                       },
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
@@ -196,7 +203,8 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                   children: user.bookmarks.map((bookmark) {
                                     final chapterReference = bookmark.chapter;
                                     return StyledTile(
-                                      onPressed: () => Navigator.of(context).pop(chapterReference),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(chapterReference.toResult(sessionId: bookmark.id)),
                                       padding: .all(16),
                                       child: Row(
                                         spacing: 8,
@@ -218,12 +226,12 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                             padding: .only(top: 24),
                             children: jumpBackInSessionById
                                 .mapToIterable(
-                                  (id, chapterReference) => StyledSwipeable(
+                                  (sessionId, chapterReference) => StyledSwipeable(
                                     key: ValueKey(chapterReference),
                                     actions: [
                                       StyledSwipeableAction.delete(
                                         onPressed: () => ref.updateUser(
-                                          (user) => user.copyWith(sessionById: user.sessionById.withRemoved(id)),
+                                          (user) => user.copyWith(sessionById: user.sessionById.withRemoved(sessionId)),
                                         ),
                                       ),
                                     ],
@@ -231,7 +239,8 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                       leading: Symbols.history.toIcon(),
                                       title: chapterReference.format().toText(),
                                       trailing: Symbols.expand_circle_right.toIcon(),
-                                      onPressed: () => Navigator.of(context).pop(chapterReference),
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(chapterReference.toResult(sessionId: sessionId)),
                                     ),
                                   ),
                                 )
@@ -283,7 +292,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                 (chapterReference) => StyledListItem(
                                   title: chapterReference.format().toText(),
                                   trailing: Symbols.expand_circle_right.toIcon(),
-                                  onPressed: () => Navigator.of(context).pop(chapterReference),
+                                  onPressed: () => Navigator.of(context).pop(chapterReference.toResult()),
                                 ),
                               )
                               .toList(),
@@ -297,3 +306,8 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
 }
 
 enum _ViewMode { book, chapter }
+
+extension on ChapterReference {
+  ChapterReferenceSearchPageResult toResult({String? sessionId}) =>
+      ChapterReferenceSearchPageResult(chapterReference: this, sessionId: sessionId);
+}

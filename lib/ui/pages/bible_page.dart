@@ -82,7 +82,7 @@ class BiblePage extends HookConsumerWidget {
                 selectionState.value = null;
 
                 final reference = bible.getChapterReferenceByPageIndex(pageIndex);
-                ref.updateUser((user) => user.withUpdatedSession(reference));
+                ref.updateUser((user) => user.withUpdatedCurrentSession(reference));
               },
               itemBuilder: (context, pageIndex) {
                 final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
@@ -301,12 +301,17 @@ class _Bottom extends HookConsumerWidget {
               translation: user.translation,
               user: user,
               onPressed: () async {
-                final newReference =
+                final result =
                     await context.pushDialog(ChapterReferenceSearchPage(initialReference: currentChapterReference))
-                        as ChapterReference?;
-                if (newReference != null) {
-                  ref.updateUser((user) => user.withNewSession(newReference));
-                  final pageIndex = bible.getPageIndexByChapterReference(newReference);
+                        as ChapterReferenceSearchPageResult?;
+                if (result != null) {
+                  if (result.sessionId case final sessionId?) {
+                    ref.updateUser((user) => user.withSelectedSession(sessionId));
+                  } else {
+                    ref.updateUser((user) => user.withNewSession(result.chapterReference));
+                  }
+
+                  final pageIndex = bible.getPageIndexByChapterReference(result.chapterReference);
                   pageController.jumpToPage(pageIndex);
                 }
               },
@@ -340,9 +345,9 @@ class _Bottom extends HookConsumerWidget {
                   children: ToolbarAction.values
                       .map(
                         (action) => StyledListItem(
-                          title: action.title(user: user, reference: currentChapterReference).toText(),
-                          subtitle: action.description(user: user, reference: currentChapterReference).toText(),
-                          leading: action.buildIcon(context, user: user, reference: currentChapterReference),
+                          title: action.title().toText(),
+                          subtitle: action.description(user: user).toText(),
+                          leading: action.buildIcon(context, user: user),
                           trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
                           onPressed: () {
                             context.pop();

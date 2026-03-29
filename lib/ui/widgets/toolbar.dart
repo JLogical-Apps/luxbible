@@ -80,10 +80,10 @@ class Toolbar extends StatelessWidget {
             (i, shortcut) => StyledEditBadge(
               isEdit: isEdit,
               child: Tooltip(
-                message: shortcut.title(user: user, reference: chapterReference),
+                message: shortcut.title(),
                 child: StyledCircleButton.lg(
                   onPressed: () => onShorcutPressed(i, shortcut),
-                  child: shortcut.buildIcon(context, user: user, reference: chapterReference),
+                  child: shortcut.buildIcon(context, user: user),
                 ),
               ),
             ),

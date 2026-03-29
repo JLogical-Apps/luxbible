@@ -19,24 +19,24 @@ enum ToolbarAction {
   study,
   search;
 
-  String title({required User user, required ChapterReference? reference}) => switch (this) {
-    bookmark => reference == null || user.getBookmark(reference) == null ? 'Bookmark' : 'Remove Bookmark',
+  String title() => switch (this) {
+    bookmark => 'Bookmark',
     study => 'Study',
     search => 'Search',
   };
 
-  String description({required User user, required ChapterReference? reference}) => switch (this) {
+  String description({required User user}) => switch (this) {
     bookmark =>
-      reference == null || user.getBookmark(reference) == null
+      user.currentSessionBookmark == null
           ? 'Bookmark this chapter to easily access it from the search page.'
-          : 'Remove this bookmark.',
+          : 'Manage this bookmark.',
     study => 'View study tools for this chapter.',
     search => 'Search for words across the Bible',
   };
 
-  Widget buildIcon(BuildContext context, {required User user, required ChapterReference? reference}) => switch (this) {
+  Widget buildIcon(BuildContext context, {required User user}) => switch (this) {
     bookmark => () {
-      final bookmark = reference == null ? null : user.getBookmark(reference);
+      final bookmark = user.currentSessionBookmark;
       return bookmark == null
           ? Icon(Symbols.bookmark, fill: 0)
           : Icon(Symbols.bookmark, color: bookmark.color.toHue(context.colors).medium);
@@ -57,11 +57,13 @@ enum ToolbarAction {
   }) async {
     switch (this) {
       case bookmark:
-        final bookmark = user.getBookmark(reference);
+        final bookmark = user.currentSessionBookmark;
         if (bookmark == null) {
           final color = await context.showStyledSheet((context) => StyledColorSheet(title: 'Bookmark Color'.toText()));
           if (color != null) {
-            ref.updateUser((user) => user.withBookmark(Bookmark(chapter: reference, color: color)));
+            ref.updateUser(
+              (user) => user.withBookmark(Bookmark(chapter: reference, color: color, id: user.currentSessionId)),
+            );
           }
         } else {
           ref.updateUser((user) => user.withRemovedBookmark(bookmark));

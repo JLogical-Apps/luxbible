@@ -18,19 +18,16 @@ enum ToolbarShortcut {
   crossReferences,
   search;
 
-  String title({required User user, required ChapterReference? reference}) =>
-      toStudyAction()?.title() ??
-      toToolbarAction()?.title(user: user, reference: reference) ??
-      (throw UnimplementedError());
+  String title() => toStudyAction()?.title() ?? toToolbarAction()?.title() ?? (throw UnimplementedError());
 
-  String description({required User user, required ChapterReference? reference}) =>
+  String description({required User user}) =>
       toStudyAction()?.description(region: null, regionType: RegionType.chapter) ??
-      toToolbarAction()?.description(user: user, reference: reference) ??
+      toToolbarAction()?.description(user: user) ??
       (throw UnimplementedError());
 
-  Widget buildIcon(BuildContext context, {required User user, required ChapterReference? reference}) =>
+  Widget buildIcon(BuildContext context, {required User user}) =>
       toStudyAction()?.icon.mapIfNonNull(Icon.new) ??
-      toToolbarAction()?.buildIcon(context, reference: reference, user: user) ??
+      toToolbarAction()?.buildIcon(context, user: user) ??
       (throw UnimplementedError());
 
   Future<void> onPressed(

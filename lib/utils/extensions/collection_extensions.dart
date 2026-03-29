@@ -9,6 +9,9 @@ extension ListExtensions<T> on List<T> {
   List<T> withRemoved(T item) => [...this]..remove(item);
   List<T> withRemovedAt(int index) => [...this]..removeAt(index);
 
+  List<T> withUpdate(bool Function(T) where, T Function(T) update) =>
+      map((item) => where(item) ? update(item) : item).toList();
+
   int? indexOfOrNull(T? item) {
     if (item == null) {
       return null;

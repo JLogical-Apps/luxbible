@@ -83,7 +83,7 @@ class ToolbarSettingsPage extends ConsumerWidget {
                                 );
                               }
                             },
-                            child: toolbar.longPressShortcut.buildIcon(context, user: user, reference: null),
+                            child: toolbar.longPressShortcut.buildIcon(context, user: user),
                           ),
                         ),
                       ),
@@ -129,9 +129,9 @@ class ToolbarSettingsPage extends ConsumerWidget {
       options: ToolbarShortcut.values,
       initialOption: initialShortcut,
       optionMapper: (shortcut) => StyledSelectOption(
-        title: shortcut.title(user: user, reference: null).toText(),
-        subtitle: shortcut.description(user: user, reference: null).toText(),
-        leading: shortcut.buildIcon(context, user: user, reference: null),
+        title: shortcut.title().toText(),
+        subtitle: shortcut.description(user: user).toText(),
+        leading: shortcut.buildIcon(context, user: user),
       ),
     ),
   );

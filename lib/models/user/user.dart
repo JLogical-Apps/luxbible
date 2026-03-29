@@ -42,8 +42,8 @@ sealed class User with _$User {
 
   Bible getBible(List<Bible> bibles) => bibles.firstWhere((bible) => bible.translation == translation);
 
-  Bookmark? getBookmark(ChapterReference reference) =>
-      bookmarks.firstWhereOrNull((bookmark) => bookmark.chapter == reference);
+  Bookmark? getBookmarkByIdOrNull(String? id) => bookmarks.firstWhereOrNull((bookmark) => bookmark.id == id);
+  Bookmark? get currentSessionBookmark => getBookmarkByIdOrNull(currentSessionId);
 
   List<Annotation> getPassageAnnotations(Passage passage) =>
       annotations.where((annotation) => annotation.passages.any((p) => p.hasAnyOf(passage))).toList();
@@ -134,13 +134,20 @@ sealed class User with _$User {
     );
   }
 
-  User withUpdatedSession(ChapterReference reference) {
+  User withUpdatedCurrentSession(ChapterReference reference) {
     final currentSessionId = this.currentSessionId;
     return copyWith(
       lastReference: reference,
       sessionById: currentSessionId == null ? sessionById : ({...sessionById}..[currentSessionId] = reference),
+      bookmarks: bookmarks.withUpdate(
+        (bookmark) => bookmark.id == currentSessionId,
+        (bookmark) => bookmark.copyWith(chapter: reference),
+      ),
     );
   }
+
+  User withSelectedSession(String sessionId) =>
+      copyWith(currentSessionId: sessionId, sessionById: {sessionId: ?sessionById[sessionId], ...sessionById});
 
   User withSearchHistory(String search) =>
       copyWith(searchHistory: [search, ...searchHistory].distinct.take(5).toList());
