@@ -5,6 +5,7 @@ import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
+import 'package:bible/style/text_style_extensions.dart';
 import 'package:bible/style/widgets/styled_banner.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/style/widgets/styled_list.dart';
@@ -191,7 +192,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                     controller: scrollController,
                     children: [
                       if (getMatchingBooks().isNotEmpty && (isBookFullySelected || bookTextState.value.isEmpty)) ...[
-                        if (user.bookmarks.isNotEmpty)
+                        if (user.bookmarkById.isNotEmpty)
                           StyledSection(
                             title: 'Bookmarks'.toText(),
                             padding: .only(top: 24),
@@ -201,17 +202,29 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                 padding: .symmetric(horizontal: 16),
                                 child: Row(
                                   spacing: 16,
-                                  children: user.bookmarks.map((bookmark) {
+                                  children: user.bookmarkById.mapToIterable((bookmarkId, bookmark) {
                                     final chapterReference = bookmark.chapter;
                                     return StyledTile(
-                                      onPressed: () => context.pop(chapterReference.toResult(bookmarkId: bookmark.id)),
+                                      onPressed: () => context.pop(chapterReference.toResult(bookmarkId: bookmarkId)),
                                       padding: .all(16),
                                       child: Row(
-                                        spacing: 8,
+                                        spacing: 12,
                                         crossAxisAlignment: .center,
                                         children: [
                                           Icon(Symbols.bookmark, color: bookmark.color.toHue(context.colors).medium),
-                                          Text(chapterReference.format(), style: context.textStyle.labelMd),
+                                          if (bookmark.name.isNotEmpty)
+                                            Column(
+                                              crossAxisAlignment: .start,
+                                              children: [
+                                                Text(bookmark.name, style: context.textStyle.labelMd),
+                                                Text(
+                                                  chapterReference.format(),
+                                                  style: context.textStyle.paragraphSm.subtle(context),
+                                                ),
+                                              ],
+                                            )
+                                          else
+                                            Text(chapterReference.format(), style: context.textStyle.labelMd),
                                         ],
                                       ),
                                     );

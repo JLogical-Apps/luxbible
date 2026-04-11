@@ -15,6 +15,7 @@ import 'package:bible/models/user/toolbar_configuration.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:uuid/uuid.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';
@@ -29,7 +30,7 @@ sealed class User with _$User {
     String? currentBookmarkId,
     @Default([]) List<ChapterReference> viewHistory,
     @Default(ColorEnum.yellow) ColorEnum highlightColor,
-    @Default([]) List<Bookmark> bookmarks,
+    @Default({}) Map<String, Bookmark> bookmarkById,
     @Default([]) List<Annotation> annotations,
     @Default(ToolbarConfiguration()) ToolbarConfiguration toolbar,
     @Default(PassageConfiguration()) PassageConfiguration passage,
@@ -41,8 +42,7 @@ sealed class User with _$User {
 
   Bible getBible(List<Bible> bibles) => bibles.firstWhere((bible) => bible.translation == translation);
 
-  Bookmark? getBookmarkByIdOrNull(String? id) => bookmarks.firstWhereOrNull((bookmark) => bookmark.id == id);
-  Bookmark? get currentSessionBookmark => getBookmarkByIdOrNull(currentBookmarkId);
+  Bookmark? get currentBookmark => bookmarkById[currentBookmarkId];
 
   List<Annotation> getPassageAnnotations(Passage passage) =>
       annotations.where((annotation) => annotation.passages.any((p) => p.hasAnyOf(passage))).toList();
@@ -92,9 +92,16 @@ sealed class User with _$User {
       annotations.expand((annotation) => annotation.selections.where((s) => s.intersects(selection))).lastOrNull ??
       selection;
 
-  User withBookmark(Bookmark bookmark) => copyWith(bookmarks: [...bookmarks, bookmark], currentBookmarkId: bookmark.id);
-  User withRemovedBookmark(Bookmark bookmark) =>
-      copyWith(bookmarks: bookmarks.withRemoved(bookmark), currentBookmarkId: null);
+  User withNewBookmark(Bookmark bookmark) {
+    final newId = Uuid().v4();
+    return copyWith(bookmarkById: {...bookmarkById, newId: bookmark}, currentBookmarkId: newId);
+  }
+
+  User withEditedBookmark({required String bookmarkId, required Bookmark bookmark}) =>
+      copyWith(bookmarkById: {...bookmarkById}..[bookmarkId] = bookmark);
+
+  User withRemovedBookmark(String bookmarkId) =>
+      copyWith(bookmarkById: {...bookmarkById}..remove(bookmarkId), currentBookmarkId: null);
 
   User withAnnotation(Annotation annotation) =>
       copyWith(annotations: [...annotations, annotation], highlightColor: annotation.color);
@@ -131,13 +138,16 @@ sealed class User with _$User {
     viewHistory: [reference, lastReference, ...viewHistory].distinct.take(5).toList(),
   );
 
-  User withSoftNavigation(ChapterReference reference) => copyWith(
-    lastReference: reference,
-    bookmarks: bookmarks.withUpdate(
-      (bookmark) => bookmark.id == currentBookmarkId,
-      (bookmark) => bookmark.copyWith(chapter: reference),
-    ),
-  );
+  User withSoftNavigation(ChapterReference reference) {
+    final currentBookmarkId = this.currentBookmarkId;
+    final currentBookmark = this.currentBookmark;
+    return copyWith(
+      lastReference: reference,
+      bookmarkById: currentBookmarkId == null || currentBookmark == null
+          ? {...bookmarkById}
+          : ({...bookmarkById}..[currentBookmarkId] = currentBookmark.copyWith(chapter: reference)),
+    );
+  }
 
   User withSearchHistory(String search) =>
       copyWith(searchHistory: [search, ...searchHistory].distinct.take(5).toList());

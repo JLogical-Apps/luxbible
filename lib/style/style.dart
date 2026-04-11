@@ -10,7 +10,6 @@ export 'text_style_extensions.dart';
 export 'text_style_library.dart';
 export 'widgets/component_size.dart';
 export 'widgets/scroll_absorber.dart';
-export 'widgets/sheet/styled_color_sheet.dart';
 export 'widgets/sheet/styled_multi_selection_sheet.dart';
 export 'widgets/sheet/styled_port_sheet.dart';
 export 'widgets/sheet/styled_selection_sheet.dart';

@@ -22,11 +22,11 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   highlightColor:
       $enumDecodeNullable(_$ColorEnumEnumMap, json['highlightColor']) ??
       ColorEnum.yellow,
-  bookmarks:
-      (json['bookmarks'] as List<dynamic>?)
-          ?.map((e) => Bookmark.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const [],
+  bookmarkById:
+      (json['bookmarkById'] as Map<String, dynamic>?)?.map(
+        (k, e) => MapEntry(k, Bookmark.fromJson(e as Map<String, dynamic>)),
+      ) ??
+      const {},
   annotations:
       (json['annotations'] as List<dynamic>?)
           ?.map((e) => Annotation.fromJson(e as Map<String, dynamic>))
@@ -56,7 +56,7 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'currentBookmarkId': instance.currentBookmarkId,
   'viewHistory': instance.viewHistory,
   'highlightColor': _$ColorEnumEnumMap[instance.highlightColor]!,
-  'bookmarks': instance.bookmarks,
+  'bookmarkById': instance.bookmarkById,
   'annotations': instance.annotations,
   'toolbar': instance.toolbar,
   'passage': instance.passage,

@@ -7,15 +7,15 @@ part of 'bookmark.dart';
 // **************************************************************************
 
 _Bookmark _$BookmarkFromJson(Map<String, dynamic> json) => _Bookmark(
-  id: json['id'] as String?,
   chapter: ChapterReference.fromJson(json['chapter'] as String),
+  name: json['name'] as String? ?? '',
   color:
       $enumDecodeNullable(_$ColorEnumEnumMap, json['color']) ?? ColorEnum.red,
 );
 
 Map<String, dynamic> _$BookmarkToJson(_Bookmark instance) => <String, dynamic>{
-  'id': instance.id,
   'chapter': instance.chapter,
+  'name': instance.name,
   'color': _$ColorEnumEnumMap[instance.color]!,
 };
 
