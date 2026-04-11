@@ -46,7 +46,11 @@ class BiblePage extends HookConsumerWidget {
     final currentPage = (pageController.pageOrNull ?? bible.getPageIndexByChapterReference(initialReference)).round();
     final currentChapterReference = bible.getChapterReferenceByPageIndex(currentPage);
 
-    final navigationStateState = useState(NavigationState(current: initialReference));
+    final navigationHistoryState = useState(
+      NavigationHistory(
+        current: NavigationState(reference: initialReference, bookmarkId: user.currentBookmarkId),
+      ),
+    );
 
     final isScrollingDownState = useState(true);
     final scrollControllerByReferenceRef = useState(<ChapterReference, ScrollController>{});
@@ -80,7 +84,9 @@ class BiblePage extends HookConsumerWidget {
 
               final reference = bible.getChapterReferenceByPageIndex(newPageIndex);
               ref.updateUser((user) => user.withSoftNavigation(reference));
-              navigationStateState.value = navigationStateState.value.withCurrent(reference);
+              navigationHistoryState.value = navigationHistoryState.value.withCurrent(
+                NavigationState(reference: reference, bookmarkId: user.currentBookmarkId),
+              );
             },
             child: PageView.builder(
               controller: pageController,
@@ -207,7 +213,7 @@ class BiblePage extends HookConsumerWidget {
             currentChapterReference: currentChapterReference,
             pageController: pageController,
             selectedReferencesState: selectedReferencesState,
-            navigationStateState: navigationStateState,
+            navigationStateState: navigationHistoryState,
             scrollController: scrollControllerByReferenceRef.value[currentChapterReference],
             isScrollingDownState: isScrollingDownState,
             selectionState: selectionState,
@@ -222,7 +228,7 @@ class BiblePage extends HookConsumerWidget {
 class _Bottom extends HookConsumerWidget {
   final ChapterReference currentChapterReference;
   final PageController pageController;
-  final ValueNotifier<NavigationState> navigationStateState;
+  final ValueNotifier<NavigationHistory> navigationStateState;
   final ValueNotifier<bool> isScrollingDownState;
   final ScrollController? scrollController;
   final ValueNotifier<List<Reference>> selectedReferencesState;
@@ -279,7 +285,9 @@ class _Bottom extends HookConsumerWidget {
       pageController.jumpToPage(pageIndex);
       ref.updateUser((user) => user.withHardNavigation(reference, bookmarkId: bookmarkId));
       if (updateNavigationState) {
-        navigationStateState.value = navigationStateState.value.withPush(reference);
+        navigationStateState.value = navigationStateState.value.withPush(
+          NavigationState(reference: reference, bookmarkId: bookmarkId),
+        );
       }
     }
 
@@ -324,7 +332,12 @@ class _Bottom extends HookConsumerWidget {
                 }
 
                 navigationStateState.value = navigationStateState.value.withUndo();
-                hardNavigateTo(navigationStateState.value.current, updateNavigationState: false);
+                final currentState = navigationStateState.value.current;
+                hardNavigateTo(
+                  currentState.reference,
+                  bookmarkId: currentState.bookmarkId,
+                  updateNavigationState: false,
+                );
               },
               onSwipeRight: () {
                 if (!navigationStateState.value.canRedo) {
@@ -332,7 +345,12 @@ class _Bottom extends HookConsumerWidget {
                 }
 
                 navigationStateState.value = navigationStateState.value.withRedo();
-                hardNavigateTo(navigationStateState.value.current, updateNavigationState: false);
+                final currentState = navigationStateState.value.current;
+                hardNavigateTo(
+                  currentState.reference,
+                  bookmarkId: currentState.bookmarkId,
+                  updateNavigationState: false,
+                );
               },
               onPressed: () async {
                 final result =
@@ -520,23 +538,29 @@ class _Bottom extends HookConsumerWidget {
   }
 }
 
-class NavigationState {
-  final ChapterReference current;
-  final List<ChapterReference> undo;
-  final List<ChapterReference> redo;
+class NavigationHistory {
+  final NavigationState current;
+  final List<NavigationState> undo;
+  final List<NavigationState> redo;
 
-  const NavigationState({required this.current, this.undo = const [], this.redo = const []});
+  const NavigationHistory({required this.current, this.undo = const [], this.redo = const []});
 
   bool get canUndo => undo.isNotEmpty;
   bool get canRedo => redo.isNotEmpty;
 
-  NavigationState withPush(ChapterReference reference) =>
-      copyWith(undo: [...undo, current], current: reference, redo: []);
+  NavigationHistory withPush(NavigationState state) => copyWith(undo: [...undo, current], current: state, redo: []);
 
-  NavigationState withCurrent(ChapterReference reference) => copyWith(current: reference);
-  NavigationState withUndo() => copyWith(undo: [...undo]..removeLast(), current: undo.last, redo: [current, ...redo]);
-  NavigationState withRedo() => copyWith(undo: [...undo, current], current: redo.first, redo: [...redo]..removeAt(0));
+  NavigationHistory withCurrent(NavigationState state) => copyWith(current: state);
+  NavigationHistory withUndo() => copyWith(undo: [...undo]..removeLast(), current: undo.last, redo: [current, ...redo]);
+  NavigationHistory withRedo() => copyWith(undo: [...undo, current], current: redo.first, redo: [...redo]..removeAt(0));
 
-  NavigationState copyWith({ChapterReference? current, List<ChapterReference>? undo, List<ChapterReference>? redo}) =>
-      NavigationState(current: current ?? this.current, undo: undo ?? this.undo, redo: redo ?? this.redo);
+  NavigationHistory copyWith({NavigationState? current, List<NavigationState>? undo, List<NavigationState>? redo}) =>
+      NavigationHistory(current: current ?? this.current, undo: undo ?? this.undo, redo: redo ?? this.redo);
+}
+
+class NavigationState {
+  final ChapterReference reference;
+  final String? bookmarkId;
+
+  const NavigationState({required this.reference, required this.bookmarkId});
 }
