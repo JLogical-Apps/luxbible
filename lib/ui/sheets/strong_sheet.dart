@@ -4,6 +4,7 @@ import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/search_page.dart';
+import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
@@ -89,17 +90,22 @@ class StrongSheet {
                 },
               ),
               children: otherReferences
-                  .map(
-                    (reference) => StyledListItem(
+                  .map((reference) {
+                    final verse = bible.getVerseByReference(reference);
+                    if (verse == null) {
+                      return null;
+                    }
+                    return StyledListItem(
                       title: reference.format().toText(),
-                      subtitle: bible.getVerseByReference(reference)?.text.toText(),
+                      subtitle: VerseText(verse: verse, highlightStrongId: strongId),
                       trailing: Symbols.expand_circle_right.toIcon(),
                       onPressed: () {
                         context.pop();
                         onNavigateToPassage(Passage.reference(reference));
                       },
-                    ),
-                  )
+                    );
+                  })
+                  .nonNulls
                   .toList(),
             ).buildChildren(context),
         ],

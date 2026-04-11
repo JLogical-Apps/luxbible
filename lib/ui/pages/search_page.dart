@@ -5,6 +5,7 @@ import 'package:bible/models/testament.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
@@ -217,23 +218,30 @@ class SearchPage extends HookConsumerWidget {
                       ),
                     )
                   else
-                    ...searchResults.map(
-                      (result) => StyledListItem(
+                    ...searchResults.map((result) {
+                      final verse = bible.getVerseByReference(result);
+                      if (verse == null) {
+                        return null;
+                      }
+
+                      return StyledListItem(
                         title: result.format().toText(),
-                        subtitle: SubstringHighlight(
-                          text: bible.getVerseByReference(result)?.text ?? '',
-                          term: searchState.value,
-                          words: true,
-                          textStyle: context.textStyle.paragraphSm.subtle(context),
-                          textStyleHighlight: context.textStyle.paragraphSm.subtle(context).bold,
-                        ),
+                        subtitle: searchState.value.trim().isStrongId
+                            ? VerseText(verse: verse, highlightStrongId: searchState.value.trim())
+                            : SubstringHighlight(
+                                text: bible.getVerseByReference(result)?.text ?? '',
+                                term: searchState.value,
+                                words: true,
+                                textStyle: context.textStyle.paragraphSm.subtle(context),
+                                textStyleHighlight: context.textStyle.paragraphSm.subtle(context).bold,
+                              ),
                         trailing: Symbols.expand_circle_right.toIcon(),
                         onPressed: () {
                           ref.updateUser((user) => user.withSearchHistory(searchState.value));
                           context.pop(SearchPageResult(reference: result));
                         },
-                      ),
-                    ),
+                      );
+                    }).nonNulls,
                 ],
               ),
             ),
