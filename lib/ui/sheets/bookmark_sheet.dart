@@ -17,7 +17,7 @@ class BookmarkSheet {
         title: Text(initialBookmark == null ? 'Create Bookmark' : 'Edit Bookmark'),
         port: Port.of({
           'color': SimplePortField<ColorEnum>(value: initialBookmark?.color ?? ColorEnum.stone),
-          'name': PortField.string(initialValue: initialBookmark?.name),
+          'name': PortField.string(initialValue: initialBookmark?.name).isNotBlank(),
         }).map((values, port) => Bookmark(chapter: reference, name: values['name'], color: values['color'])),
         childrenBuilder: (context) => [
           StyledPortFieldBuilder<ColorEnum>(

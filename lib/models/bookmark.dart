@@ -9,7 +9,7 @@ part 'bookmark.g.dart';
 sealed class Bookmark with _$Bookmark {
   const factory Bookmark({
     required ChapterReference chapter,
-    @Default('') String name,
+    required String name,
     @Default(ColorEnum.red) ColorEnum color,
   }) = _Bookmark;
 

@@ -212,19 +212,16 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                         crossAxisAlignment: .center,
                                         children: [
                                           Icon(Symbols.bookmark, color: bookmark.color.toHue(context.colors).medium),
-                                          if (bookmark.name.isNotEmpty)
-                                            Column(
-                                              crossAxisAlignment: .start,
-                                              children: [
-                                                Text(bookmark.name, style: context.textStyle.labelMd),
-                                                Text(
-                                                  chapterReference.format(),
-                                                  style: context.textStyle.paragraphSm.subtle(context),
-                                                ),
-                                              ],
-                                            )
-                                          else
-                                            Text(chapterReference.format(), style: context.textStyle.labelMd),
+                                          Column(
+                                            crossAxisAlignment: .start,
+                                            children: [
+                                              Text(bookmark.name, style: context.textStyle.labelMd),
+                                              Text(
+                                                chapterReference.format(),
+                                                style: context.textStyle.paragraphSm.subtle(context),
+                                              ),
+                                            ],
+                                          ),
                                         ],
                                       ),
                                     );

@@ -205,11 +205,11 @@ return $default(_that.chapter,_that.name,_that.color);case _:
 @JsonSerializable()
 
 class _Bookmark implements Bookmark {
-  const _Bookmark({required this.chapter, this.name = '', this.color = ColorEnum.red});
+  const _Bookmark({required this.chapter, required this.name, this.color = ColorEnum.red});
   factory _Bookmark.fromJson(Map<String, dynamic> json) => _$BookmarkFromJson(json);
 
 @override final  ChapterReference chapter;
-@override@JsonKey() final  String name;
+@override final  String name;
 @override@JsonKey() final  ColorEnum color;
 
 /// Create a copy of Bookmark
