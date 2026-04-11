@@ -31,7 +31,7 @@ class StrongSheet {
         .where((reference) => bible.getVerseByReference(reference)?.strongIds.contains(strongId) ?? false)
         .toList();
 
-    await context.showStyledSheetWithContext(
+    await context.showStyledSheetWithBreadcrumbs(
       breadcrumbText: strong.languageText,
       (context) => StyledSheet(
         title: strong.languageText.toText(),

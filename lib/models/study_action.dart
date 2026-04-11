@@ -86,7 +86,7 @@ enum StudyAction {
         );
       case interlinear:
         final strongs = ref.watch(strongsProvider);
-        context.showStyledSheetWithContext(
+        context.showStyledSheetWithBreadcrumbs(
           breadcrumbText: region.format(),
           (context) => StyledSheet(
             title: 'Interlinear'.toText(),

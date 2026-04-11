@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intersperse/intersperse.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:provider/provider.dart';
 
 class StyledSheet<T> extends HookWidget {
   final Widget title;
@@ -51,7 +52,7 @@ class StyledSheet<T> extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sheetNavigationContext = SheetNavigationContextProvider.maybeOf(context)?.context;
+    final sheetNavigationContext = context.watch<SheetNavigationBreadcrumbContext?>();
 
     return Container(
       decoration: BoxDecoration(
@@ -129,11 +130,11 @@ class StyledSheet<T> extends HookWidget {
                                 context.pop();
                                 context.showStyledSheet(
                                   (context) => breadcrumb.sheetBuilder(context),
-                                  wrapper: (sheet) => SheetNavigationContextProvider(
-                                    context: SheetNavigationContext(
+                                  wrapper: (sheetBuilder) => Provider.value(
+                                    value: SheetNavigationBreadcrumbContext(
                                       breadcrumbs: sheetNavigationContext.breadcrumbs.take(i + 1).toList(),
                                     ),
-                                    child: sheet,
+                                    child: Builder(builder: sheetBuilder),
                                   ),
                                 );
                               },

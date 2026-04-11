@@ -1,13 +1,13 @@
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:flutter/material.dart';
 
-class SheetNavigationContext {
+class SheetNavigationBreadcrumbContext {
   final List<SheetNavigationBreadcrumb> breadcrumbs;
 
-  const SheetNavigationContext({required this.breadcrumbs});
+  const SheetNavigationBreadcrumbContext({required this.breadcrumbs});
 
-  SheetNavigationContext withBreadcrumb(SheetNavigationBreadcrumb breadcrumb) =>
-      SheetNavigationContext(breadcrumbs: [...breadcrumbs, breadcrumb]);
+  SheetNavigationBreadcrumbContext withBreadcrumb(SheetNavigationBreadcrumb breadcrumb) =>
+      SheetNavigationBreadcrumbContext(breadcrumbs: [...breadcrumbs, breadcrumb]);
 }
 
 class SheetNavigationBreadcrumb {
@@ -15,16 +15,4 @@ class SheetNavigationBreadcrumb {
   final StyledSheet Function(BuildContext) sheetBuilder;
 
   const SheetNavigationBreadcrumb({required this.text, required this.sheetBuilder});
-}
-
-class SheetNavigationContextProvider extends InheritedWidget {
-  final SheetNavigationContext context;
-
-  const SheetNavigationContextProvider({super.key, required super.child, required this.context});
-
-  static SheetNavigationContextProvider? maybeOf(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<SheetNavigationContextProvider>();
-
-  @override
-  bool updateShouldNotify(SheetNavigationContextProvider old) => old.context != context;
 }

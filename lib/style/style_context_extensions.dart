@@ -7,6 +7,7 @@ import 'package:bible/style/widgets/sheet/styled_sheet_navigation_context.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:provider/provider.dart';
 
 extension StyleContextExtensions on BuildContext {
   Brightness get brightness => Theme.of(this).brightness;
@@ -17,7 +18,7 @@ extension StyleContextExtensions on BuildContext {
 
   Future<T?> showStyledSheet<T>(
     StyledSheet<T> Function(BuildContext context) sheetBuilder, {
-    Widget Function(StyledSheet)? wrapper,
+    Widget Function(StyledSheet Function(BuildContext) sheetBuilder)? wrapper,
   }) async {
     final rootContext = ScaffoldMessenger.of(this).context;
     return await showModalBottomSheet(
@@ -32,17 +33,16 @@ extension StyleContextExtensions on BuildContext {
         maxHeight: MediaQuery.sizeOf(rootContext).height - MediaQuery.paddingOf(rootContext).top - 8,
       ),
       useRootNavigator: true,
-      builder: wrapper == null ? sheetBuilder : (context) => wrapper(sheetBuilder(context)),
+      builder: wrapper == null ? sheetBuilder : (context) => wrapper(sheetBuilder),
     );
   }
 
-  Future<T?> showStyledSheetWithContext<T>(
+  Future<T?> showStyledSheetWithBreadcrumbs<T>(
     StyledSheet<T> Function(BuildContext) sheetBuilder, {
     required String breadcrumbText,
   }) async {
     final rootContext = ScaffoldMessenger.of(this).context;
-    final sheetContext =
-        SheetNavigationContextProvider.maybeOf(this)?.context ?? SheetNavigationContext(breadcrumbs: []);
+    final sheetContext = read<SheetNavigationBreadcrumbContext?>() ?? SheetNavigationBreadcrumbContext(breadcrumbs: []);
 
     return await showModalBottomSheet(
       context: this,
@@ -56,10 +56,8 @@ extension StyleContextExtensions on BuildContext {
         maxHeight: MediaQuery.sizeOf(rootContext).height - MediaQuery.paddingOf(rootContext).top - 8,
       ),
       useRootNavigator: true,
-      builder: (context) => SheetNavigationContextProvider(
-        context: sheetContext.withBreadcrumb(
-          SheetNavigationBreadcrumb(text: breadcrumbText, sheetBuilder: sheetBuilder),
-        ),
+      builder: (context) => Provider.value(
+        value: sheetContext.withBreadcrumb(SheetNavigationBreadcrumb(text: breadcrumbText, sheetBuilder: sheetBuilder)),
         child: Builder(builder: sheetBuilder),
       ),
     );
