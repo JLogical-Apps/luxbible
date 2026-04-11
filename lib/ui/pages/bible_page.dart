@@ -46,8 +46,10 @@ class BiblePage extends HookConsumerWidget {
     final currentPage = (pageController.pageOrNull ?? bible.getPageIndexByChapterReference(initialReference)).round();
     final currentChapterReference = bible.getChapterReferenceByPageIndex(currentPage);
 
+    final navigationStateState = useState(NavigationState(current: initialReference));
+
     final isScrollingDownState = useState(true);
-    final scrollControllerByReferenceRef = useRef(<ChapterReference, ScrollController>{});
+    final scrollControllerByReferenceRef = useState(<ChapterReference, ScrollController>{});
 
     final selectedReferencesState = useState(<Reference>[]);
     final selectionState = useState<Selection?>(null);
@@ -57,21 +59,28 @@ class BiblePage extends HookConsumerWidget {
       body: Stack(
         children: [
           GestureDetector(
-            onHorizontalDragUpdate: (details) {
+            onHorizontalDragUpdate: (details) async {
               const sensitivity = 8;
-              if (details.delta.dx > sensitivity) {
-                pageController.animateToPage(
-                  pageController.page!.round() - 1,
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.easeInOutCubic,
-                );
-              } else if (details.delta.dx < -sensitivity) {
-                pageController.animateToPage(
-                  pageController.page!.round() + 1,
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.easeInOutCubic,
-                );
+
+              final newPageIndex = details.delta.dx > sensitivity
+                  ? pageController.page!.round() - 1
+                  : details.delta.dx < -sensitivity
+                  ? pageController.page!.round() + 1
+                  : null;
+
+              if (newPageIndex == null) {
+                return;
               }
+
+              await pageController.animateToPage(
+                newPageIndex,
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeInOutCubic,
+              );
+
+              final reference = bible.getChapterReferenceByPageIndex(newPageIndex);
+              ref.updateUser((user) => user.withSoftNavigation(reference));
+              navigationStateState.value = navigationStateState.value.withCurrent(reference);
             },
             child: PageView.builder(
               controller: pageController,
@@ -80,9 +89,6 @@ class BiblePage extends HookConsumerWidget {
               onPageChanged: (pageIndex) {
                 isScrollingDownState.value = true;
                 selectionState.value = null;
-
-                final reference = bible.getChapterReferenceByPageIndex(pageIndex);
-                ref.updateUser((user) => user.withSoftNavigation(reference));
               },
               itemBuilder: (context, pageIndex) {
                 final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
@@ -91,9 +97,11 @@ class BiblePage extends HookConsumerWidget {
                   builder: (context) {
                     final scrollController = useDisposable(
                       useScrollController(),
-                      (controller) =>
-                          scrollControllerByReferenceRef.value = {...scrollControllerByReferenceRef.value}
-                            ..remove(chapterReference),
+                      (controller) => WidgetsBinding.instance.addPostFrameCallback(
+                        (_) =>
+                            scrollControllerByReferenceRef.value = {...scrollControllerByReferenceRef.value}
+                              ..remove(chapterReference),
+                      ),
                     );
                     if (!scrollControllerByReferenceRef.value.containsKey(chapterReference)) {
                       WidgetsBinding.instance.addPostFrameCallback(
@@ -199,6 +207,7 @@ class BiblePage extends HookConsumerWidget {
             currentChapterReference: currentChapterReference,
             pageController: pageController,
             selectedReferencesState: selectedReferencesState,
+            navigationStateState: navigationStateState,
             scrollController: scrollControllerByReferenceRef.value[currentChapterReference],
             isScrollingDownState: isScrollingDownState,
             selectionState: selectionState,
@@ -213,6 +222,7 @@ class BiblePage extends HookConsumerWidget {
 class _Bottom extends HookConsumerWidget {
   final ChapterReference currentChapterReference;
   final PageController pageController;
+  final ValueNotifier<NavigationState> navigationStateState;
   final ValueNotifier<bool> isScrollingDownState;
   final ScrollController? scrollController;
   final ValueNotifier<List<Reference>> selectedReferencesState;
@@ -222,6 +232,7 @@ class _Bottom extends HookConsumerWidget {
   const _Bottom({
     required this.currentChapterReference,
     required this.pageController,
+    required this.navigationStateState,
     required this.isScrollingDownState,
     required this.scrollController,
     required this.selectedReferencesState,
@@ -237,7 +248,6 @@ class _Bottom extends HookConsumerWidget {
 
     useListenable(scrollController);
     useListenable(isScrollingDownState);
-    useListenable(pageController);
     final selection = useListenable(selectionState).value;
 
     final selectedPassage = selectedReferencesState.value.isEmpty
@@ -264,11 +274,18 @@ class _Bottom extends HookConsumerWidget {
       selectedReferencesState.value = [];
     }
 
+    void hardNavigateTo(ChapterReference reference, {String? bookmarkId, bool updateNavigationState = true}) {
+      final pageIndex = bible.getPageIndexByChapterReference(reference);
+      pageController.jumpToPage(pageIndex);
+      ref.updateUser((user) => user.withHardNavigation(reference, bookmarkId: bookmarkId));
+      if (updateNavigationState) {
+        navigationStateState.value = navigationStateState.value.withPush(reference);
+      }
+    }
+
     void navigateToPassage(Passage passage) async {
       final chapterReference = passage.references.first.toChapterReference();
-      ref.updateUser((user) => user.withHardNavigation(chapterReference));
-      pageController.jumpToPage(bible.getPageIndexByChapterReference(chapterReference));
-      selectedReferencesState.value = passage.references;
+      hardNavigateTo(chapterReference);
 
       await Future.delayed(Duration(milliseconds: 200));
 
@@ -281,12 +298,6 @@ class _Bottom extends HookConsumerWidget {
           duration: Duration(milliseconds: 500),
         );
       }
-    }
-
-    void hardNavigateTo(ChapterReference reference, {String? bookmarkId}) {
-      ref.updateUser((user) => user.withHardNavigation(reference, bookmarkId: bookmarkId));
-      final pageIndex = bible.getPageIndexByChapterReference(reference);
-      pageController.jumpToPage(pageIndex);
     }
 
     return Stack(
@@ -306,8 +317,22 @@ class _Bottom extends HookConsumerWidget {
               toolbar: user.toolbar,
               translation: user.translation,
               user: user,
-              onSwipeLeft: () {},
-              onSwipeRight: () {},
+              onSwipeLeft: () {
+                if (!navigationStateState.value.canUndo) {
+                  return;
+                }
+
+                navigationStateState.value = navigationStateState.value.withUndo();
+                hardNavigateTo(navigationStateState.value.current, updateNavigationState: false);
+              },
+              onSwipeRight: () {
+                if (!navigationStateState.value.canRedo) {
+                  return;
+                }
+
+                navigationStateState.value = navigationStateState.value.withRedo();
+                hardNavigateTo(navigationStateState.value.current, updateNavigationState: false);
+              },
               onPressed: () async {
                 final result =
                     await context.pushDialog(ChapterReferenceSearchPage(initialReference: currentChapterReference))
@@ -492,4 +517,25 @@ class _Bottom extends HookConsumerWidget {
       ],
     );
   }
+}
+
+class NavigationState {
+  final ChapterReference current;
+  final List<ChapterReference> undo;
+  final List<ChapterReference> redo;
+
+  const NavigationState({required this.current, this.undo = const [], this.redo = const []});
+
+  bool get canUndo => undo.isNotEmpty;
+  bool get canRedo => redo.isNotEmpty;
+
+  NavigationState withPush(ChapterReference reference) =>
+      copyWith(undo: [...undo, current], current: reference, redo: []);
+
+  NavigationState withCurrent(ChapterReference reference) => copyWith(current: reference);
+  NavigationState withUndo() => copyWith(undo: [...undo]..removeLast(), current: undo.last, redo: [current, ...redo]);
+  NavigationState withRedo() => copyWith(undo: [...undo, current], current: redo.first, redo: [...redo]..removeAt(0));
+
+  NavigationState copyWith({ChapterReference? current, List<ChapterReference>? undo, List<ChapterReference>? redo}) =>
+      NavigationState(current: current ?? this.current, undo: undo ?? this.undo, redo: redo ?? this.redo);
 }
