@@ -92,8 +92,9 @@ sealed class User with _$User {
       annotations.expand((annotation) => annotation.selections.where((s) => s.intersects(selection))).lastOrNull ??
       selection;
 
-  User withBookmark(Bookmark bookmark) => copyWith(bookmarks: [...bookmarks, bookmark]);
-  User withRemovedBookmark(Bookmark bookmark) => copyWith(bookmarks: bookmarks.withRemoved(bookmark));
+  User withBookmark(Bookmark bookmark) => copyWith(bookmarks: [...bookmarks, bookmark], currentBookmarkId: bookmark.id);
+  User withRemovedBookmark(Bookmark bookmark) =>
+      copyWith(bookmarks: bookmarks.withRemoved(bookmark), currentBookmarkId: null);
 
   User withAnnotation(Annotation annotation) =>
       copyWith(annotations: [...annotations, annotation], highlightColor: annotation.color);
