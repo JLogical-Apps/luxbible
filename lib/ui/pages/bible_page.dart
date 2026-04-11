@@ -286,6 +286,7 @@ class _Bottom extends HookConsumerWidget {
     void navigateToPassage(Passage passage) async {
       final chapterReference = passage.references.first.toChapterReference();
       hardNavigateTo(chapterReference);
+      selectedReferencesState.value = passage.references;
 
       await Future.delayed(Duration(milliseconds: 200));
 
