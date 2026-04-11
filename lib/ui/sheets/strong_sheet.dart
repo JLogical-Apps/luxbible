@@ -1,5 +1,6 @@
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/reference/passage.dart';
+import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/search_page.dart';
@@ -14,8 +15,9 @@ class StrongSheet {
   static Future<void> showWithContext(
     BuildContext context,
     WidgetRef ref, {
-    required Bible bible,
     required String strongId,
+    required Bible bible,
+    required User user,
     required Function(Passage) onNavigateToPassage,
   }) async {
     final strongs = ref.watch(strongsProvider);
@@ -60,6 +62,7 @@ class StrongSheet {
                           ref,
                           strongId: strong.id,
                           bible: bible,
+                          user: user,
                           onNavigateToPassage: onNavigateToPassage,
                         );
                       },
@@ -75,7 +78,11 @@ class StrongSheet {
                 'Open In Search',
                 onPressed: () async {
                   context.pop();
-                  final result = await context.push(SearchPage(initialSearch: strongId)) as SearchPageResult?;
+                  final result =
+                      await context.push(
+                            SearchPage(initialSearch: strongId, currentChapterReference: user.lastReference),
+                          )
+                          as SearchPageResult?;
                   if (result != null) {
                     onNavigateToPassage(Passage.reference(result.reference));
                   }

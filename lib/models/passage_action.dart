@@ -76,6 +76,7 @@ enum PassageAction {
           ref,
           region: selectedPassage,
           bible: bible,
+          user: user,
           regionType: RegionType.passage,
           onNavigateToPassage: onNavigateToPassage,
         );

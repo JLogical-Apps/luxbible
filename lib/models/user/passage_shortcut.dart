@@ -66,6 +66,7 @@ enum PassageShortcut {
         ref,
         region: passage,
         bible: bible,
+        user: user,
         onNavigateToPassage: onNavigateToPassage,
       ) ??
       toPassageAction()?.onPressed(

@@ -73,6 +73,7 @@ enum ToolbarAction {
           ref,
           region: reference,
           bible: bible,
+          user: user,
           regionType: RegionType.chapter,
           onNavigateToPassage: onNavigateToPassage,
         );

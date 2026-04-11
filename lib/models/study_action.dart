@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:bible/models/bible.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
+import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
@@ -54,6 +55,7 @@ enum StudyAction {
     WidgetRef ref, {
     required ReferencesRegion region,
     required Bible bible,
+    required User user,
     required Function(Passage) onNavigateToPassage,
   }) async {
     final bibles = ref.read(biblesProvider);
@@ -120,6 +122,7 @@ enum StudyAction {
                                     ref,
                                     strongId: strongId,
                                     bible: bible,
+                                    user: user,
                                     onNavigateToPassage: onNavigateToPassage,
                                   );
                                 },

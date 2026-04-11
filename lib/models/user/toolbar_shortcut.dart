@@ -43,6 +43,7 @@ enum ToolbarShortcut {
         ref,
         region: reference,
         bible: bible,
+        user: user,
         onNavigateToPassage: onNavigateToPassage,
       ) ??
       toToolbarAction()?.onPressed(

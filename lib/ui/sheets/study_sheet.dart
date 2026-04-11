@@ -2,6 +2,7 @@ import 'package:bible/models/bible.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/study_action.dart';
+import 'package:bible/models/user/user.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
@@ -16,6 +17,7 @@ class StudySheet {
     BuildContext context,
     WidgetRef ref, {
     required ReferencesRegion region,
+    required User user,
     required Bible bible,
     required RegionType regionType,
     required Function(Passage) onNavigateToPassage,
@@ -31,7 +33,14 @@ class StudySheet {
               leading: action.icon.toIcon(),
               onPressed: () {
                 context.pop();
-                action.onPressed(context, ref, region: region, bible: bible, onNavigateToPassage: onNavigateToPassage);
+                action.onPressed(
+                  context,
+                  ref,
+                  region: region,
+                  bible: bible,
+                  user: user,
+                  onNavigateToPassage: onNavigateToPassage,
+                );
               },
             ),
           )
