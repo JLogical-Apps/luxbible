@@ -13,6 +13,7 @@ import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:uuid/uuid.dart';
 
 enum ToolbarAction {
   bookmark,
@@ -61,9 +62,7 @@ enum ToolbarAction {
         if (bookmark == null) {
           final color = await context.showStyledSheet((context) => StyledColorSheet(title: 'Bookmark Color'.toText()));
           if (color != null) {
-            ref.updateUser(
-              (user) => user.withBookmark(Bookmark(chapter: reference, color: color, id: user.currentSessionId)),
-            );
+            ref.updateUser((user) => user.withBookmark(Bookmark(chapter: reference, color: color, id: Uuid().v4())));
           }
         } else {
           ref.updateUser((user) => user.withRemovedBookmark(bookmark));

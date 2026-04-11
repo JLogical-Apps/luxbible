@@ -15,6 +15,7 @@ import 'package:bible/style/widgets/styled_select.dart';
 import 'package:bible/style/widgets/styled_swipeable.dart';
 import 'package:bible/style/widgets/styled_text_field.dart';
 import 'package:bible/style/widgets/styled_tile.dart';
+import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -31,9 +32,9 @@ import 'package:recase/recase.dart';
 
 class ChapterReferenceSearchPageResult {
   final ChapterReference chapterReference;
-  final String? sessionId;
+  final String? bookmarkId;
 
-  const ChapterReferenceSearchPageResult({required this.chapterReference, this.sessionId});
+  const ChapterReferenceSearchPageResult({required this.chapterReference, this.bookmarkId});
 }
 
 class ChapterReferenceSearchPage extends HookConsumerWidget {
@@ -97,7 +98,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
       (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
     );
 
-    final jumpBackInSessionById = user.sessionById.where((id, reference) => reference != initialReference);
+    final recents = user.viewHistory.where((reference) => reference != initialReference).toList();
 
     return StyledPage(
       backgroundColor: context.colors.surfacePrimary,
@@ -160,7 +161,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                           return;
                         }
 
-                        Navigator.of(context).pop(ChapterReference(book: book, chapterNum: chapterNum).toResult());
+                        context.pop(ChapterReference(book: book, chapterNum: chapterNum).toResult());
                       },
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
@@ -203,8 +204,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                   children: user.bookmarks.map((bookmark) {
                                     final chapterReference = bookmark.chapter;
                                     return StyledTile(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(chapterReference.toResult(sessionId: bookmark.id)),
+                                      onPressed: () => context.pop(chapterReference.toResult(bookmarkId: bookmark.id)),
                                       padding: .all(16),
                                       child: Row(
                                         spacing: 8,
@@ -220,18 +220,20 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                               ),
                             ],
                           ),
-                        if (jumpBackInSessionById.isNotEmpty)
+                        if (recents.isNotEmpty)
                           StyledSection(
-                            title: 'Jump Back In'.toText(),
+                            title: 'Recents'.toText(),
                             padding: .only(top: 24),
-                            children: jumpBackInSessionById
-                                .mapToIterable(
-                                  (sessionId, chapterReference) => StyledSwipeable(
+                            children: recents
+                                .map(
+                                  (chapterReference) => StyledSwipeable(
                                     key: ValueKey(chapterReference),
                                     actions: [
                                       StyledSwipeableAction.delete(
                                         onPressed: () => ref.updateUser(
-                                          (user) => user.copyWith(sessionById: user.sessionById.withRemoved(sessionId)),
+                                          (user) => user.copyWith(
+                                            viewHistory: user.viewHistory.withRemoved(chapterReference),
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -239,8 +241,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                       leading: Symbols.history.toIcon(),
                                       title: chapterReference.format().toText(),
                                       trailing: Symbols.expand_circle_right.toIcon(),
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(chapterReference.toResult(sessionId: sessionId)),
+                                      onPressed: () => context.pop(chapterReference.toResult()),
                                     ),
                                   ),
                                 )
@@ -292,7 +293,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                 (chapterReference) => StyledListItem(
                                   title: chapterReference.format().toText(),
                                   trailing: Symbols.expand_circle_right.toIcon(),
-                                  onPressed: () => Navigator.of(context).pop(chapterReference.toResult()),
+                                  onPressed: () => context.pop(chapterReference.toResult()),
                                 ),
                               )
                               .toList(),
@@ -308,6 +309,6 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
 enum _ViewMode { book, chapter }
 
 extension on ChapterReference {
-  ChapterReferenceSearchPageResult toResult({String? sessionId}) =>
-      ChapterReferenceSearchPageResult(chapterReference: this, sessionId: sessionId);
+  ChapterReferenceSearchPageResult toResult({String? bookmarkId}) =>
+      ChapterReferenceSearchPageResult(chapterReference: this, bookmarkId: bookmarkId);
 }

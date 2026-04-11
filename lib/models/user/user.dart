@@ -15,7 +15,6 @@ import 'package:bible/models/user/toolbar_configuration.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:uuid/uuid.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';
@@ -27,8 +26,8 @@ sealed class User with _$User {
   const factory User({
     @Default(BibleTranslation.asv) BibleTranslation translation,
     @Default(ChapterReference(chapterNum: 1, book: BookType.genesis)) ChapterReference lastReference,
-    String? currentSessionId,
-    @Default({}) Map<String, ChapterReference> sessionById,
+    String? currentBookmarkId,
+    @Default([]) List<ChapterReference> viewHistory,
     @Default(ColorEnum.yellow) ColorEnum highlightColor,
     @Default([]) List<Bookmark> bookmarks,
     @Default([]) List<Annotation> annotations,
@@ -43,7 +42,7 @@ sealed class User with _$User {
   Bible getBible(List<Bible> bibles) => bibles.firstWhere((bible) => bible.translation == translation);
 
   Bookmark? getBookmarkByIdOrNull(String? id) => bookmarks.firstWhereOrNull((bookmark) => bookmark.id == id);
-  Bookmark? get currentSessionBookmark => getBookmarkByIdOrNull(currentSessionId);
+  Bookmark? get currentSessionBookmark => getBookmarkByIdOrNull(currentBookmarkId);
 
   List<Annotation> getPassageAnnotations(Passage passage) =>
       annotations.where((annotation) => annotation.passages.any((p) => p.hasAnyOf(passage))).toList();
@@ -125,29 +124,19 @@ sealed class User with _$User {
   );
   User withRemovedAnnotation(Annotation annotation) => copyWith(annotations: annotations.withRemoved(annotation));
 
-  User withNewSession(ChapterReference reference) {
-    final sessionId = Uuid().v4();
-    return copyWith(
-      lastReference: reference,
-      currentSessionId: sessionId,
-      sessionById: {sessionId: reference, ...sessionById}.withDistinctValues.take(5),
-    );
-  }
+  User withHardNavigation(ChapterReference reference, {String? bookmarkId}) => copyWith(
+    lastReference: reference,
+    currentBookmarkId: bookmarkId,
+    viewHistory: [reference, lastReference, ...viewHistory].distinct.take(5).toList(),
+  );
 
-  User withUpdatedCurrentSession(ChapterReference reference) {
-    final currentSessionId = this.currentSessionId;
-    return copyWith(
-      lastReference: reference,
-      sessionById: currentSessionId == null ? sessionById : ({...sessionById}..[currentSessionId] = reference),
-      bookmarks: bookmarks.withUpdate(
-        (bookmark) => bookmark.id == currentSessionId,
-        (bookmark) => bookmark.copyWith(chapter: reference),
-      ),
-    );
-  }
-
-  User withSelectedSession(String sessionId) =>
-      copyWith(currentSessionId: sessionId, sessionById: {sessionId: ?sessionById[sessionId], ...sessionById});
+  User withSoftNavigation(ChapterReference reference) => copyWith(
+    lastReference: reference,
+    bookmarks: bookmarks.withUpdate(
+      (bookmark) => bookmark.id == currentBookmarkId,
+      (bookmark) => bookmark.copyWith(chapter: reference),
+    ),
+  );
 
   User withSearchHistory(String search) =>
       copyWith(searchHistory: [search, ...searchHistory].distinct.take(5).toList());

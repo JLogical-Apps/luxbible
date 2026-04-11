@@ -82,7 +82,7 @@ class BiblePage extends HookConsumerWidget {
                 selectionState.value = null;
 
                 final reference = bible.getChapterReferenceByPageIndex(pageIndex);
-                ref.updateUser((user) => user.withUpdatedCurrentSession(reference));
+                ref.updateUser((user) => user.withSoftNavigation(reference));
               },
               itemBuilder: (context, pageIndex) {
                 final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
@@ -266,7 +266,7 @@ class _Bottom extends HookConsumerWidget {
 
     void navigateToPassage(Passage passage) async {
       final chapterReference = passage.references.first.toChapterReference();
-      ref.updateUser((user) => user.withNewSession(chapterReference));
+      ref.updateUser((user) => user.withHardNavigation(chapterReference));
       pageController.jumpToPage(bible.getPageIndexByChapterReference(chapterReference));
       selectedReferencesState.value = passage.references;
 
@@ -281,6 +281,12 @@ class _Bottom extends HookConsumerWidget {
           duration: Duration(milliseconds: 500),
         );
       }
+    }
+
+    void hardNavigateTo(ChapterReference reference, {String? bookmarkId}) {
+      ref.updateUser((user) => user.withHardNavigation(reference, bookmarkId: bookmarkId));
+      final pageIndex = bible.getPageIndexByChapterReference(reference);
+      pageController.jumpToPage(pageIndex);
     }
 
     return Stack(
@@ -300,19 +306,14 @@ class _Bottom extends HookConsumerWidget {
               toolbar: user.toolbar,
               translation: user.translation,
               user: user,
+              onSwipeLeft: () {},
+              onSwipeRight: () {},
               onPressed: () async {
                 final result =
                     await context.pushDialog(ChapterReferenceSearchPage(initialReference: currentChapterReference))
                         as ChapterReferenceSearchPageResult?;
                 if (result != null) {
-                  if (result.sessionId case final sessionId?) {
-                    ref.updateUser((user) => user.withSelectedSession(sessionId));
-                  } else {
-                    ref.updateUser((user) => user.withNewSession(result.chapterReference));
-                  }
-
-                  final pageIndex = bible.getPageIndexByChapterReference(result.chapterReference);
-                  pageController.jumpToPage(pageIndex);
+                  hardNavigateTo(result.chapterReference, bookmarkId: result.bookmarkId);
                 }
               },
               onLongPressed: () => user.toolbar.longPressShortcut.onPressed(

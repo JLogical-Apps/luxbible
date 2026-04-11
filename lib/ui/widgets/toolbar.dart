@@ -17,6 +17,8 @@ class Toolbar extends StatelessWidget {
 
   final Function() onPressed;
   final Function()? onLongPressed;
+  final Function()? onSwipeLeft;
+  final Function()? onSwipeRight;
   final Function(int shortcutIndex, ToolbarShortcut) onShorcutPressed;
   final Function() onMorePressed;
 
@@ -31,6 +33,8 @@ class Toolbar extends StatelessWidget {
     required this.user,
     required this.onPressed,
     this.onLongPressed,
+    this.onSwipeRight,
+    this.onSwipeLeft,
     required this.onShorcutPressed,
     required this.onMorePressed,
     this.isEdit = false,
@@ -39,57 +43,67 @@ class Toolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StyledMaterial(
-      colorBuilder: colorBuilder ?? .surfacePrimary,
-      borderRadius: .circular(999),
-      padding: .only(left: 24, right: 12),
-      onPressed: onPressed,
-      onLongPressed: onLongPressed,
-      child: Row(
-        children: [
-          Expanded(
-            child: Align(
-              alignment: .centerLeft,
-              child: Padding(
-                padding: .symmetric(vertical: 16),
-                child: Row(
-                  spacing: 8,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        chapterReference.book.title(),
+    return GestureDetector(
+      onHorizontalDragEnd: (details) {
+        const sensitivity = 4;
+        if (details.velocity.pixelsPerSecond.dx > sensitivity) {
+          onSwipeLeft?.call();
+        } else if (details.velocity.pixelsPerSecond.dx < -sensitivity) {
+          onSwipeRight?.call();
+        }
+      },
+      child: StyledMaterial(
+        colorBuilder: colorBuilder ?? .surfacePrimary,
+        borderRadius: .circular(999),
+        padding: .only(left: 24, right: 12),
+        onPressed: onPressed,
+        onLongPressed: onLongPressed,
+        child: Row(
+          children: [
+            Expanded(
+              child: Align(
+                alignment: .centerLeft,
+                child: Padding(
+                  padding: .symmetric(vertical: 16),
+                  child: Row(
+                    spacing: 8,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          chapterReference.book.title(),
+                          style: context.textStyle.labelLg,
+                          maxLines: 1,
+                          overflow: .ellipsis,
+                        ),
+                      ),
+                      Text(
+                        chapterReference.chapterNum.toString(),
                         style: context.textStyle.labelLg,
                         maxLines: 1,
                         overflow: .ellipsis,
                       ),
-                    ),
-                    Text(
-                      chapterReference.chapterNum.toString(),
-                      style: context.textStyle.labelLg,
-                      maxLines: 1,
-                      overflow: .ellipsis,
-                    ),
-                    StyledBadge(text: translation.title()),
-                    gapW12,
-                  ],
+                      StyledBadge(text: translation.title()),
+                      gapW12,
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          ...toolbar.pinnedShortcuts.mapIndexed(
-            (i, shortcut) => StyledEditBadge(
-              isEdit: isEdit,
-              child: Tooltip(
-                message: shortcut.title(),
-                child: StyledCircleButton.lg(
-                  onPressed: () => onShorcutPressed(i, shortcut),
-                  child: shortcut.buildIcon(context, user: user),
+            ...toolbar.pinnedShortcuts.mapIndexed(
+              (i, shortcut) => StyledEditBadge(
+                isEdit: isEdit,
+                child: Tooltip(
+                  message: shortcut.title(),
+                  child: StyledCircleButton.lg(
+                    onPressed: () => onShorcutPressed(i, shortcut),
+                    child: shortcut.buildIcon(context, user: user),
+                  ),
                 ),
               ),
             ),
-          ),
-          StyledCircleButton.lg(onPressed: onMorePressed, child: Symbols.more_vert.toIcon()),
-        ],
+            StyledCircleButton.lg(onPressed: onMorePressed, child: Symbols.more_vert.toIcon()),
+          ],
+        ),
       ),
     );
   }
