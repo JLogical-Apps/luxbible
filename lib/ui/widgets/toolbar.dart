@@ -1,4 +1,4 @@
-import 'package:bible/models/bible_translation.dart';
+import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/user/toolbar_configuration.dart';
 import 'package:bible/models/user/toolbar_shortcut.dart';

@@ -1,4 +1,4 @@
-import 'package:bible/models/bible.dart';
+import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/strongs_provider.dart';

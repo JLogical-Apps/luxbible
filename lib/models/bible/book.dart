@@ -1,5 +1,5 @@
-import 'package:bible/models/book_type.dart';
-import 'package:bible/models/chapter.dart';
+import 'package:bible/models/bible/book_type.dart';
+import 'package:bible/models/bible/chapter.dart';
 
 class Book {
   final BookType bookType;

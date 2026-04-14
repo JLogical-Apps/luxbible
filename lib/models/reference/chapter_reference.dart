@@ -1,4 +1,4 @@
-import 'package:bible/models/book_type.dart';
+import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/region.dart';

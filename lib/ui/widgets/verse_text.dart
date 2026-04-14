@@ -1,4 +1,4 @@
-import 'package:bible/models/verse.dart';
+import 'package:bible/models/bible/verse.dart';
 import 'package:flutter/material.dart';
 
 class VerseText extends StatelessWidget {

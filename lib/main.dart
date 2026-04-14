@@ -4,7 +4,7 @@ import 'package:bible/functions/bible_importer.dart';
 import 'package:bible/functions/commentary_importer.dart';
 import 'package:bible/functions/cross_references_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
-import 'package:bible/models/bible_translation.dart';
+import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';

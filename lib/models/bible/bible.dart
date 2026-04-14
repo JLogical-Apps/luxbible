@@ -1,12 +1,12 @@
-import 'package:bible/models/bible_translation.dart';
-import 'package:bible/models/book.dart';
-import 'package:bible/models/book_type.dart';
-import 'package:bible/models/chapter.dart';
+import 'package:bible/models/bible/bible_translation.dart';
+import 'package:bible/models/bible/book.dart';
+import 'package:bible/models/bible/book_type.dart';
+import 'package:bible/models/bible/chapter.dart';
+import 'package:bible/models/bible/verse.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/selection.dart';
 import 'package:bible/models/reference/verse_span_reference.dart';
-import 'package:bible/models/verse.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';

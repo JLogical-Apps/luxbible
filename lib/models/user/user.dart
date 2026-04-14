@@ -1,7 +1,7 @@
 import 'package:bible/models/annotation.dart';
-import 'package:bible/models/bible.dart';
-import 'package:bible/models/bible_translation.dart';
-import 'package:bible/models/book_type.dart';
+import 'package:bible/models/bible/bible.dart';
+import 'package:bible/models/bible/bible_translation.dart';
+import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/reference/chapter_reference.dart';

@@ -1,5 +1,5 @@
-import 'package:bible/models/bible.dart';
-import 'package:bible/models/book_type.dart';
+import 'package:bible/models/bible/bible.dart';
+import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/selection.dart';
 import 'package:bible/models/user/selection_configuration.dart';
 import 'package:bible/models/user/selection_shortcut.dart';

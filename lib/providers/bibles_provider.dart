@@ -1,4 +1,4 @@
-import 'package:bible/models/bible.dart';
+import 'package:bible/models/bible/bible.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'bibles_provider.g.dart';

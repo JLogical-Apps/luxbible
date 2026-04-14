@@ -1,5 +1,5 @@
-import 'package:bible/models/bible_translation.dart';
-import 'package:bible/models/book_type.dart';
+import 'package:bible/models/bible/bible_translation.dart';
+import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';

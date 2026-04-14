@@ -1,4 +1,4 @@
-import 'package:bible/models/verse_fragment.dart';
+import 'package:bible/models/bible/verse_fragment.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 
 class Verse {

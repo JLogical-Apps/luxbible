@@ -1,5 +1,5 @@
 import 'package:bible/models/annotation.dart';
-import 'package:bible/models/bible.dart';
+import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/passage_action.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
