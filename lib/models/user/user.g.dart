@@ -67,6 +67,7 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
 const _$BibleTranslationEnumMap = {
   BibleTranslation.kjv: 'kjv',
   BibleTranslation.asv: 'asv',
+  BibleTranslation.bsb: 'bsb',
 };
 
 const _$ColorEnumEnumMap = {
