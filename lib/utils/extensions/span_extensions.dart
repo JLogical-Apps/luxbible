@@ -26,7 +26,7 @@ extension ListSpanExtensions on List<InlineSpan> {
     var initialOffset = _getTextPainter(width: width).getPositionForOffset(localPosition).offset - 1;
     // Account for WidgetSpans in selection
     var accountedLength = 0;
-    for (var span in this) {
+    for (final span in this) {
       if (span is WidgetSpan) {
         initialOffset--;
       } else if (span is TextSpan) {
@@ -71,10 +71,10 @@ extension ListSpanExtensions on List<InlineSpan> {
       );
 
   TextPainter _getTextPainter({required double width}) =>
-      (TextPainter(
+      TextPainter(
           text: TextSpan(children: this),
-          textDirection: TextDirection.ltr,
-        ))
+          textDirection: .ltr,
+        )
         ..setPlaceholderDimensions(
           whereType<SizedWidgetSpan>()
               .map((span) => PlaceholderDimensions(size: span.size, alignment: .middle))

@@ -26,7 +26,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-class PassageBuilder extends HookConsumerWidget {
+class VersesBuilder extends HookConsumerWidget {
   final Passage passage;
   final Bible? bible;
   final Function(Reference)? onReferencePressed;
@@ -38,7 +38,7 @@ class PassageBuilder extends HookConsumerWidget {
 
   final Selection? selection;
 
-  const PassageBuilder({
+  const VersesBuilder({
     super.key,
     required this.passage,
     this.bible,

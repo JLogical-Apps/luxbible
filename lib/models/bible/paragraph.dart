@@ -28,4 +28,13 @@ class BreakParagraph extends Paragraph {
 
 enum SectionType { s1, s2 }
 
-enum ParagraphType { p, q1, q2, li1, li2 }
+enum ParagraphType {
+  p,
+  q1,
+  q2,
+  qr,
+  li1,
+  li2;
+
+  bool get isPoetic => this == q1 || this == q2;
+}

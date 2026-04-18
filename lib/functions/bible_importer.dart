@@ -36,9 +36,9 @@ class BibleImporter {
             List<Verse> parseUsxVerses(XmlElement element) => element.children
                 .map(
                   (node) => switch (node) {
-                    XmlText(:final value) => Verse(
+                    XmlText(:final value) when value.trim().isNotEmpty => Verse(
                       verseNum: lastVerseNum,
-                      fragments: [VerseFragment(text: value, strongIds: const [])],
+                      fragments: [VerseFragment(text: value.trim(), strongIds: const [])],
                     ),
                     XmlElement node when node.localName == 'verse' => () {
                       lastVerseNum = int.parse(node.getAttribute('number')!);
@@ -59,7 +59,8 @@ class BibleImporter {
                       's2' => SectionParagraph(type: .s2, text: div.innerText),
                       'p' || 'pmo' || 'pc' || 'd' => VersesParagraph(type: .p, verses: parseUsxVerses(div)),
                       'q1' => VersesParagraph(type: .q1, verses: parseUsxVerses(div)),
-                      'q2' || 'qr' => VersesParagraph(type: .q2, verses: parseUsxVerses(div)),
+                      'q2' => VersesParagraph(type: .q2, verses: parseUsxVerses(div)),
+                      'qr' => VersesParagraph(type: .qr, verses: parseUsxVerses(div)),
                       'b' => BreakParagraph(),
                       'li1' => VersesParagraph(type: .li1, verses: parseUsxVerses(div)),
                       'li2' => VersesParagraph(type: .li2, verses: parseUsxVerses(div)),

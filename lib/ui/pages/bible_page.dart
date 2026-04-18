@@ -12,10 +12,11 @@ import 'package:bible/ui/pages/chapter_reference_search_page.dart';
 import 'package:bible/ui/pages/passage_settings_page.dart';
 import 'package:bible/ui/pages/selection_settings_page.dart';
 import 'package:bible/ui/pages/toolbar_settings_page.dart';
+import 'package:bible/ui/widgets/chapter_builder.dart';
 import 'package:bible/ui/widgets/passage_bottom_bar.dart';
-import 'package:bible/ui/widgets/passage_builder.dart';
 import 'package:bible/ui/widgets/selection_bottom_bar.dart';
 import 'package:bible/ui/widgets/toolbar.dart';
+import 'package:bible/ui/widgets/verses_builder.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/controller_extensions.dart';
@@ -138,36 +139,40 @@ class BiblePage extends HookConsumerWidget {
                             child: Column(
                               crossAxisAlignment: .start,
                               children: [
-                                Text(chapterReference.format(), style: context.textStyle.bibleChapter),
-                                gapH16,
-                                PassageBuilder(
-                                  passage: chapterReference.toPassage(),
-                                  underlinedReferences: selectedReferencesState.value,
-                                  onReferencePressed: (reference) {
-                                    if (selectionState.value != null) {
-                                      selectionState.value = null;
-                                    } else if (selectedReferencesState.value.isEmpty &&
-                                        user.passage.expandToAnnotation) {
-                                      selectedReferencesState.value = user.getExpandedReferences(reference);
-                                    } else {
-                                      selectedReferencesState.value = selectedReferencesState.value.withToggle(
-                                        reference,
-                                      );
-                                    }
-                                  },
-                                  onSelectionUpdated: (selection) {
-                                    selectedReferencesState.value = [];
-                                    if (selectionState.value == null &&
-                                        user.selection.expandToAnnotation &&
-                                        selection != null) {
-                                      selectionState.value = user.getExpandedSelection(selection);
-                                    } else {
-                                      selectionState.value = selection;
-                                    }
-                                  },
-                                  keyByReferenceRef: keyByReferenceRef,
-                                  selection: selectionState.value,
-                                ),
+                                if (false) ...[
+                                  Text(chapterReference.format(), style: context.textStyle.bibleChapter),
+                                  gapH16,
+                                ],
+                                ChapterBuilder(chapter: bible.getChapterByReference(chapterReference)),
+                                if (false)
+                                  VersesBuilder(
+                                    passage: chapterReference.toPassage(),
+                                    underlinedReferences: selectedReferencesState.value,
+                                    onReferencePressed: (reference) {
+                                      if (selectionState.value != null) {
+                                        selectionState.value = null;
+                                      } else if (selectedReferencesState.value.isEmpty &&
+                                          user.passage.expandToAnnotation) {
+                                        selectedReferencesState.value = user.getExpandedReferences(reference);
+                                      } else {
+                                        selectedReferencesState.value = selectedReferencesState.value.withToggle(
+                                          reference,
+                                        );
+                                      }
+                                    },
+                                    onSelectionUpdated: (selection) {
+                                      selectedReferencesState.value = [];
+                                      if (selectionState.value == null &&
+                                          user.selection.expandToAnnotation &&
+                                          selection != null) {
+                                        selectionState.value = user.getExpandedSelection(selection);
+                                      } else {
+                                        selectionState.value = selection;
+                                      }
+                                    },
+                                    keyByReferenceRef: keyByReferenceRef,
+                                    selection: selectionState.value,
+                                  ),
                                 gapH16,
                               ],
                             ),

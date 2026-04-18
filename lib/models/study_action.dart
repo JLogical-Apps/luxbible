@@ -10,7 +10,7 @@ import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
-import 'package:bible/ui/widgets/passage_builder.dart';
+import 'package:bible/ui/widgets/verses_builder.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
@@ -73,7 +73,7 @@ enum StudyAction {
                         title: bible.translation.title().toText(),
                         child: Padding(
                           padding: .only(bottom: 16),
-                          child: PassageBuilder(passage: region.toPassage(), bible: bible),
+                          child: VersesBuilder(passage: region.toPassage(), bible: bible),
                         ),
                       ),
                       if (i + 1 < bibles.length)
