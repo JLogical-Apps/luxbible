@@ -156,11 +156,13 @@ class BiblePage extends HookConsumerWidget {
                                     }
                                   },
                                   selection: selectionState.value,
-                                  onSelectionUpdated: (selection) {
-                                    if (selectedReferencesState.value.isNotEmpty) {
-                                      selectedReferencesState.value = [];
+                                  onSelectionUpdated: (selection, isNewSelection) {
+                                    selectedReferencesState.value = [];
+                                    if (isNewSelection && user.selection.expandToAnnotation && selection != null) {
+                                      selectionState.value = user.getExpandedSelection(selection);
+                                    } else {
+                                      selectionState.value = selection;
                                     }
-                                    selectionState.value = selection;
                                   },
                                   keyByReferenceRef: keyByReferenceRef,
                                 ),

@@ -37,7 +37,7 @@ class ChapterBuilder extends HookConsumerWidget {
   final List<Reference> underlinedReferences;
 
   final Selection? selection;
-  final Function(Selection?)? onSelectionUpdated;
+  final Function(Selection?, bool isNewSelection)? onSelectionUpdated;
 
   final ObjectRef<Map<Reference, GlobalKey>>? keyByReferenceRef;
 
@@ -123,6 +123,54 @@ class ChapterBuilder extends HookConsumerWidget {
                           })
                           .nonNulls
                           .flattened,
+                      ...user
+                          .getSelectionAnnotationsInPassage(
+                            chapterReference.toPassage(),
+                            translation: bible.translation,
+                          )
+                          .map((record) {
+                            final (annotation, selection) = record;
+                            final (base, extent) =
+                                getSelectionCharacterOffsets(
+                                  selection: selection,
+                                  paragraph: paragraph,
+                                  paragraphSpans: paragraphSpans,
+                                ) ??
+                                (null, null);
+                            if (base == null || extent == null) {
+                              return null;
+                            }
+
+                            return paragraphSpans
+                                .getBoxesForSelection(
+                                  baseOffset: base,
+                                  extentOffset: extent,
+                                  width: constraints.maxWidth,
+                                  textAlign: paragraph.type.textAlign,
+                                )
+                                .map((box) => box.toRect())
+                                .withMergedLines()
+                                .map(
+                                  (box) => Positioned.fromRect(
+                                    rect: Rect.fromLTWH(box.left, box.top + 4, box.width + 2, min(28, box.height)),
+                                    child: IgnorePointer(
+                                      child: AnimatedContainer(
+                                        duration: Duration(milliseconds: 300),
+                                        curve: Curves.easeInOutCubic,
+                                        decoration: BoxDecoration(
+                                          borderRadius: .circular(4),
+                                          color: annotation.color
+                                              .toHue(context.colors)
+                                              .primary
+                                              .withValues(alpha: underlinedReferences.isEmpty ? 0.5 : 0.2),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                          })
+                          .nonNulls
+                          .flattened,
                       if (selection case final selection?)
                         ...?() {
                           final (base, extent) =
@@ -182,7 +230,7 @@ class ChapterBuilder extends HookConsumerWidget {
                         final wordSelection = bible.getWordsSelection(
                           Selection.character(anchor: anchor, translation: bible.translation),
                         );
-                        onSelectionUpdated?.call(wordSelection);
+                        onSelectionUpdated?.call(wordSelection, true);
                         selectionStartAnchorState.value = anchor;
                       },
                       onLongPressMoveUpdate: (details) {
@@ -206,7 +254,7 @@ class ChapterBuilder extends HookConsumerWidget {
                         final wordsSelection = bible.getWordsSelection(
                           Selection(start: anchors.first, end: anchors.last, translation: bible.translation),
                         );
-                        onSelectionUpdated?.call(wordsSelection);
+                        onSelectionUpdated?.call(wordsSelection, false);
                       },
                       onTapUp: (details) {
                         if (paragraph is! VersesParagraph) {
@@ -275,8 +323,8 @@ class ChapterBuilder extends HookConsumerWidget {
 
                   final spans = [
                     if (verse.verseNum > maxPreviousVerseNum) ...[
-                      AnnotatedSizedWidgetSpan<Reference>(
-                        annotation: reference,
+                      AnnotatedSizedWidgetSpan<ReferencePart>(
+                        annotation: ReferencePart(reference: reference),
                         size: Size(
                           context.textStyle.bibleVerseNumber.getWidth(verse.verseNum.toString()) + 6,
                           context.textStyle.bibleBody.fontSize!,
@@ -296,18 +344,46 @@ class ChapterBuilder extends HookConsumerWidget {
                         notesButtonSpan(
                           context,
                           ref,
-                          reference: reference,
+                          referencePart: ReferencePart(reference: reference),
                           annotations: passageAnnotationsWithNote,
                           isUnderlined: underlinedReferences.contains(reference),
-                          bible: bible,
                         ),
                     ],
-                    AnnotatedTextSpan<Reference>(
-                      annotation: reference,
+                    ...AnnotatedTextSpan<ReferencePart>(
+                      annotation: ReferencePart(reference: reference),
                       text: verse.text,
                       style: context.textStyle.bibleBody.copyWith(
                         decoration: underlinedReferences.contains(reference) ? .underline : null,
                       ),
+                    ).withInjectedSpans(
+                      user
+                          .getSelectionAnnotationsWithNotesByOffset(
+                            reference: reference,
+                            translation: bible.translation,
+                          )
+                          .map(
+                            (offset, annotations) => MapEntry(
+                              offset -
+                                  (verseIndex == 0 && paragraph.firstVerseOffset > 0
+                                      ? paragraph.firstVerseOffset + 1
+                                      : 0),
+                              annotations,
+                            ),
+                          )
+                          .where((offset, annotations) => offset >= 0)
+                          .map(
+                            (offset, annotations) => MapEntry(
+                              offset,
+                              notesButtonSpan(
+                                context,
+                                ref,
+                                referencePart: ReferencePart(reference: reference, paragraphOffset: offset),
+                                annotations: annotations,
+                                isUnderlined: underlinedReferences.contains(reference),
+                              ),
+                            ),
+                          ),
+                      annotationModifier: (_, offset) => ReferencePart(reference: reference, paragraphOffset: offset),
                     ),
                   ];
                   maxPreviousVerseNum = verse.verseNum;
@@ -343,14 +419,12 @@ class ChapterBuilder extends HookConsumerWidget {
   WidgetSpan notesButtonSpan(
     BuildContext context,
     WidgetRef ref, {
-    required Reference reference,
+    required ReferencePart referencePart,
     required List<Annotation> annotations,
     required bool isUnderlined,
-    Color? color,
-    required Bible bible,
   }) {
-    return AnnotatedSizedWidgetSpan<Reference>(
-      annotation: reference,
+    return AnnotatedSizedWidgetSpan<ReferencePart>(
+      annotation: referencePart,
       size: Size(30, context.textStyle.bibleBody.fontSize!),
       alignment: .middle,
       child: OverflowBox(
@@ -358,9 +432,8 @@ class ChapterBuilder extends HookConsumerWidget {
         maxWidth: 30,
         child: Underline(
           isUnderlined: isUnderlined,
-          child: Container(
-            color: color,
-            margin: .only(bottom: 4),
+          child: Padding(
+            padding: .only(bottom: 4),
             child: StyledCircleButton.sm(
               onPressed: () => context.showStyledSheet(
                 (context) => StyledSheet(
@@ -394,14 +467,14 @@ class ChapterBuilder extends HookConsumerWidget {
         .map((span) {
           final start = cursor;
           cursor += span.textLength;
-          return span is IsAnnotatedSpan<Reference> && span.annotation == reference
-              ? (span: span, start: start, end: start + span.textLength)
+          return span is IsAnnotatedSpan<ReferencePart> && span.annotation.reference == reference
+              ? (span: span, start: start)
               : null;
         })
         .nonNulls
         .toList();
 
-    return matches.isEmpty ? null : (matches.first.start, matches.last.end);
+    return matches.isEmpty ? null : (matches.first.start, matches.last.start + matches.last.span.textLength);
   }
 
   (int, int)? getSelectionCharacterOffsets({
@@ -409,13 +482,27 @@ class ChapterBuilder extends HookConsumerWidget {
     required VersesParagraph paragraph,
     required List<InlineSpan> paragraphSpans,
   }) {
+    int getVerseOffset(Reference reference) =>
+        reference == getVerseReference(paragraph.verses.first) && paragraph.firstVerseOffset > 0
+        ? paragraph.firstVerseOffset + 1
+        : 0;
+
     var cursor = 0;
     final matches = paragraphSpans
         .map((span) {
           final start = cursor;
           cursor += span.textLength;
-          return span is AnnotatedTextSpan<Reference> && selection.isInReference(span.annotation)
-              ? (span: span, start: start)
+          return span is AnnotatedTextSpan<ReferencePart> &&
+                  selection.intersects(
+                    Selection(
+                      start: span.annotation.toSelectionAnchor(verseOffset: getVerseOffset(span.annotation.reference)),
+                      end: span.annotation.toSelectionAnchor(
+                        verseOffset: getVerseOffset(span.annotation.reference) + span.textLength,
+                      ),
+                      translation: user.translation,
+                    ),
+                  )
+              ? (span: span, start: start, offset: span.annotation.paragraphOffset)
               : null;
         })
         .nonNulls
@@ -425,16 +512,22 @@ class ChapterBuilder extends HookConsumerWidget {
       return null;
     }
 
-    final verseOffset =
-        selection.end.toReference() == getVerseReference(paragraph.verses.first) && paragraph.firstVerseOffset > 0
-        ? paragraph.firstVerseOffset + 1
-        : 0;
-
+    final verseOffset = getVerseOffset(selection.end.toReference());
     final offsets = (
-      matches.first.start + selection.start.characterOffset - verseOffset,
-      matches.last.start + selection.end.characterOffset + 1 - verseOffset,
+      matches.first.start - matches.first.offset + selection.start.characterOffset - verseOffset,
+      matches.last.start - matches.last.offset + selection.end.characterOffset + 1 - verseOffset,
     );
 
     return offsets.$1.isNegative || offsets.$2.isNegative ? null : offsets;
   }
+}
+
+class ReferencePart {
+  final Reference reference;
+  final int paragraphOffset;
+
+  const ReferencePart({required this.reference, this.paragraphOffset = 0});
+
+  SelectionWordAnchor toSelectionAnchor({required int verseOffset}) =>
+      SelectionWordAnchor.fromReference(reference: reference, characterOffset: verseOffset + paragraphOffset);
 }
