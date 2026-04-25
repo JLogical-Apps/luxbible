@@ -11,6 +11,7 @@ import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:bible/utils/range.dart';
+import 'package:utils_core/utils_core.dart';
 
 class Bible {
   final BibleTranslation translation;

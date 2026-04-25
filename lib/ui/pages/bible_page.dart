@@ -139,8 +139,9 @@ class BiblePage extends HookConsumerWidget {
                               crossAxisAlignment: .start,
                               children: [
                                 ChapterBuilder(
-                                  book: chapterReference.book,
-                                  chapter: bible.getChapterByReference(chapterReference),
+                                  chapterReference: chapterReference,
+                                  bible: bible,
+                                  user: user,
                                   underlinedReferences: selectedReferencesState.value,
                                   onReferencePressed: (reference) {
                                     if (selectionState.value != null) {

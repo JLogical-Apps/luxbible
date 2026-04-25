@@ -1,5 +1,6 @@
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:utils_core/utils_core.dart';
 
 class Commentary {
   final String name;

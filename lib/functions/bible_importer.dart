@@ -8,9 +8,9 @@ import 'package:bible/models/bible/chapter.dart';
 import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/models/bible/verse.dart';
 import 'package:bible/models/bible/verse_fragment.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
+import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
 
 class BibleImporter {

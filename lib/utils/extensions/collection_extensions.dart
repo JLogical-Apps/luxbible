@@ -67,8 +67,6 @@ extension IterableExtensions<T> on Iterable<T> {
     return true;
   }
 
-  Map<K, V> mapToMap<K, V>(MapEntry<K, V> Function(T) mapper) => Map.fromEntries(map(mapper));
-
   List<T> get distinct => toSet().toList();
   Iterable<T> distinctBy<R>(R Function(T) mapper) {
     final seen = <R>{};
@@ -109,13 +107,8 @@ extension MapEntryIterableExtensions<K, V> on Iterable<MapEntry<K, V>> {
 }
 
 extension MapExtensions<K, V> on Map<K, V> {
-  Iterable<T> mapToIterable<T>(T Function(K, V) mapper) => entries.map((entry) => mapper(entry.key, entry.value));
-
   bool any(bool Function(K, V) predicate) => entries.any((entry) => predicate(entry.key, entry.value));
   bool every(bool Function(K, V) predicate) => entries.every((entry) => predicate(entry.key, entry.value));
-
-  Map<K, V> where(bool Function(K, V) predicate) =>
-      Map.fromEntries(entries.where((entry) => predicate(entry.key, entry.value)));
 
   Map<K, V> sortedBy<E extends Comparable<E>>(E Function(K, V) elementGetter) =>
       entries.sortedBy((entry) => elementGetter(entry.key, entry.value)).toMap();

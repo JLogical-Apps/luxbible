@@ -18,6 +18,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:substring_highlight/substring_highlight.dart';
+import 'package:utils_core/utils_core.dart';
 
 class SearchPageResult {
   final Reference reference;

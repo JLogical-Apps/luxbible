@@ -1,24 +1,32 @@
+import 'package:bible/models/annotation.dart';
+import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bible/chapter.dart';
 import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/models/bible/verse.dart';
+import 'package:bible/models/reference/chapter_reference.dart';
+import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/selection.dart';
-import 'package:bible/style/style_context_extensions.dart';
-import 'package:bible/style/text_style_extensions.dart';
+import 'package:bible/models/user/user.dart';
+import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/sized_widget_span.dart';
+import 'package:bible/ui/widgets/underline.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
 import 'package:bible/utils/extensions/span_extensions.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intersperse/intersperse.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:utils_core/utils_core.dart';
 
 class ChapterBuilder extends ConsumerWidget {
-  final BookType book;
-  final Chapter chapter;
+  final ChapterReference chapterReference;
+  final User user;
+  final Bible bible;
 
   final Function(Reference)? onReferencePressed;
   final List<Reference> underlinedReferences;
@@ -27,18 +35,22 @@ class ChapterBuilder extends ConsumerWidget {
 
   const ChapterBuilder({
     super.key,
-    required this.book,
-    required this.chapter,
+    required this.chapterReference,
+    required this.user,
+    required this.bible,
     this.onReferencePressed,
     this.underlinedReferences = const [],
     this.keyByReferenceRef,
   });
 
+  Chapter get chapter => bible.getChapterByReference(chapterReference);
+  BookType get book => chapterReference.book;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       crossAxisAlignment: .stretch,
-      children: getParagraphSpansByParagraph(context)
+      children: getParagraphSpansByParagraph(context, ref)
           .mapEntries(
             (paragraph, paragraphSpan) => Padding(
               padding: paragraph.as<VersesParagraph>()?.type.padding ?? .zero,
@@ -73,10 +85,9 @@ class ChapterBuilder extends ConsumerWidget {
     );
   }
 
-  Reference getReferenceByVerse(Verse verse) =>
-      Reference(book: book, chapterNum: chapter.chapterNum, verseNum: verse.verseNum);
+  Reference getReferenceByVerse(Verse verse) => chapterReference.getReference(verse.verseNum);
 
-  List<MapEntry<Paragraph, List<InlineSpan>>> getParagraphSpansByParagraph(BuildContext context) {
+  List<MapEntry<Paragraph, List<InlineSpan>>> getParagraphSpansByParagraph(BuildContext context, WidgetRef ref) {
     var maxPreviousVerseNum = 0;
     return chapter.paragraphs.mapIndexed((paragraphIndex, paragraph) {
       final previousParagraph = paragraphIndex == 0
@@ -94,8 +105,19 @@ class ChapterBuilder extends ConsumerWidget {
             SizedWidgetSpan.space(size: Size(type.indent, 0)),
             ...verses
                 .mapIndexed((verseIndex, verse) {
+                  final reference = getReferenceByVerse(verse);
+
+                  final passageAnnotations = user.getPassageAnnotations(Passage.reference(reference));
+                  final passageAnnotationsWithNote = passageAnnotations
+                      .where(
+                        (annotation) =>
+                            annotation.note != null &&
+                            annotation.passages.any((passage) => passage.references.firstOrNull == reference),
+                      )
+                      .toList();
+
                   final spans = [
-                    if (verse.verseNum > maxPreviousVerseNum)
+                    if (verse.verseNum > maxPreviousVerseNum) ...[
                       SizedWidgetSpan(
                         size: Size(
                           context.textStyle.bibleVerseNumber.getWidth(verse.verseNum.toString()) + 6,
@@ -107,15 +129,24 @@ class ChapterBuilder extends ConsumerWidget {
                           child: Text(
                             verse.verseNum.toString(),
                             style: context.textStyle.bibleVerseNumber.copyWith(
-                              decoration: underlinedReferences.contains(getReferenceByVerse(verse)) ? .underline : null,
+                              decoration: underlinedReferences.contains(reference) ? .underline : null,
                             ),
                           ),
                         ),
                       ),
+                      if (passageAnnotationsWithNote.isNotEmpty)
+                        notesButtonSpan(
+                          context,
+                          ref,
+                          annotations: passageAnnotationsWithNote,
+                          isUnderlined: underlinedReferences.contains(reference),
+                          bible: bible,
+                        ),
+                    ],
                     TextSpan(
                       text: verse.text,
                       style: context.textStyle.bibleBody.copyWith(
-                        decoration: underlinedReferences.contains(getReferenceByVerse(verse)) ? .underline : null,
+                        decoration: underlinedReferences.contains(reference) ? .underline : null,
                       ),
                     ),
                   ];
@@ -145,5 +176,51 @@ class ChapterBuilder extends ConsumerWidget {
       offsetCount += referenceLength + 1;
     }
     return null;
+  }
+
+  WidgetSpan notesButtonSpan(
+    BuildContext context,
+    WidgetRef ref, {
+    required List<Annotation> annotations,
+    required bool isUnderlined,
+    Color? color,
+    required Bible bible,
+  }) {
+    return SizedWidgetSpan(
+      size: Size(30, context.textStyle.bibleBody.fontSize!),
+      alignment: .middle,
+      child: OverflowBox(
+        maxHeight: context.textStyle.bibleBody.totalHeight + 4,
+        maxWidth: 30,
+        child: Underline(
+          isUnderlined: isUnderlined,
+          child: Container(
+            color: color,
+            margin: .only(bottom: 4),
+            child: StyledCircleButton.sm(
+              onPressed: () => context.showStyledSheet(
+                (context) => StyledSheet(
+                  title: 'Notes'.toText(),
+                  children: annotations
+                      .map(
+                        (annotation) => StyledListItem(
+                          title: (annotation.note ?? '').toText(),
+                          subtitle: Column(
+                            children: [
+                              annotation.passages.map((passage) => passage.format()).join('; ').nullIfBlank,
+                              ...annotation.selections.map((selection) => '"${bible.getSelectionText(selection)}"'),
+                            ].nonNulls.map((text) => Text(text, maxLines: 1, overflow: .ellipsis)).toList(),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+              child: Icon(Symbols.note_stack, color: context.colors.contentTertiary),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

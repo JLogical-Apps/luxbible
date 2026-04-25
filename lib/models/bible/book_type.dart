@@ -1,5 +1,5 @@
 import 'package:bible/models/testament.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:utils_core/utils_core.dart';
 
 enum BookType {
   genesis,
