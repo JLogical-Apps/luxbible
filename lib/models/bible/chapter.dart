@@ -1,6 +1,8 @@
 import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/models/bible/verse.dart';
+import 'package:bible/models/bible/verse_fragment.dart';
 import 'package:collection/collection.dart';
+import 'package:intersperse/intersperse.dart';
 import 'package:utils_core/utils_core.dart';
 
 class Chapter {
@@ -19,6 +21,9 @@ class Chapter {
       .expand((paragraph) => paragraph.verses)
       .groupListsBy((verse) => verse.verseNum)
       .mapValues(
-        (verseNum, verses) => Verse(verseNum: verseNum, fragments: verses.expand((verse) => verse.fragments).toList()),
+        (verseNum, verses) => Verse(
+          verseNum: verseNum,
+          fragments: verses.map((verse) => verse.fragments).intersperse([VerseFragment(text: ' ')]).flattenedToList,
+        ),
       );
 }

@@ -28,7 +28,7 @@ import 'package:intersperse/intersperse.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:utils_core/utils_core.dart';
 
-class ChapterBuilder extends ConsumerWidget {
+class ChapterBuilder extends HookConsumerWidget {
   final ChapterReference chapterReference;
   final User user;
   final Bible bible;
@@ -37,6 +37,7 @@ class ChapterBuilder extends ConsumerWidget {
   final List<Reference> underlinedReferences;
 
   final Selection? selection;
+  final Function(Selection?)? onSelectionUpdated;
 
   final ObjectRef<Map<Reference, GlobalKey>>? keyByReferenceRef;
 
@@ -48,6 +49,7 @@ class ChapterBuilder extends ConsumerWidget {
     this.onReferencePressed,
     this.underlinedReferences = const [],
     this.selection,
+    this.onSelectionUpdated,
     this.keyByReferenceRef,
   });
 
@@ -56,6 +58,7 @@ class ChapterBuilder extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final selectionStartAnchorState = useState<SelectionWordAnchor?>(null);
     return Column(
       crossAxisAlignment: .stretch,
       children: getParagraphSpansByParagraph(context, ref)
@@ -67,7 +70,7 @@ class ChapterBuilder extends ConsumerWidget {
                   clipBehavior: .none,
                   fit: .passthrough,
                   children: [
-                    if (paragraph is VersesParagraph)
+                    if (paragraph is VersesParagraph) ...[
                       ...paragraph.verses
                           .map((verse) => getVerseReference(verse))
                           .mapToMap(
@@ -85,10 +88,14 @@ class ChapterBuilder extends ConsumerWidget {
                                   (annotation) => annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5),
                                 )
                                 .mixOrNull;
-                            final (base, extent) = getReferenceCharacterOffsets(
-                              reference: reference,
-                              paragraphSpans: paragraphSpans,
-                            );
+
+                            final (base, extent) =
+                                getReferenceCharacterOffsets(reference: reference, paragraphSpans: paragraphSpans) ??
+                                (null, null);
+                            if (base == null || extent == null) {
+                              return null;
+                            }
+
                             return paragraphSpans
                                 .getBoxesForSelection(
                                   baseOffset: base,
@@ -114,8 +121,93 @@ class ChapterBuilder extends ConsumerWidget {
                                   ),
                                 );
                           })
+                          .nonNulls
                           .flattened,
+                      if (selection case final selection?)
+                        ...?() {
+                          final (base, extent) =
+                              getSelectionCharacterOffsets(
+                                selection: selection,
+                                paragraph: paragraph,
+                                paragraphSpans: paragraphSpans,
+                              ) ??
+                              (null, null);
+                          if (base == null || extent == null) {
+                            return null;
+                          }
+
+                          return paragraphSpans
+                              .getBoxesForSelection(
+                                baseOffset: base,
+                                extentOffset: extent,
+                                width: constraints.maxWidth,
+                                textAlign: paragraph.type.textAlign,
+                              )
+                              .map((box) => box.toRect())
+                              .withMergedLines()
+                              .map(
+                                (box) => Positioned.fromRect(
+                                  rect: Rect.fromLTWH(box.left, box.top + 4, box.width + 2, min(28, box.height)),
+                                  child: IgnorePointer(
+                                    child: AnimatedContainer(
+                                      duration: Duration(milliseconds: 300),
+                                      curve: Curves.easeInOutCubic,
+                                      decoration: BoxDecoration(
+                                        borderRadius: .circular(4),
+                                        color: context.colors.contentPrimary.withValues(alpha: 0.2),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                        }(),
+                    ],
                     GestureDetector(
+                      onLongPressStart: (details) {
+                        if (paragraph is! VersesParagraph) {
+                          return;
+                        }
+
+                        final offset = paragraphSpans.getCharacterOffsetFromPosition(
+                          width: constraints.maxWidth,
+                          localPosition: details.localPosition,
+                          textAlign: paragraph.type.textAlign,
+                        );
+
+                        final anchor = getOffsetAnchor(characterOffset: offset, paragraph: paragraph);
+                        if (anchor == null) {
+                          return;
+                        }
+
+                        final wordSelection = bible.getWordsSelection(
+                          Selection.character(anchor: anchor, translation: bible.translation),
+                        );
+                        onSelectionUpdated?.call(wordSelection);
+                        selectionStartAnchorState.value = anchor;
+                      },
+                      onLongPressMoveUpdate: (details) {
+                        if (paragraph is! VersesParagraph || selectionStartAnchorState.value == null) {
+                          return;
+                        }
+
+                        final offset = paragraphSpans.getCharacterOffsetFromPosition(
+                          width: constraints.maxWidth,
+                          localPosition: details.localPosition,
+                          textAlign: paragraph.type.textAlign,
+                        );
+
+                        final anchor = getOffsetAnchor(characterOffset: offset, paragraph: paragraph);
+                        if (anchor == null) {
+                          return;
+                        }
+
+                        final anchors = [?selectionStartAnchorState.value, anchor]..sort();
+
+                        final wordsSelection = bible.getWordsSelection(
+                          Selection(start: anchors.first, end: anchors.last, translation: bible.translation),
+                        );
+                        onSelectionUpdated?.call(wordsSelection);
+                      },
                       onTapUp: (details) {
                         if (paragraph is! VersesParagraph) {
                           return;
@@ -132,10 +224,13 @@ class ChapterBuilder extends ConsumerWidget {
                           onReferencePressed?.call(anchor.toReference());
                         }
                       },
-                      child: Text.rich(
-                        TextSpan(children: paragraphSpans),
-                        style: TextStyle(fontStyle: paragraph.as<VersesParagraph>()?.type.fontStyle ?? .normal),
-                        textAlign: paragraph.as<VersesParagraph>()?.type.textAlign ?? .start,
+                      child: Listener(
+                        onPointerMove: (move) {},
+                        child: Text.rich(
+                          TextSpan(children: paragraphSpans),
+                          style: TextStyle(fontStyle: paragraph.as<VersesParagraph>()?.type.fontStyle ?? .normal),
+                          textAlign: paragraph.as<VersesParagraph>()?.type.textAlign ?? .start,
+                        ),
                       ),
                     ),
                   ],
@@ -230,15 +325,17 @@ class ChapterBuilder extends ConsumerWidget {
   SelectionWordAnchor? getOffsetAnchor({required int characterOffset, required VersesParagraph paragraph}) {
     var offsetCount = 0;
     for (final verse in paragraph.verses) {
-      final referenceLength = verse.text.length;
+      final referenceLength = verse.text.length + (verse == paragraph.verses.first ? paragraph.firstVerseOffset : 0);
       if (characterOffset < offsetCount + referenceLength) {
         return SelectionWordAnchor.fromReference(
           reference: getVerseReference(verse),
-          characterOffset: (characterOffset - offsetCount).clampZero,
+          characterOffset:
+              (characterOffset - offsetCount + (verse == paragraph.verses.first ? paragraph.firstVerseOffset : 0))
+                  .clampZero,
         );
       }
 
-      offsetCount += referenceLength + 1;
+      offsetCount += referenceLength;
     }
     return null;
   }
@@ -291,20 +388,53 @@ class ChapterBuilder extends ConsumerWidget {
     );
   }
 
-  (int, int) getReferenceCharacterOffsets({required Reference reference, required List<InlineSpan> paragraphSpans}) {
+  (int, int)? getReferenceCharacterOffsets({required Reference reference, required List<InlineSpan> paragraphSpans}) {
     var cursor = 0;
     final matches = paragraphSpans
         .map((span) {
           final start = cursor;
-          final length = (span is TextSpan) ? span.text!.length : 1;
-          cursor += length;
-          return (span: span, start: start, end: start + length);
+          cursor += span.textLength;
+          return span is IsAnnotatedSpan<Reference> && span.annotation == reference
+              ? (span: span, start: start, end: start + span.textLength)
+              : null;
         })
-        .where(
-          (e) => e.span is IsAnnotatedSpan<Reference> && (e.span as IsAnnotatedSpan<Reference>).annotation == reference,
-        )
+        .nonNulls
         .toList();
 
-    return matches.isEmpty ? (0, 0) : (matches.first.start, matches.last.end);
+    return matches.isEmpty ? null : (matches.first.start, matches.last.end);
+  }
+
+  (int, int)? getSelectionCharacterOffsets({
+    required Selection selection,
+    required VersesParagraph paragraph,
+    required List<InlineSpan> paragraphSpans,
+  }) {
+    var cursor = 0;
+    final matches = paragraphSpans
+        .map((span) {
+          final start = cursor;
+          cursor += span.textLength;
+          return span is AnnotatedTextSpan<Reference> && selection.isInReference(span.annotation)
+              ? (span: span, start: start)
+              : null;
+        })
+        .nonNulls
+        .toList();
+
+    if (matches.isEmpty) {
+      return null;
+    }
+
+    final verseOffset =
+        selection.end.toReference() == getVerseReference(paragraph.verses.first) && paragraph.firstVerseOffset > 0
+        ? paragraph.firstVerseOffset + 1
+        : 0;
+
+    final offsets = (
+      matches.first.start + selection.start.characterOffset - verseOffset,
+      matches.last.start + selection.end.characterOffset + 1 - verseOffset,
+    );
+
+    return offsets.$1.isNegative || offsets.$2.isNegative ? null : offsets;
   }
 }

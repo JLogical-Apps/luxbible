@@ -156,6 +156,12 @@ class BiblePage extends HookConsumerWidget {
                                     }
                                   },
                                   selection: selectionState.value,
+                                  onSelectionUpdated: (selection) {
+                                    if (selectedReferencesState.value.isNotEmpty) {
+                                      selectedReferencesState.value = [];
+                                    }
+                                    selectionState.value = selection;
+                                  },
                                   keyByReferenceRef: keyByReferenceRef,
                                 ),
                                 gapH16,

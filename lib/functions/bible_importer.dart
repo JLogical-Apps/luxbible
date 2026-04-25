@@ -42,7 +42,7 @@ class BibleImporter {
                           (node) => switch (node) {
                             XmlText(:final value) when value.trim().isNotEmpty && lastVerseNum != null => Verse(
                               verseNum: lastVerseNum!,
-                              fragments: [VerseFragment(text: value.trim(), strongIds: const [])],
+                              fragments: [VerseFragment(text: value.trim())],
                             ),
                             XmlElement node when node.localName == 'verse' => () {
                               lastVerseNum = int.parse(node.getAttribute('number')!);
@@ -62,16 +62,19 @@ class BibleImporter {
                         return null;
                       }
 
+                      final otherParagraphsWithVerse = paragraphs
+                          .whereType<VersesParagraph>()
+                          .expand((para) => para.verses)
+                          .where((verse) => verse.verseNum == verses.first.verseNum);
+
                       return VersesParagraph(
                         type: type,
                         verses: verses,
                         firstVerseOffset: verses.first.verseNum == previousLastVerseNum
-                            ? paragraphs
-                                  .whereType<VersesParagraph>()
-                                  .expand((para) => para.verses)
-                                  .where((verse) => verse.verseNum == verses.first.verseNum)
-                                  .map((verse) => verse.text.length)
-                                  .sum
+                            ? otherParagraphsWithVerse.map((verse) => verse.text.length).sum +
+                                  // Account for spaces between paragraphs
+                                  otherParagraphsWithVerse.length -
+                                  1
                             : 0,
                       );
                     }
@@ -171,7 +174,7 @@ class BibleImporter {
         }
       } else {
         // Plain text → start a fresh fragment
-        fragments.add(VerseFragment(text: token, strongIds: const []));
+        fragments.add(VerseFragment(text: token));
       }
     }
 
@@ -207,7 +210,7 @@ extension on Iterable<Verse> {
                 verseNum: verse.verseNum,
                 fragments: [
                   ...lastVerse.fragments,
-                  VerseFragment(text: ' ', strongIds: []),
+                  VerseFragment(text: ' '),
                   ...verse.fragments,
                 ],
               ))

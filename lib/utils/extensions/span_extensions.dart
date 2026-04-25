@@ -4,6 +4,14 @@ import 'package:bible/ui/widgets/sized_widget_span.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
+extension InlineSpanExtensions on InlineSpan {
+  int get textLength => switch (this) {
+    WidgetSpan() => 1,
+    TextSpan(:final text) => text?.length ?? 0,
+    _ => throw UnimplementedError(),
+  };
+}
+
 extension TextSpanExtensions on TextSpan {
   List<InlineSpan> withInjectedSpans(Map<int, InlineSpan> spanByOffset) {
     final spans = <InlineSpan>[this];
@@ -43,13 +51,7 @@ extension ListSpanExtensions on List<InlineSpan> {
     return initialOffset;
   }
 
-  int get characterLength => map(
-    (span) => switch (span) {
-      WidgetSpan() => 1,
-      TextSpan(:final text) => text?.length ?? 0,
-      _ => throw UnimplementedError(),
-    },
-  ).sum;
+  int get characterLength => map((span) => span.textLength).sum;
 
   int getActualOffset(int textOffset) {
     var numWidgetSpans = 0;
