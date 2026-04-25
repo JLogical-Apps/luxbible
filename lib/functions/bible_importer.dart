@@ -32,45 +32,65 @@ class BibleImporter {
           bookType: type,
           chapters: doc.findAllElements('chapter').mapIndexed((chapterIndex, div) {
             int? lastVerseNum;
-
-            List<Verse> parseUsxVerses(XmlElement element) => element.children
-                .map(
-                  (node) => switch (node) {
-                    XmlText(:final value) when value.trim().isNotEmpty && lastVerseNum != null => Verse(
-                      verseNum: lastVerseNum!,
-                      fragments: [VerseFragment(text: value.trim(), strongIds: const [])],
-                    ),
-                    XmlElement node when node.localName == 'verse' => () {
-                      lastVerseNum = int.parse(node.getAttribute('number')!);
-                      return null;
-                    }(),
-                    _ => null,
-                  },
-                )
-                .nonNulls
-                .toList();
-
             return Chapter(
               chapterNum: chapterIndex + 1,
               paragraphs: div.nextElementSiblings
                   .takeWhile((div) => div.localName != 'chapter')
-                  .map(
-                    (div) => switch (div.getAttribute('style')) {
+                  .fold(<Paragraph?>[], (paragraphs, div) {
+                    List<Verse> parseUsxVerses() => div.children
+                        .map(
+                          (node) => switch (node) {
+                            XmlText(:final value) when value.trim().isNotEmpty && lastVerseNum != null => Verse(
+                              verseNum: lastVerseNum!,
+                              fragments: [VerseFragment(text: value.trim(), strongIds: const [])],
+                            ),
+                            XmlElement node when node.localName == 'verse' => () {
+                              lastVerseNum = int.parse(node.getAttribute('number')!);
+                              return null;
+                            }(),
+                            _ => null,
+                          },
+                        )
+                        .nonNulls
+                        .withSameVersesCombined()
+                        .toList();
+
+                    VersesParagraph? versesParagraph(ParagraphType type) {
+                      final previousLastVerseNum = lastVerseNum;
+                      final verses = parseUsxVerses();
+                      if (verses.isEmpty) {
+                        return null;
+                      }
+
+                      return VersesParagraph(
+                        type: type,
+                        verses: verses,
+                        firstVerseOffset: verses.first.verseNum == previousLastVerseNum
+                            ? paragraphs
+                                  .whereType<VersesParagraph>()
+                                  .expand((para) => para.verses)
+                                  .where((verse) => verse.verseNum == verses.first.verseNum)
+                                  .map((verse) => verse.text.length)
+                                  .sum
+                            : 0,
+                      );
+                    }
+
+                    return paragraphs..add(switch (div.getAttribute('style')) {
                       's1' => SectionParagraph(type: .s1, text: div.innerText),
                       's2' => SectionParagraph(type: .s2, text: div.innerText),
-                      'p' || 'pmo' || 'pc' => VersesParagraph(type: .p, verses: parseUsxVerses(div)),
-                      'd' => VersesParagraph(type: .d, verses: parseUsxVerses(div)),
-                      'q1' => VersesParagraph(type: .q1, verses: parseUsxVerses(div)),
-                      'q2' => VersesParagraph(type: .q2, verses: parseUsxVerses(div)),
-                      'qr' => VersesParagraph(type: .qr, verses: parseUsxVerses(div)),
+                      'p' || 'pmo' || 'pc' => versesParagraph(.p),
+                      'd' => versesParagraph(.d),
+                      'q1' => versesParagraph(.q1),
+                      'q2' => versesParagraph(.q2),
+                      'qr' => versesParagraph(.qr),
+                      'li1' => versesParagraph(.li1),
+                      'li2' => versesParagraph(.li2),
                       'b' => BreakParagraph(),
-                      'li1' => VersesParagraph(type: .li1, verses: parseUsxVerses(div)),
-                      'li2' => VersesParagraph(type: .li2, verses: parseUsxVerses(div)),
                       _ => null,
-                    },
-                  )
+                    });
+                  })
                   .nonNulls
-                  .where((paragraph) => paragraph.isNotEmpty)
                   .toList(),
             );
           }).toList(),
@@ -166,5 +186,32 @@ extension on XmlElement {
       yield lastChild;
       lastChild = lastChild.nextElementSibling;
     }
+  }
+}
+
+extension on Iterable<Verse> {
+  Iterable<Verse> withSameVersesCombined() {
+    if (isEmpty) {
+      return this;
+    }
+
+    return fold<List<Verse>>(<Verse>[], (verses, verse) {
+      final lastVerse = verses.lastOrNull;
+      if (lastVerse == null) {
+        return verses..add(verse);
+      }
+
+      return lastVerse.verseNum == verse.verseNum
+          ? (verses
+              ..[verses.length - 1] = Verse(
+                verseNum: verse.verseNum,
+                fragments: [
+                  ...lastVerse.fragments,
+                  VerseFragment(text: ' ', strongIds: []),
+                  ...verse.fragments,
+                ],
+              ))
+          : (verses..add(verse));
+    });
   }
 }

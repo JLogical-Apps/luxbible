@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/bible/book_type.dart';
@@ -10,9 +12,12 @@ import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/selection.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/widgets/annotated_span.dart';
 import 'package:bible/ui/widgets/sized_widget_span.dart';
 import 'package:bible/ui/widgets/underline.dart';
+import 'package:bible/utils/extensions/color_extensions.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
+import 'package:bible/utils/extensions/rect_extensions.dart';
 import 'package:bible/utils/extensions/span_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:collection/collection.dart';
@@ -31,6 +36,8 @@ class ChapterBuilder extends ConsumerWidget {
   final Function(Reference)? onReferencePressed;
   final List<Reference> underlinedReferences;
 
+  final Selection? selection;
+
   final ObjectRef<Map<Reference, GlobalKey>>? keyByReferenceRef;
 
   const ChapterBuilder({
@@ -40,6 +47,7 @@ class ChapterBuilder extends ConsumerWidget {
     required this.bible,
     this.onReferencePressed,
     this.underlinedReferences = const [],
+    this.selection,
     this.keyByReferenceRef,
   });
 
@@ -52,31 +60,85 @@ class ChapterBuilder extends ConsumerWidget {
       crossAxisAlignment: .stretch,
       children: getParagraphSpansByParagraph(context, ref)
           .mapEntries(
-            (paragraph, paragraphSpan) => Padding(
+            (paragraph, paragraphSpans) => Padding(
               padding: paragraph.as<VersesParagraph>()?.type.padding ?? .zero,
               child: LayoutBuilder(
-                builder: (context, constraints) => GestureDetector(
-                  onTapUp: (details) {
-                    if (paragraph is! VersesParagraph) {
-                      return;
-                    }
+                builder: (context, constraints) => Stack(
+                  clipBehavior: .none,
+                  fit: .passthrough,
+                  children: [
+                    if (paragraph is VersesParagraph)
+                      ...paragraph.verses
+                          .map((verse) => getVerseReference(verse))
+                          .mapToMap(
+                            (reference) => MapEntry(
+                              reference,
+                              user.annotations.where(
+                                (annotation) => annotation.passages.any((passage) => passage.hasReference(reference)),
+                              ),
+                            ),
+                          )
+                          .where((reference, annotations) => annotations.isNotEmpty)
+                          .mapToIterable((reference, annotations) {
+                            final verseColor = annotations
+                                .map(
+                                  (annotation) => annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5),
+                                )
+                                .mixOrNull;
+                            final (base, extent) = getReferenceCharacterOffsets(
+                              reference: reference,
+                              paragraphSpans: paragraphSpans,
+                            );
+                            return paragraphSpans
+                                .getBoxesForSelection(
+                                  baseOffset: base,
+                                  extentOffset: extent,
+                                  width: constraints.maxWidth,
+                                  textAlign: paragraph.type.textAlign,
+                                )
+                                .map((box) => box.toRect())
+                                .withMergedLines()
+                                .map(
+                                  (box) => Positioned.fromRect(
+                                    rect: Rect.fromLTWH(box.left - 4, box.top, box.width + 4, min(32, box.height)),
+                                    child: IgnorePointer(
+                                      child: AnimatedContainer(
+                                        duration: Duration(milliseconds: 300),
+                                        curve: Curves.easeInOutCubic,
+                                        decoration: BoxDecoration(
+                                          borderRadius: .circular(4),
+                                          color: verseColor?.withValues(alpha: selection == null ? 0.5 : 0.2),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                          })
+                          .flattened,
+                    GestureDetector(
+                      onTapUp: (details) {
+                        if (paragraph is! VersesParagraph) {
+                          return;
+                        }
 
-                    final offset = paragraphSpan.getCharacterOffsetFromPosition(
-                      width: constraints.maxWidth,
-                      localPosition: details.localPosition,
-                      textAlign: paragraph.type.textAlign,
-                    );
+                        final offset = paragraphSpans.getCharacterOffsetFromPosition(
+                          width: constraints.maxWidth,
+                          localPosition: details.localPosition,
+                          textAlign: paragraph.type.textAlign,
+                        );
 
-                    final anchor = getOffsetAnchor(characterOffset: offset, paragraph: paragraph);
-                    if (anchor != null) {
-                      onReferencePressed?.call(anchor.toReference());
-                    }
-                  },
-                  child: Text.rich(
-                    TextSpan(children: paragraphSpan),
-                    style: TextStyle(fontStyle: paragraph.as<VersesParagraph>()?.type.fontStyle ?? .normal),
-                    textAlign: paragraph.as<VersesParagraph>()?.type.textAlign ?? .start,
-                  ),
+                        final anchor = getOffsetAnchor(characterOffset: offset, paragraph: paragraph);
+                        if (anchor != null) {
+                          onReferencePressed?.call(anchor.toReference());
+                        }
+                      },
+                      child: Text.rich(
+                        TextSpan(children: paragraphSpans),
+                        style: TextStyle(fontStyle: paragraph.as<VersesParagraph>()?.type.fontStyle ?? .normal),
+                        textAlign: paragraph.as<VersesParagraph>()?.type.textAlign ?? .start,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -85,7 +147,7 @@ class ChapterBuilder extends ConsumerWidget {
     );
   }
 
-  Reference getReferenceByVerse(Verse verse) => chapterReference.getReference(verse.verseNum);
+  Reference getVerseReference(Verse verse) => chapterReference.getReference(verse.verseNum);
 
   List<MapEntry<Paragraph, List<InlineSpan>>> getParagraphSpansByParagraph(BuildContext context, WidgetRef ref) {
     var maxPreviousVerseNum = 0;
@@ -105,7 +167,7 @@ class ChapterBuilder extends ConsumerWidget {
             SizedWidgetSpan.space(size: Size(type.indent, 0)),
             ...verses
                 .mapIndexed((verseIndex, verse) {
-                  final reference = getReferenceByVerse(verse);
+                  final reference = getVerseReference(verse);
 
                   final passageAnnotations = user.getPassageAnnotations(Passage.reference(reference));
                   final passageAnnotationsWithNote = passageAnnotations
@@ -118,7 +180,8 @@ class ChapterBuilder extends ConsumerWidget {
 
                   final spans = [
                     if (verse.verseNum > maxPreviousVerseNum) ...[
-                      SizedWidgetSpan(
+                      AnnotatedSizedWidgetSpan<Reference>(
+                        annotation: reference,
                         size: Size(
                           context.textStyle.bibleVerseNumber.getWidth(verse.verseNum.toString()) + 6,
                           context.textStyle.bibleBody.fontSize!,
@@ -138,12 +201,14 @@ class ChapterBuilder extends ConsumerWidget {
                         notesButtonSpan(
                           context,
                           ref,
+                          reference: reference,
                           annotations: passageAnnotationsWithNote,
                           isUnderlined: underlinedReferences.contains(reference),
                           bible: bible,
                         ),
                     ],
-                    TextSpan(
+                    AnnotatedTextSpan<Reference>(
+                      annotation: reference,
                       text: verse.text,
                       style: context.textStyle.bibleBody.copyWith(
                         decoration: underlinedReferences.contains(reference) ? .underline : null,
@@ -168,7 +233,7 @@ class ChapterBuilder extends ConsumerWidget {
       final referenceLength = verse.text.length;
       if (characterOffset < offsetCount + referenceLength) {
         return SelectionWordAnchor.fromReference(
-          reference: getReferenceByVerse(verse),
+          reference: getVerseReference(verse),
           characterOffset: (characterOffset - offsetCount).clampZero,
         );
       }
@@ -181,12 +246,14 @@ class ChapterBuilder extends ConsumerWidget {
   WidgetSpan notesButtonSpan(
     BuildContext context,
     WidgetRef ref, {
+    required Reference reference,
     required List<Annotation> annotations,
     required bool isUnderlined,
     Color? color,
     required Bible bible,
   }) {
-    return SizedWidgetSpan(
+    return AnnotatedSizedWidgetSpan<Reference>(
+      annotation: reference,
       size: Size(30, context.textStyle.bibleBody.fontSize!),
       alignment: .middle,
       child: OverflowBox(
@@ -222,5 +289,22 @@ class ChapterBuilder extends ConsumerWidget {
         ),
       ),
     );
+  }
+
+  (int, int) getReferenceCharacterOffsets({required Reference reference, required List<InlineSpan> paragraphSpans}) {
+    var cursor = 0;
+    final matches = paragraphSpans
+        .map((span) {
+          final start = cursor;
+          final length = (span is TextSpan) ? span.text!.length : 1;
+          cursor += length;
+          return (span: span, start: start, end: start + length);
+        })
+        .where(
+          (e) => e.span is IsAnnotatedSpan<Reference> && (e.span as IsAnnotatedSpan<Reference>).annotation == reference,
+        )
+        .toList();
+
+    return matches.isEmpty ? (0, 0) : (matches.first.start, matches.last.end);
   }
 }

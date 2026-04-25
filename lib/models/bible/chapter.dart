@@ -11,7 +11,7 @@ class Chapter {
 
   factory Chapter.verses({required int chapterNum, required List<Verse> verses}) => Chapter(
     chapterNum: chapterNum,
-    paragraphs: verses.map((verse) => VersesParagraph(verses: [verse], type: .p)).toList(),
+    paragraphs: verses.map((verse) => VersesParagraph(verses: [verse], type: .p, firstVerseOffset: 0)).toList(),
   );
 
   Map<int, Verse> get verses => paragraphs

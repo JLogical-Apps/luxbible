@@ -89,5 +89,5 @@ extension ListSpanExtensions on List<InlineSpan> {
               .map((span) => PlaceholderDimensions(size: span.size, alignment: .middle))
               .toList(),
         )
-        ..layout(maxWidth: width);
+        ..layout(maxWidth: width, minWidth: width);
 }

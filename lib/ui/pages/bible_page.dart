@@ -155,6 +155,7 @@ class BiblePage extends HookConsumerWidget {
                                       );
                                     }
                                   },
+                                  selection: selectionState.value,
                                   keyByReferenceRef: keyByReferenceRef,
                                 ),
                                 gapH16,

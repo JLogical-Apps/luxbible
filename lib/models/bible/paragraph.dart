@@ -3,9 +3,6 @@ import 'package:flutter/cupertino.dart';
 
 sealed class Paragraph {
   const Paragraph();
-
-  bool get isEmpty => false;
-  bool get isNotEmpty => !isEmpty;
 }
 
 class SectionParagraph extends Paragraph {
@@ -17,12 +14,10 @@ class SectionParagraph extends Paragraph {
 
 class VersesParagraph extends Paragraph {
   final List<Verse> verses;
+  final int firstVerseOffset;
   final ParagraphType type;
 
-  const VersesParagraph({required this.verses, required this.type});
-
-  @override
-  bool get isEmpty => verses.isEmpty;
+  const VersesParagraph({required this.verses, required this.firstVerseOffset, required this.type});
 }
 
 class BreakParagraph extends Paragraph {
