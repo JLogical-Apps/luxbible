@@ -7,4 +7,6 @@ class SizedWidgetSpan extends WidgetSpan {
     : super(
         child: SizedBox.fromSize(size: size, child: child),
       );
+
+  SizedWidgetSpan.space({required this.size, super.alignment}) : super(child: SizedBox.fromSize(size: size));
 }

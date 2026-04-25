@@ -22,8 +22,12 @@ extension TextSpanExtensions on TextSpan {
 }
 
 extension ListSpanExtensions on List<InlineSpan> {
-  int getCharacterOffsetFromPosition({required Offset localPosition, required double width}) {
-    var initialOffset = _getTextPainter(width: width).getPositionForOffset(localPosition).offset - 1;
+  int getCharacterOffsetFromPosition({
+    required Offset localPosition,
+    required double width,
+    required TextAlign textAlign,
+  }) {
+    var initialOffset = _getTextPainter(width: width, textAlign: textAlign).getPositionForOffset(localPosition).offset;
     // Account for WidgetSpans in selection
     var accountedLength = 0;
     for (final span in this) {
@@ -64,16 +68,21 @@ extension ListSpanExtensions on List<InlineSpan> {
     return textOffset + numWidgetSpans;
   }
 
-  List<TextBox> getBoxesForSelection({required int baseOffset, required int extentOffset, required double width}) =>
-      _getTextPainter(width: width).getBoxesForSelection(
-        TextSelection(baseOffset: baseOffset, extentOffset: extentOffset),
-        boxHeightStyle: BoxHeightStyle.max,
-      );
+  List<TextBox> getBoxesForSelection({
+    required int baseOffset,
+    required int extentOffset,
+    required double width,
+    required TextAlign textAlign,
+  }) => _getTextPainter(width: width, textAlign: textAlign).getBoxesForSelection(
+    TextSelection(baseOffset: baseOffset, extentOffset: extentOffset),
+    boxHeightStyle: BoxHeightStyle.max,
+  );
 
-  TextPainter _getTextPainter({required double width}) =>
+  TextPainter _getTextPainter({required double width, required TextAlign textAlign}) =>
       TextPainter(
           text: TextSpan(children: this),
           textDirection: .ltr,
+          textAlign: textAlign,
         )
         ..setPlaceholderDimensions(
           whereType<SizedWidgetSpan>()

@@ -1,81 +1,149 @@
+import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bible/chapter.dart';
 import 'package:bible/models/bible/paragraph.dart';
+import 'package:bible/models/bible/verse.dart';
+import 'package:bible/models/reference/reference.dart';
+import 'package:bible/models/reference/selection.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/text_style_extensions.dart';
 import 'package:bible/ui/widgets/sized_widget_span.dart';
-import 'package:bible/utils/extensions/object_extensions.dart';
+import 'package:bible/utils/extensions/num_extensions.dart';
+import 'package:bible/utils/extensions/span_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intersperse/intersperse.dart';
+import 'package:utils_core/utils_core.dart';
 
 class ChapterBuilder extends ConsumerWidget {
+  final BookType book;
   final Chapter chapter;
 
-  const ChapterBuilder({super.key, required this.chapter});
+  final Function(Reference)? onReferencePressed;
+  final List<Reference> underlinedReferences;
+
+  final ObjectRef<Map<Reference, GlobalKey>>? keyByReferenceRef;
+
+  const ChapterBuilder({
+    super.key,
+    required this.book,
+    required this.chapter,
+    this.onReferencePressed,
+    this.underlinedReferences = const [],
+    this.keyByReferenceRef,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var maxPreviousVerseNum = 0;
-    return Text.rich(
-      TextSpan(
-        children: chapter.paragraphs.expandIndexed((paragraphIndex, paragraph) {
-          final previousParagraph = paragraphIndex == 0
-              ? null
-              : chapter.paragraphs[paragraphIndex - 1].as<VersesParagraph>();
-          final children = [
-            if (previousParagraph?.type.isPoetic == true && paragraph is VersesParagraph && !paragraph.type.isPoetic)
-              TextSpan(text: '\n', style: TextStyle(fontSize: 24, height: 1)),
-            ...switch (paragraph) {
-              SectionParagraph(:final text) => [
-                if (paragraphIndex != 0) TextSpan(text: '\n', style: TextStyle(fontSize: 24, height: 1)),
-                TextSpan(text: '$text\n', style: context.textStyle.bibleSection),
-                TextSpan(text: '\n', style: TextStyle(fontSize: 12, height: 1)),
-              ],
-              VersesParagraph(:final verses, :final type) => [
-                SizedWidgetSpan(
-                  child: SizedBox.shrink(),
-                  size: Size(switch (type) {
-                    .q1 || .q2 => 0,
-                    _ => 20,
-                  }, 0),
+    return Column(
+      crossAxisAlignment: .stretch,
+      children: getParagraphSpansByParagraph(context)
+          .mapEntries(
+            (paragraph, paragraphSpan) => Padding(
+              padding: paragraph.as<VersesParagraph>()?.type.padding ?? .zero,
+              child: LayoutBuilder(
+                builder: (context, constraints) => GestureDetector(
+                  onTapUp: (details) {
+                    if (paragraph is! VersesParagraph) {
+                      return;
+                    }
+
+                    final offset = paragraphSpan.getCharacterOffsetFromPosition(
+                      width: constraints.maxWidth,
+                      localPosition: details.localPosition,
+                      textAlign: paragraph.type.textAlign,
+                    );
+
+                    final anchor = getOffsetAnchor(characterOffset: offset, paragraph: paragraph);
+                    if (anchor != null) {
+                      onReferencePressed?.call(anchor.toReference());
+                    }
+                  },
+                  child: Text.rich(
+                    TextSpan(children: paragraphSpan),
+                    style: TextStyle(fontStyle: paragraph.as<VersesParagraph>()?.type.fontStyle ?? .normal),
+                    textAlign: paragraph.as<VersesParagraph>()?.type.textAlign ?? .start,
+                  ),
                 ),
-                ...verses
-                    .mapIndexed(
-                      (verseIndex, verse) => [
-                        if (verses.take(verseIndex).none((v) => v.verseNum == verse.verseNum) &&
-                            verse.verseNum > maxPreviousVerseNum)
-                          SizedWidgetSpan(
-                            size: Size(
-                              context.textStyle.bibleVerseNumber.getWidth(verse.verseNum.toString()) + 6,
-                              context.textStyle.bibleBody.fontSize!,
-                            ),
-                            alignment: .middle,
-                            child: Padding(
-                              padding: .only(right: 6),
-                              child: Text(verse.verseNum.toString(), style: context.textStyle.bibleVerseNumber),
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  Reference getReferenceByVerse(Verse verse) =>
+      Reference(book: book, chapterNum: chapter.chapterNum, verseNum: verse.verseNum);
+
+  List<MapEntry<Paragraph, List<InlineSpan>>> getParagraphSpansByParagraph(BuildContext context) {
+    var maxPreviousVerseNum = 0;
+    return chapter.paragraphs.mapIndexed((paragraphIndex, paragraph) {
+      final previousParagraph = paragraphIndex == 0
+          ? null
+          : chapter.paragraphs[paragraphIndex - 1].as<VersesParagraph>();
+      return MapEntry(paragraph, [
+        if (previousParagraph?.type.isPoetic == true && paragraph is VersesParagraph && !paragraph.type.isPoetic)
+          TextSpan(text: '\n', style: context.textStyle.bibleBody.copyWith(height: 1.5)),
+        ...switch (paragraph) {
+          SectionParagraph(:final text) => [
+            if (paragraphIndex != 0) TextSpan(text: '\n', style: context.textStyle.bibleBody.copyWith(height: 1.5)),
+            TextSpan(text: text, style: context.textStyle.bibleSection),
+          ],
+          VersesParagraph(:final verses, :final type) => [
+            SizedWidgetSpan.space(size: Size(type.indent, 0)),
+            ...verses
+                .mapIndexed((verseIndex, verse) {
+                  final spans = [
+                    if (verse.verseNum > maxPreviousVerseNum)
+                      SizedWidgetSpan(
+                        size: Size(
+                          context.textStyle.bibleVerseNumber.getWidth(verse.verseNum.toString()) + 6,
+                          context.textStyle.bibleBody.fontSize!,
+                        ),
+                        alignment: .middle,
+                        child: Padding(
+                          padding: .only(right: 6),
+                          child: Text(
+                            verse.verseNum.toString(),
+                            style: context.textStyle.bibleVerseNumber.copyWith(
+                              decoration: underlinedReferences.contains(getReferenceByVerse(verse)) ? .underline : null,
                             ),
                           ),
-                        TextSpan(text: verse.text, style: TextStyle()),
-                      ],
-                    )
-                    .intersperse([TextSpan(text: ' ')])
-                    .flattenedToList,
-                TextSpan(text: ' \n'),
-              ],
-              BreakParagraph() => [TextSpan(text: '\n', style: TextStyle(fontSize: 24, height: 1))],
-            },
-          ];
+                        ),
+                      ),
+                    TextSpan(
+                      text: verse.text,
+                      style: context.textStyle.bibleBody.copyWith(
+                        decoration: underlinedReferences.contains(getReferenceByVerse(verse)) ? .underline : null,
+                      ),
+                    ),
+                  ];
+                  maxPreviousVerseNum = verse.verseNum;
+                  return spans;
+                })
+                .intersperse([TextSpan(text: ' ', style: context.textStyle.bibleBody)])
+                .flattenedToList,
+          ],
+          BreakParagraph() => [TextSpan(text: '\n', style: context.textStyle.bibleBody.copyWith(height: 0.75))],
+        },
+      ]);
+    }).toList();
+  }
 
-          maxPreviousVerseNum = [
-            maxPreviousVerseNum,
-            if (paragraph is VersesParagraph) paragraph.verses.last.verseNum,
-          ].max;
+  SelectionWordAnchor? getOffsetAnchor({required int characterOffset, required VersesParagraph paragraph}) {
+    var offsetCount = 0;
+    for (final verse in paragraph.verses) {
+      final referenceLength = verse.text.length;
+      if (characterOffset < offsetCount + referenceLength) {
+        return SelectionWordAnchor.fromReference(
+          reference: getReferenceByVerse(verse),
+          characterOffset: (characterOffset - offsetCount).clampZero,
+        );
+      }
 
-          return children;
-        }).toList(),
-      ),
-      style: context.textStyle.bibleBody,
-    );
+      offsetCount += referenceLength + 1;
+    }
+    return null;
   }
 }

@@ -95,7 +95,7 @@ class VersesBuilder extends HookConsumerWidget {
             child: Text(
               reference.verseNum.toString(),
               style: context.textStyle.bibleVerseNumber.copyWith(
-                decoration: underlinedReferences.contains(reference) ? TextDecoration.underline : null,
+                decoration: underlinedReferences.contains(reference) ? .underline : null,
               ),
             ),
           ),
@@ -159,7 +159,12 @@ class VersesBuilder extends HookConsumerWidget {
                   spansByReference: spansByReference,
                 );
                 return spans
-                    .getBoxesForSelection(baseOffset: base, extentOffset: extent, width: constraints.maxWidth)
+                    .getBoxesForSelection(
+                      baseOffset: base,
+                      extentOffset: extent,
+                      width: constraints.maxWidth,
+                      textAlign: .start,
+                    )
                     .map((box) => box.toRect())
                     .withMergedLines()
                     .map(
@@ -186,7 +191,12 @@ class VersesBuilder extends HookConsumerWidget {
               spansByReference: spansByReference,
             );
             return spans
-                .getBoxesForSelection(baseOffset: base, extentOffset: extent, width: constraints.maxWidth)
+                .getBoxesForSelection(
+                  baseOffset: base,
+                  extentOffset: extent,
+                  width: constraints.maxWidth,
+                  textAlign: .start,
+                )
                 .map((box) => box.toRect())
                 .withMergedLines()
                 .map(
@@ -215,7 +225,12 @@ class VersesBuilder extends HookConsumerWidget {
                 spansByReference: spansByReference,
               );
               return spans
-                  .getBoxesForSelection(baseOffset: base, extentOffset: extent, width: constraints.maxWidth)
+                  .getBoxesForSelection(
+                    baseOffset: base,
+                    extentOffset: extent,
+                    width: constraints.maxWidth,
+                    textAlign: .start,
+                  )
                   .map((box) => box.toRect())
                   .withMergedLines()
                   .map(
@@ -240,6 +255,7 @@ class VersesBuilder extends HookConsumerWidget {
               final offset = spans.getCharacterOffsetFromPosition(
                 width: constraints.maxWidth,
                 localPosition: renderBox.globalToLocal(details.globalPosition),
+                textAlign: .start,
               );
 
               final anchor = getOffsetAnchor(characterOffset: offset, bible: bible);
@@ -258,6 +274,7 @@ class VersesBuilder extends HookConsumerWidget {
               final offset = spans.getCharacterOffsetFromPosition(
                 width: constraints.maxWidth,
                 localPosition: renderBox.globalToLocal(details.globalPosition),
+                textAlign: .start,
               );
 
               final anchor = getOffsetAnchor(characterOffset: offset, bible: bible);
@@ -277,6 +294,7 @@ class VersesBuilder extends HookConsumerWidget {
               final offset = spans.getCharacterOffsetFromPosition(
                 width: constraints.maxWidth,
                 localPosition: renderBox.globalToLocal(details.globalPosition),
+                textAlign: .start,
               );
 
               final anchor = getOffsetAnchor(characterOffset: offset, bible: bible);

@@ -1,7 +1,11 @@
 import 'package:bible/models/bible/verse.dart';
+import 'package:flutter/cupertino.dart';
 
 sealed class Paragraph {
   const Paragraph();
+
+  bool get isEmpty => false;
+  bool get isNotEmpty => !isEmpty;
 }
 
 class SectionParagraph extends Paragraph {
@@ -16,6 +20,9 @@ class VersesParagraph extends Paragraph {
   final ParagraphType type;
 
   const VersesParagraph({required this.verses, required this.type});
+
+  @override
+  bool get isEmpty => verses.isEmpty;
 }
 
 class BreakParagraph extends Paragraph {
@@ -30,11 +37,26 @@ enum SectionType { s1, s2 }
 
 enum ParagraphType {
   p,
+  d,
   q1,
   q2,
   qr,
   li1,
   li2;
 
-  bool get isPoetic => this == q1 || this == q2;
+  bool get isPoetic => this == q1 || this == q2 || this == qr;
+
+  FontStyle get fontStyle => this == d ? .italic : .normal;
+  TextAlign get textAlign => this == qr ? .end : .start;
+
+  double get indent => switch (this) {
+    q1 || li1 => 0,
+    _ => 20,
+  };
+
+  EdgeInsets get padding => switch (this) {
+    li1 => .symmetric(horizontal: 16),
+    li2 => .symmetric(horizontal: 24),
+    _ => .zero,
+  };
 }

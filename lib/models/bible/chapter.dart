@@ -4,11 +4,13 @@ import 'package:collection/collection.dart';
 import 'package:utils_core/utils_core.dart';
 
 class Chapter {
+  final int chapterNum;
   final List<Paragraph> paragraphs;
 
-  const Chapter({required this.paragraphs});
+  const Chapter({required this.chapterNum, required this.paragraphs});
 
-  factory Chapter.verses({required List<Verse> verses}) => Chapter(
+  factory Chapter.verses({required int chapterNum, required List<Verse> verses}) => Chapter(
+    chapterNum: chapterNum,
     paragraphs: verses.map((verse) => VersesParagraph(verses: [verse], type: .p)).toList(),
   );
 

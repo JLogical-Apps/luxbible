@@ -30,14 +30,14 @@ class BibleImporter {
 
         return Book(
           bookType: type,
-          chapters: doc.findAllElements('chapter').map((div) {
-            var lastVerseNum = 1;
+          chapters: doc.findAllElements('chapter').mapIndexed((chapterIndex, div) {
+            int? lastVerseNum;
 
             List<Verse> parseUsxVerses(XmlElement element) => element.children
                 .map(
                   (node) => switch (node) {
-                    XmlText(:final value) when value.trim().isNotEmpty => Verse(
-                      verseNum: lastVerseNum,
+                    XmlText(:final value) when value.trim().isNotEmpty && lastVerseNum != null => Verse(
+                      verseNum: lastVerseNum!,
                       fragments: [VerseFragment(text: value.trim(), strongIds: const [])],
                     ),
                     XmlElement node when node.localName == 'verse' => () {
@@ -51,13 +51,15 @@ class BibleImporter {
                 .toList();
 
             return Chapter(
+              chapterNum: chapterIndex + 1,
               paragraphs: div.nextElementSiblings
                   .takeWhile((div) => div.localName != 'chapter')
                   .map(
                     (div) => switch (div.getAttribute('style')) {
                       's1' => SectionParagraph(type: .s1, text: div.innerText),
                       's2' => SectionParagraph(type: .s2, text: div.innerText),
-                      'p' || 'pmo' || 'pc' || 'd' => VersesParagraph(type: .p, verses: parseUsxVerses(div)),
+                      'p' || 'pmo' || 'pc' => VersesParagraph(type: .p, verses: parseUsxVerses(div)),
+                      'd' => VersesParagraph(type: .d, verses: parseUsxVerses(div)),
                       'q1' => VersesParagraph(type: .q1, verses: parseUsxVerses(div)),
                       'q2' => VersesParagraph(type: .q2, verses: parseUsxVerses(div)),
                       'qr' => VersesParagraph(type: .qr, verses: parseUsxVerses(div)),
@@ -68,6 +70,7 @@ class BibleImporter {
                     },
                   )
                   .nonNulls
+                  .where((paragraph) => paragraph.isNotEmpty)
                   .toList(),
             );
           }).toList(),
@@ -102,6 +105,7 @@ class BibleImporter {
                   .groupListsBy((verse) => verse.chapterNum)
                   .mapToIterable(
                     (chapter, verses) => Chapter.verses(
+                      chapterNum: chapter,
                       verses: verses.map((verse) => parseVerse(verseNum: verse.verseNum, raw: verse.text)).toList(),
                     ),
                   )
