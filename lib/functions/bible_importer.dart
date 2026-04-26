@@ -73,8 +73,7 @@ class BibleImporter {
                         firstVerseOffset: verses.first.verseNum == previousLastVerseNum
                             ? otherParagraphsWithVerse.map((verse) => verse.text.length).sum +
                                   // Account for spaces between paragraphs
-                                  otherParagraphsWithVerse.length -
-                                  1
+                                  otherParagraphsWithVerse.length
                             : 0,
                       );
                     }

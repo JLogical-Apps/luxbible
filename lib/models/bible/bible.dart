@@ -26,7 +26,6 @@ class Bible {
       .toList();
 
   late final List<Reference> references = chapterReferences.expand((chapter) => chapter.references).toList();
-  late final List<Verse> verses = references.map((reference) => getVerseByReference(reference)).nonNulls.toList();
 
   late final Map<Reference, Verse> _verseByReference = references
       .mapToMap(

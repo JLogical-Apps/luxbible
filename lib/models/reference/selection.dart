@@ -80,4 +80,14 @@ class SelectionWordAnchor extends Equatable with ComparableOperators<SelectionWo
       chapterNum.compareTo(other.chapterNum).nullIfZero ??
       verseNum.compareTo(other.verseNum).nullIfZero ??
       characterOffset.compareTo(other.characterOffset);
+
+  SelectionWordAnchor withCharactersAdded(int characters) => copyWith(characterOffset: characterOffset + characters);
+
+  SelectionWordAnchor copyWith({BookType? book, int? chapterNum, int? verseNum, int? characterOffset}) =>
+      SelectionWordAnchor(
+        book: book ?? this.book,
+        chapterNum: chapterNum ?? this.chapterNum,
+        verseNum: verseNum ?? this.verseNum,
+        characterOffset: characterOffset ?? this.characterOffset,
+      );
 }

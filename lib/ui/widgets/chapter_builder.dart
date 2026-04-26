@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/bible/bible.dart';
+import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bible/chapter.dart';
 import 'package:bible/models/bible/paragraph.dart';
@@ -59,234 +60,234 @@ class ChapterBuilder extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectionStartAnchorState = useState<SelectionWordAnchor?>(null);
-    return Column(
-      crossAxisAlignment: .stretch,
-      children: getParagraphSpansByParagraph(context, ref)
-          .mapEntries(
-            (paragraph, paragraphSpans) => Padding(
-              padding: paragraph.as<VersesParagraph>()?.type.padding ?? .zero,
-              child: LayoutBuilder(
-                builder: (context, constraints) => Stack(
-                  clipBehavior: .none,
-                  fit: .passthrough,
-                  children: [
-                    if (paragraph is VersesParagraph) ...[
-                      ...paragraph.verses
-                          .map((verse) => getVerseReference(verse))
-                          .mapToMap(
-                            (reference) => MapEntry(
-                              reference,
-                              user.annotations.where(
-                                (annotation) => annotation.passages.any((passage) => passage.hasReference(reference)),
-                              ),
+
+    final paragraphHitTesters = <ParagraphHitTester>[];
+
+    SelectionWordAnchor? getAnchorAtGlobalPosition(Offset globalPosition) =>
+        paragraphHitTesters.map((tester) => tester.getAnchorAt(globalPosition)).nonNulls.firstOrNull;
+
+    return GestureDetector(
+      onLongPressStart: (details) {
+        final anchor = getAnchorAtGlobalPosition(details.globalPosition);
+        if (anchor == null) return;
+
+        final wordSelection = bible.getWordsSelection(
+          Selection.character(anchor: anchor, translation: bible.translation),
+        );
+        onSelectionUpdated?.call(wordSelection, true);
+        selectionStartAnchorState.value = anchor;
+      },
+      onLongPressMoveUpdate: (details) {
+        final startAnchor = selectionStartAnchorState.value;
+        if (startAnchor == null) return;
+
+        final anchor = getAnchorAtGlobalPosition(details.globalPosition);
+        if (anchor == null) return;
+
+        final anchors = [startAnchor, anchor]..sort();
+        final wordsSelection = bible.getWordsSelection(
+          Selection(start: anchors.first, end: anchors.last, translation: bible.translation),
+        );
+        onSelectionUpdated?.call(wordsSelection, false);
+      },
+      onLongPressEnd: (_) => selectionStartAnchorState.value = null,
+      onTapUp: (details) {
+        final anchor = getAnchorAtGlobalPosition(details.globalPosition);
+        if (anchor != null) {
+          onReferencePressed?.call(anchor.toReference());
+        } else {
+          onSelectionUpdated?.call(null, true);
+        }
+      },
+      child: Column(
+        crossAxisAlignment: .stretch,
+        children: getParagraphSpansByParagraph(context, ref)
+            .mapEntries(
+              (paragraph, paragraphSpans) => Padding(
+                padding: paragraph.as<VersesParagraph>()?.type.padding ?? .zero,
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final textKey = GlobalKey();
+
+                    if (paragraph is VersesParagraph) {
+                      paragraphHitTesters.add(
+                        ParagraphHitTester(
+                          textKey: textKey,
+                          resolve: (localPosition) => getOffsetAnchor(
+                            characterOffset: paragraphSpans.getCharacterOffsetFromPosition(
+                              width: constraints.maxWidth,
+                              localPosition: localPosition,
+                              textAlign: paragraph.type.textAlign,
                             ),
-                          )
-                          .where((reference, annotations) => annotations.isNotEmpty)
-                          .mapToIterable((reference, annotations) {
-                            final verseColor = annotations
-                                .map(
-                                  (annotation) => annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5),
-                                )
-                                .mixOrNull;
+                            paragraph: paragraph,
+                          ),
+                        ),
+                      );
+                    }
 
-                            final (base, extent) =
-                                getReferenceCharacterOffsets(reference: reference, paragraphSpans: paragraphSpans) ??
-                                (null, null);
-                            if (base == null || extent == null) {
-                              return null;
-                            }
-
-                            return paragraphSpans
-                                .getBoxesForSelection(
-                                  baseOffset: base,
-                                  extentOffset: extent,
-                                  width: constraints.maxWidth,
-                                  textAlign: paragraph.type.textAlign,
-                                )
-                                .map((box) => box.toRect())
-                                .withMergedLines()
-                                .map(
-                                  (box) => Positioned.fromRect(
-                                    rect: Rect.fromLTWH(box.left - 1, box.top + 2, box.width + 4, min(32, box.height)),
-                                    child: IgnorePointer(
-                                      child: AnimatedContainer(
-                                        duration: Duration(milliseconds: 300),
-                                        curve: Curves.easeInOutCubic,
-                                        decoration: BoxDecoration(
-                                          borderRadius: .circular(4),
-                                          color: verseColor?.withValues(alpha: selection == null ? 0.5 : 0.2),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                          })
-                          .nonNulls
-                          .flattened,
-                      ...user
-                          .getSelectionAnnotationsInPassage(
-                            chapterReference.toPassage(),
-                            translation: bible.translation,
-                          )
-                          .map((record) {
-                            final (annotation, selection) = record;
-                            final (base, extent) =
-                                getSelectionCharacterOffsets(
-                                  selection: selection,
-                                  paragraph: paragraph,
-                                  paragraphSpans: paragraphSpans,
-                                ) ??
-                                (null, null);
-                            if (base == null || extent == null) {
-                              return null;
-                            }
-
-                            return paragraphSpans
-                                .getBoxesForSelection(
-                                  baseOffset: base,
-                                  extentOffset: extent,
-                                  width: constraints.maxWidth,
-                                  textAlign: paragraph.type.textAlign,
-                                )
-                                .map((box) => box.toRect())
-                                .withMergedLines()
-                                .map(
-                                  (box) => Positioned.fromRect(
-                                    rect: Rect.fromLTWH(box.left, box.top + 4, box.width + 2, min(28, box.height)),
-                                    child: IgnorePointer(
-                                      child: AnimatedContainer(
-                                        duration: Duration(milliseconds: 300),
-                                        curve: Curves.easeInOutCubic,
-                                        decoration: BoxDecoration(
-                                          borderRadius: .circular(4),
-                                          color: annotation.color
-                                              .toHue(context.colors)
-                                              .primary
-                                              .withValues(alpha: underlinedReferences.isEmpty ? 0.5 : 0.2),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                );
-                          })
-                          .nonNulls
-                          .flattened,
-                      if (selection case final selection?)
-                        ...?() {
-                          final (base, extent) =
-                              getSelectionCharacterOffsets(
-                                selection: selection,
-                                paragraph: paragraph,
-                                paragraphSpans: paragraphSpans,
-                              ) ??
-                              (null, null);
-                          if (base == null || extent == null) {
-                            return null;
-                          }
-
-                          return paragraphSpans
-                              .getBoxesForSelection(
-                                baseOffset: base,
-                                extentOffset: extent,
-                                width: constraints.maxWidth,
-                                textAlign: paragraph.type.textAlign,
-                              )
-                              .map((box) => box.toRect())
-                              .withMergedLines()
-                              .map(
-                                (box) => Positioned.fromRect(
-                                  rect: Rect.fromLTWH(box.left, box.top + 4, box.width + 2, min(28, box.height)),
-                                  child: IgnorePointer(
-                                    child: AnimatedContainer(
-                                      duration: Duration(milliseconds: 300),
-                                      curve: Curves.easeInOutCubic,
-                                      decoration: BoxDecoration(
-                                        borderRadius: .circular(4),
-                                        color: context.colors.contentPrimary.withValues(alpha: 0.2),
-                                      ),
-                                    ),
+                    return Stack(
+                      clipBehavior: .none,
+                      fit: .passthrough,
+                      children: [
+                        if (paragraph is VersesParagraph) ...[
+                          ...paragraph.verses
+                              .map((verse) => getVerseReference(verse))
+                              .mapToMap(
+                                (reference) => MapEntry(
+                                  reference,
+                                  user.annotations.where(
+                                    (annotation) =>
+                                        annotation.passages.any((passage) => passage.hasReference(reference)),
                                   ),
                                 ),
-                              );
-                        }(),
-                    ],
-                    GestureDetector(
-                      onLongPressStart: (details) {
-                        if (paragraph is! VersesParagraph) {
-                          return;
-                        }
+                              )
+                              .where((reference, annotations) => annotations.isNotEmpty)
+                              .mapToIterable((reference, annotations) {
+                                final verseColor = annotations
+                                    .map(
+                                      (annotation) =>
+                                          annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5),
+                                    )
+                                    .mixOrNull;
 
-                        final offset = paragraphSpans.getCharacterOffsetFromPosition(
-                          width: constraints.maxWidth,
-                          localPosition: details.localPosition,
-                          textAlign: paragraph.type.textAlign,
-                        );
+                                final (base, extent) =
+                                    paragraphSpans.getReferenceCharacterOffsets(reference: reference, bible: bible) ??
+                                    (null, null);
+                                if (base == null || extent == null) {
+                                  return null;
+                                }
 
-                        final anchor = getOffsetAnchor(characterOffset: offset, paragraph: paragraph);
-                        if (anchor == null) {
-                          return;
-                        }
+                                return paragraphSpans
+                                    .getBoxesForSelection(
+                                      baseOffset: base,
+                                      extentOffset: extent,
+                                      width: constraints.maxWidth,
+                                      textAlign: paragraph.type.textAlign,
+                                    )
+                                    .map((box) => box.toRect())
+                                    .withMergedLines()
+                                    .map(
+                                      (box) => Positioned.fromRect(
+                                        rect: Rect.fromLTWH(
+                                          box.left - 1,
+                                          box.top + 2,
+                                          box.width + 4,
+                                          min(32, box.height),
+                                        ),
+                                        child: IgnorePointer(
+                                          child: AnimatedContainer(
+                                            duration: Duration(milliseconds: 300),
+                                            curve: Curves.easeInOutCubic,
+                                            decoration: BoxDecoration(
+                                              borderRadius: .circular(4),
+                                              color: verseColor?.withValues(alpha: selection == null ? 0.5 : 0.2),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                              })
+                              .nonNulls
+                              .flattened,
+                          ...user
+                              .getSelectionAnnotationsInPassage(
+                                chapterReference.toPassage(),
+                                translation: bible.translation,
+                              )
+                              .map((record) {
+                                final (annotation, selection) = record;
+                                final (base, extent) =
+                                    paragraphSpans.getSelectionCharacterOffsets(
+                                      selection: selection,
+                                      translation: bible.translation,
+                                    ) ??
+                                    (null, null);
+                                if (base == null || extent == null) {
+                                  return null;
+                                }
 
-                        final wordSelection = bible.getWordsSelection(
-                          Selection.character(anchor: anchor, translation: bible.translation),
-                        );
-                        onSelectionUpdated?.call(wordSelection, true);
-                        selectionStartAnchorState.value = anchor;
-                      },
-                      onLongPressMoveUpdate: (details) {
-                        if (paragraph is! VersesParagraph || selectionStartAnchorState.value == null) {
-                          return;
-                        }
+                                return paragraphSpans
+                                    .getBoxesForSelection(
+                                      baseOffset: base,
+                                      extentOffset: extent,
+                                      width: constraints.maxWidth,
+                                      textAlign: paragraph.type.textAlign,
+                                    )
+                                    .map((box) => box.toRect())
+                                    .withMergedLines()
+                                    .map(
+                                      (box) => Positioned.fromRect(
+                                        rect: Rect.fromLTWH(box.left, box.top + 4, box.width + 2, min(28, box.height)),
+                                        child: IgnorePointer(
+                                          child: AnimatedContainer(
+                                            duration: Duration(milliseconds: 300),
+                                            curve: Curves.easeInOutCubic,
+                                            decoration: BoxDecoration(
+                                              borderRadius: .circular(4),
+                                              color: annotation.color
+                                                  .toHue(context.colors)
+                                                  .primary
+                                                  .withValues(alpha: underlinedReferences.isEmpty ? 0.5 : 0.2),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                              })
+                              .nonNulls
+                              .flattened,
+                          if (selection case final selection?)
+                            ...?() {
+                              final (base, extent) =
+                                  paragraphSpans.getSelectionCharacterOffsets(
+                                    selection: selection,
+                                    translation: bible.translation,
+                                  ) ??
+                                  (null, null);
+                              if (base == null || extent == null) {
+                                return null;
+                              }
 
-                        final offset = paragraphSpans.getCharacterOffsetFromPosition(
-                          width: constraints.maxWidth,
-                          localPosition: details.localPosition,
-                          textAlign: paragraph.type.textAlign,
-                        );
-
-                        final anchor = getOffsetAnchor(characterOffset: offset, paragraph: paragraph);
-                        if (anchor == null) {
-                          return;
-                        }
-
-                        final anchors = [?selectionStartAnchorState.value, anchor]..sort();
-
-                        final wordsSelection = bible.getWordsSelection(
-                          Selection(start: anchors.first, end: anchors.last, translation: bible.translation),
-                        );
-                        onSelectionUpdated?.call(wordsSelection, false);
-                      },
-                      onTapUp: (details) {
-                        if (paragraph is! VersesParagraph) {
-                          return;
-                        }
-
-                        final offset = paragraphSpans.getCharacterOffsetFromPosition(
-                          width: constraints.maxWidth,
-                          localPosition: details.localPosition,
-                          textAlign: paragraph.type.textAlign,
-                        );
-
-                        final anchor = getOffsetAnchor(characterOffset: offset, paragraph: paragraph);
-                        if (anchor != null) {
-                          onReferencePressed?.call(anchor.toReference());
-                        }
-                      },
-                      child: Listener(
-                        onPointerMove: (move) {},
-                        child: Text.rich(
+                              return paragraphSpans
+                                  .getBoxesForSelection(
+                                    baseOffset: base,
+                                    extentOffset: extent,
+                                    width: constraints.maxWidth,
+                                    textAlign: paragraph.type.textAlign,
+                                  )
+                                  .map((box) => box.toRect())
+                                  .withMergedLines()
+                                  .map(
+                                    (box) => Positioned.fromRect(
+                                      rect: Rect.fromLTWH(box.left, box.top + 4, box.width + 2, min(28, box.height)),
+                                      child: IgnorePointer(
+                                        child: AnimatedContainer(
+                                          duration: Duration(milliseconds: 300),
+                                          curve: Curves.easeInOutCubic,
+                                          decoration: BoxDecoration(
+                                            borderRadius: .circular(4),
+                                            color: context.colors.contentPrimary.withValues(alpha: 0.2),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                            }(),
+                        ],
+                        Text.rich(
+                          key: textKey,
                           TextSpan(children: paragraphSpans),
                           style: TextStyle(fontStyle: paragraph.as<VersesParagraph>()?.type.fontStyle ?? .normal),
                           textAlign: paragraph.as<VersesParagraph>()?.type.textAlign ?? .start,
                         ),
-                      ),
-                    ),
-                  ],
+                      ],
+                    );
+                  },
                 ),
               ),
-            ),
-          )
-          .toList(),
+            )
+            .toList(),
+      ),
     );
   }
 
@@ -311,6 +312,7 @@ class ChapterBuilder extends HookConsumerWidget {
             ...verses
                 .mapIndexed((verseIndex, verse) {
                   final reference = getVerseReference(verse);
+                  final paragraphOffset = verseIndex == 0 ? paragraph.firstVerseOffset : 0;
 
                   final passageAnnotations = user.getPassageAnnotations(Passage.reference(reference));
                   final passageAnnotationsWithNote = passageAnnotations
@@ -323,8 +325,11 @@ class ChapterBuilder extends HookConsumerWidget {
 
                   final spans = [
                     if (verse.verseNum > maxPreviousVerseNum) ...[
-                      AnnotatedSizedWidgetSpan<ReferencePart>(
-                        annotation: ReferencePart(reference: reference),
+                      AnnotatedSizedWidgetSpan<VerseElement>(
+                        annotation: VerseElement(
+                          anchor: SelectionWordAnchor.fromReference(reference: reference, characterOffset: 0),
+                          isBoundInSelection: false,
+                        ),
                         size: Size(
                           context.textStyle.bibleVerseNumber.getWidth(verse.verseNum.toString()) + 6,
                           context.textStyle.bibleBody.fontSize!,
@@ -344,13 +349,22 @@ class ChapterBuilder extends HookConsumerWidget {
                         notesButtonSpan(
                           context,
                           ref,
-                          referencePart: ReferencePart(reference: reference),
+                          element: VerseElement(
+                            anchor: SelectionWordAnchor.fromReference(reference: reference, characterOffset: 0),
+                            isBoundInSelection: false,
+                          ),
                           annotations: passageAnnotationsWithNote,
                           isUnderlined: underlinedReferences.contains(reference),
                         ),
                     ],
-                    ...AnnotatedTextSpan<ReferencePart>(
-                      annotation: ReferencePart(reference: reference),
+                    ...AnnotatedTextSpan<VerseElement>(
+                      annotation: VerseElement(
+                        anchor: SelectionWordAnchor.fromReference(
+                          reference: reference,
+                          characterOffset: paragraphOffset,
+                        ),
+                        isBoundInSelection: false,
+                      ),
                       text: verse.text,
                       style: context.textStyle.bibleBody.copyWith(
                         decoration: underlinedReferences.contains(reference) ? .underline : null,
@@ -361,29 +375,32 @@ class ChapterBuilder extends HookConsumerWidget {
                             reference: reference,
                             translation: bible.translation,
                           )
-                          .map(
-                            (offset, annotations) => MapEntry(
-                              offset -
-                                  (verseIndex == 0 && paragraph.firstVerseOffset > 0
-                                      ? paragraph.firstVerseOffset + 1
-                                      : 0),
-                              annotations,
-                            ),
+                          .where(
+                            (offset, annotations) =>
+                                offset >= paragraphOffset && offset <= paragraphOffset + verse.text.length,
                           )
-                          .where((offset, annotations) => offset >= 0)
                           .map(
                             (offset, annotations) => MapEntry(
                               offset,
                               notesButtonSpan(
                                 context,
                                 ref,
-                                referencePart: ReferencePart(reference: reference, paragraphOffset: offset),
+                                element: VerseElement(
+                                  anchor: SelectionWordAnchor.fromReference(
+                                    reference: reference,
+                                    characterOffset: offset,
+                                  ),
+                                  isBoundInSelection: true,
+                                ),
                                 annotations: annotations,
                                 isUnderlined: underlinedReferences.contains(reference),
                               ),
                             ),
                           ),
-                      annotationModifier: (_, offset) => ReferencePart(reference: reference, paragraphOffset: offset),
+                      annotationModifier: (_, offset) => VerseElement(
+                        anchor: SelectionWordAnchor.fromReference(reference: reference, characterOffset: offset),
+                        isBoundInSelection: false,
+                      ),
                     ),
                   ];
                   maxPreviousVerseNum = verse.verseNum;
@@ -398,33 +415,15 @@ class ChapterBuilder extends HookConsumerWidget {
     }).toList();
   }
 
-  SelectionWordAnchor? getOffsetAnchor({required int characterOffset, required VersesParagraph paragraph}) {
-    var offsetCount = 0;
-    for (final verse in paragraph.verses) {
-      final referenceLength = verse.text.length + (verse == paragraph.verses.first ? paragraph.firstVerseOffset : 0);
-      if (characterOffset < offsetCount + referenceLength) {
-        return SelectionWordAnchor.fromReference(
-          reference: getVerseReference(verse),
-          characterOffset:
-              (characterOffset - offsetCount + (verse == paragraph.verses.first ? paragraph.firstVerseOffset : 0))
-                  .clampZero,
-        );
-      }
-
-      offsetCount += referenceLength;
-    }
-    return null;
-  }
-
   WidgetSpan notesButtonSpan(
     BuildContext context,
     WidgetRef ref, {
-    required ReferencePart referencePart,
+    required VerseElement element,
     required List<Annotation> annotations,
     required bool isUnderlined,
   }) {
-    return AnnotatedSizedWidgetSpan<ReferencePart>(
-      annotation: referencePart,
+    return AnnotatedSizedWidgetSpan<VerseElement>(
+      annotation: element,
       size: Size(30, context.textStyle.bibleBody.fontSize!),
       alignment: .middle,
       child: OverflowBox(
@@ -461,73 +460,129 @@ class ChapterBuilder extends HookConsumerWidget {
     );
   }
 
-  (int, int)? getReferenceCharacterOffsets({required Reference reference, required List<InlineSpan> paragraphSpans}) {
-    var cursor = 0;
-    final matches = paragraphSpans
-        .map((span) {
-          final start = cursor;
-          cursor += span.textLength;
-          return span is IsAnnotatedSpan<ReferencePart> && span.annotation.reference == reference
-              ? (span: span, start: start)
-              : null;
-        })
-        .nonNulls
-        .toList();
+  SelectionWordAnchor? getOffsetAnchor({required int characterOffset, required VersesParagraph paragraph}) {
+    int getVerseOffset(Verse verse) => verse == paragraph.verses.first ? paragraph.firstVerseOffset : 0;
 
-    return matches.isEmpty ? null : (matches.first.start, matches.last.start + matches.last.span.textLength);
-  }
+    var offsetCount = 0;
+    for (final verse in paragraph.verses) {
+      final referenceLength = verse.text.length + getVerseOffset(verse);
+      if (characterOffset < offsetCount + referenceLength) {
+        return SelectionWordAnchor.fromReference(
+          reference: getVerseReference(verse),
+          characterOffset: (characterOffset - offsetCount + getVerseOffset(verse)).clampZero,
+        );
+      }
 
-  (int, int)? getSelectionCharacterOffsets({
-    required Selection selection,
-    required VersesParagraph paragraph,
-    required List<InlineSpan> paragraphSpans,
-  }) {
-    int getVerseOffset(Reference reference) =>
-        reference == getVerseReference(paragraph.verses.first) && paragraph.firstVerseOffset > 0
-        ? paragraph.firstVerseOffset + 1
-        : 0;
-
-    var cursor = 0;
-    final matches = paragraphSpans
-        .map((span) {
-          final start = cursor;
-          cursor += span.textLength;
-          return span is AnnotatedTextSpan<ReferencePart> &&
-                  selection.intersects(
-                    Selection(
-                      start: span.annotation.toSelectionAnchor(verseOffset: getVerseOffset(span.annotation.reference)),
-                      end: span.annotation.toSelectionAnchor(
-                        verseOffset: getVerseOffset(span.annotation.reference) + span.textLength,
-                      ),
-                      translation: user.translation,
-                    ),
-                  )
-              ? (span: span, start: start, offset: span.annotation.paragraphOffset)
-              : null;
-        })
-        .nonNulls
-        .toList();
-
-    if (matches.isEmpty) {
-      return null;
+      offsetCount += referenceLength;
     }
-
-    final verseOffset = getVerseOffset(selection.end.toReference());
-    final offsets = (
-      matches.first.start - matches.first.offset + selection.start.characterOffset - verseOffset,
-      matches.last.start - matches.last.offset + selection.end.characterOffset + 1 - verseOffset,
-    );
-
-    return offsets.$1.isNegative || offsets.$2.isNegative ? null : offsets;
+    return null;
   }
 }
 
-class ReferencePart {
-  final Reference reference;
-  final int paragraphOffset;
+class ParagraphHitTester {
+  final GlobalKey textKey;
+  final SelectionWordAnchor? Function(Offset localPosition) resolve;
 
-  const ReferencePart({required this.reference, this.paragraphOffset = 0});
+  const ParagraphHitTester({required this.textKey, required this.resolve});
 
-  SelectionWordAnchor toSelectionAnchor({required int verseOffset}) =>
-      SelectionWordAnchor.fromReference(reference: reference, characterOffset: verseOffset + paragraphOffset);
+  SelectionWordAnchor? getAnchorAt(Offset globalPosition) {
+    final box = textKey.currentContext?.findRenderObject() as RenderBox?;
+    if (box == null) return null;
+
+    final localPosition = box.globalToLocal(globalPosition);
+    if (localPosition.dx < 0 ||
+        localPosition.dy < 0 ||
+        localPosition.dx > box.size.width ||
+        localPosition.dy > box.size.height) {
+      return null;
+    }
+
+    return resolve(localPosition);
+  }
+}
+
+class VerseElement {
+  final SelectionWordAnchor anchor;
+  final bool isBoundInSelection;
+
+  const VerseElement({required this.anchor, required this.isBoundInSelection});
+}
+
+extension on List<InlineSpan> {
+  Selection getContainedSelection({required BibleTranslation translation}) {
+    final lastAnchor = whereType<IsAnnotatedSpan<VerseElement>>().last;
+    return Selection(
+      start: whereType<IsAnnotatedSpan<VerseElement>>().first.annotation.anchor,
+      end: lastAnchor.annotation.anchor.withCharactersAdded(lastAnchor.textLength),
+      translation: translation,
+    );
+  }
+
+  int get maxTextPosition => map((span) => span.textLength).sum;
+
+  int? getTextPosition({required SelectionWordAnchor anchor, bool onlyBound = false}) {
+    if (whereType<IsAnnotatedSpan<VerseElement>>().firstOrNull case final startingSpan?) {
+      if (startingSpan.annotation.anchor > anchor) {
+        return null;
+      }
+    }
+
+    if (whereType<IsAnnotatedSpan<VerseElement>>().every(
+      (span) => span.annotation.anchor.withCharactersAdded(span.textLength) < anchor,
+    )) {
+      return null;
+    }
+
+    var cursor = 0;
+    final equalBoundPosition = map((span) {
+      final start = cursor;
+      cursor += span.textLength;
+      return span is IsAnnotatedSpan<VerseElement> &&
+              span.annotation.anchor == anchor &&
+              span.annotation.isBoundInSelection
+          ? start - span.annotation.anchor.characterOffset + anchor.characterOffset
+          : null;
+    }).toList().nonNulls.firstOrNull;
+
+    if (equalBoundPosition != null) {
+      return equalBoundPosition;
+    }
+
+    cursor = 0;
+    return map((span) {
+      final start = cursor;
+      cursor += span.textLength;
+      return span is IsAnnotatedSpan<VerseElement> && span.annotation.anchor <= anchor
+          ? start - span.annotation.anchor.characterOffset + anchor.characterOffset
+          : null;
+    }).toList().nonNulls.lastOrNull;
+  }
+
+  (int, int)? getReferenceCharacterOffsets({required Reference reference, required Bible bible}) {
+    if (!getContainedSelection(translation: bible.translation).isInReference(reference)) {
+      return null;
+    }
+
+    return (
+      getTextPosition(anchor: SelectionWordAnchor.fromReference(reference: reference, characterOffset: 0)) ?? 1,
+      getTextPosition(
+            anchor: SelectionWordAnchor.fromReference(
+              reference: reference,
+              characterOffset: bible.getVerseByReference(reference)?.text.length ?? 0,
+            ),
+          ) ??
+          maxTextPosition,
+    );
+  }
+
+  (int, int)? getSelectionCharacterOffsets({required Selection selection, required BibleTranslation translation}) {
+    if (!getContainedSelection(translation: translation).intersects(selection)) {
+      return null;
+    }
+
+    return (
+      getTextPosition(anchor: selection.start, onlyBound: true) ?? 1,
+      (getTextPosition(anchor: selection.end, onlyBound: true) ?? (maxTextPosition - 1)) + 1,
+    );
+  }
 }
