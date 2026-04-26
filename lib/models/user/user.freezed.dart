@@ -240,7 +240,7 @@ return $default(_that.translation,_that.lastReference,_that.currentBookmarkId,_t
 @JsonSerializable()
 
 class _User extends User {
-  const _User({this.translation = BibleTranslation.asv, this.lastReference = const ChapterReference(chapterNum: 1, book: BookType.genesis), this.currentBookmarkId, final  List<ChapterReference> viewHistory = const [], this.highlightColor = ColorEnum.yellow, final  Map<String, Bookmark> bookmarkById = const {}, final  List<Annotation> annotations = const [], this.toolbar = const ToolbarConfiguration(), this.passage = const PassageConfiguration(), this.selection = const SelectionConfiguration(), final  List<String> searchHistory = const []}): _viewHistory = viewHistory,_bookmarkById = bookmarkById,_annotations = annotations,_searchHistory = searchHistory,super._();
+  const _User({this.translation = BibleTranslation.bsb, this.lastReference = const ChapterReference(chapterNum: 1, book: BookType.genesis), this.currentBookmarkId, final  List<ChapterReference> viewHistory = const [], this.highlightColor = ColorEnum.yellow, final  Map<String, Bookmark> bookmarkById = const {}, final  List<Annotation> annotations = const [], this.toolbar = const ToolbarConfiguration(), this.passage = const PassageConfiguration(), this.selection = const SelectionConfiguration(), final  List<String> searchHistory = const []}): _viewHistory = viewHistory,_bookmarkById = bookmarkById,_annotations = annotations,_searchHistory = searchHistory,super._();
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
 @override@JsonKey() final  BibleTranslation translation;

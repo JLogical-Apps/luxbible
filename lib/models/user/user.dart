@@ -25,7 +25,7 @@ sealed class User with _$User {
   const User._();
 
   const factory User({
-    @Default(BibleTranslation.asv) BibleTranslation translation,
+    @Default(BibleTranslation.bsb) BibleTranslation translation,
     @Default(ChapterReference(chapterNum: 1, book: BookType.genesis)) ChapterReference lastReference,
     String? currentBookmarkId,
     @Default([]) List<ChapterReference> viewHistory,

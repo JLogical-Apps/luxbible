@@ -9,7 +9,7 @@ part of 'user.dart';
 _User _$UserFromJson(Map<String, dynamic> json) => _User(
   translation:
       $enumDecodeNullable(_$BibleTranslationEnumMap, json['translation']) ??
-      BibleTranslation.asv,
+      BibleTranslation.bsb,
   lastReference: json['lastReference'] == null
       ? const ChapterReference(chapterNum: 1, book: BookType.genesis)
       : ChapterReference.fromJson(json['lastReference'] as String),
@@ -65,9 +65,9 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
 };
 
 const _$BibleTranslationEnumMap = {
+  BibleTranslation.bsb: 'bsb',
   BibleTranslation.kjv: 'kjv',
   BibleTranslation.asv: 'asv',
-  BibleTranslation.bsb: 'bsb',
 };
 
 const _$ColorEnumEnumMap = {

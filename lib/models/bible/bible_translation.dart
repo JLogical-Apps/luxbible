@@ -1,11 +1,11 @@
 enum BibleTranslation {
+  bsb,
   kjv,
-  asv,
-  bsb;
+  asv;
 
   String title() => switch (this) {
+    bsb => 'BSB',
     kjv => 'KJV',
     asv => 'ASV',
-    bsb => 'BSB',
   };
 }
