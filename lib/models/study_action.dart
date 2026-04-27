@@ -86,6 +86,9 @@ enum StudyAction {
           ),
         );
       case interlinear:
+        if (bible.translation == .bsb) {
+          bible = ref.read(biblesProvider).firstWhere((bible) => bible.translation == .asv);
+        }
         final strongs = ref.watch(strongsProvider);
         context.showStyledSheetWithBreadcrumbs(
           breadcrumbText: region.format(),
