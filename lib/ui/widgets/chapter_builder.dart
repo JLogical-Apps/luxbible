@@ -381,7 +381,7 @@ class ChapterBuilder extends HookConsumerWidget {
                           )
                           .map(
                             (offset, annotations) => MapEntry(
-                              offset,
+                              offset - paragraphOffset,
                               notesButtonSpan(
                                 context,
                                 ref,
@@ -398,7 +398,10 @@ class ChapterBuilder extends HookConsumerWidget {
                             ),
                           ),
                       annotationModifier: (_, offset) => VerseElement(
-                        anchor: SelectionWordAnchor.fromReference(reference: reference, characterOffset: offset),
+                        anchor: SelectionWordAnchor.fromReference(
+                          reference: reference,
+                          characterOffset: offset + paragraphOffset,
+                        ),
                         isBoundInSelection: false,
                       ),
                     ),
@@ -539,7 +542,7 @@ extension on List<InlineSpan> {
       cursor += span.textLength;
       return span is IsAnnotatedSpan<VerseElement> &&
               span.annotation.anchor == anchor &&
-              span.annotation.isBoundInSelection
+              (!onlyBound || span.annotation.isBoundInSelection)
           ? start - span.annotation.anchor.characterOffset + anchor.characterOffset
           : null;
     }).toList().nonNulls.firstOrNull;
@@ -564,12 +567,17 @@ extension on List<InlineSpan> {
     }
 
     return (
-      getTextPosition(anchor: SelectionWordAnchor.fromReference(reference: reference, characterOffset: 0)) ?? 1,
+      getTextPosition(
+            anchor: SelectionWordAnchor.fromReference(reference: reference, characterOffset: 0),
+            onlyBound: false,
+          ) ??
+          1,
       getTextPosition(
             anchor: SelectionWordAnchor.fromReference(
               reference: reference,
               characterOffset: bible.getVerseByReference(reference)?.text.length ?? 0,
             ),
+            onlyBound: false,
           ) ??
           maxTextPosition,
     );
