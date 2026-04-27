@@ -59,10 +59,19 @@ class ChapterBuilder extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final keyByReferenceRef = this.keyByReferenceRef;
+
     final selectionStartAnchorState = useState<SelectionWordAnchor?>(null);
 
-    final paragraphHitTesters = <ParagraphHitTester>[];
+    final keyByReference = chapterReference.references.mapToMap(
+      (reference) => MapEntry(reference, keyByReferenceRef?.value[reference] ?? GlobalKey()),
+    );
+    if (keyByReferenceRef != null &&
+        chapterReference.references.any((ref) => !keyByReferenceRef.value.containsKey(ref))) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => keyByReferenceRef.value = keyByReference);
+    }
 
+    final paragraphHitTesters = <ParagraphHitTester>[];
     SelectionWordAnchor? getAnchorAtGlobalPosition(Offset globalPosition) =>
         paragraphHitTesters.map((tester) => tester.getAnchorAt(globalPosition)).nonNulls.firstOrNull;
 
@@ -101,7 +110,7 @@ class ChapterBuilder extends HookConsumerWidget {
       },
       child: Column(
         crossAxisAlignment: .stretch,
-        children: getParagraphSpansByParagraph(context, ref)
+        children: getParagraphSpansByParagraph(context, ref, keyByReference: keyByReference)
             .mapEntries(
               (paragraph, paragraphSpans) => Padding(
                 padding: paragraph.as<VersesParagraph>()?.type.padding ?? .zero,
@@ -293,7 +302,11 @@ class ChapterBuilder extends HookConsumerWidget {
 
   Reference getVerseReference(Verse verse) => chapterReference.getReference(verse.verseNum);
 
-  List<MapEntry<Paragraph, List<InlineSpan>>> getParagraphSpansByParagraph(BuildContext context, WidgetRef ref) {
+  List<MapEntry<Paragraph, List<InlineSpan>>> getParagraphSpansByParagraph(
+    BuildContext context,
+    WidgetRef ref, {
+    required Map<Reference, GlobalKey> keyByReference,
+  }) {
     var maxPreviousVerseNum = 0;
     return chapter.paragraphs.mapIndexed((paragraphIndex, paragraph) {
       final previousParagraph = paragraphIndex == 0
@@ -336,6 +349,7 @@ class ChapterBuilder extends HookConsumerWidget {
                         ),
                         alignment: .middle,
                         child: Padding(
+                          key: keyByReference[reference],
                           padding: .only(right: 6),
                           child: Text(
                             verse.verseNum.toString(),
