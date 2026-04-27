@@ -37,31 +37,31 @@ class BibleImporter {
               paragraphs: div.nextElementSiblings
                   .takeWhile((div) => div.localName != 'chapter')
                   .fold(<Paragraph?>[], (paragraphs, div) {
-                    List<Verse> parseUsxVerses() => div.children
-                        .map(
+                    List<Verse> parseUsxVerses(XmlElement element) => element.children
+                        .expand<Verse>(
                           (node) => switch (node) {
-                            XmlText(:final value) when value.trim().isNotEmpty && lastVerseNum != null => Verse(
-                              verseNum: lastVerseNum!,
-                              fragments: [VerseFragment(text: value.trim())],
-                            ),
+                            XmlText(:final value) when value.trim().isNotEmpty && lastVerseNum != null => [
+                              Verse(
+                                verseNum: lastVerseNum!,
+                                fragments: [VerseFragment(text: value.trim())],
+                              ),
+                            ],
                             XmlElement node when node.localName == 'verse' => () {
                               lastVerseNum = int.parse(node.getAttribute('number')!);
-                              return null;
+                              return <Verse>[];
                             }(),
-                            XmlElement node when node.localName == 'char' && lastVerseNum != null => Verse(
-                              verseNum: lastVerseNum!,
-                              fragments: [VerseFragment(text: node.innerText)],
+                            XmlElement node when node.localName == 'char' && lastVerseNum != null => parseUsxVerses(
+                              node,
                             ),
-                            _ => null,
+                            _ => [],
                           },
                         )
-                        .nonNulls
                         .withSameVersesCombined()
                         .toList();
 
                     VersesParagraph? versesParagraph(ParagraphType type) {
                       final previousLastVerseNum = lastVerseNum;
-                      final verses = parseUsxVerses();
+                      final verses = parseUsxVerses(div);
                       if (verses.isEmpty) {
                         return null;
                       }
