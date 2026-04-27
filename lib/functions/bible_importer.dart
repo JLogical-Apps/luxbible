@@ -48,6 +48,10 @@ class BibleImporter {
                               lastVerseNum = int.parse(node.getAttribute('number')!);
                               return null;
                             }(),
+                            XmlElement node when node.localName == 'char' && lastVerseNum != null => Verse(
+                              verseNum: lastVerseNum!,
+                              fragments: [VerseFragment(text: node.innerText)],
+                            ),
                             _ => null,
                           },
                         )
