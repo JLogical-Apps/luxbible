@@ -1,20 +1,20 @@
-import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/selection.dart';
 import 'package:bible/models/user/selection_configuration.dart';
 import 'package:bible/models/user/selection_shortcut.dart';
 import 'package:bible/models/user/user.dart';
+import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/bottom_bar.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class SelectionBottomBar extends StatelessWidget {
+class SelectionBottomBar extends ConsumerWidget {
   final Selection? selection;
   final SelectionConfiguration configuration;
 
   final User user;
-  final Bible bible;
 
   final Function() onClosePressed;
   final Function() onMorePressed;
@@ -28,7 +28,6 @@ class SelectionBottomBar extends StatelessWidget {
     required this.selection,
     required this.configuration,
     required this.user,
-    required this.bible,
     required this.onClosePressed,
     required this.onMorePressed,
     required this.onShorcutPressed,
@@ -37,7 +36,10 @@ class SelectionBottomBar extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bibles = ref.watch(displayBiblesProvider);
+    final bible = user.getDisplayBible(bibles);
+
     return BottomBar(
       text:
           '"${bible.getSelectionText(selection ?? Selection(

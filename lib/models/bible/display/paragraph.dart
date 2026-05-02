@@ -1,4 +1,4 @@
-import 'package:bible/models/bible/verse.dart';
+import 'package:bible/models/bible/display/verse.dart';
 import 'package:flutter/cupertino.dart';
 
 sealed class Paragraph {
@@ -13,7 +13,7 @@ class SectionParagraph extends Paragraph {
 }
 
 class VersesParagraph extends Paragraph {
-  final List<Verse> verses;
+  final List<DisplayVerse> verses;
   final int firstVerseOffset;
   final ParagraphType type;
 

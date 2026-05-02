@@ -1,10 +1,10 @@
 import 'package:bible/models/annotation.dart';
-import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/selection.dart';
 import 'package:bible/models/user/user.dart';
+import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_port_sheet.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
@@ -27,10 +27,12 @@ class AnnotationSheet {
     BuildContext context,
     WidgetRef ref, {
     required Region region,
-    required Bible bible,
     required User user,
     Function()? onAnnotationsRemoved,
   }) {
+    final bibles = ref.watch(displayBiblesProvider);
+    final bible = user.getDisplayBible(bibles);
+
     final hasAnnotation = region.when(
       passage: (passage) => user.isPassageAnnotated(passage),
       selection: (selection) => user.isSelectionAnnotated(selection),

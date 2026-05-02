@@ -35,9 +35,9 @@ class BiblePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bibles = ref.watch(biblesProvider);
+    final bibles = ref.watch(displayBiblesProvider);
     final user = ref.watch(userProvider);
-    final bible = user.getBible(bibles);
+    final bible = user.getDisplayBible(bibles);
 
     final initialReference = user.lastReference;
 
@@ -246,9 +246,9 @@ class _Bottom extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bibles = ref.watch(biblesProvider);
+    final bibles = ref.watch(displayBiblesProvider);
     final user = ref.watch(userProvider);
-    final bible = user.getBible(bibles);
+    final bible = user.getDisplayBible(bibles);
 
     useListenable(scrollController);
     useListenable(isScrollingDownState);
@@ -363,14 +363,12 @@ class _Bottom extends HookConsumerWidget {
                 ref,
                 reference: currentChapterReference,
                 user: user,
-                bible: bible,
                 onNavigateToPassage: navigateToPassage,
               ),
               onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
                 context,
                 ref,
                 reference: currentChapterReference,
-                bible: bible,
                 user: user,
                 onNavigateToPassage: navigateToPassage,
               ),
@@ -399,7 +397,6 @@ class _Bottom extends HookConsumerWidget {
                               ref,
                               user: user,
                               reference: currentChapterReference,
-                              bible: bible,
                               onNavigateToPassage: navigateToPassage,
                             );
                           },
@@ -455,7 +452,6 @@ class _Bottom extends HookConsumerWidget {
                                             ref,
                                             user: user,
                                             selectedPassage: selectedPassage,
-                                            bible: bible,
                                             onDeselect: () => selectedReferencesState.value = [],
                                             onNavigateToPassage: navigateToPassage,
                                           );
@@ -470,7 +466,6 @@ class _Bottom extends HookConsumerWidget {
                               ref,
                               user: user,
                               passage: selectedPassage,
-                              bible: bible,
                               onDeselect: () => selectedReferencesState.value = [],
                               onNavigateToPassage: navigateToPassage,
                             ),
@@ -480,14 +475,12 @@ class _Bottom extends HookConsumerWidget {
                             selection: selection,
                             configuration: user.selection,
                             user: user,
-                            bible: bible,
                             onClosePressed: onClosePressed,
                             onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
                               context,
                               ref,
                               user: user,
                               selection: selection,
-                              bible: bible,
                               onDeselect: () => selectionState.value = null,
                               onNavigateToPassage: navigateToPassage,
                             ),
@@ -516,7 +509,6 @@ class _Bottom extends HookConsumerWidget {
                                             ref,
                                             user: user,
                                             selection: selection,
-                                            bible: bible,
                                             onDeselect: () => selectionState.value = null,
                                             onNavigateToPassage: navigateToPassage,
                                           );

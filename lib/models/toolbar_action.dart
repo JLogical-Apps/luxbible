@@ -1,4 +1,3 @@
-import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
@@ -53,7 +52,6 @@ enum ToolbarAction {
     WidgetRef ref, {
     required User user,
     required ChapterReference reference,
-    required Bible bible,
     required Function(Passage) onNavigateToPassage,
   }) async {
     switch (this) {
@@ -113,7 +111,6 @@ enum ToolbarAction {
           context,
           ref,
           region: reference,
-          bible: bible,
           user: user,
           regionType: RegionType.chapter,
           onNavigateToPassage: onNavigateToPassage,

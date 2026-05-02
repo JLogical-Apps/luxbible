@@ -1,7 +1,7 @@
-import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/user/user.dart';
+import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/sheets/study_sheet.dart';
@@ -41,17 +41,18 @@ enum PassageAction {
     WidgetRef ref, {
     required User user,
     required Passage selectedPassage,
-    required Bible bible,
     required Function() onDeselect,
     required Function(Passage) onNavigateToPassage,
   }) async {
+    final displayBibles = ref.read(displayBiblesProvider);
+    final bible = user.getDisplayBible(displayBibles);
+
     switch (this) {
       case annotate:
         final annotation = await AnnotationSheet.show(
           context,
           ref,
           region: selectedPassage,
-          bible: bible,
           user: user,
           onAnnotationsRemoved: onDeselect,
         );
@@ -75,7 +76,6 @@ enum PassageAction {
           context,
           ref,
           region: selectedPassage,
-          bible: bible,
           user: user,
           regionType: RegionType.passage,
           onNavigateToPassage: onNavigateToPassage,

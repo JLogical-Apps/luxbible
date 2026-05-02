@@ -1,4 +1,3 @@
-import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/study_action.dart';
@@ -18,7 +17,6 @@ class StudySheet {
     WidgetRef ref, {
     required ReferencesRegion region,
     required User user,
-    required Bible bible,
     required RegionType regionType,
     required Function(Passage) onNavigateToPassage,
   }) => context.showStyledSheet(
@@ -33,14 +31,7 @@ class StudySheet {
               leading: action.icon.toIcon(),
               onPressed: () {
                 context.pop();
-                action.onPressed(
-                  context,
-                  ref,
-                  region: region,
-                  bible: bible,
-                  user: user,
-                  onNavigateToPassage: onNavigateToPassage,
-                );
+                action.onPressed(context, ref, region: region, user: user, onNavigateToPassage: onNavigateToPassage);
               },
             ),
           )

@@ -1,5 +1,4 @@
 import 'package:bible/models/user/selection_shortcut.dart';
-import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/selection_bottom_bar.dart';
@@ -16,8 +15,6 @@ class SelectionSettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final bibles = ref.watch(biblesProvider);
-    final bible = user.getBible(bibles);
 
     final selectionConfiguration = user.selection;
 
@@ -34,7 +31,6 @@ class SelectionSettingsPage extends ConsumerWidget {
               child: SelectionBottomBar(
                 configuration: selectionConfiguration,
                 user: user,
-                bible: bible,
                 selection: null,
                 onMorePressed: () {},
                 onClosePressed: () {},

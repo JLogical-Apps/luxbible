@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:bible/models/annotation.dart';
-import 'package:bible/models/bible/bible.dart';
+import 'package:bible/models/bible/display/bible.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/selection.dart';
@@ -29,7 +29,7 @@ import 'package:utils_core/utils_core.dart';
 
 class VersesBuilder extends HookConsumerWidget {
   final Passage passage;
-  final Bible? bible;
+  final DisplayBible? bible;
   final Function(Reference)? onReferencePressed;
   final Function(Selection?)? onSelectionUpdated;
 
@@ -54,9 +54,9 @@ class VersesBuilder extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final keyByReferenceRef = this.keyByReferenceRef;
 
-    final bibles = ref.watch(biblesProvider);
+    final bibles = ref.watch(displayBiblesProvider);
     final user = ref.watch(userProvider);
-    final bible = this.bible ?? user.getBible(bibles);
+    final bible = this.bible ?? user.getDisplayBible(bibles);
 
     final references = passage.references;
 
@@ -325,7 +325,7 @@ class VersesBuilder extends HookConsumerWidget {
     required List<Annotation> annotations,
     required bool isUnderlined,
     Color? color,
-    required Bible bible,
+    required DisplayBible bible,
   }) {
     return SizedWidgetSpan(
       size: Size(30, context.textStyle.bibleBody.fontSize!),
@@ -392,7 +392,7 @@ class VersesBuilder extends HookConsumerWidget {
     return (getSelectionAnchorOffset(selection.start), getSelectionAnchorOffset(selection.end) + 1);
   }
 
-  SelectionWordAnchor? getOffsetAnchor({required int characterOffset, required Bible bible}) {
+  SelectionWordAnchor? getOffsetAnchor({required int characterOffset, required DisplayBible bible}) {
     var offsetCount = 0;
     for (final reference in passage.references) {
       final referenceLength = bible.getVerseByReference(reference)?.text.length;

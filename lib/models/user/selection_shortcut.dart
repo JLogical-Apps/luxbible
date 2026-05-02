@@ -1,5 +1,4 @@
 import 'package:bible/models/annotation.dart';
-import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/selection.dart';
@@ -50,7 +49,6 @@ enum SelectionShortcut {
     WidgetRef ref, {
     required Selection selection,
     required User user,
-    required Bible bible,
     required Function() onDeselect,
     required Function(Passage) onNavigateToPassage,
   }) =>
@@ -58,7 +56,6 @@ enum SelectionShortcut {
         context,
         ref,
         selection: selection,
-        bible: bible,
         user: user,
         onDeselect: onDeselect,
         onNavigateToPassage: onNavigateToPassage,

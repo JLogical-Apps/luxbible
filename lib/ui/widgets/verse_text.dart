@@ -1,8 +1,8 @@
-import 'package:bible/models/bible/verse.dart';
+import 'package:bible/models/bible/study/study_verse.dart';
 import 'package:flutter/material.dart';
 
 class VerseText extends StatelessWidget {
-  final Verse verse;
+  final StudyVerse verse;
 
   final String? highlightStrongId;
 

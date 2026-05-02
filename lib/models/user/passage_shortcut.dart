@@ -1,5 +1,4 @@
 import 'package:bible/models/annotation.dart';
-import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/passage_action.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
@@ -57,24 +56,15 @@ enum PassageShortcut {
     WidgetRef ref, {
     required Passage passage,
     required User user,
-    required Bible bible,
     required Function() onDeselect,
     required Function(Passage) onNavigateToPassage,
   }) =>
-      toStudyAction()?.onPressed(
-        context,
-        ref,
-        region: passage,
-        bible: bible,
-        user: user,
-        onNavigateToPassage: onNavigateToPassage,
-      ) ??
+      toStudyAction()?.onPressed(context, ref, region: passage, user: user, onNavigateToPassage: onNavigateToPassage) ??
       toPassageAction()?.onPressed(
         context,
         ref,
         user: user,
         selectedPassage: passage,
-        bible: bible,
         onDeselect: onDeselect,
         onNavigateToPassage: onNavigateToPassage,
       ) ??

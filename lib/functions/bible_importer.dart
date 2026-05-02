@@ -1,54 +1,62 @@
 import 'dart:convert';
 
-import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/bible/bible_translation.dart';
-import 'package:bible/models/bible/book.dart';
 import 'package:bible/models/bible/book_type.dart';
-import 'package:bible/models/bible/chapter.dart';
-import 'package:bible/models/bible/paragraph.dart';
-import 'package:bible/models/bible/verse.dart';
-import 'package:bible/models/bible/verse_fragment.dart';
+import 'package:bible/models/bible/display/bible.dart';
+import 'package:bible/models/bible/display/book.dart';
+import 'package:bible/models/bible/display/chapter.dart';
+import 'package:bible/models/bible/display/paragraph.dart';
+import 'package:bible/models/bible/display/verse.dart';
+import 'package:bible/models/bible/study/bible.dart';
+import 'package:bible/models/bible/study/book.dart';
+import 'package:bible/models/bible/study/chapter.dart';
+import 'package:bible/models/bible/study/study_verse.dart';
+import 'package:bible/models/bible/study/verse_fragment.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
 import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
 
 class BibleImporter {
-  Future<Bible> import({required BibleTranslation translation}) {
+  Future<DisplayBible> importDisplay({required BibleTranslation translation}) async {
     return switch (translation) {
-      .kjv || .asv => parseJsonBible(translation: translation),
-      .bsb => parseUsxBible(translation: translation),
+      .kjv || .asv => DisplayBible.fromStudy(await parseJsonBible(translation: translation)),
+      .bsb => await parseUsxBible(translation: translation),
     };
   }
 
-  Future<Bible> parseUsxBible({required BibleTranslation translation}) async {
-    return Bible(
+  Future<StudyBible> importStudy({required BibleTranslation translation}) async {
+    return switch (translation) {
+      .kjv || .asv => await parseJsonBible(translation: translation),
+      .bsb => StudyBible.fromDisplay(await parseUsxBible(translation: translation)),
+    };
+  }
+
+  Future<DisplayBible> parseUsxBible({required BibleTranslation translation}) async {
+    return DisplayBible(
       translation: translation,
       books: await BookType.values.map((type) async {
         final rawXml = await rootBundle.loadString('assets/translations/${translation.name}/${type.usxCode()}.usx');
         final doc = XmlDocument.parse(rawXml);
 
-        return Book(
+        return DisplayBook(
           bookType: type,
           chapters: doc.findAllElements('chapter').mapIndexed((chapterIndex, div) {
             int? lastVerseNum;
-            return Chapter(
+            return DisplayChapter(
               chapterNum: chapterIndex + 1,
               paragraphs: div.nextElementSiblings
                   .takeWhile((div) => div.localName != 'chapter')
                   .fold(<Paragraph?>[], (paragraphs, div) {
-                    List<Verse> parseUsxVerses(XmlElement element) => element.children
-                        .expand<Verse>(
+                    List<DisplayVerse> parseUsxVerses(XmlElement element) => element.children
+                        .expand<DisplayVerse>(
                           (node) => switch (node) {
                             XmlText(:final value) when value.trim().isNotEmpty && lastVerseNum != null => [
-                              Verse(
-                                verseNum: lastVerseNum!,
-                                fragments: [VerseFragment(text: value.trim())],
-                              ),
+                              DisplayVerse(verseNum: lastVerseNum!, text: value.trim()),
                             ],
                             XmlElement node when node.localName == 'verse' => () {
                               lastVerseNum = int.parse(node.getAttribute('number')!);
-                              return <Verse>[];
+                              return <DisplayVerse>[];
                             }(),
                             XmlElement node when node.localName == 'char' && lastVerseNum != null => parseUsxVerses(
                               node,
@@ -105,7 +113,7 @@ class BibleImporter {
     );
   }
 
-  Future<Bible> parseJsonBible({required BibleTranslation translation}) async {
+  Future<StudyBible> parseJsonBible({required BibleTranslation translation}) async {
     final rawJson = await rootBundle.loadString('assets/translations/${translation.name}.json');
     final json = jsonDecode(rawJson);
 
@@ -120,19 +128,21 @@ class BibleImporter {
         )
         .toList();
 
-    return Bible(
+    return StudyBible(
       translation: translation,
       books: verses
           .groupListsBy((verse) => verse.book)
           .mapToIterable(
-            (book, verses) => Book(
+            (book, verses) => StudyBook(
               bookType: BookType.values[book - 1],
               chapters: verses
                   .groupListsBy((verse) => verse.chapterNum)
                   .mapToIterable(
-                    (chapter, verses) => Chapter.verses(
+                    (chapter, verses) => StudyChapter(
                       chapterNum: chapter,
-                      verses: verses.map((verse) => parseVerse(verseNum: verse.verseNum, raw: verse.text)).toList(),
+                      verses: verses.mapToMap(
+                        (verse) => MapEntry(verse.verseNum, parseVerse(verseNum: verse.verseNum, raw: verse.text)),
+                      ),
                     ),
                   )
                   .toList(),
@@ -142,7 +152,7 @@ class BibleImporter {
     );
   }
 
-  Verse parseVerse({required int verseNum, required String raw}) {
+  StudyVerse parseVerse({required int verseNum, required String raw}) {
     final tokenRegExp = RegExp(r'\{.*?\}'); // minimally match {...}
 
     // 1) Tokenize into text and {...} strongs chunks
@@ -181,7 +191,7 @@ class BibleImporter {
       }
     }
 
-    return Verse(verseNum: verseNum, fragments: fragments);
+    return StudyVerse(fragments: fragments);
   }
 }
 
@@ -195,13 +205,13 @@ extension on XmlElement {
   }
 }
 
-extension on Iterable<Verse> {
-  Iterable<Verse> withSameVersesCombined() {
+extension on Iterable<DisplayVerse> {
+  Iterable<DisplayVerse> withSameVersesCombined() {
     if (isEmpty) {
       return this;
     }
 
-    return fold<List<Verse>>(<Verse>[], (verses, verse) {
+    return fold<List<DisplayVerse>>(<DisplayVerse>[], (verses, verse) {
       final lastVerse = verses.lastOrNull;
       if (lastVerse == null) {
         return verses..add(verse);
@@ -209,14 +219,7 @@ extension on Iterable<Verse> {
 
       return lastVerse.verseNum == verse.verseNum
           ? (verses
-              ..[verses.length - 1] = Verse(
-                verseNum: verse.verseNum,
-                fragments: [
-                  ...lastVerse.fragments,
-                  VerseFragment(text: ' '),
-                  ...verse.fragments,
-                ],
-              ))
+              ..[verses.length - 1] = DisplayVerse(verseNum: verse.verseNum, text: '${lastVerse.text} ${verse.text}'))
           : (verses..add(verse));
     });
   }

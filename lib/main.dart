@@ -23,8 +23,11 @@ Future<void> main() async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      final bibles = await Future.wait(
-        BibleTranslation.values.map((translation) => BibleImporter().import(translation: translation)),
+      final displayBibles = await Future.wait(
+        BibleTranslation.values.map((translation) => BibleImporter().importDisplay(translation: translation)),
+      );
+      final studyBibles = await Future.wait(
+        BibleTranslation.values.map((translation) => BibleImporter().importStudy(translation: translation)),
       );
       final commentaries = await CommentaryImporter().import();
       final strongs = await StrongImporter().import();
@@ -36,7 +39,8 @@ Future<void> main() async {
       runApp(
         BibleApp(
           overrides: [
-            biblesProvider.overrideWith((ref) => bibles),
+            displayBiblesProvider.overrideWith((ref) => displayBibles),
+            studyBiblesProvider.overrideWith((ref) => studyBibles),
             strongsProvider.overrideWith((ref) => strongs),
             crossReferencesProvider.overrideWith((ref) => crossReferences),
             commentariesProvider.overrideWith((ref) => [commentaries]),

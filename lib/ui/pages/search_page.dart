@@ -35,9 +35,9 @@ class SearchPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final bibles = ref.watch(biblesProvider);
+    final bibles = ref.watch(studyBiblesProvider);
 
-    final bible = user.getBible(bibles);
+    final bible = user.getStudyBible(bibles);
 
     final textState = useState(initialSearch ?? '');
     final searchState = useState(textState.value);
@@ -55,7 +55,7 @@ class SearchPage extends HookConsumerWidget {
 
       if (search.isStrongId) {
         final strongBible = bible.translation == .bsb
-            ? ref.read(biblesProvider).firstWhere((bible) => bible.translation == .asv)
+            ? ref.read(studyBiblesProvider).firstWhere((bible) => bible.translation == .asv)
             : bible;
 
         return validReferences
@@ -235,7 +235,7 @@ class SearchPage extends HookConsumerWidget {
                             ? VerseText(
                                 verse: bible.translation == .bsb
                                     ? ref
-                                          .read(biblesProvider)
+                                          .read(studyBiblesProvider)
                                           .firstWhere((bible) => bible.translation == .asv)
                                           .getVerseByReference(result)!
                                     : verse,

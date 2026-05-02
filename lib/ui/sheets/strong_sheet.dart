@@ -1,4 +1,4 @@
-import 'package:bible/models/bible/bible.dart';
+import 'package:bible/models/bible/study/bible.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/strongs_provider.dart';
@@ -17,7 +17,7 @@ class StrongSheet {
     BuildContext context,
     WidgetRef ref, {
     required String strongId,
-    required Bible bible,
+    required StudyBible bible,
     required User user,
     required Function(Passage) onNavigateToPassage,
   }) async {

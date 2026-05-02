@@ -1,7 +1,8 @@
 import 'package:bible/models/annotation.dart';
-import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
+import 'package:bible/models/bible/display/bible.dart';
+import 'package:bible/models/bible/study/bible.dart';
 import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
@@ -40,7 +41,10 @@ sealed class User with _$User {
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  Bible getBible(List<Bible> bibles) => bibles.firstWhere((bible) => bible.translation == translation);
+  DisplayBible getDisplayBible(List<DisplayBible> bibles) =>
+      bibles.firstWhere((bible) => bible.translation == translation);
+
+  StudyBible getStudyBible(List<StudyBible> bibles) => bibles.firstWhere((bible) => bible.translation == translation);
 
   Bookmark? get currentBookmark => bookmarkById[currentBookmarkId];
 

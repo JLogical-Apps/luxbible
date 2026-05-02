@@ -1,12 +1,12 @@
 import 'dart:math';
 
 import 'package:bible/models/annotation.dart';
-import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
-import 'package:bible/models/bible/chapter.dart';
-import 'package:bible/models/bible/paragraph.dart';
-import 'package:bible/models/bible/verse.dart';
+import 'package:bible/models/bible/display/bible.dart';
+import 'package:bible/models/bible/display/chapter.dart';
+import 'package:bible/models/bible/display/paragraph.dart';
+import 'package:bible/models/bible/display/verse.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
@@ -32,7 +32,7 @@ import 'package:utils_core/utils_core.dart';
 class ChapterBuilder extends HookConsumerWidget {
   final ChapterReference chapterReference;
   final User user;
-  final Bible bible;
+  final DisplayBible bible;
 
   final Function(Reference)? onReferencePressed;
   final List<Reference> underlinedReferences;
@@ -54,7 +54,7 @@ class ChapterBuilder extends HookConsumerWidget {
     this.keyByReferenceRef,
   });
 
-  Chapter get chapter => bible.getChapterByReference(chapterReference);
+  DisplayChapter get chapter => bible.getChapterByReference(chapterReference);
   BookType get book => chapterReference.book;
 
   @override
@@ -300,7 +300,7 @@ class ChapterBuilder extends HookConsumerWidget {
     );
   }
 
-  Reference getVerseReference(Verse verse) => chapterReference.getReference(verse.verseNum);
+  Reference getVerseReference(DisplayVerse verse) => chapterReference.getReference(verse.verseNum);
 
   List<MapEntry<Paragraph, List<InlineSpan>>> getParagraphSpansByParagraph(
     BuildContext context,
@@ -478,7 +478,7 @@ class ChapterBuilder extends HookConsumerWidget {
   }
 
   SelectionWordAnchor? getOffsetAnchor({required int characterOffset, required VersesParagraph paragraph}) {
-    int getVerseOffset(Verse verse) => verse == paragraph.verses.first ? paragraph.firstVerseOffset : 0;
+    int getVerseOffset(DisplayVerse verse) => verse == paragraph.verses.first ? paragraph.firstVerseOffset : 0;
 
     var offsetCount = 0;
     for (final verse in paragraph.verses) {
@@ -575,7 +575,7 @@ extension on List<InlineSpan> {
     }).toList().nonNulls.lastOrNull;
   }
 
-  (int, int)? getReferenceCharacterOffsets({required Reference reference, required Bible bible}) {
+  (int, int)? getReferenceCharacterOffsets({required Reference reference, required DisplayBible bible}) {
     if (!getContainedSelection(translation: bible.translation).isInReference(reference)) {
       return null;
     }

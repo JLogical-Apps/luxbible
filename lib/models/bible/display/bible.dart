@@ -1,23 +1,44 @@
 import 'package:bible/models/bible/bible_translation.dart';
-import 'package:bible/models/bible/book.dart';
 import 'package:bible/models/bible/book_type.dart';
-import 'package:bible/models/bible/chapter.dart';
-import 'package:bible/models/bible/verse.dart';
+import 'package:bible/models/bible/display/book.dart';
+import 'package:bible/models/bible/display/chapter.dart';
+import 'package:bible/models/bible/display/verse.dart';
+import 'package:bible/models/bible/study/bible.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/selection.dart';
-import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:bible/utils/range.dart';
 import 'package:utils_core/utils_core.dart';
 
-class Bible {
+class DisplayBible {
   final BibleTranslation translation;
-  final List<Book> books;
+  final List<DisplayBook> books;
 
-  Bible({required this.translation, required this.books});
+  DisplayBible({required this.translation, required this.books});
+
+  factory DisplayBible.fromStudy(StudyBible bible) => DisplayBible(
+    translation: bible.translation,
+    books: bible.books
+        .map(
+          (book) => DisplayBook(
+            bookType: book.bookType,
+            chapters: book.chapters
+                .map(
+                  (chapter) => DisplayChapter.verses(
+                    chapterNum: chapter.chapterNum,
+                    verses: chapter.verses
+                        .mapToIterable((verseNum, verse) => DisplayVerse(verseNum: verseNum, text: verse.text))
+                        .toList(),
+                  ),
+                )
+                .toList(),
+          ),
+        )
+        .toList(),
+  );
 
   List<ChapterReference> get chapterReferences => books
       .expand(
@@ -27,7 +48,7 @@ class Bible {
 
   late final List<Reference> references = chapterReferences.expand((chapter) => chapter.references).toList();
 
-  late final Map<Reference, Verse> _verseByReference = references
+  late final Map<Reference, DisplayVerse> _verseByReference = references
       .mapToMap(
         (reference) => MapEntry(
           reference,
@@ -36,23 +57,20 @@ class Bible {
       )
       .withoutNullValues;
 
-  Chapter getChapterByReference(ChapterReference reference) =>
+  DisplayChapter getChapterByReference(ChapterReference reference) =>
       getBookByType(reference.book).chapters[reference.chapterNum - 1];
 
-  Verse? getVerseByReference(Reference reference) => _verseByReference[reference];
-
-  List<Verse> getVersesBySpan(VerseSpanReference reference) =>
-      reference.references.map((reference) => getVerseByReference(reference)).nonNulls.toList();
+  DisplayVerse? getVerseByReference(Reference reference) => _verseByReference[reference];
 
   ChapterReference getChapterReferenceByPageIndex(int pageIndex) => chapterReferences[pageIndex];
 
   int getPageIndexByChapterReference(ChapterReference reference) =>
       chapterReferences.indexWhere((r) => r.book == reference.book && r.chapterNum == reference.chapterNum);
 
-  late final Map<BookType, Book> _bookByType = BookType.values.mapToMap(
+  late final Map<BookType, DisplayBook> _bookByType = BookType.values.mapToMap(
     (bookType) => MapEntry(bookType, books.firstWhere((book) => book.bookType == bookType)),
   );
-  Book getBookByType(BookType bookType) => _bookByType[bookType]!;
+  DisplayBook getBookByType(BookType bookType) => _bookByType[bookType]!;
 
   String getSelectionText(Selection selection) {
     final verseTexts = Reference.getReferencesBetween(

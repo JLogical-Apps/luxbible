@@ -1,6 +1,5 @@
 import 'dart:collection';
 
-import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/user/user.dart';
@@ -55,18 +54,22 @@ enum StudyAction {
     BuildContext context,
     WidgetRef ref, {
     required ReferencesRegion region,
-    required Bible bible,
     required User user,
     required Function(Passage) onNavigateToPassage,
   }) async {
-    final bibles = ref.read(biblesProvider);
+    final studyBibles = ref.read(studyBiblesProvider);
+    var studyBible = user.getStudyBible(studyBibles);
+
+    final displayBibles = ref.read(displayBiblesProvider);
+    final displayBible = user.getDisplayBible(displayBibles);
+
     switch (this) {
       case compare:
         context.showStyledSheet(
           (context) => StyledSheet(
             title: 'Compare'.toText(),
             subtitle: region.format().toText(),
-            children: bibles
+            children: studyBibles
                 .mapIndexed<Widget>(
                   (i, bible) => Stack(
                     children: [
@@ -74,10 +77,10 @@ enum StudyAction {
                         title: bible.translation.title().toText(),
                         child: Padding(
                           padding: .only(bottom: 16),
-                          child: VersesBuilder(passage: region.toPassage(), bible: bible),
+                          child: VersesBuilder(passage: region.toPassage(), bible: displayBible),
                         ),
                       ),
-                      if (i + 1 < bibles.length)
+                      if (i + 1 < studyBibles.length)
                         Positioned(bottom: 0, left: 0, right: 0, child: StyledDivider(height: 2)),
                     ],
                   ),
@@ -86,8 +89,8 @@ enum StudyAction {
           ),
         );
       case interlinear:
-        if (bible.translation == .bsb) {
-          bible = ref.read(biblesProvider).firstWhere((bible) => bible.translation == .asv);
+        if (studyBible.translation == .bsb) {
+          studyBible = ref.read(studyBiblesProvider).firstWhere((bible) => bible.translation == .asv);
         }
         final strongs = ref.watch(strongsProvider);
         context.showStyledSheetWithBreadcrumbs(
@@ -97,7 +100,7 @@ enum StudyAction {
             subtitle: region.format().toText(),
             children: region.references
                 .mapIndexed((i, reference) {
-                  final verse = bible.getVerseByReference(reference);
+                  final verse = studyBible.getVerseByReference(reference);
                   if (verse == null) {
                     return null;
                   }
@@ -125,7 +128,7 @@ enum StudyAction {
                                     context,
                                     ref,
                                     strongId: strongId,
-                                    bible: bible,
+                                    bible: studyBible,
                                     user: user,
                                     onNavigateToPassage: onNavigateToPassage,
                                   );
@@ -198,7 +201,7 @@ enum StudyAction {
                               .map(
                                 (references) => StyledListItem(
                                   title: references.toPassage().format().toText(),
-                                  subtitle: bible
+                                  subtitle: studyBible
                                       .getVersesBySpan(references)
                                       .map((verse) => verse.text)
                                       .join(' ')
