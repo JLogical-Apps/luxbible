@@ -33,8 +33,6 @@ dependencies:
   flutter_native_splash: ^2.4.7
   substring_highlight: ^1.0.33
   uuid: ^4.5.3
-  toml: ^0.18.0
-
   port:
     git:
       url: https://github.com/JLogical-Apps/flood.git

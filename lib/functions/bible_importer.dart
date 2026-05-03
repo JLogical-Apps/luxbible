@@ -1,3 +1,4 @@
+import 'package:bible/functions/toml_importer.dart';
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bible/display/bible.dart';
@@ -12,7 +13,6 @@ import 'package:bible/models/bible/study/study_verse.dart';
 import 'package:bible/models/bible/study/verse_fragment.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
-import 'package:toml/toml.dart';
 import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
 
@@ -107,8 +107,8 @@ class BibleImporter {
   }
 
   Future<StudyBible> parseTomlBible({required BibleTranslation translation}) async {
-    final raw = await rootBundle.loadString('assets/translations/${translation.name}.toml');
-    final document = TomlDocument.parse(raw).toMap();
+    final tomlImporter = TomlImporter();
+    final document = await tomlImporter.load('assets/translations/${translation.name}.toml');
 
     return StudyBible(
       translation: translation,
