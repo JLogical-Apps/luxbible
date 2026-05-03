@@ -61,7 +61,6 @@ enum StudyAction {
     var studyBible = user.getStudyBible(studyBibles);
 
     final displayBibles = ref.read(displayBiblesProvider);
-    final displayBible = user.getDisplayBible(displayBibles);
 
     switch (this) {
       case compare:
@@ -69,7 +68,7 @@ enum StudyAction {
           (context) => StyledSheet(
             title: 'Compare'.toText(),
             subtitle: region.format().toText(),
-            children: studyBibles
+            children: displayBibles
                 .mapIndexed<Widget>(
                   (i, bible) => Stack(
                     children: [
@@ -77,7 +76,7 @@ enum StudyAction {
                         title: bible.translation.title().toText(),
                         child: Padding(
                           padding: .only(bottom: 16),
-                          child: VersesBuilder(passage: region.toPassage(), bible: displayBible),
+                          child: VersesBuilder(passage: region.toPassage(), bible: bible),
                         ),
                       ),
                       if (i + 1 < studyBibles.length)
