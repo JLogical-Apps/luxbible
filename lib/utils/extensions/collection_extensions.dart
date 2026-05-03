@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:collection/collection.dart';
 
-extension ListExtensions<T> on List<T> {
+extension BibleListExtensions<T> on List<T> {
   List<T> withToggle(T item) => contains(item) ? ([...this]..remove(item)) : [...this, item];
 
   List<T> withRemoved(T item) => [...this]..remove(item);
@@ -43,9 +43,26 @@ extension ListExtensions<T> on List<T> {
     max(0, length - list.length + 1),
     (i) => i,
   ).any((i0) => list.everyIndexed((i1, item) => this[i0 + i1] == item));
+
+  List<List<T>> batchBy(bool Function(T) predicate) {
+    final output = <List<T>>[];
+    var curr = <T>[];
+    for (var item in this) {
+      if (predicate(item)) {
+        output.add(curr);
+        curr = [];
+      } else {
+        curr.add(item);
+      }
+    }
+    if (curr.isNotEmpty) {
+      output.add(curr);
+    }
+    return output;
+  }
 }
 
-extension IterableExtensions<T> on Iterable<T> {
+extension BibleIterableExtensions<T> on Iterable<T> {
   bool containsAll(Iterable<T> list) => list.every((item) => contains(item));
   bool containsAny(Iterable<T> list) => list.any((item) => contains(item));
 
@@ -79,7 +96,7 @@ extension IterableExtensions<T> on Iterable<T> {
   T? minByOrNull(num Function(T) numMapper) => isEmpty ? null : reduce((a, b) => numMapper(a) < numMapper(b) ? a : b);
 }
 
-extension IntIterableExtensions on Iterable<int> {
+extension BibleIntIterableExtensions on Iterable<int> {
   List<List<int>> batchedByRuns() {
     if (isEmpty) {
       return [];
@@ -102,11 +119,11 @@ extension IntIterableExtensions on Iterable<int> {
   }
 }
 
-extension MapEntryIterableExtensions<K, V> on Iterable<MapEntry<K, V>> {
+extension BibleMapEntryIterableExtensions<K, V> on Iterable<MapEntry<K, V>> {
   Map<K, V> toMap() => Map.fromEntries(this);
 }
 
-extension MapExtensions<K, V> on Map<K, V> {
+extension BibleMapExtensions<K, V> on Map<K, V> {
   bool any(bool Function(K, V) predicate) => entries.any((entry) => predicate(entry.key, entry.value));
   bool every(bool Function(K, V) predicate) => entries.every((entry) => predicate(entry.key, entry.value));
 
@@ -120,7 +137,7 @@ extension MapExtensions<K, V> on Map<K, V> {
   Map<K, V> get withDistinctValues => entries.distinctBy((entry) => entry.value).toMap();
 }
 
-extension NullValueMapExtensions<K, V> on Map<K, V?> {
+extension BibleNullValueMapExtensions<K, V> on Map<K, V?> {
   Map<K, V> get withoutNullValues =>
       entries.map((entry) => entry.value?.mapIfNonNull((value) => MapEntry(entry.key, value))).nonNulls.toMap();
 }
