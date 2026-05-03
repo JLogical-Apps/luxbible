@@ -54,12 +54,8 @@ class SearchPage extends HookConsumerWidget {
           .toList();
 
       if (search.isStrongId) {
-        final strongBible = bible.translation == .bsb
-            ? ref.read(studyBiblesProvider).firstWhere((bible) => bible.translation == .asv)
-            : bible;
-
         return validReferences
-            .where((reference) => strongBible.getVerseByReference(reference)?.strongIds.contains(search) ?? false)
+            .where((reference) => bible.getVerseByReference(reference)?.strongIds.contains(search) ?? false)
             .toList();
       }
 
@@ -232,15 +228,7 @@ class SearchPage extends HookConsumerWidget {
                       return StyledListItem(
                         title: result.format().toText(),
                         subtitle: searchState.value.trim().isStrongId
-                            ? VerseText(
-                                verse: bible.translation == .bsb
-                                    ? ref
-                                          .read(studyBiblesProvider)
-                                          .firstWhere((bible) => bible.translation == .asv)
-                                          .getVerseByReference(result)!
-                                    : verse,
-                                highlightStrongId: searchState.value.trim(),
-                              )
+                            ? VerseText(verse: verse, highlightStrongId: searchState.value.trim())
                             : SubstringHighlight(
                                 text: bible.getVerseByReference(result)?.text ?? '',
                                 term: searchState.value,

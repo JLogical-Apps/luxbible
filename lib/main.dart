@@ -23,17 +23,12 @@ Future<void> main() async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      final stopwatch = Stopwatch()..start();
       final displayBibles = await Future.wait(
         BibleTranslation.values.map((translation) => BibleImporter().importDisplay(translation: translation)),
       );
-      print('display: ${stopwatch.elapsedMilliseconds}');
-      stopwatch.reset();
       final studyBibles = await Future.wait(
         BibleTranslation.values.map((translation) => BibleImporter().importStudy(translation: translation)),
       );
-      print('study: ${stopwatch.elapsedMilliseconds}');
-      stopwatch.reset();
       final commentaries = await CommentaryImporter().import();
       final strongs = await StrongImporter().import();
       final crossReferences = await CrossReferencesImporter().import();
