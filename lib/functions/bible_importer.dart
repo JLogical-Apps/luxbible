@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bible/display/bible.dart';
@@ -14,23 +12,19 @@ import 'package:bible/models/bible/study/study_verse.dart';
 import 'package:bible/models/bible/study/verse_fragment.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
+import 'package:toml/toml.dart';
 import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
 
 class BibleImporter {
   Future<DisplayBible> importDisplay({required BibleTranslation translation}) async {
     return switch (translation) {
-      .kjv || .asv => DisplayBible.fromStudy(await parseJsonBible(translation: translation)),
+      .kjv || .asv => DisplayBible.fromStudy(await parseTomlBible(translation: translation)),
       .bsb => await parseUsxBible(translation: translation),
     };
   }
 
-  Future<StudyBible> importStudy({required BibleTranslation translation}) async {
-    return switch (translation) {
-      .kjv || .asv => await parseJsonBible(translation: translation),
-      .bsb => StudyBible.fromDisplay(await parseUsxBible(translation: translation)),
-    };
-  }
+  Future<StudyBible> importStudy({required BibleTranslation translation}) => parseTomlBible(translation: translation);
 
   Future<DisplayBible> parseUsxBible({required BibleTranslation translation}) async {
     return DisplayBible(
@@ -44,7 +38,6 @@ class BibleImporter {
           chapters: doc.findAllElements('chapter').mapIndexed((chapterIndex, div) {
             int? lastVerseNum;
             return DisplayChapter(
-              chapterNum: chapterIndex + 1,
               paragraphs: div.nextElementSiblings
                   .takeWhile((div) => div.localName != 'chapter')
                   .fold(<Paragraph?>[], (paragraphs, div) {
@@ -113,35 +106,33 @@ class BibleImporter {
     );
   }
 
-  Future<StudyBible> parseJsonBible({required BibleTranslation translation}) async {
-    final rawJson = await rootBundle.loadString('assets/translations/${translation.name}.json');
-    final json = jsonDecode(rawJson);
-
-    final verses = (json['verses'] as Iterable)
-        .map(
-          (verse) => (
-            book: verse['book'] as int,
-            chapterNum: verse['chapter'] as int,
-            verseNum: verse['verse'] as int,
-            text: verse['text'],
-          ),
-        )
-        .toList();
+  Future<StudyBible> parseTomlBible({required BibleTranslation translation}) async {
+    final raw = await rootBundle.loadString('assets/translations/${translation.name}.toml');
+    final document = TomlDocument.parse(raw).toMap();
 
     return StudyBible(
       translation: translation,
-      books: verses
-          .groupListsBy((verse) => verse.book)
+      books: document
           .mapToIterable(
-            (book, verses) => StudyBook(
-              bookType: BookType.values[book - 1],
-              chapters: verses
-                  .groupListsBy((verse) => verse.chapterNum)
-                  .mapToIterable(
-                    (chapter, verses) => StudyChapter(
-                      chapterNum: chapter,
-                      verses: verses.mapToMap(
-                        (verse) => MapEntry(verse.verseNum, parseVerse(verseNum: verse.verseNum, raw: verse.text)),
+            (bookName, book) => StudyBook(
+              bookType: BookType.fromTomlKey(bookName),
+              chapters: (book as Map<String, dynamic>).values
+                  .map(
+                    (chapter) => StudyChapter(
+                      verses: (chapter as Map<String, dynamic>).map(
+                        (verseNum, fragments) => MapEntry(
+                          int.parse(verseNum),
+                          StudyVerse(
+                            fragments: (fragments as List)
+                                .map(
+                                  (fragment) => VerseFragment(
+                                    text: (fragment as List).first,
+                                    strongIds: fragment.skip(1).cast<String>().toList(),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
                       ),
                     ),
                   )
@@ -150,48 +141,6 @@ class BibleImporter {
           )
           .toList(),
     );
-  }
-
-  StudyVerse parseVerse({required int verseNum, required String raw}) {
-    final tokenRegExp = RegExp(r'\{.*?\}'); // minimally match {...}
-
-    // 1) Tokenize into text and {...} strongs chunks
-    final tokens = <String>[];
-    int lastEnd = 0;
-
-    for (final match in tokenRegExp.allMatches(raw)) {
-      if (match.start > lastEnd) {
-        tokens.add(raw.substring(lastEnd, match.start)); // text chunk
-      }
-      tokens.add(raw.substring(match.start, match.end)); // strongs chunk
-      lastEnd = match.end;
-    }
-    if (lastEnd < raw.length) {
-      tokens.add(raw.substring(lastEnd)); // trailing text
-    }
-
-    // 2) Now fold tokens into fragments.
-    //    Each time we hit text, start a new fragment.
-    //    Each time we hit {H...}, append to the last fragment’s strongs.
-    final fragments = <VerseFragment>[];
-    for (final token in tokens) {
-      if (token.startsWith('{') && token.endsWith('}')) {
-        final code = token.substring(1, token.length - 1);
-        if (fragments.isEmpty) {
-          // If doc starts with a strongs tag, inject empty text
-          fragments.add(VerseFragment(text: '', strongIds: [code]));
-        } else {
-          // Add to the last fragment's strongs
-          final last = fragments.last;
-          fragments[fragments.length - 1] = VerseFragment(text: last.text, strongIds: [...last.strongIds, code]);
-        }
-      } else {
-        // Plain text → start a fresh fragment
-        fragments.add(VerseFragment(text: token));
-      }
-    }
-
-    return StudyVerse(fragments: fragments);
   }
 }
 

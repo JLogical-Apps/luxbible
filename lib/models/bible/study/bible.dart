@@ -1,10 +1,7 @@
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
-import 'package:bible/models/bible/display/bible.dart';
 import 'package:bible/models/bible/study/book.dart';
-import 'package:bible/models/bible/study/chapter.dart';
 import 'package:bible/models/bible/study/study_verse.dart';
-import 'package:bible/models/bible/study/verse_fragment.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_span_reference.dart';
@@ -16,27 +13,6 @@ class StudyBible {
   final List<StudyBook> books;
 
   StudyBible({required this.translation, required this.books});
-
-  factory StudyBible.fromDisplay(DisplayBible bible) => StudyBible(
-    translation: bible.translation,
-    books: bible.books
-        .map(
-          (book) => StudyBook(
-            bookType: book.bookType,
-            chapters: book.chapters
-                .map(
-                  (chapter) => StudyChapter(
-                    chapterNum: chapter.chapterNum,
-                    verses: chapter.verses.values.mapToMap(
-                      (verse) => MapEntry(verse.verseNum, StudyVerse(fragments: [VerseFragment(text: verse.text)])),
-                    ),
-                  ),
-                )
-                .toList(),
-          ),
-        )
-        .toList(),
-  );
 
   List<ChapterReference> get chapterReferences => books
       .expand(

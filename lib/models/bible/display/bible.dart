@@ -11,6 +11,7 @@ import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:bible/utils/range.dart';
+import 'package:collection/collection.dart';
 import 'package:utils_core/utils_core.dart';
 
 class DisplayBible {
@@ -28,7 +29,6 @@ class DisplayBible {
             chapters: book.chapters
                 .map(
                   (chapter) => DisplayChapter.verses(
-                    chapterNum: chapter.chapterNum,
                     verses: chapter.verses
                         .mapToIterable((verseNum, verse) => DisplayVerse(verseNum: verseNum, text: verse.text))
                         .toList(),

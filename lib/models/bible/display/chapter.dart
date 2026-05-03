@@ -4,13 +4,11 @@ import 'package:collection/collection.dart';
 import 'package:utils_core/utils_core.dart';
 
 class DisplayChapter {
-  final int chapterNum;
   final List<Paragraph> paragraphs;
 
-  const DisplayChapter({required this.chapterNum, required this.paragraphs});
+  const DisplayChapter({required this.paragraphs});
 
-  factory DisplayChapter.verses({required int chapterNum, required List<DisplayVerse> verses}) => DisplayChapter(
-    chapterNum: chapterNum,
+  factory DisplayChapter.verses({required List<DisplayVerse> verses}) => DisplayChapter(
     paragraphs: verses.map((verse) => VersesParagraph(verses: [verse], type: .p, firstVerseOffset: 0)).toList(),
   );
 
@@ -18,5 +16,7 @@ class DisplayChapter {
       .whereType<VersesParagraph>()
       .expand((paragraph) => paragraph.verses)
       .groupListsBy((verse) => verse.verseNum)
-      .mapValues((verseNum, verses) => DisplayVerse(verseNum: verseNum, text: verses.join(' ')));
+      .mapValues(
+        (verseNum, verses) => DisplayVerse(verseNum: verseNum, text: verses.map((verse) => verse.text).join(' ')),
+      );
 }

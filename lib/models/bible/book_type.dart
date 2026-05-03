@@ -74,6 +74,12 @@ enum BookType {
   static BookType fromOsisId(String id) =>
       _bookTypeByOsisId[id] ?? (throw Exception('Could not find book with ID: $id'));
 
+  static BookType fromTomlKey(String key) => values.firstWhere((book) => book.tomlKey() == key);
+
+  /// The key used in .toml translation files. Matches the enum name for all
+  /// books except [songOfSolomon], which uses snake_case.
+  String tomlKey() => this == songOfSolomon ? 'song_of_solomon' : name;
+
   BookType get next => values[index + 1];
 
   Testament get testament => index < matthew.index ? Testament.oldTestament : Testament.newTestament;
