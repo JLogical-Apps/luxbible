@@ -8,7 +8,6 @@ import 'package:bible/style/widgets/styled_divider.dart';
 import 'package:bible/style/widgets/styled_dock.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
-import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -21,6 +20,9 @@ class StyledSheet<T> extends HookWidget {
   final Widget? subtitle;
   final Widget? trailing;
 
+  final Widget? aboveDivider;
+  final bool showDivider;
+
   final List<Widget> children;
 
   final Widget? aboveButtons;
@@ -31,6 +33,8 @@ class StyledSheet<T> extends HookWidget {
     required this.title,
     this.subtitle,
     this.trailing,
+    this.aboveDivider,
+    this.showDivider = true,
     this.children = const [],
     this.aboveButtons,
     this.buttonsBuilder,
@@ -38,17 +42,15 @@ class StyledSheet<T> extends HookWidget {
 
   StyledSheet.child({
     super.key,
-    Widget? title,
-    String? titleText,
-    Widget? subtitle,
-    String? subtitleText,
+    required this.title,
+    this.subtitle,
     this.trailing,
+    this.aboveDivider,
+    this.showDivider = true,
     required Widget child,
     this.aboveButtons,
     this.buttonsBuilder,
-  }) : title = title ?? titleText?.mapIfNonNull(Text.new) ?? SizedBox.shrink(),
-       subtitle = subtitle ?? subtitleText?.mapIfNonNull(Text.new),
-       children = [child];
+  }) : children = [child];
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +136,7 @@ class StyledSheet<T> extends HookWidget {
                                     value: SheetNavigationBreadcrumbContext(
                                       breadcrumbs: sheetNavigationContext.breadcrumbs.take(i + 1).toList(),
                                     ),
-                                    child: Builder(builder: sheetBuilder),
+                                    child: HookBuilder(builder: sheetBuilder),
                                   ),
                                 );
                               },
@@ -147,7 +149,8 @@ class StyledSheet<T> extends HookWidget {
             ),
             gapH8,
           ],
-          StyledDivider(height: 2),
+          ?aboveDivider,
+          if (showDivider) StyledDivider(height: 2),
           Flexible(
             child: DefaultTextStyle(
               style: context.textStyle.paragraphMd,

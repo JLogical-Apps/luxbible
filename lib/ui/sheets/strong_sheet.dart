@@ -1,6 +1,6 @@
-import 'package:bible/models/bible/study/bible.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/user/user.dart';
+import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/search_page.dart';
@@ -17,15 +17,17 @@ class StrongSheet {
     BuildContext context,
     WidgetRef ref, {
     required String strongId,
-    required StudyBible bible,
     required User user,
     required Function(Passage) onNavigateToPassage,
   }) async {
-    final strongs = ref.watch(strongsProvider);
+    final strongs = ref.read(strongsProvider);
     final strong = strongs[strongId];
     if (strong == null) {
       return;
     }
+
+    final bibles = ref.read(studyBiblesProvider);
+    final bible = bibles.firstWhere((bible) => bible.translation == .bsb);
 
     final seeMoreStrongs = strong.glossary.map((glossary) => strongs[glossary]).nonNulls.toList();
     final otherReferences = bible.references
@@ -33,9 +35,10 @@ class StrongSheet {
         .toList();
 
     await context.showStyledSheetWithBreadcrumbs(
-      breadcrumbText: strong.languageText,
+      breadcrumbText: strong.id,
       (context) => StyledSheet(
-        title: strong.languageText.toText(),
+        title: 'Strong Word Analysis'.toText(),
+        subtitle: strong.id.toText(),
         children: [
           StyledSection(
             title: 'Info'.toText(),
@@ -62,7 +65,6 @@ class StrongSheet {
                           context,
                           ref,
                           strongId: strong.id,
-                          bible: bible,
                           user: user,
                           onNavigateToPassage: onNavigateToPassage,
                         );

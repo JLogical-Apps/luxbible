@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:bible/models/bible/study/verse_fragment.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/user/user.dart';
@@ -8,7 +9,9 @@ import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/style/style.dart';
-import 'package:bible/ui/sheets/strong_sheet.dart';
+import 'package:bible/style/styled_text_action.dart';
+import 'package:bible/style/widgets/dialog/styled_dialog.dart';
+import 'package:bible/ui/sheets/fragment_sheet.dart';
 import 'package:bible/ui/widgets/verses_builder.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
@@ -16,7 +19,9 @@ import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:intersperse/intersperse.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:utils_core/utils_core.dart';
 
@@ -58,7 +63,7 @@ enum StudyAction {
     required Function(Passage) onNavigateToPassage,
   }) async {
     final studyBibles = ref.read(studyBiblesProvider);
-    var studyBible = user.getStudyBible(studyBibles);
+    final studyBible = user.getStudyBible(studyBibles);
 
     final displayBibles = ref.read(displayBiblesProvider);
 
@@ -88,60 +93,161 @@ enum StudyAction {
           ),
         );
       case interlinear:
+        final interlinearBible = studyBibles.firstWhere((bible) => bible.translation == .bsb);
         final strongs = ref.watch(strongsProvider);
-        context.showStyledSheetWithBreadcrumbs(
-          breadcrumbText: region.format(),
-          (context) => StyledSheet(
+
+        context.showStyledSheetWithBreadcrumbs(breadcrumbText: region.format(), (context) {
+          final tabController = useTabController(initialLength: InterlinearDirection.values.length);
+          final interlinearDirection = useListenableSelector(tabController, () => tabController.index) == 0
+              ? InterlinearDirection.forward
+              : InterlinearDirection.reverse;
+
+          return StyledSheet(
             title: 'Interlinear'.toText(),
             subtitle: region.format().toText(),
-            children: region.references
-                .mapIndexed((i, reference) {
-                  final verse = studyBible.getVerseByReference(reference);
-                  if (verse == null) {
-                    return null;
-                  }
+            aboveDivider: StyledTabBar.fill(
+              tabController: tabController,
+              tabTitles: InterlinearDirection.values.map((direction) => direction.title().toText()).toList(),
+            ),
+            showDivider: false,
+            children: [
+              Padding(
+                padding: .all(16),
+                child: Column(
+                  spacing: 16,
+                  children: [
+                    StyledTile.message(
+                      leading: interlinearDirection.icon().toIcon(),
+                      title: interlinearDirection.description().toText(),
+                    ),
+                    if (user.translation != .bsb)
+                      StyledBanner(
+                        colorBuilder: .surfaceTertiary,
+                        leading: Symbols.book.toIcon(),
+                        message: 'Interlinear uses BSB'.toText(),
+                        action: StyledTextAction(
+                          label: 'Learn More'.toText(),
+                          onPressed: () => context.showStyledDialog(
+                            (context) => StyledDialog.confirm(
+                              title: 'Interlinear Translation'.toText(),
+                              body:
+                                  "The BSB was designed with word-for-word Strong's and morphology tagging, which is what makes the Interlinear lexical breakdown possible. Your selected translation is used everywhere else in the app."
+                                      .toText(),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              ...region.references.mapIndexed((i, reference) {
+                final verse = interlinearBible.getVerseByReference(reference);
+                if (verse == null) {
+                  return null;
+                }
 
-                  return Stack(
-                    children: [
-                      StyledStickyHeader(
-                        title: reference.format().toText(),
-                        children: verse.fragments
-                            .mapToMap((fragment) => MapEntry(fragment, fragment.strongIds.firstOrNull))
-                            .withoutNullValues
-                            .mapToIterable(
-                              (fragment, strongId) => StyledListItem.navigation(
-                                title: fragment.text.trim().toText(),
-                                subtitle: Row(
+                return Stack(
+                  children: [
+                    StyledStickyHeader(
+                      title: reference.format().toText(),
+                      children: verse.fragments
+                          .where((fragment) => interlinearDirection.passes(fragment))
+                          .mapToMap((fragment) => MapEntry(fragment, fragment.study))
+                          .withoutNullValues
+                          .maybeSortedBy(
+                            (fragment, study) => study.originalPosition,
+                            shouldSort: tabController.index == 0,
+                          )
+                          .mapToIterable(
+                            (fragment, study) => switch (interlinearDirection) {
+                              .forward => StyledListItem(
+                                title: Row(
                                   spacing: 4,
+                                  children:
+                                      [
+                                            Row(
+                                              spacing: 4,
+                                              children: [
+                                                ?study.inflection?.toText(),
+                                                if (study.strongId case final strongId?) StyledBadge(text: strongId),
+                                              ],
+                                            ),
+                                            if (strongs[study.strongId] case final strong?)
+                                              Text(
+                                                strong.transliteration,
+                                                style: TextStyle(color: context.colors.contentSecondary),
+                                              ),
+                                          ]
+                                          .intersperse(
+                                            Text('·', style: TextStyle(color: context.colors.contentSecondary)),
+                                          )
+                                          .toList(),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: .start,
+                                  children: [fragment.text.toText(), ?study.morphology?.toText()],
+                                ),
+                                trailing: study.inflection == null ? null : Symbols.chevron_right.toIcon(),
+                                onPressed: study.inflection == null
+                                    ? null
+                                    : () {
+                                        context.pop();
+                                        FragmentSheet.showWithContext(
+                                          context,
+                                          ref,
+                                          fragment: fragment,
+                                          user: user,
+                                          onNavigateToPassage: onNavigateToPassage,
+                                        );
+                                      },
+                              ),
+                              .reverse => StyledListItem(
+                                title: fragment.text.trim().toText(),
+                                subtitle: Column(
+                                  crossAxisAlignment: .start,
                                   children: [
-                                    StyledBadge(text: strongId),
-                                    if (strongs[strongId] case final strong?) Text(strong.languageText),
+                                    Row(
+                                      spacing: 4,
+                                      children: [
+                                        Row(
+                                          spacing: 4,
+                                          children: [
+                                            if (study.strongId case final strongId?) StyledBadge(text: strongId),
+                                            ?study.inflection?.toText(),
+                                          ],
+                                        ),
+                                        if (strongs[study.strongId] case final strong?) strong.transliteration.toText(),
+                                      ].intersperse('·'.toText()).toList(),
+                                    ),
+                                    ?study.morphology?.toText(),
                                   ],
                                 ),
-                                onPressed: () {
-                                  context.pop();
-                                  StrongSheet.showWithContext(
-                                    context,
-                                    ref,
-                                    strongId: strongId,
-                                    bible: studyBible,
-                                    user: user,
-                                    onNavigateToPassage: onNavigateToPassage,
-                                  );
-                                },
+                                trailing: study.inflection == null ? null : Symbols.chevron_right.toIcon(),
+                                onPressed: study.inflection == null
+                                    ? null
+                                    : () {
+                                        context.pop();
+                                        FragmentSheet.showWithContext(
+                                          context,
+                                          ref,
+                                          fragment: fragment,
+                                          user: user,
+                                          onNavigateToPassage: onNavigateToPassage,
+                                        );
+                                      },
                               ),
-                            )
-                            .toList(),
-                      ),
-                      if (i + 1 < region.references.length)
-                        Positioned(bottom: 0, left: 0, right: 0, child: StyledDivider(height: 2)),
-                    ],
-                  );
-                })
-                .nonNulls
-                .toList(),
-          ),
-        );
+                            },
+                          )
+                          .toList(),
+                    ),
+                    if (i + 1 < region.references.length)
+                      Positioned(bottom: 0, left: 0, right: 0, child: StyledDivider(height: 2)),
+                  ],
+                );
+              }).nonNulls,
+            ],
+          );
+        });
       case commentary:
         final commentaries = ref.watch(commentariesProvider);
         final relatedCommentaries = commentaries
@@ -217,4 +323,29 @@ enum StudyAction {
         );
     }
   }
+}
+
+enum InterlinearDirection {
+  forward,
+  reverse;
+
+  String title() => switch (this) {
+    forward => 'Forward',
+    reverse => 'Reverse',
+  };
+
+  String description() => switch (this) {
+    forward => 'Words appear in the original Hebrew or Greek order.',
+    reverse => 'Words appear in the English reading order.',
+  };
+
+  IconData icon() => switch (this) {
+    forward => Symbols.fast_forward,
+    reverse => Symbols.fast_rewind,
+  };
+
+  bool passes(VerseFragment fragment) => switch (this) {
+    forward => true,
+    reverse => !fragment.isEmptyText,
+  };
 }

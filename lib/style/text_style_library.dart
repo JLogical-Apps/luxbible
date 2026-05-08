@@ -10,6 +10,7 @@ class TextStyleLibrary {
   TextStyle get base =>
       TextStyle(fontFamily: 'Inter', color: colorLibrary.contentPrimary, decorationColor: colorLibrary.contentPrimary);
 
+  TextStyle get headingSm => base.bold.copyWith(fontSize: 24, height: 32 / 24, letterSpacing: 0.3);
   TextStyle get headingXs => base.bold.copyWith(fontSize: 20, height: 28 / 20, letterSpacing: 0.3);
   TextStyle get headingXxs => base.bold.copyWith(fontSize: 18, height: 24 / 18, letterSpacing: 0.3);
 

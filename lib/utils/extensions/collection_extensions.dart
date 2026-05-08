@@ -130,6 +130,9 @@ extension BibleMapExtensions<K, V> on Map<K, V> {
   Map<K, V> sortedBy<E extends Comparable<E>>(E Function(K, V) elementGetter) =>
       entries.sortedBy((entry) => elementGetter(entry.key, entry.value)).toMap();
 
+  Map<K, V> maybeSortedBy<E extends Comparable<E>>(E Function(K, V) elementGetter, {required bool shouldSort}) =>
+      shouldSort ? entries.sortedBy((entry) => elementGetter(entry.key, entry.value)).toMap() : this;
+
   Map<K, V> take(int amount) => entries.take(amount).toMap();
 
   Map<K, V> withRemoved(K key) => {...this}..remove(key);

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bible/display/bible.dart';
@@ -10,8 +12,6 @@ import 'package:bible/models/bible/study/book.dart';
 import 'package:bible/models/bible/study/chapter.dart';
 import 'package:bible/models/bible/study/study_verse.dart';
 import 'package:bible/models/bible/study/verse_fragment.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
-import 'package:bible/utils/toml_helpers.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
 import 'package:utils_core/utils_core.dart';
@@ -20,12 +20,57 @@ import 'package:xml/xml.dart';
 class BibleImporter {
   Future<DisplayBible> importDisplay({required BibleTranslation translation}) async {
     return switch (translation) {
-      .kjv || .asv => DisplayBible.fromStudy(await parseTomlBible(translation: translation)),
+      .kjv || .asv => DisplayBible.fromStudy(await importStudy(translation: translation)),
       .bsb => await parseUsxBible(translation: translation),
     };
   }
 
-  Future<StudyBible> importStudy({required BibleTranslation translation}) => parseTomlBible(translation: translation);
+  Future<StudyBible> importStudy({required BibleTranslation translation}) async {
+    final json =
+        jsonDecode(await rootBundle.loadString('assets/translations/${translation.name}.json')) as Map<String, dynamic>;
+    return StudyBible(
+      translation: translation,
+      books: json
+          .mapToIterable(
+            (bookCode, book) => StudyBook(
+              bookType: BookType.fromJsonKey(bookCode),
+              chapters: (book as Map<String, dynamic>)
+                  .mapToIterable(
+                    (chapterNum, chapter) => StudyChapter(
+                      verses: (chapter as Map<String, dynamic>).map(
+                        (verseNum, verse) => MapEntry(
+                          int.parse(verseNum),
+                          StudyVerse(
+                            fragments: switch (verse) {
+                              String text => [VerseFragment(text: text)],
+                              List list =>
+                                list
+                                    .cast<Map<String, dynamic>>()
+                                    .map(
+                                      (fragment) => VerseFragment(
+                                        text: fragment['e'],
+                                        study: VerseFragmentStudy(
+                                          originalPosition: fragment['op'],
+                                          strongId: fragment['s'],
+                                          inflection: fragment['w'],
+                                          morphology: fragment['m'],
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              _ => [],
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          )
+          .toList(),
+    );
+  }
 
   Future<DisplayBible> parseUsxBible({required BibleTranslation translation}) async {
     return DisplayBible(
@@ -104,46 +149,6 @@ class BibleImporter {
           }).toList(),
         );
       }).wait,
-    );
-  }
-
-  Future<StudyBible> parseTomlBible({required BibleTranslation translation}) async {
-    final rawToml = await rootBundle.loadString('assets/translations/${translation.name}.toml');
-    return StudyBible(
-      translation: translation,
-      books: rawToml
-          .split('\n')
-          .batchBy((line) => line.isEmpty)
-          .map((lines) {
-            final keyParts = lines.first.substring(1, lines.first.length - 1).split('.');
-            return MapEntry(
-              (BookType.fromTomlKey(keyParts.first), int.parse(keyParts[1])),
-              lines
-                  .skip(1)
-                  .map((line) => line.split(' = '))
-                  .mapToMap(
-                    (sections) => MapEntry(
-                      int.parse(sections.first),
-                      StudyVerse(
-                        fragments: TomlHelpers.parseNestedArray(
-                          sections[1].substring(1, sections[1].length - 1),
-                        ).map((list) => VerseFragment(text: list.first, strongIds: list.skip(1).toList())).toList(),
-                      ),
-                    ),
-                  ),
-            );
-          })
-          .groupListsBy((section) => section.key.$1)
-          .mapToIterable(
-            (book, bookParts) => StudyBook(
-              bookType: book,
-              chapters: bookParts
-                  .groupListsBy((bookPart) => bookPart.key.$2)
-                  .mapToIterable((chapterNum, chapterParts) => StudyChapter(verses: chapterParts.first.value))
-                  .toList(),
-            ),
-          )
-          .toList(),
     );
   }
 }

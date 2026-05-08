@@ -44,5 +44,6 @@ export 'widgets/styled_select.dart';
 export 'widgets/styled_sticky_header.dart';
 export 'widgets/styled_swipeable.dart';
 export 'widgets/styled_switch.dart';
+export 'widgets/styled_tab_bar.dart';
 export 'widgets/styled_text_field.dart';
 export 'widgets/styled_tile.dart';

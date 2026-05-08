@@ -1,20 +1,26 @@
-import 'package:bible/style/color_builder.dart';
-import 'package:bible/style/widgets/styled_card.dart';
-import 'package:bible/style/widgets/styled_list_item.dart';
+import 'package:bible/style/style.dart';
+import 'package:bible/style/styled_text_action.dart';
 import 'package:flutter/material.dart';
 
 class StyledBanner extends StatelessWidget {
+  final Widget? leading;
   final Widget message;
+  final StyledTextAction? action;
 
   final ColorBuilder? colorBuilder;
 
-  const StyledBanner({super.key, required this.message, this.colorBuilder});
+  const StyledBanner({super.key, this.leading, required this.message, this.action, this.colorBuilder});
 
   @override
   Widget build(BuildContext context) {
+    final action = this.action;
     return StyledCard.child(
       colorBuilder: colorBuilder ?? .surfaceTertiary,
-      child: StyledListItem(title: message),
+      child: StyledListItem(
+        leading: leading,
+        title: message,
+        trailing: action == null ? null : StyledPillButton(label: action.label, onPressed: action.onPressed),
+      ),
     );
   }
 }

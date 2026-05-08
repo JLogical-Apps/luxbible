@@ -2,10 +2,12 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:bible/style/color_library.dart';
 import 'package:bible/style/text_style_library.dart';
 import 'package:bible/style/widgets/component_size.dart';
+import 'package:bible/style/widgets/dialog/styled_dialog.dart';
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/sheet/styled_sheet_navigation_context.dart';
 import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:provider/provider.dart';
 
@@ -15,6 +17,28 @@ extension StyleContextExtensions on BuildContext {
   ColorLibrary get colors => ColorLibrary(brightness: brightness);
 
   TextStyleLibrary get textStyle => TextStyleLibrary(colorLibrary: colors);
+
+  Future<T?> showStyledDialog<T>(StyledDialog<T> Function(BuildContext context) dialogBuilder) async {
+    return await showModalBottomSheet(
+      context: this,
+      isScrollControlled: true,
+      isDismissible: true,
+      shape: RoundedRectangleBorder(borderRadius: .circular(16)),
+      enableDrag: false,
+      backgroundColor: Colors.transparent,
+      useRootNavigator: true,
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.sizeOf(this).width - 32,
+        maxHeight: MediaQuery.sizeOf(this).height - 48,
+      ),
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.paddingOf(context).bottom + MediaQuery.viewInsetsOf(context).bottom + 16,
+        ),
+        child: dialogBuilder(context),
+      ),
+    );
+  }
 
   Future<T?> showStyledSheet<T>(
     StyledSheet<T> Function(BuildContext context) sheetBuilder, {
@@ -58,7 +82,7 @@ extension StyleContextExtensions on BuildContext {
       useRootNavigator: true,
       builder: (context) => Provider.value(
         value: sheetContext.withBreadcrumb(SheetNavigationBreadcrumb(text: breadcrumbText, sheetBuilder: sheetBuilder)),
-        child: Builder(builder: sheetBuilder),
+        child: HookBuilder(builder: sheetBuilder),
       ),
     );
   }

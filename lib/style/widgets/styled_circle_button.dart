@@ -15,6 +15,10 @@ class StyledCircleButton extends StatelessWidget {
     : _iconSize = 24,
       _dimension = 40;
 
+  const StyledCircleButton.md({super.key, required this.child, required this.onPressed, this.colorBuilder})
+    : _iconSize = 24,
+      _dimension = 40;
+
   const StyledCircleButton.sm({super.key, required this.child, required this.onPressed, this.colorBuilder})
     : _iconSize = 16,
       _dimension = 32;

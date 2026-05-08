@@ -7,7 +7,7 @@ class StudyVerse {
   StudyVerse({required this.fragments});
 
   late final String text = fragments.map((fragment) => fragment.text.replaceAll(RegExp(r'[\[\]]'), '')).join();
-  late final List<String> strongIds = fragments.expand((fragment) => fragment.strongIds).toList();
+  late final List<String> strongIds = fragments.map((fragment) => fragment.study?.strongId).nonNulls.toList();
 
   late final List<String> searchTerms = text.toLowerCase().onlyLetters.split(' ').toList();
 }
