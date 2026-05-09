@@ -64,7 +64,10 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
     final viewModeState = useState(_ViewMode.book);
 
     List<BookType> getMatchingBooks({String? text}) => BookType.values
-        .where((book) => book.title().toUpperCase().startsWith((text ?? bookTextState.value).toUpperCase()))
+        .where(
+          (book) =>
+              book.title().keywords.any((keyword) => keyword.startsWith((text ?? bookTextState.value).toLowerCase())),
+        )
         .toList();
     BookType? getBook({String? text}) => getMatchingBooks(text: text).singleOrNull;
 
