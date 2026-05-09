@@ -62,7 +62,6 @@ enum SelectionAction {
           ref.updateUser((user) => user.withAnnotation(annotation));
         }
       case search:
-        onDeselect();
         final result =
             await context.push(
                   SearchPage(
