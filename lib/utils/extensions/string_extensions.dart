@@ -6,6 +6,8 @@ extension StringExtensions on String {
   String get onlyLetters => replaceAll(RegExp(r"[^a-zA-Z ]"), "");
   bool get isLetterOnly => contains(RegExp(r"[^a-zA-Z'\-]"));
 
+  String trimPunctuation() => replaceAll(RegExp(r'[\p{P}\p{S}]$', unicode: true), '');
+
   bool get isStrongId => RegExp(r'^[GH]\d{1,4}$').hasMatch(this);
 
   Text toText() => Text(this);

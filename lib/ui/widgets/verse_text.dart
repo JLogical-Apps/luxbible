@@ -17,7 +17,7 @@ class VerseText extends StatelessWidget {
             .where((fragment) => !fragment.isEmptyText)
             .map(
               (fragment) => TextSpan(
-                text: fragment.text,
+                text: fragment.displayText,
                 style: highlightStrongId != null && fragment.study?.strongId == highlightStrongId
                     ? TextStyle(fontWeight: FontWeight.bold)
                     : null,

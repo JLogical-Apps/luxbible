@@ -196,7 +196,7 @@ enum StudyAction {
                                 ),
                                 subtitle: Column(
                                   crossAxisAlignment: .start,
-                                  children: [fragment.text.toText(), ?study.morphology?.toText()],
+                                  children: [fragment.displayText.toText(), ?study.morphology?.toText()],
                                 ),
                                 trailing: study.inflection == null ? null : Symbols.chevron_right.toIcon(),
                                 onPressed: study.inflection == null
@@ -213,7 +213,7 @@ enum StudyAction {
                                       },
                               ),
                               .reverse => StyledListItem(
-                                title: fragment.text.trim().toText(),
+                                title: fragment.displayText.toText(),
                                 subtitle: Column(
                                   crossAxisAlignment: .start,
                                   children: [
@@ -318,6 +318,7 @@ enum StudyAction {
                                       .getVersesBySpan(references)
                                       .map((verse) => verse.text)
                                       .join(' ')
+                                      .replaceAll(RegExp(r' +'), ' ')
                                       .toText(),
                                   onPressed: () {
                                     context.pop();

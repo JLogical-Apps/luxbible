@@ -45,7 +45,7 @@ class FragmentSheet {
             padding: .only(top: 24),
             children: [
               StyledListItem(title: 'Inflected'.toText(), subtitle: inflection.toText()),
-              StyledListItem(title: 'English'.toText(), subtitle: fragment.text.toText()),
+              StyledListItem(title: 'English'.toText(), subtitle: fragment.displayText.toText()),
             ],
           ),
           if (strong != null)

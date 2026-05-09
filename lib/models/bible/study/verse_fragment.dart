@@ -1,10 +1,14 @@
+import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
+
 class VerseFragment {
   final String text;
   final VerseFragmentStudy? study;
 
   const VerseFragment({required this.text, this.study});
 
-  bool get isEmptyText => ['', '-', 'vvv', '. . .'].contains(text.trim());
+  String get displayText => text.replaceAll(RegExp(r'[\[\]]'), '').replaceAll(RegExp(r'[{}]'), '');
+  bool get isEmptyText => ['', '-', 'vvv', '. . .'].containsAny([text.trim(), text.trim().trimPunctuation()]);
 }
 
 class VerseFragmentStudy {
