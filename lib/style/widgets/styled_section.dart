@@ -1,10 +1,9 @@
-import 'package:bible/style/gap.dart';
-import 'package:bible/style/style_context_extensions.dart';
-import 'package:bible/style/widgets/styled_list.dart';
+import 'package:bible/style/style.dart';
 import 'package:flutter/material.dart';
 
 class StyledSection extends StatelessWidget {
   final Widget title;
+  final Widget? subtitle;
   final Widget? trailing;
 
   final List<Widget> children;
@@ -15,6 +14,7 @@ class StyledSection extends StatelessWidget {
   const StyledSection({
     super.key,
     required this.title,
+    this.subtitle,
     this.trailing,
     required this.children,
     this.padding = const .only(top: 36),
@@ -24,6 +24,7 @@ class StyledSection extends StatelessWidget {
   StyledSection.child({
     super.key,
     required this.title,
+    this.subtitle,
     this.trailing,
     required Widget child,
     this.padding = const .only(top: 36),
@@ -38,7 +39,14 @@ class StyledSection extends StatelessWidget {
         spacing: 8,
         children: [
           Expanded(
-            child: DefaultTextStyle(style: context.textStyle.headingXs, child: title),
+            child: Column(
+              crossAxisAlignment: .start,
+              children: [
+                DefaultTextStyle(style: context.textStyle.headingXs, child: title),
+                if (subtitle case final subtitle?)
+                  DefaultTextStyle(style: context.textStyle.paragraphSm.subtle(context), child: subtitle),
+              ],
+            ),
           ),
           ?trailing,
         ],

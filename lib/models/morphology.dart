@@ -1,11 +1,3 @@
-/// Parsed morphology codes from BibleHub-style annotations such as
-/// `Prep-b | N-fs`, `V-Qal-Perf-3ms`, or `V-PIA-3S`.
-///
-/// A single annotation can describe multiple morphology entities — for
-/// example `Prep-b | N-fs` is a prefixed preposition attached to a feminine
-/// singular noun — so [Morphology.fromCode] returns a `List<Morphology>`.
-library;
-
 /// A value rendered as the right-hand side of a [Morphology.attributes] entry.
 /// Provides everything a UI needs to show a labeled, explained chip or list item.
 abstract interface class MorphologyAttributeValue {
@@ -24,11 +16,7 @@ class MorphologyAttributeLiteral implements MorphologyAttributeValue {
   @override
   final List<String> examples;
 
-  const MorphologyAttributeLiteral({
-    required this.displayName,
-    required this.description,
-    this.examples = const [],
-  });
+  const MorphologyAttributeLiteral({required this.displayName, required this.description, this.examples = const []});
 }
 
 /// Keys used by [Morphology.attributes] for UI rendering as key/value pairs.
@@ -47,7 +35,6 @@ enum MorphologyAttribute {
   aspect,
   prefix,
   particle,
-  ordinal,
   code;
 
   String get displayName => switch (this) {
@@ -65,7 +52,6 @@ enum MorphologyAttribute {
     aspect => 'Aspect',
     prefix => 'Prefix',
     particle => 'Particle',
-    ordinal => 'Ordinal',
     code => 'Code',
   };
 
@@ -84,7 +70,6 @@ enum MorphologyAttribute {
     aspect => 'In Hebrew, the verb aspect — perfect, imperfect, participle, etc.',
     prefix => 'A Hebrew prefixed preposition letter.',
     particle => 'A small uninflected word — often a conjunction or marker.',
-    ordinal => 'Whether the number is ordinal (first, second, etc.).',
     code => 'The raw morphology code as it appears in the source text.',
   };
 }
@@ -228,16 +213,16 @@ enum MorphologyType implements MorphologyAttributeValue {
     .relativePronoun => ['who', 'which', 'that'],
     .particle => ['indeed', 'now'],
     .negativeParticle => ['not', 'no'],
-    .interrogativeParticle => ['whether', '(question marker)'],
+    .interrogativeParticle => ['(Hebrew prefix ה, no English equivalent)'],
     .demonstrativeParticle => ['behold', 'lo'],
     .genericParticle => ['indeed', 'truly'],
     .relativeParticle => ['that', 'which'],
     .verb => ['write', 'be', 'go'],
-    .pronominalSuffix => ['his hand', 'they killed me'],
-    .directObjectMarker => ['(marks the direct object)'],
+    .pronominalSuffix => ['his hand', 'their land', 'her voice'],
+    .directObjectMarker => ['אֵת (no English equivalent)'],
     .punctuation => ['.', ',', ';'],
     .interjection => ['oh!', 'alas!'],
-    .indeclinable => ['Amen', 'Hallelujah'],
+    .indeclinable => ['Hosanna', 'Hallelujah'],
     .hebraism => ['Amen', 'Hosanna', 'Sabaoth'],
     .unknown => [],
   };
@@ -433,7 +418,7 @@ enum HebrewStem implements MorphologyAttributeValue {
     .qal => ['he wrote', 'she heard'],
     .qalPassive => ['it was taken'],
     .niphal => ['he was killed', 'they gathered themselves'],
-    .piel => ['he shattered', 'he commanded'],
+    .piel => ['he praised', 'he blessed', 'he shattered'],
     .pual => ['he was praised'],
     .hiphil => ['he caused to write', 'he led out'],
     .hophal => ['he was caused to write'],
@@ -548,7 +533,7 @@ enum GreekTense implements MorphologyAttributeValue {
     .present => 'Ongoing or general action.',
     .imperfect => 'Continuous or repeated past action.',
     .future => 'Action that will happen.',
-    .aorist => 'Simple past action — undefined aspect.',
+    .aorist => 'Simple past action — viewed as a whole.',
     .perfect => 'Past action with continuing present consequence.',
     .pluperfect => 'Past action prior to another past event.',
   };
@@ -630,7 +615,7 @@ enum GreekVoice implements MorphologyAttributeValue {
     .active => ['he writes', 'they teach'],
     .middle => ['he washes himself', 'they obtained for themselves'],
     .passive => ['he was sent', 'they were taught'],
-    .middleOrPassive => ['has been sent', 'is being taught'],
+    .middleOrPassive => ['was raised / raised himself', 'was assembled / assembled themselves'],
   };
 }
 
@@ -664,13 +649,11 @@ enum Degree implements MorphologyAttributeValue {
 sealed class Morphology {
   const Morphology();
 
+  static List<String> splitCode(String code) =>
+      code.split(RegExp(r'\s*[|,]\s*')).map((s) => s.trim()).where((s) => s.isNotEmpty).toList();
+
   /// Parses a full morphology code. Components are separated by `|` or `,`.
-  static List<Morphology> fromCode(String code) => code
-      .split(RegExp(r'\s*[|,]\s*'))
-      .map((s) => s.trim())
-      .where((s) => s.isNotEmpty)
-      .map(_parseOne)
-      .toList(growable: false);
+  static List<Morphology> fromCodes(String code) => splitCode(code).map(_parseOne).toList();
 
   /// Parses a single component (no separators).
   static Morphology parse(String part) => _parseOne(part);
@@ -1234,40 +1217,45 @@ class MorphologyDirectObjectMarker extends Morphology {
   const MorphologyDirectObjectMarker();
 
   @override
-  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes =>
-      const {MorphologyAttribute.type: MorphologyType.directObjectMarker};
+  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => const {
+    MorphologyAttribute.type: MorphologyType.directObjectMarker,
+  };
 }
 
 class MorphologyPunctuation extends Morphology {
   const MorphologyPunctuation();
 
   @override
-  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes =>
-      const {MorphologyAttribute.type: MorphologyType.punctuation};
+  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => const {
+    MorphologyAttribute.type: MorphologyType.punctuation,
+  };
 }
 
 class MorphologyInterjection extends Morphology {
   const MorphologyInterjection();
 
   @override
-  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes =>
-      const {MorphologyAttribute.type: MorphologyType.interjection};
+  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => const {
+    MorphologyAttribute.type: MorphologyType.interjection,
+  };
 }
 
 class MorphologyIndeclinable extends Morphology {
   const MorphologyIndeclinable();
 
   @override
-  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes =>
-      const {MorphologyAttribute.type: MorphologyType.indeclinable};
+  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => const {
+    MorphologyAttribute.type: MorphologyType.indeclinable,
+  };
 }
 
 class MorphologyHebraism extends Morphology {
   const MorphologyHebraism();
 
   @override
-  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes =>
-      const {MorphologyAttribute.type: MorphologyType.hebraism};
+  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => const {
+    MorphologyAttribute.type: MorphologyType.hebraism,
+  };
 }
 
 /// Fallback for codes that don't match any known pattern.

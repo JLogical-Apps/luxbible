@@ -5,6 +5,7 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 class StyledListItem extends StatelessWidget {
   final Widget? title;
   final Widget? subtitle;
+  final Widget? thirdLine;
   final Widget? leading;
   final Widget? trailing;
 
@@ -17,6 +18,7 @@ class StyledListItem extends StatelessWidget {
     super.key,
     this.title,
     this.subtitle,
+    this.thirdLine,
     this.leading,
     this.trailing,
     this.onPressed,
@@ -28,6 +30,7 @@ class StyledListItem extends StatelessWidget {
     super.key,
     this.title,
     this.subtitle,
+    this.thirdLine,
     this.leading,
     this.onPressed,
     this.size = ComponentSize.md,
@@ -38,6 +41,7 @@ class StyledListItem extends StatelessWidget {
     super.key,
     this.title,
     this.subtitle,
+    this.thirdLine,
     this.leading,
     required bool selected,
     required Function() onSelected,
@@ -50,6 +54,7 @@ class StyledListItem extends StatelessWidget {
     super.key,
     this.title,
     this.subtitle,
+    this.thirdLine,
     this.leading,
     required bool isSelected,
     required Function(bool newValue) onSelected,
@@ -62,6 +67,7 @@ class StyledListItem extends StatelessWidget {
     super.key,
     this.title,
     this.subtitle,
+    this.thirdLine,
     this.leading,
     required bool selected,
     required Function(bool newValue) onSelected,
@@ -121,6 +127,13 @@ class StyledListItem extends StatelessWidget {
                                         .subtle(context)
                                         .disabled(context, disabled: !enabled),
                                     child: subtitle,
+                                  ),
+                                if (thirdLine case final thirdLine?)
+                                  DefaultTextStyle(
+                                    style: context.textStyle.paragraphSm
+                                        .subtle(context)
+                                        .disabled(context, disabled: !enabled),
+                                    child: thirdLine,
                                   ),
                               ],
                             ),
