@@ -56,6 +56,24 @@ class StyledSheet<T> extends HookWidget {
   Widget build(BuildContext context) {
     final sheetNavigationContext = context.watch<SheetNavigationBreadcrumbContext?>();
 
+    void navigateToBreadcrumb({required int breadcrumbIndex}) {
+      if (sheetNavigationContext == null) {
+        return;
+      }
+
+      final breadcrumb = sheetNavigationContext.breadcrumbs[breadcrumbIndex];
+      context.pop();
+      context.showStyledSheet(
+        (context) => breadcrumb.sheetBuilder(context),
+        wrapper: (sheetBuilder) => Provider.value(
+          value: SheetNavigationBreadcrumbContext(
+            breadcrumbs: sheetNavigationContext.breadcrumbs.take(breadcrumbIndex + 1).toList(),
+          ),
+          child: HookBuilder(builder: sheetBuilder),
+        ),
+      );
+    }
+
     return Container(
       decoration: BoxDecoration(
         color: context.colors.surfacePrimary,
@@ -87,7 +105,13 @@ class StyledSheet<T> extends HookWidget {
                   SizedBox(
                     width: 48,
                     child: Center(
-                      child: StyledCircleButton.lg(child: Symbols.close.toIcon(), onPressed: () => context.pop()),
+                      child: sheetNavigationContext != null && sheetNavigationContext.breadcrumbs.length > 1
+                          ? StyledCircleButton.lg(
+                              child: Symbols.arrow_back.toIcon(),
+                              onPressed: () =>
+                                  navigateToBreadcrumb(breadcrumbIndex: sheetNavigationContext.breadcrumbs.length - 2),
+                            )
+                          : StyledCircleButton.lg(child: Symbols.close.toIcon(), onPressed: () => context.pop()),
                     ),
                   ),
                   Expanded(
@@ -128,18 +152,7 @@ class StyledSheet<T> extends HookWidget {
                       (i, breadcrumb) => StyledChip(
                         onPressed: i + 1 == sheetNavigationContext.breadcrumbs.length
                             ? null
-                            : () {
-                                context.pop();
-                                context.showStyledSheet(
-                                  (context) => breadcrumb.sheetBuilder(context),
-                                  wrapper: (sheetBuilder) => Provider.value(
-                                    value: SheetNavigationBreadcrumbContext(
-                                      breadcrumbs: sheetNavigationContext.breadcrumbs.take(i + 1).toList(),
-                                    ),
-                                    child: HookBuilder(builder: sheetBuilder),
-                                  ),
-                                );
-                              },
+                            : () => navigateToBreadcrumb(breadcrumbIndex: i),
                         child: Text(breadcrumb.text),
                       ),
                     )
