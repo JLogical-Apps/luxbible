@@ -18,7 +18,7 @@ class StrongSheet {
     WidgetRef ref, {
     required String strongId,
     required User user,
-    required Function(Passage) onNavigateToPassage,
+    Function(Passage)? onNavigateToPassage,
   }) async {
     final strongs = ref.read(strongsProvider);
     final strong = strongs[strongId];
@@ -73,7 +73,7 @@ class StrongSheet {
                   )
                   .toList(),
             ),
-          if (otherReferences.isNotEmpty)
+          if (otherReferences.isNotEmpty && onNavigateToPassage != null)
             ...StyledSection(
               title: 'Concordance'.toText(),
               padding: .only(top: 24),

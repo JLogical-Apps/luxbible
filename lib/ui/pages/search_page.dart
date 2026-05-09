@@ -3,8 +3,10 @@ import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/testament.dart';
 import 'package:bible/providers/bibles_provider.dart';
+import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/sheets/strong_sheet.dart';
 import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
@@ -38,6 +40,8 @@ class SearchPage extends HookConsumerWidget {
     final bibles = ref.watch(studyBiblesProvider);
 
     final bible = user.getStudyBible(bibles);
+
+    final strongs = ref.watch(strongsProvider);
 
     final textState = useState(initialSearch ?? '');
     final searchState = useState(textState.value);
@@ -218,7 +222,26 @@ class SearchPage extends HookConsumerWidget {
                         leading: Symbols.search.toIcon(),
                       ),
                     )
-                  else
+                  else ...[
+                    if (searchState.value.isStrongId)
+                      if (strongs[searchState.value] case final strong?)
+                        Padding(
+                          padding: .all(16),
+                          child: StyledTile(
+                            child: StyledListItem.navigation(
+                              title: Row(
+                                spacing: 8,
+                                children: [
+                                  StyledBadge(text: strong.id),
+                                  Text([strong.languageText, strong.transliteration].join('  ·  ')),
+                                ],
+                              ),
+                              subtitle: strong.definition.toText(),
+                              onPressed: () =>
+                                  StrongSheet.showWithContext(context, ref, user: user, strongId: strong.id),
+                            ),
+                          ),
+                        ),
                     ...searchResults.map((result) {
                       final verse = bible.getVerseByReference(result);
                       if (verse == null) {
@@ -243,6 +266,7 @@ class SearchPage extends HookConsumerWidget {
                         },
                       );
                     }).nonNulls,
+                  ],
                 ],
               ),
             ),
