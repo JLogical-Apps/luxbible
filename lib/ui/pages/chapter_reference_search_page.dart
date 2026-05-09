@@ -63,12 +63,8 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
     final chapterFocusNode = useListenable(useFocusNode());
     final viewModeState = useState(_ViewMode.book);
 
-    List<BookType> getMatchingBooks({String? text}) => BookType.values
-        .where(
-          (book) =>
-              book.title().keywords.any((keyword) => keyword.startsWith((text ?? bookTextState.value).toLowerCase())),
-        )
-        .toList();
+    List<BookType> getMatchingBooks({String? text}) =>
+        BookType.values.where((book) => (text ?? bookTextState.value).passesSearch(book.title().keywords)).toList();
     BookType? getBook({String? text}) => getMatchingBooks(text: text).singleOrNull;
 
     final book = getBook();
