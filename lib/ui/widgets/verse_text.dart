@@ -14,6 +14,7 @@ class VerseText extends StatelessWidget {
     return Text.rich(
       TextSpan(
         children: verse.fragments
+            .where((fragment) => !fragment.isEmptyText)
             .map(
               (fragment) => TextSpan(
                 text: fragment.text,
