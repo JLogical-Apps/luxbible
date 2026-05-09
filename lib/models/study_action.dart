@@ -16,6 +16,7 @@ import 'package:bible/ui/widgets/verses_builder.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
+import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
@@ -97,10 +98,20 @@ enum StudyAction {
         final strongs = ref.watch(strongsProvider);
 
         context.showStyledSheetWithBreadcrumbs(breadcrumbText: region.format(), (context) {
-          final tabController = useTabController(initialLength: InterlinearDirection.values.length);
-          final interlinearDirection = useListenableSelector(tabController, () => tabController.index) == 0
-              ? InterlinearDirection.forward
-              : InterlinearDirection.reverse;
+          final tabController = useTabController(
+            initialLength: InterlinearDirection.values.length,
+            initialIndex: user.interlinearDirection.index,
+          );
+
+          useOnListenableChange(tabController, () {
+            final interlinearDirection = InterlinearDirection.values[tabController.index];
+            if (interlinearDirection != user.interlinearDirection) {
+              ref.updateUser((user) => user.copyWith(interlinearDirection: interlinearDirection));
+            }
+          });
+
+          final interlinearDirection =
+              InterlinearDirection.values[useListenableSelector(tabController, () => tabController.index)];
 
           return StyledSheet(
             title: 'Interlinear'.toText(),
@@ -156,7 +167,7 @@ enum StudyAction {
                           .withoutNullValues
                           .maybeSortedBy(
                             (fragment, study) => study.originalPosition,
-                            shouldSort: tabController.index == 0,
+                            shouldSort: interlinearDirection == .forward,
                           )
                           .mapToIterable(
                             (fragment, study) => switch (interlinearDirection) {
@@ -326,26 +337,26 @@ enum StudyAction {
 }
 
 enum InterlinearDirection {
-  forward,
-  reverse;
+  reverse,
+  forward;
 
   String title() => switch (this) {
-    forward => 'Forward',
     reverse => 'Reverse',
+    forward => 'Forward',
   };
 
   String description() => switch (this) {
-    forward => 'Words appear in the original Hebrew or Greek order.',
     reverse => 'Words appear in the English reading order.',
+    forward => 'Words appear in the original Hebrew or Greek order.',
   };
 
   IconData icon() => switch (this) {
-    forward => Symbols.fast_forward,
     reverse => Symbols.fast_rewind,
+    forward => Symbols.fast_forward,
   };
 
   bool passes(VerseFragment fragment) => switch (this) {
-    forward => true,
     reverse => !fragment.isEmptyText,
+    forward => true,
   };
 }

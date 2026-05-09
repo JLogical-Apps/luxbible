@@ -10,6 +10,7 @@ import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/selection.dart';
+import 'package:bible/models/study_action.dart';
 import 'package:bible/models/user/passage_configuration.dart';
 import 'package:bible/models/user/selection_configuration.dart';
 import 'package:bible/models/user/toolbar_configuration.dart';
@@ -37,6 +38,7 @@ sealed class User with _$User {
     @Default(PassageConfiguration()) PassageConfiguration passage,
     @Default(SelectionConfiguration()) SelectionConfiguration selection,
     @Default([]) List<String> searchHistory,
+    @Default(InterlinearDirection.reverse) InterlinearDirection interlinearDirection,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

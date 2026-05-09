@@ -48,6 +48,12 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
           ?.map((e) => e as String)
           .toList() ??
       const [],
+  interlinearDirection:
+      $enumDecodeNullable(
+        _$InterlinearDirectionEnumMap,
+        json['interlinearDirection'],
+      ) ??
+      InterlinearDirection.reverse,
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -62,6 +68,8 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'passage': instance.passage,
   'selection': instance.selection,
   'searchHistory': instance.searchHistory,
+  'interlinearDirection':
+      _$InterlinearDirectionEnumMap[instance.interlinearDirection]!,
 };
 
 const _$BibleTranslationEnumMap = {
@@ -78,4 +86,9 @@ const _$ColorEnumEnumMap = {
   ColorEnum.blue: 'blue',
   ColorEnum.violet: 'violet',
   ColorEnum.stone: 'stone',
+};
+
+const _$InterlinearDirectionEnumMap = {
+  InterlinearDirection.forward: 'forward',
+  InterlinearDirection.reverse: 'reverse',
 };
