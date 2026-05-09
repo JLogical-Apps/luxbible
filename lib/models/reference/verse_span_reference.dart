@@ -1,6 +1,7 @@
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
+import 'package:collection/collection.dart';
 
 class VerseSpanReference {
   final BiblePointer start;
@@ -20,7 +21,7 @@ class VerseSpanReference {
   }
 
   static List<VerseSpanReference> listFromReferences(List<Reference> references) {
-    references.sort();
+    references = references.sorted();
 
     if (references.isEmpty) {
       return [];

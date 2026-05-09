@@ -89,6 +89,6 @@ const _$ColorEnumEnumMap = {
 };
 
 const _$InterlinearDirectionEnumMap = {
-  InterlinearDirection.forward: 'forward',
   InterlinearDirection.reverse: 'reverse',
+  InterlinearDirection.forward: 'forward',
 };

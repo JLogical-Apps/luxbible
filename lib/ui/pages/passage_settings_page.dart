@@ -62,6 +62,14 @@ class PassageSettingsPage extends ConsumerWidget {
                         onSelected: (newValue) =>
                             ref.updateUser((user) => user.copyWith.passage(expandToAnnotation: newValue)),
                       ),
+                      StyledListItem.switchControl(
+                        title: 'Range Selection'.toText(),
+                        subtitle: 'Tapping a second verse selects all verses between it and the first.'.toText(),
+                        leading: Symbols.format_letter_spacing.toIcon(),
+                        selected: passageConfiguration.rangeSelection,
+                        onSelected: (newValue) =>
+                            ref.updateUser((user) => user.copyWith.passage(rangeSelection: newValue)),
+                      ),
                     ],
                   ),
                 ),

@@ -149,6 +149,16 @@ class BiblePage extends HookConsumerWidget {
                                     } else if (selectedReferencesState.value.isEmpty &&
                                         user.passage.expandToAnnotation) {
                                       selectedReferencesState.value = user.getExpandedReferences(reference);
+                                    } else if (!selectedReferencesState.value.contains(reference) &&
+                                        selectedReferencesState.value.isNotEmpty &&
+                                        user.passage.rangeSelection) {
+                                      final anchorReference = selectedReferencesState.value.first;
+                                      final referenceAnchors = [anchorReference, reference];
+
+                                      selectedReferencesState.value = Reference.getReferencesBetween(
+                                        referenceAnchors.min,
+                                        referenceAnchors.max,
+                                      ).toList().withRemoved(anchorReference).withInsert(0, anchorReference);
                                     } else {
                                       selectedReferencesState.value = selectedReferencesState.value.withToggle(
                                         reference,
