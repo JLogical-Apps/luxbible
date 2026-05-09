@@ -11,8 +11,10 @@ abstract interface class MorphologyAttributeValue {
 class MorphologyAttributeLiteral implements MorphologyAttributeValue {
   @override
   final String displayName;
+
   @override
   final String description;
+
   @override
   final List<String> examples;
 
@@ -57,17 +59,17 @@ enum MorphologyAttribute {
 
   String get description => switch (this) {
     type => 'The grammatical category of the word.',
-    grammaticalCase => 'In Greek, the case marks the syntactic role — subject, object, possession, etc.',
+    grammaticalCase => 'The case marks the syntactic role — subject, object, possession, etc.',
     gender => 'Grammatical gender — masculine, feminine, neuter (Greek), or common (Hebrew).',
     number => 'Whether the word refers to one (singular), two (dual), or many (plural).',
     person => 'Who the word refers to — 1st (I/we), 2nd (you), or 3rd (he/she/it/they).',
-    state => 'In Hebrew, the state of a noun — absolute, construct, or determined.',
-    tense => 'In Greek, the verb tense — combines time and aspect.',
+    state => 'The state of a noun — absolute, construct, or determined.',
+    tense => 'The verb tense — combines time and aspect.',
     mood => 'How the action is expressed — fact, command, possibility, etc.',
-    voice => 'In Greek, the voice — active, middle, or passive.',
+    voice => 'The voice — active, middle, or passive.',
     degree => 'The degree of an adjective or adverb — positive, comparative, or superlative.',
-    stem => 'In Hebrew, the verb stem (binyan) — qal, niphal, piel, etc.',
-    aspect => 'In Hebrew, the verb aspect — perfect, imperfect, participle, etc.',
+    stem => 'The verb stem (binyan) — qal, niphal, piel, etc.',
+    aspect => 'The verb aspect — perfect, imperfect, participle, etc.',
     prefix => 'A Hebrew prefixed preposition letter.',
     particle => 'A small uninflected word — often a conjunction or marker.',
     code => 'The raw morphology code as it appears in the source text.',
@@ -121,110 +123,110 @@ enum MorphologyType implements MorphologyAttributeValue {
 
   @override
   String get displayName => switch (this) {
-    .article => 'Article',
-    .conjunction => 'Conjunction',
-    .preposition => 'Preposition',
-    .adverb => 'Adverb',
-    .negativeAdverb => 'Negative adverb',
-    .adjective => 'Adjective',
-    .noun => 'Noun',
-    .properNoun => 'Proper noun',
-    .number => 'Number',
-    .ordinalNumber => 'Ordinal number',
-    .pronoun => 'Pronoun',
-    .personalPronoun => 'Personal pronoun',
-    .demonstrativePronoun => 'Demonstrative pronoun',
-    .interrogativePronoun => 'Interrogative pronoun',
-    .indefinitePronoun => 'Indefinite pronoun',
-    .reciprocalPronoun => 'Reciprocal pronoun',
-    .reflexivePronoun => 'Reflexive pronoun',
-    .relativePronoun => 'Relative pronoun',
-    .particle => 'Particle',
-    .negativeParticle => 'Negative particle',
-    .interrogativeParticle => 'Interrogative particle',
-    .demonstrativeParticle => 'Demonstrative particle',
-    .genericParticle => 'Generic particle',
-    .relativeParticle => 'Relative particle',
-    .verb => 'Verb',
-    .pronominalSuffix => 'Pronominal suffix',
-    .directObjectMarker => 'Direct object marker',
-    .punctuation => 'Punctuation',
-    .interjection => 'Interjection',
-    .indeclinable => 'Indeclinable',
-    .hebraism => 'Hebrew loanword',
-    .unknown => 'Unknown',
+    article => 'Article',
+    conjunction => 'Conjunction',
+    preposition => 'Preposition',
+    adverb => 'Adverb',
+    negativeAdverb => 'Negative adverb',
+    adjective => 'Adjective',
+    noun => 'Noun',
+    properNoun => 'Proper noun',
+    number => 'Number',
+    ordinalNumber => 'Ordinal number',
+    pronoun => 'Pronoun',
+    personalPronoun => 'Personal pronoun',
+    demonstrativePronoun => 'Demonstrative pronoun',
+    interrogativePronoun => 'Interrogative pronoun',
+    indefinitePronoun => 'Indefinite pronoun',
+    reciprocalPronoun => 'Reciprocal pronoun',
+    reflexivePronoun => 'Reflexive pronoun',
+    relativePronoun => 'Relative pronoun',
+    particle => 'Particle',
+    negativeParticle => 'Negative particle',
+    interrogativeParticle => 'Interrogative particle',
+    demonstrativeParticle => 'Demonstrative particle',
+    genericParticle => 'Generic particle',
+    relativeParticle => 'Relative particle',
+    verb => 'Verb',
+    pronominalSuffix => 'Pronominal suffix',
+    directObjectMarker => 'Direct object marker',
+    punctuation => 'Punctuation',
+    interjection => 'Interjection',
+    indeclinable => 'Indeclinable',
+    hebraism => 'Hebrew loanword',
+    unknown => 'Unknown',
   };
 
   @override
   String get description => switch (this) {
-    .article => 'A definite article — "the".',
-    .conjunction => 'A word that joins other words or clauses.',
-    .preposition => 'Relates a noun or pronoun to other words.',
-    .adverb => 'Modifies a verb, adjective, or another adverb.',
-    .negativeAdverb => 'An adverb expressing negation.',
-    .adjective => 'A word that describes a noun.',
-    .noun => 'A person, place, thing, or idea.',
-    .properNoun => 'A specific name of a person, place, or thing.',
-    .number => 'A cardinal number.',
-    .ordinalNumber => 'An ordinal number — "first", "second", and so on.',
-    .pronoun => 'A word that stands in for a noun.',
-    .personalPronoun => 'A pronoun that refers to a specific person — I, you, he, she.',
-    .demonstrativePronoun => 'A pronoun that points to something — "this", "that".',
-    .interrogativePronoun => 'A pronoun used to ask a question — "who", "what".',
-    .indefinitePronoun => 'A pronoun referring to non-specific entities.',
-    .reciprocalPronoun => 'A pronoun expressing mutual action — "one another".',
-    .reflexivePronoun => 'A pronoun referring back to the subject — "himself", "themselves".',
-    .relativePronoun => 'A pronoun introducing a subordinate clause — "who", "which", "that".',
-    .particle => 'A small uninflected word.',
-    .negativeParticle => 'A particle that marks negation.',
-    .interrogativeParticle => 'A particle that marks a question.',
-    .demonstrativeParticle => 'A pointing particle — "behold".',
-    .genericParticle => 'A general-purpose particle.',
-    .relativeParticle => 'A particle that introduces a relative clause.',
-    .verb => 'A word expressing an action or state.',
-    .pronominalSuffix => 'A pronoun fused to the end of a verb or noun (Hebrew).',
-    .directObjectMarker => 'The Hebrew אֵת that marks a definite direct object.',
-    .punctuation => 'A punctuation mark.',
-    .interjection => 'A short exclamation expressing emotion.',
-    .indeclinable => 'A word that does not change form by inflection.',
-    .hebraism => 'A Hebrew or Aramaic loanword carried into Greek.',
-    .unknown => 'A morphology code that the parser did not recognize.',
+    article => 'A definite article — "the".',
+    conjunction => 'A word that joins other words or clauses.',
+    preposition => 'Relates a noun or pronoun to other words.',
+    adverb => 'Modifies a verb, adjective, or another adverb.',
+    negativeAdverb => 'An adverb expressing negation.',
+    adjective => 'A word that describes a noun.',
+    noun => 'A person, place, thing, or idea.',
+    properNoun => 'A specific name of a person, place, or thing.',
+    number => 'A cardinal number.',
+    ordinalNumber => 'An ordinal number — "first", "second", and so on.',
+    pronoun => 'A word that stands in for a noun.',
+    personalPronoun => 'A pronoun that refers to a specific person — I, you, he, she.',
+    demonstrativePronoun => 'A pronoun that points to something — "this", "that".',
+    interrogativePronoun => 'A pronoun used to ask a question — "who", "what".',
+    indefinitePronoun => 'A pronoun referring to non-specific entities.',
+    reciprocalPronoun => 'A pronoun expressing mutual action — "one another".',
+    reflexivePronoun => 'A pronoun referring back to the subject — "himself", "themselves".',
+    relativePronoun => 'A pronoun introducing a subordinate clause — "who", "which", "that".',
+    particle => 'A small uninflected word.',
+    negativeParticle => 'A particle that marks negation.',
+    interrogativeParticle => 'A particle that marks a question.',
+    demonstrativeParticle => 'A pointing particle — "behold".',
+    genericParticle => 'A general-purpose particle.',
+    relativeParticle => 'A particle that introduces a relative clause.',
+    verb => 'A word expressing an action or state.',
+    pronominalSuffix => 'A pronoun fused to the end of a verb or noun (Hebrew).',
+    directObjectMarker => 'The Hebrew אֵת that marks a definite direct object.',
+    punctuation => 'A punctuation mark.',
+    interjection => 'A short exclamation expressing emotion.',
+    indeclinable => 'A word that does not change form by inflection.',
+    hebraism => 'A Hebrew or Aramaic loanword carried into Greek.',
+    unknown => 'A morphology code that the parser did not recognize.',
   };
 
   @override
   List<String> get examples => switch (this) {
-    .article => ['the king', 'the Lord'],
-    .conjunction => ['and', 'but', 'for'],
-    .preposition => ['in', 'to', 'with'],
-    .adverb => ['quickly', 'now', 'there'],
-    .negativeAdverb => ['not', 'never'],
-    .adjective => ['great', 'holy', 'wise'],
-    .noun => ['city', 'water', 'love'],
-    .properNoun => ['David', 'Jerusalem', 'Israel'],
-    .number => ['three', 'twelve', 'thousand'],
-    .ordinalNumber => ['first', 'tenth', 'seventieth'],
-    .pronoun => ['he', 'she', 'they'],
-    .personalPronoun => ['I', 'you', 'we'],
-    .demonstrativePronoun => ['this', 'these', 'those'],
-    .interrogativePronoun => ['who?', 'what?', 'which?'],
-    .indefinitePronoun => ['someone', 'anyone', 'nothing'],
-    .reciprocalPronoun => ['one another', 'each other'],
-    .reflexivePronoun => ['himself', 'themselves'],
-    .relativePronoun => ['who', 'which', 'that'],
-    .particle => ['indeed', 'now'],
-    .negativeParticle => ['not', 'no'],
-    .interrogativeParticle => ['(Hebrew prefix ה, no English equivalent)'],
-    .demonstrativeParticle => ['behold', 'lo'],
-    .genericParticle => ['indeed', 'truly'],
-    .relativeParticle => ['that', 'which'],
-    .verb => ['write', 'be', 'go'],
-    .pronominalSuffix => ['his hand', 'their land', 'her voice'],
-    .directObjectMarker => ['אֵת (no English equivalent)'],
-    .punctuation => ['.', ',', ';'],
-    .interjection => ['oh!', 'alas!'],
-    .indeclinable => ['Hosanna', 'Hallelujah'],
-    .hebraism => ['Amen', 'Hosanna', 'Sabaoth'],
-    .unknown => [],
+    article => ['the king', 'the Lord'],
+    conjunction => ['and', 'but', 'for'],
+    preposition => ['in', 'to', 'with'],
+    adverb => ['quickly', 'now', 'there'],
+    negativeAdverb => ['not', 'never'],
+    adjective => ['great', 'holy', 'wise'],
+    noun => ['city', 'water', 'love'],
+    properNoun => ['David', 'Jerusalem', 'Israel'],
+    number => ['three', 'twelve', 'thousand'],
+    ordinalNumber => ['first', 'tenth', 'seventieth'],
+    pronoun => ['he', 'she', 'they'],
+    personalPronoun => ['I', 'you', 'we'],
+    demonstrativePronoun => ['this', 'these', 'those'],
+    interrogativePronoun => ['who?', 'what?', 'which?'],
+    indefinitePronoun => ['someone', 'anyone', 'nothing'],
+    reciprocalPronoun => ['one another', 'each other'],
+    reflexivePronoun => ['himself', 'themselves'],
+    relativePronoun => ['who', 'which', 'that'],
+    particle => ['indeed', 'now'],
+    negativeParticle => ['not', 'no'],
+    interrogativeParticle => ['(Hebrew prefix ה, no English equivalent)'],
+    demonstrativeParticle => ['behold', 'lo'],
+    genericParticle => ['indeed', 'truly'],
+    relativeParticle => ['that', 'which'],
+    verb => ['write', 'be', 'go'],
+    pronominalSuffix => ['his hand', 'their land', 'her voice'],
+    directObjectMarker => ['אֵת (no English equivalent)'],
+    punctuation => ['.', ',', ';'],
+    interjection => ['oh!', 'alas!'],
+    indeclinable => ['Hosanna', 'Hallelujah'],
+    hebraism => ['Amen', 'Hosanna', 'Sabaoth'],
+    unknown => [],
   };
 }
 
@@ -235,23 +237,23 @@ enum Person implements MorphologyAttributeValue {
 
   @override
   String get displayName => switch (this) {
-    .first => '1st person',
-    .second => '2nd person',
-    .third => '3rd person',
+    first => '1st person',
+    second => '2nd person',
+    third => '3rd person',
   };
 
   @override
   String get description => switch (this) {
-    .first => 'The speaker — "I" or "we".',
-    .second => 'The addressee — "you" (singular or plural).',
-    .third => 'The party being spoken about — "he", "she", "it", "they".',
+    first => 'The speaker — "I" or "we".',
+    second => 'The addressee — "you" (singular or plural).',
+    third => 'The party being spoken about — "he", "she", "it", "they".',
   };
 
   @override
   List<String> get examples => switch (this) {
-    .first => ['I am', 'we walk', 'I have spoken'],
-    .second => ['you go', 'you (pl.) listen', 'you have seen'],
-    .third => ['he runs', 'she speaks', 'they gathered'],
+    first => ['I am', 'we walk', 'I have spoken'],
+    second => ['you go', 'you (pl.) listen', 'you have seen'],
+    third => ['he runs', 'she speaks', 'they gathered'],
   };
 }
 
@@ -263,26 +265,26 @@ enum GrammaticalGender implements MorphologyAttributeValue {
 
   @override
   String get displayName => switch (this) {
-    .masculine => 'Masculine',
-    .feminine => 'Feminine',
-    .neuter => 'Neuter',
-    .common => 'Common',
+    masculine => 'Masculine',
+    feminine => 'Feminine',
+    neuter => 'Neuter',
+    common => 'Common',
   };
 
   @override
   String get description => switch (this) {
-    .masculine => 'Masculine grammatical gender — used for male persons and many nouns by convention.',
-    .feminine => 'Feminine grammatical gender — used for female persons and many nouns by convention.',
-    .neuter => 'Greek neuter gender — neither masculine nor feminine.',
-    .common => 'Hebrew common gender — the form serves both masculine and feminine.',
+    masculine => 'Masculine grammatical gender — used for male persons and many nouns by convention.',
+    feminine => 'Feminine grammatical gender — used for female persons and many nouns by convention.',
+    neuter => 'Greek neuter gender — neither masculine nor feminine.',
+    common => 'Hebrew common gender — the form serves both masculine and feminine.',
   };
 
   @override
   List<String> get examples => switch (this) {
-    .masculine => ['father', 'son', 'king'],
-    .feminine => ['mother', 'daughter', 'queen'],
-    .neuter => ['child (τέκνον)', 'gift (δῶρον)'],
-    .common => ['cattle', 'voice'],
+    masculine => ['father', 'son', 'king'],
+    feminine => ['mother', 'daughter', 'queen'],
+    neuter => ['child (τέκνον)', 'gift (δῶρον)'],
+    common => ['cattle', 'voice'],
   };
 }
 
@@ -293,23 +295,23 @@ enum GrammaticalNumber implements MorphologyAttributeValue {
 
   @override
   String get displayName => switch (this) {
-    .singular => 'Singular',
-    .plural => 'Plural',
-    .dual => 'Dual',
+    singular => 'Singular',
+    plural => 'Plural',
+    dual => 'Dual',
   };
 
   @override
   String get description => switch (this) {
-    .singular => 'Refers to one.',
-    .plural => 'Refers to two or more.',
-    .dual => 'Refers to a natural pair (Hebrew only).',
+    singular => 'Refers to one.',
+    plural => 'Refers to two or more.',
+    dual => 'Refers to a natural pair (Hebrew only).',
   };
 
   @override
   List<String> get examples => switch (this) {
-    .singular => ['the book', 'a man', 'one stone'],
-    .plural => ['the books', 'men', 'stones'],
-    .dual => ['hands', 'eyes', 'two days'],
+    singular => ['the book', 'a man', 'one stone'],
+    plural => ['the books', 'men', 'stones'],
+    dual => ['hands', 'eyes', 'two days'],
   };
 }
 
@@ -322,29 +324,29 @@ enum GrammaticalCase implements MorphologyAttributeValue {
 
   @override
   String get displayName => switch (this) {
-    .nominative => 'Nominative',
-    .genitive => 'Genitive',
-    .dative => 'Dative',
-    .accusative => 'Accusative',
-    .vocative => 'Vocative',
+    nominative => 'Nominative',
+    genitive => 'Genitive',
+    dative => 'Dative',
+    accusative => 'Accusative',
+    vocative => 'Vocative',
   };
 
   @override
   String get description => switch (this) {
-    .nominative => 'Marks the subject of a sentence.',
-    .genitive => 'Indicates possession or origin — often translated "of".',
-    .dative => 'Marks the indirect object — often "to" or "for".',
-    .accusative => 'Marks the direct object.',
-    .vocative => 'Used in direct address.',
+    nominative => 'Marks the subject of a sentence.',
+    genitive => 'Indicates possession or origin — often translated "of".',
+    dative => 'Marks the indirect object — often "to" or "for".',
+    accusative => 'Marks the direct object.',
+    vocative => 'Used in direct address.',
   };
 
   @override
   List<String> get examples => switch (this) {
-    .nominative => ['God created', 'the king sees'],
-    .genitive => ['the Son of God', 'kingdom of heaven'],
-    .dative => ['gave to him', 'spoke to them'],
-    .accusative => ['saw him', 'love your neighbor'],
-    .vocative => ['Lord!', 'Father!', 'Friend!'],
+    nominative => ['God created', 'the king sees'],
+    genitive => ['the Son of God', 'kingdom of heaven'],
+    dative => ['gave to him', 'spoke to them'],
+    accusative => ['saw him', 'love your neighbor'],
+    vocative => ['Lord!', 'Father!', 'Friend!'],
   };
 }
 
@@ -355,23 +357,23 @@ enum HebrewState implements MorphologyAttributeValue {
 
   @override
   String get displayName => switch (this) {
-    .absolute => 'Absolute',
-    .construct => 'Construct',
-    .determined => 'Determined',
+    absolute => 'Absolute',
+    construct => 'Construct',
+    determined => 'Determined',
   };
 
   @override
   String get description => switch (this) {
-    .absolute => 'The default form of a noun — independent.',
-    .construct => 'Bound to a following noun, expressing "X of Y".',
-    .determined => 'Marked as definite (often by the article).',
+    absolute => 'The default form of a noun — independent.',
+    construct => 'Bound to a following noun, expressing "X of Y".',
+    determined => 'Marked as definite (often by the article).',
   };
 
   @override
   List<String> get examples => switch (this) {
-    .absolute => ['a king', 'a word'],
-    .construct => ['king of Israel', 'word of the LORD'],
-    .determined => ['the king', 'the word'],
+    absolute => ['a king', 'a word'],
+    construct => ['king of Israel', 'word of the LORD'],
+    determined => ['the king', 'the word'],
   };
 }
 
@@ -389,41 +391,41 @@ enum HebrewStem implements MorphologyAttributeValue {
 
   @override
   String get displayName => switch (this) {
-    .qal => 'Qal',
-    .qalPassive => 'Qal passive',
-    .niphal => 'Niphal',
-    .piel => 'Piel',
-    .pual => 'Pual',
-    .hiphil => 'Hiphil',
-    .hophal => 'Hophal',
-    .hithpael => 'Hithpael',
-    .nithpael => 'Nithpael',
+    qal => 'Qal',
+    qalPassive => 'Qal passive',
+    niphal => 'Niphal',
+    piel => 'Piel',
+    pual => 'Pual',
+    hiphil => 'Hiphil',
+    hophal => 'Hophal',
+    hithpael => 'Hithpael',
+    nithpael => 'Nithpael',
   };
 
   @override
   String get description => switch (this) {
-    .qal => 'The simple active stem — the basic action of the verb.',
-    .qalPassive => 'A rare passive of the simple stem.',
-    .niphal => 'The simple passive or reflexive stem.',
-    .piel => 'The intensive or factitive active stem.',
-    .pual => 'The passive of the piel.',
-    .hiphil => 'The causative active stem.',
-    .hophal => 'The passive of the hiphil.',
-    .hithpael => 'The reflexive or reciprocal of the piel.',
-    .nithpael => 'A rare reflexive-passive stem.',
+    qal => 'The simple active stem — the basic action of the verb.',
+    qalPassive => 'A rare passive of the simple stem.',
+    niphal => 'The simple passive or reflexive stem.',
+    piel => 'The intensive or factitive active stem.',
+    pual => 'The passive of the piel.',
+    hiphil => 'The causative active stem.',
+    hophal => 'The passive of the hiphil.',
+    hithpael => 'The reflexive or reciprocal of the piel.',
+    nithpael => 'A rare reflexive-passive stem.',
   };
 
   @override
   List<String> get examples => switch (this) {
-    .qal => ['he wrote', 'she heard'],
-    .qalPassive => ['it was taken'],
-    .niphal => ['he was killed', 'they gathered themselves'],
-    .piel => ['he praised', 'he blessed', 'he shattered'],
-    .pual => ['he was praised'],
-    .hiphil => ['he caused to write', 'he led out'],
-    .hophal => ['he was caused to write'],
-    .hithpael => ['he sanctified himself', 'they walked about'],
-    .nithpael => ['it was atoned for'],
+    qal => ['he wrote', 'she heard'],
+    qalPassive => ['it was taken'],
+    niphal => ['he was killed', 'they gathered themselves'],
+    piel => ['he praised', 'he blessed', 'he shattered'],
+    pual => ['he was praised'],
+    hiphil => ['he caused to write', 'he led out'],
+    hophal => ['he was caused to write'],
+    hithpael => ['he sanctified himself', 'they walked about'],
+    nithpael => ['it was atoned for'],
   };
 }
 
@@ -441,44 +443,44 @@ enum HebrewAspect implements MorphologyAttributeValue {
 
   @override
   String get displayName => switch (this) {
-    .perfect => 'Perfect',
-    .imperfect => 'Imperfect',
-    .imperative => 'Imperative',
-    .infinitiveConstruct => 'Infinitive construct',
-    .infinitiveAbsolute => 'Infinitive absolute',
-    .participle => 'Participle',
-    .consecutiveImperfect => 'Consecutive imperfect',
-    .conjunctiveImperfect => 'Conjunctive imperfect',
-    .conjunctivePerfect => 'Conjunctive perfect',
-    .passiveParticiple => 'Passive participle',
+    perfect => 'Perfect',
+    imperfect => 'Imperfect',
+    imperative => 'Imperative',
+    infinitiveConstruct => 'Infinitive construct',
+    infinitiveAbsolute => 'Infinitive absolute',
+    participle => 'Participle',
+    consecutiveImperfect => 'Consecutive imperfect',
+    conjunctiveImperfect => 'Conjunctive imperfect',
+    conjunctivePerfect => 'Conjunctive perfect',
+    passiveParticiple => 'Passive participle',
   };
 
   @override
   String get description => switch (this) {
-    .perfect => 'Completed action — typically translated as past.',
-    .imperfect => 'Incomplete or future action — often translated as future or habitual.',
-    .imperative => 'A direct command.',
-    .infinitiveConstruct => 'A verbal noun in construct form, often used with prepositions.',
-    .infinitiveAbsolute => 'An independent verbal noun, often emphatic.',
-    .participle => 'A verbal adjective — "one who Xs", or ongoing action.',
-    .consecutiveImperfect => 'Past narrative form — waw + imperfect.',
-    .conjunctiveImperfect => 'Imperfect with conjunctive waw — future or modal sense.',
-    .conjunctivePerfect => 'Perfect with conjunctive waw — often future or sequential.',
-    .passiveParticiple => 'The passive form of the qal participle.',
+    perfect => 'Completed action — typically translated as past.',
+    imperfect => 'Incomplete or future action — often translated as future or habitual.',
+    imperative => 'A direct command.',
+    infinitiveConstruct => 'A verbal noun in construct form, often used with prepositions.',
+    infinitiveAbsolute => 'An independent verbal noun, often emphatic.',
+    participle => 'A verbal adjective — "one who Xs", or ongoing action.',
+    consecutiveImperfect => 'Past narrative form — waw + imperfect.',
+    conjunctiveImperfect => 'Imperfect with conjunctive waw — future or modal sense.',
+    conjunctivePerfect => 'Perfect with conjunctive waw — often future or sequential.',
+    passiveParticiple => 'The passive form of the qal participle.',
   };
 
   @override
   List<String> get examples => switch (this) {
-    .perfect => ['he wrote', 'she has spoken'],
-    .imperfect => ['he will write', 'he writes'],
-    .imperative => ['Write!', 'Listen!'],
-    .infinitiveConstruct => ['to write', 'when writing'],
-    .infinitiveAbsolute => ['surely die', 'write thoroughly'],
-    .participle => ['writing', 'the one who hears'],
-    .consecutiveImperfect => ['and he said', 'and they went'],
-    .conjunctiveImperfect => ['and he will write'],
-    .conjunctivePerfect => ['and you shall do', 'and he will judge'],
-    .passiveParticiple => ['written', 'kept'],
+    perfect => ['he wrote', 'she has spoken'],
+    imperfect => ['he will write', 'he writes'],
+    imperative => ['Write!', 'Listen!'],
+    infinitiveConstruct => ['to write', 'when writing'],
+    infinitiveAbsolute => ['surely die', 'write thoroughly'],
+    participle => ['writing', 'the one who hears'],
+    consecutiveImperfect => ['and he said', 'and they went'],
+    conjunctiveImperfect => ['and he will write'],
+    conjunctivePerfect => ['and you shall do', 'and he will judge'],
+    passiveParticiple => ['written', 'kept'],
   };
 }
 
@@ -490,23 +492,23 @@ enum HebrewVerbMood implements MorphologyAttributeValue {
 
   @override
   String get displayName => switch (this) {
-    .jussive => 'Jussive',
-    .cohortative => 'Cohortative',
-    .hSuffix => 'h-suffix',
+    jussive => 'Jussive',
+    cohortative => 'Cohortative',
+    hSuffix => 'h-suffix',
   };
 
   @override
   String get description => switch (this) {
-    .jussive => 'A 3rd-person command or wish — "let him do".',
-    .cohortative => 'A 1st-person volitional — "let us" or "I will".',
-    .hSuffix => 'An emphatic -ah ending on the imperfect, often cohortative-like.',
+    jussive => 'A 3rd-person command or wish — "let him do".',
+    cohortative => 'A 1st-person volitional — "let us" or "I will".',
+    hSuffix => 'An emphatic -ah ending on the imperfect, often cohortative-like.',
   };
 
   @override
   List<String> get examples => switch (this) {
-    .jussive => ['Let there be light', 'May the LORD bless you'],
-    .cohortative => ['Let us go', 'I will praise'],
-    .hSuffix => ['I will surely come', 'let me draw near'],
+    jussive => ['Let there be light', 'May the LORD bless you'],
+    cohortative => ['Let us go', 'I will praise'],
+    hSuffix => ['I will surely come', 'let me draw near'],
   };
 }
 
@@ -520,32 +522,32 @@ enum GreekTense implements MorphologyAttributeValue {
 
   @override
   String get displayName => switch (this) {
-    .present => 'Present',
-    .imperfect => 'Imperfect',
-    .future => 'Future',
-    .aorist => 'Aorist',
-    .perfect => 'Perfect',
-    .pluperfect => 'Pluperfect',
+    present => 'Present',
+    imperfect => 'Imperfect',
+    future => 'Future',
+    aorist => 'Aorist',
+    perfect => 'Perfect',
+    pluperfect => 'Pluperfect',
   };
 
   @override
   String get description => switch (this) {
-    .present => 'Ongoing or general action.',
-    .imperfect => 'Continuous or repeated past action.',
-    .future => 'Action that will happen.',
-    .aorist => 'Simple past action — viewed as a whole.',
-    .perfect => 'Past action with continuing present consequence.',
-    .pluperfect => 'Past action prior to another past event.',
+    present => 'Ongoing or general action.',
+    imperfect => 'Continuous or repeated past action.',
+    future => 'Action that will happen.',
+    aorist => 'Simple past action — viewed as a whole.',
+    perfect => 'Past action with continuing present consequence.',
+    pluperfect => 'Past action prior to another past event.',
   };
 
   @override
   List<String> get examples => switch (this) {
-    .present => ['he loves', 'they walk'],
-    .imperfect => ['he was teaching', 'they used to gather'],
-    .future => ['he will come', 'they shall see'],
-    .aorist => ['he said', 'they went'],
-    .perfect => ['has been written', 'has come'],
-    .pluperfect => ['had been written', 'had departed'],
+    present => ['he loves', 'they walk'],
+    imperfect => ['he was teaching', 'they used to gather'],
+    future => ['he will come', 'they shall see'],
+    aorist => ['he said', 'they went'],
+    perfect => ['has been written', 'has come'],
+    pluperfect => ['had been written', 'had departed'],
   };
 }
 
@@ -559,32 +561,32 @@ enum GreekMood implements MorphologyAttributeValue {
 
   @override
   String get displayName => switch (this) {
-    .indicative => 'Indicative',
-    .imperative => 'Imperative',
-    .subjunctive => 'Subjunctive',
-    .optative => 'Optative',
-    .infinitive => 'Infinitive',
-    .participle => 'Participle',
+    indicative => 'Indicative',
+    imperative => 'Imperative',
+    subjunctive => 'Subjunctive',
+    optative => 'Optative',
+    infinitive => 'Infinitive',
+    participle => 'Participle',
   };
 
   @override
   String get description => switch (this) {
-    .indicative => 'States a fact.',
-    .imperative => 'Issues a command.',
-    .subjunctive => 'Expresses possibility, purpose, or contingency.',
-    .optative => 'Expresses a wish or remote possibility.',
-    .infinitive => 'A verbal noun — "to do".',
-    .participle => 'A verbal adjective — "doing" or "having done".',
+    indicative => 'States a fact.',
+    imperative => 'Issues a command.',
+    subjunctive => 'Expresses possibility, purpose, or contingency.',
+    optative => 'Expresses a wish or remote possibility.',
+    infinitive => 'A verbal noun — "to do".',
+    participle => 'A verbal adjective — "doing" or "having done".',
   };
 
   @override
   List<String> get examples => switch (this) {
-    .indicative => ['he is', 'they wrote'],
-    .imperative => ['Go!', 'Believe!', 'Do not fear!'],
-    .subjunctive => ['that he might write', 'if he goes'],
-    .optative => ['may it be so', 'may you have grace'],
-    .infinitive => ['to write', 'to believe'],
-    .participle => ['the one writing', 'having spoken'],
+    indicative => ['he is', 'they wrote'],
+    imperative => ['Go!', 'Believe!', 'Do not fear!'],
+    subjunctive => ['that he might write', 'if he goes'],
+    optative => ['may it be so', 'may you have grace'],
+    infinitive => ['to write', 'to believe'],
+    participle => ['the one writing', 'having spoken'],
   };
 }
 
@@ -596,26 +598,26 @@ enum GreekVoice implements MorphologyAttributeValue {
 
   @override
   String get displayName => switch (this) {
-    .active => 'Active',
-    .middle => 'Middle',
-    .passive => 'Passive',
-    .middleOrPassive => 'Middle/Passive',
+    active => 'Active',
+    middle => 'Middle',
+    passive => 'Passive',
+    middleOrPassive => 'Middle/Passive',
   };
 
   @override
   String get description => switch (this) {
-    .active => 'The subject performs the action.',
-    .middle => 'The subject acts on or for itself.',
-    .passive => 'The subject receives the action.',
-    .middleOrPassive => 'The form is ambiguous between middle and passive.',
+    active => 'The subject performs the action.',
+    middle => 'The subject acts on or for itself.',
+    passive => 'The subject receives the action.',
+    middleOrPassive => 'The form is ambiguous between middle and passive.',
   };
 
   @override
   List<String> get examples => switch (this) {
-    .active => ['he writes', 'they teach'],
-    .middle => ['he washes himself', 'they obtained for themselves'],
-    .passive => ['he was sent', 'they were taught'],
-    .middleOrPassive => ['was raised / raised himself', 'was assembled / assembled themselves'],
+    active => ['he writes', 'they teach'],
+    middle => ['he washes himself', 'they obtained for themselves'],
+    passive => ['he was sent', 'they were taught'],
+    middleOrPassive => ['was raised / raised himself', 'was assembled / assembled themselves'],
   };
 }
 
@@ -626,23 +628,23 @@ enum Degree implements MorphologyAttributeValue {
 
   @override
   String get displayName => switch (this) {
-    .positive => 'Positive',
-    .comparative => 'Comparative',
-    .superlative => 'Superlative',
+    positive => 'Positive',
+    comparative => 'Comparative',
+    superlative => 'Superlative',
   };
 
   @override
   String get description => switch (this) {
-    .positive => 'The plain form — neither comparative nor superlative.',
-    .comparative => 'Compares two — "X-er than".',
-    .superlative => 'The extreme — "most" or "-est".',
+    positive => 'The plain form — neither comparative nor superlative.',
+    comparative => 'Compares two — "X-er than".',
+    superlative => 'The extreme — "most" or "-est".',
   };
 
   @override
   List<String> get examples => switch (this) {
-    .positive => ['great', 'good'],
-    .comparative => ['greater', 'better than'],
-    .superlative => ['greatest', 'best'],
+    positive => ['great', 'good'],
+    comparative => ['greater', 'better than'],
+    superlative => ['greatest', 'best'],
   };
 }
 
@@ -680,17 +682,17 @@ sealed class Morphology {
       'Number' => MorphologyNumber._parse(rest),
       'V' || 'Verb' => MorphologyVerb._parse(rest),
       'Prep' => MorphologyPreposition._parse(rest),
-      'DirObjM' => const MorphologyDirectObjectMarker(),
-      'Punc' => const MorphologyPunctuation(),
-      'I' || 'Interjection' => const MorphologyInterjection(),
-      'Indec' => const MorphologyIndeclinable(),
-      'Heb' => const MorphologyHebraism(),
-      'Interrog' || 'IntPrtcl' || 'Pi' => const MorphologyParticle(kind: .interrogativeParticle),
-      'Pn' => const MorphologyParticle(kind: .negativeParticle),
-      'Pd' => const MorphologyParticle(kind: .demonstrativeParticle),
-      'Pg' => const MorphologyParticle(kind: .genericParticle),
-      'Pr' => const MorphologyParticle(kind: .relativeParticle),
-      'Prtcl' => const MorphologyParticle(),
+      'DirObjM' => MorphologyDirectObjectMarker(),
+      'Punc' => MorphologyPunctuation(),
+      'I' || 'Interjection' => MorphologyInterjection(),
+      'Indec' => MorphologyIndeclinable(),
+      'Heb' => MorphologyHebraism(),
+      'Interrog' || 'IntPrtcl' || 'Pi' => MorphologyParticle(kind: .interrogativeParticle),
+      'Pn' => MorphologyParticle(kind: .negativeParticle),
+      'Pd' => MorphologyParticle(kind: .demonstrativeParticle),
+      'Pg' => MorphologyParticle(kind: .genericParticle),
+      'Pr' => MorphologyParticle(kind: .relativeParticle),
+      'Prtcl' => MorphologyParticle(),
       'Pro' => MorphologyPronoun._parse(rest, kind: .pronoun),
       'PPro' => MorphologyPronoun._parse(rest, kind: .personalPronoun),
       'DPro' => MorphologyPronoun._parse(rest, kind: .demonstrativePronoun),
@@ -709,12 +711,12 @@ class MorphologyArticle extends Morphology {
   final GrammaticalGender? gender;
   final GrammaticalNumber? number;
 
-  const MorphologyArticle({this.language = Language.hebrew, this.grammaticalCase, this.gender, this.number});
+  const MorphologyArticle({this.language = .hebrew, this.grammaticalCase, this.gender, this.number});
 
   factory MorphologyArticle._parse(List<String> tokens) {
-    if (tokens.isEmpty) return const MorphologyArticle();
+    if (tokens.isEmpty) return MorphologyArticle();
     final cgn = _GreekCgn.tryParse(tokens.first);
-    if (cgn == null) return const MorphologyArticle();
+    if (cgn == null) return MorphologyArticle();
     return MorphologyArticle(
       language: .greek,
       grammaticalCase: cgn.grammaticalCase,
@@ -725,10 +727,10 @@ class MorphologyArticle extends Morphology {
 
   @override
   Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {
-    MorphologyAttribute.type: MorphologyType.article,
-    MorphologyAttribute.grammaticalCase: ?grammaticalCase,
-    MorphologyAttribute.gender: ?gender,
-    MorphologyAttribute.number: ?number,
+    .type: MorphologyType.article,
+    .grammaticalCase: ?grammaticalCase,
+    .gender: ?gender,
+    .number: ?number,
   };
 }
 
@@ -738,13 +740,12 @@ class MorphologyConjunction extends Morphology {
 
   const MorphologyConjunction({this.particle});
 
-  factory MorphologyConjunction._parse(List<String> tokens) =>
-      MorphologyConjunction(particle: tokens.isEmpty ? null : tokens.first);
+  factory MorphologyConjunction._parse(List<String> tokens) => MorphologyConjunction(particle: tokens.firstOrNull);
 
   @override
   Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {
-    MorphologyAttribute.type: MorphologyType.conjunction,
-    MorphologyAttribute.particle: ?_conjunctionParticleValue(particle),
+    .type: MorphologyType.conjunction,
+    .particle: ?_conjunctionParticleValue(particle),
   };
 }
 
@@ -754,13 +755,12 @@ class MorphologyPreposition extends Morphology {
 
   const MorphologyPreposition({this.prefix});
 
-  factory MorphologyPreposition._parse(List<String> tokens) =>
-      MorphologyPreposition(prefix: tokens.isEmpty ? null : tokens.first);
+  factory MorphologyPreposition._parse(List<String> tokens) => MorphologyPreposition(prefix: tokens.firstOrNull);
 
   @override
   Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {
-    MorphologyAttribute.type: MorphologyType.preposition,
-    MorphologyAttribute.prefix: ?_prepositionPrefixValue(prefix),
+    .type: MorphologyType.preposition,
+    .prefix: ?_prepositionPrefixValue(prefix),
   };
 }
 
@@ -771,25 +771,21 @@ class MorphologyAdverb extends Morphology {
 
   const MorphologyAdverb({this.modifier});
 
-  factory MorphologyAdverb._parse(List<String> tokens) =>
-      MorphologyAdverb(modifier: tokens.isEmpty ? null : tokens.first);
+  factory MorphologyAdverb._parse(List<String> tokens) => MorphologyAdverb(modifier: tokens.firstOrNull);
 
   MorphologyType get _type => switch (modifier) {
-    'NegPrt' => MorphologyType.negativeAdverb,
-    _ => MorphologyType.adverb,
+    'NegPrt' => .negativeAdverb,
+    _ => .adverb,
   };
 
   Degree? get _degree => switch (modifier) {
-    'C' => Degree.comparative,
-    'S' => Degree.superlative,
+    'C' => .comparative,
+    'S' => .superlative,
     _ => null,
   };
 
   @override
-  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {
-    MorphologyAttribute.type: _type,
-    MorphologyAttribute.degree: ?_degree,
-  };
+  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {.type: _type, .degree: ?_degree};
 }
 
 class MorphologyAdjective extends Morphology {
@@ -806,27 +802,26 @@ class MorphologyAdjective extends Morphology {
     this.gender,
     this.number,
     this.state,
-    this.degree = Degree.positive,
+    this.degree = .positive,
   });
 
   factory MorphologyAdjective._parse(List<String> tokens) {
-    if (tokens.isEmpty) return const MorphologyAdjective(language: .hebrew);
+    if (tokens.isEmpty) return MorphologyAdjective(language: .hebrew);
     final first = tokens.first;
     final cgn = _GreekCgn.tryParse(first);
     if (cgn != null) {
-      final degree = tokens.length > 1
-          ? switch (tokens[1]) {
-              'C' => Degree.comparative,
-              'S' => Degree.superlative,
-              _ => Degree.positive,
-            }
-          : Degree.positive;
       return MorphologyAdjective(
         language: .greek,
         grammaticalCase: cgn.grammaticalCase,
         gender: cgn.gender,
         number: cgn.number,
-        degree: degree,
+        degree: tokens.length > 1
+            ? switch (tokens[1]) {
+                'C' => .comparative,
+                'S' => .superlative,
+                _ => .positive,
+              }
+            : .positive,
       );
     }
     final hebrew = _HebrewGns.tryParse(first);
@@ -835,12 +830,12 @@ class MorphologyAdjective extends Morphology {
 
   @override
   Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {
-    MorphologyAttribute.type: MorphologyType.adjective,
-    MorphologyAttribute.grammaticalCase: ?grammaticalCase,
-    MorphologyAttribute.gender: ?gender,
-    MorphologyAttribute.number: ?number,
-    if (state != null && state != HebrewState.absolute) MorphologyAttribute.state: state!,
-    if (degree != Degree.positive) MorphologyAttribute.degree: degree,
+    .type: MorphologyType.adjective,
+    .grammaticalCase: ?grammaticalCase,
+    .gender: ?gender,
+    .number: ?number,
+    if (state != .absolute) .state: ?state,
+    if (degree != .positive) .degree: degree,
   };
 }
 
@@ -862,7 +857,7 @@ class MorphologyNoun extends Morphology {
   });
 
   factory MorphologyNoun._parse(List<String> tokens) {
-    if (tokens.isEmpty) return const MorphologyNoun(language: .hebrew);
+    if (tokens.isEmpty) return MorphologyNoun(language: .hebrew);
     var rest = tokens;
     var proper = false;
     if (rest.first == 'proper') {
@@ -892,11 +887,11 @@ class MorphologyNoun extends Morphology {
 
   @override
   Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {
-    MorphologyAttribute.type: proper ? MorphologyType.properNoun : MorphologyType.noun,
-    MorphologyAttribute.grammaticalCase: ?grammaticalCase,
-    MorphologyAttribute.gender: ?gender,
-    MorphologyAttribute.number: ?number,
-    if (state != null && state != HebrewState.absolute) MorphologyAttribute.state: state!,
+    .type: proper ? MorphologyType.properNoun : MorphologyType.noun,
+    .grammaticalCase: ?grammaticalCase,
+    .gender: ?gender,
+    .number: ?number,
+    if (state != HebrewState.absolute) .state: ?state,
   };
 }
 
@@ -909,7 +904,7 @@ class MorphologyNumber extends Morphology {
   const MorphologyNumber({this.gender, this.number, this.state, this.ordinal = false});
 
   factory MorphologyNumber._parse(List<String> tokens) {
-    if (tokens.isEmpty) return const MorphologyNumber();
+    if (tokens.isEmpty) return MorphologyNumber();
     var raw = tokens.first;
     var ordinal = false;
     if (raw.startsWith('o') && raw.length > 1) {
@@ -922,10 +917,10 @@ class MorphologyNumber extends Morphology {
 
   @override
   Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {
-    MorphologyAttribute.type: ordinal ? MorphologyType.ordinalNumber : MorphologyType.number,
-    MorphologyAttribute.gender: ?gender,
-    MorphologyAttribute.number: ?number,
-    if (state != null && state != HebrewState.absolute) MorphologyAttribute.state: state!,
+    .type: ordinal ? MorphologyType.ordinalNumber : MorphologyType.number,
+    .gender: ?gender,
+    .number: ?number,
+    if (state != .absolute) .state: ?state,
   };
 }
 
@@ -941,8 +936,8 @@ class MorphologyPronoun extends Morphology {
   final GrammaticalNumber? number;
 
   const MorphologyPronoun({
-    this.kind = MorphologyType.pronoun,
-    this.language = Language.hebrew,
+    this.kind = .pronoun,
+    this.language = .hebrew,
     this.person,
     this.grammaticalCase,
     this.gender,
@@ -978,11 +973,11 @@ class MorphologyPronoun extends Morphology {
 
   @override
   Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {
-    MorphologyAttribute.type: kind,
-    MorphologyAttribute.grammaticalCase: ?grammaticalCase,
-    MorphologyAttribute.gender: ?gender,
-    MorphologyAttribute.person: ?person,
-    MorphologyAttribute.number: ?number,
+    .type: kind,
+    .grammaticalCase: ?grammaticalCase,
+    .gender: ?gender,
+    .person: ?person,
+    .number: ?number,
   };
 }
 
@@ -992,17 +987,17 @@ class MorphologyParticle extends Morphology {
   /// `genericParticle`, `relativeParticle`.
   final MorphologyType kind;
 
-  const MorphologyParticle({this.kind = MorphologyType.particle});
+  const MorphologyParticle({this.kind = .particle});
 
   @override
-  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {MorphologyAttribute.type: kind};
+  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {.type: kind};
 }
 
 sealed class MorphologyVerb extends Morphology {
   const MorphologyVerb();
 
   factory MorphologyVerb._parse(List<String> tokens) {
-    if (tokens.isEmpty) return const MorphologyGreekVerb();
+    if (tokens.isEmpty) return MorphologyGreekVerb();
     return _hebrewStem(tokens.first) != null ? MorphologyHebrewVerb._parse(tokens) : MorphologyGreekVerb._parse(tokens);
   }
 }
@@ -1079,14 +1074,14 @@ class MorphologyHebrewVerb extends MorphologyVerb {
 
   @override
   Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {
-    MorphologyAttribute.type: MorphologyType.verb,
-    MorphologyAttribute.stem: stem,
-    MorphologyAttribute.aspect: aspect,
-    MorphologyAttribute.mood: ?mood,
-    MorphologyAttribute.person: ?person,
-    MorphologyAttribute.gender: ?gender,
-    MorphologyAttribute.number: ?number,
-    if (state != null && state != HebrewState.absolute) MorphologyAttribute.state: state!,
+    .type: MorphologyType.verb,
+    .stem: stem,
+    .aspect: aspect,
+    .mood: ?mood,
+    .person: ?person,
+    .gender: ?gender,
+    .number: ?number,
+    if (state != HebrewState.absolute) MorphologyAttribute.state: ?state,
   };
 }
 
@@ -1157,16 +1152,16 @@ class MorphologyGreekVerb extends MorphologyVerb {
 
   @override
   Map<MorphologyAttribute, MorphologyAttributeValue> get attributes {
-    final isParticiple = mood == GreekMood.participle;
+    final isParticiple = mood == .participle;
     return {
-      MorphologyAttribute.type: MorphologyType.verb,
-      MorphologyAttribute.tense: ?tense,
-      MorphologyAttribute.mood: ?mood,
-      MorphologyAttribute.voice: ?voice,
-      if (isParticiple) MorphologyAttribute.grammaticalCase: ?grammaticalCase,
-      if (isParticiple) MorphologyAttribute.gender: ?gender,
-      if (!isParticiple) MorphologyAttribute.person: ?person,
-      MorphologyAttribute.number: ?number,
+      .type: MorphologyType.verb,
+      .tense: ?tense,
+      .mood: ?mood,
+      .voice: ?voice,
+      if (isParticiple) .grammaticalCase: ?grammaticalCase,
+      if (isParticiple) .gender: ?gender,
+      if (!isParticiple) .person: ?person,
+      .number: ?number,
     };
   }
 }
@@ -1206,10 +1201,10 @@ class MorphologyPronominalSuffix extends Morphology {
 
   @override
   Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {
-    MorphologyAttribute.type: MorphologyType.pronominalSuffix,
-    MorphologyAttribute.person: ?person,
-    MorphologyAttribute.gender: ?gender,
-    MorphologyAttribute.number: ?number,
+    .type: MorphologyType.pronominalSuffix,
+    .person: ?person,
+    .gender: ?gender,
+    .number: ?number,
   };
 }
 
@@ -1217,45 +1212,35 @@ class MorphologyDirectObjectMarker extends Morphology {
   const MorphologyDirectObjectMarker();
 
   @override
-  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => const {
-    MorphologyAttribute.type: MorphologyType.directObjectMarker,
-  };
+  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {.type: MorphologyType.directObjectMarker};
 }
 
 class MorphologyPunctuation extends Morphology {
   const MorphologyPunctuation();
 
   @override
-  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => const {
-    MorphologyAttribute.type: MorphologyType.punctuation,
-  };
+  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {.type: MorphologyType.punctuation};
 }
 
 class MorphologyInterjection extends Morphology {
   const MorphologyInterjection();
 
   @override
-  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => const {
-    MorphologyAttribute.type: MorphologyType.interjection,
-  };
+  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {.type: MorphologyType.interjection};
 }
 
 class MorphologyIndeclinable extends Morphology {
   const MorphologyIndeclinable();
 
   @override
-  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => const {
-    MorphologyAttribute.type: MorphologyType.indeclinable,
-  };
+  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {.type: MorphologyType.indeclinable};
 }
 
 class MorphologyHebraism extends Morphology {
   const MorphologyHebraism();
 
   @override
-  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => const {
-    MorphologyAttribute.type: MorphologyType.hebraism,
-  };
+  Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {.type: MorphologyType.hebraism};
 }
 
 /// Fallback for codes that don't match any known pattern.
@@ -1266,8 +1251,8 @@ class MorphologyUnknown extends Morphology {
 
   @override
   Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {
-    MorphologyAttribute.type: MorphologyType.unknown,
-    MorphologyAttribute.code: MorphologyAttributeLiteral(
+    .type: MorphologyType.unknown,
+    .code: MorphologyAttributeLiteral(
       displayName: code,
       description: 'The raw morphology code as it appeared in the source.',
     ),
@@ -1278,7 +1263,7 @@ class MorphologyUnknown extends Morphology {
 
 MorphologyAttributeValue? _conjunctionParticleValue(String? particle) => switch (particle) {
   null => null,
-  'w' => const MorphologyAttributeLiteral(
+  'w' => MorphologyAttributeLiteral(
     displayName: 'w',
     description: 'The Hebrew waw (וְ) conjunction, meaning "and".',
     examples: ['and', 'now', 'but'],
@@ -1288,22 +1273,22 @@ MorphologyAttributeValue? _conjunctionParticleValue(String? particle) => switch 
 
 MorphologyAttributeValue? _prepositionPrefixValue(String? prefix) => switch (prefix) {
   null => null,
-  'b' => const MorphologyAttributeLiteral(
+  'b' => MorphologyAttributeLiteral(
     displayName: 'b',
     description: 'The Hebrew bet (בְּ) prefix preposition, meaning "in", "at", or "with".',
     examples: ['in the beginning', 'with strength'],
   ),
-  'k' => const MorphologyAttributeLiteral(
+  'k' => MorphologyAttributeLiteral(
     displayName: 'k',
     description: 'The Hebrew kaf (כְּ) prefix preposition, meaning "as" or "like".',
     examples: ['like a lion', 'as a shepherd'],
   ),
-  'l' => const MorphologyAttributeLiteral(
+  'l' => MorphologyAttributeLiteral(
     displayName: 'l',
     description: 'The Hebrew lamed (לְ) prefix preposition, meaning "to", "for", or "belonging to".',
     examples: ['to David', 'for the king'],
   ),
-  'm' => const MorphologyAttributeLiteral(
+  'm' => MorphologyAttributeLiteral(
     displayName: 'm',
     description: 'The Hebrew mem (מִן) prefix preposition, meaning "from" or "out of".',
     examples: ['from Egypt', 'out of the land'],
@@ -1364,9 +1349,9 @@ class _GreekPronoun {
       grammaticalCase: _greekCase(m.group(1)!),
       gender: m.group(2) == null ? null : _greekGender(m.group(2)!),
       person: switch (m.group(3)) {
-        '1' => Person.first,
-        '2' => Person.second,
-        '3' => Person.third,
+        '1' => .first,
+        '2' => .second,
+        '3' => .third,
         _ => null,
       },
       number: _greekNumber(m.group(4)!),
@@ -1388,21 +1373,21 @@ class _HebrewGns {
     if (m == null) return null;
     return _HebrewGns(
       gender: switch (m.group(1)) {
-        'm' => GrammaticalGender.masculine,
-        'f' => GrammaticalGender.feminine,
-        'c' => GrammaticalGender.common,
+        'm' => .masculine,
+        'f' => .feminine,
+        'c' => .common,
         _ => null,
       },
       number: switch (m.group(2)) {
-        's' => GrammaticalNumber.singular,
-        'p' => GrammaticalNumber.plural,
-        'd' => GrammaticalNumber.dual,
+        's' => .singular,
+        'p' => .plural,
+        'd' => .dual,
         _ => null,
       },
       state: switch (m.group(3)) {
-        'c' => HebrewState.construct,
-        'd' => HebrewState.determined,
-        _ => HebrewState.absolute,
+        'c' => .construct,
+        'd' => .determined,
+        _ => .absolute,
       },
     );
   }
@@ -1417,7 +1402,7 @@ class _HebrewPronoun {
 
   /// Parses hebrew pronoun codes such as `1cs`, `3ms`, `cp`, `r`, `fs`.
   static _HebrewPronoun? tryParse(String raw) {
-    if (raw == 'r') return const _HebrewPronoun();
+    if (raw == 'r') return _HebrewPronoun();
     final pgn = _hebrewPgn(raw);
     if (pgn != null) return _HebrewPronoun(person: pgn.person, gender: pgn.gender, number: pgn.number);
     final gn = _HebrewGns.tryParse(raw);
