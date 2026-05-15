@@ -1,56 +1,130 @@
+import 'package:bible/models/bible/study/verse_fragment.dart';
+import 'package:bible/models/morphology.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/style/widgets/dialog/styled_dialog.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:utils_core/utils_core.dart';
 
 class StrongSheet {
   static Future<void> showWithContext(
     BuildContext context,
     WidgetRef ref, {
-    required String strongId,
+    String? strongId,
+    VerseFragment? fragment,
     required User user,
     Function(Passage)? onNavigateToPassage,
   }) async {
     final strongs = ref.read(strongsProvider);
     final strong = strongs[strongId];
-    if (strong == null) {
-      return;
-    }
 
     final bibles = ref.read(studyBiblesProvider);
     final bible = bibles.firstWhere((bible) => bible.translation == .bsb);
 
-    final seeMoreStrongs = strong.glossary.map((glossary) => strongs[glossary]).nonNulls.toList();
-    final otherReferences = bible.references
-        .where((reference) => bible.getVerseByReference(reference)?.strongIds.contains(strongId) ?? false)
-        .toList();
+    final seeMoreStrongs = strong?.glossary.map((glossary) => strongs[glossary]).nonNulls.toList();
+    final otherReferences = strongId == null
+        ? null
+        : bible.references
+              .where((reference) => bible.getVerseByReference(reference)?.strongIds.contains(strongId) ?? false)
+              .toList();
 
-    await context.showStyledSheetWithBreadcrumbs(
-      breadcrumbText: strong.id,
-      (context) => StyledSheet(
-        title: 'Strong Word Analysis'.toText(),
-        subtitle: strong.id.toText(),
+    final morphologyCode = fragment?.study?.morphology;
+    final morphologyCodes = morphologyCode == null ? null : Morphology.splitCode(morphologyCode);
+
+    await context.showStyledSheetWithBreadcrumbs(breadcrumbText: fragment?.study?.inflection ?? strong?.id ?? '', (
+      context,
+    ) {
+      final selectedMorphologyCodeState = useState(morphologyCodes?.firstOrNull);
+      final selectedMorphologyCode = selectedMorphologyCodeState.value;
+
+      return StyledSheet(
+        title: 'Interlinear Word'.toText(),
+        subtitle: fragment?.study?.inflection?.toText() ?? strongId?.toText(),
         children: [
-          StyledSection(
-            title: 'Info'.toText(),
-            padding: .only(top: 24),
-            children: [
-              StyledListItem(title: 'ID'.toText(), subtitle: strongId.toText()),
-              StyledListItem(title: 'Pronunciation'.toText(), subtitle: strong.pronunciation.toText()),
-              StyledListItem(title: 'Transliteration'.toText(), subtitle: strong.transliteration.toText()),
-              StyledListItem(title: 'Definition'.toText(), subtitle: strong.definition.toText()),
-            ],
-          ),
-          if (seeMoreStrongs.isNotEmpty)
+          if (fragment != null)
+            StyledSection(
+              title: 'Usage'.toText(),
+              padding: .only(top: 24),
+              children: [
+                StyledListItem(title: 'English'.toText(), subtitle: fragment.displayText.toText()),
+                if (fragment.study case final study?)
+                  StyledListItem(title: 'Inflected'.toText(), subtitle: study.inflection?.toText()),
+                if (strong != null) StyledListItem(title: 'Root Word'.toText(), subtitle: strong.languageText.toText()),
+              ],
+            ),
+          if (strongId != null && strong != null)
+            StyledSection(
+              title: 'Strongs'.toText(),
+              subtitle: strongId.toText(),
+              padding: .only(top: 24),
+              children: [
+                StyledListItem(title: 'Root Word'.toText(), subtitle: strong.languageText.toText()),
+                StyledListItem(title: 'Pronunciation'.toText(), subtitle: strong.pronunciation.toText()),
+                StyledListItem(title: 'Transliteration'.toText(), subtitle: strong.transliteration.toText()),
+                StyledListItem(title: 'Definition'.toText(), subtitle: strong.definition.toText()),
+              ],
+            ),
+          if (morphologyCode != null && morphologyCodes != null && selectedMorphologyCode != null)
+            StyledSection(
+              title: 'Morphology'.toText(),
+              subtitle: morphologyCode.toText(),
+              trailing: morphologyCodes.length == 1
+                  ? null
+                  : StyledSegmentedControl(
+                      options: morphologyCodes,
+                      onOptionSelected: (code) => selectedMorphologyCodeState.value = code,
+                      selectedOption: selectedMorphologyCode,
+                      textBuilder: (morphology) => morphology,
+                    ),
+              padding: .only(top: 24),
+              children: Morphology.parse(selectedMorphologyCode).attributes
+                  .mapToIterable(
+                    (attribute, value) => StyledListItem(
+                      title: attribute.displayName.toText(),
+                      subtitle: value.displayName.toText(),
+                      trailing: StyledPillButton(
+                        label: 'Learn More'.toText(),
+                        onPressed: () => context.showStyledDialog(
+                          (context) => StyledDialog.confirm(
+                            title: 'Morphology Info'.toText(),
+                            bodyPadding: .zero,
+                            body: StyledList(
+                              children: [
+                                StyledListItem(
+                                  title: attribute.displayName.toText(),
+                                  subtitle: attribute.description.toText(),
+                                ),
+                                StyledListItem(
+                                  title: value.displayName.toText(),
+                                  subtitle: value.description.toText(),
+                                  thirdLine: value.examples.isEmpty
+                                      ? null
+                                      : [
+                                          'Examples: ',
+                                          value.examples.map((example) => '"$example"').join(', '),
+                                        ].join().toText(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          if (seeMoreStrongs != null && seeMoreStrongs.isNotEmpty)
             StyledSection(
               title: 'Related Terms'.toText(),
               padding: .only(top: 24),
@@ -73,7 +147,7 @@ class StrongSheet {
                   )
                   .toList(),
             ),
-          if (otherReferences.isNotEmpty && onNavigateToPassage != null)
+          if (otherReferences != null && otherReferences.isNotEmpty && onNavigateToPassage != null)
             ...StyledSection(
               title: 'Concordance'.toText(),
               padding: .only(top: 24),
@@ -111,7 +185,7 @@ class StrongSheet {
                   .toList(),
             ).buildChildren(context),
         ],
-      ),
-    );
+      );
+    });
   }
 }

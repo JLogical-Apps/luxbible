@@ -11,7 +11,7 @@ import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/style/styled_text_action.dart';
 import 'package:bible/style/widgets/dialog/styled_dialog.dart';
-import 'package:bible/ui/sheets/fragment_sheet.dart';
+import 'package:bible/ui/sheets/strong_sheet.dart';
 import 'package:bible/ui/widgets/verses_builder.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
@@ -203,10 +203,11 @@ enum StudyAction {
                                     ? null
                                     : () {
                                         context.pop();
-                                        FragmentSheet.showWithContext(
+                                        StrongSheet.showWithContext(
                                           context,
                                           ref,
                                           fragment: fragment,
+                                          strongId: fragment.study?.strongId,
                                           user: user,
                                           onNavigateToPassage: onNavigateToPassage,
                                         );
@@ -238,10 +239,11 @@ enum StudyAction {
                                     ? null
                                     : () {
                                         context.pop();
-                                        FragmentSheet.showWithContext(
+                                        StrongSheet.showWithContext(
                                           context,
                                           ref,
                                           fragment: fragment,
+                                          strongId: fragment.study?.strongId,
                                           user: user,
                                           onNavigateToPassage: onNavigateToPassage,
                                         );
