@@ -159,6 +159,7 @@ class SearchPage extends HookConsumerWidget {
                     );
                     if (newLocations != null) {
                       locationsState.value = newLocations;
+                      searchState.value = textState.value;
                       search();
                     }
                   },
