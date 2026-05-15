@@ -33,23 +33,10 @@ enum ToolbarShortcut {
     BuildContext context,
     WidgetRef ref, {
     required ChapterReference reference,
-    required User user,
     required Function(Passage) onNavigateToPassage,
   }) =>
-      toStudyAction()?.onPressed(
-        context,
-        ref,
-        region: reference,
-        user: user,
-        onNavigateToPassage: onNavigateToPassage,
-      ) ??
-      toToolbarAction()?.onPressed(
-        context,
-        ref,
-        user: user,
-        reference: reference,
-        onNavigateToPassage: onNavigateToPassage,
-      ) ??
+      toStudyAction()?.onPressed(context, ref, region: reference, onNavigateToPassage: onNavigateToPassage) ??
+      toToolbarAction()?.onPressed(context, ref, reference: reference, onNavigateToPassage: onNavigateToPassage) ??
       (throw UnimplementedError());
 
   ToolbarAction? toToolbarAction() => switch (this) {

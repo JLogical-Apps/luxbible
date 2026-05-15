@@ -1,7 +1,7 @@
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/selection.dart';
-import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/bibles_provider.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
@@ -40,11 +40,11 @@ enum SelectionAction {
   Future<void> onPressed(
     BuildContext context,
     WidgetRef ref, {
-    required User user,
     required Selection selection,
     required Function() onDeselect,
     required Function(Passage) onNavigateToPassage,
   }) async {
+    final user = ref.read(userProvider);
     final displayBibles = ref.read(displayBiblesProvider);
     final bible = user.getDisplayBible(displayBibles);
 
@@ -54,7 +54,6 @@ enum SelectionAction {
           context,
           ref,
           region: selection,
-          user: user,
           onAnnotationsRemoved: onDeselect,
         );
         if (annotation != null) {

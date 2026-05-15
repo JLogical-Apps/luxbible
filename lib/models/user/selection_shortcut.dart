@@ -48,7 +48,6 @@ enum SelectionShortcut {
     BuildContext context,
     WidgetRef ref, {
     required Selection selection,
-    required User user,
     required Function() onDeselect,
     required Function(Passage) onNavigateToPassage,
   }) =>
@@ -56,7 +55,6 @@ enum SelectionShortcut {
         context,
         ref,
         selection: selection,
-        user: user,
         onDeselect: onDeselect,
         onNavigateToPassage: onNavigateToPassage,
       ) ??
@@ -64,15 +62,15 @@ enum SelectionShortcut {
         highlight => () async {
           onDeselect();
 
-          if (user.isSelectionAnnotated(selection)) {
-            ref.updateUser((user) => user.withRemovedSelectionAnnotations(selection));
-          } else {
-            ref.updateUser(
-              (user) => user.withAnnotation(
+          ref.updateUser((user) {
+            if (user.isSelectionAnnotated(selection)) {
+              return user.withRemovedSelectionAnnotations(selection);
+            } else {
+              return user.withAnnotation(
                 Annotation(createdAt: DateTime.now(), color: user.highlightColor, selections: [selection]),
-              ),
-            );
-          }
+              );
+            }
+          });
         }(),
         _ => throw UnimplementedError(),
       };

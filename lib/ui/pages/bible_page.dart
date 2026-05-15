@@ -377,14 +377,12 @@ class _Bottom extends HookConsumerWidget {
                 context,
                 ref,
                 reference: currentChapterReference,
-                user: user,
                 onNavigateToPassage: navigateToPassage,
               ),
               onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
                 context,
                 ref,
                 reference: currentChapterReference,
-                user: user,
                 onNavigateToPassage: navigateToPassage,
               ),
               onMorePressed: () => context.showStyledSheet(
@@ -410,7 +408,6 @@ class _Bottom extends HookConsumerWidget {
                             action.onPressed(
                               context,
                               ref,
-                              user: user,
                               reference: currentChapterReference,
                               onNavigateToPassage: navigateToPassage,
                             );
@@ -465,7 +462,6 @@ class _Bottom extends HookConsumerWidget {
                                           action.onPressed(
                                             context,
                                             ref,
-                                            user: user,
                                             selectedPassage: selectedPassage,
                                             onDeselect: () => selectedReferencesState.value = [],
                                             onNavigateToPassage: navigateToPassage,
@@ -479,7 +475,6 @@ class _Bottom extends HookConsumerWidget {
                             onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
                               context,
                               ref,
-                              user: user,
                               passage: selectedPassage,
                               onDeselect: () => selectedReferencesState.value = [],
                               onNavigateToPassage: navigateToPassage,
@@ -494,7 +489,6 @@ class _Bottom extends HookConsumerWidget {
                             onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
                               context,
                               ref,
-                              user: user,
                               selection: selection,
                               onDeselect: () => selectionState.value = null,
                               onNavigateToPassage: navigateToPassage,
@@ -522,7 +516,6 @@ class _Bottom extends HookConsumerWidget {
                                           action.onPressed(
                                             context,
                                             ref,
-                                            user: user,
                                             selection: selection,
                                             onDeselect: () => selectionState.value = null,
                                             onNavigateToPassage: navigateToPassage,

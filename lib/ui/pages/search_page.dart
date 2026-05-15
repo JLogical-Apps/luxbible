@@ -239,8 +239,7 @@ class SearchPage extends HookConsumerWidget {
                                 ],
                               ),
                               subtitle: strong.definition.toText(),
-                              onPressed: () =>
-                                  StrongSheet.showWithContext(context, ref, user: user, strongId: strong.id),
+                              onPressed: () => StrongSheet.showWithContext(context, ref, strongId: strong.id),
                             ),
                           ),
                         ),

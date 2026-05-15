@@ -2,6 +2,7 @@ import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/user/user.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/sheets/bookmark_sheet.dart';
@@ -50,10 +51,10 @@ enum ToolbarAction {
   Future<void> onPressed(
     BuildContext context,
     WidgetRef ref, {
-    required User user,
     required ChapterReference reference,
     required Function(Passage) onNavigateToPassage,
   }) async {
+    final user = ref.read(userProvider);
     switch (this) {
       case bookmark:
         final bookmarkId = user.currentBookmarkId;
@@ -111,7 +112,6 @@ enum ToolbarAction {
           context,
           ref,
           region: reference,
-          user: user,
           regionType: RegionType.chapter,
           onNavigateToPassage: onNavigateToPassage,
         );

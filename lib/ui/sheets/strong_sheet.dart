@@ -1,9 +1,9 @@
 import 'package:bible/models/bible/study/verse_fragment.dart';
 import 'package:bible/models/morphology.dart';
 import 'package:bible/models/reference/passage.dart';
-import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/style/widgets/dialog/styled_dialog.dart';
 import 'package:bible/ui/pages/search_page.dart';
@@ -23,9 +23,10 @@ class StrongSheet {
     WidgetRef ref, {
     String? strongId,
     VerseFragment? fragment,
-    required User user,
     Function(Passage)? onNavigateToPassage,
   }) async {
+    final user = ref.read(userProvider);
+
     final strongs = ref.read(strongsProvider);
     final strong = strongs[strongId];
 
@@ -142,7 +143,6 @@ class StrongSheet {
                           context,
                           ref,
                           strongId: strong.id,
-                          user: user,
                           onNavigateToPassage: onNavigateToPassage,
                         );
                       },

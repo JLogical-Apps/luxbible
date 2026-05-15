@@ -1,7 +1,6 @@
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/user/toolbar_shortcut.dart';
-import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_selection_sheet.dart';
@@ -45,7 +44,7 @@ class ToolbarSettingsPage extends ConsumerWidget {
                 onPressed: () {},
                 onMorePressed: () {},
                 onShorcutPressed: (shortcutIndex, shortcut) async {
-                  final newShortcut = await showSelectToolbarSheet(context, initialShortcut: shortcut, user: user);
+                  final newShortcut = await showSelectToolbarSheet(context, ref, initialShortcut: shortcut);
                   if (newShortcut != null) {
                     ref.updateUser(
                       (user) => user.copyWith(toolbar: toolbar.withPinnedShortcut(shortcutIndex, newShortcut)),
@@ -74,8 +73,8 @@ class ToolbarSettingsPage extends ConsumerWidget {
                             onPressed: () async {
                               final newShortcut = await showSelectToolbarSheet(
                                 context,
+                                ref,
                                 initialShortcut: toolbar.longPressShortcut,
-                                user: user,
                               );
                               if (newShortcut != null) {
                                 ref.updateUser(
@@ -120,19 +119,22 @@ class ToolbarSettingsPage extends ConsumerWidget {
   }
 
   Future<ToolbarShortcut?> showSelectToolbarSheet(
-    BuildContext context, {
+    BuildContext context,
+    WidgetRef ref, {
     required ToolbarShortcut initialShortcut,
-    required User user,
-  }) => context.showStyledSheet(
-    (context) => StyledSelectionSheet(
-      title: 'Toolbar Shortcut'.toText(),
-      options: ToolbarShortcut.values,
-      initialOption: initialShortcut,
-      optionMapper: (shortcut) => StyledSelectOption(
-        title: shortcut.title().toText(),
-        subtitle: shortcut.description(user: user).toText(),
-        leading: shortcut.buildIcon(context, user: user),
+  }) {
+    final user = ref.read(userProvider);
+    return context.showStyledSheet(
+      (context) => StyledSelectionSheet(
+        title: 'Toolbar Shortcut'.toText(),
+        options: ToolbarShortcut.values,
+        initialOption: initialShortcut,
+        optionMapper: (shortcut) => StyledSelectOption(
+          title: shortcut.title().toText(),
+          subtitle: shortcut.description(user: user).toText(),
+          leading: shortcut.buildIcon(context, user: user),
+        ),
       ),
-    ),
-  );
+    );
+  }
 }

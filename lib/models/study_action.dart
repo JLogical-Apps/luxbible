@@ -3,11 +3,11 @@ import 'dart:collection';
 import 'package:bible/models/bible/study/verse_fragment.dart';
 import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
-import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/style/styled_text_action.dart';
 import 'package:bible/style/widgets/dialog/styled_dialog.dart';
@@ -60,9 +60,9 @@ enum StudyAction {
     BuildContext context,
     WidgetRef ref, {
     required ReferencesRegion region,
-    required User user,
     required Function(Passage) onNavigateToPassage,
   }) async {
+    final user = ref.read(userProvider);
     final studyBibles = ref.read(studyBiblesProvider);
     final studyBible = user.getStudyBible(studyBibles);
 
@@ -98,6 +98,8 @@ enum StudyAction {
         final strongs = ref.watch(strongsProvider);
 
         context.showStyledSheetWithBreadcrumbs(breadcrumbText: region.format(), (context) {
+          final user = ref.watch(userProvider); // User can be update tab preference
+
           final tabController = useTabController(
             initialLength: InterlinearDirection.values.length,
             initialIndex: user.interlinearDirection.index,
@@ -208,7 +210,6 @@ enum StudyAction {
                                           ref,
                                           fragment: fragment,
                                           strongId: fragment.study?.strongId,
-                                          user: user,
                                           onNavigateToPassage: onNavigateToPassage,
                                         );
                                       },
@@ -244,7 +245,6 @@ enum StudyAction {
                                           ref,
                                           fragment: fragment,
                                           strongId: fragment.study?.strongId,
-                                          user: user,
                                           onNavigateToPassage: onNavigateToPassage,
                                         );
                                       },

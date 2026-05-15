@@ -55,15 +55,13 @@ enum PassageShortcut {
     BuildContext context,
     WidgetRef ref, {
     required Passage passage,
-    required User user,
     required Function() onDeselect,
     required Function(Passage) onNavigateToPassage,
   }) =>
-      toStudyAction()?.onPressed(context, ref, region: passage, user: user, onNavigateToPassage: onNavigateToPassage) ??
+      toStudyAction()?.onPressed(context, ref, region: passage, onNavigateToPassage: onNavigateToPassage) ??
       toPassageAction()?.onPressed(
         context,
         ref,
-        user: user,
         selectedPassage: passage,
         onDeselect: onDeselect,
         onNavigateToPassage: onNavigateToPassage,
@@ -72,15 +70,15 @@ enum PassageShortcut {
         highlight => () async {
           onDeselect();
 
-          if (user.isPassageAnnotated(passage)) {
-            ref.updateUser((user) => user.withRemovedPassageAnnotations(passage));
-          } else {
-            ref.updateUser(
-              (user) => user.withAnnotation(
+          ref.updateUser((user) {
+            if (user.isPassageAnnotated(passage)) {
+              return user.withRemovedPassageAnnotations(passage);
+            } else {
+              return user.withAnnotation(
                 Annotation(createdAt: DateTime.now(), color: user.highlightColor, passages: [passage]),
-              ),
-            );
-          }
+              );
+            }
+          });
         }(),
         _ => throw UnimplementedError(),
       };
