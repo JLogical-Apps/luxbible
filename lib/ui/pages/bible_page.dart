@@ -189,17 +189,21 @@ class BiblePage extends HookConsumerWidget {
                             opacity: showTopBar ? 1 : 0,
                             duration: Duration(milliseconds: 300),
                             curve: Curves.easeInOutCubic,
-                            child: Container(
-                              color: context.colors.backgroundPrimary,
-                              padding:
-                                  EdgeInsets.only(top: MediaQuery.paddingOf(context).top) + .symmetric(horizontal: 16),
-                              alignment: .centerLeft,
-                              child: Column(
-                                crossAxisAlignment: .start,
-                                children: [
-                                  Text(chapterReference.format(), style: context.textStyle.labelSm.subtle(context)),
-                                  StyledDivider(),
-                                ],
+                            child: GestureDetector(
+                              onTap: showTopBar ? () => isScrollingDownState.value = true : null,
+                              child: Container(
+                                color: context.colors.backgroundPrimary,
+                                padding:
+                                    EdgeInsets.only(top: MediaQuery.paddingOf(context).top) +
+                                    .symmetric(horizontal: 16),
+                                alignment: .centerLeft,
+                                child: Column(
+                                  crossAxisAlignment: .start,
+                                  children: [
+                                    Text(chapterReference.format(), style: context.textStyle.labelSm.subtle(context)),
+                                    StyledDivider(),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
