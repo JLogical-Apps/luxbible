@@ -57,7 +57,8 @@ class StrongSheet {
               title: 'Usage'.toText(),
               padding: .only(top: 24),
               children: [
-                StyledListItem(title: 'English'.toText(), subtitle: fragment.displayText.toText()),
+                if (!fragment.isEmptyText)
+                  StyledListItem(title: 'English'.toText(), subtitle: fragment.displayText.toText()),
                 if (fragment.study case final study?)
                   StyledListItem(title: 'Inflected'.toText(), subtitle: study.inflection?.toText()),
                 if (strong != null) StyledListItem(title: 'Root Word'.toText(), subtitle: strong.languageText.toText()),
