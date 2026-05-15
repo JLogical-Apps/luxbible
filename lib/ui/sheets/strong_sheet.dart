@@ -79,50 +79,52 @@ class StrongSheet {
             StyledSection(
               title: 'Morphology'.toText(),
               subtitle: morphologyCode.toText(),
-              trailing: morphologyCodes.length == 1
-                  ? null
-                  : StyledSegmentedControl(
+              padding: .only(top: 24),
+              children: [
+                if (morphologyCodes.length > 1)
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16) + .symmetric(vertical: 8),
+                    child: StyledSegmentedControl(
                       options: morphologyCodes,
                       onOptionSelected: (code) => selectedMorphologyCodeState.value = code,
                       selectedOption: selectedMorphologyCode,
                       textBuilder: (morphology) => morphology,
                     ),
-              padding: .only(top: 24),
-              children: Morphology.parse(selectedMorphologyCode).attributes
-                  .mapToIterable(
-                    (attribute, value) => StyledListItem(
-                      title: attribute.displayName.toText(),
-                      subtitle: value.displayName.toText(),
-                      trailing: StyledPillButton(
-                        label: 'Learn More'.toText(),
-                        onPressed: () => context.showStyledDialog(
-                          (context) => StyledDialog.confirm(
-                            title: 'Morphology Info'.toText(),
-                            bodyPadding: .zero,
-                            body: StyledList(
-                              children: [
-                                StyledListItem(
-                                  title: attribute.displayName.toText(),
-                                  subtitle: attribute.description.toText(),
-                                ),
-                                StyledListItem(
-                                  title: value.displayName.toText(),
-                                  subtitle: value.description.toText(),
-                                  thirdLine: value.examples.isEmpty
-                                      ? null
-                                      : [
-                                          'Examples: ',
-                                          value.examples.map((example) => '"$example"').join(', '),
-                                        ].join().toText(),
-                                ),
-                              ],
-                            ),
+                  ),
+                ...Morphology.parse(selectedMorphologyCode).attributes.mapToIterable(
+                  (attribute, value) => StyledListItem(
+                    title: attribute.displayName.toText(),
+                    subtitle: value.displayName.toText(),
+                    trailing: StyledPillButton(
+                      label: 'Learn More'.toText(),
+                      onPressed: () => context.showStyledDialog(
+                        (context) => StyledDialog.confirm(
+                          title: 'Morphology Info'.toText(),
+                          bodyPadding: .zero,
+                          body: StyledList(
+                            children: [
+                              StyledListItem(
+                                title: attribute.displayName.toText(),
+                                subtitle: attribute.description.toText(),
+                              ),
+                              StyledListItem(
+                                title: value.displayName.toText(),
+                                subtitle: value.description.toText(),
+                                thirdLine: value.examples.isEmpty
+                                    ? null
+                                    : [
+                                        'Examples: ',
+                                        value.examples.map((example) => '"$example"').join(', '),
+                                      ].join().toText(),
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                  )
-                  .toList(),
+                  ),
+                ),
+              ],
             ),
           if (seeMoreStrongs != null && seeMoreStrongs.isNotEmpty)
             StyledSection(

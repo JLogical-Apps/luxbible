@@ -23,22 +23,15 @@ class StyledSegmentedControl<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyle = context.textStyle.labelSm;
     return Container(
-      decoration: BoxDecoration(color: context.colors.backgroundPrimary, borderRadius: .circular(8)),
+      width: double.infinity,
+      decoration: BoxDecoration(color: context.colors.backgroundPrimary, borderRadius: .circular(12)),
       padding: .all(4),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final optionTextWidths = options
-              .map((option) => textBuilder(option))
-              .map((text) => textStyle.getWidth(text))
-              .toList();
           final selectionIndex = options.indexOfOrNull(selectedOption);
 
-          final availablePaddingSpace = constraints.maxWidth - optionTextWidths.sum;
-          const preferredPadding = 16;
-          final paddingPerOption = min(availablePaddingSpace / options.length, preferredPadding * 2);
-          final optionWidths = optionTextWidths.map((width) => width + paddingPerOption).toList();
-
-          const height = 28.0;
+          final width = constraints.maxWidth / options.length;
+          const height = 48.0;
 
           return SizedBox(
             height: height,
@@ -48,14 +41,18 @@ class StyledSegmentedControl<T> extends StatelessWidget {
                   key: ValueKey(options.contains(selectedOption) ? 'has-selection' : 'no-selection'),
                   duration: Duration(milliseconds: 300),
                   curve: Curves.easeInOutCubic,
-                  left: selectionIndex == null ? 0 : optionWidths.take(selectionIndex).sum,
+                  left: selectionIndex == null ? 0 : width * selectionIndex,
                   child: selectionIndex != null
                       ? AnimatedContainer(
                           height: height,
                           duration: Duration(milliseconds: 300),
                           curve: Curves.easeInOutCubic,
-                          width: optionWidths[selectionIndex],
-                          decoration: BoxDecoration(color: context.colors.contentPrimary, borderRadius: .circular(6)),
+                          width: width,
+                          decoration: BoxDecoration(
+                            color: context.colors.surfacePrimary,
+                            borderRadius: .circular(8),
+                            border: Border.all(color: context.colors.borderSelected, width: 1),
+                          ),
                         )
                       : SizedBox.shrink(),
                 ),
@@ -67,12 +64,14 @@ class StyledSegmentedControl<T> extends StatelessWidget {
                           onTap: () => onOptionSelected(option),
                           child: Container(
                             color: Colors.transparent,
-                            width: optionWidths[i],
+                            width: width,
+                            padding: .symmetric(horizontal: 16),
                             child: Center(
                               child: AnimatedDefaultTextStyle(
                                 style: textStyle.copyWith(
-                                  color: i == selectionIndex ? context.colors.contentPrimaryInverse : null,
+                                  color: i == selectionIndex ? null : context.colors.contentSecondary,
                                 ),
+                                textAlign: .center,
                                 duration: Duration(milliseconds: 300),
                                 curve: Curves.easeInOutCubic,
                                 child: Text(textBuilder(option)),
