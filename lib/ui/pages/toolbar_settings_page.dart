@@ -86,6 +86,16 @@ class ToolbarSettingsPage extends ConsumerWidget {
                           ),
                         ),
                       ),
+                      StyledListItem.switchControl(
+                        title: 'Swipe to Navigate'.toText(),
+                        subtitle:
+                            'Swipe left on the toolbar to go back to the previous passage. Swipe right to undo that.'
+                                .toText(),
+                        leading: Symbols.swipe.toIcon(),
+                        selected: toolbar.swipeToUndo,
+                        onSelected: (newValue) =>
+                            ref.updateUser((user) => user.copyWith.toolbar(swipeToUndo: newValue)),
+                      ),
                     ],
                   ),
                 ),

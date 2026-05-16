@@ -21,6 +21,7 @@ _ToolbarConfiguration _$ToolbarConfigurationFromJson(
         json['longPressShortcut'],
       ) ??
       ToolbarShortcut.study,
+  swipeToUndo: json['swipeToUndo'] as bool? ?? true,
   pinToBottom: json['pinToBottom'] as bool? ?? false,
 );
 
@@ -30,6 +31,7 @@ Map<String, dynamic> _$ToolbarConfigurationToJson(
   'pinnedShortcut1': _$ToolbarShortcutEnumMap[instance.pinnedShortcut1]!,
   'pinnedShortcut2': _$ToolbarShortcutEnumMap[instance.pinnedShortcut2]!,
   'longPressShortcut': _$ToolbarShortcutEnumMap[instance.longPressShortcut]!,
+  'swipeToUndo': instance.swipeToUndo,
   'pinToBottom': instance.pinToBottom,
 };
 

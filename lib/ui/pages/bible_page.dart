@@ -339,32 +339,36 @@ class _Bottom extends HookConsumerWidget {
               toolbar: user.toolbar,
               translation: user.translation,
               user: user,
-              onSwipeLeft: () {
-                if (!navigationStateState.value.canUndo) {
-                  return;
-                }
+              onSwipeLeft: user.toolbar.swipeToUndo
+                  ? () {
+                      if (!navigationStateState.value.canUndo) {
+                        return;
+                      }
 
-                navigationStateState.value = navigationStateState.value.withUndo();
-                final currentState = navigationStateState.value.current;
-                hardNavigateTo(
-                  currentState.reference,
-                  bookmarkId: currentState.bookmarkId,
-                  updateNavigationState: false,
-                );
-              },
-              onSwipeRight: () {
-                if (!navigationStateState.value.canRedo) {
-                  return;
-                }
+                      navigationStateState.value = navigationStateState.value.withUndo();
+                      final currentState = navigationStateState.value.current;
+                      hardNavigateTo(
+                        currentState.reference,
+                        bookmarkId: currentState.bookmarkId,
+                        updateNavigationState: false,
+                      );
+                    }
+                  : null,
+              onSwipeRight: user.toolbar.swipeToUndo
+                  ? () {
+                      if (!navigationStateState.value.canRedo) {
+                        return;
+                      }
 
-                navigationStateState.value = navigationStateState.value.withRedo();
-                final currentState = navigationStateState.value.current;
-                hardNavigateTo(
-                  currentState.reference,
-                  bookmarkId: currentState.bookmarkId,
-                  updateNavigationState: false,
-                );
-              },
+                      navigationStateState.value = navigationStateState.value.withRedo();
+                      final currentState = navigationStateState.value.current;
+                      hardNavigateTo(
+                        currentState.reference,
+                        bookmarkId: currentState.bookmarkId,
+                        updateNavigationState: false,
+                      );
+                    }
+                  : null,
               onPressed: () async {
                 final result =
                     await context.pushDialog(ChapterReferenceSearchPage(initialReference: currentChapterReference))
