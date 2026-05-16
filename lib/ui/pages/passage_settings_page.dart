@@ -51,6 +51,33 @@ class PassageSettingsPage extends ConsumerWidget {
             child: ListView(
               children: [
                 StyledSection.child(
+                  title: 'Gestures'.toText(),
+                  child: StyledCard(
+                    children: [
+                      StyledListItem(
+                        title: 'Long Press'.toText(),
+                        subtitle: 'Shortcut when a selected passage is long-pressed.'.toText(),
+                        leading: Symbols.touch_long.toIcon(),
+                        trailing: StyledEditBadge(
+                          child: StyledCircleButton.lg(
+                            colorBuilder: .surfaceSecondary,
+                            onPressed: () async {
+                              final newShortcut = await showSelectToolbarSheet(
+                                context,
+                                initialShortcut: passageConfiguration.longPressShortcut,
+                              );
+                              if (newShortcut != null) {
+                                ref.updateUser((user) => user.copyWith.passage(longPressShortcut: newShortcut));
+                              }
+                            },
+                            child: passageConfiguration.longPressShortcut.buildIcon(context, user: null, passage: null),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                StyledSection.child(
                   title: 'Selection'.toText(),
                   child: StyledCard(
                     children: [

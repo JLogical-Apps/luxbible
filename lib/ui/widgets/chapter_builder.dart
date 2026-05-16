@@ -37,6 +37,7 @@ class ChapterBuilder extends HookConsumerWidget {
   final Function(Reference)? onReferencePressed;
   final List<Reference> underlinedReferences;
 
+  final bool Function(Selection selection) onHandleLongPress;
   final Selection? selection;
   final Function(Selection?, bool isNewSelection)? onSelectionUpdated;
 
@@ -49,6 +50,7 @@ class ChapterBuilder extends HookConsumerWidget {
     required this.bible,
     this.onReferencePressed,
     this.underlinedReferences = const [],
+    required this.onHandleLongPress,
     this.selection,
     this.onSelectionUpdated,
     this.keyByReferenceRef,
@@ -83,6 +85,11 @@ class ChapterBuilder extends HookConsumerWidget {
         final wordSelection = bible.getWordsSelection(
           Selection.character(anchor: anchor, translation: bible.translation),
         );
+
+        if (!onHandleLongPress(wordSelection)) {
+          return;
+        }
+
         onSelectionUpdated?.call(wordSelection, true);
         selectionStartAnchorState.value = anchor;
       },

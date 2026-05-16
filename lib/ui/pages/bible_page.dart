@@ -55,9 +55,69 @@ class BiblePage extends HookConsumerWidget {
     final isScrollingDownState = useState(true);
     final scrollControllerByReferenceRef = useState(<ChapterReference, ScrollController>{});
 
+    final currentScrollController = scrollControllerByReferenceRef.value[currentChapterReference];
+    final isAtBottom = useListenableSelector(currentScrollController, () {
+      final scrollPosition = currentScrollController?.positionsOrNull?.firstOrNull;
+      return scrollPosition == null || !scrollPosition.hasContentDimensions
+          ? false
+          : scrollPosition.pixels >= scrollPosition.maxScrollExtent;
+    });
+
+    useOnStickyScrollDirectionChanged(
+      currentScrollController,
+      (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
+      [pageController.pageOrNull],
+    );
+
     final selectedReferencesState = useState(<Reference>[]);
+    final selectedPassage = selectedReferencesState.value.isEmpty
+        ? null
+        : Passage.fromReferences(selectedReferencesState.value);
+
     final selectionState = useState<Selection?>(null);
+    final selection = selectionState.value;
+
+    final showBottomBar =
+        (isScrollingDownState.value || user.toolbar.pinToBottom || isAtBottom) &&
+        selectedPassage == null &&
+        selection == null;
+
     final keyByReferenceRef = useRef(<Reference, GlobalKey>{});
+
+    void onClosePressed() {
+      selectionState.value = null;
+      selectedReferencesState.value = [];
+    }
+
+    void hardNavigateTo(ChapterReference reference, {String? bookmarkId, bool updateNavigationState = true}) {
+      final pageIndex = bible.getPageIndexByChapterReference(reference);
+      pageController.jumpToPage(pageIndex);
+      ref.updateUser((user) => user.withHardNavigation(reference, bookmarkId: bookmarkId));
+      if (updateNavigationState) {
+        navigationHistoryState.value = navigationHistoryState.value.withPush(
+          NavigationState(reference: reference, bookmarkId: bookmarkId),
+        );
+      }
+    }
+
+    void navigateToPassage(Passage passage) async {
+      final chapterReference = passage.references.first.toChapterReference();
+      hardNavigateTo(chapterReference);
+      selectionState.value = null;
+      selectedReferencesState.value = passage.references;
+
+      await Future.delayed(Duration(milliseconds: 200));
+
+      final verseContext = keyByReferenceRef.value[passage.references.first]?.currentContext;
+      if (verseContext != null && verseContext.mounted) {
+        Scrollable.ensureVisible(
+          verseContext,
+          alignment: 0.35,
+          curve: Curves.easeInOutCubic,
+          duration: Duration(milliseconds: 500),
+        );
+      }
+    }
 
     return StyledPage(
       body: Stack(
@@ -165,6 +225,20 @@ class BiblePage extends HookConsumerWidget {
                                       );
                                     }
                                   },
+                                  onHandleLongPress: (selection) {
+                                    if (selectedPassage != null && selection.isInPassage(selectedPassage)) {
+                                      user.passage.longPressShortcut.onPressed(
+                                        context,
+                                        ref,
+                                        passage: Passage.fromReferences(selectedReferencesState.value),
+                                        onDeselect: () => selectedReferencesState.value = [],
+                                        onNavigateToPassage: navigateToPassage,
+                                      );
+                                      return false;
+                                    }
+
+                                    return true;
+                                  },
                                   selection: selectionState.value,
                                   onSelectionUpdated: (selection, isNewSelection) {
                                     selectedReferencesState.value = [];
@@ -221,321 +295,226 @@ class BiblePage extends HookConsumerWidget {
             left: 0,
             child: Container(height: MediaQuery.paddingOf(context).top, color: context.colors.backgroundPrimary),
           ),
-          _Bottom(
-            currentChapterReference: currentChapterReference,
-            pageController: pageController,
-            selectedReferencesState: selectedReferencesState,
-            navigationStateState: navigationHistoryState,
-            scrollController: scrollControllerByReferenceRef.value[currentChapterReference],
-            isScrollingDownState: isScrollingDownState,
-            selectionState: selectionState,
-            keyByReferenceRef: keyByReferenceRef,
+          Stack(
+            children: [
+              AnimatedPositioned(
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeInOutCubic,
+                bottom: showBottomBar ? 0 : -72 - MediaQuery.paddingOf(context).bottom,
+                right: 0,
+                left: 0,
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(boxShadow: [StyledShadow.down(context)]),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16) + .only(bottom: MediaQuery.paddingOf(context).bottom + 16),
+                  child: Toolbar(
+                    chapterReference: currentChapterReference,
+                    toolbar: user.toolbar,
+                    translation: user.translation,
+                    user: user,
+                    onSwipeLeft: user.toolbar.swipeToUndo
+                        ? () {
+                            if (!navigationHistoryState.value.canUndo) {
+                              return;
+                            }
+
+                            navigationHistoryState.value = navigationHistoryState.value.withUndo();
+                            final currentState = navigationHistoryState.value.current;
+                            hardNavigateTo(
+                              currentState.reference,
+                              bookmarkId: currentState.bookmarkId,
+                              updateNavigationState: false,
+                            );
+                          }
+                        : null,
+                    onSwipeRight: user.toolbar.swipeToUndo
+                        ? () {
+                            if (!navigationHistoryState.value.canRedo) {
+                              return;
+                            }
+
+                            navigationHistoryState.value = navigationHistoryState.value.withRedo();
+                            final currentState = navigationHistoryState.value.current;
+                            hardNavigateTo(
+                              currentState.reference,
+                              bookmarkId: currentState.bookmarkId,
+                              updateNavigationState: false,
+                            );
+                          }
+                        : null,
+                    onPressed: () async {
+                      final result =
+                          await context.pushDialog(
+                                ChapterReferenceSearchPage(initialReference: currentChapterReference),
+                              )
+                              as ChapterReferenceSearchPageResult?;
+                      if (result != null) {
+                        hardNavigateTo(result.chapterReference, bookmarkId: result.bookmarkId);
+                      }
+                    },
+                    onLongPressed: () => user.toolbar.longPressShortcut.onPressed(
+                      context,
+                      ref,
+                      reference: currentChapterReference,
+                      onNavigateToPassage: navigateToPassage,
+                    ),
+                    onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
+                      context,
+                      ref,
+                      reference: currentChapterReference,
+                      onNavigateToPassage: navigateToPassage,
+                    ),
+                    onMorePressed: () => context.showStyledSheet(
+                      (context) => StyledSheet(
+                        title: 'Chapter Actions'.toText(),
+                        subtitle: currentChapterReference.format().toText(),
+                        trailing: StyledCircleButton.lg(
+                          child: Symbols.tune.toIcon(),
+                          onPressed: () {
+                            context.pop();
+                            context.push(ToolbarSettingsPage());
+                          },
+                        ),
+                        children: ToolbarAction.values
+                            .map(
+                              (action) => StyledListItem(
+                                title: action.title().toText(),
+                                subtitle: action.description(user: user).toText(),
+                                leading: action.buildIcon(context, user: user),
+                                trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
+                                onPressed: () {
+                                  context.pop();
+                                  action.onPressed(
+                                    context,
+                                    ref,
+                                    reference: currentChapterReference,
+                                    onNavigateToPassage: navigateToPassage,
+                                  );
+                                },
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: AnimatedGrow(
+                  child: selectedPassage == null && selection == null
+                      ? SizedBox.shrink(key: ValueKey('empty'))
+                      : Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [StyledShadow.up(context)],
+                            color: context.colors.surfacePrimary,
+                          ),
+                          padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
+                          child: selectedPassage != null
+                              ? PassageBottomBar(
+                                  passage: selectedPassage,
+                                  configuration: user.passage,
+                                  user: user,
+                                  onClosePressed: onClosePressed,
+                                  onMorePressed: () => context.showStyledSheet(
+                                    (context) => StyledSheet(
+                                      title: 'Passage Actions'.toText(),
+                                      subtitle: selectedPassage.format().toText(),
+                                      trailing: StyledCircleButton.lg(
+                                        child: Symbols.tune.toIcon(),
+                                        onPressed: () {
+                                          context.pop();
+                                          context.push(PassageSettingsPage());
+                                        },
+                                      ),
+                                      children: PassageAction.values
+                                          .map(
+                                            (action) => StyledListItem(
+                                              title: action.title().toText(),
+                                              subtitle: action.description().toText(),
+                                              leading: action.icon.toIcon(),
+                                              trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                action.onPressed(
+                                                  context,
+                                                  ref,
+                                                  selectedPassage: selectedPassage,
+                                                  onDeselect: () => selectedReferencesState.value = [],
+                                                  onNavigateToPassage: navigateToPassage,
+                                                );
+                                              },
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ),
+                                  onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
+                                    context,
+                                    ref,
+                                    passage: selectedPassage,
+                                    onDeselect: () => selectedReferencesState.value = [],
+                                    onNavigateToPassage: navigateToPassage,
+                                  ),
+                                )
+                              : selection != null
+                              ? SelectionBottomBar(
+                                  selection: selection,
+                                  configuration: user.selection,
+                                  user: user,
+                                  onClosePressed: onClosePressed,
+                                  onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
+                                    context,
+                                    ref,
+                                    selection: selection,
+                                    onDeselect: () => selectionState.value = null,
+                                    onNavigateToPassage: navigateToPassage,
+                                  ),
+                                  onMorePressed: () => context.showStyledSheet(
+                                    (context) => StyledSheet(
+                                      title: 'Selection Actions'.toText(),
+                                      subtitle: '"${bible.getSelectionText(selection)}"'.toText(),
+                                      trailing: StyledCircleButton.lg(
+                                        child: Symbols.tune.toIcon(),
+                                        onPressed: () {
+                                          context.pop();
+                                          context.push(SelectionSettingsPage());
+                                        },
+                                      ),
+                                      children: SelectionAction.values
+                                          .map(
+                                            (action) => StyledListItem(
+                                              title: action.title().toText(),
+                                              subtitle: action.description().toText(),
+                                              leading: action.icon.toIcon(),
+                                              trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                action.onPressed(
+                                                  context,
+                                                  ref,
+                                                  selection: selection,
+                                                  onDeselect: () => selectionState.value = null,
+                                                  onNavigateToPassage: navigateToPassage,
+                                                );
+                                              },
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ),
+                                )
+                              : null,
+                        ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
-    );
-  }
-}
-
-class _Bottom extends HookConsumerWidget {
-  final ChapterReference currentChapterReference;
-  final PageController pageController;
-  final ValueNotifier<NavigationHistory> navigationStateState;
-  final ValueNotifier<bool> isScrollingDownState;
-  final ScrollController? scrollController;
-  final ValueNotifier<List<Reference>> selectedReferencesState;
-  final ValueNotifier<Selection?> selectionState;
-  final ObjectRef<Map<Reference, GlobalKey>> keyByReferenceRef;
-
-  const _Bottom({
-    required this.currentChapterReference,
-    required this.pageController,
-    required this.navigationStateState,
-    required this.isScrollingDownState,
-    required this.scrollController,
-    required this.selectedReferencesState,
-    required this.selectionState,
-    required this.keyByReferenceRef,
-  });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final bibles = ref.watch(displayBiblesProvider);
-    final user = ref.watch(userProvider);
-    final bible = user.getDisplayBible(bibles);
-
-    useListenable(scrollController);
-    useListenable(isScrollingDownState);
-    final selection = useListenable(selectionState).value;
-
-    final selectedPassage = selectedReferencesState.value.isEmpty
-        ? null
-        : Passage.fromReferences(selectedReferencesState.value);
-
-    final scrollPosition = scrollController?.positionsOrNull?.firstOrNull;
-    useOnStickyScrollDirectionChanged(
-      scrollController,
-      (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
-      [pageController.page],
-    );
-
-    final isAtBottom = scrollPosition == null || !scrollPosition.hasContentDimensions
-        ? false
-        : scrollPosition.pixels >= scrollPosition.maxScrollExtent;
-    final showBottomBar =
-        (isScrollingDownState.value || user.toolbar.pinToBottom || isAtBottom) &&
-        selectedPassage == null &&
-        selection == null;
-
-    void onClosePressed() {
-      selectionState.value = null;
-      selectedReferencesState.value = [];
-    }
-
-    void hardNavigateTo(ChapterReference reference, {String? bookmarkId, bool updateNavigationState = true}) {
-      final pageIndex = bible.getPageIndexByChapterReference(reference);
-      pageController.jumpToPage(pageIndex);
-      ref.updateUser((user) => user.withHardNavigation(reference, bookmarkId: bookmarkId));
-      if (updateNavigationState) {
-        navigationStateState.value = navigationStateState.value.withPush(
-          NavigationState(reference: reference, bookmarkId: bookmarkId),
-        );
-      }
-    }
-
-    void navigateToPassage(Passage passage) async {
-      final chapterReference = passage.references.first.toChapterReference();
-      hardNavigateTo(chapterReference);
-      selectionState.value = null;
-      selectedReferencesState.value = passage.references;
-
-      await Future.delayed(Duration(milliseconds: 200));
-
-      final verseContext = keyByReferenceRef.value[passage.references.first]?.currentContext;
-      if (verseContext != null && verseContext.mounted) {
-        Scrollable.ensureVisible(
-          verseContext,
-          alignment: 0.35,
-          curve: Curves.easeInOutCubic,
-          duration: Duration(milliseconds: 500),
-        );
-      }
-    }
-
-    return Stack(
-      children: [
-        AnimatedPositioned(
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeInOutCubic,
-          bottom: showBottomBar ? 0 : -72 - MediaQuery.paddingOf(context).bottom,
-          right: 0,
-          left: 0,
-          child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(boxShadow: [StyledShadow.down(context)]),
-            padding: EdgeInsets.symmetric(horizontal: 16) + .only(bottom: MediaQuery.paddingOf(context).bottom + 16),
-            child: Toolbar(
-              chapterReference: currentChapterReference,
-              toolbar: user.toolbar,
-              translation: user.translation,
-              user: user,
-              onSwipeLeft: user.toolbar.swipeToUndo
-                  ? () {
-                      if (!navigationStateState.value.canUndo) {
-                        return;
-                      }
-
-                      navigationStateState.value = navigationStateState.value.withUndo();
-                      final currentState = navigationStateState.value.current;
-                      hardNavigateTo(
-                        currentState.reference,
-                        bookmarkId: currentState.bookmarkId,
-                        updateNavigationState: false,
-                      );
-                    }
-                  : null,
-              onSwipeRight: user.toolbar.swipeToUndo
-                  ? () {
-                      if (!navigationStateState.value.canRedo) {
-                        return;
-                      }
-
-                      navigationStateState.value = navigationStateState.value.withRedo();
-                      final currentState = navigationStateState.value.current;
-                      hardNavigateTo(
-                        currentState.reference,
-                        bookmarkId: currentState.bookmarkId,
-                        updateNavigationState: false,
-                      );
-                    }
-                  : null,
-              onPressed: () async {
-                final result =
-                    await context.pushDialog(ChapterReferenceSearchPage(initialReference: currentChapterReference))
-                        as ChapterReferenceSearchPageResult?;
-                if (result != null) {
-                  hardNavigateTo(result.chapterReference, bookmarkId: result.bookmarkId);
-                }
-              },
-              onLongPressed: () => user.toolbar.longPressShortcut.onPressed(
-                context,
-                ref,
-                reference: currentChapterReference,
-                onNavigateToPassage: navigateToPassage,
-              ),
-              onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
-                context,
-                ref,
-                reference: currentChapterReference,
-                onNavigateToPassage: navigateToPassage,
-              ),
-              onMorePressed: () => context.showStyledSheet(
-                (context) => StyledSheet(
-                  title: 'Chapter Actions'.toText(),
-                  subtitle: currentChapterReference.format().toText(),
-                  trailing: StyledCircleButton.lg(
-                    child: Symbols.tune.toIcon(),
-                    onPressed: () {
-                      context.pop();
-                      context.push(ToolbarSettingsPage());
-                    },
-                  ),
-                  children: ToolbarAction.values
-                      .map(
-                        (action) => StyledListItem(
-                          title: action.title().toText(),
-                          subtitle: action.description(user: user).toText(),
-                          leading: action.buildIcon(context, user: user),
-                          trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
-                          onPressed: () {
-                            context.pop();
-                            action.onPressed(
-                              context,
-                              ref,
-                              reference: currentChapterReference,
-                              onNavigateToPassage: navigateToPassage,
-                            );
-                          },
-                        ),
-                      )
-                      .toList(),
-                ),
-              ),
-            ),
-          ),
-        ),
-        Positioned(
-          bottom: 0,
-          right: 0,
-          left: 0,
-          child: AnimatedGrow(
-            child: selectedPassage == null && selection == null
-                ? SizedBox.shrink(key: ValueKey('empty'))
-                : Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [StyledShadow.up(context)],
-                      color: context.colors.surfacePrimary,
-                    ),
-                    padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
-                    child: selectedPassage != null
-                        ? PassageBottomBar(
-                            passage: selectedPassage,
-                            configuration: user.passage,
-                            user: user,
-                            onClosePressed: onClosePressed,
-                            onMorePressed: () => context.showStyledSheet(
-                              (context) => StyledSheet(
-                                title: 'Passage Actions'.toText(),
-                                subtitle: selectedPassage.format().toText(),
-                                trailing: StyledCircleButton.lg(
-                                  child: Symbols.tune.toIcon(),
-                                  onPressed: () {
-                                    context.pop();
-                                    context.push(PassageSettingsPage());
-                                  },
-                                ),
-                                children: PassageAction.values
-                                    .map(
-                                      (action) => StyledListItem(
-                                        title: action.title().toText(),
-                                        subtitle: action.description().toText(),
-                                        leading: action.icon.toIcon(),
-                                        trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                          action.onPressed(
-                                            context,
-                                            ref,
-                                            selectedPassage: selectedPassage,
-                                            onDeselect: () => selectedReferencesState.value = [],
-                                            onNavigateToPassage: navigateToPassage,
-                                          );
-                                        },
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
-                            ),
-                            onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
-                              context,
-                              ref,
-                              passage: selectedPassage,
-                              onDeselect: () => selectedReferencesState.value = [],
-                              onNavigateToPassage: navigateToPassage,
-                            ),
-                          )
-                        : selection != null
-                        ? SelectionBottomBar(
-                            selection: selection,
-                            configuration: user.selection,
-                            user: user,
-                            onClosePressed: onClosePressed,
-                            onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
-                              context,
-                              ref,
-                              selection: selection,
-                              onDeselect: () => selectionState.value = null,
-                              onNavigateToPassage: navigateToPassage,
-                            ),
-                            onMorePressed: () => context.showStyledSheet(
-                              (context) => StyledSheet(
-                                title: 'Selection Actions'.toText(),
-                                subtitle: '"${bible.getSelectionText(selection)}"'.toText(),
-                                trailing: StyledCircleButton.lg(
-                                  child: Symbols.tune.toIcon(),
-                                  onPressed: () {
-                                    context.pop();
-                                    context.push(SelectionSettingsPage());
-                                  },
-                                ),
-                                children: SelectionAction.values
-                                    .map(
-                                      (action) => StyledListItem(
-                                        title: action.title().toText(),
-                                        subtitle: action.description().toText(),
-                                        leading: action.icon.toIcon(),
-                                        trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                          action.onPressed(
-                                            context,
-                                            ref,
-                                            selection: selection,
-                                            onDeselect: () => selectionState.value = null,
-                                            onNavigateToPassage: navigateToPassage,
-                                          );
-                                        },
-                                      ),
-                                    )
-                                    .toList(),
-                              ),
-                            ),
-                          )
-                        : null,
-                  ),
-          ),
-        ),
-      ],
     );
   }
 }
