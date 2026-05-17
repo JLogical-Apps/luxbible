@@ -1,5 +1,5 @@
 import 'package:bible/models/commentary.dart';
-import 'package:bible/models/reference/passage.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:flutter/services.dart';
 import 'package:utils_core/utils_core.dart';
@@ -15,7 +15,7 @@ class CommentaryImporter {
           .findAllElements('scripCom')
           .mapToMap(
             (com) => MapEntry(
-              Passage.fromOsisId(com.getAttribute('osisRef')!.split(':').last),
+              VerseSelection.fromOsisId(com.getAttribute('osisRef')!.split(':').last),
               com.nextSibling!.getElement('p')?.innerText.replaceAll('\n', ''),
             ),
           )

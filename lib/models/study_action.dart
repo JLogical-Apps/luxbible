@@ -1,8 +1,8 @@
 import 'dart:collection';
 
 import 'package:bible/models/bible/study/verse_fragment.dart';
-import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
@@ -60,7 +60,7 @@ enum StudyAction {
     BuildContext context,
     WidgetRef ref, {
     required ReferencesRegion region,
-    required Function(Passage) onNavigateToPassage,
+    required Function(VerseSelection) onNavigateToVerseSelection,
   }) async {
     final user = ref.read(userProvider);
     final studyBibles = ref.read(studyBiblesProvider);
@@ -82,7 +82,7 @@ enum StudyAction {
                         title: bible.translation.title().toText(),
                         child: Padding(
                           padding: .only(bottom: 16),
-                          child: VersesBuilder(passage: region.toPassage(), bible: bible),
+                          child: VersesBuilder(verseSelection: region.toVerseSelection(), bible: bible),
                         ),
                       ),
                       if (i + 1 < studyBibles.length)
@@ -210,7 +210,7 @@ enum StudyAction {
                                           ref,
                                           fragment: fragment,
                                           strongId: fragment.study?.strongId,
-                                          onNavigateToPassage: onNavigateToPassage,
+                                          onNavigateToVerseSelection: onNavigateToVerseSelection,
                                         );
                                       },
                               ),
@@ -245,7 +245,7 @@ enum StudyAction {
                                           ref,
                                           fragment: fragment,
                                           strongId: fragment.study?.strongId,
-                                          onNavigateToPassage: onNavigateToPassage,
+                                          onNavigateToVerseSelection: onNavigateToVerseSelection,
                                         );
                                       },
                               ),
@@ -264,7 +264,7 @@ enum StudyAction {
       case commentary:
         final commentaries = ref.watch(commentariesProvider);
         final relatedCommentaries = commentaries
-            .mapToMap((commentary) => MapEntry(commentary, commentary.getNotesFor(region.toPassage())))
+            .mapToMap((commentary) => MapEntry(commentary, commentary.getNotesFor(region.toVerseSelection())))
             .where((commentary, notes) => notes.isNotEmpty);
         context.showStyledSheet(
           (context) => StyledSheet(
@@ -283,8 +283,8 @@ enum StudyAction {
                           title: commentary.name.toText(),
                           children: notes
                               .mapToIterable(
-                                (passage, note) =>
-                                    StyledListItem(title: passage.format().toText(), subtitle: note.toText()),
+                                (verseSelection, note) =>
+                                    StyledListItem(title: verseSelection.format().toText(), subtitle: note.toText()),
                               )
                               .toList(),
                         ),
@@ -315,7 +315,7 @@ enum StudyAction {
                           children: crossReferences
                               .map(
                                 (references) => StyledListItem(
-                                  title: references.toPassage().format().toText(),
+                                  title: references.toVerseSelection().format().toText(),
                                   subtitle: studyBible
                                       .getVersesBySpan(references)
                                       .map((verse) => verse.text)
@@ -324,7 +324,7 @@ enum StudyAction {
                                       .toText(),
                                   onPressed: () {
                                     context.pop();
-                                    onNavigateToPassage(references.toPassage());
+                                    onNavigateToVerseSelection(references.toVerseSelection());
                                   },
                                   trailing: Symbols.expand_circle_right.toIcon(),
                                 ),

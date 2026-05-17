@@ -1,8 +1,8 @@
 import 'package:bible/models/bible/display/bible.dart';
+import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/selection.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 
 abstract class Region {}
 
@@ -12,44 +12,52 @@ abstract class ReferencesRegion extends Region {
 
 extension RegionExtensions on Region {
   T when<T>({
-    required T Function(Passage) passage,
-    required T Function(Selection) selection,
+    required T Function(VerseSelection) verseSelection,
+    required T Function(BibleTextSelection) textSelection,
     required T Function(ChapterReference) chapterReference,
   }) => switch (this) {
-    Passage p => passage(p),
-    Selection s => selection(s),
+    VerseSelection vs => verseSelection(vs),
+    BibleTextSelection ts => textSelection(ts),
     ChapterReference cr => chapterReference(cr),
     _ => throw UnimplementedError(),
   };
 
   String format(DisplayBible bible) => when(
-    passage: (passage) => passage.format(),
-    selection: (selection) => '"${bible.getSelectionText(selection)}"',
+    verseSelection: (verseSelection) => verseSelection.format(),
+    textSelection: (textSelection) => '"${bible.getSelectionText(textSelection)}"',
     chapterReference: (reference) => reference.format(),
   );
 }
 
 extension ReferencesRegionExtensions on ReferencesRegion {
-  T when<T>({required T Function(Passage) passage, required T Function(ChapterReference) chapterReference}) =>
-      switch (this) {
-        Passage p => passage(p),
-        ChapterReference cr => chapterReference(cr),
-        _ => throw UnimplementedError(),
-      };
+  T when<T>({
+    required T Function(VerseSelection) verseSelection,
+    required T Function(ChapterReference) chapterReference,
+  }) => switch (this) {
+    VerseSelection vs => verseSelection(vs),
+    ChapterReference cr => chapterReference(cr),
+    _ => throw UnimplementedError(),
+  };
 
-  Passage toPassage() => when(passage: (passage) => passage, chapterReference: (reference) => reference.toPassage());
+  VerseSelection toVerseSelection() => when(
+    verseSelection: (verseSelection) => verseSelection,
+    chapterReference: (reference) => reference.toVerseSelection(),
+  );
 
-  String format() => when(passage: (passage) => passage.format(), chapterReference: (reference) => reference.format());
+  String format() => when(
+    verseSelection: (verseSelection) => verseSelection.format(),
+    chapterReference: (reference) => reference.format(),
+  );
 }
 
 enum RegionType {
   chapter,
-  passage,
-  selection;
+  verses,
+  text;
 
   String formatThis() => switch (this) {
     chapter => 'this chapter',
-    passage => 'this passage',
-    selection => 'this selection',
+    verses => 'these verses',
+    text => 'this text',
   };
 }

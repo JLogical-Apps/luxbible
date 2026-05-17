@@ -1,21 +1,21 @@
-import 'package:bible/models/passage_action.dart';
+import 'package:bible/models/main_action.dart';
+import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/selection.dart';
-import 'package:bible/models/selection_action.dart';
-import 'package:bible/models/toolbar_action.dart';
+import 'package:bible/models/reference/verse_selection.dart';
+import 'package:bible/models/text_selection_action.dart';
+import 'package:bible/models/verse_selection_action.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
-import 'package:bible/ui/pages/passage_settings_page.dart';
-import 'package:bible/ui/pages/selection_settings_page.dart';
-import 'package:bible/ui/pages/toolbar_settings_page.dart';
+import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
+import 'package:bible/ui/pages/text_selection_settings_page.dart';
+import 'package:bible/ui/pages/verse_selection_settings_page.dart';
 import 'package:bible/ui/widgets/chapter_builder.dart';
-import 'package:bible/ui/widgets/passage_bottom_bar.dart';
-import 'package:bible/ui/widgets/selection_bottom_bar.dart';
-import 'package:bible/ui/widgets/toolbar.dart';
+import 'package:bible/ui/widgets/main_toolbar.dart';
+import 'package:bible/ui/widgets/text_selection_bottom_bar.dart';
+import 'package:bible/ui/widgets/verse_selection_bottom_bar.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/controller_extensions.dart';
@@ -70,22 +70,22 @@ class BibleBody extends HookConsumerWidget {
     );
 
     final selectedReferencesState = useState(<Reference>[]);
-    final selectedPassage = selectedReferencesState.value.isEmpty
+    final selectedVerseSelection = selectedReferencesState.value.isEmpty
         ? null
-        : Passage.fromReferences(selectedReferencesState.value);
+        : VerseSelection.fromReferences(selectedReferencesState.value);
 
-    final selectionState = useState<Selection?>(null);
-    final selection = selectionState.value;
+    final textSelectionState = useState<BibleTextSelection?>(null);
+    final textSelection = textSelectionState.value;
 
     final showBottomBar =
-        (isScrollingDownState.value || user.toolbar.pinToBottom || isAtBottom) &&
-        selectedPassage == null &&
-        selection == null;
+        (isScrollingDownState.value || user.mainToolbar.pinToBottom || isAtBottom) &&
+        selectedVerseSelection == null &&
+        textSelection == null;
 
     final keyByReferenceRef = useRef(<Reference, GlobalKey>{});
 
     void onClosePressed() {
-      selectionState.value = null;
+      textSelectionState.value = null;
       selectedReferencesState.value = [];
     }
 
@@ -100,15 +100,15 @@ class BibleBody extends HookConsumerWidget {
       }
     }
 
-    void navigateToPassage(Passage passage) async {
-      final chapterReference = passage.references.first.toChapterReference();
+    void navigateToVerseSelection(VerseSelection verseSelection) async {
+      final chapterReference = verseSelection.references.first.toChapterReference();
       hardNavigateTo(chapterReference);
-      selectionState.value = null;
-      selectedReferencesState.value = passage.references;
+      textSelectionState.value = null;
+      selectedReferencesState.value = verseSelection.references;
 
       await Future.delayed(Duration(milliseconds: 200));
 
-      final verseContext = keyByReferenceRef.value[passage.references.first]?.currentContext;
+      final verseContext = keyByReferenceRef.value[verseSelection.references.first]?.currentContext;
       if (verseContext != null && verseContext.mounted) {
         Scrollable.ensureVisible(
           verseContext,
@@ -153,7 +153,7 @@ class BibleBody extends HookConsumerWidget {
             physics: NeverScrollableScrollPhysics(),
             onPageChanged: (pageIndex) {
               isScrollingDownState.value = true;
-              selectionState.value = null;
+              textSelectionState.value = null;
             },
             itemBuilder: (context, pageIndex) {
               final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
@@ -204,13 +204,14 @@ class BibleBody extends HookConsumerWidget {
                                 user: user,
                                 underlinedReferences: selectedReferencesState.value,
                                 onReferencePressed: (reference) {
-                                  if (selectionState.value != null) {
-                                    selectionState.value = null;
-                                  } else if (selectedReferencesState.value.isEmpty && user.passage.expandToAnnotation) {
+                                  if (textSelectionState.value != null) {
+                                    textSelectionState.value = null;
+                                  } else if (selectedReferencesState.value.isEmpty &&
+                                      user.verseSelection.expandToAnnotation) {
                                     selectedReferencesState.value = user.getExpandedReferences(reference);
                                   } else if (!selectedReferencesState.value.contains(reference) &&
                                       selectedReferencesState.value.isNotEmpty &&
-                                      user.passage.rangeSelection) {
+                                      user.verseSelection.rangeSelection) {
                                     final anchorReference = selectedReferencesState.value.first;
                                     final referenceAnchors = [anchorReference, reference];
 
@@ -222,27 +223,30 @@ class BibleBody extends HookConsumerWidget {
                                     selectedReferencesState.value = selectedReferencesState.value.withToggle(reference);
                                   }
                                 },
-                                onHandleLongPress: (selection) {
-                                  if (selectedPassage != null && selection.isInPassage(selectedPassage)) {
-                                    user.passage.longPressShortcut.onPressed(
+                                onHandleLongPress: (textSelection) {
+                                  if (selectedVerseSelection != null &&
+                                      textSelection.isInVerseSelection(selectedVerseSelection)) {
+                                    user.verseSelection.longPressShortcut.onPressed(
                                       context,
                                       ref,
-                                      passage: Passage.fromReferences(selectedReferencesState.value),
+                                      verseSelection: VerseSelection.fromReferences(selectedReferencesState.value),
                                       onDeselect: () => selectedReferencesState.value = [],
-                                      onNavigateToPassage: navigateToPassage,
+                                      onNavigateToVerseSelection: navigateToVerseSelection,
                                     );
                                     return false;
                                   }
 
                                   return true;
                                 },
-                                selection: selectionState.value,
-                                onSelectionUpdated: (selection, isNewSelection) {
+                                textSelection: textSelectionState.value,
+                                onTextSelectionUpdated: (textSelection, isNewSelection) {
                                   selectedReferencesState.value = [];
-                                  if (isNewSelection && user.selection.expandToAnnotation && selection != null) {
-                                    selectionState.value = user.getExpandedSelection(selection);
+                                  if (isNewSelection &&
+                                      user.textSelection.expandToAnnotation &&
+                                      textSelection != null) {
+                                    textSelectionState.value = user.getExpandedTextSelection(textSelection);
                                   } else {
-                                    selectionState.value = selection;
+                                    textSelectionState.value = textSelection;
                                   }
                                 },
                                 keyByReferenceRef: keyByReferenceRef,
@@ -304,12 +308,12 @@ class BibleBody extends HookConsumerWidget {
                 decoration: BoxDecoration(boxShadow: [StyledShadow.down(context)]),
                 padding:
                     EdgeInsets.symmetric(horizontal: 16) + .only(bottom: MediaQuery.paddingOf(context).bottom + 16),
-                child: Toolbar(
+                child: MainToolbar(
                   chapterReference: currentChapterReference,
-                  toolbar: user.toolbar,
+                  mainToolbar: user.mainToolbar,
                   translation: user.translation,
                   user: user,
-                  onSwipeLeft: user.toolbar.swipeToUndo
+                  onSwipeLeft: user.mainToolbar.swipeToUndo
                       ? () {
                           if (!navigationHistoryState.value.canUndo) {
                             return;
@@ -324,7 +328,7 @@ class BibleBody extends HookConsumerWidget {
                           );
                         }
                       : null,
-                  onSwipeRight: user.toolbar.swipeToUndo
+                  onSwipeRight: user.mainToolbar.swipeToUndo
                       ? () {
                           if (!navigationHistoryState.value.canRedo) {
                             return;
@@ -347,30 +351,28 @@ class BibleBody extends HookConsumerWidget {
                       hardNavigateTo(result.chapterReference, bookmarkId: result.bookmarkId);
                     }
                   },
-                  onLongPressed: () => user.toolbar.longPressShortcut.onPressed(
+                  onLongPressed: () => user.mainToolbar.longPressShortcut.onPressed(
                     context,
                     ref,
                     reference: currentChapterReference,
-                    onNavigateToPassage: navigateToPassage,
+                    onNavigateToVerseSelection: navigateToVerseSelection,
                   ),
                   onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
                     context,
                     ref,
                     reference: currentChapterReference,
-                    onNavigateToPassage: navigateToPassage,
+                    onNavigateToVerseSelection: navigateToVerseSelection,
                   ),
                   onMorePressed: () => context.showStyledSheet(
                     (context) => StyledSheet(
-                      title: 'Chapter Actions'.toText(),
-                      subtitle: currentChapterReference.format().toText(),
                       trailing: StyledCircleButton.lg(
                         child: Symbols.tune.toIcon(),
                         onPressed: () {
                           context.pop();
-                          context.push(ToolbarSettingsPage());
+                          context.push(MainToolbarSettingsPage());
                         },
                       ),
-                      children: ToolbarAction.values
+                      children: MainAction.values
                           .map(
                             (action) => StyledListItem(
                               title: action.title().toText(),
@@ -383,7 +385,7 @@ class BibleBody extends HookConsumerWidget {
                                   context,
                                   ref,
                                   reference: currentChapterReference,
-                                  onNavigateToPassage: navigateToPassage,
+                                  onNavigateToVerseSelection: navigateToVerseSelection,
                                 );
                               },
                             ),
@@ -399,7 +401,7 @@ class BibleBody extends HookConsumerWidget {
               right: 0,
               left: 0,
               child: AnimatedGrow(
-                child: selectedPassage == null && selection == null
+                child: selectedVerseSelection == null && textSelection == null
                     ? SizedBox.shrink(key: ValueKey('empty'))
                     : Container(
                         decoration: BoxDecoration(
@@ -407,24 +409,24 @@ class BibleBody extends HookConsumerWidget {
                           color: context.colors.surfacePrimary,
                         ),
                         padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
-                        child: selectedPassage != null
-                            ? PassageBottomBar(
-                                passage: selectedPassage,
-                                configuration: user.passage,
+                        child: selectedVerseSelection != null
+                            ? VerseSelectionBottomBar(
+                                verseSelection: selectedVerseSelection,
+                                configuration: user.verseSelection,
                                 user: user,
                                 onClosePressed: onClosePressed,
                                 onMorePressed: () => context.showStyledSheet(
                                   (context) => StyledSheet(
-                                    title: 'Passage Actions'.toText(),
-                                    subtitle: selectedPassage.format().toText(),
+                                    title: 'Verse Selection'.toText(),
+                                    subtitle: selectedVerseSelection.format().toText(),
                                     trailing: StyledCircleButton.lg(
                                       child: Symbols.tune.toIcon(),
                                       onPressed: () {
                                         context.pop();
-                                        context.push(PassageSettingsPage());
+                                        context.push(VerseSelectionSettingsPage());
                                       },
                                     ),
-                                    children: PassageAction.values
+                                    children: VerseSelectionAction.values
                                         .map(
                                           (action) => StyledListItem(
                                             title: action.title().toText(),
@@ -436,9 +438,9 @@ class BibleBody extends HookConsumerWidget {
                                               action.onPressed(
                                                 context,
                                                 ref,
-                                                selectedPassage: selectedPassage,
+                                                selectedVerseSelection: selectedVerseSelection,
                                                 onDeselect: () => selectedReferencesState.value = [],
-                                                onNavigateToPassage: navigateToPassage,
+                                                onNavigateToVerseSelection: navigateToVerseSelection,
                                               );
                                             },
                                           ),
@@ -449,36 +451,36 @@ class BibleBody extends HookConsumerWidget {
                                 onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
                                   context,
                                   ref,
-                                  passage: selectedPassage,
+                                  verseSelection: selectedVerseSelection,
                                   onDeselect: () => selectedReferencesState.value = [],
-                                  onNavigateToPassage: navigateToPassage,
+                                  onNavigateToVerseSelection: navigateToVerseSelection,
                                 ),
                               )
-                            : selection != null
-                            ? SelectionBottomBar(
-                                selection: selection,
-                                configuration: user.selection,
+                            : textSelection != null
+                            ? TextSelectionBottomBar(
+                                textSelection: textSelection,
+                                configuration: user.textSelection,
                                 user: user,
                                 onClosePressed: onClosePressed,
                                 onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
                                   context,
                                   ref,
-                                  selection: selection,
-                                  onDeselect: () => selectionState.value = null,
-                                  onNavigateToPassage: navigateToPassage,
+                                  textSelection: textSelection,
+                                  onDeselect: () => textSelectionState.value = null,
+                                  onNavigateToVerseSelection: navigateToVerseSelection,
                                 ),
                                 onMorePressed: () => context.showStyledSheet(
                                   (context) => StyledSheet(
-                                    title: 'Selection Actions'.toText(),
-                                    subtitle: '"${bible.getSelectionText(selection)}"'.toText(),
+                                    title: 'Text Selection'.toText(),
+                                    subtitle: '"${bible.getSelectionText(textSelection)}"'.toText(),
                                     trailing: StyledCircleButton.lg(
                                       child: Symbols.tune.toIcon(),
                                       onPressed: () {
                                         context.pop();
-                                        context.push(SelectionSettingsPage());
+                                        context.push(TextSelectionSettingsPage());
                                       },
                                     ),
-                                    children: SelectionAction.values
+                                    children: TextSelectionAction.values
                                         .map(
                                           (action) => StyledListItem(
                                             title: action.title().toText(),
@@ -490,9 +492,9 @@ class BibleBody extends HookConsumerWidget {
                                               action.onPressed(
                                                 context,
                                                 ref,
-                                                selection: selection,
-                                                onDeselect: () => selectionState.value = null,
-                                                onNavigateToPassage: navigateToPassage,
+                                                textSelection: textSelection,
+                                                onDeselect: () => textSelectionState.value = null,
+                                                onNavigateToVerseSelection: navigateToVerseSelection,
                                               );
                                             },
                                           ),

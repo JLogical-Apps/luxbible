@@ -5,15 +5,15 @@ import 'package:bible/models/bible/display/bible.dart';
 import 'package:bible/models/bible/study/bible.dart';
 import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/color_enum.dart';
+import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/region.dart';
-import 'package:bible/models/reference/selection.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_action.dart';
-import 'package:bible/models/user/passage_configuration.dart';
-import 'package:bible/models/user/selection_configuration.dart';
-import 'package:bible/models/user/toolbar_configuration.dart';
+import 'package:bible/models/user/main_toolbar_configuration.dart';
+import 'package:bible/models/user/text_selection_configuration.dart';
+import 'package:bible/models/user/verse_selection_configuration.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -34,9 +34,9 @@ sealed class User with _$User {
     @Default(ColorEnum.yellow) ColorEnum highlightColor,
     @Default({}) Map<String, Bookmark> bookmarkById,
     @Default([]) List<Annotation> annotations,
-    @Default(ToolbarConfiguration()) ToolbarConfiguration toolbar,
-    @Default(PassageConfiguration()) PassageConfiguration passage,
-    @Default(SelectionConfiguration()) SelectionConfiguration selection,
+    @Default(MainToolbarConfiguration()) MainToolbarConfiguration mainToolbar,
+    @Default(VerseSelectionConfiguration()) VerseSelectionConfiguration verseSelection,
+    @Default(TextSelectionConfiguration()) TextSelectionConfiguration textSelection,
     @Default([]) List<String> searchHistory,
     @Default(InterlinearDirection.reverse) InterlinearDirection interlinearDirection,
   }) = _User;
@@ -50,53 +50,59 @@ sealed class User with _$User {
 
   Bookmark? get currentBookmark => bookmarkById[currentBookmarkId];
 
-  List<Annotation> getPassageAnnotations(Passage passage) =>
-      annotations.where((annotation) => annotation.passages.any((p) => p.hasAnyOf(passage))).toList();
-  bool isPassageAnnotated(Passage passage) => getPassageAnnotations(passage).isNotEmpty;
+  List<Annotation> getVerseSelectionAnnotations(VerseSelection verseSelection) => annotations
+      .where((annotation) => annotation.verseSelections.any((vs) => vs.hasAnyOf(verseSelection)))
+      .toList();
+  bool isVerseSelectionAnnotated(VerseSelection verseSelection) =>
+      getVerseSelectionAnnotations(verseSelection).isNotEmpty;
 
-  List<(Annotation, Selection)> getSelectionAnnotationsInPassage(
-    Passage passage, {
+  List<(Annotation, BibleTextSelection)> getTextSelectionAnnotationsInVerseSelection(
+    VerseSelection verseSelection, {
     required BibleTranslation translation,
   }) => annotations
       .expand(
-        (annotation) => annotation.selections
-            .where((s) => s.translation == translation && s.isInPassage(passage))
-            .map((s) => (annotation, s)),
+        (annotation) => annotation.textSelections
+            .where((ts) => ts.translation == translation && ts.isInVerseSelection(verseSelection))
+            .map((ts) => (annotation, ts)),
       )
       .toList();
 
-  List<Annotation> getSelectionAnnotations(Selection selection) => annotations
+  List<Annotation> getTextSelectionAnnotations(BibleTextSelection textSelection) => annotations
       .where(
-        (annotation) =>
-            annotation.selections.any((s) => s.translation == selection.translation && s.intersects(selection)),
+        (annotation) => annotation.textSelections.any(
+          (ts) => ts.translation == textSelection.translation && ts.intersects(textSelection),
+        ),
       )
       .toList();
-  bool isSelectionAnnotated(Selection selection) => getSelectionAnnotations(selection).isNotEmpty;
+  bool isTextSelectionAnnotated(BibleTextSelection textSelection) =>
+      getTextSelectionAnnotations(textSelection).isNotEmpty;
 
-  Map<int, List<Annotation>> getSelectionAnnotationsWithNotesByOffset({
+  Map<int, List<Annotation>> getTextSelectionAnnotationsWithNotesByOffset({
     required Reference reference,
     required BibleTranslation translation,
   }) => annotations
       .where((annotation) => annotation.note != null)
       .expand(
-        (annotation) => annotation.selections
-            .where((selection) => selection.translation == translation)
-            .where((selection) => selection.start.toReference() == reference)
-            .map((selection) => (annotation, selection)),
+        (annotation) => annotation.textSelections
+            .where((textSelection) => textSelection.translation == translation)
+            .where((textSelection) => textSelection.start.toReference() == reference)
+            .map((textSelection) => (annotation, textSelection)),
       )
       .groupListsBy((records) => records.$2.start.characterOffset)
       .map((offset, records) => MapEntry(offset, records.map((record) => record.$1).toList()));
 
   List<Reference> getExpandedReferences(Reference reference) =>
       annotations
-          .expand((annotation) => annotation.passages.where((passage) => passage.references.contains(reference)))
+          .expand(
+            (annotation) => annotation.verseSelections.where((vs) => vs.references.contains(reference)),
+          )
           .lastOrNull
           ?.references ??
       [reference];
 
-  Selection getExpandedSelection(Selection selection) =>
-      annotations.expand((annotation) => annotation.selections.where((s) => s.intersects(selection))).lastOrNull ??
-      selection;
+  BibleTextSelection getExpandedTextSelection(BibleTextSelection textSelection) =>
+      annotations.expand((annotation) => annotation.textSelections.where((ts) => ts.intersects(textSelection))).lastOrNull ??
+      textSelection;
 
   User withNewBookmark(Bookmark bookmark) {
     final newId = Uuid().v4();
@@ -113,25 +119,27 @@ sealed class User with _$User {
       copyWith(annotations: [...annotations, annotation], highlightColor: annotation.color);
 
   User withRemovedRegionAnnotations(Region region) => region.when(
-    passage: (passage) => withRemovedPassageAnnotations(passage),
-    selection: (selection) => withRemovedSelectionAnnotations(selection),
+    verseSelection: (verseSelection) => withRemovedVerseSelectionAnnotations(verseSelection),
+    textSelection: (textSelection) => withRemovedTextSelectionAnnotations(textSelection),
     chapterReference: (reference) => throw UnimplementedError(),
   );
 
-  User withRemovedPassageAnnotations(Passage passage) => copyWith(
+  User withRemovedVerseSelectionAnnotations(VerseSelection verseSelection) => copyWith(
     annotations: annotations
         .map(
-          (annotation) =>
-              annotation.copyWith(passages: annotation.passages.where((p) => !p.hasAnyOf(passage)).toList()),
+          (annotation) => annotation.copyWith(
+            verseSelections: annotation.verseSelections.where((vs) => !vs.hasAnyOf(verseSelection)).toList(),
+          ),
         )
         .where((annotation) => annotation.isNotEmpty)
         .toList(),
   );
-  User withRemovedSelectionAnnotations(Selection selection) => copyWith(
+  User withRemovedTextSelectionAnnotations(BibleTextSelection textSelection) => copyWith(
     annotations: annotations
         .map(
-          (annotation) =>
-              annotation.copyWith(selections: annotation.selections.where((s) => !selection.intersects(s)).toList()),
+          (annotation) => annotation.copyWith(
+            textSelections: annotation.textSelections.where((ts) => !textSelection.intersects(ts)).toList(),
+          ),
         )
         .where((annotation) => annotation.isNotEmpty)
         .toList(),

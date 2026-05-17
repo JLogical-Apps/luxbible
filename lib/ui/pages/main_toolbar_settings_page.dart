@@ -1,6 +1,6 @@
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/user/toolbar_shortcut.dart';
+import 'package:bible/models/user/main_toolbar_shortcut.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_selection_sheet.dart';
@@ -11,7 +11,7 @@ import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_page.dart';
 import 'package:bible/style/widgets/styled_section.dart';
 import 'package:bible/style/widgets/styled_select.dart';
-import 'package:bible/ui/widgets/toolbar.dart';
+import 'package:bible/ui/widgets/main_toolbar.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
@@ -19,17 +19,17 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-class ToolbarSettingsPage extends ConsumerWidget {
-  const ToolbarSettingsPage({super.key});
+class MainToolbarSettingsPage extends ConsumerWidget {
+  const MainToolbarSettingsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final toolbar = user.toolbar;
+    final mainToolbar = user.mainToolbar;
 
     return StyledPage(
       backgroundColor: .backgroundPrimary,
-      title: 'Toolbar Settings'.toText(),
+      title: 'Main Toolbar'.toText(),
       body: Column(
         children: [
           ColoredBox(
@@ -37,18 +37,18 @@ class ToolbarSettingsPage extends ConsumerWidget {
             child: StyledSection.child(
               title: 'Toolbar'.toText(),
               padding: .symmetric(vertical: 16),
-              child: Toolbar(
-                toolbar: toolbar,
+              child: MainToolbar(
+                mainToolbar: mainToolbar,
                 chapterReference: ChapterReference(book: BookType.genesis, chapterNum: 1),
                 translation: user.translation,
                 user: user,
                 onPressed: () {},
                 onMorePressed: () {},
                 onShorcutPressed: (shortcutIndex, shortcut) async {
-                  final newShortcut = await showSelectToolbarSheet(context, ref, initialShortcut: shortcut);
+                  final newShortcut = await showSelectMainToolbarSheet(context, ref, initialShortcut: shortcut);
                   if (newShortcut != null) {
                     ref.updateUser(
-                      (user) => user.copyWith(toolbar: toolbar.withPinnedShortcut(shortcutIndex, newShortcut)),
+                      (user) => user.copyWith(mainToolbar: mainToolbar.withPinnedShortcut(shortcutIndex, newShortcut)),
                     );
                   }
                 },
@@ -72,30 +72,31 @@ class ToolbarSettingsPage extends ConsumerWidget {
                           child: StyledCircleButton.lg(
                             colorBuilder: .surfaceSecondary,
                             onPressed: () async {
-                              final newShortcut = await showSelectToolbarSheet(
+                              final newShortcut = await showSelectMainToolbarSheet(
                                 context,
                                 ref,
-                                initialShortcut: toolbar.longPressShortcut,
+                                initialShortcut: mainToolbar.longPressShortcut,
                               );
                               if (newShortcut != null) {
                                 ref.updateUser(
-                                  (user) => user.copyWith(toolbar: toolbar.copyWith(longPressShortcut: newShortcut)),
+                                  (user) =>
+                                      user.copyWith(mainToolbar: mainToolbar.copyWith(longPressShortcut: newShortcut)),
                                 );
                               }
                             },
-                            child: toolbar.longPressShortcut.buildIcon(context, user: user),
+                            child: mainToolbar.longPressShortcut.buildIcon(context, user: user),
                           ),
                         ),
                       ),
                       StyledListItem.switchControl(
                         title: 'Swipe to Navigate'.toText(),
                         subtitle:
-                            'Swipe left on the toolbar to go back to the previous passage. Swipe right to undo that.'
+                            'Swipe left on the toolbar to go back to the previous verse selection. Swipe right to undo that.'
                                 .toText(),
                         leading: Symbols.swipe.toIcon(),
-                        selected: toolbar.swipeToUndo,
+                        selected: mainToolbar.swipeToUndo,
                         onSelected: (newValue) =>
-                            ref.updateUser((user) => user.copyWith.toolbar(swipeToUndo: newValue)),
+                            ref.updateUser((user) => user.copyWith.mainToolbar(swipeToUndo: newValue)),
                       ),
                     ],
                   ),
@@ -108,15 +109,15 @@ class ToolbarSettingsPage extends ConsumerWidget {
                         title: 'Hide'.toText(),
                         subtitle: 'Hide the toolbar while scrolling down for an immersive view of the Bible.'.toText(),
                         leading: Symbols.bottom_panel_close.toIcon(),
-                        selected: toolbar.pinToBottom == false,
-                        onSelected: () => ref.updateUser((user) => user.copyWith.toolbar(pinToBottom: false)),
+                        selected: mainToolbar.pinToBottom == false,
+                        onSelected: () => ref.updateUser((user) => user.copyWith.mainToolbar(pinToBottom: false)),
                       ),
                       StyledListItem.radio(
                         title: 'Pin'.toText(),
                         subtitle: 'Pin the toolbar to the bottom of the page.'.toText(),
                         leading: Symbols.pin_drop.toIcon(),
-                        selected: toolbar.pinToBottom == true,
-                        onSelected: () => ref.updateUser((user) => user.copyWith.toolbar(pinToBottom: true)),
+                        selected: mainToolbar.pinToBottom == true,
+                        onSelected: () => ref.updateUser((user) => user.copyWith.mainToolbar(pinToBottom: true)),
                       ),
                     ],
                   ),
@@ -129,16 +130,16 @@ class ToolbarSettingsPage extends ConsumerWidget {
     );
   }
 
-  Future<ToolbarShortcut?> showSelectToolbarSheet(
+  Future<MainToolbarShortcut?> showSelectMainToolbarSheet(
     BuildContext context,
     WidgetRef ref, {
-    required ToolbarShortcut initialShortcut,
+    required MainToolbarShortcut initialShortcut,
   }) {
     final user = ref.read(userProvider);
     return context.showStyledSheet(
       (context) => StyledSelectionSheet(
-        title: 'Toolbar Shortcut'.toText(),
-        options: ToolbarShortcut.values,
+        title: 'Main Toolbar Shortcut'.toText(),
+        options: MainToolbarShortcut.values,
         initialOption: initialShortcut,
         optionMapper: (shortcut) => StyledSelectOption(
           title: shortcut.title().toText(),

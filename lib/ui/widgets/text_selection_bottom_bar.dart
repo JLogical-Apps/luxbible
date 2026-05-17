@@ -1,7 +1,7 @@
 import 'package:bible/models/bible/book_type.dart';
-import 'package:bible/models/reference/selection.dart';
-import 'package:bible/models/user/selection_configuration.dart';
-import 'package:bible/models/user/selection_shortcut.dart';
+import 'package:bible/models/reference/bible_text_selection.dart';
+import 'package:bible/models/user/text_selection_configuration.dart';
+import 'package:bible/models/user/text_selection_shortcut.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/style/style.dart';
@@ -10,22 +10,22 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class SelectionBottomBar extends ConsumerWidget {
-  final Selection? selection;
-  final SelectionConfiguration configuration;
+class TextSelectionBottomBar extends ConsumerWidget {
+  final BibleTextSelection? textSelection;
+  final TextSelectionConfiguration configuration;
 
   final User? user;
 
   final Function()? onClosePressed;
   final Function()? onMorePressed;
-  final Function(int shortcutIndex, SelectionShortcut)? onShorcutPressed;
+  final Function(int shortcutIndex, TextSelectionShortcut)? onShorcutPressed;
 
   final bool isEdit;
   final Color? color;
 
-  const SelectionBottomBar({
+  const TextSelectionBottomBar({
     super.key,
-    required this.selection,
+    required this.textSelection,
     required this.configuration,
     this.user,
     this.onClosePressed,
@@ -43,9 +43,9 @@ class SelectionBottomBar extends ConsumerWidget {
 
     return BottomBar(
       text:
-          '"${bible.getSelectionText(selection ?? Selection(
-                start: SelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 0),
-                end: SelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 30),
+          '"${bible.getSelectionText(textSelection ?? BibleTextSelection(
+                start: BibleTextSelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 0),
+                end: BibleTextSelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 30),
                 translation: translation,
               ))}"',
       buttons: configuration.pinnedShortcuts
@@ -53,9 +53,9 @@ class SelectionBottomBar extends ConsumerWidget {
             (i, shortcut) => StyledEditBadge(
               isEdit: isEdit,
               child: Tooltip(
-                message: shortcut.title(user: user, selection: selection),
+                message: shortcut.title(user: user, textSelection: textSelection),
                 child: StyledCircleButton.lg(
-                  child: shortcut.buildIcon(context, user: user, selection: selection),
+                  child: shortcut.buildIcon(context, user: user, textSelection: textSelection),
                   onPressed: () => onShorcutPressed?.call(i, shortcut),
                 ),
               ),

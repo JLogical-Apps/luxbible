@@ -1,6 +1,6 @@
 import 'package:bible/models/bible/study/verse_fragment.dart';
 import 'package:bible/models/morphology.dart';
-import 'package:bible/models/reference/passage.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -23,7 +23,7 @@ class StrongSheet {
     WidgetRef ref, {
     String? strongId,
     VerseFragment? fragment,
-    Function(Passage)? onNavigateToPassage,
+    Function(VerseSelection)? onNavigateToVerseSelection,
   }) async {
     final user = ref.read(userProvider);
 
@@ -143,14 +143,14 @@ class StrongSheet {
                           context,
                           ref,
                           strongId: strong.id,
-                          onNavigateToPassage: onNavigateToPassage,
+                          onNavigateToVerseSelection: onNavigateToVerseSelection,
                         );
                       },
                     ),
                   )
                   .toList(),
             ),
-          if (otherReferences != null && otherReferences.isNotEmpty && onNavigateToPassage != null)
+          if (otherReferences != null && otherReferences.isNotEmpty && onNavigateToVerseSelection != null)
             ...StyledSection(
               title: 'Concordance'.toText(),
               padding: .only(top: 24),
@@ -164,7 +164,7 @@ class StrongSheet {
                           )
                           as SearchPageResult?;
                   if (result != null) {
-                    onNavigateToPassage(Passage.reference(result.reference));
+                    onNavigateToVerseSelection(VerseSelection.reference(result.reference));
                   }
                 },
               ),
@@ -180,7 +180,7 @@ class StrongSheet {
                       trailing: Symbols.expand_circle_right.toIcon(),
                       onPressed: () {
                         context.pop();
-                        onNavigateToPassage(Passage.reference(reference));
+                        onNavigateToVerseSelection(VerseSelection.reference(reference));
                       },
                     );
                   })

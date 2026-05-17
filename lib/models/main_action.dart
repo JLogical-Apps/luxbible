@@ -1,6 +1,6 @@
 import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-enum ToolbarAction {
+enum MainAction {
   bookmark,
   study,
   search;
@@ -32,7 +32,7 @@ enum ToolbarAction {
           ? 'Bookmark this chapter to easily access it from the search page.'
           : 'Manage this bookmark.',
     study => 'View study tools for this chapter.',
-    search => 'Search for words across the Bible',
+    search => 'Search for words across the Bible.',
   };
 
   Widget buildIcon(BuildContext context, {User? user}) => switch (this) {
@@ -52,7 +52,7 @@ enum ToolbarAction {
     BuildContext context,
     WidgetRef ref, {
     required ChapterReference reference,
-    required Function(Passage) onNavigateToPassage,
+    required Function(VerseSelection) onNavigateToVerseSelection,
   }) async {
     final user = ref.read(userProvider);
     switch (this) {
@@ -71,7 +71,7 @@ enum ToolbarAction {
               children: [
                 StyledListItem(
                   title: 'Stop Following'.toText(),
-                  subtitle: 'Stop this bookmark from following you'.toText(),
+                  subtitle: 'Stop this bookmark from following you.'.toText(),
                   leading: Symbols.keep_off.toIcon(),
                   onPressed: () {
                     context.pop();
@@ -80,7 +80,7 @@ enum ToolbarAction {
                 ),
                 StyledListItem(
                   title: 'Edit Bookmark'.toText(),
-                  subtitle: 'Edit this bookmark\'s color and name'.toText(),
+                  subtitle: 'Edit this bookmark\'s color and name.'.toText(),
                   leading: Symbols.edit.toIcon(),
                   onPressed: () async {
                     context.pop();
@@ -96,7 +96,7 @@ enum ToolbarAction {
                 ),
                 StyledListItem(
                   title: 'Delete Bookmark'.toText(),
-                  subtitle: 'Delete this bokmark'.toText(),
+                  subtitle: 'Delete this bokmark.'.toText(),
                   leading: Icon(Symbols.delete, color: context.colors.contentError),
                   onPressed: () {
                     context.pop();
@@ -113,12 +113,12 @@ enum ToolbarAction {
           ref,
           region: reference,
           regionType: RegionType.chapter,
-          onNavigateToPassage: onNavigateToPassage,
+          onNavigateToVerseSelection: onNavigateToVerseSelection,
         );
       case search:
         final result = await context.push(SearchPage(currentChapterReference: reference)) as SearchPageResult?;
         if (result != null) {
-          onNavigateToPassage(Passage.reference(result.reference));
+          onNavigateToVerseSelection(VerseSelection.reference(result.reference));
         }
     }
   }

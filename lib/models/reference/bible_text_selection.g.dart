@@ -1,18 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'selection.dart';
+part of 'bible_text_selection.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_Selection _$SelectionFromJson(Map<String, dynamic> json) => _Selection(
-  start: SelectionWordAnchor.fromJson(json['start'] as String),
-  end: SelectionWordAnchor.fromJson(json['end'] as String),
-  translation: $enumDecode(_$BibleTranslationEnumMap, json['translation']),
-);
+_BibleTextSelection _$BibleTextSelectionFromJson(Map<String, dynamic> json) =>
+    _BibleTextSelection(
+      start: BibleTextSelectionWordAnchor.fromJson(json['start'] as String),
+      end: BibleTextSelectionWordAnchor.fromJson(json['end'] as String),
+      translation: $enumDecode(_$BibleTranslationEnumMap, json['translation']),
+    );
 
-Map<String, dynamic> _$SelectionToJson(_Selection instance) =>
+Map<String, dynamic> _$BibleTextSelectionToJson(_BibleTextSelection instance) =>
     <String, dynamic>{
       'start': instance.start,
       'end': instance.end,

@@ -32,16 +32,20 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
           ?.map((e) => Annotation.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
-  toolbar: json['toolbar'] == null
-      ? const ToolbarConfiguration()
-      : ToolbarConfiguration.fromJson(json['toolbar'] as Map<String, dynamic>),
-  passage: json['passage'] == null
-      ? const PassageConfiguration()
-      : PassageConfiguration.fromJson(json['passage'] as Map<String, dynamic>),
-  selection: json['selection'] == null
-      ? const SelectionConfiguration()
-      : SelectionConfiguration.fromJson(
-          json['selection'] as Map<String, dynamic>,
+  mainToolbar: json['mainToolbar'] == null
+      ? const MainToolbarConfiguration()
+      : MainToolbarConfiguration.fromJson(
+          json['mainToolbar'] as Map<String, dynamic>,
+        ),
+  verseSelection: json['verseSelection'] == null
+      ? const VerseSelectionConfiguration()
+      : VerseSelectionConfiguration.fromJson(
+          json['verseSelection'] as Map<String, dynamic>,
+        ),
+  textSelection: json['textSelection'] == null
+      ? const TextSelectionConfiguration()
+      : TextSelectionConfiguration.fromJson(
+          json['textSelection'] as Map<String, dynamic>,
         ),
   searchHistory:
       (json['searchHistory'] as List<dynamic>?)
@@ -64,9 +68,9 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'highlightColor': _$ColorEnumEnumMap[instance.highlightColor]!,
   'bookmarkById': instance.bookmarkById,
   'annotations': instance.annotations,
-  'toolbar': instance.toolbar,
-  'passage': instance.passage,
-  'selection': instance.selection,
+  'mainToolbar': instance.mainToolbar,
+  'verseSelection': instance.verseSelection,
+  'textSelection': instance.textSelection,
   'searchHistory': instance.searchHistory,
   'interlinearDirection':
       _$InterlinearDirectionEnumMap[instance.interlinearDirection]!,

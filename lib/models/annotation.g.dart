@@ -7,14 +7,14 @@ part of 'annotation.dart';
 // **************************************************************************
 
 _Annotation _$AnnotationFromJson(Map<String, dynamic> json) => _Annotation(
-  selections:
-      (json['selections'] as List<dynamic>?)
-          ?.map((e) => Selection.fromJson(e as Map<String, dynamic>))
+  textSelections:
+      (json['textSelections'] as List<dynamic>?)
+          ?.map((e) => BibleTextSelection.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
-  passages:
-      (json['passages'] as List<dynamic>?)
-          ?.map((e) => Passage.fromJson(e as String))
+  verseSelections:
+      (json['verseSelections'] as List<dynamic>?)
+          ?.map((e) => VerseSelection.fromJson(e as String))
           .toList() ??
       const [],
   color:
@@ -25,8 +25,8 @@ _Annotation _$AnnotationFromJson(Map<String, dynamic> json) => _Annotation(
 
 Map<String, dynamic> _$AnnotationToJson(_Annotation instance) =>
     <String, dynamic>{
-      'selections': instance.selections,
-      'passages': instance.passages,
+      'textSelections': instance.textSelections,
+      'verseSelections': instance.verseSelections,
       'color': _$ColorEnumEnumMap[instance.color]!,
       'note': instance.note,
       'createdAt': instance.createdAt.toIso8601String(),

@@ -1,13 +1,13 @@
-import 'package:bible/models/reference/passage.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:utils_core/utils_core.dart';
 
 class Commentary {
   final String name;
-  final Map<Passage, String> notes;
+  final Map<VerseSelection, String> notes;
 
   const Commentary({required this.name, required this.notes});
 
-  Map<Passage, String> getNotesFor(Passage passage) =>
-      notes.where((p, note) => p.references.containsAny(passage.references));
+  Map<VerseSelection, String> getNotesFor(VerseSelection verseSelection) =>
+      notes.where((vs, note) => vs.references.containsAny(verseSelection.references));
 }

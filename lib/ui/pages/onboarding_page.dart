@@ -1,14 +1,14 @@
 import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/user/passage_configuration.dart';
-import 'package:bible/models/user/selection_configuration.dart';
-import 'package:bible/models/user/toolbar_configuration.dart';
+import 'package:bible/models/reference/verse_selection.dart';
+import 'package:bible/models/user/main_toolbar_configuration.dart';
+import 'package:bible/models/user/text_selection_configuration.dart';
+import 'package:bible/models/user/verse_selection_configuration.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/bible_page.dart';
-import 'package:bible/ui/widgets/passage_bottom_bar.dart';
-import 'package:bible/ui/widgets/selection_bottom_bar.dart';
-import 'package:bible/ui/widgets/toolbar.dart';
+import 'package:bible/ui/widgets/main_toolbar.dart';
+import 'package:bible/ui/widgets/text_selection_bottom_bar.dart';
+import 'package:bible/ui/widgets/verse_selection_bottom_bar.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -52,15 +52,15 @@ class OnboardingPage extends HookConsumerWidget {
               children: [
                 Padding(
                   padding: .symmetric(horizontal: 16),
-                  child: Toolbar(
+                  child: MainToolbar(
                     colorBuilder: .surfaceTertiary,
-                    toolbar: readerType.getToolbarConfiguration(),
+                    mainToolbar: readerType.getMainToolbarConfiguration(),
                     chapterReference: ChapterReference(book: .genesis, chapterNum: 1),
                     translation: .bsb,
                   ),
                 ),
                 gapH8,
-                ...readerType.getToolbarConfiguration().pinnedShortcuts.map(
+                ...readerType.getMainToolbarConfiguration().pinnedShortcuts.map(
                   (shortcut) => StyledListItem(
                     title: shortcut.title().toText(),
                     subtitle: shortcut.description().toText(),
@@ -75,14 +75,14 @@ class OnboardingPage extends HookConsumerWidget {
               children: [
                 Padding(
                   padding: .symmetric(horizontal: 16),
-                  child: PassageBottomBar(
+                  child: VerseSelectionBottomBar(
                     color: context.colors.surfaceTertiary,
-                    passage: Passage.reference(Reference(book: .genesis, chapterNum: 1, verseNum: 1)),
-                    configuration: readerType.getPassageConfiguration(),
+                    verseSelection: VerseSelection.reference(Reference(book: .genesis, chapterNum: 1, verseNum: 1)),
+                    configuration: readerType.getVerseSelectionConfiguration(),
                   ),
                 ),
                 gapH8,
-                ...readerType.getPassageConfiguration().pinnedShortcuts.map(
+                ...readerType.getVerseSelectionConfiguration().pinnedShortcuts.map(
                   (shortcut) => StyledListItem(
                     title: shortcut.title().toText(),
                     subtitle: shortcut.description().toText(),
@@ -97,14 +97,14 @@ class OnboardingPage extends HookConsumerWidget {
               children: [
                 Padding(
                   padding: .symmetric(horizontal: 16),
-                  child: SelectionBottomBar(
-                    selection: null,
+                  child: TextSelectionBottomBar(
+                    textSelection: null,
                     color: context.colors.surfaceTertiary,
-                    configuration: readerType.getSelectionConfiguration(),
+                    configuration: readerType.getTextSelectionConfiguration(),
                   ),
                 ),
                 gapH8,
-                ...readerType.getSelectionConfiguration().pinnedShortcuts.map(
+                ...readerType.getTextSelectionConfiguration().pinnedShortcuts.map(
                   (shortcut) => StyledListItem(
                     title: shortcut.title().toText(),
                     subtitle: shortcut.description().toText(),
@@ -121,9 +121,9 @@ class OnboardingPage extends HookConsumerWidget {
                 onPressed: () async {
                   ref.updateUser(
                     (user) => user.copyWith(
-                      toolbar: readerType.getToolbarConfiguration(),
-                      passage: readerType.getPassageConfiguration(),
-                      selection: readerType.getSelectionConfiguration(),
+                      mainToolbar: readerType.getMainToolbarConfiguration(),
+                      verseSelection: readerType.getVerseSelectionConfiguration(),
+                      textSelection: readerType.getTextSelectionConfiguration(),
                     ),
                   );
                   context.go(BiblePage());
@@ -166,22 +166,26 @@ enum ReaderType {
     studier => Symbols.school,
   };
 
-  ToolbarConfiguration getToolbarConfiguration() => ToolbarConfiguration();
+  MainToolbarConfiguration getMainToolbarConfiguration() => MainToolbarConfiguration();
 
-  PassageConfiguration getPassageConfiguration() => switch (this) {
-    reader => PassageConfiguration(pinnedShortcut1: .annotate, pinnedShortcut2: .study, pinnedShortcut3: .copy),
-    noteTaker => PassageConfiguration(pinnedShortcut1: .annotate, pinnedShortcut2: .highlight, pinnedShortcut3: .copy),
-    studier => PassageConfiguration(
+  VerseSelectionConfiguration getVerseSelectionConfiguration() => switch (this) {
+    reader => VerseSelectionConfiguration(pinnedShortcut1: .annotate, pinnedShortcut2: .study, pinnedShortcut3: .copy),
+    noteTaker => VerseSelectionConfiguration(
+      pinnedShortcut1: .annotate,
+      pinnedShortcut2: .highlight,
+      pinnedShortcut3: .copy,
+    ),
+    studier => VerseSelectionConfiguration(
       pinnedShortcut1: .crossReferences,
       pinnedShortcut2: .commentary,
       pinnedShortcut3: .interlinear,
     ),
   };
 
-  SelectionConfiguration getSelectionConfiguration() => switch (this) {
+  TextSelectionConfiguration getTextSelectionConfiguration() => switch (this) {
     reader ||
-    studier => SelectionConfiguration(pinnedShortcut1: .annotate, pinnedShortcut2: .search, pinnedShortcut3: .copy),
-    noteTaker => SelectionConfiguration(
+    studier => TextSelectionConfiguration(pinnedShortcut1: .annotate, pinnedShortcut2: .search, pinnedShortcut3: .copy),
+    noteTaker => TextSelectionConfiguration(
       pinnedShortcut1: .annotate,
       pinnedShortcut2: .highlight,
       pinnedShortcut3: .copy,

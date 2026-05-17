@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/bible/display/bible.dart';
-import 'package:bible/models/reference/passage.dart';
+import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/selection.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
@@ -28,26 +28,26 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:utils_core/utils_core.dart';
 
 class VersesBuilder extends HookConsumerWidget {
-  final Passage passage;
+  final VerseSelection verseSelection;
   final DisplayBible? bible;
   final Function(Reference)? onReferencePressed;
-  final Function(Selection?)? onSelectionUpdated;
+  final Function(BibleTextSelection?)? onTextSelectionUpdated;
 
   final List<Reference> underlinedReferences;
 
   final ObjectRef<Map<Reference, GlobalKey>>? keyByReferenceRef;
 
-  final Selection? selection;
+  final BibleTextSelection? textSelection;
 
   const VersesBuilder({
     super.key,
-    required this.passage,
+    required this.verseSelection,
     this.bible,
     this.onReferencePressed,
-    this.onSelectionUpdated,
+    this.onTextSelectionUpdated,
     this.underlinedReferences = const [],
     this.keyByReferenceRef,
-    this.selection,
+    this.textSelection,
   });
 
   @override
@@ -58,16 +58,17 @@ class VersesBuilder extends HookConsumerWidget {
     final user = ref.watch(userProvider);
     final bible = this.bible ?? user.getDisplayBible(bibles);
 
-    final references = passage.references;
+    final references = verseSelection.references;
 
     final keyByReference = references.mapToMap(
       (reference) => MapEntry(reference, keyByReferenceRef?.value[reference] ?? GlobalKey()),
     );
-    if (keyByReferenceRef != null && passage.references.any((ref) => !keyByReferenceRef.value.containsKey(ref))) {
+    if (keyByReferenceRef != null &&
+        verseSelection.references.any((ref) => !keyByReferenceRef.value.containsKey(ref))) {
       WidgetsBinding.instance.addPostFrameCallback((_) => keyByReferenceRef.value = keyByReference);
     }
 
-    final selectionStartAnchorState = useState<SelectionWordAnchor?>(null);
+    final textSelectionStartAnchorState = useState<BibleTextSelectionWordAnchor?>(null);
 
     final spansByReference = references.mapToMap((reference) {
       final verse = bible.getVerseByReference(reference);
@@ -75,12 +76,12 @@ class VersesBuilder extends HookConsumerWidget {
         return MapEntry(reference, null);
       }
 
-      final passageAnnotations = user.getPassageAnnotations(Passage.reference(reference));
-      final passageAnnotationsWithNote = passageAnnotations
+      final verseSelectionAnnotations = user.getVerseSelectionAnnotations(VerseSelection.reference(reference));
+      final verseSelectionAnnotationsWithNote = verseSelectionAnnotations
           .where(
             (annotation) =>
                 annotation.note != null &&
-                annotation.passages.any((passage) => passage.references.firstOrNull == reference),
+                annotation.verseSelections.any((vs) => vs.references.firstOrNull == reference),
           )
           .toList();
       return MapEntry(reference, [
@@ -101,11 +102,11 @@ class VersesBuilder extends HookConsumerWidget {
             ),
           ),
         ),
-        if (passageAnnotationsWithNote.isNotEmpty)
+        if (verseSelectionAnnotationsWithNote.isNotEmpty)
           notesButtonSpan(
             context,
             ref,
-            annotations: passageAnnotationsWithNote,
+            annotations: verseSelectionAnnotationsWithNote,
             isUnderlined: underlinedReferences.contains(reference),
             bible: bible,
           ),
@@ -116,7 +117,7 @@ class VersesBuilder extends HookConsumerWidget {
           ),
         ).withInjectedSpans(
           user
-              .getSelectionAnnotationsWithNotesByOffset(reference: reference, translation: bible.translation)
+              .getTextSelectionAnnotationsWithNotesByOffset(reference: reference, translation: bible.translation)
               .map(
                 (offset, annotations) => MapEntry(
                   offset,
@@ -141,12 +142,12 @@ class VersesBuilder extends HookConsumerWidget {
       builder: (context, constraints) => Stack(
         clipBehavior: .none,
         children: [
-          ...passage.references
+          ...verseSelection.references
               .mapToMap(
                 (reference) => MapEntry(
                   reference,
                   user.annotations.where(
-                    (annotation) => annotation.passages.any((passage) => passage.hasReference(reference)),
+                    (annotation) => annotation.verseSelections.any((vs) => vs.hasReference(reference)),
                   ),
                 ),
               )
@@ -177,7 +178,7 @@ class VersesBuilder extends HookConsumerWidget {
                             curve: Curves.easeInOutCubic,
                             decoration: BoxDecoration(
                               borderRadius: .circular(4),
-                              color: verseColor?.withValues(alpha: selection == null ? 0.5 : 0.2),
+                              color: verseColor?.withValues(alpha: textSelection == null ? 0.5 : 0.2),
                             ),
                           ),
                         ),
@@ -185,10 +186,12 @@ class VersesBuilder extends HookConsumerWidget {
                     );
               })
               .flattened,
-          ...user.getSelectionAnnotationsInPassage(passage, translation: bible.translation).map((record) {
-            final (annotation, selection) = record;
-            final (base, extent) = getSelectionCharacterOffsets(
-              selection: selection,
+          ...user.getTextSelectionAnnotationsInVerseSelection(verseSelection, translation: bible.translation).map((
+            record,
+          ) {
+            final (annotation, textSelection) = record;
+            final (base, extent) = getTextSelectionCharacterOffsets(
+              textSelection: textSelection,
               spansByReference: spansByReference,
             );
             return spans
@@ -219,10 +222,10 @@ class VersesBuilder extends HookConsumerWidget {
                   ),
                 );
           }).flattened,
-          if (selection case final selection?)
+          if (textSelection case final textSelection?)
             ...() {
-              final (base, extent) = getSelectionCharacterOffsets(
-                selection: selection,
+              final (base, extent) = getTextSelectionCharacterOffsets(
+                textSelection: textSelection,
                 spansByReference: spansByReference,
               );
               return spans
@@ -264,11 +267,11 @@ class VersesBuilder extends HookConsumerWidget {
                 return;
               }
 
-              final wordSelection = bible.getWordsSelection(
-                Selection.character(anchor: anchor, translation: bible.translation),
+              final wordTextSelection = bible.getWordsSelection(
+                BibleTextSelection.character(anchor: anchor, translation: bible.translation),
               );
-              onSelectionUpdated?.call(wordSelection);
-              selectionStartAnchorState.value = anchor;
+              onTextSelectionUpdated?.call(wordTextSelection);
+              textSelectionStartAnchorState.value = anchor;
             },
             onLongPressMoveUpdate: (details) {
               final renderBox = textKey.currentContext!.findRenderObject() as RenderBox;
@@ -283,12 +286,12 @@ class VersesBuilder extends HookConsumerWidget {
                 return;
               }
 
-              final anchors = [?selectionStartAnchorState.value, anchor]..sort();
+              final anchors = [?textSelectionStartAnchorState.value, anchor]..sort();
 
-              final wordsSelection = bible.getWordsSelection(
-                Selection(start: anchors.first, end: anchors.last, translation: bible.translation),
+              final wordsTextSelection = bible.getWordsSelection(
+                BibleTextSelection(start: anchors.first, end: anchors.last, translation: bible.translation),
               );
-              onSelectionUpdated?.call(wordsSelection);
+              onTextSelectionUpdated?.call(wordsTextSelection);
             },
             onTapUp: (details) {
               final renderBox = textKey.currentContext!.findRenderObject() as RenderBox;
@@ -348,8 +351,13 @@ class VersesBuilder extends HookConsumerWidget {
                           title: (annotation.note ?? '').toText(),
                           subtitle: Column(
                             children: [
-                              annotation.passages.map((passage) => passage.format()).join('; ').nullIfBlank,
-                              ...annotation.selections.map((selection) => '"${bible.getSelectionText(selection)}"'),
+                              annotation.verseSelections
+                                  .map((verseSelection) => verseSelection.format())
+                                  .join('; ')
+                                  .nullIfBlank,
+                              ...annotation.textSelections.map(
+                                (textSelection) => '"${bible.getSelectionText(textSelection)}"',
+                              ),
                             ].nonNulls.map((text) => Text(text, maxLines: 1, overflow: .ellipsis)).toList(),
                           ),
                         ),
@@ -381,27 +389,27 @@ class VersesBuilder extends HookConsumerWidget {
     return (0, 0);
   }
 
-  (int, int) getSelectionCharacterOffsets({
-    required Selection selection,
+  (int, int) getTextSelectionCharacterOffsets({
+    required BibleTextSelection textSelection,
     required Map<Reference, List<InlineSpan>> spansByReference,
   }) {
-    int getSelectionAnchorOffset(SelectionWordAnchor anchor) =>
+    int getTextSelectionAnchorOffset(BibleTextSelectionWordAnchor anchor) =>
         getReferenceCharacterOffsets(reference: anchor.toReference(), spansByReference: spansByReference).$1 +
         (spansByReference[anchor.toReference()]?.getActualOffset(anchor.characterOffset) ?? 0);
 
-    return (getSelectionAnchorOffset(selection.start), getSelectionAnchorOffset(selection.end) + 1);
+    return (getTextSelectionAnchorOffset(textSelection.start), getTextSelectionAnchorOffset(textSelection.end) + 1);
   }
 
-  SelectionWordAnchor? getOffsetAnchor({required int characterOffset, required DisplayBible bible}) {
+  BibleTextSelectionWordAnchor? getOffsetAnchor({required int characterOffset, required DisplayBible bible}) {
     var offsetCount = 0;
-    for (final reference in passage.references) {
+    for (final reference in verseSelection.references) {
       final referenceLength = bible.getVerseByReference(reference)?.text.length;
       if (referenceLength == null) {
         continue;
       }
 
       if (characterOffset < offsetCount + referenceLength) {
-        return SelectionWordAnchor.fromReference(
+        return BibleTextSelectionWordAnchor.fromReference(
           reference: reference,
           characterOffset: (characterOffset - offsetCount).clampZero,
         );

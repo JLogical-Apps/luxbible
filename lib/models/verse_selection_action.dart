@@ -1,5 +1,5 @@
-import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
@@ -11,7 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
-enum PassageAction {
+enum VerseSelectionAction {
   annotate,
   study,
   copy;
@@ -23,9 +23,9 @@ enum PassageAction {
   };
 
   String description() => switch (this) {
-    annotate => 'Annotate the selected passage.',
-    study => 'Study the selected passage.',
-    copy => 'Copy the selected passage to your clipboard.',
+    annotate => 'Annotate these verses.',
+    study => 'Study these verses.',
+    copy => 'Copy these verses to your clipboard.',
   };
 
   IconData get icon => switch (this) {
@@ -39,9 +39,9 @@ enum PassageAction {
   Future<void> onPressed(
     BuildContext context,
     WidgetRef ref, {
-    required Passage selectedPassage,
+    required VerseSelection selectedVerseSelection,
     required Function() onDeselect,
-    required Function(Passage) onNavigateToPassage,
+    required Function(VerseSelection) onNavigateToVerseSelection,
   }) async {
     final user = ref.read(userProvider);
     final displayBibles = ref.read(displayBiblesProvider);
@@ -52,7 +52,7 @@ enum PassageAction {
         final annotation = await AnnotationSheet.show(
           context,
           ref,
-          region: selectedPassage,
+          region: selectedVerseSelection,
           onAnnotationsRemoved: onDeselect,
         );
         if (annotation != null) {
@@ -61,10 +61,10 @@ enum PassageAction {
         }
       case copy:
         onDeselect();
-        context.showStyledSnackbar(messageText: '${selectedPassage.format()} copied to clipboard.');
+        context.showStyledSnackbar(messageText: '${selectedVerseSelection.format()} copied to clipboard.');
         await Clipboard.setData(
           ClipboardData(
-            text: selectedPassage.references
+            text: selectedVerseSelection.references
                 .map((reference) => bible.getVerseByReference(reference)?.text)
                 .nonNulls
                 .join(),
@@ -74,9 +74,9 @@ enum PassageAction {
         StudySheet.show(
           context,
           ref,
-          region: selectedPassage,
-          regionType: RegionType.passage,
-          onNavigateToPassage: onNavigateToPassage,
+          region: selectedVerseSelection,
+          regionType: RegionType.verses,
+          onNavigateToVerseSelection: onNavigateToVerseSelection,
         );
     }
   }

@@ -4,22 +4,22 @@ import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:collection/collection.dart';
 
-class Passage implements ReferencesRegion {
+class VerseSelection implements ReferencesRegion {
   final List<VerseSpanReference> spans;
 
-  const Passage({required this.spans});
+  const VerseSelection({required this.spans});
 
-  factory Passage.fromOsisId(String key) =>
-      Passage(spans: key.split(' ').map((span) => VerseSpanReference.fromOsisId(span)).toList());
+  factory VerseSelection.fromOsisId(String key) =>
+      VerseSelection(spans: key.split(' ').map((span) => VerseSpanReference.fromOsisId(span)).toList());
 
-  factory Passage.fromReferences(List<Reference> references) =>
-      Passage(spans: VerseSpanReference.listFromReferences(references));
+  factory VerseSelection.fromReferences(List<Reference> references) =>
+      VerseSelection(spans: VerseSpanReference.listFromReferences(references));
 
-  factory Passage.reference(Reference reference) => Passage(
+  factory VerseSelection.reference(Reference reference) => VerseSelection(
     spans: [VerseSpanReference(start: VerseBiblePointer(reference: reference))],
   );
 
-  factory Passage.fromJson(String json) = Passage.fromOsisId;
+  factory VerseSelection.fromJson(String json) = VerseSelection.fromOsisId;
   String toJson() => osisId();
 
   String osisId() => spans.map((span) => span.osisId()).join(' ');
@@ -32,7 +32,8 @@ class Passage implements ReferencesRegion {
   bool get isNotEmpty => spans.isNotEmpty;
 
   bool hasReference(Reference reference) => spans.any((span) => span.containsReference(reference));
-  bool hasAnyOf(Passage passage) => passage.references.any((reference) => hasReference(reference));
+  bool hasAnyOf(VerseSelection verseSelection) =>
+      verseSelection.references.any((reference) => hasReference(reference));
 
   String format() => spans.mapIndexed((spanIndex, span) {
     final previousSpan = spanIndex == 0 ? null : spans[spanIndex - 1];
@@ -50,6 +51,6 @@ class Passage implements ReferencesRegion {
     ].join(' ');
   }).join();
 
-  Passage withReference(Reference reference) =>
-      hasReference(reference) ? this : Passage.fromReferences(references + [reference]);
+  VerseSelection withReference(Reference reference) =>
+      hasReference(reference) ? this : VerseSelection.fromReferences(references + [reference]);
 }

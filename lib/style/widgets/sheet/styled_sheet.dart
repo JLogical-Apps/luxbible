@@ -16,7 +16,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:provider/provider.dart';
 
 class StyledSheet<T> extends HookWidget {
-  final Widget title;
+  final Widget? title;
   final Widget? subtitle;
   final Widget? trailing;
 
@@ -30,7 +30,7 @@ class StyledSheet<T> extends HookWidget {
 
   const StyledSheet({
     super.key,
-    required this.title,
+    this.title,
     this.subtitle,
     this.trailing,
     this.aboveDivider,
@@ -118,12 +118,13 @@ class StyledSheet<T> extends HookWidget {
                     child: Column(
                       mainAxisAlignment: .center,
                       children: [
-                        DefaultTextStyle(
-                          style: context.textStyle.headingXs,
-                          maxLines: 1,
-                          overflow: .ellipsis,
-                          child: title,
-                        ),
+                        if (title case final title?)
+                          DefaultTextStyle(
+                            style: context.textStyle.headingXs,
+                            maxLines: 1,
+                            overflow: .ellipsis,
+                            child: title,
+                          ),
                         if (subtitle case final subtitle?)
                           DefaultTextStyle(
                             style: context.textStyle.paragraphMd.subtle(),

@@ -4,9 +4,9 @@ import 'package:bible/models/bible/display/book.dart';
 import 'package:bible/models/bible/display/chapter.dart';
 import 'package:bible/models/bible/display/verse.dart';
 import 'package:bible/models/bible/study/bible.dart';
+import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/selection.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
@@ -72,7 +72,7 @@ class DisplayBible {
   );
   DisplayBook getBookByType(BookType bookType) => _bookByType[bookType]!;
 
-  String getSelectionText(Selection selection) {
+  String getSelectionText(BibleTextSelection selection) {
     final verseTexts = Reference.getReferencesBetween(
       selection.start.toReference(),
       selection.end.toReference(),
@@ -86,12 +86,12 @@ class DisplayBible {
     return verseTexts.join(' ');
   }
 
-  Selection getWordsSelection(Selection selection) {
+  BibleTextSelection getWordsSelection(BibleTextSelection selection) {
     final startVerseText = getVerseByReference(selection.start.toReference())!.text;
     final endVerseText = getVerseByReference(selection.end.toReference())!.text;
-    return Selection(
+    return BibleTextSelection(
       translation: translation,
-      start: SelectionWordAnchor.fromReference(
+      start: BibleTextSelectionWordAnchor.fromReference(
         reference: selection.start.toReference(),
         characterOffset:
             List.generate(
@@ -100,7 +100,7 @@ class DisplayBible {
             ).where((offset) => startVerseText[offset] == ' ').lastOrNull?.mapIfNonNull((offset) => offset + 1) ??
             0,
       ),
-      end: SelectionWordAnchor.fromReference(
+      end: BibleTextSelectionWordAnchor.fromReference(
         reference: selection.end.toReference(),
         characterOffset:
             Range.generate(

@@ -1,7 +1,7 @@
 import 'package:bible/models/bible/book_type.dart';
-import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/region.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:bible/utils/comparable_operators.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
@@ -30,7 +30,7 @@ class ChapterReference extends Equatable with ComparableOperators<ChapterReferen
 
   Reference getReference(int verseNum) => Reference(book: book, chapterNum: chapterNum, verseNum: verseNum);
 
-  Passage toPassage() => Passage(spans: [VerseSpanReference(start: asPointer())]);
+  VerseSelection toVerseSelection() => VerseSelection(spans: [VerseSpanReference(start: asPointer())]);
 
   String osisId() => '${book.osisId()}.$chapterNum';
 

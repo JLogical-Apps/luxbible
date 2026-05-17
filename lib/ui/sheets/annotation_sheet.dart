@@ -1,8 +1,8 @@
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/color_enum.dart';
-import 'package:bible/models/reference/passage.dart';
+import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/region.dart';
-import 'package:bible/models/reference/selection.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
@@ -34,8 +34,8 @@ class AnnotationSheet {
     final bible = user.getDisplayBible(bibles);
 
     final hasAnnotation = region.when(
-      passage: (passage) => user.isPassageAnnotated(passage),
-      selection: (selection) => user.isSelectionAnnotated(selection),
+      verseSelection: (verseSelection) => user.isVerseSelectionAnnotated(verseSelection),
+      textSelection: (textSelection) => user.isTextSelectionAnnotated(textSelection),
       chapterReference: (reference) => throw UnimplementedError(),
     );
     return context.showStyledSheet(
@@ -54,8 +54,8 @@ class AnnotationSheet {
             : null,
         port: Port.of({'color': SimplePortField<ColorEnum>(value: ColorEnum.stone), 'note': PortField.string()}).map(
           (values, port) => Annotation(
-            passages: [if (region is Passage) region],
-            selections: [if (region is Selection) region],
+            verseSelections: [if (region is VerseSelection) region],
+            textSelections: [if (region is BibleTextSelection) region],
             createdAt: DateTime.now(),
             color: values['color'],
             note: (values['note'] as String).trim().nullIfBlank,

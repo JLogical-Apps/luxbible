@@ -1,5 +1,5 @@
-import 'package:bible/models/reference/passage.dart';
-import 'package:bible/models/reference/selection.dart';
+import 'package:bible/models/reference/bible_text_selection.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
@@ -12,7 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
-enum SelectionAction {
+enum TextSelectionAction {
   annotate,
   search,
   copy;
@@ -24,9 +24,9 @@ enum SelectionAction {
   };
 
   String description() => switch (this) {
-    annotate => 'Annotate the selection.',
-    search => 'Search for other usages of the selection in the Bible.',
-    copy => 'Copy the selection to your clipboard.',
+    annotate => 'Annotate this text.',
+    search => 'Search for other usages of this text in the Bible.',
+    copy => 'Copy this text to your clipboard.',
   };
 
   IconData get icon => switch (this) {
@@ -40,9 +40,9 @@ enum SelectionAction {
   Future<void> onPressed(
     BuildContext context,
     WidgetRef ref, {
-    required Selection selection,
+    required BibleTextSelection textSelection,
     required Function() onDeselect,
-    required Function(Passage) onNavigateToPassage,
+    required Function(VerseSelection) onNavigateToVerseSelection,
   }) async {
     final user = ref.read(userProvider);
     final displayBibles = ref.read(displayBiblesProvider);
@@ -53,7 +53,7 @@ enum SelectionAction {
         final annotation = await AnnotationSheet.show(
           context,
           ref,
-          region: selection,
+          region: textSelection,
           onAnnotationsRemoved: onDeselect,
         );
         if (annotation != null) {
@@ -64,18 +64,18 @@ enum SelectionAction {
         final result =
             await context.push(
                   SearchPage(
-                    initialSearch: bible.getSelectionText(selection),
-                    currentChapterReference: selection.start.toChapterReference(),
+                    initialSearch: bible.getSelectionText(textSelection),
+                    currentChapterReference: textSelection.start.toChapterReference(),
                   ),
                 )
                 as SearchPageResult?;
         if (result != null) {
-          onNavigateToPassage(Passage.reference(result.reference));
+          onNavigateToVerseSelection(VerseSelection.reference(result.reference));
         }
       case copy:
         onDeselect();
-        context.showStyledSnackbar(messageText: 'Selection copied to clipboard.');
-        await Clipboard.setData(ClipboardData(text: bible.getSelectionText(selection)));
+        context.showStyledSnackbar(messageText: 'Text selection copied to clipboard.');
+        await Clipboard.setData(ClipboardData(text: bible.getSelectionText(textSelection)));
     }
   }
 }

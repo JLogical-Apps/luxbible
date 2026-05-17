@@ -1,7 +1,7 @@
-import 'package:bible/models/user/selection_shortcut.dart';
+import 'package:bible/models/user/text_selection_shortcut.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
-import 'package:bible/ui/widgets/selection_bottom_bar.dart';
+import 'package:bible/ui/widgets/text_selection_bottom_bar.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
@@ -9,18 +9,18 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-class SelectionSettingsPage extends ConsumerWidget {
-  const SelectionSettingsPage({super.key});
+class TextSelectionSettingsPage extends ConsumerWidget {
+  const TextSelectionSettingsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
 
-    final selectionConfiguration = user.selection;
+    final textSelectionConfiguration = user.textSelection;
 
     return StyledPage(
       backgroundColor: .backgroundPrimary,
-      title: 'Selection Settings'.toText(),
+      title: 'Text Selection'.toText(),
       body: Column(
         children: [
           ColoredBox(
@@ -29,18 +29,18 @@ class SelectionSettingsPage extends ConsumerWidget {
               title: 'Toolbar'.toText(),
               padding: .symmetric(vertical: 16),
               childPadding: .symmetric(horizontal: 8),
-              child: SelectionBottomBar(
-                configuration: selectionConfiguration,
+              child: TextSelectionBottomBar(
+                configuration: textSelectionConfiguration,
                 user: user,
-                selection: null,
+                textSelection: null,
                 onMorePressed: () {},
                 onClosePressed: () {},
                 onShorcutPressed: (shortcutIndex, shortcut) async {
-                  final newShortcut = await showSelectToolbarSheet(context, initialShortcut: shortcut);
+                  final newShortcut = await showSelectTextSelectionSheet(context, initialShortcut: shortcut);
                   if (newShortcut != null) {
                     ref.updateUser(
                       (user) => user.copyWith(
-                        selection: selectionConfiguration.withPinnedShortcut(shortcutIndex, newShortcut),
+                        textSelection: textSelectionConfiguration.withPinnedShortcut(shortcutIndex, newShortcut),
                       ),
                     );
                   }
@@ -61,9 +61,9 @@ class SelectionSettingsPage extends ConsumerWidget {
                         title: 'Expand to Annotation'.toText(),
                         subtitle: 'Long-pressing an annotated word selects its full highlighted range.'.toText(),
                         leading: Symbols.aspect_ratio.toIcon(),
-                        selected: selectionConfiguration.expandToAnnotation,
+                        selected: textSelectionConfiguration.expandToAnnotation,
                         onSelected: (newValue) =>
-                            ref.updateUser((user) => user.copyWith.selection(expandToAnnotation: newValue)),
+                            ref.updateUser((user) => user.copyWith.textSelection(expandToAnnotation: newValue)),
                       ),
                     ],
                   ),
@@ -76,13 +76,13 @@ class SelectionSettingsPage extends ConsumerWidget {
     );
   }
 
-  Future<SelectionShortcut?> showSelectToolbarSheet(
+  Future<TextSelectionShortcut?> showSelectTextSelectionSheet(
     BuildContext context, {
-    required SelectionShortcut initialShortcut,
+    required TextSelectionShortcut initialShortcut,
   }) => context.showStyledSheet(
     (context) => StyledSelectionSheet(
-      title: 'Selection Shortcut'.toText(),
-      options: SelectionShortcut.values,
+      title: 'Text Selection Shortcut'.toText(),
+      options: TextSelectionShortcut.values,
       initialOption: initialShortcut,
       optionMapper: (shortcut) => StyledSelectOption(
         title: shortcut.title().toText(),

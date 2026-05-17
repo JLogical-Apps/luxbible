@@ -1,7 +1,7 @@
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/user/toolbar_configuration.dart';
-import 'package:bible/models/user/toolbar_shortcut.dart';
+import 'package:bible/models/user/main_toolbar_configuration.dart';
+import 'package:bible/models/user/main_toolbar_shortcut.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
@@ -9,8 +9,8 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-class Toolbar extends StatelessWidget {
-  final ToolbarConfiguration toolbar;
+class MainToolbar extends StatelessWidget {
+  final MainToolbarConfiguration mainToolbar;
   final ChapterReference chapterReference;
   final BibleTranslation translation;
   final User? user;
@@ -19,15 +19,15 @@ class Toolbar extends StatelessWidget {
   final Function()? onLongPressed;
   final Function()? onSwipeLeft;
   final Function()? onSwipeRight;
-  final Function(int shortcutIndex, ToolbarShortcut)? onShorcutPressed;
+  final Function(int shortcutIndex, MainToolbarShortcut)? onShorcutPressed;
   final Function()? onMorePressed;
 
   final bool isEdit;
   final ColorBuilder? colorBuilder;
 
-  const Toolbar({
+  const MainToolbar({
     super.key,
-    required this.toolbar,
+    required this.mainToolbar,
     required this.chapterReference,
     required this.translation,
     this.user,
@@ -89,7 +89,7 @@ class Toolbar extends StatelessWidget {
                 ),
               ),
             ),
-            ...toolbar.pinnedShortcuts.mapIndexed(
+            ...mainToolbar.pinnedShortcuts.mapIndexed(
               (i, shortcut) => StyledEditBadge(
                 isEdit: isEdit,
                 child: Tooltip(

@@ -1,14 +1,14 @@
+import 'package:bible/models/main_action.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/region.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_action.dart';
-import 'package:bible/models/toolbar_action.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-enum ToolbarShortcut {
+enum MainToolbarShortcut {
   bookmark,
   study,
   compare,
@@ -17,32 +17,42 @@ enum ToolbarShortcut {
   crossReferences,
   search;
 
-  String title() => toStudyAction()?.title() ?? toToolbarAction()?.title() ?? (throw UnimplementedError());
+  String title() => toStudyAction()?.title() ?? toMainAction()?.title() ?? (throw UnimplementedError());
 
   String description({User? user}) =>
       toStudyAction()?.description(region: null, regionType: RegionType.chapter) ??
-      toToolbarAction()?.description(user: user) ??
+      toMainAction()?.description(user: user) ??
       (throw UnimplementedError());
 
   Widget buildIcon(BuildContext context, {User? user}) =>
       toStudyAction()?.icon.mapIfNonNull(Icon.new) ??
-      toToolbarAction()?.buildIcon(context, user: user) ??
+      toMainAction()?.buildIcon(context, user: user) ??
       (throw UnimplementedError());
 
   Future<void> onPressed(
     BuildContext context,
     WidgetRef ref, {
     required ChapterReference reference,
-    required Function(Passage) onNavigateToPassage,
+    required Function(VerseSelection) onNavigateToVerseSelection,
   }) =>
-      toStudyAction()?.onPressed(context, ref, region: reference, onNavigateToPassage: onNavigateToPassage) ??
-      toToolbarAction()?.onPressed(context, ref, reference: reference, onNavigateToPassage: onNavigateToPassage) ??
+      toStudyAction()?.onPressed(
+        context,
+        ref,
+        region: reference,
+        onNavigateToVerseSelection: onNavigateToVerseSelection,
+      ) ??
+      toMainAction()?.onPressed(
+        context,
+        ref,
+        reference: reference,
+        onNavigateToVerseSelection: onNavigateToVerseSelection,
+      ) ??
       (throw UnimplementedError());
 
-  ToolbarAction? toToolbarAction() => switch (this) {
-    bookmark => ToolbarAction.bookmark,
-    study => ToolbarAction.study,
-    search => ToolbarAction.search,
+  MainAction? toMainAction() => switch (this) {
+    bookmark => MainAction.bookmark,
+    study => MainAction.study,
+    search => MainAction.search,
     _ => null,
   };
 

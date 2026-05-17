@@ -1,6 +1,6 @@
 import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 import 'package:collection/collection.dart';
 
 class VerseSpanReference {
@@ -75,7 +75,7 @@ class VerseSpanReference {
     return references;
   }
 
-  Passage toPassage() => Passage(spans: [this]);
+  VerseSelection toVerseSelection() => VerseSelection(spans: [this]);
 
   String osisId() => [start, end].nonNulls.map((pointer) => pointer.osisId()).join('-');
 

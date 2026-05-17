@@ -1,61 +1,66 @@
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/reference/passage.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/region.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/utils/comparable_operators.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'selection.freezed.dart';
-part 'selection.g.dart';
+part 'bible_text_selection.freezed.dart';
+part 'bible_text_selection.g.dart';
 
 @freezed
-sealed class Selection with _$Selection implements Region {
-  const Selection._();
+sealed class BibleTextSelection with _$BibleTextSelection implements Region {
+  const BibleTextSelection._();
 
-  const factory Selection({
-    required SelectionWordAnchor start,
-    required SelectionWordAnchor end,
+  const factory BibleTextSelection({
+    required BibleTextSelectionWordAnchor start,
+    required BibleTextSelectionWordAnchor end,
     required BibleTranslation translation,
-  }) = _Selection;
+  }) = _BibleTextSelection;
 
-  factory Selection.character({required SelectionWordAnchor anchor, required BibleTranslation translation}) =>
-      Selection(start: anchor, end: anchor, translation: translation);
+  factory BibleTextSelection.character({
+    required BibleTextSelectionWordAnchor anchor,
+    required BibleTranslation translation,
+  }) => BibleTextSelection(start: anchor, end: anchor, translation: translation);
 
-  factory Selection.fromJson(Map<String, dynamic> json) => _$SelectionFromJson(json);
+  factory BibleTextSelection.fromJson(Map<String, dynamic> json) => _$BibleTextSelectionFromJson(json);
 
-  bool intersects(Selection selection) => end >= selection.start && selection.end >= start;
-  bool isInReference(Reference reference) => reference >= start.toReference() && reference <= end.toReference();
-  bool isInPassage(Passage passage) => passage.references.any((reference) => isInReference(reference));
+  bool intersects(BibleTextSelection textSelection) =>
+      end >= textSelection.start && textSelection.end >= start;
+  bool isInReference(Reference reference) =>
+      reference >= start.toReference() && reference <= end.toReference();
+  bool isInVerseSelection(VerseSelection verseSelection) =>
+      verseSelection.references.any((reference) => isInReference(reference));
 }
 
-class SelectionWordAnchor extends Equatable with ComparableOperators<SelectionWordAnchor> {
+class BibleTextSelectionWordAnchor extends Equatable with ComparableOperators<BibleTextSelectionWordAnchor> {
   final BookType book;
   final int chapterNum;
   final int verseNum;
   final int characterOffset;
 
-  const SelectionWordAnchor({
+  const BibleTextSelectionWordAnchor({
     required this.book,
     required this.chapterNum,
     required this.verseNum,
     required this.characterOffset,
   });
 
-  factory SelectionWordAnchor.fromReference({required Reference reference, required int characterOffset}) =>
-      SelectionWordAnchor(
+  factory BibleTextSelectionWordAnchor.fromReference({required Reference reference, required int characterOffset}) =>
+      BibleTextSelectionWordAnchor(
         book: reference.book,
         chapterNum: reference.chapterNum,
         verseNum: reference.verseNum,
         characterOffset: characterOffset,
       );
 
-  factory SelectionWordAnchor.fromKey(String key) {
+  factory BibleTextSelectionWordAnchor.fromKey(String key) {
     final items = key.split('.');
-    return SelectionWordAnchor(
+    return BibleTextSelectionWordAnchor(
       book: BookType.fromOsisId(items[0]),
       chapterNum: int.parse(items[1]),
       verseNum: int.parse(items[2]),
@@ -63,7 +68,7 @@ class SelectionWordAnchor extends Equatable with ComparableOperators<SelectionWo
     );
   }
 
-  factory SelectionWordAnchor.fromJson(String json) = SelectionWordAnchor.fromKey;
+  factory BibleTextSelectionWordAnchor.fromJson(String json) = BibleTextSelectionWordAnchor.fromKey;
   String toJson() => toKey();
 
   @override
@@ -75,16 +80,17 @@ class SelectionWordAnchor extends Equatable with ComparableOperators<SelectionWo
   ChapterReference toChapterReference() => toReference().toChapterReference();
 
   @override
-  int compareTo(SelectionWordAnchor other) =>
+  int compareTo(BibleTextSelectionWordAnchor other) =>
       book.index.compareTo(other.book.index).nullIfZero ??
       chapterNum.compareTo(other.chapterNum).nullIfZero ??
       verseNum.compareTo(other.verseNum).nullIfZero ??
       characterOffset.compareTo(other.characterOffset);
 
-  SelectionWordAnchor withCharactersAdded(int characters) => copyWith(characterOffset: characterOffset + characters);
+  BibleTextSelectionWordAnchor withCharactersAdded(int characters) =>
+      copyWith(characterOffset: characterOffset + characters);
 
-  SelectionWordAnchor copyWith({BookType? book, int? chapterNum, int? verseNum, int? characterOffset}) =>
-      SelectionWordAnchor(
+  BibleTextSelectionWordAnchor copyWith({BookType? book, int? chapterNum, int? verseNum, int? characterOffset}) =>
+      BibleTextSelectionWordAnchor(
         book: book ?? this.book,
         chapterNum: chapterNum ?? this.chapterNum,
         verseNum: verseNum ?? this.verseNum,
