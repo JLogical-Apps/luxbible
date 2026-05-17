@@ -1,8 +1,8 @@
 import 'package:bible/style/color_library.dart';
-import 'package:bible/style/color_palette.dart';
+import 'package:flutter/animation.dart';
 
 class ColorBuilder {
-  final ColorPalette Function(ColorLibrary) builder;
+  final Color Function(ColorLibrary) builder;
 
   const ColorBuilder(this.builder);
 
@@ -14,8 +14,8 @@ class ColorBuilder {
 
   static final ColorBuilder surfacePrimaryInverted = ColorBuilder((colors) => colors.inverted.surfacePrimary);
 
-  static final ColorBuilder backgroundPrimary = ColorBuilder((colors) => colors.inverted.backgroundPrimary);
-  static final ColorBuilder backgroundError = ColorBuilder((colors) => colors.inverted.backgroundError);
+  static final ColorBuilder backgroundPrimary = ColorBuilder((colors) => colors.backgroundPrimary);
+  static final ColorBuilder backgroundError = ColorBuilder((colors) => colors.backgroundError);
 
-  ColorPalette call(ColorLibrary colors) => builder(colors);
+  Color call(ColorLibrary colors) => builder(colors);
 }

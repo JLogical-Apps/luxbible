@@ -13,6 +13,7 @@ class StyledListItem extends StatelessWidget {
 
   final bool enabled;
   final ComponentSize size;
+  final bool? showDividerOverride;
 
   const StyledListItem({
     super.key,
@@ -24,6 +25,7 @@ class StyledListItem extends StatelessWidget {
     this.onPressed,
     this.size = ComponentSize.md,
     this.enabled = true,
+    this.showDividerOverride,
   });
 
   StyledListItem.navigation({
@@ -35,6 +37,7 @@ class StyledListItem extends StatelessWidget {
     this.onPressed,
     this.size = ComponentSize.md,
     this.enabled = true,
+    this.showDividerOverride,
   }) : trailing = Icon(Symbols.chevron_right);
 
   StyledListItem.radio({
@@ -47,6 +50,7 @@ class StyledListItem extends StatelessWidget {
     required Function() onSelected,
     this.size = ComponentSize.md,
     this.enabled = true,
+    this.showDividerOverride,
   }) : onPressed = onSelected,
        trailing = StyledRadio(isSelected: selected);
 
@@ -60,6 +64,7 @@ class StyledListItem extends StatelessWidget {
     required Function(bool newValue) onSelected,
     this.size = ComponentSize.md,
     this.enabled = true,
+    this.showDividerOverride,
   }) : onPressed = (() => onSelected(!isSelected)),
        trailing = StyledCheckbox(isSelected: isSelected);
 
@@ -73,6 +78,7 @@ class StyledListItem extends StatelessWidget {
     required Function(bool newValue) onSelected,
     this.size = ComponentSize.md,
     this.enabled = true,
+    this.showDividerOverride,
   }) : onPressed = null,
        trailing = StyledSwitch(isSelected: selected, onSelected: onSelected);
 
@@ -97,7 +103,7 @@ class StyledListItem extends StatelessWidget {
                 SizedBox(
                   width: 64,
                   child: IconTheme.merge(
-                    data: IconThemeData(color: context.colors.contentPrimary.disabled(disabled: !enabled), size: 24),
+                    data: IconThemeData(color: context.colors.content(disabled: !enabled), size: 24),
                     child: leading,
                   ),
                 )
@@ -118,21 +124,17 @@ class StyledListItem extends StatelessWidget {
                               children: [
                                 if (title case final title?)
                                   DefaultTextStyle(
-                                    style: context.textStyle.labelMd.disabled(context, disabled: !enabled),
+                                    style: context.textStyle.labelMd.disabled(disabled: !enabled),
                                     child: title,
                                   ),
                                 if (subtitle case final subtitle?)
                                   DefaultTextStyle(
-                                    style: context.textStyle.paragraphSm
-                                        .subtle(context)
-                                        .disabled(context, disabled: !enabled),
+                                    style: context.textStyle.paragraphSm.subtle().disabled(disabled: !enabled),
                                     child: subtitle,
                                   ),
                                 if (thirdLine case final thirdLine?)
                                   DefaultTextStyle(
-                                    style: context.textStyle.paragraphSm
-                                        .subtle(context)
-                                        .disabled(context, disabled: !enabled),
+                                    style: context.textStyle.paragraphSm.subtle().disabled(disabled: !enabled),
                                     child: thirdLine,
                                   ),
                               ],
@@ -154,7 +156,7 @@ class StyledListItem extends StatelessWidget {
                           gapW16,
                       ],
                     ),
-                    if (itemContext?.hideDivider == false)
+                    if ((showDividerOverride ?? itemContext?.showDivider) == true)
                       Positioned(left: 0, right: 0, bottom: 0, child: StyledDivider()),
                   ],
                 ),

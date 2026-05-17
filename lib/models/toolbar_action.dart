@@ -26,18 +26,18 @@ enum ToolbarAction {
     search => 'Search',
   };
 
-  String description({required User user}) => switch (this) {
+  String description({User? user}) => switch (this) {
     bookmark =>
-      user.currentBookmark == null
+      user?.currentBookmark == null
           ? 'Bookmark this chapter to easily access it from the search page.'
           : 'Manage this bookmark.',
     study => 'View study tools for this chapter.',
     search => 'Search for words across the Bible',
   };
 
-  Widget buildIcon(BuildContext context, {required User user}) => switch (this) {
+  Widget buildIcon(BuildContext context, {User? user}) => switch (this) {
     bookmark => () {
-      final bookmark = user.currentBookmark;
+      final bookmark = user?.currentBookmark;
       return bookmark == null
           ? Icon(Symbols.bookmark, fill: 0)
           : Icon(Symbols.bookmark, color: bookmark.color.toHue(context.colors).medium);

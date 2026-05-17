@@ -1,4 +1,3 @@
-import 'package:bible/style/color_palette.dart';
 import 'package:bible/style/hue.dart';
 import 'package:bible/utils/extensions/brightness_extensions.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +8,7 @@ class ColorLibrary {
 
   const ColorLibrary({required this.brightness});
 
-  factory ColorLibrary.fromBackground(Color color) =>
-      ColorLibrary(brightness: ThemeData.estimateBrightnessForColor(color));
+  factory ColorLibrary.fromBackground(Color color) => ColorLibrary(brightness: color.brightness);
 
   ColorLibrary get inverted => ColorLibrary(brightness: brightness.inverted);
 
@@ -23,30 +21,43 @@ class ColorLibrary {
   Hue get blue => TWColors.blue.asHue(brightness);
   Hue get violet => TWColors.violet.asHue(brightness);
 
-  ColorPalette get backgroundPrimary => toColorPalette(brightness.when(light: zinc.shade100, dark: zinc.shade900));
-  ColorPalette get backgroundError => toColorPalette(brightness.when(light: red.shade600, dark: red.shade700));
+  Color get backgroundPrimary => brightness.when(light: zinc.shade100, dark: zinc.shade900);
+  Color get backgroundError => brightness.when(light: red.shade600, dark: red.shade700);
 
-  ColorPalette get surfacePrimary => toColorPalette(brightness.when(light: Colors.white, dark: zinc.shade800));
-  ColorPalette get surfaceSecondary => toColorPalette(brightness.when(light: zinc.shade200, dark: zinc.shade600));
-  ColorPalette get surfaceTertiary => toColorPalette(brightness.when(light: zinc.shade100, dark: zinc.shade700));
+  Color get surfacePrimary => brightness.when(light: Colors.white, dark: zinc.shade800);
+  Color get surfaceSecondary => brightness.when(light: zinc.shade200, dark: zinc.shade600);
+  Color get surfaceTertiary => brightness.when(light: zinc.shade100, dark: zinc.shade700);
   Color get surfaceDisabled => brightness.when(light: zinc.shade100, dark: zinc.shade700);
   Color get surfaceError => brightness.when(light: red.shade100, dark: red.shade950);
+  Color surface({bool disabled = false}) => disabled ? surfaceDisabled : surfacePrimary;
 
-  ColorPalette get contentPrimary => toColorPalette(brightness.when(light: Colors.black, dark: Colors.white));
+  Color get contentPrimary => brightness.when(light: Colors.black, dark: Colors.white);
   Color get contentPrimaryInverse => brightness.when(light: Colors.white, dark: Colors.black);
   Color get contentSecondary => brightness.when(light: zinc.shade700, dark: zinc.shade300);
   Color get contentTertiary => brightness.when(light: zinc.shade600, dark: zinc.shade400);
   Color get contentDisabled => brightness.when(light: zinc.shade400, dark: zinc.shade600);
   Color get contentError => red.shade600;
+  Color content({bool disabled = false}) => disabled ? contentDisabled : contentPrimary;
 
   Color get borderOpaque => brightness.when(light: zinc.shade200, dark: zinc.shade700);
   Color get borderSelected => brightness.when(light: Colors.black, dark: Colors.white);
   Color get borderError => red.shade600;
   Color border(bool isSelected) => isSelected ? borderSelected : borderOpaque;
-
-  ColorPalette toColorPalette(Color color) => color.asColorPalette(disabled: contentDisabled);
 }
 
 extension on MaterialColor {
   Hue asHue(Brightness brightness) => Hue(brightness: brightness, color: this);
+}
+
+extension ColorExtensions on Color {
+  Brightness get brightness => ThemeData.estimateBrightnessForColor(this);
+  Color foreground({bool disabled = false}) => ColorLibrary.fromBackground(this).content(disabled: disabled);
+  Color asSurface({bool disabled = false}) {
+    final colors = ColorLibrary.fromBackground(this);
+    return disabled
+        ? this == colors.contentPrimaryInverse
+              ? colors.inverted.surfaceDisabled
+              : colors.surfaceDisabled
+        : this;
+  }
 }

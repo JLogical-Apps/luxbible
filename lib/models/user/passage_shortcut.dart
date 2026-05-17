@@ -21,7 +21,7 @@ enum PassageShortcut {
   highlight,
   copy;
 
-  String title({required User? user, required Passage? passage}) =>
+  String title({User? user, Passage? passage}) =>
       toStudyAction()?.title() ??
       toPassageAction()?.title() ??
       switch (this) {
@@ -29,7 +29,7 @@ enum PassageShortcut {
         _ => throw UnimplementedError(),
       };
 
-  String description({required User? user, required Passage? passage}) =>
+  String description({User? user, Passage? passage}) =>
       toStudyAction()?.description(region: null, regionType: RegionType.passage) ??
       toPassageAction()?.description() ??
       switch (this) {
@@ -40,7 +40,7 @@ enum PassageShortcut {
         _ => throw UnimplementedError(),
       };
 
-  Widget buildIcon(BuildContext context, {required User? user, required Passage? passage}) =>
+  Widget buildIcon(BuildContext context, {User? user, Passage? passage}) =>
       toStudyAction()?.icon.mapIfNonNull(Icon.new) ??
       toPassageAction()?.icon.mapIfNonNull(Icon.new) ??
       switch (this) {

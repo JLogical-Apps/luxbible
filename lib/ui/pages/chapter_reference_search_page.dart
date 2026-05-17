@@ -107,7 +107,6 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
     final recents = user.viewHistory.where((reference) => reference != initialReference).toList();
 
     return StyledPage(
-      backgroundColor: context.colors.surfacePrimary,
       leading: StyledCircleButton.lg(child: Symbols.close.toIcon(), onPressed: () => Navigator.of(context).pop()),
       body: Column(
         children: [
@@ -223,7 +222,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                               Text(bookmark.name, style: context.textStyle.labelMd),
                                               Text(
                                                 chapterReference.format(),
-                                                style: context.textStyle.paragraphSm.subtle(context),
+                                                style: context.textStyle.paragraphSm.subtle(),
                                               ),
                                             ],
                                           ),

@@ -1,19 +1,13 @@
 import 'package:bible/style/color_library.dart';
-import 'package:bible/style/style_context_extensions.dart';
 import 'package:flutter/material.dart';
 
 extension TextStyleExtensions on TextStyle {
-  TextStyle subtle(BuildContext context, {bool subtle = true}) =>
-      subtle ? copyWith(color: context.colors.contentSecondary) : this;
+  TextStyle subtle({bool subtle = true}) => subtle ? copyWith(color: colors.contentSecondary) : this;
+  TextStyle subtleTertiary({bool subtle = true}) => subtle ? copyWith(color: colors.contentTertiary) : this;
+  TextStyle disabled({bool disabled = true}) => disabled ? copyWith(color: colors.contentDisabled) : this;
+  TextStyle error({bool isError = true}) => isError ? copyWith(color: colors.contentError) : this;
 
-  TextStyle subtleTertiary(BuildContext context, {bool subtle = true}) =>
-      subtle ? copyWith(color: context.colors.contentTertiary) : this;
-
-  TextStyle disabled(BuildContext context, {bool disabled = true}) =>
-      disabled ? copyWith(color: context.colors.contentDisabled) : this;
-
-  TextStyle error(BuildContext context, {bool isError = true}) =>
-      isError ? copyWith(color: context.colors.contentError) : this;
+  ColorLibrary get colors => ColorLibrary.fromBackground(color ?? Colors.transparent).inverted;
 
   TextStyle onColor(Color? color) =>
       color == null ? this : copyWith(color: ColorLibrary.fromBackground(color).contentPrimary);

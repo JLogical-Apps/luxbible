@@ -9,9 +9,11 @@ import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/path_service.dart';
 import 'package:bible/services/shared_preferences_service.dart';
 import 'package:bible/ui/pages/bible_page.dart';
+import 'package:bible/ui/pages/get_started_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -97,7 +99,12 @@ class BibleApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           home: MediaQuery(
             data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1)),
-            child: BiblePage(),
+            child: Consumer(
+              builder: (context, ref, child) {
+                final user = ref.watch(userProvider.notifier).userOrNull;
+                return user == null ? IntroPage() : BiblePage();
+              },
+            ),
           ),
         ),
       ),

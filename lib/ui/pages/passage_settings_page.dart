@@ -18,6 +18,7 @@ class PassageSettingsPage extends ConsumerWidget {
     final passageConfiguration = user.passage;
 
     return StyledPage(
+      backgroundColor: .backgroundPrimary,
       title: 'Passage Settings'.toText(),
       body: Column(
         children: [
@@ -70,7 +71,7 @@ class PassageSettingsPage extends ConsumerWidget {
                                 ref.updateUser((user) => user.copyWith.passage(longPressShortcut: newShortcut));
                               }
                             },
-                            child: passageConfiguration.longPressShortcut.buildIcon(context, user: null, passage: null),
+                            child: passageConfiguration.longPressShortcut.buildIcon(context),
                           ),
                         ),
                       ),
@@ -115,9 +116,9 @@ class PassageSettingsPage extends ConsumerWidget {
           options: PassageShortcut.values,
           initialOption: initialShortcut,
           optionMapper: (shortcut) => StyledSelectOption(
-            title: shortcut.title(user: null, passage: null).toText(),
-            subtitle: shortcut.description(user: null, passage: null).toText(),
-            leading: shortcut.buildIcon(context, user: null, passage: null),
+            title: shortcut.title().toText(),
+            subtitle: shortcut.description().toText(),
+            leading: shortcut.buildIcon(context),
           ),
         ),
       );

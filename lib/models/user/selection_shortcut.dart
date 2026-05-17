@@ -17,14 +17,14 @@ enum SelectionShortcut {
   search,
   copy;
 
-  String title({required User? user, required Selection? selection}) =>
+  String title({User? user, Selection? selection}) =>
       toSelectionAction()?.title() ??
       switch (this) {
         highlight => _isAnnotated(user: user, selection: selection) ? 'Remove Annotations' : 'Highlight',
         _ => throw UnimplementedError(),
       };
 
-  String description({required User? user, required Selection? selection}) =>
+  String description({User? user, Selection? selection}) =>
       toSelectionAction()?.description() ??
       switch (this) {
         highlight =>
@@ -34,7 +34,7 @@ enum SelectionShortcut {
         _ => throw UnimplementedError(),
       };
 
-  Widget buildIcon(BuildContext context, {required User? user, required Selection? selection}) =>
+  Widget buildIcon(BuildContext context, {User? user, Selection? selection}) =>
       toSelectionAction()?.icon.mapIfNonNull(Icon.new) ??
       switch (this) {
         highlight =>

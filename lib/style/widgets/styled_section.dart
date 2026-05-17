@@ -44,7 +44,7 @@ class StyledSection extends StatelessWidget {
               children: [
                 DefaultTextStyle(style: context.textStyle.headingXs, child: title),
                 if (subtitle case final subtitle?)
-                  DefaultTextStyle(style: context.textStyle.paragraphSm.subtle(context), child: subtitle),
+                  DefaultTextStyle(style: context.textStyle.paragraphSm.subtle(), child: subtitle),
               ],
             ),
           ),

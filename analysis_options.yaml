@@ -7,7 +7,8 @@ analyzer:
 
 linter:
   rules:
-    - always_use_package_imports
+    always_use_package_imports: true
+    sort_child_properties_last: false
 
 formatter:
   page_width: 120

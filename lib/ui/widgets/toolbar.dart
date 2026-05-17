@@ -13,14 +13,14 @@ class Toolbar extends StatelessWidget {
   final ToolbarConfiguration toolbar;
   final ChapterReference chapterReference;
   final BibleTranslation translation;
-  final User user;
+  final User? user;
 
-  final Function() onPressed;
+  final Function()? onPressed;
   final Function()? onLongPressed;
   final Function()? onSwipeLeft;
   final Function()? onSwipeRight;
-  final Function(int shortcutIndex, ToolbarShortcut) onShorcutPressed;
-  final Function() onMorePressed;
+  final Function(int shortcutIndex, ToolbarShortcut)? onShorcutPressed;
+  final Function()? onMorePressed;
 
   final bool isEdit;
   final ColorBuilder? colorBuilder;
@@ -30,13 +30,13 @@ class Toolbar extends StatelessWidget {
     required this.toolbar,
     required this.chapterReference,
     required this.translation,
-    required this.user,
-    required this.onPressed,
+    this.user,
+    this.onPressed,
     this.onLongPressed,
     this.onSwipeRight,
     this.onSwipeLeft,
-    required this.onShorcutPressed,
-    required this.onMorePressed,
+    this.onShorcutPressed,
+    this.onMorePressed,
     this.isEdit = false,
     this.colorBuilder,
   });
@@ -56,7 +56,7 @@ class Toolbar extends StatelessWidget {
         colorBuilder: colorBuilder ?? .surfacePrimary,
         borderRadius: .circular(999),
         padding: .only(left: 24, right: 12),
-        onPressed: onPressed,
+        onPressed: () => onPressed?.call(),
         onLongPressed: onLongPressed,
         child: Row(
           children: [
@@ -95,13 +95,13 @@ class Toolbar extends StatelessWidget {
                 child: Tooltip(
                   message: shortcut.title(),
                   child: StyledCircleButton.lg(
-                    onPressed: () => onShorcutPressed(i, shortcut),
+                    onPressed: () => onShorcutPressed?.call(i, shortcut),
                     child: shortcut.buildIcon(context, user: user),
                   ),
                 ),
               ),
             ),
-            StyledCircleButton.lg(onPressed: onMorePressed, child: Symbols.more_vert.toIcon()),
+            StyledCircleButton.lg(onPressed: () => onMorePressed?.call(), child: Symbols.more_vert.toIcon()),
           ],
         ),
       ),

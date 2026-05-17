@@ -6,9 +6,10 @@ class StyledTile extends StatelessWidget {
   final Widget child;
   final Function()? onPressed;
 
+  final bool isSelected;
   final EdgeInsets padding;
 
-  const StyledTile({super.key, required this.child, this.onPressed, this.padding = .zero});
+  const StyledTile({super.key, required this.child, this.onPressed, this.isSelected = false, this.padding = .zero});
 
   StyledTile.message({
     super.key,
@@ -17,7 +18,8 @@ class StyledTile extends StatelessWidget {
     Widget? subtitle,
     this.onPressed,
     this.padding = .zero,
-  }) : child = Builder(
+  }) : isSelected = false,
+       child = Builder(
          builder: (context) => StyledListItem(
            leading: IconTheme.merge(
              data: IconThemeData(color: context.colors.contentTertiary),
@@ -45,7 +47,7 @@ class StyledTile extends StatelessWidget {
         curve: Curves.easeInOutCubic,
         foregroundDecoration: BoxDecoration(
           borderRadius: .circular(12),
-          border: Border.all(color: context.colors.borderOpaque, width: 2),
+          border: Border.all(color: context.colors.border(isSelected), width: isSelected ? 3 : 2),
         ),
         child: Stack(
           fit: StackFit.passthrough,

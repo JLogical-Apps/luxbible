@@ -9,7 +9,7 @@ class StyledList extends StatelessWidget {
   const StyledList({super.key, required this.children});
 
   static List<Widget> dividedItems({required List<Widget> children}) => children
-      .mapIndexed((i, child) => StyledListItemContext(hideDivider: i + 1 == children.length, child: child))
+      .mapIndexed((i, child) => StyledListItemContext(showDivider: i + 1 < children.length, child: child))
       .toList();
 
   @override

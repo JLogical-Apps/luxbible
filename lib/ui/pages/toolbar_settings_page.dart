@@ -28,6 +28,7 @@ class ToolbarSettingsPage extends ConsumerWidget {
     final toolbar = user.toolbar;
 
     return StyledPage(
+      backgroundColor: .backgroundPrimary,
       title: 'Toolbar Settings'.toText(),
       body: Column(
         children: [

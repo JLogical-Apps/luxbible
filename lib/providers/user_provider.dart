@@ -15,7 +15,9 @@ class UserNotifier extends _$UserNotifier {
   SharedPreferences get sharedPreferences => ref.watch(sharedPreferencesServiceProvider);
 
   @override
-  User build() {
+  User build() => userOrDefault;
+
+  User? get userOrNull {
     final userFile = this.userFile;
     if (userFile != null) {
       if (userFile.existsSync()) {
@@ -33,8 +35,10 @@ class UserNotifier extends _$UserNotifier {
       }
     }
 
-    return User();
+    return null;
   }
+
+  User get userOrDefault => userOrNull ?? User();
 
   Future<void> update(User Function(User) updater) async {
     state = updater(state);

@@ -14,11 +14,11 @@ class SelectionBottomBar extends ConsumerWidget {
   final Selection? selection;
   final SelectionConfiguration configuration;
 
-  final User user;
+  final User? user;
 
-  final Function() onClosePressed;
-  final Function() onMorePressed;
-  final Function(int shortcutIndex, SelectionShortcut) onShorcutPressed;
+  final Function()? onClosePressed;
+  final Function()? onMorePressed;
+  final Function(int shortcutIndex, SelectionShortcut)? onShorcutPressed;
 
   final bool isEdit;
   final Color? color;
@@ -27,10 +27,10 @@ class SelectionBottomBar extends ConsumerWidget {
     super.key,
     required this.selection,
     required this.configuration,
-    required this.user,
-    required this.onClosePressed,
-    required this.onMorePressed,
-    required this.onShorcutPressed,
+    this.user,
+    this.onClosePressed,
+    this.onMorePressed,
+    this.onShorcutPressed,
     this.isEdit = false,
     this.color,
   });
@@ -38,14 +38,15 @@ class SelectionBottomBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bibles = ref.watch(displayBiblesProvider);
-    final bible = user.getDisplayBible(bibles);
+    final translation = user?.translation ?? .bsb;
+    final bible = bibles.firstWhere((bible) => bible.translation == translation);
 
     return BottomBar(
       text:
           '"${bible.getSelectionText(selection ?? Selection(
                 start: SelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 0),
                 end: SelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 30),
-                translation: user.translation,
+                translation: translation,
               ))}"',
       buttons: configuration.pinnedShortcuts
           .mapIndexed(
@@ -55,14 +56,14 @@ class SelectionBottomBar extends ConsumerWidget {
                 message: shortcut.title(user: user, selection: selection),
                 child: StyledCircleButton.lg(
                   child: shortcut.buildIcon(context, user: user, selection: selection),
-                  onPressed: () => onShorcutPressed(i, shortcut),
+                  onPressed: () => onShorcutPressed?.call(i, shortcut),
                 ),
               ),
             ),
           )
           .toList(),
-      onMorePressed: onMorePressed,
-      onClosePressed: onClosePressed,
+      onMorePressed: () => onMorePressed?.call(),
+      onClosePressed: () => onClosePressed?.call(),
       color: color,
     );
   }

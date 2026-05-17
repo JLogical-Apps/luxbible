@@ -13,11 +13,11 @@ class PassageBottomBar extends StatelessWidget {
   final Passage? passage;
   final PassageConfiguration configuration;
 
-  final User user;
+  final User? user;
 
-  final Function() onClosePressed;
-  final Function() onMorePressed;
-  final Function(int shortcutIndex, PassageShortcut) onShorcutPressed;
+  final Function()? onClosePressed;
+  final Function()? onMorePressed;
+  final Function(int shortcutIndex, PassageShortcut)? onShorcutPressed;
 
   final bool isEdit;
   final Color? color;
@@ -26,10 +26,10 @@ class PassageBottomBar extends StatelessWidget {
     super.key,
     required this.passage,
     required this.configuration,
-    required this.user,
-    required this.onClosePressed,
-    required this.onMorePressed,
-    required this.onShorcutPressed,
+    this.user,
+    this.onClosePressed,
+    this.onMorePressed,
+    this.onShorcutPressed,
     this.isEdit = false,
     this.color,
   });
@@ -46,14 +46,14 @@ class PassageBottomBar extends StatelessWidget {
                 message: shortcut.title(user: user, passage: passage),
                 child: StyledCircleButton.lg(
                   child: shortcut.buildIcon(context, user: user, passage: passage),
-                  onPressed: () => onShorcutPressed(i, shortcut),
+                  onPressed: () => onShorcutPressed?.call(i, shortcut),
                 ),
               ),
             ),
           )
           .toList(),
-      onMorePressed: onMorePressed,
-      onClosePressed: onClosePressed,
+      onMorePressed: () => onMorePressed?.call(),
+      onClosePressed: () => onClosePressed?.call(),
       color: color,
     );
   }

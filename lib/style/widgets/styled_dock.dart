@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bible/style/gap.dart';
+import 'package:bible/style/keyed_scroll_notification.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/scroll_absorber.dart';
@@ -15,7 +16,20 @@ class StyledDock extends HookWidget {
   final Widget? aboveButtons;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
 
-  const StyledDock({super.key, required this.children, this.aboveButtons, this.buttonsBuilder});
+  final bool shrinkWrap;
+  final bool forceHeight;
+
+  final Object? activeScrollKey;
+
+  const StyledDock({
+    super.key,
+    required this.children,
+    this.aboveButtons,
+    this.buttonsBuilder,
+    this.shrinkWrap = true,
+    this.forceHeight = false,
+    this.activeScrollKey,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +49,9 @@ class StyledDock extends HookWidget {
           ];
 
     final metricsState = useState<ScrollMetrics?>(null);
-    final metrics = metricsState.value;
+    final metricsByKeyState = useState(<Object, ScrollMetrics>{});
+
+    final metrics = activeScrollKey == null ? metricsState.value : metricsByKeyState.value[activeScrollKey];
 
     final showBottomShadow =
         aboveButtons != null || (metrics == null ? false : metrics.pixels + 10 < metrics.maxScrollExtent);
@@ -46,8 +62,16 @@ class StyledDock extends HookWidget {
         removeBottom: true,
         context: context,
         child: LayoutBuilder(
-          builder: (context, constraints) {
-            return NotificationListener<ScrollNotification>(
+          builder: (context, constraints) => NotificationListener<KeyedScrollNotification>(
+            onNotification: (e) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (context.mounted) {
+                  metricsByKeyState.value = {...metricsByKeyState.value, e.key: e.metrics};
+                }
+              });
+              return false;
+            },
+            child: NotificationListener<ScrollNotification>(
               onNotification: (e) {
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   if (context.mounted) {
@@ -74,17 +98,32 @@ class StyledDock extends HookWidget {
                         context: context,
                         removeBottom: buttons.isNotEmpty,
                         child: Flexible(
-                          fit: FlexFit.loose,
+                          fit: shrinkWrap ? .loose : .tight,
                           child: Stack(
                             children: [
-                              StyledListView(
-                                shrinkWrap: true,
-                                physics: ClampingScrollPhysics(),
-                                padding: .only(
-                                  bottom: bottomChildren.isEmpty ? MediaQuery.paddingOf(context).bottom : 0,
-                                ),
-                                children: children,
-                              ),
+                              forceHeight
+                                  ? LayoutBuilder(
+                                      builder: (context, constraints) => SingleChildScrollView(
+                                        child: ClipRect(
+                                          child: ConstrainedBox(
+                                            constraints: BoxConstraints(maxHeight: constraints.maxHeight),
+                                            child: Column(
+                                              crossAxisAlignment: .start,
+                                              mainAxisSize: .min,
+                                              children: children,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  : StyledListView(
+                                      shrinkWrap: true,
+                                      physics: ClampingScrollPhysics(),
+                                      padding: .only(
+                                        bottom: bottomChildren.isEmpty ? MediaQuery.paddingOf(context).bottom : 0,
+                                      ),
+                                      children: children,
+                                    ),
                               Positioned(
                                 bottom: -16,
                                 left: 0,
@@ -120,8 +159,8 @@ class StyledDock extends HookWidget {
                   ),
                 ),
               ),
-            );
-          },
+            ),
+          ),
         ),
       ),
     );

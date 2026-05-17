@@ -1,5 +1,4 @@
-import 'package:bible/style/color_builder.dart';
-import 'package:bible/style/style_context_extensions.dart';
+import 'package:bible/style/style.dart';
 import 'package:flutter/material.dart';
 
 class StyledCircleButton extends StatelessWidget {

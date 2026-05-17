@@ -37,6 +37,7 @@ class BottomBar extends StatelessWidget {
               StyledCircleButton.lg(onPressed: onMorePressed, child: Symbols.more_vert.toIcon()),
             ],
           ),
+          showDividerOverride: false,
         ),
       ),
     );

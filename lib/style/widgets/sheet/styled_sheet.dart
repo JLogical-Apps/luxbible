@@ -126,7 +126,7 @@ class StyledSheet<T> extends HookWidget {
                         ),
                         if (subtitle case final subtitle?)
                           DefaultTextStyle(
-                            style: context.textStyle.paragraphMd.subtle(context),
+                            style: context.textStyle.paragraphMd.subtle(),
                             maxLines: 1,
                             overflow: .ellipsis,
                             child: subtitle,

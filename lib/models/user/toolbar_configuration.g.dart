@@ -14,7 +14,7 @@ _ToolbarConfiguration _$ToolbarConfigurationFromJson(
       ToolbarShortcut.bookmark,
   pinnedShortcut2:
       $enumDecodeNullable(_$ToolbarShortcutEnumMap, json['pinnedShortcut2']) ??
-      ToolbarShortcut.interlinear,
+      ToolbarShortcut.search,
   longPressShortcut:
       $enumDecodeNullable(
         _$ToolbarShortcutEnumMap,

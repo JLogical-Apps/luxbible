@@ -19,12 +19,12 @@ enum ToolbarShortcut {
 
   String title() => toStudyAction()?.title() ?? toToolbarAction()?.title() ?? (throw UnimplementedError());
 
-  String description({required User user}) =>
+  String description({User? user}) =>
       toStudyAction()?.description(region: null, regionType: RegionType.chapter) ??
       toToolbarAction()?.description(user: user) ??
       (throw UnimplementedError());
 
-  Widget buildIcon(BuildContext context, {required User user}) =>
+  Widget buildIcon(BuildContext context, {User? user}) =>
       toStudyAction()?.icon.mapIfNonNull(Icon.new) ??
       toToolbarAction()?.buildIcon(context, user: user) ??
       (throw UnimplementedError());

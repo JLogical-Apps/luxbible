@@ -83,7 +83,6 @@ class SearchPage extends HookConsumerWidget {
 
     return StyledPage(
       title: 'Search'.toText(),
-      backgroundColor: context.colors.surfacePrimary,
       body: Column(
         children: [
           Container(
@@ -257,8 +256,8 @@ class SearchPage extends HookConsumerWidget {
                                 text: bible.getVerseByReference(result)?.text ?? '',
                                 term: searchState.value,
                                 words: true,
-                                textStyle: context.textStyle.paragraphSm.subtle(context),
-                                textStyleHighlight: context.textStyle.paragraphSm.subtle(context).bold,
+                                textStyle: context.textStyle.paragraphSm.subtle(),
+                                textStyleHighlight: context.textStyle.paragraphSm.subtle().bold,
                               ),
                         trailing: Symbols.expand_circle_right.toIcon(),
                         onPressed: () {

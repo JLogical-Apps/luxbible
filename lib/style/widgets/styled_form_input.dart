@@ -37,7 +37,7 @@ class StyledFormInput extends StatelessWidget {
                     spacing: 4,
                     children: [
                       Icon(Symbols.error, size: 14, color: context.colors.contentError),
-                      Text(errorText, style: context.textStyle.labelSm.regular.error(context)),
+                      Text(errorText, style: context.textStyle.labelSm.regular.error()),
                     ],
                   ),
                 ),

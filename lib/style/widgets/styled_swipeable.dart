@@ -1,6 +1,4 @@
-import 'package:bible/style/color_builder.dart';
-import 'package:bible/style/style_context_extensions.dart';
-import 'package:bible/style/widgets/styled_material.dart';
+import 'package:bible/style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:material_symbols_icons/symbols.dart';

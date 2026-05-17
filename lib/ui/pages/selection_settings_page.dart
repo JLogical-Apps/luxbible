@@ -19,6 +19,7 @@ class SelectionSettingsPage extends ConsumerWidget {
     final selectionConfiguration = user.selection;
 
     return StyledPage(
+      backgroundColor: .backgroundPrimary,
       title: 'Selection Settings'.toText(),
       body: Column(
         children: [
@@ -84,9 +85,9 @@ class SelectionSettingsPage extends ConsumerWidget {
       options: SelectionShortcut.values,
       initialOption: initialShortcut,
       optionMapper: (shortcut) => StyledSelectOption(
-        title: shortcut.title(user: null, selection: null).toText(),
-        subtitle: shortcut.description(user: null, selection: null).toText(),
-        leading: shortcut.buildIcon(context, user: null, selection: null),
+        title: shortcut.title().toText(),
+        subtitle: shortcut.description().toText(),
+        leading: shortcut.buildIcon(context),
       ),
     ),
   );
