@@ -3,19 +3,7 @@ import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style_context_extensions.dart';
-import 'package:bible/style/styled_shadow.dart';
-import 'package:bible/style/text_style_extensions.dart';
-import 'package:bible/style/widgets/styled_banner.dart';
-import 'package:bible/style/widgets/styled_circle_button.dart';
-import 'package:bible/style/widgets/styled_list.dart';
-import 'package:bible/style/widgets/styled_list_item.dart';
-import 'package:bible/style/widgets/styled_page.dart';
-import 'package:bible/style/widgets/styled_section.dart';
-import 'package:bible/style/widgets/styled_select.dart';
-import 'package:bible/style/widgets/styled_swipeable.dart';
-import 'package:bible/style/widgets/styled_text_field.dart';
-import 'package:bible/style/widgets/styled_tile.dart';
+import 'package:bible/style/style.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
@@ -67,14 +55,14 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
         .where(
           (book) => onlyEqual
               ? ((text ?? bookTextState.value).toLowerCase() == book.title().toLowerCase())
-              : (text ?? bookTextState.value).passesSearch(book.title().keywords),
+              : (text ?? bookTextState.value).passesSearch(book.title().keywords, similarityLimit: null),
         )
         .toList();
     BookType? getBook({String? text}) =>
         getMatchingBooks(text: text, onlyEqual: true).singleOrNull ?? getMatchingBooks(text: text).singleOrNull;
 
     final book = getBook();
-    final previousBook = usePrevious(getBook());
+    final previousBook = usePrevious(book);
 
     final isFirstFrame = useIsFirstFrame();
     usePostFrameEffect(() {
@@ -269,7 +257,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                           child: StyledBanner(message: 'No Matches'.toText()),
                         )
                       else
-                        StyledSection(
+                        ...StyledSection(
                           title: 'Books'.toText(),
                           padding: .only(top: 24),
                           children: (isBookFullySelected ? BookType.values : getMatchingBooks())
@@ -286,32 +274,30 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                 ),
                               )
                               .toList(),
-                        ),
+                        ).buildChildren(context),
                     ],
                   )
-                : SingleChildScrollView(
+                : StyledListView(
                     key: ValueKey(ChapterReference),
                     controller: scrollController,
-                    child: StyledList(
-                      children:
-                          List.generate(
-                                bible.getBookByType(book).chapters.length,
-                                (chapterIndex) => ChapterReference(book: book, chapterNum: chapterIndex + 1),
-                              )
-                              .where(
-                                (chapterReference) =>
-                                    chapterNumState.value == null ||
-                                    chapterReference.chapterNum.toString().startsWith(chapterNumState.value.toString()),
-                              )
-                              .map(
-                                (chapterReference) => StyledListItem(
-                                  title: chapterReference.format().toText(),
-                                  trailing: Symbols.expand_circle_right.toIcon(),
-                                  onPressed: () => context.pop(chapterReference.toResult()),
-                                ),
-                              )
-                              .toList(),
-                    ),
+                    children:
+                        List.generate(
+                              bible.getBookByType(book).chapters.length,
+                              (chapterIndex) => ChapterReference(book: book, chapterNum: chapterIndex + 1),
+                            )
+                            .where(
+                              (chapterReference) =>
+                                  chapterNumState.value == null ||
+                                  chapterReference.chapterNum.toString().startsWith(chapterNumState.value.toString()),
+                            )
+                            .map(
+                              (chapterReference) => StyledListItem(
+                                title: chapterReference.format().toText(),
+                                trailing: Symbols.expand_circle_right.toIcon(),
+                                onPressed: () => context.pop(chapterReference.toResult()),
+                              ),
+                            )
+                            .toList(),
                   ),
           ),
         ],

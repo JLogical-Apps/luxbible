@@ -15,7 +15,9 @@ extension StringExtensions on String {
   List<String> get keywords =>
       trim().toLowerCase().split(RegExp(r'[\s-]+')).where((string) => string.isNotBlank).toList();
 
-  bool passesSearch(List<String> searchKeywords, {double similarityLimit = 0.88}) => keywords.every(
-    (word) => searchKeywords.any((sk) => sk.startsWith(word) || ratio(word, sk) / 100 > similarityLimit),
+  bool passesSearch(List<String> searchKeywords, {double? similarityLimit = 0.88}) => keywords.every(
+    (word) => searchKeywords.any(
+      (sk) => sk.startsWith(word) || (similarityLimit != null && ratio(word, sk) / 100 > similarityLimit),
+    ),
   );
 }

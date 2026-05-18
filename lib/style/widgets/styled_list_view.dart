@@ -8,6 +8,7 @@ class StyledListView extends StatelessWidget {
   final bool shrinkWrap;
   final EdgeInsets padding;
   final ScrollPhysics? physics;
+  final ScrollController? controller;
 
   const StyledListView({
     super.key,
@@ -15,6 +16,7 @@ class StyledListView extends StatelessWidget {
     this.shrinkWrap = false,
     this.padding = .zero,
     this.physics,
+    this.controller,
   });
 
   @override
@@ -26,6 +28,7 @@ class StyledListView extends StatelessWidget {
       child: CustomScrollView(
         shrinkWrap: shrinkWrap,
         physics: physics,
+        controller: controller,
         slivers: [
           SliverPadding(
             padding: padding,
