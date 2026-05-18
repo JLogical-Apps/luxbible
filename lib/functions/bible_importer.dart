@@ -106,7 +106,7 @@ class BibleImporter {
                         .withSameVersesCombined()
                         .toList();
 
-                    VersesParagraph? versesParagraph(ParagraphType type) {
+                    VersesParagraph? versesParagraph(ParagraphType paragraphType) {
                       final previousLastVerseNum = lastVerseNum;
                       final verses = parseUsxVerses(div);
                       if (verses.isEmpty) {
@@ -119,7 +119,7 @@ class BibleImporter {
                           .where((verse) => verse.verseNum == verses.first.verseNum);
 
                       return VersesParagraph(
-                        type: type,
+                        type: paragraphType,
                         verses: verses,
                         firstVerseOffset: verses.first.verseNum == previousLastVerseNum
                             ? otherParagraphsWithVerse.map((verse) => verse.text.length).sum +

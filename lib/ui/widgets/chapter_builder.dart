@@ -123,7 +123,9 @@ class ChapterBuilder extends HookConsumerWidget {
                 padding: paragraph.as<VersesParagraph>()?.type.padding ?? .zero,
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    final textKey = GlobalKey();
+                    final textKey = GlobalKey(
+                      debugLabel: paragraph.as<VersesParagraph>()?.verses.first.verseNum.toString(),
+                    );
 
                     if (paragraph is VersesParagraph) {
                       paragraphHitTesters.add(
@@ -498,15 +500,14 @@ class ChapterBuilder extends HookConsumerWidget {
   }
 
   BibleTextSelectionWordAnchor? getOffsetAnchor({required int characterOffset, required VersesParagraph paragraph}) {
-    int getVerseOffset(DisplayVerse verse) => verse == paragraph.verses.first ? paragraph.firstVerseOffset : 0;
-
     var offsetCount = 0;
     for (final verse in paragraph.verses) {
-      final referenceLength = verse.text.length + getVerseOffset(verse);
+      final referenceLength = verse.text.length;
       if (characterOffset < offsetCount + referenceLength) {
+        final additionalOffset = verse == paragraph.verses.first ? paragraph.firstVerseOffset : 0;
         return BibleTextSelectionWordAnchor.fromReference(
           reference: getVerseReference(verse),
-          characterOffset: (characterOffset - offsetCount + getVerseOffset(verse)).clampZero,
+          characterOffset: (characterOffset - offsetCount + additionalOffset).clampZero,
         );
       }
 
