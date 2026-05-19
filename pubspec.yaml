@@ -73,3 +73,6 @@ flutter:
         - asset: fonts/Inter-Regular.ttf
         - asset: fonts/Inter-Italic.ttf
           style: italic
+    - family: Bitter
+      fonts:
+        - asset: fonts/Bitter-VariableFont_wght.ttf
