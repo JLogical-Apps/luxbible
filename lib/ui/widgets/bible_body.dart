@@ -53,7 +53,7 @@ class BibleBody extends HookConsumerWidget {
     );
 
     final isScrollingDownState = useState(true);
-    final scrollControllerByReferenceRef = useState(<ChapterReference, ScrollController>{});
+    final scrollControllerByReferenceRef = useRef(<ChapterReference, ScrollController>{});
 
     final currentScrollController = scrollControllerByReferenceRef.value[currentChapterReference];
     final isAtBottom = useListenableSelector(currentScrollController, () {
@@ -162,12 +162,9 @@ class BibleBody extends HookConsumerWidget {
                 builder: (context) {
                   final scrollController = useDisposable(
                     useScrollController(),
-                    (controller) => WidgetsBinding.instance.addPostFrameCallback((_) {
-                      if (context.mounted) {
+                    (controller) =>
                         scrollControllerByReferenceRef.value = {...scrollControllerByReferenceRef.value}
-                          ..remove(chapterReference);
-                      }
-                    }),
+                          ..remove(chapterReference),
                   );
                   if (!scrollControllerByReferenceRef.value.containsKey(chapterReference)) {
                     WidgetsBinding.instance.addPostFrameCallback(
