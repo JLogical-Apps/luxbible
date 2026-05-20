@@ -1,6 +1,5 @@
 import 'dart:collection';
 
-import 'package:bible/models/bible/study/verse_fragment.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
@@ -164,7 +163,6 @@ enum StudyAction {
                     StyledStickyHeader(
                       title: reference.format().toText(),
                       children: verse.fragments
-                          .where((fragment) => interlinearDirection.passes(fragment))
                           .mapToMap((fragment) => MapEntry(fragment, fragment.study))
                           .withoutNullValues
                           .maybeSortedBy(
@@ -356,10 +354,5 @@ enum InterlinearDirection {
   IconData icon() => switch (this) {
     reverse => Symbols.fast_rewind,
     forward => Symbols.fast_forward,
-  };
-
-  bool passes(VerseFragment fragment) => switch (this) {
-    reverse => !fragment.isEmptyText,
-    forward => true,
   };
 }
