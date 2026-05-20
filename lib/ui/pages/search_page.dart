@@ -95,7 +95,7 @@ class SearchPage extends HookConsumerWidget {
                 StyledTextField(
                   labelText: 'Search',
                   text: textState.value,
-                  autofocus: true,
+                  autofocus: initialSearch == null,
                   onChanged: (text) {
                     textState.value = text;
                     searchState.value = '';
