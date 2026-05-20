@@ -121,6 +121,7 @@ class SearchPage extends HookConsumerWidget {
                           .toText(),
                   colorBuilder: locations.isEmpty ? null : .primary,
                   onPressed: () async {
+                    FocusManager.instance.primaryFocus?.unfocus();
                     final newLocations = await context.showStyledSheet(
                       (context) => StyledMultiSelectionSheet<SearchLocationFilter>(
                         title: 'Locations'.toText(),
