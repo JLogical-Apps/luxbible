@@ -12,11 +12,11 @@ sealed class TextSelectionConfiguration with _$TextSelectionConfiguration {
     @Default(TextSelectionShortcut.annotate) TextSelectionShortcut pinnedShortcut1,
     @Default(TextSelectionShortcut.search) TextSelectionShortcut pinnedShortcut2,
     @Default(TextSelectionShortcut.copy) TextSelectionShortcut pinnedShortcut3,
+    @Default(TextSelectionShortcut.highlight) TextSelectionShortcut longPressShortcut,
     @Default(false) bool expandToAnnotation,
   }) = _TextSelectionConfiguration;
 
-  factory TextSelectionConfiguration.fromJson(Map<String, dynamic> json) =>
-      _$TextSelectionConfigurationFromJson(json);
+  factory TextSelectionConfiguration.fromJson(Map<String, dynamic> json) => _$TextSelectionConfigurationFromJson(json);
 
   List<TextSelectionShortcut> get pinnedShortcuts => [pinnedShortcut1, pinnedShortcut2, pinnedShortcut3];
 

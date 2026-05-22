@@ -35,7 +35,7 @@ class VerseSelectionSettingsPage extends ConsumerWidget {
                 onMorePressed: () {},
                 onClosePressed: () {},
                 onShorcutPressed: (shortcutIndex, shortcut) async {
-                  final newShortcut = await showSelectVerseSelectionSheet(context, initialShortcut: shortcut);
+                  final newShortcut = await showShortcutSheet(context, initialShortcut: shortcut);
                   if (newShortcut != null) {
                     ref.updateUser(
                       (user) => user.copyWith(
@@ -64,7 +64,7 @@ class VerseSelectionSettingsPage extends ConsumerWidget {
                           child: StyledCircleButton.lg(
                             colorBuilder: .surfaceSecondary,
                             onPressed: () async {
-                              final newShortcut = await showSelectVerseSelectionSheet(
+                              final newShortcut = await showShortcutSheet(
                                 context,
                                 initialShortcut: verseSelectionConfiguration.longPressShortcut,
                               );
@@ -110,7 +110,7 @@ class VerseSelectionSettingsPage extends ConsumerWidget {
     );
   }
 
-  Future<VerseSelectionShortcut?> showSelectVerseSelectionSheet(
+  Future<VerseSelectionShortcut?> showShortcutSheet(
     BuildContext context, {
     required VerseSelectionShortcut initialShortcut,
   }) => context.showStyledSheet(

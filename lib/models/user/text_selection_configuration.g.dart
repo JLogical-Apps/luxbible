@@ -27,6 +27,12 @@ _TextSelectionConfiguration _$TextSelectionConfigurationFromJson(
         json['pinnedShortcut3'],
       ) ??
       TextSelectionShortcut.copy,
+  longPressShortcut:
+      $enumDecodeNullable(
+        _$TextSelectionShortcutEnumMap,
+        json['longPressShortcut'],
+      ) ??
+      TextSelectionShortcut.highlight,
   expandToAnnotation: json['expandToAnnotation'] as bool? ?? false,
 );
 
@@ -36,6 +42,8 @@ Map<String, dynamic> _$TextSelectionConfigurationToJson(
   'pinnedShortcut1': _$TextSelectionShortcutEnumMap[instance.pinnedShortcut1]!,
   'pinnedShortcut2': _$TextSelectionShortcutEnumMap[instance.pinnedShortcut2]!,
   'pinnedShortcut3': _$TextSelectionShortcutEnumMap[instance.pinnedShortcut3]!,
+  'longPressShortcut':
+      _$TextSelectionShortcutEnumMap[instance.longPressShortcut]!,
   'expandToAnnotation': instance.expandToAnnotation,
 };
 

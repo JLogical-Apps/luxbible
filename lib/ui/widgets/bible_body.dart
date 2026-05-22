@@ -220,14 +220,23 @@ class BibleBody extends HookConsumerWidget {
                                     selectedReferencesState.value = selectedReferencesState.value.withToggle(reference);
                                   }
                                 },
-                                onHandleLongPress: (textSelection) {
+                                onHandleLongPress: (newSelection) {
                                   if (selectedVerseSelection != null &&
-                                      textSelection.isInVerseSelection(selectedVerseSelection)) {
+                                      newSelection.isInVerseSelection(selectedVerseSelection)) {
                                     user.verseSelection.longPressShortcut.onPressed(
                                       context,
                                       ref,
                                       verseSelection: VerseSelection.fromReferences(selectedReferencesState.value),
                                       onDeselect: () => selectedReferencesState.value = [],
+                                      onNavigateToVerseSelection: navigateToVerseSelection,
+                                    );
+                                    return false;
+                                  } else if (textSelection != null && textSelection.intersects(newSelection)) {
+                                    user.textSelection.longPressShortcut.onPressed(
+                                      context,
+                                      ref,
+                                      textSelection: textSelection,
+                                      onDeselect: () => textSelectionState.value = null,
                                       onNavigateToVerseSelection: navigateToVerseSelection,
                                     );
                                     return false;

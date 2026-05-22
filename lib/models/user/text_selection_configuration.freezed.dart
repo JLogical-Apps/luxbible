@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TextSelectionConfiguration {
 
- TextSelectionShortcut get pinnedShortcut1; TextSelectionShortcut get pinnedShortcut2; TextSelectionShortcut get pinnedShortcut3; bool get expandToAnnotation;
+ TextSelectionShortcut get pinnedShortcut1; TextSelectionShortcut get pinnedShortcut2; TextSelectionShortcut get pinnedShortcut3; TextSelectionShortcut get longPressShortcut; bool get expandToAnnotation;
 /// Create a copy of TextSelectionConfiguration
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $TextSelectionConfigurationCopyWith<TextSelectionConfiguration> get copyWith => 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TextSelectionConfiguration&&(identical(other.pinnedShortcut1, pinnedShortcut1) || other.pinnedShortcut1 == pinnedShortcut1)&&(identical(other.pinnedShortcut2, pinnedShortcut2) || other.pinnedShortcut2 == pinnedShortcut2)&&(identical(other.pinnedShortcut3, pinnedShortcut3) || other.pinnedShortcut3 == pinnedShortcut3)&&(identical(other.expandToAnnotation, expandToAnnotation) || other.expandToAnnotation == expandToAnnotation));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TextSelectionConfiguration&&(identical(other.pinnedShortcut1, pinnedShortcut1) || other.pinnedShortcut1 == pinnedShortcut1)&&(identical(other.pinnedShortcut2, pinnedShortcut2) || other.pinnedShortcut2 == pinnedShortcut2)&&(identical(other.pinnedShortcut3, pinnedShortcut3) || other.pinnedShortcut3 == pinnedShortcut3)&&(identical(other.longPressShortcut, longPressShortcut) || other.longPressShortcut == longPressShortcut)&&(identical(other.expandToAnnotation, expandToAnnotation) || other.expandToAnnotation == expandToAnnotation));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,pinnedShortcut1,pinnedShortcut2,pinnedShortcut3,expandToAnnotation);
+int get hashCode => Object.hash(runtimeType,pinnedShortcut1,pinnedShortcut2,pinnedShortcut3,longPressShortcut,expandToAnnotation);
 
 @override
 String toString() {
-  return 'TextSelectionConfiguration(pinnedShortcut1: $pinnedShortcut1, pinnedShortcut2: $pinnedShortcut2, pinnedShortcut3: $pinnedShortcut3, expandToAnnotation: $expandToAnnotation)';
+  return 'TextSelectionConfiguration(pinnedShortcut1: $pinnedShortcut1, pinnedShortcut2: $pinnedShortcut2, pinnedShortcut3: $pinnedShortcut3, longPressShortcut: $longPressShortcut, expandToAnnotation: $expandToAnnotation)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $TextSelectionConfigurationCopyWith<$Res>  {
   factory $TextSelectionConfigurationCopyWith(TextSelectionConfiguration value, $Res Function(TextSelectionConfiguration) _then) = _$TextSelectionConfigurationCopyWithImpl;
 @useResult
 $Res call({
- TextSelectionShortcut pinnedShortcut1, TextSelectionShortcut pinnedShortcut2, TextSelectionShortcut pinnedShortcut3, bool expandToAnnotation
+ TextSelectionShortcut pinnedShortcut1, TextSelectionShortcut pinnedShortcut2, TextSelectionShortcut pinnedShortcut3, TextSelectionShortcut longPressShortcut, bool expandToAnnotation
 });
 
 
@@ -65,11 +65,12 @@ class _$TextSelectionConfigurationCopyWithImpl<$Res>
 
 /// Create a copy of TextSelectionConfiguration
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? pinnedShortcut1 = null,Object? pinnedShortcut2 = null,Object? pinnedShortcut3 = null,Object? expandToAnnotation = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? pinnedShortcut1 = null,Object? pinnedShortcut2 = null,Object? pinnedShortcut3 = null,Object? longPressShortcut = null,Object? expandToAnnotation = null,}) {
   return _then(_self.copyWith(
 pinnedShortcut1: null == pinnedShortcut1 ? _self.pinnedShortcut1 : pinnedShortcut1 // ignore: cast_nullable_to_non_nullable
 as TextSelectionShortcut,pinnedShortcut2: null == pinnedShortcut2 ? _self.pinnedShortcut2 : pinnedShortcut2 // ignore: cast_nullable_to_non_nullable
 as TextSelectionShortcut,pinnedShortcut3: null == pinnedShortcut3 ? _self.pinnedShortcut3 : pinnedShortcut3 // ignore: cast_nullable_to_non_nullable
+as TextSelectionShortcut,longPressShortcut: null == longPressShortcut ? _self.longPressShortcut : longPressShortcut // ignore: cast_nullable_to_non_nullable
 as TextSelectionShortcut,expandToAnnotation: null == expandToAnnotation ? _self.expandToAnnotation : expandToAnnotation // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
@@ -153,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( TextSelectionShortcut pinnedShortcut1,  TextSelectionShortcut pinnedShortcut2,  TextSelectionShortcut pinnedShortcut3,  bool expandToAnnotation)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( TextSelectionShortcut pinnedShortcut1,  TextSelectionShortcut pinnedShortcut2,  TextSelectionShortcut pinnedShortcut3,  TextSelectionShortcut longPressShortcut,  bool expandToAnnotation)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TextSelectionConfiguration() when $default != null:
-return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut3,_that.expandToAnnotation);case _:
+return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut3,_that.longPressShortcut,_that.expandToAnnotation);case _:
   return orElse();
 
 }
@@ -174,10 +175,10 @@ return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( TextSelectionShortcut pinnedShortcut1,  TextSelectionShortcut pinnedShortcut2,  TextSelectionShortcut pinnedShortcut3,  bool expandToAnnotation)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( TextSelectionShortcut pinnedShortcut1,  TextSelectionShortcut pinnedShortcut2,  TextSelectionShortcut pinnedShortcut3,  TextSelectionShortcut longPressShortcut,  bool expandToAnnotation)  $default,) {final _that = this;
 switch (_that) {
 case _TextSelectionConfiguration():
-return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut3,_that.expandToAnnotation);}
+return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut3,_that.longPressShortcut,_that.expandToAnnotation);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -191,10 +192,10 @@ return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( TextSelectionShortcut pinnedShortcut1,  TextSelectionShortcut pinnedShortcut2,  TextSelectionShortcut pinnedShortcut3,  bool expandToAnnotation)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( TextSelectionShortcut pinnedShortcut1,  TextSelectionShortcut pinnedShortcut2,  TextSelectionShortcut pinnedShortcut3,  TextSelectionShortcut longPressShortcut,  bool expandToAnnotation)?  $default,) {final _that = this;
 switch (_that) {
 case _TextSelectionConfiguration() when $default != null:
-return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut3,_that.expandToAnnotation);case _:
+return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut3,_that.longPressShortcut,_that.expandToAnnotation);case _:
   return null;
 
 }
@@ -206,12 +207,13 @@ return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut
 @JsonSerializable()
 
 class _TextSelectionConfiguration extends TextSelectionConfiguration {
-  const _TextSelectionConfiguration({this.pinnedShortcut1 = TextSelectionShortcut.annotate, this.pinnedShortcut2 = TextSelectionShortcut.search, this.pinnedShortcut3 = TextSelectionShortcut.copy, this.expandToAnnotation = false}): super._();
+  const _TextSelectionConfiguration({this.pinnedShortcut1 = TextSelectionShortcut.annotate, this.pinnedShortcut2 = TextSelectionShortcut.search, this.pinnedShortcut3 = TextSelectionShortcut.copy, this.longPressShortcut = TextSelectionShortcut.highlight, this.expandToAnnotation = false}): super._();
   factory _TextSelectionConfiguration.fromJson(Map<String, dynamic> json) => _$TextSelectionConfigurationFromJson(json);
 
 @override@JsonKey() final  TextSelectionShortcut pinnedShortcut1;
 @override@JsonKey() final  TextSelectionShortcut pinnedShortcut2;
 @override@JsonKey() final  TextSelectionShortcut pinnedShortcut3;
+@override@JsonKey() final  TextSelectionShortcut longPressShortcut;
 @override@JsonKey() final  bool expandToAnnotation;
 
 /// Create a copy of TextSelectionConfiguration
@@ -227,16 +229,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TextSelectionConfiguration&&(identical(other.pinnedShortcut1, pinnedShortcut1) || other.pinnedShortcut1 == pinnedShortcut1)&&(identical(other.pinnedShortcut2, pinnedShortcut2) || other.pinnedShortcut2 == pinnedShortcut2)&&(identical(other.pinnedShortcut3, pinnedShortcut3) || other.pinnedShortcut3 == pinnedShortcut3)&&(identical(other.expandToAnnotation, expandToAnnotation) || other.expandToAnnotation == expandToAnnotation));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TextSelectionConfiguration&&(identical(other.pinnedShortcut1, pinnedShortcut1) || other.pinnedShortcut1 == pinnedShortcut1)&&(identical(other.pinnedShortcut2, pinnedShortcut2) || other.pinnedShortcut2 == pinnedShortcut2)&&(identical(other.pinnedShortcut3, pinnedShortcut3) || other.pinnedShortcut3 == pinnedShortcut3)&&(identical(other.longPressShortcut, longPressShortcut) || other.longPressShortcut == longPressShortcut)&&(identical(other.expandToAnnotation, expandToAnnotation) || other.expandToAnnotation == expandToAnnotation));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,pinnedShortcut1,pinnedShortcut2,pinnedShortcut3,expandToAnnotation);
+int get hashCode => Object.hash(runtimeType,pinnedShortcut1,pinnedShortcut2,pinnedShortcut3,longPressShortcut,expandToAnnotation);
 
 @override
 String toString() {
-  return 'TextSelectionConfiguration(pinnedShortcut1: $pinnedShortcut1, pinnedShortcut2: $pinnedShortcut2, pinnedShortcut3: $pinnedShortcut3, expandToAnnotation: $expandToAnnotation)';
+  return 'TextSelectionConfiguration(pinnedShortcut1: $pinnedShortcut1, pinnedShortcut2: $pinnedShortcut2, pinnedShortcut3: $pinnedShortcut3, longPressShortcut: $longPressShortcut, expandToAnnotation: $expandToAnnotation)';
 }
 
 
@@ -247,7 +249,7 @@ abstract mixin class _$TextSelectionConfigurationCopyWith<$Res> implements $Text
   factory _$TextSelectionConfigurationCopyWith(_TextSelectionConfiguration value, $Res Function(_TextSelectionConfiguration) _then) = __$TextSelectionConfigurationCopyWithImpl;
 @override @useResult
 $Res call({
- TextSelectionShortcut pinnedShortcut1, TextSelectionShortcut pinnedShortcut2, TextSelectionShortcut pinnedShortcut3, bool expandToAnnotation
+ TextSelectionShortcut pinnedShortcut1, TextSelectionShortcut pinnedShortcut2, TextSelectionShortcut pinnedShortcut3, TextSelectionShortcut longPressShortcut, bool expandToAnnotation
 });
 
 
@@ -264,11 +266,12 @@ class __$TextSelectionConfigurationCopyWithImpl<$Res>
 
 /// Create a copy of TextSelectionConfiguration
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? pinnedShortcut1 = null,Object? pinnedShortcut2 = null,Object? pinnedShortcut3 = null,Object? expandToAnnotation = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? pinnedShortcut1 = null,Object? pinnedShortcut2 = null,Object? pinnedShortcut3 = null,Object? longPressShortcut = null,Object? expandToAnnotation = null,}) {
   return _then(_TextSelectionConfiguration(
 pinnedShortcut1: null == pinnedShortcut1 ? _self.pinnedShortcut1 : pinnedShortcut1 // ignore: cast_nullable_to_non_nullable
 as TextSelectionShortcut,pinnedShortcut2: null == pinnedShortcut2 ? _self.pinnedShortcut2 : pinnedShortcut2 // ignore: cast_nullable_to_non_nullable
 as TextSelectionShortcut,pinnedShortcut3: null == pinnedShortcut3 ? _self.pinnedShortcut3 : pinnedShortcut3 // ignore: cast_nullable_to_non_nullable
+as TextSelectionShortcut,longPressShortcut: null == longPressShortcut ? _self.longPressShortcut : longPressShortcut // ignore: cast_nullable_to_non_nullable
 as TextSelectionShortcut,expandToAnnotation: null == expandToAnnotation ? _self.expandToAnnotation : expandToAnnotation // ignore: cast_nullable_to_non_nullable
 as bool,
   ));

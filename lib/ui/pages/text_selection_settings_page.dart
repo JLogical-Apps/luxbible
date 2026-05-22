@@ -36,7 +36,7 @@ class TextSelectionSettingsPage extends ConsumerWidget {
                 onMorePressed: () {},
                 onClosePressed: () {},
                 onShorcutPressed: (shortcutIndex, shortcut) async {
-                  final newShortcut = await showSelectTextSelectionSheet(context, initialShortcut: shortcut);
+                  final newShortcut = await showShortcutSheet(context, initialShortcut: shortcut);
                   if (newShortcut != null) {
                     ref.updateUser(
                       (user) => user.copyWith(
@@ -53,6 +53,33 @@ class TextSelectionSettingsPage extends ConsumerWidget {
           Expanded(
             child: ListView(
               children: [
+                StyledSection.child(
+                  title: 'Gestures'.toText(),
+                  child: StyledCard(
+                    children: [
+                      StyledListItem(
+                        title: 'Long Press'.toText(),
+                        subtitle: 'Shortcut when a text selection is long-pressed.'.toText(),
+                        leading: Symbols.touch_long.toIcon(),
+                        trailing: StyledEditBadge(
+                          child: StyledCircleButton.lg(
+                            colorBuilder: .surfaceSecondary,
+                            onPressed: () async {
+                              final newShortcut = await showShortcutSheet(
+                                context,
+                                initialShortcut: textSelectionConfiguration.longPressShortcut,
+                              );
+                              if (newShortcut != null) {
+                                ref.updateUser((user) => user.copyWith.textSelection(longPressShortcut: newShortcut));
+                              }
+                            },
+                            child: textSelectionConfiguration.longPressShortcut.buildIcon(context),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 StyledSection.child(
                   title: 'Selection'.toText(),
                   child: StyledCard(
@@ -76,7 +103,7 @@ class TextSelectionSettingsPage extends ConsumerWidget {
     );
   }
 
-  Future<TextSelectionShortcut?> showSelectTextSelectionSheet(
+  Future<TextSelectionShortcut?> showShortcutSheet(
     BuildContext context, {
     required TextSelectionShortcut initialShortcut,
   }) => context.showStyledSheet(
