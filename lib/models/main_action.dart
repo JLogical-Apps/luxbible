@@ -5,6 +5,7 @@ import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/search_page.dart';
+import 'package:bible/ui/pages/settings_page.dart';
 import 'package:bible/ui/sheets/bookmark_sheet.dart';
 import 'package:bible/ui/sheets/study_sheet.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
@@ -18,12 +19,14 @@ import 'package:material_symbols_icons/symbols.dart';
 enum MainAction {
   bookmark,
   study,
-  search;
+  search,
+  settings;
 
   String title() => switch (this) {
     bookmark => 'Bookmark',
     study => 'Study',
     search => 'Search',
+    settings => 'Settings',
   };
 
   String description({User? user}) => switch (this) {
@@ -33,6 +36,7 @@ enum MainAction {
           : 'Manage this bookmark.',
     study => 'View study tools for this chapter.',
     search => 'Search for words across the Bible.',
+    settings => 'View the settings for Lux.',
   };
 
   Widget buildIcon(BuildContext context, {User? user}) => switch (this) {
@@ -44,6 +48,7 @@ enum MainAction {
     }(),
     study => Icon(Symbols.school),
     search => Icon(Symbols.search),
+    settings => Icon(Symbols.settings),
   };
 
   bool get isNavigation => [study, search].contains(this);
@@ -120,6 +125,8 @@ enum MainAction {
         if (result != null) {
           onNavigateToVerseSelection(VerseSelection.reference(result.reference));
         }
+      case settings:
+        context.push(SettingsPage());
     }
   }
 }
