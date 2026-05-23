@@ -24,10 +24,14 @@ extension TextStyleExtensions on TextStyle {
 
   TextStyle get underlined => copyWith(decoration: TextDecoration.underline);
 
-  double getWidth(String text) => (TextPainter(
-    text: TextSpan(text: text, style: this),
-    textDirection: TextDirection.ltr,
-  )..layout()).width;
+  static final Map<(TextStyle, String), double> _textWidths = {};
+  double getWidth(String text) => _textWidths.putIfAbsent(
+    (this, text),
+    () => (TextPainter(
+      text: TextSpan(text: text, style: this),
+      textDirection: .ltr,
+    )..layout()).width,
+  );
 
   double get totalHeight => fontSize! * height!;
 }
