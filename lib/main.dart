@@ -4,10 +4,12 @@ import 'package:bible/functions/bible_importer.dart';
 import 'package:bible/functions/commentary_importer.dart';
 import 'package:bible/functions/cross_references_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
+import 'package:bible/licenses.dart';
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
+import 'package:bible/providers/package_info_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/path_service.dart';
@@ -17,6 +19,7 @@ import 'package:bible/ui/pages/get_started_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,6 +27,8 @@ Future<void> main() async {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+
+      await registerLicenses();
 
       final displayBibles = await Future.wait(
         BibleTranslation.values.map((translation) => BibleImporter().importDisplay(translation: translation)),
@@ -37,6 +42,7 @@ Future<void> main() async {
 
       final paths = await getPaths();
       final sharedPreferences = await SharedPreferences.getInstance();
+      final packageInfo = await PackageInfo.fromPlatform();
 
       runApp(
         BibleApp(
@@ -48,6 +54,7 @@ Future<void> main() async {
             commentariesProvider.overrideWith((ref) => [commentaries]),
             pathServiceProvider.overrideWith((ref) => paths),
             sharedPreferencesServiceProvider.overrideWith((ref) => sharedPreferences),
+            packageInfoProvider.overrideWith((ref) => packageInfo),
           ],
         ),
       );
@@ -73,10 +80,10 @@ class BibleApp extends StatelessWidget {
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: MaterialApp(
-          title: 'Bible',
+          title: 'Lux Bible',
           theme: ThemeData(
             colorScheme: ColorScheme.highContrastLight(brightness: Brightness.light, primary: Colors.black),
-            cardColor: Colors.transparent,
+            cardColor: Colors.white,
             appBarTheme: AppBarThemeData(scrolledUnderElevation: 0),
             iconTheme: IconThemeData(fill: 1, weight: 400, size: 25, color: Colors.black, opticalSize: 24),
             textSelectionTheme: TextSelectionThemeData(
@@ -87,7 +94,7 @@ class BibleApp extends StatelessWidget {
           ),
           darkTheme: ThemeData(
             colorScheme: ColorScheme.dark(brightness: Brightness.dark, primary: Colors.white),
-            cardColor: Colors.transparent,
+            cardColor: Colors.black,
             appBarTheme: AppBarThemeData(scrolledUnderElevation: 0),
             iconTheme: IconThemeData(fill: 1, weight: 400, size: 25, color: Colors.white, opticalSize: 24),
             textSelectionTheme: TextSelectionThemeData(

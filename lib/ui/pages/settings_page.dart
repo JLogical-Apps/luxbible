@@ -1,3 +1,4 @@
+import 'package:bible/providers/package_info_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/pages/text_selection_settings_page.dart';
@@ -6,13 +7,15 @@ import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends HookConsumerWidget {
   const SettingsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final packageInfo = ref.watch(packageInfoProvider);
     return StyledPage(
       backgroundColor: .backgroundPrimary,
       title: 'Settings'.toText(),
@@ -36,6 +39,23 @@ class SettingsPage extends StatelessWidget {
                   title: 'Text Selection'.toText(),
                   leading: Symbols.text_format.toIcon(),
                   onPressed: () => context.push(TextSelectionSettingsPage()),
+                ),
+              ],
+            ),
+          ),
+          StyledSection.child(
+            title: 'About'.toText(),
+            child: StyledCard(
+              children: [
+                StyledListItem(
+                  title: 'Version'.toText(),
+                  subtitle: packageInfo.version.toText(),
+                  leading: Symbols.perm_device_information.toIcon(),
+                ),
+                StyledListItem.navigation(
+                  title: 'Licenses'.toText(),
+                  leading: Symbols.license.toIcon(),
+                  onPressed: () => showLicensePage(context: context),
                 ),
               ],
             ),
