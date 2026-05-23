@@ -58,6 +58,9 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
         json['interlinearDirection'],
       ) ??
       InterlinearDirection.reverse,
+  theme:
+      $enumDecodeNullable(_$ThemeModeEnumMap, json['theme']) ??
+      ThemeMode.system,
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -74,6 +77,7 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'searchHistory': instance.searchHistory,
   'interlinearDirection':
       _$InterlinearDirectionEnumMap[instance.interlinearDirection]!,
+  'theme': _$ThemeModeEnumMap[instance.theme]!,
 };
 
 const _$BibleTranslationEnumMap = {
@@ -95,4 +99,10 @@ const _$ColorEnumEnumMap = {
 const _$InterlinearDirectionEnumMap = {
   InterlinearDirection.reverse: 'reverse',
   InterlinearDirection.forward: 'forward',
+};
+
+const _$ThemeModeEnumMap = {
+  ThemeMode.system: 'system',
+  ThemeMode.light: 'light',
+  ThemeMode.dark: 'dark',
 };

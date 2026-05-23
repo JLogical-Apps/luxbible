@@ -16,6 +16,7 @@ import 'package:bible/models/user/text_selection_configuration.dart';
 import 'package:bible/models/user/verse_selection_configuration.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -39,6 +40,7 @@ sealed class User with _$User {
     @Default(TextSelectionConfiguration()) TextSelectionConfiguration textSelection,
     @Default([]) List<String> searchHistory,
     @Default(InterlinearDirection.reverse) InterlinearDirection interlinearDirection,
+    @Default(ThemeMode.system) ThemeMode theme,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -50,9 +52,8 @@ sealed class User with _$User {
 
   Bookmark? get currentBookmark => bookmarkById[currentBookmarkId];
 
-  List<Annotation> getVerseSelectionAnnotations(VerseSelection verseSelection) => annotations
-      .where((annotation) => annotation.verseSelections.any((vs) => vs.hasAnyOf(verseSelection)))
-      .toList();
+  List<Annotation> getVerseSelectionAnnotations(VerseSelection verseSelection) =>
+      annotations.where((annotation) => annotation.verseSelections.any((vs) => vs.hasAnyOf(verseSelection))).toList();
   bool isVerseSelectionAnnotated(VerseSelection verseSelection) =>
       getVerseSelectionAnnotations(verseSelection).isNotEmpty;
 
@@ -93,15 +94,15 @@ sealed class User with _$User {
 
   List<Reference> getExpandedReferences(Reference reference) =>
       annotations
-          .expand(
-            (annotation) => annotation.verseSelections.where((vs) => vs.references.contains(reference)),
-          )
+          .expand((annotation) => annotation.verseSelections.where((vs) => vs.references.contains(reference)))
           .lastOrNull
           ?.references ??
       [reference];
 
   BibleTextSelection getExpandedTextSelection(BibleTextSelection textSelection) =>
-      annotations.expand((annotation) => annotation.textSelections.where((ts) => ts.intersects(textSelection))).lastOrNull ??
+      annotations
+          .expand((annotation) => annotation.textSelections.where((ts) => ts.intersects(textSelection)))
+          .lastOrNull ??
       textSelection;
 
   User withNewBookmark(Bookmark bookmark) {

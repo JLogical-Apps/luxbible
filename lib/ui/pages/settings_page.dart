@@ -1,10 +1,13 @@
+import 'package:bible/models/user/theme_mode.dart';
 import 'package:bible/providers/package_info_provider.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/pages/text_selection_settings_page.dart';
 import 'package:bible/ui/pages/verse_selection_settings_page.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
+import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -16,6 +19,8 @@ class SettingsPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final packageInfo = ref.watch(packageInfoProvider);
+    final user = ref.watch(userProvider);
+
     return StyledPage(
       backgroundColor: .backgroundPrimary,
       title: 'Settings'.toText(),
@@ -41,6 +46,19 @@ class SettingsPage extends HookConsumerWidget {
                   onPressed: () => context.push(TextSelectionSettingsPage()),
                 ),
               ],
+            ),
+          ),
+          StyledSection.child(
+            title: 'Theme'.toText(),
+            child: StyledCard.child(
+              padding: .all(4),
+              child: StyledSegmentedControl(
+                colorBuilder: .surfacePrimary,
+                options: ThemeMode.values,
+                selectedOption: user.theme,
+                onOptionSelected: (theme) => ref.updateUser((user) => user.copyWith(theme: theme)),
+                optionBuilder: (theme) => StyledSelectOption(title: Text(theme.title()), leading: theme.icon.toIcon()),
+              ),
             ),
           ),
           StyledSection.child(

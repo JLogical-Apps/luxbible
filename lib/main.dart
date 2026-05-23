@@ -20,7 +20,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
@@ -45,7 +44,7 @@ Future<void> main() async {
       final packageInfo = await PackageInfo.fromPlatform();
 
       runApp(
-        BibleApp(
+        ProviderScope(
           overrides: [
             displayBiblesProvider.overrideWith((ref) => displayBibles),
             studyBiblesProvider.overrideWith((ref) => studyBibles),
@@ -56,6 +55,7 @@ Future<void> main() async {
             sharedPreferencesServiceProvider.overrideWith((ref) => sharedPreferences),
             packageInfoProvider.overrideWith((ref) => packageInfo),
           ],
+          child: BibleApp(),
         ),
       );
     },
@@ -68,50 +68,47 @@ Future<void> main() async {
   );
 }
 
-class BibleApp extends StatelessWidget {
-  final List<Override> overrides;
-
-  const BibleApp({super.key, required this.overrides});
+class BibleApp extends ConsumerWidget {
+  const BibleApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ProviderScope(
-      overrides: overrides,
-      child: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: MaterialApp(
-          title: 'Lux Bible',
-          theme: ThemeData(
-            colorScheme: ColorScheme.highContrastLight(brightness: Brightness.light, primary: Colors.black),
-            cardColor: Colors.white,
-            appBarTheme: AppBarThemeData(scrolledUnderElevation: 0),
-            iconTheme: IconThemeData(fill: 1, weight: 400, size: 25, color: Colors.black, opticalSize: 24),
-            textSelectionTheme: TextSelectionThemeData(
-              cursorColor: Colors.black,
-              selectionColor: Colors.black.withValues(alpha: 0.2),
-              selectionHandleColor: Colors.black,
-            ),
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userProvider);
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: MaterialApp(
+        title: 'Lux Bible',
+        themeMode: user.theme,
+        theme: ThemeData(
+          colorScheme: ColorScheme.highContrastLight(brightness: Brightness.light, primary: Colors.black),
+          cardColor: Colors.white,
+          appBarTheme: AppBarThemeData(scrolledUnderElevation: 0),
+          iconTheme: IconThemeData(fill: 1, weight: 400, size: 25, color: Colors.black, opticalSize: 24),
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: Colors.black,
+            selectionColor: Colors.black.withValues(alpha: 0.2),
+            selectionHandleColor: Colors.black,
           ),
-          darkTheme: ThemeData(
-            colorScheme: ColorScheme.dark(brightness: Brightness.dark, primary: Colors.white),
-            cardColor: Colors.black,
-            appBarTheme: AppBarThemeData(scrolledUnderElevation: 0),
-            iconTheme: IconThemeData(fill: 1, weight: 400, size: 25, color: Colors.white, opticalSize: 24),
-            textSelectionTheme: TextSelectionThemeData(
-              cursorColor: Colors.white,
-              selectionColor: Colors.white.withValues(alpha: 0.2),
-              selectionHandleColor: Colors.white,
-            ),
+        ),
+        darkTheme: ThemeData(
+          colorScheme: ColorScheme.dark(brightness: Brightness.dark, primary: Colors.white),
+          cardColor: Colors.black,
+          appBarTheme: AppBarThemeData(scrolledUnderElevation: 0),
+          iconTheme: IconThemeData(fill: 1, weight: 400, size: 25, color: Colors.white, opticalSize: 24),
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: Colors.white,
+            selectionColor: Colors.white.withValues(alpha: 0.2),
+            selectionHandleColor: Colors.white,
           ),
-          debugShowCheckedModeBanner: false,
-          home: MediaQuery(
-            data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1)),
-            child: Consumer(
-              builder: (context, ref, child) {
-                final user = ref.watch(userProvider.notifier).userOrNull;
-                return user == null ? IntroPage() : BiblePage();
-              },
-            ),
+        ),
+        debugShowCheckedModeBanner: false,
+        home: MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1)),
+          child: Consumer(
+            builder: (context, ref, child) {
+              final user = ref.watch(userProvider.notifier).userOrNull;
+              return user == null ? IntroPage() : BiblePage();
+            },
           ),
         ),
       ),

@@ -90,7 +90,7 @@ class StrongSheet {
                       options: morphologyCodes,
                       onOptionSelected: (code) => selectedMorphologyCodeState.value = code,
                       selectedOption: selectedMorphologyCode,
-                      textBuilder: (morphology) => morphology,
+                      optionBuilder: (morphology) => StyledSelectOption(title: Text(morphology)),
                     ),
                   ),
                 ...Morphology.parse(selectedMorphologyCode).attributes.mapToIterable(

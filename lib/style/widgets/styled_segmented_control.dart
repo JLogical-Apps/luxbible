@@ -9,14 +9,17 @@ class StyledSegmentedControl<T> extends StatelessWidget {
   final List<T> options;
   final T selectedOption;
   final Function(T) onOptionSelected;
-  final String Function(T) textBuilder;
+  final StyledSelectOption<T> Function(T) optionBuilder;
+
+  final ColorBuilder? colorBuilder;
 
   const StyledSegmentedControl({
     super.key,
     required this.options,
     required this.selectedOption,
     required this.onOptionSelected,
-    required this.textBuilder,
+    required this.optionBuilder,
+    this.colorBuilder,
   });
 
   @override
@@ -24,14 +27,17 @@ class StyledSegmentedControl<T> extends StatelessWidget {
     final textStyle = context.textStyle.labelSm;
     return Container(
       width: double.infinity,
-      decoration: BoxDecoration(color: context.colors.backgroundPrimary, borderRadius: .circular(12)),
+      decoration: BoxDecoration(
+        color: colorBuilder?.call(context.colors) ?? context.colors.backgroundPrimary,
+        borderRadius: .circular(12),
+      ),
       padding: .all(4),
       child: LayoutBuilder(
         builder: (context, constraints) {
           final selectionIndex = options.indexOfOrNull(selectedOption);
 
           final width = constraints.maxWidth / options.length;
-          const height = 48.0;
+          final height = options.any((option) => optionBuilder(option).leading != null) ? 56.0 : 48.0;
 
           return SizedBox(
             height: height,
@@ -66,15 +72,16 @@ class StyledSegmentedControl<T> extends StatelessWidget {
                             color: Colors.transparent,
                             width: width,
                             padding: .symmetric(horizontal: 16),
-                            child: Center(
-                              child: AnimatedDefaultTextStyle(
-                                style: textStyle.copyWith(
-                                  color: i == selectionIndex ? null : context.colors.contentSecondary,
-                                ),
-                                textAlign: .center,
-                                duration: Duration(milliseconds: 300),
-                                curve: Curves.easeInOutCubic,
-                                child: Text(textBuilder(option)),
+                            child: AnimatedDefaultTextStyle(
+                              style: textStyle.copyWith(
+                                color: i == selectionIndex ? null : context.colors.contentSecondary,
+                              ),
+                              textAlign: .center,
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeInOutCubic,
+                              child: Column(
+                                mainAxisAlignment: .center,
+                                children: [?optionBuilder(option).leading, optionBuilder(option).title],
                               ),
                             ),
                           ),

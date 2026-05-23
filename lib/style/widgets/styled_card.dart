@@ -6,10 +6,11 @@ import 'package:flutter/material.dart';
 class StyledCard extends StatelessWidget {
   final List<Widget> children;
 
+  final EdgeInsets padding;
   final ColorBuilder? colorBuilder;
 
-  const StyledCard({super.key, required this.children, this.colorBuilder});
-  StyledCard.child({super.key, required Widget child, this.colorBuilder}) : children = [child];
+  const StyledCard({super.key, required this.children, this.colorBuilder, this.padding = .zero});
+  StyledCard.child({super.key, required Widget child, this.colorBuilder, this.padding = .zero}) : children = [child];
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,10 @@ class StyledCard extends StatelessWidget {
       borderRadius: .circular(16),
       child: ColoredBox(
         color: colorBuilder?.call(context.colors) ?? context.colors.surfacePrimary,
-        child: StyledList(children: children),
+        child: Padding(
+          padding: padding,
+          child: StyledList(children: children),
+        ),
       ),
     );
   }
