@@ -12,7 +12,7 @@ sealed class VerseSelectionConfiguration with _$VerseSelectionConfiguration {
     @Default(VerseSelectionShortcut.annotate) VerseSelectionShortcut pinnedShortcut1,
     @Default(VerseSelectionShortcut.commentary) VerseSelectionShortcut pinnedShortcut2,
     @Default(VerseSelectionShortcut.interlinear) VerseSelectionShortcut pinnedShortcut3,
-    @Default(VerseSelectionShortcut.crossReferences) VerseSelectionShortcut longPressShortcut,
+    @Default(VerseSelectionShortcut.highlight) VerseSelectionShortcut longPressShortcut,
     @Default(false) bool expandToAnnotation,
     @Default(true) bool rangeSelection,
   }) = _VerseSelectionConfiguration;

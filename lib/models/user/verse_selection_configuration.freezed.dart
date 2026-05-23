@@ -208,7 +208,7 @@ return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.pinnedShortcut
 @JsonSerializable()
 
 class _VerseSelectionConfiguration extends VerseSelectionConfiguration {
-  const _VerseSelectionConfiguration({this.pinnedShortcut1 = VerseSelectionShortcut.annotate, this.pinnedShortcut2 = VerseSelectionShortcut.commentary, this.pinnedShortcut3 = VerseSelectionShortcut.interlinear, this.longPressShortcut = VerseSelectionShortcut.crossReferences, this.expandToAnnotation = false, this.rangeSelection = true}): super._();
+  const _VerseSelectionConfiguration({this.pinnedShortcut1 = VerseSelectionShortcut.annotate, this.pinnedShortcut2 = VerseSelectionShortcut.commentary, this.pinnedShortcut3 = VerseSelectionShortcut.interlinear, this.longPressShortcut = VerseSelectionShortcut.highlight, this.expandToAnnotation = false, this.rangeSelection = true}): super._();
   factory _VerseSelectionConfiguration.fromJson(Map<String, dynamic> json) => _$VerseSelectionConfigurationFromJson(json);
 
 @override@JsonKey() final  VerseSelectionShortcut pinnedShortcut1;

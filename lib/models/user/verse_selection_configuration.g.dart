@@ -32,7 +32,7 @@ _VerseSelectionConfiguration _$VerseSelectionConfigurationFromJson(
         _$VerseSelectionShortcutEnumMap,
         json['longPressShortcut'],
       ) ??
-      VerseSelectionShortcut.crossReferences,
+      VerseSelectionShortcut.highlight,
   expandToAnnotation: json['expandToAnnotation'] as bool? ?? false,
   rangeSelection: json['rangeSelection'] as bool? ?? true,
 );
