@@ -10,8 +10,10 @@ import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingsPage extends HookConsumerWidget {
   const SettingsPage({super.key});
@@ -59,6 +61,27 @@ class SettingsPage extends HookConsumerWidget {
                 onOptionSelected: (theme) => ref.updateUser((user) => user.copyWith(theme: theme)),
                 optionBuilder: (theme) => StyledSelectOption(title: Text(theme.title()), leading: theme.icon.toIcon()),
               ),
+            ),
+          ),
+          StyledSection.child(
+            title: 'Community'.toText(),
+            child: StyledCard(
+              children: [
+                StyledListItem(
+                  title: 'Discord'.toText(),
+                  subtitle: 'Feedback and announcements'.toText(),
+                  leading: FaIcon(FontAwesomeIcons.discord),
+                  onPressed: () => launchUrl(Uri.parse('https://discord.gg/C4zfZDpZMB')),
+                  trailing: Symbols.arrow_outward.toIcon(),
+                ),
+                StyledListItem(
+                  title: 'Instagram'.toText(),
+                  subtitle: 'Tips and updates about Lux'.toText(),
+                  leading: FaIcon(FontAwesomeIcons.instagram),
+                  onPressed: () => launchUrl(Uri.parse('https://www.instagram.com/luxbible.app/')),
+                  trailing: Symbols.arrow_outward.toIcon(),
+                ),
+              ],
             ),
           ),
           StyledSection.child(

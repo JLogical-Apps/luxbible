@@ -102,9 +102,11 @@ class StyledListItem extends StatelessWidget {
               if (leading case final leading?)
                 SizedBox(
                   width: 64,
-                  child: IconTheme.merge(
-                    data: IconThemeData(color: context.colors.content(disabled: !enabled), size: 24),
-                    child: leading,
+                  child: Center(
+                    child: IconTheme.merge(
+                      data: IconThemeData(color: context.colors.content(disabled: !enabled), size: 24),
+                      child: leading,
+                    ),
                   ),
                 )
               else
