@@ -53,7 +53,8 @@ sealed class User with _$User {
   Bookmark? get currentBookmark => bookmarkById[currentBookmarkId];
 
   List<Annotation> getVerseSelectionAnnotations(VerseSelection verseSelection) =>
-      annotations.where((annotation) => annotation.verseSelections.any((vs) => vs.hasAnyOf(verseSelection))).toList();
+      annotations.where((annotation) => annotation.verseSelection?.hasAnyOf(verseSelection) == true).toList();
+
   bool isVerseSelectionAnnotated(VerseSelection verseSelection) =>
       getVerseSelectionAnnotations(verseSelection).isNotEmpty;
 
@@ -61,20 +62,20 @@ sealed class User with _$User {
     VerseSelection verseSelection, {
     required BibleTranslation translation,
   }) => annotations
-      .expand(
-        (annotation) => annotation.textSelections
-            .where((ts) => ts.translation == translation && ts.isInVerseSelection(verseSelection))
-            .map((ts) => (annotation, ts)),
+      .map((annotation) => (annotation, annotation.textSelection))
+      .whereType<(Annotation, BibleTextSelection)>()
+      .where(
+        (annotationAndSelection) =>
+            annotationAndSelection.$2.translation == translation &&
+            annotationAndSelection.$2.isInVerseSelection(verseSelection),
       )
       .toList();
 
-  List<Annotation> getTextSelectionAnnotations(BibleTextSelection textSelection) => annotations
-      .where(
-        (annotation) => annotation.textSelections.any(
-          (ts) => ts.translation == textSelection.translation && ts.intersects(textSelection),
-        ),
-      )
-      .toList();
+  List<Annotation> getTextSelectionAnnotations(BibleTextSelection textSelection) => annotations.where((annotation) {
+    final ts = annotation.textSelection;
+    return ts != null && ts.translation == textSelection.translation && ts.intersects(textSelection);
+  }).toList();
+
   bool isTextSelectionAnnotated(BibleTextSelection textSelection) =>
       getTextSelectionAnnotations(textSelection).isNotEmpty;
 
@@ -82,26 +83,31 @@ sealed class User with _$User {
     required Reference reference,
     required BibleTranslation translation,
   }) => annotations
-      .where((annotation) => annotation.note != null)
-      .expand(
-        (annotation) => annotation.textSelections
-            .where((textSelection) => textSelection.translation == translation)
-            .where((textSelection) => textSelection.start.toReference() == reference)
-            .map((textSelection) => (annotation, textSelection)),
+      .where((annotation) => annotation.note.isNotEmpty)
+      .map((annotation) => (annotation, annotation.textSelection))
+      .whereType<(Annotation, BibleTextSelection)>()
+      .where(
+        (annotationAndSelection) =>
+            annotationAndSelection.$2.translation == translation &&
+            annotationAndSelection.$2.start.toReference() == reference,
       )
       .groupListsBy((records) => records.$2.start.characterOffset)
       .map((offset, records) => MapEntry(offset, records.map((record) => record.$1).toList()));
 
   List<Reference> getExpandedReferences(Reference reference) =>
       annotations
-          .expand((annotation) => annotation.verseSelections.where((vs) => vs.references.contains(reference)))
+          .map((annotation) => annotation.verseSelection)
+          .nonNulls
+          .where((verseSelection) => verseSelection.hasReference(reference))
           .lastOrNull
           ?.references ??
       [reference];
 
   BibleTextSelection getExpandedTextSelection(BibleTextSelection textSelection) =>
       annotations
-          .expand((annotation) => annotation.textSelections.where((ts) => ts.intersects(textSelection)))
+          .map((annotation) => annotation.textSelection)
+          .nonNulls
+          .where((textSelection) => textSelection.intersects(textSelection))
           .lastOrNull ??
       textSelection;
 
@@ -127,22 +133,12 @@ sealed class User with _$User {
 
   User withRemovedVerseSelectionAnnotations(VerseSelection verseSelection) => copyWith(
     annotations: annotations
-        .map(
-          (annotation) => annotation.copyWith(
-            verseSelections: annotation.verseSelections.where((vs) => !vs.hasAnyOf(verseSelection)).toList(),
-          ),
-        )
-        .where((annotation) => annotation.isNotEmpty)
+        .where((annotation) => annotation.verseSelection?.hasAnyOf(verseSelection) != true)
         .toList(),
   );
   User withRemovedTextSelectionAnnotations(BibleTextSelection textSelection) => copyWith(
     annotations: annotations
-        .map(
-          (annotation) => annotation.copyWith(
-            textSelections: annotation.textSelections.where((ts) => !textSelection.intersects(ts)).toList(),
-          ),
-        )
-        .where((annotation) => annotation.isNotEmpty)
+        .where((annotation) => annotation.textSelection?.intersects(textSelection) != true)
         .toList(),
   );
   User withRemovedAnnotation(Annotation annotation) => copyWith(annotations: annotations.withRemoved(annotation));

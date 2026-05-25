@@ -1,6 +1,5 @@
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/color_enum.dart';
-import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
@@ -20,7 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:port/port.dart';
-import 'package:utils_core/utils_core.dart';
 
 class AnnotationSheet {
   static Future<Annotation?> show(
@@ -54,11 +52,14 @@ class AnnotationSheet {
             : null,
         port: Port.of({'color': SimplePortField<ColorEnum>(value: ColorEnum.stone), 'note': PortField.string()}).map(
           (values, port) => Annotation(
-            verseSelections: [if (region is VerseSelection) region],
-            textSelections: [if (region is BibleTextSelection) region],
-            createdAt: DateTime.now(),
+            selection: region.when(
+              chapterReference: (chapter) =>
+                  AnnotationSelection.verses(verseSelection: VerseSelection.fromReferences(chapter.references)),
+              verseSelection: (verses) => AnnotationSelection.verses(verseSelection: verses),
+              textSelection: (text) => AnnotationSelection.text(textSelection: text),
+            ),
             color: values['color'],
-            note: (values['note'] as String).trim().nullIfBlank,
+            note: (values['note'] as String).trim(),
           ),
         ),
         childrenBuilder: (context) => [

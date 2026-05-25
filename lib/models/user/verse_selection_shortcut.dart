@@ -80,7 +80,10 @@ enum VerseSelectionShortcut {
               return user.withRemovedVerseSelectionAnnotations(verseSelection);
             } else {
               return user.withAnnotation(
-                Annotation(createdAt: DateTime.now(), color: user.highlightColor, verseSelections: [verseSelection]),
+                Annotation(
+                  color: user.highlightColor,
+                  selection: AnnotationSelection.verses(verseSelection: verseSelection),
+                ),
               );
             }
           });

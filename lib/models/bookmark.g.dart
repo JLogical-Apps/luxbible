@@ -14,7 +14,7 @@ _Bookmark _$BookmarkFromJson(Map<String, dynamic> json) => _Bookmark(
 );
 
 Map<String, dynamic> _$BookmarkToJson(_Bookmark instance) => <String, dynamic>{
-  'chapter': instance.chapter,
+  'chapter': instance.chapter.toJson(),
   'name': instance.name,
   'color': _$ColorEnumEnumMap[instance.color]!,
 };

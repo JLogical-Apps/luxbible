@@ -7,29 +7,20 @@ part of 'annotation.dart';
 // **************************************************************************
 
 _Annotation _$AnnotationFromJson(Map<String, dynamic> json) => _Annotation(
-  textSelections:
-      (json['textSelections'] as List<dynamic>?)
-          ?.map((e) => BibleTextSelection.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const [],
-  verseSelections:
-      (json['verseSelections'] as List<dynamic>?)
-          ?.map((e) => VerseSelection.fromJson(e as String))
-          .toList() ??
-      const [],
+  selection: AnnotationSelection.fromJson(
+    _annotationSelectionFromAnnotation(json, 'selection')
+        as Map<String, dynamic>,
+  ),
   color:
       $enumDecodeNullable(_$ColorEnumEnumMap, json['color']) ?? ColorEnum.stone,
-  note: json['note'] as String?,
-  createdAt: DateTime.parse(json['createdAt'] as String),
+  note: json['note'] as String? ?? '',
 );
 
 Map<String, dynamic> _$AnnotationToJson(_Annotation instance) =>
     <String, dynamic>{
-      'textSelections': instance.textSelections,
-      'verseSelections': instance.verseSelections,
+      'selection': instance.selection.toJson(),
       'color': _$ColorEnumEnumMap[instance.color]!,
       'note': instance.note,
-      'createdAt': instance.createdAt.toIso8601String(),
     };
 
 const _$ColorEnumEnumMap = {
@@ -40,4 +31,34 @@ const _$ColorEnumEnumMap = {
   ColorEnum.blue: 'blue',
   ColorEnum.violet: 'violet',
   ColorEnum.stone: 'stone',
+};
+
+VersesAnnotationSelection _$VersesAnnotationSelectionFromJson(
+  Map<String, dynamic> json,
+) => VersesAnnotationSelection(
+  verseSelection: VerseSelection.fromJson(json['verseSelection'] as String),
+  $type: json['runtimeType'] as String?,
+);
+
+Map<String, dynamic> _$VersesAnnotationSelectionToJson(
+  VersesAnnotationSelection instance,
+) => <String, dynamic>{
+  'verseSelection': instance.verseSelection.toJson(),
+  'runtimeType': instance.$type,
+};
+
+TextAnnotationSelection _$TextAnnotationSelectionFromJson(
+  Map<String, dynamic> json,
+) => TextAnnotationSelection(
+  textSelection: BibleTextSelection.fromJson(
+    json['textSelection'] as Map<String, dynamic>,
+  ),
+  $type: json['runtimeType'] as String?,
+);
+
+Map<String, dynamic> _$TextAnnotationSelectionToJson(
+  TextAnnotationSelection instance,
+) => <String, dynamic>{
+  'textSelection': instance.textSelection.toJson(),
+  'runtimeType': instance.$type,
 };

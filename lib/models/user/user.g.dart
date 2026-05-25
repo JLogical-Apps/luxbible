@@ -65,15 +65,15 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'translation': _$BibleTranslationEnumMap[instance.translation]!,
-  'lastReference': instance.lastReference,
+  'lastReference': instance.lastReference.toJson(),
   'currentBookmarkId': instance.currentBookmarkId,
-  'viewHistory': instance.viewHistory,
+  'viewHistory': instance.viewHistory.map((e) => e.toJson()).toList(),
   'highlightColor': _$ColorEnumEnumMap[instance.highlightColor]!,
-  'bookmarkById': instance.bookmarkById,
-  'annotations': instance.annotations,
-  'mainToolbar': instance.mainToolbar,
-  'verseSelection': instance.verseSelection,
-  'textSelection': instance.textSelection,
+  'bookmarkById': instance.bookmarkById.map((k, e) => MapEntry(k, e.toJson())),
+  'annotations': instance.annotations.map((e) => e.toJson()).toList(),
+  'mainToolbar': instance.mainToolbar.toJson(),
+  'verseSelection': instance.verseSelection.toJson(),
+  'textSelection': instance.textSelection.toJson(),
   'searchHistory': instance.searchHistory,
   'interlinearDirection':
       _$InterlinearDirectionEnumMap[instance.interlinearDirection]!,

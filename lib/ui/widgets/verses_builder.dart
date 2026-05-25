@@ -80,8 +80,7 @@ class VersesBuilder extends HookConsumerWidget {
       final verseSelectionAnnotationsWithNote = verseSelectionAnnotations
           .where(
             (annotation) =>
-                annotation.note != null &&
-                annotation.verseSelections.any((vs) => vs.references.firstOrNull == reference),
+                annotation.note.isNotEmpty && annotation.verseSelection?.references.firstOrNull == reference,
           )
           .toList();
       return MapEntry(reference, [
@@ -146,9 +145,7 @@ class VersesBuilder extends HookConsumerWidget {
               .mapToMap(
                 (reference) => MapEntry(
                   reference,
-                  user.annotations.where(
-                    (annotation) => annotation.verseSelections.any((vs) => vs.hasReference(reference)),
-                  ),
+                  user.annotations.where((annotation) => annotation.verseSelection?.hasReference(reference) == true),
                 ),
               )
               .where((reference, annotations) => annotations.isNotEmpty)
@@ -348,18 +345,8 @@ class VersesBuilder extends HookConsumerWidget {
                   children: annotations
                       .map(
                         (annotation) => StyledListItem(
-                          title: (annotation.note ?? '').toText(),
-                          subtitle: Column(
-                            children: [
-                              annotation.verseSelections
-                                  .map((verseSelection) => verseSelection.format())
-                                  .join('; ')
-                                  .nullIfBlank,
-                              ...annotation.textSelections.map(
-                                (textSelection) => '"${bible.getSelectionText(textSelection)}"',
-                              ),
-                            ].nonNulls.map((text) => Text(text, maxLines: 1, overflow: .ellipsis)).toList(),
-                          ),
+                          title: annotation.note.toText(),
+                          subtitle: Text(annotation.formatSelection(bible), maxLines: 1, overflow: .ellipsis),
                         ),
                       )
                       .toList(),

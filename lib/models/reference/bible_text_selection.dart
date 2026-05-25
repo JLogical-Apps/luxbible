@@ -29,12 +29,13 @@ sealed class BibleTextSelection with _$BibleTextSelection implements Region {
 
   factory BibleTextSelection.fromJson(Map<String, dynamic> json) => _$BibleTextSelectionFromJson(json);
 
-  bool intersects(BibleTextSelection textSelection) =>
-      end >= textSelection.start && textSelection.end >= start;
-  bool isInReference(Reference reference) =>
-      reference >= start.toReference() && reference <= end.toReference();
+  bool intersects(BibleTextSelection textSelection) => end >= textSelection.start && textSelection.end >= start;
+  bool isInReference(Reference reference) => reference >= start.toReference() && reference <= end.toReference();
   bool isInVerseSelection(VerseSelection verseSelection) =>
       verseSelection.references.any((reference) => isInReference(reference));
+
+  VerseSelection get verseSelection =>
+      VerseSelection.fromReferences(Reference.getReferencesBetween(start.toReference(), end.toReference()).toList());
 }
 
 class BibleTextSelectionWordAnchor extends Equatable with ComparableOperators<BibleTextSelectionWordAnchor> {

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/services/path_service.dart';
 import 'package:bible/services/shared_preferences_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utils_core/utils_core.dart';
@@ -21,7 +22,13 @@ class UserNotifier extends _$UserNotifier {
     final userFile = this.userFile;
     if (userFile != null) {
       if (userFile.existsSync()) {
-        final user = guard(() => User.fromJson(jsonDecode(userFile.readAsStringSync())));
+        final user = guard(
+          () => User.fromJson(jsonDecode(userFile.readAsStringSync())),
+          onException: (error, stackTrace) {
+            debugPrint(error.toString());
+            debugPrintStack(stackTrace: stackTrace);
+          },
+        );
         if (user != null) {
           return user;
         }

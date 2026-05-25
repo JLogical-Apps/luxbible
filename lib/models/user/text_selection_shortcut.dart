@@ -67,7 +67,10 @@ enum TextSelectionShortcut {
               return user.withRemovedTextSelectionAnnotations(textSelection);
             } else {
               return user.withAnnotation(
-                Annotation(createdAt: DateTime.now(), color: user.highlightColor, textSelections: [textSelection]),
+                Annotation(
+                  color: user.highlightColor,
+                  selection: AnnotationSelection.text(textSelection: textSelection),
+                ),
               );
             }
           });

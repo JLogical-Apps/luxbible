@@ -2,6 +2,7 @@ import 'package:bible/models/user/theme_mode.dart';
 import 'package:bible/providers/package_info_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/pages/annotations_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/pages/text_selection_settings_page.dart';
 import 'package:bible/ui/pages/verse_selection_settings_page.dart';
@@ -46,6 +47,23 @@ class SettingsPage extends HookConsumerWidget {
                   title: 'Text Selection'.toText(),
                   leading: Symbols.text_format.toIcon(),
                   onPressed: () => context.push(TextSelectionSettingsPage()),
+                ),
+              ],
+            ),
+          ),
+          StyledSection.child(
+            title: 'Your Content'.toText(),
+            child: StyledCard(
+              children: [
+                StyledListItem.navigation(
+                  title: 'Annotations'.toText(),
+                  leading: Symbols.note_stack.toIcon(),
+                  onPressed: () => context.push(AnnotationsPage()),
+                ),
+                StyledListItem.navigation(
+                  title: 'Bookmarks'.toText(),
+                  leading: Symbols.bookmark.toIcon(),
+                  onPressed: () => context.push(VerseSelectionSettingsPage()),
                 ),
               ],
             ),

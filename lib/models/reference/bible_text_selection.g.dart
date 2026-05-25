@@ -15,8 +15,8 @@ _BibleTextSelection _$BibleTextSelectionFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$BibleTextSelectionToJson(_BibleTextSelection instance) =>
     <String, dynamic>{
-      'start': instance.start,
-      'end': instance.end,
+      'start': instance.start.toJson(),
+      'end': instance.end.toJson(),
       'translation': _$BibleTranslationEnumMap[instance.translation]!,
     };
 
