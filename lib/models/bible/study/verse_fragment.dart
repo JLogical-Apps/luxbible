@@ -10,7 +10,7 @@ class VerseFragment {
 
   String get displayText => text.replaceAll(RegExp(r'[\[\]]'), '').replaceAll(RegExp(r'[{}]'), '');
   bool get isEmptyText =>
-      ['', '-', 'vvv', '. . .'].containsAny([text.trim(), text.trim().trimTrailingPunctuation()]) ||
+      ['-', 'vvv', '. . .'].containsAny([text.trim(), text.trim().trimTrailingPunctuation()]) ||
       text.trimPunctuation().isBlank;
 }
 

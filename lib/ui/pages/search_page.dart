@@ -52,6 +52,9 @@ class SearchPage extends HookConsumerWidget {
     List<Reference> getSearchedReferences() {
       final locations = locationsState.value;
       final search = searchState.value.trim();
+      if (search.isEmpty) {
+        return [];
+      }
 
       final validReferences = bible.references
           .where((reference) => locations.isEmpty || locations.any((filter) => filter.passes(reference)))
