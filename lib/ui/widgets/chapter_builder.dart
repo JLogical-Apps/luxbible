@@ -511,7 +511,7 @@ class ChapterBuilder extends HookConsumerWidget {
         );
       }
 
-      offsetCount += referenceLength;
+      offsetCount += referenceLength + 1;
     }
     return null;
   }
