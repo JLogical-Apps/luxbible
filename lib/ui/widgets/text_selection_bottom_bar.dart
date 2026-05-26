@@ -43,7 +43,7 @@ class TextSelectionBottomBar extends ConsumerWidget {
 
     return BottomBar(
       text:
-          '"${bible.getSelectionText(textSelection ?? BibleTextSelection(
+          '"${bible.getTextSelectionText(textSelection ?? BibleTextSelection(
                 start: BibleTextSelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 0),
                 end: BibleTextSelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 30),
                 translation: translation,

@@ -7,6 +7,7 @@ import 'package:bible/models/bible/study/bible.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
@@ -72,7 +73,10 @@ class DisplayBible {
   );
   DisplayBook getBookByType(BookType bookType) => _bookByType[bookType]!;
 
-  String getSelectionText(BibleTextSelection selection) {
+  String getVerseSelectionText(VerseSelection selection) =>
+      selection.references.map((reference) => getVerseByReference(reference)?.text).nonNulls.join(' ');
+
+  String getTextSelectionText(BibleTextSelection selection) {
     final verseTexts = Reference.getReferencesBetween(
       selection.start.toReference(),
       selection.end.toReference(),

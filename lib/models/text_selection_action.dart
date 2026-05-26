@@ -50,7 +50,7 @@ enum TextSelectionAction {
 
     switch (this) {
       case annotate:
-        final annotation = await AnnotationSheet.show(
+        final annotation = await NewAnnotationSheet.show(
           context,
           ref,
           region: textSelection,
@@ -64,7 +64,7 @@ enum TextSelectionAction {
         final result =
             await context.push(
                   SearchPage(
-                    initialSearch: bible.getSelectionText(textSelection),
+                    initialSearch: bible.getTextSelectionText(textSelection),
                     currentChapterReference: textSelection.start.toChapterReference(),
                   ),
                 )
@@ -75,7 +75,7 @@ enum TextSelectionAction {
       case copy:
         onDeselect();
         context.showStyledSnackbar(messageText: 'Text selection copied to clipboard.');
-        await Clipboard.setData(ClipboardData(text: bible.getSelectionText(textSelection)));
+        await Clipboard.setData(ClipboardData(text: bible.getTextSelectionText(textSelection)));
     }
   }
 }

@@ -34,7 +34,7 @@ sealed class BibleTextSelection with _$BibleTextSelection implements Region {
   bool isInVerseSelection(VerseSelection verseSelection) =>
       verseSelection.references.any((reference) => isInReference(reference));
 
-  VerseSelection get verseSelection =>
+  VerseSelection toVerseSelection() =>
       VerseSelection.fromReferences(Reference.getReferencesBetween(start.toReference(), end.toReference()).toList());
 }
 

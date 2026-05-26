@@ -15,12 +15,14 @@ class StyledSelectionSheet<T> extends StyledSheet<T> {
     required this.options,
     this.initialOption,
     required this.optionMapper,
+    super.trailing,
   });
 
   @override
   Widget build(BuildContext context) {
     return StyledSheet(
       title: title,
+      trailing: trailing,
       children: options
           .map(
             (option) => StyledListItem.radio(

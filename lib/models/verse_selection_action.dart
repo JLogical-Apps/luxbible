@@ -49,7 +49,7 @@ enum VerseSelectionAction {
 
     switch (this) {
       case annotate:
-        final annotation = await AnnotationSheet.show(
+        final annotation = await NewAnnotationSheet.show(
           context,
           ref,
           region: selectedVerseSelection,

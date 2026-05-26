@@ -81,6 +81,7 @@ enum VerseSelectionShortcut {
             } else {
               return user.withAnnotation(
                 Annotation(
+                  createdAt: .now(),
                   color: user.highlightColor,
                   selection: AnnotationSelection.verses(verseSelection: verseSelection),
                 ),

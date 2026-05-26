@@ -126,7 +126,10 @@ enum MainAction {
           onNavigateToVerseSelection(VerseSelection.reference(result.reference));
         }
       case settings:
-        context.push(SettingsPage());
+        final result = await context.push(SettingsPage()) as VerseSelection?;
+        if (result != null) {
+          onNavigateToVerseSelection(result);
+        }
     }
   }
 }

@@ -478,7 +478,7 @@ class BibleBody extends HookConsumerWidget {
                                 onMorePressed: () => context.showStyledSheet(
                                   (context) => StyledSheet(
                                     title: 'Text Selection'.toText(),
-                                    subtitle: '"${bible.getSelectionText(textSelection)}"'.toText(),
+                                    subtitle: '"${bible.getTextSelectionText(textSelection)}"'.toText(),
                                     trailing: StyledCircleButton.lg(
                                       child: Symbols.tune.toIcon(),
                                       onPressed: () {

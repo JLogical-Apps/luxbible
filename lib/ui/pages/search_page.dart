@@ -1,12 +1,11 @@
-import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/testament.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
+import 'package:bible/ui/widgets/search_location_button.dart';
 import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
@@ -14,13 +13,11 @@ import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:collection/collection.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:substring_highlight/substring_highlight.dart';
-import 'package:utils_core/utils_core.dart';
 
 class SearchPageResult {
   final Reference reference;
@@ -111,61 +108,14 @@ class SearchPage extends HookConsumerWidget {
                     search();
                   },
                 ),
-                StyledPillButton(
-                  leading: Symbols.book.toIcon(),
-                  trailing: Symbols.keyboard_arrow_down.toIcon(),
-                  label:
-                      (locations.isEmpty
-                              ? 'Locations'
-                              : locations
-                                    .sortedByIndexIn(SearchLocationFilter.values)
-                                    .map((location) => location.title())
-                                    .join(', '))
-                          .toText(),
-                  colorBuilder: locations.isEmpty ? null : .primary,
-                  onPressed: () async {
-                    FocusManager.instance.primaryFocus?.unfocus();
-                    final newLocations = await context.showStyledSheet(
-                      (context) => StyledMultiSelectionSheet<SearchLocationFilter>(
-                        title: 'Locations'.toText(),
-                        optionsByCategory: SearchLocationFilterGroup.values.mapToMap(
-                          (group) =>
-                              MapEntry(group.title(), group.getFilters(currentBook: currentChapterReference?.book)),
-                        ),
-                        initialOptions: locations,
-                        optionMapper: (option) => StyledSelectOption(title: option.title().toText()),
-                        aboveButtonsBuilder: (context, selectedOptions, updateSelectedOptions) => Column(
-                          children: [
-                            StyledListItem(
-                              title: Text(
-                                [
-                                  'Selected: ',
-                                  selectedOptions.isEmpty
-                                      ? 'None'
-                                      : selectedOptions
-                                            .sortedByIndexIn(SearchLocationFilter.values)
-                                            .map((option) => option.title())
-                                            .join(', '),
-                                ].join(),
-                                maxLines: 1,
-                                overflow: .ellipsis,
-                              ),
-                              trailing: selectedOptions.isEmpty
-                                  ? null
-                                  : StyledLink('Clear', onPressed: () => updateSelectedOptions([])),
-                            ),
-                            StyledDivider(height: 2),
-                          ],
-                        ),
-                        searchKeywordsMapper: (option) => option.title().keywords,
-                      ),
-                    );
-                    if (newLocations != null) {
-                      locationsState.value = newLocations;
-                      searchState.value = textState.value;
-                      search();
-                    }
+                SearchLocationButton(
+                  locations: locations,
+                  onLocationsSelected: (locations) {
+                    locationsState.value = locations;
+                    searchState.value = textState.value;
+                    search();
                   },
+                  currentBook: currentChapterReference?.book,
                 ),
               ],
             ),
@@ -279,65 +229,4 @@ class SearchPage extends HookConsumerWidget {
       ),
     );
   }
-}
-
-sealed class SearchLocationFilter {
-  const SearchLocationFilter();
-
-  static List<SearchLocationFilter> get values => [
-    ...Testament.values.map((testament) => TestamentSearchLocationFilter(testament: testament)),
-    ...BookType.values.map((book) => BookSearchLocationFilter(book: book)),
-  ];
-
-  bool passes(Reference reference);
-
-  String title();
-}
-
-class TestamentSearchLocationFilter extends SearchLocationFilter with EquatableMixin {
-  final Testament testament;
-
-  const TestamentSearchLocationFilter({required this.testament});
-
-  @override
-  bool passes(Reference reference) => reference.book.testament == testament;
-
-  @override
-  List<Object?> get props => [testament];
-
-  @override
-  String title() => testament.title();
-}
-
-class BookSearchLocationFilter extends SearchLocationFilter with EquatableMixin {
-  final BookType book;
-
-  const BookSearchLocationFilter({required this.book});
-
-  @override
-  bool passes(Reference reference) => reference.book == book;
-
-  @override
-  List<Object?> get props => [book];
-
-  @override
-  String title() => book.title();
-}
-
-enum SearchLocationFilterGroup {
-  currentBook,
-  testaments,
-  books;
-
-  List<SearchLocationFilter> getFilters({required BookType? currentBook}) => switch (this) {
-    .currentBook => [if (currentBook != null) BookSearchLocationFilter(book: currentBook)],
-    testaments => Testament.values.map((testament) => TestamentSearchLocationFilter(testament: testament)).toList(),
-    books => BookType.values.map((book) => BookSearchLocationFilter(book: book)).toList(),
-  };
-
-  String title() => switch (this) {
-    currentBook => 'Current Book',
-    testaments => 'Testaments',
-    books => 'Books',
-  };
 }

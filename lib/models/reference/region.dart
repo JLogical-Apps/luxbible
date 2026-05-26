@@ -22,9 +22,15 @@ extension RegionExtensions on Region {
     _ => throw UnimplementedError(),
   };
 
+  List<Reference> get allReferences => when(
+    verseSelection: (verseSelection) => verseSelection.references,
+    textSelection: (textSelection) => textSelection.toVerseSelection().references,
+    chapterReference: (reference) => reference.references,
+  );
+
   String format(DisplayBible bible) => when(
     verseSelection: (verseSelection) => verseSelection.format(),
-    textSelection: (textSelection) => '"${bible.getSelectionText(textSelection)}"',
+    textSelection: (textSelection) => '"${bible.getTextSelectionText(textSelection)}"',
     chapterReference: (reference) => reference.format(),
   );
 }

@@ -14,6 +14,7 @@ _Annotation _$AnnotationFromJson(Map<String, dynamic> json) => _Annotation(
   color:
       $enumDecodeNullable(_$ColorEnumEnumMap, json['color']) ?? ColorEnum.stone,
   note: json['note'] as String? ?? '',
+  createdAt: DateTime.parse(json['createdAt'] as String),
 );
 
 Map<String, dynamic> _$AnnotationToJson(_Annotation instance) =>
@@ -21,6 +22,7 @@ Map<String, dynamic> _$AnnotationToJson(_Annotation instance) =>
       'selection': instance.selection.toJson(),
       'color': _$ColorEnumEnumMap[instance.color]!,
       'note': instance.note,
+      'createdAt': instance.createdAt.toIso8601String(),
     };
 
 const _$ColorEnumEnumMap = {

@@ -68,6 +68,7 @@ enum TextSelectionShortcut {
             } else {
               return user.withAnnotation(
                 Annotation(
+                  createdAt: .now(),
                   color: user.highlightColor,
                   selection: AnnotationSelection.text(textSelection: textSelection),
                 ),

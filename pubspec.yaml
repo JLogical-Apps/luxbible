@@ -34,6 +34,7 @@ dependencies:
   substring_highlight: ^1.0.33
   uuid: ^4.5.3
   package_info_plus: ^10.1.0
+  timeago: ^3.7.1
   port:
     git:
       url: https://github.com/JLogical-Apps/flood.git

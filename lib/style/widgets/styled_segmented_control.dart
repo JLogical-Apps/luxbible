@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bible/style/style.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:collection/collection.dart';

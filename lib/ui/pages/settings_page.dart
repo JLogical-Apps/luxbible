@@ -58,7 +58,12 @@ class SettingsPage extends HookConsumerWidget {
                 StyledListItem.navigation(
                   title: 'Annotations'.toText(),
                   leading: Symbols.note_stack.toIcon(),
-                  onPressed: () => context.push(AnnotationsPage()),
+                  onPressed: () async {
+                    final result = await context.push(AnnotationsPage());
+                    if (result != null && context.mounted) {
+                      context.pop(result);
+                    }
+                  },
                 ),
                 StyledListItem.navigation(
                   title: 'Bookmarks'.toText(),
