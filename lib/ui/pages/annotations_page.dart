@@ -25,8 +25,7 @@ class AnnotationsPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final bibles = ref.watch(biblesProvider);
-    final bible = user.getBible(bibles);
+    final bible = ref.watch(bibleProvider);
 
     final sortState = useState(AnnotationSort.mostRecent);
     final colorState = useState<ColorEnum?>(null);

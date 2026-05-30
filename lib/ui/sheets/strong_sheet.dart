@@ -26,18 +26,16 @@ class StrongSheet {
     Function(VerseSelection)? onNavigateToVerseSelection,
   }) async {
     final user = ref.read(userProvider);
+    final studyBible = ref.read(studyBibleProvider);
 
     final strongs = ref.read(strongsProvider);
     final strong = strongs[strongId];
 
-    final bibles = ref.read(biblesProvider);
-    final bible = bibles.firstWhere((bible) => bible.translation == .bsb);
-
     final seeMoreStrongs = strong?.glossary.map((glossary) => strongs[glossary]).nonNulls.toList();
     final otherReferences = strongId == null
         ? null
-        : bible.references
-              .where((reference) => bible.getVerseByReference(reference)?.strongIds.contains(strongId) ?? false)
+        : studyBible.references
+              .where((reference) => studyBible.getVerseByReference(reference)?.strongIds.contains(strongId) ?? false)
               .toList();
 
     final morphologyCode = word?.data?.morphology;
@@ -165,7 +163,7 @@ class StrongSheet {
               ),
               children: otherReferences
                   .map((reference) {
-                    final verse = bible.getVerseByReference(reference);
+                    final verse = studyBible.getVerseByReference(reference);
                     if (verse == null) {
                       return null;
                     }

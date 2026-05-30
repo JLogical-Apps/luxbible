@@ -34,9 +34,8 @@ class SearchPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final bibles = ref.watch(biblesProvider);
-
-    final bible = user.getBible(bibles);
+    final bible = ref.watch(bibleProvider);
+    final studyBible = ref.watch(studyBibleProvider);
 
     final strongs = ref.watch(strongsProvider);
 
@@ -59,7 +58,7 @@ class SearchPage extends HookConsumerWidget {
 
       if (search.isStrongId) {
         return validReferences
-            .where((reference) => bible.getVerseByReference(reference)?.strongIds.contains(search) ?? false)
+            .where((reference) => studyBible.getVerseByReference(reference)?.strongIds.contains(search) ?? false)
             .toList();
       }
 

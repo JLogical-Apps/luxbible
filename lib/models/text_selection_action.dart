@@ -1,7 +1,6 @@
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
-import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
@@ -44,9 +43,7 @@ enum TextSelectionAction {
     required Function() onDeselect,
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) async {
-    final user = ref.read(userProvider);
-    final bibles = ref.read(biblesProvider);
-    final bible = user.getBible(bibles);
+    final bible = ref.read(bibleProvider);
 
     switch (this) {
       case annotate:

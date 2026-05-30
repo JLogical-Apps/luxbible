@@ -61,9 +61,8 @@ enum StudyAction {
     required ReferencesRegion region,
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) async {
-    final user = ref.read(userProvider);
     final bibles = ref.read(biblesProvider);
-    final bible = user.getBible(bibles);
+    final bible = ref.read(bibleProvider);
 
     switch (this) {
       case compare:
