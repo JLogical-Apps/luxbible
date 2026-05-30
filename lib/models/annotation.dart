@@ -32,9 +32,11 @@ sealed class Annotation with _$Annotation {
   VerseSelection? get verseSelection => selection.as<VersesAnnotationSelection>()?.verseSelection;
   BibleTextSelection? get textSelection => selection.as<TextAnnotationSelection>()?.textSelection;
 
-  String formatContent(Bible bible) => switch (selection) {
+  String formatContent({required Bible bible, required List<Bible> bibles}) => switch (selection) {
     VersesAnnotationSelection(:final verseSelection) => bible.getVerseSelectionText(verseSelection),
-    TextAnnotationSelection(:final textSelection) => textSelection.format(bible),
+    TextAnnotationSelection(:final textSelection) => textSelection.format(
+      bibles.firstWhere((bible) => bible.translation == textSelection.translation),
+    ),
   };
 
   String formatSelection(Bible bible) => region.format(bible);

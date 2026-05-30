@@ -25,6 +25,7 @@ class AnnotationsPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
+    final bibles = ref.watch(biblesProvider);
     final bible = ref.watch(bibleProvider);
 
     final sortState = useState(AnnotationSort.mostRecent);
@@ -149,6 +150,7 @@ class AnnotationsPage extends HookConsumerWidget {
           gapH8,
           Expanded(
             child: StyledListView(
+              padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
               children: [
                 if (user.annotations.isEmpty)
                   Padding(
@@ -176,12 +178,23 @@ class AnnotationsPage extends HookConsumerWidget {
                         ],
                         child: StyledListItem(
                           leading: ColoredCircle(color: annotation.color.toHue(context.colors).primary),
-                          title: annotation.formatLocation().toText(),
+                          title: Row(
+                            spacing: 4,
+                            children: [
+                              annotation.formatLocation().toText(),
+                              if (annotation.selection case TextAnnotationSelection selection)
+                                StyledBadge(text: selection.textSelection.translation.title()),
+                            ],
+                          ),
                           subtitle: Column(
                             spacing: 4,
                             crossAxisAlignment: .start,
                             children: [
-                              Text(annotation.formatContent(bible), maxLines: 2, overflow: .ellipsis),
+                              Text(
+                                annotation.formatContent(bible: bible, bibles: bibles),
+                                maxLines: 2,
+                                overflow: .ellipsis,
+                              ),
                               if (annotation.note.isNotEmpty)
                                 Text.rich(
                                   TextSpan(
