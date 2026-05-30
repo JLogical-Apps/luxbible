@@ -121,12 +121,12 @@ enum MainAction {
           onNavigateToVerseSelection: onNavigateToVerseSelection,
         );
       case search:
-        final result = await context.push(SearchPage(currentChapterReference: reference)) as SearchPageResult?;
+        final result = await context.push<SearchPageResult>(SearchPage(currentChapterReference: reference));
         if (result != null) {
           onNavigateToVerseSelection(VerseSelection.reference(result.reference));
         }
       case settings:
-        final result = await context.push(SettingsPage()) as VerseSelection?;
+        final result = await context.push<VerseSelection>(SettingsPage());
         if (result != null) {
           onNavigateToVerseSelection(result);
         }

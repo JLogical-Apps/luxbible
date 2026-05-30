@@ -61,14 +61,12 @@ enum TextSelectionAction {
           ref.updateUser((user) => user.withAnnotation(annotation));
         }
       case search:
-        final result =
-            await context.push(
-                  SearchPage(
-                    initialSearch: bible.getTextSelectionText(textSelection),
-                    currentChapterReference: textSelection.start.toChapterReference(),
-                  ),
-                )
-                as SearchPageResult?;
+        final result = await context.push<SearchPageResult>(
+          SearchPage(
+            initialSearch: bible.getTextSelectionText(textSelection),
+            currentChapterReference: textSelection.start.toChapterReference(),
+          ),
+        );
         if (result != null) {
           onNavigateToVerseSelection(VerseSelection.reference(result.reference));
         }

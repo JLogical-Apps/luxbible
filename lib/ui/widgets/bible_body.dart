@@ -355,11 +355,9 @@ class BibleBody extends HookConsumerWidget {
                           }
                         : null,
                     onPressed: () async {
-                      final result =
-                          await context.pushDialog(
-                                ChapterReferenceSearchPage(initialReference: currentChapterReference),
-                              )
-                              as ChapterReferenceSearchPageResult?;
+                      final result = await context.pushDialog<ChapterReferenceSearchPageResult>(
+                        ChapterReferenceSearchPage(initialReference: currentChapterReference),
+                      );
                       if (result != null) {
                         hardNavigateTo(result.chapterReference, bookmarkId: result.bookmarkId);
                       }

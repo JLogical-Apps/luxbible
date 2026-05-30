@@ -155,11 +155,9 @@ class StrongSheet {
                 'Open In Search',
                 onPressed: () async {
                   context.pop();
-                  final result =
-                      await context.push(
-                            SearchPage(initialSearch: strongId, currentChapterReference: user.lastReference),
-                          )
-                          as SearchPageResult?;
+                  final result = await context.push<SearchPageResult>(
+                    SearchPage(initialSearch: strongId, currentChapterReference: user.lastReference),
+                  );
                   if (result != null) {
                     onNavigateToVerseSelection(VerseSelection.reference(result.reference));
                   }
