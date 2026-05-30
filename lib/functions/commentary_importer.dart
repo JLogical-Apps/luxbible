@@ -1,25 +1,9 @@
+import 'dart:convert';
+
 import 'package:bible/models/commentary.dart';
-import 'package:bible/models/reference/verse_selection.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:flutter/services.dart';
-import 'package:utils_core/utils_core.dart';
-import 'package:xml/xml.dart';
 
 class CommentaryImporter {
-  Future<Commentary> import() async {
-    final rawCommentary = await rootBundle.loadString('assets/commentary/matthew_henry.xml');
-    final doc = XmlDocument.parse(rawCommentary);
-    return Commentary(
-      name: 'Matthew Henry',
-      notes: doc
-          .findAllElements('scripCom')
-          .mapToMap(
-            (com) => MapEntry(
-              VerseSelection.fromOsisId(com.getAttribute('osisRef')!.split(':').last),
-              com.nextSibling!.getElement('p')?.innerText.replaceAll('\n', ''),
-            ),
-          )
-          .withoutNullValues,
-    );
-  }
+  Future<Commentary> import() async =>
+      Commentary.fromJson(jsonDecode(await rootBundle.loadString('assets/commentary/matthew_henry.json')));
 }

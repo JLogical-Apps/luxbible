@@ -1,17 +1,18 @@
-class Strong {
-  final String id;
-  final String languageText;
-  final String pronunciation;
-  final String transliteration;
-  final String definition;
-  final List<String> glossary;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  const Strong({
-    required this.id,
-    required this.languageText,
-    required this.pronunciation,
-    required this.transliteration,
-    required this.definition,
-    required this.glossary,
-  });
+part 'strong.freezed.dart';
+part 'strong.g.dart';
+
+@freezed
+sealed class Strong with _$Strong {
+  const factory Strong({
+    @JsonKey(name: 'i') required String id,
+    @JsonKey(name: 'l') required String languageText,
+    @JsonKey(name: 'p') required String pronunciation,
+    @JsonKey(name: 'x') required String transliteration,
+    @JsonKey(name: 'd') required String definition,
+    @JsonKey(name: 'g') required List<String> glossary,
+  }) = _Strong;
+
+  factory Strong.fromJson(Map<String, dynamic> json) => _$StrongFromJson(json);
 }
