@@ -4,6 +4,7 @@ export 'color_library.dart';
 export 'gap.dart';
 export 'highlighted_paragraph.dart';
 export 'hue.dart';
+export 'paragraph_type_style.dart';
 export 'style_context_extensions.dart';
 export 'styled_shadow.dart';
 export 'text_style_extensions.dart';

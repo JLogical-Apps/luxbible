@@ -31,7 +31,8 @@ final class BiblesProvider
 
   @$internal
   @override
-  $ProviderElement<List<Bible>> $createElement($ProviderPointer pointer) => $ProviderElement(pointer);
+  $ProviderElement<List<Bible>> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
   List<Bible> create(Ref ref) {
@@ -40,8 +41,11 @@ final class BiblesProvider
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(List<Bible> value) {
-    return $ProviderOverride(origin: this, providerOverride: $SyncValueProvider<List<Bible>>(value));
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<List<Bible>>(value),
+    );
   }
 }
 
-String _$biblesHash() => r'f92be3c8c657e9395a8380a322bf7578aec0d487';
+String _$biblesHash() => r'd9b5f3b04a77a7a337c9394fc946d2fba0e2f388';

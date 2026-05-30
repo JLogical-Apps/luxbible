@@ -1,31 +1,31 @@
 import 'package:bible/models/bible/verse.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:bible/utils/extensions/num_extensions.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-sealed class Paragraph {
-  const Paragraph();
-}
+part 'paragraph.freezed.dart';
+part 'paragraph.g.dart';
 
-class SectionParagraph extends Paragraph {
-  final String text;
-  final SectionType type;
+@Freezed(unionKey: 'r')
+sealed class Paragraph with _$Paragraph {
+  const Paragraph._();
 
-  const SectionParagraph({required this.text, required this.type});
-}
+  @FreezedUnionValue('v')
+  const factory Paragraph.verses({
+    @JsonKey(name: 'v') required List<Verse> verses,
+    @JsonKey(name: 'o', toJson: _firstVerseOffsetToJson, includeIfNull: false) @Default(0) int firstVerseOffset,
+    @JsonKey(name: 't') required ParagraphType type,
+  }) = VersesParagraph;
 
-class VersesParagraph extends Paragraph {
-  final List<Verse> verses;
-  final int firstVerseOffset;
-  final ParagraphType type;
+  @FreezedUnionValue('s')
+  const factory Paragraph.section({
+    @JsonKey(name: 'x') required String text,
+    @JsonKey(name: 't') required SectionType type,
+  }) = SectionParagraph;
 
-  const VersesParagraph({required this.verses, this.firstVerseOffset = 0, required this.type});
-}
+  @FreezedUnionValue('b')
+  const factory Paragraph.lineBreak() = BreakParagraph;
 
-class BreakParagraph extends Paragraph {
-  static const BreakParagraph _instance = BreakParagraph._();
-
-  const BreakParagraph._();
-
-  factory BreakParagraph() => _instance;
+  factory Paragraph.fromJson(Map<String, dynamic> json) => _$ParagraphFromJson(json);
 }
 
 enum SectionType { s1, s2 }
@@ -40,18 +40,6 @@ enum ParagraphType {
   li2;
 
   bool get isPoetic => this == q1 || this == q2 || this == qr;
-
-  FontStyle get fontStyle => this == d ? .italic : .normal;
-  TextAlign get textAlign => this == qr ? .end : .start;
-
-  double get indent => switch (this) {
-    q1 || li1 => 0,
-    _ => 20,
-  };
-
-  EdgeInsets get padding => switch (this) {
-    li1 => .symmetric(horizontal: 16),
-    li2 => .symmetric(horizontal: 24),
-    _ => .zero,
-  };
 }
+
+int? _firstVerseOffsetToJson(int firstVerseOffset) => firstVerseOffset.nullIfZero;

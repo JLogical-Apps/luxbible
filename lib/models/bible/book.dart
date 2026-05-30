@@ -1,9 +1,16 @@
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bible/chapter.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class Book {
-  final BookType bookType;
-  final List<Chapter> chapters;
+part 'book.freezed.dart';
+part 'book.g.dart';
 
-  const Book({required this.bookType, required this.chapters});
+@freezed
+sealed class Book with _$Book {
+  const factory Book({
+    @JsonKey(name: 'b') required BookType bookType,
+    @JsonKey(name: 'c') required List<Chapter> chapters,
+  }) = _Book;
+
+  factory Book.fromJson(Map<String, dynamic> json) => _$BookFromJson(json);
 }
