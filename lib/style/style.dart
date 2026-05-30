@@ -2,7 +2,6 @@ export 'animated_grow.dart';
 export 'color_builder.dart';
 export 'color_library.dart';
 export 'gap.dart';
-export 'highlighted_paragraph.dart';
 export 'hue.dart';
 export 'paragraph_type_style.dart';
 export 'style_context_extensions.dart';
