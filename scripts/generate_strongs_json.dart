@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:xml/xml.dart';
 import 'package:utils_core/utils_core.dart';
+import 'package:xml/xml.dart';
 
 void main() {
   final strongs = [
@@ -10,7 +10,6 @@ void main() {
     ...parseGreek(File('source_files/strongs/greek.xml').readAsStringSync()),
   ];
   File('assets/strongs/strongs.json').writeAsStringSync(jsonEncode(strongs));
-  print('Wrote ${strongs.length} entries to assets/strongs/strongs.json');
 }
 
 List<Map<String, dynamic>> parseHebrew(String rawXml) {
@@ -21,9 +20,7 @@ List<Map<String, dynamic>> parseHebrew(String rawXml) {
       .map((div) {
         final w = div.getElement('w')!;
         final id = w.getAttribute('ID')!;
-        final noteEl = guard(
-          () => div.findElements('note').firstWhere((n) => n.getAttribute('type') == 'translation'),
-        );
+        final noteEl = guard(() => div.findElements('note').firstWhere((n) => n.getAttribute('type') == 'translation'));
         if (noteEl == null) return null;
         return {
           'i': id,
@@ -31,7 +28,13 @@ List<Map<String, dynamic>> parseHebrew(String rawXml) {
           'p': w.getAttribute('POS')!,
           'x': w.getAttribute('xlit')!,
           'd': noteEl.innerText,
-          'g': div.getElement('foreign')?.findElements('w').map((w) => w.getAttribute('gloss')!.replaceAll(':', '')).toList() ?? [],
+          'g':
+              div
+                  .getElement('foreign')
+                  ?.findElements('w')
+                  .map((w) => w.getAttribute('gloss')!.replaceAll(':', ''))
+                  .toList() ??
+              [],
         };
       })
       .nonNulls
@@ -43,35 +46,35 @@ List<Map<String, dynamic>> parseGreek(String rawXml) {
   return doc
       .findAllElements('entry')
       .map((entry) {
-        return guard(
-          () {
-            final num = entry.getElement('strongs')!.innerText.trimLeft();
-            final id = 'G$num';
-            final greek = entry.getElement('greek')!;
-            final definition = [
-              entry.getElement('strongs_def'),
-              entry.getElement('kjv_def'),
-            ].nonNulls.map((e) => e.innerText.replaceAll('\n', '')).join('\n');
-            final glossary = entry
-                .findAllElements('see')
-                .map((see) =>
+        return guard(() {
+          final num = entry.getElement('strongs')!.innerText.trimLeft();
+          final id = 'G$num';
+          final greek = entry.getElement('greek')!;
+          final definition = [
+            entry.getElement('strongs_def'),
+            entry.getElement('kjv_def'),
+          ].nonNulls.map((e) => e.innerText.replaceAll('\n', '')).join('\n');
+          final glossary = entry
+              .findAllElements('see')
+              .map(
+                (see) =>
                     switch (see.getAttribute('language')!) {
                       'HEBREW' => 'H',
                       'GREEK' => 'G',
                       _ => throw UnimplementedError(),
                     } +
-                    see.getAttribute('strongs').toString())
-                .toList();
-            return {
-              'i': id,
-              'l': greek.getAttribute('unicode')!,
-              'p': entry.getElement('pronunciation')!.getAttribute('strongs')!,
-              'x': greek.getAttribute('translit')!,
-              'd': definition,
-              'g': glossary,
-            };
-          },
-        );
+                    see.getAttribute('strongs').toString(),
+              )
+              .toList();
+          return {
+            'i': id,
+            'l': greek.getAttribute('unicode')!,
+            'p': entry.getElement('pronunciation')!.getAttribute('strongs')!,
+            'x': greek.getAttribute('translit')!,
+            'd': definition,
+            'g': glossary,
+          };
+        });
       })
       .nonNulls
       .toList();

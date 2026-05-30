@@ -18,5 +18,4 @@ void main() {
 
   final json = {'n': 'Matthew Henry', 'v': notes};
   File('assets/commentary/matthew_henry.json').writeAsStringSync(jsonEncode(json));
-  print('Wrote ${notes.length} commentary notes to assets/commentary/matthew_henry.json');
 }
