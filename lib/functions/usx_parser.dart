@@ -59,7 +59,7 @@ Book parseUsxBook(BookType type, String rawXml) {
 
               VersesParagraph? versesParagraph(ParagraphType paragraphType) {
                 final previousLastVerseNum = lastVerseNum;
-                final verses = parseUsxVerses(div);
+                final verses = parseUsxVerses(div).trim();
                 if (verses.isEmpty) {
                   return null;
                 }
@@ -71,7 +71,7 @@ Book parseUsxBook(BookType type, String rawXml) {
 
                 return VersesParagraph(
                   type: paragraphType,
-                  verses: verses.trim(),
+                  verses: verses,
                   firstVerseOffset: verses.first.verseNum == previousLastVerseNum
                       ? otherParagraphsWithVerse.map((verse) => verse.text.length).sum +
                             // Account for spaces between paragraphs
