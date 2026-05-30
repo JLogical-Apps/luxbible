@@ -10,6 +10,12 @@ extension BibleListExtensions<T> on List<T> {
   List<T> withRemoved(T item) => [...this]..remove(item);
   List<T> withRemovedAt(int index) => [...this]..removeAt(index);
 
+  List<T> withReorder(int oldIndex, int newIndex) {
+    final items = [...this];
+    final item = items.removeAt(oldIndex);
+    return items..insert(newIndex, item);
+  }
+
   List<T> withUpdate(bool Function(T) where, T Function(T) update) =>
       map((item) => where(item) ? update(item) : item).toList();
 
@@ -97,29 +103,6 @@ extension BibleIterableExtensions<T> on Iterable<T> {
   T? minByOrNull(num Function(T) numMapper) => isEmpty ? null : reduce((a, b) => numMapper(a) < numMapper(b) ? a : b);
 }
 
-extension BibleIntIterableExtensions on Iterable<int> {
-  List<List<int>> batchedByRuns() {
-    if (isEmpty) {
-      return [];
-    }
-
-    final out = <List<int>>[
-      [first],
-    ];
-
-    for (var num in skip(1)) {
-      final lastNum = out.last.last;
-      if (lastNum + 1 == num) {
-        out.last.add(num);
-      } else {
-        out.add([num]);
-      }
-    }
-
-    return out;
-  }
-}
-
 extension BibleMapEntryIterableExtensions<K, V> on Iterable<MapEntry<K, V>> {
   Map<K, V> toMap() => Map.fromEntries(this);
 }
@@ -130,6 +113,8 @@ extension BibleMapExtensions<K, V> on Map<K, V> {
 
   Map<K, V> sortedBy<E extends Comparable<E>>(E Function(K, V) elementGetter) =>
       entries.sortedBy((entry) => elementGetter(entry.key, entry.value)).toMap();
+
+  Map<K, V> withReorder(int oldIndex, int newIndex) => entries.toList().withReorder(oldIndex, newIndex).toMap();
 
   Map<K, V> maybeSortedBy<E extends Comparable<E>>(E Function(K, V) elementGetter, {required bool shouldSort}) =>
       shouldSort ? entries.sortedBy((entry) => elementGetter(entry.key, entry.value)).toMap() : this;

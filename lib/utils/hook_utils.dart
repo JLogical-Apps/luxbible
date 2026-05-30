@@ -77,3 +77,8 @@ T useDisposable<T>(T object, Function(T) onDispose) {
   useOnDispose(() => onDispose(object), [object]);
   return object;
 }
+
+Function() useRefresh() {
+  final state = useState(0);
+  return () => state.value++;
+}

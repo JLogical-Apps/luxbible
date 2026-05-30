@@ -18,6 +18,9 @@ class UserNotifier extends _$UserNotifier {
   @override
   User build() => userOrDefault;
 
+  @override
+  bool updateShouldNotify(_, _) => true;
+
   User? get userOrNull {
     final userFile = this.userFile;
     if (userFile != null) {

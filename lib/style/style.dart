@@ -41,6 +41,7 @@ export 'widgets/styled_port_field_builder.dart';
 export 'widgets/styled_progress_bar.dart';
 export 'widgets/styled_radio.dart';
 export 'widgets/styled_rect_button.dart';
+export 'widgets/styled_reorderable_list.dart';
 export 'widgets/styled_scrollbar.dart';
 export 'widgets/styled_section.dart';
 export 'widgets/styled_segmented_control.dart';

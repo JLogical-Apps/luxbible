@@ -3,6 +3,7 @@ import 'package:bible/providers/package_info_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/annotations_page.dart';
+import 'package:bible/ui/pages/bookmarks_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/pages/text_selection_settings_page.dart';
 import 'package:bible/ui/pages/verse_selection_settings_page.dart';
@@ -68,7 +69,7 @@ class SettingsPage extends HookConsumerWidget {
                 StyledListItem.navigation(
                   title: 'Bookmarks'.toText(),
                   leading: Symbols.bookmark.toIcon(),
-                  onPressed: () => context.push(VerseSelectionSettingsPage()),
+                  onPressed: () => context.push(BookmarksPage()),
                 ),
               ],
             ),

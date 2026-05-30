@@ -82,6 +82,18 @@ class StyledListItem extends StatelessWidget {
   }) : onPressed = null,
        trailing = StyledSwitch(isSelected: selected, onSelected: onSelected);
 
+  StyledListItem.draggable({
+    super.key,
+    this.title,
+    this.subtitle,
+    this.thirdLine,
+    this.leading,
+    this.onPressed,
+    this.size = ComponentSize.md,
+    this.enabled = true,
+    this.showDividerOverride,
+  }) : trailing = ReorderableDragStartListener(child: Icon(Symbols.drag_handle), index: 0);
+
   @override
   Widget build(BuildContext context) {
     final itemContext = StyledListItemContext.maybeOf(context);
