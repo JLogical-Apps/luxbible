@@ -29,12 +29,7 @@ class StudySheet {
               leading: action.icon.toIcon(),
               onPressed: () {
                 context.pop();
-                action.onPressed(
-                  context,
-                  ref,
-                  region: region,
-                  onNavigateToVerseSelection: onNavigateToVerseSelection,
-                );
+                action.onPressed(context, ref, region: region, onNavigateToVerseSelection: onNavigateToVerseSelection);
               },
             ),
           )

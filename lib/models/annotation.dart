@@ -1,4 +1,4 @@
-import 'package:bible/models/bible/display/bible.dart';
+import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/reference.dart';
@@ -32,12 +32,12 @@ sealed class Annotation with _$Annotation {
   VerseSelection? get verseSelection => selection.as<VersesAnnotationSelection>()?.verseSelection;
   BibleTextSelection? get textSelection => selection.as<TextAnnotationSelection>()?.textSelection;
 
-  String formatContent(DisplayBible bible) => switch (selection) {
+  String formatContent(Bible bible) => switch (selection) {
     VersesAnnotationSelection(:final verseSelection) => bible.getVerseSelectionText(verseSelection),
     TextAnnotationSelection(:final textSelection) => textSelection.format(bible),
   };
 
-  String formatSelection(DisplayBible bible) => region.format(bible);
+  String formatSelection(Bible bible) => region.format(bible);
 
   String formatLocation() => switch (selection) {
     VersesAnnotationSelection s => s.verseSelection.format(),

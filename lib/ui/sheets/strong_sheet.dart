@@ -1,4 +1,4 @@
-import 'package:bible/models/bible/study/verse_fragment.dart';
+import 'package:bible/models/bible/word.dart';
 import 'package:bible/models/morphology.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
@@ -22,7 +22,7 @@ class StrongSheet {
     BuildContext context,
     WidgetRef ref, {
     String? strongId,
-    VerseFragment? fragment,
+    Word? word,
     Function(VerseSelection)? onNavigateToVerseSelection,
   }) async {
     final user = ref.read(userProvider);
@@ -30,7 +30,7 @@ class StrongSheet {
     final strongs = ref.read(strongsProvider);
     final strong = strongs[strongId];
 
-    final bibles = ref.read(studyBiblesProvider);
+    final bibles = ref.read(biblesProvider);
     final bible = bibles.firstWhere((bible) => bible.translation == .bsb);
 
     final seeMoreStrongs = strong?.glossary.map((glossary) => strongs[glossary]).nonNulls.toList();
@@ -40,28 +40,25 @@ class StrongSheet {
               .where((reference) => bible.getVerseByReference(reference)?.strongIds.contains(strongId) ?? false)
               .toList();
 
-    final morphologyCode = fragment?.study?.morphology;
+    final morphologyCode = word?.data?.morphology;
     final morphologyCodes = morphologyCode == null ? null : Morphology.splitCode(morphologyCode);
 
-    await context.showStyledSheetWithBreadcrumbs(breadcrumbText: fragment?.study?.inflection ?? strong?.id ?? '', (
-      context,
-    ) {
+    await context.showStyledSheetWithBreadcrumbs(breadcrumbText: word?.data?.inflection ?? strong?.id ?? '', (context) {
       final selectedMorphologyCodeState = useState(morphologyCodes?.firstOrNull);
       final selectedMorphologyCode = selectedMorphologyCodeState.value;
 
       return StyledSheet(
         title: 'Interlinear Word'.toText(),
-        subtitle: fragment?.study?.inflection?.toText() ?? strongId?.toText(),
+        subtitle: word?.data?.inflection?.toText() ?? strongId?.toText(),
         children: [
-          if (fragment != null)
+          if (word != null)
             StyledSection(
               title: 'Usage'.toText(),
               padding: .only(top: 24),
               children: [
-                if (!fragment.isEmptyText)
-                  StyledListItem(title: 'English'.toText(), subtitle: fragment.displayText.toText()),
-                if (fragment.study case final study?)
-                  StyledListItem(title: 'Inflected'.toText(), subtitle: study.inflection?.toText()),
+                if (word.text case final text?) StyledListItem(title: 'English'.toText(), subtitle: text.toText()),
+                if (word.data case final data?)
+                  StyledListItem(title: 'Inflected'.toText(), subtitle: data.inflection?.toText()),
                 if (strong != null) StyledListItem(title: 'Root Word'.toText(), subtitle: strong.languageText.toText()),
               ],
             ),

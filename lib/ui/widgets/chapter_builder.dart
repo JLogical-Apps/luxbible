@@ -3,10 +3,10 @@ import 'dart:math';
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
-import 'package:bible/models/bible/display/bible.dart';
-import 'package:bible/models/bible/display/chapter.dart';
-import 'package:bible/models/bible/display/paragraph.dart';
-import 'package:bible/models/bible/display/verse.dart';
+import 'package:bible/models/bible/bible.dart';
+import 'package:bible/models/bible/chapter.dart';
+import 'package:bible/models/bible/paragraph.dart';
+import 'package:bible/models/bible/verse.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
@@ -32,7 +32,7 @@ import 'package:utils_core/utils_core.dart';
 class ChapterBuilder extends HookConsumerWidget {
   final ChapterReference chapterReference;
   final User user;
-  final DisplayBible bible;
+  final Bible bible;
 
   final Function(Reference)? onReferencePressed;
   final List<Reference> underlinedReferences;
@@ -56,7 +56,7 @@ class ChapterBuilder extends HookConsumerWidget {
     this.keyByReferenceRef,
   });
 
-  DisplayChapter get chapter => bible.getChapterByReference(chapterReference);
+  Chapter get chapter => bible.getChapterByReference(chapterReference);
   BookType get book => chapterReference.book;
 
   @override
@@ -308,7 +308,7 @@ class ChapterBuilder extends HookConsumerWidget {
     );
   }
 
-  Reference getVerseReference(DisplayVerse verse) => chapterReference.getReference(verse.verseNum);
+  Reference getVerseReference(Verse verse) => chapterReference.getReference(verse.verseNum);
 
   List<MapEntry<Paragraph, List<InlineSpan>>> getParagraphSpansByParagraph(
     BuildContext context,
@@ -582,7 +582,7 @@ extension on List<InlineSpan> {
     }).toList().nonNulls.lastOrNull;
   }
 
-  (int, int)? getReferenceCharacterOffsets({required Reference reference, required DisplayBible bible}) {
+  (int, int)? getReferenceCharacterOffsets({required Reference reference, required Bible bible}) {
     if (!getContainedTextSelection(translation: bible.translation).isInReference(reference)) {
       return null;
     }

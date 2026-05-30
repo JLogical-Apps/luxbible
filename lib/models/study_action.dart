@@ -62,10 +62,8 @@ enum StudyAction {
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) async {
     final user = ref.read(userProvider);
-    final studyBibles = ref.read(studyBiblesProvider);
-    final studyBible = user.getStudyBible(studyBibles);
-
-    final displayBibles = ref.read(displayBiblesProvider);
+    final bibles = ref.read(biblesProvider);
+    final bible = user.getBible(bibles);
 
     switch (this) {
       case compare:
@@ -73,7 +71,7 @@ enum StudyAction {
           (context) => StyledSheet(
             title: 'Compare'.toText(),
             subtitle: region.format().toText(),
-            children: displayBibles
+            children: bibles
                 .mapIndexed<Widget>(
                   (i, bible) => Stack(
                     children: [
@@ -84,7 +82,7 @@ enum StudyAction {
                           child: VersesBuilder(verseSelection: region.toVerseSelection(), bible: bible),
                         ),
                       ),
-                      if (i + 1 < studyBibles.length)
+                      if (i + 1 < bibles.length)
                         Positioned(bottom: 0, left: 0, right: 0, child: StyledDivider(height: 2)),
                     ],
                   ),
@@ -93,7 +91,7 @@ enum StudyAction {
           ),
         );
       case interlinear:
-        final interlinearBible = studyBibles.firstWhere((bible) => bible.translation == .bsb);
+        final interlinearBible = bibles.firstWhere((bible) => bible.translation == .bsb);
         final strongs = ref.watch(strongsProvider);
 
         context.showStyledSheetWithBreadcrumbs(breadcrumbText: region.format(), (context) {
@@ -162,15 +160,15 @@ enum StudyAction {
                   children: [
                     StyledStickyHeader(
                       title: reference.format().toText(),
-                      children: verse.fragments
-                          .mapToMap((fragment) => MapEntry(fragment, fragment.study))
+                      children: verse.words
+                          .mapToMap((word) => MapEntry(word, word.data))
                           .withoutNullValues
                           .maybeSortedBy(
-                            (fragment, study) => study.originalPosition,
+                            (word, data) => data.originalPosition,
                             shouldSort: interlinearDirection == .forward,
                           )
                           .mapToIterable(
-                            (fragment, study) => switch (interlinearDirection) {
+                            (word, data) => switch (interlinearDirection) {
                               .forward => StyledListItem(
                                 title: Row(
                                   spacing: 4,
@@ -179,11 +177,11 @@ enum StudyAction {
                                             Row(
                                               spacing: 4,
                                               children: [
-                                                ?study.inflection?.toText(),
-                                                if (study.strongId case final strongId?) StyledBadge(text: strongId),
+                                                ?data.inflection?.toText(),
+                                                if (data.strongId case final strongId?) StyledBadge(text: strongId),
                                               ],
                                             ),
-                                            if (strongs[study.strongId] case final strong?)
+                                            if (strongs[data.strongId] case final strong?)
                                               Text(
                                                 strong.transliteration,
                                                 style: TextStyle(color: context.colors.contentSecondary),
@@ -196,24 +194,24 @@ enum StudyAction {
                                 ),
                                 subtitle: Column(
                                   crossAxisAlignment: .start,
-                                  children: [fragment.displayText.toText(), ?study.morphology?.toText()],
+                                  children: [?word.text?.toText(), ?data.morphology?.toText()],
                                 ),
-                                trailing: study.inflection == null ? null : Symbols.chevron_right.toIcon(),
-                                onPressed: study.inflection == null
+                                trailing: data.inflection == null ? null : Symbols.chevron_right.toIcon(),
+                                onPressed: data.inflection == null
                                     ? null
                                     : () {
                                         context.pop();
                                         StrongSheet.showWithContext(
                                           context,
                                           ref,
-                                          fragment: fragment,
-                                          strongId: fragment.study?.strongId,
+                                          word: word,
+                                          strongId: word.data?.strongId,
                                           onNavigateToVerseSelection: onNavigateToVerseSelection,
                                         );
                                       },
                               ),
                               .reverse => StyledListItem(
-                                title: fragment.displayText.toText(),
+                                title: (word.text ?? '').toText(),
                                 subtitle: Column(
                                   crossAxisAlignment: .start,
                                   children: [
@@ -223,26 +221,26 @@ enum StudyAction {
                                         Row(
                                           spacing: 4,
                                           children: [
-                                            if (study.strongId case final strongId?) StyledBadge(text: strongId),
-                                            ?study.inflection?.toText(),
+                                            if (data.strongId case final strongId?) StyledBadge(text: strongId),
+                                            ?data.inflection?.toText(),
                                           ],
                                         ),
-                                        if (strongs[study.strongId] case final strong?) strong.transliteration.toText(),
+                                        if (strongs[data.strongId] case final strong?) strong.transliteration.toText(),
                                       ].intersperse('·'.toText()).toList(),
                                     ),
-                                    ?study.morphology?.toText(),
+                                    ?data.morphology?.toText(),
                                   ],
                                 ),
-                                trailing: study.inflection == null ? null : Symbols.chevron_right.toIcon(),
-                                onPressed: study.inflection == null
+                                trailing: data.inflection == null ? null : Symbols.chevron_right.toIcon(),
+                                onPressed: data.inflection == null
                                     ? null
                                     : () {
                                         context.pop();
                                         StrongSheet.showWithContext(
                                           context,
                                           ref,
-                                          fragment: fragment,
-                                          strongId: fragment.study?.strongId,
+                                          word: word,
+                                          strongId: word.data?.strongId,
                                           onNavigateToVerseSelection: onNavigateToVerseSelection,
                                         );
                                       },
@@ -314,7 +312,7 @@ enum StudyAction {
                               .map(
                                 (references) => StyledListItem(
                                   title: references.toVerseSelection().format().toText(),
-                                  subtitle: studyBible
+                                  subtitle: bible
                                       .getVersesBySpan(references)
                                       .map((verse) => verse.text)
                                       .join(' ')

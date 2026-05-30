@@ -1,8 +1,8 @@
-import 'package:bible/models/bible/study/study_verse.dart';
+import 'package:bible/models/bible/verse.dart';
 import 'package:flutter/material.dart';
 
 class VerseText extends StatelessWidget {
-  final StudyVerse verse;
+  final Verse verse;
 
   final String? highlightStrongId;
 
@@ -13,13 +13,13 @@ class VerseText extends StatelessWidget {
     final highlightStrongId = this.highlightStrongId;
     return Text.rich(
       TextSpan(
-        children: verse.fragments
-            .where((fragment) => !fragment.isEmptyText)
+        children: verse.words
+            .where((word) => word.text != null)
             .map(
-              (fragment) => TextSpan(
-                text: fragment.displayText,
-                style: highlightStrongId != null && fragment.study?.strongId == highlightStrongId
-                    ? TextStyle(fontWeight: FontWeight.bold)
+              (word) => TextSpan(
+                text: word.text,
+                style: highlightStrongId != null && word.data?.strongId == highlightStrongId
+                    ? TextStyle(fontWeight: .bold)
                     : null,
               ),
             )

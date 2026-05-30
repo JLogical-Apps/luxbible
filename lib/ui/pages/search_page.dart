@@ -34,9 +34,9 @@ class SearchPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final bibles = ref.watch(studyBiblesProvider);
+    final bibles = ref.watch(biblesProvider);
 
-    final bible = user.getStudyBible(bibles);
+    final bible = user.getBible(bibles);
 
     final strongs = ref.watch(strongsProvider);
 

@@ -33,9 +33,9 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bibles = ref.watch(studyBiblesProvider);
+    final bibles = ref.watch(biblesProvider);
     final user = ref.watch(userProvider);
-    final bible = user.getStudyBible(bibles);
+    final bible = user.getBible(bibles);
 
     final bookTextState = useState(initialReference.book.title());
     final bookTextSelectionState = useState<TextSelection>(

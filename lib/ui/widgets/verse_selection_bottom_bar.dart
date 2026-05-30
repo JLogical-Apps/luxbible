@@ -37,8 +37,7 @@ class VerseSelectionBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomBar(
-      text: (verseSelection ??
-              VerseSelection.reference(Reference(book: BookType.genesis, chapterNum: 1, verseNum: 1)))
+      text: (verseSelection ?? VerseSelection.reference(Reference(book: BookType.genesis, chapterNum: 1, verseNum: 1)))
           .format(),
       buttons: configuration.pinnedShortcuts
           .mapIndexed(

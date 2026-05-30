@@ -83,8 +83,8 @@ class NewAnnotationSheet {
     Function()? onAnnotationsRemoved,
   }) {
     final user = ref.read(userProvider);
-    final bibles = ref.read(displayBiblesProvider);
-    final bible = user.getDisplayBible(bibles);
+    final bibles = ref.read(biblesProvider);
+    final bible = user.getBible(bibles);
 
     final hasAnnotation = region.when(
       verseSelection: (verseSelection) => user.isVerseSelectionAnnotated(verseSelection),

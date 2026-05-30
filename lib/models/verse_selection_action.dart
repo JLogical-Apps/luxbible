@@ -44,8 +44,8 @@ enum VerseSelectionAction {
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) async {
     final user = ref.read(userProvider);
-    final displayBibles = ref.read(displayBiblesProvider);
-    final bible = user.getDisplayBible(displayBibles);
+    final bibles = ref.read(biblesProvider);
+    final bible = user.getBible(bibles);
 
     switch (this) {
       case annotate:

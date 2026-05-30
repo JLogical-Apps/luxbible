@@ -1,4 +1,4 @@
-import 'package:bible/models/bible/display/bible.dart';
+import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
@@ -28,7 +28,7 @@ extension RegionExtensions on Region {
     chapterReference: (reference) => reference.references,
   );
 
-  String format(DisplayBible bible) => when(
+  String format(Bible bible) => when(
     verseSelection: (verseSelection) => verseSelection.format(),
     textSelection: (textSelection) => '"${bible.getTextSelectionText(textSelection)}"',
     chapterReference: (reference) => reference.format(),

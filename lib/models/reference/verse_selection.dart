@@ -32,8 +32,7 @@ class VerseSelection implements ReferencesRegion {
   bool get isNotEmpty => spans.isNotEmpty;
 
   bool hasReference(Reference reference) => spans.any((span) => span.containsReference(reference));
-  bool hasAnyOf(VerseSelection verseSelection) =>
-      verseSelection.references.any((reference) => hasReference(reference));
+  bool hasAnyOf(VerseSelection verseSelection) => verseSelection.references.any((reference) => hasReference(reference));
 
   String format() => spans.mapIndexed((spanIndex, span) {
     final previousSpan = spanIndex == 0 ? null : spans[spanIndex - 1];

@@ -35,9 +35,9 @@ class BibleBody extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bibles = ref.watch(displayBiblesProvider);
+    final bibles = ref.watch(biblesProvider);
     final user = ref.watch(userProvider);
-    final bible = user.getDisplayBible(bibles);
+    final bible = user.getBible(bibles);
 
     final initialReference = user.lastReference;
 

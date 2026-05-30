@@ -37,7 +37,7 @@ class TextSelectionBottomBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bibles = ref.watch(displayBiblesProvider);
+    final bibles = ref.watch(biblesProvider);
     final translation = user?.translation ?? .bsb;
     final bible = bibles.firstWhere((bible) => bible.translation == translation);
 

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:bible/models/annotation.dart';
-import 'package:bible/models/bible/display/bible.dart';
+import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
@@ -29,7 +29,7 @@ import 'package:utils_core/utils_core.dart';
 
 class VersesBuilder extends HookConsumerWidget {
   final VerseSelection verseSelection;
-  final DisplayBible? bible;
+  final Bible? bible;
   final Function(Reference)? onReferencePressed;
   final Function(BibleTextSelection?)? onTextSelectionUpdated;
 
@@ -54,9 +54,9 @@ class VersesBuilder extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final keyByReferenceRef = this.keyByReferenceRef;
 
-    final bibles = ref.watch(displayBiblesProvider);
+    final bibles = ref.watch(biblesProvider);
     final user = ref.watch(userProvider);
-    final bible = this.bible ?? user.getDisplayBible(bibles);
+    final bible = this.bible ?? user.getBible(bibles);
 
     final references = verseSelection.references;
 
@@ -325,7 +325,7 @@ class VersesBuilder extends HookConsumerWidget {
     required List<Annotation> annotations,
     required bool isUnderlined,
     Color? color,
-    required DisplayBible bible,
+    required Bible bible,
   }) {
     return SizedWidgetSpan(
       size: Size(30, context.textStyle.bibleBody.fontSize!),
@@ -387,7 +387,7 @@ class VersesBuilder extends HookConsumerWidget {
     return (getTextSelectionAnchorOffset(textSelection.start), getTextSelectionAnchorOffset(textSelection.end) + 1);
   }
 
-  BibleTextSelectionWordAnchor? getOffsetAnchor({required int characterOffset, required DisplayBible bible}) {
+  BibleTextSelectionWordAnchor? getOffsetAnchor({required int characterOffset, required Bible bible}) {
     var offsetCount = 0;
     for (final reference in verseSelection.references) {
       final referenceLength = bible.getVerseByReference(reference)?.text.length;
