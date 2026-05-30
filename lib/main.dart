@@ -98,8 +98,7 @@ class BibleApp extends ConsumerWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaler: TextScaler.linear(1)),
+        home: MediaQuery.withNoTextScaling(
           child: Consumer(
             builder: (context, ref, child) {
               final user = ref.watch(userProvider.notifier).userOrNull;

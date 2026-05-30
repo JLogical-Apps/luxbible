@@ -30,6 +30,7 @@ class StyledPage extends StatelessWidget {
             : null);
     return Scaffold(
       backgroundColor: backgroundColor?.call(context.colors) ?? context.colors.surfacePrimary,
+      resizeToAvoidBottomInset: false,
       appBar: leading != null || title != null
           ? AppBar(
               backgroundColor: context.colors.surfacePrimary,

@@ -186,15 +186,11 @@ class BibleBody extends HookConsumerWidget {
                         controller: scrollController,
                         child: SingleChildScrollView(
                           controller: scrollController,
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 20, vertical: 8) +
-                              .only(
-                                top: MediaQuery.paddingOf(context).top + 24,
-                                bottom: MediaQuery.paddingOf(context).bottom + 72,
-                              ),
+                          padding: .symmetric(horizontal: 20, vertical: 8),
                           child: Column(
                             crossAxisAlignment: .start,
                             children: [
+                              Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).top + 24)),
                               ChapterBuilder(
                                 chapterReference: chapterReference,
                                 bible: bible,
@@ -257,7 +253,9 @@ class BibleBody extends HookConsumerWidget {
                                 },
                                 keyByReferenceRef: keyByReferenceRef,
                               ),
-                              gapH16,
+                              Builder(
+                                builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).bottom + 88),
+                              ),
                             ],
                           ),
                         ),
@@ -272,17 +270,20 @@ class BibleBody extends HookConsumerWidget {
                           curve: Curves.easeInOutCubic,
                           child: GestureDetector(
                             onTap: showTopBar ? () => isScrollingDownState.value = true : null,
-                            child: Container(
-                              color: context.colors.backgroundPrimary,
-                              padding:
-                                  EdgeInsets.only(top: MediaQuery.paddingOf(context).top) + .symmetric(horizontal: 16),
-                              alignment: .centerLeft,
-                              child: Column(
-                                crossAxisAlignment: .start,
-                                children: [
-                                  Text(chapterReference.format(), style: context.textStyle.labelSm.subtle()),
-                                  StyledDivider(),
-                                ],
+                            child: Builder(
+                              builder: (context) => Container(
+                                color: context.colors.backgroundPrimary,
+                                padding:
+                                    EdgeInsets.only(top: MediaQuery.paddingOf(context).top) +
+                                    .symmetric(horizontal: 16),
+                                alignment: .centerLeft,
+                                child: Column(
+                                  crossAxisAlignment: .start,
+                                  children: [
+                                    Text(chapterReference.format(), style: context.textStyle.labelSm.subtle()),
+                                    StyledDivider(),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -299,104 +300,111 @@ class BibleBody extends HookConsumerWidget {
           top: 0,
           right: 0,
           left: 0,
-          child: Container(height: MediaQuery.paddingOf(context).top, color: context.colors.backgroundPrimary),
+          child: Builder(
+            builder: (context) =>
+                Container(height: MediaQuery.paddingOf(context).top, color: context.colors.backgroundPrimary),
+          ),
         ),
         Stack(
           children: [
-            AnimatedPositioned(
-              duration: Duration(milliseconds: 300),
-              curve: Curves.easeInOutCubic,
-              bottom: showBottomBar ? 0 : -72 - MediaQuery.paddingOf(context).bottom,
-              right: 0,
-              left: 0,
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(boxShadow: [StyledShadow.down(context)]),
-                padding:
-                    EdgeInsets.symmetric(horizontal: 16) + .only(bottom: MediaQuery.paddingOf(context).bottom + 16),
-                child: MainToolbar(
-                  chapterReference: currentChapterReference,
-                  mainToolbar: user.mainToolbar,
-                  translation: user.translation,
-                  user: user,
-                  onSwipeLeft: user.mainToolbar.swipeToUndo
-                      ? () {
-                          if (!navigationHistoryState.value.canUndo) {
-                            return;
-                          }
+            Builder(
+              builder: (context) => AnimatedPositioned(
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeInOutCubic,
+                bottom: showBottomBar ? 0 : -72 - MediaQuery.paddingOf(context).bottom,
+                right: 0,
+                left: 0,
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(boxShadow: [StyledShadow.down(context)]),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 16) + .only(bottom: MediaQuery.paddingOf(context).bottom + 16),
+                  child: MainToolbar(
+                    chapterReference: currentChapterReference,
+                    mainToolbar: user.mainToolbar,
+                    translation: user.translation,
+                    user: user,
+                    onSwipeLeft: user.mainToolbar.swipeToUndo
+                        ? () {
+                            if (!navigationHistoryState.value.canUndo) {
+                              return;
+                            }
 
-                          navigationHistoryState.value = navigationHistoryState.value.withUndo();
-                          final currentState = navigationHistoryState.value.current;
-                          hardNavigateTo(
-                            currentState.reference,
-                            bookmarkId: currentState.bookmarkId,
-                            updateNavigationState: false,
-                          );
-                        }
-                      : null,
-                  onSwipeRight: user.mainToolbar.swipeToUndo
-                      ? () {
-                          if (!navigationHistoryState.value.canRedo) {
-                            return;
+                            navigationHistoryState.value = navigationHistoryState.value.withUndo();
+                            final currentState = navigationHistoryState.value.current;
+                            hardNavigateTo(
+                              currentState.reference,
+                              bookmarkId: currentState.bookmarkId,
+                              updateNavigationState: false,
+                            );
                           }
+                        : null,
+                    onSwipeRight: user.mainToolbar.swipeToUndo
+                        ? () {
+                            if (!navigationHistoryState.value.canRedo) {
+                              return;
+                            }
 
-                          navigationHistoryState.value = navigationHistoryState.value.withRedo();
-                          final currentState = navigationHistoryState.value.current;
-                          hardNavigateTo(
-                            currentState.reference,
-                            bookmarkId: currentState.bookmarkId,
-                            updateNavigationState: false,
-                          );
-                        }
-                      : null,
-                  onPressed: () async {
-                    final result =
-                        await context.pushDialog(ChapterReferenceSearchPage(initialReference: currentChapterReference))
-                            as ChapterReferenceSearchPageResult?;
-                    if (result != null) {
-                      hardNavigateTo(result.chapterReference, bookmarkId: result.bookmarkId);
-                    }
-                  },
-                  onLongPressed: () => user.mainToolbar.longPressShortcut.onPressed(
-                    context,
-                    ref,
-                    reference: currentChapterReference,
-                    onNavigateToVerseSelection: navigateToVerseSelection,
-                  ),
-                  onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
-                    context,
-                    ref,
-                    reference: currentChapterReference,
-                    onNavigateToVerseSelection: navigateToVerseSelection,
-                  ),
-                  onMorePressed: () => context.showStyledSheet(
-                    (context) => StyledSheet(
-                      trailing: StyledCircleButton.lg(
-                        child: Symbols.tune.toIcon(),
-                        onPressed: () {
-                          context.pop();
-                          context.push(MainToolbarSettingsPage());
-                        },
+                            navigationHistoryState.value = navigationHistoryState.value.withRedo();
+                            final currentState = navigationHistoryState.value.current;
+                            hardNavigateTo(
+                              currentState.reference,
+                              bookmarkId: currentState.bookmarkId,
+                              updateNavigationState: false,
+                            );
+                          }
+                        : null,
+                    onPressed: () async {
+                      final result =
+                          await context.pushDialog(
+                                ChapterReferenceSearchPage(initialReference: currentChapterReference),
+                              )
+                              as ChapterReferenceSearchPageResult?;
+                      if (result != null) {
+                        hardNavigateTo(result.chapterReference, bookmarkId: result.bookmarkId);
+                      }
+                    },
+                    onLongPressed: () => user.mainToolbar.longPressShortcut.onPressed(
+                      context,
+                      ref,
+                      reference: currentChapterReference,
+                      onNavigateToVerseSelection: navigateToVerseSelection,
+                    ),
+                    onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
+                      context,
+                      ref,
+                      reference: currentChapterReference,
+                      onNavigateToVerseSelection: navigateToVerseSelection,
+                    ),
+                    onMorePressed: () => context.showStyledSheet(
+                      (context) => StyledSheet(
+                        trailing: StyledCircleButton.lg(
+                          child: Symbols.tune.toIcon(),
+                          onPressed: () {
+                            context.pop();
+                            context.push(MainToolbarSettingsPage());
+                          },
+                        ),
+                        children: MainAction.values
+                            .map(
+                              (action) => StyledListItem(
+                                title: action.title().toText(),
+                                subtitle: action.description(user: user).toText(),
+                                leading: action.buildIcon(context, user: user),
+                                trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
+                                onPressed: () {
+                                  context.pop();
+                                  action.onPressed(
+                                    context,
+                                    ref,
+                                    reference: currentChapterReference,
+                                    onNavigateToVerseSelection: navigateToVerseSelection,
+                                  );
+                                },
+                              ),
+                            )
+                            .toList(),
                       ),
-                      children: MainAction.values
-                          .map(
-                            (action) => StyledListItem(
-                              title: action.title().toText(),
-                              subtitle: action.description(user: user).toText(),
-                              leading: action.buildIcon(context, user: user),
-                              trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
-                              onPressed: () {
-                                context.pop();
-                                action.onPressed(
-                                  context,
-                                  ref,
-                                  reference: currentChapterReference,
-                                  onNavigateToVerseSelection: navigateToVerseSelection,
-                                );
-                              },
-                            ),
-                          )
-                          .toList(),
                     ),
                   ),
                 ),
@@ -409,107 +417,109 @@ class BibleBody extends HookConsumerWidget {
               child: AnimatedGrow(
                 child: selectedVerseSelection == null && textSelection == null
                     ? SizedBox.shrink(key: ValueKey('empty'))
-                    : Container(
-                        decoration: BoxDecoration(
-                          boxShadow: [StyledShadow.up(context)],
-                          color: context.colors.surfacePrimary,
-                        ),
-                        padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
-                        child: selectedVerseSelection != null
-                            ? VerseSelectionBottomBar(
-                                verseSelection: selectedVerseSelection,
-                                configuration: user.verseSelection,
-                                user: user,
-                                onClosePressed: onClosePressed,
-                                onMorePressed: () => context.showStyledSheet(
-                                  (context) => StyledSheet(
-                                    title: 'Verse Selection'.toText(),
-                                    subtitle: selectedVerseSelection.format().toText(),
-                                    trailing: StyledCircleButton.lg(
-                                      child: Symbols.tune.toIcon(),
-                                      onPressed: () {
-                                        context.pop();
-                                        context.push(VerseSelectionSettingsPage());
-                                      },
-                                    ),
-                                    children: VerseSelectionAction.values
-                                        .map(
-                                          (action) => StyledListItem(
-                                            title: action.title().toText(),
-                                            subtitle: action.description().toText(),
-                                            leading: action.icon.toIcon(),
-                                            trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                              action.onPressed(
-                                                context,
-                                                ref,
-                                                selectedVerseSelection: selectedVerseSelection,
-                                                onDeselect: () => selectedReferencesState.value = [],
-                                                onNavigateToVerseSelection: navigateToVerseSelection,
-                                              );
-                                            },
-                                          ),
-                                        )
-                                        .toList(),
-                                  ),
-                                ),
-                                onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
-                                  context,
-                                  ref,
+                    : Builder(
+                        builder: (context) => Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [StyledShadow.up(context)],
+                            color: context.colors.surfacePrimary,
+                          ),
+                          padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
+                          child: selectedVerseSelection != null
+                              ? VerseSelectionBottomBar(
                                   verseSelection: selectedVerseSelection,
-                                  onDeselect: () => selectedReferencesState.value = [],
-                                  onNavigateToVerseSelection: navigateToVerseSelection,
-                                ),
-                              )
-                            : textSelection != null
-                            ? TextSelectionBottomBar(
-                                textSelection: textSelection,
-                                configuration: user.textSelection,
-                                user: user,
-                                onClosePressed: onClosePressed,
-                                onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
-                                  context,
-                                  ref,
-                                  textSelection: textSelection,
-                                  onDeselect: () => textSelectionState.value = null,
-                                  onNavigateToVerseSelection: navigateToVerseSelection,
-                                ),
-                                onMorePressed: () => context.showStyledSheet(
-                                  (context) => StyledSheet(
-                                    title: 'Text Selection'.toText(),
-                                    subtitle: '"${bible.getTextSelectionText(textSelection)}"'.toText(),
-                                    trailing: StyledCircleButton.lg(
-                                      child: Symbols.tune.toIcon(),
-                                      onPressed: () {
-                                        context.pop();
-                                        context.push(TextSelectionSettingsPage());
-                                      },
+                                  configuration: user.verseSelection,
+                                  user: user,
+                                  onClosePressed: onClosePressed,
+                                  onMorePressed: () => context.showStyledSheet(
+                                    (context) => StyledSheet(
+                                      title: 'Verse Selection'.toText(),
+                                      subtitle: selectedVerseSelection.format().toText(),
+                                      trailing: StyledCircleButton.lg(
+                                        child: Symbols.tune.toIcon(),
+                                        onPressed: () {
+                                          context.pop();
+                                          context.push(VerseSelectionSettingsPage());
+                                        },
+                                      ),
+                                      children: VerseSelectionAction.values
+                                          .map(
+                                            (action) => StyledListItem(
+                                              title: action.title().toText(),
+                                              subtitle: action.description().toText(),
+                                              leading: action.icon.toIcon(),
+                                              trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                action.onPressed(
+                                                  context,
+                                                  ref,
+                                                  selectedVerseSelection: selectedVerseSelection,
+                                                  onDeselect: () => selectedReferencesState.value = [],
+                                                  onNavigateToVerseSelection: navigateToVerseSelection,
+                                                );
+                                              },
+                                            ),
+                                          )
+                                          .toList(),
                                     ),
-                                    children: TextSelectionAction.values
-                                        .map(
-                                          (action) => StyledListItem(
-                                            title: action.title().toText(),
-                                            subtitle: action.description().toText(),
-                                            leading: action.icon.toIcon(),
-                                            trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                              action.onPressed(
-                                                context,
-                                                ref,
-                                                textSelection: textSelection,
-                                                onDeselect: () => textSelectionState.value = null,
-                                                onNavigateToVerseSelection: navigateToVerseSelection,
-                                              );
-                                            },
-                                          ),
-                                        )
-                                        .toList(),
                                   ),
-                                ),
-                              )
-                            : null,
+                                  onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
+                                    context,
+                                    ref,
+                                    verseSelection: selectedVerseSelection,
+                                    onDeselect: () => selectedReferencesState.value = [],
+                                    onNavigateToVerseSelection: navigateToVerseSelection,
+                                  ),
+                                )
+                              : textSelection != null
+                              ? TextSelectionBottomBar(
+                                  textSelection: textSelection,
+                                  configuration: user.textSelection,
+                                  user: user,
+                                  onClosePressed: onClosePressed,
+                                  onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
+                                    context,
+                                    ref,
+                                    textSelection: textSelection,
+                                    onDeselect: () => textSelectionState.value = null,
+                                    onNavigateToVerseSelection: navigateToVerseSelection,
+                                  ),
+                                  onMorePressed: () => context.showStyledSheet(
+                                    (context) => StyledSheet(
+                                      title: 'Text Selection'.toText(),
+                                      subtitle: '"${bible.getTextSelectionText(textSelection)}"'.toText(),
+                                      trailing: StyledCircleButton.lg(
+                                        child: Symbols.tune.toIcon(),
+                                        onPressed: () {
+                                          context.pop();
+                                          context.push(TextSelectionSettingsPage());
+                                        },
+                                      ),
+                                      children: TextSelectionAction.values
+                                          .map(
+                                            (action) => StyledListItem(
+                                              title: action.title().toText(),
+                                              subtitle: action.description().toText(),
+                                              leading: action.icon.toIcon(),
+                                              trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                                action.onPressed(
+                                                  context,
+                                                  ref,
+                                                  textSelection: textSelection,
+                                                  onDeselect: () => textSelectionState.value = null,
+                                                  onNavigateToVerseSelection: navigateToVerseSelection,
+                                                );
+                                              },
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ),
+                                )
+                              : null,
+                        ),
                       ),
               ),
             ),
