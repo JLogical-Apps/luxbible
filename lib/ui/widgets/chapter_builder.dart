@@ -187,7 +187,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                       (box) => Positioned.fromRect(
                                         rect: Rect.fromLTWH(
                                           box.left - 1,
-                                          box.top + 2,
+                                          box.top + 3,
                                           box.width + 4,
                                           min(32, box.height),
                                         ),

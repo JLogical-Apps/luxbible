@@ -26,14 +26,14 @@ class AnnotationSheet {
     Widget? subtitle,
     Annotation? annotation,
     required AnnotationSelection selection,
-    Function()? onRemove,
+    Function(BuildContext)? onRemove,
   }) => context.showStyledSheet(
     (context) => StyledPortSheet(
       title: (annotation == null ? 'Annotate' : 'Annotation').toText(),
       subtitle: subtitle,
       trailing: onRemove == null
           ? null
-          : StyledCircleButton.lg(child: Symbols.ink_eraser.toIcon(), onPressed: onRemove),
+          : StyledCircleButton.lg(child: Symbols.ink_eraser.toIcon(), onPressed: () => onRemove(context)),
       port:
           Port.of({
             'color': SimplePortField<ColorEnum>(value: annotation?.color ?? ColorEnum.stone),
@@ -97,7 +97,7 @@ class NewAnnotationSheet {
       selection: .fromRegion(region),
       subtitle: region.format(bible).toText(),
       onRemove: hasAnnotation
-          ? () {
+          ? (context) {
               ref.updateUser((user) => user.withRemovedRegionAnnotations(region));
               onAnnotationsRemoved?.call();
               context.pop();
