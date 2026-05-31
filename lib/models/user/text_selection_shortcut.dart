@@ -14,6 +14,7 @@ import 'package:material_symbols_icons/symbols.dart';
 enum TextSelectionShortcut {
   annotate,
   highlight,
+  interlinear,
   search,
   copy;
 
@@ -81,6 +82,7 @@ enum TextSelectionShortcut {
 
   TextSelectionAction? toTextSelectionAction() => switch (this) {
     annotate => TextSelectionAction.annotate,
+    interlinear => TextSelectionAction.interlinear,
     search => TextSelectionAction.search,
     copy => TextSelectionAction.copy,
     _ => null,

@@ -1,8 +1,9 @@
 import 'package:bible/models/bible/bible_translation.dart';
-import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bible/book.dart';
+import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bible/chapter.dart';
 import 'package:bible/models/bible/verse.dart';
+import 'package:bible/models/bible/word.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
@@ -94,6 +95,41 @@ class Bible {
             endVerseText.length - 1,
       ),
     );
+  }
+
+  List<Word> getTextSelectionWords(BibleTextSelection selection) {
+    final verses = Reference.getReferencesBetween(
+      selection.start.toReference(),
+      selection.end.toReference(),
+    ).map((reference) => getVerseByReference(reference)).nonNulls.toList();
+
+    return verses.expandIndexed((i, verse) {
+      var words = verse.words;
+      if (i + 1 == verses.length) {
+        words = words
+            .mapWithPrevious<(int, Word)>(
+              (previousOffsetAndWord, word) =>
+                  ((previousOffsetAndWord?.$1 ?? 0) + (previousOffsetAndWord?.$2.text?.length ?? 0), word),
+            )
+            .where((offsetAndWord) => offsetAndWord.$1 <= selection.end.characterOffset + 1)
+            .map((offsetAndWord) => offsetAndWord.$2)
+            .toList();
+      }
+      if (i == 0) {
+        words = words
+            .mapWithPrevious<(int, Word)>(
+              (previousOffsetAndWord, word) =>
+                  ((previousOffsetAndWord?.$1 ?? 0) + (previousOffsetAndWord?.$2.text?.length ?? 0), word),
+            )
+            .where(
+              (offsetAndWord) =>
+                  offsetAndWord.$1 + (offsetAndWord.$2.text?.length ?? 0) >= selection.start.characterOffset,
+            )
+            .map((offsetAndWord) => offsetAndWord.$2)
+            .toList();
+      }
+      return words;
+    }).toList();
   }
 
   List<Verse> getVersesBySpan(VerseSpanReference reference) =>

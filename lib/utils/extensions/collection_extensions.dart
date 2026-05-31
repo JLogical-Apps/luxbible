@@ -67,6 +67,9 @@ extension BibleListExtensions<T> on List<T> {
     }
     return output;
   }
+
+  List<R> mapWithPrevious<R>(R Function(R?, T) mapper) =>
+      fold(<R>[], (list, item) => list..add(mapper(list.lastOrNull, item)));
 }
 
 extension BibleIterableExtensions<T> on Iterable<T> {

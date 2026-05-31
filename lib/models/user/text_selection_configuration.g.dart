@@ -50,6 +50,7 @@ Map<String, dynamic> _$TextSelectionConfigurationToJson(
 const _$TextSelectionShortcutEnumMap = {
   TextSelectionShortcut.annotate: 'annotate',
   TextSelectionShortcut.highlight: 'highlight',
+  TextSelectionShortcut.interlinear: 'interlinear',
   TextSelectionShortcut.search: 'search',
   TextSelectionShortcut.copy: 'copy',
 };
