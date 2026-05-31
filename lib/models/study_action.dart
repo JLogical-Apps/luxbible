@@ -11,7 +11,6 @@ import 'package:bible/style/style.dart';
 import 'package:bible/style/styled_text_action.dart';
 import 'package:bible/style/widgets/dialog/styled_dialog.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
-import 'package:bible/ui/widgets/verses_builder.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
@@ -78,7 +77,7 @@ enum StudyAction {
                         title: bible.translation.title().toText(),
                         child: Padding(
                           padding: .only(bottom: 16),
-                          child: VersesBuilder(verseSelection: region.toVerseSelection(), bible: bible),
+                          child: bible.getVerseSelectionText(region.toVerseSelection()).toText(),
                         ),
                       ),
                       if (i + 1 < bibles.length)
