@@ -185,7 +185,7 @@ class BibleBody extends HookConsumerWidget {
                         controller: scrollController,
                         child: SingleChildScrollView(
                           controller: scrollController,
-                          padding: .symmetric(horizontal: 20, vertical: 8),
+                          padding: .symmetric(horizontal: 24, vertical: 8),
                           child: Column(
                             crossAxisAlignment: .start,
                             children: [

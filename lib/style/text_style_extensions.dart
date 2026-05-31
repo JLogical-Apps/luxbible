@@ -15,7 +15,7 @@ extension TextStyleExtensions on TextStyle {
   TextStyle get thin => copyWith(fontVariations: [FontVariation('wght', 100)]);
   TextStyle get extraLight => copyWith(fontVariations: [FontVariation('wght', 200)]);
   TextStyle get light => copyWith(fontVariations: [FontVariation('wght', 300)]);
-  TextStyle get regular => copyWith(fontVariations: [FontVariation('wght', 400)]);
+  TextStyle get regular => copyWith(fontVariations: [FontVariation('wght', 440)]);
   TextStyle get medium => copyWith(fontVariations: [FontVariation('wght', 520)]);
   TextStyle get semiBold => copyWith(fontVariations: [FontVariation('wght', 600)]);
   TextStyle get bold => copyWith(fontVariations: [FontVariation('wght', 700)]);

@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:bible/models/annotation.dart';
+import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
-import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/bible/chapter.dart';
 import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/models/bible/verse.dart';
@@ -327,6 +327,7 @@ class ChapterBuilder extends HookConsumerWidget {
           SectionParagraph(:final text) => [
             if (paragraphIndex != 0) TextSpan(text: '\n', style: context.textStyle.bibleBody.copyWith(height: 1.5)),
             TextSpan(text: text, style: context.textStyle.bibleSection),
+            TextSpan(text: '\n ', style: context.textStyle.bibleBody.copyWith(height: 0.8)),
           ],
           VersesParagraph(:final verses, :final type) => [
             SizedWidgetSpan.space(size: Size(type.indent, 0)),
@@ -355,12 +356,12 @@ class ChapterBuilder extends HookConsumerWidget {
                         ),
                         size: Size(
                           context.textStyle.bibleVerseNumber.getWidth(verse.verseNum.toString()) + 6,
-                          context.textStyle.bibleBody.fontSize!,
+                          context.textStyle.bibleBody.fontSize! + 6,
                         ),
                         alignment: .middle,
                         child: Padding(
                           key: keyByReference[reference],
-                          padding: .only(right: 6),
+                          padding: .only(right: 4),
                           child: Text(
                             verse.verseNum.toString(),
                             style: context.textStyle.bibleVerseNumber.copyWith(

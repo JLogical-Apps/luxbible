@@ -1,7 +1,10 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 
 Future<void> registerLicenses() async {
   LicenseRegistry.addLicense(() async* {
+    yield LicenseEntryWithLineBreaks(['Bitter'], await rootBundle.loadString('fonts/Bitter-OFL.txt'));
+
     yield const LicenseEntryWithLineBreaks(
       ['Berean Standard Bible (BSB)'],
       '''
