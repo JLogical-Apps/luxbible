@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Chapter {
 
-@JsonKey(name: 'p') List<Paragraph> get paragraphs;
+ Map<int, Verse> get verses;@JsonKey(name: 'p') List<Paragraph> get paragraphs;
 /// Create a copy of Chapter
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ChapterCopyWith<Chapter> get copyWith => _$ChapterCopyWithImpl<Chapter>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Chapter&&const DeepCollectionEquality().equals(other.paragraphs, paragraphs));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Chapter&&const DeepCollectionEquality().equals(other.verses, verses)&&const DeepCollectionEquality().equals(other.paragraphs, paragraphs));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(paragraphs));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(verses),const DeepCollectionEquality().hash(paragraphs));
 
 @override
 String toString() {
-  return 'Chapter(paragraphs: $paragraphs)';
+  return 'Chapter(verses: $verses, paragraphs: $paragraphs)';
 }
 
 
@@ -203,7 +203,7 @@ return $default(_that.paragraphs);case _:
 @JsonSerializable()
 
 class _Chapter extends Chapter {
-  const _Chapter({@JsonKey(name: 'p') required final  List<Paragraph> paragraphs}): _paragraphs = paragraphs,super._();
+   _Chapter({@JsonKey(name: 'p') required final  List<Paragraph> paragraphs}): _paragraphs = paragraphs,super._();
   factory _Chapter.fromJson(Map<String, dynamic> json) => _$ChapterFromJson(json);
 
  final  List<Paragraph> _paragraphs;

@@ -11,9 +11,9 @@ part 'chapter.g.dart';
 
 @freezed
 sealed class Chapter with _$Chapter {
-  const Chapter._();
+  Chapter._();
 
-  const factory Chapter({@JsonKey(name: 'p') required List<Paragraph> paragraphs}) = _Chapter;
+  factory Chapter({@JsonKey(name: 'p') required List<Paragraph> paragraphs}) = _Chapter;
 
   factory Chapter.fromJson(Map<String, dynamic> json) => _$ChapterFromJson(json);
 
@@ -23,7 +23,8 @@ sealed class Chapter with _$Chapter {
         .toList(),
   );
 
-  Map<int, Verse> get verses => paragraphs
+  @override
+  late final Map<int, Verse> verses = paragraphs
       .whereType<VersesParagraph>()
       .expand((paragraph) => paragraph.verses)
       .groupListsBy((verse) => verse.verseNum)
