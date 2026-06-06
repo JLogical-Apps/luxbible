@@ -103,7 +103,7 @@ sealed class User with _$User {
       annotations
           .map((annotation) => annotation.textSelection)
           .nonNulls
-          .where((textSelection) => textSelection.intersects(textSelection))
+          .where((selection) => selection.intersects(textSelection))
           .lastOrNull ??
       textSelection;
 
