@@ -50,4 +50,5 @@ const _$MainToolbarShortcutEnumMap = {
   MainToolbarShortcut.commentary: 'commentary',
   MainToolbarShortcut.crossReferences: 'crossReferences',
   MainToolbarShortcut.search: 'search',
+  MainToolbarShortcut.themeAndLayout: 'themeAndLayout',
 };
