@@ -183,12 +183,16 @@ enum ReaderType {
   };
 
   TextSelectionConfiguration getTextSelectionConfiguration() => switch (this) {
-    reader ||
-    studier => TextSelectionConfiguration(pinnedShortcut1: .annotate, pinnedShortcut2: .search, pinnedShortcut3: .copy),
+    reader => TextSelectionConfiguration(pinnedShortcut1: .annotate, pinnedShortcut2: .search, pinnedShortcut3: .copy),
     noteTaker => TextSelectionConfiguration(
       pinnedShortcut1: .annotate,
       pinnedShortcut2: .highlight,
       pinnedShortcut3: .copy,
+    ),
+    studier => TextSelectionConfiguration(
+      pinnedShortcut1: .annotate,
+      pinnedShortcut2: .search,
+      pinnedShortcut3: .interlinear,
     ),
   };
 }
