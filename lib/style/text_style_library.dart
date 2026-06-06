@@ -26,10 +26,4 @@ class TextStyleLibrary {
   TextStyle get paragraphLg => base.regular.copyWith(fontSize: 18, height: 28 / 18);
   TextStyle get paragraphMd => base.copyWith(fontSize: 16, height: 24 / 16);
   TextStyle get paragraphSm => base.copyWith(fontSize: 14, height: 20 / 14);
-
-  TextStyle get bibleSection => base.bold.copyWith(fontSize: 24, height: 40 / 24);
-
-  TextStyle get bibleVerseNumber => base.bold.copyWith(fontSize: 14, letterSpacing: 0.25, decorationStyle: .dotted);
-  TextStyle get bibleBody =>
-      base.regular.copyWith(fontSize: 20, letterSpacing: 0.2, height: 40 / 20, decorationStyle: .dotted);
 }

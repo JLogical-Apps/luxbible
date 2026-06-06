@@ -39,7 +39,24 @@ class ThemeSettingsPage extends ConsumerWidget {
                 StyledListItem(
                   title: 'Font'.toText(),
                   subtitle: user.themeLayout.font.title().toText(),
-                  trailing: StyledPillButton.md(label: 'Edit'.toText(), onPressed: () {}),
+                  trailing: StyledPillButton.md(
+                    label: 'Edit'.toText(),
+                    onPressed: () async {
+                      final newFont = await context.showStyledSheet(
+                        (context) => StyledSelectionSheet(
+                          title: 'Font'.toText(),
+                          options: ThemeFont.values,
+                          optionMapper: (option) => StyledSelectOption(
+                            title: Text(option.title(), style: TextStyle(fontFamily: option.fontFamily)),
+                          ),
+                          initialOption: user.themeLayout.font,
+                        ),
+                      );
+                      if (newFont != null) {
+                        ref.updateUser((user) => user.copyWith.themeLayout(font: newFont));
+                      }
+                    },
+                  ),
                 ),
                 StyledListItem(
                   title: 'Font Size & Spacing'.toText(),

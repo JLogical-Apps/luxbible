@@ -11,6 +11,7 @@ import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
+import 'package:bible/models/user/theme_layout_configuration.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/annotated_span.dart';
@@ -58,6 +59,8 @@ class ChapterBuilder extends HookConsumerWidget {
 
   Chapter get chapter => bible.getChapterByReference(chapterReference);
   BookType get book => chapterReference.book;
+
+  double get sizeMultiplier => user.themeLayout.fontSizeSpacing.multiplier;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -190,12 +193,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                     .withMergedLines()
                                     .map(
                                       (box) => Positioned.fromRect(
-                                        rect: Rect.fromLTWH(
-                                          box.left - 1,
-                                          box.top + 3,
-                                          box.width + 4,
-                                          min(32, box.height),
-                                        ),
+                                        rect: box.asVerseSelection(multiplier: sizeMultiplier),
                                         child: IgnorePointer(
                                           child: AnimatedContainer(
                                             duration: Duration(milliseconds: 300),
@@ -240,7 +238,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                     .withMergedLines()
                                     .map(
                                       (box) => Positioned.fromRect(
-                                        rect: Rect.fromLTWH(box.left, box.top + 5, box.width + 2, min(28, box.height)),
+                                        rect: box.asTextSelection(multiplier: sizeMultiplier),
                                         child: IgnorePointer(
                                           child: AnimatedContainer(
                                             duration: Duration(milliseconds: 300),
@@ -283,7 +281,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                   .withMergedLines()
                                   .map(
                                     (box) => Positioned.fromRect(
-                                      rect: Rect.fromLTWH(box.left, box.top + 5, box.width + 2, min(28, box.height)),
+                                      rect: box.asTextSelection(multiplier: sizeMultiplier),
                                       child: IgnorePointer(
                                         child: AnimatedContainer(
                                           duration: Duration(milliseconds: 300),
@@ -322,6 +320,8 @@ class ChapterBuilder extends HookConsumerWidget {
     WidgetRef ref, {
     required Map<Reference, GlobalKey> keyByReference,
   }) {
+    final bibleTextStyle = BibleTextStyle(context, config: user.themeLayout);
+
     var maxPreviousVerseNum = 0;
     return chapter.paragraphs.mapIndexed((paragraphIndex, paragraph) {
       final previousParagraph = paragraphIndex == 0
@@ -332,15 +332,15 @@ class ChapterBuilder extends HookConsumerWidget {
             paragraph is VersesParagraph &&
             !paragraph.type.isPoetic &&
             user.themeLayout.paragraphs)
-          TextSpan(text: '\n', style: context.textStyle.bibleBody.copyWith(height: 1.5)),
+          TextSpan(text: '\n', style: bibleTextStyle.bibleBody.copyWith(height: 1.5)),
         ...switch (paragraph) {
           SectionParagraph(:final text) =>
             user.themeLayout.sections
                 ? [
                     if (paragraphIndex != 0)
-                      TextSpan(text: '\n', style: context.textStyle.bibleBody.copyWith(height: 1.5)),
-                    TextSpan(text: text, style: context.textStyle.bibleSection),
-                    TextSpan(text: '\n ', style: context.textStyle.bibleBody.copyWith(height: 0.8)),
+                      TextSpan(text: '\n', style: bibleTextStyle.bibleBody.copyWith(height: 1.5)),
+                    TextSpan(text: text, style: bibleTextStyle.bibleSection),
+                    TextSpan(text: '\n ', style: bibleTextStyle.bibleBody.copyWith(height: 0.8)),
                   ]
                 : <InlineSpan>[],
           VersesParagraph(:final verses, :final type) => [
@@ -369,8 +369,8 @@ class ChapterBuilder extends HookConsumerWidget {
                           isBoundInSelection: false,
                         ),
                         size: Size(
-                          context.textStyle.bibleVerseNumber.getWidth(verse.verseNum.toString()) + 6,
-                          context.textStyle.bibleBody.fontSize! + 6,
+                          bibleTextStyle.bibleVerseNumber.getWidth(verse.verseNum.toString()) + 6,
+                          bibleTextStyle.bibleBody.fontSize! + 6,
                         ),
                         alignment: .middle,
                         child: Padding(
@@ -378,7 +378,7 @@ class ChapterBuilder extends HookConsumerWidget {
                           padding: .only(right: 4),
                           child: Text(
                             verse.verseNum.toString(),
-                            style: context.textStyle.bibleVerseNumber.copyWith(
+                            style: bibleTextStyle.bibleVerseNumber.copyWith(
                               decoration: underlinedReferences.contains(reference) ? .underline : null,
                             ),
                           ),
@@ -415,7 +415,7 @@ class ChapterBuilder extends HookConsumerWidget {
                           isBoundInSelection: false,
                         ),
                         text: word.text,
-                        style: context.textStyle.bibleBody.copyWith(
+                        style: bibleTextStyle.bibleBody.copyWith(
                           color: word.redLetters && user.themeLayout.redLetters ? context.colors.red.dark : null,
                           decoration: underlinedReferences.contains(reference) ? .underline : null,
                         ),
@@ -462,13 +462,13 @@ class ChapterBuilder extends HookConsumerWidget {
                   return spans;
                 })
                 .intersperse([
-                  TextSpan(text: user.themeLayout.paragraphs ? ' ' : '\n', style: context.textStyle.bibleBody),
+                  TextSpan(text: user.themeLayout.paragraphs ? ' ' : '\n', style: bibleTextStyle.bibleBody),
                 ])
                 .flattenedToList,
           ],
           BreakParagraph() =>
             user.themeLayout.paragraphs
-                ? [TextSpan(text: '\n', style: context.textStyle.bibleBody.copyWith(height: 0.75))]
+                ? [TextSpan(text: '\n', style: bibleTextStyle.bibleBody.copyWith(height: 0.75))]
                 : <InlineSpan>[],
         },
       ]);
@@ -482,15 +482,17 @@ class ChapterBuilder extends HookConsumerWidget {
     required List<Annotation> annotations,
     required bool isUnderlined,
   }) {
+    final bibleTextStyle = BibleTextStyle(context, config: user.themeLayout);
     return AnnotatedSizedWidgetSpan<VerseElement>(
       annotation: element,
-      size: Size(30, context.textStyle.bibleBody.fontSize!),
+      size: Size(30, bibleTextStyle.bibleBody.fontSize!),
       alignment: .middle,
       child: OverflowBox(
-        maxHeight: context.textStyle.bibleBody.totalHeight + 4,
+        maxHeight: bibleTextStyle.bibleBody.totalHeight + 4,
         maxWidth: 30,
         child: Underline(
           isUnderlined: isUnderlined,
+          style: bibleTextStyle.bibleBody,
           child: Padding(
             padding: .only(bottom: 4),
             child: StyledCircleButton.sm(
@@ -533,6 +535,27 @@ class ChapterBuilder extends HookConsumerWidget {
   }
 }
 
+class BibleTextStyle {
+  final ThemeLayoutConfiguration config;
+  final BuildContext context;
+
+  const BibleTextStyle(this.context, {required this.config});
+
+  TextStyle get base => TextStyle(
+    fontFamily: config.font.fontFamily,
+    color: context.colors.contentPrimary,
+    decorationColor: context.colors.contentPrimary,
+  );
+
+  double get multiplier => config.fontSizeSpacing.multiplier;
+
+  TextStyle get bibleSection => base.bold.copyWith(fontSize: 24 * multiplier, height: 40 / 24);
+  TextStyle get bibleVerseNumber =>
+      base.bold.copyWith(fontSize: 14 * multiplier, letterSpacing: 0, decorationStyle: .dotted);
+  TextStyle get bibleBody =>
+      base.regular.copyWith(fontSize: 20 * multiplier, letterSpacing: 0, height: 40 / 20, decorationStyle: .dotted);
+}
+
 class ParagraphHitTester {
   final GlobalKey textKey;
   final BibleTextSelectionWordAnchor? Function(Offset localPosition) resolve;
@@ -560,6 +583,14 @@ class VerseElement {
   final bool isBoundInSelection;
 
   const VerseElement({required this.anchor, required this.isBoundInSelection});
+}
+
+extension on Rect {
+  Rect asVerseSelection({required double multiplier}) =>
+      Rect.fromLTWH(left - 1, top + 3 * (multiplier + 1) / 2, width + 4 * multiplier, min(32 * multiplier, height));
+
+  Rect asTextSelection({required double multiplier}) =>
+      Rect.fromLTWH(left, top + 5 * (multiplier + 1) / 2, width + 2 * multiplier, min(28 * multiplier, height));
 }
 
 extension on List<InlineSpan> {

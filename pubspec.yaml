@@ -72,6 +72,14 @@ flutter:
     - assets/strongs/
     - assets/commentary/
     - assets/cross_references/
+    # Font license files (OFL) bundled so they can be shown on the licenses page.
+    - fonts/Bitter-OFL.txt
+    - fonts/Lora-OFL.txt
+    - fonts/Merriweather-OFL.txt
+    - fonts/PTSerif-OFL.txt
+    - fonts/OpenSans-OFL.txt
+    - fonts/Lato-OFL.txt
+    - fonts/OpenDyslexic-OFL.txt
   fonts:
     - family: Inter
       fonts:
@@ -81,3 +89,38 @@ flutter:
     - family: Bitter
       fonts:
         - asset: fonts/Bitter-VariableFont_wght.ttf
+    - family: Lora
+      fonts:
+        - asset: fonts/Lora-VariableFont_wght.ttf
+        - asset: fonts/Lora-Italic-VariableFont_wght.ttf
+          style: italic
+    - family: Merriweather
+      fonts:
+        - asset: fonts/Merriweather-VariableFont.ttf
+        - asset: fonts/Merriweather-Italic-VariableFont.ttf
+          style: italic
+    - family: PT Serif
+      fonts:
+        - asset: fonts/PTSerif-Regular.ttf
+        - asset: fonts/PTSerif-Italic.ttf
+          style: italic
+    - family: Open Sans
+      fonts:
+        - asset: fonts/OpenSans-VariableFont.ttf
+        - asset: fonts/OpenSans-Italic-VariableFont.ttf
+          style: italic
+    - family: Lato
+      fonts:
+        - asset: fonts/Lato-Regular.ttf
+        - asset: fonts/Lato-Italic.ttf
+          style: italic
+    - family: OpenDyslexic
+      fonts:
+        - asset: fonts/OpenDyslexic-Regular.ttf
+        - asset: fonts/OpenDyslexic-Italic.ttf
+          style: italic
+        - asset: fonts/OpenDyslexic-Bold.ttf
+          weight: 700
+        - asset: fonts/OpenDyslexic-BoldItalic.ttf
+          weight: 700
+          style: italic

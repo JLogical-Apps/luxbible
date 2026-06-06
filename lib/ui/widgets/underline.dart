@@ -1,11 +1,11 @@
-import 'package:bible/style/style_context_extensions.dart';
 import 'package:flutter/material.dart';
 
 class Underline extends StatelessWidget {
   final Widget child;
+  final TextStyle style;
   final bool isUnderlined;
 
-  const Underline({super.key, required this.child, this.isUnderlined = true});
+  const Underline({super.key, required this.child, required this.style, this.isUnderlined = true});
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +16,7 @@ class Underline extends StatelessWidget {
           child: IgnorePointer(
             child: Text(
               '.....',
-              style: context.textStyle.bibleBody.copyWith(
-                color: Colors.transparent,
-                decoration: isUnderlined ? TextDecoration.underline : null,
-              ),
+              style: style.copyWith(color: Colors.transparent, decoration: isUnderlined ? .underline : null),
             ),
           ),
         ),

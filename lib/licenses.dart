@@ -5,6 +5,18 @@ Future<void> registerLicenses() async {
   LicenseRegistry.addLicense(() async* {
     yield LicenseEntryWithLineBreaks(['Bitter'], await rootBundle.loadString('fonts/Bitter-OFL.txt'));
 
+    yield LicenseEntryWithLineBreaks(['Lora'], await rootBundle.loadString('fonts/Lora-OFL.txt'));
+
+    yield LicenseEntryWithLineBreaks(['Merriweather'], await rootBundle.loadString('fonts/Merriweather-OFL.txt'));
+
+    yield LicenseEntryWithLineBreaks(['PT Serif'], await rootBundle.loadString('fonts/PTSerif-OFL.txt'));
+
+    yield LicenseEntryWithLineBreaks(['Open Sans'], await rootBundle.loadString('fonts/OpenSans-OFL.txt'));
+
+    yield LicenseEntryWithLineBreaks(['Lato'], await rootBundle.loadString('fonts/Lato-OFL.txt'));
+
+    yield LicenseEntryWithLineBreaks(['OpenDyslexic'], await rootBundle.loadString('fonts/OpenDyslexic-OFL.txt'));
+
     yield const LicenseEntryWithLineBreaks(
       ['Berean Standard Bible (BSB)'],
       '''

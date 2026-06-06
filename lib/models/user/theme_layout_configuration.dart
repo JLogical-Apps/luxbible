@@ -20,10 +20,32 @@ sealed class ThemeLayoutConfiguration with _$ThemeLayoutConfiguration {
 }
 
 enum ThemeFont {
-  inter;
+  inter,
+  lora,
+  merriweather,
+  ptSerif,
+  openSans,
+  lato,
+  openDyslexic;
 
   String title() => switch (this) {
     inter => 'Inter',
+    lora => 'Lora',
+    merriweather => 'Merriweather',
+    ptSerif => 'PT Serif',
+    openSans => 'Open Sans',
+    lato => 'Lato',
+    openDyslexic => 'OpenDyslexic',
+  };
+
+  String get fontFamily => switch (this) {
+    inter => 'Inter',
+    lora => 'Lora',
+    merriweather => 'Merriweather',
+    ptSerif => 'PTSerif',
+    openSans => 'OpenSans',
+    lato => 'Lato',
+    openDyslexic => 'OpenDyslexic',
   };
 }
 
@@ -42,5 +64,11 @@ enum FontSizeSpacing {
     dense => 'Smaller font size and spacing so more text can fit on your screen.',
     standard => 'Font size and spacing balanced for legibility and spacing.',
     comfort => 'Larger font size and spacing for enhanced legibility.',
+  };
+
+  double get multiplier => switch (this) {
+    dense => 0.8,
+    standard => 1,
+    comfort => 1.2,
   };
 }

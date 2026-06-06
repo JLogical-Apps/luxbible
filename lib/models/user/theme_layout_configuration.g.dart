@@ -31,7 +31,15 @@ Map<String, dynamic> _$ThemeLayoutConfigurationToJson(
   'paragraphs': instance.paragraphs,
 };
 
-const _$ThemeFontEnumMap = {ThemeFont.inter: 'inter'};
+const _$ThemeFontEnumMap = {
+  ThemeFont.inter: 'inter',
+  ThemeFont.lora: 'lora',
+  ThemeFont.merriweather: 'merriweather',
+  ThemeFont.ptSerif: 'ptSerif',
+  ThemeFont.openSans: 'openSans',
+  ThemeFont.lato: 'lato',
+  ThemeFont.openDyslexic: 'openDyslexic',
+};
 
 const _$FontSizeSpacingEnumMap = {
   FontSizeSpacing.dense: 'dense',
