@@ -55,20 +55,21 @@ class StrongSheet {
               padding: .only(top: 24),
               children: [
                 if (word.text case final text?) StyledListItem(title: 'English'.toText(), subtitle: text.toText()),
-                if (word.data case final data?)
+                if (word.data case final data?) ...[
                   StyledListItem(title: 'Inflected'.toText(), subtitle: data.inflection?.toText()),
-                if (strong != null) StyledListItem(title: 'Root Word'.toText(), subtitle: strong.languageText.toText()),
+                  StyledListItem(title: 'Transliteration'.toText(), subtitle: data.transliteration?.toText()),
+                ],
               ],
             ),
           if (strongId != null && strong != null)
             StyledSection(
-              title: 'Strongs'.toText(),
-              subtitle: strongId.toText(),
+              title: 'Root'.toText(),
+              subtitle: 'Strongs $strongId'.toText(),
               padding: .only(top: 24),
               children: [
                 StyledListItem(title: 'Root Word'.toText(), subtitle: strong.languageText.toText()),
-                StyledListItem(title: 'Pronunciation'.toText(), subtitle: strong.pronunciation.toText()),
                 StyledListItem(title: 'Transliteration'.toText(), subtitle: strong.transliteration.toText()),
+                StyledListItem(title: 'Pronunciation'.toText(), subtitle: strong.pronunciation.toText()),
                 StyledListItem(title: 'Definition'.toText(), subtitle: strong.definition.toText()),
               ],
             ),
