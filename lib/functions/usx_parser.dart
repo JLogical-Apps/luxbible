@@ -19,7 +19,7 @@ Book parseUsxBook(BookType type, String rawXml) {
         paragraphs: div.nextElementSiblings
             .takeWhile((div) => div.localName != 'chapter')
             .fold(<Paragraph?>[], (paragraphs, div) {
-              List<Verse> parseUsxVerses(XmlElement element, {InterlinearData? data}) =>
+              List<Verse> parseUsxVerses(XmlElement element, {InterlinearData? data, bool isRedLetters = false}) =>
                   element.children.isEmpty && data != null && lastVerseNum != null
                   ? [
                       Verse(
@@ -33,7 +33,7 @@ Book parseUsxBook(BookType type, String rawXml) {
                             XmlText(:final value) when lastVerseNum != null => [
                               Verse(
                                 verseNum: lastVerseNum!,
-                                words: [Word(text: value, data: data)],
+                                words: [Word(text: value, data: data, redLetters: isRedLetters)],
                               ),
                             ],
                             XmlElement node when node.localName == 'verse' => () {
@@ -48,8 +48,10 @@ Book parseUsxBook(BookType type, String rawXml) {
                                       inflection: node.getAttribute('x-lemma'),
                                       morphology: node.getAttribute('x-morph'),
                                       strongId: node.getAttribute('strong'),
+                                      transliteration: node.getAttribute('x-translit'),
                                     )
                                   : null,
+                              isRedLetters: node.getAttribute('style') == 'wj' || isRedLetters,
                             ),
                             _ => [],
                           },

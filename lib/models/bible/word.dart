@@ -9,7 +9,10 @@ sealed class Word with _$Word {
   const factory Word({
     @JsonKey(name: 't', includeIfNull: false) String? text,
     @JsonKey(name: 'd', includeIfNull: false) InterlinearData? data,
+    @JsonKey(name: 'r', toJson: _onlyIfTrue, includeIfNull: false) @Default(false) bool redLetters,
   }) = _Word;
 
   factory Word.fromJson(Map<String, dynamic> json) => _$WordFromJson(json);
 }
+
+bool? _onlyIfTrue(bool value) => value ? value : null;

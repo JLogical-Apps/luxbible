@@ -12,6 +12,7 @@ _InterlinearData _$InterlinearDataFromJson(Map<String, dynamic> json) =>
       inflection: json['i'] as String?,
       strongId: json['s'] as String?,
       morphology: json['m'] as String?,
+      transliteration: json['t'] as String?,
     );
 
 Map<String, dynamic> _$InterlinearDataToJson(_InterlinearData instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$InterlinearDataToJson(_InterlinearData instance) =>
       'i': ?instance.inflection,
       's': ?instance.strongId,
       'm': ?instance.morphology,
+      't': ?instance.transliteration,
     };

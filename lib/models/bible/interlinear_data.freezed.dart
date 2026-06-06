@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$InterlinearData {
 
-@JsonKey(name: 'o') int get originalPosition;@JsonKey(name: 'i', includeIfNull: false) String? get inflection;@JsonKey(name: 's', includeIfNull: false) String? get strongId;@JsonKey(name: 'm', includeIfNull: false) String? get morphology;
+@JsonKey(name: 'o') int get originalPosition;@JsonKey(name: 'i', includeIfNull: false) String? get inflection;@JsonKey(name: 's', includeIfNull: false) String? get strongId;@JsonKey(name: 'm', includeIfNull: false) String? get morphology;@JsonKey(name: 't', includeIfNull: false) String? get transliteration;
 /// Create a copy of InterlinearData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $InterlinearDataCopyWith<InterlinearData> get copyWith => _$InterlinearDataCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is InterlinearData&&(identical(other.originalPosition, originalPosition) || other.originalPosition == originalPosition)&&(identical(other.inflection, inflection) || other.inflection == inflection)&&(identical(other.strongId, strongId) || other.strongId == strongId)&&(identical(other.morphology, morphology) || other.morphology == morphology));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is InterlinearData&&(identical(other.originalPosition, originalPosition) || other.originalPosition == originalPosition)&&(identical(other.inflection, inflection) || other.inflection == inflection)&&(identical(other.strongId, strongId) || other.strongId == strongId)&&(identical(other.morphology, morphology) || other.morphology == morphology)&&(identical(other.transliteration, transliteration) || other.transliteration == transliteration));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,originalPosition,inflection,strongId,morphology);
+int get hashCode => Object.hash(runtimeType,originalPosition,inflection,strongId,morphology,transliteration);
 
 @override
 String toString() {
-  return 'InterlinearData(originalPosition: $originalPosition, inflection: $inflection, strongId: $strongId, morphology: $morphology)';
+  return 'InterlinearData(originalPosition: $originalPosition, inflection: $inflection, strongId: $strongId, morphology: $morphology, transliteration: $transliteration)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $InterlinearDataCopyWith<$Res>  {
   factory $InterlinearDataCopyWith(InterlinearData value, $Res Function(InterlinearData) _then) = _$InterlinearDataCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'o') int originalPosition,@JsonKey(name: 'i', includeIfNull: false) String? inflection,@JsonKey(name: 's', includeIfNull: false) String? strongId,@JsonKey(name: 'm', includeIfNull: false) String? morphology
+@JsonKey(name: 'o') int originalPosition,@JsonKey(name: 'i', includeIfNull: false) String? inflection,@JsonKey(name: 's', includeIfNull: false) String? strongId,@JsonKey(name: 'm', includeIfNull: false) String? morphology,@JsonKey(name: 't', includeIfNull: false) String? transliteration
 });
 
 
@@ -65,12 +65,13 @@ class _$InterlinearDataCopyWithImpl<$Res>
 
 /// Create a copy of InterlinearData
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? originalPosition = null,Object? inflection = freezed,Object? strongId = freezed,Object? morphology = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? originalPosition = null,Object? inflection = freezed,Object? strongId = freezed,Object? morphology = freezed,Object? transliteration = freezed,}) {
   return _then(_self.copyWith(
 originalPosition: null == originalPosition ? _self.originalPosition : originalPosition // ignore: cast_nullable_to_non_nullable
 as int,inflection: freezed == inflection ? _self.inflection : inflection // ignore: cast_nullable_to_non_nullable
 as String?,strongId: freezed == strongId ? _self.strongId : strongId // ignore: cast_nullable_to_non_nullable
 as String?,morphology: freezed == morphology ? _self.morphology : morphology // ignore: cast_nullable_to_non_nullable
+as String?,transliteration: freezed == transliteration ? _self.transliteration : transliteration // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
@@ -153,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'o')  int originalPosition, @JsonKey(name: 'i', includeIfNull: false)  String? inflection, @JsonKey(name: 's', includeIfNull: false)  String? strongId, @JsonKey(name: 'm', includeIfNull: false)  String? morphology)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'o')  int originalPosition, @JsonKey(name: 'i', includeIfNull: false)  String? inflection, @JsonKey(name: 's', includeIfNull: false)  String? strongId, @JsonKey(name: 'm', includeIfNull: false)  String? morphology, @JsonKey(name: 't', includeIfNull: false)  String? transliteration)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _InterlinearData() when $default != null:
-return $default(_that.originalPosition,_that.inflection,_that.strongId,_that.morphology);case _:
+return $default(_that.originalPosition,_that.inflection,_that.strongId,_that.morphology,_that.transliteration);case _:
   return orElse();
 
 }
@@ -174,10 +175,10 @@ return $default(_that.originalPosition,_that.inflection,_that.strongId,_that.mor
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'o')  int originalPosition, @JsonKey(name: 'i', includeIfNull: false)  String? inflection, @JsonKey(name: 's', includeIfNull: false)  String? strongId, @JsonKey(name: 'm', includeIfNull: false)  String? morphology)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'o')  int originalPosition, @JsonKey(name: 'i', includeIfNull: false)  String? inflection, @JsonKey(name: 's', includeIfNull: false)  String? strongId, @JsonKey(name: 'm', includeIfNull: false)  String? morphology, @JsonKey(name: 't', includeIfNull: false)  String? transliteration)  $default,) {final _that = this;
 switch (_that) {
 case _InterlinearData():
-return $default(_that.originalPosition,_that.inflection,_that.strongId,_that.morphology);}
+return $default(_that.originalPosition,_that.inflection,_that.strongId,_that.morphology,_that.transliteration);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -191,10 +192,10 @@ return $default(_that.originalPosition,_that.inflection,_that.strongId,_that.mor
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'o')  int originalPosition, @JsonKey(name: 'i', includeIfNull: false)  String? inflection, @JsonKey(name: 's', includeIfNull: false)  String? strongId, @JsonKey(name: 'm', includeIfNull: false)  String? morphology)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'o')  int originalPosition, @JsonKey(name: 'i', includeIfNull: false)  String? inflection, @JsonKey(name: 's', includeIfNull: false)  String? strongId, @JsonKey(name: 'm', includeIfNull: false)  String? morphology, @JsonKey(name: 't', includeIfNull: false)  String? transliteration)?  $default,) {final _that = this;
 switch (_that) {
 case _InterlinearData() when $default != null:
-return $default(_that.originalPosition,_that.inflection,_that.strongId,_that.morphology);case _:
+return $default(_that.originalPosition,_that.inflection,_that.strongId,_that.morphology,_that.transliteration);case _:
   return null;
 
 }
@@ -206,13 +207,14 @@ return $default(_that.originalPosition,_that.inflection,_that.strongId,_that.mor
 @JsonSerializable()
 
 class _InterlinearData implements InterlinearData {
-  const _InterlinearData({@JsonKey(name: 'o') required this.originalPosition, @JsonKey(name: 'i', includeIfNull: false) required this.inflection, @JsonKey(name: 's', includeIfNull: false) this.strongId, @JsonKey(name: 'm', includeIfNull: false) this.morphology});
+  const _InterlinearData({@JsonKey(name: 'o') required this.originalPosition, @JsonKey(name: 'i', includeIfNull: false) required this.inflection, @JsonKey(name: 's', includeIfNull: false) this.strongId, @JsonKey(name: 'm', includeIfNull: false) this.morphology, @JsonKey(name: 't', includeIfNull: false) this.transliteration});
   factory _InterlinearData.fromJson(Map<String, dynamic> json) => _$InterlinearDataFromJson(json);
 
 @override@JsonKey(name: 'o') final  int originalPosition;
 @override@JsonKey(name: 'i', includeIfNull: false) final  String? inflection;
 @override@JsonKey(name: 's', includeIfNull: false) final  String? strongId;
 @override@JsonKey(name: 'm', includeIfNull: false) final  String? morphology;
+@override@JsonKey(name: 't', includeIfNull: false) final  String? transliteration;
 
 /// Create a copy of InterlinearData
 /// with the given fields replaced by the non-null parameter values.
@@ -227,16 +229,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _InterlinearData&&(identical(other.originalPosition, originalPosition) || other.originalPosition == originalPosition)&&(identical(other.inflection, inflection) || other.inflection == inflection)&&(identical(other.strongId, strongId) || other.strongId == strongId)&&(identical(other.morphology, morphology) || other.morphology == morphology));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _InterlinearData&&(identical(other.originalPosition, originalPosition) || other.originalPosition == originalPosition)&&(identical(other.inflection, inflection) || other.inflection == inflection)&&(identical(other.strongId, strongId) || other.strongId == strongId)&&(identical(other.morphology, morphology) || other.morphology == morphology)&&(identical(other.transliteration, transliteration) || other.transliteration == transliteration));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,originalPosition,inflection,strongId,morphology);
+int get hashCode => Object.hash(runtimeType,originalPosition,inflection,strongId,morphology,transliteration);
 
 @override
 String toString() {
-  return 'InterlinearData(originalPosition: $originalPosition, inflection: $inflection, strongId: $strongId, morphology: $morphology)';
+  return 'InterlinearData(originalPosition: $originalPosition, inflection: $inflection, strongId: $strongId, morphology: $morphology, transliteration: $transliteration)';
 }
 
 
@@ -247,7 +249,7 @@ abstract mixin class _$InterlinearDataCopyWith<$Res> implements $InterlinearData
   factory _$InterlinearDataCopyWith(_InterlinearData value, $Res Function(_InterlinearData) _then) = __$InterlinearDataCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'o') int originalPosition,@JsonKey(name: 'i', includeIfNull: false) String? inflection,@JsonKey(name: 's', includeIfNull: false) String? strongId,@JsonKey(name: 'm', includeIfNull: false) String? morphology
+@JsonKey(name: 'o') int originalPosition,@JsonKey(name: 'i', includeIfNull: false) String? inflection,@JsonKey(name: 's', includeIfNull: false) String? strongId,@JsonKey(name: 'm', includeIfNull: false) String? morphology,@JsonKey(name: 't', includeIfNull: false) String? transliteration
 });
 
 
@@ -264,12 +266,13 @@ class __$InterlinearDataCopyWithImpl<$Res>
 
 /// Create a copy of InterlinearData
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? originalPosition = null,Object? inflection = freezed,Object? strongId = freezed,Object? morphology = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? originalPosition = null,Object? inflection = freezed,Object? strongId = freezed,Object? morphology = freezed,Object? transliteration = freezed,}) {
   return _then(_InterlinearData(
 originalPosition: null == originalPosition ? _self.originalPosition : originalPosition // ignore: cast_nullable_to_non_nullable
 as int,inflection: freezed == inflection ? _self.inflection : inflection // ignore: cast_nullable_to_non_nullable
 as String?,strongId: freezed == strongId ? _self.strongId : strongId // ignore: cast_nullable_to_non_nullable
 as String?,morphology: freezed == morphology ? _self.morphology : morphology // ignore: cast_nullable_to_non_nullable
+as String?,transliteration: freezed == transliteration ? _self.transliteration : transliteration // ignore: cast_nullable_to_non_nullable
 as String?,
   ));
 }
