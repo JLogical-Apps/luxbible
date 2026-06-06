@@ -19,7 +19,7 @@ class StyledBanner extends StatelessWidget {
       child: StyledListItem(
         leading: leading,
         title: message,
-        trailing: action == null ? null : StyledPillButton(label: action.label, onPressed: action.onPressed),
+        trailing: action == null ? null : StyledPillButton.sm(label: action.label, onPressed: action.onPressed),
       ),
     );
   }

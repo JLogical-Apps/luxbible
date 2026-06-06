@@ -118,9 +118,10 @@ class ChapterBuilder extends HookConsumerWidget {
       child: Column(
         crossAxisAlignment: .stretch,
         children: getParagraphSpansByParagraph(context, ref, keyByReference: keyByReference)
+            .where((entry) => entry.value.isNotEmpty)
             .mapEntries(
               (paragraph, paragraphSpans) => Padding(
-                padding: paragraph.as<VersesParagraph>()?.type.padding ?? .zero,
+                padding: user.themeLayout.paragraphs ? paragraph.as<VersesParagraph>()?.type.padding ?? .zero : .zero,
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     final textKey = GlobalKey(
@@ -168,7 +169,11 @@ class ChapterBuilder extends HookConsumerWidget {
                                     .mixOrNull;
 
                                 final (base, extent) =
-                                    paragraphSpans.getReferenceCharacterOffsets(reference: reference, bible: bible) ??
+                                    paragraphSpans.getReferenceCharacterOffsets(
+                                      reference: reference,
+                                      bible: bible,
+                                      isParagraphs: user.themeLayout.paragraphs,
+                                    ) ??
                                     (null, null);
                                 if (base == null || extent == null) {
                                   return null;
@@ -217,6 +222,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                     paragraphSpans.getTextSelectionCharacterOffsets(
                                       textSelection: textSelection,
                                       translation: bible.translation,
+                                      isParagraphs: user.themeLayout.paragraphs,
                                     ) ??
                                     (null, null);
                                 if (base == null || extent == null) {
@@ -259,6 +265,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                   paragraphSpans.getTextSelectionCharacterOffsets(
                                     textSelection: textSelection,
                                     translation: bible.translation,
+                                    isParagraphs: user.themeLayout.paragraphs,
                                   ) ??
                                   (null, null);
                               if (base == null || extent == null) {
@@ -321,16 +328,23 @@ class ChapterBuilder extends HookConsumerWidget {
           ? null
           : chapter.paragraphs[paragraphIndex - 1].as<VersesParagraph>();
       return MapEntry(paragraph, [
-        if (previousParagraph?.type.isPoetic == true && paragraph is VersesParagraph && !paragraph.type.isPoetic)
+        if (previousParagraph?.type.isPoetic == true &&
+            paragraph is VersesParagraph &&
+            !paragraph.type.isPoetic &&
+            user.themeLayout.paragraphs)
           TextSpan(text: '\n', style: context.textStyle.bibleBody.copyWith(height: 1.5)),
         ...switch (paragraph) {
-          SectionParagraph(:final text) => [
-            if (paragraphIndex != 0) TextSpan(text: '\n', style: context.textStyle.bibleBody.copyWith(height: 1.5)),
-            TextSpan(text: text, style: context.textStyle.bibleSection),
-            TextSpan(text: '\n ', style: context.textStyle.bibleBody.copyWith(height: 0.8)),
-          ],
+          SectionParagraph(:final text) =>
+            user.themeLayout.sections
+                ? [
+                    if (paragraphIndex != 0)
+                      TextSpan(text: '\n', style: context.textStyle.bibleBody.copyWith(height: 1.5)),
+                    TextSpan(text: text, style: context.textStyle.bibleSection),
+                    TextSpan(text: '\n ', style: context.textStyle.bibleBody.copyWith(height: 0.8)),
+                  ]
+                : <InlineSpan>[],
           VersesParagraph(:final verses, :final type) => [
-            SizedWidgetSpan.space(size: Size(type.indent, 0)),
+            if (user.themeLayout.paragraphs) SizedWidgetSpan.space(size: Size(type.indent, 0)),
             ...verses
                 .mapIndexed((verseIndex, verse) {
                   final reference = getVerseReference(verse);
@@ -348,7 +362,7 @@ class ChapterBuilder extends HookConsumerWidget {
                       .toList();
 
                   final spans = [
-                    if (verse.verseNum > maxPreviousVerseNum) ...[
+                    if (verse.verseNum > maxPreviousVerseNum && user.themeLayout.verseNumbers) ...[
                       AnnotatedSizedWidgetSpan<VerseElement>(
                         annotation: VerseElement(
                           anchor: BibleTextSelectionWordAnchor.fromReference(reference: reference, characterOffset: 0),
@@ -402,7 +416,7 @@ class ChapterBuilder extends HookConsumerWidget {
                         ),
                         text: word.text,
                         style: context.textStyle.bibleBody.copyWith(
-                          color: word.redLetters ? context.colors.red.dark : null,
+                          color: word.redLetters && user.themeLayout.redLetters ? context.colors.red.dark : null,
                           decoration: underlinedReferences.contains(reference) ? .underline : null,
                         ),
                       ).withInjectedSpans(
@@ -447,10 +461,15 @@ class ChapterBuilder extends HookConsumerWidget {
                   maxPreviousVerseNum = verse.verseNum;
                   return spans;
                 })
-                .intersperse([TextSpan(text: ' ', style: context.textStyle.bibleBody)])
+                .intersperse([
+                  TextSpan(text: user.themeLayout.paragraphs ? ' ' : '\n', style: context.textStyle.bibleBody),
+                ])
                 .flattenedToList,
           ],
-          BreakParagraph() => [TextSpan(text: '\n', style: context.textStyle.bibleBody.copyWith(height: 0.75))],
+          BreakParagraph() =>
+            user.themeLayout.paragraphs
+                ? [TextSpan(text: '\n', style: context.textStyle.bibleBody.copyWith(height: 0.75))]
+                : <InlineSpan>[],
         },
       ]);
     }).toList();
@@ -593,7 +612,11 @@ extension on List<InlineSpan> {
     }).toList().nonNulls.lastOrNull;
   }
 
-  (int, int)? getReferenceCharacterOffsets({required Reference reference, required Bible bible}) {
+  (int, int)? getReferenceCharacterOffsets({
+    required Reference reference,
+    required Bible bible,
+    required bool isParagraphs,
+  }) {
     if (!getContainedTextSelection(translation: bible.translation).isInReference(reference)) {
       return null;
     }
@@ -603,7 +626,7 @@ extension on List<InlineSpan> {
             anchor: BibleTextSelectionWordAnchor.fromReference(reference: reference, characterOffset: 0),
             onlyBound: false,
           ) ??
-          1,
+          (isParagraphs ? 1 : 0),
       getTextPosition(
             anchor: BibleTextSelectionWordAnchor.fromReference(
               reference: reference,
@@ -618,13 +641,14 @@ extension on List<InlineSpan> {
   (int, int)? getTextSelectionCharacterOffsets({
     required BibleTextSelection textSelection,
     required BibleTranslation translation,
+    required bool isParagraphs,
   }) {
     if (!getContainedTextSelection(translation: translation).intersects(textSelection)) {
       return null;
     }
 
     return (
-      getTextPosition(anchor: textSelection.start, onlyBound: true) ?? 1,
+      getTextPosition(anchor: textSelection.start, onlyBound: true) ?? (isParagraphs ? 1 : 0),
       (getTextPosition(anchor: textSelection.end, onlyBound: true) ?? (maxTextPosition - 1)) + 1,
     );
   }

@@ -7,20 +7,20 @@ class StyledCircleButton extends StatelessWidget {
 
   final ColorBuilder? colorBuilder;
 
-  final double _iconSize;
-  final double _dimension;
+  final double iconSize;
+  final double dimension;
 
   const StyledCircleButton.lg({super.key, required this.child, required this.onPressed, this.colorBuilder})
-    : _iconSize = 24,
-      _dimension = 40;
+    : iconSize = 24,
+      dimension = 40;
 
   const StyledCircleButton.md({super.key, required this.child, required this.onPressed, this.colorBuilder})
-    : _iconSize = 24,
-      _dimension = 40;
+    : iconSize = 24,
+      dimension = 40;
 
   const StyledCircleButton.sm({super.key, required this.child, required this.onPressed, this.colorBuilder})
-    : _iconSize = 16,
-      _dimension = 32;
+    : iconSize = 16,
+      dimension = 32;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +33,10 @@ class StyledCircleButton extends StatelessWidget {
         style: IconButton.styleFrom(
           foregroundColor: colorBuilder?.call(context.colors).foreground() ?? context.colors.contentPrimary,
           backgroundColor: colorBuilder?.call(context.colors),
-          iconSize: _iconSize,
-          fixedSize: Size.square(_dimension),
-          maximumSize: Size.square(_dimension),
-          minimumSize: Size.square(_dimension),
+          iconSize: iconSize,
+          fixedSize: Size.square(dimension),
+          maximumSize: Size.square(dimension),
+          minimumSize: Size.square(dimension),
         ),
       ),
     );

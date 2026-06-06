@@ -54,7 +54,7 @@ class AnnotationsPage extends HookConsumerWidget {
             child: Row(
               spacing: 8,
               children: [
-                StyledPillButton(
+                StyledPillButton.md(
                   leading: Symbols.sort.toIcon(),
                   label: sortState.value.title().toText(),
                   trailing: Symbols.keyboard_arrow_down.toIcon(),
@@ -72,7 +72,7 @@ class AnnotationsPage extends HookConsumerWidget {
                     }
                   },
                 ),
-                StyledPillButton(
+                StyledPillButton.md(
                   colorBuilder: colorState.value == null ? null : .primary,
                   leading: Icon(Symbols.circle, color: colorState.value?.toHue(context.colors).primary),
                   label: (colorState.value?.title() ?? 'Color').toText(),
@@ -103,7 +103,7 @@ class AnnotationsPage extends HookConsumerWidget {
                     }
                   },
                 ),
-                StyledPillButton(
+                StyledPillButton.md(
                   colorBuilder: hasNoteState.value == null ? null : .primary,
                   leading: Symbols.note.toIcon(),
                   label: switch (hasNoteState.value) {

@@ -11,6 +11,7 @@ import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/user/main_toolbar_configuration.dart';
 import 'package:bible/models/user/text_selection_configuration.dart';
+import 'package:bible/models/user/theme_layout_configuration.dart';
 import 'package:bible/models/user/verse_selection_configuration.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
@@ -40,6 +41,7 @@ sealed class User with _$User {
     @Default([]) List<String> searchHistory,
     @Default(InterlinearDirection.reverse) InterlinearDirection interlinearDirection,
     @Default(ThemeMode.system) ThemeMode theme,
+    @Default(ThemeLayoutConfiguration()) ThemeLayoutConfiguration themeLayout,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

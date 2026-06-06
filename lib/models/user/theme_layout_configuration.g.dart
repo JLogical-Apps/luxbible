@@ -1,0 +1,40 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'theme_layout_configuration.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_ThemeLayoutConfiguration _$ThemeLayoutConfigurationFromJson(
+  Map<String, dynamic> json,
+) => _ThemeLayoutConfiguration(
+  font:
+      $enumDecodeNullable(_$ThemeFontEnumMap, json['font']) ?? ThemeFont.inter,
+  fontSizeSpacing:
+      $enumDecodeNullable(_$FontSizeSpacingEnumMap, json['fontSizeSpacing']) ??
+      FontSizeSpacing.standard,
+  redLetters: json['redLetters'] as bool? ?? true,
+  sections: json['sections'] as bool? ?? true,
+  verseNumbers: json['verseNumbers'] as bool? ?? true,
+  paragraphs: json['paragraphs'] as bool? ?? true,
+);
+
+Map<String, dynamic> _$ThemeLayoutConfigurationToJson(
+  _ThemeLayoutConfiguration instance,
+) => <String, dynamic>{
+  'font': _$ThemeFontEnumMap[instance.font]!,
+  'fontSizeSpacing': _$FontSizeSpacingEnumMap[instance.fontSizeSpacing]!,
+  'redLetters': instance.redLetters,
+  'sections': instance.sections,
+  'verseNumbers': instance.verseNumbers,
+  'paragraphs': instance.paragraphs,
+};
+
+const _$ThemeFontEnumMap = {ThemeFont.inter: 'inter'};
+
+const _$FontSizeSpacingEnumMap = {
+  FontSizeSpacing.dense: 'dense',
+  FontSizeSpacing.standard: 'standard',
+  FontSizeSpacing.comfort: 'comfort',
+};

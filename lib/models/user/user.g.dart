@@ -61,6 +61,11 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   theme:
       $enumDecodeNullable(_$ThemeModeEnumMap, json['theme']) ??
       ThemeMode.system,
+  themeLayout: json['themeLayout'] == null
+      ? const ThemeLayoutConfiguration()
+      : ThemeLayoutConfiguration.fromJson(
+          json['themeLayout'] as Map<String, dynamic>,
+        ),
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -78,6 +83,7 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'interlinearDirection':
       _$InterlinearDirectionEnumMap[instance.interlinearDirection]!,
   'theme': _$ThemeModeEnumMap[instance.theme]!,
+  'themeLayout': instance.themeLayout.toJson(),
 };
 
 const _$BibleTranslationEnumMap = {

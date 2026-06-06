@@ -19,7 +19,7 @@ class SearchLocationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StyledPillButton(
+    return StyledPillButton.md(
       leading: Symbols.book.toIcon(),
       trailing: Symbols.keyboard_arrow_down.toIcon(),
       label:

@@ -93,7 +93,7 @@ class StrongSheet {
                   (attribute, value) => StyledListItem(
                     title: attribute.displayName.toText(),
                     subtitle: value.displayName.toText(),
-                    trailing: StyledPillButton(
+                    trailing: StyledPillButton.sm(
                       label: 'Learn More'.toText(),
                       onPressed: () => context.showStyledDialog(
                         (context) => StyledDialog.confirm(

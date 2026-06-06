@@ -1,15 +1,13 @@
-import 'package:bible/models/user/theme_mode.dart';
 import 'package:bible/providers/package_info_provider.dart';
-import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/annotations_page.dart';
 import 'package:bible/ui/pages/bookmarks_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/pages/text_selection_settings_page.dart';
+import 'package:bible/ui/pages/theme_settings_page.dart';
 import 'package:bible/ui/pages/verse_selection_settings_page.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
-import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -23,17 +21,20 @@ class SettingsPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final packageInfo = ref.watch(packageInfoProvider);
-    final user = ref.watch(userProvider);
-
     return StyledPage(
       backgroundColor: .backgroundPrimary,
       title: 'Settings'.toText(),
       body: ListView(
         children: [
           StyledSection.child(
-            title: 'Features'.toText(),
+            title: 'Customize'.toText(),
             child: StyledCard(
               children: [
+                StyledListItem.navigation(
+                  title: 'Theme & Layout'.toText(),
+                  leading: Symbols.custom_typography.toIcon(),
+                  onPressed: () => context.push(ThemeSettingsPage()),
+                ),
                 StyledListItem.navigation(
                   title: 'Main Toolbar'.toText(),
                   leading: RotatedBox(quarterTurns: 2, child: Symbols.toolbar.toIcon()),
@@ -46,7 +47,7 @@ class SettingsPage extends HookConsumerWidget {
                 ),
                 StyledListItem.navigation(
                   title: 'Text Selection'.toText(),
-                  leading: Symbols.text_format.toIcon(),
+                  leading: Symbols.text_select_start.toIcon(),
                   onPressed: () => context.push(TextSelectionSettingsPage()),
                 ),
               ],
@@ -75,32 +76,19 @@ class SettingsPage extends HookConsumerWidget {
             ),
           ),
           StyledSection.child(
-            title: 'Theme'.toText(),
-            child: StyledCard.child(
-              padding: .all(4),
-              child: StyledSegmentedControl(
-                colorBuilder: .surfacePrimary,
-                options: ThemeMode.values,
-                selectedOption: user.theme,
-                onOptionSelected: (theme) => ref.updateUser((user) => user.copyWith(theme: theme)),
-                optionBuilder: (theme) => StyledSelectOption(title: Text(theme.title()), leading: theme.icon.toIcon()),
-              ),
-            ),
-          ),
-          StyledSection.child(
             title: 'Community'.toText(),
             child: StyledCard(
               children: [
                 StyledListItem(
                   title: 'Discord'.toText(),
-                  subtitle: 'Feedback and announcements'.toText(),
+                  subtitle: 'Discussion and announcements'.toText(),
                   leading: FaIcon(FontAwesomeIcons.discord),
                   onPressed: () => launchUrl(Uri.parse('https://discord.gg/C4zfZDpZMB')),
                   trailing: Symbols.arrow_outward.toIcon(),
                 ),
                 StyledListItem(
                   title: 'Instagram'.toText(),
-                  subtitle: 'Tips and updates about Lux'.toText(),
+                  subtitle: 'Tips and updates'.toText(),
                   leading: FaIcon(FontAwesomeIcons.instagram),
                   onPressed: () => launchUrl(Uri.parse('https://www.instagram.com/luxbible.app/')),
                   trailing: Symbols.arrow_outward.toIcon(),
