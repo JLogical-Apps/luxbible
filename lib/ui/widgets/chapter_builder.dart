@@ -234,7 +234,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                     .withMergedLines()
                                     .map(
                                       (box) => Positioned.fromRect(
-                                        rect: Rect.fromLTWH(box.left, box.top + 4, box.width + 2, min(28, box.height)),
+                                        rect: Rect.fromLTWH(box.left, box.top + 5, box.width + 2, min(28, box.height)),
                                         child: IgnorePointer(
                                           child: AnimatedContainer(
                                             duration: Duration(milliseconds: 300),
@@ -276,7 +276,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                   .withMergedLines()
                                   .map(
                                     (box) => Positioned.fromRect(
-                                      rect: Rect.fromLTWH(box.left, box.top + 4, box.width + 2, min(28, box.height)),
+                                      rect: Rect.fromLTWH(box.left, box.top + 5, box.width + 2, min(28, box.height)),
                                       child: IgnorePointer(
                                         child: AnimatedContainer(
                                           duration: Duration(milliseconds: 300),
