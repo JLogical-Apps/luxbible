@@ -22,6 +22,6 @@ class Hue {
   Color get primary => brightness.when(light: shade400, dark: shade300);
   Color get secondary => brightness.when(light: shade200, dark: shade700);
   Color get tertiary => brightness.when(light: shade100, dark: shade800);
-  Color get dark => brightness.when(light: shade700, dark: shade200);
+  Color get dark => brightness.when(light: shade700, dark: shade300);
   Color get medium => shade500;
 }

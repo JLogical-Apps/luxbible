@@ -334,7 +334,7 @@ class ChapterBuilder extends HookConsumerWidget {
             ...verses
                 .mapIndexed((verseIndex, verse) {
                   final reference = getVerseReference(verse);
-                  final paragraphOffset = verseIndex == 0 ? paragraph.firstVerseOffset : 0;
+                  final verseParagraphOffset = verseIndex == 0 ? paragraph.firstVerseOffset : 0;
 
                   final verseSelectionAnnotations = user.getVerseSelectionAnnotations(
                     VerseSelection.reference(reference),
@@ -385,54 +385,64 @@ class ChapterBuilder extends HookConsumerWidget {
                           isUnderlined: underlinedReferences.contains(reference),
                         ),
                     ],
-                    ...AnnotatedTextSpan<VerseElement>(
-                      annotation: VerseElement(
-                        anchor: BibleTextSelectionWordAnchor.fromReference(
-                          reference: reference,
-                          characterOffset: paragraphOffset,
-                        ),
-                        isBoundInSelection: false,
-                      ),
-                      text: verse.text,
-                      style: context.textStyle.bibleBody.copyWith(
-                        decoration: underlinedReferences.contains(reference) ? .underline : null,
-                      ),
-                    ).withInjectedSpans(
-                      user
-                          .getTextSelectionAnnotationsWithNotesByOffset(
+                    ...verse.words.expandIndexed((wordIndex, word) {
+                      if (word.text == null) {
+                        return <InlineSpan>[];
+                      }
+
+                      final wordParagraphOffset =
+                          verseParagraphOffset + verse.words.take(wordIndex).map((word) => word.text?.length ?? 0).sum;
+                      return AnnotatedTextSpan<VerseElement>(
+                        annotation: VerseElement(
+                          anchor: BibleTextSelectionWordAnchor.fromReference(
                             reference: reference,
-                            translation: bible.translation,
-                          )
-                          .where(
-                            (offset, annotations) =>
-                                offset >= paragraphOffset && offset <= paragraphOffset + verse.text.length,
-                          )
-                          .map(
-                            (offset, annotations) => MapEntry(
-                              offset - paragraphOffset,
-                              notesButtonSpan(
-                                context,
-                                ref,
-                                element: VerseElement(
-                                  anchor: BibleTextSelectionWordAnchor.fromReference(
-                                    reference: reference,
-                                    characterOffset: offset,
+                            characterOffset: wordParagraphOffset,
+                          ),
+                          isBoundInSelection: false,
+                        ),
+                        text: word.text,
+                        style: context.textStyle.bibleBody.copyWith(
+                          color: word.redLetters ? context.colors.red.dark : null,
+                          decoration: underlinedReferences.contains(reference) ? .underline : null,
+                        ),
+                      ).withInjectedSpans(
+                        user
+                            .getTextSelectionAnnotationsWithNotesByOffset(
+                              reference: reference,
+                              translation: bible.translation,
+                            )
+                            .where(
+                              (offset, annotations) =>
+                                  offset >= wordParagraphOffset &&
+                                  offset <= wordParagraphOffset + (word.text?.length ?? 0),
+                            )
+                            .map(
+                              (offset, annotations) => MapEntry(
+                                offset - wordParagraphOffset,
+                                notesButtonSpan(
+                                  context,
+                                  ref,
+                                  element: VerseElement(
+                                    anchor: BibleTextSelectionWordAnchor.fromReference(
+                                      reference: reference,
+                                      characterOffset: offset,
+                                    ),
+                                    isBoundInSelection: true,
                                   ),
-                                  isBoundInSelection: true,
+                                  annotations: annotations,
+                                  isUnderlined: underlinedReferences.contains(reference),
                                 ),
-                                annotations: annotations,
-                                isUnderlined: underlinedReferences.contains(reference),
                               ),
                             ),
+                        annotationModifier: (_, offset) => VerseElement(
+                          anchor: BibleTextSelectionWordAnchor.fromReference(
+                            reference: reference,
+                            characterOffset: offset + wordParagraphOffset,
                           ),
-                      annotationModifier: (_, offset) => VerseElement(
-                        anchor: BibleTextSelectionWordAnchor.fromReference(
-                          reference: reference,
-                          characterOffset: offset + paragraphOffset,
+                          isBoundInSelection: false,
                         ),
-                        isBoundInSelection: false,
-                      ),
-                    ),
+                      );
+                    }),
                   ];
                   maxPreviousVerseNum = verse.verseNum;
                   return spans;
