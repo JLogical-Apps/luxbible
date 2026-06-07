@@ -7,7 +7,6 @@ import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/user/main_toolbar_configuration.dart';
 import 'package:bible/models/user/text_selection_configuration.dart';
@@ -126,10 +125,9 @@ sealed class User with _$User {
   User withAnnotationUpdated(Annotation oldAnnotation, Annotation newAnnotation) =>
       copyWith(annotations: annotations.withRemoved(oldAnnotation) + [newAnnotation]);
 
-  User withRemovedRegionAnnotations(Region region) => region.when(
-    verseSelection: (verseSelection) => withRemovedVerseSelectionAnnotations(verseSelection),
-    textSelection: (textSelection) => withRemovedTextSelectionAnnotations(textSelection),
-    chapterReference: (reference) => throw UnimplementedError(),
+  User withRemovedSelectionAnnotations(AnnotationSelection selection) => selection.when(
+    verses: (verseSelection) => withRemovedVerseSelectionAnnotations(verseSelection),
+    text: (textSelection) => withRemovedTextSelectionAnnotations(textSelection),
   );
 
   User withRemovedVerseSelectionAnnotations(VerseSelection verseSelection) => copyWith(

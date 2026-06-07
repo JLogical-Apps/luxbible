@@ -1,5 +1,4 @@
 import 'package:bible/style/style.dart';
-import 'package:bible/style/styled_text_action.dart';
 import 'package:flutter/material.dart';
 
 class StyledBanner extends StatelessWidget {

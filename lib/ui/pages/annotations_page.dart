@@ -25,8 +25,6 @@ class AnnotationsPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final bibles = ref.watch(biblesProvider);
-    final bible = ref.watch(bibleProvider);
 
     final sortState = useState(AnnotationSort.mostRecent);
     final colorState = useState<ColorEnum?>(null);
@@ -171,87 +169,103 @@ class AnnotationsPage extends HookConsumerWidget {
                 ...matchingAnnotations
                     .sorted(sortState.value.comparator)
                     .map(
-                      (annotation) => StyledSwipeable(
-                        key: ValueKey(annotation),
-                        actions: [
-                          .delete(onPressed: () => ref.updateUser((user) => user.withRemovedAnnotation(annotation))),
-                        ],
-                        child: StyledListItem(
-                          leading: ColoredCircle(color: annotation.color.toHue(context.colors).primary),
-                          title: Row(
-                            spacing: 4,
-                            children: [
-                              annotation.formatLocation().toText(),
-                              if (annotation.selection case TextAnnotationSelection selection)
-                                StyledBadge(text: selection.textSelection.translation.title()),
-                            ],
-                          ),
-                          subtitle: Column(
-                            spacing: 4,
-                            crossAxisAlignment: .start,
-                            children: [
-                              Text(
-                                annotation.formatContent(bible: bible, bibles: bibles),
-                                maxLines: 2,
-                                overflow: .ellipsis,
-                              ),
-                              if (annotation.note.isNotEmpty)
-                                Text.rich(
-                                  TextSpan(
-                                    children: [
-                                      WidgetSpan(child: Icon(Symbols.note_stack, size: 16)),
-                                      TextSpan(text: ' ${annotation.note}'),
-                                    ],
-                                  ),
-                                  maxLines: 2,
-                                  overflow: .ellipsis,
+                      (annotation) => Consumer(
+                        builder: (context, ref, child) {
+                          final annotationSelectionText = ref
+                              .watch(
+                                annotationSelectionTextProvider(
+                                  selection: annotation.selection,
+                                  translation: user.translation,
                                 ),
+                              )
+                              .value;
+                          return StyledSwipeable(
+                            key: ValueKey(annotation),
+                            actions: [
+                              .delete(
+                                onPressed: () => ref.updateUser((user) => user.withRemovedAnnotation(annotation)),
+                              ),
                             ],
-                          ),
-                          thirdLine: 'Annotated ${timeago.format(annotation.createdAt)}'.toText(),
-                          trailing: StyledCircleButton.md(
-                            child: Symbols.more_vert.toIcon(),
-                            onPressed: () => context.showStyledSheet(
-                              (context) => StyledSheet(
-                                title: 'Annotation'.toText(),
+                            child: StyledListItem(
+                              leading: ColoredCircle(color: annotation.color.toHue(context.colors).primary),
+                              title: Row(
+                                spacing: 4,
                                 children: [
-                                  StyledListItem(
-                                    title: 'Go to Passage'.toText(),
-                                    leading: Symbols.expand_circle_right.toIcon(),
-                                    onPressed: () {
-                                      context.pop();
-                                      context.pop(VerseSelection.fromReferences(annotation.region.allReferences));
-                                    },
-                                  ),
-                                  StyledListItem(
-                                    title: 'Edit'.toText(),
-                                    leading: Symbols.edit.toIcon(),
-                                    onPressed: () async {
-                                      context.pop();
-                                      final newAnnotation = await AnnotationSheet.show(
-                                        context,
-                                        ref,
-                                        selection: annotation.selection,
-                                        annotation: annotation,
-                                      );
-                                      if (newAnnotation != null) {
-                                        ref.updateUser((user) => user.withAnnotationUpdated(annotation, newAnnotation));
-                                      }
-                                    },
-                                  ),
-                                  StyledListItem(
-                                    title: 'Delete'.toText(),
-                                    leading: Symbols.delete.toIcon(),
-                                    onPressed: () {
-                                      context.pop();
-                                      ref.updateUser((user) => user.withRemovedAnnotation(annotation));
-                                    },
-                                  ),
+                                  annotation.formatLocation().toText(),
+                                  if (annotation.selection case TextAnnotationSelection selection)
+                                    StyledBadge(text: selection.textSelection.translation.title()),
                                 ],
                               ),
+                              subtitle: Column(
+                                spacing: 4,
+                                crossAxisAlignment: .start,
+                                children: [
+                                  StyledLoading(
+                                    child: annotationSelectionText == null
+                                        ? null
+                                        : Text(annotationSelectionText, maxLines: 2, overflow: .ellipsis),
+                                  ),
+                                  if (annotation.note.isNotEmpty)
+                                    Text.rich(
+                                      TextSpan(
+                                        children: [
+                                          WidgetSpan(child: Icon(Symbols.note_stack, size: 16)),
+                                          TextSpan(text: ' ${annotation.note}'),
+                                        ],
+                                      ),
+                                      maxLines: 2,
+                                      overflow: .ellipsis,
+                                    ),
+                                ],
+                              ),
+                              thirdLine: 'Annotated ${timeago.format(annotation.createdAt)}'.toText(),
+                              trailing: StyledCircleButton.md(
+                                child: Symbols.more_vert.toIcon(),
+                                onPressed: () => context.showStyledSheet(
+                                  (context) => StyledSheet(
+                                    title: 'Annotation'.toText(),
+                                    children: [
+                                      StyledListItem(
+                                        title: 'Go to Passage'.toText(),
+                                        leading: Symbols.expand_circle_right.toIcon(),
+                                        onPressed: () {
+                                          context.pop();
+                                          context.pop(VerseSelection.fromReferences(annotation.region.allReferences));
+                                        },
+                                      ),
+                                      StyledListItem(
+                                        title: 'Edit'.toText(),
+                                        leading: Symbols.edit.toIcon(),
+                                        onPressed: () async {
+                                          context.pop();
+                                          final newAnnotation = await AnnotationSheet.show(
+                                            context,
+                                            ref,
+                                            selection: annotation.selection,
+                                            annotation: annotation,
+                                          );
+                                          if (newAnnotation != null) {
+                                            ref.updateUser(
+                                              (user) => user.withAnnotationUpdated(annotation, newAnnotation),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                      StyledListItem(
+                                        title: 'Delete'.toText(),
+                                        leading: Symbols.delete.toIcon(),
+                                        onPressed: () {
+                                          context.pop();
+                                          ref.updateUser((user) => user.withRemovedAnnotation(annotation));
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       ),
                     ),
               ],

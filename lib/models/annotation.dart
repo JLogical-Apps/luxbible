@@ -1,4 +1,3 @@
-import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/reference.dart';
@@ -32,15 +31,6 @@ sealed class Annotation with _$Annotation {
   VerseSelection? get verseSelection => selection.as<VersesAnnotationSelection>()?.verseSelection;
   BibleTextSelection? get textSelection => selection.as<TextAnnotationSelection>()?.textSelection;
 
-  String formatContent({required Bible bible, required List<Bible> bibles}) => switch (selection) {
-    VersesAnnotationSelection(:final verseSelection) => bible.getVerseSelectionText(verseSelection),
-    TextAnnotationSelection(:final textSelection) => textSelection.format(
-      bibles.firstWhere((bible) => bible.translation == textSelection.translation),
-    ),
-  };
-
-  String formatSelection(Bible bible) => region.format(bible);
-
   String formatLocation() => switch (selection) {
     VersesAnnotationSelection s => s.verseSelection.format(),
     TextAnnotationSelection s => 'Text in ${s.textSelection.toVerseSelection().format()}',
@@ -53,12 +43,6 @@ sealed class AnnotationSelection with _$AnnotationSelection, ComparableOperators
 
   const factory AnnotationSelection.verses({required VerseSelection verseSelection}) = VersesAnnotationSelection;
   const factory AnnotationSelection.text({required BibleTextSelection textSelection}) = TextAnnotationSelection;
-
-  factory AnnotationSelection.fromRegion(Region region) => region.when(
-    chapterReference: (chapter) => .verses(verseSelection: .fromReferences(chapter.references)),
-    verseSelection: (verses) => .verses(verseSelection: verses),
-    textSelection: (text) => .text(textSelection: text),
-  );
 
   factory AnnotationSelection.fromJson(Map<String, dynamic> json) => _$AnnotationSelectionFromJson(json);
 

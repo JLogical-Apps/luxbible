@@ -37,17 +37,18 @@ class TextSelectionBottomBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bibles = ref.watch(biblesProvider);
     final translation = user?.translation ?? .bsb;
-    final bible = bibles.firstWhere((bible) => bible.translation == translation);
+    final textSelection =
+        this.textSelection ??
+        BibleTextSelection(
+          start: BibleTextSelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 0),
+          end: BibleTextSelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 30),
+          translation: translation,
+        );
+    final selectionText = ref.watch(textSelectionTextProvider(textSelection)).value;
 
     return BottomBar(
-      text:
-          '"${bible.getTextSelectionText(textSelection ?? BibleTextSelection(
-                start: BibleTextSelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 0),
-                end: BibleTextSelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 30),
-                translation: translation,
-              ))}"',
+      text: selectionText == null ? '' : '"$selectionText"',
       buttons: configuration.pinnedShortcuts
           .mapIndexed(
             (i, shortcut) => StyledEditBadge(

@@ -2,8 +2,9 @@ import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:collection/collection.dart';
+import 'package:equatable/equatable.dart';
 
-class VerseSpanReference {
+class VerseSpanReference extends Equatable {
   final BiblePointer start;
   final BiblePointer? end;
 
@@ -19,6 +20,9 @@ class VerseSpanReference {
       throw Exception('Cannot convert `$id` to VerseSpanReference');
     }
   }
+
+  @override
+  List<Object> get props => [start, ?end];
 
   static List<VerseSpanReference> listFromReferences(List<Reference> references) {
     references = references.sorted();
@@ -101,10 +105,13 @@ sealed class BiblePointer {
   }
 }
 
-class VerseBiblePointer implements BiblePointer {
+class VerseBiblePointer extends Equatable implements BiblePointer {
   final Reference reference;
 
   const VerseBiblePointer({required this.reference});
+
+  @override
+  List<Object?> get props => [reference];
 
   @override
   Reference get startReference => reference;
@@ -139,10 +146,13 @@ class VerseBiblePointer implements BiblePointer {
   }
 }
 
-class ChapterBiblePointer implements BiblePointer {
+class ChapterBiblePointer extends Equatable implements BiblePointer {
   final ChapterReference reference;
 
   const ChapterBiblePointer({required this.reference});
+
+  @override
+  List<Object?> get props => [reference];
 
   @override
   Reference get startReference => reference.getReference(1);

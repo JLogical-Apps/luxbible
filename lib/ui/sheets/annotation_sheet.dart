@@ -1,6 +1,5 @@
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/color_enum.dart';
-import 'package:bible/models/reference/region.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
@@ -79,26 +78,29 @@ class NewAnnotationSheet {
   static Future<Annotation?> show(
     BuildContext context,
     WidgetRef ref, {
-    required Region region,
+    required AnnotationSelection selection,
     Function()? onAnnotationsRemoved,
-  }) {
+  }) async {
     final user = ref.read(userProvider);
-    final bible = ref.read(bibleProvider);
-
-    final hasAnnotation = region.when(
-      verseSelection: (verseSelection) => user.isVerseSelectionAnnotated(verseSelection),
-      textSelection: (textSelection) => user.isTextSelectionAnnotated(textSelection),
-      chapterReference: (reference) => throw UnimplementedError(),
+    final selectionText = await ref.read(
+      annotationSelectionTextProvider(translation: user.translation, selection: selection).future,
     );
+
+    final hasAnnotation = selection.when(
+      verses: (verseSelection) => user.isVerseSelectionAnnotated(verseSelection),
+      text: (textSelection) => user.isTextSelectionAnnotated(textSelection),
+    );
+
+    if (!context.mounted) return null;
 
     return AnnotationSheet.show(
       context,
       ref,
-      selection: .fromRegion(region),
-      subtitle: region.format(bible).toText(),
+      selection: selection,
+      subtitle: selectionText.toText(),
       onRemove: hasAnnotation
           ? (context) {
-              ref.updateUser((user) => user.withRemovedRegionAnnotations(region));
+              ref.updateUser((user) => user.withRemovedSelectionAnnotations(selection));
               onAnnotationsRemoved?.call();
               context.pop();
             }

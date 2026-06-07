@@ -1,4 +1,5 @@
 import 'package:bible/models/bible/word.dart';
+import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:utils_core/utils_core.dart';
 
@@ -9,10 +10,8 @@ part 'verse.g.dart';
 sealed class Verse with _$Verse {
   const Verse._();
 
-  const factory Verse({
-    @JsonKey(name: 'n') required int verseNum,
-    @JsonKey(name: 'w') required List<Word> words,
-  }) = _Verse;
+  const factory Verse({@JsonKey(name: 'n') required int verseNum, @JsonKey(name: 'w') required List<Word> words}) =
+      _Verse;
 
   factory Verse.fromJson(Map<String, dynamic> json) => _$VerseFromJson(json);
 
@@ -25,4 +24,17 @@ sealed class Verse with _$Verse {
     verseNum: verseNum,
     words: words.skipWhile((word) => word.text?.isBlank == true && word.data == null).toList(),
   );
+}
+
+extension IterableVerseExtensions on Iterable<Verse> {
+  String getTextSelectionText(BibleTextSelection selection) {
+    final verseTexts = map((verse) => verse.text).toList();
+    verseTexts[verseTexts.length - 1] = verseTexts[verseTexts.length - 1].substring(
+      0,
+      selection.end.characterOffset + 1,
+    );
+    verseTexts[0] = verseTexts[0].substring(selection.start.characterOffset);
+
+    return verseTexts.join(' ');
+  }
 }

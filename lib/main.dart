@@ -30,7 +30,9 @@ Future<void> main() async {
       await registerLicenses();
 
       final bibles = await Future.wait(
-        BibleTranslation.values.map((translation) => BibleImporter().importBible(translation: translation)),
+        BibleTranslation.values
+            .where((translation) => translation.isLocal)
+            .map((translation) => BibleImporter().importBible(translation: translation)),
       );
       final commentaries = await CommentaryImporter().import();
       final strongs = await StrongImporter().import();
@@ -43,7 +45,7 @@ Future<void> main() async {
       runApp(
         ProviderScope(
           overrides: [
-            biblesProvider.overrideWith((ref) => bibles),
+            localBiblesProvider.overrideWith((ref) => bibles),
             strongsProvider.overrideWith((ref) => strongs),
             crossReferencesProvider.overrideWith((ref) => crossReferences),
             commentariesProvider.overrideWith((ref) => [commentaries]),

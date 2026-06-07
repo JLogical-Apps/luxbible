@@ -1,6 +1,8 @@
+import 'package:bible/models/annotation.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/sheets/study_sheet.dart';
@@ -42,14 +44,12 @@ enum VerseSelectionAction {
     required Function() onDeselect,
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) async {
-    final bible = ref.read(bibleProvider);
-
     switch (this) {
       case annotate:
         final annotation = await NewAnnotationSheet.show(
           context,
           ref,
-          region: selectedVerseSelection,
+          selection: AnnotationSelection.verses(verseSelection: selectedVerseSelection),
           onAnnotationsRemoved: onDeselect,
         );
         if (annotation != null) {
@@ -57,15 +57,17 @@ enum VerseSelectionAction {
           ref.updateUser((user) => user.withAnnotation(annotation));
         }
       case copy:
+        final user = ref.read(userProvider);
+        final text = await ref.read(
+          verseSelectionTextProvider(selection: selectedVerseSelection, translation: user.translation).future,
+        );
+
+        if (!context.mounted) return;
+
         onDeselect();
         context.showStyledSnackbar(messageText: '${selectedVerseSelection.format()} copied to clipboard.');
         await Clipboard.setData(
-          ClipboardData(
-            text: selectedVerseSelection.references
-                .map((reference) => bible.getVerseByReference(reference)?.text)
-                .nonNulls
-                .join(),
-          ),
+          ClipboardData(text: selectedVerseSelection.references.map((reference) => text).nonNulls.join()),
         );
       case study:
         StudySheet.show(

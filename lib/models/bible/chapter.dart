@@ -1,6 +1,10 @@
 import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/models/bible/verse.dart';
 import 'package:bible/models/bible/word.dart';
+import 'package:bible/models/reference/bible_text_selection.dart';
+import 'package:bible/models/reference/reference.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
+import 'package:bible/utils/range.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intersperse/intersperse.dart';
@@ -34,4 +38,32 @@ sealed class Chapter with _$Chapter {
           words: verses.map((word) => word.words).intersperse([Word(text: ' ', data: null)]).flattenedToList,
         ),
       );
+
+  Verse? getVerseByReference(Reference reference) => verses[reference.verseNum];
+
+  BibleTextSelection getWordsSelection(BibleTextSelection selection) {
+    final startVerseText = getVerseByReference(selection.start.toReference())!.text;
+    final endVerseText = getVerseByReference(selection.end.toReference())!.text;
+    return BibleTextSelection(
+      translation: selection.translation,
+      start: BibleTextSelectionWordAnchor.fromReference(
+        reference: selection.start.toReference(),
+        characterOffset:
+            List.generate(
+              selection.start.characterOffset,
+              (i) => i,
+            ).where((offset) => startVerseText[offset] == ' ').lastOrNull?.mapIfNonNull((offset) => offset + 1) ??
+            0,
+      ),
+      end: BibleTextSelectionWordAnchor.fromReference(
+        reference: selection.end.toReference(),
+        characterOffset:
+            Range.generate(
+              selection.end.characterOffset,
+              endVerseText.length - 1,
+            ).where((offset) => endVerseText[offset].isLetterOnly).firstOrNull?.mapIfNonNull((offset) => offset - 1) ??
+            endVerseText.length - 1,
+      ),
+    );
+  }
 }

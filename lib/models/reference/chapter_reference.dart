@@ -18,6 +18,8 @@ class ChapterReference extends Equatable with ComparableOperators<ChapterReferen
     return ChapterReference(book: BookType.fromOsisId(items[0]), chapterNum: int.parse(items[1]));
   }
 
+  factory ChapterReference.fromBibleChapterIndex(int index) => values[index];
+
   factory ChapterReference.fromJson(String json) = ChapterReference.fromOsisId;
   String toJson() => osisId();
 
@@ -40,6 +42,14 @@ class ChapterReference extends Equatable with ComparableOperators<ChapterReferen
   List<Reference> get references => List.generate(numVerses, (i) => getReference(i + 1));
 
   int get numVerses => book.bookInfo.getNumVerses(chapterNum);
+
+  static final List<ChapterReference> values = BookType.values
+      .expand(
+        (book) => List.generate(book.bookInfo.numChapters, (i) => ChapterReference(book: book, chapterNum: i + 1)),
+      )
+      .toList();
+
+  int get bibleChapterIndex => values.indexOf(this);
 
   BiblePointer asPointer() => ChapterBiblePointer(reference: this);
 }

@@ -9,25 +9,25 @@ part of 'bibles_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(bibles)
-final biblesProvider = BiblesProvider._();
+@ProviderFor(localBibles)
+final localBiblesProvider = LocalBiblesProvider._();
 
-final class BiblesProvider
+final class LocalBiblesProvider
     extends $FunctionalProvider<List<Bible>, List<Bible>, List<Bible>>
     with $Provider<List<Bible>> {
-  BiblesProvider._()
+  LocalBiblesProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'biblesProvider',
+        name: r'localBiblesProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$biblesHash();
+  String debugGetCreateSourceHash() => _$localBiblesHash();
 
   @$internal
   @override
@@ -36,7 +36,7 @@ final class BiblesProvider
 
   @override
   List<Bible> create(Ref ref) {
-    return bibles(ref);
+    return localBibles(ref);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -48,7 +48,7 @@ final class BiblesProvider
   }
 }
 
-String _$biblesHash() => r'd9b5f3b04a77a7a337c9394fc946d2fba0e2f388';
+String _$localBiblesHash() => r'1141358574dac76bbd5c3f4e8d018bc961423452';
 
 @ProviderFor(studyBible)
 final studyBibleProvider = StudyBibleProvider._();
@@ -88,44 +88,418 @@ final class StudyBibleProvider extends $FunctionalProvider<Bible, Bible, Bible>
   }
 }
 
-String _$studyBibleHash() => r'b09836042fdbea9586ce083dd8d247ae59e871cb';
+String _$studyBibleHash() => r'3bcffe137162ac12b82a06798f22d98ee86b8776';
 
-@ProviderFor(bible)
-final bibleProvider = BibleProvider._();
+@ProviderFor(chapter)
+final chapterProvider = ChapterFamily._();
 
-final class BibleProvider extends $FunctionalProvider<Bible, Bible, Bible>
-    with $Provider<Bible> {
-  BibleProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'bibleProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
+final class ChapterProvider
+    extends $FunctionalProvider<AsyncValue<Chapter>, Chapter, FutureOr<Chapter>>
+    with $FutureModifier<Chapter>, $FutureProvider<Chapter> {
+  ChapterProvider._({
+    required ChapterFamily super.from,
+    required ({ChapterReference chapterReference, BibleTranslation translation})
+    super.argument,
+  }) : super(
+         retry: null,
+         name: r'chapterProvider',
+         isAutoDispose: false,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
-  String debugGetCreateSourceHash() => _$bibleHash();
+  String debugGetCreateSourceHash() => _$chapterHash();
+
+  @override
+  String toString() {
+    return r'chapterProvider'
+        ''
+        '$argument';
+  }
 
   @$internal
   @override
-  $ProviderElement<Bible> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $FutureProviderElement<Chapter> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
 
   @override
-  Bible create(Ref ref) {
-    return bible(ref);
+  FutureOr<Chapter> create(Ref ref) {
+    final argument =
+        this.argument
+            as ({
+              ChapterReference chapterReference,
+              BibleTranslation translation,
+            });
+    return chapter(
+      ref,
+      chapterReference: argument.chapterReference,
+      translation: argument.translation,
+    );
   }
 
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(Bible value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<Bible>(value),
-    );
+  @override
+  bool operator ==(Object other) {
+    return other is ChapterProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
   }
 }
 
-String _$bibleHash() => r'22cc573b54b33b94108f8c723bbe3454d36ff0af';
+String _$chapterHash() => r'8b51ede949945eefe7b0d255ec1a96ec0422d7d1';
+
+final class ChapterFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<Chapter>,
+          ({ChapterReference chapterReference, BibleTranslation translation})
+        > {
+  ChapterFamily._()
+    : super(
+        retry: null,
+        name: r'chapterProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: false,
+      );
+
+  ChapterProvider call({
+    required ChapterReference chapterReference,
+    required BibleTranslation translation,
+  }) => ChapterProvider._(
+    argument: (chapterReference: chapterReference, translation: translation),
+    from: this,
+  );
+
+  @override
+  String toString() => r'chapterProvider';
+}
+
+@ProviderFor(verse)
+final verseProvider = VerseFamily._();
+
+final class VerseProvider
+    extends $FunctionalProvider<AsyncValue<Verse?>, Verse?, FutureOr<Verse?>>
+    with $FutureModifier<Verse?>, $FutureProvider<Verse?> {
+  VerseProvider._({
+    required VerseFamily super.from,
+    required ({Reference reference, BibleTranslation translation})
+    super.argument,
+  }) : super(
+         retry: null,
+         name: r'verseProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$verseHash();
+
+  @override
+  String toString() {
+    return r'verseProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<Verse?> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<Verse?> create(Ref ref) {
+    final argument =
+        this.argument as ({Reference reference, BibleTranslation translation});
+    return verse(
+      ref,
+      reference: argument.reference,
+      translation: argument.translation,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is VerseProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$verseHash() => r'c136323f49ffa765af98a44e6def534414ec0d27';
+
+final class VerseFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<Verse?>,
+          ({Reference reference, BibleTranslation translation})
+        > {
+  VerseFamily._()
+    : super(
+        retry: null,
+        name: r'verseProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  VerseProvider call({
+    required Reference reference,
+    required BibleTranslation translation,
+  }) => VerseProvider._(
+    argument: (reference: reference, translation: translation),
+    from: this,
+  );
+
+  @override
+  String toString() => r'verseProvider';
+}
+
+@ProviderFor(verseSelectionText)
+final verseSelectionTextProvider = VerseSelectionTextFamily._();
+
+final class VerseSelectionTextProvider
+    extends $FunctionalProvider<AsyncValue<String>, String, FutureOr<String>>
+    with $FutureModifier<String>, $FutureProvider<String> {
+  VerseSelectionTextProvider._({
+    required VerseSelectionTextFamily super.from,
+    required ({VerseSelection selection, BibleTranslation translation})
+    super.argument,
+  }) : super(
+         retry: null,
+         name: r'verseSelectionTextProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$verseSelectionTextHash();
+
+  @override
+  String toString() {
+    return r'verseSelectionTextProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<String> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<String> create(Ref ref) {
+    final argument =
+        this.argument
+            as ({VerseSelection selection, BibleTranslation translation});
+    return verseSelectionText(
+      ref,
+      selection: argument.selection,
+      translation: argument.translation,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is VerseSelectionTextProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$verseSelectionTextHash() =>
+    r'efbb5720f6f9c081d8d8f48d7c6a8af8a47dc16f';
+
+final class VerseSelectionTextFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<String>,
+          ({VerseSelection selection, BibleTranslation translation})
+        > {
+  VerseSelectionTextFamily._()
+    : super(
+        retry: null,
+        name: r'verseSelectionTextProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  VerseSelectionTextProvider call({
+    required VerseSelection selection,
+    required BibleTranslation translation,
+  }) => VerseSelectionTextProvider._(
+    argument: (selection: selection, translation: translation),
+    from: this,
+  );
+
+  @override
+  String toString() => r'verseSelectionTextProvider';
+}
+
+@ProviderFor(textSelectionText)
+final textSelectionTextProvider = TextSelectionTextFamily._();
+
+final class TextSelectionTextProvider
+    extends $FunctionalProvider<AsyncValue<String>, String, FutureOr<String>>
+    with $FutureModifier<String>, $FutureProvider<String> {
+  TextSelectionTextProvider._({
+    required TextSelectionTextFamily super.from,
+    required BibleTextSelection super.argument,
+  }) : super(
+         retry: null,
+         name: r'textSelectionTextProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$textSelectionTextHash();
+
+  @override
+  String toString() {
+    return r'textSelectionTextProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<String> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<String> create(Ref ref) {
+    final argument = this.argument as BibleTextSelection;
+    return textSelectionText(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is TextSelectionTextProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$textSelectionTextHash() => r'26b030bc6261ea7b6d2847a30150548dc720ba6e';
+
+final class TextSelectionTextFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<String>, BibleTextSelection> {
+  TextSelectionTextFamily._()
+    : super(
+        retry: null,
+        name: r'textSelectionTextProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  TextSelectionTextProvider call(BibleTextSelection selection) =>
+      TextSelectionTextProvider._(argument: selection, from: this);
+
+  @override
+  String toString() => r'textSelectionTextProvider';
+}
+
+@ProviderFor(annotationSelectionText)
+final annotationSelectionTextProvider = AnnotationSelectionTextFamily._();
+
+final class AnnotationSelectionTextProvider
+    extends $FunctionalProvider<AsyncValue<String>, String, FutureOr<String>>
+    with $FutureModifier<String>, $FutureProvider<String> {
+  AnnotationSelectionTextProvider._({
+    required AnnotationSelectionTextFamily super.from,
+    required ({AnnotationSelection selection, BibleTranslation translation})
+    super.argument,
+  }) : super(
+         retry: null,
+         name: r'annotationSelectionTextProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$annotationSelectionTextHash();
+
+  @override
+  String toString() {
+    return r'annotationSelectionTextProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<String> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<String> create(Ref ref) {
+    final argument =
+        this.argument
+            as ({AnnotationSelection selection, BibleTranslation translation});
+    return annotationSelectionText(
+      ref,
+      selection: argument.selection,
+      translation: argument.translation,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is AnnotationSelectionTextProvider &&
+        other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$annotationSelectionTextHash() =>
+    r'6464b06e6da2ca41b3fd9328d1cb5ca8f1b74c14';
+
+final class AnnotationSelectionTextFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<String>,
+          ({AnnotationSelection selection, BibleTranslation translation})
+        > {
+  AnnotationSelectionTextFamily._()
+    : super(
+        retry: null,
+        name: r'annotationSelectionTextProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  AnnotationSelectionTextProvider call({
+    required AnnotationSelection selection,
+    required BibleTranslation translation,
+  }) => AnnotationSelectionTextProvider._(
+    argument: (selection: selection, translation: translation),
+    from: this,
+  );
+
+  @override
+  String toString() => r'annotationSelectionTextProvider';
+}

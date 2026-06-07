@@ -10,9 +10,6 @@ import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
-import 'package:bible/utils/extensions/object_extensions.dart';
-import 'package:bible/utils/extensions/string_extensions.dart';
-import 'package:bible/utils/range.dart';
 import 'package:collection/collection.dart';
 import 'package:utils_core/utils_core.dart';
 
@@ -69,32 +66,6 @@ class Bible {
     verseTexts[0] = verseTexts[0].substring(selection.start.characterOffset);
 
     return verseTexts.join(' ');
-  }
-
-  BibleTextSelection getWordsSelection(BibleTextSelection selection) {
-    final startVerseText = getVerseByReference(selection.start.toReference())!.text;
-    final endVerseText = getVerseByReference(selection.end.toReference())!.text;
-    return BibleTextSelection(
-      translation: translation,
-      start: BibleTextSelectionWordAnchor.fromReference(
-        reference: selection.start.toReference(),
-        characterOffset:
-            List.generate(
-              selection.start.characterOffset,
-              (i) => i,
-            ).where((offset) => startVerseText[offset] == ' ').lastOrNull?.mapIfNonNull((offset) => offset + 1) ??
-            0,
-      ),
-      end: BibleTextSelectionWordAnchor.fromReference(
-        reference: selection.end.toReference(),
-        characterOffset:
-            Range.generate(
-              selection.end.characterOffset,
-              endVerseText.length - 1,
-            ).where((offset) => endVerseText[offset].isLetterOnly).firstOrNull?.mapIfNonNull((offset) => offset - 1) ??
-            endVerseText.length - 1,
-      ),
-    );
   }
 
   List<Word> getTextSelectionWords(BibleTextSelection selection) {

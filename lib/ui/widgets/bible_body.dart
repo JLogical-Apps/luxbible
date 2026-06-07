@@ -36,14 +36,13 @@ class BibleBody extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final bible = ref.watch(bibleProvider);
 
     final initialReference = user.lastReference;
 
-    final pageController = usePageController(initialPage: bible.getPageIndexByChapterReference(initialReference));
+    final pageController = usePageController(initialPage: initialReference.bibleChapterIndex);
 
-    final currentPage = (pageController.pageOrNull ?? bible.getPageIndexByChapterReference(initialReference)).round();
-    final currentChapterReference = bible.getChapterReferenceByPageIndex(currentPage);
+    final currentPage = (pageController.pageOrNull ?? initialReference.bibleChapterIndex).round();
+    final currentChapterReference = ChapterReference.fromBibleChapterIndex(currentPage);
 
     final navigationHistoryState = useState(
       NavigationHistory(
@@ -89,8 +88,7 @@ class BibleBody extends HookConsumerWidget {
     }
 
     void hardNavigateTo(ChapterReference reference, {String? bookmarkId, bool updateNavigationState = true}) {
-      final pageIndex = bible.getPageIndexByChapterReference(reference);
-      pageController.jumpToPage(pageIndex);
+      pageController.jumpToPage(reference.bibleChapterIndex);
       ref.updateUser((user) => user.withHardNavigation(reference, bookmarkId: bookmarkId));
       if (updateNavigationState) {
         navigationHistoryState.value = navigationHistoryState.value.withPush(
@@ -105,6 +103,7 @@ class BibleBody extends HookConsumerWidget {
       textSelectionState.value = null;
       selectedReferencesState.value = verseSelection.references;
 
+      await ref.read(chapterProvider(translation: user.translation, chapterReference: chapterReference).future);
       await Future.delayed(Duration(milliseconds: 200));
 
       final verseContext = keyByReferenceRef.value[verseSelection.references.first]?.currentContext;
@@ -130,7 +129,7 @@ class BibleBody extends HookConsumerWidget {
                 ? pageController.page!.round() + 1
                 : null;
 
-            if (newPageIndex == null || newPageIndex < 0 || newPageIndex >= bible.chapterReferences.length) {
+            if (newPageIndex == null || newPageIndex < 0 || newPageIndex >= ChapterReference.values.length) {
               return;
             }
 
@@ -140,7 +139,7 @@ class BibleBody extends HookConsumerWidget {
               curve: Curves.easeInOutCubic,
             );
 
-            final reference = bible.getChapterReferenceByPageIndex(newPageIndex);
+            final reference = ChapterReference.fromBibleChapterIndex(newPageIndex);
             ref.updateUser((user) => user.withSoftNavigation(reference));
             navigationHistoryState.value = navigationHistoryState.value.withCurrent(
               NavigationState(reference: reference, bookmarkId: user.currentBookmarkId),
@@ -152,10 +151,11 @@ class BibleBody extends HookConsumerWidget {
             physics: NeverScrollableScrollPhysics(),
             onPageChanged: (pageIndex) {
               isScrollingDownState.value = true;
+              selectedReferencesState.value = [];
               textSelectionState.value = null;
             },
             itemBuilder: (context, pageIndex) {
-              final chapterReference = bible.getChapterReferenceByPageIndex(pageIndex);
+              final chapterReference = ChapterReference.fromBibleChapterIndex(pageIndex);
 
               return HookBuilder(
                 builder: (context) {
@@ -192,7 +192,6 @@ class BibleBody extends HookConsumerWidget {
                               Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).top + 24)),
                               ChapterBuilder(
                                 chapterReference: chapterReference,
-                                bible: bible,
                                 user: user,
                                 underlinedReferences: selectedReferencesState.value,
                                 onReferencePressed: (reference) {
@@ -481,39 +480,46 @@ class BibleBody extends HookConsumerWidget {
                                     onDeselect: () => textSelectionState.value = null,
                                     onNavigateToVerseSelection: navigateToVerseSelection,
                                   ),
-                                  onMorePressed: () => context.showStyledSheet(
-                                    (context) => StyledSheet(
-                                      title: 'Text Selection'.toText(),
-                                      subtitle: '"${bible.getTextSelectionText(textSelection)}"'.toText(),
-                                      trailing: StyledCircleButton.lg(
-                                        child: Symbols.tune.toIcon(),
-                                        onPressed: () {
-                                          context.pop();
-                                          context.push(TextSelectionSettingsPage());
-                                        },
+                                  onMorePressed: () async {
+                                    final selectionText = await ref.read(
+                                      textSelectionTextProvider(textSelection).future,
+                                    );
+
+                                    if (!context.mounted) return;
+                                    await context.showStyledSheet(
+                                      (context) => StyledSheet(
+                                        title: 'Text Selection'.toText(),
+                                        subtitle: '"$selectionText"'.toText(),
+                                        trailing: StyledCircleButton.lg(
+                                          child: Symbols.tune.toIcon(),
+                                          onPressed: () {
+                                            context.pop();
+                                            context.push(TextSelectionSettingsPage());
+                                          },
+                                        ),
+                                        children: TextSelectionAction.values
+                                            .map(
+                                              (action) => StyledListItem(
+                                                title: action.title().toText(),
+                                                subtitle: action.description().toText(),
+                                                leading: action.icon.toIcon(),
+                                                trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                  action.onPressed(
+                                                    context,
+                                                    ref,
+                                                    textSelection: textSelection,
+                                                    onDeselect: () => textSelectionState.value = null,
+                                                    onNavigateToVerseSelection: navigateToVerseSelection,
+                                                  );
+                                                },
+                                              ),
+                                            )
+                                            .toList(),
                                       ),
-                                      children: TextSelectionAction.values
-                                          .map(
-                                            (action) => StyledListItem(
-                                              title: action.title().toText(),
-                                              subtitle: action.description().toText(),
-                                              leading: action.icon.toIcon(),
-                                              trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                                action.onPressed(
-                                                  context,
-                                                  ref,
-                                                  textSelection: textSelection,
-                                                  onDeselect: () => textSelectionState.value = null,
-                                                  onNavigateToVerseSelection: navigateToVerseSelection,
-                                                );
-                                              },
-                                            ),
-                                          )
-                                          .toList(),
-                                    ),
-                                  ),
+                                    );
+                                  },
                                 )
                               : null,
                         ),

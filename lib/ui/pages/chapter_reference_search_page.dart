@@ -1,7 +1,6 @@
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
@@ -34,7 +33,6 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final bible = ref.watch(bibleProvider);
 
     final bookTextState = useState(initialReference.book.title());
     final bookTextSelectionState = useState<TextSelection>(
@@ -157,18 +155,20 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                       },
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
-                        if (book != null)
-                          RangeTextInputFormatter(min: 1, max: bible.getBookByType(book).chapters.length),
+                        if (book != null) RangeTextInputFormatter(min: 1, max: book.bookInfo.numChapters),
                       ],
                     ),
                   ),
                   SizedBox(
-                    width: 96,
+                    width: 112,
                     child: StyledSelect(
                       options: BibleTranslation.values,
                       selectedOption: user.translation,
                       onSelected: (translation) => ref.updateUser((user) => user.copyWith(translation: translation)),
-                      optionMapper: (translation) => StyledSelectOption(title: translation.title().toText()),
+                      optionMapper: (translation) => StyledSelectOption(
+                        title: translation.title().toText(),
+                        subtitle: translation.fullName().toText(),
+                      ),
                       dialogTitle: 'Bible Translation',
                     ),
                   ),
@@ -281,7 +281,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                     controller: scrollController,
                     children:
                         List.generate(
-                              bible.getBookByType(book).chapters.length,
+                              book.bookInfo.numChapters,
                               (chapterIndex) => ChapterReference(book: book, chapterNum: chapterIndex + 1),
                             )
                             .where(

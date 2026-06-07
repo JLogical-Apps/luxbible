@@ -1,8 +1,8 @@
+import 'package:bible/models/annotation.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/style/style.dart';
-import 'package:bible/style/widgets/dialog/styled_dialog.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
@@ -51,11 +51,9 @@ enum TextSelectionAction {
     required Function() onDeselect,
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) async {
-    final bible = ref.read(bibleProvider);
-
     switch (this) {
       case interlinear:
-        if (bible.translation != .bsb) {
+        if (textSelection.translation != .bsb) {
           context.showStyledDialog(
             (context) => StyledDialog.confirm(
               title: 'Interlinear'.toText(),
@@ -67,7 +65,8 @@ enum TextSelectionAction {
           return;
         }
 
-        final studyWords = bible.getTextSelectionWords(textSelection).where((word) => word.data != null).toList();
+        final studyBible = ref.read(studyBibleProvider);
+        final studyWords = studyBible.getTextSelectionWords(textSelection).where((word) => word.data != null).toList();
         if (studyWords.isEmpty) {
           context.showStyledSnackbar(messageText: 'No interlinear words found in this selection.');
           return;
@@ -104,7 +103,7 @@ enum TextSelectionAction {
         final annotation = await NewAnnotationSheet.show(
           context,
           ref,
-          region: textSelection,
+          selection: AnnotationSelection.text(textSelection: textSelection),
           onAnnotationsRemoved: onDeselect,
         );
         if (annotation != null) {
@@ -112,19 +111,23 @@ enum TextSelectionAction {
           ref.updateUser((user) => user.withAnnotation(annotation));
         }
       case search:
+        final text = await ref.read(textSelectionTextProvider(textSelection).future);
+
+        if (!context.mounted) return;
+
         final result = await context.push<SearchPageResult>(
-          SearchPage(
-            initialSearch: bible.getTextSelectionText(textSelection),
-            currentChapterReference: textSelection.start.toChapterReference(),
-          ),
+          SearchPage(initialSearch: text, currentChapterReference: textSelection.start.toChapterReference()),
         );
         if (result != null) {
           onNavigateToVerseSelection(VerseSelection.reference(result.reference));
         }
       case copy:
+        final text = await ref.read(textSelectionTextProvider(textSelection).future);
         onDeselect();
+
+        if (!context.mounted) return;
         context.showStyledSnackbar(messageText: 'Text selection copied to clipboard.');
-        await Clipboard.setData(ClipboardData(text: bible.getTextSelectionText(textSelection)));
+        await Clipboard.setData(ClipboardData(text: text));
     }
   }
 }

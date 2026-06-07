@@ -34,8 +34,9 @@ class SearchPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final bible = ref.watch(bibleProvider);
+    final localBibles = ref.watch(localBiblesProvider);
     final studyBible = ref.watch(studyBibleProvider);
+    final localBible = localBibles.firstWhereOrNull((bible) => bible.translation == user.translation) ?? studyBible;
 
     final strongs = ref.watch(strongsProvider);
 
@@ -52,7 +53,7 @@ class SearchPage extends HookConsumerWidget {
         return [];
       }
 
-      final validReferences = bible.references
+      final validReferences = localBible.references
           .where((reference) => locations.isEmpty || locations.any((filter) => filter.passes(reference)))
           .toList();
 
@@ -68,7 +69,7 @@ class SearchPage extends HookConsumerWidget {
           : validReferences
                 .where(
                   (reference) =>
-                      bible.getVerseByReference(reference)?.searchTerms.containsInOrder(searchTerms) ?? false,
+                      localBible.getVerseByReference(reference)?.searchTerms.containsInOrder(searchTerms) ?? false,
                 )
                 .toList();
     }
@@ -115,6 +116,20 @@ class SearchPage extends HookConsumerWidget {
                     search();
                   },
                   currentBook: currentChapterReference?.book,
+                ),
+                StyledBanner(
+                  leading: Symbols.book.toIcon(),
+                  message: 'Using BSB for search'.toText(),
+                  action: StyledTextAction(
+                    label: 'Learn More'.toText(),
+                    onPressed: () => context.showStyledDialog(
+                      (context) => StyledDialog.confirm(
+                        title: 'Search Translations'.toText(),
+                        body: '${user.translation.title()} does not currently support search. Using BSB instead.'
+                            .toText(),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -196,7 +211,7 @@ class SearchPage extends HookConsumerWidget {
                           ),
                         ),
                     ...searchResults.map((result) {
-                      final verse = bible.getVerseByReference(result);
+                      final verse = localBible.getVerseByReference(result);
                       if (verse == null) {
                         return null;
                       }
@@ -206,7 +221,7 @@ class SearchPage extends HookConsumerWidget {
                         subtitle: searchState.value.trim().isStrongId
                             ? VerseText(verse: verse, highlightStrongId: searchState.value.trim())
                             : SubstringHighlight(
-                                text: bible.getVerseByReference(result)?.text ?? '',
+                                text: localBible.getVerseByReference(result)?.text ?? '',
                                 term: searchState.value,
                                 words: true,
                                 textStyle: context.textStyle.paragraphSm.subtle(),

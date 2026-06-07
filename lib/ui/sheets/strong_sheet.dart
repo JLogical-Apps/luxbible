@@ -5,7 +5,6 @@ import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
-import 'package:bible/style/widgets/dialog/styled_dialog.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';

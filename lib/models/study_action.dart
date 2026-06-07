@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
@@ -7,8 +8,6 @@ import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
-import 'package:bible/style/styled_text_action.dart';
-import 'package:bible/style/widgets/dialog/styled_dialog.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
@@ -58,36 +57,41 @@ enum StudyAction {
     required ReferencesRegion region,
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) async {
-    final bibles = ref.read(biblesProvider);
-    final bible = ref.read(bibleProvider);
-
     switch (this) {
       case compare:
         context.showStyledSheet(
           (context) => StyledSheet(
             title: 'Compare'.toText(),
             subtitle: region.format().toText(),
-            children: bibles
+            children: BibleTranslation.values
                 .mapIndexed<Widget>(
-                  (i, bible) => Stack(
-                    children: [
-                      StyledStickyHeader.child(
-                        title: bible.translation.title().toText(),
-                        child: Padding(
-                          padding: .only(bottom: 16),
-                          child: bible.getVerseSelectionText(region.toVerseSelection()).toText(),
-                        ),
-                      ),
-                      if (i + 1 < bibles.length)
-                        Positioned(bottom: 0, left: 0, right: 0, child: StyledDivider(height: 2)),
-                    ],
+                  (i, translation) => Consumer(
+                    builder: (context, ref, child) {
+                      final text = ref
+                          .watch(
+                            verseSelectionTextProvider(selection: region.toVerseSelection(), translation: translation),
+                          )
+                          .value;
+                      return Stack(
+                        children: [
+                          StyledStickyHeader.child(
+                            title: translation.title().toText(),
+                            child: StyledLoading(
+                              child: text == null ? null : Padding(padding: .only(bottom: 16), child: text.toText()),
+                            ),
+                          ),
+                          if (i + 1 < BibleTranslation.values.length)
+                            Positioned(bottom: 0, left: 0, right: 0, child: StyledDivider(height: 2)),
+                        ],
+                      );
+                    },
                   ),
                 )
                 .toList(),
           ),
         );
       case interlinear:
-        final interlinearBible = bibles.firstWhere((bible) => bible.translation == .bsb);
+        final studyBible = ref.read(studyBibleProvider);
 
         context.showStyledSheetWithBreadcrumbs(breadcrumbText: region.format(), (context) {
           final user = ref.watch(userProvider); // User can be update tab preference
@@ -146,7 +150,7 @@ enum StudyAction {
                 ),
               ),
               ...region.references.mapIndexed((i, reference) {
-                final verse = interlinearBible.getVerseByReference(reference);
+                final verse = studyBible.getVerseByReference(reference);
                 if (verse == null) {
                   return null;
                 }
@@ -212,7 +216,8 @@ enum StudyAction {
           ),
         );
       case crossReferences:
-        final crossReferences = ref.watch(crossReferencesProvider);
+        final user = ref.read(userProvider);
+        final crossReferences = ref.read(crossReferencesProvider);
         final relatedCrossReferences = crossReferences.where(
           (reference, crossReferences) => region.references.contains(reference),
         );
@@ -233,19 +238,26 @@ enum StudyAction {
                           title: reference.format().toText(),
                           children: crossReferences
                               .map(
-                                (references) => StyledListItem(
-                                  title: references.toVerseSelection().format().toText(),
-                                  subtitle: bible
-                                      .getVersesBySpan(references)
-                                      .map((verse) => verse.text)
-                                      .join(' ')
-                                      .replaceAll(RegExp(r' +'), ' ')
-                                      .toText(),
-                                  onPressed: () {
-                                    context.pop();
-                                    onNavigateToVerseSelection(references.toVerseSelection());
+                                (references) => Consumer(
+                                  builder: (context, ref, child) {
+                                    final verses = ref
+                                        .watch(
+                                          verseSelectionTextProvider(
+                                            translation: user.translation,
+                                            selection: references.toVerseSelection(),
+                                          ),
+                                        )
+                                        .value;
+                                    return StyledListItem(
+                                      title: references.toVerseSelection().format().toText(),
+                                      subtitle: StyledLoading(child: verses?.toText()),
+                                      onPressed: () {
+                                        context.pop();
+                                        onNavigateToVerseSelection(references.toVerseSelection());
+                                      },
+                                      trailing: Symbols.expand_circle_right.toIcon(),
+                                    );
                                   },
-                                  trailing: Symbols.expand_circle_right.toIcon(),
                                 ),
                               )
                               .toList(),

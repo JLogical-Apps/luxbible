@@ -3,8 +3,9 @@ import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:collection/collection.dart';
+import 'package:equatable/equatable.dart';
 
-class VerseSelection implements ReferencesRegion {
+class VerseSelection extends Equatable implements ReferencesRegion {
   final List<VerseSpanReference> spans;
 
   const VerseSelection({required this.spans});
@@ -18,6 +19,9 @@ class VerseSelection implements ReferencesRegion {
   factory VerseSelection.reference(Reference reference) => VerseSelection(
     spans: [VerseSpanReference(start: VerseBiblePointer(reference: reference))],
   );
+
+  @override
+  List<Object?> get props => [spans];
 
   factory VerseSelection.fromJson(String json) = VerseSelection.fromOsisId;
   String toJson() => osisId();

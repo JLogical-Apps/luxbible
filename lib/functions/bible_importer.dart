@@ -15,6 +15,7 @@ class BibleImporter {
   Future<Bible> importBible({required BibleTranslation translation}) async => switch (translation) {
     .kjv || .asv => await parseJsonBible(translation: translation),
     .bsb => await parseBsbJsonBible(translation: translation),
+    _ => throw UnimplementedError(),
   };
 
   Future<Bible> parseJsonBible({required BibleTranslation translation}) async {
