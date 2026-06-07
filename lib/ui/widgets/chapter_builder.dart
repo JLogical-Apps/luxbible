@@ -18,8 +18,10 @@ import 'package:bible/ui/widgets/annotated_span.dart';
 import 'package:bible/ui/widgets/sized_widget_span.dart';
 import 'package:bible/ui/widgets/underline.dart';
 import 'package:bible/utils/extensions/color_extensions.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
 import 'package:bible/utils/extensions/rect_extensions.dart';
+import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/span_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:collection/collection.dart';
@@ -61,7 +63,33 @@ class ChapterBuilder extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chapter = ref.watch(chapterProvider(translation: user.translation, chapterReference: chapterReference)).value;
+    final chapterRaw = ref.watch(chapterProvider(translation: user.translation, chapterReference: chapterReference));
+    if (chapterRaw.hasError) {
+      return Column(
+        spacing: 12,
+        children: [
+          StyledTile.message(
+            leading: Symbols.error.toIcon(),
+            title: 'Something went wrong'.toText(),
+            subtitle: 'Make sure you are connected to the internet or try again later.'.toText(),
+          ),
+          if (user.translation != .bsb)
+            StyledRectButton.secondary(
+              label: 'Switch to BSB'.toText(),
+              onPressed: () => ref.updateUser((user) => user.copyWith(translation: .bsb)),
+            ),
+          StyledRectButton.secondary(
+            label: 'Try Again'.toText(),
+            onPressed: () => ref.invalidate(
+              chapterProvider(translation: user.translation, chapterReference: chapterReference),
+              asReload: true,
+            ),
+          ),
+        ],
+      );
+    }
+
+    final chapter = chapterRaw.value;
     if (chapter == null) {
       return SizedBox.shrink();
     }
@@ -92,237 +120,249 @@ class ChapterBuilder extends HookConsumerWidget {
     BibleTextSelectionWordAnchor? getAnchorAtGlobalPosition(Offset globalPosition) =>
         paragraphHitTesters.map((tester) => tester.getAnchorAt(globalPosition)).nonNulls.firstOrNull;
 
-    return GestureDetector(
-      onLongPressStart: (details) {
-        final anchor = getAnchorAtGlobalPosition(details.globalPosition);
-        if (anchor == null) return;
+    return Column(
+      crossAxisAlignment: .start,
+      spacing: 12,
+      children: [
+        GestureDetector(
+          onLongPressStart: (details) {
+            final anchor = getAnchorAtGlobalPosition(details.globalPosition);
+            if (anchor == null) return;
 
-        final wordTextSelection = chapter.getWordsSelection(
-          BibleTextSelection.character(anchor: anchor, translation: user.translation),
-        );
+            final wordTextSelection = chapter.getWordsSelection(
+              BibleTextSelection.character(anchor: anchor, translation: user.translation),
+            );
 
-        if (!onHandleLongPress(wordTextSelection)) {
-          return;
-        }
+            if (!onHandleLongPress(wordTextSelection)) {
+              return;
+            }
 
-        onTextSelectionUpdated?.call(wordTextSelection, true);
-        textSelectionStartAnchorState.value = anchor;
-      },
-      onLongPressMoveUpdate: (details) {
-        final startAnchor = textSelectionStartAnchorState.value;
-        if (startAnchor == null) return;
+            onTextSelectionUpdated?.call(wordTextSelection, true);
+            textSelectionStartAnchorState.value = anchor;
+          },
+          onLongPressMoveUpdate: (details) {
+            final startAnchor = textSelectionStartAnchorState.value;
+            if (startAnchor == null) return;
 
-        final anchor = getAnchorAtGlobalPosition(details.globalPosition);
-        if (anchor == null) return;
+            final anchor = getAnchorAtGlobalPosition(details.globalPosition);
+            if (anchor == null) return;
 
-        final anchors = [startAnchor, anchor]..sort();
-        final wordsTextSelection = chapter.getWordsSelection(
-          BibleTextSelection(start: anchors.first, end: anchors.last, translation: user.translation),
-        );
-        onTextSelectionUpdated?.call(wordsTextSelection, false);
-      },
-      onLongPressEnd: (_) => textSelectionStartAnchorState.value = null,
-      onTapUp: (details) {
-        final anchor = getAnchorAtGlobalPosition(details.globalPosition);
-        if (anchor != null) {
-          onReferencePressed?.call(anchor.toReference());
-        } else {
-          onTextSelectionUpdated?.call(null, true);
-        }
-      },
-      child: Column(
-        crossAxisAlignment: .stretch,
-        children: getParagraphSpansByParagraph(context, ref, chapter: chapter, keyByReference: keyByReference)
-            .where((entry) => entry.value.isNotEmpty)
-            .mapEntries(
-              (paragraph, paragraphSpans) => Padding(
-                padding: user.themeLayout.paragraphs ? paragraph.as<VersesParagraph>()?.type.padding ?? .zero : .zero,
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    final textKey = GlobalKey(
-                      debugLabel: paragraph.as<VersesParagraph>()?.verses.first.verseNum.toString(),
-                    );
+            final anchors = [startAnchor, anchor]..sort();
+            final wordsTextSelection = chapter.getWordsSelection(
+              BibleTextSelection(start: anchors.first, end: anchors.last, translation: user.translation),
+            );
+            onTextSelectionUpdated?.call(wordsTextSelection, false);
+          },
+          onLongPressEnd: (_) => textSelectionStartAnchorState.value = null,
+          onTapUp: (details) {
+            final anchor = getAnchorAtGlobalPosition(details.globalPosition);
+            if (anchor != null) {
+              onReferencePressed?.call(anchor.toReference());
+            } else {
+              onTextSelectionUpdated?.call(null, true);
+            }
+          },
+          child: Column(
+            crossAxisAlignment: .stretch,
+            children: getParagraphSpansByParagraph(context, ref, chapter: chapter, keyByReference: keyByReference)
+                .where((entry) => entry.value.isNotEmpty)
+                .mapEntries(
+                  (paragraph, paragraphSpans) => Padding(
+                    padding: user.themeLayout.paragraphs
+                        ? paragraph.as<VersesParagraph>()?.type.padding ?? .zero
+                        : .zero,
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final textKey = GlobalKey(
+                          debugLabel: paragraph.as<VersesParagraph>()?.verses.first.verseNum.toString(),
+                        );
 
-                    if (paragraph is VersesParagraph) {
-                      paragraphHitTesters.add(
-                        ParagraphHitTester(
-                          textKey: textKey,
-                          resolve: (localPosition) => getOffsetAnchor(
-                            characterOffset: paragraphSpans.getCharacterOffsetFromPosition(
-                              width: constraints.maxWidth,
-                              localPosition: localPosition,
-                              textAlign: paragraph.type.textAlign,
-                            ),
-                            paragraph: paragraph,
-                          ),
-                        ),
-                      );
-                    }
-
-                    return Stack(
-                      clipBehavior: .none,
-                      fit: .passthrough,
-                      children: [
-                        if (paragraph is VersesParagraph) ...[
-                          ...paragraph.verses
-                              .map((verse) => getVerseReference(verse))
-                              .mapToMap(
-                                (reference) => MapEntry(
-                                  reference,
-                                  user.annotations.where(
-                                    (annotation) => annotation.verseSelection?.hasReference(reference) == true,
-                                  ),
+                        if (paragraph is VersesParagraph) {
+                          paragraphHitTesters.add(
+                            ParagraphHitTester(
+                              textKey: textKey,
+                              resolve: (localPosition) => getOffsetAnchor(
+                                characterOffset: paragraphSpans.getCharacterOffsetFromPosition(
+                                  width: constraints.maxWidth,
+                                  localPosition: localPosition,
+                                  textAlign: paragraph.type.textAlign,
                                 ),
-                              )
-                              .where((reference, annotations) => annotations.isNotEmpty)
-                              .mapToIterable((reference, annotations) {
-                                final verseColor = annotations
-                                    .map(
-                                      (annotation) =>
-                                          annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5),
-                                    )
-                                    .mixOrNull;
+                                paragraph: paragraph,
+                              ),
+                            ),
+                          );
+                        }
 
-                                final (base, extent) =
-                                    paragraphSpans.getReferenceCharacterOffsets(
-                                      reference: reference,
-                                      translation: user.translation,
-                                      chapter: chapter,
-                                      isParagraphs: user.themeLayout.paragraphs,
-                                    ) ??
-                                    (null, null);
-                                if (base == null || extent == null) {
-                                  return null;
-                                }
-
-                                return paragraphSpans
-                                    .getBoxesForSelection(
-                                      baseOffset: base,
-                                      extentOffset: extent,
-                                      width: constraints.maxWidth,
-                                      textAlign: paragraph.type.textAlign,
-                                    )
-                                    .map((box) => box.toRect())
-                                    .withMergedLines()
-                                    .map(
-                                      (box) => Positioned.fromRect(
-                                        rect: box.asVerseSelection(multiplier: sizeMultiplier),
-                                        child: IgnorePointer(
-                                          child: AnimatedContainer(
-                                            duration: Duration(milliseconds: 300),
-                                            curve: Curves.easeInOutCubic,
-                                            decoration: BoxDecoration(
-                                              borderRadius: .circular(4),
-                                              color: verseColor?.withValues(alpha: textSelection == null ? 0.5 : 0.2),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                              })
-                              .nonNulls
-                              .flattened,
-                          ...user
-                              .getTextSelectionAnnotationsInVerseSelection(
-                                chapterReference.toVerseSelection(),
-                                translation: user.translation,
-                              )
-                              .map((record) {
-                                final (annotation, textSelection) = record;
-                                final (base, extent) =
-                                    paragraphSpans.getTextSelectionCharacterOffsets(
-                                      textSelection: textSelection,
-                                      translation: user.translation,
-                                      isParagraphs: user.themeLayout.paragraphs,
-                                    ) ??
-                                    (null, null);
-                                if (base == null || extent == null) {
-                                  return null;
-                                }
-
-                                return paragraphSpans
-                                    .getBoxesForSelection(
-                                      baseOffset: base,
-                                      extentOffset: extent,
-                                      width: constraints.maxWidth,
-                                      textAlign: paragraph.type.textAlign,
-                                    )
-                                    .map((box) => box.toRect())
-                                    .withMergedLines()
-                                    .map(
-                                      (box) => Positioned.fromRect(
-                                        rect: box.asTextSelection(multiplier: sizeMultiplier),
-                                        child: IgnorePointer(
-                                          child: AnimatedContainer(
-                                            duration: Duration(milliseconds: 300),
-                                            curve: Curves.easeInOutCubic,
-                                            decoration: BoxDecoration(
-                                              borderRadius: .circular(4),
-                                              color: annotation.color
-                                                  .toHue(context.colors)
-                                                  .primary
-                                                  .withValues(alpha: underlinedReferences.isEmpty ? 0.5 : 0.2),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                              })
-                              .nonNulls
-                              .flattened,
-                          if (textSelection case final textSelection?)
-                            ...?() {
-                              final (base, extent) =
-                                  paragraphSpans.getTextSelectionCharacterOffsets(
-                                    textSelection: textSelection,
-                                    translation: user.translation,
-                                    isParagraphs: user.themeLayout.paragraphs,
-                                  ) ??
-                                  (null, null);
-                              if (base == null || extent == null) {
-                                return null;
-                              }
-
-                              return paragraphSpans
-                                  .getBoxesForSelection(
-                                    baseOffset: base,
-                                    extentOffset: extent,
-                                    width: constraints.maxWidth,
-                                    textAlign: paragraph.type.textAlign,
-                                  )
-                                  .map((box) => box.toRect())
-                                  .withMergedLines()
-                                  .map(
-                                    (box) => Positioned.fromRect(
-                                      rect: box.asTextSelection(multiplier: sizeMultiplier),
-                                      child: IgnorePointer(
-                                        child: AnimatedContainer(
-                                          duration: Duration(milliseconds: 300),
-                                          curve: Curves.easeInOutCubic,
-                                          decoration: BoxDecoration(
-                                            borderRadius: .circular(4),
-                                            color: context.colors.contentPrimary.withValues(alpha: 0.2),
-                                          ),
-                                        ),
+                        return Stack(
+                          clipBehavior: .none,
+                          fit: .passthrough,
+                          children: [
+                            if (paragraph is VersesParagraph) ...[
+                              ...paragraph.verses
+                                  .map((verse) => getVerseReference(verse))
+                                  .mapToMap(
+                                    (reference) => MapEntry(
+                                      reference,
+                                      user.annotations.where(
+                                        (annotation) => annotation.verseSelection?.hasReference(reference) == true,
                                       ),
                                     ),
-                                  );
-                            }(),
-                        ],
-                        Text.rich(
-                          key: textKey,
-                          TextSpan(children: paragraphSpans),
-                          style: TextStyle(fontStyle: paragraph.as<VersesParagraph>()?.type.fontStyle ?? .normal),
-                          textAlign: paragraph.as<VersesParagraph>()?.type.textAlign ?? .start,
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            )
-            .toList(),
-      ),
+                                  )
+                                  .where((reference, annotations) => annotations.isNotEmpty)
+                                  .mapToIterable((reference, annotations) {
+                                    final verseColor = annotations
+                                        .map(
+                                          (annotation) =>
+                                              annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5),
+                                        )
+                                        .mixOrNull;
+
+                                    final (base, extent) =
+                                        paragraphSpans.getReferenceCharacterOffsets(
+                                          reference: reference,
+                                          translation: user.translation,
+                                          chapter: chapter,
+                                          isParagraphs: user.themeLayout.paragraphs,
+                                        ) ??
+                                        (null, null);
+                                    if (base == null || extent == null) {
+                                      return null;
+                                    }
+
+                                    return paragraphSpans
+                                        .getBoxesForSelection(
+                                          baseOffset: base,
+                                          extentOffset: extent,
+                                          width: constraints.maxWidth,
+                                          textAlign: paragraph.type.textAlign,
+                                        )
+                                        .map((box) => box.toRect())
+                                        .withMergedLines()
+                                        .map(
+                                          (box) => Positioned.fromRect(
+                                            rect: box.asVerseSelection(multiplier: sizeMultiplier),
+                                            child: IgnorePointer(
+                                              child: AnimatedContainer(
+                                                duration: Duration(milliseconds: 300),
+                                                curve: Curves.easeInOutCubic,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: .circular(4),
+                                                  color: verseColor?.withValues(
+                                                    alpha: textSelection == null ? 0.5 : 0.2,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                  })
+                                  .nonNulls
+                                  .flattened,
+                              ...user
+                                  .getTextSelectionAnnotationsInVerseSelection(
+                                    chapterReference.toVerseSelection(),
+                                    translation: user.translation,
+                                  )
+                                  .map((record) {
+                                    final (annotation, textSelection) = record;
+                                    final (base, extent) =
+                                        paragraphSpans.getTextSelectionCharacterOffsets(
+                                          textSelection: textSelection,
+                                          translation: user.translation,
+                                          isParagraphs: user.themeLayout.paragraphs,
+                                        ) ??
+                                        (null, null);
+                                    if (base == null || extent == null) {
+                                      return null;
+                                    }
+
+                                    return paragraphSpans
+                                        .getBoxesForSelection(
+                                          baseOffset: base,
+                                          extentOffset: extent,
+                                          width: constraints.maxWidth,
+                                          textAlign: paragraph.type.textAlign,
+                                        )
+                                        .map((box) => box.toRect())
+                                        .withMergedLines()
+                                        .map(
+                                          (box) => Positioned.fromRect(
+                                            rect: box.asTextSelection(multiplier: sizeMultiplier),
+                                            child: IgnorePointer(
+                                              child: AnimatedContainer(
+                                                duration: Duration(milliseconds: 300),
+                                                curve: Curves.easeInOutCubic,
+                                                decoration: BoxDecoration(
+                                                  borderRadius: .circular(4),
+                                                  color: annotation.color
+                                                      .toHue(context.colors)
+                                                      .primary
+                                                      .withValues(alpha: underlinedReferences.isEmpty ? 0.5 : 0.2),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                  })
+                                  .nonNulls
+                                  .flattened,
+                              if (textSelection case final textSelection?)
+                                ...?() {
+                                  final (base, extent) =
+                                      paragraphSpans.getTextSelectionCharacterOffsets(
+                                        textSelection: textSelection,
+                                        translation: user.translation,
+                                        isParagraphs: user.themeLayout.paragraphs,
+                                      ) ??
+                                      (null, null);
+                                  if (base == null || extent == null) {
+                                    return null;
+                                  }
+
+                                  return paragraphSpans
+                                      .getBoxesForSelection(
+                                        baseOffset: base,
+                                        extentOffset: extent,
+                                        width: constraints.maxWidth,
+                                        textAlign: paragraph.type.textAlign,
+                                      )
+                                      .map((box) => box.toRect())
+                                      .withMergedLines()
+                                      .map(
+                                        (box) => Positioned.fromRect(
+                                          rect: box.asTextSelection(multiplier: sizeMultiplier),
+                                          child: IgnorePointer(
+                                            child: AnimatedContainer(
+                                              duration: Duration(milliseconds: 300),
+                                              curve: Curves.easeInOutCubic,
+                                              decoration: BoxDecoration(
+                                                borderRadius: .circular(4),
+                                                color: context.colors.contentPrimary.withValues(alpha: 0.2),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                }(),
+                            ],
+                            Text.rich(
+                              key: textKey,
+                              TextSpan(children: paragraphSpans),
+                              style: TextStyle(fontStyle: paragraph.as<VersesParagraph>()?.type.fontStyle ?? .normal),
+                              textAlign: paragraph.as<VersesParagraph>()?.type.textAlign ?? .start,
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+        if (user.translation.copyright case final copyright?)
+          Text(copyright, style: context.textStyle.paragraphXs.subtle(), textAlign: .center),
+      ],
     );
   }
 

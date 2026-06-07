@@ -9,6 +9,8 @@ class StyledRectButton extends StatelessWidget {
   final ColorBuilder? colorBuilder;
 
   StyledRectButton.primary({super.key, required this.label, required this.onPressed}) : colorBuilder = .primary;
+  StyledRectButton.secondary({super.key, required this.label, required this.onPressed})
+    : colorBuilder = .surfaceSecondary;
 
   @override
   Widget build(BuildContext context) {
