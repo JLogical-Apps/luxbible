@@ -23,7 +23,7 @@ Map<String, dynamic> _$BibleTextSelectionToJson(_BibleTextSelection instance) =>
 const _$BibleTranslationEnumMap = {
   BibleTranslation.bsb: 'bsb',
   BibleTranslation.nasb95: 'nasb95',
-  BibleTranslation.niv: 'niv',
+  BibleTranslation.niv11: 'niv11',
   BibleTranslation.kjv: 'kjv',
   BibleTranslation.asv: 'asv',
 };

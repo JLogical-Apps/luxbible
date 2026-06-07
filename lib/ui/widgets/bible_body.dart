@@ -251,6 +251,15 @@ class BibleBody extends HookConsumerWidget {
                                 },
                                 keyByReferenceRef: keyByReferenceRef,
                               ),
+                              if (user.translation.copyright case final copyright?)
+                                Padding(
+                                  padding: .only(top: 32),
+                                  child: Text(
+                                    copyright,
+                                    style: context.textStyle.paragraphXs.subtle(),
+                                    textAlign: .center,
+                                  ),
+                                ),
                               Builder(
                                 builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).bottom + 88),
                               ),
