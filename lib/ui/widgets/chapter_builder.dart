@@ -66,6 +66,16 @@ class ChapterBuilder extends HookConsumerWidget {
       return SizedBox.shrink();
     }
 
+    final nextReference = chapterReference.next;
+    if (nextReference != null) {
+      ref.watch(chapterProvider(translation: user.translation, chapterReference: nextReference));
+    }
+
+    final previousReference = chapterReference.previous;
+    if (previousReference != null) {
+      ref.watch(chapterProvider(translation: user.translation, chapterReference: previousReference));
+    }
+
     final keyByReferenceRef = this.keyByReferenceRef;
 
     final textSelectionStartAnchorState = useState<BibleTextSelectionWordAnchor?>(null);

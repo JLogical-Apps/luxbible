@@ -53,4 +53,7 @@ class ChapterReference extends Equatable with ComparableOperators<ChapterReferen
   int get bibleChapterIndex => values.indexOf(this);
 
   BiblePointer asPointer() => ChapterBiblePointer(reference: this);
+
+  ChapterReference? get next => values.elementAtOrNull(bibleChapterIndex + 1);
+  ChapterReference? get previous => bibleChapterIndex == 0 ? null : values[bibleChapterIndex - 1];
 }
