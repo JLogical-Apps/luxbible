@@ -21,11 +21,8 @@ class YouVersion {
       '/v1/bibles/$bibleId/passages/${chapterReference.usxId()}',
       queryParameters: {'format': 'html', 'include_headings': true},
     );
-    return parseChapter(response.data['content']);
-  }
 
-  static Chapter parseChapter(String content) {
-    final fragment = html_parser.parseFragment(content);
+    final fragment = html_parser.parseFragment(response.data['content']);
 
     final root = fragment.children.length == 1 && fragment.children.single.localName == 'div'
         ? fragment.children.single
@@ -97,6 +94,7 @@ class YouVersion {
         's' || 's1' => SectionParagraph(type: .s1, text: div.text.trim()),
         's2' => SectionParagraph(type: .s2, text: div.text.trim()),
         'p' || 'pmo' || 'pc' => versesParagraph(.p),
+        'pi' => versesParagraph(.pi),
         'd' => versesParagraph(.d),
         'q' || 'q1' => versesParagraph(.q1),
         'q2' => versesParagraph(.q2),

@@ -32,6 +32,7 @@ enum SectionType { s1, s2 }
 
 enum ParagraphType {
   p,
+  pi,
   d,
   q1,
   q2,

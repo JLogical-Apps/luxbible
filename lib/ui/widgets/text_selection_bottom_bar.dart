@@ -37,13 +37,12 @@ class TextSelectionBottomBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final translation = user?.translation ?? .bsb;
     final textSelection =
         this.textSelection ??
         BibleTextSelection(
           start: BibleTextSelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 0),
           end: BibleTextSelectionWordAnchor(book: BookType.genesis, chapterNum: 1, verseNum: 1, characterOffset: 30),
-          translation: translation,
+          translation: .bsb,
         );
     final selectionText = ref.watch(textSelectionTextProvider(textSelection)).value;
 
