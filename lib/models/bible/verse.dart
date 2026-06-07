@@ -37,4 +37,30 @@ extension IterableVerseExtensions on Iterable<Verse> {
 
     return verseTexts.join(' ');
   }
+
+  List<Verse> trim() {
+    if (isEmpty) {
+      return toList();
+    }
+
+    final list = skipWhile((verse) => verse.text.isBlank).toList();
+    if (list.isEmpty) {
+      return list;
+    }
+    list[0] = list[0].trimStart();
+    return list;
+  }
+
+  Iterable<Verse> withSameVersesCombined() => isEmpty
+      ? this
+      : fold<List<Verse>>([], (verses, verse) {
+          final lastVerse = verses.lastOrNull;
+          if (lastVerse == null) {
+            return verses..add(verse);
+          }
+
+          return lastVerse.verseNum == verse.verseNum
+              ? (verses..[verses.length - 1] = Verse(verseNum: verse.verseNum, words: lastVerse.words + verse.words))
+              : (verses..add(verse));
+        });
 }

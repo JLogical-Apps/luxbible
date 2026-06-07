@@ -6,7 +6,6 @@ import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/models/bible/verse.dart';
 import 'package:bible/models/bible/word.dart';
 import 'package:collection/collection.dart';
-import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
 
 Book parseUsxBook(BookType type, String rawXml) {
@@ -111,29 +110,4 @@ extension on XmlElement {
       lastChild = lastChild.nextElementSibling;
     }
   }
-}
-
-extension on Iterable<Verse> {
-  List<Verse> trim() {
-    if (isEmpty) {
-      return toList();
-    }
-
-    final list = skipWhile((verse) => verse.text.isBlank).toList();
-    list[0] = list[0].trimStart();
-    return list;
-  }
-
-  Iterable<Verse> withSameVersesCombined() => isEmpty
-      ? this
-      : fold<List<Verse>>([], (verses, verse) {
-          final lastVerse = verses.lastOrNull;
-          if (lastVerse == null) {
-            return verses..add(verse);
-          }
-
-          return lastVerse.verseNum == verse.verseNum
-              ? (verses..[verses.length - 1] = Verse(verseNum: verse.verseNum, words: lastVerse.words + verse.words))
-              : (verses..add(verse));
-        });
 }

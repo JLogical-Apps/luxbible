@@ -10,6 +10,7 @@ sealed class Word with _$Word {
     @JsonKey(name: 't', includeIfNull: false) String? text,
     @JsonKey(name: 'd', includeIfNull: false) InterlinearData? data,
     @JsonKey(name: 'r', toJson: _onlyIfTrue, includeIfNull: false) @Default(false) bool redLetters,
+    @JsonKey(name: 'i', toJson: _onlyIfTrue, includeIfNull: false) @Default(false) bool italic,
   }) = _Word;
 
   factory Word.fromJson(Map<String, dynamic> json) => _$WordFromJson(json);

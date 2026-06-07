@@ -421,6 +421,7 @@ class ChapterBuilder extends HookConsumerWidget {
                         text: word.text,
                         style: bibleTextStyle.bibleBody.copyWith(
                           color: word.redLetters && user.themeLayout.redLetters ? context.colors.red.dark : null,
+                          fontStyle: word.italic ? .italic : null,
                           decoration: underlinedReferences.contains(reference) ? .underline : null,
                         ),
                       ).withInjectedSpans(

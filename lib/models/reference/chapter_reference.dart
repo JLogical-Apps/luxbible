@@ -35,6 +35,7 @@ class ChapterReference extends Equatable with ComparableOperators<ChapterReferen
   VerseSelection toVerseSelection() => VerseSelection(spans: [VerseSpanReference(start: asPointer())]);
 
   String osisId() => '${book.osisId()}.$chapterNum';
+  String usxId() => '${book.usxCode()}.$chapterNum';
 
   String format() => '${book.title()} $chapterNum';
 

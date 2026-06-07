@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Word {
 
-@JsonKey(name: 't', includeIfNull: false) String? get text;@JsonKey(name: 'd', includeIfNull: false) InterlinearData? get data;@JsonKey(name: 'r', toJson: _onlyIfTrue, includeIfNull: false) bool get redLetters;
+@JsonKey(name: 't', includeIfNull: false) String? get text;@JsonKey(name: 'd', includeIfNull: false) InterlinearData? get data;@JsonKey(name: 'r', toJson: _onlyIfTrue, includeIfNull: false) bool get redLetters;@JsonKey(name: 'i', toJson: _onlyIfTrue, includeIfNull: false) bool get italic;
 /// Create a copy of Word
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $WordCopyWith<Word> get copyWith => _$WordCopyWithImpl<Word>(this as Word, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Word&&(identical(other.text, text) || other.text == text)&&(identical(other.data, data) || other.data == data)&&(identical(other.redLetters, redLetters) || other.redLetters == redLetters));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Word&&(identical(other.text, text) || other.text == text)&&(identical(other.data, data) || other.data == data)&&(identical(other.redLetters, redLetters) || other.redLetters == redLetters)&&(identical(other.italic, italic) || other.italic == italic));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,text,data,redLetters);
+int get hashCode => Object.hash(runtimeType,text,data,redLetters,italic);
 
 @override
 String toString() {
-  return 'Word(text: $text, data: $data, redLetters: $redLetters)';
+  return 'Word(text: $text, data: $data, redLetters: $redLetters, italic: $italic)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $WordCopyWith<$Res>  {
   factory $WordCopyWith(Word value, $Res Function(Word) _then) = _$WordCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 't', includeIfNull: false) String? text,@JsonKey(name: 'd', includeIfNull: false) InterlinearData? data,@JsonKey(name: 'r', toJson: _onlyIfTrue, includeIfNull: false) bool redLetters
+@JsonKey(name: 't', includeIfNull: false) String? text,@JsonKey(name: 'd', includeIfNull: false) InterlinearData? data,@JsonKey(name: 'r', toJson: _onlyIfTrue, includeIfNull: false) bool redLetters,@JsonKey(name: 'i', toJson: _onlyIfTrue, includeIfNull: false) bool italic
 });
 
 
@@ -65,11 +65,12 @@ class _$WordCopyWithImpl<$Res>
 
 /// Create a copy of Word
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? text = freezed,Object? data = freezed,Object? redLetters = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? text = freezed,Object? data = freezed,Object? redLetters = null,Object? italic = null,}) {
   return _then(_self.copyWith(
 text: freezed == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
 as String?,data: freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
 as InterlinearData?,redLetters: null == redLetters ? _self.redLetters : redLetters // ignore: cast_nullable_to_non_nullable
+as bool,italic: null == italic ? _self.italic : italic // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -164,10 +165,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 't', includeIfNull: false)  String? text, @JsonKey(name: 'd', includeIfNull: false)  InterlinearData? data, @JsonKey(name: 'r', toJson: _onlyIfTrue, includeIfNull: false)  bool redLetters)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 't', includeIfNull: false)  String? text, @JsonKey(name: 'd', includeIfNull: false)  InterlinearData? data, @JsonKey(name: 'r', toJson: _onlyIfTrue, includeIfNull: false)  bool redLetters, @JsonKey(name: 'i', toJson: _onlyIfTrue, includeIfNull: false)  bool italic)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Word() when $default != null:
-return $default(_that.text,_that.data,_that.redLetters);case _:
+return $default(_that.text,_that.data,_that.redLetters,_that.italic);case _:
   return orElse();
 
 }
@@ -185,10 +186,10 @@ return $default(_that.text,_that.data,_that.redLetters);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 't', includeIfNull: false)  String? text, @JsonKey(name: 'd', includeIfNull: false)  InterlinearData? data, @JsonKey(name: 'r', toJson: _onlyIfTrue, includeIfNull: false)  bool redLetters)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 't', includeIfNull: false)  String? text, @JsonKey(name: 'd', includeIfNull: false)  InterlinearData? data, @JsonKey(name: 'r', toJson: _onlyIfTrue, includeIfNull: false)  bool redLetters, @JsonKey(name: 'i', toJson: _onlyIfTrue, includeIfNull: false)  bool italic)  $default,) {final _that = this;
 switch (_that) {
 case _Word():
-return $default(_that.text,_that.data,_that.redLetters);}
+return $default(_that.text,_that.data,_that.redLetters,_that.italic);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -202,10 +203,10 @@ return $default(_that.text,_that.data,_that.redLetters);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 't', includeIfNull: false)  String? text, @JsonKey(name: 'd', includeIfNull: false)  InterlinearData? data, @JsonKey(name: 'r', toJson: _onlyIfTrue, includeIfNull: false)  bool redLetters)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 't', includeIfNull: false)  String? text, @JsonKey(name: 'd', includeIfNull: false)  InterlinearData? data, @JsonKey(name: 'r', toJson: _onlyIfTrue, includeIfNull: false)  bool redLetters, @JsonKey(name: 'i', toJson: _onlyIfTrue, includeIfNull: false)  bool italic)?  $default,) {final _that = this;
 switch (_that) {
 case _Word() when $default != null:
-return $default(_that.text,_that.data,_that.redLetters);case _:
+return $default(_that.text,_that.data,_that.redLetters,_that.italic);case _:
   return null;
 
 }
@@ -217,12 +218,13 @@ return $default(_that.text,_that.data,_that.redLetters);case _:
 @JsonSerializable()
 
 class _Word implements Word {
-  const _Word({@JsonKey(name: 't', includeIfNull: false) this.text, @JsonKey(name: 'd', includeIfNull: false) this.data, @JsonKey(name: 'r', toJson: _onlyIfTrue, includeIfNull: false) this.redLetters = false});
+  const _Word({@JsonKey(name: 't', includeIfNull: false) this.text, @JsonKey(name: 'd', includeIfNull: false) this.data, @JsonKey(name: 'r', toJson: _onlyIfTrue, includeIfNull: false) this.redLetters = false, @JsonKey(name: 'i', toJson: _onlyIfTrue, includeIfNull: false) this.italic = false});
   factory _Word.fromJson(Map<String, dynamic> json) => _$WordFromJson(json);
 
 @override@JsonKey(name: 't', includeIfNull: false) final  String? text;
 @override@JsonKey(name: 'd', includeIfNull: false) final  InterlinearData? data;
 @override@JsonKey(name: 'r', toJson: _onlyIfTrue, includeIfNull: false) final  bool redLetters;
+@override@JsonKey(name: 'i', toJson: _onlyIfTrue, includeIfNull: false) final  bool italic;
 
 /// Create a copy of Word
 /// with the given fields replaced by the non-null parameter values.
@@ -237,16 +239,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Word&&(identical(other.text, text) || other.text == text)&&(identical(other.data, data) || other.data == data)&&(identical(other.redLetters, redLetters) || other.redLetters == redLetters));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Word&&(identical(other.text, text) || other.text == text)&&(identical(other.data, data) || other.data == data)&&(identical(other.redLetters, redLetters) || other.redLetters == redLetters)&&(identical(other.italic, italic) || other.italic == italic));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,text,data,redLetters);
+int get hashCode => Object.hash(runtimeType,text,data,redLetters,italic);
 
 @override
 String toString() {
-  return 'Word(text: $text, data: $data, redLetters: $redLetters)';
+  return 'Word(text: $text, data: $data, redLetters: $redLetters, italic: $italic)';
 }
 
 
@@ -257,7 +259,7 @@ abstract mixin class _$WordCopyWith<$Res> implements $WordCopyWith<$Res> {
   factory _$WordCopyWith(_Word value, $Res Function(_Word) _then) = __$WordCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 't', includeIfNull: false) String? text,@JsonKey(name: 'd', includeIfNull: false) InterlinearData? data,@JsonKey(name: 'r', toJson: _onlyIfTrue, includeIfNull: false) bool redLetters
+@JsonKey(name: 't', includeIfNull: false) String? text,@JsonKey(name: 'd', includeIfNull: false) InterlinearData? data,@JsonKey(name: 'r', toJson: _onlyIfTrue, includeIfNull: false) bool redLetters,@JsonKey(name: 'i', toJson: _onlyIfTrue, includeIfNull: false) bool italic
 });
 
 
@@ -274,11 +276,12 @@ class __$WordCopyWithImpl<$Res>
 
 /// Create a copy of Word
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? text = freezed,Object? data = freezed,Object? redLetters = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? text = freezed,Object? data = freezed,Object? redLetters = null,Object? italic = null,}) {
   return _then(_Word(
 text: freezed == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
 as String?,data: freezed == data ? _self.data : data // ignore: cast_nullable_to_non_nullable
 as InterlinearData?,redLetters: null == redLetters ? _self.redLetters : redLetters // ignore: cast_nullable_to_non_nullable
+as bool,italic: null == italic ? _self.italic : italic // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

@@ -18,24 +18,12 @@ List<Bible> localBibles(Ref ref) => throw UnimplementedError();
 Bible studyBible(Ref ref) => ref.watch(localBiblesProvider).firstWhere((bible) => bible.translation == .bsb);
 
 @Riverpod(keepAlive: true)
-Future<Chapter> chapter(
-  Ref ref, {
-  required ChapterReference chapterReference,
-  required BibleTranslation translation,
-}) async {
-  if (translation.isLocal) {
-    return ref
-        .watch(localBiblesProvider)
-        .firstWhere((bible) => bible.translation == translation)
-        .getChapterByReference(chapterReference);
-  } else {
-    await Future.delayed(Duration(seconds: 1));
-    return ref
-        .watch(localBiblesProvider)
-        .firstWhere((bible) => bible.translation == .bsb)
-        .getChapterByReference(chapterReference);
-  }
-}
+Future<Chapter> chapter(Ref ref, {required ChapterReference chapterReference, required BibleTranslation translation}) =>
+    translation.source.getChapter(
+      chapterReference: chapterReference,
+      translation: translation,
+      localBibles: ref.watch(localBiblesProvider),
+    );
 
 @riverpod
 Future<Verse?> verse(Ref ref, {required Reference reference, required BibleTranslation translation}) async {
