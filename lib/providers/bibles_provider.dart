@@ -25,42 +25,43 @@ Future<Chapter> chapter(Ref ref, {required ChapterReference chapterReference, re
       localBibles: ref.watch(localBiblesProvider),
     );
 
-@riverpod
-Future<Verse?> verse(Ref ref, {required Reference reference, required BibleTranslation translation}) async {
+@Riverpod(keepAlive: true)
+FutureOr<Verse?> verse(Ref ref, {required Reference reference, required BibleTranslation translation}) {
   if (translation.isLocal) {
     return ref
         .watch(localBiblesProvider)
         .firstWhere((bible) => bible.translation == translation)
         .getVerseByReference(reference);
   } else {
-    final chapter = await ref.watch(
-      chapterProvider(chapterReference: reference.toChapterReference(), translation: translation).future,
-    );
+    final chapter = ref
+        .watch(chapterProvider(chapterReference: reference.toChapterReference(), translation: translation))
+        .requireValue;
     return chapter.getVerseByReference(reference);
   }
 }
 
 @riverpod
-Future<String> verseSelectionText(
+FutureOr<String> verseSelectionText(
   Ref ref, {
   required VerseSelection selection,
   required BibleTranslation translation,
-}) async {
+}) {
   if (translation.isLocal) {
     return ref
         .watch(localBiblesProvider)
         .firstWhere((bible) => bible.translation == translation)
         .getVerseSelectionText(selection);
   } else {
-    final verses = await selection.references
-        .map((reference) => ref.watch(verseProvider(reference: reference, translation: translation).future))
-        .wait;
-    return verses.nonNulls.map((verse) => verse.text).join(' ');
+    return selection.references
+        .map((reference) => ref.watch(verseProvider(reference: reference, translation: translation)).requireValue)
+        .nonNulls
+        .map((verse) => verse.text)
+        .join(' ');
   }
 }
 
 @riverpod
-Future<String> textSelectionText(Ref ref, BibleTextSelection selection) async {
+FutureOr<String> textSelectionText(Ref ref, BibleTextSelection selection) {
   final translation = selection.translation;
   if (translation.isLocal) {
     return ref
@@ -68,12 +69,12 @@ Future<String> textSelectionText(Ref ref, BibleTextSelection selection) async {
         .firstWhere((bible) => bible.translation == translation)
         .getTextSelectionText(selection);
   } else {
-    final verses = await selection
+    return selection
         .toVerseSelection()
         .references
-        .map((reference) => ref.watch(verseProvider(reference: reference, translation: translation).future))
-        .wait;
-    return verses.nonNulls.getTextSelectionText(selection);
+        .map((reference) => ref.watch(verseProvider(reference: reference, translation: translation)).requireValue)
+        .nonNulls
+        .getTextSelectionText(selection);
   }
 }
 

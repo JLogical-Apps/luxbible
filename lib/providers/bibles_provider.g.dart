@@ -191,7 +191,7 @@ final class VerseProvider
   }) : super(
          retry: null,
          name: r'verseProvider',
-         isAutoDispose: true,
+         isAutoDispose: false,
          dependencies: null,
          $allTransitiveDependencies: null,
        );
@@ -233,7 +233,7 @@ final class VerseProvider
   }
 }
 
-String _$verseHash() => r'e78e1c831d718deb18f0dbebe5d688b14adc081d';
+String _$verseHash() => r'd5d1f3a2a1275fa2f9a14cb5167c70adec5555d7';
 
 final class VerseFamily extends $Family
     with
@@ -247,7 +247,7 @@ final class VerseFamily extends $Family
         name: r'verseProvider',
         dependencies: null,
         $allTransitiveDependencies: null,
-        isAutoDispose: true,
+        isAutoDispose: false,
       );
 
   VerseProvider call({
@@ -319,7 +319,7 @@ final class VerseSelectionTextProvider
 }
 
 String _$verseSelectionTextHash() =>
-    r'cbba7b8eb1fd9fd808cb0b3c2bf85b2d67d0250a';
+    r'3a5b211739510ddda396647556a243694be16798';
 
 final class VerseSelectionTextFamily extends $Family
     with
@@ -397,7 +397,7 @@ final class TextSelectionTextProvider
   }
 }
 
-String _$textSelectionTextHash() => r'443b75debc7a40ee5512ed2ac875687053d061da';
+String _$textSelectionTextHash() => r'ba61dba4d1c8d363823715855c233acb7c56aff6';
 
 final class TextSelectionTextFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<String>, BibleTextSelection> {
