@@ -117,20 +117,21 @@ class SearchPage extends HookConsumerWidget {
                   },
                   currentBook: currentChapterReference?.book,
                 ),
-                StyledBanner(
-                  leading: Symbols.book.toIcon(),
-                  message: 'Using BSB for search'.toText(),
-                  action: StyledTextAction(
-                    label: 'Learn More'.toText(),
-                    onPressed: () => context.showStyledDialog(
-                      (context) => StyledDialog.confirm(
-                        title: 'Search Translations'.toText(),
-                        body: '${user.translation.title()} does not currently support search. Using BSB instead.'
-                            .toText(),
+                if (user.translation.isOnline)
+                  StyledBanner(
+                    leading: Symbols.book.toIcon(),
+                    message: 'Using BSB for search'.toText(),
+                    action: StyledTextAction(
+                      label: 'Learn More'.toText(),
+                      onPressed: () => context.showStyledDialog(
+                        (context) => StyledDialog.confirm(
+                          title: 'Search Translations'.toText(),
+                          body: '${user.translation.title()} does not currently support search. Using BSB instead.'
+                              .toText(),
+                        ),
                       ),
                     ),
                   ),
-                ),
               ],
             ),
           ),
