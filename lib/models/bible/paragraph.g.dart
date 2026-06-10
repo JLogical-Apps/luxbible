@@ -26,6 +26,7 @@ Map<String, dynamic> _$VersesParagraphToJson(VersesParagraph instance) =>
 
 const _$ParagraphTypeEnumMap = {
   ParagraphType.p: 'p',
+  ParagraphType.pi: 'pi',
   ParagraphType.d: 'd',
   ParagraphType.q1: 'q1',
   ParagraphType.q2: 'q2',

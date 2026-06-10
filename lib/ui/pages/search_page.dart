@@ -202,7 +202,7 @@ class SearchPage extends HookConsumerWidget {
                               title: Row(
                                 spacing: 8,
                                 children: [
-                                  StyledBadge(text: strong.id),
+                                  StyledBadge(child: strong.id.toText()),
                                   Text([strong.languageText, strong.transliteration].join('  ·  ')),
                                 ],
                               ),

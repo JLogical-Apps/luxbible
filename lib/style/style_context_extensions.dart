@@ -57,7 +57,7 @@ extension StyleContextExtensions on BuildContext {
         maxHeight: MediaQuery.sizeOf(rootContext).height - MediaQuery.paddingOf(rootContext).top - 8,
       ),
       useRootNavigator: true,
-      builder: wrapper == null ? sheetBuilder : (context) => wrapper(sheetBuilder),
+      builder: wrapper == null ? (context) => HookBuilder(builder: sheetBuilder) : (context) => wrapper(sheetBuilder),
     );
   }
 

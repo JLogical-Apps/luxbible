@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$User {
 
- BibleTranslation get translation; ChapterReference get lastReference; String? get currentBookmarkId; List<ChapterReference> get viewHistory; ColorEnum get highlightColor; Map<String, Bookmark> get bookmarkById; List<Annotation> get annotations; MainToolbarConfiguration get mainToolbar; VerseSelectionConfiguration get verseSelection; TextSelectionConfiguration get textSelection; List<String> get searchHistory; InterlinearDirection get interlinearDirection; ThemeMode get theme; ThemeLayoutConfiguration get themeLayout;
+ BibleTranslation get translation; List<BibleTranslation>? get bibles; ChapterReference get lastReference; String? get currentBookmarkId; List<ChapterReference> get viewHistory; ColorEnum get highlightColor; Map<String, Bookmark> get bookmarkById; List<Annotation> get annotations; MainToolbarConfiguration get mainToolbar; VerseSelectionConfiguration get verseSelection; TextSelectionConfiguration get textSelection; List<String> get searchHistory; InterlinearDirection get interlinearDirection; ThemeMode get theme; ThemeLayoutConfiguration get themeLayout;
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserCopyWith<User> get copyWith => _$UserCopyWithImpl<User>(this as User, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.translation, translation) || other.translation == translation)&&(identical(other.lastReference, lastReference) || other.lastReference == lastReference)&&(identical(other.currentBookmarkId, currentBookmarkId) || other.currentBookmarkId == currentBookmarkId)&&const DeepCollectionEquality().equals(other.viewHistory, viewHistory)&&(identical(other.highlightColor, highlightColor) || other.highlightColor == highlightColor)&&const DeepCollectionEquality().equals(other.bookmarkById, bookmarkById)&&const DeepCollectionEquality().equals(other.annotations, annotations)&&(identical(other.mainToolbar, mainToolbar) || other.mainToolbar == mainToolbar)&&(identical(other.verseSelection, verseSelection) || other.verseSelection == verseSelection)&&(identical(other.textSelection, textSelection) || other.textSelection == textSelection)&&const DeepCollectionEquality().equals(other.searchHistory, searchHistory)&&(identical(other.interlinearDirection, interlinearDirection) || other.interlinearDirection == interlinearDirection)&&(identical(other.theme, theme) || other.theme == theme)&&(identical(other.themeLayout, themeLayout) || other.themeLayout == themeLayout));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.translation, translation) || other.translation == translation)&&const DeepCollectionEquality().equals(other.bibles, bibles)&&(identical(other.lastReference, lastReference) || other.lastReference == lastReference)&&(identical(other.currentBookmarkId, currentBookmarkId) || other.currentBookmarkId == currentBookmarkId)&&const DeepCollectionEquality().equals(other.viewHistory, viewHistory)&&(identical(other.highlightColor, highlightColor) || other.highlightColor == highlightColor)&&const DeepCollectionEquality().equals(other.bookmarkById, bookmarkById)&&const DeepCollectionEquality().equals(other.annotations, annotations)&&(identical(other.mainToolbar, mainToolbar) || other.mainToolbar == mainToolbar)&&(identical(other.verseSelection, verseSelection) || other.verseSelection == verseSelection)&&(identical(other.textSelection, textSelection) || other.textSelection == textSelection)&&const DeepCollectionEquality().equals(other.searchHistory, searchHistory)&&(identical(other.interlinearDirection, interlinearDirection) || other.interlinearDirection == interlinearDirection)&&(identical(other.theme, theme) || other.theme == theme)&&(identical(other.themeLayout, themeLayout) || other.themeLayout == themeLayout));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,translation,lastReference,currentBookmarkId,const DeepCollectionEquality().hash(viewHistory),highlightColor,const DeepCollectionEquality().hash(bookmarkById),const DeepCollectionEquality().hash(annotations),mainToolbar,verseSelection,textSelection,const DeepCollectionEquality().hash(searchHistory),interlinearDirection,theme,themeLayout);
+int get hashCode => Object.hash(runtimeType,translation,const DeepCollectionEquality().hash(bibles),lastReference,currentBookmarkId,const DeepCollectionEquality().hash(viewHistory),highlightColor,const DeepCollectionEquality().hash(bookmarkById),const DeepCollectionEquality().hash(annotations),mainToolbar,verseSelection,textSelection,const DeepCollectionEquality().hash(searchHistory),interlinearDirection,theme,themeLayout);
 
 @override
 String toString() {
-  return 'User(translation: $translation, lastReference: $lastReference, currentBookmarkId: $currentBookmarkId, viewHistory: $viewHistory, highlightColor: $highlightColor, bookmarkById: $bookmarkById, annotations: $annotations, mainToolbar: $mainToolbar, verseSelection: $verseSelection, textSelection: $textSelection, searchHistory: $searchHistory, interlinearDirection: $interlinearDirection, theme: $theme, themeLayout: $themeLayout)';
+  return 'User(translation: $translation, bibles: $bibles, lastReference: $lastReference, currentBookmarkId: $currentBookmarkId, viewHistory: $viewHistory, highlightColor: $highlightColor, bookmarkById: $bookmarkById, annotations: $annotations, mainToolbar: $mainToolbar, verseSelection: $verseSelection, textSelection: $textSelection, searchHistory: $searchHistory, interlinearDirection: $interlinearDirection, theme: $theme, themeLayout: $themeLayout)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserCopyWith<$Res>  {
   factory $UserCopyWith(User value, $Res Function(User) _then) = _$UserCopyWithImpl;
 @useResult
 $Res call({
- BibleTranslation translation, ChapterReference lastReference, String? currentBookmarkId, List<ChapterReference> viewHistory, ColorEnum highlightColor, Map<String, Bookmark> bookmarkById, List<Annotation> annotations, MainToolbarConfiguration mainToolbar, VerseSelectionConfiguration verseSelection, TextSelectionConfiguration textSelection, List<String> searchHistory, InterlinearDirection interlinearDirection, ThemeMode theme, ThemeLayoutConfiguration themeLayout
+ BibleTranslation translation, List<BibleTranslation>? bibles, ChapterReference lastReference, String? currentBookmarkId, List<ChapterReference> viewHistory, ColorEnum highlightColor, Map<String, Bookmark> bookmarkById, List<Annotation> annotations, MainToolbarConfiguration mainToolbar, VerseSelectionConfiguration verseSelection, TextSelectionConfiguration textSelection, List<String> searchHistory, InterlinearDirection interlinearDirection, ThemeMode theme, ThemeLayoutConfiguration themeLayout
 });
 
 
@@ -65,10 +65,11 @@ class _$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? translation = null,Object? lastReference = null,Object? currentBookmarkId = freezed,Object? viewHistory = null,Object? highlightColor = null,Object? bookmarkById = null,Object? annotations = null,Object? mainToolbar = null,Object? verseSelection = null,Object? textSelection = null,Object? searchHistory = null,Object? interlinearDirection = null,Object? theme = null,Object? themeLayout = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? translation = null,Object? bibles = freezed,Object? lastReference = null,Object? currentBookmarkId = freezed,Object? viewHistory = null,Object? highlightColor = null,Object? bookmarkById = null,Object? annotations = null,Object? mainToolbar = null,Object? verseSelection = null,Object? textSelection = null,Object? searchHistory = null,Object? interlinearDirection = null,Object? theme = null,Object? themeLayout = null,}) {
   return _then(_self.copyWith(
 translation: null == translation ? _self.translation : translation // ignore: cast_nullable_to_non_nullable
-as BibleTranslation,lastReference: null == lastReference ? _self.lastReference : lastReference // ignore: cast_nullable_to_non_nullable
+as BibleTranslation,bibles: freezed == bibles ? _self.bibles : bibles // ignore: cast_nullable_to_non_nullable
+as List<BibleTranslation>?,lastReference: null == lastReference ? _self.lastReference : lastReference // ignore: cast_nullable_to_non_nullable
 as ChapterReference,currentBookmarkId: freezed == currentBookmarkId ? _self.currentBookmarkId : currentBookmarkId // ignore: cast_nullable_to_non_nullable
 as String?,viewHistory: null == viewHistory ? _self.viewHistory : viewHistory // ignore: cast_nullable_to_non_nullable
 as List<ChapterReference>,highlightColor: null == highlightColor ? _self.highlightColor : highlightColor // ignore: cast_nullable_to_non_nullable
@@ -199,10 +200,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BibleTranslation translation,  ChapterReference lastReference,  String? currentBookmarkId,  List<ChapterReference> viewHistory,  ColorEnum highlightColor,  Map<String, Bookmark> bookmarkById,  List<Annotation> annotations,  MainToolbarConfiguration mainToolbar,  VerseSelectionConfiguration verseSelection,  TextSelectionConfiguration textSelection,  List<String> searchHistory,  InterlinearDirection interlinearDirection,  ThemeMode theme,  ThemeLayoutConfiguration themeLayout)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BibleTranslation translation,  List<BibleTranslation>? bibles,  ChapterReference lastReference,  String? currentBookmarkId,  List<ChapterReference> viewHistory,  ColorEnum highlightColor,  Map<String, Bookmark> bookmarkById,  List<Annotation> annotations,  MainToolbarConfiguration mainToolbar,  VerseSelectionConfiguration verseSelection,  TextSelectionConfiguration textSelection,  List<String> searchHistory,  InterlinearDirection interlinearDirection,  ThemeMode theme,  ThemeLayoutConfiguration themeLayout)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.translation,_that.lastReference,_that.currentBookmarkId,_that.viewHistory,_that.highlightColor,_that.bookmarkById,_that.annotations,_that.mainToolbar,_that.verseSelection,_that.textSelection,_that.searchHistory,_that.interlinearDirection,_that.theme,_that.themeLayout);case _:
+return $default(_that.translation,_that.bibles,_that.lastReference,_that.currentBookmarkId,_that.viewHistory,_that.highlightColor,_that.bookmarkById,_that.annotations,_that.mainToolbar,_that.verseSelection,_that.textSelection,_that.searchHistory,_that.interlinearDirection,_that.theme,_that.themeLayout);case _:
   return orElse();
 
 }
@@ -220,10 +221,10 @@ return $default(_that.translation,_that.lastReference,_that.currentBookmarkId,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BibleTranslation translation,  ChapterReference lastReference,  String? currentBookmarkId,  List<ChapterReference> viewHistory,  ColorEnum highlightColor,  Map<String, Bookmark> bookmarkById,  List<Annotation> annotations,  MainToolbarConfiguration mainToolbar,  VerseSelectionConfiguration verseSelection,  TextSelectionConfiguration textSelection,  List<String> searchHistory,  InterlinearDirection interlinearDirection,  ThemeMode theme,  ThemeLayoutConfiguration themeLayout)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BibleTranslation translation,  List<BibleTranslation>? bibles,  ChapterReference lastReference,  String? currentBookmarkId,  List<ChapterReference> viewHistory,  ColorEnum highlightColor,  Map<String, Bookmark> bookmarkById,  List<Annotation> annotations,  MainToolbarConfiguration mainToolbar,  VerseSelectionConfiguration verseSelection,  TextSelectionConfiguration textSelection,  List<String> searchHistory,  InterlinearDirection interlinearDirection,  ThemeMode theme,  ThemeLayoutConfiguration themeLayout)  $default,) {final _that = this;
 switch (_that) {
 case _User():
-return $default(_that.translation,_that.lastReference,_that.currentBookmarkId,_that.viewHistory,_that.highlightColor,_that.bookmarkById,_that.annotations,_that.mainToolbar,_that.verseSelection,_that.textSelection,_that.searchHistory,_that.interlinearDirection,_that.theme,_that.themeLayout);}
+return $default(_that.translation,_that.bibles,_that.lastReference,_that.currentBookmarkId,_that.viewHistory,_that.highlightColor,_that.bookmarkById,_that.annotations,_that.mainToolbar,_that.verseSelection,_that.textSelection,_that.searchHistory,_that.interlinearDirection,_that.theme,_that.themeLayout);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -237,10 +238,10 @@ return $default(_that.translation,_that.lastReference,_that.currentBookmarkId,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BibleTranslation translation,  ChapterReference lastReference,  String? currentBookmarkId,  List<ChapterReference> viewHistory,  ColorEnum highlightColor,  Map<String, Bookmark> bookmarkById,  List<Annotation> annotations,  MainToolbarConfiguration mainToolbar,  VerseSelectionConfiguration verseSelection,  TextSelectionConfiguration textSelection,  List<String> searchHistory,  InterlinearDirection interlinearDirection,  ThemeMode theme,  ThemeLayoutConfiguration themeLayout)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BibleTranslation translation,  List<BibleTranslation>? bibles,  ChapterReference lastReference,  String? currentBookmarkId,  List<ChapterReference> viewHistory,  ColorEnum highlightColor,  Map<String, Bookmark> bookmarkById,  List<Annotation> annotations,  MainToolbarConfiguration mainToolbar,  VerseSelectionConfiguration verseSelection,  TextSelectionConfiguration textSelection,  List<String> searchHistory,  InterlinearDirection interlinearDirection,  ThemeMode theme,  ThemeLayoutConfiguration themeLayout)?  $default,) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.translation,_that.lastReference,_that.currentBookmarkId,_that.viewHistory,_that.highlightColor,_that.bookmarkById,_that.annotations,_that.mainToolbar,_that.verseSelection,_that.textSelection,_that.searchHistory,_that.interlinearDirection,_that.theme,_that.themeLayout);case _:
+return $default(_that.translation,_that.bibles,_that.lastReference,_that.currentBookmarkId,_that.viewHistory,_that.highlightColor,_that.bookmarkById,_that.annotations,_that.mainToolbar,_that.verseSelection,_that.textSelection,_that.searchHistory,_that.interlinearDirection,_that.theme,_that.themeLayout);case _:
   return null;
 
 }
@@ -252,10 +253,19 @@ return $default(_that.translation,_that.lastReference,_that.currentBookmarkId,_t
 @JsonSerializable()
 
 class _User extends User {
-  const _User({this.translation = BibleTranslation.bsb, this.lastReference = const ChapterReference(chapterNum: 1, book: BookType.genesis), this.currentBookmarkId, final  List<ChapterReference> viewHistory = const [], this.highlightColor = ColorEnum.yellow, final  Map<String, Bookmark> bookmarkById = const {}, final  List<Annotation> annotations = const [], this.mainToolbar = const MainToolbarConfiguration(), this.verseSelection = const VerseSelectionConfiguration(), this.textSelection = const TextSelectionConfiguration(), final  List<String> searchHistory = const [], this.interlinearDirection = InterlinearDirection.reverse, this.theme = ThemeMode.system, this.themeLayout = const ThemeLayoutConfiguration()}): _viewHistory = viewHistory,_bookmarkById = bookmarkById,_annotations = annotations,_searchHistory = searchHistory,super._();
+  const _User({this.translation = BibleTranslation.bsb, final  List<BibleTranslation>? bibles, this.lastReference = const ChapterReference(chapterNum: 1, book: BookType.genesis), this.currentBookmarkId, final  List<ChapterReference> viewHistory = const [], this.highlightColor = ColorEnum.yellow, final  Map<String, Bookmark> bookmarkById = const {}, final  List<Annotation> annotations = const [], this.mainToolbar = const MainToolbarConfiguration(), this.verseSelection = const VerseSelectionConfiguration(), this.textSelection = const TextSelectionConfiguration(), final  List<String> searchHistory = const [], this.interlinearDirection = InterlinearDirection.reverse, this.theme = ThemeMode.system, this.themeLayout = const ThemeLayoutConfiguration()}): _bibles = bibles,_viewHistory = viewHistory,_bookmarkById = bookmarkById,_annotations = annotations,_searchHistory = searchHistory,super._();
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
 @override@JsonKey() final  BibleTranslation translation;
+ final  List<BibleTranslation>? _bibles;
+@override List<BibleTranslation>? get bibles {
+  final value = _bibles;
+  if (value == null) return null;
+  if (_bibles is EqualUnmodifiableListView) return _bibles;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 @override@JsonKey() final  ChapterReference lastReference;
 @override final  String? currentBookmarkId;
  final  List<ChapterReference> _viewHistory;
@@ -307,16 +317,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.translation, translation) || other.translation == translation)&&(identical(other.lastReference, lastReference) || other.lastReference == lastReference)&&(identical(other.currentBookmarkId, currentBookmarkId) || other.currentBookmarkId == currentBookmarkId)&&const DeepCollectionEquality().equals(other._viewHistory, _viewHistory)&&(identical(other.highlightColor, highlightColor) || other.highlightColor == highlightColor)&&const DeepCollectionEquality().equals(other._bookmarkById, _bookmarkById)&&const DeepCollectionEquality().equals(other._annotations, _annotations)&&(identical(other.mainToolbar, mainToolbar) || other.mainToolbar == mainToolbar)&&(identical(other.verseSelection, verseSelection) || other.verseSelection == verseSelection)&&(identical(other.textSelection, textSelection) || other.textSelection == textSelection)&&const DeepCollectionEquality().equals(other._searchHistory, _searchHistory)&&(identical(other.interlinearDirection, interlinearDirection) || other.interlinearDirection == interlinearDirection)&&(identical(other.theme, theme) || other.theme == theme)&&(identical(other.themeLayout, themeLayout) || other.themeLayout == themeLayout));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.translation, translation) || other.translation == translation)&&const DeepCollectionEquality().equals(other._bibles, _bibles)&&(identical(other.lastReference, lastReference) || other.lastReference == lastReference)&&(identical(other.currentBookmarkId, currentBookmarkId) || other.currentBookmarkId == currentBookmarkId)&&const DeepCollectionEquality().equals(other._viewHistory, _viewHistory)&&(identical(other.highlightColor, highlightColor) || other.highlightColor == highlightColor)&&const DeepCollectionEquality().equals(other._bookmarkById, _bookmarkById)&&const DeepCollectionEquality().equals(other._annotations, _annotations)&&(identical(other.mainToolbar, mainToolbar) || other.mainToolbar == mainToolbar)&&(identical(other.verseSelection, verseSelection) || other.verseSelection == verseSelection)&&(identical(other.textSelection, textSelection) || other.textSelection == textSelection)&&const DeepCollectionEquality().equals(other._searchHistory, _searchHistory)&&(identical(other.interlinearDirection, interlinearDirection) || other.interlinearDirection == interlinearDirection)&&(identical(other.theme, theme) || other.theme == theme)&&(identical(other.themeLayout, themeLayout) || other.themeLayout == themeLayout));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,translation,lastReference,currentBookmarkId,const DeepCollectionEquality().hash(_viewHistory),highlightColor,const DeepCollectionEquality().hash(_bookmarkById),const DeepCollectionEquality().hash(_annotations),mainToolbar,verseSelection,textSelection,const DeepCollectionEquality().hash(_searchHistory),interlinearDirection,theme,themeLayout);
+int get hashCode => Object.hash(runtimeType,translation,const DeepCollectionEquality().hash(_bibles),lastReference,currentBookmarkId,const DeepCollectionEquality().hash(_viewHistory),highlightColor,const DeepCollectionEquality().hash(_bookmarkById),const DeepCollectionEquality().hash(_annotations),mainToolbar,verseSelection,textSelection,const DeepCollectionEquality().hash(_searchHistory),interlinearDirection,theme,themeLayout);
 
 @override
 String toString() {
-  return 'User(translation: $translation, lastReference: $lastReference, currentBookmarkId: $currentBookmarkId, viewHistory: $viewHistory, highlightColor: $highlightColor, bookmarkById: $bookmarkById, annotations: $annotations, mainToolbar: $mainToolbar, verseSelection: $verseSelection, textSelection: $textSelection, searchHistory: $searchHistory, interlinearDirection: $interlinearDirection, theme: $theme, themeLayout: $themeLayout)';
+  return 'User(translation: $translation, bibles: $bibles, lastReference: $lastReference, currentBookmarkId: $currentBookmarkId, viewHistory: $viewHistory, highlightColor: $highlightColor, bookmarkById: $bookmarkById, annotations: $annotations, mainToolbar: $mainToolbar, verseSelection: $verseSelection, textSelection: $textSelection, searchHistory: $searchHistory, interlinearDirection: $interlinearDirection, theme: $theme, themeLayout: $themeLayout)';
 }
 
 
@@ -327,7 +337,7 @@ abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$UserCopyWith(_User value, $Res Function(_User) _then) = __$UserCopyWithImpl;
 @override @useResult
 $Res call({
- BibleTranslation translation, ChapterReference lastReference, String? currentBookmarkId, List<ChapterReference> viewHistory, ColorEnum highlightColor, Map<String, Bookmark> bookmarkById, List<Annotation> annotations, MainToolbarConfiguration mainToolbar, VerseSelectionConfiguration verseSelection, TextSelectionConfiguration textSelection, List<String> searchHistory, InterlinearDirection interlinearDirection, ThemeMode theme, ThemeLayoutConfiguration themeLayout
+ BibleTranslation translation, List<BibleTranslation>? bibles, ChapterReference lastReference, String? currentBookmarkId, List<ChapterReference> viewHistory, ColorEnum highlightColor, Map<String, Bookmark> bookmarkById, List<Annotation> annotations, MainToolbarConfiguration mainToolbar, VerseSelectionConfiguration verseSelection, TextSelectionConfiguration textSelection, List<String> searchHistory, InterlinearDirection interlinearDirection, ThemeMode theme, ThemeLayoutConfiguration themeLayout
 });
 
 
@@ -344,10 +354,11 @@ class __$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? translation = null,Object? lastReference = null,Object? currentBookmarkId = freezed,Object? viewHistory = null,Object? highlightColor = null,Object? bookmarkById = null,Object? annotations = null,Object? mainToolbar = null,Object? verseSelection = null,Object? textSelection = null,Object? searchHistory = null,Object? interlinearDirection = null,Object? theme = null,Object? themeLayout = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? translation = null,Object? bibles = freezed,Object? lastReference = null,Object? currentBookmarkId = freezed,Object? viewHistory = null,Object? highlightColor = null,Object? bookmarkById = null,Object? annotations = null,Object? mainToolbar = null,Object? verseSelection = null,Object? textSelection = null,Object? searchHistory = null,Object? interlinearDirection = null,Object? theme = null,Object? themeLayout = null,}) {
   return _then(_User(
 translation: null == translation ? _self.translation : translation // ignore: cast_nullable_to_non_nullable
-as BibleTranslation,lastReference: null == lastReference ? _self.lastReference : lastReference // ignore: cast_nullable_to_non_nullable
+as BibleTranslation,bibles: freezed == bibles ? _self._bibles : bibles // ignore: cast_nullable_to_non_nullable
+as List<BibleTranslation>?,lastReference: null == lastReference ? _self.lastReference : lastReference // ignore: cast_nullable_to_non_nullable
 as ChapterReference,currentBookmarkId: freezed == currentBookmarkId ? _self.currentBookmarkId : currentBookmarkId // ignore: cast_nullable_to_non_nullable
 as String?,viewHistory: null == viewHistory ? _self._viewHistory : viewHistory // ignore: cast_nullable_to_non_nullable
 as List<ChapterReference>,highlightColor: null == highlightColor ? _self.highlightColor : highlightColor // ignore: cast_nullable_to_non_nullable

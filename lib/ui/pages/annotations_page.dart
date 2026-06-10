@@ -193,7 +193,7 @@ class AnnotationsPage extends HookConsumerWidget {
                                 children: [
                                   annotation.formatLocation().toText(),
                                   if (annotation.selection case TextAnnotationSelection selection)
-                                    StyledBadge(text: selection.textSelection.translation.title()),
+                                    StyledBadge(child: selection.textSelection.translation.title().toText()),
                                 ],
                               ),
                               subtitle: Column(

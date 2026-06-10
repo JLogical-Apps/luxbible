@@ -1,8 +1,8 @@
-import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/pages/bibles_page.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
@@ -162,7 +162,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                   SizedBox(
                     width: 112,
                     child: StyledSelect(
-                      options: BibleTranslation.values,
+                      options: user.biblesOrDefault,
                       selectedOption: user.translation,
                       onSelected: (translation) => ref.updateUser((user) => user.copyWith(translation: translation)),
                       optionMapper: (translation) => StyledSelectOption(
@@ -170,6 +170,13 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                         subtitle: translation.fullName().toText(),
                       ),
                       dialogTitle: 'Bible Translation',
+                      dialogTrailing: StyledCircleButton.lg(
+                        child: Symbols.tune.toIcon(),
+                        onPressed: () {
+                          context.pop();
+                          context.push(BiblesPage());
+                        },
+                      ),
                     ),
                   ),
                 ],

@@ -10,6 +10,9 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   translation:
       $enumDecodeNullable(_$BibleTranslationEnumMap, json['translation']) ??
       BibleTranslation.bsb,
+  bibles: (json['bibles'] as List<dynamic>?)
+      ?.map((e) => $enumDecode(_$BibleTranslationEnumMap, e))
+      .toList(),
   lastReference: json['lastReference'] == null
       ? const ChapterReference(chapterNum: 1, book: BookType.genesis)
       : ChapterReference.fromJson(json['lastReference'] as String),
@@ -70,6 +73,7 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'translation': _$BibleTranslationEnumMap[instance.translation]!,
+  'bibles': instance.bibles?.map((e) => _$BibleTranslationEnumMap[e]!).toList(),
   'lastReference': instance.lastReference.toJson(),
   'currentBookmarkId': instance.currentBookmarkId,
   'viewHistory': instance.viewHistory.map((e) => e.toJson()).toList(),

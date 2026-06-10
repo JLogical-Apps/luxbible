@@ -28,6 +28,7 @@ sealed class User with _$User {
 
   const factory User({
     @Default(BibleTranslation.bsb) BibleTranslation translation,
+    List<BibleTranslation>? bibles,
     @Default(ChapterReference(chapterNum: 1, book: BookType.genesis)) ChapterReference lastReference,
     String? currentBookmarkId,
     @Default([]) List<ChapterReference> viewHistory,
@@ -46,6 +47,8 @@ sealed class User with _$User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   Bible getBible(List<Bible> bibles) => bibles.firstWhere((bible) => bible.translation == translation);
+
+  List<BibleTranslation> get biblesOrDefault => bibles ?? BibleTranslation.values;
 
   Bookmark? get currentBookmark => bookmarkById[currentBookmarkId];
 

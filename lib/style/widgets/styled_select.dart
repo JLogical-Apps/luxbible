@@ -12,6 +12,7 @@ class StyledSelect<T> extends StatelessWidget {
   final StyledSelectOption<T> Function(T) optionMapper;
 
   final String dialogTitle;
+  final Widget? dialogTrailing;
 
   const StyledSelect({
     super.key,
@@ -20,6 +21,7 @@ class StyledSelect<T> extends StatelessWidget {
     required this.onSelected,
     required this.optionMapper,
     required this.dialogTitle,
+    this.dialogTrailing,
   });
 
   @override
@@ -35,6 +37,7 @@ class StyledSelect<T> extends StatelessWidget {
             options: options,
             optionMapper: optionMapper,
             initialOption: selectedOption,
+            trailing: dialogTrailing,
           ),
         );
         if (newSelection is T) {

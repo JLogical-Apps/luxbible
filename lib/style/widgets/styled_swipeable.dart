@@ -6,9 +6,10 @@ import 'package:material_symbols_icons/symbols.dart';
 class StyledSwipeable extends StatelessWidget {
   final Widget child;
 
+  final bool isEnabled;
   final List<StyledSwipeableAction> actions;
 
-  const StyledSwipeable({required super.key, required this.child, required this.actions});
+  const StyledSwipeable({required super.key, required this.child, this.isEnabled = true, required this.actions});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class StyledSwipeable extends StatelessWidget {
       builder: (context, constraints) {
         return Slidable(
           key: super.key,
-          enabled: actions.isNotEmpty,
+          enabled: isEnabled && actions.isNotEmpty,
           groupTag: '0',
           endActionPane: ActionPane(
             motion: ScrollMotion(),

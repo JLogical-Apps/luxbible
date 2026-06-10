@@ -1,6 +1,7 @@
 import 'package:bible/providers/package_info_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/annotations_page.dart';
+import 'package:bible/ui/pages/bibles_page.dart';
 import 'package:bible/ui/pages/bookmarks_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/pages/text_selection_settings_page.dart';
@@ -34,6 +35,11 @@ class SettingsPage extends HookConsumerWidget {
                   title: 'Theme & Layout'.toText(),
                   leading: Symbols.custom_typography.toIcon(),
                   onPressed: () => context.push(ThemeSettingsPage()),
+                ),
+                StyledListItem.navigation(
+                  title: 'Bibles'.toText(),
+                  leading: Symbols.book.toIcon(),
+                  onPressed: () => context.push(BiblesPage()),
                 ),
                 StyledListItem.navigation(
                   title: 'Main Toolbar'.toText(),

@@ -1,4 +1,5 @@
 import 'package:bible/style/widgets/styled_badge.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
@@ -17,7 +18,7 @@ class StyledEditBadge extends StatelessWidget {
           Positioned(
             right: 0,
             bottom: 0,
-            child: StyledBadge(icon: Symbols.edit, colorBuilder: .surfacePrimaryInverted),
+            child: StyledBadge(child: Symbols.edit.toIcon(), colorBuilder: .surfacePrimaryInverted),
           ),
       ],
     );

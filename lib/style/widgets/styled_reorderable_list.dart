@@ -11,11 +11,14 @@ class StyledReorderableList extends HookWidget {
   final List<Widget> children;
   final Function(int oldIndex, int newIndex) onReorder;
 
-  const StyledReorderableList({super.key, required this.children, required this.onReorder});
+  final bool shrinkWrap;
+
+  const StyledReorderableList({super.key, required this.children, required this.onReorder, this.shrinkWrap = false});
 
   @override
   Widget build(BuildContext context) {
     return ReorderableListView(
+      shrinkWrap: shrinkWrap,
       children: children
           .mapIndexed(
             (i, child) => StyledListItemContext(key: child.key, showDivider: i + 1 < children.length, child: child),

@@ -397,7 +397,7 @@ final class TextSelectionTextProvider
   }
 }
 
-String _$textSelectionTextHash() => r'ba61dba4d1c8d363823715855c233acb7c56aff6';
+String _$textSelectionTextHash() => r'c5b11ec7bad2535e2730c28b04cc37c504d343e9';
 
 final class TextSelectionTextFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<String>, BibleTextSelection> {

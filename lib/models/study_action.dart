@@ -1,6 +1,5 @@
 import 'dart:collection';
 
-import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
@@ -59,11 +58,12 @@ enum StudyAction {
   }) async {
     switch (this) {
       case compare:
+        final bibles = ref.read(userProvider).biblesOrDefault;
         context.showStyledSheet(
           (context) => StyledSheet(
             title: 'Compare'.toText(),
             subtitle: region.format().toText(),
-            children: BibleTranslation.values
+            children: bibles
                 .mapIndexed<Widget>(
                   (i, translation) => Consumer(
                     builder: (context, ref, child) {
@@ -80,7 +80,7 @@ enum StudyAction {
                               child: text == null ? null : Padding(padding: .only(bottom: 16), child: text.toText()),
                             ),
                           ),
-                          if (i + 1 < BibleTranslation.values.length)
+                          if (i + 1 < bibles.length)
                             Positioned(bottom: 0, left: 0, right: 0, child: StyledDivider(height: 2)),
                         ],
                       );
