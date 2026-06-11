@@ -4,6 +4,7 @@ import 'package:bible/style/widgets/styled_list_item_context.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class StyledReorderableList extends HookWidget {
   static Size? draggedChildSize;
@@ -17,17 +18,19 @@ class StyledReorderableList extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ReorderableListView(
-      shrinkWrap: shrinkWrap,
-      children: children
-          .mapIndexed(
-            (i, child) => StyledListItemContext(key: child.key, showDivider: i + 1 < children.length, child: child),
-          )
-          .toList(),
-      onReorderItem: onReorder,
-      proxyDecorator: (widget, _, _) => Container(
-        decoration: BoxDecoration(color: context.colors.surfacePrimary, boxShadow: [StyledShadow.down(context)]),
-        child: widget,
+    return SlidableAutoCloseBehavior(
+      child: ReorderableListView(
+        shrinkWrap: shrinkWrap,
+        children: children
+            .mapIndexed(
+              (i, child) => StyledListItemContext(key: child.key, showDivider: i + 1 < children.length, child: child),
+            )
+            .toList(),
+        onReorderItem: onReorder,
+        proxyDecorator: (widget, _, _) => Container(
+          decoration: BoxDecoration(color: context.colors.surfacePrimary, boxShadow: [StyledShadow.down(context)]),
+          child: widget,
+        ),
       ),
     );
   }
