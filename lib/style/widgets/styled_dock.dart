@@ -21,6 +21,8 @@ class StyledDock extends HookWidget {
 
   final Object? activeScrollKey;
 
+  final ScrollController? controller;
+
   const StyledDock({
     super.key,
     required this.children,
@@ -29,6 +31,7 @@ class StyledDock extends HookWidget {
     this.shrinkWrap = true,
     this.forceHeight = false,
     this.activeScrollKey,
+    this.controller,
   });
 
   @override
@@ -104,6 +107,7 @@ class StyledDock extends HookWidget {
                               forceHeight
                                   ? LayoutBuilder(
                                       builder: (context, constraints) => SingleChildScrollView(
+                                        controller: controller,
                                         child: ClipRect(
                                           child: ConstrainedBox(
                                             constraints: BoxConstraints(maxHeight: constraints.maxHeight),
@@ -119,6 +123,7 @@ class StyledDock extends HookWidget {
                                   : StyledListView(
                                       shrinkWrap: true,
                                       physics: ClampingScrollPhysics(),
+                                      controller: controller,
                                       padding: .only(
                                         bottom: bottomChildren.isEmpty ? MediaQuery.paddingOf(context).bottom : 0,
                                       ),

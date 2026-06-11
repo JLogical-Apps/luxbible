@@ -56,6 +56,18 @@ class StyledSheet<T> extends HookWidget {
   Widget build(BuildContext context) {
     final sheetNavigationContext = context.watch<SheetNavigationBreadcrumbContext?>();
 
+    // Remember this sheet's scroll position keyed by its depth in the breadcrumb stack,
+    // so navigating back to it (via a breadcrumb chip or the back arrow) restores it.
+    final depth = (sheetNavigationContext?.breadcrumbs.length ?? 1) - 1;
+    final scrollController = useScrollController(
+      initialScrollOffset: sheetNavigationContext?.scrollOffsetByDepth[depth] ?? 0,
+    );
+    useOnListenableChange(scrollController, () {
+      if (scrollController.hasClients && sheetNavigationContext != null) {
+        sheetNavigationContext.scrollOffsetByDepth[depth] = scrollController.offset;
+      }
+    });
+
     void navigateToBreadcrumb({required int breadcrumbIndex}) {
       if (sheetNavigationContext == null) {
         return;
@@ -68,6 +80,8 @@ class StyledSheet<T> extends HookWidget {
         wrapper: (sheetBuilder) => Provider.value(
           value: SheetNavigationBreadcrumbContext(
             breadcrumbs: sheetNavigationContext.breadcrumbs.take(breadcrumbIndex + 1).toList(),
+            // Carry the same offset map so the restored sheet recovers its scroll position.
+            scrollOffsetByDepth: sheetNavigationContext.scrollOffsetByDepth,
           ),
           child: HookBuilder(builder: sheetBuilder),
         ),
@@ -168,7 +182,12 @@ class StyledSheet<T> extends HookWidget {
           Flexible(
             child: DefaultTextStyle(
               style: context.textStyle.paragraphMd,
-              child: StyledDock(aboveButtons: aboveButtons, buttonsBuilder: buttonsBuilder, children: children),
+              child: StyledDock(
+                controller: scrollController,
+                aboveButtons: aboveButtons,
+                buttonsBuilder: buttonsBuilder,
+                children: children,
+              ),
             ),
           ),
         ],

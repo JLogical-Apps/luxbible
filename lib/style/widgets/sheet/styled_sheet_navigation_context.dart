@@ -4,10 +4,18 @@ import 'package:flutter/material.dart';
 class SheetNavigationBreadcrumbContext {
   final List<SheetNavigationBreadcrumb> breadcrumbs;
 
-  const SheetNavigationBreadcrumbContext({required this.breadcrumbs});
+  /// Remembered scroll offsets (pixels) keyed by breadcrumb depth, shared across the
+  /// whole breadcrumb session so navigating back to a breadcrumb restores its position.
+  final Map<int, double> scrollOffsetByDepth;
+
+  SheetNavigationBreadcrumbContext({required this.breadcrumbs, Map<int, double>? scrollOffsetByDepth})
+    : scrollOffsetByDepth = scrollOffsetByDepth ?? {};
 
   SheetNavigationBreadcrumbContext withBreadcrumb(SheetNavigationBreadcrumb breadcrumb) =>
-      SheetNavigationBreadcrumbContext(breadcrumbs: [...breadcrumbs, breadcrumb]);
+      SheetNavigationBreadcrumbContext(
+        breadcrumbs: [...breadcrumbs, breadcrumb],
+        scrollOffsetByDepth: scrollOffsetByDepth,
+      );
 }
 
 class SheetNavigationBreadcrumb {

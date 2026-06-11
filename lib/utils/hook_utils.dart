@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bible/utils/extensions/controller_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -81,4 +83,13 @@ T useDisposable<T>(T object, Function(T) onDispose) {
 Function() useRefresh() {
   final state = useState(0);
   return () => state.value++;
+}
+
+void usePeriodic(Duration duration, Function() callback) {
+  final callbackRef = useRef(callback);
+  callbackRef.value = callback;
+  useEffect(() {
+    final timer = Timer.periodic(duration, (_) => callbackRef.value());
+    return timer.cancel;
+  }, []);
 }

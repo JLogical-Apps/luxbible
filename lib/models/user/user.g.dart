@@ -13,13 +13,18 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   bibles: (json['bibles'] as List<dynamic>?)
       ?.map((e) => $enumDecode(_$BibleTranslationEnumMap, e))
       .toList(),
-  lastReference: json['lastReference'] == null
-      ? const ChapterReference(chapterNum: 1, book: BookType.genesis)
-      : ChapterReference.fromJson(json['lastReference'] as String),
+  lastPosition: ChapterPositionFromReference.read(json, 'lastReference') == null
+      ? const ChapterPosition(
+          reference: ChapterReference(chapterNum: 1, book: BookType.genesis),
+        )
+      : ChapterPosition.fromJson(
+          ChapterPositionFromReference.read(json, 'lastReference')
+              as Map<String, dynamic>,
+        ),
   currentBookmarkId: json['currentBookmarkId'] as String?,
   viewHistory:
-      (json['viewHistory'] as List<dynamic>?)
-          ?.map((e) => ChapterReference.fromJson(e as String))
+      (ChapterPositionFromReference.read(json, 'viewHistory') as List<dynamic>?)
+          ?.map((e) => ChapterPosition.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
   highlightColor:
@@ -74,7 +79,7 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'translation': _$BibleTranslationEnumMap[instance.translation]!,
   'bibles': instance.bibles?.map((e) => _$BibleTranslationEnumMap[e]!).toList(),
-  'lastReference': instance.lastReference.toJson(),
+  'lastReference': instance.lastPosition.toJson(),
   'currentBookmarkId': instance.currentBookmarkId,
   'viewHistory': instance.viewHistory.map((e) => e.toJson()).toList(),
   'highlightColor': _$ColorEnumEnumMap[instance.highlightColor]!,

@@ -1,5 +1,6 @@
 import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/color_enum.dart';
+import 'package:bible/models/reference/chapter_position.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/style/style.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,13 @@ class BookmarkSheet {
         port: Port.of({
           'color': SimplePortField<ColorEnum>(value: initialBookmark?.color ?? ColorEnum.stone),
           'name': PortField.string(initialValue: initialBookmark?.name).isNotBlank(),
-        }).map((values, port) => Bookmark(chapter: reference, name: values['name'], color: values['color'])),
+        }).map(
+          (values, port) => Bookmark(
+            position: ChapterPosition(reference: reference),
+            name: values['name'],
+            color: values['color'],
+          ),
+        ),
         childrenBuilder: (context) => [
           StyledPortFieldBuilder<ColorEnum>(
             fieldPath: 'color',

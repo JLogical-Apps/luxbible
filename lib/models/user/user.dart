@@ -5,6 +5,7 @@ import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
+import 'package:bible/models/reference/chapter_position.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
@@ -29,9 +30,11 @@ sealed class User with _$User {
   const factory User({
     @Default(BibleTranslation.bsb) BibleTranslation translation,
     List<BibleTranslation>? bibles,
-    @Default(ChapterReference(chapterNum: 1, book: BookType.genesis)) ChapterReference lastReference,
+    @ChapterPositionFromReference('lastReference')
+    @Default(ChapterPosition(reference: ChapterReference(chapterNum: 1, book: BookType.genesis)))
+    ChapterPosition lastPosition,
     String? currentBookmarkId,
-    @Default([]) List<ChapterReference> viewHistory,
+    @ChapterPositionFromReference('viewHistory') @Default([]) List<ChapterPosition> viewHistory,
     @Default(ColorEnum.yellow) ColorEnum highlightColor,
     @Default({}) Map<String, Bookmark> bookmarkById,
     @Default([]) List<Annotation> annotations,
@@ -49,6 +52,8 @@ sealed class User with _$User {
   Bible getBible(List<Bible> bibles) => bibles.firstWhere((bible) => bible.translation == translation);
 
   List<BibleTranslation> get biblesOrDefault => bibles ?? BibleTranslation.values;
+
+  ChapterReference get lastReference => lastPosition.reference;
 
   Bookmark? get currentBookmark => bookmarkById[currentBookmarkId];
 
@@ -145,20 +150,44 @@ sealed class User with _$User {
   );
   User withRemovedAnnotation(Annotation annotation) => copyWith(annotations: annotations.withRemoved(annotation));
 
-  User withHardNavigation(ChapterReference reference, {String? bookmarkId}) => copyWith(
-    lastReference: reference,
-    currentBookmarkId: bookmarkId,
-    viewHistory: [reference, lastReference, ...viewHistory].distinct.take(5).toList(),
-  );
+  User withHardNavigation(ChapterPosition position, {String? bookmarkId}) {
+    return copyWith(
+      lastPosition: position,
+      currentBookmarkId: bookmarkId,
+      viewHistory: [
+        position,
+        lastPosition,
+        ...viewHistory,
+      ].distinctBy((position) => position.reference).take(5).toList(),
+    );
+  }
 
-  User withSoftNavigation(ChapterReference reference) {
+  User withSoftNavigation(ChapterPosition position) {
     final currentBookmarkId = this.currentBookmarkId;
     final currentBookmark = this.currentBookmark;
     return copyWith(
-      lastReference: reference,
+      lastPosition: position,
       bookmarkById: currentBookmarkId == null || currentBookmark == null
           ? {...bookmarkById}
-          : ({...bookmarkById}..[currentBookmarkId] = currentBookmark.copyWith(chapter: reference)),
+          : ({...bookmarkById}..[currentBookmarkId] = currentBookmark.copyWith(position: position)),
+    );
+  }
+
+  User withScrollPercent(double percent) {
+    final updatedPosition = lastPosition.copyWith(scrollPercent: percent);
+    final currentBookmarkId = this.currentBookmarkId;
+    final currentBookmark = this.currentBookmark;
+    return copyWith(
+      lastPosition: updatedPosition,
+      viewHistory: viewHistory.isNotEmpty && viewHistory.first.reference == lastPosition.reference
+          ? [updatedPosition, ...viewHistory.skip(1)]
+          : viewHistory,
+      bookmarkById: currentBookmarkId == null || currentBookmark == null
+          ? bookmarkById
+          : ({...bookmarkById}
+              ..[currentBookmarkId] = currentBookmark.copyWith(
+                position: currentBookmark.position.copyWith(scrollPercent: percent),
+              )),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'package:bible/models/bible/book_type.dart';
+import 'package:bible/models/reference/chapter_position.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
@@ -19,10 +20,10 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:utils_core/utils_core.dart';
 
 class ChapterReferenceSearchPageResult {
-  final ChapterReference chapterReference;
+  final ChapterPosition position;
   final String? bookmarkId;
 
-  const ChapterReferenceSearchPageResult({required this.chapterReference, this.bookmarkId});
+  const ChapterReferenceSearchPageResult({required this.position, this.bookmarkId});
 }
 
 class ChapterReferenceSearchPage extends HookConsumerWidget {
@@ -89,7 +90,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
       (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
     );
 
-    final recents = user.viewHistory.where((reference) => reference != initialReference).toList();
+    final recents = user.viewHistory.where((position) => position.reference != initialReference).toList();
 
     return StyledPage(
       leading: StyledCircleButton.lg(child: Symbols.close.toIcon(), onPressed: () => Navigator.of(context).pop()),
@@ -200,30 +201,35 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                                 padding: .symmetric(horizontal: 16),
                                 child: Row(
                                   spacing: 16,
-                                  children: user.bookmarkById.mapToIterable((bookmarkId, bookmark) {
-                                    final chapterReference = bookmark.chapter;
-                                    return StyledTile(
-                                      onPressed: () => context.pop(chapterReference.toResult(bookmarkId: bookmarkId)),
-                                      padding: .all(16),
-                                      child: Row(
-                                        spacing: 12,
-                                        crossAxisAlignment: .center,
-                                        children: [
-                                          Icon(Symbols.bookmark, color: bookmark.color.toHue(context.colors).medium),
-                                          Column(
-                                            crossAxisAlignment: .start,
+                                  children: user.bookmarkById
+                                      .mapToIterable(
+                                        (bookmarkId, bookmark) => StyledTile(
+                                          onPressed: () =>
+                                              context.pop(bookmark.position.toResult(bookmarkId: bookmarkId)),
+                                          padding: .all(16),
+                                          child: Row(
+                                            spacing: 12,
+                                            crossAxisAlignment: .center,
                                             children: [
-                                              Text(bookmark.name, style: context.textStyle.labelMd),
-                                              Text(
-                                                chapterReference.format(),
-                                                style: context.textStyle.paragraphSm.subtle(),
+                                              Icon(
+                                                Symbols.bookmark,
+                                                color: bookmark.color.toHue(context.colors).medium,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment: .start,
+                                                children: [
+                                                  Text(bookmark.name, style: context.textStyle.labelMd),
+                                                  Text(
+                                                    bookmark.chapter.format(),
+                                                    style: context.textStyle.paragraphSm.subtle(),
+                                                  ),
+                                                ],
                                               ),
                                             ],
                                           ),
-                                        ],
-                                      ),
-                                    );
-                                  }).toList(),
+                                        ),
+                                      )
+                                      .toList(),
                                 ),
                               ),
                             ],
@@ -234,22 +240,20 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                             padding: .only(top: 24),
                             children: recents
                                 .map(
-                                  (chapterReference) => StyledSwipeable(
-                                    key: ValueKey(chapterReference),
+                                  (position) => StyledSwipeable(
+                                    key: ValueKey(position.reference),
                                     actions: [
                                       StyledSwipeableAction.delete(
                                         onPressed: () => ref.updateUser(
-                                          (user) => user.copyWith(
-                                            viewHistory: user.viewHistory.withRemoved(chapterReference),
-                                          ),
+                                          (user) => user.copyWith(viewHistory: user.viewHistory.withRemoved(position)),
                                         ),
                                       ),
                                     ],
                                     child: StyledListItem(
                                       leading: Symbols.history.toIcon(),
-                                      title: chapterReference.format().toText(),
+                                      title: position.reference.format().toText(),
                                       trailing: Symbols.expand_circle_right.toIcon(),
-                                      onPressed: () => context.pop(chapterReference.toResult()),
+                                      onPressed: () => context.pop(position.toResult()),
                                     ),
                                   ),
                                 )
@@ -315,6 +319,14 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
 enum _ViewMode { book, chapter }
 
 extension on ChapterReference {
+  ChapterReferenceSearchPageResult toResult({String? bookmarkId, double scrollPercent = 0}) =>
+      ChapterReferenceSearchPageResult(
+        position: ChapterPosition(reference: this, scrollPercent: scrollPercent),
+        bookmarkId: bookmarkId,
+      );
+}
+
+extension on ChapterPosition {
   ChapterReferenceSearchPageResult toResult({String? bookmarkId}) =>
-      ChapterReferenceSearchPageResult(chapterReference: this, bookmarkId: bookmarkId);
+      ChapterReferenceSearchPageResult(position: this, bookmarkId: bookmarkId);
 }
