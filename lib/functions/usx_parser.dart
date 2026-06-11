@@ -6,6 +6,7 @@ import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/models/bible/verse.dart';
 import 'package:bible/models/bible/word.dart';
 import 'package:collection/collection.dart';
+import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
 
 Book parseUsxBook(BookType type, String rawXml) {
@@ -46,7 +47,7 @@ Book parseUsxBook(BookType type, String rawXml) {
                                       originalPosition: int.parse(node.getAttribute('x-position')!),
                                       inflection: node.getAttribute('x-lemma'),
                                       morphology: node.getAttribute('x-morph'),
-                                      strongId: node.getAttribute('strong'),
+                                      strongId: node.getAttribute('strong')?.nullIfBlank,
                                       transliteration: node.getAttribute('x-translit'),
                                     )
                                   : null,
