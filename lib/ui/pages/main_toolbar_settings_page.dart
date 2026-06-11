@@ -1,6 +1,7 @@
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/user/main_toolbar_shortcut.dart';
+import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_selection_sheet.dart';
@@ -45,7 +46,7 @@ class MainToolbarSettingsPage extends ConsumerWidget {
                 onPressed: () {},
                 onMorePressed: () {},
                 onShorcutPressed: (shortcutIndex, shortcut) async {
-                  final newShortcut = await showSelectMainToolbarSheet(context, ref, initialShortcut: shortcut);
+                  final newShortcut = await showSelectMainToolbarSheet(context, initialShortcut: shortcut);
                   if (newShortcut != null) {
                     ref.updateUser(
                       (user) => user.copyWith(mainToolbar: mainToolbar.withPinnedShortcut(shortcutIndex, newShortcut)),
@@ -74,7 +75,6 @@ class MainToolbarSettingsPage extends ConsumerWidget {
                             onPressed: () async {
                               final newShortcut = await showSelectMainToolbarSheet(
                                 context,
-                                ref,
                                 initialShortcut: mainToolbar.longPressShortcut,
                               );
                               if (newShortcut != null) {
@@ -131,8 +131,7 @@ class MainToolbarSettingsPage extends ConsumerWidget {
   }
 
   Future<MainToolbarShortcut?> showSelectMainToolbarSheet(
-    BuildContext context,
-    WidgetRef ref, {
+    BuildContext context, {
     required MainToolbarShortcut initialShortcut,
   }) {
     final user = ref.read(userProvider);

@@ -5,6 +5,7 @@ import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
+import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
@@ -51,8 +52,7 @@ enum StudyAction {
   };
 
   Future<void> onPressed(
-    BuildContext context,
-    WidgetRef ref, {
+    BuildContext context, {
     required VerseSelection verseSelection,
     required String regionFormat,
     required Function(VerseSelection) onNavigateToVerseSelection,
@@ -93,7 +93,7 @@ enum StudyAction {
         final studyBible = ref.read(studyBibleProvider);
 
         context.showStyledSheetWithBreadcrumbs(breadcrumbText: regionFormat, (context) {
-          final user = ref.watch(userProvider); // User can be update tab preference
+          final user = ref.read(userProvider);
 
           final tabController = useTabController(
             initialLength: InterlinearDirection.values.length,
@@ -102,7 +102,8 @@ enum StudyAction {
 
           useOnListenableChange(tabController, () {
             final interlinearDirection = InterlinearDirection.values[tabController.index];
-            if (interlinearDirection != user.interlinearDirection) {
+            // Read fresh so the comparison reflects the latest saved preference.
+            if (interlinearDirection != ref.read(userProvider).interlinearDirection) {
               ref.updateUser((user) => user.copyWith(interlinearDirection: interlinearDirection));
             }
           });
@@ -184,7 +185,7 @@ enum StudyAction {
           );
         });
       case commentary:
-        final commentaries = ref.watch(commentariesProvider);
+        final commentaries = ref.read(commentariesProvider);
         final relatedCommentaries = commentaries
             .mapToMap((commentary) => MapEntry(commentary, commentary.getNotesFor(verseSelection)))
             .where((commentary, notes) => notes.isNotEmpty);

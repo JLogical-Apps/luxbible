@@ -219,7 +219,6 @@ class BibleBody extends HookConsumerWidget {
                                       newSelection.isInVerseSelection(selectedVerseSelection)) {
                                     user.verseSelection.longPressShortcut.onPressed(
                                       context,
-                                      ref,
                                       verseSelection: VerseSelection.fromReferences(selectedReferencesState.value),
                                       onDeselect: () => selectedReferencesState.value = [],
                                       onNavigateToVerseSelection: navigateToVerseSelection,
@@ -228,7 +227,6 @@ class BibleBody extends HookConsumerWidget {
                                   } else if (textSelection != null && textSelection.intersects(newSelection)) {
                                     user.textSelection.longPressShortcut.onPressed(
                                       context,
-                                      ref,
                                       textSelection: textSelection,
                                       onDeselect: () => textSelectionState.value = null,
                                       onNavigateToVerseSelection: navigateToVerseSelection,
@@ -362,13 +360,11 @@ class BibleBody extends HookConsumerWidget {
                     },
                     onLongPressed: () => user.mainToolbar.longPressShortcut.onPressed(
                       context,
-                      ref,
                       reference: currentChapterReference,
                       onNavigateToVerseSelection: navigateToVerseSelection,
                     ),
                     onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
                       context,
-                      ref,
                       reference: currentChapterReference,
                       onNavigateToVerseSelection: navigateToVerseSelection,
                     ),
@@ -392,7 +388,6 @@ class BibleBody extends HookConsumerWidget {
                                   context.pop();
                                   action.onPressed(
                                     context,
-                                    ref,
                                     reference: currentChapterReference,
                                     onNavigateToVerseSelection: navigateToVerseSelection,
                                   );
@@ -448,7 +443,6 @@ class BibleBody extends HookConsumerWidget {
                                                 Navigator.of(context).pop();
                                                 action.onPressed(
                                                   context,
-                                                  ref,
                                                   selectedVerseSelection: selectedVerseSelection,
                                                   onDeselect: () => selectedReferencesState.value = [],
                                                   onNavigateToVerseSelection: navigateToVerseSelection,
@@ -461,7 +455,6 @@ class BibleBody extends HookConsumerWidget {
                                   ),
                                   onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
                                     context,
-                                    ref,
                                     verseSelection: selectedVerseSelection,
                                     onDeselect: () => selectedReferencesState.value = [],
                                     onNavigateToVerseSelection: navigateToVerseSelection,
@@ -475,7 +468,6 @@ class BibleBody extends HookConsumerWidget {
                                   onClosePressed: onClosePressed,
                                   onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
                                     context,
-                                    ref,
                                     textSelection: textSelection,
                                     onDeselect: () => textSelectionState.value = null,
                                     onNavigateToVerseSelection: navigateToVerseSelection,
@@ -508,7 +500,6 @@ class BibleBody extends HookConsumerWidget {
                                                   Navigator.of(context).pop();
                                                   action.onPressed(
                                                     context,
-                                                    ref,
                                                     textSelection: textSelection,
                                                     onDeselect: () => textSelectionState.value = null,
                                                     onNavigateToVerseSelection: navigateToVerseSelection,

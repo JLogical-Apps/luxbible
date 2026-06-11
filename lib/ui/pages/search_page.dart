@@ -207,7 +207,7 @@ class SearchPage extends HookConsumerWidget {
                                 ],
                               ),
                               subtitle: strong.definition.toText(),
-                              onPressed: () => StrongSheet.showWithBreadcrumbs(context, ref, strongId: strong.id),
+                              onPressed: () => StrongSheet.showWithBreadcrumbs(context, strongId: strong.id),
                             ),
                           ),
                         ),

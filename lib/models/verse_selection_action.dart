@@ -2,6 +2,7 @@ import 'package:bible/models/annotation.dart';
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
+import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
@@ -9,7 +10,6 @@ import 'package:bible/ui/sheets/study_sheet.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 enum VerseSelectionAction {
@@ -38,8 +38,7 @@ enum VerseSelectionAction {
   bool get isNavigation => [annotate, study].contains(this);
 
   Future<void> onPressed(
-    BuildContext context,
-    WidgetRef ref, {
+    BuildContext context, {
     required VerseSelection selectedVerseSelection,
     required Function() onDeselect,
     required Function(VerseSelection) onNavigateToVerseSelection,
@@ -48,7 +47,6 @@ enum VerseSelectionAction {
       case annotate:
         final annotation = await NewAnnotationSheet.show(
           context,
-          ref,
           selection: AnnotationSelection.verses(verseSelection: selectedVerseSelection),
           onAnnotationsRemoved: onDeselect,
         );
@@ -72,7 +70,6 @@ enum VerseSelectionAction {
       case study:
         StudySheet.show(
           context,
-          ref,
           regionFormat: selectedVerseSelection.format(),
           verseSelection: selectedVerseSelection,
           regionType: RegionType.verses,

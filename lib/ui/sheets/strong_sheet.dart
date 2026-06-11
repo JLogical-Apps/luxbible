@@ -2,6 +2,7 @@ import 'package:bible/models/bible/word.dart';
 import 'package:bible/models/morphology.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
+import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
@@ -12,14 +13,12 @@ import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:utils_core/utils_core.dart';
 
 class StrongSheet {
   static Future<void> showWithBreadcrumbs(
-    BuildContext context,
-    WidgetRef ref, {
+    BuildContext context, {
     String? strongId,
     Word? word,
     Function(VerseSelection)? onNavigateToVerseSelection,
@@ -136,7 +135,6 @@ class StrongSheet {
                         context.pop();
                         StrongSheet.showWithBreadcrumbs(
                           context,
-                          ref,
                           strongId: strong.id,
                           onNavigateToVerseSelection: onNavigateToVerseSelection,
                         );

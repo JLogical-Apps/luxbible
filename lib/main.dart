@@ -10,6 +10,7 @@ import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/package_info_provider.dart';
+import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/path_service.dart';
@@ -42,20 +43,19 @@ Future<void> main() async {
       final sharedPreferences = await SharedPreferences.getInstance();
       final packageInfo = await PackageInfo.fromPlatform();
 
-      runApp(
-        ProviderScope(
-          overrides: [
-            localBiblesProvider.overrideWith((ref) => bibles),
-            strongsProvider.overrideWith((ref) => strongs),
-            crossReferencesProvider.overrideWith((ref) => crossReferences),
-            commentariesProvider.overrideWith((ref) => [commentaries]),
-            pathServiceProvider.overrideWith((ref) => paths),
-            sharedPreferencesServiceProvider.overrideWith((ref) => sharedPreferences),
-            packageInfoProvider.overrideWith((ref) => packageInfo),
-          ],
-          child: BibleApp(),
-        ),
+      ref = ProviderContainer(
+        overrides: [
+          localBiblesProvider.overrideWith((ref) => bibles),
+          strongsProvider.overrideWith((ref) => strongs),
+          crossReferencesProvider.overrideWith((ref) => crossReferences),
+          commentariesProvider.overrideWith((ref) => [commentaries]),
+          pathServiceProvider.overrideWith((ref) => paths),
+          sharedPreferencesServiceProvider.overrideWith((ref) => sharedPreferences),
+          packageInfoProvider.overrideWith((ref) => packageInfo),
+        ],
       );
+
+      runApp(UncontrolledProviderScope(container: ref, child: BibleApp()));
     },
     (error, stack) {
       if (kDebugMode) {

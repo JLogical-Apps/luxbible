@@ -241,7 +241,6 @@ class AnnotationsPage extends HookConsumerWidget {
                                           context.pop();
                                           final newAnnotation = await AnnotationSheet.show(
                                             context,
-                                            ref,
                                             selection: annotation.selection,
                                             annotation: annotation,
                                           );

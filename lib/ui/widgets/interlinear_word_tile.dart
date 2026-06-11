@@ -53,7 +53,6 @@ class InterlinearWordTile extends ConsumerWidget {
                 context.pop();
                 StrongSheet.showWithBreadcrumbs(
                   context,
-                  ref,
                   word: word,
                   strongId: word.data?.strongId,
                   onNavigateToVerseSelection: onNavigateToVerseSelection,
@@ -88,7 +87,6 @@ class InterlinearWordTile extends ConsumerWidget {
                 context.pop();
                 StrongSheet.showWithBreadcrumbs(
                   context,
-                  ref,
                   word: word,
                   strongId: word.data?.strongId,
                   onNavigateToVerseSelection: onNavigateToVerseSelection,

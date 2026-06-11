@@ -9,7 +9,6 @@ import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 enum MainToolbarShortcut {
@@ -35,21 +34,18 @@ enum MainToolbarShortcut {
       Symbols.custom_typography.toIcon();
 
   Future<void> onPressed(
-    BuildContext context,
-    WidgetRef ref, {
+    BuildContext context, {
     required ChapterReference reference,
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) =>
       toStudyAction()?.onPressed(
         context,
-        ref,
         verseSelection: reference.toVerseSelection(),
         regionFormat: reference.format(),
         onNavigateToVerseSelection: onNavigateToVerseSelection,
       ) ??
       toMainAction()?.onPressed(
         context,
-        ref,
         reference: reference,
         onNavigateToVerseSelection: onNavigateToVerseSelection,
       ) ??

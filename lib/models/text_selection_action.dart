@@ -2,6 +2,7 @@ import 'package:bible/models/annotation.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
+import 'package:bible/providers/root_ref.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
@@ -12,7 +13,6 @@ import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 enum TextSelectionAction {
@@ -45,8 +45,7 @@ enum TextSelectionAction {
   bool get isNavigation => [annotate, interlinear, search].contains(this);
 
   Future<void> onPressed(
-    BuildContext context,
-    WidgetRef ref, {
+    BuildContext context, {
     required BibleTextSelection textSelection,
     required Function() onDeselect,
     required Function(VerseSelection) onNavigateToVerseSelection,
@@ -76,7 +75,6 @@ enum TextSelectionAction {
           final word = studyWords.first;
           await StrongSheet.showWithBreadcrumbs(
             context,
-            ref,
             word: word,
             strongId: word.data?.strongId,
             onNavigateToVerseSelection: onNavigateToVerseSelection,
@@ -103,7 +101,6 @@ enum TextSelectionAction {
       case annotate:
         final annotation = await NewAnnotationSheet.show(
           context,
-          ref,
           selection: AnnotationSelection.text(textSelection: textSelection),
           onAnnotationsRemoved: onDeselect,
         );

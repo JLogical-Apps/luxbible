@@ -164,7 +164,7 @@ class ChapterBuilder extends HookConsumerWidget {
           },
           child: Column(
             crossAxisAlignment: .stretch,
-            children: getParagraphSpansByParagraph(context, ref, chapter: chapter, keyByReference: keyByReference)
+            children: getParagraphSpansByParagraph(context, chapter: chapter, keyByReference: keyByReference)
                 .where((entry) => entry.value.isNotEmpty)
                 .mapEntries(
                   (paragraph, paragraphSpans) => Padding(
@@ -369,8 +369,7 @@ class ChapterBuilder extends HookConsumerWidget {
   Reference getVerseReference(Verse verse) => chapterReference.getReference(verse.verseNum);
 
   List<MapEntry<Paragraph, List<InlineSpan>>> getParagraphSpansByParagraph(
-    BuildContext context,
-    WidgetRef ref, {
+    BuildContext context, {
     required Chapter chapter,
     required Map<Reference, GlobalKey> keyByReference,
   }) {
@@ -441,7 +440,6 @@ class ChapterBuilder extends HookConsumerWidget {
                       if (verseSelectionAnnotationsWithNote.isNotEmpty)
                         notesButtonSpan(
                           context,
-                          ref,
                           element: VerseElement(
                             anchor: BibleTextSelectionWordAnchor.fromReference(
                               reference: reference,
@@ -490,7 +488,6 @@ class ChapterBuilder extends HookConsumerWidget {
                                 offset - wordParagraphOffset,
                                 notesButtonSpan(
                                   context,
-                                  ref,
                                   element: VerseElement(
                                     anchor: BibleTextSelectionWordAnchor.fromReference(
                                       reference: reference,
@@ -531,8 +528,7 @@ class ChapterBuilder extends HookConsumerWidget {
   }
 
   WidgetSpan notesButtonSpan(
-    BuildContext context,
-    WidgetRef ref, {
+    BuildContext context, {
     required VerseElement element,
     required List<Annotation> annotations,
     required bool isUnderlined,

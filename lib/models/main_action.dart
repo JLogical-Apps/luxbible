@@ -2,6 +2,7 @@ import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/user/user.dart';
+import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/search_page.dart';
@@ -13,7 +14,6 @@ import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 enum MainAction {
@@ -54,8 +54,7 @@ enum MainAction {
   bool get isNavigation => [study, search].contains(this);
 
   Future<void> onPressed(
-    BuildContext context,
-    WidgetRef ref, {
+    BuildContext context, {
     required ChapterReference reference,
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) async {
@@ -115,7 +114,6 @@ enum MainAction {
       case study:
         StudySheet.show(
           context,
-          ref,
           verseSelection: reference.toVerseSelection(),
           regionFormat: reference.format(),
           regionType: RegionType.chapter,

@@ -4,11 +4,11 @@ import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/models/verse_selection_action.dart';
+import 'package:bible/providers/root_ref.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 enum VerseSelectionShortcut {
@@ -52,22 +52,19 @@ enum VerseSelectionShortcut {
       };
 
   Future<void> onPressed(
-    BuildContext context,
-    WidgetRef ref, {
+    BuildContext context, {
     required VerseSelection verseSelection,
     required Function() onDeselect,
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) =>
       toStudyAction()?.onPressed(
         context,
-        ref,
         regionFormat: verseSelection.format(),
         verseSelection: verseSelection,
         onNavigateToVerseSelection: onNavigateToVerseSelection,
       ) ??
       toVerseSelectionAction()?.onPressed(
         context,
-        ref,
         selectedVerseSelection: verseSelection,
         onDeselect: onDeselect,
         onNavigateToVerseSelection: onNavigateToVerseSelection,

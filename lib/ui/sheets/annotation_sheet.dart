@@ -1,6 +1,7 @@
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/providers/bibles_provider.dart';
+import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/widgets/sheet/styled_port_sheet.dart';
@@ -14,14 +15,12 @@ import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:port/port.dart';
 
 class AnnotationSheet {
   static Future<Annotation?> show(
-    BuildContext context,
-    WidgetRef ref, {
+    BuildContext context, {
     Widget? subtitle,
     Annotation? annotation,
     required AnnotationSelection selection,
@@ -76,8 +75,7 @@ class AnnotationSheet {
 
 class NewAnnotationSheet {
   static Future<Annotation?> show(
-    BuildContext context,
-    WidgetRef ref, {
+    BuildContext context, {
     required AnnotationSelection selection,
     Function()? onAnnotationsRemoved,
   }) async {
@@ -95,7 +93,6 @@ class NewAnnotationSheet {
 
     return AnnotationSheet.show(
       context,
-      ref,
       selection: selection,
       subtitle: selectionText.toText(),
       onRemove: hasAnnotation
