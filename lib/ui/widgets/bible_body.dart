@@ -202,9 +202,39 @@ class BibleBody extends HookConsumerWidget {
                           ..remove(chapterReference),
                   );
 
-                  final chapter = ref
-                      .watch(chapterProvider(translation: user.translation, chapterReference: chapterReference))
-                      .value;
+                  final chapterValue = ref.watch(
+                    chapterProvider(translation: user.translation, chapterReference: chapterReference),
+                  );
+                  final chapter = chapterValue.value;
+
+                  if (chapterValue.hasError) {
+                    return Padding(
+                      padding: .symmetric(horizontal: 16),
+                      child: Column(
+                        spacing: 12,
+                        children: [
+                          Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).top + 24)),
+                          StyledTile.message(
+                            leading: Symbols.error.toIcon(),
+                            title: 'Something went wrong'.toText(),
+                            subtitle: 'Make sure you are connected to the internet or try again later.'.toText(),
+                          ),
+                          if (user.translation != .bsb)
+                            StyledRectButton.secondary(
+                              label: 'Switch to BSB'.toText(),
+                              onPressed: () => ref.updateUser((user) => user.copyWith(translation: .bsb)),
+                            ),
+                          StyledRectButton.secondary(
+                            label: 'Try Again'.toText(),
+                            onPressed: () => ref.invalidate(
+                              chapterProvider(translation: user.translation, chapterReference: chapterReference),
+                              asReload: true,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
 
                   final isLoadedState = useState(false);
                   usePostFrameEffect(() {

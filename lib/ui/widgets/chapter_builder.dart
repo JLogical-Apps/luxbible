@@ -18,10 +18,8 @@ import 'package:bible/ui/widgets/annotated_span.dart';
 import 'package:bible/ui/widgets/sized_widget_span.dart';
 import 'package:bible/ui/widgets/underline.dart';
 import 'package:bible/utils/extensions/color_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
 import 'package:bible/utils/extensions/rect_extensions.dart';
-import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/span_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:collection/collection.dart';
@@ -63,33 +61,7 @@ class ChapterBuilder extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chapterRaw = ref.watch(chapterProvider(translation: user.translation, chapterReference: chapterReference));
-    if (chapterRaw.hasError) {
-      return Column(
-        spacing: 12,
-        children: [
-          StyledTile.message(
-            leading: Symbols.error.toIcon(),
-            title: 'Something went wrong'.toText(),
-            subtitle: 'Make sure you are connected to the internet or try again later.'.toText(),
-          ),
-          if (user.translation != .bsb)
-            StyledRectButton.secondary(
-              label: 'Switch to BSB'.toText(),
-              onPressed: () => ref.updateUser((user) => user.copyWith(translation: .bsb)),
-            ),
-          StyledRectButton.secondary(
-            label: 'Try Again'.toText(),
-            onPressed: () => ref.invalidate(
-              chapterProvider(translation: user.translation, chapterReference: chapterReference),
-              asReload: true,
-            ),
-          ),
-        ],
-      );
-    }
-
-    final chapter = chapterRaw.value;
+    final chapter = ref.watch(chapterProvider(translation: user.translation, chapterReference: chapterReference)).value;
     if (chapter == null) {
       return SizedBox.shrink();
     }
