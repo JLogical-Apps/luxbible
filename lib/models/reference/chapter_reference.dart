@@ -1,13 +1,12 @@
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:bible/utils/comparable_operators.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
 import 'package:equatable/equatable.dart';
 
-class ChapterReference extends Equatable with ComparableOperators<ChapterReference> implements ReferencesRegion {
+class ChapterReference extends Equatable with ComparableOperators<ChapterReference> {
   final BookType book;
   final int chapterNum;
 
@@ -39,7 +38,6 @@ class ChapterReference extends Equatable with ComparableOperators<ChapterReferen
 
   String format() => '${book.title()} $chapterNum';
 
-  @override
   List<Reference> get references => List.generate(numVerses, (i) => getReference(i + 1));
 
   int get numVerses => book.bookInfo.getNumVerses(chapterNum);

@@ -2,7 +2,6 @@ import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/utils/comparable_operators.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
@@ -13,7 +12,7 @@ part 'bible_text_selection.freezed.dart';
 part 'bible_text_selection.g.dart';
 
 @freezed
-sealed class BibleTextSelection with _$BibleTextSelection implements Region {
+sealed class BibleTextSelection with _$BibleTextSelection {
   const BibleTextSelection._();
 
   const factory BibleTextSelection({

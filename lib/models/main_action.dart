@@ -1,5 +1,5 @@
 import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/reference/region.dart';
+import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -116,7 +116,8 @@ enum MainAction {
         StudySheet.show(
           context,
           ref,
-          region: reference,
+          verseSelection: reference.toVerseSelection(),
+          regionFormat: reference.format(),
           regionType: RegionType.chapter,
           onNavigateToVerseSelection: onNavigateToVerseSelection,
         );

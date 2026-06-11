@@ -1,6 +1,6 @@
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
-import 'package:bible/models/reference/region.dart';
+import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/text_selection_action.dart';
 import 'package:bible/models/user/user.dart';

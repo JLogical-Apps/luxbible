@@ -1,6 +1,6 @@
 import 'package:bible/models/main_action.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/reference/region.dart';
+import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/models/user/user.dart';
@@ -25,7 +25,7 @@ enum MainToolbarShortcut {
   String title() => toStudyAction()?.title() ?? toMainAction()?.title() ?? 'Theme & Layout';
 
   String description({User? user}) =>
-      toStudyAction()?.description(region: null, regionType: RegionType.chapter) ??
+      toStudyAction()?.description(regionFormat: null, regionType: RegionType.chapter) ??
       toMainAction()?.description(user: user) ??
       'Customize the theme & layout of the Bible.';
 
@@ -43,7 +43,8 @@ enum MainToolbarShortcut {
       toStudyAction()?.onPressed(
         context,
         ref,
-        region: reference,
+        verseSelection: reference.toVerseSelection(),
+        regionFormat: reference.format(),
         onNavigateToVerseSelection: onNavigateToVerseSelection,
       ) ??
       toMainAction()?.onPressed(

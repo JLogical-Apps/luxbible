@@ -1,5 +1,5 @@
 import 'package:bible/models/annotation.dart';
-import 'package:bible/models/reference/region.dart';
+import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/models/user/user.dart';
@@ -30,7 +30,7 @@ enum VerseSelectionShortcut {
       };
 
   String description({User? user, VerseSelection? verseSelection}) =>
-      toStudyAction()?.description(region: null, regionType: RegionType.verses) ??
+      toStudyAction()?.description(regionFormat: null, regionType: RegionType.verses) ??
       toVerseSelectionAction()?.description() ??
       switch (this) {
         highlight =>
@@ -61,7 +61,8 @@ enum VerseSelectionShortcut {
       toStudyAction()?.onPressed(
         context,
         ref,
-        region: verseSelection,
+        regionFormat: verseSelection.format(),
+        verseSelection: verseSelection,
         onNavigateToVerseSelection: onNavigateToVerseSelection,
       ) ??
       toVerseSelectionAction()?.onPressed(

@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:bible/models/reference/region.dart';
+import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
@@ -33,8 +33,8 @@ enum StudyAction {
     crossReferences => 'Cross References',
   };
 
-  String description({required ReferencesRegion? region, required RegionType regionType}) {
-    final regionText = region?.format() ?? regionType.formatThis();
+  String description({required String? regionFormat, required RegionType regionType}) {
+    final regionText = regionFormat ?? regionType.formatThis();
     return switch (this) {
       compare => 'Compare $regionText across a variety of translations.',
       interlinear => 'View a lexical breakdown of $regionText using Strongs.',
@@ -53,7 +53,8 @@ enum StudyAction {
   Future<void> onPressed(
     BuildContext context,
     WidgetRef ref, {
-    required ReferencesRegion region,
+    required VerseSelection verseSelection,
+    required String regionFormat,
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) async {
     switch (this) {
@@ -62,15 +63,13 @@ enum StudyAction {
         context.showStyledSheet(
           (context) => StyledSheet(
             title: 'Compare'.toText(),
-            subtitle: region.format().toText(),
+            subtitle: regionFormat.toText(),
             children: bibles
                 .mapIndexed<Widget>(
                   (i, translation) => Consumer(
                     builder: (context, ref, child) {
                       final text = ref
-                          .watch(
-                            verseSelectionTextProvider(selection: region.toVerseSelection(), translation: translation),
-                          )
+                          .watch(verseSelectionTextProvider(selection: verseSelection, translation: translation))
                           .value;
                       return Stack(
                         children: [
@@ -93,7 +92,7 @@ enum StudyAction {
       case interlinear:
         final studyBible = ref.read(studyBibleProvider);
 
-        context.showStyledSheetWithBreadcrumbs(breadcrumbText: region.format(), (context) {
+        context.showStyledSheetWithBreadcrumbs(breadcrumbText: regionFormat, (context) {
           final user = ref.watch(userProvider); // User can be update tab preference
 
           final tabController = useTabController(
@@ -113,7 +112,7 @@ enum StudyAction {
 
           return StyledSheet(
             title: 'Interlinear'.toText(),
-            subtitle: region.format().toText(),
+            subtitle: regionFormat.toText(),
             aboveDivider: StyledTabBar.fill(
               tabController: tabController,
               tabTitles: InterlinearDirection.values.map((direction) => direction.title().toText()).toList(),
@@ -149,7 +148,7 @@ enum StudyAction {
                   ],
                 ),
               ),
-              ...region.references.mapIndexed((i, reference) {
+              ...verseSelection.references.mapIndexed((i, reference) {
                 final verse = studyBible.getVerseByReference(reference);
                 if (verse == null) {
                   return null;
@@ -176,7 +175,7 @@ enum StudyAction {
                           )
                           .toList(),
                     ),
-                    if (i + 1 < region.references.length)
+                    if (i + 1 < verseSelection.references.length)
                       Positioned(bottom: 0, left: 0, right: 0, child: StyledDivider(height: 2)),
                   ],
                 );
@@ -187,12 +186,12 @@ enum StudyAction {
       case commentary:
         final commentaries = ref.watch(commentariesProvider);
         final relatedCommentaries = commentaries
-            .mapToMap((commentary) => MapEntry(commentary, commentary.getNotesFor(region.toVerseSelection())))
+            .mapToMap((commentary) => MapEntry(commentary, commentary.getNotesFor(verseSelection)))
             .where((commentary, notes) => notes.isNotEmpty);
         context.showStyledSheet(
           (context) => StyledSheet(
             title: 'Commentary'.toText(),
-            subtitle: region.format().toText(),
+            subtitle: regionFormat.toText(),
             children: relatedCommentaries.isEmpty
                 ? [
                     Padding(
@@ -219,12 +218,12 @@ enum StudyAction {
         final user = ref.read(userProvider);
         final crossReferences = ref.read(crossReferencesProvider);
         final relatedCrossReferences = crossReferences.where(
-          (reference, crossReferences) => region.references.contains(reference),
+          (reference, crossReferences) => verseSelection.references.contains(reference),
         );
         context.showStyledSheet(
           (context) => StyledSheet(
             title: 'Cross References'.toText(),
-            subtitle: region.format().toText(),
+            subtitle: regionFormat.toText(),
             children: relatedCrossReferences.isEmpty
                 ? [
                     Padding(

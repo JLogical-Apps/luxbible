@@ -1,6 +1,5 @@
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/color_enum.dart';
-import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -230,7 +229,9 @@ class AnnotationsPage extends HookConsumerWidget {
                                         leading: Symbols.expand_circle_right.toIcon(),
                                         onPressed: () {
                                           context.pop();
-                                          context.pop(VerseSelection.fromReferences(annotation.region.allReferences));
+                                          context.pop(
+                                            VerseSelection.fromReferences(annotation.selection.allReferences),
+                                          );
                                         },
                                       ),
                                       StyledListItem(

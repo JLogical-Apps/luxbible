@@ -1,7 +1,6 @@
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/utils/comparable_operators.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -22,11 +21,6 @@ sealed class Annotation with _$Annotation {
   }) = _Annotation;
 
   factory Annotation.fromJson(Map<String, dynamic> json) => _$AnnotationFromJson(json);
-
-  Region get region => switch (selection) {
-    VersesAnnotationSelection selection => selection.verseSelection,
-    TextAnnotationSelection selection => selection.textSelection,
-  };
 
   VerseSelection? get verseSelection => selection.as<VersesAnnotationSelection>()?.verseSelection;
   BibleTextSelection? get textSelection => selection.as<TextAnnotationSelection>()?.textSelection;
@@ -49,6 +43,11 @@ sealed class AnnotationSelection with _$AnnotationSelection, ComparableOperators
   Reference get startingReference => switch (this) {
     VersesAnnotationSelection(:final verseSelection) => verseSelection.references.first,
     TextAnnotationSelection(:final textSelection) => textSelection.toVerseSelection().references.first,
+  };
+
+  List<Reference> get allReferences => switch (this) {
+    VersesAnnotationSelection(:final verseSelection) => verseSelection.references,
+    TextAnnotationSelection(:final textSelection) => textSelection.toVerseSelection().references,
   };
 
   @override

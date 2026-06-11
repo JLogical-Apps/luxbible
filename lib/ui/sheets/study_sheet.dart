@@ -1,4 +1,4 @@
-import 'package:bible/models/reference/region.dart';
+import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/style/style_context_extensions.dart';
@@ -14,22 +14,29 @@ class StudySheet {
   static Future<void> show(
     BuildContext context,
     WidgetRef ref, {
-    required ReferencesRegion region,
+    required String regionFormat,
+    required VerseSelection verseSelection,
     required RegionType regionType,
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) => context.showStyledSheet(
     (context) => StyledSheet(
       title: 'Study'.toText(),
-      subtitle: region.format().toText(),
+      subtitle: regionFormat.toText(),
       children: StudyAction.values
           .map(
             (action) => StyledListItem.navigation(
               title: action.title().toText(),
-              subtitle: action.description(region: region, regionType: regionType).toText(),
+              subtitle: action.description(regionFormat: regionFormat, regionType: regionType).toText(),
               leading: action.icon.toIcon(),
               onPressed: () {
                 context.pop();
-                action.onPressed(context, ref, region: region, onNavigateToVerseSelection: onNavigateToVerseSelection);
+                action.onPressed(
+                  context,
+                  ref,
+                  regionFormat: regionFormat,
+                  verseSelection: verseSelection,
+                  onNavigateToVerseSelection: onNavigateToVerseSelection,
+                );
               },
             ),
           )

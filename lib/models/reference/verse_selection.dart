@@ -1,11 +1,10 @@
 import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/region.dart';
 import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 
-class VerseSelection extends Equatable implements ReferencesRegion {
+class VerseSelection extends Equatable {
   final List<VerseSpanReference> spans;
 
   const VerseSelection({required this.spans});
@@ -28,7 +27,6 @@ class VerseSelection extends Equatable implements ReferencesRegion {
 
   String osisId() => spans.map((span) => span.osisId()).join(' ');
 
-  @override
   List<Reference> get references =>
       spans.expand((span) => span.references).distinct.sortedBy((reference) => reference).toList();
 

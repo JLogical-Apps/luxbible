@@ -1,5 +1,5 @@
 import 'package:bible/models/annotation.dart';
-import 'package:bible/models/reference/region.dart';
+import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -73,7 +73,8 @@ enum VerseSelectionAction {
         StudySheet.show(
           context,
           ref,
-          region: selectedVerseSelection,
+          regionFormat: selectedVerseSelection.format(),
+          verseSelection: selectedVerseSelection,
           regionType: RegionType.verses,
           onNavigateToVerseSelection: onNavigateToVerseSelection,
         );
