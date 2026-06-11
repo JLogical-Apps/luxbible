@@ -9,6 +9,8 @@ extension StringExtensions on String {
   String trimPunctuation() => replaceAll(RegExp(r'[\p{P}\p{S}]', unicode: true), '');
   String trimTrailingPunctuation() => replaceAll(RegExp(r'[\p{P}\p{S}]+$', unicode: true), '');
 
+  String withLength(int length) => this.length > length ? '${substring(0, length - 3)}...' : this;
+
   bool get isStrongId => RegExp(r'^[GH]\d{1,4}$').hasMatch(this);
 
   Text toText() => Text(this);
