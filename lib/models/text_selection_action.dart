@@ -82,7 +82,8 @@ enum TextSelectionAction {
             onNavigateToVerseSelection: onNavigateToVerseSelection,
           );
         } else {
-          await context.showStyledSheet(
+          await context.showStyledSheetWithBreadcrumbs(
+            breadcrumbText: await ref.read(textSelectionTextProvider(textSelection).future),
             (context) => StyledSheet(
               title: 'Interlinear'.toText(),
               subtitle: 'Text in ${textSelection.toVerseSelection().format()}'.toText(),
