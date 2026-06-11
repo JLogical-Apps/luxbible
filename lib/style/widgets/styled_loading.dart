@@ -16,10 +16,10 @@ class StyledLoading extends StatelessWidget {
       fadeInCurve: Curves.easeInOutCubic,
       fadeOutCurve: Curves.easeInOutCubic,
       sizeCurve: Curves.easeInOutCubic,
-      child:
-          Align(
-            alignment: .topLeft,
-            child: child ??
+      child: Align(
+        alignment: .topLeft,
+        child:
+            child ??
             Shimmer.fromColors(
               key: ValueKey('empty'),
               baseColor: context.colors.contentDisabled.withValues(alpha: 0.5),
@@ -32,7 +32,7 @@ class StyledLoading extends StatelessWidget {
                 margin: .only(bottom: (textStyle.style.totalHeight - textStyle.style.fontSize!)),
               ),
             ),
-          ),
+      ),
     );
   }
 }
