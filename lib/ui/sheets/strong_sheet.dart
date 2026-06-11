@@ -17,7 +17,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:utils_core/utils_core.dart';
 
 class StrongSheet {
-  static Future<void> showWithContext(
+  static Future<void> showWithBreadcrumbs(
     BuildContext context,
     WidgetRef ref, {
     String? strongId,
@@ -134,7 +134,7 @@ class StrongSheet {
                       subtitle: Text('${strong.languageText}: ${strong.definition}', maxLines: 1, overflow: .ellipsis),
                       onPressed: () {
                         context.pop();
-                        StrongSheet.showWithContext(
+                        StrongSheet.showWithBreadcrumbs(
                           context,
                           ref,
                           strongId: strong.id,

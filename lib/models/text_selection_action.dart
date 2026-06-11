@@ -74,7 +74,7 @@ enum TextSelectionAction {
 
         if (studyWords.length == 1) {
           final word = studyWords.first;
-          await StrongSheet.showWithContext(
+          await StrongSheet.showWithBreadcrumbs(
             context,
             ref,
             word: word,

@@ -51,7 +51,7 @@ class InterlinearWordTile extends ConsumerWidget {
             ? null
             : () {
                 context.pop();
-                StrongSheet.showWithContext(
+                StrongSheet.showWithBreadcrumbs(
                   context,
                   ref,
                   word: word,
@@ -86,7 +86,7 @@ class InterlinearWordTile extends ConsumerWidget {
             ? null
             : () {
                 context.pop();
-                StrongSheet.showWithContext(
+                StrongSheet.showWithBreadcrumbs(
                   context,
                   ref,
                   word: word,
