@@ -87,7 +87,7 @@ class VerseSelectionSettingsPage extends ConsumerWidget {
                         title: 'Expand to Annotation'.toText(),
                         subtitle: 'Tapping a verse selects its full annotated verse selection.'.toText(),
                         leading: Symbols.aspect_ratio.toIcon(),
-                        selected: verseSelectionConfiguration.expandToAnnotation,
+                        isSelected: verseSelectionConfiguration.expandToAnnotation,
                         onSelected: (newValue) =>
                             ref.updateUser((user) => user.copyWith.verseSelection(expandToAnnotation: newValue)),
                       ),
@@ -95,7 +95,7 @@ class VerseSelectionSettingsPage extends ConsumerWidget {
                         title: 'Range Selection'.toText(),
                         subtitle: 'Tapping a second verse selects all verses between it and the first.'.toText(),
                         leading: Symbols.format_letter_spacing.toIcon(),
-                        selected: verseSelectionConfiguration.rangeSelection,
+                        isSelected: verseSelectionConfiguration.rangeSelection,
                         onSelected: (newValue) =>
                             ref.updateUser((user) => user.copyWith.verseSelection(rangeSelection: newValue)),
                       ),

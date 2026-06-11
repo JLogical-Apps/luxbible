@@ -85,7 +85,7 @@ class ThemeSettingsPage extends ConsumerWidget {
                   title: 'Red Letters'.toText(),
                   subtitle: 'Show Jesus\' words in red.'.toText(),
                   thirdLine: 'This is only available in the BSB translation.'.toText(),
-                  selected: user.themeLayout.redLetters,
+                  isSelected: user.themeLayout.redLetters,
                   onSelected: (newValue) => ref.updateUser((user) => user.copyWith.themeLayout(redLetters: newValue)),
                 ),
               ],
@@ -98,18 +98,18 @@ class ThemeSettingsPage extends ConsumerWidget {
               children: [
                 StyledListItem.switchControl(
                   title: 'Section Headings'.toText(),
-                  selected: user.themeLayout.sections,
+                  isSelected: user.themeLayout.sections,
                   onSelected: (newValue) => ref.updateUser((user) => user.copyWith.themeLayout(sections: newValue)),
                 ),
                 StyledListItem.switchControl(
                   title: 'Verse Numbers'.toText(),
-                  selected: user.themeLayout.verseNumbers,
+                  isSelected: user.themeLayout.verseNumbers,
                   onSelected: (newValue) => ref.updateUser((user) => user.copyWith.themeLayout(verseNumbers: newValue)),
                 ),
                 StyledListItem.switchControl(
                   title: 'Paragraphs'.toText(),
                   subtitle: 'Format verses into paragraphs.'.toText(),
-                  selected: user.themeLayout.paragraphs,
+                  isSelected: user.themeLayout.paragraphs,
                   onSelected: (newValue) => ref.updateUser((user) => user.copyWith.themeLayout(paragraphs: newValue)),
                 ),
               ],

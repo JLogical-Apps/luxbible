@@ -94,7 +94,7 @@ class MainToolbarSettingsPage extends ConsumerWidget {
                             'Swipe left on the toolbar to go back to the previous verse selection. Swipe right to undo that.'
                                 .toText(),
                         leading: Symbols.swipe.toIcon(),
-                        selected: mainToolbar.swipeToUndo,
+                        isSelected: mainToolbar.swipeToUndo,
                         onSelected: (newValue) =>
                             ref.updateUser((user) => user.copyWith.mainToolbar(swipeToUndo: newValue)),
                       ),
@@ -109,14 +109,14 @@ class MainToolbarSettingsPage extends ConsumerWidget {
                         title: 'Hide'.toText(),
                         subtitle: 'Hide the toolbar while scrolling down for an immersive view of the Bible.'.toText(),
                         leading: Symbols.bottom_panel_close.toIcon(),
-                        selected: mainToolbar.pinToBottom == false,
+                        isSelected: mainToolbar.pinToBottom == false,
                         onSelected: () => ref.updateUser((user) => user.copyWith.mainToolbar(pinToBottom: false)),
                       ),
                       StyledListItem.radio(
                         title: 'Pin'.toText(),
                         subtitle: 'Pin the toolbar to the bottom of the page.'.toText(),
                         leading: Symbols.pin_drop.toIcon(),
-                        selected: mainToolbar.pinToBottom == true,
+                        isSelected: mainToolbar.pinToBottom == true,
                         onSelected: () => ref.updateUser((user) => user.copyWith.mainToolbar(pinToBottom: true)),
                       ),
                     ],

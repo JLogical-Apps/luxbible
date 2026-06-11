@@ -156,7 +156,7 @@ class StyledModuleStep {
                   title: optionMapper(option).title,
                   subtitle: optionMapper(option).subtitle,
                   leading: optionMapper(option).leading,
-                  selected: selectedOption == option,
+                  isSelected: selectedOption == option,
                   onSelected: () => onSelectOption(option),
                 ),
               ),

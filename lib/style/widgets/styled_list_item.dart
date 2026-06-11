@@ -46,13 +46,13 @@ class StyledListItem extends StatelessWidget {
     this.subtitle,
     this.thirdLine,
     this.leading,
-    required bool selected,
+    required bool isSelected,
     required Function() onSelected,
     this.size = ComponentSize.md,
     this.enabled = true,
     this.showDividerOverride,
   }) : onPressed = onSelected,
-       trailing = StyledRadio(isSelected: selected);
+       trailing = StyledRadio(isSelected: isSelected);
 
   StyledListItem.checkbox({
     super.key,
@@ -74,13 +74,13 @@ class StyledListItem extends StatelessWidget {
     this.subtitle,
     this.thirdLine,
     this.leading,
-    required bool selected,
+    required bool isSelected,
     required Function(bool newValue) onSelected,
     this.size = ComponentSize.md,
     this.enabled = true,
     this.showDividerOverride,
   }) : onPressed = null,
-       trailing = StyledSwitch(isSelected: selected, onSelected: onSelected);
+       trailing = StyledSwitch(isSelected: isSelected, onSelected: onSelected);
 
   StyledListItem.draggable({
     super.key,

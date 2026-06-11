@@ -29,7 +29,7 @@ class StyledSelectionSheet<T> extends StyledSheet<T> {
               title: optionMapper(option).title,
               subtitle: optionMapper(option).subtitle,
               leading: optionMapper(option).leading,
-              selected: option == initialOption,
+              isSelected: option == initialOption,
               onSelected: () => context.pop(option),
             ),
           )

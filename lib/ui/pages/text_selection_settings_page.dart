@@ -88,7 +88,7 @@ class TextSelectionSettingsPage extends ConsumerWidget {
                         title: 'Expand to Annotation'.toText(),
                         subtitle: 'Long-pressing an annotated word selects its full highlighted range.'.toText(),
                         leading: Symbols.aspect_ratio.toIcon(),
-                        selected: textSelectionConfiguration.expandToAnnotation,
+                        isSelected: textSelectionConfiguration.expandToAnnotation,
                         onSelected: (newValue) =>
                             ref.updateUser((user) => user.copyWith.textSelection(expandToAnnotation: newValue)),
                       ),
