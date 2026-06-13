@@ -101,12 +101,7 @@ class BibleApp extends ConsumerWidget {
         ),
         debugShowCheckedModeBanner: false,
         home: MediaQuery.withNoTextScaling(
-          child: Consumer(
-            builder: (context, ref, child) {
-              final user = ref.watch(userProvider.notifier).userOrNull;
-              return user == null ? IntroPage() : BiblePage();
-            },
-          ),
+          child: ref.watch(userProvider.notifier).userOrNull == null ? IntroPage() : BiblePage(),
         ),
       ),
     );
