@@ -1,3 +1,4 @@
+import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
@@ -6,10 +7,12 @@ import 'package:bible/models/user/text_selection_configuration.dart';
 import 'package:bible/models/user/verse_selection_configuration.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/bible_page.dart';
+import 'package:bible/ui/widgets/bible_tile.dart';
 import 'package:bible/ui/widgets/main_toolbar.dart';
 import 'package:bible/ui/widgets/text_selection_bottom_bar.dart';
 import 'package:bible/ui/widgets/verse_selection_bottom_bar.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
+import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
@@ -25,6 +28,10 @@ class OnboardingPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final readerTypeState = useState<ReaderType?>(null);
     final readerType = readerTypeState.value ?? .reader;
+
+    final selectedTranslationsState = useState(BibleTranslation.values.toList());
+    final selectedTranslations = selectedTranslationsState.value.sortedByIndexIn(BibleTranslation.values);
+
     return StyledModulePage(
       title: 'Get Started'.toText(),
       steps: [
@@ -39,6 +46,31 @@ class OnboardingPage extends HookConsumerWidget {
             leading: type.icon.toIcon(),
           ),
           canGoNext: readerTypeState.value != null,
+        ),
+        StyledModuleStep(
+          title: 'Which translations do you want?'.toText(),
+          subtitle: 'You can always change these settings later.'.toText(),
+          childrenBuilder: (context) => [
+            Column(
+              spacing: 12,
+              children: BibleTranslation.values.map((translation) {
+                final isEnabled = selectedTranslations.length > 1 || !selectedTranslations.contains(translation);
+                return StyledTile(
+                  isSelected: selectedTranslations.contains(translation),
+                  child: BibleTile(
+                    translation: translation,
+                    trailing: StyledCheckbox(
+                      isSelected: selectedTranslations.contains(translation),
+                      isEnabled: isEnabled,
+                    ),
+                    isEnabled: isEnabled,
+                    onPressedOverride: () =>
+                        selectedTranslationsState.value = selectedTranslations.withToggle(translation),
+                  ),
+                );
+              }).toList(),
+            ),
+          ],
         ),
         StyledModuleStep(
           title: 'Your ${readerType.title()} Toolbar Setup'.toText(),
@@ -56,7 +88,7 @@ class OnboardingPage extends HookConsumerWidget {
                     colorBuilder: .surfaceTertiary,
                     mainToolbar: readerType.getMainToolbarConfiguration(),
                     chapterReference: ChapterReference(book: .genesis, chapterNum: 1),
-                    translation: .bsb,
+                    translation: selectedTranslations.first,
                   ),
                 ),
                 gapH8,
@@ -121,6 +153,8 @@ class OnboardingPage extends HookConsumerWidget {
                 onPressed: () async {
                   ref.updateUser(
                     (user) => user.copyWith(
+                      translation: selectedTranslations.first,
+                      bibles: selectedTranslations,
                       mainToolbar: readerType.getMainToolbarConfiguration(),
                       verseSelection: readerType.getVerseSelectionConfiguration(),
                       textSelection: readerType.getTextSelectionConfiguration(),

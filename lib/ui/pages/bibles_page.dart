@@ -1,6 +1,7 @@
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/widgets/bible_tile.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
@@ -47,8 +48,7 @@ class BiblesPage extends HookConsumerWidget {
                           ),
                         ),
                       ],
-                      child: bibleTile(
-                        context,
+                      child: BibleTile(
                         translation: translation,
                         trailing: ReorderableDragStartListener(child: Icon(Symbols.drag_handle), index: 0),
                       ),
@@ -69,8 +69,7 @@ class BiblesPage extends HookConsumerWidget {
                 title: 'Add & Remove Bibles'.toText(),
                 children: BibleTranslation.values
                     .map(
-                      (translation) => bibleTile(
-                        context,
+                      (translation) => BibleTile(
                         translation: translation,
                         trailing: StyledSwitch(
                           isSelected: selectedBiblesState.value.contains(translation),
@@ -98,64 +97,4 @@ class BiblesPage extends HookConsumerWidget {
       ),
     );
   }
-
-  Widget bibleTile(BuildContext context, {required BibleTranslation translation, Widget? trailing}) => StyledListItem(
-    title: translation.title().toText(),
-    subtitle: translation.fullName().toText(),
-    thirdLine: Row(
-      spacing: 4,
-      children: [
-        if (translation.isOnline)
-          StyledBadge(
-            child: 'Online Only'.toText(),
-            leading: Symbols.cloud.toIcon(),
-            colorBuilder: ColorBuilder((colors) => colors.blue.tertiary),
-          ),
-        if (translation == .bsb)
-          StyledBadge(
-            child: 'Study Bible'.toText(),
-            leading: Symbols.school.toIcon(),
-            colorBuilder: ColorBuilder((colors) => colors.green.tertiary),
-          ),
-      ],
-    ),
-    trailing: trailing,
-    onPressed: () => context.showStyledDialog(
-      (context) => StyledDialog.confirm(
-        title: translation.fullName().toText(),
-        bodyPadding: .zero,
-        body: StyledList(
-          children: [
-            translation.isOnline
-                ? StyledListItem(
-                    leading: Symbols.cloud.toIcon(),
-                    title: 'Online Only'.toText(),
-                    subtitle:
-                        'This translation is streamed from YouVersion Platform, so it requires an internet connection.'
-                            .toText(),
-                  )
-                : StyledListItem(
-                    leading: Symbols.book_4.toIcon(),
-                    title: 'On Device'.toText(),
-                    subtitle: 'This translation is downloaded to your device, so you can search it and read offline.'
-                        .toText(),
-                  ),
-            translation == .bsb
-                ? StyledListItem(
-                    leading: Symbols.school.toIcon(),
-                    title: 'Study Bible'.toText(),
-                    subtitle:
-                        'Includes interlinear and morphology data. Long-press any word while reading to see the original Greek or Hebrew.'
-                            .toText(),
-                  )
-                : StyledListItem(
-                    leading: Symbols.auto_stories.toIcon(),
-                    title: 'Reading Bible'.toText(),
-                    subtitle: 'Doesn\'t include interlinear or morphology data.'.toText(),
-                  ),
-          ],
-        ),
-      ),
-    ),
-  );
 }
