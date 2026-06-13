@@ -67,8 +67,8 @@ enum FontSizeSpacing {
   };
 
   double get multiplier => switch (this) {
-    dense => 0.8,
-    standard => 1,
-    comfort => 1.2,
+    dense => 0.85,
+    standard => 0.95,
+    comfort => 1.1,
   };
 }

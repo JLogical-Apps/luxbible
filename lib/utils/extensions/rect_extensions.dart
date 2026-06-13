@@ -12,4 +12,14 @@ extension RectIterableExtensions on Iterable<Rect> {
       rects.first.bottom,
     ),
   );
+
+  Iterable<Rect> withHangingIndent(double indent) {
+    if (indent <= 0 || isEmpty) return this;
+    final firstTop = map((rect) => rect.top).min;
+    return map(
+      (rect) => rect.top > firstTop
+          ? Rect.fromLTRB(indent.clamp(rect.left, rect.right), rect.top, rect.right, rect.bottom)
+          : rect,
+    );
+  }
 }

@@ -11,6 +11,9 @@ extension ParagraphTypeStyleExtensions on ParagraphType {
     _ => 20,
   };
 
+  double get hangingIndent => this == .q1 || this == .q2 ? 30 : 0;
+  double get blockIndent => hangingIndent == 0 ? 0 : indent;
+
   EdgeInsets get padding => switch (this) {
     .li1 => .symmetric(horizontal: 16),
     .li2 => .symmetric(horizontal: 24),

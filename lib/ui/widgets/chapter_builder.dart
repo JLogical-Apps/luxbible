@@ -138,23 +138,39 @@ class ChapterBuilder extends HookConsumerWidget {
             crossAxisAlignment: .stretch,
             children: getParagraphSpansByParagraph(context, chapter: chapter, keyByReference: keyByReference)
                 .where((entry) => entry.value.isNotEmpty)
-                .mapEntries(
-                  (paragraph, paragraphSpans) => Padding(
+                .mapEntries((paragraph, originalSpans) {
+                  final versesParagraph = paragraph.as<VersesParagraph>();
+                  final blockIndent = user.themeLayout.paragraphs && versesParagraph != null
+                      ? versesParagraph.type.blockIndent
+                      : 0.0;
+                  final hangingIndent = versesParagraph?.type.hangingIndent ?? 0.0;
+
+                  return Padding(
                     padding: user.themeLayout.paragraphs
-                        ? paragraph.as<VersesParagraph>()?.type.padding ?? .zero
+                        ? (versesParagraph?.type.padding ?? .zero).copyWith(left: blockIndent)
                         : .zero,
                     child: LayoutBuilder(
                       builder: (context, constraints) {
-                        final textKey = GlobalKey(
-                          debugLabel: paragraph.as<VersesParagraph>()?.verses.first.verseNum.toString(),
-                        );
+                        final textKey = GlobalKey(debugLabel: versesParagraph?.verses.first.verseNum.toString());
+
+                        final renderSpans = versesParagraph != null && user.themeLayout.paragraphs
+                            ? originalSpans.withHangingIndent<VerseElement>(
+                                width: constraints.maxWidth,
+                                textAlign: versesParagraph.type.textAlign,
+                                hangingIndent: versesParagraph.type.hangingIndent,
+                                annotationModifier: (element, charactersAdded) => VerseElement(
+                                  anchor: element.anchor.withCharactersAdded(charactersAdded),
+                                  isBoundInSelection: element.isBoundInSelection,
+                                ),
+                              )
+                            : originalSpans;
 
                         if (paragraph is VersesParagraph) {
                           paragraphHitTesters.add(
                             ParagraphHitTester(
                               textKey: textKey,
                               resolve: (localPosition) => getOffsetAnchor(
-                                characterOffset: paragraphSpans.getCharacterOffsetFromPosition(
+                                characterOffset: renderSpans.getCharacterOffsetFromPosition(
                                   width: constraints.maxWidth,
                                   localPosition: localPosition,
                                   textAlign: paragraph.type.textAlign,
@@ -190,7 +206,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                         .mixOrNull;
 
                                     final (base, extent) =
-                                        paragraphSpans.getReferenceCharacterOffsets(
+                                        renderSpans.getReferenceCharacterOffsets(
                                           reference: reference,
                                           translation: user.translation,
                                           chapter: chapter,
@@ -201,7 +217,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                       return null;
                                     }
 
-                                    return paragraphSpans
+                                    return renderSpans
                                         .getBoxesForSelection(
                                           baseOffset: base,
                                           extentOffset: extent,
@@ -210,6 +226,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                         )
                                         .map((box) => box.toRect())
                                         .withMergedLines()
+                                        .withHangingIndent(hangingIndent)
                                         .map(
                                           (box) => Positioned.fromRect(
                                             rect: box.asVerseSelection(multiplier: sizeMultiplier),
@@ -238,7 +255,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                   .map((record) {
                                     final (annotation, textSelection) = record;
                                     final (base, extent) =
-                                        paragraphSpans.getTextSelectionCharacterOffsets(
+                                        renderSpans.getTextSelectionCharacterOffsets(
                                           textSelection: textSelection,
                                           translation: user.translation,
                                           isParagraphs: user.themeLayout.paragraphs,
@@ -248,7 +265,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                       return null;
                                     }
 
-                                    return paragraphSpans
+                                    return renderSpans
                                         .getBoxesForSelection(
                                           baseOffset: base,
                                           extentOffset: extent,
@@ -257,6 +274,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                         )
                                         .map((box) => box.toRect())
                                         .withMergedLines()
+                                        .withHangingIndent(hangingIndent)
                                         .map(
                                           (box) => Positioned.fromRect(
                                             rect: box.asTextSelection(multiplier: sizeMultiplier),
@@ -281,7 +299,7 @@ class ChapterBuilder extends HookConsumerWidget {
                               if (textSelection case final textSelection?)
                                 ...?() {
                                   final (base, extent) =
-                                      paragraphSpans.getTextSelectionCharacterOffsets(
+                                      renderSpans.getTextSelectionCharacterOffsets(
                                         textSelection: textSelection,
                                         translation: user.translation,
                                         isParagraphs: user.themeLayout.paragraphs,
@@ -291,7 +309,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                     return null;
                                   }
 
-                                  return paragraphSpans
+                                  return renderSpans
                                       .getBoxesForSelection(
                                         baseOffset: base,
                                         extentOffset: extent,
@@ -300,6 +318,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                       )
                                       .map((box) => box.toRect())
                                       .withMergedLines()
+                                      .withHangingIndent(hangingIndent)
                                       .map(
                                         (box) => Positioned.fromRect(
                                           rect: box.asTextSelection(multiplier: sizeMultiplier),
@@ -319,7 +338,7 @@ class ChapterBuilder extends HookConsumerWidget {
                             ],
                             Text.rich(
                               key: textKey,
-                              TextSpan(children: paragraphSpans),
+                              TextSpan(children: renderSpans),
                               style: TextStyle(fontStyle: paragraph.as<VersesParagraph>()?.type.fontStyle ?? .normal),
                               textAlign: paragraph.as<VersesParagraph>()?.type.textAlign ?? .start,
                             ),
@@ -327,8 +346,8 @@ class ChapterBuilder extends HookConsumerWidget {
                         );
                       },
                     ),
-                  ),
-                )
+                  );
+                })
                 .toList(),
           ),
         ),
@@ -369,7 +388,8 @@ class ChapterBuilder extends HookConsumerWidget {
                   ]
                 : <InlineSpan>[],
           VersesParagraph(:final verses, :final type) => [
-            if (user.themeLayout.paragraphs) SizedWidgetSpan.space(size: Size(type.indent, 0)),
+            if (user.themeLayout.paragraphs)
+              SizedWidgetSpan.space(size: Size(type.hangingIndent != 0 ? 0 : type.indent, 0)),
             ...verses
                 .mapIndexed((verseIndex, verse) {
                   final reference = getVerseReference(verse);
