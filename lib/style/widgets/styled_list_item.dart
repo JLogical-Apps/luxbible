@@ -102,75 +102,77 @@ class StyledListItem extends StatelessWidget {
       onPressed: onPressed,
       child: Stack(
         children: [
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              minHeight: switch (size) {
-                ComponentSize.sm => 56,
-                ComponentSize.md => 64,
-                ComponentSize.lg => 80,
-              },
-            ),
-            child: Row(
-              children: [
-                if (leading case final leading?)
-                  SizedBox(
-                    width: 64,
-                    child: Center(
-                      child: IconTheme.merge(
-                        data: IconThemeData(color: context.colors.content(disabled: !enabled), size: 24),
-                        child: leading,
-                      ),
-                    ),
-                  )
-                else
-                  gapW16,
-                Expanded(
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: .symmetric(vertical: 16),
-                          child: Column(
-                            spacing: 4,
-                            crossAxisAlignment: .start,
-                            mainAxisAlignment: .center,
-                            children: [
-                              if (title case final title?)
-                                DefaultTextStyle(
-                                  style: context.textStyle.labelMd.disabled(disabled: !enabled),
-                                  child: title,
-                                ),
-                              if (subtitle case final subtitle?)
-                                DefaultTextStyle(
-                                  style: context.textStyle.paragraphSm.subtle().disabled(disabled: !enabled),
-                                  child: subtitle,
-                                ),
-                              if (thirdLine case final thirdLine?)
-                                DefaultTextStyle(
-                                  style: context.textStyle.paragraphSm.subtle().disabled(disabled: !enabled),
-                                  child: thirdLine,
-                                ),
-                            ],
-                          ),
+          IntrinsicHeight(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: switch (size) {
+                  ComponentSize.sm => 56,
+                  ComponentSize.md => 64,
+                  ComponentSize.lg => 80,
+                },
+              ),
+              child: Row(
+                children: [
+                  if (leading case final leading?)
+                    SizedBox(
+                      width: 64,
+                      child: Center(
+                        child: IconTheme.merge(
+                          data: IconThemeData(color: context.colors.content(disabled: !enabled), size: 24),
+                          child: leading,
                         ),
                       ),
-                      if (trailing case final trailing?)
-                        ConstrainedBox(
-                          constraints: BoxConstraints(minWidth: 64),
+                    )
+                  else
+                    gapW16,
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Expanded(
                           child: Padding(
-                            padding: .symmetric(horizontal: 8),
-                            child: IconTheme.merge(
-                              data: IconThemeData(color: context.colors.contentDisabled, size: 24),
-                              child: IntrinsicWidth(child: IntrinsicHeight(child: trailing)),
+                            padding: .symmetric(vertical: 16),
+                            child: Column(
+                              spacing: 4,
+                              crossAxisAlignment: .start,
+                              mainAxisAlignment: .center,
+                              children: [
+                                if (title case final title?)
+                                  DefaultTextStyle(
+                                    style: context.textStyle.labelMd.disabled(disabled: !enabled),
+                                    child: title,
+                                  ),
+                                if (subtitle case final subtitle?)
+                                  DefaultTextStyle(
+                                    style: context.textStyle.paragraphSm.subtle().disabled(disabled: !enabled),
+                                    child: subtitle,
+                                  ),
+                                if (thirdLine case final thirdLine?)
+                                  DefaultTextStyle(
+                                    style: context.textStyle.paragraphSm.subtle().disabled(disabled: !enabled),
+                                    child: thirdLine,
+                                  ),
+                              ],
                             ),
                           ),
-                        )
-                      else
-                        gapW16,
-                    ],
+                        ),
+                        if (trailing case final trailing?)
+                          ConstrainedBox(
+                            constraints: BoxConstraints(minWidth: 64),
+                            child: Padding(
+                              padding: .symmetric(horizontal: 8),
+                              child: IconTheme.merge(
+                                data: IconThemeData(color: context.colors.contentDisabled, size: 24),
+                                child: IntrinsicWidth(child: IntrinsicHeight(child: trailing)),
+                              ),
+                            ),
+                          )
+                        else
+                          gapW16,
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           if ((showDividerOverride ?? itemContext?.showDivider) == true)
