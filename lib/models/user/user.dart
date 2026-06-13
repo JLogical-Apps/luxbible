@@ -1,5 +1,4 @@
 import 'package:bible/models/annotation.dart';
-import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bookmark.dart';
@@ -48,8 +47,6 @@ sealed class User with _$User {
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
-
-  Bible getBible(List<Bible> bibles) => bibles.firstWhere((bible) => bible.translation == translation);
 
   List<BibleTranslation> get biblesOrDefault => bibles ?? BibleTranslation.values;
 

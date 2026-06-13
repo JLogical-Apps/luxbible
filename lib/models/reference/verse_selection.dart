@@ -51,7 +51,4 @@ class VerseSelection extends Equatable {
       ].join('-'),
     ].join(' ');
   }).join();
-
-  VerseSelection withReference(Reference reference) =>
-      hasReference(reference) ? this : VerseSelection.fromReferences(references + [reference]);
 }

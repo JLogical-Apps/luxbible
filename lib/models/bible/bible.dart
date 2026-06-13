@@ -41,11 +41,6 @@ class Bible {
 
   Verse? getVerseByReference(Reference reference) => _verseByReference[reference];
 
-  ChapterReference getChapterReferenceByPageIndex(int pageIndex) => chapterReferences[pageIndex];
-
-  int getPageIndexByChapterReference(ChapterReference reference) =>
-      chapterReferences.indexWhere((r) => r.book == reference.book && r.chapterNum == reference.chapterNum);
-
   late final Map<BookType, Book> _bookByType = BookType.values.mapToMap(
     (bookType) => MapEntry(bookType, books.firstWhere((book) => book.bookType == bookType)),
   );
