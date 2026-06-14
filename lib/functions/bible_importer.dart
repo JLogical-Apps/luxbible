@@ -14,10 +14,10 @@ import 'package:intersperse/intersperse.dart';
 import 'package:utils_core/utils_core.dart';
 
 class BibleImporter {
-  Future<Bible> importBible({required BibleTranslation translation}) async => switch (translation) {
+  Future<Bible> importBible({required BibleTranslation translation, required Bible bsb}) async => switch (translation) {
     .kjv || .asv => await parseJsonBible(translation: translation),
-    .bsb => await parseBsbJsonBible(translation: translation),
-    .original => await parseOriginalLanguagesBible(translation: translation),
+    .bsb => bsb,
+    .original => parseOriginalLanguagesBible(bsb: bsb),
     _ => throw UnimplementedError(),
   };
 
@@ -55,17 +55,17 @@ class BibleImporter {
     );
   }
 
-  Future<Bible> parseBsbJsonBible({required BibleTranslation translation}) async {
+  Future<Bible> parseBsbJsonBible() async {
     final rawBsb = await rootBundle.loadString('assets/translations/bsb.json');
     return Bible(
-      translation: translation,
+      translation: .bsb,
       books: (jsonDecode(rawBsb) as List).map((bookJson) => Book.fromJson(bookJson)).toList(),
     );
   }
 
-  Future<Bible> parseOriginalLanguagesBible({required BibleTranslation translation}) async => Bible(
-    translation: translation,
-    books: (await parseBsbJsonBible(translation: .bsb)).books
+  Bible parseOriginalLanguagesBible({required Bible bsb}) => Bible(
+    translation: .original,
+    books: bsb.books
         .map(
           (book) => book.copyWith(
             chapters: book.chapters

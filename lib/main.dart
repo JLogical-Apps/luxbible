@@ -30,10 +30,11 @@ Future<void> main() async {
 
       await registerLicenses();
 
+      final bsb = await BibleImporter().parseBsbJsonBible();
       final bibles = await Future.wait(
         BibleTranslation.values
             .where((translation) => translation.isLocal)
-            .map((translation) => BibleImporter().importBible(translation: translation)),
+            .map((translation) => BibleImporter().importBible(translation: translation, bsb: bsb)),
       );
       final commentaries = await CommentaryImporter().import();
       final strongs = await StrongImporter().import();
