@@ -2,8 +2,8 @@ import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:utils_core/utils_core.dart';
 
 extension StringExtensions on String {
-  String get onlyLetters => replaceAll(RegExp(r"[^a-zA-Z ]"), "");
-  bool get isLetterOnly => contains(RegExp(r"[^a-zA-Z'\-]"));
+  String get onlyLetters => replaceAll(RegExp(r"[^a-zA-ZͰ-Ͽἀ-῿֐-׿ ]"), "");
+  bool get isLetterOnly => contains(RegExp(r"[^a-zA-ZͰ-Ͽἀ-῿֐-׿'\-]"));
 
   String withLength(int length) => this.length > length ? '${substring(0, length - 3)}...' : this;
 
