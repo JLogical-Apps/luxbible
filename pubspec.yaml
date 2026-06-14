@@ -128,3 +128,6 @@ flutter:
         - asset: fonts/OpenDyslexic-BoldItalic.ttf
           weight: 700
           style: italic
+    - family: Ezra SIL SR
+      fonts:
+        - asset: fonts/EzraSILSR.ttf

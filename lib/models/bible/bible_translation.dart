@@ -8,7 +8,8 @@ enum BibleTranslation {
   nasb95,
   niv11,
   kjv,
-  asv;
+  asv,
+  original;
 
   String title() => switch (this) {
     bsb => 'BSB',
@@ -16,6 +17,7 @@ enum BibleTranslation {
     niv11 => 'NIV',
     kjv => 'KJV',
     asv => 'ASV',
+    original => 'Original',
   };
 
   String fullName() => switch (this) {
@@ -24,10 +26,11 @@ enum BibleTranslation {
     niv11 => 'New International Version 2011',
     kjv => 'King James Version',
     asv => 'American Standard Version',
+    original => 'Original Languages (Hebrew & Greek)',
   };
 
   BibleTranslationSource get source => switch (this) {
-    bsb || asv || kjv => .local,
+    bsb || asv || kjv || original => .local,
     nasb95 => .youVersion(100),
     niv11 => .youVersion(111),
   };

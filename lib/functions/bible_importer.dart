@@ -8,13 +8,16 @@ import 'package:bible/models/bible/chapter.dart';
 import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/models/bible/verse.dart';
 import 'package:bible/models/bible/word.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
+import 'package:intersperse/intersperse.dart';
 import 'package:utils_core/utils_core.dart';
 
 class BibleImporter {
   Future<Bible> importBible({required BibleTranslation translation}) async => switch (translation) {
     .kjv || .asv => await parseJsonBible(translation: translation),
     .bsb => await parseBsbJsonBible(translation: translation),
+    .original => await parseOriginalLanguagesBible(translation: translation),
     _ => throw UnimplementedError(),
   };
 
@@ -59,4 +62,33 @@ class BibleImporter {
       books: (jsonDecode(rawBsb) as List).map((bookJson) => Book.fromJson(bookJson)).toList(),
     );
   }
+
+  Future<Bible> parseOriginalLanguagesBible({required BibleTranslation translation}) async => Bible(
+    translation: translation,
+    books: (await parseBsbJsonBible(translation: .bsb)).books
+        .map(
+          (book) => book.copyWith(
+            chapters: book.chapters
+                .map(
+                  (chapter) => Chapter.verses(
+                    verses: chapter.verses.values
+                        .map(
+                          (verse) => Verse(
+                            verseNum: verse.verseNum,
+                            words: verse.words
+                                .where((word) => word.data?.inflection != null)
+                                .sortedBy((a) => a.data!.originalPosition)
+                                .map((word) => word.copyWith(text: word.data!.inflection))
+                                .intersperse(Word(text: ' '))
+                                .toList(),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                )
+                .toList(),
+          ),
+        )
+        .toList(),
+  );
 }

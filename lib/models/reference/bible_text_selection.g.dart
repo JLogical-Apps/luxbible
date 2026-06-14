@@ -26,4 +26,5 @@ const _$BibleTranslationEnumMap = {
   BibleTranslation.niv11: 'niv11',
   BibleTranslation.kjv: 'kjv',
   BibleTranslation.asv: 'asv',
+  BibleTranslation.original: 'original',
 };

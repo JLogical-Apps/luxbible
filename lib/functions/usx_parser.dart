@@ -24,7 +24,7 @@ Book parseUsxBook(BookType type, String rawXml) {
                   ? [
                       Verse(
                         verseNum: lastVerseNum!,
-                        words: [Word(data: data)],
+                        words: [Word(data: data, redLetters: isRedLetters)],
                       ),
                     ]
                   : element.children

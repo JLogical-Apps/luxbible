@@ -21,7 +21,7 @@ import 'package:bible/utils/extensions/color_extensions.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
 import 'package:bible/utils/extensions/rect_extensions.dart';
 import 'package:bible/utils/extensions/span_extensions.dart';
-import 'package:bible/utils/extensions/string_extensions.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -58,6 +58,12 @@ class ChapterBuilder extends HookConsumerWidget {
   BookType get book => chapterReference.book;
 
   double get sizeMultiplier => user.themeLayout.fontSizeSpacing.multiplier;
+
+  static const hebrewFontFamily = 'Ezra SIL SR';
+
+  TextDirection get textDirection => user.translation == .original && book.testament == .oldTestament ? .rtl : .ltr;
+  bool get isLtr => textDirection == .ltr;
+  bool get useParagraphs => user.themeLayout.paragraphs && isLtr;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -146,14 +152,14 @@ class ChapterBuilder extends HookConsumerWidget {
                   final hangingIndent = versesParagraph?.type.hangingIndent ?? 0.0;
 
                   return Padding(
-                    padding: user.themeLayout.paragraphs
+                    padding: useParagraphs
                         ? (versesParagraph?.type.padding ?? .zero).copyWith(left: blockIndent)
                         : .zero,
                     child: LayoutBuilder(
                       builder: (context, constraints) {
                         final textKey = GlobalKey(debugLabel: versesParagraph?.verses.first.verseNum.toString());
 
-                        final renderSpans = versesParagraph != null && user.themeLayout.paragraphs
+                        final renderSpans = versesParagraph != null && useParagraphs
                             ? originalSpans.withHangingIndent<VerseElement>(
                                 width: constraints.maxWidth,
                                 textAlign: versesParagraph.type.textAlign,
@@ -174,6 +180,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                   width: constraints.maxWidth,
                                   localPosition: localPosition,
                                   textAlign: paragraph.type.textAlign,
+                                  textDirection: textDirection,
                                 ),
                                 paragraph: paragraph,
                               ),
@@ -223,6 +230,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                           extentOffset: extent,
                                           width: constraints.maxWidth,
                                           textAlign: paragraph.type.textAlign,
+                                          textDirection: textDirection,
                                         )
                                         .map((box) => box.toRect())
                                         .withMergedLines()
@@ -271,6 +279,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                           extentOffset: extent,
                                           width: constraints.maxWidth,
                                           textAlign: paragraph.type.textAlign,
+                                          textDirection: textDirection,
                                         )
                                         .map((box) => box.toRect())
                                         .withMergedLines()
@@ -315,6 +324,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                         extentOffset: extent,
                                         width: constraints.maxWidth,
                                         textAlign: paragraph.type.textAlign,
+                                        textDirection: textDirection,
                                       )
                                       .map((box) => box.toRect())
                                       .withMergedLines()
@@ -341,6 +351,7 @@ class ChapterBuilder extends HookConsumerWidget {
                               TextSpan(children: renderSpans),
                               style: TextStyle(fontStyle: paragraph.as<VersesParagraph>()?.type.fontStyle ?? .normal),
                               textAlign: paragraph.as<VersesParagraph>()?.type.textAlign ?? .start,
+                              textDirection: textDirection,
                             ),
                           ],
                         );
@@ -388,8 +399,7 @@ class ChapterBuilder extends HookConsumerWidget {
                   ]
                 : <InlineSpan>[],
           VersesParagraph(:final verses, :final type) => [
-            if (user.themeLayout.paragraphs)
-              SizedWidgetSpan.space(size: Size(type.hangingIndent != 0 ? 0 : type.indent, 0)),
+            if (useParagraphs) SizedWidgetSpan.space(size: Size(type.hangingIndent != 0 ? 0 : type.indent, 0)),
             ...verses
                 .mapIndexed((verseIndex, verse) {
                   final reference = getVerseReference(verse);
@@ -420,7 +430,7 @@ class ChapterBuilder extends HookConsumerWidget {
                         alignment: .middle,
                         child: Padding(
                           key: keyByReference[reference],
-                          padding: .only(right: 4),
+                          padding: .only(right: isLtr ? 4 : 0, left: isLtr ? 0 : 4),
                           child: Text(
                             verse.verseNum.toString(),
                             style: bibleTextStyle.bibleVerseNumber.copyWith(
@@ -460,6 +470,7 @@ class ChapterBuilder extends HookConsumerWidget {
                         ),
                         text: word.text,
                         style: bibleTextStyle.bibleBody.copyWith(
+                          fontFamily: isLtr ? null : hebrewFontFamily,
                           color: word.redLetters && user.themeLayout.redLetters ? context.colors.red.dark : null,
                           fontStyle: word.italic ? .italic : null,
                           decoration: underlinedReferences.contains(reference) ? .underline : null,
