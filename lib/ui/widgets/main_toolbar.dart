@@ -5,7 +5,7 @@ import 'package:bible/models/user/main_toolbar_shortcut.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
-import 'package:bible/utils/extensions/string_extensions.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';

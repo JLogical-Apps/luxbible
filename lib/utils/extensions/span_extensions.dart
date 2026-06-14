@@ -51,8 +51,13 @@ extension ListSpanExtensions on List<InlineSpan> {
     required Offset localPosition,
     required double width,
     required TextAlign textAlign,
+    TextDirection textDirection = .ltr,
   }) {
-    var initialOffset = _getTextPainter(width: width, textAlign: textAlign).getPositionForOffset(localPosition).offset;
+    var initialOffset = _getTextPainter(
+      width: width,
+      textAlign: textAlign,
+      textDirection: textDirection,
+    ).getPositionForOffset(localPosition).offset;
     // Account for WidgetSpans and line-breaks in selection
     var accountedLength = 0;
     for (final span in this) {
@@ -141,15 +146,20 @@ extension ListSpanExtensions on List<InlineSpan> {
     required int extentOffset,
     required double width,
     required TextAlign textAlign,
-  }) => _getTextPainter(width: width, textAlign: textAlign).getBoxesForSelection(
+    TextDirection textDirection = .ltr,
+  }) => _getTextPainter(width: width, textAlign: textAlign, textDirection: textDirection).getBoxesForSelection(
     TextSelection(baseOffset: baseOffset, extentOffset: extentOffset),
     boxHeightStyle: BoxHeightStyle.max,
   );
 
-  TextPainter _getTextPainter({required double width, required TextAlign textAlign}) =>
+  TextPainter _getTextPainter({
+    required double width,
+    required TextAlign textAlign,
+    TextDirection textDirection = .ltr,
+  }) =>
       TextPainter(
           text: TextSpan(children: this),
-          textDirection: .ltr,
+          textDirection: textDirection,
           textAlign: textAlign,
         )
         ..setPlaceholderDimensions(

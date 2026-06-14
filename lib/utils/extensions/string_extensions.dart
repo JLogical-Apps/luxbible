@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:utils_core/utils_core.dart';
 
@@ -6,14 +5,9 @@ extension StringExtensions on String {
   String get onlyLetters => replaceAll(RegExp(r"[^a-zA-Z ]"), "");
   bool get isLetterOnly => contains(RegExp(r"[^a-zA-Z'\-]"));
 
-  String trimPunctuation() => replaceAll(RegExp(r'[\p{P}\p{S}]', unicode: true), '');
-  String trimTrailingPunctuation() => replaceAll(RegExp(r'[\p{P}\p{S}]+$', unicode: true), '');
-
   String withLength(int length) => this.length > length ? '${substring(0, length - 3)}...' : this;
 
   bool get isStrongId => RegExp(r'^[GH]\d{1,4}$').hasMatch(this);
-
-  Text toText() => Text(this);
 
   List<String> get keywords =>
       trim().toLowerCase().split(RegExp(r'[\s-]+')).where((string) => string.isNotBlank).toList();

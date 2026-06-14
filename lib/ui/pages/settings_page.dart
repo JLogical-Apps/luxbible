@@ -9,7 +9,7 @@ import 'package:bible/ui/pages/theme_settings_page.dart';
 import 'package:bible/ui/pages/verse_selection_settings_page.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
-import 'package:bible/utils/extensions/string_extensions.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

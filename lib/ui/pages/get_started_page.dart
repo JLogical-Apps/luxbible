@@ -2,7 +2,7 @@ import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/onboarding_page.dart';
 import 'package:bible/ui/widgets/bible_body.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/string_extensions.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:flutter/material.dart';
 
 class IntroPage extends StatelessWidget {
