@@ -1,0 +1,132 @@
+LXX -> KJV mapping discrepancy report
+============================================================
+
+Built best-effort from: standard Psalm regrouping + the MT->KJV map
+(OSHB notes, for boundary shifts shared with the LXX) + STEPBible TVTMS
+'Greek' rules (Jeremiah reorder etc.) + identity. The SWORD LXX is a
+'compromise' versification with no authoritative KJV mapping, so the
+items below are where this is imperfect.
+SUMMARY: 346 dropped (no KJV home), 328 dropped (displaced by mapping), 12 residual cross-chapter merges.
+
+
+## Gen  (total 1539: 1493 identity, 33 mt-shift, 0 psalm, 5 tvtms)
+  DROPPED, no KJV verse exists [4]: 3:25, 6:23, 19:39, 42:39
+  DROPPED, identity verse displaced by authoritative mapping [4]: 2:25->2:25, 5:32->5:32, 31:55->31:55, 37:2->37:2
+
+## Exod  (total 1190: 915 identity, 63 mt-shift, 0 psalm, 195 tvtms)
+  DROPPED, identity verse displaced by authoritative mapping [17]: 8:29->8:29, 8:30->8:30, 8:31->8:31, 8:32->8:32, 22:31->22:31, 28:40->28:40, 28:41->28:41, 28:42->28:42, 28:43->28:43, 38:28->38:28, 38:29->38:29, 40:33->40:33, 40:34->40:34, 40:35->40:35, 40:36->40:36, 40:37->40:37, 40:38->40:38
+  RESIDUAL MERGES (KJV verse holds text from >1 LXX chapter) [3]: 36:8<-LXXch[36, 37], 38:19<-LXXch[37, 38], 38:20<-LXXch[37, 38]
+
+## Lev  (total 876: 791 identity, 30 mt-shift, 0 psalm, 38 tvtms)
+  DROPPED, identity verse displaced by authoritative mapping [17]: 6:24->6:24, 6:25->6:25, 6:26->6:26, 6:27->6:27, 6:28->6:28, 6:29->6:29, 6:30->6:30, 7:29->7:29, 7:30->7:30, 7:31->7:31, 7:32->7:32, 7:33->7:33, 7:34->7:34, 7:35->7:35, 7:36->7:36, 7:37->7:37, 7:38->7:38
+
+## Num  (total 1305: 1188 identity, 45 mt-shift, 0 psalm, 55 tvtms)
+  DROPPED, no KJV verse exists [1]: 13:34
+  DROPPED, identity verse displaced by authoritative mapping [16]: 16:36->16:36, 16:37->16:37, 16:38->16:38, 16:39->16:39, 16:40->16:40, 16:41->16:41, 16:42->16:42, 16:43->16:43, 16:44->16:44, 16:45->16:45, 16:46->16:46, 16:47->16:47, 16:48->16:48, 16:49->16:49, 16:50->16:50, 29:40->29:40
+
+## Deut  (total 965: 845 identity, 74 mt-shift, 0 psalm, 41 tvtms)
+  DROPPED, no KJV verse exists [1]: 27:27
+  DROPPED, identity verse displaced by authoritative mapping [4]: 12:32->12:32, 14:29->14:29, 22:30->22:30, 29:29->29:29
+  RESIDUAL MERGES (KJV verse holds text from >1 LXX chapter) [2]: 23:24<-LXXch[23, 24], 23:25<-LXXch[23, 24]
+
+## Josh  (total 676: 650 identity, 0 mt-shift, 0 psalm, 14 tvtms)
+  DROPPED, no KJV verse exists [12]: 5:16, 15:64, 19:52, 19:53, 19:54, 21:46, 21:47, 21:48, 21:49, 24:34, 24:35, 24:36
+
+## Judg  (total 620: 618 identity, 0 mt-shift, 0 psalm, 0 tvtms)
+  DROPPED, no KJV verse exists [2]: 5:32, 18:32
+
+## 1Sam  (total 814: 766 identity, 39 mt-shift, 0 psalm, 5 tvtms)
+  DROPPED, no KJV verse exists [2]: 20:43, 30:32
+  DROPPED, identity verse displaced by authoritative mapping [2]: 20:42->20:42, 23:29->23:29
+
+## 2Sam  (total 699: 651 identity, 44 mt-shift, 0 psalm, 0 tvtms)
+  DROPPED, no KJV verse exists [3]: 5:26, 23:40, 23:41
+  DROPPED, identity verse displaced by authoritative mapping [1]: 18:33->18:33
+
+## 1Kgs  (total 915: 569 identity, 43 mt-shift, 0 psalm, 206 tvtms)
+  DROPPED, no KJV verse exists [70]: 2:47, 2:48, 2:49, 2:50, 2:51, 2:52, 2:53, 2:54, 2:55, 2:56, 2:57, 2:58, 2:59, 2:60, 2:61, 2:62, 2:63, 2:64, 2:65, 2:66, 2:67, 2:68, 2:69, 2:70, 2:71, 3:29, 3:30, 3:31, 3:32, 3:33, 3:34, 3:35, 3:36, 3:37, 3:38, 3:39, 10:30, 10:31, 10:32, 10:33 ...
+  DROPPED, identity verse displaced by authoritative mapping [27]: 4:22->4:22, 4:23->4:23, 4:24->4:24, 4:27->4:27, 4:28->4:28, 4:29->4:29, 4:30->4:30, 4:31->4:31, 4:32->4:32, 4:33->4:33, 4:34->4:34, 7:51->7:51, 20:30->20:30, 20:31->20:31, 20:32->20:32, 20:33->20:33, 20:34->20:34, 20:35->20:35, 20:36->20:36, 20:37->20:37, 20:38->20:38, 20:39->20:39, 20:40->20:40, 20:41->20:41, 20:42->20:42, 20:43->20:43, 22:22->22:22
+  RESIDUAL MERGES (KJV verse holds text from >1 LXX chapter) [4]: 4:21<-LXXch[4, 5], 4:25<-LXXch[4, 5], 4:26<-LXXch[4, 5], 4:34<-LXXch[3, 5]
+
+## 2Kgs  (total 726: 697 identity, 22 mt-shift, 0 psalm, 0 tvtms)
+  DROPPED, no KJV verse exists [6]: 1:19, 1:20, 1:21, 1:22, 6:34, 6:35
+  DROPPED, identity verse displaced by authoritative mapping [1]: 11:21->11:21
+
+## 1Chr  (total 958: 824 identity, 118 mt-shift, 0 psalm, 0 tvtms)
+  DROPPED, identity verse displaced by authoritative mapping [16]: 6:67->6:67, 6:68->6:68, 6:69->6:69, 6:70->6:70, 6:71->6:71, 6:72->6:72, 6:73->6:73, 6:74->6:74, 6:75->6:75, 6:76->6:76, 6:77->6:77, 6:78->6:78, 6:79->6:79, 6:80->6:80, 6:81->6:81, 12:4->12:4
+
+## 2Chr  (total 837: 789 identity, 33 mt-shift, 0 psalm, 0 tvtms)
+  DROPPED, no KJV verse exists [13]: 4:23, 35:28, 35:29, 35:30, 35:31, 36:24, 36:25, 36:26, 36:27, 36:28, 36:29, 36:30, 36:31
+  DROPPED, identity verse displaced by authoritative mapping [2]: 2:18->2:18, 14:15->14:15
+
+## Neh  (total 412: 334 identity, 67 mt-shift, 0 psalm, 9 tvtms)
+  DROPPED, identity verse displaced by authoritative mapping [2]: 7:73->7:73, 9:38->9:38
+
+## Esth  (total 188: 117 identity, 0 mt-shift, 0 psalm, 25 tvtms)
+  DROPPED, no KJV verse exists [45]: 1:2, 1:3, 1:4, 1:5, 1:6, 1:7, 1:8, 1:9, 1:10, 1:11, 1:12, 1:13, 1:14, 1:15, 1:16, 1:17, 1:18, 3:14, 3:15, 5:2, 5:3, 5:4, 5:5, 5:6, 5:7, 5:9, 5:10, 8:13, 8:14, 8:15, 8:16, 8:17, 9:33, 9:34, 9:35, 10:4, 10:5, 10:6, 10:7, 10:8 ...
+  DROPPED, identity verse displaced by authoritative mapping [1]: 9:32->9:32
+
+## Job  (total 1096: 997 identity, 34 mt-shift, 0 psalm, 44 tvtms)
+  DROPPED, no KJV verse exists [13]: 2:14, 2:15, 2:16, 2:17, 2:18, 7:22, 16:23, 36:34, 42:18, 42:19, 42:20, 42:21, 42:22
+  DROPPED, identity verse displaced by authoritative mapping [8]: 41:27->41:27, 41:28->41:28, 41:29->41:29, 41:30->41:30, 41:31->41:31, 41:32->41:32, 41:33->41:33, 41:34->41:34
+
+## Ps  (total 2574: 0 identity, 0 mt-shift, 2567 psalm, 0 tvtms)
+  DROPPED, no KJV verse exists [7]: 151:1, 151:2, 151:3, 151:4, 151:5, 151:6, 151:7
+  RESIDUAL MERGES (KJV verse holds text from >1 LXX chapter) [2]: 116:1<-LXXch[114, 115], 147:1<-LXXch[146, 147]
+
+## Prov  (total 998: 904 identity, 0 mt-shift, 0 psalm, 11 tvtms)
+  DROPPED, no KJV verse exists [82]: 1:34, 1:35, 2:23, 3:36, 3:37, 3:38, 6:36, 6:37, 6:38, 6:39, 6:40, 7:28, 8:37, 9:19, 9:20, 9:21, 9:22, 9:23, 9:24, 9:25, 10:33, 12:29, 12:30, 12:31, 13:26, 13:27, 14:36, 15:34, 15:35, 15:36, 15:37, 15:38, 17:29, 17:30, 22:30, 22:31, 23:36, 24:35, 24:36, 24:37 ...
+  DROPPED, identity verse displaced by authoritative mapping [1]: 4:27->4:27
+
+## Eccl  (total 224: 202 identity, 20 mt-shift, 0 psalm, 0 tvtms)
+  DROPPED, no KJV verse exists [1]: 7:30
+  DROPPED, identity verse displaced by authoritative mapping [1]: 5:20->5:20
+
+## Song  (total 120: 103 identity, 14 mt-shift, 0 psalm, 0 tvtms)
+  DROPPED, no KJV verse exists [2]: 5:17, 8:15
+  DROPPED, identity verse displaced by authoritative mapping [1]: 6:13->6:13
+
+## Isa  (total 1295: 1256 identity, 33 mt-shift, 0 psalm, 2 tvtms)
+  DROPPED, no KJV verse exists [2]: 45:26, 63:20
+  DROPPED, identity verse displaced by authoritative mapping [2]: 9:21->9:21, 64:12->64:12
+
+## Jer  (total 1557: 610 identity, 26 mt-shift, 0 psalm, 748 tvtms)
+  DROPPED, no KJV verse exists [15]: 23:41, 23:42, 31:45, 31:46, 31:47, 40:17, 40:18, 40:19, 40:20, 40:21, 40:22, 40:23, 40:24, 40:25, 40:26
+  DROPPED, identity verse displaced by authoritative mapping [158]: 9:26->9:26, 25:20->25:20, 25:21->25:21, 25:22->25:22, 25:23->25:23, 25:24->25:24, 25:25->25:25, 25:26->25:26, 25:27->25:27, 25:28->25:28, 25:29->25:29, 25:30->25:30, 25:31->25:31, 25:32->25:32, 25:33->25:33, 29:24->29:24, 29:25->29:25, 29:26->29:26, 29:27->29:27, 29:28->29:28, 29:29->29:29, 29:30->29:30, 29:31->29:31, 32:39->32:39, 32:40->32:40, 32:41->32:41, 32:42->32:42, 32:43->32:43, 32:44->32:44, 35:18->35:18, 35:19->35:19, 40:14->40:14, 40:15->40:15, 40:16->40:16, 42:20->42:20, 42:21->42:21, 42:22->42:22, 44:22->44:22, 44:23->44:23, 44:24->44:24 ...
+  RESIDUAL MERGES (KJV verse holds text from >1 LXX chapter) [1]: 27:21<-LXXch[27, 34]
+
+## Ezek  (total 1281: 1229 identity, 37 mt-shift, 0 psalm, 7 tvtms)
+  DROPPED, no KJV verse exists [3]: 2:11, 2:12, 2:13
+  DROPPED, identity verse displaced by authoritative mapping [5]: 20:45->20:45, 20:46->20:46, 20:47->20:47, 20:48->20:48, 20:49->20:49
+
+## Dan  (total 428: 283 identity, 66 mt-shift, 0 psalm, 11 tvtms)
+  DROPPED, no KJV verse exists [60]: 3:34, 3:35, 3:36, 3:37, 3:38, 3:39, 3:40, 3:41, 3:42, 3:43, 3:44, 3:45, 3:46, 3:47, 3:48, 3:49, 3:50, 3:51, 3:52, 3:53, 3:54, 3:55, 3:56, 3:57, 3:58, 3:59, 3:60, 3:61, 3:62, 3:63, 3:64, 3:65, 3:66, 3:67, 3:68, 3:69, 3:70, 3:71, 3:72, 3:73 ...
+  DROPPED, identity verse displaced by authoritative mapping [8]: 3:24->3:24, 3:25->3:25, 3:26->3:26, 3:27->3:27, 3:28->3:28, 3:29->3:29, 3:30->3:30, 5:31->5:31
+
+## Hos  (total 202: 136 identity, 50 mt-shift, 0 psalm, 12 tvtms)
+  DROPPED, identity verse displaced by authoritative mapping [4]: 1:10->1:10, 1:11->1:11, 11:12->11:12, 13:16->13:16
+
+## Joel  (total 94: 47 identity, 26 mt-shift, 0 psalm, 0 tvtms)
+  DROPPED, identity verse displaced by authoritative mapping [21]: 2:28->2:28, 2:29->2:29, 2:30->2:30, 2:31->2:31, 2:32->2:32, 3:6->3:6, 3:7->3:7, 3:8->3:8, 3:9->3:9, 3:10->3:10, 3:11->3:11, 3:12->3:12, 3:13->3:13, 3:14->3:14, 3:15->3:15, 3:16->3:16, 3:17->3:17, 3:18->3:18, 3:19->3:19, 3:20->3:20, 3:21->3:21
+
+## Amos  (total 147: 146 identity, 0 mt-shift, 0 psalm, 0 tvtms)
+  DROPPED, no KJV verse exists [1]: 6:15
+
+## Jonah  (total 49: 37 identity, 11 mt-shift, 0 psalm, 0 tvtms)
+  DROPPED, identity verse displaced by authoritative mapping [1]: 1:17->1:17
+
+## Mic  (total 106: 90 identity, 15 mt-shift, 0 psalm, 0 tvtms)
+  DROPPED, identity verse displaced by authoritative mapping [1]: 5:15->5:15
+
+## Nah  (total 48: 33 identity, 14 mt-shift, 0 psalm, 0 tvtms)
+  DROPPED, identity verse displaced by authoritative mapping [1]: 1:15->1:15
+
+## Zeph  (total 54: 50 identity, 0 mt-shift, 0 psalm, 2 tvtms)
+  DROPPED, no KJV verse exists [1]: 3:21
+  DROPPED, identity verse displaced by authoritative mapping [1]: 2:15->2:15
+
+## Hag  (total 39: 18 identity, 0 mt-shift, 0 psalm, 20 tvtms)
+  DROPPED, identity verse displaced by authoritative mapping [1]: 1:15->1:15
+
+## Zech  (total 216: 184 identity, 17 mt-shift, 0 psalm, 11 tvtms)
+  DROPPED, identity verse displaced by authoritative mapping [4]: 1:18->1:18, 1:19->1:19, 1:20->1:20, 1:21->1:21

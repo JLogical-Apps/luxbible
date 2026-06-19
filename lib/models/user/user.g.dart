@@ -101,7 +101,11 @@ const _$BibleTranslationEnumMap = {
   BibleTranslation.niv11: 'niv11',
   BibleTranslation.kjv: 'kjv',
   BibleTranslation.asv: 'asv',
-  BibleTranslation.original: 'original',
+  BibleTranslation.oshb: 'oshb',
+  BibleTranslation.lxx: 'lxx',
+  BibleTranslation.tr: 'tr',
+  BibleTranslation.byz: 'byz',
+  BibleTranslation.statresgnt: 'statresgnt',
 };
 
 const _$ColorEnumEnumMap = {

@@ -70,6 +70,8 @@ extension BibleListExtensions<T> on List<T> {
 
   List<R> mapWithPrevious<R>(R Function(R?, T) mapper) =>
       fold(<R>[], (list, item) => list..add(mapper(list.lastOrNull, item)));
+
+  List<T> maybeReversed(bool shouldReverse) => shouldReverse ? reversed.toList() : this;
 }
 
 extension BibleIterableExtensions<T> on Iterable<T> {

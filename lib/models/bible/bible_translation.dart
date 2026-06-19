@@ -1,7 +1,9 @@
 import 'package:bible/functions/youversion.dart';
 import 'package:bible/models/bible/bible.dart';
+import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bible/chapter.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
+import 'package:bible/models/testament.dart';
 
 enum BibleTranslation {
   bsb,
@@ -9,7 +11,11 @@ enum BibleTranslation {
   niv11,
   kjv,
   asv,
-  original;
+  oshb,
+  lxx,
+  tr,
+  byz,
+  statresgnt;
 
   String title() => switch (this) {
     bsb => 'BSB',
@@ -17,7 +23,11 @@ enum BibleTranslation {
     niv11 => 'NIV',
     kjv => 'KJV',
     asv => 'ASV',
-    original => 'Original',
+    oshb => 'OSHB',
+    lxx => 'LXX',
+    tr => 'TR',
+    byz => 'BYZ',
+    statresgnt => 'SR',
   };
 
   String fullName() => switch (this) {
@@ -26,11 +36,15 @@ enum BibleTranslation {
     niv11 => 'New International Version 2011',
     kjv => 'King James Version',
     asv => 'American Standard Version',
-    original => 'Original Languages (Hebrew & Greek)',
+    oshb => 'Open Scriptures Hebrew Bible',
+    lxx => 'Septuagint (Rahlfs)',
+    tr => 'Textus Receptus (1550/1894)',
+    byz => 'Byzantine Textform 2013',
+    statresgnt => 'Statistical Restoration Greek New Testament',
   };
 
   BibleTranslationSource get source => switch (this) {
-    bsb || asv || kjv || original => .local,
+    bsb || asv || kjv || oshb || lxx || tr || byz || statresgnt => .local,
     nasb95 => .youVersion(100),
     niv11 => .youVersion(111),
   };
@@ -40,8 +54,30 @@ enum BibleTranslation {
       'NEW AMERICAN STANDARD BIBLE®\nCopyright © 1960, 1962, 1963, 1968, 1971, 1972, 1973, 1975, 1977, 1995 by THE LOCKMAN FOUNDATION\nA Corporation Not for Profit\nLA HABRA, CA\nAll Rights Reserved\nhttp://www.lockman.org',
     niv11 =>
       'The Holy Bible, New International Version® NIV®\nCopyright © 1973, 1978, 1984, 2011 by Biblica, Inc.®\nUsed by Permission of Biblica, Inc.® All rights reserved worldwide.',
+    oshb =>
+      'Open Scriptures Hebrew Bible\nText is Public Domain; Strong\'s and morphology tagging is Creative Commons: BY 4.0\nhttp://openscriptures.org',
+    lxx =>
+      'Septuagint, Morphologically Tagged Rahlfs\'\nCopyrighted; free non-commercial distribution\nhttp://ccat.sas.upenn.edu',
+    tr => 'Textus Receptus (1550/1894)\nCreative Commons: BY-NC-SA 4.0',
+    byz =>
+      'The New Testament in the Original Greek: Byzantine Textform 2013\nby Maurice A. Robinson and William G. Pierpont\nCreative Commons: BY-NC-SA 4.0',
+    statresgnt =>
+      'Statistical Restoration Greek New Testament\nby Alan Bunning, Center for New Testament Restoration\nCreative Commons: BY 4.0',
     _ => null,
   };
+
+  Testament? get testament => switch (this) {
+    oshb || lxx => .oldTestament,
+    tr || byz || statresgnt => .newTestament,
+    _ => null,
+  };
+
+  bool get isRtl => this == oshb;
+
+  bool containsBook(BookType book) => testament == null || book.testament == testament;
+
+  BibleTranslation effectiveFor(BookType book) =>
+      containsBook(book) ? this : (book.testament == .oldTestament ? oshb : statresgnt);
 
   bool get isLocal => source == .local;
   bool get isOnline => !isLocal;

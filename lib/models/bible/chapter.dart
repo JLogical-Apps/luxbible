@@ -36,6 +36,7 @@ sealed class Chapter with _$Chapter {
         (verseNum, verses) => Verse(
           verseNum: verseNum,
           words: verses.map((word) => word.words).intersperse([Word(text: ' ', data: null)]).flattenedToList,
+          originalVerse: verses.map((verse) => verse.originalVerse).nonNulls.firstOrNull,
         ),
       );
 

@@ -43,3 +43,11 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+.venv/
+
+# Raw SWORD modules (build input for scripts/sword/extract_sword.py)
+source_files/sword/
+
+# STEPBible TVTMS download (re-downloadable build input)
+scripts/sword/data/TVTMS.txt

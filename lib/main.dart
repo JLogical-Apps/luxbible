@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 
 import 'package:bible/functions/bible_importer.dart';
 import 'package:bible/functions/commentary_importer.dart';
@@ -30,12 +31,11 @@ Future<void> main() async {
 
       await registerLicenses();
 
-      final bsb = await BibleImporter().parseBsbJsonBible();
-      final bibles = await Future.wait(
-        BibleTranslation.values
-            .where((translation) => translation.isLocal)
-            .map((translation) => BibleImporter().importBible(translation: translation, bsb: bsb)),
-      );
+      final bibles =
+          await (BibleTranslation.values
+                  .where((translation) => translation.isLocal)
+                  .map((translation) => BibleImporter().importBible(translation: translation)))
+              .wait;
       final commentaries = await CommentaryImporter().import();
       final strongs = await StrongImporter().import();
       final crossReferences = await CrossReferencesImporter().import();
@@ -54,6 +54,7 @@ Future<void> main() async {
           sharedPreferencesServiceProvider.overrideWith((ref) => sharedPreferences),
           packageInfoProvider.overrideWith((ref) => packageInfo),
         ],
+        observers: [ProviderErrorObserver()],
       );
 
       runApp(UncontrolledProviderScope(container: ref, child: BibleApp()));
@@ -106,5 +107,13 @@ class BibleApp extends ConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+final class ProviderErrorObserver extends ProviderObserver {
+  @override
+  void providerDidFail(ProviderObserverContext context, Object error, StackTrace stackTrace) {
+    developer.log('Provider ${context.provider.name ?? context.provider.runtimeType} failed with: $error');
+    developer.log('Stacktrace: $stackTrace');
   }
 }

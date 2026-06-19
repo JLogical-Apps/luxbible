@@ -41,9 +41,9 @@ class Bible {
 
   Verse? getVerseByReference(Reference reference) => _verseByReference[reference];
 
-  late final Map<BookType, Book> _bookByType = BookType.values.mapToMap(
-    (bookType) => MapEntry(bookType, books.firstWhere((book) => book.bookType == bookType)),
-  );
+  late final Map<BookType, Book> _bookByType = BookType.values
+      .mapToMap((bookType) => MapEntry(bookType, books.firstWhereOrNull((book) => book.bookType == bookType)))
+      .withoutNullValues;
   Book getBookByType(BookType bookType) => _bookByType[bookType]!;
 
   String getVerseSelectionText(VerseSelection selection) =>

@@ -8,18 +8,24 @@ import 'package:bible/models/bible/chapter.dart';
 import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/models/bible/verse.dart';
 import 'package:bible/models/bible/word.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
-import 'package:intersperse/intersperse.dart';
 import 'package:utils_core/utils_core.dart';
 
 class BibleImporter {
-  Future<Bible> importBible({required BibleTranslation translation, required Bible bsb}) async => switch (translation) {
+  Future<Bible> importBible({required BibleTranslation translation}) async => switch (translation) {
     .kjv || .asv => await parseJsonBible(translation: translation),
-    .bsb => bsb,
-    .original => parseOriginalLanguagesBible(bsb: bsb),
+    .bsb => await parseBsbJsonBible(),
+    .oshb || .lxx || .tr || .byz || .statresgnt => await parseStructuredJsonBible(translation: translation),
     _ => throw UnimplementedError(),
   };
+
+  Future<Bible> parseStructuredJsonBible({required BibleTranslation translation}) async {
+    final raw = await rootBundle.loadString('assets/translations/${translation.name}.json');
+    return Bible(
+      translation: translation,
+      books: (jsonDecode(raw) as List).map((bookJson) => Book.fromJson(bookJson)).toList(),
+    );
+  }
 
   Future<Bible> parseJsonBible({required BibleTranslation translation}) async {
     final json =
@@ -62,33 +68,4 @@ class BibleImporter {
       books: (jsonDecode(rawBsb) as List).map((bookJson) => Book.fromJson(bookJson)).toList(),
     );
   }
-
-  Bible parseOriginalLanguagesBible({required Bible bsb}) => Bible(
-    translation: .original,
-    books: bsb.books
-        .map(
-          (book) => book.copyWith(
-            chapters: book.chapters
-                .map(
-                  (chapter) => Chapter.verses(
-                    verses: chapter.verses.values
-                        .map(
-                          (verse) => Verse(
-                            verseNum: verse.verseNum,
-                            words: verse.words
-                                .where((word) => word.data?.inflection != null)
-                                .sortedBy((a) => a.data!.originalPosition)
-                                .map((word) => word.copyWith(text: word.data!.inflection))
-                                .intersperse(Word(text: ' '))
-                                .toList(),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                )
-                .toList(),
-          ),
-        )
-        .toList(),
-  );
 }

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Verse {
 
-@JsonKey(name: 'n') int get verseNum;@JsonKey(name: 'w') List<Word> get words;
+@JsonKey(name: 'n') int get verseNum;@JsonKey(name: 'w') List<Word> get words;@JsonKey(name: 'o', includeIfNull: false) Reference? get originalVerse;
 /// Create a copy of Verse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $VerseCopyWith<Verse> get copyWith => _$VerseCopyWithImpl<Verse>(this as Verse, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Verse&&(identical(other.verseNum, verseNum) || other.verseNum == verseNum)&&const DeepCollectionEquality().equals(other.words, words));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Verse&&(identical(other.verseNum, verseNum) || other.verseNum == verseNum)&&const DeepCollectionEquality().equals(other.words, words)&&(identical(other.originalVerse, originalVerse) || other.originalVerse == originalVerse));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,verseNum,const DeepCollectionEquality().hash(words));
+int get hashCode => Object.hash(runtimeType,verseNum,const DeepCollectionEquality().hash(words),originalVerse);
 
 @override
 String toString() {
-  return 'Verse(verseNum: $verseNum, words: $words)';
+  return 'Verse(verseNum: $verseNum, words: $words, originalVerse: $originalVerse)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $VerseCopyWith<$Res>  {
   factory $VerseCopyWith(Verse value, $Res Function(Verse) _then) = _$VerseCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'n') int verseNum,@JsonKey(name: 'w') List<Word> words
+@JsonKey(name: 'n') int verseNum,@JsonKey(name: 'w') List<Word> words,@JsonKey(name: 'o', includeIfNull: false) Reference? originalVerse
 });
 
 
@@ -65,11 +65,12 @@ class _$VerseCopyWithImpl<$Res>
 
 /// Create a copy of Verse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? verseNum = null,Object? words = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? verseNum = null,Object? words = null,Object? originalVerse = freezed,}) {
   return _then(_self.copyWith(
 verseNum: null == verseNum ? _self.verseNum : verseNum // ignore: cast_nullable_to_non_nullable
 as int,words: null == words ? _self.words : words // ignore: cast_nullable_to_non_nullable
-as List<Word>,
+as List<Word>,originalVerse: freezed == originalVerse ? _self.originalVerse : originalVerse // ignore: cast_nullable_to_non_nullable
+as Reference?,
   ));
 }
 
@@ -151,10 +152,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'n')  int verseNum, @JsonKey(name: 'w')  List<Word> words)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'n')  int verseNum, @JsonKey(name: 'w')  List<Word> words, @JsonKey(name: 'o', includeIfNull: false)  Reference? originalVerse)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Verse() when $default != null:
-return $default(_that.verseNum,_that.words);case _:
+return $default(_that.verseNum,_that.words,_that.originalVerse);case _:
   return orElse();
 
 }
@@ -172,10 +173,10 @@ return $default(_that.verseNum,_that.words);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'n')  int verseNum, @JsonKey(name: 'w')  List<Word> words)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'n')  int verseNum, @JsonKey(name: 'w')  List<Word> words, @JsonKey(name: 'o', includeIfNull: false)  Reference? originalVerse)  $default,) {final _that = this;
 switch (_that) {
 case _Verse():
-return $default(_that.verseNum,_that.words);}
+return $default(_that.verseNum,_that.words,_that.originalVerse);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -189,10 +190,10 @@ return $default(_that.verseNum,_that.words);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'n')  int verseNum, @JsonKey(name: 'w')  List<Word> words)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'n')  int verseNum, @JsonKey(name: 'w')  List<Word> words, @JsonKey(name: 'o', includeIfNull: false)  Reference? originalVerse)?  $default,) {final _that = this;
 switch (_that) {
 case _Verse() when $default != null:
-return $default(_that.verseNum,_that.words);case _:
+return $default(_that.verseNum,_that.words,_that.originalVerse);case _:
   return null;
 
 }
@@ -204,7 +205,7 @@ return $default(_that.verseNum,_that.words);case _:
 @JsonSerializable()
 
 class _Verse extends Verse {
-  const _Verse({@JsonKey(name: 'n') required this.verseNum, @JsonKey(name: 'w') required final  List<Word> words}): _words = words,super._();
+  const _Verse({@JsonKey(name: 'n') required this.verseNum, @JsonKey(name: 'w') required final  List<Word> words, @JsonKey(name: 'o', includeIfNull: false) this.originalVerse}): _words = words,super._();
   factory _Verse.fromJson(Map<String, dynamic> json) => _$VerseFromJson(json);
 
 @override@JsonKey(name: 'n') final  int verseNum;
@@ -215,6 +216,7 @@ class _Verse extends Verse {
   return EqualUnmodifiableListView(_words);
 }
 
+@override@JsonKey(name: 'o', includeIfNull: false) final  Reference? originalVerse;
 
 /// Create a copy of Verse
 /// with the given fields replaced by the non-null parameter values.
@@ -229,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Verse&&(identical(other.verseNum, verseNum) || other.verseNum == verseNum)&&const DeepCollectionEquality().equals(other._words, _words));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Verse&&(identical(other.verseNum, verseNum) || other.verseNum == verseNum)&&const DeepCollectionEquality().equals(other._words, _words)&&(identical(other.originalVerse, originalVerse) || other.originalVerse == originalVerse));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,verseNum,const DeepCollectionEquality().hash(_words));
+int get hashCode => Object.hash(runtimeType,verseNum,const DeepCollectionEquality().hash(_words),originalVerse);
 
 @override
 String toString() {
-  return 'Verse(verseNum: $verseNum, words: $words)';
+  return 'Verse(verseNum: $verseNum, words: $words, originalVerse: $originalVerse)';
 }
 
 
@@ -249,7 +251,7 @@ abstract mixin class _$VerseCopyWith<$Res> implements $VerseCopyWith<$Res> {
   factory _$VerseCopyWith(_Verse value, $Res Function(_Verse) _then) = __$VerseCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'n') int verseNum,@JsonKey(name: 'w') List<Word> words
+@JsonKey(name: 'n') int verseNum,@JsonKey(name: 'w') List<Word> words,@JsonKey(name: 'o', includeIfNull: false) Reference? originalVerse
 });
 
 
@@ -266,11 +268,12 @@ class __$VerseCopyWithImpl<$Res>
 
 /// Create a copy of Verse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? verseNum = null,Object? words = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? verseNum = null,Object? words = null,Object? originalVerse = freezed,}) {
   return _then(_Verse(
 verseNum: null == verseNum ? _self.verseNum : verseNum // ignore: cast_nullable_to_non_nullable
 as int,words: null == words ? _self._words : words // ignore: cast_nullable_to_non_nullable
-as List<Word>,
+as List<Word>,originalVerse: freezed == originalVerse ? _self.originalVerse : originalVerse // ignore: cast_nullable_to_non_nullable
+as Reference?,
   ));
 }
 
