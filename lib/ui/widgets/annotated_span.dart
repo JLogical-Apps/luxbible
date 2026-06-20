@@ -33,13 +33,6 @@ class AnnotatedTextSpan<T> extends TextSpan with IsAnnotatedSpan<T> {
   }
 }
 
-class AnnotatedWidgetSpan<T> extends WidgetSpan with IsAnnotatedSpan<T> {
-  @override
-  final T annotation;
-
-  const AnnotatedWidgetSpan({required super.child, required this.annotation});
-}
-
 class AnnotatedSizedWidgetSpan<T> extends SizedWidgetSpan with IsAnnotatedSpan<T> {
   @override
   final T annotation;

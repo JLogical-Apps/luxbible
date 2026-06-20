@@ -2,12 +2,13 @@ import 'dart:ui';
 
 import 'package:bible/ui/widgets/annotated_span.dart';
 import 'package:bible/ui/widgets/sized_widget_span.dart';
+import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
-class HangingBreakSpan extends TextSpan {
-  const HangingBreakSpan({super.style}) : super(text: '\n');
+class BreakSpan extends TextSpan {
+  const BreakSpan({super.style}) : super(text: '\n');
 }
 
 extension InlineSpanExtensions on InlineSpan {
@@ -61,7 +62,7 @@ extension ListSpanExtensions on List<InlineSpan> {
     // Account for WidgetSpans and line-breaks in selection
     var accountedLength = 0;
     for (final span in this) {
-      if (span is WidgetSpan || span is HangingBreakSpan) {
+      if (span is WidgetSpan || span is BreakSpan) {
         initialOffset--;
       } else if (span is TextSpan) {
         accountedLength += span.text?.length ?? 0;
@@ -82,10 +83,7 @@ extension ListSpanExtensions on List<InlineSpan> {
     final runoverWidth = width - hangingIndent;
     if (hangingIndent <= 0 || runoverWidth <= 0) return this;
 
-    List<InlineSpan> breakSpans(TextStyle? style) => [
-      HangingBreakSpan(style: style),
-      SizedWidgetSpan.space(size: Size(hangingIndent, 0)),
-    ];
+    List<InlineSpan> breakSpans() => [BreakSpan(), SizedWidgetSpan.space(size: Size(hangingIndent, 0))];
 
     final result = <InlineSpan>[];
     var remaining = this;
@@ -101,7 +99,7 @@ extension ListSpanExtensions on List<InlineSpan> {
       final (head, tail) = remaining.splitAt<T>(breakAt, annotationModifier);
       result
         ..addAll(head)
-        ..addAll(breakSpans(head.whereType<TextSpan>().lastOrNull?.style));
+        ..addAll(breakSpans());
       remaining = tail;
     }
     return result;
@@ -139,6 +137,56 @@ extension ListSpanExtensions on List<InlineSpan> {
       raw += length;
     }
     return (head, tail);
+  }
+
+  List<InlineSpan> withUnorphanedLeadingSpans({
+    required double width,
+    required TextAlign textAlign,
+    required bool Function(InlineSpan span) isLeadingSpan,
+    TextDirection textDirection = .ltr,
+  }) {
+    if (none(isLeadingSpan)) return this;
+
+    int? firstOrphanedLeadingSpan(List<InlineSpan> spans) {
+      final painter = spans._getTextPainter(width: width, textAlign: textAlign, textDirection: textDirection);
+
+      double topAt(int offset) => painter
+          .getBoxesForSelection(
+            TextSelection(baseOffset: offset, extentOffset: offset + 1),
+            boxHeightStyle: .max,
+          )
+          .first
+          .top;
+
+      int offsetOf(int index) => spans.take(index).map((span) => span.textLength).sum;
+
+      bool isOrphaned(int groupStart) {
+        final start = offsetOf(groupStart);
+        final groupSize = spans.skip(groupStart).takeWhile(isLeadingSpan).length;
+
+        final groupTop = topAt(start);
+        final wordTop = topAt(start + groupSize);
+        final precedingTop = topAt(start - 1);
+
+        final startsLine = precedingTop != groupTop;
+        final wordWraps = wordTop != groupTop;
+        return !startsLine && wordWraps;
+      }
+
+      return spans.indexed
+          .firstWhereOrNull(
+            (entry) =>
+                entry.$1 >= 1 && isLeadingSpan(entry.$2) && !isLeadingSpan(spans[entry.$1 - 1]) && isOrphaned(entry.$1),
+          )
+          ?.$1;
+    }
+
+    var spans = this;
+    while (true) {
+      final breakAt = firstOrphanedLeadingSpan(spans);
+      if (breakAt == null) return spans;
+      spans = spans.withInsert(breakAt, BreakSpan());
+    }
   }
 
   List<TextBox> getBoxesForSelection({

@@ -171,15 +171,21 @@ class ChapterBuilder extends HookConsumerWidget {
                         final textKey = GlobalKey(debugLabel: versesParagraph?.verses.first.verseNum.toString());
 
                         final renderSpans = versesParagraph != null && useParagraphs
-                            ? originalSpans.withHangingIndent<VerseElement>(
-                                width: constraints.maxWidth,
-                                textAlign: versesParagraph.type.textAlign,
-                                hangingIndent: versesParagraph.type.hangingIndent,
-                                annotationModifier: (element, charactersAdded) => VerseElement(
-                                  anchor: element.anchor.withCharactersAdded(charactersAdded),
-                                  isBoundInSelection: element.isBoundInSelection,
-                                ),
-                              )
+                            ? originalSpans
+                                  .withHangingIndent<VerseElement>(
+                                    width: constraints.maxWidth,
+                                    textAlign: versesParagraph.type.textAlign,
+                                    hangingIndent: versesParagraph.type.hangingIndent,
+                                    annotationModifier: (element, charactersAdded) =>
+                                        element.copyWith(anchor: element.anchor.withCharactersAdded(charactersAdded)),
+                                  )
+                                  .withUnorphanedLeadingSpans(
+                                    width: constraints.maxWidth,
+                                    textAlign: versesParagraph.type.textAlign,
+                                    textDirection: textDirection,
+                                    isLeadingSpan: (span) =>
+                                        span is IsAnnotatedSpan<VerseElement> && span.annotation.isLeading,
+                                  )
                             : originalSpans;
 
                         if (paragraph is VersesParagraph) {
@@ -428,32 +434,34 @@ class ChapterBuilder extends HookConsumerWidget {
                       .toList();
 
                   final spans = [
-                    if (verse.verseNum > maxPreviousVerseNum && user.themeLayout.verseNumbers)
+                    if (verse.verseNum > maxPreviousVerseNum)
                       ...[
-                        AnnotatedSizedWidgetSpan<VerseElement>(
-                          annotation: VerseElement(
-                            anchor: BibleTextSelectionWordAnchor.fromReference(
-                              reference: reference,
-                              characterOffset: 0,
+                        if (user.themeLayout.verseNumbers)
+                          AnnotatedSizedWidgetSpan<VerseElement>(
+                            annotation: VerseElement(
+                              anchor: BibleTextSelectionWordAnchor.fromReference(
+                                reference: reference,
+                                characterOffset: 0,
+                              ),
+                              isBoundInSelection: false,
+                              isLeading: true,
                             ),
-                            isBoundInSelection: false,
-                          ),
-                          size: Size(
-                            bibleTextStyle.bibleVerseNumber.getWidth(verse.verseNum.toString()) + 6,
-                            bibleTextStyle.bibleBody.fontSize! + 6,
-                          ),
-                          alignment: .middle,
-                          child: Padding(
-                            key: keyByReference[reference],
-                            padding: .only(right: isLtr ? 4 : 0, left: isLtr ? 0 : 4),
-                            child: Text(
-                              verse.verseNum.toString(),
-                              style: bibleTextStyle.bibleVerseNumber.copyWith(
-                                decoration: underlinedReferences.contains(reference) ? .underline : null,
+                            size: Size(
+                              bibleTextStyle.bibleVerseNumber.getWidth(verse.verseNum.toString()) + 6,
+                              bibleTextStyle.bibleBody.fontSize! + 6,
+                            ),
+                            alignment: .middle,
+                            child: Padding(
+                              key: keyByReference[reference],
+                              padding: .only(right: isLtr ? 4 : 0, left: isLtr ? 0 : 4),
+                              child: Text(
+                                verse.verseNum.toString(),
+                                style: bibleTextStyle.bibleVerseNumber.copyWith(
+                                  decoration: underlinedReferences.contains(reference) ? .underline : null,
+                                ),
                               ),
                             ),
                           ),
-                        ),
                         if (verse.originalVerse case final originalVerse?)
                           AnnotatedSizedWidgetSpan<VerseElement>(
                             annotation: VerseElement(
@@ -462,6 +470,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                 characterOffset: 0,
                               ),
                               isBoundInSelection: false,
+                              isLeading: true,
                             ),
                             size: Size(
                               context.textStyle.labelXs.getWidth('${translation.title()} ${originalVerse.format()}') +
@@ -494,6 +503,7 @@ class ChapterBuilder extends HookConsumerWidget {
                                 characterOffset: 0,
                               ),
                               isBoundInSelection: false,
+                              isLeading: true,
                             ),
                             annotations: verseSelectionAnnotationsWithNote,
                             isUnderlined: underlinedReferences.contains(reference),
@@ -697,8 +707,16 @@ class ParagraphHitTester {
 class VerseElement {
   final BibleTextSelectionWordAnchor anchor;
   final bool isBoundInSelection;
+  final bool isLeading;
 
-  const VerseElement({required this.anchor, required this.isBoundInSelection});
+  const VerseElement({required this.anchor, required this.isBoundInSelection, this.isLeading = false});
+
+  VerseElement copyWith({BibleTextSelectionWordAnchor? anchor, bool? isBoundInSelection, bool? isLeading}) =>
+      VerseElement(
+        anchor: anchor ?? this.anchor,
+        isBoundInSelection: isBoundInSelection ?? this.isBoundInSelection,
+        isLeading: isLeading ?? this.isLeading,
+      );
 }
 
 extension on Rect {
