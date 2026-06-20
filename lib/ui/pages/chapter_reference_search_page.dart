@@ -8,10 +8,10 @@ import 'package:bible/ui/pages/bibles_page.dart';
 import 'package:bible/ui/widgets/bible_tile.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:bible/utils/input_formatters.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +38,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
 
-    final bookTextState = useState(initialReference.book.title());
+    final bookTextState = useState(initialReference.book.title(isPlural: true));
     final bookTextSelectionState = useState<TextSelection>(
       TextSelection(baseOffset: 0, extentOffset: bookTextState.value.length),
     );
@@ -55,8 +55,8 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
     List<BookType> getMatchingBooks({String? text, bool onlyEqual = false}) => BookType.values
         .where(
           (book) => onlyEqual
-              ? ((text ?? bookTextState.value).toLowerCase() == book.title().toLowerCase())
-              : (text ?? bookTextState.value).passesSearch(book.title().keywords, similarityLimit: null),
+              ? ((text ?? bookTextState.value).toLowerCase() == book.title(isPlural: true).toLowerCase())
+              : (text ?? bookTextState.value).passesSearch(book.title(isPlural: true).keywords, similarityLimit: null),
         )
         .toList();
     BookType? getBook({String? text}) =>
@@ -80,7 +80,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
       }
 
       if (!bookFocusNode.hasPrimaryFocus && book != null) {
-        bookTextState.value = book.title().titleCase;
+        bookTextState.value = book.title(isPlural: true).titleCase;
       }
     });
 
@@ -122,7 +122,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                           },
                           onTextEditValueChanged: (value) => bookTextSelectionState.value = value.selection,
                           autofocus: true,
-                          suggestedText: book?.title(),
+                          suggestedText: book?.title(isPlural: true),
                           hintText: 'Book',
                           autocorrect: false,
                           textStyle: context.textStyle.paragraphLg,
@@ -304,10 +304,10 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                           children: (isBookFullySelected ? BookType.values : getMatchingBooks())
                               .map(
                                 (book) => StyledListItem(
-                                  title: book.title().toText(),
+                                  title: book.title(isPlural: true).toText(),
                                   trailing: Symbols.chevron_right.toIcon(),
                                   onPressed: () {
-                                    bookTextState.value = book.title();
+                                    bookTextState.value = book.title(isPlural: true);
                                     WidgetsBinding.instance.addPostFrameCallback(
                                       (_) => chapterFocusNode.requestFocus(),
                                     );

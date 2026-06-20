@@ -3,9 +3,9 @@ import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/testament.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -116,7 +116,7 @@ class BookSearchLocationFilter extends SearchLocationFilter with EquatableMixin 
   List<Object?> get props => [book];
 
   @override
-  String title() => book.title();
+  String title() => book.title(isPlural: true);
 }
 
 enum SearchLocationFilterGroup {

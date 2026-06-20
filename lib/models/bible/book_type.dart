@@ -82,7 +82,7 @@ enum BookType {
 
   Testament get testament => index < matthew.index ? Testament.oldTestament : Testament.newTestament;
 
-  String title() => switch (this) {
+  String title({bool isPlural = false}) => switch (this) {
     genesis => 'Genesis',
     exodus => 'Exodus',
     leviticus => 'Leviticus',
@@ -101,7 +101,7 @@ enum BookType {
     nehemiah => 'Nehemiah',
     esther => 'Esther',
     job => 'Job',
-    psalms => 'Psalm',
+    psalms => isPlural ? 'Psalms' : 'Psalm',
     proverbs => 'Proverbs',
     ecclesiastes => 'Ecclesiastes',
     songOfSolomon => 'Song of Solomon',
