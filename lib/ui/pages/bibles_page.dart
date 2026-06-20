@@ -4,13 +4,15 @@ import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/bible_tile.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:utils_core/utils_core.dart';
 
 class BiblesPage extends HookConsumerWidget {
   const BiblesPage({super.key});
@@ -68,16 +70,27 @@ class BiblesPage extends HookConsumerWidget {
               return StyledSheet(
                 title: 'Add & Remove Bibles'.toText(),
                 children: BibleTranslation.values
-                    .map(
-                      (translation) => BibleTile(
-                        translation: translation,
-                        trailing: StyledSwitch(
-                          isSelected: selectedBiblesState.value.contains(translation),
-                          onSelected:
-                              selectedBiblesState.value.length <= 1 && selectedBiblesState.value.contains(translation)
-                              ? null
-                              : (_) => selectedBiblesState.value = selectedBiblesState.value.withToggle(translation),
-                        ),
+                    .groupListsBy((translation) => translation.language)
+                    .mapToIterable(
+                      (language, translations) => StyledStickyHeader(
+                        title: language.title().toText(),
+                        children: translations
+                            .map(
+                              (translation) => BibleTile(
+                                translation: translation,
+                                trailing: StyledSwitch(
+                                  isSelected: selectedBiblesState.value.contains(translation),
+                                  onSelected:
+                                      selectedBiblesState.value.length <= 1 &&
+                                          selectedBiblesState.value.contains(translation)
+                                      ? null
+                                      : (_) => selectedBiblesState.value = selectedBiblesState.value.withToggle(
+                                          translation,
+                                        ),
+                                ),
+                              ),
+                            )
+                            .toList(),
                       ),
                     )
                     .toList(),

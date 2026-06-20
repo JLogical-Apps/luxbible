@@ -11,11 +11,11 @@ enum BibleTranslation {
   niv11,
   kjv,
   asv,
-  oshb,
   lxx,
   tr,
   byz,
-  statresgnt;
+  statresgnt,
+  oshb;
 
   String title() => switch (this) {
     bsb => 'BSB',
@@ -47,6 +47,12 @@ enum BibleTranslation {
     bsb || asv || kjv || oshb || lxx || tr || byz || statresgnt => .local,
     nasb95 => .youVersion(100),
     niv11 => .youVersion(111),
+  };
+
+  BibleLanguage get language => switch (this) {
+    lxx || tr || byz || statresgnt => .greek,
+    oshb => .hebrew,
+    _ => .english,
   };
 
   String? get copyright => switch (this) {
@@ -117,4 +123,16 @@ class YouVersionTranslationSource implements BibleTranslationSource {
     required BibleTranslation translation,
     required List<Bible> localBibles,
   }) => YouVersion.fetchChapter(bibleId: bibleId, chapterReference: chapterReference);
+}
+
+enum BibleLanguage {
+  english,
+  greek,
+  hebrew;
+
+  String title() => switch (this) {
+    english => 'English',
+    greek => 'Greek',
+    hebrew => 'Hebrew',
+  };
 }
