@@ -150,13 +150,13 @@ extension ListSpanExtensions on List<InlineSpan> {
     int? firstOrphanedLeadingSpan(List<InlineSpan> spans) {
       final painter = spans._getTextPainter(width: width, textAlign: textAlign, textDirection: textDirection);
 
-      double topAt(int offset) => painter
+      double? topAt(int offset) => painter
           .getBoxesForSelection(
             TextSelection(baseOffset: offset, extentOffset: offset + 1),
             boxHeightStyle: .max,
           )
-          .first
-          .top;
+          .firstOrNull
+          ?.top;
 
       int offsetOf(int index) => spans.take(index).map((span) => span.textLength).sum;
 
@@ -167,6 +167,9 @@ extension ListSpanExtensions on List<InlineSpan> {
         final groupTop = topAt(start);
         final wordTop = topAt(start + groupSize);
         final precedingTop = topAt(start - 1);
+        if (groupTop == null || wordTop == null || precedingTop == null) {
+          return false;
+        }
 
         final startsLine = precedingTop != groupTop;
         final wordWraps = wordTop != groupTop;
