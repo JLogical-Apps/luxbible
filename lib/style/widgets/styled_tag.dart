@@ -1,28 +1,29 @@
 import 'package:bible/style/color_builder.dart';
 import 'package:bible/style/color_library.dart';
 import 'package:bible/style/style_context_extensions.dart';
+import 'package:bible/style/widgets/styled_material.dart';
 import 'package:flutter/material.dart';
 
-class StyledBadge extends StatelessWidget {
+class StyledTag extends StatelessWidget {
   final Widget child;
   final Widget? leading;
+  final Function()? onPressed;
 
   final ColorBuilder? colorBuilder;
 
-  const StyledBadge({super.key, required this.child, this.leading, this.colorBuilder});
+  const StyledTag({super.key, required this.child, this.leading, this.colorBuilder, this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     final color = colorBuilder?.call(context.colors) ?? context.colors.surfaceSecondary;
     final foregroundColor = ColorLibrary.fromBackground(color).contentPrimary;
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: .circular(999),
-        color: colorBuilder?.call(context.colors) ?? context.colors.surfaceSecondary,
-      ),
-      constraints: BoxConstraints(minHeight: 18),
-      padding: .all(4),
+    return StyledMaterial(
+      colorBuilder: colorBuilder ?? .surfaceSecondary,
+      padding: .symmetric(vertical: 4, horizontal: 6),
+      onPressed: onPressed,
+      enabled: true,
+      borderRadius: .circular(999),
       child: Row(
         spacing: 4,
         children: [

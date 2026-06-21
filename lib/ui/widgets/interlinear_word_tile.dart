@@ -5,8 +5,8 @@ import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intersperse/intersperse.dart';
@@ -38,7 +38,7 @@ class InterlinearWordTile extends ConsumerWidget {
               spacing: 4,
               children: [
                 ?data.inflection?.toText(),
-                if (data.strongId case final strongId?) StyledBadge(child: strongId.toText()),
+                if (data.strongId case final strongId?) StyledTag(child: strongId.toText()),
               ],
             ),
             if (strongs[data.strongId] case final strong?)
@@ -70,7 +70,7 @@ class InterlinearWordTile extends ConsumerWidget {
                 Row(
                   spacing: 4,
                   children: [
-                    if (data.strongId case final strongId?) StyledBadge(child: strongId.toText()),
+                    if (data.strongId case final strongId?) StyledTag(child: strongId.toText()),
                     ?data.inflection?.toText(),
                   ],
                 ),

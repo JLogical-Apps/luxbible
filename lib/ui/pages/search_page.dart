@@ -9,10 +9,10 @@ import 'package:bible/ui/widgets/search_location_button.dart';
 import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -203,7 +203,7 @@ class SearchPage extends HookConsumerWidget {
                               title: Row(
                                 spacing: 8,
                                 children: [
-                                  StyledBadge(child: strong.id.toText()),
+                                  StyledTag(child: strong.id.toText()),
                                   Text([strong.languageText, strong.transliteration].join('  ·  ')),
                                 ],
                               ),

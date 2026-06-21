@@ -1,7 +1,7 @@
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/style/style.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
@@ -22,13 +22,13 @@ class BibleTile extends StatelessWidget {
       spacing: 4,
       children: [
         if (translation.isOnline)
-          StyledBadge(
+          StyledTag(
             child: 'Online Only'.toText(),
             leading: Symbols.cloud.toIcon(),
             colorBuilder: ColorBuilder((colors) => colors.blue.tertiary),
           ),
         if (translation == .bsb)
-          StyledBadge(
+          StyledTag(
             child: 'Study Bible'.toText(),
             leading: Symbols.school.toIcon(),
             colorBuilder: ColorBuilder((colors) => colors.green.tertiary),

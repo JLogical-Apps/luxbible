@@ -8,9 +8,9 @@ import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/widgets/colored_circle.dart';
 import 'package:bible/ui/widgets/search_location_button.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -192,7 +192,7 @@ class AnnotationsPage extends HookConsumerWidget {
                                 children: [
                                   annotation.formatLocation().toText(),
                                   if (annotation.selection case TextAnnotationSelection selection)
-                                    StyledBadge(child: selection.textSelection.translation.title().toText()),
+                                    StyledTag(child: selection.textSelection.translation.title().toText()),
                                 ],
                               ),
                               subtitle: Column(
