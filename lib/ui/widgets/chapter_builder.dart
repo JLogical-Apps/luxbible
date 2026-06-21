@@ -734,7 +734,7 @@ extension on Rect {
   );
 
   Rect asTextSelection({required double multiplier}) =>
-      Rect.fromLTWH(left, top + 4.5 * (multiplier * 2.5 + 1) / 2, width + 2 * multiplier, min(28 * multiplier, height));
+      Rect.fromLTWH(left, top + 4 * (multiplier * 2.5 + 1) / 2, width + 2 * multiplier, min(28 * multiplier, height));
 }
 
 extension on List<InlineSpan> {
