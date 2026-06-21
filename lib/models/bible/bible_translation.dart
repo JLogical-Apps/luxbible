@@ -17,6 +17,9 @@ enum BibleTranslation {
   statresgnt,
   oshb;
 
+  static List<BibleTranslation> get defaultTranslations =>
+      values.where((translation) => translation.language == .english).toList();
+
   String title() => switch (this) {
     bsb => 'BSB',
     nasb95 => 'NASB',

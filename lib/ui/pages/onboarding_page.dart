@@ -13,13 +13,15 @@ import 'package:bible/ui/widgets/text_selection_bottom_bar.dart';
 import 'package:bible/ui/widgets/verse_selection_bottom_bar.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:utils_core/utils_core.dart';
 
 class OnboardingPage extends HookConsumerWidget {
   const OnboardingPage({super.key});
@@ -29,7 +31,7 @@ class OnboardingPage extends HookConsumerWidget {
     final readerTypeState = useState<ReaderType?>(null);
     final readerType = readerTypeState.value ?? .reader;
 
-    final selectedTranslationsState = useState(BibleTranslation.values.toList());
+    final selectedTranslationsState = useState(BibleTranslation.defaultTranslations);
     final selectedTranslations = selectedTranslationsState.value.sortedByIndexIn(BibleTranslation.values);
 
     return StyledModulePage(
@@ -50,27 +52,35 @@ class OnboardingPage extends HookConsumerWidget {
         StyledModuleStep(
           title: 'Which translations do you want?'.toText(),
           subtitle: 'You can always change these settings later.'.toText(),
-          childrenBuilder: (context) => [
-            Column(
-              spacing: 12,
-              children: BibleTranslation.values.map((translation) {
-                final isEnabled = selectedTranslations.length > 1 || !selectedTranslations.contains(translation);
-                return StyledTile(
-                  isSelected: selectedTranslations.contains(translation),
-                  child: BibleTile(
-                    translation: translation,
-                    trailing: StyledCheckbox(
-                      isSelected: selectedTranslations.contains(translation),
-                      isEnabled: isEnabled,
-                    ),
-                    isEnabled: isEnabled,
-                    onPressedOverride: () =>
-                        selectedTranslationsState.value = selectedTranslations.withToggle(translation),
+          bodyPadding: .zero,
+          childrenBuilder: (context) => BibleTranslation.values
+              .groupListsBy((translation) => translation.language)
+              .mapToIterable(
+                (language, translations) => StyledSection.child(
+                  title: language.title().toText(),
+                  padding: .only(top: 24),
+                  child: Column(
+                    spacing: 12,
+                    children: translations.map((translation) {
+                      final isEnabled = selectedTranslations.length > 1 || !selectedTranslations.contains(translation);
+                      return StyledTile(
+                        isSelected: selectedTranslations.contains(translation),
+                        child: BibleTile(
+                          translation: translation,
+                          trailing: StyledCheckbox(
+                            isSelected: selectedTranslations.contains(translation),
+                            isEnabled: isEnabled,
+                          ),
+                          isEnabled: isEnabled,
+                          onPressedOverride: () =>
+                              selectedTranslationsState.value = selectedTranslations.withToggle(translation),
+                        ),
+                      );
+                    }).toList(),
                   ),
-                );
-              }).toList(),
-            ),
-          ],
+                ),
+              )
+              .toList(),
         ),
         StyledModuleStep(
           title: 'Your ${readerType.title()} Toolbar Setup'.toText(),

@@ -48,8 +48,7 @@ sealed class User with _$User {
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  List<BibleTranslation> get biblesOrDefault =>
-      bibles ?? BibleTranslation.values.where((translation) => translation.language == .english).toList();
+  List<BibleTranslation> get biblesOrDefault => bibles ?? BibleTranslation.defaultTranslations;
 
   ChapterReference get lastReference => lastPosition.reference;
 
