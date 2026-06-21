@@ -200,12 +200,15 @@ class SearchPage extends HookConsumerWidget {
                           padding: .all(16),
                           child: StyledTile(
                             child: StyledListItem.navigation(
-                              title: Row(
-                                spacing: 8,
-                                children: [
-                                  StyledTag(child: strong.id.toText()),
-                                  Text([strong.languageText, strong.transliteration].join('  ·  ')),
-                                ],
+                              title: SingleChildScrollView(
+                                scrollDirection: .horizontal,
+                                child: Row(
+                                  spacing: 8,
+                                  children: [
+                                    StyledTag(child: strong.id.toText()),
+                                    Text([strong.languageText, strong.transliteration].join('  ·  ')),
+                                  ],
+                                ),
                               ),
                               subtitle: strong.definition.toText(),
                               onPressed: () => StrongSheet.showWithBreadcrumbs(context, strongId: strong.id),
