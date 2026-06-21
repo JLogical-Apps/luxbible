@@ -172,7 +172,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                       onPressed: () async {
                         final newTranslation = await context.showStyledSheet<BibleTranslation>(
                           (context) => StyledSheet(
-                            title: 'Bible Translation'.toText(),
+                            title: 'Bible'.toText(),
                             trailing: StyledCircleButton.lg(
                               child: Symbols.tune.toIcon(),
                               onPressed: () {

@@ -138,7 +138,7 @@ enum StudyAction {
                           label: 'Learn More'.toText(),
                           onPressed: () => context.showStyledDialog(
                             (context) => StyledDialog.confirm(
-                              title: 'Interlinear Translation'.toText(),
+                              title: 'Interlinear Bible'.toText(),
                               body:
                                   "The BSB was designed with word-for-word Strong's and morphology tagging, which is what makes the Interlinear lexical breakdown possible. Your selected translation is used everywhere else in the app."
                                       .toText(),
