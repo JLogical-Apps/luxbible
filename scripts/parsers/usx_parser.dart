@@ -59,6 +59,9 @@ Book parseUsxBook(BookType type, String rawXml) {
                         .withSameVersesCombined()
                         .toList();
 
+              SectionParagraph sectionParagraph(SectionType sectionType) =>
+                  SectionParagraph(text: div.innerText, type: sectionType);
+
               VersesParagraph? versesParagraph(ParagraphType paragraphType) {
                 final previousLastVerseNum = lastVerseNum;
                 final verses = parseUsxVerses(div).trim();
@@ -83,10 +86,14 @@ Book parseUsxBook(BookType type, String rawXml) {
               }
 
               return paragraphs..add(switch (div.getAttribute('style')) {
-                's1' => SectionParagraph(type: .s1, text: div.innerText),
-                's2' => SectionParagraph(type: .s2, text: div.innerText),
+                's1' => sectionParagraph(.s1),
+                's2' => sectionParagraph(.s2),
+                'ms' => sectionParagraph(.ms),
+                'd' => () {
+                  lastVerseNum = 1;
+                  return sectionParagraph(.d);
+                }(),
                 'p' || 'pmo' || 'pc' => versesParagraph(.p),
-                'd' => versesParagraph(.d),
                 'q1' => versesParagraph(.q1),
                 'q2' => versesParagraph(.q2),
                 'qr' => versesParagraph(.qr),

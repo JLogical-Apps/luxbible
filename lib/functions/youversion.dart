@@ -67,6 +67,9 @@ class YouVersion {
       // Class is e.g. "s1 yv-h" or "p"; the USX-style token is the non-`yv-` one.
       final style = div.classes.firstWhereOrNull((className) => !className.startsWith('yv-'));
 
+      SectionParagraph sectionParagraph(SectionType sectionType) =>
+          SectionParagraph(text: div.text.trim(), type: sectionType);
+
       VersesParagraph? versesParagraph(ParagraphType paragraphType) {
         final previousLastVerseNum = lastVerseNum;
         final verses = parseVerses(div).trim();
@@ -91,11 +94,11 @@ class YouVersion {
       }
 
       final paragraph = switch (style) {
-        's' || 's1' => SectionParagraph(type: .s1, text: div.text.trim()),
-        's2' => SectionParagraph(type: .s2, text: div.text.trim()),
+        's' || 's1' => sectionParagraph(.s1),
+        's2' => sectionParagraph(.s2),
+        'd' => sectionParagraph(.d),
         'p' || 'pmo' || 'pc' => versesParagraph(.p),
         'pi' => versesParagraph(.pi),
-        'd' => versesParagraph(.d),
         'q' || 'q1' => versesParagraph(.q1),
         'q2' => versesParagraph(.q2),
         'qr' => versesParagraph(.qr),

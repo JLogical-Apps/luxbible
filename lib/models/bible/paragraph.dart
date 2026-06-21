@@ -28,12 +28,11 @@ sealed class Paragraph with _$Paragraph {
   factory Paragraph.fromJson(Map<String, dynamic> json) => _$ParagraphFromJson(json);
 }
 
-enum SectionType { s1, s2 }
+enum SectionType { s1, s2, ms, d }
 
 enum ParagraphType {
   p,
   pi,
-  d,
   q1,
   q2,
   qr,

@@ -22,6 +22,7 @@ import 'package:bible/utils/extensions/color_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
+import 'package:bible/utils/extensions/paragraph_style_extensions.dart';
 import 'package:bible/utils/extensions/rect_extensions.dart';
 import 'package:bible/utils/extensions/span_extensions.dart';
 import 'package:collection/collection.dart';
@@ -366,7 +367,6 @@ class ChapterBuilder extends HookConsumerWidget {
                             Text.rich(
                               key: textKey,
                               TextSpan(children: renderSpans),
-                              style: TextStyle(fontStyle: paragraph.as<VersesParagraph>()?.type.fontStyle ?? .normal),
                               textAlign: paragraph.as<VersesParagraph>()?.type.textAlign ?? .start,
                               textDirection: textDirection,
                             ),
@@ -404,16 +404,21 @@ class ChapterBuilder extends HookConsumerWidget {
             paragraph is VersesParagraph &&
             !paragraph.type.isPoetic &&
             user.themeLayout.paragraphs)
-          TextSpan(text: '\n', style: bibleTextStyle.bibleBody.copyWith(height: 1.5)),
+          TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 1.5)),
         ...switch (paragraph) {
-          SectionParagraph(:final text) =>
+          SectionParagraph(:final text, :final type) =>
             user.themeLayout.sections
-                ? [
-                    if (paragraphIndex != 0)
-                      TextSpan(text: '\n', style: bibleTextStyle.bibleBody.copyWith(height: 1.5)),
-                    TextSpan(text: text, style: bibleTextStyle.bibleSection),
-                    TextSpan(text: '\n ', style: bibleTextStyle.bibleBody.copyWith(height: 0.8)),
-                  ]
+                ? type == .d
+                      ? [TextSpan(text: text, style: bibleTextStyle.psalmHeader)]
+                      : [
+                          if (paragraphIndex != 0)
+                            TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 1.5)),
+                          TextSpan(
+                            text: text,
+                            style: type == .ms ? bibleTextStyle.majorSection : bibleTextStyle.section,
+                          ),
+                          TextSpan(text: '\n ', style: bibleTextStyle.body.copyWith(height: 0.8)),
+                        ]
                 : <InlineSpan>[],
           VersesParagraph(:final verses, :final type) => [
             if (useParagraphs) SizedWidgetSpan.space(size: Size(type.hangingIndent != 0 ? 0 : type.indent, 0)),
@@ -447,8 +452,8 @@ class ChapterBuilder extends HookConsumerWidget {
                               isLeading: true,
                             ),
                             size: Size(
-                              bibleTextStyle.bibleVerseNumber.getWidth(verse.verseNum.toString()) + 6,
-                              bibleTextStyle.bibleBody.fontSize! + 6,
+                              bibleTextStyle.verseNumber.getWidth(verse.verseNum.toString()) + 6,
+                              bibleTextStyle.body.fontSize! + 6,
                             ),
                             alignment: .middle,
                             child: Padding(
@@ -456,7 +461,7 @@ class ChapterBuilder extends HookConsumerWidget {
                               padding: .only(right: isLtr ? 4 : 0, left: isLtr ? 0 : 4),
                               child: Text(
                                 verse.verseNum.toString(),
-                                style: bibleTextStyle.bibleVerseNumber.copyWith(
+                                style: bibleTextStyle.verseNumber.copyWith(
                                   decoration: underlinedReferences.contains(reference) ? .underline : null,
                                 ),
                               ),
@@ -525,7 +530,7 @@ class ChapterBuilder extends HookConsumerWidget {
                           isBoundInSelection: false,
                         ),
                         text: word.text,
-                        style: bibleTextStyle.bibleBody.copyWith(
+                        style: bibleTextStyle.body.copyWith(
                           fontFamily: isLtr ? null : hebrewFontFamily,
                           color: word.redLetters && user.themeLayout.redLetters ? context.colors.red.dark : null,
                           fontStyle: word.italic ? .italic : null,
@@ -572,14 +577,12 @@ class ChapterBuilder extends HookConsumerWidget {
                   maxPreviousVerseNum = verse.verseNum;
                   return spans;
                 })
-                .intersperse([
-                  TextSpan(text: user.themeLayout.paragraphs ? ' ' : '\n', style: bibleTextStyle.bibleBody),
-                ])
+                .intersperse([TextSpan(text: user.themeLayout.paragraphs ? ' ' : '\n', style: bibleTextStyle.body)])
                 .flattenedToList,
           ],
           BreakParagraph() =>
             user.themeLayout.paragraphs
-                ? [TextSpan(text: '\n', style: bibleTextStyle.bibleBody.copyWith(height: 0.75))]
+                ? [TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 0.75))]
                 : <InlineSpan>[],
         },
       ]);
@@ -595,14 +598,14 @@ class ChapterBuilder extends HookConsumerWidget {
     final bibleTextStyle = BibleTextStyle(context, config: user.themeLayout);
     return AnnotatedSizedWidgetSpan<VerseElement>(
       annotation: element,
-      size: Size(30, bibleTextStyle.bibleBody.fontSize!),
+      size: Size(30, bibleTextStyle.body.fontSize!),
       alignment: .middle,
       child: OverflowBox(
-        maxHeight: bibleTextStyle.bibleBody.totalHeight + 4,
+        maxHeight: bibleTextStyle.body.totalHeight + 4,
         maxWidth: 30,
         child: Underline(
           isUnderlined: isUnderlined,
-          style: bibleTextStyle.bibleBody,
+          style: bibleTextStyle.body,
           child: Padding(
             padding: .only(bottom: 4),
             child: StyledCircleButton.sm(
@@ -675,10 +678,13 @@ class BibleTextStyle {
 
   double get multiplier => config.fontSizeSpacing.multiplier;
 
-  TextStyle get bibleSection => base.bold.copyWith(fontSize: 24 * multiplier, height: 40 / 24);
-  TextStyle get bibleVerseNumber =>
+  TextStyle get majorSection => base.extraBold.copyWith(fontSize: 28 * multiplier, height: 40 / 28);
+  TextStyle get section => base.bold.copyWith(fontSize: 24 * multiplier, height: 40 / 24);
+  TextStyle get psalmHeader =>
+      base.regular.copyWith(fontSize: 20 * multiplier, letterSpacing: 0, height: 40 / 20, fontStyle: .italic);
+  TextStyle get verseNumber =>
       base.bold.copyWith(fontSize: 14 * multiplier, letterSpacing: 0, decorationStyle: .dotted);
-  TextStyle get bibleBody =>
+  TextStyle get body =>
       base.regular.copyWith(fontSize: 20 * multiplier, letterSpacing: 0, height: 40 / 20, decorationStyle: .dotted);
 }
 

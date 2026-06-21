@@ -27,7 +27,6 @@ Map<String, dynamic> _$VersesParagraphToJson(VersesParagraph instance) =>
 const _$ParagraphTypeEnumMap = {
   ParagraphType.p: 'p',
   ParagraphType.pi: 'pi',
-  ParagraphType.d: 'd',
   ParagraphType.q1: 'q1',
   ParagraphType.q2: 'q2',
   ParagraphType.qr: 'qr',
@@ -49,7 +48,12 @@ Map<String, dynamic> _$SectionParagraphToJson(SectionParagraph instance) =>
       'r': instance.$type,
     };
 
-const _$SectionTypeEnumMap = {SectionType.s1: 's1', SectionType.s2: 's2'};
+const _$SectionTypeEnumMap = {
+  SectionType.s1: 's1',
+  SectionType.s2: 's2',
+  SectionType.ms: 'ms',
+  SectionType.d: 'd',
+};
 
 BreakParagraph _$BreakParagraphFromJson(Map<String, dynamic> json) =>
     BreakParagraph($type: json['r'] as String?);

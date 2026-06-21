@@ -2,7 +2,6 @@ import 'package:bible/models/bible/paragraph.dart';
 import 'package:flutter/cupertino.dart';
 
 extension ParagraphTypeStyleExtensions on ParagraphType {
-  FontStyle get fontStyle => this == .d ? .italic : .normal;
   TextAlign get textAlign => this == .qr ? .end : .start;
 
   double get indent => switch (this) {
