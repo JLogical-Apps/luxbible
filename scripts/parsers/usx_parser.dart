@@ -19,52 +19,59 @@ Book parseUsxBook(BookType type, String rawXml) {
         paragraphs: div.nextElementSiblings
             .takeWhile((div) => div.localName != 'chapter')
             .fold(<Paragraph?>[], (paragraphs, div) {
-              List<Verse> parseUsxVerses(XmlElement element, {InterlinearData? data, bool isRedLetters = false}) =>
-                  element.children.isEmpty && data != null && lastVerseNum != null
-                  ? [
-                      Verse(
-                        verseNum: lastVerseNum!,
-                        words: [Word(data: data, redLetters: isRedLetters)],
-                      ),
-                    ]
-                  : element.children
-                        .expand<Verse>(
-                          (node) => switch (node) {
-                            XmlText(:final value) when lastVerseNum != null => [
-                              Verse(
-                                verseNum: lastVerseNum!,
-                                words: [Word(text: value, data: data, redLetters: isRedLetters)],
+              List<Verse> parseUsxVerses(
+                XmlElement element, {
+                InterlinearData? data,
+                bool isRedLetters = false,
+                bool onlyIfValidVerse = true,
+              }) {
+                final canParseVerse = !onlyIfValidVerse || lastVerseNum != null;
+                return element.children.isEmpty && data != null && canParseVerse
+                    ? [
+                        Verse(
+                          verseNum: lastVerseNum ?? 0,
+                          words: [Word(data: data, redLetters: isRedLetters)],
+                        ),
+                      ]
+                    : element.children
+                          .expand<Verse>(
+                            (node) => switch (node) {
+                              XmlText(:final value) when canParseVerse => [
+                                Verse(
+                                  verseNum: lastVerseNum ?? 0,
+                                  words: [Word(text: value, data: data, redLetters: isRedLetters)],
+                                ),
+                              ],
+                              XmlElement node when node.localName == 'verse' => () {
+                                lastVerseNum = int.parse(node.getAttribute('number')!);
+                                return <Verse>[];
+                              }(),
+                              XmlElement node when node.localName == 'char' && canParseVerse => parseUsxVerses(
+                                node,
+                                data: node.getAttribute('style') == 'w'
+                                    ? InterlinearData(
+                                        originalPosition: int.parse(node.getAttribute('x-position')!),
+                                        inflection: node.getAttribute('x-lemma'),
+                                        morphology: node.getAttribute('x-morph'),
+                                        strongId: node.getAttribute('strong')?.nullIfBlank,
+                                        transliteration: node.getAttribute('x-translit'),
+                                      )
+                                    : null,
+                                isRedLetters: node.getAttribute('style') == 'wj' || isRedLetters,
                               ),
-                            ],
-                            XmlElement node when node.localName == 'verse' => () {
-                              lastVerseNum = int.parse(node.getAttribute('number')!);
-                              return <Verse>[];
-                            }(),
-                            XmlElement node when node.localName == 'char' && lastVerseNum != null => parseUsxVerses(
-                              node,
-                              data: node.getAttribute('style') == 'w'
-                                  ? InterlinearData(
-                                      originalPosition: int.parse(node.getAttribute('x-position')!),
-                                      inflection: node.getAttribute('x-lemma'),
-                                      morphology: node.getAttribute('x-morph'),
-                                      strongId: node.getAttribute('strong')?.nullIfBlank,
-                                      transliteration: node.getAttribute('x-translit'),
-                                    )
-                                  : null,
-                              isRedLetters: node.getAttribute('style') == 'wj' || isRedLetters,
-                            ),
-                            _ => [],
-                          },
-                        )
-                        .withSameVersesCombined()
-                        .toList();
+                              _ => [],
+                            },
+                          )
+                          .withSameVersesCombined()
+                          .toList();
+              }
 
               SectionParagraph sectionParagraph(SectionType sectionType) =>
                   SectionParagraph(text: div.innerText, type: sectionType);
 
-              VersesParagraph? versesParagraph(ParagraphType paragraphType) {
+              VersesParagraph? versesParagraph(ParagraphType paragraphType, {bool onlyIfValidVerse = true}) {
                 final previousLastVerseNum = lastVerseNum;
-                final verses = parseUsxVerses(div).trim();
+                final verses = parseUsxVerses(div, onlyIfValidVerse: onlyIfValidVerse).trim();
                 if (verses.isEmpty) {
                   return null;
                 }
@@ -89,10 +96,7 @@ Book parseUsxBook(BookType type, String rawXml) {
                 's1' => sectionParagraph(.s1),
                 's2' => sectionParagraph(.s2),
                 'ms' => sectionParagraph(.ms),
-                'd' => () {
-                  lastVerseNum = 1;
-                  return sectionParagraph(.d);
-                }(),
+                'd' => versesParagraph(.p, onlyIfValidVerse: false)?.toSectionParagraph(.d),
                 'p' || 'pmo' || 'pc' => versesParagraph(.p),
                 'q1' => versesParagraph(.q1),
                 'q2' => versesParagraph(.q2),
@@ -118,4 +122,9 @@ extension on XmlElement {
       lastChild = lastChild.nextElementSibling;
     }
   }
+}
+
+extension on VersesParagraph {
+  SectionParagraph toSectionParagraph(SectionType type) =>
+      SectionParagraph(text: verses.map((verse) => verse.text).join(' '), type: type);
 }
