@@ -1,3 +1,4 @@
+import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
@@ -35,6 +36,10 @@ class VerseSelection extends Equatable {
 
   bool hasReference(Reference reference) => spans.any((span) => span.containsReference(reference));
   bool hasAnyOf(VerseSelection verseSelection) => verseSelection.references.any((reference) => hasReference(reference));
+
+  bool isInTranslation(BibleTranslation translation) =>
+      references.isEmpty ||
+      (translation.containsBook(references.first.book) && translation.containsBook(references.last.book));
 
   String format() => spans.mapIndexed((spanIndex, span) {
     final previousSpan = spanIndex == 0 ? null : spans[spanIndex - 1];

@@ -75,9 +75,19 @@ enum StudyAction {
                         children: [
                           StyledStickyHeader.child(
                             title: translation.title().toText(),
-                            child: StyledLoading(
-                              child: text == null ? null : Padding(padding: .only(bottom: 16), child: text.toText()),
-                            ),
+                            child: verseSelection.isInTranslation(translation)
+                                ? StyledLoading(
+                                    child: text == null
+                                        ? null
+                                        : Padding(padding: .only(bottom: 16), child: text.toText()),
+                                  )
+                                : Padding(
+                                    padding: .only(bottom: 16),
+                                    child: StyledTile.message(
+                                      leading: Symbols.translate.toIcon(),
+                                      title: "${translation.fullName()} doesn't include this selection.".toText(),
+                                    ),
+                                  ),
                           ),
                           if (i + 1 < bibles.length)
                             Positioned(bottom: 0, left: 0, right: 0, child: StyledDivider(height: 2)),
@@ -240,16 +250,25 @@ enum StudyAction {
                               .map(
                                 (references) => Consumer(
                                   builder: (context, ref, child) {
+                                    final book = references.references.first.book;
+                                    final translation = user.translation.effectiveFor(book);
                                     final verses = ref
                                         .watch(
                                           verseSelectionTextProvider(
-                                            translation: user.translation,
+                                            translation: translation,
                                             selection: references.toVerseSelection(),
                                           ),
                                         )
                                         .value;
                                     return StyledListItem(
-                                      title: references.toVerseSelection().format().toText(),
+                                      title: Row(
+                                        spacing: 4,
+                                        children: [
+                                          references.toVerseSelection().format().toText(),
+                                          if (!user.translation.containsBook(book))
+                                            StyledTag(child: translation.title().toText()),
+                                        ],
+                                      ),
                                       subtitle: StyledLoading(child: verses?.toText()),
                                       onPressed: () {
                                         context.pop();
