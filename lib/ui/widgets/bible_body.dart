@@ -240,7 +240,7 @@ class BibleBody extends HookConsumerWidget {
                   usePostFrameEffect(() {
                     final target = scrollPercentByReferenceRef.value[chapterReference] ?? 0;
                     final position = scrollController.positionOrNull;
-                    if (!isLoadedState.value && position != null && position.maxScrollExtent > 0) {
+                    if (!isLoadedState.value && chapter != null && position != null) {
                       scrollController.jumpTo((target * position.maxScrollExtent).clamp(0.0, position.maxScrollExtent));
                       scrollControllerByReferenceRef.value = {
                         ...scrollControllerByReferenceRef.value,
@@ -248,7 +248,7 @@ class BibleBody extends HookConsumerWidget {
                       };
                       isLoadedState.value = true;
                     }
-                  }, [chapter != null]);
+                  }, [chapter != null, scrollController.positionOrNull != null]);
 
                   final showTopBar = useListenableSelector(
                     scrollController,
