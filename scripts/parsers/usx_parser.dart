@@ -25,8 +25,8 @@ Book parseUsxBook(BookType type, String rawXml) {
                 bool isRedLetters = false,
                 bool onlyIfValidVerse = true,
               }) {
-                final canParseVerse = !onlyIfValidVerse || lastVerseNum != null;
-                return element.children.isEmpty && data != null && canParseVerse
+                bool canParseVerse() => !onlyIfValidVerse || lastVerseNum != null;
+                return element.children.isEmpty && data != null && canParseVerse()
                     ? [
                         Verse(
                           verseNum: lastVerseNum ?? 0,
@@ -36,7 +36,7 @@ Book parseUsxBook(BookType type, String rawXml) {
                     : element.children
                           .expand<Verse>(
                             (node) => switch (node) {
-                              XmlText(:final value) when canParseVerse => [
+                              XmlText(:final value) when canParseVerse() => [
                                 Verse(
                                   verseNum: lastVerseNum ?? 0,
                                   words: [Word(text: value, data: data, redLetters: isRedLetters)],
@@ -46,7 +46,7 @@ Book parseUsxBook(BookType type, String rawXml) {
                                 lastVerseNum = int.parse(node.getAttribute('number')!);
                                 return <Verse>[];
                               }(),
-                              XmlElement node when node.localName == 'char' && canParseVerse => parseUsxVerses(
+                              XmlElement node when node.localName == 'char' && canParseVerse() => parseUsxVerses(
                                 node,
                                 data: node.getAttribute('style') == 'w'
                                     ? InterlinearData(
