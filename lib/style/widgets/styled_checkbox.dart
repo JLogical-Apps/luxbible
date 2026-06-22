@@ -8,6 +8,8 @@ class StyledCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Checkbox(value: isSelected, onChanged: isEnabled ? (_) {} : null);
+    return IgnorePointer(
+      child: Checkbox(value: isSelected, onChanged: isEnabled ? (_) {} : null),
+    );
   }
 }
