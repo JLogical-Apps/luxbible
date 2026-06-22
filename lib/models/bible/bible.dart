@@ -54,9 +54,10 @@ class Bible {
       selection.start.toReference(),
       selection.end.toReference(),
     ).map((reference) => getVerseByReference(reference)?.text).nonNulls.toList();
-    verseTexts[verseTexts.length - 1] = verseTexts[verseTexts.length - 1].substring(
+    final lastVerse = verseTexts[verseTexts.length - 1];
+    verseTexts[verseTexts.length - 1] = lastVerse.substring(
       0,
-      selection.end.characterOffset + 1,
+      (selection.end.characterOffset + 1).clamp(0, lastVerse.length),
     );
     verseTexts[0] = verseTexts[0].substring(selection.start.characterOffset);
 
