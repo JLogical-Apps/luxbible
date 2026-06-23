@@ -441,6 +441,10 @@ class ChapterBuilder extends HookConsumerWidget {
                   final spans = [
                     if (verse.verseNum > maxPreviousVerseNum)
                       ...[
+                        SizedWidgetSpan(
+                          child: SizedBox.shrink(key: keyByReference[reference]),
+                          size: Size.zero,
+                        ),
                         if (user.themeLayout.verseNumbers)
                           AnnotatedSizedWidgetSpan<VerseElement>(
                             annotation: VerseElement(
@@ -457,7 +461,6 @@ class ChapterBuilder extends HookConsumerWidget {
                             ),
                             alignment: .middle,
                             child: Padding(
-                              key: keyByReference[reference],
                               padding: .only(right: isLtr ? 4 : 0, left: isLtr ? 0 : 4),
                               child: Text(
                                 verse.verseNum.toString(),

@@ -6,6 +6,7 @@ class AnimatedGrow extends StatelessWidget {
   final Clip clip;
   final Alignment alignment;
   final Axis axis;
+  final Duration duration;
 
   const AnimatedGrow({
     super.key,
@@ -13,6 +14,7 @@ class AnimatedGrow extends StatelessWidget {
     this.clip = .none,
     this.alignment = .topCenter,
     this.axis = .vertical,
+    this.duration = const Duration(milliseconds: 300),
   });
 
   AnimatedGrow.showHide({
@@ -22,6 +24,7 @@ class AnimatedGrow extends StatelessWidget {
     this.clip = .none,
     this.alignment = .topCenter,
     this.axis = .vertical,
+    this.duration = const Duration(milliseconds: 300),
   }) : child = show
            ? child
            : SizedBox(
@@ -33,13 +36,13 @@ class AnimatedGrow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSize(
-      duration: Duration(milliseconds: 300),
+      duration: duration,
       curve: Curves.easeInOutCubic,
       alignment: alignment,
       clipBehavior: clip,
       child: AnimatedSwitcher(
-        duration: Duration(milliseconds: 300),
-        reverseDuration: Duration(milliseconds: 300),
+        duration: duration,
+        reverseDuration: duration,
         switchOutCurve: Curves.easeInCubic,
         switchInCurve: Curves.easeInCubic,
         layoutBuilder: _layoutBuilder,

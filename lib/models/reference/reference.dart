@@ -2,6 +2,7 @@ import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/utils/comparable_operators.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 
 class Reference extends Equatable with ComparableOperators<Reference> {
@@ -9,7 +10,7 @@ class Reference extends Equatable with ComparableOperators<Reference> {
   final int chapterNum;
   final int verseNum;
 
-  const Reference({required this.book, required this.chapterNum, required this.verseNum});
+  Reference({required this.book, required this.chapterNum, required this.verseNum});
 
   factory Reference.fromOsisId(String key) {
     final items = key.split('.');
@@ -19,6 +20,15 @@ class Reference extends Equatable with ComparableOperators<Reference> {
       verseNum: int.parse(items[2]),
     );
   }
+
+  static List<Reference> get values => BookType.values
+      .expand(
+        (book) => book.bookInfo.chapterVerseLengths.mapIndexed(
+          (chapterIndex, chapterVerseLength) =>
+              Reference(book: book, chapterNum: chapterIndex + 1, verseNum: chapterVerseLength),
+        ),
+      )
+      .toList();
 
   factory Reference.fromJson(String json) = Reference.fromOsisId;
   String toJson() => osisId();
@@ -51,7 +61,7 @@ class Reference extends Equatable with ComparableOperators<Reference> {
   }
 
   @override
-  List<Object?> get props => [book, chapterNum, verseNum];
+  late final List<Object?> props = [book, chapterNum, verseNum];
 
   @override
   int compareTo(Reference other) =>

@@ -8,7 +8,7 @@ import 'package:equatable/equatable.dart';
 class VerseSelection extends Equatable {
   final List<VerseSpanReference> spans;
 
-  const VerseSelection({required this.spans});
+  VerseSelection({required this.spans});
 
   factory VerseSelection.fromOsisId(String key) =>
       VerseSelection(spans: key.split(' ').map((span) => VerseSpanReference.fromOsisId(span)).toList());
@@ -28,8 +28,11 @@ class VerseSelection extends Equatable {
 
   String osisId() => spans.map((span) => span.osisId()).join(' ');
 
-  List<Reference> get references =>
-      spans.expand((span) => span.references).distinct.sortedBy((reference) => reference).toList();
+  late final List<Reference> references = spans
+      .expand((span) => span.references)
+      .distinct
+      .sortedBy((reference) => reference)
+      .toList();
 
   bool get isEmpty => spans.isEmpty;
   bool get isNotEmpty => spans.isNotEmpty;

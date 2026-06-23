@@ -37,6 +37,7 @@ enum MainToolbarShortcut {
     BuildContext context, {
     required ChapterReference reference,
     required Function(VerseSelection) onNavigateToVerseSelection,
+    required Function(StudyAction) onAddStudyPanel,
   }) =>
       toStudyAction()?.onPressed(
         context,
@@ -48,6 +49,7 @@ enum MainToolbarShortcut {
         context,
         reference: reference,
         onNavigateToVerseSelection: onNavigateToVerseSelection,
+        onAddStudyPanel: onAddStudyPanel,
       ) ??
       context.push(ThemeSettingsPage());
 

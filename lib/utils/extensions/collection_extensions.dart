@@ -135,3 +135,7 @@ extension BibleNullValueMapExtensions<K, V> on Map<K, V?> {
   Map<K, V> get withoutNullValues =>
       entries.map((entry) => entry.value?.mapIfNonNull((value) => MapEntry(entry.key, value))).nonNulls.toMap();
 }
+
+extension BibleIterableMapExtensions<K, V> on Iterable<Map<K, V>> {
+  Map<K, V> get flattened => {for (final map in this) ...map};
+}

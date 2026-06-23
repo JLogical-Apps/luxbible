@@ -1,6 +1,7 @@
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
+import 'package:bible/models/study_action.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -19,12 +20,14 @@ import 'package:material_symbols_icons/symbols.dart';
 enum MainAction {
   bookmark,
   study,
+  studyPanel,
   search,
   settings;
 
   String title() => switch (this) {
     bookmark => 'Bookmark',
     study => 'Study',
+    studyPanel => 'Add Study Panel',
     search => 'Search',
     settings => 'Settings',
   };
@@ -35,6 +38,7 @@ enum MainAction {
           ? 'Bookmark this chapter to easily access it from the search page.'
           : 'Manage this bookmark.',
     study => 'View study tools for this chapter.',
+    studyPanel => 'Add a new study panel.',
     search => 'Search for words across the Bible.',
     settings => 'View the settings for Lux.',
   };
@@ -47,6 +51,7 @@ enum MainAction {
           : Icon(Symbols.bookmark, color: bookmark.color.toHue(context.colors).medium);
     }(),
     study => Icon(Symbols.school),
+    studyPanel => Icon(Symbols.add_notes),
     search => Icon(Symbols.search),
     settings => Icon(Symbols.settings),
   };
@@ -57,6 +62,7 @@ enum MainAction {
     BuildContext context, {
     required ChapterReference reference,
     required Function(VerseSelection) onNavigateToVerseSelection,
+    required Function(StudyAction) onAddStudyPanel,
   }) async {
     final user = ref.read(userProvider);
     switch (this) {
@@ -119,6 +125,25 @@ enum MainAction {
           regionType: RegionType.chapter,
           onNavigateToVerseSelection: onNavigateToVerseSelection,
         );
+      case studyPanel:
+        final studyAction = await context.showStyledSheet<StudyAction>(
+          (context) => StyledSheet(
+            title: 'Study Panel'.toText(),
+            children: StudyAction.values
+                .map(
+                  (studyAction) => StyledListItem(
+                    title: studyAction.title().toText(),
+                    subtitle: studyAction.description(regionFormat: null, regionType: .visibleVerses).toText(),
+                    leading: studyAction.icon.toIcon(),
+                    onPressed: () => context.pop(studyAction),
+                  ),
+                )
+                .toList(),
+          ),
+        );
+        if (studyAction != null) {
+          onAddStudyPanel(studyAction);
+        }
       case search:
         final result = await context.push<SearchPageResult>(SearchPage(currentChapterReference: reference));
         if (result != null) {

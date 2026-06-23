@@ -18,50 +18,65 @@ import 'package:provider/provider.dart';
 class StyledSheet<T> extends HookWidget {
   final Widget? title;
   final Widget? subtitle;
+  final Widget? leading;
   final Widget? trailing;
 
   final Widget? aboveDivider;
   final bool showDivider;
+
+  final ScrollController? scrollController;
 
   final List<Widget> children;
 
   final Widget? aboveButtons;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
 
+  final GestureDragStartCallback? onHeaderDragStart;
+  final GestureDragUpdateCallback? onHeaderDragUpdate;
+  final GestureDragEndCallback? onHeaderDragEnd;
+
   const StyledSheet({
     super.key,
     this.title,
     this.subtitle,
+    this.leading,
     this.trailing,
     this.aboveDivider,
     this.showDivider = true,
+    this.scrollController,
     this.children = const [],
     this.aboveButtons,
     this.buttonsBuilder,
+    this.onHeaderDragStart,
+    this.onHeaderDragUpdate,
+    this.onHeaderDragEnd,
   });
 
   StyledSheet.child({
     super.key,
     required this.title,
     this.subtitle,
+    this.leading,
     this.trailing,
     this.aboveDivider,
     this.showDivider = true,
+    this.scrollController,
     required Widget child,
     this.aboveButtons,
     this.buttonsBuilder,
+    this.onHeaderDragStart,
+    this.onHeaderDragUpdate,
+    this.onHeaderDragEnd,
   }) : children = [child];
 
   @override
   Widget build(BuildContext context) {
     final sheetNavigationContext = context.watch<SheetNavigationBreadcrumbContext?>();
 
-    // Remember this sheet's scroll position keyed by its depth in the breadcrumb stack,
-    // so navigating back to it (via a breadcrumb chip or the back arrow) restores it.
     final depth = (sheetNavigationContext?.breadcrumbs.length ?? 1) - 1;
-    final scrollController = useScrollController(
-      initialScrollOffset: sheetNavigationContext?.scrollOffsetByDepth[depth] ?? 0,
-    );
+    final scrollController =
+        this.scrollController ??
+        useScrollController(initialScrollOffset: sheetNavigationContext?.scrollOffsetByDepth[depth] ?? 0);
     useOnListenableChange(scrollController, () {
       if (scrollController.hasClients && sheetNavigationContext != null) {
         sheetNavigationContext.scrollOffsetByDepth[depth] = scrollController.offset;
@@ -80,7 +95,6 @@ class StyledSheet<T> extends HookWidget {
         wrapper: (sheetBuilder) => Provider.value(
           value: SheetNavigationBreadcrumbContext(
             breadcrumbs: sheetNavigationContext.breadcrumbs.take(breadcrumbIndex + 1).toList(),
-            // Carry the same offset map so the restored sheet recovers its scroll position.
             scrollOffsetByDepth: sheetNavigationContext.scrollOffsetByDepth,
           ),
           child: HookBuilder(builder: sheetBuilder),
@@ -97,61 +111,78 @@ class StyledSheet<T> extends HookWidget {
         crossAxisAlignment: .start,
         mainAxisSize: .min,
         children: [
-          SizedBox(
-            height: 12,
-            child: Align(
-              alignment: .bottomCenter,
-              child: Container(
-                width: 48,
-                height: 4,
-                decoration: BoxDecoration(borderRadius: .circular(999), color: context.colors.borderOpaque),
-              ),
-            ),
-          ),
-          gapH8,
-          SizedBox(
-            height: subtitle == null ? 48 : 52,
-            child: Padding(
-              padding: .symmetric(horizontal: 8),
-              child: Row(
-                spacing: 8,
-                children: [
-                  SizedBox(
-                    width: 48,
-                    child: Center(
-                      child: sheetNavigationContext != null && sheetNavigationContext.breadcrumbs.length > 1
-                          ? StyledCircleButton.lg(
-                              child: Symbols.arrow_back.toIcon(),
-                              onPressed: () =>
-                                  navigateToBreadcrumb(breadcrumbIndex: sheetNavigationContext.breadcrumbs.length - 2),
-                            )
-                          : StyledCircleButton.lg(child: Symbols.close.toIcon(), onPressed: () => context.pop()),
+          GestureDetector(
+            behavior: .translucent,
+            onVerticalDragStart: onHeaderDragStart,
+            onVerticalDragUpdate: onHeaderDragUpdate,
+            onVerticalDragEnd: onHeaderDragEnd,
+            child: Column(
+              crossAxisAlignment: .start,
+              mainAxisSize: .min,
+              children: [
+                SizedBox(
+                  height: 12,
+                  child: Align(
+                    alignment: .bottomCenter,
+                    child: Container(
+                      width: 48,
+                      height: 4,
+                      decoration: BoxDecoration(borderRadius: .circular(999), color: context.colors.borderOpaque),
                     ),
                   ),
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: .center,
+                ),
+                gapH8,
+                SizedBox(
+                  height: subtitle == null ? 48 : 52,
+                  child: Padding(
+                    padding: .symmetric(horizontal: 8),
+                    child: Row(
+                      spacing: 8,
                       children: [
-                        if (title case final title?)
-                          DefaultTextStyle(
-                            style: context.textStyle.headingXs,
-                            maxLines: 1,
-                            overflow: .ellipsis,
-                            child: title,
+                        leading ??
+                            SizedBox(
+                              width: 48,
+                              child: Center(
+                                child: sheetNavigationContext != null && sheetNavigationContext.breadcrumbs.length > 1
+                                    ? StyledCircleButton.lg(
+                                        child: Symbols.arrow_back.toIcon(),
+                                        onPressed: () => navigateToBreadcrumb(
+                                          breadcrumbIndex: sheetNavigationContext.breadcrumbs.length - 2,
+                                        ),
+                                      )
+                                    : StyledCircleButton.lg(
+                                        child: Symbols.close.toIcon(),
+                                        onPressed: () => context.pop(),
+                                      ),
+                              ),
+                            ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: .center,
+                            children: [
+                              if (title case final title?)
+                                DefaultTextStyle(
+                                  style: context.textStyle.headingXs,
+                                  maxLines: 1,
+                                  overflow: .ellipsis,
+                                  child: title,
+                                ),
+                              if (subtitle case final subtitle?)
+                                DefaultTextStyle(
+                                  style: context.textStyle.paragraphMd.subtle(),
+                                  maxLines: 1,
+                                  overflow: .ellipsis,
+                                  child: subtitle,
+                                ),
+                            ],
                           ),
-                        if (subtitle case final subtitle?)
-                          DefaultTextStyle(
-                            style: context.textStyle.paragraphMd.subtle(),
-                            maxLines: 1,
-                            overflow: .ellipsis,
-                            child: subtitle,
-                          ),
+                        ),
+                        if (trailing case final trailing?) SizedBox(width: 48, child: trailing) else gapW48,
                       ],
                     ),
                   ),
-                  if (trailing case final trailing?) SizedBox(width: 48, child: trailing) else gapW48,
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           gapH8,

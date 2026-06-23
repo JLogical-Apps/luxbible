@@ -4,9 +4,12 @@ import 'package:bible/models/reference/chapter_position.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
+import 'package:bible/models/study_action.dart';
 import 'package:bible/models/text_selection_action.dart';
+import 'package:bible/models/user/user.dart';
 import 'package:bible/models/verse_selection_action.dart';
 import 'package:bible/providers/bibles_provider.dart';
+import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
@@ -31,6 +34,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:utils_core/utils_core.dart';
 
 class BibleBody extends HookConsumerWidget {
   const BibleBody({super.key});
@@ -56,14 +60,6 @@ class BibleBody extends HookConsumerWidget {
     final scrollControllerByReferenceRef = useRef(<ChapterReference, ScrollController>{});
     final scrollPercentByReferenceRef = useRef({initialPosition.reference: initialPosition.scrollPercent});
 
-    ChapterPosition positionOf(ChapterReference reference) {
-      final position = scrollControllerByReferenceRef.value[reference]?.positionsOrNull?.firstOrNull;
-      return ChapterPosition(
-        reference: reference,
-        scrollPercent: position == null ? 0 : (position.pixels / position.maxScrollExtent).clamp(0, 1),
-      );
-    }
-
     void saveScroll() {
       final reference = currentChapterReference;
       final position = scrollControllerByReferenceRef.value[reference]?.positionsOrNull?.firstOrNull;
@@ -84,12 +80,6 @@ class BibleBody extends HookConsumerWidget {
     usePeriodic(Duration(seconds: 5), () => saveScroll());
 
     final currentScrollController = scrollControllerByReferenceRef.value[currentChapterReference];
-    final isAtBottom = useListenableSelector(currentScrollController, () {
-      final scrollPosition = currentScrollController?.positionsOrNull?.firstOrNull;
-      return scrollPosition == null || !scrollPosition.hasContentDimensions
-          ? false
-          : scrollPosition.pixels >= scrollPosition.maxScrollExtent;
-    });
 
     useOnStickyScrollDirectionChanged(
       currentScrollController,
@@ -103,13 +93,6 @@ class BibleBody extends HookConsumerWidget {
         : VerseSelection.fromReferences(selectedReferencesState.value);
 
     final textSelectionState = useState<BibleTextSelection?>(null);
-    final textSelection = textSelectionState.value;
-
-    final showBottomBar =
-        (isScrollingDownState.value || user.mainToolbar.pinToBottom || isAtBottom) &&
-        selectedVerseSelection == null &&
-        textSelection == null;
-
     final keyByReferenceRef = useRef(<Reference, GlobalKey>{});
 
     void onClosePressed() {
@@ -149,242 +132,179 @@ class BibleBody extends HookConsumerWidget {
       }
     }
 
-    return Stack(
+    final studyPanelState = useState<StudyAction?>(null);
+    final studyPanel = studyPanelState.value;
+
+    return Column(
       children: [
-        GestureDetector(
-          onHorizontalDragUpdate: (details) async {
-            const sensitivity = 8;
+        Expanded(
+          child: Stack(
+            children: [
+              biblePages(
+                user,
+                pageController,
+                saveScroll,
+                navigationHistoryState,
+                isScrollingDownState,
+                selectedReferencesState,
+                textSelectionState,
+                scrollControllerByReferenceRef,
+                scrollPercentByReferenceRef,
+                selectedVerseSelection,
+                navigateToVerseSelection,
+                keyByReferenceRef,
+              ),
+              Positioned(
+                top: 0,
+                right: 0,
+                left: 0,
+                child: Builder(
+                  builder: (context) =>
+                      Container(height: MediaQuery.paddingOf(context).top, color: context.colors.backgroundPrimary),
+                ),
+              ),
+              HookBuilder(
+                builder: (context) => TweenAnimationBuilder(
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.easeInOutCubic,
+                  tween: Tween(
+                    begin: MediaQuery.of(context).viewPadding,
+                    end: studyPanelState.value == null ? MediaQuery.of(context).viewPadding : EdgeInsets.zero,
+                  ),
+                  builder: (context, insets, child) => MediaQuery(
+                    data: MediaQuery.of(context).copyWith(padding: insets, viewPadding: insets, viewInsets: insets),
+                    child: child!,
+                  ),
+                  child: bottom(
+                    currentChapterReference,
+                    user,
+                    currentScrollController,
+                    isScrollingDownState,
+                    navigationHistoryState,
+                    hardNavigateTo,
+                    navigateToVerseSelection,
+                    (studyAction) => studyPanelState.value = studyAction,
+                    selectedVerseSelection,
+                    onClosePressed,
+                    selectedReferencesState,
+                    textSelectionState,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        HookBuilder(
+          builder: (context) {
+            final studyPanelHeightState = useState(400.0);
+            final isResizingState = useState(false);
+            final dragStartHeightRef = useRef(0.0);
+            final dragStartYRef = useRef(0.0);
+            final minStudyPanelHeight = 82.0;
+            final maxStudyPanelHeight = MediaQuery.sizeOf(context).height * 0.5;
+            final studyPanelHeight = studyPanelHeightState.value.clamp(minStudyPanelHeight, maxStudyPanelHeight);
+            useListenable(currentScrollController);
 
-            final newPageIndex = details.delta.dx > sensitivity
-                ? pageController.page!.round() - 1
-                : details.delta.dx < -sensitivity
-                ? pageController.page!.round() + 1
-                : null;
+            final visibleReferences = useMemoized(() {
+              final viewportTop = MediaQuery.paddingOf(context).top;
+              final viewportBottom = MediaQuery.sizeOf(context).height - studyPanelHeight;
 
-            if (newPageIndex == null || newPageIndex < 0 || newPageIndex >= ChapterReference.values.length) {
-              return;
-            }
+              final topByReference = currentChapterReference.references
+                  .mapToMap(
+                    (reference) => MapEntry(
+                      reference,
+                      (keyByReferenceRef.value[reference]?.currentContext?.findRenderObject() as RenderBox?)
+                          ?.localToGlobal(Offset.zero)
+                          .dy,
+                    ),
+                  )
+                  .withoutNullValues;
 
-            saveScroll();
+              final ordered = currentChapterReference.references.where(topByReference.containsKey).toList();
+              return ordered
+                  .mapIndexed((i, top) {
+                    final top = topByReference[ordered[i]]!;
+                    final bottom = i + 1 < ordered.length ? topByReference[ordered[i + 1]]! : double.infinity;
+                    return top < viewportBottom && bottom > viewportTop ? ordered[i] : null;
+                  })
+                  .nonNulls
+                  .toList();
+            }, [currentScrollController, currentScrollController?.positionOrNull?.pixels, isResizingState.value]);
 
-            final reference = ChapterReference.fromBibleChapterIndex(newPageIndex);
-            final position = positionOf(reference);
+            final visibleVerseSelection = VerseSelection.fromReferences(visibleReferences);
 
-            await pageController.animateToPage(
-              newPageIndex,
-              duration: Duration(milliseconds: 300),
-              curve: Curves.easeInOutCubic,
-            );
-
-            ref.updateUser((user) => user.withSoftNavigation(position));
-            navigationHistoryState.value = navigationHistoryState.value.withCurrent(
-              NavigationState(position: position, bookmarkId: user.currentBookmarkId),
+            return AnimatedGrow(
+              duration: isResizingState.value ? Duration(milliseconds: 1) : Duration(milliseconds: 300),
+              child: studyPanel == null
+                  ? SizedBox.shrink(key: ValueKey('empty'))
+                  : Container(
+                      width: double.infinity,
+                      height: studyPanelHeight,
+                      color: context.colors.surfacePrimary,
+                      child: StyledSheet(
+                        key: ValueKey(visibleVerseSelection),
+                        title: visibleVerseSelection.format().toText(),
+                        subtitle: studyPanel.title().toText(),
+                        onHeaderDragStart: (details) {
+                          isResizingState.value = true;
+                          dragStartHeightRef.value = studyPanelHeight;
+                          dragStartYRef.value = details.globalPosition.dy;
+                        },
+                        onHeaderDragUpdate: (details) {
+                          final offset = details.globalPosition.dy - dragStartYRef.value;
+                          studyPanelHeightState.value = (dragStartHeightRef.value - offset).clamp(
+                            minStudyPanelHeight,
+                            maxStudyPanelHeight,
+                          );
+                        },
+                        onHeaderDragEnd: (_) => isResizingState.value = false,
+                        leading: StyledCircleButton.lg(
+                          child: Symbols.close.toIcon(),
+                          onPressed: () => studyPanelState.value = null,
+                        ),
+                        children: studyPanel.buildSheetChildren(
+                          context,
+                          verseSelection: visibleVerseSelection,
+                          onNavigateToVerseSelection: navigateToVerseSelection,
+                        ),
+                      ),
+                    ),
             );
           },
-          child: PageView.builder(
-            controller: pageController,
-            allowImplicitScrolling: false,
-            physics: NeverScrollableScrollPhysics(),
-            onPageChanged: (pageIndex) {
-              isScrollingDownState.value = true;
-              selectedReferencesState.value = [];
-              textSelectionState.value = null;
-            },
-            itemBuilder: (context, pageIndex) {
-              final chapterReference = ChapterReference.fromBibleChapterIndex(pageIndex);
-
-              return HookConsumerBuilder(
-                builder: (context, ref) {
-                  final scrollController = useDisposable(
-                    useScrollController(),
-                    (controller) =>
-                        scrollControllerByReferenceRef.value = {...scrollControllerByReferenceRef.value}
-                          ..remove(chapterReference),
-                  );
-
-                  final chapterValue = ref.watch(
-                    chapterProvider(translation: user.translation, chapterReference: chapterReference),
-                  );
-                  final chapter = chapterValue.value;
-
-                  if (chapterValue.hasError) {
-                    return Padding(
-                      padding: .symmetric(horizontal: 16),
-                      child: Column(
-                        spacing: 12,
-                        children: [
-                          Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).top + 24)),
-                          StyledTile.message(
-                            leading: Symbols.error.toIcon(),
-                            title: 'Something went wrong'.toText(),
-                            subtitle: 'Make sure you are connected to the internet or try again later.'.toText(),
-                          ),
-                          if (user.translation != .bsb)
-                            StyledRectButton.secondary(
-                              label: 'Switch to BSB'.toText(),
-                              onPressed: () => ref.updateUser((user) => user.copyWith(translation: .bsb)),
-                            ),
-                          StyledRectButton.secondary(
-                            label: 'Try Again'.toText(),
-                            onPressed: () => ref.invalidate(
-                              chapterProvider(translation: user.translation, chapterReference: chapterReference),
-                              asReload: true,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-
-                  final isLoadedState = useState(false);
-                  usePostFrameEffect(() {
-                    final target = scrollPercentByReferenceRef.value[chapterReference] ?? 0;
-                    final position = scrollController.positionOrNull;
-                    if (!isLoadedState.value && chapter != null && position != null) {
-                      scrollController.jumpTo((target * position.maxScrollExtent).clamp(0.0, position.maxScrollExtent));
-                      scrollControllerByReferenceRef.value = {
-                        ...scrollControllerByReferenceRef.value,
-                        chapterReference: scrollController,
-                      };
-                      isLoadedState.value = true;
-                    }
-                  }, [chapter != null, scrollController.positionOrNull != null]);
-
-                  final showTopBar = useListenableSelector(
-                    scrollController,
-                    () => scrollController.hasClients && scrollController.position.pixels > 60,
-                  );
-
-                  return AnimatedOpacity(
-                    opacity: isLoadedState.value ? 1 : 0,
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeOutCubic,
-                    child: Stack(
-                      children: [
-                        StyledScrollbar(
-                          controller: scrollController,
-                          child: SingleChildScrollView(
-                            controller: scrollController,
-                            padding: .symmetric(horizontal: 24, vertical: 8),
-                            child: Column(
-                              crossAxisAlignment: .start,
-                              children: [
-                                Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).top + 24)),
-                                ChapterBuilder(
-                                  chapterReference: chapterReference,
-                                  user: user,
-                                  underlinedReferences: selectedReferencesState.value,
-                                  onReferencePressed: (reference) {
-                                    if (textSelectionState.value != null) {
-                                      textSelectionState.value = null;
-                                    } else if (selectedReferencesState.value.isEmpty &&
-                                        user.verseSelection.expandToAnnotation) {
-                                      selectedReferencesState.value = user.getExpandedReferences(reference);
-                                    } else if (!selectedReferencesState.value.contains(reference) &&
-                                        selectedReferencesState.value.isNotEmpty &&
-                                        user.verseSelection.rangeSelection) {
-                                      final anchorReference = selectedReferencesState.value.first;
-                                      final referenceAnchors = [anchorReference, reference];
-
-                                      selectedReferencesState.value = Reference.getReferencesBetween(
-                                        referenceAnchors.min,
-                                        referenceAnchors.max,
-                                      ).toList().withRemoved(anchorReference).withInsert(0, anchorReference);
-                                    } else {
-                                      selectedReferencesState.value = selectedReferencesState.value.withToggle(
-                                        reference,
-                                      );
-                                    }
-                                  },
-                                  onHandleLongPress: (newSelection) {
-                                    if (selectedVerseSelection != null &&
-                                        newSelection.isInVerseSelection(selectedVerseSelection)) {
-                                      user.verseSelection.longPressShortcut.onPressed(
-                                        context,
-                                        verseSelection: VerseSelection.fromReferences(selectedReferencesState.value),
-                                        onDeselect: () => selectedReferencesState.value = [],
-                                        onNavigateToVerseSelection: navigateToVerseSelection,
-                                      );
-                                      return false;
-                                    } else if (textSelection != null && textSelection.intersects(newSelection)) {
-                                      user.textSelection.longPressShortcut.onPressed(
-                                        context,
-                                        textSelection: textSelection,
-                                        onDeselect: () => textSelectionState.value = null,
-                                        onNavigateToVerseSelection: navigateToVerseSelection,
-                                      );
-                                      return false;
-                                    }
-
-                                    return true;
-                                  },
-                                  textSelection: textSelectionState.value,
-                                  onTextSelectionUpdated: (textSelection, isNewSelection) {
-                                    selectedReferencesState.value = [];
-                                    if (isNewSelection &&
-                                        user.textSelection.expandToAnnotation &&
-                                        textSelection != null) {
-                                      textSelectionState.value = user.getExpandedTextSelection(textSelection);
-                                    } else {
-                                      textSelectionState.value = textSelection;
-                                    }
-                                  },
-                                  keyByReferenceRef: keyByReferenceRef,
-                                ),
-                                Builder(
-                                  builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).bottom + 88),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 0,
-                          right: 0,
-                          left: 0,
-                          child: AnimatedOpacity(
-                            key: ValueKey(scrollController.hasClients),
-                            opacity: showTopBar ? 1 : 0,
-                            duration: Duration(milliseconds: 300),
-                            curve: Curves.easeInOutCubic,
-                            child: GestureDetector(
-                              onTap: showTopBar ? () => isScrollingDownState.value = true : null,
-                              child: Builder(
-                                builder: (context) => Container(
-                                  color: context.colors.backgroundPrimary,
-                                  padding:
-                                      EdgeInsets.only(top: MediaQuery.paddingOf(context).top) +
-                                      .symmetric(horizontal: 16),
-                                  alignment: .centerLeft,
-                                  child: Column(
-                                    crossAxisAlignment: .start,
-                                    children: [
-                                      Text(chapterReference.format(), style: context.textStyle.labelSm.subtle()),
-                                      StyledDivider(),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
-          ),
         ),
-        Positioned(
-          top: 0,
-          right: 0,
-          left: 0,
-          child: Builder(
-            builder: (context) =>
-                Container(height: MediaQuery.paddingOf(context).top, color: context.colors.backgroundPrimary),
-          ),
-        ),
+      ],
+    );
+  }
+
+  Widget bottom(
+    ChapterReference currentChapterReference,
+    User user,
+    ScrollController? currentScrollController,
+    ValueNotifier<bool> isScrollingDownState,
+    ValueNotifier<NavigationHistory> navigationHistoryState,
+    void Function(ChapterPosition, {String? bookmarkId, bool updateNavigationState}) hardNavigateTo,
+    void Function(VerseSelection) navigateToVerseSelection,
+    void Function(StudyAction) onAddStudyPanel,
+    VerseSelection? selectedVerseSelection,
+    void Function() onClosePressed,
+    ValueNotifier<List<Reference>> selectedReferencesState,
+    ValueNotifier<BibleTextSelection?> textSelectionState,
+  ) {
+    final textSelection = textSelectionState.value;
+    final isAtBottom = useListenableSelector(currentScrollController, () {
+      final scrollPosition = currentScrollController?.positionsOrNull?.firstOrNull;
+      return scrollPosition == null || !scrollPosition.hasContentDimensions
+          ? false
+          : scrollPosition.pixels >= scrollPosition.maxScrollExtent;
+    });
+
+    final showBottomBar =
+        (isScrollingDownState.value || user.mainToolbar.pinToBottom || isAtBottom) &&
+        selectedVerseSelection == null &&
+        textSelection == null;
+
+    return Stack(
+      children: [
         Builder(
           builder: (context) => AnimatedPositioned(
             duration: Duration(milliseconds: 300),
@@ -444,11 +364,13 @@ class BibleBody extends HookConsumerWidget {
                   context,
                   reference: currentChapterReference,
                   onNavigateToVerseSelection: navigateToVerseSelection,
+                  onAddStudyPanel: onAddStudyPanel,
                 ),
                 onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
                   context,
                   reference: currentChapterReference,
                   onNavigateToVerseSelection: navigateToVerseSelection,
+                  onAddStudyPanel: onAddStudyPanel,
                 ),
                 onMorePressed: () => context.showStyledSheet(
                   (context) => StyledSheet(
@@ -472,6 +394,7 @@ class BibleBody extends HookConsumerWidget {
                                 context,
                                 reference: currentChapterReference,
                                 onNavigateToVerseSelection: navigateToVerseSelection,
+                                onAddStudyPanel: onAddStudyPanel,
                               );
                             },
                           ),
@@ -598,6 +521,250 @@ class BibleBody extends HookConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget biblePages(
+    User user,
+    PageController pageController,
+    void Function() saveScroll,
+    ValueNotifier<NavigationHistory> navigationHistoryState,
+    ValueNotifier<bool> isScrollingDownState,
+    ValueNotifier<List<Reference>> selectedReferencesState,
+    ValueNotifier<BibleTextSelection?> textSelectionState,
+    ObjectRef<Map<ChapterReference, ScrollController>> scrollControllerByReferenceRef,
+    ObjectRef<Map<ChapterReference, double>> scrollPercentByReferenceRef,
+    VerseSelection? selectedVerseSelection,
+    void Function(VerseSelection) navigateToVerseSelection,
+    ObjectRef<Map<Reference, GlobalKey<State<StatefulWidget>>>> keyByReferenceRef,
+  ) {
+    final textSelection = textSelectionState.value;
+
+    ChapterPosition positionOf(ChapterReference reference) {
+      final position = scrollControllerByReferenceRef.value[reference]?.positionsOrNull?.firstOrNull;
+      return ChapterPosition(
+        reference: reference,
+        scrollPercent: position == null ? 0 : (position.pixels / position.maxScrollExtent).clamp(0, 1),
+      );
+    }
+
+    return GestureDetector(
+      onHorizontalDragUpdate: (details) async {
+        const sensitivity = 8;
+
+        final newPageIndex = details.delta.dx > sensitivity
+            ? pageController.page!.round() - 1
+            : details.delta.dx < -sensitivity
+            ? pageController.page!.round() + 1
+            : null;
+
+        if (newPageIndex == null || newPageIndex < 0 || newPageIndex >= ChapterReference.values.length) {
+          return;
+        }
+
+        saveScroll();
+
+        final reference = ChapterReference.fromBibleChapterIndex(newPageIndex);
+        final position = positionOf(reference);
+
+        await pageController.animateToPage(
+          newPageIndex,
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeInOutCubic,
+        );
+
+        ref.updateUser((user) => user.withSoftNavigation(position));
+        navigationHistoryState.value = navigationHistoryState.value.withCurrent(
+          NavigationState(position: position, bookmarkId: user.currentBookmarkId),
+        );
+      },
+      child: PageView.builder(
+        controller: pageController,
+        allowImplicitScrolling: false,
+        physics: NeverScrollableScrollPhysics(),
+        onPageChanged: (pageIndex) {
+          isScrollingDownState.value = true;
+          selectedReferencesState.value = [];
+          textSelectionState.value = null;
+        },
+        itemBuilder: (context, pageIndex) {
+          final chapterReference = ChapterReference.fromBibleChapterIndex(pageIndex);
+
+          return HookConsumerBuilder(
+            builder: (context, ref) {
+              final scrollController = useDisposable(
+                useScrollController(),
+                (controller) =>
+                    scrollControllerByReferenceRef.value = {...scrollControllerByReferenceRef.value}
+                      ..remove(chapterReference),
+              );
+
+              final chapterValue = ref.watch(
+                chapterProvider(translation: user.translation, chapterReference: chapterReference),
+              );
+              final chapter = chapterValue.value;
+
+              if (chapterValue.hasError) {
+                return Padding(
+                  padding: .symmetric(horizontal: 16),
+                  child: Column(
+                    spacing: 12,
+                    children: [
+                      Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).top + 24)),
+                      StyledTile.message(
+                        leading: Symbols.error.toIcon(),
+                        title: 'Something went wrong'.toText(),
+                        subtitle: 'Make sure you are connected to the internet or try again later.'.toText(),
+                      ),
+                      if (user.translation != .bsb)
+                        StyledRectButton.secondary(
+                          label: 'Switch to BSB'.toText(),
+                          onPressed: () => ref.updateUser((user) => user.copyWith(translation: .bsb)),
+                        ),
+                      StyledRectButton.secondary(
+                        label: 'Try Again'.toText(),
+                        onPressed: () => ref.invalidate(
+                          chapterProvider(translation: user.translation, chapterReference: chapterReference),
+                          asReload: true,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              final isLoadedState = useState(false);
+              usePostFrameEffect(() {
+                final target = scrollPercentByReferenceRef.value[chapterReference] ?? 0;
+                final position = scrollController.positionOrNull;
+                if (!isLoadedState.value && chapter != null && position != null) {
+                  scrollController.jumpTo((target * position.maxScrollExtent).clamp(0.0, position.maxScrollExtent));
+                  scrollControllerByReferenceRef.value = {
+                    ...scrollControllerByReferenceRef.value,
+                    chapterReference: scrollController,
+                  };
+                  isLoadedState.value = true;
+                }
+              }, [chapter != null, scrollController.positionOrNull != null]);
+
+              final showTopBar = useListenableSelector(
+                scrollController,
+                () => scrollController.hasClients && scrollController.position.pixels > 60,
+              );
+
+              return AnimatedOpacity(
+                opacity: isLoadedState.value ? 1 : 0,
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeOutCubic,
+                child: Stack(
+                  children: [
+                    StyledScrollbar(
+                      controller: scrollController,
+                      child: SingleChildScrollView(
+                        controller: scrollController,
+                        padding: .symmetric(horizontal: 24, vertical: 8),
+                        child: Column(
+                          crossAxisAlignment: .start,
+                          children: [
+                            Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).top + 24)),
+                            ChapterBuilder(
+                              chapterReference: chapterReference,
+                              user: user,
+                              underlinedReferences: selectedReferencesState.value,
+                              onReferencePressed: (reference) {
+                                if (textSelectionState.value != null) {
+                                  textSelectionState.value = null;
+                                } else if (selectedReferencesState.value.isEmpty &&
+                                    user.verseSelection.expandToAnnotation) {
+                                  selectedReferencesState.value = user.getExpandedReferences(reference);
+                                } else if (!selectedReferencesState.value.contains(reference) &&
+                                    selectedReferencesState.value.isNotEmpty &&
+                                    user.verseSelection.rangeSelection) {
+                                  final anchorReference = selectedReferencesState.value.first;
+                                  final referenceAnchors = [anchorReference, reference];
+
+                                  selectedReferencesState.value = Reference.getReferencesBetween(
+                                    referenceAnchors.min,
+                                    referenceAnchors.max,
+                                  ).toList().withRemoved(anchorReference).withInsert(0, anchorReference);
+                                } else {
+                                  selectedReferencesState.value = selectedReferencesState.value.withToggle(reference);
+                                }
+                              },
+                              onHandleLongPress: (newSelection) {
+                                if (selectedVerseSelection != null &&
+                                    newSelection.isInVerseSelection(selectedVerseSelection)) {
+                                  user.verseSelection.longPressShortcut.onPressed(
+                                    context,
+                                    verseSelection: VerseSelection.fromReferences(selectedReferencesState.value),
+                                    onDeselect: () => selectedReferencesState.value = [],
+                                    onNavigateToVerseSelection: navigateToVerseSelection,
+                                  );
+                                  return false;
+                                } else if (textSelection != null && textSelection.intersects(newSelection)) {
+                                  user.textSelection.longPressShortcut.onPressed(
+                                    context,
+                                    textSelection: textSelection,
+                                    onDeselect: () => textSelectionState.value = null,
+                                    onNavigateToVerseSelection: navigateToVerseSelection,
+                                  );
+                                  return false;
+                                }
+
+                                return true;
+                              },
+                              textSelection: textSelectionState.value,
+                              onTextSelectionUpdated: (textSelection, isNewSelection) {
+                                selectedReferencesState.value = [];
+                                if (isNewSelection && user.textSelection.expandToAnnotation && textSelection != null) {
+                                  textSelectionState.value = user.getExpandedTextSelection(textSelection);
+                                } else {
+                                  textSelectionState.value = textSelection;
+                                }
+                              },
+                              keyByReferenceRef: keyByReferenceRef,
+                            ),
+                            Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).bottom + 88)),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      left: 0,
+                      child: AnimatedOpacity(
+                        key: ValueKey(scrollController.hasClients),
+                        opacity: showTopBar ? 1 : 0,
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeInOutCubic,
+                        child: GestureDetector(
+                          onTap: showTopBar ? () => isScrollingDownState.value = true : null,
+                          child: Builder(
+                            builder: (context) => Container(
+                              color: context.colors.backgroundPrimary,
+                              padding:
+                                  EdgeInsets.only(top: MediaQuery.paddingOf(context).top) + .symmetric(horizontal: 16),
+                              alignment: .centerLeft,
+                              child: Column(
+                                crossAxisAlignment: .start,
+                                children: [
+                                  Text(chapterReference.format(), style: context.textStyle.labelSm.subtle()),
+                                  StyledDivider(),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
