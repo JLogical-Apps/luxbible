@@ -218,11 +218,12 @@ class BibleBody extends HookConsumerWidget {
         ),
         HookBuilder(
           builder: (context) {
-            final studyPanelHeightState = useState(400.0);
-            final isResizingState = useState(false);
-
             final minStudyPanelHeight = 82.0;
             final maxStudyPanelHeight = MediaQuery.sizeOf(context).height * 0.5;
+
+            final studyPanelHeightState = useState(MediaQuery.sizeOf(context).height * user.studyPanelPosition);
+            final isResizingState = useState(false);
+
             final studyPanelHeight = studyPanelHeightState.value.clamp(minStudyPanelHeight, maxStudyPanelHeight);
 
             useListenable(currentScrollController);
@@ -241,6 +242,13 @@ class BibleBody extends HookConsumerWidget {
             }, [currentScrollController, currentScrollController?.positionOrNull?.pixels, isResizingState.value]);
 
             final visibleVerseSelection = VerseSelection.fromReferences(visibleReferences);
+
+            usePeriodic(Duration(seconds: 1), () {
+              final studyPanelPercentVisible = studyPanelHeightState.value / maxStudyPanelHeight;
+              if (studyPanelPercentVisible != user.studyPanelPosition) {
+                ref.updateUser((user) => user.copyWith(studyPanelPosition: studyPanelPercentVisible));
+              }
+            });
 
             return AnimatedGrow(
               duration: isResizingState.value ? Duration(milliseconds: 1) : Duration(milliseconds: 300),
