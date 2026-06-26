@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 class ResizableContainer extends HookWidget {
   final Widget child;
-  final double height;
+  final double initialHeight;
   final double minHeight;
   final double maxHeight;
 
@@ -14,7 +14,7 @@ class ResizableContainer extends HookWidget {
   const ResizableContainer({
     super.key,
     required this.child,
-    required this.height,
+    required this.initialHeight,
     required this.minHeight,
     required this.maxHeight,
     required this.onHeightUpdated,
@@ -24,27 +24,27 @@ class ResizableContainer extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isResizingState = useState(false);
+    final heightState = useState(initialHeight.clamp(minHeight, maxHeight));
     final dragStartHeightRef = useRef(0.0);
     final dragStartYRef = useRef(0.0);
-    final height = this.height.clamp(minHeight, maxHeight);
 
-    return GestureDetector(
-      onVerticalDragStart: (details) {
-        isResizingState.value = true;
-        onResizeStart?.call();
-        dragStartHeightRef.value = height;
-        dragStartYRef.value = details.globalPosition.dy;
-      },
-      onVerticalDragUpdate: (details) {
-        final offset = details.globalPosition.dy - dragStartYRef.value;
-        onHeightUpdated((dragStartHeightRef.value - offset).clamp(minHeight, maxHeight));
-      },
-      onVerticalDragEnd: (_) {
-        isResizingState.value = false;
-        onResizeEnd?.call();
-      },
-      child: child,
+    return SizedBox(
+      height: heightState.value,
+      child: GestureDetector(
+        onVerticalDragStart: (details) {
+          onResizeStart?.call();
+          dragStartHeightRef.value = heightState.value;
+          dragStartYRef.value = details.globalPosition.dy;
+        },
+        onVerticalDragUpdate: (details) {
+          final offset = details.globalPosition.dy - dragStartYRef.value;
+          final height = (dragStartHeightRef.value - offset).clamp(minHeight, maxHeight);
+          heightState.value = height;
+          onHeightUpdated(height);
+        },
+        onVerticalDragEnd: (_) => onResizeEnd?.call(),
+        child: child,
+      ),
     );
   }
 }

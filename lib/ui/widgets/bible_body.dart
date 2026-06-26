@@ -221,30 +221,32 @@ class BibleBody extends HookConsumerWidget {
             final minStudyPanelHeight = 82.0;
             final maxStudyPanelHeight = MediaQuery.sizeOf(context).height * 0.5;
 
-            final studyPanelHeightState = useState(MediaQuery.sizeOf(context).height * user.studyPanelPosition);
+            final studyPanelHeightRef = useRef(
+              (MediaQuery.sizeOf(context).height * user.studyPanelPosition).clamp(
+                minStudyPanelHeight,
+                maxStudyPanelHeight,
+              ),
+            );
             final isResizingState = useState(false);
 
-            final studyPanelHeight = studyPanelHeightState.value.clamp(minStudyPanelHeight, maxStudyPanelHeight);
-
-            useListenable(currentScrollController);
-
-            final visibleReferences = useMemoized(() {
+            final visibleVerseSelection = useListenableSelector(currentScrollController, () {
               const topBarHeight = 30.0;
               final viewportTop = MediaQuery.paddingOf(context).top + topBarHeight;
+              final studyPanelHeight = studyPanelHeightRef.value.clamp(minStudyPanelHeight, maxStudyPanelHeight);
               final viewportBottom = MediaQuery.sizeOf(context).height - studyPanelHeight;
 
-              return currentChapterReference.references.where((reference) {
-                final top = (keyByReferenceRef.value[reference]?.currentContext?.findRenderObject() as RenderBox?)
-                    ?.localToGlobal(Offset.zero)
-                    .dy;
-                return top != null && top >= viewportTop && top <= viewportBottom;
-              }).toList();
-            }, [currentScrollController, currentScrollController?.positionOrNull?.pixels, isResizingState.value]);
-
-            final visibleVerseSelection = VerseSelection.fromReferences(visibleReferences);
+              return VerseSelection.fromReferences(
+                currentChapterReference.references.where((reference) {
+                  final top = (keyByReferenceRef.value[reference]?.currentContext?.findRenderObject() as RenderBox?)
+                      ?.localToGlobal(Offset.zero)
+                      .dy;
+                  return top != null && top >= viewportTop && top <= viewportBottom;
+                }).toList(),
+              );
+            });
 
             usePeriodic(Duration(seconds: 1), () {
-              final studyPanelPercentVisible = studyPanelHeightState.value / maxStudyPanelHeight;
+              final studyPanelPercentVisible = studyPanelHeightRef.value / maxStudyPanelHeight;
               if (studyPanelPercentVisible != user.studyPanelPosition) {
                 ref.updateUser((user) => user.copyWith(studyPanelPosition: studyPanelPercentVisible));
               }
@@ -254,25 +256,24 @@ class BibleBody extends HookConsumerWidget {
               duration: isResizingState.value ? Duration(milliseconds: 1) : Duration(milliseconds: 300),
               child: studyPanels.isEmpty
                   ? SizedBox.shrink(key: ValueKey('empty'))
-                  : Container(
-                      width: double.infinity,
-                      height: studyPanelHeight,
-                      color: context.colors.surfacePrimary,
-                      child: PageView(
-                        key: ValueKey(studyPanels.join(',')),
-                        controller: studyPanelsPageController,
-                        onPageChanged: (page) => ref.updateUser((user) => user.copyWith(studyPanelIndex: page)),
-                        children: studyPanels
-                            .mapIndexed(
-                              (i, studyPanel) => ResizableContainer(
-                                height: studyPanelHeightState.value,
-                                minHeight: 82,
-                                maxHeight: MediaQuery.sizeOf(context).height * 0.5,
-                                onResizeStart: () => isResizingState.value = true,
-                                onResizeEnd: () => isResizingState.value = false,
-                                onHeightUpdated: (size) => studyPanelHeightState.value = size,
-                                child: StyledSheet(
-                                  key: ValueKey(visibleVerseSelection),
+                  : ResizableContainer(
+                      initialHeight: studyPanelHeightRef.value,
+                      minHeight: minStudyPanelHeight,
+                      maxHeight: maxStudyPanelHeight,
+                      onResizeStart: () => isResizingState.value = true,
+                      onResizeEnd: () => isResizingState.value = false,
+                      onHeightUpdated: (size) => studyPanelHeightRef.value = size,
+                      child: Container(
+                        width: double.infinity,
+                        color: context.colors.surfacePrimary,
+                        child: PageView(
+                          key: ValueKey(studyPanels.join(',')),
+                          controller: studyPanelsPageController,
+                          onPageChanged: (page) => ref.updateUser((user) => user.copyWith(studyPanelIndex: page)),
+                          children: studyPanels
+                              .mapIndexed(
+                                (i, studyPanel) => StyledSheet(
+                                  key: ValueKey((i, visibleVerseSelection)),
                                   title: visibleVerseSelection.format().toText(),
                                   subtitle: studyPanel.title().toText(),
                                   leading: StyledCircleButton.lg(
@@ -287,9 +288,9 @@ class BibleBody extends HookConsumerWidget {
                                     onNavigateToVerseSelection: navigateToVerseSelection,
                                   ),
                                 ),
-                              ),
-                            )
-                            .toList(),
+                              )
+                              .toList(),
+                        ),
                       ),
                     ),
             );
