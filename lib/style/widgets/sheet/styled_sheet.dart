@@ -31,10 +31,6 @@ class StyledSheet<T> extends HookWidget {
   final Widget? aboveButtons;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
 
-  final GestureDragStartCallback? onHeaderDragStart;
-  final GestureDragUpdateCallback? onHeaderDragUpdate;
-  final GestureDragEndCallback? onHeaderDragEnd;
-
   const StyledSheet({
     super.key,
     this.title,
@@ -47,9 +43,6 @@ class StyledSheet<T> extends HookWidget {
     this.children = const [],
     this.aboveButtons,
     this.buttonsBuilder,
-    this.onHeaderDragStart,
-    this.onHeaderDragUpdate,
-    this.onHeaderDragEnd,
   });
 
   StyledSheet.child({
@@ -64,9 +57,6 @@ class StyledSheet<T> extends HookWidget {
     required Widget child,
     this.aboveButtons,
     this.buttonsBuilder,
-    this.onHeaderDragStart,
-    this.onHeaderDragUpdate,
-    this.onHeaderDragEnd,
   }) : children = [child];
 
   @override
@@ -111,79 +101,73 @@ class StyledSheet<T> extends HookWidget {
         crossAxisAlignment: .start,
         mainAxisSize: .min,
         children: [
-          GestureDetector(
-            behavior: .translucent,
-            onVerticalDragStart: onHeaderDragStart,
-            onVerticalDragUpdate: onHeaderDragUpdate,
-            onVerticalDragEnd: onHeaderDragEnd,
-            child: Column(
-              crossAxisAlignment: .start,
-              mainAxisSize: .min,
-              children: [
-                SizedBox(
-                  height: 12,
-                  child: Align(
-                    alignment: .bottomCenter,
-                    child: Container(
-                      width: 48,
-                      height: 4,
-                      decoration: BoxDecoration(borderRadius: .circular(999), color: context.colors.borderOpaque),
-                    ),
+          Column(
+            crossAxisAlignment: .start,
+            mainAxisSize: .min,
+            children: [
+              SizedBox(
+                height: 12,
+                child: Align(
+                  alignment: .bottomCenter,
+                  child: Container(
+                    width: 48,
+                    height: 4,
+                    decoration: BoxDecoration(borderRadius: .circular(999), color: context.colors.borderOpaque),
                   ),
                 ),
-                gapH8,
-                SizedBox(
-                  height: subtitle == null ? 48 : 52,
-                  child: Padding(
-                    padding: .symmetric(horizontal: 8),
-                    child: Row(
-                      spacing: 8,
-                      children: [
-                        leading ??
-                            SizedBox(
-                              width: 48,
-                              child: Center(
-                                child: sheetNavigationContext != null && sheetNavigationContext.breadcrumbs.length > 1
-                                    ? StyledCircleButton.lg(
-                                        child: Symbols.arrow_back.toIcon(),
-                                        onPressed: () => navigateToBreadcrumb(
-                                          breadcrumbIndex: sheetNavigationContext.breadcrumbs.length - 2,
-                                        ),
-                                      )
-                                    : StyledCircleButton.lg(
-                                        child: Symbols.close.toIcon(),
-                                        onPressed: () => context.pop(),
+              ),
+              gapH8,
+              SizedBox(
+                height: subtitle == null ? 48 : 52,
+                child: Padding(
+                  padding: .symmetric(horizontal: 8),
+                  child: Row(
+                    spacing: 8,
+                    children: [
+                      leading ??
+                          SizedBox(
+                            width: 48,
+                            child: Center(
+                              child: sheetNavigationContext != null && sheetNavigationContext.breadcrumbs.length > 1
+                                  ? StyledCircleButton.lg(
+                                      child: Symbols.arrow_back.toIcon(),
+                                      onPressed: () => navigateToBreadcrumb(
+                                        breadcrumbIndex: sheetNavigationContext.breadcrumbs.length - 2,
                                       ),
-                              ),
+                                    )
+                                  : StyledCircleButton.lg(
+                                      child: Symbols.close.toIcon(),
+                                      onPressed: () => context.pop(),
+                                    ),
                             ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: .center,
-                            children: [
-                              if (title case final title?)
-                                DefaultTextStyle(
-                                  style: context.textStyle.headingXs,
-                                  maxLines: 1,
-                                  overflow: .ellipsis,
-                                  child: title,
-                                ),
-                              if (subtitle case final subtitle?)
-                                DefaultTextStyle(
-                                  style: context.textStyle.paragraphMd.subtle(),
-                                  maxLines: 1,
-                                  overflow: .ellipsis,
-                                  child: subtitle,
-                                ),
-                            ],
                           ),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: .center,
+                          children: [
+                            if (title case final title?)
+                              DefaultTextStyle(
+                                style: context.textStyle.headingXs,
+                                maxLines: 1,
+                                overflow: .ellipsis,
+                                child: title,
+                              ),
+                            if (subtitle case final subtitle?)
+                              DefaultTextStyle(
+                                style: context.textStyle.paragraphMd.subtle(),
+                                maxLines: 1,
+                                overflow: .ellipsis,
+                                child: subtitle,
+                              ),
+                          ],
                         ),
-                        if (trailing case final trailing?) SizedBox(width: 48, child: trailing) else gapW48,
-                      ],
-                    ),
+                      ),
+                      if (trailing case final trailing?) SizedBox(width: 48, child: trailing) else gapW48,
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           gapH8,
           if (sheetNavigationContext != null && sheetNavigationContext.breadcrumbs.length > 1) ...[

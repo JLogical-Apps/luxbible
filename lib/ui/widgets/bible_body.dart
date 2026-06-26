@@ -19,6 +19,7 @@ import 'package:bible/ui/pages/verse_selection_settings_page.dart';
 import 'package:bible/ui/widgets/chapter_builder.dart';
 import 'package:bible/ui/widgets/hook_consumer_builder.dart';
 import 'package:bible/ui/widgets/main_toolbar.dart';
+import 'package:bible/ui/widgets/resizable_container.dart';
 import 'package:bible/ui/widgets/text_selection_bottom_bar.dart';
 import 'package:bible/ui/widgets/verse_selection_bottom_bar.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
@@ -133,11 +134,10 @@ class BibleBody extends HookConsumerWidget {
       }
     }
 
-    final studyPanelsState = useState(<StudyAction>[]);
-
+    final studyPanels = user.studyPanels;
     final studyPanelsPageController = usePageController(
-      initialPage: studyPanelsState.value.length - 1,
-      keys: [studyPanelsState.value.join(',')],
+      initialPage: user.studyPanelIndex ?? (studyPanels.length - 1),
+      keys: [studyPanels.join(',')],
     );
 
     return Column(
@@ -174,7 +174,7 @@ class BibleBody extends HookConsumerWidget {
                   curve: Curves.easeInOutCubic,
                   tween: Tween(
                     begin: MediaQuery.of(context).viewPadding,
-                    end: studyPanelsState.value.isEmpty ? MediaQuery.of(context).viewPadding : EdgeInsets.zero,
+                    end: studyPanels.isEmpty ? MediaQuery.of(context).viewPadding : EdgeInsets.zero,
                   ),
                   builder: (context, insets, child) => MediaQuery(
                     data: MediaQuery.of(context).copyWith(padding: insets, viewPadding: insets, viewInsets: insets),
@@ -188,7 +188,7 @@ class BibleBody extends HookConsumerWidget {
                     navigationHistoryState,
                     hardNavigateTo,
                     navigateToVerseSelection,
-                    (studyAction) => studyPanelsState.value += [studyAction],
+                    (studyAction) => ref.updateUser((user) => user.withStudyPanel(studyAction)),
                     selectedVerseSelection,
                     onClosePressed,
                     selectedReferencesState,
@@ -196,7 +196,7 @@ class BibleBody extends HookConsumerWidget {
                   ),
                 ),
               ),
-              if (studyPanelsState.value.length > 1)
+              if (studyPanels.length > 1)
                 Positioned(
                   bottom: 4,
                   left: 0,
@@ -204,7 +204,7 @@ class BibleBody extends HookConsumerWidget {
                   child: Center(
                     child: SmoothPageIndicator(
                       controller: studyPanelsPageController,
-                      count: studyPanelsState.value.length,
+                      count: studyPanels.length,
                       effect: WormEffect(
                         dotHeight: 8,
                         dotWidth: 8,
@@ -221,11 +221,11 @@ class BibleBody extends HookConsumerWidget {
           builder: (context) {
             final studyPanelHeightState = useState(400.0);
             final isResizingState = useState(false);
-            final dragStartHeightRef = useRef(0.0);
-            final dragStartYRef = useRef(0.0);
+
             final minStudyPanelHeight = 82.0;
             final maxStudyPanelHeight = MediaQuery.sizeOf(context).height * 0.5;
             final studyPanelHeight = studyPanelHeightState.value.clamp(minStudyPanelHeight, maxStudyPanelHeight);
+
             useListenable(currentScrollController);
 
             final visibleReferences = useMemoized(() {
@@ -258,42 +258,40 @@ class BibleBody extends HookConsumerWidget {
 
             return AnimatedGrow(
               duration: isResizingState.value ? Duration(milliseconds: 1) : Duration(milliseconds: 300),
-              child: studyPanelsState.value.isEmpty
+              child: studyPanels.isEmpty
                   ? SizedBox.shrink(key: ValueKey('empty'))
                   : Container(
-                      key: ValueKey(visibleVerseSelection),
                       width: double.infinity,
                       height: studyPanelHeight,
                       color: context.colors.surfacePrimary,
                       child: PageView(
-                        key: ValueKey(studyPanelsState.value.join(',')),
+                        key: ValueKey(studyPanels.join(',')),
                         controller: studyPanelsPageController,
-                        children: studyPanelsState.value
+                        onPageChanged: (page) => ref.updateUser((user) => user.copyWith(studyPanelIndex: page)),
+                        children: studyPanels
                             .mapIndexed(
-                              (i, studyPanel) => StyledSheet(
-                                title: visibleVerseSelection.format().toText(),
-                                subtitle: studyPanel.title().toText(),
-                                onHeaderDragStart: (details) {
-                                  isResizingState.value = true;
-                                  dragStartHeightRef.value = studyPanelHeight;
-                                  dragStartYRef.value = details.globalPosition.dy;
-                                },
-                                onHeaderDragUpdate: (details) {
-                                  final offset = details.globalPosition.dy - dragStartYRef.value;
-                                  studyPanelHeightState.value = (dragStartHeightRef.value - offset).clamp(
-                                    minStudyPanelHeight,
-                                    maxStudyPanelHeight,
-                                  );
-                                },
-                                onHeaderDragEnd: (_) => isResizingState.value = false,
-                                leading: StyledCircleButton.lg(
-                                  child: Symbols.close.toIcon(),
-                                  onPressed: () => studyPanelsState.value = studyPanelsState.value.withRemovedAt(i),
-                                ),
-                                children: studyPanel.buildSheetChildren(
-                                  context,
-                                  verseSelection: visibleVerseSelection,
-                                  onNavigateToVerseSelection: navigateToVerseSelection,
+                              (i, studyPanel) => ResizableContainer(
+                                height: studyPanelHeightState.value,
+                                minHeight: 82,
+                                maxHeight: MediaQuery.sizeOf(context).height * 0.5,
+                                onResizeStart: () => isResizingState.value = true,
+                                onResizeEnd: () => isResizingState.value = false,
+                                onHeightUpdated: (size) => studyPanelHeightState.value = size,
+                                child: StyledSheet(
+                                  key: ValueKey(visibleVerseSelection),
+                                  title: visibleVerseSelection.format().toText(),
+                                  subtitle: studyPanel.title().toText(),
+                                  leading: StyledCircleButton.lg(
+                                    child: Symbols.close.toIcon(),
+                                    onPressed: () => ref.updateUser(
+                                      (user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i)),
+                                    ),
+                                  ),
+                                  children: studyPanel.buildSheetChildren(
+                                    context,
+                                    verseSelection: visibleVerseSelection,
+                                    onNavigateToVerseSelection: navigateToVerseSelection,
+                                  ),
                                 ),
                               ),
                             )

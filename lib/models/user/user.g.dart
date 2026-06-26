@@ -74,6 +74,13 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
       : ThemeLayoutConfiguration.fromJson(
           json['themeLayout'] as Map<String, dynamic>,
         ),
+  studyPanels:
+      (json['studyPanels'] as List<dynamic>?)
+          ?.map((e) => $enumDecode(_$StudyActionEnumMap, e))
+          .toList() ??
+      const [],
+  studyPanelIndex: (json['studyPanelIndex'] as num?)?.toInt(),
+  studyPanelPosition: (json['studyPanelPosition'] as num?)?.toDouble() ?? 0.5,
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -93,6 +100,11 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
       _$InterlinearDirectionEnumMap[instance.interlinearDirection]!,
   'theme': _$ThemeModeEnumMap[instance.theme]!,
   'themeLayout': instance.themeLayout.toJson(),
+  'studyPanels': instance.studyPanels
+      .map((e) => _$StudyActionEnumMap[e]!)
+      .toList(),
+  'studyPanelIndex': instance.studyPanelIndex,
+  'studyPanelPosition': instance.studyPanelPosition,
 };
 
 const _$BibleTranslationEnumMap = {
@@ -127,4 +139,11 @@ const _$ThemeModeEnumMap = {
   ThemeMode.system: 'system',
   ThemeMode.light: 'light',
   ThemeMode.dark: 'dark',
+};
+
+const _$StudyActionEnumMap = {
+  StudyAction.compare: 'compare',
+  StudyAction.interlinear: 'interlinear',
+  StudyAction.commentary: 'commentary',
+  StudyAction.crossReferences: 'crossReferences',
 };
