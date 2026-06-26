@@ -36,7 +36,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:utils_core/utils_core.dart';
 
 class BibleBody extends HookConsumerWidget {
   const BibleBody({super.key});
@@ -229,29 +228,16 @@ class BibleBody extends HookConsumerWidget {
             useListenable(currentScrollController);
 
             final visibleReferences = useMemoized(() {
-              final viewportTop = MediaQuery.paddingOf(context).top;
+              const topBarHeight = 30.0;
+              final viewportTop = MediaQuery.paddingOf(context).top + topBarHeight;
               final viewportBottom = MediaQuery.sizeOf(context).height - studyPanelHeight;
 
-              final topByReference = currentChapterReference.references
-                  .mapToMap(
-                    (reference) => MapEntry(
-                      reference,
-                      (keyByReferenceRef.value[reference]?.currentContext?.findRenderObject() as RenderBox?)
-                          ?.localToGlobal(Offset.zero)
-                          .dy,
-                    ),
-                  )
-                  .withoutNullValues;
-
-              final ordered = currentChapterReference.references.where(topByReference.containsKey).toList();
-              return ordered
-                  .mapIndexed((i, top) {
-                    final top = topByReference[ordered[i]]!;
-                    final bottom = i + 1 < ordered.length ? topByReference[ordered[i + 1]]! : double.infinity;
-                    return top < viewportBottom && bottom > viewportTop ? ordered[i] : null;
-                  })
-                  .nonNulls
-                  .toList();
+              return currentChapterReference.references.where((reference) {
+                final top = (keyByReferenceRef.value[reference]?.currentContext?.findRenderObject() as RenderBox?)
+                    ?.localToGlobal(Offset.zero)
+                    .dy;
+                return top != null && top >= viewportTop && top <= viewportBottom;
+              }).toList();
             }, [currentScrollController, currentScrollController?.positionOrNull?.pixels, isResizingState.value]);
 
             final visibleVerseSelection = VerseSelection.fromReferences(visibleReferences);
