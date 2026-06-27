@@ -234,7 +234,7 @@ class BibleBody extends HookConsumerWidget {
             final isResizingState = useState(false);
 
             final visibleVerseSelectionState = useState(VerseSelection.empty());
-            final visibleVerseSelection = visibleVerseSelectionState.value;
+            final visibleVerseSelection = selectedVerseSelection ?? visibleVerseSelectionState.value;
 
             void computeVisibleVerses() {
               const topBarHeight = 30.0;
