@@ -191,6 +191,7 @@ class BibleBody extends HookConsumerWidget {
                     navigationHistoryState,
                     hardNavigateTo,
                     navigateToVerseSelection,
+                    studyPanels,
                     (studyAction) => ref.updateUser((user) => user.withStudyPanel(studyAction)),
                     selectedVerseSelection,
                     onClosePressed,
@@ -201,18 +202,25 @@ class BibleBody extends HookConsumerWidget {
               ),
               if (studyPanels.length > 1)
                 Positioned(
-                  bottom: 4,
+                  bottom: 2,
                   left: 0,
                   right: 0,
                   child: Center(
-                    child: SmoothPageIndicator(
-                      controller: studyPanelsPageController,
-                      count: studyPanels.length,
-                      effect: WormEffect(
-                        dotHeight: 8,
-                        dotWidth: 8,
-                        activeDotColor: context.colors.contentPrimary,
-                        dotColor: context.colors.surfacePrimary,
+                    child: Container(
+                      padding: .all(4),
+                      decoration: BoxDecoration(
+                        borderRadius: .circular(999),
+                        color: context.colors.surfaceSecondary.withValues(alpha: 0.5),
+                      ),
+                      child: SmoothPageIndicator(
+                        controller: studyPanelsPageController,
+                        count: studyPanels.length,
+                        effect: WormEffect(
+                          dotHeight: 8,
+                          dotWidth: 8,
+                          activeDotColor: context.colors.contentPrimary,
+                          dotColor: context.colors.surfacePrimary,
+                        ),
                       ),
                     ),
                   ),
@@ -324,6 +332,7 @@ class BibleBody extends HookConsumerWidget {
     ValueNotifier<NavigationHistory> navigationHistoryState,
     void Function(ChapterPosition, {String? bookmarkId, bool updateNavigationState}) hardNavigateTo,
     void Function(VerseSelection) navigateToVerseSelection,
+    List<StudyAction> studyPanels,
     void Function(StudyAction) onAddStudyPanel,
     VerseSelection? selectedVerseSelection,
     void Function() onClosePressed,
@@ -349,7 +358,11 @@ class BibleBody extends HookConsumerWidget {
           builder: (context) => AnimatedPositioned(
             duration: Duration(milliseconds: 300),
             curve: Curves.easeInOutCubic,
-            bottom: showBottomBar ? 0 : -72 - MediaQuery.paddingOf(context).bottom,
+            bottom: showBottomBar
+                ? studyPanels.isEmpty
+                      ? 0
+                      : 4
+                : -72 - MediaQuery.paddingOf(context).bottom,
             right: 0,
             left: 0,
             child: Container(
