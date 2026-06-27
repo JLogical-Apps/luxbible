@@ -9,6 +9,7 @@ import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
+import 'package:bible/ui/widgets/paragraphs_builder.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
@@ -58,21 +59,33 @@ enum StudyAction {
   }) {
     switch (this) {
       case compare:
-        final bibles = ref.read(userProvider).biblesOrDefault;
+        final user = ref.read(userProvider);
+        final bibles = user.biblesOrDefault;
         return bibles
             .mapIndexed<Widget>(
               (i, translation) => Consumer(
                 builder: (context, ref, child) {
-                  final text = ref
-                      .watch(verseSelectionTextProvider(selection: verseSelection, translation: translation))
+                  final paragraphs = ref
+                      .watch(verseSelectionParagraphsProvider(selection: verseSelection, translation: translation))
                       .value;
+                  final chapterReference = verseSelection.references.firstOrNull?.toChapterReference();
                   return Stack(
                     children: [
                       StyledStickyHeader.child(
                         title: translation.title().toText(),
                         child: verseSelection.isInTranslation(translation)
                             ? StyledLoading(
-                                child: text == null ? null : Padding(padding: .only(bottom: 16), child: text.toText()),
+                                child: paragraphs == null || chapterReference == null
+                                    ? null
+                                    : Padding(
+                                        padding: .only(bottom: 16),
+                                        child: ParagraphsBuilder(
+                                          paragraphs: paragraphs,
+                                          chapterReference: chapterReference,
+                                          user: user,
+                                          translation: translation,
+                                        ),
+                                      ),
                               )
                             : Padding(
                                 padding: .only(bottom: 16),

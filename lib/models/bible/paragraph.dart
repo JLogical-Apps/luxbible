@@ -1,5 +1,6 @@
 import 'package:bible/models/bible/verse.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
+import 'package:bible/utils/serialization_utils.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'paragraph.freezed.dart';
@@ -14,6 +15,7 @@ sealed class Paragraph with _$Paragraph {
     @JsonKey(name: 'v') required List<Verse> verses,
     @JsonKey(name: 'o', toJson: _firstVerseOffsetToJson, includeIfNull: false) @Default(0) int firstVerseOffset,
     @JsonKey(name: 't') required ParagraphType type,
+    @jsonIgnore @Default(false) bool preventIndent,
   }) = VersesParagraph;
 
   @FreezedUnionValue('s')

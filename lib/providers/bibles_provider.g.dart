@@ -348,6 +348,99 @@ final class VerseSelectionTextFamily extends $Family
   String toString() => r'verseSelectionTextProvider';
 }
 
+@ProviderFor(verseSelectionParagraphs)
+final verseSelectionParagraphsProvider = VerseSelectionParagraphsFamily._();
+
+final class VerseSelectionParagraphsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Paragraph>>,
+          List<Paragraph>,
+          FutureOr<List<Paragraph>>
+        >
+    with $FutureModifier<List<Paragraph>>, $FutureProvider<List<Paragraph>> {
+  VerseSelectionParagraphsProvider._({
+    required VerseSelectionParagraphsFamily super.from,
+    required ({VerseSelection selection, BibleTranslation translation})
+    super.argument,
+  }) : super(
+         retry: null,
+         name: r'verseSelectionParagraphsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$verseSelectionParagraphsHash();
+
+  @override
+  String toString() {
+    return r'verseSelectionParagraphsProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<Paragraph>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<Paragraph>> create(Ref ref) {
+    final argument =
+        this.argument
+            as ({VerseSelection selection, BibleTranslation translation});
+    return verseSelectionParagraphs(
+      ref,
+      selection: argument.selection,
+      translation: argument.translation,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is VerseSelectionParagraphsProvider &&
+        other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$verseSelectionParagraphsHash() =>
+    r'6525c441cb71d0f051de06fa56c50138f2b23c54';
+
+final class VerseSelectionParagraphsFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<List<Paragraph>>,
+          ({VerseSelection selection, BibleTranslation translation})
+        > {
+  VerseSelectionParagraphsFamily._()
+    : super(
+        retry: null,
+        name: r'verseSelectionParagraphsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  VerseSelectionParagraphsProvider call({
+    required VerseSelection selection,
+    required BibleTranslation translation,
+  }) => VerseSelectionParagraphsProvider._(
+    argument: (selection: selection, translation: translation),
+    from: this,
+  );
+
+  @override
+  String toString() => r'verseSelectionParagraphsProvider';
+}
+
 @ProviderFor(textSelectionText)
 final textSelectionTextProvider = TextSelectionTextFamily._();
 

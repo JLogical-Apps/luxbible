@@ -152,10 +152,10 @@ return lineBreak(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function(@JsonKey(name: 'v')  List<Verse> verses, @JsonKey(name: 'o', toJson: _firstVerseOffsetToJson, includeIfNull: false)  int firstVerseOffset, @JsonKey(name: 't')  ParagraphType type)?  verses,TResult Function(@JsonKey(name: 'x')  String text, @JsonKey(name: 't')  SectionType type)?  section,TResult Function()?  lineBreak,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function(@JsonKey(name: 'v')  List<Verse> verses, @JsonKey(name: 'o', toJson: _firstVerseOffsetToJson, includeIfNull: false)  int firstVerseOffset, @JsonKey(name: 't')  ParagraphType type, @jsonIgnore  bool preventIndent)?  verses,TResult Function(@JsonKey(name: 'x')  String text, @JsonKey(name: 't')  SectionType type)?  section,TResult Function()?  lineBreak,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case VersesParagraph() when verses != null:
-return verses(_that.verses,_that.firstVerseOffset,_that.type);case SectionParagraph() when section != null:
+return verses(_that.verses,_that.firstVerseOffset,_that.type,_that.preventIndent);case SectionParagraph() when section != null:
 return section(_that.text,_that.type);case BreakParagraph() when lineBreak != null:
 return lineBreak();case _:
   return orElse();
@@ -175,10 +175,10 @@ return lineBreak();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function(@JsonKey(name: 'v')  List<Verse> verses, @JsonKey(name: 'o', toJson: _firstVerseOffsetToJson, includeIfNull: false)  int firstVerseOffset, @JsonKey(name: 't')  ParagraphType type)  verses,required TResult Function(@JsonKey(name: 'x')  String text, @JsonKey(name: 't')  SectionType type)  section,required TResult Function()  lineBreak,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function(@JsonKey(name: 'v')  List<Verse> verses, @JsonKey(name: 'o', toJson: _firstVerseOffsetToJson, includeIfNull: false)  int firstVerseOffset, @JsonKey(name: 't')  ParagraphType type, @jsonIgnore  bool preventIndent)  verses,required TResult Function(@JsonKey(name: 'x')  String text, @JsonKey(name: 't')  SectionType type)  section,required TResult Function()  lineBreak,}) {final _that = this;
 switch (_that) {
 case VersesParagraph():
-return verses(_that.verses,_that.firstVerseOffset,_that.type);case SectionParagraph():
+return verses(_that.verses,_that.firstVerseOffset,_that.type,_that.preventIndent);case SectionParagraph():
 return section(_that.text,_that.type);case BreakParagraph():
 return lineBreak();}
 }
@@ -194,10 +194,10 @@ return lineBreak();}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function(@JsonKey(name: 'v')  List<Verse> verses, @JsonKey(name: 'o', toJson: _firstVerseOffsetToJson, includeIfNull: false)  int firstVerseOffset, @JsonKey(name: 't')  ParagraphType type)?  verses,TResult? Function(@JsonKey(name: 'x')  String text, @JsonKey(name: 't')  SectionType type)?  section,TResult? Function()?  lineBreak,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function(@JsonKey(name: 'v')  List<Verse> verses, @JsonKey(name: 'o', toJson: _firstVerseOffsetToJson, includeIfNull: false)  int firstVerseOffset, @JsonKey(name: 't')  ParagraphType type, @jsonIgnore  bool preventIndent)?  verses,TResult? Function(@JsonKey(name: 'x')  String text, @JsonKey(name: 't')  SectionType type)?  section,TResult? Function()?  lineBreak,}) {final _that = this;
 switch (_that) {
 case VersesParagraph() when verses != null:
-return verses(_that.verses,_that.firstVerseOffset,_that.type);case SectionParagraph() when section != null:
+return verses(_that.verses,_that.firstVerseOffset,_that.type,_that.preventIndent);case SectionParagraph() when section != null:
 return section(_that.text,_that.type);case BreakParagraph() when lineBreak != null:
 return lineBreak();case _:
   return null;
@@ -211,7 +211,7 @@ return lineBreak();case _:
 @JsonSerializable()
 
 class VersesParagraph extends Paragraph {
-  const VersesParagraph({@JsonKey(name: 'v') required final  List<Verse> verses, @JsonKey(name: 'o', toJson: _firstVerseOffsetToJson, includeIfNull: false) this.firstVerseOffset = 0, @JsonKey(name: 't') required this.type, final  String? $type}): _verses = verses,$type = $type ?? 'v',super._();
+  const VersesParagraph({@JsonKey(name: 'v') required final  List<Verse> verses, @JsonKey(name: 'o', toJson: _firstVerseOffsetToJson, includeIfNull: false) this.firstVerseOffset = 0, @JsonKey(name: 't') required this.type, @jsonIgnore this.preventIndent = false, final  String? $type}): _verses = verses,$type = $type ?? 'v',super._();
   factory VersesParagraph.fromJson(Map<String, dynamic> json) => _$VersesParagraphFromJson(json);
 
  final  List<Verse> _verses;
@@ -223,6 +223,7 @@ class VersesParagraph extends Paragraph {
 
 @JsonKey(name: 'o', toJson: _firstVerseOffsetToJson, includeIfNull: false) final  int firstVerseOffset;
 @JsonKey(name: 't') final  ParagraphType type;
+@jsonIgnore final  bool preventIndent;
 
 @JsonKey(name: 'r')
 final String $type;
@@ -241,16 +242,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is VersesParagraph&&const DeepCollectionEquality().equals(other._verses, _verses)&&(identical(other.firstVerseOffset, firstVerseOffset) || other.firstVerseOffset == firstVerseOffset)&&(identical(other.type, type) || other.type == type));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VersesParagraph&&const DeepCollectionEquality().equals(other._verses, _verses)&&(identical(other.firstVerseOffset, firstVerseOffset) || other.firstVerseOffset == firstVerseOffset)&&(identical(other.type, type) || other.type == type)&&(identical(other.preventIndent, preventIndent) || other.preventIndent == preventIndent));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_verses),firstVerseOffset,type);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_verses),firstVerseOffset,type,preventIndent);
 
 @override
 String toString() {
-  return 'Paragraph.verses(verses: $verses, firstVerseOffset: $firstVerseOffset, type: $type)';
+  return 'Paragraph.verses(verses: $verses, firstVerseOffset: $firstVerseOffset, type: $type, preventIndent: $preventIndent)';
 }
 
 
@@ -261,7 +262,7 @@ abstract mixin class $VersesParagraphCopyWith<$Res> implements $ParagraphCopyWit
   factory $VersesParagraphCopyWith(VersesParagraph value, $Res Function(VersesParagraph) _then) = _$VersesParagraphCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'v') List<Verse> verses,@JsonKey(name: 'o', toJson: _firstVerseOffsetToJson, includeIfNull: false) int firstVerseOffset,@JsonKey(name: 't') ParagraphType type
+@JsonKey(name: 'v') List<Verse> verses,@JsonKey(name: 'o', toJson: _firstVerseOffsetToJson, includeIfNull: false) int firstVerseOffset,@JsonKey(name: 't') ParagraphType type,@jsonIgnore bool preventIndent
 });
 
 
@@ -278,12 +279,13 @@ class _$VersesParagraphCopyWithImpl<$Res>
 
 /// Create a copy of Paragraph
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? verses = null,Object? firstVerseOffset = null,Object? type = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? verses = null,Object? firstVerseOffset = null,Object? type = null,Object? preventIndent = null,}) {
   return _then(VersesParagraph(
 verses: null == verses ? _self._verses : verses // ignore: cast_nullable_to_non_nullable
 as List<Verse>,firstVerseOffset: null == firstVerseOffset ? _self.firstVerseOffset : firstVerseOffset // ignore: cast_nullable_to_non_nullable
 as int,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as ParagraphType,
+as ParagraphType,preventIndent: null == preventIndent ? _self.preventIndent : preventIndent // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

@@ -384,8 +384,9 @@ class ParagraphsBuilder extends HookWidget {
                         ]
                       : [TextSpan(text: text, style: bibleTextStyle.smallHeading)]
                 : <InlineSpan>[],
-          VersesParagraph(:final verses, :final type) => [
-            if (useParagraphs) SizedWidgetSpan.space(size: Size(type.hangingIndent != 0 ? 0 : type.indent, 0)),
+          VersesParagraph(:final verses, :final type, :final preventIndent) => [
+            if (useParagraphs && !preventIndent)
+              SizedWidgetSpan.space(size: Size(type.hangingIndent != 0 ? 0 : type.indent, 0)),
             ...verses
                 .mapIndexed((verseIndex, verse) {
                   final reference = getVerseReference(verse);

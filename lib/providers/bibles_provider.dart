@@ -2,12 +2,16 @@ import 'package:bible/models/annotation.dart';
 import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/chapter.dart';
+import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/models/bible/verse.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
+import 'package:bible/utils/range.dart';
+import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:utils_core/utils_core.dart';
 
 part 'bibles_provider.g.dart';
 
@@ -61,6 +65,60 @@ FutureOr<String> verseSelectionText(
         .join(' ');
   }
 }
+
+@riverpod
+FutureOr<List<Paragraph>> verseSelectionParagraphs(
+  Ref ref, {
+  required VerseSelection selection,
+  required BibleTranslation translation,
+}) => selection.references.groupListsBy((reference) => reference.toChapterReference()).mapToIterable<List<Paragraph>>((
+  chapterReference,
+  reference,
+) {
+  final chapter = ref.watch(chapterProvider(chapterReference: chapterReference, translation: translation)).requireValue;
+
+  bool isSelected(Verse verse) => selection.references.any((reference) => reference.verseNum == verse.verseNum);
+
+  final paragraphs = chapter.paragraphs;
+  final selectedIndices = paragraphs
+      .mapIndexed((index, paragraph) => paragraph is VersesParagraph && paragraph.verses.any(isSelected) ? index : null)
+      .nonNulls
+      .toList();
+  if (selectedIndices.isEmpty) return [];
+
+  bool sectionIntroducesShownParagraph(int index) {
+    final firstVerse = paragraphs.skip(index + 1).whereType<VersesParagraph>().firstOrNull?.verses.firstOrNull;
+    return firstVerse != null && isSelected(firstVerse);
+  }
+
+  var startIndex = selectedIndices.first;
+  while (startIndex > 0 && paragraphs[startIndex - 1] is SectionParagraph) {
+    startIndex--;
+  }
+
+  return Range.generate(startIndex, selectedIndices.last)
+      .map((index) {
+        final paragraph = paragraphs[index];
+        switch (paragraph) {
+          case SectionParagraph():
+            return sectionIntroducesShownParagraph(index) ? paragraph : null;
+          case VersesParagraph():
+            final selectedVerses = paragraph.verses.where(isSelected).toList();
+            if (selectedVerses.isEmpty) return null;
+
+            final isContinuation = selectedVerses.first != paragraph.verses.first;
+            return paragraph.copyWith(
+              verses: selectedVerses,
+              firstVerseOffset: isContinuation ? 0 : paragraph.firstVerseOffset,
+              preventIndent: selectedVerses.first != paragraph.verses.first,
+            );
+          case BreakParagraph():
+            return paragraph;
+        }
+      })
+      .nonNulls
+      .toList();
+}).flattenedToList;
 
 @riverpod
 FutureOr<String> textSelectionText(Ref ref, BibleTextSelection selection) {
