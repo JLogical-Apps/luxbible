@@ -43,14 +43,12 @@ class YouVersion {
               lastVerseNum = int.parse(child.attributes['v']!);
               return <Verse>[];
             }(),
-            // The visible verse-number label duplicates the marker; skip its text.
-            dom.Element child when child.classes.contains('yv-vlbl') => <Verse>[],
+            dom.Element child when child.classes.contains('yv-vlbl') => [],
             dom.Element child when child.classes.contains('wj') => parseVerses(
               child,
               isRedLetters: true,
               isItalic: isItalic,
             ),
-            // Translator-supplied words (e.g. NASB) are wrapped in `<span class="it">`.
             dom.Element child when child.classes.contains('it') => parseVerses(
               child,
               isRedLetters: isRedLetters,
@@ -97,7 +95,7 @@ class YouVersion {
         's' || 's1' => sectionParagraph(.s1),
         's2' => sectionParagraph(.s2),
         'd' => sectionParagraph(.d),
-        'p' || 'pmo' || 'pc' => versesParagraph(.p),
+        'p' || 'pm' || 'pmo' || 'pmc' || 'pc' => versesParagraph(.p),
         'pi' => versesParagraph(.pi),
         'q' || 'q1' => versesParagraph(.q1),
         'q2' => versesParagraph(.q2),
