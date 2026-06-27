@@ -28,18 +28,31 @@ sealed class Paragraph with _$Paragraph {
   factory Paragraph.fromJson(Map<String, dynamic> json) => _$ParagraphFromJson(json);
 }
 
-enum SectionType { s1, s2, ms, d }
+enum SectionType { s1, s2, ms, d, qa }
 
 enum ParagraphType {
   p,
   pi,
+  pc,
+  pr,
   q1,
   q2,
   qr,
+  qc,
+  m,
   li1,
   li2;
 
-  bool get isPoetic => this == q1 || this == q2 || this == qr;
+  bool get isPoetic => this == q1 || this == q2 || this == qr || this == qc;
+
+  double get indent => switch (this) {
+    q1 || li1 || m || qc || pc => 0,
+    pi => 40,
+    _ => 20,
+  };
+
+  double get hangingIndent => this == q1 || this == q2 ? 30 : 0;
+  double get blockIndent => hangingIndent == 0 ? 0 : indent;
 }
 
 int? _firstVerseOffsetToJson(int firstVerseOffset) => firstVerseOffset.nullIfZero;

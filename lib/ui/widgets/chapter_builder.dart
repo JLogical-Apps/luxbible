@@ -357,7 +357,10 @@ class ChapterBuilder extends HookConsumerWidget {
                             Text.rich(
                               key: textKey,
                               TextSpan(children: renderSpans),
-                              textAlign: paragraph.as<VersesParagraph>()?.type.textAlign ?? .start,
+                              textAlign:
+                                  paragraph.as<VersesParagraph>()?.type.textAlign ??
+                                  paragraph.as<SectionParagraph>()?.type.textAlign ??
+                                  .start,
                               textDirection: textDirection,
                             ),
                           ],
@@ -398,9 +401,8 @@ class ChapterBuilder extends HookConsumerWidget {
         ...switch (paragraph) {
           SectionParagraph(:final text, :final type) =>
             user.themeLayout.sections
-                ? type == .d
-                      ? [TextSpan(text: text, style: bibleTextStyle.psalmHeader)]
-                      : [
+                ? type.isLarge
+                      ? [
                           if (paragraphIndex != 0)
                             TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 1.5)),
                           TextSpan(
@@ -409,6 +411,7 @@ class ChapterBuilder extends HookConsumerWidget {
                           ),
                           TextSpan(text: '\n ', style: bibleTextStyle.body.copyWith(height: 0.8)),
                         ]
+                      : [TextSpan(text: text, style: bibleTextStyle.smallHeading)]
                 : <InlineSpan>[],
           VersesParagraph(:final verses, :final type) => [
             if (useParagraphs) SizedWidgetSpan.space(size: Size(type.hangingIndent != 0 ? 0 : type.indent, 0)),
@@ -673,7 +676,7 @@ class BibleTextStyle {
 
   TextStyle get majorSection => base.extraBold.copyWith(fontSize: 28 * multiplier, height: 40 / 28);
   TextStyle get section => base.bold.copyWith(fontSize: 24 * multiplier, height: 40 / 24);
-  TextStyle get psalmHeader =>
+  TextStyle get smallHeading =>
       base.regular.copyWith(fontSize: 20 * multiplier, letterSpacing: 0, height: 40 / 20, fontStyle: .italic);
   TextStyle get verseNumber =>
       base.bold.copyWith(fontSize: 14 * multiplier, letterSpacing: 0, decorationStyle: .dotted);

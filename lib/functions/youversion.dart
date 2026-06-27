@@ -65,12 +65,19 @@ class YouVersion {
       // Class is e.g. "s1 yv-h" or "p"; the USX-style token is the non-`yv-` one.
       final style = div.classes.firstWhereOrNull((className) => !className.startsWith('yv-'));
 
-      SectionParagraph sectionParagraph(SectionType sectionType) =>
-          SectionParagraph(text: div.text.trim(), type: sectionType);
+      SectionParagraph sectionParagraph(SectionType sectionType) => SectionParagraph(
+        text: div.nodes
+            .where((node) => node.attributes['class']?.startsWith('yv-') != true)
+            .map((node) => node.text)
+            .join(),
+        type: sectionType,
+      );
 
-      VersesParagraph? versesParagraph(ParagraphType paragraphType) {
-        final previousLastVerseNum = lastVerseNum;
-        final verses = parseVerses(div).trim();
+      VersesParagraph? buildVersesParagraph(
+        ParagraphType paragraphType,
+        int? previousLastVerseNum,
+        List<Verse> verses,
+      ) {
         if (verses.isEmpty) {
           return null;
         }
@@ -91,20 +98,60 @@ class YouVersion {
         );
       }
 
-      final paragraph = switch (style) {
-        's' || 's1' => sectionParagraph(.s1),
-        's2' => sectionParagraph(.s2),
-        'd' => sectionParagraph(.d),
-        'p' || 'pm' || 'pmo' || 'pmc' || 'pc' => versesParagraph(.p),
-        'pi' => versesParagraph(.pi),
-        'q' || 'q1' => versesParagraph(.q1),
-        'q2' => versesParagraph(.q2),
-        'qr' => versesParagraph(.qr),
-        'li' || 'li1' => versesParagraph(.li1),
-        'li2' => versesParagraph(.li2),
-        'b' => BreakParagraph(),
-        _ => null,
-      };
+      VersesParagraph? versesParagraph(ParagraphType paragraphType) =>
+          buildVersesParagraph(paragraphType, lastVerseNum, parseVerses(div).trim());
+
+      VersesParagraph? tableParagraph() {
+        final previousLastVerseNum = lastVerseNum;
+        final verses = div
+            .querySelectorAll('tr')
+            .expandIndexed<Verse>((rowIndex, row) {
+              final cells = row.children.where((cell) => cell.localName == 'td').toList();
+              return [
+                if (rowIndex != 0)
+                  Verse(
+                    verseNum: lastVerseNum ?? 0,
+                    words: [Word(text: '\n')],
+                  ),
+                ...cells.expandIndexed(
+                  (cellIndex, cell) => [
+                    if (cellIndex != 0)
+                      Verse(
+                        verseNum: lastVerseNum ?? 0,
+                        words: [Word(text: '   ')],
+                      ),
+                    ...parseVerses(cell),
+                  ],
+                ),
+              ];
+            })
+            .withSameVersesCombined()
+            .toList()
+            .trim();
+        return buildVersesParagraph(.m, previousLastVerseNum, verses);
+      }
+
+      final paragraph = div.localName == 'table'
+          ? tableParagraph()
+          : switch (style) {
+              's' || 's1' || 'cl' => sectionParagraph(.s1),
+              's2' => sectionParagraph(.s2),
+              'd' || 'qd' => sectionParagraph(.d),
+              'p' || 'pm' || 'pmo' || 'pmc' => versesParagraph(.p),
+              'pc' => versesParagraph(.pc),
+              'pr' || 'pmr' || 'cls' => versesParagraph(.pr),
+              'pi' || 'pi1' => versesParagraph(.pi),
+              'm' || 'mi' => versesParagraph(.m),
+              'q' || 'q1' => versesParagraph(.q1),
+              'q2' => versesParagraph(.q2),
+              'qr' => versesParagraph(.qr),
+              'qc' => versesParagraph(.qc),
+              'qa' => sectionParagraph(.qa),
+              'li' || 'li1' => versesParagraph(.li1),
+              'li2' || 'lim' => versesParagraph(.li2),
+              'b' => BreakParagraph(),
+              _ => null,
+            };
 
       return paragraph == null ? paragraphs : (paragraphs..add(paragraph));
     });
