@@ -20,6 +20,8 @@ class VerseSelection extends Equatable {
     spans: [VerseSpanReference(start: VerseBiblePointer(reference: reference))],
   );
 
+  factory VerseSelection.empty() => VerseSelection(spans: []);
+
   @override
   List<Object?> get props => [spans];
 

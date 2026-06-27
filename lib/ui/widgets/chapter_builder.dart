@@ -44,7 +44,7 @@ class ChapterBuilder extends HookConsumerWidget {
   final BibleTextSelection? textSelection;
   final Function(BibleTextSelection?, bool isNewSelection)? onTextSelectionUpdated;
 
-  final ObjectRef<Map<Reference, GlobalKey>>? keyByReferenceRef;
+  final Map<Reference, GlobalKey>? keyByReference;
 
   const ChapterBuilder({
     super.key,
@@ -55,7 +55,7 @@ class ChapterBuilder extends HookConsumerWidget {
     required this.onHandleLongPress,
     this.textSelection,
     this.onTextSelectionUpdated,
-    this.keyByReferenceRef,
+    this.keyByReference,
   });
 
   BookType get book => chapterReference.book;
@@ -88,17 +88,7 @@ class ChapterBuilder extends HookConsumerWidget {
       ref.watch(chapterProvider(translation: translation, chapterReference: previousReference));
     }
 
-    final keyByReferenceRef = this.keyByReferenceRef;
-
     final textSelectionStartAnchorState = useState<BibleTextSelectionWordAnchor?>(null);
-
-    final keyByReference = chapterReference.references.mapToMap(
-      (reference) => MapEntry(reference, keyByReferenceRef?.value[reference] ?? GlobalKey()),
-    );
-    if (keyByReferenceRef != null &&
-        chapterReference.references.any((ref) => !keyByReferenceRef.value.containsKey(ref))) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => keyByReferenceRef.value = keyByReference);
-    }
 
     final paragraphHitTesters = <ParagraphHitTester>[];
     BibleTextSelectionWordAnchor? getAnchorAtGlobalPosition(Offset globalPosition) =>
@@ -390,7 +380,7 @@ class ChapterBuilder extends HookConsumerWidget {
   List<MapEntry<Paragraph, List<InlineSpan>>> getParagraphSpansByParagraph(
     BuildContext context, {
     required Chapter chapter,
-    required Map<Reference, GlobalKey> keyByReference,
+    required Map<Reference, GlobalKey>? keyByReference,
   }) {
     final bibleTextStyle = BibleTextStyle(context, config: user.themeLayout);
 
@@ -442,7 +432,7 @@ class ChapterBuilder extends HookConsumerWidget {
                     if (verse.verseNum > maxPreviousVerseNum)
                       ...[
                         SizedWidgetSpan(
-                          child: SizedBox.shrink(key: keyByReference[reference]),
+                          child: SizedBox.shrink(key: keyByReference?[reference]),
                           size: Size.zero,
                         ),
                         if (user.themeLayout.verseNumbers)

@@ -36,6 +36,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:utils_core/utils_core.dart';
 
 class BibleBody extends HookConsumerWidget {
   const BibleBody({super.key});
@@ -94,7 +95,10 @@ class BibleBody extends HookConsumerWidget {
         : VerseSelection.fromReferences(selectedReferencesState.value);
 
     final textSelectionState = useState<BibleTextSelection?>(null);
-    final keyByReferenceRef = useRef(<Reference, GlobalKey>{});
+    final keyByReference = useMemoized(
+      () => currentChapterReference.references.mapToMap((reference) => MapEntry(reference, GlobalKey())),
+      [currentChapterReference],
+    );
 
     void onClosePressed() {
       textSelectionState.value = null;
@@ -122,7 +126,7 @@ class BibleBody extends HookConsumerWidget {
       await ref.read(chapterProvider(translation: user.translation, chapterReference: chapterReference).future);
       await Future.delayed(Duration(milliseconds: 200));
 
-      final verseContext = keyByReferenceRef.value[verseSelection.references.first]?.currentContext;
+      final verseContext = keyByReference[verseSelection.references.first]?.currentContext;
       if (verseContext != null && verseContext.mounted) {
         Scrollable.ensureVisible(
           verseContext,
@@ -156,7 +160,7 @@ class BibleBody extends HookConsumerWidget {
                 scrollPercentByReferenceRef,
                 selectedVerseSelection,
                 navigateToVerseSelection,
-                keyByReferenceRef,
+                keyByReference,
               ),
               Positioned(
                 top: 0,
@@ -216,8 +220,8 @@ class BibleBody extends HookConsumerWidget {
             ],
           ),
         ),
-        HookBuilder(
-          builder: (context) {
+        HookConsumerBuilder(
+          builder: (context, ref) {
             final minStudyPanelHeight = 82.0;
             final maxStudyPanelHeight = MediaQuery.sizeOf(context).height * 0.5;
 
@@ -229,21 +233,33 @@ class BibleBody extends HookConsumerWidget {
             );
             final isResizingState = useState(false);
 
-            final visibleVerseSelection = useListenableSelector(currentScrollController, () {
+            final visibleVerseSelectionState = useState(VerseSelection.empty());
+            final visibleVerseSelection = visibleVerseSelectionState.value;
+
+            void computeVisibleVerses() {
               const topBarHeight = 30.0;
               final viewportTop = MediaQuery.paddingOf(context).top + topBarHeight;
               final studyPanelHeight = studyPanelHeightRef.value.clamp(minStudyPanelHeight, maxStudyPanelHeight);
               final viewportBottom = MediaQuery.sizeOf(context).height - studyPanelHeight;
 
-              return VerseSelection.fromReferences(
-                currentChapterReference.references.where((reference) {
-                  final top = (keyByReferenceRef.value[reference]?.currentContext?.findRenderObject() as RenderBox?)
-                      ?.localToGlobal(Offset.zero)
-                      .dy;
-                  return top != null && top >= viewportTop && top <= viewportBottom;
-                }).toList(),
-              );
-            });
+              final visibleReferences = currentChapterReference.references.where((reference) {
+                final top = (keyByReference[reference]?.currentContext?.findRenderObject() as RenderBox?)
+                    ?.localToGlobal(Offset.zero)
+                    .dy;
+                return top != null && top >= viewportTop && top <= viewportBottom;
+              }).toList();
+
+              if (visibleReferences.isNotEmpty) {
+                visibleVerseSelectionState.value = VerseSelection.fromReferences(visibleReferences);
+              }
+            }
+
+            final chapterValue = ref.watch(
+              chapterProvider(chapterReference: currentChapterReference, translation: user.translation),
+            );
+            useOnListenableChange(currentScrollController, computeVisibleVerses);
+            useOnListenableChange(isResizingState, computeVisibleVerses);
+            usePostFrameEffect(computeVisibleVerses, [currentScrollController, chapterValue.value]);
 
             usePeriodic(Duration(seconds: 1), () {
               final studyPanelPercentVisible = studyPanelHeightRef.value / maxStudyPanelHeight;
@@ -560,7 +576,7 @@ class BibleBody extends HookConsumerWidget {
     ObjectRef<Map<ChapterReference, double>> scrollPercentByReferenceRef,
     VerseSelection? selectedVerseSelection,
     void Function(VerseSelection) navigateToVerseSelection,
-    ObjectRef<Map<Reference, GlobalKey<State<StatefulWidget>>>> keyByReferenceRef,
+    Map<Reference, GlobalKey<State<StatefulWidget>>> keyByReference,
   ) {
     final textSelection = textSelectionState.value;
 
@@ -746,7 +762,7 @@ class BibleBody extends HookConsumerWidget {
                                   textSelectionState.value = textSelection;
                                 }
                               },
-                              keyByReferenceRef: keyByReferenceRef,
+                              keyByReference: keyByReference,
                             ),
                             Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).bottom + 88)),
                           ],
