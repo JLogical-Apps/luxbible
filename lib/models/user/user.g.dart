@@ -82,6 +82,11 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   studyPanelIndex: (json['studyPanelIndex'] as num?)?.toInt(),
   studyPanelBottomPosition:
       (json['studyPanelBottomPosition'] as num?)?.toDouble() ?? 0.5,
+  tutorials:
+      (json['tutorials'] as List<dynamic>?)
+          ?.map((e) => $enumDecode(_$TutorialEnumMap, e))
+          .toList() ??
+      const [],
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -104,6 +109,7 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'studyPanels': instance.studyPanels.map((e) => e.toJson()).toList(),
   'studyPanelIndex': instance.studyPanelIndex,
   'studyPanelBottomPosition': instance.studyPanelBottomPosition,
+  'tutorials': instance.tutorials.map((e) => _$TutorialEnumMap[e]!).toList(),
 };
 
 const _$BibleTranslationEnumMap = {
@@ -139,3 +145,5 @@ const _$ThemeModeEnumMap = {
   ThemeMode.light: 'light',
   ThemeMode.dark: 'dark',
 };
+
+const _$TutorialEnumMap = {Tutorial.interlinearBsb: 'interlinearBsb'};

@@ -12,6 +12,7 @@ import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/main_toolbar_configuration.dart';
 import 'package:bible/models/user/text_selection_configuration.dart';
 import 'package:bible/models/user/theme_layout_configuration.dart';
+import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/models/user/verse_selection_configuration.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
@@ -48,6 +49,7 @@ sealed class User with _$User {
     @Default([]) List<StudyPanel> studyPanels,
     int? studyPanelIndex,
     @Default(0.5) double studyPanelBottomPosition,
+    @Default([]) List<Tutorial> tutorials,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -197,4 +199,6 @@ sealed class User with _$User {
 
   User withStudyPanel(StudyPanel studyPanel) =>
       copyWith(studyPanels: [...studyPanels, studyPanel], studyPanelIndex: studyPanels.length);
+
+  User withTutorial(Tutorial tutorial) => copyWith(tutorials: tutorials + [tutorial]);
 }
