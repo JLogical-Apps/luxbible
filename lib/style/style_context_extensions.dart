@@ -1,7 +1,6 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:bible/style/color_library.dart';
 import 'package:bible/style/text_style_library.dart';
-import 'package:bible/style/widgets/component_size.dart';
 import 'package:bible/style/widgets/dialog/styled_dialog.dart';
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/sheet/styled_sheet_navigation_context.dart';
@@ -90,16 +89,15 @@ extension StyleContextExtensions on BuildContext {
   void showStyledSnackbar({required String messageText}) async {
     Flushbar(
       messageText: StyledListItem(
-        size: ComponentSize.sm,
+        size: .sm,
         title: Text(messageText, style: textStyle.paragraphMd.copyWith(color: colors.contentPrimaryInverse)),
-        leading: SizedBox(
-          width: 64,
-          height: 64,
+        leading: SizedBox.square(
+          dimension: 64,
           child: Center(child: Icon(Symbols.check_circle, size: 24, color: colors.contentPrimaryInverse)),
         ),
       ),
       duration: Duration(seconds: 3),
-      dismissDirection: FlushbarDismissDirection.VERTICAL,
+      dismissDirection: .VERTICAL,
       margin: .all(16),
       padding: .zero,
       backgroundColor: colors.inverted.surfacePrimary,
@@ -108,7 +106,7 @@ extension StyleContextExtensions on BuildContext {
       forwardAnimationCurve: Curves.easeOutCubic,
       reverseAnimationCurve: Curves.easeInCubic,
       animationDuration: Duration(milliseconds: 300),
-      flushbarPosition: FlushbarPosition.TOP,
+      flushbarPosition: .TOP,
     ).show(Navigator.of(this, rootNavigator: true).context);
   }
 }
