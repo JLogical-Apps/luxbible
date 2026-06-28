@@ -146,4 +146,8 @@ const _$ThemeModeEnumMap = {
   ThemeMode.dark: 'dark',
 };
 
-const _$TutorialEnumMap = {Tutorial.interlinearBsb: 'interlinearBsb'};
+const _$TutorialEnumMap = {
+  Tutorial.interlinearBsb: 'interlinearBsb',
+  Tutorial.crossReferencesBsb: 'crossReferencesBsb',
+  Tutorial.concordanceBsb: 'concordanceBsb',
+};

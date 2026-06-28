@@ -1,6 +1,8 @@
+import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/reference/verse_span_reference.dart';
+import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
@@ -68,6 +70,11 @@ enum StudyAction {
       case crossReferences:
         final user = ref.read(userProvider);
         final crossReferences = ref.read(crossReferencesProvider);
+
+        final crossReferenceTranslation = user.translation.isOnline ? BibleTranslation.bsb : user.translation;
+        final showCrossReferencesBsbBanner =
+            user.translation.isOnline && !user.tutorials.contains(Tutorial.crossReferencesBsb);
+
         final crossReferenceSpans = verseSelection.references
             .map((reference) => crossReferences[reference])
             .nonNulls
@@ -85,36 +92,67 @@ enum StudyAction {
                   child: StyledBanner(message: 'No Cross References Found'.toText()),
                 ),
               ]
-            : crossReferenceSpans
-                  .map(
-                    (crossReference) => Consumer(
-                      key: ValueKey(crossReference),
-                      builder: (context, ref, child) {
-                        final verseSelection = crossReference.toVerseSelection();
-                        final book = crossReference.references.first.book;
-                        final translation = user.translation.effectiveFor(book);
-                        final verses = ref
-                            .watch(verseSelectionTextProvider(translation: translation, selection: verseSelection))
-                            .value;
-                        return StyledListItem(
-                          title: Row(
-                            spacing: 4,
-                            children: [
-                              verseSelection.format().toText(),
-                              if (!user.translation.containsBook(book)) StyledTag(child: translation.title().toText()),
+            : [
+                if (showCrossReferencesBsbBanner)
+                  Padding(
+                    padding: .all(16),
+                    child: StyledBanner(
+                      colorBuilder: .surfaceTertiary,
+                      leading: Symbols.book.toIcon(),
+                      message: 'Cross references use BSB'.toText(),
+                      action: StyledTextAction(
+                        label: 'Learn More'.toText(),
+                        onPressed: () => context.showStyledDialog(
+                          (context) => StyledDialog(
+                            title: 'Cross References'.toText(),
+                            body:
+                                "Because your selected translation is only available online, cross references are shown using the BSB to save on performance and costs. Your selected translation is used everywhere else in the app."
+                                    .toText(),
+                            buttonsBuilder: (context) => [
+                              StyledRectButton.secondary(
+                                label: "Don't Show Again".toText(),
+                                onPressed: () {
+                                  ref.updateUser((user) => user.withTutorial(.crossReferencesBsb));
+                                  context.pop();
+                                },
+                              ),
+                              StyledRectButton.primary(label: 'Ok'.toText(), onPressed: () => context.pop()),
                             ],
                           ),
-                          subtitle: StyledLoading(child: verses?.toText()),
-                          onPressed: () {
-                            if (popOnAction) context.pop();
-                            onNavigateToVerseSelection(verseSelection);
-                          },
-                          trailing: Symbols.expand_circle_right.toIcon(),
-                        );
-                      },
+                        ),
+                      ),
                     ),
-                  )
-                  .toList();
+                  ),
+                ...crossReferenceSpans.map(
+                  (crossReference) => Consumer(
+                    key: ValueKey(crossReference),
+                    builder: (context, ref, child) {
+                      final verseSelection = crossReference.toVerseSelection();
+                      final book = crossReference.references.first.book;
+                      final translation = crossReferenceTranslation.effectiveFor(book);
+                      final verses = ref
+                          .watch(verseSelectionTextProvider(translation: translation, selection: verseSelection))
+                          .value;
+                      return StyledListItem(
+                        title: Row(
+                          spacing: 4,
+                          children: [
+                            verseSelection.format().toText(),
+                            if (!crossReferenceTranslation.containsBook(book))
+                              StyledTag(child: translation.title().toText()),
+                          ],
+                        ),
+                        subtitle: StyledLoading(child: verses?.toText()),
+                        onPressed: () {
+                          if (popOnAction) context.pop();
+                          onNavigateToVerseSelection(verseSelection);
+                        },
+                        trailing: Symbols.expand_circle_right.toIcon(),
+                      );
+                    },
+                  ),
+                ),
+              ];
     }
   }
 
