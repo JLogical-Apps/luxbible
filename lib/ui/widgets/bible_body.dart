@@ -45,7 +45,12 @@ class BibleBody extends HookConsumerWidget {
 
     final initialPosition = user.lastPosition;
 
-    final pageController = usePageController(initialPage: initialPosition.reference.bibleChapterIndex);
+    final isSideLayout = MediaQuery.sizeOf(context).width >= 800;
+
+    final pageController = usePageController(
+      initialPage: initialPosition.reference.bibleChapterIndex,
+      keys: [isSideLayout],
+    );
 
     final currentPage = (pageController.pageOrNull ?? initialPosition.reference.bibleChapterIndex).round();
     final currentChapterReference = ChapterReference.fromBibleChapterIndex(currentPage);
@@ -138,8 +143,6 @@ class BibleBody extends HookConsumerWidget {
         );
       }
     }
-
-    final isSideLayout = MediaQuery.sizeOf(context).width >= 800;
 
     final studyPanels = user.studyPanels;
     final studyPanelsPageController = usePageController(
