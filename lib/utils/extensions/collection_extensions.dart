@@ -41,9 +41,6 @@ extension BibleListExtensions<T> on List<T> {
   List<T> sortedByIndexIn<T2>(List<T2> source, [T2 Function(T)? mapper]) =>
       sortedBy((e) => source.indexOfOrNull(mapper == null ? e as T2 : mapper(e)) ?? double.infinity);
 
-  List<T> sortedByDescending<K extends Comparable>(K Function(T) mapper) =>
-      [...this]..sortByCompare(mapper, (a, b) => b.compareTo(a));
-
   T get random => this[Random().nextInt(length)];
 
   bool containsInOrder(List<T> list) => Iterable.generate(
@@ -77,6 +74,9 @@ extension BibleListExtensions<T> on List<T> {
 extension BibleIterableExtensions<T> on Iterable<T> {
   bool containsAll(Iterable<T> list) => list.every((item) => contains(item));
   bool containsAny(Iterable<T> list) => list.any((item) => contains(item));
+
+  List<T> sortedByDescending<K extends Comparable>(K Function(T) mapper) =>
+      [...this]..sortByCompare(mapper, (a, b) => b.compareTo(a));
 
   bool anyIndexed(bool Function(int index, T) predicate) {
     for (var i = 0; i < length; i++) {
@@ -118,6 +118,8 @@ extension BibleMapExtensions<K, V> on Map<K, V> {
 
   Map<K, V> sortedBy<E extends Comparable<E>>(E Function(K, V) elementGetter) =>
       entries.sortedBy((entry) => elementGetter(entry.key, entry.value)).toMap();
+  Map<K, V> sortedByDescending<E extends Comparable<E>>(E Function(K, V) elementGetter) =>
+      entries.sortedByDescending((entry) => elementGetter(entry.key, entry.value)).toMap();
 
   Map<K, V> withReorder(int oldIndex, int newIndex) => entries.toList().withReorder(oldIndex, newIndex).toMap();
 

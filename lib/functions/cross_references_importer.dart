@@ -1,12 +1,11 @@
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_span_reference.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/services.dart';
 import 'package:utils_core/utils_core.dart';
 
 class CrossReferencesImporter {
-  Future<Map<Reference, List<VerseSpanReference>>> import() async {
+  Future<Map<Reference, Map<VerseSpanReference, int>>> import() async {
     final crossReferencesRaw = await rootBundle.loadString('assets/cross_references/cross_references.txt');
     return crossReferencesRaw
         .split('\n')
@@ -22,10 +21,7 @@ class CrossReferencesImporter {
           ),
         )
         .groupListsBy((line) => line.referenceOf)
-        .mapValues(
-          (reference, lines) =>
-              lines.sortedByDescending((line) => line.votes ?? -1).map((line) => line.referenceTo).toList(),
-        );
+        .mapValues((reference, lines) => lines.mapToMap((line) => MapEntry(line.referenceTo, line.votes ?? 0)));
   }
 }
 

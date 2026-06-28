@@ -5,4 +5,4 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'cross_references_provider.g.dart';
 
 @riverpod
-Map<Reference, List<VerseSpanReference>> crossReferences(Ref ref) => throw UnimplementedError();
+Map<Reference, Map<VerseSpanReference, int>> crossReferences(Ref ref) => throw UnimplementedError();

@@ -1,5 +1,6 @@
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
+import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
@@ -95,54 +96,49 @@ enum StudyAction {
       case crossReferences:
         final user = ref.read(userProvider);
         final crossReferences = ref.read(crossReferencesProvider);
-        final relatedCrossReferences = verseSelection.references
-            .mapToMap((reference) => MapEntry(reference, crossReferences[reference]))
-            .withoutNullValues;
-        return relatedCrossReferences.isEmpty
+        final crossReferenceSpans = verseSelection.references
+            .map((reference) => crossReferences[reference])
+            .nonNulls
+            .fold(<VerseSpanReference, int>{}, (totalVoteBySpan, voteBySpan) {
+              voteBySpan.forEach((span, vote) => totalVoteBySpan.update(span, (v) => v + vote, ifAbsent: () => vote));
+              return totalVoteBySpan;
+            })
+            .sortedByDescending((span, votes) => votes)
+            .keys
+            .toList();
+        return crossReferenceSpans.isEmpty
             ? [
                 Padding(
                   padding: .all(16),
                   child: StyledBanner(message: 'No Cross References Found'.toText()),
                 ),
               ]
-            : relatedCrossReferences
-                  .mapToIterable(
-                    (reference, crossReferences) => StyledStickyHeader(
-                      title: reference.format().toText(),
-                      children: crossReferences
-                          .map(
-                            (references) => Consumer(
-                              builder: (context, ref, child) {
-                                final book = references.references.first.book;
-                                final translation = user.translation.effectiveFor(book);
-                                final verses = ref
-                                    .watch(
-                                      verseSelectionTextProvider(
-                                        translation: translation,
-                                        selection: references.toVerseSelection(),
-                                      ),
-                                    )
-                                    .value;
-                                return StyledListItem(
-                                  title: Row(
-                                    spacing: 4,
-                                    children: [
-                                      references.toVerseSelection().format().toText(),
-                                      if (!user.translation.containsBook(book))
-                                        StyledTag(child: translation.title().toText()),
-                                    ],
-                                  ),
-                                  subtitle: StyledLoading(child: verses?.toText()),
-                                  onPressed: () {
-                                    context.pop();
-                                    onNavigateToVerseSelection(references.toVerseSelection());
-                                  },
-                                  trailing: Symbols.expand_circle_right.toIcon(),
-                                );
-                              },
-                            ),
-                          )
-                          .toList(),
+            : crossReferenceSpans
+                  .map(
+                    (crossReference) => Consumer(
+                      builder: (context, ref, child) {
+                        final verseSelection = crossReference.toVerseSelection();
+                        final book = crossReference.references.first.book;
+                        final translation = user.translation.effectiveFor(book);
+                        final verses = ref
+                            .watch(verseSelectionTextProvider(translation: translation, selection: verseSelection))
+                            .value;
+                        return StyledListItem(
+                          title: Row(
+                            spacing: 4,
+                            children: [
+                              verseSelection.format().toText(),
+                              if (!user.translation.containsBook(book)) StyledTag(child: translation.title().toText()),
+                            ],
+                          ),
+                          subtitle: StyledLoading(child: verses?.toText()),
+                          onPressed: () {
+                            context.pop();
+                            onNavigateToVerseSelection(verseSelection);
+                          },
+                          trailing: Symbols.expand_circle_right.toIcon(),
+                        );
+                      },
                     ),
                   )
                   .toList();
