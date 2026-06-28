@@ -139,7 +139,7 @@ class BibleBody extends HookConsumerWidget {
       }
     }
 
-    final isSideLayout = MediaQuery.sizeOf(context).width >= 600;
+    final isSideLayout = MediaQuery.sizeOf(context).width >= 800;
 
     final studyPanels = user.studyPanels;
     final studyPanelsPageController = usePageController(
