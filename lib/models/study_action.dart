@@ -60,12 +60,7 @@ enum StudyAction {
   }) {
     switch (this) {
       case compare:
-        return CompareSheet.buildSheetChildren(
-          context,
-          verseSelection: verseSelection,
-          onNavigateToVerseSelection: onNavigateToVerseSelection,
-          user: user,
-        );
+        return CompareSheet.buildSheetChildren(context, verseSelection: verseSelection, user: user);
       case interlinear:
         throw UnimplementedError();
       case commentary:

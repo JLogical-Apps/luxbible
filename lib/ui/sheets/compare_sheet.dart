@@ -18,7 +18,6 @@ class CompareSheet {
   static List<Widget> buildSheetChildren(
     BuildContext context, {
     required VerseSelection verseSelection,
-    required Function(VerseSelection) onNavigateToVerseSelection,
     BibleTranslation? translation,
     required User user,
   }) {

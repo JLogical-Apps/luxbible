@@ -45,7 +45,6 @@ sealed class StudyPanel with _$StudyPanel {
     CompareStudyPanel(:final translation) => CompareSheet.buildSheetChildren(
       context,
       verseSelection: verseSelection,
-      onNavigateToVerseSelection: onNavigateToVerseSelection,
       user: user,
       translation: translation,
     ),
