@@ -137,10 +137,12 @@ class BibleBody extends HookConsumerWidget {
       }
     }
 
+    final isSideLayout = MediaQuery.sizeOf(context).width >= 600;
+
     final studyPanels = user.studyPanels;
     final studyPanelsPageController = usePageController(
       initialPage: user.studyPanelIndex ?? (studyPanels.length - 1),
-      keys: [studyPanels.join(',')],
+      keys: [studyPanels.join(','), isSideLayout],
     );
 
     void addStudyPanel(StudyPanel studyPanel) {
@@ -154,8 +156,6 @@ class BibleBody extends HookConsumerWidget {
         ref.updateUser((user) => user.withStudyPanel(studyPanel));
       }
     }
-
-    final isSideLayout = MediaQuery.sizeOf(context).width >= 600;
 
     Widget studyPanelIndicator() => Center(
       child: Container(
