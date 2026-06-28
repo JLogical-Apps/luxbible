@@ -155,6 +155,28 @@ class BibleBody extends HookConsumerWidget {
       }
     }
 
+    final isSideLayout = MediaQuery.sizeOf(context).width >= 600;
+
+    Widget studyPanelIndicator() => Center(
+      child: Container(
+        padding: .all(4),
+        decoration: BoxDecoration(
+          borderRadius: .circular(999),
+          color: context.colors.surfaceSecondary.withValues(alpha: 0.5),
+        ),
+        child: SmoothPageIndicator(
+          controller: studyPanelsPageController,
+          count: studyPanels.length,
+          effect: WormEffect(
+            dotHeight: 8,
+            dotWidth: 8,
+            activeDotColor: context.colors.contentPrimary,
+            dotColor: context.colors.surfacePrimary,
+          ),
+        ),
+      ),
+    );
+
     Widget bottom() {
       final textSelection = textSelectionState.value;
       final isAtBottom = useListenableSelector(currentScrollController, () {
@@ -629,156 +651,170 @@ class BibleBody extends HookConsumerWidget {
       );
     }
 
-    return Column(
+    Widget mainArea() => Stack(
       children: [
-        Expanded(
-          child: Stack(
-            children: [
-              biblePages(),
-              Positioned(
-                top: 0,
-                right: 0,
-                left: 0,
-                child: Builder(
-                  builder: (context) =>
-                      Container(height: MediaQuery.paddingOf(context).top, color: context.colors.backgroundPrimary),
-                ),
-              ),
-              HookBuilder(
-                builder: (context) => TweenAnimationBuilder(
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.easeInOutCubic,
-                  tween: Tween(
-                    begin: MediaQuery.of(context).viewPadding,
-                    end: studyPanels.isEmpty ? MediaQuery.of(context).viewPadding : EdgeInsets.zero,
-                  ),
-                  builder: (context, insets, child) => MediaQuery(
-                    data: MediaQuery.of(context).copyWith(padding: insets, viewPadding: insets, viewInsets: insets),
-                    child: child!,
-                  ),
-                  child: bottom(),
-                ),
-              ),
-              if (studyPanels.length > 1)
-                Positioned(
-                  bottom: 2,
-                  left: 0,
-                  right: 0,
-                  child: Center(
-                    child: Container(
-                      padding: .all(4),
-                      decoration: BoxDecoration(
-                        borderRadius: .circular(999),
-                        color: context.colors.surfaceSecondary.withValues(alpha: 0.5),
-                      ),
-                      child: SmoothPageIndicator(
-                        controller: studyPanelsPageController,
-                        count: studyPanels.length,
-                        effect: WormEffect(
-                          dotHeight: 8,
-                          dotWidth: 8,
-                          activeDotColor: context.colors.contentPrimary,
-                          dotColor: context.colors.surfacePrimary,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-            ],
+        biblePages(),
+        Positioned(
+          top: 0,
+          right: 0,
+          left: 0,
+          child: Builder(
+            builder: (context) =>
+                Container(height: MediaQuery.paddingOf(context).top, color: context.colors.backgroundPrimary),
           ),
         ),
-        HookConsumerBuilder(
-          builder: (context, ref) {
-            final minStudyPanelHeight = 82.0;
-            final maxStudyPanelHeight = MediaQuery.sizeOf(context).height * 0.75;
-
-            final studyPanelHeightRef = useRef(
-              (maxStudyPanelHeight * user.studyPanelBottomPosition).clamp(minStudyPanelHeight, maxStudyPanelHeight),
-            );
-            final isResizingState = useState(false);
-
-            final visibleVerseSelectionState = useState(VerseSelection.empty());
-            final visibleVerseSelection = selectedVerseSelection ?? visibleVerseSelectionState.value;
-
-            void computeVisibleVerses() {
-              const topBarHeight = 30.0;
-              final viewportTop = MediaQuery.paddingOf(context).top + topBarHeight;
-              final studyPanelHeight = studyPanelHeightRef.value.clamp(minStudyPanelHeight, maxStudyPanelHeight);
-              final viewportBottom = MediaQuery.sizeOf(context).height - studyPanelHeight;
-
-              final visibleReferences = currentChapterReference.references.where((reference) {
-                final top = (keyByReference[reference]?.currentContext?.findRenderObject() as RenderBox?)
-                    ?.localToGlobal(Offset.zero)
-                    .dy;
-                return top != null && top >= viewportTop && top <= viewportBottom;
-              }).toList();
-
-              if (visibleReferences.isNotEmpty) {
-                visibleVerseSelectionState.value = VerseSelection.fromReferences(visibleReferences);
-              }
-            }
-
-            final chapterValue = ref.watch(
-              chapterProvider(chapterReference: currentChapterReference, translation: user.translation),
-            );
-            useOnListenableChange(currentScrollController, computeVisibleVerses);
-            useOnListenableChange(isResizingState, computeVisibleVerses);
-            usePostFrameEffect(computeVisibleVerses, [currentScrollController, chapterValue.value]);
-
-            usePeriodic(Duration(seconds: 1), () {
-              final studyPanelPercentVisible = studyPanelHeightRef.value / maxStudyPanelHeight;
-              if (studyPanelPercentVisible != user.studyPanelBottomPosition) {
-                ref.updateUser((user) => user.copyWith(studyPanelBottomPosition: studyPanelPercentVisible));
-              }
-            });
-
-            return AnimatedGrow(
-              duration: isResizingState.value ? Duration(milliseconds: 1) : Duration(milliseconds: 300),
-              child: studyPanels.isEmpty
-                  ? SizedBox.shrink(key: ValueKey('empty'))
-                  : ResizableContainer(
-                      initialHeight: studyPanelHeightRef.value,
-                      minHeight: minStudyPanelHeight,
-                      maxHeight: maxStudyPanelHeight,
-                      onResizeStart: () => isResizingState.value = true,
-                      onResizeEnd: () => isResizingState.value = false,
-                      onHeightUpdated: (size) => studyPanelHeightRef.value = size,
-                      child: Container(
-                        width: double.infinity,
-                        color: context.colors.surfacePrimary,
-                        child: PageView(
-                          key: ValueKey(studyPanels.join(',')),
-                          controller: studyPanelsPageController,
-                          onPageChanged: (page) => ref.updateUser((user) => user.copyWith(studyPanelIndex: page)),
-                          children: studyPanels
-                              .mapIndexed(
-                                (i, studyPanel) => StyledSheet(
-                                  key: ValueKey((i, visibleVerseSelection)),
-                                  title: visibleVerseSelection.format().toText(),
-                                  subtitle: studyPanel.title().toText(),
-                                  leading: StyledCircleButton.lg(
-                                    child: Symbols.close.toIcon(),
-                                    onPressed: () => ref.updateUser(
-                                      (user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i)),
-                                    ),
-                                  ),
-                                  children: studyPanel.buildSheetChildren(
-                                    context,
-                                    verseSelection: visibleVerseSelection,
-                                    onNavigateToVerseSelection: navigateToVerseSelection,
-                                    user: user,
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ),
-                    ),
-            );
-          },
+        HookBuilder(
+          builder: (context) => TweenAnimationBuilder(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOutCubic,
+            tween: Tween(
+              begin: MediaQuery.of(context).viewPadding,
+              end: studyPanels.isEmpty || isSideLayout ? MediaQuery.of(context).viewPadding : EdgeInsets.zero,
+            ),
+            builder: (context, insets, child) => MediaQuery(
+              data: MediaQuery.of(context).copyWith(padding: insets, viewPadding: insets, viewInsets: insets),
+              child: child!,
+            ),
+            child: bottom(),
+          ),
         ),
+        if (!isSideLayout && studyPanels.length > 1)
+          Positioned(bottom: 2, left: 0, right: 0, child: studyPanelIndicator()),
       ],
     );
+
+    Widget studyPanelSection() => HookConsumerBuilder(
+      builder: (context, ref) {
+        final minStudyPanelHeight = 82.0;
+        final maxStudyPanelHeight = MediaQuery.sizeOf(context).height * 0.75;
+
+        final studyPanelHeightRef = useRef(
+          (maxStudyPanelHeight * user.studyPanelBottomPosition).clamp(minStudyPanelHeight, maxStudyPanelHeight),
+        );
+        final isResizingState = useState(false);
+
+        final visibleVerseSelectionState = useState(VerseSelection.empty());
+        final visibleVerseSelection = selectedVerseSelection ?? visibleVerseSelectionState.value;
+
+        void computeVisibleVerses() {
+          const topBarHeight = 30.0;
+          final viewportTop = MediaQuery.paddingOf(context).top + topBarHeight;
+          final studyPanelHeight = studyPanelHeightRef.value.clamp(minStudyPanelHeight, maxStudyPanelHeight);
+          final viewportBottom = isSideLayout
+              ? MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).bottom
+              : MediaQuery.sizeOf(context).height - studyPanelHeight;
+
+          final visibleReferences = currentChapterReference.references.where((reference) {
+            final top = (keyByReference[reference]?.currentContext?.findRenderObject() as RenderBox?)
+                ?.localToGlobal(Offset.zero)
+                .dy;
+            return top != null && top >= viewportTop && top <= viewportBottom;
+          }).toList();
+
+          if (visibleReferences.isNotEmpty) {
+            visibleVerseSelectionState.value = VerseSelection.fromReferences(visibleReferences);
+          }
+        }
+
+        final chapterValue = ref.watch(
+          chapterProvider(chapterReference: currentChapterReference, translation: user.translation),
+        );
+        useOnListenableChange(currentScrollController, computeVisibleVerses);
+        useOnListenableChange(isResizingState, computeVisibleVerses);
+        usePostFrameEffect(computeVisibleVerses, [currentScrollController, chapterValue.value]);
+
+        usePeriodic(Duration(seconds: 1), () {
+          if (isSideLayout) {
+            return;
+          }
+
+          final studyPanelPercentVisible = studyPanelHeightRef.value / maxStudyPanelHeight;
+          if (studyPanelPercentVisible != user.studyPanelBottomPosition) {
+            ref.updateUser((user) => user.copyWith(studyPanelBottomPosition: studyPanelPercentVisible));
+          }
+        });
+
+        Widget carousel() => PageView(
+          key: ValueKey(studyPanels.join(',')),
+          controller: studyPanelsPageController,
+          onPageChanged: (page) => ref.updateUser((user) => user.copyWith(studyPanelIndex: page)),
+          children: studyPanels
+              .mapIndexed(
+                (i, studyPanel) => Padding(
+                  padding: isSideLayout ? .symmetric(horizontal: 4) : .zero,
+                  child: StyledSheet(
+                    key: ValueKey((i, visibleVerseSelection)),
+                    showDragHandle: !isSideLayout,
+                    title: visibleVerseSelection.format().toText(),
+                    subtitle: studyPanel.title().toText(),
+                    leading: StyledCircleButton.lg(
+                      child: Symbols.close.toIcon(),
+                      onPressed: () =>
+                          ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
+                    ),
+                    children: studyPanel.buildSheetChildren(
+                      context,
+                      verseSelection: visibleVerseSelection,
+                      onNavigateToVerseSelection: navigateToVerseSelection,
+                      user: user,
+                    ),
+                  ),
+                ),
+              )
+              .toList(),
+        );
+
+        if (isSideLayout) {
+          if (studyPanels.isEmpty) {
+            return SizedBox.shrink();
+          }
+
+          return Padding(
+            padding: EdgeInsets.only(
+              top: MediaQuery.paddingOf(context).top + 8,
+              bottom: MediaQuery.paddingOf(context).bottom + 8,
+              left: 4,
+              right: 4,
+            ),
+            child: Stack(
+              children: [
+                carousel(),
+                if (studyPanels.length > 1) Positioned(bottom: 2, left: 0, right: 0, child: studyPanelIndicator()),
+              ],
+            ),
+          );
+        }
+
+        return AnimatedGrow(
+          duration: isResizingState.value ? Duration(milliseconds: 1) : Duration(milliseconds: 300),
+          child: studyPanels.isEmpty
+              ? SizedBox.shrink(key: ValueKey('empty'))
+              : ResizableContainer(
+                  initialHeight: studyPanelHeightRef.value,
+                  minHeight: minStudyPanelHeight,
+                  maxHeight: maxStudyPanelHeight,
+                  onResizeStart: () => isResizingState.value = true,
+                  onResizeEnd: () => isResizingState.value = false,
+                  onHeightUpdated: (size) => studyPanelHeightRef.value = size,
+                  child: Container(width: double.infinity, color: context.colors.surfacePrimary, child: carousel()),
+                ),
+        );
+      },
+    );
+
+    return isSideLayout
+        ? Row(
+            children: [
+              Expanded(flex: 3, child: mainArea()),
+              if (studyPanels.isNotEmpty) Expanded(flex: 2, child: studyPanelSection()),
+            ],
+          )
+        : Column(
+            children: [
+              Expanded(child: mainArea()),
+              studyPanelSection(),
+            ],
+          );
   }
 }
 

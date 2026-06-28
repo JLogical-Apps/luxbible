@@ -57,7 +57,8 @@ class StyledDock extends HookWidget {
     final metrics = activeScrollKey == null ? metricsState.value : metricsByKeyState.value[activeScrollKey];
 
     final showBottomShadow =
-        aboveButtons != null || (metrics == null ? false : metrics.pixels + 10 < metrics.maxScrollExtent);
+        aboveButtons != null ||
+        (bottomChildren.isNotEmpty && (metrics == null ? false : metrics.pixels + 10 < metrics.maxScrollExtent));
 
     return Padding(
       padding: .only(bottom: MediaQuery.viewInsetsOf(context).bottom),

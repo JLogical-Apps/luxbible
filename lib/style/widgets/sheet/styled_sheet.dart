@@ -23,6 +23,7 @@ class StyledSheet<T> extends HookWidget {
 
   final Widget? aboveDivider;
   final bool showDivider;
+  final bool showDragHandle;
 
   final ScrollController? scrollController;
 
@@ -39,6 +40,7 @@ class StyledSheet<T> extends HookWidget {
     this.trailing,
     this.aboveDivider,
     this.showDivider = true,
+    this.showDragHandle = true,
     this.scrollController,
     this.children = const [],
     this.aboveButtons,
@@ -53,6 +55,7 @@ class StyledSheet<T> extends HookWidget {
     this.trailing,
     this.aboveDivider,
     this.showDivider = true,
+    this.showDragHandle = true,
     this.scrollController,
     required Widget child,
     this.aboveButtons,
@@ -95,7 +98,7 @@ class StyledSheet<T> extends HookWidget {
     return Container(
       decoration: BoxDecoration(
         color: context.colors.surfacePrimary,
-        borderRadius: .vertical(top: .circular(16)),
+        borderRadius: showDragHandle ? .vertical(top: .circular(16)) : .circular(16),
       ),
       child: Column(
         crossAxisAlignment: .start,
@@ -105,17 +108,18 @@ class StyledSheet<T> extends HookWidget {
             crossAxisAlignment: .start,
             mainAxisSize: .min,
             children: [
-              SizedBox(
-                height: 12,
-                child: Align(
-                  alignment: .bottomCenter,
-                  child: Container(
-                    width: 48,
-                    height: 4,
-                    decoration: BoxDecoration(borderRadius: .circular(999), color: context.colors.borderOpaque),
+              if (showDragHandle)
+                SizedBox(
+                  height: 12,
+                  child: Align(
+                    alignment: .bottomCenter,
+                    child: Container(
+                      width: 48,
+                      height: 4,
+                      decoration: BoxDecoration(borderRadius: .circular(999), color: context.colors.borderOpaque),
+                    ),
                   ),
                 ),
-              ),
               gapH8,
               SizedBox(
                 height: subtitle == null ? 48 : 52,
