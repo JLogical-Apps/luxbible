@@ -3,6 +3,7 @@ import 'package:bible/models/commentary_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/models/user/user.dart';
+import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
@@ -33,6 +34,7 @@ sealed class StudyPanel with _$StudyPanel {
   String title() => switch (this) {
     CompareStudyPanel(:final translation) => 'Compare with ${translation.title()}',
     InterlinearStudyPanel(:final direction) => '${direction.title()} Interlinear',
+    CommentaryStudyPanel(:final type) => '${type.title()} Commentary',
     _ => studyAction.title(),
   };
 
@@ -56,6 +58,11 @@ sealed class StudyPanel with _$StudyPanel {
       direction: direction,
       showDirectionBanner: false,
       popOnAction: false,
+    ),
+    CommentaryStudyPanel(:final type) => CommentarySheet.buildSheetChildren(
+      context,
+      verseSelection: verseSelection,
+      commentary: type,
     ),
     _ => studyAction.buildSheetChildren(
       context,

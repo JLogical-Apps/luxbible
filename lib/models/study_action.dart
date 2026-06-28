@@ -3,11 +3,11 @@ import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/bibles_provider.dart';
-import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
@@ -20,7 +20,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:utils_core/utils_core.dart';
 
 enum StudyAction {
   compare,
@@ -65,30 +64,7 @@ enum StudyAction {
       case interlinear:
         throw UnimplementedError();
       case commentary:
-        final commentaries = ref.read(commentariesProvider);
-        final relatedCommentaries = commentaries
-            .mapToMap((commentary) => MapEntry(commentary, commentary.getNotesFor(verseSelection)))
-            .where((commentary, notes) => notes.isNotEmpty);
-        return relatedCommentaries.isEmpty
-            ? [
-                Padding(
-                  padding: .all(16),
-                  child: StyledBanner(message: 'No Commentaries Found'.toText()),
-                ),
-              ]
-            : relatedCommentaries
-                  .mapToIterable(
-                    (commentary, notes) => StyledStickyHeader(
-                      title: commentary.type.title().toText(),
-                      children: notes
-                          .mapToIterable(
-                            (verseSelection, note) =>
-                                StyledListItem(title: verseSelection.format().toText(), subtitle: note.toText()),
-                          )
-                          .toList(),
-                    ),
-                  )
-                  .toList();
+        return CommentarySheet.buildSheetChildren(context, verseSelection: verseSelection);
       case crossReferences:
         final user = ref.read(userProvider);
         final crossReferences = ref.read(crossReferencesProvider);
