@@ -25,6 +25,7 @@ class InterlinearSheet {
     required InterlinearDirection direction,
     required User user,
     bool showDirectionBanner = true,
+    bool popOnAction = true,
   }) {
     final studyBible = ref.read(studyBibleProvider);
     final showInterlinearBsbBanner = user.translation != .bsb && !user.tutorials.contains(Tutorial.interlinearBsb);
@@ -88,6 +89,7 @@ class InterlinearSheet {
                       data: data,
                       direction: direction,
                       onNavigateToVerseSelection: onNavigateToVerseSelection,
+                      popOnAction: popOnAction,
                     ),
                   )
                   .toList(),

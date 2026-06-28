@@ -57,6 +57,7 @@ enum StudyAction {
     required VerseSelection verseSelection,
     required Function(VerseSelection) onNavigateToVerseSelection,
     required User user,
+    bool popOnAction = true,
   }) {
     switch (this) {
       case compare:
@@ -129,7 +130,7 @@ enum StudyAction {
                           ),
                           subtitle: StyledLoading(child: verses?.toText()),
                           onPressed: () {
-                            context.pop();
+                            if (popOnAction) context.pop();
                             onNavigateToVerseSelection(verseSelection);
                           },
                           trailing: Symbols.expand_circle_right.toIcon(),

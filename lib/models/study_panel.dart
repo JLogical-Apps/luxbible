@@ -55,12 +55,14 @@ sealed class StudyPanel with _$StudyPanel {
       user: user,
       direction: direction,
       showDirectionBanner: false,
+      popOnAction: false,
     ),
     _ => studyAction.buildSheetChildren(
       context,
       verseSelection: verseSelection,
       onNavigateToVerseSelection: onNavigateToVerseSelection,
       user: user,
+      popOnAction: false,
     ),
   };
 }

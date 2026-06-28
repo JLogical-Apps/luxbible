@@ -17,6 +17,7 @@ class InterlinearWordTile extends ConsumerWidget {
   final InterlinearData data;
   final InterlinearDirection direction;
   final Function(VerseSelection) onNavigateToVerseSelection;
+  final bool popOnAction;
 
   const InterlinearWordTile({
     super.key,
@@ -24,6 +25,7 @@ class InterlinearWordTile extends ConsumerWidget {
     required this.data,
     required this.direction,
     required this.onNavigateToVerseSelection,
+    this.popOnAction = true,
   });
 
   @override
@@ -50,7 +52,7 @@ class InterlinearWordTile extends ConsumerWidget {
         onPressed: data.inflection == null
             ? null
             : () {
-                context.pop();
+                if (popOnAction) context.pop();
                 StrongSheet.showWithBreadcrumbs(
                   context,
                   word: word,
@@ -84,7 +86,7 @@ class InterlinearWordTile extends ConsumerWidget {
         onPressed: data.inflection == null
             ? null
             : () {
-                context.pop();
+                if (popOnAction) context.pop();
                 StrongSheet.showWithBreadcrumbs(
                   context,
                   word: word,
