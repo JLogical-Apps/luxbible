@@ -207,7 +207,7 @@ return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.longPressShort
 @JsonSerializable()
 
 class _MainToolbarConfiguration extends MainToolbarConfiguration {
-  const _MainToolbarConfiguration({this.pinnedShortcut1 = MainToolbarShortcut.bookmark, this.pinnedShortcut2 = MainToolbarShortcut.search, this.longPressShortcut = MainToolbarShortcut.study, this.swipeToUndo = true, this.pinToBottom = false}): super._();
+  const _MainToolbarConfiguration({this.pinnedShortcut1 = MainToolbarShortcut.bookmark, this.pinnedShortcut2 = MainToolbarShortcut.search, this.longPressShortcut = MainToolbarShortcut.studyPanel, this.swipeToUndo = true, this.pinToBottom = false}): super._();
   factory _MainToolbarConfiguration.fromJson(Map<String, dynamic> json) => _$MainToolbarConfigurationFromJson(json);
 
 @override@JsonKey() final  MainToolbarShortcut pinnedShortcut1;

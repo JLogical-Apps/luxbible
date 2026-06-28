@@ -11,7 +11,7 @@ sealed class MainToolbarConfiguration with _$MainToolbarConfiguration {
   const factory MainToolbarConfiguration({
     @Default(MainToolbarShortcut.bookmark) MainToolbarShortcut pinnedShortcut1,
     @Default(MainToolbarShortcut.search) MainToolbarShortcut pinnedShortcut2,
-    @Default(MainToolbarShortcut.study) MainToolbarShortcut longPressShortcut,
+    @Default(MainToolbarShortcut.studyPanel) MainToolbarShortcut longPressShortcut,
     @Default(true) bool swipeToUndo,
     @Default(false) bool pinToBottom,
   }) = _MainToolbarConfiguration;

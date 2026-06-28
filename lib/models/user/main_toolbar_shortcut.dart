@@ -21,6 +21,7 @@ enum MainToolbarShortcut {
   interlinear,
   commentary,
   crossReferences,
+  studyPanel,
   search,
   themeAndLayout;
 
@@ -58,17 +59,18 @@ enum MainToolbarShortcut {
       context.push(ThemeSettingsPage());
 
   MainAction? toMainAction() => switch (this) {
-    bookmark => MainAction.bookmark,
-    study => MainAction.study,
-    search => MainAction.search,
+    bookmark => .bookmark,
+    study => .study,
+    search => .search,
+    studyPanel => .studyPanel,
     _ => null,
   };
 
   StudyAction? toStudyAction() => switch (this) {
-    compare => StudyAction.compare,
-    interlinear => StudyAction.interlinear,
-    commentary => StudyAction.commentary,
-    crossReferences => StudyAction.crossReferences,
+    compare => .compare,
+    interlinear => .interlinear,
+    commentary => .commentary,
+    crossReferences => .crossReferences,
     _ => null,
   };
 }

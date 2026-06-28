@@ -26,7 +26,7 @@ _MainToolbarConfiguration _$MainToolbarConfigurationFromJson(
         _$MainToolbarShortcutEnumMap,
         json['longPressShortcut'],
       ) ??
-      MainToolbarShortcut.study,
+      MainToolbarShortcut.studyPanel,
   swipeToUndo: json['swipeToUndo'] as bool? ?? true,
   pinToBottom: json['pinToBottom'] as bool? ?? false,
 );
@@ -49,6 +49,7 @@ const _$MainToolbarShortcutEnumMap = {
   MainToolbarShortcut.interlinear: 'interlinear',
   MainToolbarShortcut.commentary: 'commentary',
   MainToolbarShortcut.crossReferences: 'crossReferences',
+  MainToolbarShortcut.studyPanel: 'studyPanel',
   MainToolbarShortcut.search: 'search',
   MainToolbarShortcut.themeAndLayout: 'themeAndLayout',
 };

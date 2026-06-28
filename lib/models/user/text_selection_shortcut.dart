@@ -79,10 +79,10 @@ enum TextSelectionShortcut {
       };
 
   TextSelectionAction? toTextSelectionAction() => switch (this) {
-    annotate => TextSelectionAction.annotate,
-    interlinear => TextSelectionAction.interlinear,
-    search => TextSelectionAction.search,
-    copy => TextSelectionAction.copy,
+    annotate => .annotate,
+    interlinear => .interlinear,
+    search => .search,
+    copy => .copy,
     _ => null,
   };
 

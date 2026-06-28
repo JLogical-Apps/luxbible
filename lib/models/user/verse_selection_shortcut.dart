@@ -93,17 +93,17 @@ enum VerseSelectionShortcut {
       };
 
   VerseSelectionAction? toVerseSelectionAction() => switch (this) {
-    study => VerseSelectionAction.study,
-    annotate => VerseSelectionAction.annotate,
-    copy => VerseSelectionAction.copy,
+    study => .study,
+    annotate => .annotate,
+    copy => .copy,
     _ => null,
   };
 
   StudyAction? toStudyAction() => switch (this) {
-    compare => StudyAction.compare,
-    interlinear => StudyAction.interlinear,
-    commentary => StudyAction.commentary,
-    crossReferences => StudyAction.crossReferences,
+    compare => .compare,
+    interlinear => .interlinear,
+    commentary => .commentary,
+    crossReferences => .crossReferences,
     _ => null,
   };
 

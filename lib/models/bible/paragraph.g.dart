@@ -36,6 +36,7 @@ const _$ParagraphTypeEnumMap = {
   ParagraphType.m: 'm',
   ParagraphType.li1: 'li1',
   ParagraphType.li2: 'li2',
+  ParagraphType.nb: 'nb',
 };
 
 SectionParagraph _$SectionParagraphFromJson(Map<String, dynamic> json) =>
