@@ -93,3 +93,9 @@ void usePeriodic(Duration duration, Function() callback) {
     return timer.cancel;
   }, []);
 }
+
+ValueNotifier<T> usePassthrough<T>(T value) {
+  final state = useMemoized(() => ValueNotifier(value));
+  usePostFrameEffect(() => state.value = value, [value]);
+  return state;
+}

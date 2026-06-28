@@ -99,6 +99,7 @@ class BibleBody extends HookConsumerWidget {
       () => currentChapterReference.references.mapToMap((reference) => MapEntry(reference, GlobalKey())),
       [currentChapterReference],
     );
+    final keyByReferencePassthrough = usePassthrough(keyByReference);
 
     void onClosePressed() {
       textSelectionState.value = null;
@@ -126,6 +127,7 @@ class BibleBody extends HookConsumerWidget {
       await ref.read(chapterProvider(translation: user.translation, chapterReference: chapterReference).future);
       await Future.delayed(Duration(milliseconds: 200));
 
+      final keyByReference = keyByReferencePassthrough.value;
       final verseContext = keyByReference[verseSelection.references.first]?.currentContext;
       if (verseContext != null && verseContext.mounted) {
         Scrollable.ensureVisible(
