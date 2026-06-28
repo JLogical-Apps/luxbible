@@ -195,6 +195,7 @@ class BibleBody extends HookConsumerWidget {
           textSelection == null;
 
       return Stack(
+        clipBehavior: .none,
         children: [
           Builder(
             builder: (context) => AnimatedPositioned(
