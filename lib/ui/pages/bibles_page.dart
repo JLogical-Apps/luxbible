@@ -1,5 +1,6 @@
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/style/keyed_scroll_transformer.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/bible_tile.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
@@ -27,6 +28,7 @@ class BiblesPage extends HookConsumerWidget {
       body: StyledDock(
         forceHeight: true,
         shrinkWrap: false,
+        activeScrollKey: 'scroll',
         children: [
           if (bibles.isEmpty)
             Padding(
@@ -37,28 +39,32 @@ class BiblesPage extends HookConsumerWidget {
               ),
             ),
           Expanded(
-            child: StyledReorderableList(
-              children: bibles
-                  .map(
-                    (translation) => StyledSwipeable(
-                      key: ValueKey(translation),
-                      isEnabled: user.biblesOrDefault.length > 1,
-                      actions: [
-                        .delete(
-                          onPressed: () => ref.updateUser(
-                            (user) => user.copyWith(bibles: user.biblesOrDefault.withRemoved(translation)),
+            child: KeyedScrollTransformer(
+              scrollKey: 'scroll',
+              child: StyledReorderableList(
+                children: bibles
+                    .map(
+                      (translation) => StyledSwipeable(
+                        key: ValueKey(translation),
+                        isEnabled: user.biblesOrDefault.length > 1,
+                        actions: [
+                          .delete(
+                            onPressed: () => ref.updateUser(
+                              (user) => user.copyWith(bibles: user.biblesOrDefault.withRemoved(translation)),
+                            ),
                           ),
+                        ],
+                        child: BibleTile(
+                          translation: translation,
+                          trailing: ReorderableDragStartListener(child: Icon(Symbols.drag_handle), index: 0),
                         ),
-                      ],
-                      child: BibleTile(
-                        translation: translation,
-                        trailing: ReorderableDragStartListener(child: Icon(Symbols.drag_handle), index: 0),
                       ),
-                    ),
-                  )
-                  .toList(),
-              onReorder: (oldIndex, newIndex) =>
-                  ref.updateUser((user) => user.copyWith(bibles: user.biblesOrDefault.withReorder(oldIndex, newIndex))),
+                    )
+                    .toList(),
+                onReorder: (oldIndex, newIndex) => ref.updateUser(
+                  (user) => user.copyWith(bibles: user.biblesOrDefault.withReorder(oldIndex, newIndex)),
+                ),
+              ),
             ),
           ),
         ],
