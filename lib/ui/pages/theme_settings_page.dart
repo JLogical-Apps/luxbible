@@ -2,9 +2,9 @@ import 'package:bible/models/user/theme_layout_configuration.dart';
 import 'package:bible/models/user/theme_mode.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -84,7 +84,7 @@ class ThemeSettingsPage extends ConsumerWidget {
                 StyledListItem.switchControl(
                   title: 'Red Letters'.toText(),
                   subtitle: 'Show Jesus\' words in red.'.toText(),
-                  thirdLine: 'This is only available in the BSB translation.'.toText(),
+                  thirdLine: 'This is only available in BSB, NASB, and NIV.'.toText(),
                   isSelected: user.themeLayout.redLetters,
                   onSelected: (newValue) => ref.updateUser((user) => user.copyWith.themeLayout(redLetters: newValue)),
                 ),
