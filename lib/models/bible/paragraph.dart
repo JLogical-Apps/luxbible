@@ -43,12 +43,13 @@ enum ParagraphType {
   qc,
   m,
   li1,
-  li2;
+  li2,
+  nb;
 
   bool get isPoetic => this == q1 || this == q2 || this == qr || this == qc;
 
   double get indent => switch (this) {
-    q1 || li1 || m || qc || pc => 0,
+    q1 || li1 || m || qc || pc || nb => 0,
     pi => 40,
     _ => 20,
   };

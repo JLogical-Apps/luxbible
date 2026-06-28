@@ -139,6 +139,7 @@ class YouVersion {
               'd' || 'qd' => sectionParagraph(.d),
               'p' || 'pm' || 'pmo' || 'pmc' => versesParagraph(.p),
               'pc' => versesParagraph(.pc),
+              'nb' => versesParagraph(.nb),
               'pr' || 'pmr' || 'cls' => versesParagraph(.pr),
               'pi' || 'pi1' => versesParagraph(.pi),
               'm' || 'mi' => versesParagraph(.m),
