@@ -804,7 +804,10 @@ class BibleBody extends HookConsumerWidget {
     return isSideLayout
         ? Row(
             children: [
-              Expanded(flex: 3, child: mainArea()),
+              Expanded(
+                flex: 3,
+                child: MediaQuery.removeViewPadding(context: context, child: mainArea(), removeRight: true),
+              ),
               if (studyPanels.isNotEmpty) Expanded(flex: 2, child: studyPanelSection()),
             ],
           )
