@@ -244,10 +244,7 @@ class BibleBody extends HookConsumerWidget {
             final maxStudyPanelHeight = MediaQuery.sizeOf(context).height * 0.75;
 
             final studyPanelHeightRef = useRef(
-              (MediaQuery.sizeOf(context).height * user.studyPanelBottomPosition).clamp(
-                minStudyPanelHeight,
-                maxStudyPanelHeight,
-              ),
+              (maxStudyPanelHeight * user.studyPanelBottomPosition).clamp(minStudyPanelHeight, maxStudyPanelHeight),
             );
             final isResizingState = useState(false);
 
