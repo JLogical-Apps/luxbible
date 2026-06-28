@@ -116,6 +116,7 @@ enum StudyAction {
             : crossReferenceSpans
                   .map(
                     (crossReference) => Consumer(
+                      key: ValueKey(crossReference),
                       builder: (context, ref, child) {
                         final verseSelection = crossReference.toVerseSelection();
                         final book = crossReference.references.first.book;
