@@ -160,18 +160,25 @@ extension ListSpanExtensions on List<InlineSpan> {
 
       int offsetOf(int index) => spans.take(index).map((span) => span.textLength).sum;
 
+      double? precedingTop(int start) {
+        for (var offset = start - 1; offset >= 0; offset--) {
+          final top = topAt(offset);
+          if (top != null) return top;
+        }
+        return null;
+      }
+
       bool isOrphaned(int groupStart) {
         final start = offsetOf(groupStart);
         final groupSize = spans.skip(groupStart).takeWhile(isLeadingSpan).length;
 
         final groupTop = topAt(start);
         final wordTop = topAt(start + groupSize);
-        final precedingTop = topAt(start - 1);
-        if (groupTop == null || wordTop == null || precedingTop == null) {
+        if (groupTop == null || wordTop == null) {
           return false;
         }
 
-        final startsLine = precedingTop != groupTop;
+        final startsLine = precedingTop(start) != groupTop;
         final wordWraps = wordTop != groupTop;
         return !startsLine && wordWraps;
       }
