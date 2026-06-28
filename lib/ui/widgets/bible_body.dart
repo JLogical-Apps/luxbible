@@ -62,12 +62,12 @@ class BibleBody extends HookConsumerWidget {
     );
 
     final isScrollingDownState = useState(true);
-    final scrollControllerByReferenceRef = useRef(<ChapterReference, ScrollController>{});
+    final currentScrollController = useScrollController(keys: [currentChapterReference]);
     final scrollPercentByReferenceRef = useRef({initialPosition.reference: initialPosition.scrollPercent});
 
     void saveScroll() {
       final reference = currentChapterReference;
-      final position = scrollControllerByReferenceRef.value[reference]?.positionsOrNull?.firstOrNull;
+      final position = currentScrollController.positionOrNull;
       if (position == null || position.maxScrollExtent == 0) {
         return;
       }
@@ -83,8 +83,6 @@ class BibleBody extends HookConsumerWidget {
     }
 
     usePeriodic(Duration(seconds: 5), () => saveScroll());
-
-    final currentScrollController = scrollControllerByReferenceRef.value[currentChapterReference];
 
     useOnStickyScrollDirectionChanged(
       currentScrollController,
@@ -185,7 +183,7 @@ class BibleBody extends HookConsumerWidget {
     Widget bottom() {
       final textSelection = textSelectionState.value;
       final isAtBottom = useListenableSelector(currentScrollController, () {
-        final scrollPosition = currentScrollController?.positionsOrNull?.firstOrNull;
+        final scrollPosition = currentScrollController.positionOrNull;
         return scrollPosition == null || !scrollPosition.hasContentDimensions
             ? false
             : scrollPosition.pixels >= scrollPosition.maxScrollExtent;
@@ -424,7 +422,7 @@ class BibleBody extends HookConsumerWidget {
 
     Widget biblePages() {
       ChapterPosition positionOf(ChapterReference reference) {
-        final position = scrollControllerByReferenceRef.value[reference]?.positionsOrNull?.firstOrNull;
+        final position = currentScrollController.positionOrNull;
         return ChapterPosition(
           reference: reference,
           scrollPercent: position == null ? 0 : (position.pixels / position.maxScrollExtent).clamp(0, 1),
@@ -475,13 +473,7 @@ class BibleBody extends HookConsumerWidget {
 
             return HookConsumerBuilder(
               builder: (context, ref) {
-                final scrollController = useDisposable(
-                  useScrollController(),
-                  (controller) =>
-                      scrollControllerByReferenceRef.value = {...scrollControllerByReferenceRef.value}
-                        ..remove(chapterReference),
-                );
-
+                final scrollController = chapterReference == currentChapterReference ? currentScrollController : null;
                 final chapterValue = ref.watch(
                   chapterProvider(translation: user.translation, chapterReference: chapterReference),
                 );
@@ -518,21 +510,22 @@ class BibleBody extends HookConsumerWidget {
 
                 final isLoadedState = useState(false);
                 usePostFrameEffect(() {
+                  if (scrollController == null) {
+                    return;
+                  }
+
                   final target = scrollPercentByReferenceRef.value[chapterReference] ?? 0;
-                  final position = scrollController.positionOrNull;
+                  final position = currentScrollController.positionOrNull;
                   if (!isLoadedState.value && chapter != null && position != null) {
                     scrollController.jumpTo((target * position.maxScrollExtent).clamp(0.0, position.maxScrollExtent));
-                    scrollControllerByReferenceRef.value = {
-                      ...scrollControllerByReferenceRef.value,
-                      chapterReference: scrollController,
-                    };
                     isLoadedState.value = true;
                   }
-                }, [chapter != null, scrollController.positionOrNull != null]);
+                }, [chapter != null, scrollController != null, currentScrollController.positionOrNull != null]);
 
                 final showTopBar = useListenableSelector(
                   scrollController,
-                  () => scrollController.hasClients && scrollController.position.pixels > 60,
+                  () =>
+                      scrollController != null && scrollController.hasClients && scrollController.position.pixels > 60,
                 );
 
                 return AnimatedOpacity(
@@ -621,7 +614,7 @@ class BibleBody extends HookConsumerWidget {
                         right: 0,
                         left: 0,
                         child: AnimatedOpacity(
-                          key: ValueKey(scrollController.hasClients),
+                          key: ValueKey(scrollController?.hasClients),
                           opacity: showTopBar ? 1 : 0,
                           duration: Duration(milliseconds: 300),
                           curve: Curves.easeInOutCubic,
