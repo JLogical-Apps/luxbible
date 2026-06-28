@@ -192,7 +192,17 @@ class BibleBody extends HookConsumerWidget {
                     hardNavigateTo,
                     navigateToVerseSelection,
                     studyPanels,
-                    (studyAction) => ref.updateUser((user) => user.withStudyPanel(studyAction)),
+                    (studyPanel) {
+                      if (user.studyPanels.contains(studyPanel)) {
+                        studyPanelsPageController.animateToPage(
+                          user.studyPanels.indexOf(studyPanel),
+                          duration: Duration(milliseconds: 300),
+                          curve: Curves.easeInOutCubic,
+                        );
+                      } else {
+                        ref.updateUser((user) => user.withStudyPanel(studyPanel));
+                      }
+                    },
                     selectedVerseSelection,
                     onClosePressed,
                     selectedReferencesState,
