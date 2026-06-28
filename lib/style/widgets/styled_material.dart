@@ -27,8 +27,8 @@ class StyledMaterial extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = colorBuilder?.call(context.colors);
-    final backgroundColor = color?.asSurface(isDisabled: !isEnabled) ?? Colors.transparent;
-    final foregroundColor = backgroundColor.foreground(isDisabled: !isEnabled, isCritical: isCritical);
+    final backgroundColor = color?.asSurface(isDisabled: !isEnabled);
+    final foregroundColor = backgroundColor?.foreground(isDisabled: !isEnabled, isCritical: isCritical);
     return AnimatedContainer(
       duration: Duration(milliseconds: 300),
       curve: Curves.easeInOutCubic,
@@ -40,7 +40,7 @@ class StyledMaterial extends StatelessWidget {
           borderRadius: borderRadius,
           onTap: onPressed,
           onLongPress: onLongPressed,
-          overlayColor: .all(foregroundColor.withValues(alpha: 0.1)),
+          overlayColor: foregroundColor == null ? null : .all(foregroundColor.withValues(alpha: 0.1)),
           child: Padding(
             padding: padding,
             child: DefaultTextStyle(
