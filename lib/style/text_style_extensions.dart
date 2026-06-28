@@ -2,10 +2,10 @@ import 'package:bible/style/color_library.dart';
 import 'package:flutter/material.dart';
 
 extension TextStyleExtensions on TextStyle {
-  TextStyle subtle({bool subtle = true}) => subtle ? copyWith(color: colors.contentSecondary) : this;
-  TextStyle subtleTertiary({bool subtle = true}) => subtle ? copyWith(color: colors.contentTertiary) : this;
-  TextStyle disabled({bool disabled = true}) => disabled ? copyWith(color: colors.contentDisabled) : this;
-  TextStyle error({bool isError = true}) => isError ? copyWith(color: colors.contentError) : this;
+  TextStyle subtle({bool isSubtle = true}) => isSubtle ? copyWith(color: colors.contentSecondary) : this;
+  TextStyle subtleTertiary({bool isSubtle = true}) => isSubtle ? copyWith(color: colors.contentTertiary) : this;
+  TextStyle disabled({bool isDisabled = true}) => isDisabled ? copyWith(color: colors.contentDisabled) : this;
+  TextStyle critical({bool isCritical = true}) => isCritical ? copyWith(color: colors.contentCritical) : this;
 
   ColorLibrary get colors => ColorLibrary.fromBackground(color ?? Colors.transparent).inverted;
 

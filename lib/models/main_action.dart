@@ -109,7 +109,7 @@ enum MainAction {
                 StyledListItem(
                   title: 'Delete Bookmark'.toText(),
                   subtitle: 'Delete this bokmark.'.toText(),
-                  leading: Icon(Symbols.delete, color: context.colors.contentError),
+                  leading: Icon(Symbols.delete, color: context.colors.contentCritical),
                   onPressed: () {
                     context.pop();
                     ref.updateUser((user) => user.withRemovedBookmark(bookmarkId));

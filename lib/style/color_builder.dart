@@ -1,5 +1,5 @@
 import 'package:bible/style/color_library.dart';
-import 'package:flutter/animation.dart';
+import 'package:flutter/material.dart';
 
 class ColorBuilder {
   final Color Function(ColorLibrary) builder;
@@ -16,6 +16,8 @@ class ColorBuilder {
 
   static final ColorBuilder backgroundPrimary = ColorBuilder((colors) => colors.backgroundPrimary);
   static final ColorBuilder backgroundError = ColorBuilder((colors) => colors.backgroundError);
+
+  static final ColorBuilder transparent = ColorBuilder((colors) => Colors.transparent);
 
   Color call(ColorLibrary colors) => builder(colors);
 }

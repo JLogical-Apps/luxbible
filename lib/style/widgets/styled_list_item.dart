@@ -11,7 +11,7 @@ class StyledListItem extends StatelessWidget {
 
   final Function()? onPressed;
 
-  final bool enabled;
+  final bool isEnabled;
   final ComponentSize size;
   final bool? showDividerOverride;
 
@@ -24,7 +24,7 @@ class StyledListItem extends StatelessWidget {
     this.trailing,
     this.onPressed,
     this.size = ComponentSize.md,
-    this.enabled = true,
+    this.isEnabled = true,
     this.showDividerOverride,
   });
 
@@ -36,7 +36,7 @@ class StyledListItem extends StatelessWidget {
     this.leading,
     this.onPressed,
     this.size = ComponentSize.md,
-    this.enabled = true,
+    this.isEnabled = true,
     this.showDividerOverride,
   }) : trailing = Icon(Symbols.chevron_right);
 
@@ -49,7 +49,7 @@ class StyledListItem extends StatelessWidget {
     required bool isSelected,
     required Function() onSelected,
     this.size = ComponentSize.md,
-    this.enabled = true,
+    this.isEnabled = true,
     this.showDividerOverride,
   }) : onPressed = onSelected,
        trailing = StyledRadio(isSelected: isSelected);
@@ -63,7 +63,7 @@ class StyledListItem extends StatelessWidget {
     required bool isSelected,
     required Function(bool newValue) onSelected,
     this.size = ComponentSize.md,
-    this.enabled = true,
+    this.isEnabled = true,
     this.showDividerOverride,
   }) : onPressed = (() => onSelected(!isSelected)),
        trailing = StyledCheckbox(isSelected: isSelected);
@@ -77,7 +77,7 @@ class StyledListItem extends StatelessWidget {
     required bool isSelected,
     required Function(bool newValue) onSelected,
     this.size = ComponentSize.md,
-    this.enabled = true,
+    this.isEnabled = true,
     this.showDividerOverride,
   }) : onPressed = null,
        trailing = StyledSwitch(isSelected: isSelected, onSelected: onSelected);
@@ -90,7 +90,7 @@ class StyledListItem extends StatelessWidget {
     this.leading,
     this.onPressed,
     this.size = ComponentSize.md,
-    this.enabled = true,
+    this.isEnabled = true,
     this.showDividerOverride,
   }) : trailing = ReorderableDragStartListener(child: Icon(Symbols.drag_handle), index: 0);
 
@@ -118,7 +118,7 @@ class StyledListItem extends StatelessWidget {
                       width: 64,
                       child: Center(
                         child: IconTheme.merge(
-                          data: IconThemeData(color: context.colors.content(disabled: !enabled), size: 24),
+                          data: IconThemeData(color: context.colors.content(isDisabled: !isEnabled), size: 24),
                           child: leading,
                         ),
                       ),
@@ -138,17 +138,17 @@ class StyledListItem extends StatelessWidget {
                               children: [
                                 if (title case final title?)
                                   DefaultTextStyle(
-                                    style: context.textStyle.labelMd.disabled(disabled: !enabled),
+                                    style: context.textStyle.labelMd.disabled(isDisabled: !isEnabled),
                                     child: title,
                                   ),
                                 if (subtitle case final subtitle?)
                                   DefaultTextStyle(
-                                    style: context.textStyle.paragraphSm.subtle().disabled(disabled: !enabled),
+                                    style: context.textStyle.paragraphSm.subtle().disabled(isDisabled: !isEnabled),
                                     child: subtitle,
                                   ),
                                 if (thirdLine case final thirdLine?)
                                   DefaultTextStyle(
-                                    style: context.textStyle.paragraphSm.subtle().disabled(disabled: !enabled),
+                                    style: context.textStyle.paragraphSm.subtle().disabled(isDisabled: !isEnabled),
                                     child: thirdLine,
                                   ),
                               ],

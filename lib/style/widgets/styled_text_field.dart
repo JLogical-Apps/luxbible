@@ -134,7 +134,7 @@ class StyledTextField extends HookWidget {
             enabled: onChanged != null,
             maxLines: maxLines,
             autofocus: autofocus,
-            style: textStyle.disabled(disabled: onChanged == null),
+            style: textStyle.disabled(isDisabled: onChanged == null),
             keyboardType: textInputType,
             textInputAction: action,
             textCapitalization: textCapitalization,
@@ -150,7 +150,7 @@ class StyledTextField extends HookWidget {
               filled: !focusNode.hasPrimaryFocus,
               border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: .circular(8)),
               hintText: hintText,
-              hintStyle: context.textStyle.paragraphMd.subtle().disabled(disabled: onChanged == null),
+              hintStyle: context.textStyle.paragraphMd.subtle().disabled(isDisabled: onChanged == null),
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(
                   color: hasError ? context.colors.borderError : context.colors.borderSelected,

@@ -22,7 +22,7 @@ class StyledTag extends StatelessWidget {
       colorBuilder: colorBuilder ?? .surfaceSecondary,
       padding: .symmetric(vertical: 4, horizontal: 6),
       onPressed: onPressed,
-      enabled: true,
+      isEnabled: true,
       borderRadius: .circular(999),
       child: Row(
         spacing: 4,

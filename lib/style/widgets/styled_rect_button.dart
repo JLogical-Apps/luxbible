@@ -7,9 +7,11 @@ class StyledRectButton extends StatelessWidget {
   final Function()? onPressed;
 
   final ColorBuilder? colorBuilder;
+  final bool isCritical;
 
-  StyledRectButton.primary({super.key, required this.label, required this.onPressed}) : colorBuilder = .primary;
-  StyledRectButton.secondary({super.key, required this.label, required this.onPressed})
+  StyledRectButton.primary({super.key, required this.label, required this.onPressed, this.isCritical = false})
+    : colorBuilder = .primary;
+  StyledRectButton.secondary({super.key, required this.label, required this.onPressed, this.isCritical = false})
     : colorBuilder = .surfaceSecondary;
 
   @override
@@ -20,6 +22,7 @@ class StyledRectButton extends StatelessWidget {
       child: StyledMaterial(
         onPressed: onPressed,
         colorBuilder: colorBuilder,
+        isCritical: isCritical,
         borderRadius: .circular(8),
         child: Center(child: label),
       ),

@@ -5,9 +5,10 @@ class StyledMaterial extends StatelessWidget {
   final Widget child;
   final Function()? onPressed;
   final Function()? onLongPressed;
-  final bool enabled;
+  final bool isEnabled;
 
   final ColorBuilder? colorBuilder;
+  final bool isCritical;
   final BorderRadius borderRadius;
   final EdgeInsets padding;
 
@@ -16,16 +17,18 @@ class StyledMaterial extends StatelessWidget {
     required this.child,
     this.onPressed,
     this.onLongPressed,
-    bool? enabled,
+    bool? isEnabled,
     this.colorBuilder,
+    this.isCritical = false,
     this.borderRadius = .zero,
     this.padding = .zero,
-  }) : enabled = enabled ?? (onPressed != null || onLongPressed != null);
+  }) : isEnabled = isEnabled ?? (onPressed != null || onLongPressed != null);
 
   @override
   Widget build(BuildContext context) {
     final color = colorBuilder?.call(context.colors);
-    final backgroundColor = color?.asSurface(disabled: !enabled) ?? Colors.transparent;
+    final backgroundColor = color?.asSurface(isDisabled: !isEnabled) ?? Colors.transparent;
+    final foregroundColor = backgroundColor.foreground(isDisabled: !isEnabled, isCritical: isCritical);
     return AnimatedContainer(
       duration: Duration(milliseconds: 300),
       curve: Curves.easeInOutCubic,
@@ -37,12 +40,16 @@ class StyledMaterial extends StatelessWidget {
           borderRadius: borderRadius,
           onTap: onPressed,
           onLongPress: onLongPressed,
+          overlayColor: .all(foregroundColor.withValues(alpha: 0.1)),
           child: Padding(
             padding: padding,
             child: DefaultTextStyle(
-              style: context.textStyle.labelLg.onColor(backgroundColor).disabled(disabled: !enabled),
+              style: context.textStyle.labelLg
+                  .onColor(backgroundColor)
+                  .disabled(isDisabled: !isEnabled)
+                  .critical(isCritical: isCritical),
               child: IconTheme.merge(
-                data: IconThemeData(color: backgroundColor.foreground(disabled: !enabled)),
+                data: IconThemeData(color: foregroundColor),
                 child: child,
               ),
             ),

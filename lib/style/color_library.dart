@@ -29,15 +29,19 @@ class ColorLibrary {
   Color get surfaceTertiary => brightness.when(light: zinc.shade100, dark: zinc.shade700);
   Color get surfaceDisabled => brightness.when(light: zinc.shade100, dark: zinc.shade700);
   Color get surfaceError => brightness.when(light: red.shade100, dark: red.shade950);
-  Color surface({bool disabled = false}) => disabled ? surfaceDisabled : surfacePrimary;
+  Color surface({bool isDisabled = false}) => isDisabled ? surfaceDisabled : surfacePrimary;
 
   Color get contentPrimary => brightness.when(light: Colors.black, dark: Colors.white);
   Color get contentPrimaryInverse => brightness.when(light: Colors.white, dark: Colors.black);
   Color get contentSecondary => brightness.when(light: zinc.shade700, dark: zinc.shade300);
   Color get contentTertiary => brightness.when(light: zinc.shade600, dark: zinc.shade400);
   Color get contentDisabled => brightness.when(light: zinc.shade400, dark: zinc.shade600);
-  Color get contentError => red.shade600;
-  Color content({bool disabled = false}) => disabled ? contentDisabled : contentPrimary;
+  Color get contentCritical => red.shade600;
+  Color content({bool isDisabled = false, bool isCritical = false}) => isCritical
+      ? contentCritical
+      : isDisabled
+      ? contentDisabled
+      : contentPrimary;
 
   Color get borderOpaque => brightness.when(light: zinc.shade200, dark: zinc.shade700);
   Color get borderSelected => brightness.when(light: Colors.black, dark: Colors.white);
@@ -51,10 +55,11 @@ extension on MaterialColor {
 
 extension ColorExtensions on Color {
   Brightness get brightness => ThemeData.estimateBrightnessForColor(this);
-  Color foreground({bool disabled = false}) => ColorLibrary.fromBackground(this).content(disabled: disabled);
-  Color asSurface({bool disabled = false}) {
+  Color foreground({bool isDisabled = false, bool isCritical = false}) =>
+      ColorLibrary.fromBackground(this).content(isDisabled: isDisabled, isCritical: isCritical);
+  Color asSurface({bool isDisabled = false}) {
     final colors = ColorLibrary.fromBackground(this);
-    return disabled
+    return isDisabled
         ? this == colors.contentPrimaryInverse
               ? colors.inverted.surfaceDisabled
               : colors.surfaceDisabled

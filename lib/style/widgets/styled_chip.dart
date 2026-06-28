@@ -10,10 +10,10 @@ class StyledChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final enabled = onPressed != null;
+    final isEnabled = onPressed != null;
 
     return StyledMaterial(
-      colorBuilder: enabled ? .surfaceSecondary : null,
+      colorBuilder: isEnabled ? .surfaceSecondary : null,
       borderRadius: .circular(8),
       padding: .symmetric(horizontal: 8, vertical: 8),
       onPressed: onPressed,
