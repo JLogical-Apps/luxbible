@@ -7,9 +7,14 @@ part of 'commentary.dart';
 // **************************************************************************
 
 _Commentary _$CommentaryFromJson(Map<String, dynamic> json) => _Commentary(
-  name: json['n'] as String,
+  type: $enumDecode(_$CommentaryTypeEnumMap, json['t']),
   notes: _notesFromJson(json['v'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$CommentaryToJson(_Commentary instance) =>
-    <String, dynamic>{'n': instance.name, 'v': _notesToJson(instance.notes)};
+    <String, dynamic>{
+      't': _$CommentaryTypeEnumMap[instance.type]!,
+      'v': _notesToJson(instance.notes),
+    };
+
+const _$CommentaryTypeEnumMap = {CommentaryType.matthewHenry: 'matthewHenry'};

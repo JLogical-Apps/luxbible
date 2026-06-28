@@ -4,7 +4,7 @@ import 'package:bible/models/reference/chapter_position.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
-import 'package:bible/models/study_action.dart';
+import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/text_selection_action.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/models/verse_selection_action.dart';
@@ -234,7 +234,7 @@ class BibleBody extends HookConsumerWidget {
             final maxStudyPanelHeight = MediaQuery.sizeOf(context).height * 0.5;
 
             final studyPanelHeightRef = useRef(
-              (MediaQuery.sizeOf(context).height * user.studyPanelPosition).clamp(
+              (MediaQuery.sizeOf(context).height * user.studyPanelBottomPosition).clamp(
                 minStudyPanelHeight,
                 maxStudyPanelHeight,
               ),
@@ -271,8 +271,8 @@ class BibleBody extends HookConsumerWidget {
 
             usePeriodic(Duration(seconds: 1), () {
               final studyPanelPercentVisible = studyPanelHeightRef.value / maxStudyPanelHeight;
-              if (studyPanelPercentVisible != user.studyPanelPosition) {
-                ref.updateUser((user) => user.copyWith(studyPanelPosition: studyPanelPercentVisible));
+              if (studyPanelPercentVisible != user.studyPanelBottomPosition) {
+                ref.updateUser((user) => user.copyWith(studyPanelBottomPosition: studyPanelPercentVisible));
               }
             });
 
@@ -310,6 +310,7 @@ class BibleBody extends HookConsumerWidget {
                                     context,
                                     verseSelection: visibleVerseSelection,
                                     onNavigateToVerseSelection: navigateToVerseSelection,
+                                    user: user,
                                   ),
                                 ),
                               )
@@ -332,8 +333,8 @@ class BibleBody extends HookConsumerWidget {
     ValueNotifier<NavigationHistory> navigationHistoryState,
     void Function(ChapterPosition, {String? bookmarkId, bool updateNavigationState}) hardNavigateTo,
     void Function(VerseSelection) navigateToVerseSelection,
-    List<StudyAction> studyPanels,
-    void Function(StudyAction) onAddStudyPanel,
+    List<StudyPanel> studyPanels,
+    void Function(StudyPanel) onAddStudyPanel,
     VerseSelection? selectedVerseSelection,
     void Function() onClosePressed,
     ValueNotifier<List<Reference>> selectedReferencesState,
@@ -426,7 +427,7 @@ class BibleBody extends HookConsumerWidget {
                   onAddStudyPanel: onAddStudyPanel,
                 ),
                 onMorePressed: () => context.showStyledSheet(
-                  (context) => StyledSheet(
+                  (_) => StyledSheet(
                     trailing: StyledCircleButton.lg(
                       child: Symbols.tune.toIcon(),
                       onPressed: () {

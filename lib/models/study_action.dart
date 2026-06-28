@@ -1,21 +1,20 @@
-import 'dart:collection';
-
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
+import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/sheets/compare_sheet.dart';
+import 'package:bible/ui/sheets/interlinear_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
-import 'package:bible/ui/widgets/paragraphs_builder.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -56,122 +55,18 @@ enum StudyAction {
     BuildContext context, {
     required VerseSelection verseSelection,
     required Function(VerseSelection) onNavigateToVerseSelection,
+    required User user,
   }) {
     switch (this) {
       case compare:
-        final user = ref.read(userProvider);
-        final bibles = user.biblesOrDefault;
-        return bibles
-            .mapIndexed<Widget>(
-              (i, translation) => Consumer(
-                builder: (context, ref, child) {
-                  final paragraphs = ref
-                      .watch(verseSelectionParagraphsProvider(selection: verseSelection, translation: translation))
-                      .value;
-                  final chapterReference = verseSelection.references.firstOrNull?.toChapterReference();
-                  return Stack(
-                    children: [
-                      StyledStickyHeader.child(
-                        title: translation.title().toText(),
-                        child: verseSelection.isInTranslation(translation)
-                            ? StyledLoading(
-                                child: paragraphs == null || chapterReference == null
-                                    ? null
-                                    : Padding(
-                                        padding: .only(bottom: 16),
-                                        child: ParagraphsBuilder(
-                                          paragraphs: paragraphs,
-                                          chapterReference: chapterReference,
-                                          user: user,
-                                          translation: translation,
-                                        ),
-                                      ),
-                              )
-                            : Padding(
-                                padding: .only(bottom: 16),
-                                child: StyledTile.message(
-                                  leading: Symbols.translate.toIcon(),
-                                  title: "${translation.fullName()} doesn't include this selection.".toText(),
-                                ),
-                              ),
-                      ),
-                      if (i + 1 < bibles.length)
-                        Positioned(bottom: 0, left: 0, right: 0, child: StyledDivider(height: 2)),
-                    ],
-                  );
-                },
-              ),
-            )
-            .toList();
+        return CompareSheet.buildSheetChildren(
+          context,
+          verseSelection: verseSelection,
+          onNavigateToVerseSelection: onNavigateToVerseSelection,
+          user: user,
+        );
       case interlinear:
-        final studyBible = ref.read(studyBibleProvider);
-        final user = ref.read(userProvider);
-
-        final interlinearDirection = InterlinearDirection.forward;
-
-        return [
-          Padding(
-            padding: .all(16),
-            child: Column(
-              spacing: 16,
-              children: [
-                StyledTile.message(
-                  leading: interlinearDirection.icon().toIcon(),
-                  title: interlinearDirection.description().toText(),
-                ),
-                if (user.translation != .bsb)
-                  StyledBanner(
-                    colorBuilder: .surfaceTertiary,
-                    leading: Symbols.book.toIcon(),
-                    message: 'Interlinear uses BSB'.toText(),
-                    action: StyledTextAction(
-                      label: 'Learn More'.toText(),
-                      onPressed: () => context.showStyledDialog(
-                        (context) => StyledDialog.confirm(
-                          title: 'Interlinear Bible'.toText(),
-                          body:
-                              "The BSB was designed with word-for-word Strong's and morphology tagging, which is what makes the Interlinear lexical breakdown possible. Your selected translation is used everywhere else in the app."
-                                  .toText(),
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          ...verseSelection.references.mapIndexed((i, reference) {
-            final verse = studyBible.getVerseByReference(reference);
-            if (verse == null) {
-              return null;
-            }
-
-            return Stack(
-              children: [
-                StyledStickyHeader(
-                  title: reference.format().toText(),
-                  children: verse.words
-                      .mapToMap((word) => MapEntry(word, word.data))
-                      .withoutNullValues
-                      .maybeSortedBy(
-                        (word, data) => data.originalPosition,
-                        shouldSort: interlinearDirection == .forward,
-                      )
-                      .mapToIterable(
-                        (word, data) => InterlinearWordTile(
-                          word: word,
-                          data: data,
-                          direction: interlinearDirection,
-                          onNavigateToVerseSelection: onNavigateToVerseSelection,
-                        ),
-                      )
-                      .toList(),
-                ),
-                if (i + 1 < verseSelection.references.length)
-                  Positioned(bottom: 0, left: 0, right: 0, child: StyledDivider(height: 2)),
-              ],
-            );
-          }).nonNulls,
-        ];
+        throw UnimplementedError();
       case commentary:
         final commentaries = ref.read(commentariesProvider);
         final relatedCommentaries = commentaries
@@ -187,7 +82,7 @@ enum StudyAction {
             : relatedCommentaries
                   .mapToIterable(
                     (commentary, notes) => StyledStickyHeader(
-                      title: commentary.name.toText(),
+                      title: commentary.type.title().toText(),
                       children: notes
                           .mapToIterable(
                             (verseSelection, note) =>
@@ -259,10 +154,9 @@ enum StudyAction {
     required VerseSelection verseSelection,
     required String regionFormat,
     required Function(VerseSelection) onNavigateToVerseSelection,
+    required User user,
   }) async {
     if (this == .interlinear) {
-      final studyBible = ref.read(studyBibleProvider);
-
       context.showStyledSheetWithBreadcrumbs(breadcrumbText: regionFormat, (context) {
         final user = ref.read(userProvider);
 
@@ -290,69 +184,13 @@ enum StudyAction {
             tabTitles: InterlinearDirection.values.map((direction) => direction.title().toText()).toList(),
           ),
           showDivider: false,
-          children: [
-            Padding(
-              padding: .all(16),
-              child: Column(
-                spacing: 16,
-                children: [
-                  StyledTile.message(
-                    leading: interlinearDirection.icon().toIcon(),
-                    title: interlinearDirection.description().toText(),
-                  ),
-                  if (user.translation != .bsb)
-                    StyledBanner(
-                      colorBuilder: .surfaceTertiary,
-                      leading: Symbols.book.toIcon(),
-                      message: 'Interlinear uses BSB'.toText(),
-                      action: StyledTextAction(
-                        label: 'Learn More'.toText(),
-                        onPressed: () => context.showStyledDialog(
-                          (context) => StyledDialog.confirm(
-                            title: 'Interlinear Bible'.toText(),
-                            body:
-                                "The BSB was designed with word-for-word Strong's and morphology tagging, which is what makes the Interlinear lexical breakdown possible. Your selected translation is used everywhere else in the app."
-                                    .toText(),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            ...verseSelection.references.mapIndexed((i, reference) {
-              final verse = studyBible.getVerseByReference(reference);
-              if (verse == null) {
-                return null;
-              }
-
-              return Stack(
-                children: [
-                  StyledStickyHeader(
-                    title: reference.format().toText(),
-                    children: verse.words
-                        .mapToMap((word) => MapEntry(word, word.data))
-                        .withoutNullValues
-                        .maybeSortedBy(
-                          (word, data) => data.originalPosition,
-                          shouldSort: interlinearDirection == .forward,
-                        )
-                        .mapToIterable(
-                          (word, data) => InterlinearWordTile(
-                            word: word,
-                            data: data,
-                            direction: interlinearDirection,
-                            onNavigateToVerseSelection: onNavigateToVerseSelection,
-                          ),
-                        )
-                        .toList(),
-                  ),
-                  if (i + 1 < verseSelection.references.length)
-                    Positioned(bottom: 0, left: 0, right: 0, child: StyledDivider(height: 2)),
-                ],
-              );
-            }).nonNulls,
-          ],
+          children: InterlinearSheet.buildSheetChildren(
+            context,
+            verseSelection: verseSelection,
+            onNavigateToVerseSelection: onNavigateToVerseSelection,
+            direction: interlinearDirection,
+            user: user,
+          ),
         );
       });
     } else {
@@ -364,6 +202,7 @@ enum StudyAction {
             context,
             verseSelection: verseSelection,
             onNavigateToVerseSelection: onNavigateToVerseSelection,
+            user: user,
           ),
         ),
       );

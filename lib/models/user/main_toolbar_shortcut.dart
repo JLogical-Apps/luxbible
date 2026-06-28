@@ -3,7 +3,10 @@ import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_action.dart';
+import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
+import 'package:bible/providers/root_ref.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/pages/theme_settings_page.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
@@ -37,13 +40,14 @@ enum MainToolbarShortcut {
     BuildContext context, {
     required ChapterReference reference,
     required Function(VerseSelection) onNavigateToVerseSelection,
-    required Function(StudyAction) onAddStudyPanel,
+    required Function(StudyPanel) onAddStudyPanel,
   }) =>
       toStudyAction()?.onPressed(
         context,
         verseSelection: reference.toVerseSelection(),
         regionFormat: reference.format(),
         onNavigateToVerseSelection: onNavigateToVerseSelection,
+        user: ref.read(userProvider),
       ) ??
       toMainAction()?.onPressed(
         context,

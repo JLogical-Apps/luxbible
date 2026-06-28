@@ -8,7 +8,7 @@ import 'package:bible/models/reference/chapter_position.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
-import 'package:bible/models/study_action.dart';
+import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/main_toolbar_configuration.dart';
 import 'package:bible/models/user/text_selection_configuration.dart';
 import 'package:bible/models/user/theme_layout_configuration.dart';
@@ -45,9 +45,9 @@ sealed class User with _$User {
     @Default(InterlinearDirection.reverse) InterlinearDirection interlinearDirection,
     @Default(ThemeMode.system) ThemeMode theme,
     @Default(ThemeLayoutConfiguration()) ThemeLayoutConfiguration themeLayout,
-    @Default([]) List<StudyAction> studyPanels,
+    @Default([]) List<StudyPanel> studyPanels,
     int? studyPanelIndex,
-    @Default(0.5) double studyPanelPosition,
+    @Default(0.5) double studyPanelBottomPosition,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -195,6 +195,6 @@ sealed class User with _$User {
   User withSearchHistory(String search) =>
       copyWith(searchHistory: [search, ...searchHistory].distinct.take(5).toList());
 
-  User withStudyPanel(StudyAction studyPanel) =>
+  User withStudyPanel(StudyPanel studyPanel) =>
       copyWith(studyPanels: [...studyPanels, studyPanel], studyPanelIndex: studyPanels.length);
 }

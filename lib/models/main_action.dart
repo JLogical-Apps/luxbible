@@ -2,6 +2,7 @@ import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_action.dart';
+import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -10,6 +11,7 @@ import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/pages/settings_page.dart';
 import 'package:bible/ui/sheets/bookmark_sheet.dart';
 import 'package:bible/ui/sheets/study_sheet.dart';
+import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
@@ -62,7 +64,7 @@ enum MainAction {
     BuildContext context, {
     required ChapterReference reference,
     required Function(VerseSelection) onNavigateToVerseSelection,
-    required Function(StudyAction) onAddStudyPanel,
+    required Function(StudyPanel) onAddStudyPanel,
   }) async {
     final user = ref.read(userProvider);
     switch (this) {
@@ -141,8 +143,40 @@ enum MainAction {
                 .toList(),
           ),
         );
-        if (studyAction != null) {
-          onAddStudyPanel(studyAction);
+        if (studyAction != null && context.mounted) {
+          switch (studyAction) {
+            case .compare:
+              final translation = await context.showStyledSheet(
+                (context) => StyledSelectionSheet(
+                  title: 'Compare With'.toText(),
+                  options: user.biblesOrDefault,
+                  optionMapper: (option) =>
+                      StyledSelectOption(title: option.title().toText(), subtitle: option.fullName().toText()),
+                ),
+              );
+              if (translation != null) {
+                onAddStudyPanel(StudyPanel.compare(translation: translation));
+              }
+            case .interlinear:
+              final direction = await context.showStyledSheet(
+                (context) => StyledSelectionSheet(
+                  title: 'Interlinear Direction'.toText(),
+                  options: InterlinearDirection.values,
+                  optionMapper: (option) => StyledSelectOption(
+                    title: option.title().toText(),
+                    subtitle: option.description().toText(),
+                    leading: option.icon.toIcon(),
+                  ),
+                ),
+              );
+              if (direction != null) {
+                onAddStudyPanel(StudyPanel.interlinear(direction: direction));
+              }
+            case .commentary:
+              onAddStudyPanel(StudyPanel.commentary(type: .matthewHenry));
+            case .crossReferences:
+              onAddStudyPanel(StudyPanel.crossReferences());
+          }
         }
       case search:
         final result = await context.push<SearchPageResult>(SearchPage(currentChapterReference: reference));

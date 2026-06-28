@@ -111,7 +111,7 @@ enum InterlinearDirection {
     forward => 'Words appear in the original Hebrew or Greek order.',
   };
 
-  IconData icon() => switch (this) {
+  IconData get icon => switch (this) {
     reverse => Symbols.fast_rewind,
     forward => Symbols.fast_forward,
   };

@@ -1,3 +1,4 @@
+import 'package:bible/models/commentary_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -11,7 +12,7 @@ sealed class Commentary with _$Commentary {
   const Commentary._();
 
   const factory Commentary({
-    @JsonKey(name: 'n') required String name,
+    @JsonKey(name: 't') required CommentaryType type,
     @JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson) required Map<VerseSelection, String> notes,
   }) = _Commentary;
 

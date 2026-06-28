@@ -5,6 +5,7 @@ import 'package:bible/models/study_action.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/models/verse_selection_action.dart';
 import 'package:bible/providers/root_ref.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -62,6 +63,7 @@ enum VerseSelectionShortcut {
         regionFormat: verseSelection.format(),
         verseSelection: verseSelection,
         onNavigateToVerseSelection: onNavigateToVerseSelection,
+        user: ref.read(userProvider),
       ) ??
       toVerseSelectionAction()?.onPressed(
         context,
