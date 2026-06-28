@@ -33,19 +33,22 @@ class InterlinearWordTile extends ConsumerWidget {
     final strongs = ref.watch(strongsProvider);
     return switch (direction) {
       .forward => StyledListItem(
-        title: Row(
-          spacing: 4,
-          children: [
-            Row(
-              spacing: 4,
-              children: [
-                ?data.inflection?.toText(),
-                if (data.strongId case final strongId?) StyledTag(child: strongId.toText()),
-              ],
-            ),
-            if (strongs[data.strongId] case final strong?)
-              Text(strong.transliteration, style: TextStyle(color: context.colors.contentSecondary)),
-          ].intersperse(Text('·', style: TextStyle(color: context.colors.contentSecondary))).toList(),
+        title: SingleChildScrollView(
+          scrollDirection: .horizontal,
+          child: Row(
+            spacing: 4,
+            children: [
+              Row(
+                spacing: 4,
+                children: [
+                  ?data.inflection?.toText(),
+                  if (data.strongId case final strongId?) StyledTag(child: strongId.toText()),
+                ],
+              ),
+              if (strongs[data.strongId] case final strong?)
+                Text(strong.transliteration, style: TextStyle(color: context.colors.contentSecondary)),
+            ].intersperse(Text('·', style: TextStyle(color: context.colors.contentSecondary))).toList(),
+          ),
         ),
         subtitle: Column(crossAxisAlignment: .start, children: [?word.text?.toText(), ?data.morphology?.toText()]),
         trailing: data.inflection == null ? null : Symbols.chevron_right.toIcon(),
@@ -66,18 +69,21 @@ class InterlinearWordTile extends ConsumerWidget {
         subtitle: Column(
           crossAxisAlignment: .start,
           children: [
-            Row(
-              spacing: 4,
-              children: [
-                Row(
-                  spacing: 4,
-                  children: [
-                    if (data.strongId case final strongId?) StyledTag(child: strongId.toText()),
-                    ?data.inflection?.toText(),
-                  ],
-                ),
-                if (strongs[data.strongId] case final strong?) strong.transliteration.toText(),
-              ].intersperse('·'.toText()).toList(),
+            SingleChildScrollView(
+              scrollDirection: .horizontal,
+              child: Row(
+                spacing: 4,
+                children: [
+                  Row(
+                    spacing: 4,
+                    children: [
+                      if (data.strongId case final strongId?) StyledTag(child: strongId.toText()),
+                      ?data.inflection?.toText(),
+                    ],
+                  ),
+                  if (strongs[data.strongId] case final strong?) strong.transliteration.toText(),
+                ].intersperse('·'.toText()).toList(),
+              ),
             ),
             ?data.morphology?.toText(),
           ],
