@@ -511,7 +511,7 @@ class ParagraphsBuilder extends HookWidget {
                           decoration: underlinedReferences.contains(reference) ? .underline : null,
                         ),
                       ).withInjectedSpans(
-                        {
+                        [
                           ...user
                               .getTextSelectionAnnotationsWithNotesByOffset(
                                 reference: reference,
@@ -522,8 +522,8 @@ class ParagraphsBuilder extends HookWidget {
                                     offset >= wordParagraphOffset &&
                                     offset <= wordParagraphOffset + (word.text?.length ?? 0),
                               )
-                              .map(
-                                (offset, annotations) => MapEntry(
+                              .mapToIterable(
+                                (offset, annotations) => (
                                   offset - wordParagraphOffset,
                                   notesButtonSpan(
                                     context,
@@ -547,8 +547,8 @@ class ParagraphsBuilder extends HookWidget {
                                       getFootnoteOffset(footnote) <= wordVerseOffset + (word.text?.length ?? 0),
                                 )
                                 .groupListsBy((footnote) => getFootnoteOffset(footnote) - wordVerseOffset)
-                                .map(
-                                  (relativeOffset, footnotes) => MapEntry(
+                                .mapToIterable(
+                                  (relativeOffset, footnotes) => (
                                     relativeOffset,
                                     footnoteButtonSpan(
                                       context,
@@ -564,7 +564,7 @@ class ParagraphsBuilder extends HookWidget {
                                     ),
                                   ),
                                 ),
-                        },
+                        ],
                         injectAtEnd: wordIndex == lastTextWordIndex,
                         annotationModifier: (_, offset) => VerseElement(
                           anchor: BibleTextSelectionWordAnchor.fromReference(
