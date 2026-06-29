@@ -16,6 +16,7 @@ import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/annotated_span.dart';
+import 'package:bible/ui/widgets/simple_markdown.dart';
 import 'package:bible/ui/widgets/sized_widget_span.dart';
 import 'package:bible/ui/widgets/underline.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
@@ -28,7 +29,6 @@ import 'package:bible/utils/extensions/span_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intersperse/intersperse.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -393,6 +393,9 @@ class ParagraphsBuilder extends HookWidget {
                 .mapIndexed((verseIndex, verse) {
                   final reference = getVerseReference(verse);
                   final verseParagraphOffset = verseIndex == 0 ? paragraph.firstVerseOffset : 0;
+                  final lastTextWordIndex = verse.words.lastIndexWhere((word) => word.text != null);
+
+                  int getFootnoteOffset(Footnote footnote) => footnote.offset.clamp(0, verse.text.length);
 
                   final verseSelectionAnnotations = user.getVerseSelectionAnnotations(
                     VerseSelection.reference(reference),
@@ -540,10 +543,10 @@ class ParagraphsBuilder extends HookWidget {
                             ...?verse.footnotes
                                 ?.where(
                                   (footnote) =>
-                                      footnote.offset >= wordVerseOffset &&
-                                      footnote.offset <= wordVerseOffset + (word.text?.length ?? 0),
+                                      getFootnoteOffset(footnote) >= wordVerseOffset &&
+                                      getFootnoteOffset(footnote) <= wordVerseOffset + (word.text?.length ?? 0),
                                 )
-                                .groupListsBy((footnote) => footnote.offset - wordVerseOffset)
+                                .groupListsBy((footnote) => getFootnoteOffset(footnote) - wordVerseOffset)
                                 .map(
                                   (relativeOffset, footnotes) => MapEntry(
                                     relativeOffset,
@@ -552,7 +555,7 @@ class ParagraphsBuilder extends HookWidget {
                                       element: VerseElement(
                                         anchor: BibleTextSelectionWordAnchor.fromReference(
                                           reference: reference,
-                                          characterOffset: verseParagraphOffset + footnotes.first.offset,
+                                          characterOffset: verseParagraphOffset + getFootnoteOffset(footnotes.first),
                                         ),
                                         isBoundInSelection: false,
                                       ),
@@ -562,6 +565,7 @@ class ParagraphsBuilder extends HookWidget {
                                   ),
                                 ),
                         },
+                        injectAtEnd: wordIndex == lastTextWordIndex,
                         annotationModifier: (_, offset) => VerseElement(
                           anchor: BibleTextSelectionWordAnchor.fromReference(
                             reference: reference,
@@ -668,19 +672,7 @@ class ParagraphsBuilder extends HookWidget {
                 (context) => StyledSheet(
                   title: 'Footnotes'.toText(),
                   children: footnotes
-                      .map(
-                        (footnote) => StyledListItem(
-                          title: MarkdownBody(
-                            data: footnote.text,
-                            shrinkWrap: true,
-                            styleSheet: MarkdownStyleSheet(
-                              p: context.textStyle.labelMd,
-                              pPadding: EdgeInsets.zero,
-                              blockSpacing: 0,
-                            ),
-                          ),
-                        ),
-                      )
+                      .map((footnote) => StyledListItem(title: SimpleMarkdown(text: footnote.text)))
                       .toList(),
                 ),
               ),

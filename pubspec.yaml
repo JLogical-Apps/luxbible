@@ -39,7 +39,6 @@ dependencies:
   animated_size_and_fade: ^5.1.1
   dio: ^5.9.2
   smooth_page_indicator: ^2.0.1
-  flutter_markdown_plus: ^1.0.7
   port:
     git:
       url: https://github.com/JLogical-Apps/flood.git

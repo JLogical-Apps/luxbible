@@ -1,5 +1,5 @@
 import 'package:bible/ui/widgets/sized_widget_span.dart';
-import 'package:collection/collection.dart';
+import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:utils_core/utils_core.dart';
 
@@ -16,10 +16,14 @@ class AnnotatedTextSpan<T> extends TextSpan with IsAnnotatedSpan<T> {
   List<InlineSpan> withInjectedSpans(
     Map<int, InlineSpan> spanByOffset, {
     required T Function(T, int offset) annotationModifier,
+    bool injectAtEnd = false,
   }) {
     final spans = <InlineSpan>[this];
     for (final MapEntry(:key, :value)
-        in spanByOffset.where((offset, span) => text!.length > offset).entries.sortedBy((entry) => -entry.key)) {
+        in spanByOffset
+            .where((offset, span) => injectAtEnd ? text!.length >= offset : text!.length > offset)
+            .entries
+            .sortedByDescending((entry) => entry.key)) {
       final textSpan = spans.removeAt(0) as AnnotatedTextSpan<T>;
       final text = textSpan.text ?? '';
       spans.insertAll(0, [
