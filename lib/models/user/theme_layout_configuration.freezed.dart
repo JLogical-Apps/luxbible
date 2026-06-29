@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ThemeLayoutConfiguration {
 
- ThemeFont get font; FontSizeSpacing get fontSizeSpacing; bool get redLetters; bool get sections; bool get verseNumbers; bool get paragraphs;
+ ThemeFont get font; FontSizeSpacing get fontSizeSpacing; bool get redLetters; bool get sections; bool get verseNumbers; bool get paragraphs; bool get footnotes;
 /// Create a copy of ThemeLayoutConfiguration
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ThemeLayoutConfigurationCopyWith<ThemeLayoutConfiguration> get copyWith => _$Th
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeLayoutConfiguration&&(identical(other.font, font) || other.font == font)&&(identical(other.fontSizeSpacing, fontSizeSpacing) || other.fontSizeSpacing == fontSizeSpacing)&&(identical(other.redLetters, redLetters) || other.redLetters == redLetters)&&(identical(other.sections, sections) || other.sections == sections)&&(identical(other.verseNumbers, verseNumbers) || other.verseNumbers == verseNumbers)&&(identical(other.paragraphs, paragraphs) || other.paragraphs == paragraphs));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThemeLayoutConfiguration&&(identical(other.font, font) || other.font == font)&&(identical(other.fontSizeSpacing, fontSizeSpacing) || other.fontSizeSpacing == fontSizeSpacing)&&(identical(other.redLetters, redLetters) || other.redLetters == redLetters)&&(identical(other.sections, sections) || other.sections == sections)&&(identical(other.verseNumbers, verseNumbers) || other.verseNumbers == verseNumbers)&&(identical(other.paragraphs, paragraphs) || other.paragraphs == paragraphs)&&(identical(other.footnotes, footnotes) || other.footnotes == footnotes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,font,fontSizeSpacing,redLetters,sections,verseNumbers,paragraphs);
+int get hashCode => Object.hash(runtimeType,font,fontSizeSpacing,redLetters,sections,verseNumbers,paragraphs,footnotes);
 
 @override
 String toString() {
-  return 'ThemeLayoutConfiguration(font: $font, fontSizeSpacing: $fontSizeSpacing, redLetters: $redLetters, sections: $sections, verseNumbers: $verseNumbers, paragraphs: $paragraphs)';
+  return 'ThemeLayoutConfiguration(font: $font, fontSizeSpacing: $fontSizeSpacing, redLetters: $redLetters, sections: $sections, verseNumbers: $verseNumbers, paragraphs: $paragraphs, footnotes: $footnotes)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ThemeLayoutConfigurationCopyWith<$Res>  {
   factory $ThemeLayoutConfigurationCopyWith(ThemeLayoutConfiguration value, $Res Function(ThemeLayoutConfiguration) _then) = _$ThemeLayoutConfigurationCopyWithImpl;
 @useResult
 $Res call({
- ThemeFont font, FontSizeSpacing fontSizeSpacing, bool redLetters, bool sections, bool verseNumbers, bool paragraphs
+ ThemeFont font, FontSizeSpacing fontSizeSpacing, bool redLetters, bool sections, bool verseNumbers, bool paragraphs, bool footnotes
 });
 
 
@@ -65,7 +65,7 @@ class _$ThemeLayoutConfigurationCopyWithImpl<$Res>
 
 /// Create a copy of ThemeLayoutConfiguration
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? font = null,Object? fontSizeSpacing = null,Object? redLetters = null,Object? sections = null,Object? verseNumbers = null,Object? paragraphs = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? font = null,Object? fontSizeSpacing = null,Object? redLetters = null,Object? sections = null,Object? verseNumbers = null,Object? paragraphs = null,Object? footnotes = null,}) {
   return _then(_self.copyWith(
 font: null == font ? _self.font : font // ignore: cast_nullable_to_non_nullable
 as ThemeFont,fontSizeSpacing: null == fontSizeSpacing ? _self.fontSizeSpacing : fontSizeSpacing // ignore: cast_nullable_to_non_nullable
@@ -73,6 +73,7 @@ as FontSizeSpacing,redLetters: null == redLetters ? _self.redLetters : redLetter
 as bool,sections: null == sections ? _self.sections : sections // ignore: cast_nullable_to_non_nullable
 as bool,verseNumbers: null == verseNumbers ? _self.verseNumbers : verseNumbers // ignore: cast_nullable_to_non_nullable
 as bool,paragraphs: null == paragraphs ? _self.paragraphs : paragraphs // ignore: cast_nullable_to_non_nullable
+as bool,footnotes: null == footnotes ? _self.footnotes : footnotes // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -155,10 +156,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ThemeFont font,  FontSizeSpacing fontSizeSpacing,  bool redLetters,  bool sections,  bool verseNumbers,  bool paragraphs)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ThemeFont font,  FontSizeSpacing fontSizeSpacing,  bool redLetters,  bool sections,  bool verseNumbers,  bool paragraphs,  bool footnotes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ThemeLayoutConfiguration() when $default != null:
-return $default(_that.font,_that.fontSizeSpacing,_that.redLetters,_that.sections,_that.verseNumbers,_that.paragraphs);case _:
+return $default(_that.font,_that.fontSizeSpacing,_that.redLetters,_that.sections,_that.verseNumbers,_that.paragraphs,_that.footnotes);case _:
   return orElse();
 
 }
@@ -176,10 +177,10 @@ return $default(_that.font,_that.fontSizeSpacing,_that.redLetters,_that.sections
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ThemeFont font,  FontSizeSpacing fontSizeSpacing,  bool redLetters,  bool sections,  bool verseNumbers,  bool paragraphs)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ThemeFont font,  FontSizeSpacing fontSizeSpacing,  bool redLetters,  bool sections,  bool verseNumbers,  bool paragraphs,  bool footnotes)  $default,) {final _that = this;
 switch (_that) {
 case _ThemeLayoutConfiguration():
-return $default(_that.font,_that.fontSizeSpacing,_that.redLetters,_that.sections,_that.verseNumbers,_that.paragraphs);}
+return $default(_that.font,_that.fontSizeSpacing,_that.redLetters,_that.sections,_that.verseNumbers,_that.paragraphs,_that.footnotes);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -193,10 +194,10 @@ return $default(_that.font,_that.fontSizeSpacing,_that.redLetters,_that.sections
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ThemeFont font,  FontSizeSpacing fontSizeSpacing,  bool redLetters,  bool sections,  bool verseNumbers,  bool paragraphs)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ThemeFont font,  FontSizeSpacing fontSizeSpacing,  bool redLetters,  bool sections,  bool verseNumbers,  bool paragraphs,  bool footnotes)?  $default,) {final _that = this;
 switch (_that) {
 case _ThemeLayoutConfiguration() when $default != null:
-return $default(_that.font,_that.fontSizeSpacing,_that.redLetters,_that.sections,_that.verseNumbers,_that.paragraphs);case _:
+return $default(_that.font,_that.fontSizeSpacing,_that.redLetters,_that.sections,_that.verseNumbers,_that.paragraphs,_that.footnotes);case _:
   return null;
 
 }
@@ -208,7 +209,7 @@ return $default(_that.font,_that.fontSizeSpacing,_that.redLetters,_that.sections
 @JsonSerializable()
 
 class _ThemeLayoutConfiguration extends ThemeLayoutConfiguration {
-  const _ThemeLayoutConfiguration({this.font = ThemeFont.inter, this.fontSizeSpacing = FontSizeSpacing.standard, this.redLetters = true, this.sections = true, this.verseNumbers = true, this.paragraphs = true}): super._();
+  const _ThemeLayoutConfiguration({this.font = ThemeFont.inter, this.fontSizeSpacing = FontSizeSpacing.standard, this.redLetters = true, this.sections = true, this.verseNumbers = true, this.paragraphs = true, this.footnotes = true}): super._();
   factory _ThemeLayoutConfiguration.fromJson(Map<String, dynamic> json) => _$ThemeLayoutConfigurationFromJson(json);
 
 @override@JsonKey() final  ThemeFont font;
@@ -217,6 +218,7 @@ class _ThemeLayoutConfiguration extends ThemeLayoutConfiguration {
 @override@JsonKey() final  bool sections;
 @override@JsonKey() final  bool verseNumbers;
 @override@JsonKey() final  bool paragraphs;
+@override@JsonKey() final  bool footnotes;
 
 /// Create a copy of ThemeLayoutConfiguration
 /// with the given fields replaced by the non-null parameter values.
@@ -231,16 +233,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ThemeLayoutConfiguration&&(identical(other.font, font) || other.font == font)&&(identical(other.fontSizeSpacing, fontSizeSpacing) || other.fontSizeSpacing == fontSizeSpacing)&&(identical(other.redLetters, redLetters) || other.redLetters == redLetters)&&(identical(other.sections, sections) || other.sections == sections)&&(identical(other.verseNumbers, verseNumbers) || other.verseNumbers == verseNumbers)&&(identical(other.paragraphs, paragraphs) || other.paragraphs == paragraphs));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ThemeLayoutConfiguration&&(identical(other.font, font) || other.font == font)&&(identical(other.fontSizeSpacing, fontSizeSpacing) || other.fontSizeSpacing == fontSizeSpacing)&&(identical(other.redLetters, redLetters) || other.redLetters == redLetters)&&(identical(other.sections, sections) || other.sections == sections)&&(identical(other.verseNumbers, verseNumbers) || other.verseNumbers == verseNumbers)&&(identical(other.paragraphs, paragraphs) || other.paragraphs == paragraphs)&&(identical(other.footnotes, footnotes) || other.footnotes == footnotes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,font,fontSizeSpacing,redLetters,sections,verseNumbers,paragraphs);
+int get hashCode => Object.hash(runtimeType,font,fontSizeSpacing,redLetters,sections,verseNumbers,paragraphs,footnotes);
 
 @override
 String toString() {
-  return 'ThemeLayoutConfiguration(font: $font, fontSizeSpacing: $fontSizeSpacing, redLetters: $redLetters, sections: $sections, verseNumbers: $verseNumbers, paragraphs: $paragraphs)';
+  return 'ThemeLayoutConfiguration(font: $font, fontSizeSpacing: $fontSizeSpacing, redLetters: $redLetters, sections: $sections, verseNumbers: $verseNumbers, paragraphs: $paragraphs, footnotes: $footnotes)';
 }
 
 
@@ -251,7 +253,7 @@ abstract mixin class _$ThemeLayoutConfigurationCopyWith<$Res> implements $ThemeL
   factory _$ThemeLayoutConfigurationCopyWith(_ThemeLayoutConfiguration value, $Res Function(_ThemeLayoutConfiguration) _then) = __$ThemeLayoutConfigurationCopyWithImpl;
 @override @useResult
 $Res call({
- ThemeFont font, FontSizeSpacing fontSizeSpacing, bool redLetters, bool sections, bool verseNumbers, bool paragraphs
+ ThemeFont font, FontSizeSpacing fontSizeSpacing, bool redLetters, bool sections, bool verseNumbers, bool paragraphs, bool footnotes
 });
 
 
@@ -268,7 +270,7 @@ class __$ThemeLayoutConfigurationCopyWithImpl<$Res>
 
 /// Create a copy of ThemeLayoutConfiguration
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? font = null,Object? fontSizeSpacing = null,Object? redLetters = null,Object? sections = null,Object? verseNumbers = null,Object? paragraphs = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? font = null,Object? fontSizeSpacing = null,Object? redLetters = null,Object? sections = null,Object? verseNumbers = null,Object? paragraphs = null,Object? footnotes = null,}) {
   return _then(_ThemeLayoutConfiguration(
 font: null == font ? _self.font : font // ignore: cast_nullable_to_non_nullable
 as ThemeFont,fontSizeSpacing: null == fontSizeSpacing ? _self.fontSizeSpacing : fontSizeSpacing // ignore: cast_nullable_to_non_nullable
@@ -276,6 +278,7 @@ as FontSizeSpacing,redLetters: null == redLetters ? _self.redLetters : redLetter
 as bool,sections: null == sections ? _self.sections : sections // ignore: cast_nullable_to_non_nullable
 as bool,verseNumbers: null == verseNumbers ? _self.verseNumbers : verseNumbers // ignore: cast_nullable_to_non_nullable
 as bool,paragraphs: null == paragraphs ? _self.paragraphs : paragraphs // ignore: cast_nullable_to_non_nullable
+as bool,footnotes: null == footnotes ? _self.footnotes : footnotes // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

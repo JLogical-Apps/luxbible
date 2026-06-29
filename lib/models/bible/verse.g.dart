@@ -14,10 +14,14 @@ _Verse _$VerseFromJson(Map<String, dynamic> json) => _Verse(
   originalVerse: json['o'] == null
       ? null
       : Reference.fromJson(json['o'] as String),
+  footnotes: (json['f'] as List<dynamic>?)
+      ?.map((e) => Footnote.fromJson(e as Map<String, dynamic>))
+      .toList(),
 );
 
 Map<String, dynamic> _$VerseToJson(_Verse instance) => <String, dynamic>{
   'n': instance.verseNum,
   'w': instance.words.map((e) => e.toJson()).toList(),
   'o': ?instance.originalVerse?.toJson(),
+  'f': ?instance.footnotes?.map((e) => e.toJson()).toList(),
 };

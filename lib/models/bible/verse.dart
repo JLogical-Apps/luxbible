@@ -1,3 +1,4 @@
+import 'package:bible/models/bible/footnote.dart';
 import 'package:bible/models/bible/word.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/reference.dart';
@@ -15,6 +16,7 @@ sealed class Verse with _$Verse {
     @JsonKey(name: 'n') required int verseNum,
     @JsonKey(name: 'w') required List<Word> words,
     @JsonKey(name: 'o', includeIfNull: false) Reference? originalVerse,
+    @JsonKey(name: 'f', includeIfNull: false) List<Footnote>? footnotes,
   }) = _Verse;
 
   factory Verse.fromJson(Map<String, dynamic> json) => _$VerseFromJson(json);
@@ -28,6 +30,7 @@ sealed class Verse with _$Verse {
     verseNum: verseNum,
     words: words.skipWhile((word) => word.text?.isBlank == true && word.data == null).toList(),
     originalVerse: originalVerse,
+    footnotes: footnotes,
   );
 }
 
@@ -65,11 +68,18 @@ extension IterableVerseExtensions on Iterable<Verse> {
           }
 
           return lastVerse.verseNum == verse.verseNum
-              ? (verses..[verses.length - 1] = Verse(
-                  verseNum: verse.verseNum,
-                  words: lastVerse.words + verse.words,
-                  originalVerse: lastVerse.originalVerse ?? verse.originalVerse,
-                ))
+              ? (verses
+                  ..[verses.length - 1] = Verse(
+                    verseNum: verse.verseNum,
+                    words: lastVerse.words + verse.words,
+                    originalVerse: lastVerse.originalVerse ?? verse.originalVerse,
+                    footnotes: [
+                      ...?lastVerse.footnotes,
+                      ...?verse.footnotes?.map(
+                        (footnote) => footnote.copyWith(offset: lastVerse.text.length + footnote.offset),
+                      ),
+                    ].nullIfEmpty?.toList(),
+                  ))
               : (verses..add(verse));
         });
 }

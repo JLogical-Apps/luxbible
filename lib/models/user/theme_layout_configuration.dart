@@ -14,6 +14,7 @@ sealed class ThemeLayoutConfiguration with _$ThemeLayoutConfiguration {
     @Default(true) bool sections,
     @Default(true) bool verseNumbers,
     @Default(true) bool paragraphs,
+    @Default(true) bool footnotes,
   }) = _ThemeLayoutConfiguration;
 
   factory ThemeLayoutConfiguration.fromJson(Map<String, dynamic> json) => _$ThemeLayoutConfigurationFromJson(json);

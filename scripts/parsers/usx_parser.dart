@@ -1,10 +1,12 @@
 import 'package:bible/models/bible/book.dart';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bible/chapter.dart';
+import 'package:bible/models/bible/footnote.dart';
 import 'package:bible/models/bible/interlinear_data.dart';
 import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/models/bible/verse.dart';
 import 'package:bible/models/bible/word.dart';
+import 'package:bible/utils/footnote_markdown.dart';
 import 'package:collection/collection.dart';
 import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
@@ -59,6 +61,17 @@ Book parseUsxBook(BookType type, String rawXml) {
                                     : null,
                                 isRedLetters: node.getAttribute('style') == 'wj' || isRedLetters,
                               ),
+                              XmlElement node
+                                  when node.localName == 'note' &&
+                                      node.getAttribute('style') == 'f' &&
+                                      canParseVerse() =>
+                                [
+                                  Verse(
+                                    verseNum: lastVerseNum ?? 0,
+                                    words: [],
+                                    footnotes: [Footnote(offset: 0, text: _footnoteMarkdown(node))],
+                                  ),
+                                ],
                               _ => [],
                             },
                           )
@@ -113,6 +126,27 @@ Book parseUsxBook(BookType type, String rawXml) {
       );
     }).toList(),
   );
+}
+
+String _footnoteMarkdown(XmlElement note) {
+  final runs = <(String, bool)>[];
+  void walk(XmlNode node, bool italic) {
+    for (final child in node.children) {
+      switch (child) {
+        case XmlText(:final value):
+          runs.add((value, italic));
+        case XmlElement element when element.getAttribute('style') == 'fr':
+          break;
+        case XmlElement element:
+          walk(element, italic || FootnoteMarkdown.italicStyles.contains(element.getAttribute('style')));
+        default:
+          break;
+      }
+    }
+  }
+
+  walk(note, false);
+  return FootnoteMarkdown.runsToMarkdown(runs);
 }
 
 extension on XmlElement {

@@ -4,6 +4,7 @@ import 'package:bible/models/annotation.dart';
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bible/chapter.dart';
+import 'package:bible/models/bible/footnote.dart';
 import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/models/bible/verse.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
@@ -27,6 +28,7 @@ import 'package:bible/utils/extensions/span_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_markdown_plus/flutter_markdown_plus.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intersperse/intersperse.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -489,6 +491,7 @@ class ParagraphsBuilder extends HookWidget {
 
                       final wordParagraphOffset =
                           verseParagraphOffset + verse.words.take(wordIndex).map((word) => word.text?.length ?? 0).sum;
+                      final wordVerseOffset = wordParagraphOffset - verseParagraphOffset;
                       return AnnotatedTextSpan<VerseElement>(
                         annotation: VerseElement(
                           anchor: BibleTextSelectionWordAnchor.fromReference(
@@ -505,33 +508,60 @@ class ParagraphsBuilder extends HookWidget {
                           decoration: underlinedReferences.contains(reference) ? .underline : null,
                         ),
                       ).withInjectedSpans(
-                        user
-                            .getTextSelectionAnnotationsWithNotesByOffset(
-                              reference: reference,
-                              translation: translation,
-                            )
-                            .where(
-                              (offset, annotations) =>
-                                  offset >= wordParagraphOffset &&
-                                  offset <= wordParagraphOffset + (word.text?.length ?? 0),
-                            )
-                            .map(
-                              (offset, annotations) => MapEntry(
-                                offset - wordParagraphOffset,
-                                notesButtonSpan(
-                                  context,
-                                  element: VerseElement(
-                                    anchor: BibleTextSelectionWordAnchor.fromReference(
-                                      reference: reference,
-                                      characterOffset: offset,
+                        {
+                          ...user
+                              .getTextSelectionAnnotationsWithNotesByOffset(
+                                reference: reference,
+                                translation: translation,
+                              )
+                              .where(
+                                (offset, annotations) =>
+                                    offset >= wordParagraphOffset &&
+                                    offset <= wordParagraphOffset + (word.text?.length ?? 0),
+                              )
+                              .map(
+                                (offset, annotations) => MapEntry(
+                                  offset - wordParagraphOffset,
+                                  notesButtonSpan(
+                                    context,
+                                    element: VerseElement(
+                                      anchor: BibleTextSelectionWordAnchor.fromReference(
+                                        reference: reference,
+                                        characterOffset: offset,
+                                      ),
+                                      isBoundInSelection: true,
                                     ),
-                                    isBoundInSelection: true,
+                                    annotations: annotations,
+                                    isUnderlined: underlinedReferences.contains(reference),
                                   ),
-                                  annotations: annotations,
-                                  isUnderlined: underlinedReferences.contains(reference),
                                 ),
                               ),
-                            ),
+                          if (user.themeLayout.footnotes)
+                            ...?verse.footnotes
+                                ?.where(
+                                  (footnote) =>
+                                      footnote.offset >= wordVerseOffset &&
+                                      footnote.offset <= wordVerseOffset + (word.text?.length ?? 0),
+                                )
+                                .groupListsBy((footnote) => footnote.offset - wordVerseOffset)
+                                .map(
+                                  (relativeOffset, footnotes) => MapEntry(
+                                    relativeOffset,
+                                    footnoteButtonSpan(
+                                      context,
+                                      element: VerseElement(
+                                        anchor: BibleTextSelectionWordAnchor.fromReference(
+                                          reference: reference,
+                                          characterOffset: verseParagraphOffset + footnotes.first.offset,
+                                        ),
+                                        isBoundInSelection: false,
+                                      ),
+                                      footnotes: footnotes,
+                                      isUnderlined: underlinedReferences.contains(reference),
+                                    ),
+                                  ),
+                                ),
+                        },
                         annotationModifier: (_, offset) => VerseElement(
                           anchor: BibleTextSelectionWordAnchor.fromReference(
                             reference: reference,
@@ -607,6 +637,54 @@ class ParagraphsBuilder extends HookWidget {
                 ),
               ),
               child: Icon(Symbols.note_stack, color: context.colors.contentTertiary),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  WidgetSpan footnoteButtonSpan(
+    BuildContext context, {
+    required VerseElement element,
+    required List<Footnote> footnotes,
+    required bool isUnderlined,
+  }) {
+    final bibleTextStyle = BibleTextStyle(context, config: user.themeLayout);
+    return AnnotatedSizedWidgetSpan<VerseElement>(
+      annotation: element,
+      size: Size(30, bibleTextStyle.body.fontSize!),
+      alignment: .middle,
+      child: OverflowBox(
+        maxHeight: bibleTextStyle.body.totalHeight + 4,
+        maxWidth: 30,
+        child: Underline(
+          isUnderlined: isUnderlined,
+          style: bibleTextStyle.body,
+          child: Padding(
+            padding: .only(bottom: 4),
+            child: StyledCircleButton.sm(
+              onPressed: () => context.showStyledSheet(
+                (context) => StyledSheet(
+                  title: 'Footnotes'.toText(),
+                  children: footnotes
+                      .map(
+                        (footnote) => StyledListItem(
+                          title: MarkdownBody(
+                            data: footnote.text,
+                            shrinkWrap: true,
+                            styleSheet: MarkdownStyleSheet(
+                              p: context.textStyle.labelMd,
+                              pPadding: EdgeInsets.zero,
+                              blockSpacing: 0,
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+              child: Icon(Symbols.article, color: context.colors.contentTertiary),
             ),
           ),
         ),

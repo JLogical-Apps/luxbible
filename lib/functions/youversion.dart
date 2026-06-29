@@ -1,8 +1,10 @@
 import 'package:bible/models/bible/chapter.dart';
+import 'package:bible/models/bible/footnote.dart';
 import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/models/bible/verse.dart';
 import 'package:bible/models/bible/word.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
+import 'package:bible/utils/footnote_markdown.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:html/dom.dart' as dom;
@@ -19,10 +21,14 @@ class YouVersion {
   static Future<Chapter> fetchChapter({required int bibleId, required ChapterReference chapterReference}) async {
     final response = await dio.get(
       '/v1/bibles/$bibleId/passages/${chapterReference.usxId()}',
-      queryParameters: {'format': 'html', 'include_headings': true},
+      queryParameters: {'format': 'html', 'include_headings': true, 'include_notes': true},
     );
 
-    final fragment = html_parser.parseFragment(response.data['content']);
+    return parseChapter(response.data['content'] as String);
+  }
+
+  static Chapter parseChapter(String content) {
+    final fragment = html_parser.parseFragment(content);
 
     final root = fragment.children.length == 1 && fragment.children.single.localName == 'div'
         ? fragment.children.single
@@ -54,8 +60,15 @@ class YouVersion {
               isRedLetters: isRedLetters,
               isItalic: true,
             ),
+            dom.Element child when child.classes.contains('yv-n') => [
+              Verse(
+                verseNum: lastVerseNum ?? 0,
+                words: [],
+                footnotes: [Footnote(offset: 0, text: _footnoteMarkdown(child))],
+              ),
+            ],
             dom.Element child => parseVerses(child, isRedLetters: isRedLetters, isItalic: isItalic),
-            _ => <Verse>[],
+            _ => [],
           },
         )
         .withSameVersesCombined()
@@ -159,4 +172,20 @@ class YouVersion {
 
     return Chapter(paragraphs: paragraphs.nonNulls.toList());
   }
+}
+
+String _footnoteMarkdown(dom.Element note) {
+  final runs = <(String, bool)>[];
+  void walk(dom.Node node, bool italic) {
+    for (final child in node.nodes) {
+      if (child is dom.Text) {
+        runs.add((child.data, italic));
+      } else if (child is dom.Element && !child.classes.contains('fr')) {
+        walk(child, italic || child.classes.any((clazz) => FootnoteMarkdown.italicStyles.contains(clazz)));
+      }
+    }
+  }
+
+  walk(note, false);
+  return FootnoteMarkdown.runsToMarkdown(runs);
 }

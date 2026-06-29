@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Verse {
 
-@JsonKey(name: 'n') int get verseNum;@JsonKey(name: 'w') List<Word> get words;@JsonKey(name: 'o', includeIfNull: false) Reference? get originalVerse;
+@JsonKey(name: 'n') int get verseNum;@JsonKey(name: 'w') List<Word> get words;@JsonKey(name: 'o', includeIfNull: false) Reference? get originalVerse;@JsonKey(name: 'f', includeIfNull: false) List<Footnote>? get footnotes;
 /// Create a copy of Verse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $VerseCopyWith<Verse> get copyWith => _$VerseCopyWithImpl<Verse>(this as Verse, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Verse&&(identical(other.verseNum, verseNum) || other.verseNum == verseNum)&&const DeepCollectionEquality().equals(other.words, words)&&(identical(other.originalVerse, originalVerse) || other.originalVerse == originalVerse));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Verse&&(identical(other.verseNum, verseNum) || other.verseNum == verseNum)&&const DeepCollectionEquality().equals(other.words, words)&&(identical(other.originalVerse, originalVerse) || other.originalVerse == originalVerse)&&const DeepCollectionEquality().equals(other.footnotes, footnotes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,verseNum,const DeepCollectionEquality().hash(words),originalVerse);
+int get hashCode => Object.hash(runtimeType,verseNum,const DeepCollectionEquality().hash(words),originalVerse,const DeepCollectionEquality().hash(footnotes));
 
 @override
 String toString() {
-  return 'Verse(verseNum: $verseNum, words: $words, originalVerse: $originalVerse)';
+  return 'Verse(verseNum: $verseNum, words: $words, originalVerse: $originalVerse, footnotes: $footnotes)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $VerseCopyWith<$Res>  {
   factory $VerseCopyWith(Verse value, $Res Function(Verse) _then) = _$VerseCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'n') int verseNum,@JsonKey(name: 'w') List<Word> words,@JsonKey(name: 'o', includeIfNull: false) Reference? originalVerse
+@JsonKey(name: 'n') int verseNum,@JsonKey(name: 'w') List<Word> words,@JsonKey(name: 'o', includeIfNull: false) Reference? originalVerse,@JsonKey(name: 'f', includeIfNull: false) List<Footnote>? footnotes
 });
 
 
@@ -65,12 +65,13 @@ class _$VerseCopyWithImpl<$Res>
 
 /// Create a copy of Verse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? verseNum = null,Object? words = null,Object? originalVerse = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? verseNum = null,Object? words = null,Object? originalVerse = freezed,Object? footnotes = freezed,}) {
   return _then(_self.copyWith(
 verseNum: null == verseNum ? _self.verseNum : verseNum // ignore: cast_nullable_to_non_nullable
 as int,words: null == words ? _self.words : words // ignore: cast_nullable_to_non_nullable
 as List<Word>,originalVerse: freezed == originalVerse ? _self.originalVerse : originalVerse // ignore: cast_nullable_to_non_nullable
-as Reference?,
+as Reference?,footnotes: freezed == footnotes ? _self.footnotes : footnotes // ignore: cast_nullable_to_non_nullable
+as List<Footnote>?,
   ));
 }
 
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'n')  int verseNum, @JsonKey(name: 'w')  List<Word> words, @JsonKey(name: 'o', includeIfNull: false)  Reference? originalVerse)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'n')  int verseNum, @JsonKey(name: 'w')  List<Word> words, @JsonKey(name: 'o', includeIfNull: false)  Reference? originalVerse, @JsonKey(name: 'f', includeIfNull: false)  List<Footnote>? footnotes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Verse() when $default != null:
-return $default(_that.verseNum,_that.words,_that.originalVerse);case _:
+return $default(_that.verseNum,_that.words,_that.originalVerse,_that.footnotes);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.verseNum,_that.words,_that.originalVerse);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'n')  int verseNum, @JsonKey(name: 'w')  List<Word> words, @JsonKey(name: 'o', includeIfNull: false)  Reference? originalVerse)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'n')  int verseNum, @JsonKey(name: 'w')  List<Word> words, @JsonKey(name: 'o', includeIfNull: false)  Reference? originalVerse, @JsonKey(name: 'f', includeIfNull: false)  List<Footnote>? footnotes)  $default,) {final _that = this;
 switch (_that) {
 case _Verse():
-return $default(_that.verseNum,_that.words,_that.originalVerse);}
+return $default(_that.verseNum,_that.words,_that.originalVerse,_that.footnotes);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -190,10 +191,10 @@ return $default(_that.verseNum,_that.words,_that.originalVerse);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'n')  int verseNum, @JsonKey(name: 'w')  List<Word> words, @JsonKey(name: 'o', includeIfNull: false)  Reference? originalVerse)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'n')  int verseNum, @JsonKey(name: 'w')  List<Word> words, @JsonKey(name: 'o', includeIfNull: false)  Reference? originalVerse, @JsonKey(name: 'f', includeIfNull: false)  List<Footnote>? footnotes)?  $default,) {final _that = this;
 switch (_that) {
 case _Verse() when $default != null:
-return $default(_that.verseNum,_that.words,_that.originalVerse);case _:
+return $default(_that.verseNum,_that.words,_that.originalVerse,_that.footnotes);case _:
   return null;
 
 }
@@ -205,7 +206,7 @@ return $default(_that.verseNum,_that.words,_that.originalVerse);case _:
 @JsonSerializable()
 
 class _Verse extends Verse {
-  const _Verse({@JsonKey(name: 'n') required this.verseNum, @JsonKey(name: 'w') required final  List<Word> words, @JsonKey(name: 'o', includeIfNull: false) this.originalVerse}): _words = words,super._();
+  const _Verse({@JsonKey(name: 'n') required this.verseNum, @JsonKey(name: 'w') required final  List<Word> words, @JsonKey(name: 'o', includeIfNull: false) this.originalVerse, @JsonKey(name: 'f', includeIfNull: false) final  List<Footnote>? footnotes}): _words = words,_footnotes = footnotes,super._();
   factory _Verse.fromJson(Map<String, dynamic> json) => _$VerseFromJson(json);
 
 @override@JsonKey(name: 'n') final  int verseNum;
@@ -217,6 +218,15 @@ class _Verse extends Verse {
 }
 
 @override@JsonKey(name: 'o', includeIfNull: false) final  Reference? originalVerse;
+ final  List<Footnote>? _footnotes;
+@override@JsonKey(name: 'f', includeIfNull: false) List<Footnote>? get footnotes {
+  final value = _footnotes;
+  if (value == null) return null;
+  if (_footnotes is EqualUnmodifiableListView) return _footnotes;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 
 /// Create a copy of Verse
 /// with the given fields replaced by the non-null parameter values.
@@ -231,16 +241,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Verse&&(identical(other.verseNum, verseNum) || other.verseNum == verseNum)&&const DeepCollectionEquality().equals(other._words, _words)&&(identical(other.originalVerse, originalVerse) || other.originalVerse == originalVerse));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Verse&&(identical(other.verseNum, verseNum) || other.verseNum == verseNum)&&const DeepCollectionEquality().equals(other._words, _words)&&(identical(other.originalVerse, originalVerse) || other.originalVerse == originalVerse)&&const DeepCollectionEquality().equals(other._footnotes, _footnotes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,verseNum,const DeepCollectionEquality().hash(_words),originalVerse);
+int get hashCode => Object.hash(runtimeType,verseNum,const DeepCollectionEquality().hash(_words),originalVerse,const DeepCollectionEquality().hash(_footnotes));
 
 @override
 String toString() {
-  return 'Verse(verseNum: $verseNum, words: $words, originalVerse: $originalVerse)';
+  return 'Verse(verseNum: $verseNum, words: $words, originalVerse: $originalVerse, footnotes: $footnotes)';
 }
 
 
@@ -251,7 +261,7 @@ abstract mixin class _$VerseCopyWith<$Res> implements $VerseCopyWith<$Res> {
   factory _$VerseCopyWith(_Verse value, $Res Function(_Verse) _then) = __$VerseCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'n') int verseNum,@JsonKey(name: 'w') List<Word> words,@JsonKey(name: 'o', includeIfNull: false) Reference? originalVerse
+@JsonKey(name: 'n') int verseNum,@JsonKey(name: 'w') List<Word> words,@JsonKey(name: 'o', includeIfNull: false) Reference? originalVerse,@JsonKey(name: 'f', includeIfNull: false) List<Footnote>? footnotes
 });
 
 
@@ -268,12 +278,13 @@ class __$VerseCopyWithImpl<$Res>
 
 /// Create a copy of Verse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? verseNum = null,Object? words = null,Object? originalVerse = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? verseNum = null,Object? words = null,Object? originalVerse = freezed,Object? footnotes = freezed,}) {
   return _then(_Verse(
 verseNum: null == verseNum ? _self.verseNum : verseNum // ignore: cast_nullable_to_non_nullable
 as int,words: null == words ? _self._words : words // ignore: cast_nullable_to_non_nullable
 as List<Word>,originalVerse: freezed == originalVerse ? _self.originalVerse : originalVerse // ignore: cast_nullable_to_non_nullable
-as Reference?,
+as Reference?,footnotes: freezed == footnotes ? _self._footnotes : footnotes // ignore: cast_nullable_to_non_nullable
+as List<Footnote>?,
   ));
 }
 

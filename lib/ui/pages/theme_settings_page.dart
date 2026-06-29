@@ -93,7 +93,7 @@ class ThemeSettingsPage extends ConsumerWidget {
           ),
           StyledSection.child(
             title: 'Layout'.toText(),
-            subtitle: 'These are only available in the BSB translation.'.toText(),
+            subtitle: 'These are only available in BSB, NASB, and NIV.'.toText(),
             child: StyledCard(
               children: [
                 StyledListItem.switchControl(
@@ -111,6 +111,12 @@ class ThemeSettingsPage extends ConsumerWidget {
                   subtitle: 'Format verses into paragraphs.'.toText(),
                   isSelected: user.themeLayout.paragraphs,
                   onSelected: (newValue) => ref.updateUser((user) => user.copyWith.themeLayout(paragraphs: newValue)),
+                ),
+                StyledListItem.switchControl(
+                  title: 'Footnotes'.toText(),
+                  subtitle: 'Show footnote markers within the text.'.toText(),
+                  isSelected: user.themeLayout.footnotes,
+                  onSelected: (newValue) => ref.updateUser((user) => user.copyWith.themeLayout(footnotes: newValue)),
                 ),
               ],
             ),
