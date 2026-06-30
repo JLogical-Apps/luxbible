@@ -9,6 +9,7 @@ import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_sheet.dart';
@@ -143,10 +144,14 @@ enum StudyAction {
                           ],
                         ),
                         subtitle: StyledLoading(child: verses?.toText()),
-                        onPressed: () {
-                          if (popOnAction) context.pop();
-                          onNavigateToVerseSelection(verseSelection);
-                        },
+                        onPressed: () => ChapterPreviewPage.show(
+                          context,
+                          verseSelection: verseSelection,
+                          onOpenInFullScreen: () {
+                            if (popOnAction) context.pop();
+                            onNavigateToVerseSelection(verseSelection);
+                          },
+                        ),
                         trailing: Symbols.expand_circle_right.toIcon(),
                       );
                     },

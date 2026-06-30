@@ -6,6 +6,7 @@ import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
@@ -169,10 +170,14 @@ class StrongSheet {
                       title: reference.format().toText(),
                       subtitle: VerseText(verse: verse, highlightStrongId: strongId),
                       trailing: Symbols.expand_circle_right.toIcon(),
-                      onPressed: () {
-                        context.pop();
-                        onNavigateToVerseSelection(VerseSelection.reference(reference));
-                      },
+                      onPressed: () => ChapterPreviewPage.show(
+                        context,
+                        verseSelection: VerseSelection.reference(reference),
+                        onOpenInFullScreen: () {
+                          context.pop();
+                          onNavigateToVerseSelection(VerseSelection.reference(reference));
+                        },
+                      ),
                     );
                   })
                   .nonNulls

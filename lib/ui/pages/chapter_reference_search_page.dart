@@ -94,7 +94,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
     final recents = user.viewHistory.where((position) => position.reference != initialReference).toList();
 
     return StyledPage(
-      leading: StyledCircleButton.lg(child: Symbols.close.toIcon(), onPressed: () => Navigator.of(context).pop()),
+      leading: StyledCircleButton.lg(child: Symbols.close.toIcon(), onPressed: () => context.pop()),
       body: Column(
         children: [
           DecoratedBox(

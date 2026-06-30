@@ -1,5 +1,6 @@
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
+import 'package:bible/models/bible/chapter.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
@@ -26,6 +27,8 @@ class ChapterBuilder extends HookConsumerWidget {
 
   final Map<Reference, GlobalKey>? keyByReference;
 
+  final Chapter? chapter;
+
   const ChapterBuilder({
     super.key,
     required this.chapterReference,
@@ -36,6 +39,7 @@ class ChapterBuilder extends HookConsumerWidget {
     this.textSelection,
     this.onTextSelectionUpdated,
     this.keyByReference,
+    this.chapter,
   });
 
   BookType get book => chapterReference.book;
@@ -45,7 +49,8 @@ class ChapterBuilder extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chapter = ref.watch(chapterProvider(translation: translation, chapterReference: chapterReference)).value;
+    final chapter =
+        this.chapter ?? ref.watch(chapterProvider(translation: translation, chapterReference: chapterReference)).value;
     if (chapter == null) {
       return SizedBox.shrink();
     }

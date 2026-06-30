@@ -1,5 +1,7 @@
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
+import 'package:bible/models/reference/verse_selection.dart';
+import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/dictionary_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
@@ -247,10 +249,14 @@ class SearchPage extends HookConsumerWidget {
                                 textStyleHighlight: context.textStyle.paragraphSm.subtle().bold,
                               ),
                         trailing: Symbols.expand_circle_right.toIcon(),
-                        onPressed: () {
-                          ref.updateUser((user) => user.withSearchHistory(searchState.value));
-                          context.pop(SearchPageResult(reference: result));
-                        },
+                        onPressed: () => ChapterPreviewPage.show(
+                          context,
+                          verseSelection: VerseSelection.reference(result),
+                          onOpenInFullScreen: () {
+                            ref.updateUser((user) => user.withSearchHistory(searchState.value));
+                            context.pop(SearchPageResult(reference: result));
+                          },
+                        ),
                       );
                     }).nonNulls,
                   ],

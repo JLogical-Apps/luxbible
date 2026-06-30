@@ -15,6 +15,7 @@ import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/pages/text_selection_settings_page.dart';
 import 'package:bible/ui/pages/verse_selection_settings_page.dart';
 import 'package:bible/ui/widgets/chapter_builder.dart';
+import 'package:bible/ui/widgets/chapter_page_view.dart';
 import 'package:bible/ui/widgets/hook_consumer_builder.dart';
 import 'package:bible/ui/widgets/main_toolbar.dart';
 import 'package:bible/ui/widgets/resizable_container.dart';
@@ -421,234 +422,165 @@ class BibleBody extends HookConsumerWidget {
       );
     }
 
-    Widget biblePages() {
-      ChapterPosition positionOf(ChapterReference reference) {
-        final position = currentScrollController.positionOrNull;
-        return ChapterPosition(
+    Widget biblePages() => ChapterPageView(
+      controller: pageController,
+      user: user,
+      onNavigate: (reference) async {
+        saveScroll();
+
+        final scrollPosition = currentScrollController.positionOrNull;
+        final position = ChapterPosition(
           reference: reference,
-          scrollPercent: position == null ? 0 : (position.pixels / position.maxScrollExtent).clamp(0, 1),
+          scrollPercent: scrollPosition == null
+              ? 0
+              : (scrollPosition.pixels / scrollPosition.maxScrollExtent).clamp(0, 1),
         );
-      }
 
-      return GestureDetector(
-        onHorizontalDragUpdate: (details) async {
-          const sensitivity = 8;
+        ref.updateUser((user) => user.withSoftNavigation(position));
+        navigationHistoryState.value = navigationHistoryState.value.withCurrent(
+          NavigationState(position: position, bookmarkId: user.currentBookmarkId),
+        );
+      },
+      onPageChanged: (reference) {
+        isScrollingDownState.value = true;
+        selectedReferencesState.value = [];
+        textSelectionState.value = null;
+      },
+      itemBuilder: (context, chapterReference, chapter) => HookBuilder(
+        builder: (context) {
+          final scrollController = chapterReference == currentChapterReference ? currentScrollController : null;
 
-          final newPageIndex = details.delta.dx > sensitivity
-              ? pageController.page!.round() - 1
-              : details.delta.dx < -sensitivity
-              ? pageController.page!.round() + 1
-              : null;
+          final isLoadedState = useState(false);
+          usePostFrameEffect(() {
+            if (scrollController == null) {
+              return;
+            }
 
-          if (newPageIndex == null || newPageIndex < 0 || newPageIndex >= ChapterReference.values.length) {
-            return;
-          }
+            final target = scrollPercentByReferenceRef.value[chapterReference] ?? 0;
+            final position = currentScrollController.positionOrNull;
+            if (!isLoadedState.value && position != null) {
+              scrollController.jumpTo((target * position.maxScrollExtent).clamp(0.0, position.maxScrollExtent));
+              isLoadedState.value = true;
+            }
+          }, [scrollController != null, currentScrollController.positionOrNull != null]);
 
-          saveScroll();
+          final showTopBar = useListenableSelector(
+            scrollController,
+            () => scrollController != null && scrollController.hasClients && scrollController.position.pixels > 60,
+          );
 
-          final reference = ChapterReference.fromBibleChapterIndex(newPageIndex);
-          final position = positionOf(reference);
-
-          await pageController.animateToPage(
-            newPageIndex,
+          return AnimatedOpacity(
+            opacity: isLoadedState.value ? 1 : 0,
             duration: Duration(milliseconds: 300),
-            curve: Curves.easeInOutCubic,
-          );
-
-          ref.updateUser((user) => user.withSoftNavigation(position));
-          navigationHistoryState.value = navigationHistoryState.value.withCurrent(
-            NavigationState(position: position, bookmarkId: user.currentBookmarkId),
-          );
-        },
-        child: PageView.builder(
-          controller: pageController,
-          allowImplicitScrolling: false,
-          physics: NeverScrollableScrollPhysics(),
-          onPageChanged: (pageIndex) {
-            isScrollingDownState.value = true;
-            selectedReferencesState.value = [];
-            textSelectionState.value = null;
-          },
-          itemBuilder: (context, pageIndex) {
-            final chapterReference = ChapterReference.fromBibleChapterIndex(pageIndex);
-
-            return HookConsumerBuilder(
-              builder: (context, ref) {
-                final scrollController = chapterReference == currentChapterReference ? currentScrollController : null;
-                final chapterValue = ref.watch(
-                  chapterProvider(translation: user.translation, chapterReference: chapterReference),
-                );
-                final chapter = chapterValue.value;
-
-                if (chapterValue.hasError) {
-                  return Padding(
-                    padding: .symmetric(horizontal: 16),
+            curve: Curves.easeOutCubic,
+            child: Stack(
+              children: [
+                StyledScrollbar(
+                  controller: scrollController,
+                  child: SingleChildScrollView(
+                    controller: scrollController,
+                    padding: .symmetric(horizontal: 24, vertical: 8),
                     child: Column(
-                      spacing: 12,
+                      crossAxisAlignment: .start,
                       children: [
-                        Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).top + 24)),
-                        StyledTile.message(
-                          leading: Symbols.error.toIcon(),
-                          title: 'Something went wrong'.toText(),
-                          subtitle: 'Make sure you are connected to the internet or try again later.'.toText(),
+                        Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).top + 32)),
+                        ChapterBuilder(
+                          chapterReference: chapterReference,
+                          user: user,
+                          chapter: chapter,
+                          underlinedReferences: selectedReferencesState.value,
+                          onReferencePressed: (reference) {
+                            if (textSelectionState.value != null) {
+                              textSelectionState.value = null;
+                            } else if (selectedReferencesState.value.isEmpty &&
+                                user.verseSelection.expandToAnnotation) {
+                              selectedReferencesState.value = user.getExpandedReferences(reference);
+                            } else if (!selectedReferencesState.value.contains(reference) &&
+                                selectedReferencesState.value.isNotEmpty &&
+                                user.verseSelection.rangeSelection) {
+                              final anchorReference = selectedReferencesState.value.first;
+                              final referenceAnchors = [anchorReference, reference];
+
+                              selectedReferencesState.value = Reference.getReferencesBetween(
+                                referenceAnchors.min,
+                                referenceAnchors.max,
+                              ).toList().withRemoved(anchorReference).withInsert(0, anchorReference);
+                            } else {
+                              selectedReferencesState.value = selectedReferencesState.value.withToggle(reference);
+                            }
+                          },
+                          onHandleLongPress: (newSelection) {
+                            if (selectedVerseSelection != null &&
+                                newSelection.isInVerseSelection(selectedVerseSelection)) {
+                              user.verseSelection.longPressShortcut.onPressed(
+                                context,
+                                verseSelection: VerseSelection.fromReferences(selectedReferencesState.value),
+                                onDeselect: () => selectedReferencesState.value = [],
+                                onNavigateToVerseSelection: navigateToVerseSelection,
+                              );
+                              return false;
+                            } else if (textSelection != null && textSelection.intersects(newSelection)) {
+                              user.textSelection.longPressShortcut.onPressed(
+                                context,
+                                textSelection: textSelection,
+                                onDeselect: () => textSelectionState.value = null,
+                                onNavigateToVerseSelection: navigateToVerseSelection,
+                              );
+                              return false;
+                            }
+
+                            return true;
+                          },
+                          textSelection: textSelectionState.value,
+                          onTextSelectionUpdated: (textSelection, isNewSelection) {
+                            selectedReferencesState.value = [];
+                            if (isNewSelection && user.textSelection.expandToAnnotation && textSelection != null) {
+                              textSelectionState.value = user.getExpandedTextSelection(textSelection);
+                            } else {
+                              textSelectionState.value = textSelection;
+                            }
+                          },
+                          keyByReference: keyByReference,
                         ),
-                        if (user.translation != .bsb)
-                          StyledRectButton.secondary(
-                            label: 'Switch to BSB'.toText(),
-                            onPressed: () => ref.updateUser((user) => user.copyWith(translation: .bsb)),
-                          ),
-                        StyledRectButton.secondary(
-                          label: 'Try Again'.toText(),
-                          onPressed: () => ref.invalidate(
-                            chapterProvider(translation: user.translation, chapterReference: chapterReference),
-                            asReload: true,
-                          ),
-                        ),
+                        Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).bottom + 88)),
                       ],
                     ),
-                  );
-                }
-
-                final isLoadedState = useState(false);
-                usePostFrameEffect(() {
-                  if (scrollController == null) {
-                    return;
-                  }
-
-                  final target = scrollPercentByReferenceRef.value[chapterReference] ?? 0;
-                  final position = currentScrollController.positionOrNull;
-                  if (!isLoadedState.value && chapter != null && position != null) {
-                    scrollController.jumpTo((target * position.maxScrollExtent).clamp(0.0, position.maxScrollExtent));
-                    isLoadedState.value = true;
-                  }
-                }, [chapter != null, scrollController != null, currentScrollController.positionOrNull != null]);
-
-                final showTopBar = useListenableSelector(
-                  scrollController,
-                  () =>
-                      scrollController != null && scrollController.hasClients && scrollController.position.pixels > 60,
-                );
-
-                return AnimatedOpacity(
-                  opacity: isLoadedState.value ? 1 : 0,
-                  duration: Duration(milliseconds: 300),
-                  curve: Curves.easeOutCubic,
-                  child: Stack(
-                    children: [
-                      StyledScrollbar(
-                        controller: scrollController,
-                        child: SingleChildScrollView(
-                          controller: scrollController,
-                          padding: .symmetric(horizontal: 24, vertical: 8),
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  left: 0,
+                  child: AnimatedOpacity(
+                    key: ValueKey(scrollController?.hasClients),
+                    opacity: showTopBar ? 1 : 0,
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeInOutCubic,
+                    child: GestureDetector(
+                      onTap: showTopBar ? () => isScrollingDownState.value = true : null,
+                      child: Builder(
+                        builder: (context) => Container(
+                          color: context.colors.backgroundPrimary,
+                          padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top) + .symmetric(horizontal: 16),
+                          alignment: .centerLeft,
                           child: Column(
                             crossAxisAlignment: .start,
                             children: [
-                              Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).top + 24)),
-                              ChapterBuilder(
-                                chapterReference: chapterReference,
-                                user: user,
-                                underlinedReferences: selectedReferencesState.value,
-                                onReferencePressed: (reference) {
-                                  if (textSelectionState.value != null) {
-                                    textSelectionState.value = null;
-                                  } else if (selectedReferencesState.value.isEmpty &&
-                                      user.verseSelection.expandToAnnotation) {
-                                    selectedReferencesState.value = user.getExpandedReferences(reference);
-                                  } else if (!selectedReferencesState.value.contains(reference) &&
-                                      selectedReferencesState.value.isNotEmpty &&
-                                      user.verseSelection.rangeSelection) {
-                                    final anchorReference = selectedReferencesState.value.first;
-                                    final referenceAnchors = [anchorReference, reference];
-
-                                    selectedReferencesState.value = Reference.getReferencesBetween(
-                                      referenceAnchors.min,
-                                      referenceAnchors.max,
-                                    ).toList().withRemoved(anchorReference).withInsert(0, anchorReference);
-                                  } else {
-                                    selectedReferencesState.value = selectedReferencesState.value.withToggle(reference);
-                                  }
-                                },
-                                onHandleLongPress: (newSelection) {
-                                  if (selectedVerseSelection != null &&
-                                      newSelection.isInVerseSelection(selectedVerseSelection)) {
-                                    user.verseSelection.longPressShortcut.onPressed(
-                                      context,
-                                      verseSelection: VerseSelection.fromReferences(selectedReferencesState.value),
-                                      onDeselect: () => selectedReferencesState.value = [],
-                                      onNavigateToVerseSelection: navigateToVerseSelection,
-                                    );
-                                    return false;
-                                  } else if (textSelection != null && textSelection.intersects(newSelection)) {
-                                    user.textSelection.longPressShortcut.onPressed(
-                                      context,
-                                      textSelection: textSelection,
-                                      onDeselect: () => textSelectionState.value = null,
-                                      onNavigateToVerseSelection: navigateToVerseSelection,
-                                    );
-                                    return false;
-                                  }
-
-                                  return true;
-                                },
-                                textSelection: textSelectionState.value,
-                                onTextSelectionUpdated: (textSelection, isNewSelection) {
-                                  selectedReferencesState.value = [];
-                                  if (isNewSelection &&
-                                      user.textSelection.expandToAnnotation &&
-                                      textSelection != null) {
-                                    textSelectionState.value = user.getExpandedTextSelection(textSelection);
-                                  } else {
-                                    textSelectionState.value = textSelection;
-                                  }
-                                },
-                                keyByReference: keyByReference,
-                              ),
-                              Builder(
-                                builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).bottom + 88),
-                              ),
+                              Text(chapterReference.format(), style: context.textStyle.labelSm.subtle()),
+                              StyledDivider(),
                             ],
                           ),
                         ),
                       ),
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        left: 0,
-                        child: AnimatedOpacity(
-                          key: ValueKey(scrollController?.hasClients),
-                          opacity: showTopBar ? 1 : 0,
-                          duration: Duration(milliseconds: 300),
-                          curve: Curves.easeInOutCubic,
-                          child: GestureDetector(
-                            onTap: showTopBar ? () => isScrollingDownState.value = true : null,
-                            child: Builder(
-                              builder: (context) => Container(
-                                color: context.colors.backgroundPrimary,
-                                padding:
-                                    EdgeInsets.only(top: MediaQuery.paddingOf(context).top) +
-                                    .symmetric(horizontal: 16),
-                                alignment: .centerLeft,
-                                child: Column(
-                                  crossAxisAlignment: .start,
-                                  children: [
-                                    Text(chapterReference.format(), style: context.textStyle.labelSm.subtle()),
-                                    StyledDivider(),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                );
-              },
-            );
-          },
-        ),
-      );
-    }
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
 
     Widget mainArea() => Stack(
       children: [
