@@ -99,3 +99,5 @@ ValueNotifier<T> usePassthrough<T>(T value) {
   usePostFrameEffect(() => state.value = value, [value]);
   return state;
 }
+
+void useOneTimeEffect(Function() effect) => useEffect(() => effect(), []);

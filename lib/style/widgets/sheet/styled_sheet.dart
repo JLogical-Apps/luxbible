@@ -8,11 +8,13 @@ import 'package:bible/style/widgets/styled_divider.dart';
 import 'package:bible/style/widgets/styled_dock.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
+import 'package:bible/utils/hook_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:intersperse/intersperse.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class StyledSheet<T> extends HookWidget {
@@ -24,8 +26,6 @@ class StyledSheet<T> extends HookWidget {
   final Widget? aboveDivider;
   final bool showDivider;
   final bool showDragHandle;
-
-  final ScrollController? scrollController;
 
   final List<Widget> children;
 
@@ -41,7 +41,6 @@ class StyledSheet<T> extends HookWidget {
     this.aboveDivider,
     this.showDivider = true,
     this.showDragHandle = true,
-    this.scrollController,
     this.children = const [],
     this.aboveButtons,
     this.buttonsBuilder,
@@ -56,7 +55,6 @@ class StyledSheet<T> extends HookWidget {
     this.aboveDivider,
     this.showDivider = true,
     this.showDragHandle = true,
-    this.scrollController,
     required Widget child,
     this.aboveButtons,
     this.buttonsBuilder,
@@ -67,12 +65,23 @@ class StyledSheet<T> extends HookWidget {
     final sheetNavigationContext = context.watch<SheetNavigationBreadcrumbContext?>();
 
     final depth = (sheetNavigationContext?.breadcrumbs.length ?? 1) - 1;
-    final scrollController =
-        this.scrollController ??
-        useScrollController(initialScrollOffset: sheetNavigationContext?.scrollOffsetByDepth[depth] ?? 0);
+
+    final scrollController = ModalScrollController.of(context);
+
     useOnListenableChange(scrollController, () {
-      if (scrollController.hasClients && sheetNavigationContext != null) {
+      if (scrollController != null && scrollController.hasClients && sheetNavigationContext != null) {
         sheetNavigationContext.scrollOffsetByDepth[depth] = scrollController.offset;
+      }
+    });
+
+    useOneTimeEffect(() {
+      final saved = sheetNavigationContext?.scrollOffsetByDepth[depth] ?? 0;
+      if (saved > 0) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (scrollController != null && scrollController.hasClients) {
+            scrollController.jumpTo(saved);
+          }
+        });
       }
     });
 
