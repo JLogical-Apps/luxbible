@@ -8,6 +8,7 @@ import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_sheet.dart';
+import 'package:bible/ui/widgets/colored_circle.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:collection/collection.dart';
@@ -102,6 +103,7 @@ sealed class StudyPanel with _$StudyPanel {
                           )
                           .value;
                       return StyledListItem(
+                        leading: ColoredCircle(color: annotation.color.toHue(context.colors).primary),
                         title: annotation.note.toText(),
                         subtitle: StyledLoading(
                           child: annotationText == null ? null : Text(annotationText, maxLines: 1, overflow: .ellipsis),
