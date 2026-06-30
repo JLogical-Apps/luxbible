@@ -29,7 +29,7 @@ const _$BibleTranslationEnumMap = {
   BibleTranslation.byz: 'byz',
   BibleTranslation.statresgnt: 'statresgnt',
   BibleTranslation.oshb: 'oshb',
-  BibleTranslation.svv: 'svv',
+  BibleTranslation.sv: 'sv',
 };
 
 InterlinearStudyPanel _$InterlinearStudyPanelFromJson(

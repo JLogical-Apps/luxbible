@@ -16,7 +16,7 @@ enum BibleTranslation {
   byz,
   statresgnt,
   oshb,
-  svv;
+  sv;
 
   static List<BibleTranslation> get defaultTranslations =>
       values.where((translation) => translation.language == .english).toList();
@@ -32,7 +32,7 @@ enum BibleTranslation {
     tr => 'TR',
     byz => 'BYZ',
     statresgnt => 'SR',
-    svv => 'SVV',
+    sv => 'SV',
   };
 
   String fullName() => switch (this) {
@@ -46,11 +46,11 @@ enum BibleTranslation {
     tr => 'Textus Receptus (1550/1894)',
     byz => 'Byzantine Textform 2013',
     statresgnt => 'Statistical Restoration Greek New Testament',
-    svv => 'Statenvertaling',
+    sv => 'Statenvertaling',
   };
 
   BibleTranslationSource get source => switch (this) {
-    bsb || asv || kjv || oshb || lxx || tr || byz || statresgnt || svv => .local,
+    bsb || asv || kjv || oshb || lxx || tr || byz || statresgnt || sv => .local,
     nasb95 => .youVersion(100),
     niv11 => .youVersion(111),
   };
@@ -58,7 +58,7 @@ enum BibleTranslation {
   BibleLanguage get language => switch (this) {
     lxx || tr || byz || statresgnt => .greek,
     oshb => .hebrew,
-    svv => .dutch,
+    sv => .dutch,
     _ => .english,
   };
 
@@ -76,7 +76,7 @@ enum BibleTranslation {
       'The New Testament in the Original Greek: Byzantine Textform 2013\nby Maurice A. Robinson and William G. Pierpont\nCreative Commons: BY-NC-SA 4.0',
     statresgnt =>
       'Statistical Restoration Greek New Testament\nby Alan Bunning, Center for New Testament Restoration\nCreative Commons: BY 4.0',
-    svv => 'Statenvertaling (1637)\nPublic Domain\nhttps://bijbel.coas.nl/bijbel/',
+    sv => 'Statenvertaling (1637)\nPublic Domain\nhttps://bijbel.coas.nl/bijbel/',
     _ => null,
   };
 
