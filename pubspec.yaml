@@ -68,6 +68,8 @@ dev_dependencies:
   riverpod_lint: ^3.0.3
   freezed: ^3.2.3
   json_serializable: ^6.11.1
+  googleapis: ^14.0.0
+  googleapis_auth: ^2.0.0
 
 flutter:
   uses-material-design: true
