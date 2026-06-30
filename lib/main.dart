@@ -4,12 +4,14 @@ import 'dart:developer' as developer;
 import 'package:bible/functions/bible_importer.dart';
 import 'package:bible/functions/commentary_importer.dart';
 import 'package:bible/functions/cross_references_importer.dart';
+import 'package:bible/functions/dictionary_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
 import 'package:bible/licenses.dart';
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
+import 'package:bible/providers/dictionary_provider.dart';
 import 'package:bible/providers/package_info_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/strongs_provider.dart';
@@ -38,6 +40,7 @@ Future<void> main() async {
               .wait;
       final commentaries = await CommentaryImporter().import();
       final strongs = await StrongImporter().import();
+      final dictionary = await DictionaryImporter().import();
       final crossReferences = await CrossReferencesImporter().import();
 
       final paths = await getPaths();
@@ -48,6 +51,7 @@ Future<void> main() async {
         overrides: [
           localBiblesProvider.overrideWith((ref) => bibles),
           strongsProvider.overrideWith((ref) => strongs),
+          dictionaryProvider.overrideWith((ref) => dictionary),
           crossReferencesProvider.overrideWith((ref) => crossReferences),
           commentariesProvider.overrideWith((ref) => [commentaries]),
           pathServiceProvider.overrideWith((ref) => paths),

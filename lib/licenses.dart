@@ -77,5 +77,17 @@ Source: https://github.com/openscriptures/strongs
   - greek/StrongsGreekDictionaryXML_1.4/strongsgreek.xml
   - hebrew/StrongHebrewG.xml''',
     );
+
+    yield const LicenseEntryWithLineBreaks(
+      ["Easton's Bible Dictionary"],
+      '''
+Easton's Bible Dictionary.
+
+These dictionary topics are from M.G. Easton M.A., D.D., Illustrated Bible Dictionary, Third Edition, published by Thomas Nelson, 1897. Public Domain — Copy Freely.
+
+Distributed as a SWORD module by CrossWire Bible Society, sourced from the Christian Classics Ethereal Library (CCEL).
+
+Source: https://www.crosswire.org/sword/modules/''',
+    );
   });
 }

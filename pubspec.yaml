@@ -75,6 +75,7 @@ flutter:
   assets:
     - assets/translations/
     - assets/strongs/
+    - assets/dictionary/
     - assets/commentary/
     - assets/cross_references/
     # Font license files (OFL) bundled so they can be shown on the licenses page.

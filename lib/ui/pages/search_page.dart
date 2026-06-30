@@ -1,9 +1,11 @@
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/providers/bibles_provider.dart';
+import 'package:bible/providers/dictionary_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/sheets/dictionary_sheet.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
 import 'package:bible/ui/widgets/search_location_button.dart';
 import 'package:bible/ui/widgets/verse_text.dart';
@@ -40,6 +42,7 @@ class SearchPage extends HookConsumerWidget {
     final localBible = localBibles.firstWhereOrNull((bible) => bible.translation == user.translation) ?? studyBible;
 
     final strongs = ref.watch(strongsProvider);
+    final dictionary = ref.watch(dictionaryProvider);
 
     final textState = useState(initialSearch ?? '');
     final searchState = useState(textState.value);
@@ -194,7 +197,7 @@ class SearchPage extends HookConsumerWidget {
                       ),
                     )
                   else ...[
-                    if (searchState.value.isStrongId)
+                    if (searchState.value.isStrongId) ...[
                       if (strongs[searchState.value] case final strong?)
                         Padding(
                           padding: .all(16),
@@ -215,6 +218,17 @@ class SearchPage extends HookConsumerWidget {
                             ),
                           ),
                         ),
+                    ] else if (dictionary[searchState.value.trim().toUpperCase()] case final entry?)
+                      Padding(
+                        padding: .all(16),
+                        child: StyledTile(
+                          child: StyledListItem.navigation(
+                            title: entry.title.toText(),
+                            subtitle: Text(entry.definition, maxLines: 2, overflow: .ellipsis),
+                            onPressed: () => DictionarySheet.show(context, entry: entry),
+                          ),
+                        ),
+                      ),
                     ...searchResults.map((result) {
                       final verse = localBible.getVerseByReference(result);
                       if (verse == null) {
