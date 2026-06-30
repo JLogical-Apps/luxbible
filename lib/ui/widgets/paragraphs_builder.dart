@@ -14,17 +14,22 @@ import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/user/theme_layout_configuration.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/bibles_provider.dart';
+import 'package:bible/providers/root_ref.dart' as root_ref;
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/widgets/annotated_span.dart';
 import 'package:bible/ui/widgets/simple_markdown.dart';
 import 'package:bible/ui/widgets/sized_widget_span.dart';
 import 'package:bible/ui/widgets/underline.dart';
+import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/color_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
 import 'package:bible/utils/extensions/paragraph_style_extensions.dart';
 import 'package:bible/utils/extensions/rect_extensions.dart';
+import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/span_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -626,12 +631,60 @@ class ParagraphsBuilder extends HookWidget {
                                   ),
                                 )
                                 .value;
-                            return StyledListItem(
-                              title: annotation.note.toText(),
-                              subtitle: StyledLoading(
-                                child: annotationText == null
-                                    ? null
-                                    : Text(annotationText, maxLines: 1, overflow: .ellipsis),
+                            return StyledSwipeable(
+                              key: ValueKey(annotation),
+                              actions: [
+                                .delete(
+                                  onPressed: () {
+                                    context.pop();
+                                    ref.updateUser((user) => user.withRemovedAnnotation(annotation));
+                                  },
+                                ),
+                              ],
+                              child: StyledListItem(
+                                title: annotation.note.toText(),
+                                subtitle: StyledLoading(
+                                  child: annotationText == null
+                                      ? null
+                                      : Text(annotationText, maxLines: 1, overflow: .ellipsis),
+                                ),
+                                trailing: StyledCircleButton.md(
+                                  child: Symbols.more_vert.toIcon(),
+                                  onPressed: () => context.showStyledSheet(
+                                    (context) => StyledSheet(
+                                      title: 'Annotation'.toText(),
+                                      children: [
+                                        StyledListItem(
+                                          title: 'Edit'.toText(),
+                                          leading: Symbols.edit.toIcon(),
+                                          onPressed: () async {
+                                            context.pop();
+                                            context.pop();
+                                            final newAnnotation = await AnnotationSheet.show(
+                                              context,
+                                              selection: annotation.selection,
+                                              annotation: annotation,
+                                            );
+                                            if (newAnnotation != null) {
+                                              root_ref.ref.updateUser(
+                                                (user) => user.withAnnotationUpdated(annotation, newAnnotation),
+                                              );
+                                            }
+                                          },
+                                        ),
+                                        StyledListItem(
+                                          title: 'Delete'.toText(),
+                                          leading: Symbols.delete.toIcon(),
+                                          onPressed: () {
+                                            context.pop();
+                                            context.pop();
+                                            root_ref.ref.updateUser((user) => user.withRemovedAnnotation(annotation));
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ),
                             );
                           },
