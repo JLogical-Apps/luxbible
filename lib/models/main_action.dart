@@ -6,6 +6,8 @@ import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/pages/dictionary_page.dart';
+import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/pages/settings_page.dart';
 import 'package:bible/ui/sheets/bookmark_sheet.dart';
@@ -23,6 +25,7 @@ enum MainAction {
   study,
   studyPanel,
   search,
+  resources,
   settings;
 
   String title() => switch (this) {
@@ -30,6 +33,7 @@ enum MainAction {
     study => 'Study',
     studyPanel => 'Add Study Panel',
     search => 'Search',
+    resources => 'Resources',
     settings => 'Settings',
   };
 
@@ -41,6 +45,7 @@ enum MainAction {
     study => 'View study tools for this chapter.',
     studyPanel => 'Add a new study panel.',
     search => 'Search for words across the Bible.',
+    resources => 'Look up words in the dictionary and lexicon.',
     settings => 'View the settings for Lux.',
   };
 
@@ -54,6 +59,7 @@ enum MainAction {
     study => Icon(Symbols.school),
     studyPanel => Icon(Symbols.add_notes),
     search => Icon(Symbols.search),
+    resources => Icon(Symbols.local_library),
     settings => Icon(Symbols.settings),
   };
 
@@ -184,6 +190,37 @@ enum MainAction {
         if (result != null) {
           onNavigateToVerseSelection(VerseSelection.reference(result.reference));
         }
+      case resources:
+        final resource = await context.showStyledSheet<_Resource>(
+          (context) => StyledSheet(
+            title: 'Resources'.toText(),
+            children: [
+              StyledListItem.navigation(
+                title: 'Dictionary'.toText(),
+                subtitle: "Look up people, places, and topics in Easton's Bible Dictionary.".toText(),
+                leading: Symbols.menu_book.toIcon(),
+                onPressed: () => context.pop(_Resource.dictionary),
+              ),
+              StyledListItem.navigation(
+                title: 'Lexicon'.toText(),
+                subtitle: "Study the original Hebrew and Greek words with Strong's Lexicon.".toText(),
+                leading: Symbols.translate.toIcon(),
+                onPressed: () => context.pop(_Resource.lexicon),
+              ),
+            ],
+          ),
+        );
+        if (resource == null || !context.mounted) {
+          return;
+        }
+        final page = switch (resource) {
+          _Resource.dictionary => DictionaryPage(),
+          _Resource.lexicon => LexiconPage(),
+        };
+        final result = await context.push<VerseSelection>(page);
+        if (result != null) {
+          onNavigateToVerseSelection(result);
+        }
       case settings:
         final result = await context.push<VerseSelection>(SettingsPage());
         if (result != null) {
@@ -192,3 +229,5 @@ enum MainAction {
     }
   }
 }
+
+enum _Resource { dictionary, lexicon }

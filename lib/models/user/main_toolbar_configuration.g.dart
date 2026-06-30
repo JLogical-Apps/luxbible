@@ -52,5 +52,8 @@ const _$MainToolbarShortcutEnumMap = {
   MainToolbarShortcut.studyPanel: 'studyPanel',
   MainToolbarShortcut.switchBible: 'switchBible',
   MainToolbarShortcut.search: 'search',
+  MainToolbarShortcut.resources: 'resources',
+  MainToolbarShortcut.dictionary: 'dictionary',
+  MainToolbarShortcut.lexicon: 'lexicon',
   MainToolbarShortcut.themeAndLayout: 'themeAndLayout',
 };

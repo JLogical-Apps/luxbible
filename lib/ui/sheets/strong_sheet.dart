@@ -44,7 +44,7 @@ class StrongSheet {
       final selectedMorphologyCode = selectedMorphologyCodeState.value;
 
       return StyledSheet(
-        title: 'Interlinear Word'.toText(),
+        title: (word != null ? 'Interlinear Word' : 'Lexicon').toText(),
         subtitle: word?.data?.inflection?.toText() ?? strongId?.toText(),
         children: [
           if (word != null)

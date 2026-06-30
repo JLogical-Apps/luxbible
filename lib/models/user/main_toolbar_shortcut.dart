@@ -7,6 +7,8 @@ import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/ui/pages/dictionary_page.dart';
+import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/theme_settings_page.dart';
 import 'package:bible/ui/sheets/bible_sheet.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
@@ -26,6 +28,9 @@ enum MainToolbarShortcut {
   studyPanel,
   switchBible,
   search,
+  resources,
+  dictionary,
+  lexicon,
   themeAndLayout;
 
   String title() =>
@@ -33,6 +38,8 @@ enum MainToolbarShortcut {
       toMainAction()?.title() ??
       switch (this) {
         switchBible => 'Switch Bible',
+        dictionary => 'Dictionary',
+        lexicon => 'Lexicon',
         _ => 'Theme & Layout',
       };
 
@@ -41,6 +48,8 @@ enum MainToolbarShortcut {
       toMainAction()?.description(user: user) ??
       switch (this) {
         switchBible => 'Switch the Bible translation.',
+        dictionary => 'Look up people, places, and topics in Easton\'s Bible Dictionary.',
+        lexicon => 'Study the original Hebrew and Greek words with Strong\'s Lexicon.',
         _ => 'Customize the theme & layout of the Bible.',
       };
 
@@ -49,6 +58,8 @@ enum MainToolbarShortcut {
       toMainAction()?.buildIcon(context, user: user) ??
       switch (this) {
         switchBible => Symbols.book.toIcon(),
+        dictionary => Symbols.menu_book.toIcon(),
+        lexicon => Symbols.translate.toIcon(),
         _ => Symbols.custom_typography.toIcon(),
       };
 
@@ -78,6 +89,13 @@ enum MainToolbarShortcut {
             ref.updateUser((user) => user.copyWith(translation: newTranslation));
           }
         }(),
+        dictionary => context.push(DictionaryPage()),
+        lexicon => () async {
+          final result = await context.push<VerseSelection>(LexiconPage());
+          if (result != null) {
+            onNavigateToVerseSelection(result);
+          }
+        }(),
         _ => context.push(ThemeSettingsPage()),
       };
 
@@ -86,6 +104,7 @@ enum MainToolbarShortcut {
     study => .study,
     search => .search,
     studyPanel => .studyPanel,
+    resources => .resources,
     _ => null,
   };
 
