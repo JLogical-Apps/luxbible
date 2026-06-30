@@ -11,7 +11,11 @@ The SWORD zLD (compressed lexicon/dictionary) format used here is made of:
 Entry bodies are TEI (<entryFree>, <title>, <p>, <foreign>, <ref osisRef="...">). We keep the
 display title and the plain-text article (paragraphs joined by blank lines) and drop all markup.
 
-The output is a JSON object mapping each uppercase lookup key to {"t": title, "d": definition}.
+Two files are written, both JSON objects mapping each uppercase lookup key to its data:
+  - the shipped asset, {"t": title, "d": definition}
+  - a full-fidelity archive in source_files that additionally keeps {"r": [osisRef, ...]},
+    the scripture cross-references found in the article (deduped, in order of appearance,
+    with the SWORD "Bible:" prefix stripped so they parse as app osisIds)
 
 Usage: python3 scripts/sword/extract_easton.py
 """
@@ -25,7 +29,8 @@ import zlib
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 MODULE = os.path.join(ROOT, 'source_files/sword/Easton/modules/lexdict/zld/easton')
-OUTPUT = os.path.join(ROOT, 'assets/dictionary/easton.json')
+ASSET_OUTPUT = os.path.join(ROOT, 'assets/dictionary/easton.json')
+RAW_OUTPUT = os.path.join(ROOT, 'source_files/dictionary/easton.json')
 
 
 def read_entries():
@@ -56,28 +61,41 @@ def parse(tei):
     title_match = re.search(r'<title>(.*?)</title>', tei, re.S)
     title = html.unescape(title_match.group(1).strip()) if title_match else ''
 
+    references = []
+    for match in re.finditer(r'osisRef="([^"]+)"', tei):
+        osis = match.group(1).replace('Bible:', '')
+        if osis not in references:
+            references.append(osis)
+
     definition = re.sub(r'<title>.*?</title>', '', tei, flags=re.S)
     definition = re.sub(r'</p>\s*<p[^>]*>', '\n\n', definition)
     definition = re.sub(r'<[^>]+>', '', definition)
     definition = html.unescape(definition)
     definition = re.sub(r'[ \t]+', ' ', definition)
     definition = re.sub(r'\n{3,}', '\n\n', definition).strip()
-    return title, definition
+    return title, definition, references
 
 
 def main():
-    entries = {}
+    raw = {}
     for key, tei in read_entries():
-        title, definition = parse(tei)
-        if key in entries:
-            entries[key]['d'] += '\n\n' + definition
+        title, definition, references = parse(tei)
+        if key in raw:
+            raw[key]['d'] += '\n\n' + definition
+            raw[key]['r'].extend(ref for ref in references if ref not in raw[key]['r'])
         else:
-            entries[key] = {'t': title, 'd': definition}
+            raw[key] = {'t': title, 'd': definition, 'r': references}
 
-    os.makedirs(os.path.dirname(OUTPUT), exist_ok=True)
-    with open(OUTPUT, 'w') as f:
-        json.dump(entries, f, ensure_ascii=False, separators=(',', ':'))
-    print(f'Wrote {len(entries)} entries to {OUTPUT}')
+    os.makedirs(os.path.dirname(RAW_OUTPUT), exist_ok=True)
+    with open(RAW_OUTPUT, 'w') as f:
+        json.dump(raw, f, ensure_ascii=False, indent=2)
+    print(f'Wrote {len(raw)} entries to {RAW_OUTPUT}')
+
+    asset = {key: {'t': entry['t'], 'd': entry['d']} for key, entry in raw.items()}
+    os.makedirs(os.path.dirname(ASSET_OUTPUT), exist_ok=True)
+    with open(ASSET_OUTPUT, 'w') as f:
+        json.dump(asset, f, ensure_ascii=False, separators=(',', ':'))
+    print(f'Wrote {len(asset)} entries to {ASSET_OUTPUT}')
 
 
 if __name__ == '__main__':
