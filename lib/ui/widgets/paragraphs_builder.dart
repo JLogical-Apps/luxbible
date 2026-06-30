@@ -723,7 +723,7 @@ class ParagraphsBuilder extends HookWidget {
     final bibleTextStyle = BibleTextStyle(context, config: user.themeLayout);
     return AnnotatedSizedWidgetSpan<VerseElement>(
       annotation: element,
-      size: Size(20, bibleTextStyle.body.fontSize!),
+      size: Size(24, bibleTextStyle.body.fontSize!),
       alignment: .middle,
       child: OverflowBox(
         maxHeight: bibleTextStyle.body.totalHeight + 4,
