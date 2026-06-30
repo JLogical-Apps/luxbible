@@ -186,32 +186,45 @@ class ParagraphsBuilder extends HookWidget {
                       children: [
                         if (paragraph is VersesParagraph) ...[
                           ...paragraph.verses
-                              .map((verse) => getVerseReference(verse))
-                              .mapToMap(
-                                (reference) => MapEntry(
-                                  reference,
-                                  user.annotations.where(
-                                    (annotation) => annotation.verseSelection?.hasReference(reference) == true,
-                                  ),
-                                ),
+                              .map((verse) {
+                                final reference = getVerseReference(verse);
+                                final annotations = user.annotations
+                                    .where((annotation) => annotation.verseSelection?.hasReference(reference) == true)
+                                    .toSet();
+                                return (
+                                  reference: reference,
+                                  annotations: annotations,
+                                  color: annotations
+                                      .map(
+                                        (annotation) =>
+                                            annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5),
+                                      )
+                                      .mixOrNull,
+                                );
+                              })
+                              .splitBetween(
+                                (a, b) => a.color != b.color || a.annotations.intersection(b.annotations).isEmpty,
                               )
-                              .where((reference, annotations) => annotations.isNotEmpty)
-                              .mapToIterable((reference, annotations) {
-                                final verseColor = annotations
-                                    .map(
-                                      (annotation) =>
-                                          annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5),
-                                    )
-                                    .mixOrNull;
+                              .where((run) => run.first.color != null)
+                              .map((run) {
+                                final verseColor = run.first.color;
 
-                                final (base, extent) =
-                                    renderSpans.getReferenceCharacterOffsets(
-                                      reference: reference,
+                                final base = renderSpans
+                                    .getReferenceCharacterOffsets(
+                                      reference: run.first.reference,
                                       translation: translation,
                                       chapter: chapter,
                                       isParagraphs: user.themeLayout.paragraphs,
-                                    ) ??
-                                    (null, null);
+                                    )
+                                    ?.$1;
+                                final extent = renderSpans
+                                    .getReferenceCharacterOffsets(
+                                      reference: run.last.reference,
+                                      translation: translation,
+                                      chapter: chapter,
+                                      isParagraphs: user.themeLayout.paragraphs,
+                                    )
+                                    ?.$2;
                                 if (base == null || extent == null) {
                                   return null;
                                 }
