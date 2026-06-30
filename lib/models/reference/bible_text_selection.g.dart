@@ -31,4 +31,5 @@ const _$BibleTranslationEnumMap = {
   BibleTranslation.byz: 'byz',
   BibleTranslation.statresgnt: 'statresgnt',
   BibleTranslation.oshb: 'oshb',
+  BibleTranslation.svv: 'svv',
 };

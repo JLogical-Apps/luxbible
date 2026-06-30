@@ -49,6 +49,7 @@ MODULES = {
     "byz":        dict(path="Byz",        canon="kjv", books=NT_OSIS, mode="kjv"),
     "statresgnt": dict(path="StatResGNT", canon="kjv", books=NT_OSIS, mode="kjv"),
     "lxx":        dict(path="LXX",        canon="lxx", books=OT_OSIS, mode="lxx"),
+    "svv":        dict(path="DutSVV",     canon="kjv", books=OT_OSIS + NT_OSIS, mode="kjv"),
 }
 
 # STEPBible/Tyndale book codes -> OSIS, for the protestant OT (used by the LXX map).
