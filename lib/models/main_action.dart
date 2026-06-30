@@ -1,7 +1,6 @@
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
-import 'package:bible/models/study_action.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/root_ref.dart';
@@ -128,14 +127,14 @@ enum MainAction {
           onNavigateToVerseSelection: onNavigateToVerseSelection,
         );
       case studyPanel:
-        final studyAction = await context.showStyledSheet<StudyAction>(
+        final studyPanelType = await context.showStyledSheet<StudyPanelType>(
           (context) => StyledSheet(
             title: 'Study Panel'.toText(),
-            children: StudyAction.values
+            children: StudyPanelType.values
                 .map(
                   (studyAction) => StyledListItem(
                     title: studyAction.title().toText(),
-                    subtitle: studyAction.description(regionFormat: null, regionType: .visibleVerses).toText(),
+                    subtitle: studyAction.description().toText(),
                     leading: studyAction.icon.toIcon(),
                     onPressed: () => context.pop(studyAction),
                   ),
@@ -143,8 +142,8 @@ enum MainAction {
                 .toList(),
           ),
         );
-        if (studyAction != null && context.mounted) {
-          switch (studyAction) {
+        if (studyPanelType != null && context.mounted) {
+          switch (studyPanelType) {
             case .compare:
               final translation = await context.showStyledSheet(
                 (context) => StyledSelectionSheet(
@@ -176,6 +175,8 @@ enum MainAction {
               onAddStudyPanel(StudyPanel.commentary(type: .matthewHenry));
             case .crossReferences:
               onAddStudyPanel(StudyPanel.crossReferences());
+            case .notes:
+              onAddStudyPanel(StudyPanel.notes());
           }
         }
       case search:

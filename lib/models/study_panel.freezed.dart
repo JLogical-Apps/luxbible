@@ -31,6 +31,10 @@ StudyPanel _$StudyPanelFromJson(
           return CrossReferencesStudyPanel.fromJson(
             json
           );
+                case 'notes':
+          return NotesStudyPanel.fromJson(
+            json
+          );
         
           default:
             throw CheckedFromJsonException(
@@ -89,14 +93,15 @@ extension StudyPanelPatterns on StudyPanel {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( CompareStudyPanel value)?  compare,TResult Function( InterlinearStudyPanel value)?  interlinear,TResult Function( CommentaryStudyPanel value)?  commentary,TResult Function( CrossReferencesStudyPanel value)?  crossReferences,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( CompareStudyPanel value)?  compare,TResult Function( InterlinearStudyPanel value)?  interlinear,TResult Function( CommentaryStudyPanel value)?  commentary,TResult Function( CrossReferencesStudyPanel value)?  crossReferences,TResult Function( NotesStudyPanel value)?  notes,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case CompareStudyPanel() when compare != null:
 return compare(_that);case InterlinearStudyPanel() when interlinear != null:
 return interlinear(_that);case CommentaryStudyPanel() when commentary != null:
 return commentary(_that);case CrossReferencesStudyPanel() when crossReferences != null:
-return crossReferences(_that);case _:
+return crossReferences(_that);case NotesStudyPanel() when notes != null:
+return notes(_that);case _:
   return orElse();
 
 }
@@ -114,14 +119,15 @@ return crossReferences(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( CompareStudyPanel value)  compare,required TResult Function( InterlinearStudyPanel value)  interlinear,required TResult Function( CommentaryStudyPanel value)  commentary,required TResult Function( CrossReferencesStudyPanel value)  crossReferences,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( CompareStudyPanel value)  compare,required TResult Function( InterlinearStudyPanel value)  interlinear,required TResult Function( CommentaryStudyPanel value)  commentary,required TResult Function( CrossReferencesStudyPanel value)  crossReferences,required TResult Function( NotesStudyPanel value)  notes,}){
 final _that = this;
 switch (_that) {
 case CompareStudyPanel():
 return compare(_that);case InterlinearStudyPanel():
 return interlinear(_that);case CommentaryStudyPanel():
 return commentary(_that);case CrossReferencesStudyPanel():
-return crossReferences(_that);}
+return crossReferences(_that);case NotesStudyPanel():
+return notes(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -135,14 +141,15 @@ return crossReferences(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( CompareStudyPanel value)?  compare,TResult? Function( InterlinearStudyPanel value)?  interlinear,TResult? Function( CommentaryStudyPanel value)?  commentary,TResult? Function( CrossReferencesStudyPanel value)?  crossReferences,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( CompareStudyPanel value)?  compare,TResult? Function( InterlinearStudyPanel value)?  interlinear,TResult? Function( CommentaryStudyPanel value)?  commentary,TResult? Function( CrossReferencesStudyPanel value)?  crossReferences,TResult? Function( NotesStudyPanel value)?  notes,}){
 final _that = this;
 switch (_that) {
 case CompareStudyPanel() when compare != null:
 return compare(_that);case InterlinearStudyPanel() when interlinear != null:
 return interlinear(_that);case CommentaryStudyPanel() when commentary != null:
 return commentary(_that);case CrossReferencesStudyPanel() when crossReferences != null:
-return crossReferences(_that);case _:
+return crossReferences(_that);case NotesStudyPanel() when notes != null:
+return notes(_that);case _:
   return null;
 
 }
@@ -159,13 +166,14 @@ return crossReferences(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( BibleTranslation translation)?  compare,TResult Function( InterlinearDirection direction)?  interlinear,TResult Function( CommentaryType type)?  commentary,TResult Function()?  crossReferences,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( BibleTranslation translation)?  compare,TResult Function( InterlinearDirection direction)?  interlinear,TResult Function( CommentaryType type)?  commentary,TResult Function()?  crossReferences,TResult Function()?  notes,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case CompareStudyPanel() when compare != null:
 return compare(_that.translation);case InterlinearStudyPanel() when interlinear != null:
 return interlinear(_that.direction);case CommentaryStudyPanel() when commentary != null:
 return commentary(_that.type);case CrossReferencesStudyPanel() when crossReferences != null:
-return crossReferences();case _:
+return crossReferences();case NotesStudyPanel() when notes != null:
+return notes();case _:
   return orElse();
 
 }
@@ -183,13 +191,14 @@ return crossReferences();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( BibleTranslation translation)  compare,required TResult Function( InterlinearDirection direction)  interlinear,required TResult Function( CommentaryType type)  commentary,required TResult Function()  crossReferences,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( BibleTranslation translation)  compare,required TResult Function( InterlinearDirection direction)  interlinear,required TResult Function( CommentaryType type)  commentary,required TResult Function()  crossReferences,required TResult Function()  notes,}) {final _that = this;
 switch (_that) {
 case CompareStudyPanel():
 return compare(_that.translation);case InterlinearStudyPanel():
 return interlinear(_that.direction);case CommentaryStudyPanel():
 return commentary(_that.type);case CrossReferencesStudyPanel():
-return crossReferences();}
+return crossReferences();case NotesStudyPanel():
+return notes();}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -203,13 +212,14 @@ return crossReferences();}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( BibleTranslation translation)?  compare,TResult? Function( InterlinearDirection direction)?  interlinear,TResult? Function( CommentaryType type)?  commentary,TResult? Function()?  crossReferences,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( BibleTranslation translation)?  compare,TResult? Function( InterlinearDirection direction)?  interlinear,TResult? Function( CommentaryType type)?  commentary,TResult? Function()?  crossReferences,TResult? Function()?  notes,}) {final _that = this;
 switch (_that) {
 case CompareStudyPanel() when compare != null:
 return compare(_that.translation);case InterlinearStudyPanel() when interlinear != null:
 return interlinear(_that.direction);case CommentaryStudyPanel() when commentary != null:
 return commentary(_that.type);case CrossReferencesStudyPanel() when crossReferences != null:
-return crossReferences();case _:
+return crossReferences();case NotesStudyPanel() when notes != null:
+return notes();case _:
   return null;
 
 }
@@ -467,6 +477,45 @@ int get hashCode => runtimeType.hashCode;
 @override
 String toString() {
   return 'StudyPanel.crossReferences()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+@JsonSerializable()
+
+class NotesStudyPanel extends StudyPanel {
+  const NotesStudyPanel({final  String? $type}): $type = $type ?? 'notes',super._();
+  factory NotesStudyPanel.fromJson(Map<String, dynamic> json) => _$NotesStudyPanelFromJson(json);
+
+
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+
+@override
+Map<String, dynamic> toJson() {
+  return _$NotesStudyPanelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotesStudyPanel);
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'StudyPanel.notes()';
 }
 
 
