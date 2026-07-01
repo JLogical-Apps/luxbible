@@ -7,7 +7,6 @@ import 'package:bible/functions/cross_references_importer.dart';
 import 'package:bible/functions/dictionary_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
 import 'package:bible/licenses.dart';
-import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
@@ -33,11 +32,7 @@ Future<void> main() async {
 
       await registerLicenses();
 
-      final bibles =
-          await (BibleTranslation.values
-                  .where((translation) => translation.isLocal)
-                  .map((translation) => BibleImporter().importBible(translation: translation)))
-              .wait;
+      final studyBible = await BibleImporter().importBible(translation: .bsb);
       final commentaries = await CommentaryImporter().import();
       final strongs = await StrongImporter().import();
       final dictionary = await DictionaryImporter().import();
@@ -49,7 +44,7 @@ Future<void> main() async {
 
       ref = ProviderContainer(
         overrides: [
-          localBiblesProvider.overrideWith((ref) => bibles),
+          studyBibleProvider.overrideWith((ref) => studyBible),
           strongsProvider.overrideWith((ref) => strongs),
           dictionaryProvider.overrideWith((ref) => dictionary),
           crossReferencesProvider.overrideWith((ref) => crossReferences),

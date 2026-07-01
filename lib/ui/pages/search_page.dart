@@ -39,9 +39,10 @@ class SearchPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final localBibles = ref.watch(localBiblesProvider);
     final studyBible = ref.watch(studyBibleProvider);
-    final localBible = localBibles.firstWhereOrNull((bible) => bible.translation == user.translation) ?? studyBible;
+    final localBible = user.translation.isLocal
+        ? ref.watch(localBibleProvider(translation: user.translation)).value
+        : studyBible;
 
     final strongs = ref.watch(strongsProvider);
     final dictionary = ref.watch(dictionaryProvider);
@@ -55,7 +56,7 @@ class SearchPage extends HookConsumerWidget {
     List<Reference> getSearchedReferences() {
       final locations = locationsState.value;
       final search = searchState.value.trim();
-      if (search.isEmpty) {
+      if (search.isEmpty || localBible == null) {
         return [];
       }
 
@@ -232,7 +233,7 @@ class SearchPage extends HookConsumerWidget {
                         ),
                       ),
                     ...searchResults.map((result) {
-                      final verse = localBible.getVerseByReference(result);
+                      final verse = localBible?.getVerseByReference(result);
                       if (verse == null) {
                         return null;
                       }
@@ -242,7 +243,7 @@ class SearchPage extends HookConsumerWidget {
                         subtitle: searchState.value.trim().isStrongId
                             ? VerseText(verse: verse, highlightStrongId: searchState.value.trim())
                             : SubstringHighlight(
-                                text: localBible.getVerseByReference(result)?.text ?? '',
+                                text: localBible?.getVerseByReference(result)?.text ?? '',
                                 term: searchState.value,
                                 words: true,
                                 textStyle: context.textStyle.paragraphSm.subtle(),

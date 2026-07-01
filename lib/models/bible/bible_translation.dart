@@ -106,7 +106,7 @@ sealed class BibleTranslationSource {
   Future<Chapter> getChapter({
     required ChapterReference chapterReference,
     required BibleTranslation translation,
-    required List<Bible> localBibles,
+    required Bible? localBible,
   });
 }
 
@@ -115,9 +115,8 @@ class LocalTranslationSource implements BibleTranslationSource {
   Future<Chapter> getChapter({
     required ChapterReference chapterReference,
     required BibleTranslation translation,
-    required List<Bible> localBibles,
-  }) async =>
-      localBibles.firstWhere((bible) => bible.translation == translation).getChapterByReference(chapterReference);
+    required Bible? localBible,
+  }) async => localBible!.getChapterByReference(chapterReference);
 }
 
 class YouVersionTranslationSource implements BibleTranslationSource {
@@ -129,7 +128,7 @@ class YouVersionTranslationSource implements BibleTranslationSource {
   Future<Chapter> getChapter({
     required ChapterReference chapterReference,
     required BibleTranslation translation,
-    required List<Bible> localBibles,
+    required Bible? localBible,
   }) => YouVersion.fetchChapter(bibleId: bibleId, chapterReference: chapterReference);
 }
 

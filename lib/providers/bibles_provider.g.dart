@@ -9,47 +9,6 @@ part of 'bibles_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(localBibles)
-final localBiblesProvider = LocalBiblesProvider._();
-
-final class LocalBiblesProvider
-    extends $FunctionalProvider<List<Bible>, List<Bible>, List<Bible>>
-    with $Provider<List<Bible>> {
-  LocalBiblesProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'localBiblesProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$localBiblesHash();
-
-  @$internal
-  @override
-  $ProviderElement<List<Bible>> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  List<Bible> create(Ref ref) {
-    return localBibles(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(List<Bible> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<List<Bible>>(value),
-    );
-  }
-}
-
-String _$localBiblesHash() => r'1141358574dac76bbd5c3f4e8d018bc961423452';
-
 @ProviderFor(studyBible)
 final studyBibleProvider = StudyBibleProvider._();
 
@@ -61,7 +20,7 @@ final class StudyBibleProvider extends $FunctionalProvider<Bible, Bible, Bible>
         argument: null,
         retry: null,
         name: r'studyBibleProvider',
-        isAutoDispose: true,
+        isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
@@ -88,7 +47,76 @@ final class StudyBibleProvider extends $FunctionalProvider<Bible, Bible, Bible>
   }
 }
 
-String _$studyBibleHash() => r'3bcffe137162ac12b82a06798f22d98ee86b8776';
+String _$studyBibleHash() => r'b7f3d27c35ba981df493655e1f08c828e0640929';
+
+@ProviderFor(localBible)
+final localBibleProvider = LocalBibleFamily._();
+
+final class LocalBibleProvider
+    extends $FunctionalProvider<AsyncValue<Bible>, Bible, FutureOr<Bible>>
+    with $FutureModifier<Bible>, $FutureProvider<Bible> {
+  LocalBibleProvider._({
+    required LocalBibleFamily super.from,
+    required BibleTranslation super.argument,
+  }) : super(
+         retry: null,
+         name: r'localBibleProvider',
+         isAutoDispose: false,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$localBibleHash();
+
+  @override
+  String toString() {
+    return r'localBibleProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<Bible> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<Bible> create(Ref ref) {
+    final argument = this.argument as BibleTranslation;
+    return localBible(ref, translation: argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is LocalBibleProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$localBibleHash() => r'89f5fe56d2a6f7fc8d4cb564926eeee60342e09d';
+
+final class LocalBibleFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<Bible>, BibleTranslation> {
+  LocalBibleFamily._()
+    : super(
+        retry: null,
+        name: r'localBibleProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: false,
+      );
+
+  LocalBibleProvider call({required BibleTranslation translation}) =>
+      LocalBibleProvider._(argument: translation, from: this);
+
+  @override
+  String toString() => r'localBibleProvider';
+}
 
 @ProviderFor(chapter)
 final chapterProvider = ChapterFamily._();
@@ -149,7 +177,7 @@ final class ChapterProvider
   }
 }
 
-String _$chapterHash() => r'edcc6aabbd9ff50ad8c497c62af699531e5bc45d';
+String _$chapterHash() => r'aaabd30ce3fa81cc83321b494b6258a092c29705';
 
 final class ChapterFamily extends $Family
     with
@@ -233,7 +261,7 @@ final class VerseProvider
   }
 }
 
-String _$verseHash() => r'd5d1f3a2a1275fa2f9a14cb5167c70adec5555d7';
+String _$verseHash() => r'5d0b52d79e48443e8db546d82014c47deed847e3';
 
 final class VerseFamily extends $Family
     with
@@ -319,7 +347,7 @@ final class VerseSelectionTextProvider
 }
 
 String _$verseSelectionTextHash() =>
-    r'3a5b211739510ddda396647556a243694be16798';
+    r'ff292f6aa92ac757a37efc75da2ad19aa27f3fd4';
 
 final class VerseSelectionTextFamily extends $Family
     with
@@ -490,7 +518,7 @@ final class TextSelectionTextProvider
   }
 }
 
-String _$textSelectionTextHash() => r'c5b11ec7bad2535e2730c28b04cc37c504d343e9';
+String _$textSelectionTextHash() => r'9b7977d8e53c93837728c99bd916123423c19209';
 
 final class TextSelectionTextFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<String>, BibleTextSelection> {

@@ -1,3 +1,4 @@
+import 'package:bible/functions/bible_importer.dart';
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/bible/bible_translation.dart';
@@ -16,28 +17,34 @@ import 'package:utils_core/utils_core.dart';
 part 'bibles_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-List<Bible> localBibles(Ref ref) => throw UnimplementedError();
-
-@riverpod
-Bible studyBible(Ref ref) => ref.watch(localBiblesProvider).firstWhere((bible) => bible.translation == .bsb);
+Bible studyBible(Ref ref) => throw UnimplementedError();
 
 @Riverpod(keepAlive: true)
-Future<Chapter> chapter(Ref ref, {required ChapterReference chapterReference, required BibleTranslation translation}) {
+Future<Bible> localBible(Ref ref, {required BibleTranslation translation}) async =>
+    translation == .bsb ? ref.watch(studyBibleProvider) : BibleImporter().importBible(translation: translation);
+
+@Riverpod(keepAlive: true)
+Future<Chapter> chapter(
+  Ref ref, {
+  required ChapterReference chapterReference,
+  required BibleTranslation translation,
+}) async {
   final effectiveTranslation = translation.effectiveFor(chapterReference.book);
+  final localBible = effectiveTranslation.isLocal
+      ? await ref.watch(localBibleProvider(translation: effectiveTranslation).future)
+      : null;
   return effectiveTranslation.source.getChapter(
     chapterReference: chapterReference,
     translation: effectiveTranslation,
-    localBibles: ref.watch(localBiblesProvider),
+    localBible: localBible,
   );
 }
 
 @Riverpod(keepAlive: true)
-FutureOr<Verse?> verse(Ref ref, {required Reference reference, required BibleTranslation translation}) {
+FutureOr<Verse?> verse(Ref ref, {required Reference reference, required BibleTranslation translation}) async {
   if (translation.isLocal) {
-    return ref
-        .watch(localBiblesProvider)
-        .firstWhere((bible) => bible.translation == translation)
-        .getVerseByReference(reference);
+    final bible = await ref.watch(localBibleProvider(translation: translation).future);
+    return bible.getVerseByReference(reference);
   } else {
     final chapter = ref
         .watch(chapterProvider(chapterReference: reference.toChapterReference(), translation: translation))
@@ -51,12 +58,10 @@ FutureOr<String> verseSelectionText(
   Ref ref, {
   required VerseSelection selection,
   required BibleTranslation translation,
-}) {
+}) async {
   if (translation.isLocal) {
-    return ref
-        .watch(localBiblesProvider)
-        .firstWhere((bible) => bible.translation == translation)
-        .getVerseSelectionText(selection);
+    final bible = await ref.watch(localBibleProvider(translation: translation).future);
+    return bible.getVerseSelectionText(selection);
   } else {
     return selection.references
         .map((reference) => ref.watch(verseProvider(reference: reference, translation: translation)).requireValue)
@@ -121,13 +126,11 @@ FutureOr<List<Paragraph>> verseSelectionParagraphs(
 }).flattenedToList;
 
 @riverpod
-FutureOr<String> textSelectionText(Ref ref, BibleTextSelection selection) {
+FutureOr<String> textSelectionText(Ref ref, BibleTextSelection selection) async {
   final translation = selection.translation;
   if (translation.isLocal) {
-    return ref
-        .watch(localBiblesProvider)
-        .firstWhere((bible) => bible.translation == translation)
-        .getTextSelectionText(selection);
+    final bible = await ref.watch(localBibleProvider(translation: translation).future);
+    return bible.getTextSelectionText(selection);
   } else {
     return selection
         .toVerseSelection()
