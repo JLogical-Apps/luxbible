@@ -177,7 +177,7 @@ final class ChapterProvider
   }
 }
 
-String _$chapterHash() => r'aaabd30ce3fa81cc83321b494b6258a092c29705';
+String _$chapterHash() => r'd3d606407b4e45d1a85bb380752d6313cfc3610d';
 
 final class ChapterFamily extends $Family
     with
@@ -261,7 +261,7 @@ final class VerseProvider
   }
 }
 
-String _$verseHash() => r'5d0b52d79e48443e8db546d82014c47deed847e3';
+String _$verseHash() => r'62a672b86ae9979cf573111e53db36902f2ed22c';
 
 final class VerseFamily extends $Family
     with
@@ -347,7 +347,7 @@ final class VerseSelectionTextProvider
 }
 
 String _$verseSelectionTextHash() =>
-    r'ff292f6aa92ac757a37efc75da2ad19aa27f3fd4';
+    r'949b7df5e81c8e42fa14ba69bc103ede0c6245e8';
 
 final class VerseSelectionTextFamily extends $Family
     with
@@ -518,7 +518,7 @@ final class TextSelectionTextProvider
   }
 }
 
-String _$textSelectionTextHash() => r'9b7977d8e53c93837728c99bd916123423c19209';
+String _$textSelectionTextHash() => r'b95ea48c83f761368d2ce08afa4f60a700304124';
 
 final class TextSelectionTextFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<String>, BibleTextSelection> {

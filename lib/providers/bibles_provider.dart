@@ -24,14 +24,14 @@ Future<Bible> localBible(Ref ref, {required BibleTranslation translation}) async
     translation == .bsb ? ref.watch(studyBibleProvider) : BibleImporter().importBible(translation: translation);
 
 @Riverpod(keepAlive: true)
-Future<Chapter> chapter(
+FutureOr<Chapter> chapter(
   Ref ref, {
   required ChapterReference chapterReference,
   required BibleTranslation translation,
-}) async {
+}) {
   final effectiveTranslation = translation.effectiveFor(chapterReference.book);
   final localBible = effectiveTranslation.isLocal
-      ? await ref.watch(localBibleProvider(translation: effectiveTranslation).future)
+      ? ref.watch(localBibleProvider(translation: effectiveTranslation)).requireValue
       : null;
   return effectiveTranslation.source.getChapter(
     chapterReference: chapterReference,
@@ -41,9 +41,9 @@ Future<Chapter> chapter(
 }
 
 @Riverpod(keepAlive: true)
-FutureOr<Verse?> verse(Ref ref, {required Reference reference, required BibleTranslation translation}) async {
+FutureOr<Verse?> verse(Ref ref, {required Reference reference, required BibleTranslation translation}) {
   if (translation.isLocal) {
-    final bible = await ref.watch(localBibleProvider(translation: translation).future);
+    final bible = ref.watch(localBibleProvider(translation: translation)).requireValue;
     return bible.getVerseByReference(reference);
   } else {
     final chapter = ref
@@ -58,9 +58,9 @@ FutureOr<String> verseSelectionText(
   Ref ref, {
   required VerseSelection selection,
   required BibleTranslation translation,
-}) async {
+}) {
   if (translation.isLocal) {
-    final bible = await ref.watch(localBibleProvider(translation: translation).future);
+    final bible = ref.watch(localBibleProvider(translation: translation)).requireValue;
     return bible.getVerseSelectionText(selection);
   } else {
     return selection.references
@@ -126,10 +126,10 @@ FutureOr<List<Paragraph>> verseSelectionParagraphs(
 }).flattenedToList;
 
 @riverpod
-FutureOr<String> textSelectionText(Ref ref, BibleTextSelection selection) async {
+FutureOr<String> textSelectionText(Ref ref, BibleTextSelection selection) {
   final translation = selection.translation;
   if (translation.isLocal) {
-    final bible = await ref.watch(localBibleProvider(translation: translation).future);
+    final bible = ref.watch(localBibleProvider(translation: translation)).requireValue;
     return bible.getTextSelectionText(selection);
   } else {
     return selection
