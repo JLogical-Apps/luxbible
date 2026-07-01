@@ -67,7 +67,7 @@ enum StudyAction {
       case interlinear:
         throw UnimplementedError();
       case commentary:
-        return CommentarySheet.buildSheetChildren(context, verseSelection: verseSelection);
+        return CommentarySheet.buildSheetChildren(context, verseSelection: verseSelection, user: user);
       case crossReferences:
         final user = ref.read(userProvider);
         final crossReferences = ref.read(crossReferencesProvider);

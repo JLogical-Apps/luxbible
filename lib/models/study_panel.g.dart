@@ -65,7 +65,11 @@ Map<String, dynamic> _$CommentaryStudyPanelToJson(
   'runtimeType': instance.$type,
 };
 
-const _$CommentaryTypeEnumMap = {CommentaryType.matthewHenry: 'matthewHenry'};
+const _$CommentaryTypeEnumMap = {
+  CommentaryType.matthewHenry: 'matthewHenry',
+  CommentaryType.jamiesonFaussetBrown: 'jamiesonFaussetBrown',
+  CommentaryType.calvin: 'calvin',
+};
 
 CrossReferencesStudyPanel _$CrossReferencesStudyPanelFromJson(
   Map<String, dynamic> json,

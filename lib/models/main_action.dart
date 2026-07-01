@@ -178,7 +178,17 @@ enum MainAction {
                 onAddStudyPanel(StudyPanel.interlinear(direction: direction));
               }
             case .commentary:
-              onAddStudyPanel(StudyPanel.commentary(type: .matthewHenry));
+              final commentaryType = await context.showStyledSheet(
+                (context) => StyledSelectionSheet(
+                  title: 'Commentary'.toText(),
+                  options: user.commentariesOrDefault,
+                  optionMapper: (option) =>
+                      StyledSelectOption(title: option.title().toText(), subtitle: option.description().toText()),
+                ),
+              );
+              if (commentaryType != null) {
+                onAddStudyPanel(StudyPanel.commentary(type: commentaryType));
+              }
             case .crossReferences:
               onAddStudyPanel(StudyPanel.crossReferences());
             case .notes:

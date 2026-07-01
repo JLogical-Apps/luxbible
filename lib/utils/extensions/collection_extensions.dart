@@ -112,6 +112,10 @@ extension BibleMapEntryIterableExtensions<K, V> on Iterable<MapEntry<K, V>> {
   Map<K, V> toMap() => Map.fromEntries(this);
 }
 
+extension BibleFutureMapEntryIterableExtensions<K, V> on Iterable<Future<MapEntry<K, V>>> {
+  Future<Map<K, V>> get waitToMap async => Map.fromEntries(await Future.wait(this));
+}
+
 extension BibleMapExtensions<K, V> on Map<K, V> {
   bool any(bool Function(K, V) predicate) => entries.any((entry) => predicate(entry.key, entry.value));
   bool every(bool Function(K, V) predicate) => entries.every((entry) => predicate(entry.key, entry.value));

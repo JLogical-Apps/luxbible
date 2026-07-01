@@ -13,6 +13,9 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   bibles: (json['bibles'] as List<dynamic>?)
       ?.map((e) => $enumDecode(_$BibleTranslationEnumMap, e))
       .toList(),
+  commentaries: (json['commentaries'] as List<dynamic>?)
+      ?.map((e) => $enumDecode(_$CommentaryTypeEnumMap, e))
+      .toList(),
   lastPosition: ChapterPositionFromReference.read(json, 'lastReference') == null
       ? const ChapterPosition(
           reference: ChapterReference(chapterNum: 1, book: BookType.genesis),
@@ -92,6 +95,9 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'translation': _$BibleTranslationEnumMap[instance.translation]!,
   'bibles': instance.bibles?.map((e) => _$BibleTranslationEnumMap[e]!).toList(),
+  'commentaries': instance.commentaries
+      ?.map((e) => _$CommentaryTypeEnumMap[e]!)
+      .toList(),
   'lastReference': instance.lastPosition.toJson(),
   'currentBookmarkId': instance.currentBookmarkId,
   'viewHistory': instance.viewHistory.map((e) => e.toJson()).toList(),
@@ -124,6 +130,12 @@ const _$BibleTranslationEnumMap = {
   BibleTranslation.statresgnt: 'statresgnt',
   BibleTranslation.oshb: 'oshb',
   BibleTranslation.sv: 'sv',
+};
+
+const _$CommentaryTypeEnumMap = {
+  CommentaryType.matthewHenry: 'matthewHenry',
+  CommentaryType.jamiesonFaussetBrown: 'jamiesonFaussetBrown',
+  CommentaryType.calvin: 'calvin',
 };
 
 const _$ColorEnumEnumMap = {

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Commentary {
 
-@JsonKey(name: 't') CommentaryType get type;@JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson) Map<VerseSelection, String> get notes;
+@JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson) Map<VerseSelection, String> get notes;
 /// Create a copy of Commentary
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $CommentaryCopyWith<Commentary> get copyWith => _$CommentaryCopyWithImpl<Comment
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Commentary&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other.notes, notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Commentary&&const DeepCollectionEquality().equals(other.notes, notes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,type,const DeepCollectionEquality().hash(notes));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(notes));
 
 @override
 String toString() {
-  return 'Commentary(type: $type, notes: $notes)';
+  return 'Commentary(notes: $notes)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $CommentaryCopyWith<$Res>  {
   factory $CommentaryCopyWith(Commentary value, $Res Function(Commentary) _then) = _$CommentaryCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 't') CommentaryType type,@JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson) Map<VerseSelection, String> notes
+@JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson) Map<VerseSelection, String> notes
 });
 
 
@@ -65,10 +65,9 @@ class _$CommentaryCopyWithImpl<$Res>
 
 /// Create a copy of Commentary
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? type = null,Object? notes = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? notes = null,}) {
   return _then(_self.copyWith(
-type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as CommentaryType,notes: null == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
+notes: null == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
 as Map<VerseSelection, String>,
   ));
 }
@@ -151,10 +150,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 't')  CommentaryType type, @JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson)  Map<VerseSelection, String> notes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson)  Map<VerseSelection, String> notes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Commentary() when $default != null:
-return $default(_that.type,_that.notes);case _:
+return $default(_that.notes);case _:
   return orElse();
 
 }
@@ -172,10 +171,10 @@ return $default(_that.type,_that.notes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 't')  CommentaryType type, @JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson)  Map<VerseSelection, String> notes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson)  Map<VerseSelection, String> notes)  $default,) {final _that = this;
 switch (_that) {
 case _Commentary():
-return $default(_that.type,_that.notes);}
+return $default(_that.notes);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -189,10 +188,10 @@ return $default(_that.type,_that.notes);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 't')  CommentaryType type, @JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson)  Map<VerseSelection, String> notes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson)  Map<VerseSelection, String> notes)?  $default,) {final _that = this;
 switch (_that) {
 case _Commentary() when $default != null:
-return $default(_that.type,_that.notes);case _:
+return $default(_that.notes);case _:
   return null;
 
 }
@@ -204,10 +203,9 @@ return $default(_that.type,_that.notes);case _:
 @JsonSerializable()
 
 class _Commentary extends Commentary {
-  const _Commentary({@JsonKey(name: 't') required this.type, @JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson) required final  Map<VerseSelection, String> notes}): _notes = notes,super._();
+  const _Commentary({@JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson) required final  Map<VerseSelection, String> notes}): _notes = notes,super._();
   factory _Commentary.fromJson(Map<String, dynamic> json) => _$CommentaryFromJson(json);
 
-@override@JsonKey(name: 't') final  CommentaryType type;
  final  Map<VerseSelection, String> _notes;
 @override@JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson) Map<VerseSelection, String> get notes {
   if (_notes is EqualUnmodifiableMapView) return _notes;
@@ -229,16 +227,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Commentary&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other._notes, _notes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Commentary&&const DeepCollectionEquality().equals(other._notes, _notes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,type,const DeepCollectionEquality().hash(_notes));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_notes));
 
 @override
 String toString() {
-  return 'Commentary(type: $type, notes: $notes)';
+  return 'Commentary(notes: $notes)';
 }
 
 
@@ -249,7 +247,7 @@ abstract mixin class _$CommentaryCopyWith<$Res> implements $CommentaryCopyWith<$
   factory _$CommentaryCopyWith(_Commentary value, $Res Function(_Commentary) _then) = __$CommentaryCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 't') CommentaryType type,@JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson) Map<VerseSelection, String> notes
+@JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson) Map<VerseSelection, String> notes
 });
 
 
@@ -266,10 +264,9 @@ class __$CommentaryCopyWithImpl<$Res>
 
 /// Create a copy of Commentary
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? type = null,Object? notes = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? notes = null,}) {
   return _then(_Commentary(
-type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as CommentaryType,notes: null == notes ? _self._notes : notes // ignore: cast_nullable_to_non_nullable
+notes: null == notes ? _self._notes : notes // ignore: cast_nullable_to_non_nullable
 as Map<VerseSelection, String>,
   ));
 }

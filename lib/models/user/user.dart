@@ -3,6 +3,7 @@ import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/color_enum.dart';
+import 'package:bible/models/commentary_type.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_position.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
@@ -31,6 +32,7 @@ sealed class User with _$User {
   const factory User({
     @Default(BibleTranslation.bsb) BibleTranslation translation,
     List<BibleTranslation>? bibles,
+    List<CommentaryType>? commentaries,
     @ChapterPositionFromReference('lastReference')
     @Default(ChapterPosition(reference: ChapterReference(chapterNum: 1, book: BookType.genesis)))
     ChapterPosition lastPosition,
@@ -55,6 +57,8 @@ sealed class User with _$User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   List<BibleTranslation> get biblesOrDefault => bibles ?? BibleTranslation.defaultTranslations;
+
+  List<CommentaryType> get commentariesOrDefault => commentaries ?? CommentaryType.values;
 
   ChapterReference get lastReference => lastPosition.reference;
 

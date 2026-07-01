@@ -48,7 +48,7 @@ Future<void> main() async {
           strongsProvider.overrideWith((ref) => strongs),
           dictionaryProvider.overrideWith((ref) => dictionary),
           crossReferencesProvider.overrideWith((ref) => crossReferences),
-          commentariesProvider.overrideWith((ref) => [commentaries]),
+          commentariesProvider.overrideWith((ref) => commentaries),
           pathServiceProvider.overrideWith((ref) => paths),
           sharedPreferencesServiceProvider.overrideWith((ref) => sharedPreferences),
           packageInfoProvider.overrideWith((ref) => packageInfo),
