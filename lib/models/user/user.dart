@@ -133,8 +133,10 @@ sealed class User with _$User {
   User withAnnotation(Annotation annotation) =>
       copyWith(annotations: [...annotations, annotation], highlightColor: annotation.color);
 
-  User withAnnotationUpdated(Annotation oldAnnotation, Annotation newAnnotation) =>
-      copyWith(annotations: annotations.withRemoved(oldAnnotation) + [newAnnotation]);
+  User withAnnotationUpdated(Annotation oldAnnotation, Annotation newAnnotation) => copyWith(
+    annotations: annotations.withRemoved(oldAnnotation) + [newAnnotation],
+    highlightColor: newAnnotation.color,
+  );
 
   User withRemovedSelectionAnnotations(AnnotationSelection selection) => selection.when(
     verses: (verseSelection) => withRemovedVerseSelectionAnnotations(verseSelection),
