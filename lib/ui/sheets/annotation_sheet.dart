@@ -71,6 +71,22 @@ class AnnotationSheet {
       ],
     ),
   );
+
+  static Future<void> edit(BuildContext context, {required Annotation annotation}) async {
+    final newAnnotation = await show(
+      context,
+      selection: annotation.selection,
+      annotation: annotation,
+      subtitle: annotation.formatLocation().toText(),
+      onRemove: (context) {
+        ref.updateUser((user) => user.withRemovedAnnotation(annotation));
+        context.pop();
+      },
+    );
+    if (newAnnotation != null) {
+      ref.updateUser((user) => user.withAnnotationUpdated(annotation, newAnnotation));
+    }
+  }
 }
 
 class NewAnnotationSheet {

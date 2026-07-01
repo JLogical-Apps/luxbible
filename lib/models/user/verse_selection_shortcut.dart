@@ -7,6 +7,9 @@ import 'package:bible/models/verse_selection_action.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/sheets/annotation_sheet.dart';
+import 'package:bible/utils/extensions/build_context_extensions.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/cupertino.dart';
@@ -73,21 +76,31 @@ enum VerseSelectionShortcut {
       ) ??
       switch (this) {
         highlight => () async {
+          final rootContext = context.rootContext;
           onDeselect();
 
-          ref.updateUser((user) {
-            if (user.isVerseSelectionAnnotated(verseSelection)) {
-              return user.withRemovedVerseSelectionAnnotations(verseSelection);
-            } else {
-              return user.withAnnotation(
-                Annotation(
-                  createdAt: .now(),
-                  color: user.highlightColor,
-                  selection: AnnotationSelection.verses(verseSelection: verseSelection),
-                ),
-              );
-            }
-          });
+          final user = ref.read(userProvider);
+          if (user.isVerseSelectionAnnotated(verseSelection)) {
+            ref.updateUser((user) => user.withRemovedVerseSelectionAnnotations(verseSelection));
+            return;
+          }
+
+          final annotation = Annotation(
+            createdAt: .now(),
+            color: user.highlightColor,
+            selection: AnnotationSelection.verses(verseSelection: verseSelection),
+          );
+          ref.updateUser((user) => user.withAnnotation(annotation));
+
+          if (!context.mounted) return;
+          context.showStyledSnackbar(
+            messageText: 'Highlighted ${verseSelection.format()}.',
+            duration: Duration(seconds: 8),
+            action: StyledTextAction(
+              label: 'Edit'.toText(),
+              onPressed: () => AnnotationSheet.edit(rootContext, annotation: annotation),
+            ),
+          );
         }(),
         _ => throw UnimplementedError(),
       };

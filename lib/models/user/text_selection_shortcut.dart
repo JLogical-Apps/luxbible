@@ -5,7 +5,12 @@ import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/text_selection_action.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/root_ref.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
+import 'package:bible/style/styled_text_action.dart';
+import 'package:bible/ui/sheets/annotation_sheet.dart';
+import 'package:bible/utils/extensions/build_context_extensions.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/cupertino.dart';
@@ -59,21 +64,31 @@ enum TextSelectionShortcut {
       ) ??
       switch (this) {
         highlight => () async {
+          final rootContext = context.rootContext;
           onDeselect();
 
-          ref.updateUser((user) {
-            if (user.isTextSelectionAnnotated(textSelection)) {
-              return user.withRemovedTextSelectionAnnotations(textSelection);
-            } else {
-              return user.withAnnotation(
-                Annotation(
-                  createdAt: .now(),
-                  color: user.highlightColor,
-                  selection: AnnotationSelection.text(textSelection: textSelection),
-                ),
-              );
-            }
-          });
+          final user = ref.read(userProvider);
+          if (user.isTextSelectionAnnotated(textSelection)) {
+            ref.updateUser((user) => user.withRemovedTextSelectionAnnotations(textSelection));
+            return;
+          }
+
+          final annotation = Annotation(
+            createdAt: .now(),
+            color: user.highlightColor,
+            selection: AnnotationSelection.text(textSelection: textSelection),
+          );
+          ref.updateUser((user) => user.withAnnotation(annotation));
+
+          if (!context.mounted) return;
+          context.showStyledSnackbar(
+            messageText: 'Highlighted text in ${textSelection.toVerseSelection().format()}.',
+            duration: Duration(seconds: 8),
+            action: StyledTextAction(
+              label: 'Edit'.toText(),
+              onPressed: () => AnnotationSheet.edit(rootContext, annotation: annotation),
+            ),
+          );
         }(),
         _ => throw UnimplementedError(),
       };
