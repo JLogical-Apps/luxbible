@@ -2,6 +2,7 @@ import 'package:bible/models/bible/footnote.dart';
 import 'package:bible/models/bible/word.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/reference.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:utils_core/utils_core.dart';
 
@@ -24,7 +25,7 @@ sealed class Verse with _$Verse {
   String get text => words.map((word) => word.text).nonNulls.join();
   List<String> get strongIds => words.map((word) => word.data?.strongId).nonNulls.toList();
   List<String> get searchTerms =>
-      text.trim().toLowerCase().split(RegExp(r'[\s-]+')).where((string) => string.isNotBlank).toList();
+      text.onlyLetters.toLowerCase().split(' ').where((string) => string.isNotBlank).toList();
 
   Verse trimStart() => Verse(
     verseNum: verseNum,
