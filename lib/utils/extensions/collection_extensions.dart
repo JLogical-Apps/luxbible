@@ -137,6 +137,11 @@ extension BibleMapExtensions<K, V> on Map<K, V> {
   Map<K, V> get withDistinctValues => entries.distinctBy((entry) => entry.value).toMap();
 }
 
+extension BibleNullKeyMapExtensions<K, V> on Map<K?, V> {
+  Map<K, V> get withoutNullKeys =>
+      entries.map((entry) => entry.key?.mapIfNonNull((key) => MapEntry(key, entry.value))).nonNulls.toMap();
+}
+
 extension BibleNullValueMapExtensions<K, V> on Map<K, V?> {
   Map<K, V> get withoutNullValues =>
       entries.map((entry) => entry.value?.mapIfNonNull((value) => MapEntry(entry.key, value))).nonNulls.toMap();

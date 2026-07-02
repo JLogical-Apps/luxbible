@@ -1,3 +1,4 @@
+import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -16,8 +17,16 @@ sealed class Commentary with _$Commentary {
 
   factory Commentary.fromJson(Map<String, dynamic> json) => _$CommentaryFromJson(json);
 
-  Map<VerseSelection, String> getNotesFor(VerseSelection verseSelection) =>
-      notes.where((vs, note) => vs.references.containsAny(verseSelection.references));
+  Map<VerseSelection, String> getNotesFor(VerseSelection verseSelection) {
+    final references = verseSelection.references.expand(
+      (reference) => [
+        if (reference.chapterNum == 1 && reference.verseNum == 1)
+          Reference(book: reference.book, chapterNum: 1, verseNum: 0),
+        reference,
+      ],
+    );
+    return notes.where((vs, note) => vs.references.containsAny(references));
+  }
 }
 
 Map<String, dynamic> _notesToJson(Map<VerseSelection, String> notes) =>

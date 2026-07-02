@@ -1,3 +1,4 @@
+import 'package:bible/models/commentary.dart';
 import 'package:bible/models/commentary_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/user/user.dart';
@@ -18,28 +19,21 @@ class CommentarySheet {
   }) {
     final commentaries = ref.read(commentariesProvider);
     if (commentary != null) {
-      final relatedCommentary = commentaries[commentary]?.getNotesFor(verseSelection);
-      return relatedCommentary == null || relatedCommentary.isEmpty
+      final items = commentaries[commentary]?.mapIfNonNull((c) => _commentaryItems(c, verseSelection)) ?? [];
+      return items.isEmpty
           ? [
               Padding(
                 padding: .all(16),
                 child: StyledBanner(message: 'No Commentaries Found'.toText()),
               ),
             ]
-          : relatedCommentary
-                .mapToIterable(
-                  (verseSelection, note) => StyledListItem(
-                    title: verseSelection.format().toText(),
-                    subtitle: SimpleMarkdown(text: note),
-                  ),
-                )
-                .toList();
+          : items;
     }
 
     final relatedCommentaries = commentaries
         .where((type, commentary) => user.commentariesOrDefault.contains(type))
-        .mapValues((type, commentary) => commentary.getNotesFor(verseSelection))
-        .where((type, notes) => notes.isNotEmpty);
+        .mapValues((type, commentary) => _commentaryItems(commentary, verseSelection))
+        .where((type, items) => items.isNotEmpty);
 
     return relatedCommentaries.isEmpty
         ? [
@@ -49,19 +43,25 @@ class CommentarySheet {
             ),
           ]
         : relatedCommentaries
-              .mapToIterable(
-                (type, notes) => StyledStickyHeader(
-                  title: type.title().toText(),
-                  children: notes
-                      .mapToIterable(
-                        (verseSelection, note) => StyledListItem(
-                          title: verseSelection.format().toText(),
-                          subtitle: SimpleMarkdown(text: note),
-                        ),
-                      )
-                      .toList(),
-                ),
-              )
+              .mapToIterable((type, items) => StyledStickyHeader(title: type.title().toText(), children: items))
               .toList();
   }
+
+  static List<Widget> _commentaryItems(Commentary commentary, VerseSelection verseSelection) => commentary
+      .getNotesFor(verseSelection)
+      .mapToIterable(
+        (verseSelection, note) => StyledListItem(
+          title:
+              (verseSelection.isIntro
+                      ? 'Intro to ${verseSelection.references.first.book.title()}'
+                      : verseSelection.format())
+                  .toText(),
+          subtitle: SimpleMarkdown(text: note),
+        ),
+      )
+      .toList();
+}
+
+extension on VerseSelection {
+  bool get isIntro => references.any((reference) => reference.chapterNum == 1 && reference.verseNum == 0);
 }
