@@ -43,7 +43,7 @@ enum MainAction {
           ? 'Bookmark this chapter to easily access it from the search page.'
           : 'Manage this bookmark.',
     study => 'View study tools for this chapter.',
-    studyPanel => 'Add a new study panel.',
+    studyPanel => 'Pin a panel beside the text that follows along and shows study tools for whatever you\'re reading.',
     search => 'Search for words across the Bible.',
     resources => 'Look up words in the dictionary and lexicon.',
     settings => 'View the settings for Lux.',
