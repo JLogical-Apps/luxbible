@@ -1,12 +1,12 @@
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
-import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/dictionary_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/sheets/dictionary_sheet.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
 import 'package:bible/ui/widgets/search_location_button.dart';
@@ -253,7 +253,7 @@ class SearchPage extends HookConsumerWidget {
                         onPressed: () => ChapterPreviewPage.show(
                           context,
                           verseSelection: VerseSelection.reference(result),
-                          onOpenInFullScreen: () {
+                          onNavigateToPassage: () {
                             ref.updateUser((user) => user.withSearchHistory(searchState.value));
                             context.pop(SearchPageResult(reference: result));
                           },

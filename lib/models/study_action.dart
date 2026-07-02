@@ -147,7 +147,7 @@ enum StudyAction {
                         onPressed: () => ChapterPreviewPage.show(
                           context,
                           verseSelection: verseSelection,
-                          onOpenInFullScreen: () {
+                          onNavigateToPassage: () {
                             if (popOnAction) context.pop();
                             onNavigateToVerseSelection(verseSelection);
                           },

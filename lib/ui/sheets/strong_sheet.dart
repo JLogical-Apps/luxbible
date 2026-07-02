@@ -10,8 +10,8 @@ import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -173,7 +173,7 @@ class StrongSheet {
                       onPressed: () => ChapterPreviewPage.show(
                         context,
                         verseSelection: VerseSelection.reference(reference),
-                        onOpenInFullScreen: () {
+                        onNavigateToPassage: () {
                           context.pop();
                           onNavigateToVerseSelection(VerseSelection.reference(reference));
                         },

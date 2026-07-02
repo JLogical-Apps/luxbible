@@ -17,15 +17,16 @@ import 'package:utils_core/utils_core.dart';
 
 class ChapterPreviewPage extends HookConsumerWidget {
   final VerseSelection verseSelection;
-  final VoidCallback onOpenInFullScreen;
+  final VoidCallback onNavigateToPassage;
 
-  const ChapterPreviewPage({super.key, required this.verseSelection, required this.onOpenInFullScreen});
+  const ChapterPreviewPage({super.key, required this.verseSelection, required this.onNavigateToPassage});
 
   static Future<void> show(
     BuildContext context, {
     required VerseSelection verseSelection,
-    required VoidCallback onOpenInFullScreen,
-  }) => context.pushDialog(ChapterPreviewPage(verseSelection: verseSelection, onOpenInFullScreen: onOpenInFullScreen));
+    required VoidCallback onNavigateToPassage,
+  }) =>
+      context.pushDialog(ChapterPreviewPage(verseSelection: verseSelection, onNavigateToPassage: onNavigateToPassage));
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -44,10 +45,10 @@ class ChapterPreviewPage extends HookConsumerWidget {
       leading: StyledCircleButton.lg(child: Symbols.close.toIcon(), onPressed: () => context.pop()),
       showShadow: true,
       trailing: StyledCircleButton.lg(
-        child: Symbols.open_in_full.toIcon(),
+        child: Symbols.expand_circle_right.toIcon(),
         onPressed: () {
           context.pop();
-          onOpenInFullScreen();
+          onNavigateToPassage();
         },
       ),
       body: ChapterPageView(
