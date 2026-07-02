@@ -6,6 +6,7 @@ import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/simple_markdown.dart';
+import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:utils_core/utils_core.dart';
@@ -30,8 +31,9 @@ class CommentarySheet {
           : items;
     }
 
-    final relatedCommentaries = commentaries
-        .where((type, commentary) => user.commentariesOrDefault.contains(type))
+    final relatedCommentaries = user.commentariesOrDefault
+        .mapToMap((type) => MapEntry(type, commentaries[type]))
+        .withoutNullValues
         .mapValues((type, commentary) => _commentaryItems(commentary, verseSelection))
         .where((type, items) => items.isNotEmpty);
 
