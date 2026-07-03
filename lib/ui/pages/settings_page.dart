@@ -1,4 +1,6 @@
+import 'package:bible/models/user/toolbar_preset.dart';
 import 'package:bible/providers/package_info_provider.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/annotations_page.dart';
 import 'package:bible/ui/pages/bibles_page.dart';
@@ -25,6 +27,7 @@ class SettingsPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final packageInfo = ref.watch(packageInfoProvider);
+    final user = ref.watch(userProvider);
 
     usePostFrameEffect(() => ref.markOnboardingStep(.openSettings));
 
@@ -51,6 +54,61 @@ class SettingsPage extends HookConsumerWidget {
                   title: 'Commentaries'.toText(),
                   leading: Symbols.tooltip_2.toIcon(),
                   onPressed: () => context.push(CommentariesPage()),
+                ),
+              ],
+            ),
+          ),
+          StyledSection.child(
+            title: 'Toolbars'.toText(),
+            child: StyledCard(
+              children: [
+                StyledListItem(
+                  title: 'Toolbar Presets'.toText(),
+                  subtitle: (user.toolbarPreset?.title() ?? 'Custom').toText(),
+                  trailing: StyledPillButton.md(
+                    label: 'Select'.toText(),
+                    onPressed: () async {
+                      ref.markOnboardingStep(.customizeToolbar);
+                      final preset = await context.showStyledSheet(
+                        (context) => StyledSelectionSheet(
+                          title: 'Toolbar Preset'.toText(),
+                          aboveOptions: Padding(
+                            padding: .all(16),
+                            child: StyledTile.message(
+                              leading: Symbols.info.toIcon(),
+                              title: 'Selecting a preset will override your current toolbar shortcuts.'.toText(),
+                            ),
+                          ),
+                          options: ToolbarPreset.values,
+                          initialOption: user.toolbarPreset,
+                          optionMapper: (preset) => StyledSelectOption(
+                            title: preset.title().toText(),
+                            subtitle: preset.description().toText(),
+                            thirdLine: Padding(
+                              padding: .only(top: 8),
+                              child: Wrap(
+                                spacing: 8,
+                                runSpacing: 8,
+                                children: preset.prominentShortcuts
+                                    .map(
+                                      (shortcut) => IntrinsicWidth(
+                                        child: StyledTag.md(
+                                          leading: shortcut.buildIcon(context),
+                                          child: shortcut.title().toText(),
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                      if (preset != null) {
+                        ref.updateUser((user) => user.withPreset(preset));
+                      }
+                    },
+                  ),
                 ),
                 StyledListItem.navigation(
                   title: 'Main Toolbar'.toText(),
@@ -119,7 +177,7 @@ class SettingsPage extends HookConsumerWidget {
               children: [
                 StyledListItem(
                   title: 'Reset Onboarding'.toText(),
-                  subtitle: 'Show the onboarding checklist again'.toText(),
+                  subtitle: 'Show the Get Started checklist again'.toText(),
                   leading: Symbols.data_info_alert.toIcon(),
                   onPressed: () {
                     ref.updateUser((user) => user.withOnboardingReset());

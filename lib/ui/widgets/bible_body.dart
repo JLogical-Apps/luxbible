@@ -225,38 +225,34 @@ class BibleBody extends HookConsumerWidget {
                   mainToolbar: user.mainToolbar,
                   translation: user.translation,
                   user: user,
-                  onSwipeLeft: user.mainToolbar.swipeToUndo
-                      ? () {
-                          var history = navigationHistoryState.value;
-                          if (!history.canUndo) {
-                            return;
-                          }
+                  onSwipeLeft: () {
+                    var history = navigationHistoryState.value;
+                    if (!history.canUndo) {
+                      return;
+                    }
 
-                          navigationHistoryState.value = navigationHistoryState.value.withUndo();
-                          final currentState = navigationHistoryState.value.current;
-                          hardNavigateTo(
-                            currentState.position,
-                            bookmarkId: currentState.bookmarkId,
-                            updateNavigationState: false,
-                          );
-                          ref.markOnboardingStep(.goBack);
-                        }
-                      : null,
-                  onSwipeRight: user.mainToolbar.swipeToUndo
-                      ? () {
-                          if (!navigationHistoryState.value.canRedo) {
-                            return;
-                          }
+                    navigationHistoryState.value = navigationHistoryState.value.withUndo();
+                    final currentState = navigationHistoryState.value.current;
+                    hardNavigateTo(
+                      currentState.position,
+                      bookmarkId: currentState.bookmarkId,
+                      updateNavigationState: false,
+                    );
+                    ref.markOnboardingStep(.goBack);
+                  },
+                  onSwipeRight: () {
+                    if (!navigationHistoryState.value.canRedo) {
+                      return;
+                    }
 
-                          navigationHistoryState.value = navigationHistoryState.value.withRedo();
-                          final currentState = navigationHistoryState.value.current;
-                          hardNavigateTo(
-                            currentState.position,
-                            bookmarkId: currentState.bookmarkId,
-                            updateNavigationState: false,
-                          );
-                        }
-                      : null,
+                    navigationHistoryState.value = navigationHistoryState.value.withRedo();
+                    final currentState = navigationHistoryState.value.current;
+                    hardNavigateTo(
+                      currentState.position,
+                      bookmarkId: currentState.bookmarkId,
+                      updateNavigationState: false,
+                    );
+                  },
                   onPressed: () async {
                     final result = await context.pushDialog<ChapterReferenceSearchPageResult>(
                       ChapterReferenceSearchPage(initialReference: currentChapterReference),
@@ -445,6 +441,7 @@ class BibleBody extends HookConsumerWidget {
         );
 
         ref.updateUser((user) => user.withSoftNavigation(position));
+        ref.markOnboardingStep(.swipeChapter);
         navigationHistoryState.value = navigationHistoryState.value.withCurrent(
           NavigationState(position: position, bookmarkId: user.currentBookmarkId),
         );
@@ -682,8 +679,6 @@ class BibleBody extends HookConsumerWidget {
           isWordSelected: textSelectionState.value != null,
           isMainToolbarVisible: showBottomBar,
           hasStudyPanel: studyPanels.isNotEmpty,
-          isViewingStudyPanel:
-              studyPanels.isNotEmpty && currentCarouselPage != null && currentCarouselPage - onboardingOffset >= 0,
           hasHistory: navigationHistoryState.value.canUndo,
         );
 

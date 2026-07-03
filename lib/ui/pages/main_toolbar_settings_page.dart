@@ -13,9 +13,9 @@ import 'package:bible/style/widgets/styled_page.dart';
 import 'package:bible/style/widgets/styled_section.dart';
 import 'package:bible/style/widgets/styled_select.dart';
 import 'package:bible/ui/widgets/main_toolbar.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -46,6 +46,7 @@ class MainToolbarSettingsPage extends ConsumerWidget {
                 onPressed: () {},
                 onMorePressed: () {},
                 onShorcutPressed: (shortcutIndex, shortcut) async {
+                  ref.markOnboardingStep(.customizeToolbar);
                   final newShortcut = await showSelectMainToolbarSheet(context, initialShortcut: shortcut);
                   if (newShortcut != null) {
                     ref.updateUser(
@@ -73,6 +74,7 @@ class MainToolbarSettingsPage extends ConsumerWidget {
                           child: StyledCircleButton.lg(
                             colorBuilder: .surfaceSecondary,
                             onPressed: () async {
+                              ref.markOnboardingStep(.customizeToolbar);
                               final newShortcut = await showSelectMainToolbarSheet(
                                 context,
                                 initialShortcut: mainToolbar.longPressShortcut,
@@ -87,16 +89,6 @@ class MainToolbarSettingsPage extends ConsumerWidget {
                             child: mainToolbar.longPressShortcut.buildIcon(context, user: user),
                           ),
                         ),
-                      ),
-                      StyledListItem.switchControl(
-                        title: 'Swipe to Navigate'.toText(),
-                        subtitle:
-                            'Swipe left on the toolbar to go back to the previous verse selection. Swipe right to undo that.'
-                                .toText(),
-                        leading: Symbols.swipe.toIcon(),
-                        isSelected: mainToolbar.swipeToUndo,
-                        onSelected: (newValue) =>
-                            ref.updateUser((user) => user.copyWith.mainToolbar(swipeToUndo: newValue)),
                       ),
                     ],
                   ),

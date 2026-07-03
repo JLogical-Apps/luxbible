@@ -26,7 +26,7 @@ _VerseSelectionConfiguration _$VerseSelectionConfigurationFromJson(
         _$VerseSelectionShortcutEnumMap,
         json['pinnedShortcut3'],
       ) ??
-      VerseSelectionShortcut.interlinear,
+      VerseSelectionShortcut.compare,
   longPressShortcut:
       $enumDecodeNullable(
         _$VerseSelectionShortcutEnumMap,

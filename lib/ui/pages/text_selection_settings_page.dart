@@ -36,6 +36,7 @@ class TextSelectionSettingsPage extends ConsumerWidget {
                 onMorePressed: () {},
                 onClosePressed: () {},
                 onShorcutPressed: (shortcutIndex, shortcut) async {
+                  ref.markOnboardingStep(.customizeToolbar);
                   final newShortcut = await showShortcutSheet(context, initialShortcut: shortcut);
                   if (newShortcut != null) {
                     ref.updateUser(
@@ -65,6 +66,7 @@ class TextSelectionSettingsPage extends ConsumerWidget {
                           child: StyledCircleButton.lg(
                             colorBuilder: .surfaceSecondary,
                             onPressed: () async {
+                              ref.markOnboardingStep(.customizeToolbar);
                               final newShortcut = await showShortcutSheet(
                                 context,
                                 initialShortcut: textSelectionConfiguration.longPressShortcut,

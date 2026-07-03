@@ -11,6 +11,7 @@ class ColorBuilder {
   static final ColorBuilder surfacePrimary = ColorBuilder((colors) => colors.surfacePrimary);
   static final ColorBuilder surfaceSecondary = ColorBuilder((colors) => colors.surfaceSecondary);
   static final ColorBuilder surfaceTertiary = ColorBuilder((colors) => colors.surfaceTertiary);
+  static final ColorBuilder surfaceDisabled = ColorBuilder((colors) => colors.surfaceDisabled);
 
   static final ColorBuilder surfacePrimaryInverted = ColorBuilder((colors) => colors.inverted.surfacePrimary);
   static final ColorBuilder surfaceSecondaryInverted = ColorBuilder((colors) => colors.inverted.surfaceSecondary);

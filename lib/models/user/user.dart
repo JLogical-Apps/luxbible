@@ -14,6 +14,7 @@ import 'package:bible/models/user/main_toolbar_configuration.dart';
 import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/models/user/text_selection_configuration.dart';
 import 'package:bible/models/user/theme_layout_configuration.dart';
+import 'package:bible/models/user/toolbar_preset.dart';
 import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/models/user/verse_selection_configuration.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
@@ -126,6 +127,21 @@ sealed class User with _$User {
           .lastOrNull ??
       textSelection;
 
+  ToolbarPreset? get toolbarPreset => ToolbarPreset.values.firstWhereOrNull((preset) => preset.matches(this));
+
+  bool get isOnboardingActive => completedOnboardingSteps != null;
+
+  bool isOnboardingStepCompleted(OnboardingStep step) => completedOnboardingSteps?.contains(step) ?? false;
+
+  int? get currentOnboardingStepIndex {
+    final completedOnboardingSteps = this.completedOnboardingSteps;
+    if (completedOnboardingSteps == null) return null;
+    return OnboardingStep.values.indexWhereOrNull((step) => !completedOnboardingSteps.contains(step));
+  }
+
+  OnboardingStep? get currentOnboardingStep =>
+      currentOnboardingStepIndex?.mapIfNonNull((stepIndex) => OnboardingStep.values[stepIndex]);
+
   User withNewBookmark(Bookmark bookmark) {
     final newId = Uuid().v4();
     return copyWith(bookmarkById: {...bookmarkById, newId: bookmark}, currentBookmarkId: newId);
@@ -211,19 +227,6 @@ sealed class User with _$User {
 
   User withTutorial(Tutorial tutorial) => copyWith(tutorials: tutorials + [tutorial]);
 
-  bool get isOnboardingActive => completedOnboardingSteps != null;
-
-  bool isOnboardingStepCompleted(OnboardingStep step) => completedOnboardingSteps?.contains(step) ?? false;
-
-  int? get currentOnboardingStepIndex {
-    final completedOnboardingSteps = this.completedOnboardingSteps;
-    if (completedOnboardingSteps == null) return null;
-    return OnboardingStep.values.indexWhereOrNull((step) => !completedOnboardingSteps.contains(step));
-  }
-
-  OnboardingStep? get currentOnboardingStep =>
-      currentOnboardingStepIndex?.mapIfNonNull((stepIndex) => OnboardingStep.values[stepIndex]);
-
   User withOnboardingStepCompleted(OnboardingStep step) {
     final completed = completedOnboardingSteps;
     return completed == null || completed.contains(step)
@@ -234,4 +237,24 @@ sealed class User with _$User {
   User withOnboardingReset() => copyWith(completedOnboardingSteps: []);
 
   User withOnboardingDismissed() => copyWith(completedOnboardingSteps: null);
+
+  User withPreset(ToolbarPreset preset) => copyWith(
+    mainToolbar: mainToolbar.copyWith(
+      pinnedShortcut1: preset.mainPinnedShortcuts[0],
+      pinnedShortcut2: preset.mainPinnedShortcuts[1],
+      longPressShortcut: preset.mainLongPressShortcut,
+    ),
+    verseSelection: verseSelection.copyWith(
+      pinnedShortcut1: preset.versePinnedShortcuts[0],
+      pinnedShortcut2: preset.versePinnedShortcuts[1],
+      pinnedShortcut3: preset.versePinnedShortcuts[2],
+      longPressShortcut: preset.verseLongPressShortcut,
+    ),
+    textSelection: textSelection.copyWith(
+      pinnedShortcut1: preset.textPinnedShortcuts[0],
+      pinnedShortcut2: preset.textPinnedShortcuts[1],
+      pinnedShortcut3: preset.textPinnedShortcuts[2],
+      longPressShortcut: preset.textLongPressShortcut,
+    ),
+  );
 }

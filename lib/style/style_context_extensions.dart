@@ -101,9 +101,9 @@ extension StyleContextExtensions on BuildContext {
         ),
         trailing: action == null
             ? null
-            : StyledPillButton.sm(
+            : StyledPillButton.md(
                 label: action.label,
-                colorBuilder: .surfaceSecondaryInverted,
+                colorBuilder: .transparent,
                 onPressed: () {
                   flushbar.dismiss();
                   action.onPressed();

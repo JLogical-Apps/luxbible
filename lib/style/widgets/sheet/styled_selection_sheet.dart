@@ -8,6 +8,7 @@ class StyledSelectionSheet<T> extends StyledSheet<T> {
   final List<T> options;
   final T? initialOption;
   final StyledSelectOption<T> Function(T) optionMapper;
+  final Widget? aboveOptions;
 
   const StyledSelectionSheet({
     super.key,
@@ -15,6 +16,7 @@ class StyledSelectionSheet<T> extends StyledSheet<T> {
     required this.options,
     this.initialOption,
     required this.optionMapper,
+    this.aboveOptions,
     super.trailing,
   });
 
@@ -23,17 +25,19 @@ class StyledSelectionSheet<T> extends StyledSheet<T> {
     return StyledSheet(
       title: title,
       trailing: trailing,
-      children: options
-          .map(
-            (option) => StyledListItem.radio(
-              title: optionMapper(option).title,
-              subtitle: optionMapper(option).subtitle,
-              leading: optionMapper(option).leading,
-              isSelected: option == initialOption,
-              onSelected: () => context.pop(option),
-            ),
-          )
-          .toList(),
+      children: [
+        ?aboveOptions,
+        ...options.map(
+          (option) => StyledListItem.radio(
+            title: optionMapper(option).title,
+            subtitle: optionMapper(option).subtitle,
+            thirdLine: optionMapper(option).thirdLine,
+            leading: optionMapper(option).leading,
+            isSelected: option == initialOption,
+            onSelected: () => context.pop(option),
+          ),
+        ),
+      ],
     );
   }
 }

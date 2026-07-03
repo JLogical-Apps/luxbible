@@ -58,44 +58,63 @@ class OnboardingPanel extends HookConsumerWidget {
           }
         },
       ),
-      title: 'Onboarding'.toText(),
-      children: OnboardingStep.values.mapIndexed((stepIndex, step) {
-        final isStepCompleted = user.isOnboardingStepCompleted(step);
-        final isActiveStep = stepIndex == currentStepIndex;
-        return StyledListItem(
-          key: keyByStep[step],
-          leading: step.icon.toIcon(),
-          title: step.title().toText(),
-          subtitle: isActiveStep ? step.instructions().toText() : null,
-          thirdLine: step.microSteps.isEmpty || !isActiveStep
-              ? null
-              : Padding(
-                  padding: .only(top: 8),
-                  child: Wrap(
-                    spacing: 6,
-                    runSpacing: 6,
-                    children: step.microSteps.map((microStep) {
-                      final isCompleted = microStep.isCompleted(state);
-                      return IntrinsicWidth(
-                        child: StyledTag.md(
-                          colorBuilder: isCompleted ? .primary : .surfaceSecondary,
-                          onPressed: () => context.showStyledDialog(
-                            (context) => StyledDialog.confirm(
-                              title: microStep.title().toText(),
-                              body: microStep.detail().toText(),
+      title: 'Get Started'.toText(),
+      subtitle: 'Learn how to use Lux'.toText(),
+      children: [
+        Padding(
+          padding: .all(16),
+          child: StyledTile.message(
+            leading: Symbols.info.toIcon(),
+            title: 'Complete the checklist below to learn how to use Lux.'.toText(),
+            subtitle: 'In a hurry? Tap ✕ to skip.'.toText(),
+          ),
+        ),
+        ...OnboardingStep.values.mapIndexed((stepIndex, step) {
+          final isStepCompleted = user.isOnboardingStepCompleted(step);
+          final isActiveStep = stepIndex == currentStepIndex;
+          return StyledListItem.checkbox(
+            key: keyByStep[step],
+            leading: step.icon.toIcon(),
+            title: step.title().toText(),
+            subtitle: isActiveStep ? step.description().toText() : null,
+            thirdLine: !isActiveStep
+                ? null
+                : Padding(
+                    padding: .only(top: 4),
+                    child: Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
+                      children: step.microSteps.map((microStep) {
+                        final isCompleted = microStep.isCompleted(state);
+                        return IntrinsicWidth(
+                          child: StyledTag.md(
+                            colorBuilder: isCompleted ? .surfaceDisabled : .primary,
+                            onPressed: isCompleted
+                                ? null
+                                : () => context.showStyledDialog(
+                                    (context) => StyledDialog.confirm(
+                                      title: microStep.title().toText(),
+                                      body: microStep.detail().toText(),
+                                    ),
+                                  ),
+                            leading: StyledCheckbox(
+                              isSelected: isCompleted,
+                              isEnabled: false,
+                              isCompact: true,
+                              isInverted: !isCompleted,
                             ),
+                            child: microStep.title().toText(),
                           ),
-                          leading: isCompleted ? Symbols.check.toIcon() : null,
-                          child: microStep.title().toText(),
-                        ),
-                      );
-                    }).toList(),
+                        );
+                      }).toList(),
+                    ),
                   ),
-                ),
-          trailing: StyledCheckbox(isSelected: isStepCompleted, isEnabled: false),
-          isEnabled: isActiveStep,
-        );
-      }).toList(),
+            isSelected: isStepCompleted,
+            onSelected: null,
+            isEnabled: isActiveStep,
+          );
+        }),
+      ],
       buttonsBuilder: (context) => [
         if (isComplete)
           StyledRectButton.primary(

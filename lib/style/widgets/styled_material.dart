@@ -28,7 +28,9 @@ class StyledMaterial extends StatelessWidget {
   Widget build(BuildContext context) {
     final color = colorBuilder?.call(context.colors);
     final backgroundColor = color?.asSurface(isDisabled: !isEnabled);
-    final foregroundColor = backgroundColor?.foreground(isDisabled: !isEnabled, isCritical: isCritical);
+    final foregroundColor = color == Colors.transparent
+        ? context.colors.contentPrimary
+        : backgroundColor?.foreground(isDisabled: !isEnabled, isCritical: isCritical);
     return AnimatedContainer(
       duration: Duration(milliseconds: 300),
       curve: Curves.easeInOutCubic,
@@ -45,7 +47,7 @@ class StyledMaterial extends StatelessWidget {
             padding: padding,
             child: DefaultTextStyle(
               style: context.textStyle.labelLg
-                  .onColor(backgroundColor)
+                  .copyWith(color: foregroundColor)
                   .disabled(isDisabled: !isEnabled)
                   .critical(isCritical: isCritical),
               child: IconTheme.merge(

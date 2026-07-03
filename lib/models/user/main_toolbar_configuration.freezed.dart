@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$MainToolbarConfiguration {
 
- MainToolbarShortcut get pinnedShortcut1; MainToolbarShortcut get pinnedShortcut2; MainToolbarShortcut get longPressShortcut; bool get swipeToUndo; bool get pinToBottom;
+ MainToolbarShortcut get pinnedShortcut1; MainToolbarShortcut get pinnedShortcut2; MainToolbarShortcut get longPressShortcut; bool get pinToBottom;
 /// Create a copy of MainToolbarConfiguration
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $MainToolbarConfigurationCopyWith<MainToolbarConfiguration> get copyWith => _$Ma
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MainToolbarConfiguration&&(identical(other.pinnedShortcut1, pinnedShortcut1) || other.pinnedShortcut1 == pinnedShortcut1)&&(identical(other.pinnedShortcut2, pinnedShortcut2) || other.pinnedShortcut2 == pinnedShortcut2)&&(identical(other.longPressShortcut, longPressShortcut) || other.longPressShortcut == longPressShortcut)&&(identical(other.swipeToUndo, swipeToUndo) || other.swipeToUndo == swipeToUndo)&&(identical(other.pinToBottom, pinToBottom) || other.pinToBottom == pinToBottom));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MainToolbarConfiguration&&(identical(other.pinnedShortcut1, pinnedShortcut1) || other.pinnedShortcut1 == pinnedShortcut1)&&(identical(other.pinnedShortcut2, pinnedShortcut2) || other.pinnedShortcut2 == pinnedShortcut2)&&(identical(other.longPressShortcut, longPressShortcut) || other.longPressShortcut == longPressShortcut)&&(identical(other.pinToBottom, pinToBottom) || other.pinToBottom == pinToBottom));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,pinnedShortcut1,pinnedShortcut2,longPressShortcut,swipeToUndo,pinToBottom);
+int get hashCode => Object.hash(runtimeType,pinnedShortcut1,pinnedShortcut2,longPressShortcut,pinToBottom);
 
 @override
 String toString() {
-  return 'MainToolbarConfiguration(pinnedShortcut1: $pinnedShortcut1, pinnedShortcut2: $pinnedShortcut2, longPressShortcut: $longPressShortcut, swipeToUndo: $swipeToUndo, pinToBottom: $pinToBottom)';
+  return 'MainToolbarConfiguration(pinnedShortcut1: $pinnedShortcut1, pinnedShortcut2: $pinnedShortcut2, longPressShortcut: $longPressShortcut, pinToBottom: $pinToBottom)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $MainToolbarConfigurationCopyWith<$Res>  {
   factory $MainToolbarConfigurationCopyWith(MainToolbarConfiguration value, $Res Function(MainToolbarConfiguration) _then) = _$MainToolbarConfigurationCopyWithImpl;
 @useResult
 $Res call({
- MainToolbarShortcut pinnedShortcut1, MainToolbarShortcut pinnedShortcut2, MainToolbarShortcut longPressShortcut, bool swipeToUndo, bool pinToBottom
+ MainToolbarShortcut pinnedShortcut1, MainToolbarShortcut pinnedShortcut2, MainToolbarShortcut longPressShortcut, bool pinToBottom
 });
 
 
@@ -65,13 +65,12 @@ class _$MainToolbarConfigurationCopyWithImpl<$Res>
 
 /// Create a copy of MainToolbarConfiguration
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? pinnedShortcut1 = null,Object? pinnedShortcut2 = null,Object? longPressShortcut = null,Object? swipeToUndo = null,Object? pinToBottom = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? pinnedShortcut1 = null,Object? pinnedShortcut2 = null,Object? longPressShortcut = null,Object? pinToBottom = null,}) {
   return _then(_self.copyWith(
 pinnedShortcut1: null == pinnedShortcut1 ? _self.pinnedShortcut1 : pinnedShortcut1 // ignore: cast_nullable_to_non_nullable
 as MainToolbarShortcut,pinnedShortcut2: null == pinnedShortcut2 ? _self.pinnedShortcut2 : pinnedShortcut2 // ignore: cast_nullable_to_non_nullable
 as MainToolbarShortcut,longPressShortcut: null == longPressShortcut ? _self.longPressShortcut : longPressShortcut // ignore: cast_nullable_to_non_nullable
-as MainToolbarShortcut,swipeToUndo: null == swipeToUndo ? _self.swipeToUndo : swipeToUndo // ignore: cast_nullable_to_non_nullable
-as bool,pinToBottom: null == pinToBottom ? _self.pinToBottom : pinToBottom // ignore: cast_nullable_to_non_nullable
+as MainToolbarShortcut,pinToBottom: null == pinToBottom ? _self.pinToBottom : pinToBottom // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -154,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( MainToolbarShortcut pinnedShortcut1,  MainToolbarShortcut pinnedShortcut2,  MainToolbarShortcut longPressShortcut,  bool swipeToUndo,  bool pinToBottom)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( MainToolbarShortcut pinnedShortcut1,  MainToolbarShortcut pinnedShortcut2,  MainToolbarShortcut longPressShortcut,  bool pinToBottom)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _MainToolbarConfiguration() when $default != null:
-return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.longPressShortcut,_that.swipeToUndo,_that.pinToBottom);case _:
+return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.longPressShortcut,_that.pinToBottom);case _:
   return orElse();
 
 }
@@ -175,10 +174,10 @@ return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.longPressShort
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( MainToolbarShortcut pinnedShortcut1,  MainToolbarShortcut pinnedShortcut2,  MainToolbarShortcut longPressShortcut,  bool swipeToUndo,  bool pinToBottom)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( MainToolbarShortcut pinnedShortcut1,  MainToolbarShortcut pinnedShortcut2,  MainToolbarShortcut longPressShortcut,  bool pinToBottom)  $default,) {final _that = this;
 switch (_that) {
 case _MainToolbarConfiguration():
-return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.longPressShortcut,_that.swipeToUndo,_that.pinToBottom);}
+return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.longPressShortcut,_that.pinToBottom);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -192,10 +191,10 @@ return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.longPressShort
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( MainToolbarShortcut pinnedShortcut1,  MainToolbarShortcut pinnedShortcut2,  MainToolbarShortcut longPressShortcut,  bool swipeToUndo,  bool pinToBottom)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( MainToolbarShortcut pinnedShortcut1,  MainToolbarShortcut pinnedShortcut2,  MainToolbarShortcut longPressShortcut,  bool pinToBottom)?  $default,) {final _that = this;
 switch (_that) {
 case _MainToolbarConfiguration() when $default != null:
-return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.longPressShortcut,_that.swipeToUndo,_that.pinToBottom);case _:
+return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.longPressShortcut,_that.pinToBottom);case _:
   return null;
 
 }
@@ -207,13 +206,12 @@ return $default(_that.pinnedShortcut1,_that.pinnedShortcut2,_that.longPressShort
 @JsonSerializable()
 
 class _MainToolbarConfiguration extends MainToolbarConfiguration {
-  const _MainToolbarConfiguration({this.pinnedShortcut1 = MainToolbarShortcut.bookmark, this.pinnedShortcut2 = MainToolbarShortcut.search, this.longPressShortcut = MainToolbarShortcut.studyPanel, this.swipeToUndo = true, this.pinToBottom = false}): super._();
+  const _MainToolbarConfiguration({this.pinnedShortcut1 = MainToolbarShortcut.bookmark, this.pinnedShortcut2 = MainToolbarShortcut.search, this.longPressShortcut = MainToolbarShortcut.studyPanel, this.pinToBottom = false}): super._();
   factory _MainToolbarConfiguration.fromJson(Map<String, dynamic> json) => _$MainToolbarConfigurationFromJson(json);
 
 @override@JsonKey() final  MainToolbarShortcut pinnedShortcut1;
 @override@JsonKey() final  MainToolbarShortcut pinnedShortcut2;
 @override@JsonKey() final  MainToolbarShortcut longPressShortcut;
-@override@JsonKey() final  bool swipeToUndo;
 @override@JsonKey() final  bool pinToBottom;
 
 /// Create a copy of MainToolbarConfiguration
@@ -229,16 +227,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MainToolbarConfiguration&&(identical(other.pinnedShortcut1, pinnedShortcut1) || other.pinnedShortcut1 == pinnedShortcut1)&&(identical(other.pinnedShortcut2, pinnedShortcut2) || other.pinnedShortcut2 == pinnedShortcut2)&&(identical(other.longPressShortcut, longPressShortcut) || other.longPressShortcut == longPressShortcut)&&(identical(other.swipeToUndo, swipeToUndo) || other.swipeToUndo == swipeToUndo)&&(identical(other.pinToBottom, pinToBottom) || other.pinToBottom == pinToBottom));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MainToolbarConfiguration&&(identical(other.pinnedShortcut1, pinnedShortcut1) || other.pinnedShortcut1 == pinnedShortcut1)&&(identical(other.pinnedShortcut2, pinnedShortcut2) || other.pinnedShortcut2 == pinnedShortcut2)&&(identical(other.longPressShortcut, longPressShortcut) || other.longPressShortcut == longPressShortcut)&&(identical(other.pinToBottom, pinToBottom) || other.pinToBottom == pinToBottom));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,pinnedShortcut1,pinnedShortcut2,longPressShortcut,swipeToUndo,pinToBottom);
+int get hashCode => Object.hash(runtimeType,pinnedShortcut1,pinnedShortcut2,longPressShortcut,pinToBottom);
 
 @override
 String toString() {
-  return 'MainToolbarConfiguration(pinnedShortcut1: $pinnedShortcut1, pinnedShortcut2: $pinnedShortcut2, longPressShortcut: $longPressShortcut, swipeToUndo: $swipeToUndo, pinToBottom: $pinToBottom)';
+  return 'MainToolbarConfiguration(pinnedShortcut1: $pinnedShortcut1, pinnedShortcut2: $pinnedShortcut2, longPressShortcut: $longPressShortcut, pinToBottom: $pinToBottom)';
 }
 
 
@@ -249,7 +247,7 @@ abstract mixin class _$MainToolbarConfigurationCopyWith<$Res> implements $MainTo
   factory _$MainToolbarConfigurationCopyWith(_MainToolbarConfiguration value, $Res Function(_MainToolbarConfiguration) _then) = __$MainToolbarConfigurationCopyWithImpl;
 @override @useResult
 $Res call({
- MainToolbarShortcut pinnedShortcut1, MainToolbarShortcut pinnedShortcut2, MainToolbarShortcut longPressShortcut, bool swipeToUndo, bool pinToBottom
+ MainToolbarShortcut pinnedShortcut1, MainToolbarShortcut pinnedShortcut2, MainToolbarShortcut longPressShortcut, bool pinToBottom
 });
 
 
@@ -266,13 +264,12 @@ class __$MainToolbarConfigurationCopyWithImpl<$Res>
 
 /// Create a copy of MainToolbarConfiguration
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? pinnedShortcut1 = null,Object? pinnedShortcut2 = null,Object? longPressShortcut = null,Object? swipeToUndo = null,Object? pinToBottom = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? pinnedShortcut1 = null,Object? pinnedShortcut2 = null,Object? longPressShortcut = null,Object? pinToBottom = null,}) {
   return _then(_MainToolbarConfiguration(
 pinnedShortcut1: null == pinnedShortcut1 ? _self.pinnedShortcut1 : pinnedShortcut1 // ignore: cast_nullable_to_non_nullable
 as MainToolbarShortcut,pinnedShortcut2: null == pinnedShortcut2 ? _self.pinnedShortcut2 : pinnedShortcut2 // ignore: cast_nullable_to_non_nullable
 as MainToolbarShortcut,longPressShortcut: null == longPressShortcut ? _self.longPressShortcut : longPressShortcut // ignore: cast_nullable_to_non_nullable
-as MainToolbarShortcut,swipeToUndo: null == swipeToUndo ? _self.swipeToUndo : swipeToUndo // ignore: cast_nullable_to_non_nullable
-as bool,pinToBottom: null == pinToBottom ? _self.pinToBottom : pinToBottom // ignore: cast_nullable_to_non_nullable
+as MainToolbarShortcut,pinToBottom: null == pinToBottom ? _self.pinToBottom : pinToBottom // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

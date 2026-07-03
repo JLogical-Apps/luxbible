@@ -65,7 +65,8 @@ class StyledSelect<T> extends StatelessWidget {
 class StyledSelectOption<T> {
   final Widget title;
   final Widget? subtitle;
+  final Widget? thirdLine;
   final Widget? leading;
 
-  StyledSelectOption({required this.title, this.subtitle, this.leading});
+  StyledSelectOption({required this.title, this.subtitle, this.thirdLine, this.leading});
 }
