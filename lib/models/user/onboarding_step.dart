@@ -139,7 +139,7 @@ enum OnboardingStep {
     navigateChapter => 'Jump straight to any chapter to keep your study moving.',
     goBack => 'Quickly return to where you were after exploring somewhere else by swiping on the toolbar.',
     swipeChapter => 'Swiping the Bible is the fastest way to move through chapters as you read.',
-    addStudyPanel => 'Study panels keep your study side-by-side with the text.',
+    addStudyPanel => 'Study panels keep your study side-by-side with the text as you scroll.',
     openSettings => 'Settings is where you customize Lux to fit the way you study.',
     customizeToolbar => 'Customizing your toolbars puts the actions you use most within easy reach.',
   };

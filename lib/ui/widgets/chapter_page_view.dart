@@ -4,6 +4,7 @@ import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/hook_consumer_builder.dart';
+import 'package:bible/ui/widgets/swipe_page_view.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -16,7 +17,7 @@ class ChapterPageView extends StatelessWidget {
   final User user;
   final Widget Function(BuildContext context, ChapterReference chapterReference, Chapter chapter) itemBuilder;
   final void Function(ChapterReference chapterReference)? onPageChanged;
-  final void Function(ChapterReference chapterReference)? onNavigate;
+  final void Function(ChapterReference chapterReference)? onSwipe;
 
   const ChapterPageView({
     super.key,
@@ -24,85 +25,57 @@ class ChapterPageView extends StatelessWidget {
     required this.user,
     required this.itemBuilder,
     this.onPageChanged,
-    this.onNavigate,
+    this.onSwipe,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onHorizontalDragUpdate: (details) {
-        const sensitivity = 8;
+    return SwipePageView.builder(
+      controller: controller,
+      pageCount: ChapterReference.values.length,
+      onSwipe: (pageIndex) => onSwipe?.call(ChapterReference.fromBibleChapterIndex(pageIndex)),
+      onPageChanged: (pageIndex) => onPageChanged?.call(ChapterReference.fromBibleChapterIndex(pageIndex)),
+      itemBuilder: (context, pageIndex) => HookConsumerBuilder(
+        builder: (context, ref) {
+          final chapterReference = ChapterReference.fromBibleChapterIndex(pageIndex);
+          final translation = user.translation.effectiveFor(chapterReference.book);
+          final chapterValue = ref.watch(chapterProvider(translation: translation, chapterReference: chapterReference));
 
-        final currentPage = controller.page!.round();
-        final newPageIndex = details.delta.dx > sensitivity
-            ? currentPage - 1
-            : details.delta.dx < -sensitivity
-            ? currentPage + 1
-            : null;
-
-        if (newPageIndex == null || newPageIndex < 0 || newPageIndex >= ChapterReference.values.length) {
-          return;
-        }
-
-        final reference = ChapterReference.fromBibleChapterIndex(newPageIndex);
-        controller.animateToPage(
-          reference.bibleChapterIndex,
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeInOutCubic,
-        );
-        onNavigate?.call(reference);
-      },
-      child: PageView.builder(
-        controller: controller,
-        allowImplicitScrolling: false,
-        physics: NeverScrollableScrollPhysics(),
-        onPageChanged: onPageChanged == null
-            ? null
-            : (pageIndex) => onPageChanged!(ChapterReference.fromBibleChapterIndex(pageIndex)),
-        itemBuilder: (context, pageIndex) => HookConsumerBuilder(
-          builder: (context, ref) {
-            final chapterReference = ChapterReference.fromBibleChapterIndex(pageIndex);
-            final translation = user.translation.effectiveFor(chapterReference.book);
-            final chapterValue = ref.watch(
-              chapterProvider(translation: translation, chapterReference: chapterReference),
-            );
-
-            if (chapterValue.hasError) {
-              return SingleChildScrollView(
-                padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top + 24) + .symmetric(horizontal: 16),
-                child: Column(
-                  spacing: 12,
-                  children: [
-                    StyledTile.message(
-                      leading: Symbols.error.toIcon(),
-                      title: 'Something went wrong'.toText(),
-                      subtitle: 'Make sure you are connected to the internet or try again later.'.toText(),
-                    ),
-                    if (user.translation != .bsb)
-                      StyledRectButton.secondary(
-                        label: 'Switch to BSB'.toText(),
-                        onPressed: () => ref.updateUser((user) => user.copyWith(translation: .bsb)),
-                      ),
+          if (chapterValue.hasError) {
+            return SingleChildScrollView(
+              padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top + 24) + .symmetric(horizontal: 16),
+              child: Column(
+                spacing: 12,
+                children: [
+                  StyledTile.message(
+                    leading: Symbols.error.toIcon(),
+                    title: 'Something went wrong'.toText(),
+                    subtitle: 'Make sure you are connected to the internet or try again later.'.toText(),
+                  ),
+                  if (user.translation != .bsb)
                     StyledRectButton.secondary(
-                      label: 'Try Again'.toText(),
-                      onPressed: () => ref.invalidate(
-                        chapterProvider(translation: translation, chapterReference: chapterReference),
-                        asReload: true,
-                      ),
+                      label: 'Switch to BSB'.toText(),
+                      onPressed: () => ref.updateUser((user) => user.copyWith(translation: .bsb)),
                     ),
-                  ],
-                ),
-              );
-            }
+                  StyledRectButton.secondary(
+                    label: 'Try Again'.toText(),
+                    onPressed: () => ref.invalidate(
+                      chapterProvider(translation: translation, chapterReference: chapterReference),
+                      asReload: true,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
 
-            final chapter = chapterValue.value;
-            if (chapter == null) {
-              return SizedBox.shrink();
-            }
+          final chapter = chapterValue.value;
+          if (chapter == null) {
+            return SizedBox.shrink();
+          }
 
-            return itemBuilder(context, chapterReference, chapter);
-          },
-        ),
+          return itemBuilder(context, chapterReference, chapter);
+        },
       ),
     );
   }

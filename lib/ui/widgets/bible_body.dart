@@ -22,6 +22,7 @@ import 'package:bible/ui/widgets/keep_alive_container.dart';
 import 'package:bible/ui/widgets/main_toolbar.dart';
 import 'package:bible/ui/widgets/onboarding_panel.dart';
 import 'package:bible/ui/widgets/resizable_container.dart';
+import 'package:bible/ui/widgets/swipe_page_view.dart';
 import 'package:bible/ui/widgets/text_selection_bottom_bar.dart';
 import 'package:bible/ui/widgets/verse_selection_bottom_bar.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
@@ -429,7 +430,7 @@ class BibleBody extends HookConsumerWidget {
     Widget biblePages() => ChapterPageView(
       controller: pageController,
       user: user,
-      onNavigate: (reference) async {
+      onSwipe: (reference) {
         saveScroll();
 
         final scrollPosition = currentScrollController.positionOrNull;
@@ -682,9 +683,10 @@ class BibleBody extends HookConsumerWidget {
           hasHistory: navigationHistoryState.value.canUndo,
         );
 
-        Widget carousel() => PageView(
+        Widget carousel() => SwipePageView(
           key: ValueKey((studyPanels.join(','), user.isOnboardingActive)),
           controller: studyPanelsPageController,
+          pageCount: panelCount,
           onPageChanged: (page) {
             ref.updateUser(
               (user) => user.copyWith(studyPanelIndex: (page - onboardingOffset).clamp(0, studyPanels.length)),
