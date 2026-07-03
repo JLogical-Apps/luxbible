@@ -48,7 +48,7 @@ class UserNotifier extends _$UserNotifier {
     return null;
   }
 
-  User get userOrDefault => userOrNull ?? User();
+  User get userOrDefault => userOrNull ?? User(completedOnboardingSteps: []);
 
   Future<void> update(User Function(User) updater) async {
     state = updater(state);

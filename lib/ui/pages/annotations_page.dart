@@ -192,7 +192,7 @@ class AnnotationsPage extends HookConsumerWidget {
                                 children: [
                                   annotation.formatLocation().toText(),
                                   if (annotation.selection case TextAnnotationSelection selection)
-                                    StyledTag(child: selection.textSelection.translation.title().toText()),
+                                    StyledTag.sm(child: selection.textSelection.translation.title().toText()),
                                 ],
                               ),
                               subtitle: Column(

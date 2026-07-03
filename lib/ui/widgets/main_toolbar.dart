@@ -83,7 +83,7 @@ class MainToolbar extends StatelessWidget {
                         maxLines: 1,
                         overflow: .ellipsis,
                       ),
-                      StyledTag(child: translation.title().toText()),
+                      StyledTag.sm(child: translation.title().toText()),
                       gapW12,
                     ],
                   ),

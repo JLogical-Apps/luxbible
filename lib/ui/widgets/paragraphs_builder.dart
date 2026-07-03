@@ -486,7 +486,7 @@ class ParagraphsBuilder extends HookWidget {
                             alignment: .middle,
                             child: Padding(
                               padding: .only(right: isLtr ? 4 : 0, left: isLtr ? 0 : 4, bottom: 2 * sizeMultiplier),
-                              child: StyledTag(
+                              child: StyledTag.sm(
                                 child: '${translation.title()} ${originalVerse.format()}'.toText(),
                                 onPressed: () => context.showStyledDialog(
                                   (context) => StyledDialog.confirm(

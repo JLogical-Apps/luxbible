@@ -53,6 +53,7 @@ enum VerseSelectionAction {
         if (annotation != null) {
           onDeselect();
           ref.updateUser((user) => user.withAnnotation(annotation));
+          ref.markOnboardingStep(.annotateVerse);
         }
       case copy:
         final user = ref.read(userProvider);

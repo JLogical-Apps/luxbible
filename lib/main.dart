@@ -18,7 +18,6 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/path_service.dart';
 import 'package:bible/services/shared_preferences_service.dart';
 import 'package:bible/ui/pages/bible_page.dart';
-import 'package:bible/ui/pages/get_started_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -101,9 +100,7 @@ class BibleApp extends ConsumerWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: MediaQuery.withNoTextScaling(
-          child: ref.watch(userProvider.notifier).userOrNull == null ? IntroPage() : BiblePage(),
-        ),
+        home: MediaQuery.withNoTextScaling(child: BiblePage()),
       ),
     );
   }

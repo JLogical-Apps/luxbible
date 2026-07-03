@@ -120,7 +120,7 @@ class LexiconPage extends HookConsumerWidget {
                         child: Row(
                           spacing: 8,
                           children: [
-                            StyledTag(child: strong.id.toText()),
+                            StyledTag.sm(child: strong.id.toText()),
                             Text([strong.languageText, strong.transliteration].join('  ·  ')),
                           ],
                         ),

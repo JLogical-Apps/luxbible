@@ -22,13 +22,13 @@ class BibleTile extends StatelessWidget {
       spacing: 4,
       children: [
         if (translation.isOnline)
-          StyledTag(
+          StyledTag.sm(
             child: 'Online Only'.toText(),
             leading: Symbols.cloud.toIcon(),
             colorBuilder: ColorBuilder((colors) => colors.blue.tertiary),
           ),
         if (translation == .bsb)
-          StyledTag(
+          StyledTag.sm(
             child: 'Study Bible'.toText(),
             leading: Symbols.school.toIcon(),
             colorBuilder: ColorBuilder((colors) => colors.green.tertiary),

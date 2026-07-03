@@ -16,29 +16,31 @@ class StyledBadge extends StatelessWidget {
     final color = colorBuilder?.call(context.colors) ?? context.colors.surfaceSecondary;
     final foregroundColor = ColorLibrary.fromBackground(color).contentPrimary;
 
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: .circular(999),
-        color: colorBuilder?.call(context.colors) ?? context.colors.surfaceSecondary,
-      ),
-      constraints: BoxConstraints(minHeight: 18),
-      padding: .all(4),
-      child: Row(
-        spacing: 4,
-        children: [
-          if (leading case final leading?)
-            IconTheme.merge(
-              data: IconThemeData(size: 12, color: foregroundColor),
-              child: leading,
+    return IgnorePointer(
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: .circular(999),
+          color: colorBuilder?.call(context.colors) ?? context.colors.surfaceSecondary,
+        ),
+        constraints: BoxConstraints(minHeight: 18),
+        padding: .all(4),
+        child: Row(
+          spacing: 4,
+          children: [
+            if (leading case final leading?)
+              IconTheme.merge(
+                data: IconThemeData(size: 12, color: foregroundColor),
+                child: leading,
+              ),
+            DefaultTextStyle(
+              style: context.textStyle.labelXs.copyWith(color: foregroundColor),
+              child: IconTheme.merge(
+                data: IconThemeData(size: 12, color: foregroundColor),
+                child: child,
+              ),
             ),
-          DefaultTextStyle(
-            style: context.textStyle.labelXs.copyWith(color: foregroundColor),
-            child: IconTheme.merge(
-              data: IconThemeData(size: 12, color: foregroundColor),
-              child: child,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

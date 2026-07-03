@@ -11,12 +11,14 @@ import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/main_toolbar_configuration.dart';
+import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/models/user/text_selection_configuration.dart';
 import 'package:bible/models/user/theme_layout_configuration.dart';
 import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/models/user/verse_selection_configuration.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -52,6 +54,7 @@ sealed class User with _$User {
     int? studyPanelIndex,
     @Default(0.5) double studyPanelBottomPosition,
     @Default([]) List<Tutorial> tutorials,
+    List<OnboardingStep>? completedOnboardingSteps,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -207,4 +210,28 @@ sealed class User with _$User {
       copyWith(studyPanels: [...studyPanels, studyPanel], studyPanelIndex: studyPanels.length);
 
   User withTutorial(Tutorial tutorial) => copyWith(tutorials: tutorials + [tutorial]);
+
+  bool get isOnboardingActive => completedOnboardingSteps != null;
+
+  bool isOnboardingStepCompleted(OnboardingStep step) => completedOnboardingSteps?.contains(step) ?? false;
+
+  int? get currentOnboardingStepIndex {
+    final completedOnboardingSteps = this.completedOnboardingSteps;
+    if (completedOnboardingSteps == null) return null;
+    return OnboardingStep.values.indexWhereOrNull((step) => !completedOnboardingSteps.contains(step));
+  }
+
+  OnboardingStep? get currentOnboardingStep =>
+      currentOnboardingStepIndex?.mapIfNonNull((stepIndex) => OnboardingStep.values[stepIndex]);
+
+  User withOnboardingStepCompleted(OnboardingStep step) {
+    final completed = completedOnboardingSteps;
+    return completed == null || completed.contains(step)
+        ? this
+        : copyWith(completedOnboardingSteps: [...completed, step]);
+  }
+
+  User withOnboardingReset() => copyWith(completedOnboardingSteps: []);
+
+  User withOnboardingDismissed() => copyWith(completedOnboardingSteps: null);
 }

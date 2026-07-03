@@ -6,6 +6,7 @@ import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/text_selection_action.dart';
+import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/models/verse_selection_action.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -17,7 +18,9 @@ import 'package:bible/ui/pages/verse_selection_settings_page.dart';
 import 'package:bible/ui/widgets/chapter_builder.dart';
 import 'package:bible/ui/widgets/chapter_page_view.dart';
 import 'package:bible/ui/widgets/hook_consumer_builder.dart';
+import 'package:bible/ui/widgets/keep_alive_container.dart';
 import 'package:bible/ui/widgets/main_toolbar.dart';
+import 'package:bible/ui/widgets/onboarding_panel.dart';
 import 'package:bible/ui/widgets/resizable_container.dart';
 import 'package:bible/ui/widgets/text_selection_bottom_bar.dart';
 import 'package:bible/ui/widgets/verse_selection_bottom_bar.dart';
@@ -30,7 +33,6 @@ import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -62,7 +64,6 @@ class BibleBody extends HookConsumerWidget {
       ),
     );
 
-    final isScrollingDownState = useState(true);
     final currentScrollController = useScrollController(keys: [currentChapterReference]);
     final scrollPercentByReferenceRef = useRef({initialPosition.reference: initialPosition.scrollPercent});
 
@@ -85,12 +86,6 @@ class BibleBody extends HookConsumerWidget {
 
     usePeriodic(Duration(seconds: 5), () => saveScroll());
 
-    useOnStickyScrollDirectionChanged(
-      currentScrollController,
-      (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
-      [pageController.pageOrNull],
-    );
-
     final selectedReferencesState = useState(<Reference>[]);
     final selectedVerseSelection = selectedReferencesState.value.isEmpty
         ? null
@@ -99,11 +94,32 @@ class BibleBody extends HookConsumerWidget {
     final textSelectionState = useState<BibleTextSelection?>(null);
     final textSelection = textSelectionState.value;
 
+    final isScrollingDownState = useState(true);
+    final isAtBottom = useListenableSelector(currentScrollController, () {
+      final scrollPosition = currentScrollController.positionOrNull;
+      return scrollPosition == null || !scrollPosition.hasContentDimensions
+          ? false
+          : scrollPosition.pixels >= scrollPosition.maxScrollExtent;
+    });
+
+    final showBottomBar =
+        (isScrollingDownState.value || user.mainToolbar.pinToBottom || isAtBottom) &&
+        selectedVerseSelection == null &&
+        textSelection == null;
+
+    useOnStickyScrollDirectionChanged(
+      currentScrollController,
+      (direction) => isScrollingDownState.value = direction == .forward,
+      [pageController.pageOrNull],
+    );
+
     final keyByReference = useMemoized(
       () => currentChapterReference.references.mapToMap((reference) => MapEntry(reference, GlobalKey())),
       [currentChapterReference],
     );
     final keyByReferencePassthrough = usePassthrough(keyByReference);
+
+    final onboardingPanelKey = useMemoized(() => GlobalKey());
 
     void onClosePressed() {
       textSelectionState.value = null;
@@ -144,15 +160,17 @@ class BibleBody extends HookConsumerWidget {
     }
 
     final studyPanels = user.studyPanels;
+    final onboardingOffset = user.isOnboardingActive ? 1 : 0;
+    final panelCount = studyPanels.length + onboardingOffset;
     final studyPanelsPageController = usePageController(
-      initialPage: user.studyPanelIndex ?? (studyPanels.length - 1),
-      keys: [studyPanels.join(','), isSideLayout],
+      initialPage: user.isOnboardingActive ? 0 : (user.studyPanelIndex ?? (studyPanels.length - 1)),
+      keys: [studyPanels.join(','), user.isOnboardingActive, isSideLayout],
     );
 
     void addStudyPanel(StudyPanel studyPanel) {
       if (user.studyPanels.contains(studyPanel)) {
         studyPanelsPageController.animateToPage(
-          user.studyPanels.indexOf(studyPanel),
+          user.studyPanels.indexOf(studyPanel) + onboardingOffset,
           duration: Duration(milliseconds: 300),
           curve: Curves.easeInOutCubic,
         );
@@ -170,7 +188,7 @@ class BibleBody extends HookConsumerWidget {
         ),
         child: SmoothPageIndicator(
           controller: studyPanelsPageController,
-          count: studyPanels.length,
+          count: panelCount,
           effect: WormEffect(
             dotHeight: 8,
             dotWidth: 8,
@@ -183,18 +201,6 @@ class BibleBody extends HookConsumerWidget {
 
     Widget bottom() {
       final textSelection = textSelectionState.value;
-      final isAtBottom = useListenableSelector(currentScrollController, () {
-        final scrollPosition = currentScrollController.positionOrNull;
-        return scrollPosition == null || !scrollPosition.hasContentDimensions
-            ? false
-            : scrollPosition.pixels >= scrollPosition.maxScrollExtent;
-      });
-
-      final showBottomBar =
-          (isScrollingDownState.value || user.mainToolbar.pinToBottom || isAtBottom) &&
-          selectedVerseSelection == null &&
-          textSelection == null;
-
       return Stack(
         clipBehavior: .none,
         children: [
@@ -203,7 +209,7 @@ class BibleBody extends HookConsumerWidget {
               duration: Duration(milliseconds: 300),
               curve: Curves.easeInOutCubic,
               bottom: showBottomBar
-                  ? studyPanels.isEmpty
+                  ? panelCount == 0
                         ? 0
                         : 4
                   : -72 - MediaQuery.paddingOf(context).bottom,
@@ -233,6 +239,7 @@ class BibleBody extends HookConsumerWidget {
                             bookmarkId: currentState.bookmarkId,
                             updateNavigationState: false,
                           );
+                          ref.markOnboardingStep(.goBack);
                         }
                       : null,
                   onSwipeRight: user.mainToolbar.swipeToUndo
@@ -256,6 +263,7 @@ class BibleBody extends HookConsumerWidget {
                     );
                     if (result != null) {
                       hardNavigateTo(result.position, bookmarkId: result.bookmarkId);
+                      ref.markOnboardingStep(.navigateChapter);
                     }
                   },
                   onLongPressed: () => user.mainToolbar.longPressShortcut.onPressed(
@@ -490,6 +498,7 @@ class BibleBody extends HookConsumerWidget {
                           chapter: chapter,
                           underlinedReferences: selectedReferencesState.value,
                           onReferencePressed: (reference) {
+                            ref.markOnboardingStep(.selectVerse);
                             if (textSelectionState.value != null) {
                               textSelectionState.value = null;
                             } else if (selectedReferencesState.value.isEmpty &&
@@ -533,6 +542,9 @@ class BibleBody extends HookConsumerWidget {
                           },
                           textSelection: textSelectionState.value,
                           onTextSelectionUpdated: (textSelection, isNewSelection) {
+                            if (textSelection != null) {
+                              ref.markOnboardingStep(.selectWord);
+                            }
                             selectedReferencesState.value = [];
                             if (isNewSelection && user.textSelection.expandToAnnotation && textSelection != null) {
                               textSelectionState.value = user.getExpandedTextSelection(textSelection);
@@ -600,7 +612,7 @@ class BibleBody extends HookConsumerWidget {
             curve: Curves.easeInOutCubic,
             tween: Tween(
               begin: MediaQuery.of(context).viewPadding,
-              end: studyPanels.isEmpty || isSideLayout ? MediaQuery.of(context).viewPadding : EdgeInsets.zero,
+              end: panelCount == 0 || isSideLayout ? MediaQuery.of(context).viewPadding : EdgeInsets.zero,
             ),
             builder: (context, insets, child) => MediaQuery(
               data: MediaQuery.of(context).copyWith(padding: insets, viewPadding: insets, viewInsets: insets),
@@ -609,8 +621,7 @@ class BibleBody extends HookConsumerWidget {
             child: bottom(),
           ),
         ),
-        if (!isSideLayout && studyPanels.length > 1)
-          Positioned(bottom: 2, left: 0, right: 0, child: studyPanelIndicator()),
+        if (!isSideLayout && panelCount > 1) Positioned(bottom: 2, left: 0, right: 0, child: studyPanelIndicator()),
       ],
     );
 
@@ -665,38 +676,68 @@ class BibleBody extends HookConsumerWidget {
           }
         });
 
+        final currentCarouselPage = studyPanelsPageController.pageOrNull?.round();
+        final onboardingState = OnboardingState(
+          isVerseSelected: selectedVerseSelection != null,
+          isWordSelected: textSelectionState.value != null,
+          isMainToolbarVisible: showBottomBar,
+          hasStudyPanel: studyPanels.isNotEmpty,
+          isViewingStudyPanel:
+              studyPanels.isNotEmpty && currentCarouselPage != null && currentCarouselPage - onboardingOffset >= 0,
+          hasHistory: navigationHistoryState.value.canUndo,
+        );
+
         Widget carousel() => PageView(
-          key: ValueKey(studyPanels.join(',')),
+          key: ValueKey((studyPanels.join(','), user.isOnboardingActive)),
           controller: studyPanelsPageController,
-          onPageChanged: (page) => ref.updateUser((user) => user.copyWith(studyPanelIndex: page)),
-          children: studyPanels
-              .mapIndexed(
-                (i, studyPanel) => Padding(
+          onPageChanged: (page) {
+            ref.updateUser(
+              (user) => user.copyWith(studyPanelIndex: (page - onboardingOffset).clamp(0, studyPanels.length)),
+            );
+            if (studyPanels.isNotEmpty && page - onboardingOffset >= 0) {
+              ref.markOnboardingStep(.addStudyPanel);
+            }
+          },
+          children: [
+            if (user.isOnboardingActive)
+              KeepAliveContainer(
+                child: Padding(
                   padding: isSideLayout ? .symmetric(horizontal: 4) : .zero,
-                  child: StyledSheet(
-                    key: ValueKey((i, visibleVerseSelection)),
+                  child: OnboardingPanel(
+                    key: onboardingPanelKey,
                     showDragHandle: !isSideLayout,
-                    title: visibleVerseSelection.format().toText(),
-                    subtitle: studyPanel.title().toText(),
-                    leading: StyledCircleButton.lg(
-                      child: Symbols.close.toIcon(),
-                      onPressed: () =>
-                          ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
-                    ),
-                    children: studyPanel.buildSheetChildren(
-                      context,
-                      verseSelection: visibleVerseSelection,
-                      onNavigateToVerseSelection: navigateToVerseSelection,
-                      user: user,
-                    ),
+                    state: onboardingState,
+                    isVisible: currentCarouselPage == 0,
                   ),
                 ),
-              )
-              .toList(),
+              ),
+            ...studyPanels.mapIndexed(
+              (i, studyPanel) => Padding(
+                padding: isSideLayout ? .symmetric(horizontal: 4) : .zero,
+                child: StyledSheet(
+                  key: ValueKey((i, visibleVerseSelection)),
+                  showDragHandle: !isSideLayout,
+                  title: visibleVerseSelection.format().toText(),
+                  subtitle: studyPanel.title().toText(),
+                  leading: StyledCircleButton.lg(
+                    child: Symbols.close.toIcon(),
+                    onPressed: () =>
+                        ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
+                  ),
+                  children: studyPanel.buildSheetChildren(
+                    context,
+                    verseSelection: visibleVerseSelection,
+                    onNavigateToVerseSelection: navigateToVerseSelection,
+                    user: user,
+                  ),
+                ),
+              ),
+            ),
+          ],
         );
 
         if (isSideLayout) {
-          if (studyPanels.isEmpty) {
+          if (panelCount == 0) {
             return SizedBox.shrink();
           }
 
@@ -710,7 +751,7 @@ class BibleBody extends HookConsumerWidget {
             child: Stack(
               children: [
                 carousel(),
-                if (studyPanels.length > 1) Positioned(bottom: 2, left: 0, right: 0, child: studyPanelIndicator()),
+                if (panelCount > 1) Positioned(bottom: 2, left: 0, right: 0, child: studyPanelIndicator()),
               ],
             ),
           );
@@ -718,7 +759,7 @@ class BibleBody extends HookConsumerWidget {
 
         return AnimatedGrow(
           duration: isResizingState.value ? Duration(milliseconds: 1) : Duration(milliseconds: 300),
-          child: studyPanels.isEmpty
+          child: panelCount == 0
               ? SizedBox.shrink(key: ValueKey('empty'))
               : ResizableContainer(
                   initialHeight: studyPanelHeightRef.value,
@@ -740,7 +781,7 @@ class BibleBody extends HookConsumerWidget {
                 flex: 3,
                 child: MediaQuery.removeViewPadding(context: context, child: mainArea(), removeRight: true),
               ),
-              if (studyPanels.isNotEmpty) Expanded(flex: 2, child: studyPanelSection()),
+              if (panelCount > 0) Expanded(flex: 2, child: studyPanelSection()),
             ],
           )
         : Column(

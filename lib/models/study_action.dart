@@ -140,7 +140,7 @@ enum StudyAction {
                           children: [
                             verseSelection.format().toText(),
                             if (!crossReferenceTranslation.containsBook(book))
-                              StyledTag(child: translation.title().toText()),
+                              StyledTag.sm(child: translation.title().toText()),
                           ],
                         ),
                         subtitle: StyledLoading(child: verses?.toText()),
@@ -168,6 +168,8 @@ enum StudyAction {
     required Function(VerseSelection) onNavigateToVerseSelection,
     required User user,
   }) async {
+    if (this == crossReferences) ref.markOnboardingStep(.crossReferences);
+
     if (this == .interlinear) {
       context.showStyledSheetWithBreadcrumbs(breadcrumbText: regionFormat, (context) {
         final user = ref.read(userProvider);

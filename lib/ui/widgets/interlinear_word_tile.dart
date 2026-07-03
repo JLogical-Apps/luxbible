@@ -42,7 +42,7 @@ class InterlinearWordTile extends ConsumerWidget {
                 spacing: 4,
                 children: [
                   ?data.inflection?.toText(),
-                  if (data.strongId case final strongId?) StyledTag(child: strongId.toText()),
+                  if (data.strongId case final strongId?) StyledTag.sm(child: strongId.toText()),
                 ],
               ),
               if (strongs[data.strongId] case final strong?)
@@ -77,7 +77,7 @@ class InterlinearWordTile extends ConsumerWidget {
                   Row(
                     spacing: 4,
                     children: [
-                      if (data.strongId case final strongId?) StyledTag(child: strongId.toText()),
+                      if (data.strongId case final strongId?) StyledTag.sm(child: strongId.toText()),
                       ?data.inflection?.toText(),
                     ],
                   ),

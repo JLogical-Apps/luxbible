@@ -61,12 +61,12 @@ class StyledListItem extends StatelessWidget {
     this.thirdLine,
     this.leading,
     required bool isSelected,
-    required Function(bool newValue) onSelected,
+    required Function(bool newValue)? onSelected,
     this.size = ComponentSize.md,
     this.isEnabled = true,
     this.showDividerOverride,
-  }) : onPressed = (() => onSelected(!isSelected)),
-       trailing = StyledCheckbox(isSelected: isSelected);
+  }) : onPressed = onSelected == null ? null : (() => onSelected(!isSelected)),
+       trailing = StyledCheckbox(isSelected: isSelected, isEnabled: onSelected != null);
 
   StyledListItem.switchControl({
     super.key,

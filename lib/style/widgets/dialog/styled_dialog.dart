@@ -22,12 +22,30 @@ class StyledDialog<T> extends HookWidget {
     required this.buttonsBuilder,
   });
 
-  StyledDialog.confirm({
-    super.key,
-    required this.title,
-    required this.body,
-    this.bodyPadding = const .symmetric(horizontal: 16),
-  }) : buttonsBuilder = ((context) => [StyledRectButton.primary(label: 'Ok'.toText(), onPressed: () => context.pop())]);
+  static StyledDialog<bool> confirm({
+    required Widget title,
+    required Widget body,
+    EdgeInsets bodyPadding = const .symmetric(horizontal: 16),
+  }) => StyledDialog(
+    title: title,
+    body: body,
+    bodyPadding: bodyPadding,
+    buttonsBuilder: ((context) => [StyledRectButton.primary(label: 'Ok'.toText(), onPressed: () => context.pop())]),
+  );
+
+  static StyledDialog<bool> confirmOrCancel({
+    required Widget title,
+    required Widget body,
+    EdgeInsets bodyPadding = const .symmetric(horizontal: 16),
+  }) => StyledDialog(
+    title: title,
+    body: body,
+    bodyPadding: bodyPadding,
+    buttonsBuilder: ((context) => [
+      StyledRectButton.primary(label: 'Ok'.toText(), onPressed: () => context.pop(true)),
+      StyledRectButton.transparent(label: 'Nevermind'.toText(), onPressed: () => context.pop(false)),
+    ]),
+  );
 
   @override
   Widget build(BuildContext context) {

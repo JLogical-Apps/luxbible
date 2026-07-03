@@ -90,6 +90,9 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
           ?.map((e) => $enumDecode(_$TutorialEnumMap, e))
           .toList() ??
       const [],
+  completedOnboardingSteps: (json['completedOnboardingSteps'] as List<dynamic>?)
+      ?.map((e) => $enumDecode(_$OnboardingStepEnumMap, e))
+      .toList(),
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -116,6 +119,9 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'studyPanelIndex': instance.studyPanelIndex,
   'studyPanelBottomPosition': instance.studyPanelBottomPosition,
   'tutorials': instance.tutorials.map((e) => _$TutorialEnumMap[e]!).toList(),
+  'completedOnboardingSteps': instance.completedOnboardingSteps
+      ?.map((e) => _$OnboardingStepEnumMap[e]!)
+      .toList(),
 };
 
 const _$BibleTranslationEnumMap = {
@@ -163,4 +169,18 @@ const _$TutorialEnumMap = {
   Tutorial.interlinearBsb: 'interlinearBsb',
   Tutorial.crossReferencesBsb: 'crossReferencesBsb',
   Tutorial.concordanceBsb: 'concordanceBsb',
+};
+
+const _$OnboardingStepEnumMap = {
+  OnboardingStep.selectVerse: 'selectVerse',
+  OnboardingStep.annotateVerse: 'annotateVerse',
+  OnboardingStep.crossReferences: 'crossReferences',
+  OnboardingStep.selectWord: 'selectWord',
+  OnboardingStep.searchWord: 'searchWord',
+  OnboardingStep.changeBible: 'changeBible',
+  OnboardingStep.navigateChapter: 'navigateChapter',
+  OnboardingStep.goBack: 'goBack',
+  OnboardingStep.addStudyPanel: 'addStudyPanel',
+  OnboardingStep.openSettings: 'openSettings',
+  OnboardingStep.customizeToolbar: 'customizeToolbar',
 };
