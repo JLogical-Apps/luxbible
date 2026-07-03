@@ -110,7 +110,12 @@ class OnboardingPanel extends HookConsumerWidget {
                     ),
                   ),
             isSelected: isStepCompleted,
-            onSelected: null,
+            onSelected: isActiveStep
+                ? (_) => showMicroStepDialog(
+                    context,
+                    microStep: step.microSteps.lastWhere((step) => !step.isCompleted(state)),
+                  )
+                : null,
             isEnabled: isActiveStep,
           );
         }),
@@ -124,4 +129,8 @@ class OnboardingPanel extends HookConsumerWidget {
       ],
     );
   }
+
+  void showMicroStepDialog(BuildContext context, {required OnboardingMicroStep microStep}) => context.showStyledDialog(
+    (context) => StyledDialog.confirm(title: microStep.title().toText(), body: microStep.detail().toText()),
+  );
 }
