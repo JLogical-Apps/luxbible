@@ -47,6 +47,21 @@ class StyledDialog<T> extends HookWidget {
     ]),
   );
 
+  static StyledDialog<bool> confirmDelete({
+    required Widget title,
+    required Widget body,
+    Widget? deleteLabel,
+    EdgeInsets bodyPadding = const .symmetric(horizontal: 16),
+  }) => StyledDialog(
+    title: title,
+    body: body,
+    bodyPadding: bodyPadding,
+    buttonsBuilder: ((context) => [
+      StyledRectButton.critical(label: deleteLabel ?? 'Delete'.toText(), onPressed: () => context.pop(true)),
+      StyledRectButton.transparent(label: 'Nevermind'.toText(), onPressed: () => context.pop(false)),
+    ]),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Container(

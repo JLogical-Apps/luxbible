@@ -234,7 +234,17 @@ class AnnotationsPage extends HookConsumerWidget {
                             key: ValueKey(annotation),
                             actions: [
                               .delete(
-                                onPressed: () => ref.updateUser((user) => user.withRemovedAnnotation(annotation)),
+                                onPressed: () async {
+                                  final confirmed = await context.showStyledDialog(
+                                    (context) => StyledDialog.confirmDelete(
+                                      title: 'Delete Annotation'.toText(),
+                                      body: 'Are you sure you want to delete this annotation?'.toText(),
+                                    ),
+                                  );
+                                  if (confirmed == true) {
+                                    ref.updateUser((user) => user.withRemovedAnnotation(annotation));
+                                  }
+                                },
                               ),
                             ],
                             child: StyledListItem(
@@ -309,10 +319,18 @@ class AnnotationsPage extends HookConsumerWidget {
                                       ),
                                       StyledListItem(
                                         title: 'Delete'.toText(),
-                                        leading: Symbols.delete.toIcon(),
-                                        onPressed: () {
+                                        leading: Icon(Symbols.delete, color: context.colors.contentCritical),
+                                        onPressed: () async {
                                           context.pop();
-                                          ref.updateUser((user) => user.withRemovedAnnotation(annotation));
+                                          final confirmed = await context.showStyledDialog(
+                                            (context) => StyledDialog.confirmDelete(
+                                              title: 'Delete Annotation'.toText(),
+                                              body: 'Are you sure you want to delete this annotation?'.toText(),
+                                            ),
+                                          );
+                                          if (confirmed == true) {
+                                            ref.updateUser((user) => user.withRemovedAnnotation(annotation));
+                                          }
                                         },
                                       ),
                                     ],

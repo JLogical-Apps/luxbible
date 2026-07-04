@@ -658,9 +658,17 @@ class ParagraphsBuilder extends HookWidget {
                               key: ValueKey(annotation),
                               actions: [
                                 .delete(
-                                  onPressed: () {
-                                    context.pop();
-                                    ref.updateUser((user) => user.withRemovedAnnotation(annotation));
+                                  onPressed: () async {
+                                    final confirmed = await context.showStyledDialog(
+                                      (context) => StyledDialog.confirmDelete(
+                                        title: 'Delete Annotation'.toText(),
+                                        body: 'Are you sure you want to delete this annotation?'.toText(),
+                                      ),
+                                    );
+                                    if (confirmed == true && context.mounted) {
+                                      context.pop();
+                                      ref.updateUser((user) => user.withRemovedAnnotation(annotation));
+                                    }
                                   },
                                 ),
                               ],
@@ -697,11 +705,21 @@ class ParagraphsBuilder extends HookWidget {
                                         ),
                                         StyledListItem(
                                           title: 'Delete'.toText(),
-                                          leading: Symbols.delete.toIcon(),
-                                          onPressed: () {
-                                            context.pop();
-                                            context.pop();
-                                            root_ref.ref.updateUser((user) => user.withRemovedAnnotation(annotation));
+                                          leading: Icon(Symbols.delete, color: context.colors.contentCritical),
+                                          onPressed: () async {
+                                            final confirmed = await context.showStyledDialog(
+                                              (context) => StyledDialog.confirmDelete(
+                                                title: 'Delete Annotation'.toText(),
+                                                body: 'Are you sure you want to delete this annotation?'.toText(),
+                                              ),
+                                            );
+                                            if (confirmed == true && context.mounted) {
+                                              context.pop();
+                                              context.pop();
+                                              root_ref.ref.updateUser(
+                                                (user) => user.withRemovedAnnotation(annotation),
+                                              );
+                                            }
                                           },
                                         ),
                                       ],

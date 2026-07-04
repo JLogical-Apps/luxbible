@@ -69,7 +69,7 @@ class NotebooksPage extends HookConsumerWidget {
                                       ),
                                       StyledListItem(
                                         title: 'Delete'.toText(),
-                                        leading: Symbols.delete.toIcon(),
+                                        leading: Icon(Symbols.delete, color: context.colors.contentCritical),
                                         onPressed: () {
                                           context.pop();
                                           showDeleteDialog(context, notebook: notebook);

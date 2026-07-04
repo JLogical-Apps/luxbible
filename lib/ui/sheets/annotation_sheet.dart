@@ -4,6 +4,7 @@ import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style_context_extensions.dart';
+import 'package:bible/style/widgets/dialog/styled_dialog.dart';
 import 'package:bible/style/widgets/sheet/styled_port_sheet.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/style/widgets/styled_form_input.dart';
@@ -133,9 +134,17 @@ class AnnotationSheet {
       selection: annotation.selection,
       annotation: annotation,
       subtitle: annotation.formatLocation().toText(),
-      onRemove: (context) {
-        ref.updateUser((user) => user.withRemovedAnnotation(annotation));
-        context.pop();
+      onRemove: (context) async {
+        final confirmed = await context.showStyledDialog(
+          (context) => StyledDialog.confirmDelete(
+            title: 'Delete Annotation'.toText(),
+            body: 'Are you sure you want to delete this annotation?'.toText(),
+          ),
+        );
+        if (confirmed == true && context.mounted) {
+          ref.updateUser((user) => user.withRemovedAnnotation(annotation));
+          context.pop();
+        }
       },
     );
     if (newAnnotation != null) {
@@ -167,10 +176,18 @@ class NewAnnotationSheet {
       selection: selection,
       subtitle: selectionText.toText(),
       onRemove: hasAnnotation
-          ? (context) {
-              ref.updateUser((user) => user.withRemovedSelectionAnnotations(selection));
-              onAnnotationsRemoved?.call();
-              context.pop();
+          ? (context) async {
+              final confirmed = await context.showStyledDialog(
+                (context) => StyledDialog.confirmDelete(
+                  title: 'Delete Annotation'.toText(),
+                  body: 'Are you sure you want to delete this annotation?'.toText(),
+                ),
+              );
+              if (confirmed == true && context.mounted) {
+                ref.updateUser((user) => user.withRemovedSelectionAnnotations(selection));
+                onAnnotationsRemoved?.call();
+                context.pop();
+              }
             }
           : null,
     );

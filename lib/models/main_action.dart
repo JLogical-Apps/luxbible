@@ -97,7 +97,6 @@ enum MainAction {
                 ),
                 StyledListItem(
                   title: 'Edit Bookmark'.toText(),
-                  subtitle: 'Edit this bookmark\'s color and name.'.toText(),
                   leading: Symbols.edit.toIcon(),
                   onPressed: () async {
                     context.pop();
@@ -113,11 +112,18 @@ enum MainAction {
                 ),
                 StyledListItem(
                   title: 'Delete Bookmark'.toText(),
-                  subtitle: 'Delete this bokmark.'.toText(),
                   leading: Icon(Symbols.delete, color: context.colors.contentCritical),
-                  onPressed: () {
+                  onPressed: () async {
                     context.pop();
-                    ref.updateUser((user) => user.withRemovedBookmark(bookmarkId));
+                    final confirmed = await context.showStyledDialog(
+                      (context) => StyledDialog.confirmDelete(
+                        title: 'Delete Bookmark'.toText(),
+                        body: 'Are you sure you want to delete this bookmark?'.toText(),
+                      ),
+                    );
+                    if (confirmed == true) {
+                      ref.updateUser((user) => user.withRemovedBookmark(bookmarkId));
+                    }
                   },
                 ),
               ],

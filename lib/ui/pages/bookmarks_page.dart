@@ -30,7 +30,21 @@ class BookmarksPage extends HookConsumerWidget {
                   .mapToIterable(
                     (id, bookmark) => StyledSwipeable(
                       key: ValueKey(id),
-                      actions: [.delete(onPressed: () => ref.updateUser((user) => user.withRemovedBookmark(id)))],
+                      actions: [
+                        .delete(
+                          onPressed: () async {
+                            final confirmed = await context.showStyledDialog(
+                              (context) => StyledDialog.confirmDelete(
+                                title: 'Delete Bookmark'.toText(),
+                                body: 'Are you sure you want to delete "${bookmark.name}"?'.toText(),
+                              ),
+                            );
+                            if (confirmed == true) {
+                              ref.updateUser((user) => user.withRemovedBookmark(id));
+                            }
+                          },
+                        ),
+                      ],
                       child: StyledListItem.draggable(
                         title: bookmark.name.toText(),
                         subtitle: bookmark.chapter.format().toText(),
