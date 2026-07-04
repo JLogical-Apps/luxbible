@@ -37,6 +37,7 @@ class MainToolbarSettingsPage extends ConsumerWidget {
             color: context.colors.surfacePrimary,
             child: StyledSection.child(
               title: 'Toolbar'.toText(),
+              subtitle: 'Shown when nothing is selected.'.toText(),
               padding: .symmetric(vertical: 16),
               child: MainToolbar(
                 mainToolbar: mainToolbar,

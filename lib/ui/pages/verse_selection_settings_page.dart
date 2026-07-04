@@ -26,6 +26,7 @@ class VerseSelectionSettingsPage extends ConsumerWidget {
             color: context.colors.surfacePrimary,
             child: StyledSection.child(
               title: 'Toolbar'.toText(),
+              subtitle: 'Shown when a verse is selected.'.toText(),
               padding: .symmetric(vertical: 16),
               childPadding: .symmetric(horizontal: 8),
               child: VerseSelectionBottomBar(

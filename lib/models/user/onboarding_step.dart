@@ -76,7 +76,7 @@ enum OnboardingMicroStep {
         icon(Symbols.more_vert),
         TextSpan(text: ' → '),
         icon(Symbols.settings),
-        TextSpan(text: ' and pick a toolbar preset or change any of your toolbar shortcuts'),
+        TextSpan(text: ' > Toolbars and pick a toolbar preset or change any of your toolbar shortcuts'),
       ],
     };
   }

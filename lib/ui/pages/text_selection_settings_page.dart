@@ -2,9 +2,9 @@ import 'package:bible/models/user/text_selection_shortcut.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/text_selection_bottom_bar.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -27,6 +27,7 @@ class TextSelectionSettingsPage extends ConsumerWidget {
             color: context.colors.surfacePrimary,
             child: StyledSection.child(
               title: 'Toolbar'.toText(),
+              subtitle: 'Shown when long-pressing text within verses.'.toText(),
               padding: .symmetric(vertical: 16),
               childPadding: .symmetric(horizontal: 8),
               child: TextSelectionBottomBar(

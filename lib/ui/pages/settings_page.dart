@@ -73,7 +73,7 @@ class SettingsPage extends HookConsumerWidget {
                             padding: .all(16),
                             child: StyledTile.message(
                               leading: Symbols.info.toIcon(),
-                              title: 'Selecting a preset will override your current toolbar shortcuts.'.toText(),
+                              title: 'Selecting a preset will override the shortcuts in all your toolbars.'.toText(),
                             ),
                           ),
                           options: ToolbarPreset.values,
