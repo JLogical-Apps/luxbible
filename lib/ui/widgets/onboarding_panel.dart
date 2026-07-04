@@ -76,46 +76,30 @@ class OnboardingPanel extends HookConsumerWidget {
             key: keyByStep[step],
             leading: step.icon.toIcon(),
             title: step.title().toText(),
-            subtitle: isActiveStep ? step.description().toText() : null,
-            thirdLine: !isActiveStep
+            subtitle: !isActiveStep
                 ? null
-                : Padding(
-                    padding: .only(top: 4),
-                    child: Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: step.microSteps.map((microStep) {
-                        final isCompleted = microStep.isCompleted(state);
-                        return IntrinsicWidth(
-                          child: StyledTag.md(
-                            colorBuilder: isCompleted ? .surfaceDisabled : .primary,
-                            onPressed: isCompleted
-                                ? null
-                                : () => context.showStyledDialog(
-                                    (context) => StyledDialog.confirm(
-                                      title: microStep.title().toText(),
-                                      body: microStep.detail().toText(),
-                                    ),
-                                  ),
-                            leading: StyledCheckbox(
-                              isSelected: isCompleted,
-                              isEnabled: false,
-                              isCompact: true,
-                              isInverted: !isCompleted,
-                            ),
-                            child: microStep.title().toText(),
+                : Column(
+                    crossAxisAlignment: .start,
+                    children: step.microSteps
+                        .map(
+                          (microStep) => Row(
+                            spacing: 4,
+                            crossAxisAlignment: .start,
+                            children: [
+                              Text('•'),
+                              Expanded(
+                                child: Text.rich(
+                                  TextSpan(children: microStep.description(translation: user.translation)),
+                                  style: TextStyle(decoration: microStep.isCompleted(state) ? .lineThrough : null),
+                                ),
+                              ),
+                            ],
                           ),
-                        );
-                      }).toList(),
-                    ),
+                        )
+                        .toList(),
                   ),
             isSelected: isStepCompleted,
-            onSelected: isActiveStep
-                ? (_) => showMicroStepDialog(
-                    context,
-                    microStep: step.microSteps.lastWhere((step) => !step.isCompleted(state)),
-                  )
-                : null,
+            onSelected: null,
             isEnabled: isActiveStep,
           );
         }),
@@ -129,8 +113,4 @@ class OnboardingPanel extends HookConsumerWidget {
       ],
     );
   }
-
-  void showMicroStepDialog(BuildContext context, {required OnboardingMicroStep microStep}) => context.showStyledDialog(
-    (context) => StyledDialog.confirm(title: microStep.title().toText(), body: microStep.detail().toText()),
-  );
 }

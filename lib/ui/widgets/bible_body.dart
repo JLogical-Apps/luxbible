@@ -500,7 +500,6 @@ class BibleBody extends HookConsumerWidget {
                           chapter: chapter,
                           underlinedReferences: selectedReferencesState.value,
                           onReferencePressed: (reference) {
-                            ref.markOnboardingStep(.selectVerse);
                             if (textSelectionState.value != null) {
                               textSelectionState.value = null;
                             } else if (selectedReferencesState.value.isEmpty &&
@@ -544,9 +543,6 @@ class BibleBody extends HookConsumerWidget {
                           },
                           textSelection: textSelectionState.value,
                           onTextSelectionUpdated: (textSelection, isNewSelection) {
-                            if (textSelection != null) {
-                              ref.markOnboardingStep(.selectWord);
-                            }
                             selectedReferencesState.value = [];
                             if (isNewSelection && user.textSelection.expandToAnnotation && textSelection != null) {
                               textSelectionState.value = user.getExpandedTextSelection(textSelection);

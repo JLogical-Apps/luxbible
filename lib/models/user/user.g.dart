@@ -172,10 +172,8 @@ const _$TutorialEnumMap = {
 };
 
 const _$OnboardingStepEnumMap = {
-  OnboardingStep.selectVerse: 'selectVerse',
-  OnboardingStep.annotateVerse: 'annotateVerse',
   OnboardingStep.crossReferences: 'crossReferences',
-  OnboardingStep.selectWord: 'selectWord',
+  OnboardingStep.annotateVerse: 'annotateVerse',
   OnboardingStep.searchWord: 'searchWord',
   OnboardingStep.changeBible: 'changeBible',
   OnboardingStep.navigateChapter: 'navigateChapter',
