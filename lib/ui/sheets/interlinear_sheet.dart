@@ -69,36 +69,35 @@ class InterlinearSheet {
             ],
           ),
         ),
-      ...verseSelection.references.mapIndexed((i, reference) {
-        final verse = studyBible.getVerseByReference(reference);
-        if (verse == null) {
-          return null;
-        }
+      ...StyledDivider(height: 2).wrapPositioned(
+        verseSelection.references
+            .mapIndexed((i, reference) {
+              final verse = studyBible.getVerseByReference(reference);
+              if (verse == null) {
+                return null;
+              }
 
-        return Stack(
-          children: [
-            StyledStickyHeader(
-              title: reference.format().toText(),
-              children: verse.words
-                  .mapToMap((word) => MapEntry(word, word.data))
-                  .withoutNullValues
-                  .maybeSortedBy((word, data) => data.originalPosition, shouldSort: direction == .forward)
-                  .mapToIterable(
-                    (word, data) => InterlinearWordTile(
-                      word: word,
-                      data: data,
-                      direction: direction,
-                      onNavigateToVerseSelection: onNavigateToVerseSelection,
-                      popOnAction: popOnAction,
-                    ),
-                  )
-                  .toList(),
-            ),
-            if (i + 1 < verseSelection.references.length)
-              Positioned(bottom: 0, left: 0, right: 0, child: StyledDivider(height: 2)),
-          ],
-        );
-      }).nonNulls,
+              return StyledStickyHeader(
+                title: reference.format().toText(),
+                children: verse.words
+                    .mapToMap((word) => MapEntry(word, word.data))
+                    .withoutNullValues
+                    .maybeSortedBy((word, data) => data.originalPosition, shouldSort: direction == .forward)
+                    .mapToIterable(
+                      (word, data) => InterlinearWordTile(
+                        word: word,
+                        data: data,
+                        direction: direction,
+                        onNavigateToVerseSelection: onNavigateToVerseSelection,
+                        popOnAction: popOnAction,
+                      ),
+                    )
+                    .toList(),
+              );
+            })
+            .nonNulls
+            .toList(),
+      ),
     ];
   }
 }
