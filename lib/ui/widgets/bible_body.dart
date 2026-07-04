@@ -95,10 +95,6 @@ class BibleBody extends HookConsumerWidget {
     final textSelectionState = useState<BibleTextSelection?>(null);
     final textSelection = textSelectionState.value;
 
-    // Fix for a release-only bug where a newly-set selection wasn't painted until an unrelated scroll/tap.
-    useOnListenableChange(textSelectionState, WidgetsBinding.instance.scheduleFrame);
-    useOnListenableChange(selectedReferencesState, WidgetsBinding.instance.scheduleFrame);
-
     final isScrollingDownState = useState(true);
     final isAtBottom = useListenableSelector(currentScrollController, () {
       final scrollPosition = currentScrollController.positionOrNull;

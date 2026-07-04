@@ -11,8 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_hooks: ^0.21.3+1
-  hooks_riverpod: ^3.0.3
-  riverpod_annotation: ^4.0.0
+  hooks_riverpod: ^3.3.2
+  riverpod_annotation: ^4.0.3
   xml: ^7.0.1
   collection: ^1.19.1
   shared_preferences: ^2.5.3
@@ -64,11 +64,10 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   riverpod_generator: ^4.0.0+1
   build_runner: ^2.7.1
-  custom_lint: ^0.8.0
   riverpod_lint: ^3.0.3
   freezed: ^3.2.3
   json_serializable: ^6.11.1
-  googleapis: ^14.0.0
+  googleapis: ^16.0.0
   googleapis_auth: ^2.0.0
 
 flutter:
