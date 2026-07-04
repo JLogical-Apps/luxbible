@@ -17,6 +17,7 @@ sealed class Annotation with _$Annotation {
     @JsonKey(readValue: _annotationSelectionFromAnnotation) required AnnotationSelection selection,
     @Default(ColorEnum.stone) ColorEnum color,
     @Default('') String note,
+    String? notebookId,
     required DateTime createdAt,
   }) = _Annotation;
 
@@ -49,6 +50,8 @@ sealed class AnnotationSelection with _$AnnotationSelection, ComparableOperators
     VersesAnnotationSelection(:final verseSelection) => verseSelection.references,
     TextAnnotationSelection(:final textSelection) => textSelection.toVerseSelection().references,
   };
+
+  VerseSelection toVerseSelection() => .fromReferences(allReferences);
 
   @override
   int compareTo(AnnotationSelection other) => startingReference.compareTo(other.startingReference);

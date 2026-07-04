@@ -15,6 +15,9 @@ class StyledRectButton extends StatelessWidget {
     : colorBuilder = .surfaceSecondary;
   StyledRectButton.transparent({super.key, required this.label, required this.onPressed, this.isCritical = false})
     : colorBuilder = .transparent;
+  StyledRectButton.critical({super.key, required this.label, required this.onPressed})
+    : isCritical = false,
+      colorBuilder = .backgroundCritical;
 
   @override
   Widget build(BuildContext context) {

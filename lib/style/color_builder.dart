@@ -12,12 +12,13 @@ class ColorBuilder {
   static final ColorBuilder surfaceSecondary = ColorBuilder((colors) => colors.surfaceSecondary);
   static final ColorBuilder surfaceTertiary = ColorBuilder((colors) => colors.surfaceTertiary);
   static final ColorBuilder surfaceDisabled = ColorBuilder((colors) => colors.surfaceDisabled);
+  static final ColorBuilder surfaceCritical = ColorBuilder((colors) => colors.surfaceCritical);
 
   static final ColorBuilder surfacePrimaryInverted = ColorBuilder((colors) => colors.inverted.surfacePrimary);
   static final ColorBuilder surfaceSecondaryInverted = ColorBuilder((colors) => colors.inverted.surfaceSecondary);
 
   static final ColorBuilder backgroundPrimary = ColorBuilder((colors) => colors.backgroundPrimary);
-  static final ColorBuilder backgroundError = ColorBuilder((colors) => colors.backgroundError);
+  static final ColorBuilder backgroundCritical = ColorBuilder((colors) => colors.backgroundCritical);
 
   static final ColorBuilder transparent = ColorBuilder((colors) => Colors.transparent);
 

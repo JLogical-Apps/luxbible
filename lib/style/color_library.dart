@@ -22,13 +22,13 @@ class ColorLibrary {
   Hue get violet => TWColors.violet.asHue(brightness);
 
   Color get backgroundPrimary => brightness.when(light: zinc.shade100, dark: zinc.shade900);
-  Color get backgroundError => brightness.when(light: red.shade600, dark: red.shade700);
+  Color get backgroundCritical => brightness.when(light: red.shade600, dark: red.shade700);
 
   Color get surfacePrimary => brightness.when(light: Colors.white, dark: zinc.shade800);
   Color get surfaceSecondary => brightness.when(light: zinc.shade200, dark: zinc.shade600);
   Color get surfaceTertiary => brightness.when(light: zinc.shade100, dark: zinc.shade700);
   Color get surfaceDisabled => brightness.when(light: zinc.shade100, dark: zinc.shade700);
-  Color get surfaceError => brightness.when(light: red.shade100, dark: red.shade950);
+  Color get surfaceCritical => brightness.when(light: red.shade100, dark: red.shade950);
   Color surface({bool isDisabled = false}) => isDisabled ? surfaceDisabled : surfacePrimary;
 
   Color get contentPrimary => brightness.when(light: Colors.black, dark: Colors.white);

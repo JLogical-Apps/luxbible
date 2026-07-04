@@ -43,6 +43,12 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
           ?.map((e) => Annotation.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
+  notebooks:
+      (json['notebooks'] as List<dynamic>?)
+          ?.map((e) => Notebook.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
+  lastNotebookId: json['lastNotebookId'] as String?,
   mainToolbar: json['mainToolbar'] == null
       ? const MainToolbarConfiguration()
       : MainToolbarConfiguration.fromJson(
@@ -107,6 +113,8 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'highlightColor': _$ColorEnumEnumMap[instance.highlightColor]!,
   'bookmarkById': instance.bookmarkById.map((k, e) => MapEntry(k, e.toJson())),
   'annotations': instance.annotations.map((e) => e.toJson()).toList(),
+  'notebooks': instance.notebooks.map((e) => e.toJson()).toList(),
+  'lastNotebookId': instance.lastNotebookId,
   'mainToolbar': instance.mainToolbar.toJson(),
   'verseSelection': instance.verseSelection.toJson(),
   'textSelection': instance.textSelection.toJson(),

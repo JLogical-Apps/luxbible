@@ -7,6 +7,7 @@ import 'package:bible/ui/pages/bibles_page.dart';
 import 'package:bible/ui/pages/bookmarks_page.dart';
 import 'package:bible/ui/pages/commentaries_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
+import 'package:bible/ui/pages/notebooks_page.dart';
 import 'package:bible/ui/pages/text_selection_settings_page.dart';
 import 'package:bible/ui/pages/theme_settings_page.dart';
 import 'package:bible/ui/pages/verse_selection_settings_page.dart';
@@ -134,6 +135,16 @@ class SettingsPage extends HookConsumerWidget {
                   leading: Symbols.note_stack.toIcon(),
                   onPressed: () async {
                     final result = await context.push(AnnotationsPage());
+                    if (result != null && context.mounted) {
+                      context.pop(result);
+                    }
+                  },
+                ),
+                StyledListItem.navigation(
+                  title: 'Notebooks'.toText(),
+                  leading: Symbols.book_2.toIcon(),
+                  onPressed: () async {
+                    final result = await context.push(NotebooksPage());
                     if (result != null && context.mounted) {
                       context.pop(result);
                     }

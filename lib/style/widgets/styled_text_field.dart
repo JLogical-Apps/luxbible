@@ -14,10 +14,10 @@ class StyledTextField extends HookWidget {
   final Function(String)? onChanged;
   final Function(String)? onSubmit;
 
-  final String? labelText;
+  final Widget? label;
   final String? suggestedText;
   final String? hintText;
-  final String? errorText;
+  final Widget? error;
 
   final int? maxLines;
 
@@ -40,10 +40,10 @@ class StyledTextField extends HookWidget {
     this.onTextEditValueChanged,
     this.onChanged,
     this.onSubmit,
-    this.labelText,
+    this.label,
     this.hintText,
     this.suggestedText,
-    this.errorText,
+    this.error,
     this.autofocus = false,
     this.autocorrect = true,
     this.readOnly = false,
@@ -62,10 +62,10 @@ class StyledTextField extends HookWidget {
     this.onTextEditValueChanged,
     this.onChanged,
     this.onSubmit,
-    this.labelText,
+    this.label,
     this.hintText,
     this.suggestedText,
-    this.errorText,
+    this.error,
     this.autofocus = false,
     this.autocorrect = true,
     this.readOnly = false,
@@ -110,12 +110,12 @@ class StyledTextField extends HookWidget {
         ? null
         : suggestedText.substring(text.length);
 
-    final errorText = this.errorText;
-    final hasError = errorText != null;
+    final error = this.error;
+    final hasError = error != null;
 
     return StyledFormInput(
-      labelText: labelText,
-      errorText: errorText,
+      label: label,
+      error: error,
       child: Stack(
         children: [
           if (focusNode.hasPrimaryFocus && onChanged != null && remainingSuggestedText != null)
@@ -145,7 +145,7 @@ class StyledTextField extends HookWidget {
               fillColor: onChanged == null
                   ? context.colors.surfaceDisabled
                   : hasError
-                  ? context.colors.surfaceError
+                  ? context.colors.surfaceCritical
                   : context.colors.surfaceSecondary,
               filled: !focusNode.hasPrimaryFocus,
               border: OutlineInputBorder(borderSide: BorderSide.none, borderRadius: .circular(8)),

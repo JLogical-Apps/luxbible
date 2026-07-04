@@ -1,9 +1,9 @@
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/color_enum.dart';
-import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/widgets/colored_circle.dart';
 import 'package:bible/ui/widgets/search_location_button.dart';
@@ -19,16 +19,26 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class AnnotationsPage extends HookConsumerWidget {
-  const AnnotationsPage({super.key});
+  final (String?,)? initialNotebookId;
+
+  const AnnotationsPage({super.key, this.initialNotebookId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
 
     final sortState = useState(AnnotationSort.mostRecent);
+
     final colorState = useState<ColorEnum?>(null);
+    final color = colorState.value;
+
     final hasNoteState = useState<bool?>(null);
+
     final locationsState = useState(<SearchLocationFilter>[]);
+
+    final notebookIdState = useState(initialNotebookId);
+    final notebookId = notebookIdState.value;
+    final notebook = notebookId == null ? null : user.getNotebookById(notebookId.$1);
 
     final matchingAnnotations = user.annotations
         .where(
@@ -37,7 +47,8 @@ class AnnotationsPage extends HookConsumerWidget {
               locationsState.value.any((location) => location.passes(annotation.selection.startingReference)),
         )
         .where((annotation) => hasNoteState.value == null || (annotation.note.isNotEmpty == hasNoteState.value))
-        .where((annotation) => colorState.value == null || annotation.color == colorState.value)
+        .where((annotation) => color == null || annotation.color == color)
+        .where((annotation) => notebookId == null || user.getNotebookById(annotation.notebookId)?.id == notebookId.$1)
         .toList();
 
     return StyledPage(
@@ -69,9 +80,50 @@ class AnnotationsPage extends HookConsumerWidget {
                     }
                   },
                 ),
+                if (user.notebooks.isNotEmpty)
+                  StyledPillButton.md(
+                    colorBuilder: notebookId == null ? null : .primary,
+                    leading: notebookId == null
+                        ? Symbols.book_2.toIcon()
+                        : ColoredCircle(color: (notebook?.color ?? .stone).toHue(context.colors).primary),
+                    label: (notebookId == null ? 'Notebook' : notebook?.name ?? 'Default').toText(),
+                    trailing: Symbols.keyboard_arrow_down.toIcon(),
+                    onPressed: () async {
+                      final result = await context.showStyledSheet(
+                        (context) => StyledSelectionSheet<(String?,)>(
+                          title: 'Notebook'.toText(),
+                          trailing: notebookId == null
+                              ? null
+                              : StyledCircleButton.md(
+                                  child: Symbols.delete.toIcon(),
+                                  onPressed: () {
+                                    notebookIdState.value = null;
+                                    context.pop();
+                                  },
+                                ),
+                          options: [...user.notebooks.map((notebook) => (notebook.id,)), (null,)],
+                          optionMapper: (option) {
+                            final notebook = user.getNotebookById(option.$1);
+                            return StyledSelectOption(
+                              title: (notebook?.name ?? 'Default').toText(),
+                              leading: ColoredCircle(
+                                color: (notebook?.color ?? ColorEnum.stone).toHue(context.colors).primary,
+                              ),
+                            );
+                          },
+                          initialOption: notebookId,
+                        ),
+                      );
+                      if (result != null) {
+                        notebookIdState.value = result;
+                      }
+                    },
+                  ),
                 StyledPillButton.md(
                   colorBuilder: colorState.value == null ? null : .primary,
-                  leading: Icon(Symbols.circle, color: colorState.value?.toHue(context.colors).primary),
+                  leading: color == null
+                      ? Icon(Symbols.circle)
+                      : ColoredCircle(color: color.toHue(context.colors).primary),
                   label: (colorState.value?.title() ?? 'Color').toText(),
                   trailing: Symbols.keyboard_arrow_down.toIcon(),
                   onPressed: () async {
@@ -187,13 +239,27 @@ class AnnotationsPage extends HookConsumerWidget {
                             ],
                             child: StyledListItem(
                               leading: ColoredCircle(color: annotation.color.toHue(context.colors).primary),
-                              title: Row(
-                                spacing: 4,
-                                children: [
-                                  annotation.formatLocation().toText(),
-                                  if (annotation.selection case TextAnnotationSelection selection)
-                                    StyledTag.sm(child: selection.textSelection.translation.title().toText()),
-                                ],
+                              title: SingleChildScrollView(
+                                scrollDirection: .horizontal,
+                                child: Row(
+                                  spacing: 4,
+                                  children: [
+                                    annotation.formatLocation().toText(),
+                                    if (annotation.selection case TextAnnotationSelection selection)
+                                      StyledTag.sm(child: selection.textSelection.translation.title().toText()),
+                                    if (annotation.notebookId case final notebookId?)
+                                      if (user.getNotebookById(notebookId) case final notebook?)
+                                        StyledTag.sm(
+                                          child: Row(
+                                            spacing: 4,
+                                            children: [
+                                              Icon(Symbols.circle, color: notebook.color.toHue(context.colors).primary),
+                                              notebook.name.toText(),
+                                            ],
+                                          ),
+                                        ),
+                                  ],
+                                ),
                               ),
                               subtitle: Column(
                                 spacing: 4,
@@ -225,16 +291,6 @@ class AnnotationsPage extends HookConsumerWidget {
                                     title: 'Annotation'.toText(),
                                     children: [
                                       StyledListItem(
-                                        title: 'Go to Passage'.toText(),
-                                        leading: Symbols.expand_circle_right.toIcon(),
-                                        onPressed: () {
-                                          context.pop();
-                                          context.pop(
-                                            VerseSelection.fromReferences(annotation.selection.allReferences),
-                                          );
-                                        },
-                                      ),
-                                      StyledListItem(
                                         title: 'Edit'.toText(),
                                         leading: Symbols.edit.toIcon(),
                                         onPressed: () async {
@@ -262,6 +318,14 @@ class AnnotationsPage extends HookConsumerWidget {
                                     ],
                                   ),
                                 ),
+                              ),
+                              onPressed: () => ChapterPreviewPage.show(
+                                context,
+                                verseSelection: annotation.selection.toVerseSelection(),
+                                onNavigateToPassage: () {
+                                  context.pop();
+                                  context.pop(annotation.selection.toVerseSelection());
+                                },
                               ),
                             ),
                           );

@@ -3,6 +3,7 @@ import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/reference/chapter_position.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:port/port.dart';
@@ -16,22 +17,22 @@ class BookmarkSheet {
     return await context.showStyledSheet(
       (context) => StyledPortSheet(
         title: Text(initialBookmark == null ? 'Create Bookmark' : 'Edit Bookmark'),
-        port: Port.of({
-          'color': SimplePortField<ColorEnum>(value: initialBookmark?.color ?? ColorEnum.stone),
-          'name': PortField.string(initialValue: initialBookmark?.name).isNotBlank(),
-        }).map(
-          (values, port) => Bookmark(
-            position: ChapterPosition(reference: reference),
-            name: values['name'],
-            color: values['color'],
-          ),
-        ),
+        port:
+            Port.of({
+              'color': SimplePortField<ColorEnum>(value: initialBookmark?.color ?? ColorEnum.stone),
+              'name': PortField.string(initialValue: initialBookmark?.name).isNotBlank(),
+            }).map(
+              (values, port) => Bookmark(
+                position: ChapterPosition(reference: reference),
+                name: values['name'],
+                color: values['color'],
+              ),
+            ),
         childrenBuilder: (context) => [
           StyledPortFieldBuilder<ColorEnum>(
             fieldPath: 'color',
             builder: (context, value, errorText, onChanged) => StyledFormInput(
-              labelText: 'Color',
-              errorText: errorText,
+              label: 'Color'.toText(),
               child: Row(
                 mainAxisAlignment: .spaceBetween,
                 children: ColorEnum.values
@@ -53,7 +54,7 @@ class BookmarkSheet {
           StyledPortFieldBuilder<String>(
             fieldPath: 'name',
             builder: (context, value, errorText, onChanged) =>
-                StyledTextField(text: value, labelText: 'Name', errorText: errorText, onChanged: onChanged),
+                StyledTextField(text: value, label: 'Name'.toText(), error: errorText?.toText(), onChanged: onChanged),
           ),
         ],
       ),

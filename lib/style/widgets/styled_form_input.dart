@@ -5,30 +5,30 @@ import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 class StyledFormInput extends StatelessWidget {
-  final String? labelText;
-  final String? errorText;
+  final Widget? label;
+  final Widget? error;
 
   final Widget child;
 
-  const StyledFormInput({super.key, this.labelText, this.errorText, required this.child});
+  const StyledFormInput({super.key, this.label, this.error, required this.child});
 
   @override
   Widget build(BuildContext context) {
-    final errorText = this.errorText;
+    final error = this.error;
 
     return Column(
       crossAxisAlignment: .start,
       children: [
-        if (labelText case final labelText?)
+        if (label case final label?)
           Padding(
             padding: .only(bottom: 8),
-            child: Text(labelText, style: context.textStyle.labelMd),
+            child: DefaultTextStyle(child: label, style: context.textStyle.labelMd),
           ),
         child,
         AnimatedGrow(
           alignment: .bottomLeft,
           clip: .hardEdge,
-          child: errorText == null
+          child: error == null
               ? SizedBox(key: ValueKey('empty'), width: double.infinity)
               : Padding(
                   padding: .only(top: 8),
@@ -37,7 +37,7 @@ class StyledFormInput extends StatelessWidget {
                     spacing: 4,
                     children: [
                       Icon(Symbols.error, size: 14, color: context.colors.contentCritical),
-                      Text(errorText, style: context.textStyle.labelSm.regular.critical()),
+                      DefaultTextStyle(child: error, style: context.textStyle.labelSm.regular.critical()),
                     ],
                   ),
                 ),

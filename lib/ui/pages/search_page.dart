@@ -103,7 +103,7 @@ class SearchPage extends HookConsumerWidget {
               crossAxisAlignment: .start,
               children: [
                 StyledTextField(
-                  labelText: 'Search',
+                  label: 'Search'.toText(),
                   text: textState.value,
                   autofocus: initialSearch == null,
                   onChanged: (text) {

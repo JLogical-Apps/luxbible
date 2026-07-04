@@ -4,6 +4,7 @@ import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/commentary_type.dart';
+import 'package:bible/models/notebook.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_position.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
@@ -44,6 +45,8 @@ sealed class User with _$User {
     @Default(ColorEnum.yellow) ColorEnum highlightColor,
     @Default({}) Map<String, Bookmark> bookmarkById,
     @Default([]) List<Annotation> annotations,
+    @Default([]) List<Notebook> notebooks,
+    String? lastNotebookId,
     @Default(MainToolbarConfiguration()) MainToolbarConfiguration mainToolbar,
     @Default(VerseSelectionConfiguration()) VerseSelectionConfiguration verseSelection,
     @Default(TextSelectionConfiguration()) TextSelectionConfiguration textSelection,
@@ -153,8 +156,32 @@ sealed class User with _$User {
   User withRemovedBookmark(String bookmarkId) =>
       copyWith(bookmarkById: {...bookmarkById}..remove(bookmarkId), currentBookmarkId: null);
 
-  User withAnnotation(Annotation annotation) =>
-      copyWith(annotations: [...annotations, annotation], highlightColor: annotation.color);
+  Notebook? getNotebookById(String? id) =>
+      id == null ? null : notebooks.firstWhereOrNull((notebook) => notebook.id == id);
+
+  Notebook? get lastNotebook => getNotebookById(lastNotebookId);
+
+  User withNewNotebook(Notebook notebook) => copyWith(notebooks: [notebook, ...notebooks], lastNotebookId: notebook.id);
+
+  User withUpdatedNotebook(Notebook notebook) =>
+      copyWith(notebooks: notebooks.map((n) => n.id == notebook.id ? notebook : n).toList());
+
+  User withRemovedNotebook(String notebookId, {required bool deleteAnnotations}) => copyWith(
+    notebooks: notebooks.where((notebook) => notebook.id != notebookId).toList(),
+    annotations: deleteAnnotations
+        ? annotations.where((annotation) => annotation.notebookId != notebookId).toList()
+        : annotations,
+    lastNotebookId: lastNotebookId == notebookId ? null : lastNotebookId,
+  );
+
+  User withReorderedNotebooks(int oldIndex, int newIndex) =>
+      copyWith(notebooks: notebooks.withReorder(oldIndex, newIndex));
+
+  User withAnnotation(Annotation annotation) => copyWith(
+    annotations: [...annotations, annotation],
+    highlightColor: annotation.color,
+    lastNotebookId: annotation.notebookId,
+  );
 
   User withAnnotationUpdated(Annotation oldAnnotation, Annotation newAnnotation) => copyWith(
     annotations: annotations.withRemoved(oldAnnotation) + [newAnnotation],

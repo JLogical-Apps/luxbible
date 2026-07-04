@@ -21,6 +21,7 @@ class StyledReorderableList extends HookWidget {
     return SlidableAutoCloseBehavior(
       child: ReorderableListView(
         shrinkWrap: shrinkWrap,
+        physics: shrinkWrap ? NeverScrollableScrollPhysics() : null,
         children: children
             .mapIndexed(
               (i, child) => StyledListItemContext(key: child.key, showDivider: i + 1 < children.length, child: child),
