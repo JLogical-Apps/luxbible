@@ -63,7 +63,7 @@ enum MainAction {
     settings => Icon(Symbols.settings),
   };
 
-  bool get isNavigation => [study, search].contains(this);
+  bool get isNavigation => [study, search, resources, settings].contains(this);
 
   Future<void> onPressed(
     BuildContext context, {
