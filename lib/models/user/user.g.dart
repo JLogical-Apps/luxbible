@@ -180,6 +180,5 @@ const _$OnboardingStepEnumMap = {
   OnboardingStep.goBack: 'goBack',
   OnboardingStep.swipeChapter: 'swipeChapter',
   OnboardingStep.addStudyPanel: 'addStudyPanel',
-  OnboardingStep.openSettings: 'openSettings',
   OnboardingStep.customizeToolbar: 'customizeToolbar',
 };

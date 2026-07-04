@@ -36,7 +36,6 @@ enum OnboardingMicroStep {
   goBack,
   swipeChapter,
   viewStudyPanel,
-  openSettings,
   customizeToolbar;
 
   List<InlineSpan> description({required BibleTranslation translation}) {
@@ -72,8 +71,13 @@ enum OnboardingMicroStep {
       goBack => [TextSpan(text: 'Swipe right on the toolbar to go back')],
       swipeChapter => [TextSpan(text: 'Swipe the Bible left or right to change chapter')],
       viewStudyPanel => [TextSpan(text: 'Swipe this panel right to view your study panel')],
-      openSettings => [TextSpan(text: 'Open '), icon(Symbols.more_vert), TextSpan(text: ' → '), icon(Symbols.settings)],
-      customizeToolbar => [TextSpan(text: 'Pick a toolbar preset or change any of your toolbar shortcuts')],
+      customizeToolbar => [
+        TextSpan(text: 'Open '),
+        icon(Symbols.more_vert),
+        TextSpan(text: ' → '),
+        icon(Symbols.settings),
+        TextSpan(text: ' and pick a toolbar preset or change any of your toolbar shortcuts'),
+      ],
     };
   }
 
@@ -92,7 +96,6 @@ enum OnboardingMicroStep {
     goBack ||
     swipeChapter ||
     viewStudyPanel ||
-    openSettings ||
     customizeToolbar => false,
   };
 }
@@ -106,7 +109,6 @@ enum OnboardingStep {
   goBack,
   swipeChapter,
   addStudyPanel,
-  openSettings,
   customizeToolbar;
 
   String title() => switch (this) {
@@ -118,7 +120,6 @@ enum OnboardingStep {
     goBack => 'Go back',
     swipeChapter => 'Swipe to change chapter',
     addStudyPanel => 'Add a study panel',
-    openSettings => 'Open Settings',
     customizeToolbar => 'Customize your toolbars',
   };
 
@@ -131,7 +132,6 @@ enum OnboardingStep {
     goBack => Symbols.undo,
     swipeChapter => Symbols.swipe,
     addStudyPanel => Symbols.add_notes,
-    openSettings => Symbols.settings,
     customizeToolbar => Symbols.tune,
   };
 
@@ -144,7 +144,6 @@ enum OnboardingStep {
     goBack => [.navigateSomewhere, .deselectEverything, .revealMainToolbar, .goBack],
     swipeChapter => [.swipeChapter],
     addStudyPanel => [.deselectEverything, .revealMainToolbar, .addStudyPanel, .viewStudyPanel],
-    openSettings => [.deselectEverything, .revealMainToolbar, .openSettings],
-    customizeToolbar => [.deselectEverything, .revealMainToolbar, .openSettings, .customizeToolbar],
+    customizeToolbar => [.deselectEverything, .revealMainToolbar, .customizeToolbar],
   };
 }
