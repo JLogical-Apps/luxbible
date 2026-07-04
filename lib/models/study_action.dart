@@ -216,11 +216,13 @@ enum StudyAction {
         return StyledSheet(
           title: title().toText(),
           subtitle: regionFormat.toText(),
+          shrinkWrap: false,
           aboveDivider: StyledTabBar.scrollable(
             tabController: tabController,
             tabTitles: user.commentariesOrDefault.map((type) => type.title().toText()).toList(),
           ),
           showDivider: false,
+          childrenKey: ValueKey(selectedCommentary),
           children: CommentarySheet.buildSheetChildren(
             context,
             verseSelection: verseSelection,

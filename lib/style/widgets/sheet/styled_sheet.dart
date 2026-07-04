@@ -27,10 +27,13 @@ class StyledSheet<T> extends HookWidget {
   final bool showDivider;
   final bool showDragHandle;
 
+  final Key? childrenKey;
   final List<Widget> children;
 
   final Widget? aboveButtons;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
+
+  final bool shrinkWrap;
 
   const StyledSheet({
     super.key,
@@ -41,9 +44,11 @@ class StyledSheet<T> extends HookWidget {
     this.aboveDivider,
     this.showDivider = true,
     this.showDragHandle = true,
+    this.childrenKey,
     this.children = const [],
     this.aboveButtons,
     this.buttonsBuilder,
+    this.shrinkWrap = true,
   });
 
   StyledSheet.child({
@@ -55,9 +60,11 @@ class StyledSheet<T> extends HookWidget {
     this.aboveDivider,
     this.showDivider = true,
     this.showDragHandle = true,
+    this.childrenKey,
     required Widget child,
     this.aboveButtons,
     this.buttonsBuilder,
+    this.shrinkWrap = true,
   }) : children = [child];
 
   @override
@@ -211,10 +218,12 @@ class StyledSheet<T> extends HookWidget {
             child: DefaultTextStyle(
               style: context.textStyle.paragraphMd,
               child: StyledDock(
+                key: childrenKey,
                 controller: scrollController,
                 aboveButtons: aboveButtons,
                 buttonsBuilder: buttonsBuilder,
                 children: children,
+                shrinkWrap: shrinkWrap,
               ),
             ),
           ),
