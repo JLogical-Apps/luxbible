@@ -34,6 +34,7 @@ import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -94,6 +95,22 @@ class BibleBody extends HookConsumerWidget {
 
     final textSelectionState = useState<BibleTextSelection?>(null);
     final textSelection = textSelectionState.value;
+
+    // Safety net for a Flutter edge case that only surfaced on release builds. A scroll-metrics
+    // listener in this build (e.g. `isAtBottom`, which reads `maxScrollExtent`) can mark this
+    // element needing build during the layout phase — for instance when toggling the bottom bar
+    // changes the scroll extent, causing the ScrollPosition to notify mid-layout. Flutter does not
+    // schedule a frame for a build requested mid-layout/paint, so the dirty flag strands with no
+    // frame queued, and `markNeedsBuild` then early-returns on every later state change. That left a
+    // new text selection unpainted until an unrelated scroll/tap forced a frame (debug hid it by
+    // pumping incidental frames). If a frame ends with this element still dirty and nothing queued,
+    // schedule one so the pending rebuild isn't stranded.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final element = context as Element;
+      if (element.mounted && element.dirty && !SchedulerBinding.instance.hasScheduledFrame) {
+        SchedulerBinding.instance.scheduleFrame();
+      }
+    });
 
     final isScrollingDownState = useState(true);
     final isAtBottom = useListenableSelector(currentScrollController, () {
