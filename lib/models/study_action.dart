@@ -67,7 +67,7 @@ enum StudyAction {
       case interlinear:
         throw UnimplementedError();
       case commentary:
-        return CommentarySheet.buildSheetChildren(context, verseSelection: verseSelection, user: user);
+        throw UnimplementedError();
       case crossReferences:
         final user = ref.read(userProvider);
         final crossReferences = ref.read(crossReferencesProvider);
@@ -204,6 +204,27 @@ enum StudyAction {
             onNavigateToVerseSelection: onNavigateToVerseSelection,
             direction: interlinearDirection,
             user: user,
+          ),
+        );
+      });
+    } else if (this == .commentary) {
+      context.showStyledSheet((context) {
+        final tabController = useTabController(initialLength: user.commentariesOrDefault.length);
+        final selectedCommentary =
+            user.commentariesOrDefault[useListenableSelector(tabController, () => tabController.index)];
+
+        return StyledSheet(
+          title: title().toText(),
+          subtitle: regionFormat.toText(),
+          aboveDivider: StyledTabBar.scrollable(
+            tabController: tabController,
+            tabTitles: user.commentariesOrDefault.map((type) => type.title().toText()).toList(),
+          ),
+          showDivider: false,
+          children: CommentarySheet.buildSheetChildren(
+            context,
+            verseSelection: verseSelection,
+            commentary: selectedCommentary,
           ),
         );
       });

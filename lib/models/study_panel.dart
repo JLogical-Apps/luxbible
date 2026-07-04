@@ -73,7 +73,6 @@ sealed class StudyPanel with _$StudyPanel {
       context,
       verseSelection: verseSelection,
       commentary: type,
-      user: user,
     ),
     NotesStudyPanel() => () {
       final noteAnnotations = [

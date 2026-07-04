@@ -37,30 +37,27 @@ class CompareSheet {
       ];
     }
     final bibles = user.biblesOrDefault;
-    return bibles
-        .mapIndexed<Widget>(
-          (i, translation) => Consumer(
-            builder: (context, ref, child) {
-              final paragraphs = ref
-                  .watch(verseSelectionParagraphsProvider(selection: verseSelection, translation: translation))
-                  .value;
-              return Stack(
-                children: [
-                  StyledStickyHeader.child(
-                    title: translation.title().toText(),
-                    child: _bibleParagraphs(
-                      translation: translation,
-                      paragraphs: paragraphs,
-                      verseSelection: verseSelection,
-                    ),
+    return StyledDivider(height: 2).wrapPositioned(
+      bibles
+          .mapIndexed<Widget>(
+            (i, translation) => Consumer(
+              builder: (context, ref, child) {
+                final paragraphs = ref
+                    .watch(verseSelectionParagraphsProvider(selection: verseSelection, translation: translation))
+                    .value;
+                return StyledStickyHeader.child(
+                  title: translation.title().toText(),
+                  child: _bibleParagraphs(
+                    translation: translation,
+                    paragraphs: paragraphs,
+                    verseSelection: verseSelection,
                   ),
-                  if (i + 1 < bibles.length) Positioned(bottom: 0, left: 0, right: 0, child: StyledDivider(height: 2)),
-                ],
-              );
-            },
-          ),
-        )
-        .toList();
+                );
+              },
+            ),
+          )
+          .toList(),
+    );
   }
 
   static Widget _bibleParagraphs({
