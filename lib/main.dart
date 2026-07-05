@@ -17,6 +17,7 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/path_service.dart';
 import 'package:bible/services/shared_preferences_service.dart';
 import 'package:bible/ui/pages/bible_page.dart';
+import 'package:bible/utils/scroll_behavior.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -104,6 +105,7 @@ class BibleApp extends ConsumerWidget {
         ),
         debugShowCheckedModeBanner: false,
         home: MediaQuery.withNoTextScaling(child: BiblePage()),
+        builder: (context, widget) => ScrollConfiguration(behavior: BouncingScrollBehavior(), child: widget!),
       ),
     );
   }
