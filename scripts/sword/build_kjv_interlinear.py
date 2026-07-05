@@ -362,17 +362,17 @@ def parse_verse(body):
                 pieces.append(("note", note))
             return
         if tag == "w":
-            text = "".join(elem.itertext())
-            if text.strip():
-                lemma = elem.get("lemma", "") or ""
-                pieces.append(("word", dict(
-                    text=text,
-                    strongs=STRONG_RE.findall(lemma),
-                    greeks=GREEK_LEMMA_RE.findall(lemma),
-                    morphs=ROBINSON_RE.findall(elem.get("morph", "") or ""),
-                    srcs=(elem.get("src") or "").split(),
-                    red=red,
-                )))
+            # Untranslated words (self-closing <w src=.../>) are kept too, so they
+            # can become empty interlinear tiles like the BSB's.
+            lemma = elem.get("lemma", "") or ""
+            pieces.append(("word", dict(
+                text="".join(elem.itertext()),
+                strongs=STRONG_RE.findall(lemma),
+                greeks=GREEK_LEMMA_RE.findall(lemma),
+                morphs=ROBINSON_RE.findall(elem.get("morph", "") or ""),
+                srcs=(elem.get("src") or "").split(),
+                red=red,
+            )))
             return
         if tag == "milestone":
             if (elem.get("type", "") or "").startswith("x-p") or elem.get("marker") == "¶":
@@ -409,50 +409,59 @@ def parse_verse(body):
 # --------------------------------------------------------------------------- #
 
 def resolve_ot(word, oshb):
-    """Match a KJV OT word to an OSHB token by Strong's for position, lemma, morph."""
+    """Claim an OSHB token (by Strong's) for each of the KJV word's Strong's numbers,
+    so untranslated particles (the direct-object marker אֵת, etc.) are consumed too.
+    Returns tiles sorted by original position; the content word is flagged primary
+    (it carries the English), the rest are empty particle tiles — like the BSB."""
     norms = [n for n in (norm_strong(s) for s in word["strongs"]) if n]
-    content = [n for n in norms if n != DIR_OBJ_MARKER] or norms
-    primary = None
-    for n in content:
+    if not norms:
+        return []
+    content = {n for n in norms if n != DIR_OBJ_MARKER} or set(norms)
+    claimed = []
+    for n in norms:
         tok = next((t for t in oshb if not t["used"] and n in t["norms"]), None)
         if tok:
             tok["used"] = True
-            if primary is None:
-                primary = tok
-    if primary is None:
-        return None
-    strong = next((n for n in content if n in primary["norms"]), next(iter(primary["norms"]), None))
-    return dict(strong=strong, position=primary["position"], lemma=primary["lemma"], morph=primary["morph"])
+            claimed.append((n, tok))
+    if not claimed:
+        return []
+    primary_i = next((i for i, (n, _) in enumerate(claimed) if n in content), 0)
+    tiles = [
+        dict(strong=n, position=t["position"], lemma=t["lemma"], morph=t["morph"], primary=(i == primary_i))
+        for i, (n, t) in enumerate(claimed)
+    ]
+    tiles.sort(key=lambda d: d["position"])
+    return tiles
 
 
 def resolve_nt(word):
-    """Read the KJV word's embedded TR layer; pick the content word when several
-    Greek words fold into one English word."""
+    """Emit a tile for every TR word folded into this KJV word (positions from src).
+    The content word (non-article) carries the English; Greek articles and other
+    untranslated words become empty tiles — like the BSB."""
     n = max(len(word["strongs"]), len(word["greeks"]), len(word["morphs"]), len(word["srcs"]))
-    if n == 0:
-        return None
 
     def at(seq, i):
         return seq[i] if i < len(seq) else None
 
-    candidates = [
-        dict(
+    tiles = []
+    for i in range(n):
+        src = at(word["srcs"], i)
+        if not (src and src.isdigit()):
+            continue
+        morph = at(word["morphs"], i)
+        tiles.append(dict(
             strong=norm_strong(at(word["strongs"], i) or ""),
-            greek=at(word["greeks"], i),
-            morph=at(word["morphs"], i),
-            src=at(word["srcs"], i),
-        )
-        for i in range(n)
-    ]
-    non_article = [c for c in candidates if not (c["morph"] or "").startswith("T")]
-    pool = non_article or candidates
-    primary = next((c for c in pool if c["src"]), pool[0])
-    return dict(
-        strong=primary["strong"],
-        position=int(primary["src"]) if primary["src"] and primary["src"].isdigit() else None,
-        lemma=primary["greek"],
-        morph=convert_robinson(primary["morph"]) if primary["morph"] else None,
-    )
+            position=int(src),
+            lemma=at(word["greeks"], i),
+            morph=convert_robinson(morph) if morph else None,
+            primary=False,
+        ))
+    if not tiles:
+        return []
+    primary_i = next((i for i, t in enumerate(tiles) if not (t["morph"] or "").startswith("Art")), 0)
+    tiles[primary_i]["primary"] = True
+    tiles.sort(key=lambda d: d["position"])
+    return tiles
 
 
 def char_xml(text, data):
@@ -480,7 +489,7 @@ def build_book(bible, book_name, chapters, osis, usx_code):
     oshb = load_oshb(osis) if is_ot else {}
     headings = load_bsb_headings(usx_code)
     out = ['<?xml version="1.0" encoding="UTF-8"?>', f'<usx version="3.1"><book style="id" code="{usx_code}">KJV</book>']
-    stats = dict(words=0, matched=0, headings=0, notes=0)
+    stats = dict(words=0, matched=0, tiles=0, empty=0, headings=0, notes=0)
     buf = []
 
     def flush_para():
@@ -506,29 +515,71 @@ def build_book(bible, book_name, chapters, osis, usx_code):
                 out.append(f'<para style="{style}">{escape(text)}</para>')
                 stats["headings"] += 1
 
-            buf.append(f'<verse style="v" number="{v}"/>')
+            # Build the verse as ordered items so untranslated original words can be
+            # inserted at their position: ("tile", pos, frag) | ("raw", frag) |
+            # ("break",) | ("title", text).
+            vitems = [("raw", f'<verse style="v" number="{v}"/>')]
+            claimed = set()
+
+            def red_wrap(frag, red):
+                return f'<char style="wj">{frag}</char>' if red else frag
+
             for piece in pieces:
                 kind = piece[0]
                 if kind == "break":
-                    flush_para()
+                    vitems.append(("break",))
                 elif kind == "note":
-                    buf.append(piece[1])
+                    vitems.append(("raw", piece[1]))
                     stats["notes"] += 1
                 elif kind == "title":
-                    flush_para()
-                    out.append(f'<para style="d">{escape(piece[1])}</para>')
+                    vitems.append(("title", piece[1]))
                 elif kind == "text":
                     text = re.sub(r"\s+", " ", piece[1])
                     if text:
-                        buf.append(f'<char style="wj">{escape(text)}</char>' if piece[2] else escape(text))
+                        vitems.append(("raw", red_wrap(escape(text), piece[2])))
                 elif kind == "word":
                     word = piece[1]
-                    data = resolve_ot(word, verse_oshb) if is_ot else resolve_nt(word)
-                    stats["words"] += 1
-                    if data is not None and data["position"] is not None:
-                        stats["matched"] += 1
-                    frag = char_xml(word["text"], data)
-                    buf.append(f'<char style="wj">{frag}</char>' if word["red"] else frag)
+                    tiles = resolve_ot(word, verse_oshb) if is_ot else resolve_nt(word)
+                    if word["text"].strip():
+                        stats["words"] += 1
+                        if tiles:
+                            stats["matched"] += 1
+                    if not tiles:
+                        if word["text"]:
+                            vitems.append(("raw", red_wrap(escape(word["text"]), word["red"])))
+                        continue
+                    for tile in tiles:
+                        text = word["text"] if tile["primary"] else ""
+                        claimed.add(tile["position"])
+                        stats["tiles"] += 1
+                        if not text.strip():
+                            stats["empty"] += 1
+                        vitems.append(("tile", tile["position"], red_wrap(char_xml(text, tile), word["red"])))
+
+            # OSHB backbone: every Hebrew word gets a tile, so the forward interlinear
+            # matches OSHB word-for-word. Words the KJV never tagged become empty tiles,
+            # inserted before the first higher-position tile.
+            if is_ot:
+                for tok in verse_oshb:
+                    if tok["position"] in claimed:
+                        continue
+                    frag = char_xml("", dict(
+                        strong=next(iter(sorted(tok["norms"])), None),
+                        position=tok["position"], lemma=tok["lemma"], morph=tok["morph"],
+                    ))
+                    idx = next((i for i, it in enumerate(vitems) if it[0] == "tile" and it[1] > tok["position"]), len(vitems))
+                    vitems.insert(idx, ("tile", tok["position"], frag))
+                    stats["tiles"] += 1
+                    stats["empty"] += 1
+
+            for it in vitems:
+                if it[0] == "break":
+                    flush_para()
+                elif it[0] == "title":
+                    flush_para()
+                    out.append(f'<para style="d">{escape(it[1])}</para>')
+                else:
+                    buf.append(it[2] if it[0] == "tile" else it[1])
         flush_para()
 
     out.append("</usx>")
@@ -546,18 +597,19 @@ def main():
     bible = sm.get_bible_from_module(list(sm.parse_modules().keys())[0])
     entry_by_osis = {b[1]: b for b in canons["kjv"]["ot"] + canons["kjv"]["nt"]}
 
-    totals = dict(words=0, matched=0, headings=0, notes=0)
+    totals = dict(words=0, matched=0, tiles=0, empty=0, headings=0, notes=0)
     for osis, usx_code in OSIS_USX:
         entry = entry_by_osis[osis]
         stats = build_book(bible, entry[0], entry[3], osis, usx_code)
         for k in totals:
             totals[k] += stats[k]
         pct = 100 * stats["matched"] / stats["words"] if stats["words"] else 0
-        print(f"{usx_code:4s} {osis:6s}: {stats['matched']:6d}/{stats['words']:6d} aligned ({pct:5.1f}%), "
-              f"{stats['headings']:3d} headings")
+        print(f"{usx_code:4s} {osis:6s}: {stats['matched']:6d}/{stats['words']:6d} words aligned ({pct:5.1f}%), "
+              f"{stats['tiles']:6d} tiles ({stats['empty']:5d} empty), {stats['headings']:3d} headings")
 
     pct = 100 * totals["matched"] / totals["words"] if totals["words"] else 0
-    print(f"\nTOTAL: {totals['matched']}/{totals['words']} words carry interlinear data ({pct:.1f}%)")
+    print(f"\nTOTAL: {totals['matched']}/{totals['words']} translated words aligned ({pct:.1f}%)")
+    print(f"       {totals['tiles']} interlinear tiles ({totals['empty']} untranslated/empty, like the BSB)")
     print(f"       {totals['headings']} section headings carried over from the BSB")
     print(f"       {totals['notes']} footnotes from the KJV module")
 
