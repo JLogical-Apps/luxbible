@@ -9,9 +9,9 @@ import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
@@ -53,19 +53,21 @@ enum TextSelectionAction {
   }) async {
     switch (this) {
       case interlinear:
-        if (textSelection.translation != .bsb) {
+        if (!textSelection.translation.isStudy) {
           context.showStyledDialog(
             (context) => StyledDialog.confirm(
               title: 'Interlinear'.toText(),
               body:
-                  "Interlinear by text selection is only available in the BSB, which was designed with word-for-word Strong's and morphology tagging. Switch your translation to the BSB to use this action."
+                  "Interlinear by text selection is only available in Study Bibles, which was designed with word-for-word Strong's and morphology tagging. Switch your translation to a Study Bible to use this action."
                       .toText(),
             ),
           );
           return;
         }
 
-        final studyBible = ref.read(studyBibleProvider);
+        final studyBible = await ref.read(studyBibleProvider.future);
+        if (!context.mounted) return;
+
         final studyWords = studyBible.getTextSelectionWords(textSelection).where((word) => word.data != null).toList();
         if (studyWords.isEmpty) {
           context.showStyledSnackbar(messageText: 'No interlinear words found in this selection.');

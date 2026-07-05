@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
-import 'package:bible/functions/bible_importer.dart';
 import 'package:bible/functions/commentary_importer.dart';
 import 'package:bible/functions/cross_references_importer.dart';
 import 'package:bible/functions/dictionary_importer.dart';
@@ -31,7 +30,6 @@ Future<void> main() async {
 
       await registerLicenses();
 
-      final studyBible = await BibleImporter().importBible(translation: .bsb);
       final commentaries = await CommentaryImporter().import();
       final strongs = await StrongImporter().import();
       final dictionary = await DictionaryImporter().import();
@@ -43,7 +41,6 @@ Future<void> main() async {
 
       ref = ProviderContainer(
         overrides: [
-          studyBibleProvider.overrideWith((ref) => studyBible),
           strongsProvider.overrideWith((ref) => strongs),
           dictionaryProvider.overrideWith((ref) => dictionary),
           crossReferencesProvider.overrideWith((ref) => crossReferences),
@@ -55,6 +52,8 @@ Future<void> main() async {
         observers: [ProviderErrorObserver()],
       );
 
+      eagerlyLoad();
+
       runApp(UncontrolledProviderScope(container: ref, child: BibleApp()));
     },
     (error, stack) {
@@ -64,6 +63,10 @@ Future<void> main() async {
       }
     },
   );
+}
+
+void eagerlyLoad() {
+  ref.read(studyBibleProvider);
 }
 
 class BibleApp extends ConsumerWidget {

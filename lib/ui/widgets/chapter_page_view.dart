@@ -52,10 +52,10 @@ class ChapterPageView extends StatelessWidget {
                     title: 'Something went wrong'.toText(),
                     subtitle: 'Make sure you are connected to the internet or try again later.'.toText(),
                   ),
-                  if (user.translation != .bsb)
+                  if (!user.translation.isStudy)
                     StyledRectButton.secondary(
-                      label: 'Switch to BSB'.toText(),
-                      onPressed: () => ref.updateUser((user) => user.copyWith(translation: .bsb)),
+                      label: 'Switch to ${user.studyTranslation.title()}'.toText(),
+                      onPressed: () => ref.updateUser((user) => user.withTranslation(user.studyTranslation)),
                     ),
                   StyledRectButton.secondary(
                     label: 'Try Again'.toText(),

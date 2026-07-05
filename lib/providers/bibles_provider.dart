@@ -9,6 +9,7 @@ import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/utils/range.dart';
 import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -17,11 +18,14 @@ import 'package:utils_core/utils_core.dart';
 part 'bibles_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Bible studyBible(Ref ref) => throw UnimplementedError();
+Future<Bible> localBible(Ref ref, {required BibleTranslation translation}) async =>
+    BibleImporter().importBible(translation: translation);
 
 @Riverpod(keepAlive: true)
-Future<Bible> localBible(Ref ref, {required BibleTranslation translation}) async =>
-    translation == .bsb ? ref.watch(studyBibleProvider) : BibleImporter().importBible(translation: translation);
+FutureOr<Bible> studyBible(Ref ref) {
+  final user = ref.watch(userProvider);
+  return ref.watch(localBibleProvider(translation: user.studyTranslation)).requireValue;
+}
 
 @Riverpod(keepAlive: true)
 FutureOr<Chapter> chapter(

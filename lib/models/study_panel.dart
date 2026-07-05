@@ -1,3 +1,4 @@
+import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/commentary_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
@@ -53,6 +54,7 @@ sealed class StudyPanel with _$StudyPanel {
     required VerseSelection verseSelection,
     required Function(VerseSelection) onNavigateToVerseSelection,
     required User user,
+    required Bible studyBible,
   }) => switch (this) {
     CompareStudyPanel(:final translation) => CompareSheet.buildSheetChildren(
       context,
@@ -65,6 +67,7 @@ sealed class StudyPanel with _$StudyPanel {
       verseSelection: verseSelection,
       onNavigateToVerseSelection: onNavigateToVerseSelection,
       user: user,
+      studyBible: studyBible,
       direction: direction,
       showDirectionBanner: false,
       popOnAction: false,

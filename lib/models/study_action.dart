@@ -1,4 +1,3 @@
-import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/reference/verse_span_reference.dart';
@@ -72,9 +71,9 @@ enum StudyAction {
         final user = ref.read(userProvider);
         final crossReferences = ref.read(crossReferencesProvider);
 
-        final crossReferenceTranslation = user.translation.isOnline ? BibleTranslation.bsb : user.translation;
-        final showCrossReferencesBsbBanner =
-            user.translation.isOnline && !user.tutorials.contains(Tutorial.crossReferencesBsb);
+        final crossReferenceTranslation = user.translation.isOnline ? user.studyTranslation : user.translation;
+        final showCrossReferencesStudyBanner =
+            user.translation.isOnline && !user.tutorials.contains(Tutorial.crossReferencesStudy);
 
         final crossReferenceSpans = verseSelection.references
             .map((reference) => crossReferences[reference])
@@ -94,26 +93,26 @@ enum StudyAction {
                 ),
               ]
             : [
-                if (showCrossReferencesBsbBanner)
+                if (showCrossReferencesStudyBanner)
                   Padding(
                     padding: .all(16),
                     child: StyledBanner(
                       colorBuilder: .surfaceTertiary,
                       leading: Symbols.book.toIcon(),
-                      message: 'Cross references use BSB'.toText(),
+                      message: 'Cross references use ${user.studyTranslation.title()}'.toText(),
                       action: StyledTextAction(
                         label: 'Learn More'.toText(),
                         onPressed: () => context.showStyledDialog(
                           (context) => StyledDialog(
                             title: 'Cross References'.toText(),
                             body:
-                                "Because your selected translation is only available online, cross references are shown using the BSB to save on performance and costs. Your selected translation is used everywhere else in the app."
+                                "Because your selected translation is only available online, cross references are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app."
                                     .toText(),
                             buttonsBuilder: (context) => [
                               StyledRectButton.secondary(
                                 label: "Don't Show Again".toText(),
                                 onPressed: () {
-                                  ref.updateUser((user) => user.withTutorial(.crossReferencesBsb));
+                                  ref.updateUser((user) => user.withTutorial(.crossReferencesStudy));
                                   context.pop();
                                 },
                               ),
@@ -190,7 +189,7 @@ enum StudyAction {
         final interlinearDirection =
             InterlinearDirection.values[useListenableSelector(tabController, () => tabController.index)];
 
-        return StyledSheet(
+        return StyledSheet.builder(
           title: 'Interlinear'.toText(),
           subtitle: regionFormat.toText(),
           aboveDivider: StyledTabBar.fill(
@@ -198,13 +197,20 @@ enum StudyAction {
             tabTitles: InterlinearDirection.values.map((direction) => direction.title().toText()).toList(),
           ),
           showDivider: false,
-          children: InterlinearSheet.buildSheetChildren(
-            context,
-            verseSelection: verseSelection,
-            onNavigateToVerseSelection: onNavigateToVerseSelection,
-            direction: interlinearDirection,
-            user: user,
-          ),
+          childrenBuilder: (context, ref) {
+            final studyBible = ref.watch(studyBibleProvider).value;
+            if (studyBible == null) {
+              return [Padding(padding: .all(16), child: StyledLoading())];
+            }
+            return InterlinearSheet.buildSheetChildren(
+              context,
+              verseSelection: verseSelection,
+              onNavigateToVerseSelection: onNavigateToVerseSelection,
+              direction: interlinearDirection,
+              user: user,
+              studyBible: studyBible,
+            );
+          },
         );
       });
     } else if (this == .commentary) {

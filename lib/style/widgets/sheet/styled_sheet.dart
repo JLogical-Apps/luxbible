@@ -12,12 +12,13 @@ import 'package:bible/utils/hook_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intersperse/intersperse.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' as provider;
 
-class StyledSheet<T> extends HookWidget {
+class StyledSheet<T> extends HookConsumerWidget {
   final Widget? title;
   final Widget? subtitle;
   final Widget? leading;
@@ -28,14 +29,14 @@ class StyledSheet<T> extends HookWidget {
   final bool showDragHandle;
 
   final Key? childrenKey;
-  final List<Widget> children;
+  final List<Widget> Function(BuildContext context, WidgetRef ref) childrenBuilder;
 
   final Widget? aboveButtons;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
 
   final bool shrinkWrap;
 
-  const StyledSheet({
+  StyledSheet({
     super.key,
     this.title,
     this.subtitle,
@@ -45,11 +46,11 @@ class StyledSheet<T> extends HookWidget {
     this.showDivider = true,
     this.showDragHandle = true,
     this.childrenKey,
-    this.children = const [],
+    List<Widget> children = const [],
     this.aboveButtons,
     this.buttonsBuilder,
     this.shrinkWrap = true,
-  });
+  }) : childrenBuilder = ((context, ref) => children);
 
   StyledSheet.child({
     super.key,
@@ -65,10 +66,28 @@ class StyledSheet<T> extends HookWidget {
     this.aboveButtons,
     this.buttonsBuilder,
     this.shrinkWrap = true,
-  }) : children = [child];
+  }) : childrenBuilder = ((context, ref) => [child]);
+
+  const StyledSheet.builder({
+    super.key,
+    required this.title,
+    this.subtitle,
+    this.leading,
+    this.trailing,
+    this.aboveDivider,
+    this.showDivider = true,
+    this.showDragHandle = true,
+    this.childrenKey,
+    required this.childrenBuilder,
+    this.aboveButtons,
+    this.buttonsBuilder,
+    this.shrinkWrap = true,
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final children = childrenBuilder(context, ref);
+
     final sheetNavigationContext = context.watch<SheetNavigationBreadcrumbContext?>();
 
     final depth = (sheetNavigationContext?.breadcrumbs.length ?? 1) - 1;
@@ -101,7 +120,7 @@ class StyledSheet<T> extends HookWidget {
       context.pop();
       context.showStyledSheet(
         (context) => breadcrumb.sheetBuilder(context),
-        wrapper: (sheetBuilder) => Provider.value(
+        wrapper: (sheetBuilder) => provider.Provider.value(
           value: SheetNavigationBreadcrumbContext(
             breadcrumbs: sheetNavigationContext.breadcrumbs.take(breadcrumbIndex + 1).toList(),
             scrollOffsetByDepth: sheetNavigationContext.scrollOffsetByDepth,

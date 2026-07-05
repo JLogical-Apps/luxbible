@@ -6,7 +6,7 @@ import 'package:shimmer/shimmer.dart';
 class StyledLoading extends StatelessWidget {
   final Widget? child;
 
-  const StyledLoading({super.key, required this.child});
+  const StyledLoading({super.key, this.child});
 
   @override
   Widget build(BuildContext context) {

@@ -707,7 +707,7 @@ class BibleBody extends HookConsumerWidget {
             ...studyPanels.mapIndexed(
               (i, studyPanel) => Padding(
                 padding: isSideLayout ? .symmetric(horizontal: 4) : .zero,
-                child: StyledSheet(
+                child: StyledSheet.builder(
                   key: ValueKey((i, visibleVerseSelection)),
                   showDragHandle: !isSideLayout,
                   title: visibleVerseSelection.format().toText(),
@@ -717,12 +717,19 @@ class BibleBody extends HookConsumerWidget {
                     onPressed: () =>
                         ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
                   ),
-                  children: studyPanel.buildSheetChildren(
-                    context,
-                    verseSelection: visibleVerseSelection,
-                    onNavigateToVerseSelection: navigateToVerseSelection,
-                    user: user,
-                  ),
+                  childrenBuilder: (context, ref) {
+                    final studyBible = ref.watch(studyBibleProvider).value;
+                    if (studyBible == null) {
+                      return [Padding(padding: .all(16), child: StyledLoading())];
+                    }
+                    return studyPanel.buildSheetChildren(
+                      context,
+                      verseSelection: visibleVerseSelection,
+                      onNavigateToVerseSelection: navigateToVerseSelection,
+                      user: user,
+                      studyBible: studyBible,
+                    );
+                  },
                 ),
               ),
             ),

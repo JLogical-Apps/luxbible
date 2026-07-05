@@ -9,46 +9,6 @@ part of 'bibles_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(studyBible)
-final studyBibleProvider = StudyBibleProvider._();
-
-final class StudyBibleProvider extends $FunctionalProvider<Bible, Bible, Bible>
-    with $Provider<Bible> {
-  StudyBibleProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'studyBibleProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$studyBibleHash();
-
-  @$internal
-  @override
-  $ProviderElement<Bible> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
-
-  @override
-  Bible create(Ref ref) {
-    return studyBible(ref);
-  }
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(Bible value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<Bible>(value),
-    );
-  }
-}
-
-String _$studyBibleHash() => r'b7f3d27c35ba981df493655e1f08c828e0640929';
-
 @ProviderFor(localBible)
 final localBibleProvider = LocalBibleFamily._();
 
@@ -98,7 +58,7 @@ final class LocalBibleProvider
   }
 }
 
-String _$localBibleHash() => r'89f5fe56d2a6f7fc8d4cb564926eeee60342e09d';
+String _$localBibleHash() => r'f4ee81d6d88803abe9aa50e2ff78e9bab1ffc892';
 
 final class LocalBibleFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<Bible>, BibleTranslation> {
@@ -117,6 +77,39 @@ final class LocalBibleFamily extends $Family
   @override
   String toString() => r'localBibleProvider';
 }
+
+@ProviderFor(studyBible)
+final studyBibleProvider = StudyBibleProvider._();
+
+final class StudyBibleProvider
+    extends $FunctionalProvider<AsyncValue<Bible>, Bible, FutureOr<Bible>>
+    with $FutureModifier<Bible>, $FutureProvider<Bible> {
+  StudyBibleProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'studyBibleProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$studyBibleHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<Bible> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<Bible> create(Ref ref) {
+    return studyBible(ref);
+  }
+}
+
+String _$studyBibleHash() => r'38488664834ff466439fb919c22a900bde2538ec';
 
 @ProviderFor(chapter)
 final chapterProvider = ChapterFamily._();

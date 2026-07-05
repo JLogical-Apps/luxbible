@@ -3,6 +3,7 @@ import 'package:bible/style/widgets/styled_list_item.dart';
 import 'package:bible/style/widgets/styled_select.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class StyledSelectionSheet<T> extends StyledSheet<T> {
   final List<T> options;
@@ -10,7 +11,7 @@ class StyledSelectionSheet<T> extends StyledSheet<T> {
   final StyledSelectOption<T> Function(T) optionMapper;
   final Widget? aboveOptions;
 
-  const StyledSelectionSheet({
+  StyledSelectionSheet({
     super.key,
     required super.title,
     required this.options,
@@ -21,7 +22,7 @@ class StyledSelectionSheet<T> extends StyledSheet<T> {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return StyledSheet(
       title: title,
       trailing: trailing,

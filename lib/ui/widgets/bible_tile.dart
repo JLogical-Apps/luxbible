@@ -27,7 +27,7 @@ class BibleTile extends StatelessWidget {
             leading: Symbols.cloud.toIcon(),
             colorBuilder: ColorBuilder((colors) => colors.blue.tertiary),
           ),
-        if (translation == .bsb)
+        if (translation.isStudy)
           StyledTag.sm(
             child: 'Study Bible'.toText(),
             leading: Symbols.school.toIcon(),
@@ -59,7 +59,7 @@ class BibleTile extends StatelessWidget {
                   subtitle: 'This translation is downloaded to your device, so you can search it and read offline.'
                       .toText(),
                 ),
-          translation == .bsb
+          translation.isStudy
               ? StyledListItem(
                   leading: Symbols.school.toIcon(),
                   title: 'Study Bible'.toText(),

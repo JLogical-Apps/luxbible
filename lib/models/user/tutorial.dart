@@ -1,1 +1,1 @@
-enum Tutorial { interlinearBsb, crossReferencesBsb, concordanceBsb }
+enum Tutorial { interlinearStudy, crossReferencesStudy, concordanceStudy }

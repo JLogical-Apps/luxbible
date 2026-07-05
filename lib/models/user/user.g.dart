@@ -10,6 +10,12 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   translation:
       $enumDecodeNullable(_$BibleTranslationEnumMap, json['translation']) ??
       BibleTranslation.bsb,
+  studyTranslation:
+      $enumDecodeNullable(
+        _$BibleTranslationEnumMap,
+        json['studyTranslation'],
+      ) ??
+      BibleTranslation.bsb,
   bibles: (json['bibles'] as List<dynamic>?)
       ?.map((e) => $enumDecode(_$BibleTranslationEnumMap, e))
       .toList(),
@@ -93,9 +99,15 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
       (json['studyPanelBottomPosition'] as num?)?.toDouble() ?? 0.5,
   tutorials:
       (json['tutorials'] as List<dynamic>?)
-          ?.map((e) => $enumDecode(_$TutorialEnumMap, e))
-          .toList() ??
-      const [],
+          ?.map(
+            (e) => $enumDecodeNullable(
+              _$TutorialEnumMap,
+              e,
+              unknownValue: JsonKey.nullForUndefinedEnumValue,
+            ),
+          )
+          .toSet() ??
+      const {},
   completedOnboardingSteps: (json['completedOnboardingSteps'] as List<dynamic>?)
       ?.map((e) => $enumDecode(_$OnboardingStepEnumMap, e))
       .toList(),
@@ -103,6 +115,7 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'translation': _$BibleTranslationEnumMap[instance.translation]!,
+  'studyTranslation': _$BibleTranslationEnumMap[instance.studyTranslation]!,
   'bibles': instance.bibles?.map((e) => _$BibleTranslationEnumMap[e]!).toList(),
   'commentaries': instance.commentaries
       ?.map((e) => _$CommentaryTypeEnumMap[e]!)
@@ -126,7 +139,7 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'studyPanels': instance.studyPanels.map((e) => e.toJson()).toList(),
   'studyPanelIndex': instance.studyPanelIndex,
   'studyPanelBottomPosition': instance.studyPanelBottomPosition,
-  'tutorials': instance.tutorials.map((e) => _$TutorialEnumMap[e]!).toList(),
+  'tutorials': instance.tutorials.map((e) => _$TutorialEnumMap[e]).toList(),
   'completedOnboardingSteps': instance.completedOnboardingSteps
       ?.map((e) => _$OnboardingStepEnumMap[e]!)
       .toList(),
@@ -174,9 +187,9 @@ const _$ThemeModeEnumMap = {
 };
 
 const _$TutorialEnumMap = {
-  Tutorial.interlinearBsb: 'interlinearBsb',
-  Tutorial.crossReferencesBsb: 'crossReferencesBsb',
-  Tutorial.concordanceBsb: 'concordanceBsb',
+  Tutorial.interlinearStudy: 'interlinearStudy',
+  Tutorial.crossReferencesStudy: 'crossReferencesStudy',
+  Tutorial.concordanceStudy: 'concordanceStudy',
 };
 
 const _$OnboardingStepEnumMap = {

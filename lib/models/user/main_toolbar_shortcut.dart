@@ -86,7 +86,7 @@ enum MainToolbarShortcut {
         switchBible => () async {
           final newTranslation = await BibleSheet.show(context);
           if (newTranslation != null) {
-            ref.updateUser((user) => user.copyWith(translation: newTranslation));
+            ref.updateUser((user) => user.withTranslation(newTranslation));
           }
         }(),
         dictionary => context.push(DictionaryPage()),

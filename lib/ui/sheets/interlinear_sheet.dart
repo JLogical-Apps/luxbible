@@ -1,9 +1,9 @@
 import 'dart:collection';
 
+import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/models/user/user.dart';
-import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
@@ -24,14 +24,14 @@ class InterlinearSheet {
     required Function(VerseSelection) onNavigateToVerseSelection,
     required InterlinearDirection direction,
     required User user,
+    required Bible studyBible,
     bool showDirectionBanner = true,
     bool popOnAction = true,
   }) {
-    final studyBible = ref.read(studyBibleProvider);
-    final showInterlinearBsbBanner = user.translation != .bsb && !user.tutorials.contains(Tutorial.interlinearBsb);
+    final showInterlinearStudyBanner = !user.translation.isStudy && !user.tutorials.contains(Tutorial.interlinearStudy);
 
     return [
-      if (showDirectionBanner || showInterlinearBsbBanner)
+      if (showDirectionBanner || showInterlinearStudyBanner)
         Padding(
           padding: .all(16),
           child: Column(
@@ -39,24 +39,24 @@ class InterlinearSheet {
             children: [
               if (showDirectionBanner)
                 StyledTile.message(leading: direction.icon.toIcon(), title: direction.description().toText()),
-              if (showInterlinearBsbBanner)
+              if (showInterlinearStudyBanner)
                 StyledBanner(
                   colorBuilder: .surfaceTertiary,
                   leading: Symbols.book.toIcon(),
-                  message: 'Interlinear uses BSB'.toText(),
+                  message: 'Interlinear uses ${user.studyTranslation.title()}'.toText(),
                   action: StyledTextAction(
                     label: 'Learn More'.toText(),
                     onPressed: () => context.showStyledDialog(
                       (context) => StyledDialog(
                         title: 'Interlinear Bible'.toText(),
                         body:
-                            "The BSB was designed with word-for-word Strong's and morphology tagging, which is what makes the Interlinear lexical breakdown possible. Your selected translation is used everywhere else in the app."
+                            "Study Bibles are designed with word-for-word Strong's and morphology tagging, which is what makes the Interlinear lexical breakdown possible. Your most-recent Study Bible will be used for interlinear. Your selected translation is used everywhere else in the app."
                                 .toText(),
                         buttonsBuilder: (context) => [
                           StyledRectButton.secondary(
                             label: "Don't Show Again".toText(),
                             onPressed: () {
-                              ref.updateUser((user) => user.withTutorial(.interlinearBsb));
+                              ref.updateUser((user) => user.withTutorial(.interlinearStudy));
                               context.pop();
                             },
                           ),

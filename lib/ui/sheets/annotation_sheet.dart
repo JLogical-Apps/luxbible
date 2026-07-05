@@ -60,7 +60,7 @@ class AnnotationSheet {
             ? null
             : StyledCircleButton.lg(child: Symbols.ink_eraser.toIcon(), onPressed: () => onRemove(context)),
         port: port,
-        childrenBuilder: (context) => [
+        childrenBuilder: (context, ref) => [
           if (user.notebooks.isNotEmpty)
             Consumer(
               builder: (context, ref, child) {

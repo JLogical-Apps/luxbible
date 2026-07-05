@@ -1,11 +1,12 @@
 import 'package:bible/style/style.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:utils_core/utils_core.dart';
 
@@ -19,7 +20,7 @@ class StyledMultiSelectionSheet<T> extends StyledSheet<List<T>> {
 
   final List<String> Function(T)? searchKeywordsMapper;
 
-  const StyledMultiSelectionSheet({
+  StyledMultiSelectionSheet({
     super.key,
     required super.title,
     super.trailing,
@@ -31,7 +32,7 @@ class StyledMultiSelectionSheet<T> extends StyledSheet<List<T>> {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final searchKeywordsMapper = this.searchKeywordsMapper;
 
     final selectedOptionsState = useState(initialOptions);

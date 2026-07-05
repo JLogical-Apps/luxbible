@@ -1,16 +1,15 @@
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/styled_rect_button.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/port_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
+import 'package:bible/utils/extensions/port_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:port/port.dart';
 
 class StyledPortSheet<T> extends StyledSheet<T> {
   final Port<T> port;
-
-  final List<Widget> Function(BuildContext) childrenBuilder;
 
   const StyledPortSheet({
     super.key,
@@ -18,11 +17,11 @@ class StyledPortSheet<T> extends StyledSheet<T> {
     required super.title,
     super.subtitle,
     super.trailing,
-    required this.childrenBuilder,
-  });
+    required super.childrenBuilder,
+  }) : super.builder();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final port = useMemoized(() => this.port);
     return StyledSheet.child(
       title: title,
@@ -33,7 +32,7 @@ class StyledPortSheet<T> extends StyledSheet<T> {
         child: PortBuilder(
           port: port,
           builder: (context, port) =>
-              Column(spacing: 16, crossAxisAlignment: .start, children: childrenBuilder(context)),
+              Column(spacing: 16, crossAxisAlignment: .start, children: childrenBuilder(context, ref)),
         ),
       ),
       buttonsBuilder: (context) => [

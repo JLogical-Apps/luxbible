@@ -29,7 +29,7 @@ class BookmarkSheet {
                 color: values['color'],
               ),
             ),
-        childrenBuilder: (context) => [
+        childrenBuilder: (context, ref) => [
           StyledPortFieldBuilder<ColorEnum>(
             fieldPath: 'color',
             builder: (context, value, errorText, onChanged) => StyledFormInput(

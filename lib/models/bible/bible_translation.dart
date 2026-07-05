@@ -4,6 +4,7 @@ import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bible/chapter.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/testament.dart';
+import 'package:flutter/foundation.dart';
 
 enum BibleTranslation {
   bsb,
@@ -92,6 +93,8 @@ enum BibleTranslation {
 
   bool get isLocal => source == .local;
   bool get isOnline => !isLocal;
+
+  bool get isStudy => this == .bsb || this == .kjv;
 }
 
 sealed class BibleTranslationSource {
@@ -113,7 +116,7 @@ class LocalTranslationSource implements BibleTranslationSource {
     required ChapterReference chapterReference,
     required BibleTranslation translation,
     required Bible? localBible,
-  }) async => localBible!.getChapterByReference(chapterReference);
+  }) => SynchronousFuture(localBible!.getChapterByReference(chapterReference));
 }
 
 class YouVersionTranslationSource implements BibleTranslationSource {

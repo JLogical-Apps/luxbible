@@ -21,6 +21,7 @@ import 'package:bible/models/user/verse_selection_configuration.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
+import 'package:bible/utils/serialization_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -35,6 +36,7 @@ sealed class User with _$User {
 
   const factory User({
     @Default(BibleTranslation.bsb) BibleTranslation translation,
+    @Default(BibleTranslation.bsb) BibleTranslation studyTranslation,
     List<BibleTranslation>? bibles,
     List<CommentaryType>? commentaries,
     @ChapterPositionFromReference('lastReference')
@@ -57,7 +59,7 @@ sealed class User with _$User {
     @Default([]) List<StudyPanel> studyPanels,
     int? studyPanelIndex,
     @Default(0.5) double studyPanelBottomPosition,
-    @Default([]) List<Tutorial> tutorials,
+    @Default({}) @nullUnknownEnum Set<Tutorial?> tutorials,
     List<OnboardingStep>? completedOnboardingSteps,
   }) = _User;
 
@@ -256,7 +258,7 @@ sealed class User with _$User {
   User withStudyPanel(StudyPanel studyPanel) =>
       copyWith(studyPanels: [...studyPanels, studyPanel], studyPanelIndex: studyPanels.length);
 
-  User withTutorial(Tutorial tutorial) => copyWith(tutorials: tutorials + [tutorial]);
+  User withTutorial(Tutorial tutorial) => copyWith(tutorials: {...tutorials, tutorial});
 
   User withOnboardingStepCompleted(OnboardingStep step) {
     final completed = completedOnboardingSteps;
@@ -288,4 +290,7 @@ sealed class User with _$User {
       longPressShortcut: preset.textLongPressShortcut,
     ),
   );
+
+  User withTranslation(BibleTranslation translation) =>
+      copyWith(translation: translation, studyTranslation: translation.isStudy ? translation : studyTranslation);
 }
