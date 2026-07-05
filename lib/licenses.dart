@@ -15,21 +15,21 @@ Future<void> registerLicenses() async {
     yield const LicenseEntryWithLineBreaks(
       ['Berean Standard Bible (BSB)'],
       '''
-The Holy Bible, Berean Standard Bible (BSB).
+The Holy Bible, Berean Standard Bible, BSB is produced in cooperation with Bible Hub, Discovery Bible, OpenBible.com, and the Berean Bible Translation Committee.
 
-The Berean Bible and Majority Bible texts are officially dedicated to the public domain as of April 30, 2023. Attribution is appreciated but not required.
-
-Suggested attribution: "The Holy Bible, Berean Standard Bible, BSB is produced in cooperation with Bible Hub, Discovery Bible, OpenBible.com, and the Berean Bible Translation Committee."
-
-Source: https://berean.bible/''',
+https://berean.bible/''',
     );
 
     yield const LicenseEntryWithLineBreaks(
       ['King James Version (KJV)'],
       '''
-The Holy Bible, King James Version (KJV).
+The Holy Bible, King James Version (KJV), 1769.
 
-The King James Version is in the public domain in the United States and most of the world. (In the United Kingdom, rights are vested in the Crown.)''',
+The King James Version base text is in the public domain in the United States and most of the world. (In the United Kingdom, rights are vested in the Crown.)
+
+Strong's numbers, Greek morphology, and footnotes are taken from the KJV SWORD module of the CrossWire Bible Society, licensed under the GNU General Public License (GPL). Hebrew morphology is derived from the Open Scriptures Hebrew Bible, licensed under Creative Commons Attribution 4.0 (CC BY 4.0).
+
+Source: https://www.crosswire.org''',
     );
 
     yield const LicenseEntryWithLineBreaks(
@@ -37,7 +37,11 @@ The King James Version is in the public domain in the United States and most of 
       '''
 The Holy Bible, American Standard Version (ASV), 1901.
 
-The American Standard Version is in the public domain.''',
+The American Standard Version is in the public domain.
+
+Text, paragraph formatting, and footnotes are taken from the ASV SWORD module distributed by the CrossWire Bible Society, sourced from eBible.org.
+
+Source: http://www.ebible.org/bible/asv/''',
     );
 
     yield const LicenseEntryWithLineBreaks(
