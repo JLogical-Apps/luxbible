@@ -11,6 +11,7 @@ import 'package:bible/style/widgets/styled_form_input.dart';
 import 'package:bible/style/widgets/styled_port_field_builder.dart';
 import 'package:bible/style/widgets/styled_select.dart';
 import 'package:bible/style/widgets/styled_text_field.dart';
+import 'package:bible/ui/pages/notebook_icon.dart';
 import 'package:bible/ui/pages/notebooks_page.dart';
 import 'package:bible/ui/widgets/colored_circle.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
@@ -74,17 +75,10 @@ class AnnotationSheet {
                       final notebook = user.getNotebookById(id);
                       return StyledSelectOption(
                         title: (notebook?.name ?? 'Default').toText(),
-                        leading: ColoredCircle(color: (notebook?.color ?? .stone).toHue(context.colors).primary),
+                        leading: NotebookIcon(notebook: notebook),
                       );
                     },
-                    onSelected: (id) {
-                      onChanged(id);
-                      if (user.getNotebookById(id) case final notebook?) {
-                        port.setValue(path: 'color', value: notebook.color);
-                      } else {
-                        port.setValue(path: 'color', value: ColorEnum.stone);
-                      }
-                    },
+                    onSelected: (id) => onChanged(id),
                     dialogTrailing: StyledCircleButton.md(
                       child: Symbols.tune.toIcon(),
                       onPressed: () {

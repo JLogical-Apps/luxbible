@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Notebook {
 
- String get id; String get name; ColorEnum get color;
+ String get id; String get name; ColorEnum get color; bool get isVisible;
 /// Create a copy of Notebook
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $NotebookCopyWith<Notebook> get copyWith => _$NotebookCopyWithImpl<Notebook>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Notebook&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.color, color) || other.color == color));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Notebook&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.color, color) || other.color == color)&&(identical(other.isVisible, isVisible) || other.isVisible == isVisible));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,color);
+int get hashCode => Object.hash(runtimeType,id,name,color,isVisible);
 
 @override
 String toString() {
-  return 'Notebook(id: $id, name: $name, color: $color)';
+  return 'Notebook(id: $id, name: $name, color: $color, isVisible: $isVisible)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $NotebookCopyWith<$Res>  {
   factory $NotebookCopyWith(Notebook value, $Res Function(Notebook) _then) = _$NotebookCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, ColorEnum color
+ String id, String name, ColorEnum color, bool isVisible
 });
 
 
@@ -65,12 +65,13 @@ class _$NotebookCopyWithImpl<$Res>
 
 /// Create a copy of Notebook
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? color = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? color = null,Object? isVisible = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
-as ColorEnum,
+as ColorEnum,isVisible: null == isVisible ? _self.isVisible : isVisible // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  ColorEnum color)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  ColorEnum color,  bool isVisible)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Notebook() when $default != null:
-return $default(_that.id,_that.name,_that.color);case _:
+return $default(_that.id,_that.name,_that.color,_that.isVisible);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.id,_that.name,_that.color);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  ColorEnum color)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  ColorEnum color,  bool isVisible)  $default,) {final _that = this;
 switch (_that) {
 case _Notebook():
-return $default(_that.id,_that.name,_that.color);}
+return $default(_that.id,_that.name,_that.color,_that.isVisible);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -190,10 +191,10 @@ return $default(_that.id,_that.name,_that.color);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  ColorEnum color)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  ColorEnum color,  bool isVisible)?  $default,) {final _that = this;
 switch (_that) {
 case _Notebook() when $default != null:
-return $default(_that.id,_that.name,_that.color);case _:
+return $default(_that.id,_that.name,_that.color,_that.isVisible);case _:
   return null;
 
 }
@@ -205,12 +206,13 @@ return $default(_that.id,_that.name,_that.color);case _:
 @JsonSerializable()
 
 class _Notebook extends Notebook {
-  const _Notebook({required this.id, required this.name, this.color = ColorEnum.stone}): super._();
+  const _Notebook({required this.id, required this.name, this.color = ColorEnum.stone, this.isVisible = true}): super._();
   factory _Notebook.fromJson(Map<String, dynamic> json) => _$NotebookFromJson(json);
 
 @override final  String id;
 @override final  String name;
 @override@JsonKey() final  ColorEnum color;
+@override@JsonKey() final  bool isVisible;
 
 /// Create a copy of Notebook
 /// with the given fields replaced by the non-null parameter values.
@@ -225,16 +227,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Notebook&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.color, color) || other.color == color));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Notebook&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.color, color) || other.color == color)&&(identical(other.isVisible, isVisible) || other.isVisible == isVisible));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,name,color);
+int get hashCode => Object.hash(runtimeType,id,name,color,isVisible);
 
 @override
 String toString() {
-  return 'Notebook(id: $id, name: $name, color: $color)';
+  return 'Notebook(id: $id, name: $name, color: $color, isVisible: $isVisible)';
 }
 
 
@@ -245,7 +247,7 @@ abstract mixin class _$NotebookCopyWith<$Res> implements $NotebookCopyWith<$Res>
   factory _$NotebookCopyWith(_Notebook value, $Res Function(_Notebook) _then) = __$NotebookCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, ColorEnum color
+ String id, String name, ColorEnum color, bool isVisible
 });
 
 
@@ -262,12 +264,13 @@ class __$NotebookCopyWithImpl<$Res>
 
 /// Create a copy of Notebook
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? color = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? color = null,Object? isVisible = null,}) {
   return _then(_Notebook(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
-as ColorEnum,
+as ColorEnum,isVisible: null == isVisible ? _self.isVisible : isVisible // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

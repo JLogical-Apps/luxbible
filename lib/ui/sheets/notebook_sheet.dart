@@ -1,9 +1,10 @@
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/notebook.dart';
 import 'package:bible/style/style.dart';
-import 'package:bible/ui/widgets/colored_circle.dart';
+import 'package:bible/ui/widgets/selectable_icon.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:port/port.dart';
 import 'package:uuid/uuid.dart';
 
@@ -16,8 +17,10 @@ class NotebookSheet {
             'color': SimplePortField<ColorEnum>(value: initialNotebook?.color ?? ColorEnum.stone),
             'name': PortField.string(initialValue: initialNotebook?.name).isNotBlank(),
           }).map(
-            (values, port) =>
-                Notebook(id: initialNotebook?.id ?? Uuid().v4(), name: values['name'], color: values['color']),
+            (values, port) => (initialNotebook ?? Notebook(id: initialNotebook?.id ?? Uuid().v4(), name: '')).copyWith(
+              name: values['name'],
+              color: values['color'],
+            ),
           ),
       childrenBuilder: (context) => [
         StyledPortFieldBuilder<ColorEnum>(
@@ -29,7 +32,11 @@ class NotebookSheet {
               children: ColorEnum.values
                   .map(
                     (color) => StyledCircleButton.lg(
-                      child: ColoredCircle(color: color.toHue(context.colors).primary, isSelected: value == color),
+                      child: SelectableIcon(
+                        Symbols.book_2,
+                        isSelected: color == value,
+                        color: color.toHue(context.colors).medium,
+                      ),
                       onPressed: () => onChanged(color),
                     ),
                   )

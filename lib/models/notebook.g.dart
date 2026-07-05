@@ -11,12 +11,14 @@ _Notebook _$NotebookFromJson(Map<String, dynamic> json) => _Notebook(
   name: json['name'] as String,
   color:
       $enumDecodeNullable(_$ColorEnumEnumMap, json['color']) ?? ColorEnum.stone,
+  isVisible: json['isVisible'] as bool? ?? true,
 );
 
 Map<String, dynamic> _$NotebookToJson(_Notebook instance) => <String, dynamic>{
   'id': instance.id,
   'name': instance.name,
   'color': _$ColorEnumEnumMap[instance.color]!,
+  'isVisible': instance.isVisible,
 };
 
 const _$ColorEnumEnumMap = {

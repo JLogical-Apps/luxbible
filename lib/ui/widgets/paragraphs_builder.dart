@@ -198,7 +198,7 @@ class ParagraphsBuilder extends HookWidget {
                         ...paragraph.verses
                             .map((verse) {
                               final reference = getVerseReference(verse);
-                              final annotations = user.annotations
+                              final annotations = user.visibleAnnotations
                                   .where((annotation) => annotation.verseSelection?.hasReference(reference) == true)
                                   .toSet();
                               return (
@@ -716,9 +716,7 @@ class ParagraphsBuilder extends HookWidget {
                                             if (confirmed == true && context.mounted) {
                                               context.pop();
                                               context.pop();
-                                              root_ref.ref.updateUser(
-                                                (user) => user.withRemovedAnnotation(annotation),
-                                              );
+                                              root_ref.ref.updateUser((user) => user.withRemovedAnnotation(annotation));
                                             }
                                           },
                                         ),

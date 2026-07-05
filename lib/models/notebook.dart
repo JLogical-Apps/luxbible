@@ -8,8 +8,12 @@ part 'notebook.g.dart';
 sealed class Notebook with _$Notebook {
   const Notebook._();
 
-  const factory Notebook({required String id, required String name, @Default(ColorEnum.stone) ColorEnum color}) =
-      _Notebook;
+  const factory Notebook({
+    required String id,
+    required String name,
+    @Default(ColorEnum.stone) ColorEnum color,
+    @Default(true) bool isVisible,
+  }) = _Notebook;
 
   factory Notebook.fromJson(Map<String, dynamic> json) => _$NotebookFromJson(json);
 }

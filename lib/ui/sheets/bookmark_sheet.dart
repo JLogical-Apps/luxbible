@@ -3,6 +3,7 @@ import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/reference/chapter_position.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/widgets/selectable_icon.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -38,11 +39,10 @@ class BookmarkSheet {
                 children: ColorEnum.values
                     .map(
                       (color) => StyledCircleButton.lg(
-                        child: Stack(
-                          children: [
-                            Icon(Symbols.bookmark, color: color.toHue(context.colors).medium),
-                            if (color == value) Icon(Symbols.bookmark, fill: 0),
-                          ],
+                        child: SelectableIcon(
+                          Symbols.bookmark,
+                          isSelected: color == value,
+                          color: color.toHue(context.colors).medium,
                         ),
                         onPressed: () => onChanged(color),
                       ),

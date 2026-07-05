@@ -4,6 +4,7 @@ import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/chapter_preview_page.dart';
+import 'package:bible/ui/pages/notebook_icon.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/widgets/colored_circle.dart';
 import 'package:bible/ui/widgets/search_location_button.dart';
@@ -84,8 +85,8 @@ class AnnotationsPage extends HookConsumerWidget {
                   StyledPillButton.md(
                     colorBuilder: notebookId == null ? null : .primary,
                     leading: notebookId == null
-                        ? Symbols.book_2.toIcon()
-                        : ColoredCircle(color: (notebook?.color ?? .stone).toHue(context.colors).primary),
+                        ? Icon(Symbols.book_2)
+                        : NotebookIcon(notebook: notebook, isInverted: true),
                     label: (notebookId == null ? 'Notebook' : notebook?.name ?? 'Default').toText(),
                     trailing: Symbols.keyboard_arrow_down.toIcon(),
                     onPressed: () async {
@@ -106,9 +107,7 @@ class AnnotationsPage extends HookConsumerWidget {
                             final notebook = user.getNotebookById(option.$1);
                             return StyledSelectOption(
                               title: (notebook?.name ?? 'Default').toText(),
-                              leading: ColoredCircle(
-                                color: (notebook?.color ?? ColorEnum.stone).toHue(context.colors).primary,
-                              ),
+                              leading: NotebookIcon(notebook: notebook),
                             );
                           },
                           initialOption: notebookId,
@@ -252,7 +251,7 @@ class AnnotationsPage extends HookConsumerWidget {
                               title: SingleChildScrollView(
                                 scrollDirection: .horizontal,
                                 child: Row(
-                                  spacing: 4,
+                                  spacing: 8,
                                   children: [
                                     annotation.formatLocation().toText(),
                                     if (annotation.selection case TextAnnotationSelection selection)
@@ -263,7 +262,7 @@ class AnnotationsPage extends HookConsumerWidget {
                                           child: Row(
                                             spacing: 4,
                                             children: [
-                                              Icon(Symbols.circle, color: notebook.color.toHue(context.colors).primary),
+                                              NotebookIcon(notebook: notebook),
                                               notebook.name.toText(),
                                             ],
                                           ),

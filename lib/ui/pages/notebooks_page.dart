@@ -1,12 +1,11 @@
-import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/notebook.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/annotations_page.dart';
+import 'package:bible/ui/pages/notebook_icon.dart';
 import 'package:bible/ui/sheets/notebook_sheet.dart';
-import 'package:bible/ui/widgets/colored_circle.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
@@ -46,9 +45,15 @@ class NotebooksPage extends HookConsumerWidget {
                             key: ValueKey(notebook.id),
                             actions: [.delete(onPressed: () => showDeleteDialog(context, notebook: notebook))],
                             child: StyledListItem(
-                              key: ValueKey(notebook.id),
-                              leading: ColoredCircle(color: notebook.color.toHue(context.colors).primary),
-                              title: notebook.name.toText(),
+                              leading: NotebookIcon(notebook: notebook),
+                              title: Row(
+                                spacing: 8,
+                                children: [
+                                  notebook.name.toText(),
+                                  if (!notebook.isVisible)
+                                    StyledTag.sm(leading: Symbols.visibility_off.toIcon(), child: 'Hidden'.toText()),
+                                ],
+                              ),
                               subtitle: getNumAnnotationsText(user: user, notebook: notebook).toText(),
                               trailing: StyledCircleButton.md(
                                 child: Symbols.more_vert.toIcon(),
@@ -56,6 +61,31 @@ class NotebooksPage extends HookConsumerWidget {
                                   (context) => StyledSheet(
                                     title: notebook.name.toText(),
                                     children: [
+                                      if (notebook.isVisible)
+                                        StyledListItem(
+                                          title: 'Hide'.toText(),
+                                          subtitle: 'Hide the annotations in this notebook from appearing in the Bible.'
+                                              .toText(),
+                                          leading: Symbols.visibility_off.toIcon(),
+                                          onPressed: () {
+                                            context.pop();
+                                            ref.updateUser(
+                                              (user) => user.withUpdatedNotebook(notebook.copyWith(isVisible: false)),
+                                            );
+                                          },
+                                        )
+                                      else
+                                        StyledListItem(
+                                          title: 'Show'.toText(),
+                                          subtitle: 'Show the annotations from this notebook in the Bible.'.toText(),
+                                          leading: Symbols.visibility.toIcon(),
+                                          onPressed: () {
+                                            context.pop();
+                                            ref.updateUser(
+                                              (user) => user.withUpdatedNotebook(notebook.copyWith(isVisible: true)),
+                                            );
+                                          },
+                                        ),
                                       StyledListItem(
                                         title: 'Edit'.toText(),
                                         leading: Symbols.edit.toIcon(),
@@ -94,7 +124,7 @@ class NotebooksPage extends HookConsumerWidget {
                   ),
                   Padding(padding: .only(left: 64), child: StyledDivider()),
                   StyledListItem(
-                    leading: ColoredCircle(color: ColorEnum.stone.toHue(context.colors).primary),
+                    leading: NotebookIcon(notebook: null),
                     title: 'Default'.toText(),
                     subtitle: getNumAnnotationsText(user: user, notebook: null).toText(),
                     thirdLine: 'The permanent notebook for unassigned annotations.'.toText(),

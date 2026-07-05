@@ -72,7 +72,7 @@ sealed class User with _$User {
   Bookmark? get currentBookmark => bookmarkById[currentBookmarkId];
 
   List<Annotation> getVerseSelectionAnnotations(VerseSelection verseSelection) =>
-      annotations.where((annotation) => annotation.verseSelection?.hasAnyOf(verseSelection) == true).toList();
+      visibleAnnotations.where((annotation) => annotation.verseSelection?.hasAnyOf(verseSelection) == true).toList();
 
   bool isVerseSelectionAnnotated(VerseSelection verseSelection) =>
       getVerseSelectionAnnotations(verseSelection).isNotEmpty;
@@ -80,7 +80,7 @@ sealed class User with _$User {
   List<(Annotation, BibleTextSelection)> getTextSelectionAnnotationsInVerseSelection(
     VerseSelection verseSelection, {
     required BibleTranslation translation,
-  }) => annotations
+  }) => visibleAnnotations
       .map((annotation) => (annotation, annotation.textSelection))
       .whereType<(Annotation, BibleTextSelection)>()
       .where(
@@ -90,10 +90,11 @@ sealed class User with _$User {
       )
       .toList();
 
-  List<Annotation> getTextSelectionAnnotations(BibleTextSelection textSelection) => annotations.where((annotation) {
-    final ts = annotation.textSelection;
-    return ts != null && ts.translation == textSelection.translation && ts.intersects(textSelection);
-  }).toList();
+  List<Annotation> getTextSelectionAnnotations(BibleTextSelection textSelection) =>
+      visibleAnnotations.where((annotation) {
+        final ts = annotation.textSelection;
+        return ts != null && ts.translation == textSelection.translation && ts.intersects(textSelection);
+      }).toList();
 
   bool isTextSelectionAnnotated(BibleTextSelection textSelection) =>
       getTextSelectionAnnotations(textSelection).isNotEmpty;
@@ -101,7 +102,7 @@ sealed class User with _$User {
   Map<int, List<Annotation>> getTextSelectionAnnotationsWithNotesByOffset({
     required Reference reference,
     required BibleTranslation translation,
-  }) => annotations
+  }) => visibleAnnotations
       .where((annotation) => annotation.note.isNotEmpty)
       .map((annotation) => (annotation, annotation.textSelection))
       .whereType<(Annotation, BibleTextSelection)>()
@@ -114,7 +115,7 @@ sealed class User with _$User {
       .map((offset, records) => MapEntry(offset, records.map((record) => record.$1).toList()));
 
   List<Reference> getExpandedReferences(Reference reference) =>
-      annotations
+      visibleAnnotations
           .map((annotation) => annotation.verseSelection)
           .nonNulls
           .where((verseSelection) => verseSelection.hasReference(reference))
@@ -123,7 +124,7 @@ sealed class User with _$User {
       [reference];
 
   BibleTextSelection getExpandedTextSelection(BibleTextSelection textSelection) =>
-      annotations
+      visibleAnnotations
           .map((annotation) => annotation.textSelection)
           .nonNulls
           .where((selection) => selection.intersects(textSelection))
@@ -160,6 +161,9 @@ sealed class User with _$User {
       id == null ? null : notebooks.firstWhereOrNull((notebook) => notebook.id == id);
 
   Notebook? get lastNotebook => getNotebookById(lastNotebookId);
+
+  List<Annotation> get visibleAnnotations =>
+      annotations.where((annotation) => getNotebookById(annotation.notebookId)?.isVisible != false).toList();
 
   User withNewNotebook(Notebook notebook) => copyWith(notebooks: [notebook, ...notebooks], lastNotebookId: notebook.id);
 
