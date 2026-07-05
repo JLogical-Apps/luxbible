@@ -711,14 +711,17 @@ class BibleBody extends HookConsumerWidget {
                   key: ValueKey((i, visibleVerseSelection)),
                   showDragHandle: !isSideLayout,
                   title: visibleVerseSelection.format().toText(),
-                  subtitle: Row(
-                    mainAxisAlignment: .center,
-                    spacing: 8,
-                    children: [
-                      studyPanel.title().toText(),
-                      if (studyPanel.studyAction?.getTranslationOverride(user: user) case final override?)
-                        StyledTag.sm(child: override.title().toText()),
-                    ],
+                  subtitle: SingleChildScrollView(
+                    scrollDirection: .horizontal,
+                    child: Row(
+                      mainAxisAlignment: .center,
+                      spacing: 8,
+                      children: [
+                        studyPanel.title().toText(),
+                        if (studyPanel.studyAction?.getTranslationOverride(user: user) case final override?)
+                          StyledTag.sm(child: override.title().toText()),
+                      ],
+                    ),
                   ),
                   leading: StyledCircleButton.lg(
                     child: Symbols.close.toIcon(),

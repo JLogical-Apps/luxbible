@@ -255,14 +255,17 @@ enum StudyAction {
       context.showStyledSheet(
         (context) => StyledSheet(
           title: title().toText(),
-          subtitle: Row(
-            mainAxisAlignment: .center,
-            spacing: 8,
-            children: [
-              regionFormat.toText(),
-              if (getTranslationOverride(user: user) case final override?)
-                StyledTag.sm(child: override.title().toText()),
-            ],
+          subtitle: SingleChildScrollView(
+            scrollDirection: .horizontal,
+            child: Row(
+              mainAxisAlignment: .center,
+              spacing: 8,
+              children: [
+                regionFormat.toText(),
+                if (getTranslationOverride(user: user) case final override?)
+                  StyledTag.sm(child: override.title().toText()),
+              ],
+            ),
           ),
           children: buildSheetChildren(
             context,
