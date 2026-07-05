@@ -4,7 +4,6 @@ import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bible/chapter.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/testament.dart';
-import 'package:flutter/foundation.dart';
 
 enum BibleTranslation {
   bsb,
@@ -116,7 +115,7 @@ class LocalTranslationSource implements BibleTranslationSource {
     required ChapterReference chapterReference,
     required BibleTranslation translation,
     required Bible? localBible,
-  }) => SynchronousFuture(localBible!.getChapterByReference(chapterReference));
+  }) => Future.syncValue(localBible!.getChapterByReference(chapterReference));
 }
 
 class YouVersionTranslationSource implements BibleTranslationSource {

@@ -45,8 +45,8 @@ class InterlinearWordTile extends ConsumerWidget {
                   if (data.strongId case final strongId?) StyledTag.sm(child: strongId.toText()),
                 ],
               ),
-              if (strongs[data.strongId] case final strong?)
-                Text(strong.transliteration, style: TextStyle(color: context.colors.contentSecondary)),
+              if (data.transliteration case final transliteration?)
+                Text(transliteration, style: TextStyle(color: context.colors.contentSecondary)),
             ].intersperse(Text('·', style: TextStyle(color: context.colors.contentSecondary))).toList(),
           ),
         ),
