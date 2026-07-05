@@ -1,3 +1,4 @@
+import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/reference/verse_span_reference.dart';
@@ -51,6 +52,12 @@ enum StudyAction {
     interlinear => Symbols.dictionary,
     commentary => Symbols.tooltip_2,
     crossReferences => Symbols.graph_4,
+  };
+
+  BibleTranslation? getTranslationOverride({required User user}) => switch (this) {
+    interlinear => user.translation.isStudy ? null : user.studyTranslation,
+    crossReferences => user.translation.isLocal ? null : user.studyTranslation,
+    _ => null,
   };
 
   List<Widget> buildSheetChildren(
@@ -191,7 +198,15 @@ enum StudyAction {
 
         return StyledSheet.builder(
           title: 'Interlinear'.toText(),
-          subtitle: regionFormat.toText(),
+          subtitle: Row(
+            mainAxisAlignment: .center,
+            spacing: 8,
+            children: [
+              regionFormat.toText(),
+              if (user.translation != user.studyTranslation)
+                StyledTag.sm(child: user.studyTranslation.title().toText()),
+            ],
+          ),
           aboveDivider: StyledTabBar.fill(
             tabController: tabController,
             tabTitles: InterlinearDirection.values.map((direction) => direction.title().toText()).toList(),
@@ -240,7 +255,15 @@ enum StudyAction {
       context.showStyledSheet(
         (context) => StyledSheet(
           title: title().toText(),
-          subtitle: regionFormat.toText(),
+          subtitle: Row(
+            mainAxisAlignment: .center,
+            spacing: 8,
+            children: [
+              regionFormat.toText(),
+              if (getTranslationOverride(user: user) case final override?)
+                StyledTag.sm(child: override.title().toText()),
+            ],
+          ),
           children: buildSheetChildren(
             context,
             verseSelection: verseSelection,
