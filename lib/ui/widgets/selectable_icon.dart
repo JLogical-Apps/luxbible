@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/symbols.dart';
 
 class SelectableIcon extends StatelessWidget {
   final IconData icon;
@@ -14,7 +13,7 @@ class SelectableIcon extends StatelessWidget {
     return Stack(
       children: [
         Icon(icon, color: color),
-        if (isSelected) Icon(Symbols.book_2, fill: 0),
+        if (isSelected) Icon(icon, fill: 0),
       ],
     );
   }
