@@ -44,6 +44,12 @@ class SearchPage extends HookConsumerWidget {
     final user = ref.watch(userProvider);
     usePostFrameEffect(() => ref.markOnboardingStep(.searchWord));
 
+    usePostFrameEffect(() {
+      if (initialSearch case final initialSearch?) {
+        ref.updateUser((user) => user.withSearchHistory(initialSearch));
+      }
+    });
+
     final studyBible = ref.watch(studyBibleProvider).value;
     final localBible = user.translation.isLocal
         ? ref.watch(localBibleProvider(translation: user.translation)).value
@@ -252,7 +258,7 @@ class SearchPage extends HookConsumerWidget {
                         return null;
                       }
 
-                      return StyledListItem(
+                      return StyledListItem.navigation(
                         title: result.format().toText(),
                         subtitle: searchState.value.trim().isStrongId
                             ? VerseText(verse: verse, highlightStrongId: searchState.value.trim())

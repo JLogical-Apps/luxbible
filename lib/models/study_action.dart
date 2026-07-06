@@ -132,7 +132,7 @@ enum StudyAction {
                       final verses = ref
                           .watch(verseSelectionTextProvider(translation: translation, selection: verseSelection))
                           .value;
-                      return StyledListItem(
+                      return StyledListItem.navigation(
                         title: Row(
                           spacing: 4,
                           children: [
@@ -150,7 +150,6 @@ enum StudyAction {
                             onNavigateToVerseSelection(verseSelection);
                           },
                         ),
-                        trailing: Symbols.expand_circle_right.toIcon(),
                       );
                     },
                   ),

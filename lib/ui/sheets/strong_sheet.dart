@@ -11,11 +11,9 @@ import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:utils_core/utils_core.dart';
 
 class StrongSheet {
@@ -33,13 +31,25 @@ class StrongSheet {
     final morphologyCode = word?.data?.morphology;
     final morphologyCodes = morphologyCode == null ? null : Morphology.splitCode(morphologyCode);
 
+    final user = ref.read(userProvider);
+
     await context.showStyledSheetWithBreadcrumbs(breadcrumbText: word?.data?.inflection ?? strong?.id ?? '', (context) {
       final selectedMorphologyCodeState = useState(morphologyCodes?.firstOrNull);
       final selectedMorphologyCode = selectedMorphologyCodeState.value;
 
       return StyledSheet.builder(
         title: (word != null ? 'Interlinear Word' : 'Lexicon').toText(),
-        subtitle: word?.data?.inflection?.toText() ?? strongId?.toText(),
+        subtitle: SingleChildScrollView(
+          scrollDirection: .horizontal,
+          child: Row(
+            spacing: 8,
+            children: [
+              ?word?.data?.inflection?.toText() ?? strongId?.toText(),
+              if (user.translation != user.studyTranslation)
+                StyledTag.sm(child: user.studyTranslation.title().toText()),
+            ],
+          ),
+        ),
         childrenBuilder: (context, ref) {
           return [
             if (word != null)
@@ -198,10 +208,9 @@ class StrongSheet {
             if (verse == null) {
               return null;
             }
-            return StyledListItem(
+            return StyledListItem.navigation(
               title: reference.format().toText(),
               subtitle: VerseText(verse: verse, highlightStrongId: strongId),
-              trailing: Symbols.expand_circle_right.toIcon(),
               onPressed: () => ChapterPreviewPage.show(
                 context,
                 verseSelection: VerseSelection.reference(reference),
