@@ -4,14 +4,12 @@ import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/models/user/user.dart';
-import 'package:bible/providers/root_ref.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/dialogs/tutorial_dialog.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
-import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
-import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -43,25 +41,16 @@ class InterlinearSheet {
                 StyledBanner(
                   colorBuilder: .surfaceTertiary,
                   leading: Symbols.book.toIcon(),
-                  message: 'Interlinear uses ${user.studyTranslation.title()}'.toText(),
+                  message: 'Using ${user.studyTranslation.title()} for interlinear'.toText(),
                   action: StyledTextAction(
                     label: 'Learn More'.toText(),
                     onPressed: () => context.showStyledDialog(
-                      (context) => StyledDialog(
+                      (context) => TutorialDialog(
                         title: 'Interlinear Bible'.toText(),
                         body:
-                            "Study Bibles are designed with word-for-word Strong's and morphology tagging, which is what makes the Interlinear lexical breakdown possible. Your most-recent Study Bible will be used for interlinear. Your selected translation is used everywhere else in the app."
+                            "Study Bibles are designed with word-for-word Strong's and morphology tagging, which is what makes the Interlinear lexical breakdown possible. Using your most-recent Study Bible instead."
                                 .toText(),
-                        buttonsBuilder: (context) => [
-                          StyledRectButton.secondary(
-                            label: "Don't Show Again".toText(),
-                            onPressed: () {
-                              ref.updateUser((user) => user.withTutorial(.interlinearStudy));
-                              context.pop();
-                            },
-                          ),
-                          StyledRectButton.primary(label: 'Ok'.toText(), onPressed: () => context.pop()),
-                        ],
+                        tutorial: .interlinearStudy,
                       ),
                     ),
                   ),

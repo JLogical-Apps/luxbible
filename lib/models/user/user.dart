@@ -260,6 +260,8 @@ sealed class User with _$User {
 
   User withTutorial(Tutorial tutorial) => copyWith(tutorials: {...tutorials, tutorial});
 
+  User withTutorialsReset() => copyWith(tutorials: {});
+
   User withOnboardingStepCompleted(OnboardingStep step) {
     final completed = completedOnboardingSteps;
     return completed == null || completed.contains(step)

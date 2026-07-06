@@ -9,6 +9,7 @@ import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/dialogs/tutorial_dialog.dart';
 import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
@@ -110,21 +111,12 @@ enum StudyAction {
                       action: StyledTextAction(
                         label: 'Learn More'.toText(),
                         onPressed: () => context.showStyledDialog(
-                          (context) => StyledDialog(
+                          (context) => TutorialDialog(
                             title: 'Cross References'.toText(),
                             body:
-                                "Because your selected translation is only available online, cross references are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app."
+                                'Because your selected translation is only available online, cross references are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app.'
                                     .toText(),
-                            buttonsBuilder: (context) => [
-                              StyledRectButton.secondary(
-                                label: "Don't Show Again".toText(),
-                                onPressed: () {
-                                  ref.updateUser((user) => user.withTutorial(.crossReferencesStudy));
-                                  context.pop();
-                                },
-                              ),
-                              StyledRectButton.primary(label: 'Ok'.toText(), onPressed: () => context.pop()),
-                            ],
+                            tutorial: .crossReferencesStudy,
                           ),
                         ),
                       ),

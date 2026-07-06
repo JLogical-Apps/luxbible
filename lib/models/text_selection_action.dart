@@ -70,7 +70,7 @@ enum TextSelectionAction {
 
         final studyWords = studyBible.getTextSelectionWords(textSelection).where((word) => word.data != null).toList();
         if (studyWords.isEmpty) {
-          context.showStyledSnackbar(messageText: 'No interlinear words found in this selection.');
+          context.showStyledSnackbar(message: 'No interlinear words found in this selection.'.toText());
           return;
         }
 
@@ -127,7 +127,7 @@ enum TextSelectionAction {
         onDeselect();
 
         if (!context.mounted) return;
-        context.showStyledSnackbar(messageText: 'Text selection copied to clipboard.');
+        context.showStyledSnackbar(message: 'Text selection copied to clipboard.'.toText());
         await Clipboard.setData(ClipboardData(text: text));
     }
   }

@@ -1,11 +1,13 @@
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
+import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/dictionary_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/dialogs/tutorial_dialog.dart';
 import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/sheets/dictionary_sheet.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
@@ -131,18 +133,19 @@ class SearchPage extends HookConsumerWidget {
                   },
                   currentBook: currentChapterReference?.book,
                 ),
-                if (user.translation.isOnline)
+                if (user.translation.isOnline && !user.tutorials.contains(Tutorial.searchStudy))
                   StyledBanner(
                     leading: Symbols.book.toIcon(),
                     message: 'Using ${user.studyTranslation.title()} for search'.toText(),
                     action: StyledTextAction(
                       label: 'Learn More'.toText(),
                       onPressed: () => context.showStyledDialog(
-                        (context) => StyledDialog.confirm(
-                          title: 'Search Translations'.toText(),
+                        (context) => TutorialDialog(
+                          title: 'Search Bible'.toText(),
                           body:
-                              '${user.translation.title()} does not currently support search. Using your most recent Study Bible instead.'
+                              '${user.translation.title()} does not currently support search. Using your most-recent Study Bible instead.'
                                   .toText(),
+                          tutorial: .searchStudy,
                         ),
                       ),
                     ),
@@ -257,7 +260,6 @@ class SearchPage extends HookConsumerWidget {
                                 textStyle: context.textStyle.paragraphSm.subtle(),
                                 textStyleHighlight: context.textStyle.paragraphSm.subtle().bold,
                               ),
-                        trailing: Symbols.expand_circle_right.toIcon(),
                         onPressed: () => ChapterPreviewPage.show(
                           context,
                           verseSelection: VerseSelection.reference(result),

@@ -7,6 +7,7 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/sheets/study_sheet.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -64,7 +65,7 @@ enum VerseSelectionAction {
         if (!context.mounted) return;
 
         onDeselect();
-        context.showStyledSnackbar(messageText: '${selectedVerseSelection.format()} copied to clipboard.');
+        context.showStyledSnackbar(message: '${selectedVerseSelection.format()} copied to clipboard.'.toText());
         await Clipboard.setData(
           ClipboardData(text: selectedVerseSelection.references.map((reference) => text).nonNulls.join()),
         );

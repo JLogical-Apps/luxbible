@@ -86,7 +86,7 @@ extension StyleContextExtensions on BuildContext {
   }
 
   void showStyledSnackbar({
-    required String messageText,
+    required Widget message,
     StyledTextAction? action,
     Duration duration = const Duration(seconds: 3),
   }) async {
@@ -94,7 +94,10 @@ extension StyleContextExtensions on BuildContext {
     flushbar = Flushbar(
       messageText: StyledListItem(
         size: .sm,
-        title: Text(messageText, style: textStyle.paragraphMd.copyWith(color: colors.contentPrimaryInverse)),
+        title: DefaultTextStyle(
+          child: message,
+          style: textStyle.paragraphMd.copyWith(color: colors.contentPrimaryInverse),
+        ),
         leading: SizedBox.square(
           dimension: 64,
           child: Center(child: Icon(Symbols.check_circle, size: 24, color: colors.contentPrimaryInverse)),

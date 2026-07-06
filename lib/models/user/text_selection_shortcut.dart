@@ -82,7 +82,7 @@ enum TextSelectionShortcut {
 
           if (!context.mounted) return;
           context.showStyledSnackbar(
-            messageText: 'Highlighted text in ${textSelection.toVerseSelection().format()}.',
+            message: 'Highlighted text in ${textSelection.toVerseSelection().format()}.'.toText(),
             duration: Duration(seconds: 8),
             action: StyledTextAction(
               label: 'Edit'.toText(),

@@ -189,7 +189,7 @@ const _$ThemeModeEnumMap = {
 const _$TutorialEnumMap = {
   Tutorial.interlinearStudy: 'interlinearStudy',
   Tutorial.crossReferencesStudy: 'crossReferencesStudy',
-  Tutorial.concordanceStudy: 'concordanceStudy',
+  Tutorial.searchStudy: 'searchStudy',
 };
 
 const _$OnboardingStepEnumMap = {

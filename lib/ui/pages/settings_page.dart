@@ -184,12 +184,21 @@ class SettingsPage extends HookConsumerWidget {
             child: StyledCard(
               children: [
                 StyledListItem(
-                  title: 'Reset Onboarding'.toText(),
+                  title: 'Restart Get Started'.toText(),
                   subtitle: 'Show the Get Started checklist again'.toText(),
                   leading: Symbols.data_info_alert.toIcon(),
                   onPressed: () {
                     ref.updateUser((user) => user.withOnboardingReset());
                     context.pop();
+                  },
+                ),
+                StyledListItem(
+                  title: 'Reset Tutorials'.toText(),
+                  subtitle: 'Show helpful hints throughout the app again'.toText(),
+                  leading: Symbols.help.toIcon(),
+                  onPressed: () {
+                    ref.updateUser((user) => user.withTutorialsReset());
+                    context.showStyledSnackbar(message: 'Tutorials have been reset.'.toText());
                   },
                 ),
               ],
