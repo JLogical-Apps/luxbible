@@ -8,11 +8,13 @@ part of 'annotation.dart';
 
 _Annotation _$AnnotationFromJson(Map<String, dynamic> json) => _Annotation(
   selection: AnnotationSelection.fromJson(
-    _annotationSelectionFromAnnotation(json, 'selection')
-        as Map<String, dynamic>,
+    _readAnnotationSelection(json, 'selection') as Map<String, dynamic>,
   ),
-  color:
-      $enumDecodeNullable(_$ColorEnumEnumMap, json['color']) ?? ColorEnum.stone,
+  style: _readHighlightStyle(json, 'style') == null
+      ? HighlightStyle.fallback
+      : HighlightStyle.fromJson(
+          _readHighlightStyle(json, 'style') as Map<String, dynamic>,
+        ),
   note: json['note'] as String? ?? '',
   notebookId: json['notebookId'] as String?,
   createdAt: DateTime.parse(json['createdAt'] as String),
@@ -21,21 +23,11 @@ _Annotation _$AnnotationFromJson(Map<String, dynamic> json) => _Annotation(
 Map<String, dynamic> _$AnnotationToJson(_Annotation instance) =>
     <String, dynamic>{
       'selection': instance.selection.toJson(),
-      'color': _$ColorEnumEnumMap[instance.color]!,
+      'style': instance.style.toJson(),
       'note': instance.note,
       'notebookId': instance.notebookId,
       'createdAt': instance.createdAt.toIso8601String(),
     };
-
-const _$ColorEnumEnumMap = {
-  ColorEnum.red: 'red',
-  ColorEnum.orange: 'orange',
-  ColorEnum.yellow: 'yellow',
-  ColorEnum.green: 'green',
-  ColorEnum.blue: 'blue',
-  ColorEnum.violet: 'violet',
-  ColorEnum.stone: 'stone',
-};
 
 VersesAnnotationSelection _$VersesAnnotationSelectionFromJson(
   Map<String, dynamic> json,

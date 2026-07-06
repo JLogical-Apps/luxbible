@@ -1,12 +1,12 @@
 import 'package:bible/models/annotation.dart';
-import 'package:bible/models/color_enum.dart';
+import 'package:bible/models/highlight_style.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/pages/notebook_icon.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
-import 'package:bible/ui/widgets/colored_circle.dart';
+import 'package:bible/ui/widgets/highlight_style_icon.dart';
 import 'package:bible/ui/widgets/search_location_button.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
@@ -21,8 +21,9 @@ import 'package:timeago/timeago.dart' as timeago;
 
 class AnnotationsPage extends HookConsumerWidget {
   final (String?,)? initialNotebookId;
+  final HighlightStyle? initialStyle;
 
-  const AnnotationsPage({super.key, this.initialNotebookId});
+  const AnnotationsPage({super.key, this.initialNotebookId, this.initialStyle});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,8 +31,8 @@ class AnnotationsPage extends HookConsumerWidget {
 
     final sortState = useState(AnnotationSort.mostRecent);
 
-    final colorState = useState<ColorEnum?>(null);
-    final color = colorState.value;
+    final styleState = useState(initialStyle);
+    final style = styleState.value;
 
     final hasNoteState = useState<bool?>(null);
 
@@ -48,7 +49,7 @@ class AnnotationsPage extends HookConsumerWidget {
               locationsState.value.any((location) => location.passes(annotation.selection.startingReference)),
         )
         .where((annotation) => hasNoteState.value == null || (annotation.note.isNotEmpty == hasNoteState.value))
-        .where((annotation) => color == null || annotation.color == color)
+        .where((annotation) => style == null || annotation.style == style)
         .where((annotation) => notebookId == null || user.getNotebookById(annotation.notebookId)?.id == notebookId.$1)
         .toList();
 
@@ -119,35 +120,35 @@ class AnnotationsPage extends HookConsumerWidget {
                     },
                   ),
                 StyledPillButton.md(
-                  colorBuilder: colorState.value == null ? null : .primary,
-                  leading: color == null
-                      ? Icon(Symbols.circle)
-                      : ColoredCircle(color: color.toHue(context.colors).primary),
-                  label: (colorState.value?.title() ?? 'Color').toText(),
+                  colorBuilder: style == null ? null : .primary,
+                  leading: style == null
+                      ? Icon(Symbols.format_ink_highlighter)
+                      : HighlightStyleIcon(style: style, size: .sm),
+                  label: (style == null ? 'Style' : user.labelForHighlightStyle(style) ?? 'Style').toText(),
                   trailing: Symbols.keyboard_arrow_down.toIcon(),
                   onPressed: () async {
-                    final newColor = await context.showStyledSheet(
-                      (context) => StyledSelectionSheet(
-                        title: 'Color'.toText(),
-                        options: ColorEnum.values,
+                    final newStyle = await context.showStyledSheet(
+                      (context) => StyledSelectionSheet<HighlightStyle>(
+                        title: 'Style'.toText(),
+                        options: user.highlightStyles.map((entry) => entry.$1).toList(),
                         optionMapper: (option) => StyledSelectOption(
-                          title: option.title().toText(),
-                          leading: ColoredCircle(color: option.toHue(context.colors).primary),
+                          title: (user.labelForHighlightStyle(option) ?? '').toText(),
+                          leading: HighlightStyleIcon(style: option),
                         ),
-                        initialOption: colorState.value,
-                        trailing: colorState.value == null
+                        initialOption: style,
+                        trailing: style == null
                             ? null
                             : StyledCircleButton.md(
                                 child: Symbols.delete.toIcon(),
                                 onPressed: () {
-                                  colorState.value = null;
+                                  styleState.value = null;
                                   context.pop();
                                 },
                               ),
                       ),
                     );
-                    if (newColor != null) {
-                      colorState.value = newColor;
+                    if (newStyle != null) {
+                      styleState.value = newStyle;
                     }
                   },
                 ),
@@ -247,7 +248,7 @@ class AnnotationsPage extends HookConsumerWidget {
                               ),
                             ],
                             child: StyledListItem(
-                              leading: ColoredCircle(color: annotation.color.toHue(context.colors).primary),
+                              leading: HighlightStyleIcon(style: annotation.style),
                               title: SingleChildScrollView(
                                 scrollDirection: .horizontal,
                                 child: Row(

@@ -4,6 +4,7 @@ import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/commentary_type.dart';
+import 'package:bible/models/highlight_style.dart';
 import 'package:bible/models/notebook.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_position.dart';
@@ -44,7 +45,7 @@ sealed class User with _$User {
     ChapterPosition lastPosition,
     String? currentBookmarkId,
     @ChapterPositionFromReference('viewHistory') @Default([]) List<ChapterPosition> viewHistory,
-    @Default(ColorEnum.yellow) ColorEnum highlightColor,
+    @Default(HighlightStyle.fallback) @JsonKey(readValue: _readLastHighlightStyle) HighlightStyle lastHighlightStyle,
     @Default({}) Map<String, Bookmark> bookmarkById,
     @Default([]) List<Annotation> annotations,
     @Default([]) List<Notebook> notebooks,
@@ -61,6 +62,7 @@ sealed class User with _$User {
     @Default(0.5) double studyPanelBottomPosition,
     @Default({}) @nullUnknownEnum Set<Tutorial?> tutorials,
     List<OnboardingStep>? completedOnboardingSteps,
+    @Default(HighlightStyle.defaultValues) List<(HighlightStyle, String label)> highlightStyles,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -183,15 +185,42 @@ sealed class User with _$User {
   User withReorderedNotebooks(int oldIndex, int newIndex) =>
       copyWith(notebooks: notebooks.withReorder(oldIndex, newIndex));
 
+  bool hasHighlightStyle(HighlightStyle style) => highlightStyles.any((entry) => entry.$1 == style);
+
+  String? labelForHighlightStyle(HighlightStyle style) =>
+      highlightStyles.firstWhereOrNull((entry) => entry.$1 == style)?.$2;
+
+  HighlightStyle get defaultAnnotationStyle =>
+      hasHighlightStyle(lastHighlightStyle) ? lastHighlightStyle : highlightStyles.firstOrNull?.$1 ?? .fallback;
+
+  User withNewHighlightStyle((HighlightStyle, String label) style) =>
+      copyWith(highlightStyles: [style, ...highlightStyles]);
+
+  User withUpdatedHighlightStyle(int index, (HighlightStyle, String label) style) =>
+      copyWith(highlightStyles: highlightStyles.mapIndexed((i, entry) => i == index ? style : entry).toList());
+
+  User withRemovedHighlightStyle(int index, {required bool deleteAnnotations}) {
+    final style = highlightStyles[index].$1;
+    return copyWith(
+      highlightStyles: highlightStyles.whereIndexed((i, _) => i != index).toList(),
+      annotations: deleteAnnotations
+          ? annotations.where((annotation) => annotation.style != style).toList()
+          : annotations,
+    );
+  }
+
+  User withReorderedHighlightStyles(int oldIndex, int newIndex) =>
+      copyWith(highlightStyles: highlightStyles.withReorder(oldIndex, newIndex));
+
   User withAnnotation(Annotation annotation) => copyWith(
     annotations: [...annotations, annotation],
-    highlightColor: annotation.color,
+    lastHighlightStyle: annotation.style,
     lastNotebookId: annotation.notebookId,
   );
 
   User withAnnotationUpdated(Annotation oldAnnotation, Annotation newAnnotation) => copyWith(
     annotations: annotations.withRemoved(oldAnnotation) + [newAnnotation],
-    highlightColor: newAnnotation.color,
+    lastHighlightStyle: newAnnotation.style,
   );
 
   User withRemovedSelectionAnnotations(AnnotationSelection selection) => selection.when(
@@ -295,4 +324,18 @@ sealed class User with _$User {
 
   User withTranslation(BibleTranslation translation) =>
       copyWith(translation: translation, studyTranslation: translation.isStudy ? translation : studyTranslation);
+}
+
+Object? _readLastHighlightStyle(Map data, String key) {
+  final existing = data[key];
+  if (existing != null) {
+    return existing;
+  }
+
+  final rawColor = data['highlightColor'];
+  if (rawColor is String) {
+    return HighlightStyle(color: ColorEnum.values.byName(rawColor), type: .highlight).toJson();
+  }
+
+  return null;
 }

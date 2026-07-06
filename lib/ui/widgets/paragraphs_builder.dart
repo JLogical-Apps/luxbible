@@ -18,12 +18,12 @@ import 'package:bible/providers/root_ref.dart' as root_ref;
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/widgets/annotated_span.dart';
+import 'package:bible/ui/widgets/highlight_underline.dart';
 import 'package:bible/ui/widgets/simple_markdown.dart';
 import 'package:bible/ui/widgets/sized_widget_span.dart';
 import 'package:bible/ui/widgets/underline.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
-import 'package:bible/utils/extensions/color_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
@@ -71,6 +71,7 @@ class ParagraphsBuilder extends HookWidget {
   BookType get book => chapterReference.book;
 
   double get sizeMultiplier => user.themeLayout.fontSizeSpacing.multiplier;
+  double get underlineThickness => 4 * sizeMultiplier;
 
   static const hebrewFontFamily = 'Ezra SIL SR';
 
@@ -195,129 +196,21 @@ class ParagraphsBuilder extends HookWidget {
                     fit: .passthrough,
                     children: [
                       if (paragraph is VersesParagraph) ...[
-                        ...paragraph.verses
-                            .map((verse) {
-                              final reference = getVerseReference(verse);
-                              final annotations = user.visibleAnnotations
-                                  .where((annotation) => annotation.verseSelection?.hasReference(reference) == true)
-                                  .toSet();
-                              return (
-                                reference: reference,
-                                annotations: annotations,
-                                color: annotations
-                                    .map(
-                                      (annotation) =>
-                                          annotation.color.toHue(context.colors).primary.withValues(alpha: 0.5),
-                                    )
-                                    .mixOrNull,
-                              );
-                            })
-                            .splitBetween(
-                              (a, b) => a.color != b.color || a.annotations.intersection(b.annotations).isEmpty,
-                            )
-                            .where((run) => run.first.color != null)
-                            .map((run) {
-                              final verseColor = run.first.color;
-
-                              final base = renderSpans
-                                  .getReferenceCharacterOffsets(
-                                    reference: run.first.reference,
-                                    translation: translation,
-                                    chapter: chapter,
-                                    isParagraphs: user.themeLayout.paragraphs,
-                                  )
-                                  ?.$1;
-                              final extent = renderSpans
-                                  .getReferenceCharacterOffsets(
-                                    reference: run.last.reference,
-                                    translation: translation,
-                                    chapter: chapter,
-                                    isParagraphs: user.themeLayout.paragraphs,
-                                  )
-                                  ?.$2;
-                              if (base == null || extent == null) {
-                                return null;
-                              }
-
-                              return renderSpans
-                                  .getBoxesForSelection(
-                                    baseOffset: base,
-                                    extentOffset: extent,
-                                    width: constraints.maxWidth,
-                                    textAlign: paragraph.type.textAlign,
-                                    textDirection: textDirection,
-                                  )
-                                  .map((box) => box.toRect())
-                                  .withMergedLines()
-                                  .withHangingIndent(hangingIndent)
-                                  .map(
-                                    (box) => Positioned.fromRect(
-                                      rect: box.asVerseSelection(multiplier: sizeMultiplier),
-                                      child: IgnorePointer(
-                                        child: AnimatedContainer(
-                                          duration: Duration(milliseconds: 300),
-                                          curve: Curves.easeInOutCubic,
-                                          decoration: BoxDecoration(
-                                            borderRadius: .circular(4),
-                                            color: verseColor?.withValues(alpha: textSelection == null ? 0.5 : 0.2),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                            })
-                            .nonNulls
-                            .flattened,
-                        ...user
-                            .getTextSelectionAnnotationsInVerseSelection(
-                              chapterReference.toVerseSelection(),
-                              translation: translation,
-                            )
-                            .map((record) {
-                              final (annotation, textSelection) = record;
-                              final (base, extent) =
-                                  renderSpans.getTextSelectionCharacterOffsets(
-                                    textSelection: textSelection,
-                                    translation: translation,
-                                    isParagraphs: user.themeLayout.paragraphs,
-                                  ) ??
-                                  (null, null);
-                              if (base == null || extent == null) {
-                                return null;
-                              }
-
-                              return renderSpans
-                                  .getBoxesForSelection(
-                                    baseOffset: base,
-                                    extentOffset: extent,
-                                    width: constraints.maxWidth,
-                                    textAlign: paragraph.type.textAlign,
-                                    textDirection: textDirection,
-                                  )
-                                  .map((box) => box.toRect())
-                                  .withMergedLines()
-                                  .withHangingIndent(hangingIndent)
-                                  .map(
-                                    (box) => Positioned.fromRect(
-                                      rect: box.asTextSelection(multiplier: sizeMultiplier),
-                                      child: IgnorePointer(
-                                        child: AnimatedContainer(
-                                          duration: Duration(milliseconds: 300),
-                                          curve: Curves.easeInOutCubic,
-                                          decoration: BoxDecoration(
-                                            borderRadius: .circular(4),
-                                            color: annotation.color
-                                                .toHue(context.colors)
-                                                .primary
-                                                .withValues(alpha: underlinedReferences.isEmpty ? 0.5 : 0.2),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                            })
-                            .nonNulls
-                            .flattened,
+                        ...buildVerseAnnotationOverlays(
+                          context,
+                          renderSpans: renderSpans,
+                          paragraph: paragraph,
+                          chapter: chapter,
+                          maxWidth: constraints.maxWidth,
+                          hangingIndent: hangingIndent,
+                        ),
+                        ...buildTextSelectionAnnotationOverlays(
+                          context,
+                          renderSpans: renderSpans,
+                          paragraph: paragraph,
+                          maxWidth: constraints.maxWidth,
+                          hangingIndent: hangingIndent,
+                        ),
                         if (textSelection case final textSelection?)
                           ...?() {
                             final (base, extent) =
@@ -344,6 +237,7 @@ class ParagraphsBuilder extends HookWidget {
                                 .withHangingIndent(hangingIndent)
                                 .map(
                                   (box) => Positioned.fromRect(
+                                    key: ValueKey(box),
                                     rect: box.asTextSelection(multiplier: sizeMultiplier),
                                     child: IgnorePointer(
                                       child: AnimatedContainer(
@@ -378,6 +272,158 @@ class ParagraphsBuilder extends HookWidget {
       ),
     );
   }
+
+  Iterable<Widget> buildVerseAnnotationOverlays(
+    BuildContext context, {
+    required List<InlineSpan> renderSpans,
+    required VersesParagraph paragraph,
+    required Chapter chapter,
+    required double maxWidth,
+    required double hangingIndent,
+  }) {
+    final references = paragraph.verses.map(getVerseReference).toList();
+    return user.visibleAnnotations
+        .where((annotation) => annotation.verseSelection != null)
+        .map((annotation) {
+          final covered = references.where((reference) => annotation.verseSelection!.hasReference(reference)).toList();
+          if (covered.isEmpty) {
+            return null;
+          }
+
+          final offsets = referenceOffsets(
+            renderSpans: renderSpans,
+            chapter: chapter,
+            first: covered.first,
+            last: covered.last,
+          );
+          if (offsets == null) {
+            return null;
+          }
+
+          return buildOverlays(
+            renderSpans: renderSpans,
+            paragraph: paragraph,
+            maxWidth: maxWidth,
+            hangingIndent: hangingIndent,
+            base: offsets.$1,
+            extent: offsets.$2,
+            annotation: annotation,
+            toRect: (box) => box.asVerseSelection(multiplier: sizeMultiplier),
+            buildChild: () => buildAnnotationChild(context, annotation: annotation, isDimmed: textSelection != null),
+          );
+        })
+        .nonNulls
+        .flattened;
+  }
+
+  Iterable<Widget> buildTextSelectionAnnotationOverlays(
+    BuildContext context, {
+    required List<InlineSpan> renderSpans,
+    required VersesParagraph paragraph,
+    required double maxWidth,
+    required double hangingIndent,
+  }) => user
+      .getTextSelectionAnnotationsInVerseSelection(chapterReference.toVerseSelection(), translation: translation)
+      .map((record) {
+        final (annotation, textSelection) = record;
+        final (base, extent) =
+            renderSpans.getTextSelectionCharacterOffsets(
+              textSelection: textSelection,
+              translation: translation,
+              isParagraphs: user.themeLayout.paragraphs,
+            ) ??
+            (null, null);
+        if (base == null || extent == null) {
+          return null;
+        }
+
+        return buildOverlays(
+          renderSpans: renderSpans,
+          paragraph: paragraph,
+          maxWidth: maxWidth,
+          hangingIndent: hangingIndent,
+          base: base,
+          extent: extent,
+          annotation: annotation,
+          toRect: (box) => box.asTextSelection(multiplier: sizeMultiplier),
+          buildChild: () =>
+              buildAnnotationChild(context, annotation: annotation, isDimmed: underlinedReferences.isNotEmpty),
+        );
+      })
+      .nonNulls
+      .flattened;
+
+  Widget buildAnnotationChild(BuildContext context, {required Annotation annotation, required bool isDimmed}) {
+    final color = annotation.color.toHue(context.colors).primary;
+    return annotation.style.type == .highlight
+        ? AnimatedContainer(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOutCubic,
+            decoration: BoxDecoration(
+              borderRadius: .circular(4),
+              color: color.withValues(alpha: isDimmed ? 0.2 : 0.5),
+            ),
+          )
+        : HighlightUnderline(
+            color: color.withValues(alpha: isDimmed ? 0.35 : 0.9),
+            wavy: annotation.style.type == .wavyUnderline,
+            thickness: underlineThickness,
+          );
+  }
+
+  (int, int)? referenceOffsets({
+    required List<InlineSpan> renderSpans,
+    required Chapter chapter,
+    required Reference first,
+    required Reference last,
+  }) {
+    final base = renderSpans
+        .getReferenceCharacterOffsets(
+          reference: first,
+          translation: translation,
+          chapter: chapter,
+          isParagraphs: user.themeLayout.paragraphs,
+        )
+        ?.$1;
+    final extent = renderSpans
+        .getReferenceCharacterOffsets(
+          reference: last,
+          translation: translation,
+          chapter: chapter,
+          isParagraphs: user.themeLayout.paragraphs,
+        )
+        ?.$2;
+    return base == null || extent == null ? null : (base, extent);
+  }
+
+  Iterable<Widget> buildOverlays({
+    required List<InlineSpan> renderSpans,
+    required VersesParagraph paragraph,
+    required Annotation annotation,
+    required double maxWidth,
+    required double hangingIndent,
+    required int base,
+    required int extent,
+    required Rect Function(Rect box) toRect,
+    required Widget Function() buildChild,
+  }) => renderSpans
+      .getBoxesForSelection(
+        baseOffset: base,
+        extentOffset: extent,
+        width: maxWidth,
+        textAlign: paragraph.type.textAlign,
+        textDirection: textDirection,
+      )
+      .map((box) => box.toRect())
+      .withMergedLines()
+      .withHangingIndent(hangingIndent)
+      .map(
+        (box) => Positioned.fromRect(
+          key: ValueKey((annotation, box)),
+          rect: toRect(box),
+          child: IgnorePointer(child: buildChild()),
+        ),
+      );
 
   Reference getVerseReference(Verse verse) => chapterReference.getReference(verse.verseNum);
 

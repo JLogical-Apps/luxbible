@@ -6,6 +6,7 @@ import 'package:bible/ui/pages/annotations_page.dart';
 import 'package:bible/ui/pages/bibles_page.dart';
 import 'package:bible/ui/pages/bookmarks_page.dart';
 import 'package:bible/ui/pages/commentaries_page.dart';
+import 'package:bible/ui/pages/highlight_styles_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/pages/notebooks_page.dart';
 import 'package:bible/ui/pages/text_selection_settings_page.dart';
@@ -149,6 +150,11 @@ class SettingsPage extends HookConsumerWidget {
                       context.pop(result);
                     }
                   },
+                ),
+                StyledListItem.navigation(
+                  title: 'Highlight Styles'.toText(),
+                  leading: Symbols.format_ink_highlighter.toIcon(),
+                  onPressed: () => context.push(HighlightStylesPage()),
                 ),
                 StyledListItem.navigation(
                   title: 'Bookmarks'.toText(),

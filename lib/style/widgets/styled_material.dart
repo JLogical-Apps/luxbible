@@ -6,6 +6,7 @@ class StyledMaterial extends StatelessWidget {
   final Function()? onPressed;
   final Function()? onLongPressed;
   final bool isEnabled;
+  final bool? isSelected;
 
   final ColorBuilder? colorBuilder;
   final bool isCritical;
@@ -18,6 +19,7 @@ class StyledMaterial extends StatelessWidget {
     this.onPressed,
     this.onLongPressed,
     bool? isEnabled,
+    this.isSelected,
     this.colorBuilder,
     this.isCritical = false,
     this.borderRadius = .zero,
@@ -35,6 +37,14 @@ class StyledMaterial extends StatelessWidget {
       duration: Duration(milliseconds: 300),
       curve: Curves.easeInOutCubic,
       decoration: BoxDecoration(color: backgroundColor, borderRadius: borderRadius),
+      foregroundDecoration: BoxDecoration(
+        borderRadius: borderRadius,
+        border: switch (isSelected) {
+          true => .all(color: context.colors.borderSelected, width: 2),
+          false => .all(color: context.colors.borderOpaque, width: 2),
+          null => null,
+        },
+      ),
       child: Material(
         color: Colors.transparent,
         borderRadius: borderRadius,

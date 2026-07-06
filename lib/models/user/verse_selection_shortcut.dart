@@ -8,6 +8,7 @@ import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
+import 'package:bible/ui/widgets/highlight_style_icon.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/object_extensions.dart';
@@ -51,7 +52,9 @@ enum VerseSelectionShortcut {
         highlight =>
           _isAnnotated(user: user, verseSelection: verseSelection)
               ? Icon(Symbols.ink_eraser)
-              : Icon(Symbols.highlighter_size_3, color: user?.highlightColor.toHue(context.colors).primary),
+              : user == null
+              ? Icon(Symbols.highlighter_size_3)
+              : HighlightStyleIcon(style: user.lastHighlightStyle),
         _ => throw UnimplementedError(),
       };
 
@@ -87,7 +90,7 @@ enum VerseSelectionShortcut {
 
           final annotation = Annotation(
             createdAt: .now(),
-            color: user.highlightColor,
+            style: user.lastHighlightStyle,
             selection: AnnotationSelection.verses(verseSelection: verseSelection),
           );
           ref.updateUser((user) => user.withAnnotation(annotation));

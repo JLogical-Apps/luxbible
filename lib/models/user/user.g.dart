@@ -36,9 +36,13 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
           ?.map((e) => ChapterPosition.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
-  highlightColor:
-      $enumDecodeNullable(_$ColorEnumEnumMap, json['highlightColor']) ??
-      ColorEnum.yellow,
+  lastHighlightStyle:
+      _readLastHighlightStyle(json, 'lastHighlightStyle') == null
+      ? HighlightStyle.fallback
+      : HighlightStyle.fromJson(
+          _readLastHighlightStyle(json, 'lastHighlightStyle')
+              as Map<String, dynamic>,
+        ),
   bookmarkById:
       (json['bookmarkById'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, Bookmark.fromJson(e as Map<String, dynamic>)),
@@ -111,6 +115,21 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   completedOnboardingSteps: (json['completedOnboardingSteps'] as List<dynamic>?)
       ?.map((e) => $enumDecode(_$OnboardingStepEnumMap, e))
       .toList(),
+  highlightStyles:
+      (json['highlightStyles'] as List<dynamic>?)
+          ?.map(
+            (e) => _$recordConvert(
+              e,
+              ($jsonValue) => (
+                HighlightStyle.fromJson(
+                  $jsonValue[r'$1'] as Map<String, dynamic>,
+                ),
+                $jsonValue[r'$2'] as String,
+              ),
+            ),
+          )
+          .toList() ??
+      HighlightStyle.defaultValues,
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -123,7 +142,7 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'lastReference': instance.lastPosition.toJson(),
   'currentBookmarkId': instance.currentBookmarkId,
   'viewHistory': instance.viewHistory.map((e) => e.toJson()).toList(),
-  'highlightColor': _$ColorEnumEnumMap[instance.highlightColor]!,
+  'lastHighlightStyle': instance.lastHighlightStyle.toJson(),
   'bookmarkById': instance.bookmarkById.map((k, e) => MapEntry(k, e.toJson())),
   'annotations': instance.annotations.map((e) => e.toJson()).toList(),
   'notebooks': instance.notebooks.map((e) => e.toJson()).toList(),
@@ -142,6 +161,9 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'tutorials': instance.tutorials.map((e) => _$TutorialEnumMap[e]).toList(),
   'completedOnboardingSteps': instance.completedOnboardingSteps
       ?.map((e) => _$OnboardingStepEnumMap[e]!)
+      .toList(),
+  'highlightStyles': instance.highlightStyles
+      .map((e) => <String, dynamic>{r'$1': e.$1.toJson(), r'$2': e.$2})
       .toList(),
 };
 
@@ -163,16 +185,6 @@ const _$CommentaryTypeEnumMap = {
   CommentaryType.matthewHenry: 'matthewHenry',
   CommentaryType.jamiesonFaussetBrown: 'jamiesonFaussetBrown',
   CommentaryType.calvin: 'calvin',
-};
-
-const _$ColorEnumEnumMap = {
-  ColorEnum.red: 'red',
-  ColorEnum.orange: 'orange',
-  ColorEnum.yellow: 'yellow',
-  ColorEnum.green: 'green',
-  ColorEnum.blue: 'blue',
-  ColorEnum.violet: 'violet',
-  ColorEnum.stone: 'stone',
 };
 
 const _$InterlinearDirectionEnumMap = {
@@ -203,3 +215,6 @@ const _$OnboardingStepEnumMap = {
   OnboardingStep.addStudyPanel: 'addStudyPanel',
   OnboardingStep.customizeToolbar: 'customizeToolbar',
 };
+
+$Rec _$recordConvert<$Rec>(Object? value, $Rec Function(Map) convert) =>
+    convert(value as Map<String, dynamic>);

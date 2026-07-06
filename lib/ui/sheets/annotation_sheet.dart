@@ -1,25 +1,19 @@
 import 'package:bible/models/annotation.dart';
-import 'package:bible/models/color_enum.dart';
+import 'package:bible/models/highlight_style.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style_context_extensions.dart';
-import 'package:bible/style/widgets/dialog/styled_dialog.dart';
-import 'package:bible/style/widgets/sheet/styled_port_sheet.dart';
-import 'package:bible/style/widgets/styled_circle_button.dart';
-import 'package:bible/style/widgets/styled_form_input.dart';
-import 'package:bible/style/widgets/styled_port_field_builder.dart';
-import 'package:bible/style/widgets/styled_select.dart';
-import 'package:bible/style/widgets/styled_text_field.dart';
+import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/notebook_icon.dart';
-import 'package:bible/ui/pages/notebooks_page.dart';
-import 'package:bible/ui/widgets/colored_circle.dart';
+import 'package:bible/ui/sheets/highlight_style_sheet.dart';
+import 'package:bible/ui/sheets/notebook_sheet.dart';
+import 'package:bible/ui/widgets/highlight_style_icon.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:port/port.dart';
 
@@ -35,18 +29,18 @@ class AnnotationSheet {
     final initialNotebookId = annotation != null
         ? annotation.notebookId
         : user.getNotebookById(user.lastNotebookId)?.id;
-    final initialColor = annotation?.color ?? user.getNotebookById(initialNotebookId)?.color ?? .stone;
+    final initialStyle = annotation?.style ?? user.defaultAnnotationStyle;
 
     final port =
         Port.of({
-          'color': SimplePortField<ColorEnum>(value: initialColor),
+          'style': SimplePortField<HighlightStyle>(value: initialStyle),
           'note': PortField.string(initialValue: annotation?.note),
           'notebookId': SimplePortField<String?>(value: initialNotebookId),
         }).map(
           (values, port) => Annotation(
             createdAt: annotation?.createdAt ?? .now(),
             selection: selection,
-            color: values['color'],
+            style: values['style'],
             note: (values['note'] as String).trim(),
             notebookId: values['notebookId'],
           ),
@@ -56,68 +50,103 @@ class AnnotationSheet {
       (context) => StyledPortSheet(
         title: (annotation == null ? 'Annotate' : 'Annotation').toText(),
         subtitle: subtitle,
+        bodyPadding: .only(top: 16),
         trailing: onRemove == null
             ? null
             : StyledCircleButton.lg(child: Symbols.ink_eraser.toIcon(), onPressed: () => onRemove(context)),
         port: port,
-        childrenBuilder: (context, ref) => [
-          if (user.notebooks.isNotEmpty)
-            Consumer(
-              builder: (context, ref, child) {
-                final user = ref.watch(userProvider);
-                return StyledPortFieldBuilder<String?>(
-                  fieldPath: 'notebookId',
-                  builder: (context, value, errorText, onChanged) => StyledSelect<String?>(
-                    label: 'Notebook'.toText(),
-                    options: [...user.notebooks.map((notebook) => notebook.id), null],
-                    selectedOption: user.getNotebookById(value)?.id,
-                    optionMapper: (id) {
-                      final notebook = user.getNotebookById(id);
-                      return StyledSelectOption(
-                        title: (notebook?.name ?? 'Default').toText(),
-                        leading: NotebookIcon(notebook: notebook),
-                      );
-                    },
-                    onSelected: (id) => onChanged(id),
-                    dialogTrailing: StyledCircleButton.md(
-                      child: Symbols.tune.toIcon(),
-                      onPressed: () {
-                        context.pop();
-                        context.push(NotebooksPage());
-                      },
+        childrenBuilder: (context, ref) {
+          final user = ref.watch(userProvider);
+          return [
+            if (user.notebooks.isNotEmpty)
+              StyledPortFieldBuilder<String?>(
+                fieldPath: 'notebookId',
+                builder: (context, value, errorText, onChanged) => StyledFormInput(
+                  label: 'Notebook'.toText(),
+                  labelPadding: .symmetric(horizontal: 16),
+                  error: errorText?.toText(),
+                  child: SingleChildScrollView(
+                    key: ValueKey(user.notebooks),
+                    padding: .symmetric(horizontal: 16),
+                    scrollDirection: .horizontal,
+                    child: Row(
+                      spacing: 8,
+                      children: [
+                        ...[...user.notebooks, null].map(
+                          (notebook) => StyledChip(
+                            leading: NotebookIcon(notebook: notebook),
+                            child: (notebook?.name ?? 'Default').withLength(12).toText(),
+                            isSelected: notebook?.id == value,
+                            onPressed: () => onChanged(notebook?.id),
+                          ),
+                        ),
+                        StyledTextButton(
+                          child: 'Add New'.toText(),
+                          leading: Symbols.add.toIcon(),
+                          onPressed: () async {
+                            final newNotebook = await NotebookSheet.show(context);
+                            if (newNotebook != null) {
+                              ref.updateUser((user) => user.withNewNotebook(newNotebook));
+                              port.setValue(path: 'notebookId', value: newNotebook.id);
+                            }
+                          },
+                        ),
+                      ],
                     ),
                   ),
-                );
-              },
-            ),
-          StyledPortFieldBuilder<ColorEnum>(
-            fieldPath: 'color',
-            builder: (context, value, errorText, onChanged) => StyledFormInput(
-              label: 'Color'.toText(),
-              error: errorText?.toText(),
-              child: Row(
-                mainAxisAlignment: .spaceBetween,
-                children: ColorEnum.values
-                    .map(
-                      (color) => StyledCircleButton.lg(
-                        child: ColoredCircle(color: color.toHue(context.colors).primary, isSelected: value == color),
-                        onPressed: () => onChanged(color),
+                ),
+              ),
+            StyledPortFieldBuilder<HighlightStyle>(
+              fieldPath: 'style',
+              builder: (context, value, errorText, onChanged) => StyledFormInput(
+                label: 'Style'.toText(),
+                labelPadding: .symmetric(horizontal: 16),
+                error: errorText?.toText(),
+                child: SingleChildScrollView(
+                  key: ValueKey(user.highlightStyles),
+                  padding: .symmetric(horizontal: 16),
+                  scrollDirection: .horizontal,
+                  child: Row(
+                    spacing: 8,
+                    children: [
+                      ...user.highlightStyles.map(
+                        (entry) => StyledChip(
+                          leading: HighlightStyleIcon(style: entry.$1),
+                          child: entry.$2.withLength(12).toText(),
+                          isSelected: entry.$1 == value,
+                          onPressed: () => onChanged(entry.$1),
+                        ),
                       ),
-                    )
-                    .toList(),
+                      StyledTextButton(
+                        child: 'Add New'.toText(),
+                        leading: Symbols.add.toIcon(),
+                        onPressed: () async {
+                          final newStyle = await HighlightStyleSheet.show(context, otherStyles: user.highlightStyles);
+                          if (newStyle != null) {
+                            ref.updateUser((user) => user.withNewHighlightStyle(newStyle));
+                            port.setValue(path: 'style', value: newStyle.$1);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-          StyledPortFieldBuilder<String>(
-            fieldPath: 'note',
-            builder: (context, value, errorText, onChanged) => StyledTextField.multiline(
-              text: value,
-              label: 'Note'.toText(),
-              error: errorText?.toText(),
-              onChanged: onChanged,
+            StyledPortFieldBuilder<String>(
+              fieldPath: 'note',
+              builder: (context, value, errorText, onChanged) => Padding(
+                padding: .symmetric(horizontal: 16),
+                child: StyledTextField.multiline(
+                  text: value,
+                  label: 'Note'.toText(),
+                  error: errorText?.toText(),
+                  onChanged: onChanged,
+                ),
+              ),
             ),
-          ),
-        ],
+          ];
+        },
       ),
     );
   }
@@ -129,16 +158,8 @@ class AnnotationSheet {
       annotation: annotation,
       subtitle: annotation.formatLocation().toText(),
       onRemove: (context) async {
-        final confirmed = await context.showStyledDialog(
-          (context) => StyledDialog.confirmDelete(
-            title: 'Delete Annotation'.toText(),
-            body: 'Are you sure you want to delete this annotation?'.toText(),
-          ),
-        );
-        if (confirmed == true && context.mounted) {
-          ref.updateUser((user) => user.withRemovedAnnotation(annotation));
-          context.pop();
-        }
+        ref.updateUser((user) => user.withRemovedAnnotation(annotation));
+        context.pop();
       },
     );
     if (newAnnotation != null) {
@@ -171,17 +192,9 @@ class NewAnnotationSheet {
       subtitle: selectionText.toText(),
       onRemove: hasAnnotation
           ? (context) async {
-              final confirmed = await context.showStyledDialog(
-                (context) => StyledDialog.confirmDelete(
-                  title: 'Delete Annotation'.toText(),
-                  body: 'Are you sure you want to delete this annotation?'.toText(),
-                ),
-              );
-              if (confirmed == true && context.mounted) {
-                ref.updateUser((user) => user.withRemovedSelectionAnnotations(selection));
-                onAnnotationsRemoved?.call();
-                context.pop();
-              }
+              ref.updateUser((user) => user.withRemovedSelectionAnnotations(selection));
+              onAnnotationsRemoved?.call();
+              context.pop();
             }
           : null,
     );

@@ -19,6 +19,7 @@ extension BuildContextExtensions on BuildContext {
 
   String? getValidationError(Object? error) => switch (error) {
     IsNotBlankValidationError() => 'Cannot be blank',
-    _ => null,
+    null => null,
+    _ => error.toString(),
   };
 }

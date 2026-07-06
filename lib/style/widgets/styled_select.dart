@@ -53,8 +53,8 @@ class StyledSelect<T> extends StatelessWidget {
           }
         },
         child: Row(
-          spacing: 8,
           children: [
+            gapW4,
             Expanded(
               child: DefaultTextStyle(
                 style: context.textStyle.paragraphLg,
@@ -63,6 +63,7 @@ class StyledSelect<T> extends StatelessWidget {
                 child: optionMapper(selectedOption).title,
               ),
             ),
+            gapW8,
             Icon(Symbols.keyboard_arrow_down, color: context.colors.contentTertiary),
           ],
         ),

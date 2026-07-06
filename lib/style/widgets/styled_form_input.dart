@@ -8,9 +8,11 @@ class StyledFormInput extends StatelessWidget {
   final Widget? label;
   final Widget? error;
 
+  final EdgeInsets labelPadding;
+
   final Widget child;
 
-  const StyledFormInput({super.key, this.label, this.error, required this.child});
+  const StyledFormInput({super.key, this.label, this.error, this.labelPadding = .zero, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class StyledFormInput extends StatelessWidget {
       children: [
         if (label case final label?)
           Padding(
-            padding: .only(bottom: 8),
+            padding: labelPadding + .only(bottom: 8),
             child: DefaultTextStyle(child: label, style: context.textStyle.labelMd),
           ),
         child,

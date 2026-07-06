@@ -10,10 +10,12 @@ import 'package:port/port.dart';
 
 class StyledPortSheet<T> extends StyledSheet<T> {
   final Port<T> port;
+  final EdgeInsets bodyPadding;
 
   const StyledPortSheet({
     super.key,
     required this.port,
+    this.bodyPadding = const .only(left: 16, right: 16, top: 16),
     required super.title,
     super.subtitle,
     super.trailing,
@@ -28,7 +30,7 @@ class StyledPortSheet<T> extends StyledSheet<T> {
       subtitle: subtitle,
       trailing: trailing,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16) + .only(top: 16),
+        padding: bodyPadding,
         child: PortBuilder(
           port: port,
           builder: (context, port) =>

@@ -4,23 +4,39 @@ import 'package:flutter/material.dart';
 class StyledCircleButton extends StatelessWidget {
   final Widget child;
   final Function()? onPressed;
+  final bool? isSelected;
 
   final ColorBuilder? colorBuilder;
 
   final double iconSize;
   final double dimension;
 
-  const StyledCircleButton.lg({super.key, required this.child, required this.onPressed, this.colorBuilder})
-    : iconSize = 24,
-      dimension = 40;
+  const StyledCircleButton.lg({
+    super.key,
+    required this.child,
+    required this.onPressed,
+    this.colorBuilder,
+    this.isSelected,
+  }) : iconSize = 24,
+       dimension = 40;
 
-  const StyledCircleButton.md({super.key, required this.child, required this.onPressed, this.colorBuilder})
-    : iconSize = 24,
-      dimension = 40;
+  const StyledCircleButton.md({
+    super.key,
+    required this.child,
+    required this.onPressed,
+    this.colorBuilder,
+    this.isSelected,
+  }) : iconSize = 24,
+       dimension = 40;
 
-  const StyledCircleButton.sm({super.key, required this.child, required this.onPressed, this.colorBuilder})
-    : iconSize = 16,
-      dimension = 32;
+  const StyledCircleButton.sm({
+    super.key,
+    required this.child,
+    required this.onPressed,
+    this.colorBuilder,
+    this.isSelected,
+  }) : iconSize = 16,
+       dimension = 32;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +53,11 @@ class StyledCircleButton extends StatelessWidget {
           fixedSize: Size.square(dimension),
           maximumSize: Size.square(dimension),
           minimumSize: Size.square(dimension),
+          side: switch (isSelected) {
+            true => BorderSide(color: context.colors.borderSelected, width: 2),
+            false => BorderSide(color: context.colors.borderOpaque, width: 2),
+            null => null,
+          },
         ),
       ),
     );
