@@ -101,3 +101,15 @@ ValueNotifier<T> usePassthrough<T>(T value) {
 }
 
 void useOneTimeEffect(Function() effect) => useEffect(() => effect(), []);
+
+bool useOnContentLoaded({ScrollController? controller, Function(double maxScrollExtent)? onContentLoaded}) {
+  final isLoadedState = useState(false);
+  usePostFrameEffect(() {
+    final position = controller?.positionOrNull;
+    if (!isLoadedState.value && position != null) {
+      onContentLoaded?.call(position.maxScrollExtent);
+      isLoadedState.value = true;
+    }
+  }, [controller != null, controller?.positionOrNull != null]);
+  return isLoadedState.value;
+}

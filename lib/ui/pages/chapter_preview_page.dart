@@ -66,35 +66,49 @@ class ChapterPreviewPage extends HookConsumerWidget {
             );
 
             final scrollToSelection = chapterReference == initialChapterReference ? verseSelection : null;
-            usePostFrameEffect(() {
-              if (scrollToSelection == null) {
-                return;
-              }
-
-              final verseContext = keyByReference[scrollToSelection.references.first]?.currentContext;
-              if (verseContext != null && verseContext.mounted) {
-                Scrollable.ensureVisible(verseContext, alignment: 0.35, curve: Curves.easeInOutCubic, duration: .zero);
-              }
-            }, []);
-
-            return StyledScrollbar(
+            final isLoaded = useOnContentLoaded(
               controller: scrollController,
-              child: SingleChildScrollView(
+              onContentLoaded: (maxScrollExtent) {
+                if (scrollToSelection == null) {
+                  return;
+                }
+
+                final verseContext = keyByReference[scrollToSelection.references.first]?.currentContext;
+                if (verseContext != null && verseContext.mounted) {
+                  Scrollable.ensureVisible(
+                    verseContext,
+                    alignment: 0.35,
+                    curve: Curves.easeInOutCubic,
+                    duration: .zero,
+                  );
+                }
+              },
+            );
+
+            return AnimatedOpacity(
+              opacity: isLoaded ? 1 : 0,
+              duration: Duration(milliseconds: 300),
+              curve: Curves.easeOutCubic,
+              child: StyledScrollbar(
                 controller: scrollController,
-                padding: .symmetric(horizontal: 24, vertical: 16),
-                child: Column(
-                  crossAxisAlignment: .start,
-                  children: [
-                    ChapterBuilder(
-                      chapterReference: chapterReference,
-                      user: user,
-                      chapter: chapter,
-                      underlinedReferences: scrollToSelection?.references ?? const [],
-                      onHandleLongPress: (_) => false,
-                      keyByReference: keyByReference,
-                    ),
-                    Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).bottom + 24)),
-                  ],
+                child: SingleChildScrollView(
+                  physics: AlwaysScrollableScrollPhysics(),
+                  controller: scrollController,
+                  padding: .symmetric(horizontal: 24, vertical: 16),
+                  child: Column(
+                    crossAxisAlignment: .start,
+                    children: [
+                      ChapterBuilder(
+                        chapterReference: chapterReference,
+                        user: user,
+                        chapter: chapter,
+                        underlinedReferences: scrollToSelection?.references ?? const [],
+                        onHandleLongPress: (_) => false,
+                        keyByReference: keyByReference,
+                      ),
+                      Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).bottom + 24)),
+                    ],
+                  ),
                 ),
               ),
             );

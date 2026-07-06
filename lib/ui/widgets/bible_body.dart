@@ -456,19 +456,13 @@ class BibleBody extends HookConsumerWidget {
         builder: (context) {
           final scrollController = chapterReference == currentChapterReference ? currentScrollController : null;
 
-          final isLoadedState = useState(false);
-          usePostFrameEffect(() {
-            if (scrollController == null) {
-              return;
-            }
-
-            final target = scrollPercentByReferenceRef.value[chapterReference] ?? 0;
-            final position = currentScrollController.positionOrNull;
-            if (!isLoadedState.value && position != null) {
-              scrollController.jumpTo((target * position.maxScrollExtent).clamp(0.0, position.maxScrollExtent));
-              isLoadedState.value = true;
-            }
-          }, [scrollController != null, currentScrollController.positionOrNull != null]);
+          final isLoaded = useOnContentLoaded(
+            controller: scrollController,
+            onContentLoaded: (maxScrollExtent) {
+              final target = scrollPercentByReferenceRef.value[chapterReference] ?? 0;
+              scrollController?.jumpTo((target * maxScrollExtent).clamp(0.0, maxScrollExtent));
+            },
+          );
 
           final showTopBar = useListenableSelector(
             scrollController,
@@ -476,14 +470,16 @@ class BibleBody extends HookConsumerWidget {
           );
 
           return AnimatedOpacity(
-            opacity: isLoadedState.value ? 1 : 0,
+            opacity: isLoaded ? 1 : 0,
             duration: Duration(milliseconds: 300),
             curve: Curves.easeOutCubic,
             child: Stack(
+              fit: .expand,
               children: [
                 StyledScrollbar(
                   controller: scrollController,
                   child: SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
                     controller: scrollController,
                     padding: .symmetric(horizontal: 24, vertical: 8),
                     child: Column(
