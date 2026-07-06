@@ -2,6 +2,7 @@ import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/testament.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
@@ -21,7 +22,7 @@ class SearchLocationButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StyledPillButton.md(
-      leading: Symbols.book.toIcon(),
+      leading: Symbols.book_6.toIcon(),
       trailing: Symbols.keyboard_arrow_down.toIcon(),
       label:
           (locations.isEmpty
@@ -37,6 +38,12 @@ class SearchLocationButton extends StatelessWidget {
         final newLocations = await context.showStyledSheet(
           (context) => StyledMultiSelectionSheet<SearchLocationFilter>(
             title: 'Locations'.toText(),
+            trailing: locations.isEmpty
+                ? null
+                : StyledCircleButton.md(
+                    child: Symbols.delete.toIcon(),
+                    onPressed: () => context.pop(<SearchLocationFilter>[]),
+                  ),
             optionsByCategory: SearchLocationFilterGroup.values.mapToMap(
               (group) => MapEntry(group.title(), group.getFilters(currentBook: currentBook)),
             ),
