@@ -49,15 +49,13 @@ class BibleTile extends StatelessWidget {
               ? StyledListItem(
                   leading: Symbols.cloud.toIcon(),
                   title: 'Online Only'.toText(),
-                  subtitle:
-                      'This translation is streamed from YouVersion Platform, so it requires an internet connection.'
-                          .toText(),
+                  subtitle: 'This Bible is streamed from YouVersion Platform, so it requires an internet connection.'
+                      .toText(),
                 )
               : StyledListItem(
                   leading: Symbols.book_4.toIcon(),
                   title: 'On Device'.toText(),
-                  subtitle: 'This translation is downloaded to your device, so you can search it and read offline.'
-                      .toText(),
+                  subtitle: 'This Bible is downloaded to your device, so you can search it and read offline.'.toText(),
                 ),
           translation.isStudy
               ? StyledListItem(
@@ -72,6 +70,39 @@ class BibleTile extends StatelessWidget {
                   title: 'Reading Bible'.toText(),
                   subtitle: 'Doesn\'t include interlinear or morphology data.'.toText(),
                 ),
+          if (translation.hasNativeHeadings)
+            StyledListItem(
+              title: 'Native Headings'.toText(),
+              subtitle: 'Headings are included with this Bible.'.toText(),
+              leading: Symbols.title.toIcon(),
+            )
+          else if (translation.hasSyntheticHeadings)
+            StyledListItem(
+              title: 'Synthetic Headings'.toText(),
+              subtitle: 'Headings are synthetically inserted into this Bible from the BSB.'.toText(),
+              leading: Symbols.labs.toIcon(),
+            )
+          else
+            StyledListItem(
+              title: 'No Headings'.toText(),
+              subtitle: 'No headings are included in this Bible.'.toText(),
+              leading: Symbols.format_clear.toIcon(),
+            ),
+          StyledListItem(
+            trailing: StyledSwitch(isSelected: translation.hasRedLetters, isEnabled: true),
+            title: 'Red Letters'.toText(),
+            subtitle: 'Whether Red Letters are supported in this Bible.'.toText(),
+          ),
+          StyledListItem(
+            trailing: StyledSwitch(isSelected: translation.hasFootnotes, isEnabled: true),
+            title: 'Footnotes'.toText(),
+            subtitle: 'Whether this Bible includes footnotes.'.toText(),
+          ),
+          StyledListItem(
+            trailing: StyledSwitch(isSelected: translation.hasParagraphs, isEnabled: true),
+            title: 'Paragraphs'.toText(),
+            subtitle: 'Whether this Bible includes paragraphs.'.toText(),
+          ),
         ],
       ),
     ),

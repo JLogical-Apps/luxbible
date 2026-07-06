@@ -75,7 +75,7 @@ class StyledListItem extends StatelessWidget {
     this.thirdLine,
     this.leading,
     required bool isSelected,
-    required Function(bool newValue) onSelected,
+    required Function(bool newValue)? onSelected,
     this.size = ComponentSize.md,
     this.isEnabled = true,
     this.showDividerOverride,

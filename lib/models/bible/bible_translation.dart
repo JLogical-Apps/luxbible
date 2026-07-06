@@ -114,6 +114,11 @@ enum BibleTranslation {
     bsb || kjv || nasb95 || niv11 || asv => true,
     _ => false,
   };
+
+  bool get hasParagraphs => switch (this) {
+    oshb || sv => false,
+    _ => true,
+  };
 }
 
 sealed class BibleTranslationSource {
