@@ -15,7 +15,9 @@ _ThemeLayoutConfiguration _$ThemeLayoutConfigurationFromJson(
       $enumDecodeNullable(_$FontSizeSpacingEnumMap, json['fontSizeSpacing']) ??
       FontSizeSpacing.standard,
   redLetters: json['redLetters'] as bool? ?? true,
-  sections: json['sections'] as bool? ?? true,
+  sections: json['sections'] == null
+      ? SectionHeadings.all
+      : _sectionHeadingsFromJson(json['sections']),
   verseNumbers: json['verseNumbers'] as bool? ?? true,
   paragraphs: json['paragraphs'] as bool? ?? true,
   footnotes: json['footnotes'] as bool? ?? true,
@@ -27,7 +29,7 @@ Map<String, dynamic> _$ThemeLayoutConfigurationToJson(
   'font': _$ThemeFontEnumMap[instance.font]!,
   'fontSizeSpacing': _$FontSizeSpacingEnumMap[instance.fontSizeSpacing]!,
   'redLetters': instance.redLetters,
-  'sections': instance.sections,
+  'sections': _$SectionHeadingsEnumMap[instance.sections]!,
   'verseNumbers': instance.verseNumbers,
   'paragraphs': instance.paragraphs,
   'footnotes': instance.footnotes,
@@ -47,4 +49,10 @@ const _$FontSizeSpacingEnumMap = {
   FontSizeSpacing.dense: 'dense',
   FontSizeSpacing.standard: 'standard',
   FontSizeSpacing.comfort: 'comfort',
+};
+
+const _$SectionHeadingsEnumMap = {
+  SectionHeadings.all: 'all',
+  SectionHeadings.native: 'native',
+  SectionHeadings.none: 'none',
 };

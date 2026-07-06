@@ -84,7 +84,9 @@ class ThemeSettingsPage extends ConsumerWidget {
                 StyledListItem.switchControl(
                   title: 'Red Letters'.toText(),
                   subtitle: 'Show Jesus\' words in red.'.toText(),
-                  thirdLine: 'This is only available in BSB, NASB, and NIV.'.toText(),
+                  thirdLine: user.translation.hasRedLetters
+                      ? null
+                      : 'This is not available in ${user.translation.title()}.'.toText(),
                   isSelected: user.themeLayout.redLetters,
                   onSelected: (newValue) => ref.updateUser((user) => user.copyWith.themeLayout(redLetters: newValue)),
                 ),
@@ -93,13 +95,30 @@ class ThemeSettingsPage extends ConsumerWidget {
           ),
           StyledSection.child(
             title: 'Layout'.toText(),
-            subtitle: 'These are only available in BSB, NASB, and NIV.'.toText(),
             child: StyledCard(
               children: [
-                StyledListItem.switchControl(
+                StyledListItem(
                   title: 'Section Headings'.toText(),
-                  isSelected: user.themeLayout.sections,
-                  onSelected: (newValue) => ref.updateUser((user) => user.copyWith.themeLayout(sections: newValue)),
+                  subtitle: user.themeLayout.sections.title().toText(),
+                  trailing: StyledPillButton.md(
+                    label: 'Edit'.toText(),
+                    onPressed: () async {
+                      final newSectionHeadings = await context.showStyledSheet(
+                        (context) => StyledSelectionSheet(
+                          title: 'Section Headings'.toText(),
+                          options: SectionHeadings.values,
+                          optionMapper: (option) => StyledSelectOption(
+                            title: option.title().toText(),
+                            subtitle: option.description().toText(),
+                          ),
+                          initialOption: user.themeLayout.sections,
+                        ),
+                      );
+                      if (newSectionHeadings != null) {
+                        ref.updateUser((user) => user.copyWith.themeLayout(sections: newSectionHeadings));
+                      }
+                    },
+                  ),
                 ),
                 StyledListItem.switchControl(
                   title: 'Verse Numbers'.toText(),

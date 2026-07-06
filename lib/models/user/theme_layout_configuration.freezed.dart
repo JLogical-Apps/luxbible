@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ThemeLayoutConfiguration {
 
- ThemeFont get font; FontSizeSpacing get fontSizeSpacing; bool get redLetters; bool get sections; bool get verseNumbers; bool get paragraphs; bool get footnotes;
+ ThemeFont get font; FontSizeSpacing get fontSizeSpacing; bool get redLetters;@JsonKey(fromJson: _sectionHeadingsFromJson) SectionHeadings get sections; bool get verseNumbers; bool get paragraphs; bool get footnotes;
 /// Create a copy of ThemeLayoutConfiguration
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $ThemeLayoutConfigurationCopyWith<$Res>  {
   factory $ThemeLayoutConfigurationCopyWith(ThemeLayoutConfiguration value, $Res Function(ThemeLayoutConfiguration) _then) = _$ThemeLayoutConfigurationCopyWithImpl;
 @useResult
 $Res call({
- ThemeFont font, FontSizeSpacing fontSizeSpacing, bool redLetters, bool sections, bool verseNumbers, bool paragraphs, bool footnotes
+ ThemeFont font, FontSizeSpacing fontSizeSpacing, bool redLetters,@JsonKey(fromJson: _sectionHeadingsFromJson) SectionHeadings sections, bool verseNumbers, bool paragraphs, bool footnotes
 });
 
 
@@ -71,7 +71,7 @@ font: null == font ? _self.font : font // ignore: cast_nullable_to_non_nullable
 as ThemeFont,fontSizeSpacing: null == fontSizeSpacing ? _self.fontSizeSpacing : fontSizeSpacing // ignore: cast_nullable_to_non_nullable
 as FontSizeSpacing,redLetters: null == redLetters ? _self.redLetters : redLetters // ignore: cast_nullable_to_non_nullable
 as bool,sections: null == sections ? _self.sections : sections // ignore: cast_nullable_to_non_nullable
-as bool,verseNumbers: null == verseNumbers ? _self.verseNumbers : verseNumbers // ignore: cast_nullable_to_non_nullable
+as SectionHeadings,verseNumbers: null == verseNumbers ? _self.verseNumbers : verseNumbers // ignore: cast_nullable_to_non_nullable
 as bool,paragraphs: null == paragraphs ? _self.paragraphs : paragraphs // ignore: cast_nullable_to_non_nullable
 as bool,footnotes: null == footnotes ? _self.footnotes : footnotes // ignore: cast_nullable_to_non_nullable
 as bool,
@@ -156,7 +156,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ThemeFont font,  FontSizeSpacing fontSizeSpacing,  bool redLetters,  bool sections,  bool verseNumbers,  bool paragraphs,  bool footnotes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ThemeFont font,  FontSizeSpacing fontSizeSpacing,  bool redLetters, @JsonKey(fromJson: _sectionHeadingsFromJson)  SectionHeadings sections,  bool verseNumbers,  bool paragraphs,  bool footnotes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ThemeLayoutConfiguration() when $default != null:
 return $default(_that.font,_that.fontSizeSpacing,_that.redLetters,_that.sections,_that.verseNumbers,_that.paragraphs,_that.footnotes);case _:
@@ -177,7 +177,7 @@ return $default(_that.font,_that.fontSizeSpacing,_that.redLetters,_that.sections
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ThemeFont font,  FontSizeSpacing fontSizeSpacing,  bool redLetters,  bool sections,  bool verseNumbers,  bool paragraphs,  bool footnotes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ThemeFont font,  FontSizeSpacing fontSizeSpacing,  bool redLetters, @JsonKey(fromJson: _sectionHeadingsFromJson)  SectionHeadings sections,  bool verseNumbers,  bool paragraphs,  bool footnotes)  $default,) {final _that = this;
 switch (_that) {
 case _ThemeLayoutConfiguration():
 return $default(_that.font,_that.fontSizeSpacing,_that.redLetters,_that.sections,_that.verseNumbers,_that.paragraphs,_that.footnotes);}
@@ -194,7 +194,7 @@ return $default(_that.font,_that.fontSizeSpacing,_that.redLetters,_that.sections
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ThemeFont font,  FontSizeSpacing fontSizeSpacing,  bool redLetters,  bool sections,  bool verseNumbers,  bool paragraphs,  bool footnotes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ThemeFont font,  FontSizeSpacing fontSizeSpacing,  bool redLetters, @JsonKey(fromJson: _sectionHeadingsFromJson)  SectionHeadings sections,  bool verseNumbers,  bool paragraphs,  bool footnotes)?  $default,) {final _that = this;
 switch (_that) {
 case _ThemeLayoutConfiguration() when $default != null:
 return $default(_that.font,_that.fontSizeSpacing,_that.redLetters,_that.sections,_that.verseNumbers,_that.paragraphs,_that.footnotes);case _:
@@ -209,13 +209,13 @@ return $default(_that.font,_that.fontSizeSpacing,_that.redLetters,_that.sections
 @JsonSerializable()
 
 class _ThemeLayoutConfiguration extends ThemeLayoutConfiguration {
-  const _ThemeLayoutConfiguration({this.font = ThemeFont.inter, this.fontSizeSpacing = FontSizeSpacing.standard, this.redLetters = true, this.sections = true, this.verseNumbers = true, this.paragraphs = true, this.footnotes = true}): super._();
+  const _ThemeLayoutConfiguration({this.font = ThemeFont.inter, this.fontSizeSpacing = FontSizeSpacing.standard, this.redLetters = true, @JsonKey(fromJson: _sectionHeadingsFromJson) this.sections = SectionHeadings.all, this.verseNumbers = true, this.paragraphs = true, this.footnotes = true}): super._();
   factory _ThemeLayoutConfiguration.fromJson(Map<String, dynamic> json) => _$ThemeLayoutConfigurationFromJson(json);
 
 @override@JsonKey() final  ThemeFont font;
 @override@JsonKey() final  FontSizeSpacing fontSizeSpacing;
 @override@JsonKey() final  bool redLetters;
-@override@JsonKey() final  bool sections;
+@override@JsonKey(fromJson: _sectionHeadingsFromJson) final  SectionHeadings sections;
 @override@JsonKey() final  bool verseNumbers;
 @override@JsonKey() final  bool paragraphs;
 @override@JsonKey() final  bool footnotes;
@@ -253,7 +253,7 @@ abstract mixin class _$ThemeLayoutConfigurationCopyWith<$Res> implements $ThemeL
   factory _$ThemeLayoutConfigurationCopyWith(_ThemeLayoutConfiguration value, $Res Function(_ThemeLayoutConfiguration) _then) = __$ThemeLayoutConfigurationCopyWithImpl;
 @override @useResult
 $Res call({
- ThemeFont font, FontSizeSpacing fontSizeSpacing, bool redLetters, bool sections, bool verseNumbers, bool paragraphs, bool footnotes
+ ThemeFont font, FontSizeSpacing fontSizeSpacing, bool redLetters,@JsonKey(fromJson: _sectionHeadingsFromJson) SectionHeadings sections, bool verseNumbers, bool paragraphs, bool footnotes
 });
 
 
@@ -276,7 +276,7 @@ font: null == font ? _self.font : font // ignore: cast_nullable_to_non_nullable
 as ThemeFont,fontSizeSpacing: null == fontSizeSpacing ? _self.fontSizeSpacing : fontSizeSpacing // ignore: cast_nullable_to_non_nullable
 as FontSizeSpacing,redLetters: null == redLetters ? _self.redLetters : redLetters // ignore: cast_nullable_to_non_nullable
 as bool,sections: null == sections ? _self.sections : sections // ignore: cast_nullable_to_non_nullable
-as bool,verseNumbers: null == verseNumbers ? _self.verseNumbers : verseNumbers // ignore: cast_nullable_to_non_nullable
+as SectionHeadings,verseNumbers: null == verseNumbers ? _self.verseNumbers : verseNumbers // ignore: cast_nullable_to_non_nullable
 as bool,paragraphs: null == paragraphs ? _self.paragraphs : paragraphs // ignore: cast_nullable_to_non_nullable
 as bool,footnotes: null == footnotes ? _self.footnotes : footnotes // ignore: cast_nullable_to_non_nullable
 as bool,

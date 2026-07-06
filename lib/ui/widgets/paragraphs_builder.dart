@@ -401,7 +401,7 @@ class ParagraphsBuilder extends HookWidget {
           TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 1.5)),
         ...switch (paragraph) {
           SectionParagraph(:final text, :final type) =>
-            user.themeLayout.sections
+            user.themeLayout.sections.showFor(translation: translation, sectionType: type)
                 ? type.isLarge
                       ? [
                           if (paragraphIndex != 0)

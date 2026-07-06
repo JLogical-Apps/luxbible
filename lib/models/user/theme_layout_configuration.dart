@@ -1,3 +1,5 @@
+import 'package:bible/models/bible/bible_translation.dart';
+import 'package:bible/models/bible/paragraph.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'theme_layout_configuration.freezed.dart';
@@ -11,7 +13,7 @@ sealed class ThemeLayoutConfiguration with _$ThemeLayoutConfiguration {
     @Default(ThemeFont.inter) ThemeFont font,
     @Default(FontSizeSpacing.standard) FontSizeSpacing fontSizeSpacing,
     @Default(true) bool redLetters,
-    @Default(true) bool sections,
+    @Default(SectionHeadings.all) @JsonKey(fromJson: _sectionHeadingsFromJson) SectionHeadings sections,
     @Default(true) bool verseNumbers,
     @Default(true) bool paragraphs,
     @Default(true) bool footnotes,
@@ -72,4 +74,42 @@ enum FontSizeSpacing {
     standard => 0.95,
     comfort => 1.1,
   };
+}
+
+enum SectionHeadings {
+  all,
+  native,
+  none;
+
+  String title() => switch (this) {
+    all => 'Native & Synthetic',
+    native => 'Native',
+    none => 'None',
+  };
+
+  String description() => switch (this) {
+    all =>
+      'Show headings in translations that support them, and synthetically insert BSB\'s section headings into English translations without them natively.',
+    native => 'Show headings in translations that support them.',
+    none => 'Do not show section headings',
+  };
+
+  bool showFor({required BibleTranslation translation, required SectionType sectionType}) =>
+      sectionType == .s1 || sectionType == .s2
+      ? switch (this) {
+          all => true,
+          native => translation.hasNativeHeadings,
+          none => false,
+        }
+      : true;
+}
+
+SectionHeadings _sectionHeadingsFromJson(dynamic json) {
+  if (json is bool) {
+    return json ? .all : .none;
+  } else if (json is SectionHeadings) {
+    return json;
+  } else {
+    return .all;
+  }
 }

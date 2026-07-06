@@ -93,7 +93,27 @@ enum BibleTranslation {
   bool get isLocal => source == .local;
   bool get isOnline => !isLocal;
 
-  bool get isStudy => this == .bsb || this == .kjv;
+  bool get isStudy => this == bsb || this == kjv;
+
+  bool get hasRedLetters => switch (this) {
+    bsb || kjv || nasb95 || niv11 => true,
+    _ => false,
+  };
+
+  bool get hasNativeHeadings => switch (this) {
+    bsb || nasb95 || niv11 => true,
+    _ => false,
+  };
+
+  bool get hasSyntheticHeadings => switch (this) {
+    kjv || asv => true,
+    _ => false,
+  };
+
+  bool get hasFootnotes => switch (this) {
+    bsb || kjv || nasb95 || niv11 || asv => true,
+    _ => false,
+  };
 }
 
 sealed class BibleTranslationSource {
