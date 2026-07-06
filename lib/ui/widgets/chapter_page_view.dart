@@ -42,7 +42,7 @@ class ChapterPageView extends StatelessWidget {
           final chapterValue = ref.watch(chapterProvider(translation: translation, chapterReference: chapterReference));
 
           if (chapterValue.hasError) {
-            return SingleChildScrollView(
+            return StyledListView.child(
               padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top + 24) + .symmetric(horizontal: 16),
               child: Column(
                 spacing: 12,
