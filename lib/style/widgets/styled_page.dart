@@ -1,7 +1,7 @@
 import 'package:bible/style/color_builder.dart';
 import 'package:bible/style/gap.dart';
-import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/style_context_extensions.dart';
+import 'package:bible/style/styled_shadow.dart';
 import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
@@ -15,7 +15,7 @@ class StyledPage extends StatelessWidget {
 
   final Widget? leading;
   final Widget? trailing;
-  final bool showShadow;
+  final bool showTopShadow;
   final Function(BuildContext)? onBackPressed;
 
   const StyledPage({
@@ -25,7 +25,7 @@ class StyledPage extends StatelessWidget {
     this.backgroundColor,
     this.leading,
     this.trailing,
-    this.showShadow = false,
+    this.showTopShadow = false,
     this.onBackPressed,
   });
 
@@ -58,7 +58,7 @@ class StyledPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor?.call(context.colors) ?? context.colors.surfacePrimary,
       resizeToAvoidBottomInset: false,
-      appBar: appBar != null && showShadow
+      appBar: appBar != null && showTopShadow
           ? PreferredSize(
               preferredSize: appBar.preferredSize,
               child: DecoratedBox(
