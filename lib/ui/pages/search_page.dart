@@ -95,6 +95,9 @@ class SearchPage extends HookConsumerWidget {
 
     void search() {
       searchResultsState.value = getSearchedReferences();
+      if (searchState.value.isNotEmpty) {
+        ref.updateUser((user) => user.withSearchHistory(searchState.value));
+      }
     }
 
     return StyledPage(
@@ -263,10 +266,7 @@ class SearchPage extends HookConsumerWidget {
                         onPressed: () => ChapterPreviewPage.show(
                           context,
                           verseSelection: VerseSelection.reference(result),
-                          onNavigateToPassage: () {
-                            ref.updateUser((user) => user.withSearchHistory(searchState.value));
-                            context.pop(SearchPageResult(reference: result));
-                          },
+                          onNavigateToPassage: () => context.pop(SearchPageResult(reference: result)),
                         ),
                       );
                     }).nonNulls,
