@@ -103,9 +103,9 @@ class BibleApp extends ConsumerWidget {
             selectionHandleColor: Colors.white,
           ),
         ),
+        scrollBehavior: BouncingScrollBehavior(),
         debugShowCheckedModeBanner: false,
         home: MediaQuery.withNoTextScaling(child: BiblePage()),
-        builder: (context, widget) => ScrollConfiguration(behavior: BouncingScrollBehavior(), child: widget!),
       ),
     );
   }

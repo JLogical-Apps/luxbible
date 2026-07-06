@@ -19,6 +19,15 @@ class StyledListView extends StatelessWidget {
     this.controller,
   });
 
+  StyledListView.child({
+    super.key,
+    required Widget child,
+    this.shrinkWrap = false,
+    this.padding = .zero,
+    this.physics,
+    this.controller,
+  }) : children = [child];
+
   @override
   Widget build(BuildContext context) {
     final separatedChildren = children

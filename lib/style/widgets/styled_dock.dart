@@ -108,6 +108,7 @@ class StyledDock extends HookWidget {
                               forceHeight
                                   ? LayoutBuilder(
                                       builder: (context, constraints) => SingleChildScrollView(
+                                        physics: BouncingScrollPhysics(),
                                         controller: controller,
                                         child: ClipRect(
                                           child: ConstrainedBox(
@@ -122,9 +123,9 @@ class StyledDock extends HookWidget {
                                       ),
                                     )
                                   : StyledListView(
-                                      shrinkWrap: true,
-                                      physics: ClampingScrollPhysics(),
+                                      shrinkWrap: shrinkWrap,
                                       controller: controller,
+                                      physics: shrinkWrap ? ClampingScrollPhysics() : null,
                                       padding: .only(
                                         bottom: bottomChildren.isEmpty ? MediaQuery.paddingOf(context).bottom : 0,
                                       ),

@@ -1,9 +1,9 @@
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -18,11 +18,13 @@ class BookmarksPage extends HookConsumerWidget {
     return StyledPage(
       title: 'Your Bookmarks'.toText(),
       body: user.bookmarkById.isEmpty
-          ? Padding(
-              padding: .all(16),
-              child: StyledTile.message(
-                leading: Symbols.bookmark.toIcon(),
-                title: "You haven't created any bookmarks.".toText(),
+          ? StyledListView.child(
+              child: Padding(
+                padding: .all(16),
+                child: StyledTile.message(
+                  leading: Symbols.bookmark.toIcon(),
+                  title: "You haven't created any bookmarks.".toText(),
+                ),
               ),
             )
           : StyledReorderableList(

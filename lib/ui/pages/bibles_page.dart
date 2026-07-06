@@ -1,12 +1,10 @@
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/keyed_scroll_transformer.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/bible_tile.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -26,46 +24,31 @@ class BiblesPage extends HookConsumerWidget {
     return StyledPage(
       title: 'Bibles'.toText(),
       body: StyledDock(
-        forceHeight: true,
         shrinkWrap: false,
-        activeScrollKey: 'scroll',
         children: [
-          if (bibles.isEmpty)
-            Padding(
-              padding: .all(16),
-              child: StyledTile.message(
-                leading: Symbols.book.toIcon(),
-                title: "You haven't added any Bibles.".toText(),
-              ),
-            ),
-          Expanded(
-            child: KeyedScrollTransformer(
-              scrollKey: 'scroll',
-              child: StyledReorderableList(
-                children: bibles
-                    .map(
-                      (translation) => StyledSwipeable(
-                        key: ValueKey(translation),
-                        isEnabled: user.biblesOrDefault.length > 1,
-                        actions: [
-                          .delete(
-                            onPressed: () => ref.updateUser(
-                              (user) => user.copyWith(bibles: user.biblesOrDefault.withRemoved(translation)),
-                            ),
-                          ),
-                        ],
-                        child: BibleTile(
-                          translation: translation,
-                          trailing: ReorderableDragStartListener(child: Icon(Symbols.drag_handle), index: 0),
+          StyledReorderableList(
+            shrinkWrap: true,
+            children: bibles
+                .map(
+                  (translation) => StyledSwipeable(
+                    key: ValueKey(translation),
+                    isEnabled: user.biblesOrDefault.length > 1,
+                    actions: [
+                      .delete(
+                        onPressed: () => ref.updateUser(
+                          (user) => user.copyWith(bibles: user.biblesOrDefault.withRemoved(translation)),
                         ),
                       ),
-                    )
-                    .toList(),
-                onReorder: (oldIndex, newIndex) => ref.updateUser(
-                  (user) => user.copyWith(bibles: user.biblesOrDefault.withReorder(oldIndex, newIndex)),
-                ),
-              ),
-            ),
+                    ],
+                    child: BibleTile(
+                      translation: translation,
+                      trailing: ReorderableDragStartListener(child: Icon(Symbols.drag_handle), index: 0),
+                    ),
+                  ),
+                )
+                .toList(),
+            onReorder: (oldIndex, newIndex) =>
+                ref.updateUser((user) => user.copyWith(bibles: user.biblesOrDefault.withReorder(oldIndex, newIndex))),
           ),
         ],
         buttonsBuilder: (context) => [
