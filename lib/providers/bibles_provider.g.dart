@@ -369,6 +369,98 @@ final class VerseSelectionTextFamily extends $Family
   String toString() => r'verseSelectionTextProvider';
 }
 
+@ProviderFor(verseSelectionVerses)
+final verseSelectionVersesProvider = VerseSelectionVersesFamily._();
+
+final class VerseSelectionVersesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Verse>>,
+          List<Verse>,
+          FutureOr<List<Verse>>
+        >
+    with $FutureModifier<List<Verse>>, $FutureProvider<List<Verse>> {
+  VerseSelectionVersesProvider._({
+    required VerseSelectionVersesFamily super.from,
+    required ({VerseSelection selection, BibleTranslation translation})
+    super.argument,
+  }) : super(
+         retry: null,
+         name: r'verseSelectionVersesProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$verseSelectionVersesHash();
+
+  @override
+  String toString() {
+    return r'verseSelectionVersesProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<Verse>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<Verse>> create(Ref ref) {
+    final argument =
+        this.argument
+            as ({VerseSelection selection, BibleTranslation translation});
+    return verseSelectionVerses(
+      ref,
+      selection: argument.selection,
+      translation: argument.translation,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is VerseSelectionVersesProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$verseSelectionVersesHash() =>
+    r'84a76410248b909a13c3acbb6bab1bbf4815478a';
+
+final class VerseSelectionVersesFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<List<Verse>>,
+          ({VerseSelection selection, BibleTranslation translation})
+        > {
+  VerseSelectionVersesFamily._()
+    : super(
+        retry: null,
+        name: r'verseSelectionVersesProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  VerseSelectionVersesProvider call({
+    required VerseSelection selection,
+    required BibleTranslation translation,
+  }) => VerseSelectionVersesProvider._(
+    argument: (selection: selection, translation: translation),
+    from: this,
+  );
+
+  @override
+  String toString() => r'verseSelectionVersesProvider';
+}
+
 @ProviderFor(verseSelectionParagraphs)
 final verseSelectionParagraphsProvider = VerseSelectionParagraphsFamily._();
 

@@ -15,10 +15,12 @@ import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
+import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
+import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -130,7 +132,7 @@ enum StudyAction {
                       final book = crossReference.references.first.book;
                       final translation = crossReferenceTranslation.effectiveFor(book);
                       final verses = ref
-                          .watch(verseSelectionTextProvider(translation: translation, selection: verseSelection))
+                          .watch(verseSelectionVersesProvider(translation: translation, selection: verseSelection))
                           .value;
                       return StyledListItem.navigation(
                         title: Row(
@@ -141,7 +143,7 @@ enum StudyAction {
                               StyledTag.sm(child: translation.title().toText()),
                           ],
                         ),
-                        subtitle: StyledLoading(child: verses?.toText()),
+                        subtitle: StyledLoading(child: verses?.mapIfNonNull((verses) => VerseText(verses: verses))),
                         onPressed: () => ChapterPreviewPage.show(
                           context,
                           verseSelection: verseSelection,

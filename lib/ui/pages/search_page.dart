@@ -25,7 +25,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:substring_highlight/substring_highlight.dart';
 
 class SearchPageResult {
   final Reference reference;
@@ -261,13 +260,11 @@ class SearchPage extends HookConsumerWidget {
                       return StyledListItem.navigation(
                         title: result.format().toText(),
                         subtitle: searchState.value.trim().isStrongId
-                            ? VerseText(verse: verse, highlightStrongId: searchState.value.trim())
-                            : SubstringHighlight(
-                                text: localBible.getVerseByReference(result)?.text ?? '',
-                                term: searchState.value,
-                                words: true,
-                                textStyle: context.textStyle.paragraphSm.subtle(),
-                                textStyleHighlight: context.textStyle.paragraphSm.subtle().bold,
+                            ? VerseText.verse(verse: verse, highlightStrongId: searchState.value.trim())
+                            : VerseText.verse(
+                                verse: verse,
+                                highlightTerm: searchState.value,
+                                style: context.textStyle.paragraphSm.subtle(),
                               ),
                         onPressed: () => ChapterPreviewPage.show(
                           context,

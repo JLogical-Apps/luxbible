@@ -31,7 +31,6 @@ dependencies:
   path_provider: ^2.1.5
   sticky_headers: ^0.3.0+2
   flutter_native_splash: ^2.4.7
-  substring_highlight: ^1.0.33
   uuid: ^4.5.3
   package_info_plus: ^10.1.0
   timeago: ^3.7.1

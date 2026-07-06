@@ -58,22 +58,32 @@ FutureOr<Verse?> verse(Ref ref, {required Reference reference, required BibleTra
 }
 
 @riverpod
-FutureOr<String> verseSelectionText(
+FutureOr<List<Verse>> verseSelectionVerses(
   Ref ref, {
   required VerseSelection selection,
   required BibleTranslation translation,
 }) {
   if (translation.isLocal) {
     final bible = ref.watch(localBibleProvider(translation: translation)).requireValue;
-    return bible.getVerseSelectionText(selection);
+    return selection.references.map((reference) => bible.getVerseByReference(reference)).nonNulls.toList();
   } else {
     return selection.references
         .map((reference) => ref.watch(verseProvider(reference: reference, translation: translation)).requireValue)
         .nonNulls
-        .map((verse) => verse.text)
-        .join(' ');
+        .toList();
   }
 }
+
+@riverpod
+FutureOr<String> verseSelectionText(
+  Ref ref, {
+  required VerseSelection selection,
+  required BibleTranslation translation,
+}) => ref
+    .watch(verseSelectionVersesProvider(translation: translation, selection: selection))
+    .requireValue
+    .map((verse) => verse.text)
+    .join(' ');
 
 @riverpod
 FutureOr<List<Paragraph>> verseSelectionParagraphs(

@@ -7,7 +7,6 @@ import 'package:bible/models/bible/word.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:collection/collection.dart';
@@ -45,9 +44,6 @@ class Bible {
       .mapToMap((bookType) => MapEntry(bookType, books.firstWhereOrNull((book) => book.bookType == bookType)))
       .withoutNullValues;
   Book getBookByType(BookType bookType) => _bookByType[bookType]!;
-
-  String getVerseSelectionText(VerseSelection selection) =>
-      selection.references.map((reference) => getVerseByReference(reference)?.text).nonNulls.join(' ');
 
   String getTextSelectionText(BibleTextSelection selection) {
     final verseTexts = Reference.getReferencesBetween(

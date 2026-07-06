@@ -210,7 +210,7 @@ class StrongSheet {
             }
             return StyledListItem.navigation(
               title: reference.format().toText(),
-              subtitle: VerseText(verse: verse, highlightStrongId: strongId),
+              subtitle: VerseText.verse(verse: verse, highlightStrongId: strongId),
               onPressed: () => ChapterPreviewPage.show(
                 context,
                 verseSelection: VerseSelection.reference(reference),
