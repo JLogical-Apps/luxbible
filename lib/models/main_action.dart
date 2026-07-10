@@ -6,6 +6,7 @@ import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:bible/ui/pages/dictionary_page.dart';
 import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
@@ -26,6 +27,7 @@ enum MainAction {
   studyPanel,
   search,
   resources,
+  plans,
   settings;
 
   String title() => switch (this) {
@@ -34,6 +36,7 @@ enum MainAction {
     studyPanel => 'Add Study Panel',
     search => 'Search',
     resources => 'Resources',
+    plans => 'Bible Plans',
     settings => 'Settings',
   };
 
@@ -46,6 +49,7 @@ enum MainAction {
     studyPanel => 'Pin a panel beside the text that follows along and shows study tools for whatever you\'re reading.',
     search => 'Search for words across the Bible.',
     resources => 'Look up words in the dictionary and lexicon.',
+    plans => 'Read through the Bible with guided reading plans.',
     settings => 'View the settings for Lux.',
   };
 
@@ -60,10 +64,11 @@ enum MainAction {
     studyPanel => Icon(Symbols.add_notes),
     search => Icon(Symbols.search),
     resources => Icon(Symbols.local_library),
+    plans => Icon(Symbols.calendar_month),
     settings => Icon(Symbols.settings),
   };
 
-  bool get isNavigation => [study, search, resources, settings].contains(this);
+  bool get isNavigation => [study, search, resources, plans, settings].contains(this);
 
   Future<void> onPressed(
     BuildContext context, {
@@ -234,6 +239,11 @@ enum MainAction {
           _Resource.lexicon => LexiconPage(),
         };
         final result = await context.push<VerseSelection>(page);
+        if (result != null) {
+          onNavigateToVerseSelection(result);
+        }
+      case plans:
+        final result = await context.push<VerseSelection>(BiblePlansPage());
         if (result != null) {
           onNavigateToVerseSelection(result);
         }

@@ -1,9 +1,12 @@
 import 'package:bible/models/bible/bible_translation.dart';
+import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:utils_core/utils_core.dart';
 
 class VerseSelection extends Equatable {
   final List<VerseSpanReference> spans;
@@ -21,6 +24,30 @@ class VerseSelection extends Equatable {
   );
 
   factory VerseSelection.empty() => VerseSelection(spans: []);
+
+  factory VerseSelection.parse(String input, {Map<BookType, String> bookToName = const {}}) {
+    /// Captures the book name (group 1) and an optional chapter/verse range (group 2).
+    final referencePattern = RegExp(r'^(.*?)\s*(\d+(?::\d+)?(?:\s*-\s*\d+(?::\d+)?)?)?$');
+
+    final match = referencePattern.firstMatch(input.trim());
+    if (match == null) {
+      throw FormatException('Could not parse reference: "$input"');
+    }
+
+    final (rawBook, range) = (match.group(1)!.normalized, match.group(2));
+
+    final book =
+        BookType.values.firstWhereOrNull((type) => type.title().normalized == rawBook) ??
+        BookType.values.firstWhereOrNull((type) => type.osisId().toLowerCase().normalized == rawBook) ??
+        BookType.values.firstWhereOrNull((type) => bookToName[type]?.normalized == rawBook) ??
+        (throw FormatException('Unknown book "$rawBook" in reference "$input"'));
+
+    if (range == null || range.isEmpty) {
+      return VerseSelection.fromReferences(book.allReferences);
+    }
+
+    return VerseSpanReference.parse(range, book: book).toVerseSelection();
+  }
 
   @override
   List<Object?> get props => [spans];
@@ -42,6 +69,15 @@ class VerseSelection extends Equatable {
   bool hasReference(Reference reference) => spans.any((span) => span.containsReference(reference));
   bool hasAnyOf(VerseSelection verseSelection) => verseSelection.references.any((reference) => hasReference(reference));
 
+  List<VerseSelection> splitByChapter() => references
+      .groupListsBy((reference) => reference.toChapterReference())
+      .mapToIterable(
+        (chapter, references) => chapter.numVerses == references.length
+            ? chapter.toVerseSelection()
+            : VerseSelection.fromReferences(references),
+      )
+      .toList();
+
   bool isInTranslation(BibleTranslation translation) =>
       references.isEmpty ||
       (translation.containsBook(references.first.book) && translation.containsBook(references.last.book));
@@ -61,4 +97,8 @@ class VerseSelection extends Equatable {
       ].join('-'),
     ].join(' ');
   }).join();
+}
+
+extension on String {
+  String get normalized => withStrippedWhitespace.toLowerCase();
 }

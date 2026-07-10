@@ -34,13 +34,14 @@ class SwipePageView extends StatelessWidget {
     final itemBuilder = this.itemBuilder;
 
     return GestureDetector(
-      onHorizontalDragUpdate: (details) {
+      onHorizontalDragEnd: (details) {
+        final delta = details.velocity.pixelsPerSecond;
         const sensitivity = 8;
 
         final currentPage = controller.page!.round();
-        final newPage = details.delta.dx > sensitivity
+        final newPage = delta.dx > sensitivity
             ? currentPage - 1
-            : details.delta.dx < -sensitivity
+            : delta.dx < -sensitivity
             ? currentPage + 1
             : null;
 

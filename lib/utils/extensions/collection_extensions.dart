@@ -19,6 +19,8 @@ extension BibleListExtensions<T> on List<T> {
   List<T> withUpdate(bool Function(T) where, T Function(T) update) =>
       map((item) => where(item) ? update(item) : item).toList();
 
+  List<T> withUpdateAt(int index, T Function(T) update) => [...this]..[index] = update(this[index]);
+
   int? indexOfOrNull(T? item) {
     if (item == null) {
       return null;
@@ -126,6 +128,8 @@ extension BibleMapExtensions<K, V> on Map<K, V> {
       entries.sortedByDescending((entry) => elementGetter(entry.key, entry.value)).toMap();
 
   Map<K, V> withReorder(int oldIndex, int newIndex) => entries.toList().withReorder(oldIndex, newIndex).toMap();
+
+  Map<K, V> withUpdate(K key, V Function(V) update) => containsKey(key) ? {...this, key: update(this[key] as V)} : this;
 
   Map<K, V> maybeSortedBy<E extends Comparable<E>>(E Function(K, V) elementGetter, {required bool shouldSort}) =>
       shouldSort ? entries.sortedBy((entry) => elementGetter(entry.key, entry.value)).toMap() : this;

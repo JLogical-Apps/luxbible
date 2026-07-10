@@ -93,5 +93,26 @@ Distributed as a SWORD module by CrossWire Bible Society, sourced from the Chris
 
 Source: https://www.crosswire.org/sword/modules/''',
     );
+
+    yield const LicenseEntryWithLineBreaks(
+      ['Bible Reading Plans'],
+      '''
+Reading plan schedules (daily passage references only; no Bible text is included).
+
+Compiled from the open-source "readingplans" project by Kyle Hornberg, licensed under the MIT License, itself derived from devkardia/bibleplan.
+https://github.com/khornberg/readingplans
+
+The individual plans remain the work of their original publishers:
+
+M'Cheyne — Robert Murray M'Cheyne (1813-1843). Public domain.
+
+Through the Bible; Gospels and Epistles; Every Day in the Word; Literary Study Bible; Chronicles and Prophets; Pentateuch and History of Israel; Psalms and Wisdom Literature — ESV reading plans, Crossway. https://www.esv.org
+
+One Year Chronological — The One Year Bible, Tyndale House Publishers. https://www.oneyearbibleonline.com
+
+Old and New Testament — Heartlight, Inc. https://www.heartlight.org
+
+Only the daily passage references are used; the Scripture text is provided under the Bible translation licenses.''',
+    );
   });
 }

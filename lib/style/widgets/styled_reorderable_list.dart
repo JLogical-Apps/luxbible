@@ -1,6 +1,4 @@
-import 'package:bible/style/style_context_extensions.dart';
-import 'package:bible/style/styled_shadow.dart';
-import 'package:bible/style/widgets/styled_list_item_context.dart';
+import 'package:bible/style/style.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -14,7 +12,15 @@ class StyledReorderableList extends HookWidget {
 
   final bool shrinkWrap;
 
-  const StyledReorderableList({super.key, required this.children, required this.onReorder, this.shrinkWrap = false});
+  final bool showProxyBackground;
+
+  const StyledReorderableList({
+    super.key,
+    required this.children,
+    required this.onReorder,
+    this.shrinkWrap = false,
+    this.showProxyBackground = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +34,11 @@ class StyledReorderableList extends HookWidget {
             )
             .toList(),
         onReorderItem: onReorder,
-        proxyDecorator: (widget, _, _) => Container(
-          decoration: BoxDecoration(color: context.colors.surfacePrimary, boxShadow: [StyledShadow.down(context)]),
+        proxyDecorator: (widget, _, _) => DecoratedBox(
+          decoration: BoxDecoration(
+            color: showProxyBackground ? context.colors.surfacePrimary : Colors.transparent,
+            boxShadow: [StyledShadow.down(context)],
+          ),
           child: widget,
         ),
       ),

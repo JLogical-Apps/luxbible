@@ -1,3 +1,4 @@
+import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:collection/collection.dart';
 
 class FootnoteMarkdown {
@@ -11,7 +12,7 @@ class FootnoteMarkdown {
         return group.first.$2 ? _emphasize(text) : text;
       })
       .join()
-      .replaceAll(RegExp(r'\s+'), ' ')
+      .withCollapsedWhitespace
       .trim();
 
   static String _emphasize(String text) {

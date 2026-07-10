@@ -1,10 +1,12 @@
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
+import 'package:bible/models/bible_plan.dart';
 import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/commentary_type.dart';
 import 'package:bible/models/highlight_style.dart';
+import 'package:bible/models/hydrated_bible_plan_progress.dart';
 import 'package:bible/models/notebook.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_position.dart';
@@ -26,6 +28,7 @@ import 'package:bible/utils/serialization_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:utils_core/utils_core.dart';
 import 'package:uuid/uuid.dart';
 
 part 'user.freezed.dart';
@@ -63,6 +66,7 @@ sealed class User with _$User {
     @Default({}) @nullUnknownEnum Set<Tutorial?> tutorials,
     List<OnboardingStep>? completedOnboardingSteps,
     @Default(HighlightStyle.defaultValues) List<(HighlightStyle, String label)> highlightStyles,
+    @Default({}) Map<BiblePlanType, BiblePlanProgress> planProgressByType,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -324,6 +328,94 @@ sealed class User with _$User {
 
   User withTranslation(BibleTranslation translation) =>
       copyWith(translation: translation, studyTranslation: translation.isStudy ? translation : studyTranslation);
+
+  List<HydratedBiblePlanProgress> getHydratedPlanProgresses(Map<BiblePlanType, BiblePlan> planByType) =>
+      planProgressByType
+          .mapToIterable(
+            (type, progress) => HydratedBiblePlanProgress(type: type, plan: planByType[type]!, progress: progress),
+          )
+          .toList();
+
+  HydratedBiblePlanProgress? getFirstHydratedPlanProgress(Map<BiblePlanType, BiblePlan> planByType) =>
+      getHydratedPlanProgresses(planByType).firstOrNull;
+
+  HydratedBiblePlanProgress? getHydratedPlanProgress({
+    required BiblePlanType planType,
+    required Map<BiblePlanType, BiblePlan> planByType,
+  }) => getHydratedPlanProgresses(planByType).firstWhereOrNull((progress) => progress.type == planType);
+
+  bool hasStartedPlan(BiblePlanType planType) => planProgressByType.containsKey(planType);
+
+  bool hasCompletedPassage({required BiblePlanType planType, required int dayIndex, required VerseSelection passage}) =>
+      planProgressByType[planType]?.days[dayIndex].completedPassages.contains(passage) ?? false;
+
+  User withStartedPlan({required BiblePlanType planType, required BiblePlan plan}) =>
+      planProgressByType.containsKey(planType)
+      ? this
+      : copyWith(
+          planProgressByType: {
+            ...planProgressByType,
+            planType: BiblePlanProgress(days: plan.days.map((day) => BiblePlanDayProgress()).toList()),
+          },
+        );
+
+  User withStoppedPlan(BiblePlanType planType) =>
+      copyWith(planProgressByType: {...planProgressByType}..remove(planType));
+
+  User withPlanExpanded(BiblePlanType planType, bool isExpanded) =>
+      withUpdatePlanProgress(planType, (progress) => progress.copyWith(isExpanded: isExpanded));
+
+  User withPassageToggled({required BiblePlanType planType, required int dayIndex, required VerseSelection passage}) =>
+      hasCompletedPassage(planType: planType, dayIndex: dayIndex, passage: passage)
+      ? withPassageUncompleted(planType: planType, dayIndex: dayIndex, passage: passage)
+      : withPassageCompleted(planType: planType, dayIndex: dayIndex, passage: passage);
+
+  User withProgressDayUpdated({
+    required BiblePlanType planType,
+    required int dayIndex,
+    required BiblePlanDayProgress Function(BiblePlanDayProgress) updater,
+  }) => withUpdatePlanProgress(
+    planType,
+    (progress) => progress.copyWith(days: progress.days.withUpdateAt(dayIndex, updater)),
+  );
+
+  User withPassageCompleted({
+    required BiblePlanType planType,
+    required int dayIndex,
+    required VerseSelection passage,
+  }) => withProgressDayUpdated(
+    planType: planType,
+    dayIndex: dayIndex,
+    updater: (dayProgress) => dayProgress.copyWith(completedPassages: {...dayProgress.completedPassages, passage}),
+  );
+
+  User withPassageUncompleted({
+    required BiblePlanType planType,
+    required int dayIndex,
+    required VerseSelection passage,
+  }) => withProgressDayUpdated(
+    planType: planType,
+    dayIndex: dayIndex,
+    updater: (dayProgress) =>
+        dayProgress.copyWith(completedPassages: {...dayProgress.completedPassages}..remove(passage)),
+  );
+
+  User withJumpedToDay({required BiblePlanType planType, required BiblePlan plan, required int dayIndex}) =>
+      withUpdatePlanProgress(
+        planType,
+        (progress) => progress.copyWith(
+          days: plan.days
+              .mapIndexed(
+                (dayIndex, day) => dayIndex < dayIndex
+                    ? BiblePlanDayProgress(completedPassages: day.passages.toSet())
+                    : BiblePlanDayProgress(),
+              )
+              .toList(),
+        ),
+      );
+
+  User withUpdatePlanProgress(BiblePlanType planType, BiblePlanProgress Function(BiblePlanProgress) update) =>
+      copyWith(planProgressByType: planProgressByType.withUpdate(planType, update));
 }
 
 Object? _readLastHighlightStyle(Map data, String key) {

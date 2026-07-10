@@ -1,0 +1,2932 @@
+{
+  "id": "esveverydayinword",
+  "name": "Every Day In the Word",
+  "description": "Every Day in the Word www.esv.org",
+  "days": [
+    {
+      "passages": [
+        "Gen.1.1-Gen.2.25",
+        "Matt.1.1-Matt.2.12",
+        "Ps.1.1-Ps.1.6",
+        "Prov.1.1-Prov.1.6"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.3.1-Gen.4.26",
+        "Matt.2.13-Matt.3.6",
+        "Ps.2.1-Ps.2.12",
+        "Prov.1.7-Prov.1.9"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.5.1-Gen.7.24",
+        "Matt.3.7-Matt.4.11",
+        "Ps.3.1-Ps.3.8",
+        "Prov.1.10-Prov.1.19"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.8.1-Gen.10.32",
+        "Matt.4.12-Matt.4.25",
+        "Ps.4.1-Ps.4.8",
+        "Prov.1.20-Prov.1.23"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.11.1-Gen.13.4",
+        "Matt.5.1-Matt.5.26",
+        "Ps.5.1-Ps.5.12",
+        "Prov.1.24-Prov.1.28"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.13.5-Gen.15.21",
+        "Matt.5.27-Matt.5.48",
+        "Ps.6.1-Ps.6.10",
+        "Prov.1.29-Prov.1.33"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.16.1-Gen.18.19",
+        "Matt.6.1-Matt.6.24",
+        "Ps.7.1-Ps.7.17",
+        "Prov.2.1-Prov.2.5"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.18.20-Gen.19.38",
+        "Matt.6.25-Matt.7.14",
+        "Ps.8.1-Ps.8.9",
+        "Prov.2.6-Prov.2.15"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.20.1-Gen.22.24",
+        "Matt.7.15-Matt.7.29",
+        "Ps.9.1-Ps.9.12",
+        "Prov.2.16-Prov.2.22"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.23.1-Gen.24.51",
+        "Matt.8.1-Matt.8.17",
+        "Ps.9.13-Ps.9.20",
+        "Prov.3.1-Prov.3.6"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.24.52-Gen.26.16",
+        "Matt.8.18-Matt.8.34",
+        "Ps.10.1-Ps.10.15",
+        "Prov.3.7-Prov.3.8"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.26.17-Gen.27.46",
+        "Matt.9.1-Matt.9.17",
+        "Ps.10.16-Ps.10.18",
+        "Prov.3.9-Prov.3.10"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.28.1-Gen.29.35",
+        "Matt.9.18-Matt.9.38",
+        "Ps.11.1-Ps.11.7",
+        "Prov.3.11-Prov.3.12"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.30.1-Gen.31.16",
+        "Matt.10.1-Matt.10.25",
+        "Ps.12.1-Ps.12.8",
+        "Prov.3.13-Prov.3.15"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.31.17-Gen.32.12",
+        "Matt.10.26-Matt.11.6",
+        "Ps.13.1-Ps.13.6",
+        "Prov.3.16-Prov.3.18"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.32.13-Gen.34.31",
+        "Matt.11.7-Matt.11.30",
+        "Ps.14.1-Ps.14.7",
+        "Prov.3.19-Prov.3.20"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.35.1-Gen.36.43",
+        "Matt.12.1-Matt.12.21",
+        "Ps.15.1-Ps.15.5",
+        "Prov.3.21-Prov.3.26"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.37.1-Gen.38.30",
+        "Matt.12.22-Matt.12.45",
+        "Ps.16.1-Ps.16.11",
+        "Prov.3.27-Prov.3.32"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.39.1-Gen.41.16",
+        "Matt.12.46-Matt.13.23",
+        "Ps.17.1-Ps.17.15",
+        "Prov.3.33-Prov.3.35"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.41.17-Gen.42.17",
+        "Matt.13.24-Matt.13.46",
+        "Ps.18.1-Ps.18.15",
+        "Prov.4.1-Prov.4.6"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.42.18-Gen.43.34",
+        "Matt.13.47-Matt.14.12",
+        "Ps.18.16-Ps.18.36",
+        "Prov.4.7-Prov.4.10"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.44.1-Gen.45.28",
+        "Matt.14.13-Matt.14.36",
+        "Ps.18.37-Ps.18.50",
+        "Prov.4.11-Prov.4.13"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.46.1-Gen.47.31",
+        "Matt.15.1-Matt.15.28",
+        "Ps.19.1-Ps.19.14",
+        "Prov.4.14-Prov.4.19"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.48.1-Gen.49.33",
+        "Matt.15.29-Matt.16.12",
+        "Ps.20.1-Ps.20.9",
+        "Prov.4.20-Prov.4.27"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.50.1-Gen.50.26",
+        "Exod.1.1-Exod.2.10",
+        "Matt.16.13-Matt.17.9",
+        "Ps.21.1-Ps.21.13",
+        "Prov.5.1-Prov.5.6"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.2.11-Exod.3.22",
+        "Matt.17.10-Matt.17.27",
+        "Ps.22.1-Ps.22.18",
+        "Prov.5.7-Prov.5.14"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.4.1-Exod.5.21",
+        "Matt.18.1-Matt.18.22",
+        "Ps.22.19-Ps.22.31",
+        "Prov.5.15-Prov.5.21"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.5.22-Exod.7.24",
+        "Matt.18.23-Matt.19.12",
+        "Ps.23.1-Ps.23.6",
+        "Prov.5.22-Prov.5.23"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.7.25-Exod.9.35",
+        "Matt.19.13-Matt.19.30",
+        "Ps.24.1-Ps.24.10",
+        "Prov.6.1-Prov.6.5"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.10.1-Exod.12.13",
+        "Matt.20.1-Matt.20.28",
+        "Ps.25.1-Ps.25.15",
+        "Prov.6.6-Prov.6.11"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.12.14-Exod.13.16",
+        "Matt.20.29-Matt.21.22",
+        "Ps.25.16-Ps.25.22",
+        "Prov.6.12-Prov.6.15"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.13.17-Exod.15.18",
+        "Matt.21.23-Matt.21.46",
+        "Ps.26.1-Ps.26.12",
+        "Prov.6.16-Prov.6.19"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.15.19-Exod.17.7",
+        "Matt.22.1-Matt.22.33",
+        "Ps.27.1-Ps.27.6",
+        "Prov.6.20-Prov.6.26"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.17.8-Exod.19.15",
+        "Matt.22.34-Matt.23.12",
+        "Ps.27.7-Ps.27.14",
+        "Prov.6.27-Prov.6.35"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.19.16-Exod.21.21",
+        "Matt.23.13-Matt.23.39",
+        "Ps.28.1-Ps.28.9",
+        "Prov.7.1-Prov.7.5"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.21.22-Exod.23.13",
+        "Matt.24.1-Matt.24.28",
+        "Ps.29.1-Ps.29.11",
+        "Prov.7.6-Prov.7.23"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.23.14-Exod.25.40",
+        "Matt.24.29-Matt.24.51",
+        "Ps.30.1-Ps.30.12",
+        "Prov.7.24-Prov.7.27"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.26.1-Exod.27.21",
+        "Matt.25.1-Matt.25.30",
+        "Ps.31.1-Ps.31.8",
+        "Prov.8.1-Prov.8.11"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.28.1-Exod.28.43",
+        "Matt.25.31-Matt.26.13",
+        "Ps.31.9-Ps.31.18",
+        "Prov.8.12-Prov.8.13"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.29.1-Exod.30.10",
+        "Matt.26.14-Matt.26.46",
+        "Ps.31.19-Ps.31.24",
+        "Prov.8.14-Prov.8.26"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.30.11-Exod.31.18",
+        "Matt.26.47-Matt.26.68",
+        "Ps.32.1-Ps.32.11",
+        "Prov.8.27-Prov.8.32"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.32.1-Exod.33.23",
+        "Matt.26.69-Matt.27.14",
+        "Ps.33.1-Ps.33.11",
+        "Prov.8.33-Prov.8.36"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.34.1-Exod.35.9",
+        "Matt.27.15-Matt.27.31",
+        "Ps.33.12-Ps.33.22",
+        "Prov.9.1-Prov.9.6"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.35.10-Exod.36.38",
+        "Matt.27.32-Matt.27.66",
+        "Ps.34.1-Ps.34.10",
+        "Prov.9.7-Prov.9.8"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.37.1-Exod.38.31",
+        "Matt.28.1-Matt.28.20",
+        "Ps.34.11-Ps.34.22",
+        "Prov.9.9-Prov.9.10"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.39.1-Exod.40.38",
+        "Mark.1.1-Mark.1.28",
+        "Ps.35.1-Ps.35.16",
+        "Prov.9.11-Prov.9.12"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.1.1-Lev.3.17",
+        "Mark.1.29-Mark.2.12",
+        "Ps.35.17-Ps.35.28",
+        "Prov.9.13-Prov.9.18"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.4.1-Lev.5.19",
+        "Mark.2.13-Mark.3.6",
+        "Ps.36.1-Ps.36.12",
+        "Prov.10.1-Prov.10.2"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.6.1-Lev.7.27",
+        "Mark.3.7-Mark.3.30",
+        "Ps.37.1-Ps.37.11",
+        "Prov.10.3-Prov.10.4"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.7.28-Lev.9.6",
+        "Mark.3.31-Mark.4.25",
+        "Ps.37.12-Ps.37.29",
+        "Prov.10.5"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.9.7-Lev.10.20",
+        "Mark.4.26-Mark.5.20",
+        "Ps.37.30-Ps.37.40",
+        "Prov.10.6-Prov.10.7"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.11.1-Lev.12.8",
+        "Mark.5.21-Mark.5.43",
+        "Ps.38.1-Ps.38.22",
+        "Prov.10.8-Prov.10.9"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.13.1-Lev.13.59",
+        "Mark.6.1-Mark.6.29",
+        "Ps.39.1-Ps.39.13",
+        "Prov.10.10"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.14.1-Lev.14.57",
+        "Mark.6.30-Mark.6.56",
+        "Ps.40.1-Ps.40.10",
+        "Prov.10.11-Prov.10.12"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.15.1-Lev.16.28",
+        "Mark.7.1-Mark.7.23",
+        "Ps.40.11-Ps.40.17",
+        "Prov.10.13-Prov.10.14"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.16.29-Lev.18.30",
+        "Mark.7.24-Mark.8.10",
+        "Ps.41.1-Ps.41.13",
+        "Prov.10.15-Prov.10.16"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.19.1-Lev.20.21",
+        "Mark.8.11-Mark.8.38",
+        "Ps.42.1-Ps.42.11",
+        "Prov.10.17"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.20.22-Lev.22.16",
+        "Mark.9.1-Mark.9.29",
+        "Ps.43.1-Ps.43.5",
+        "Prov.10.18"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.22.17-Lev.23.44",
+        "Mark.9.30-Mark.10.12",
+        "Ps.44.1-Ps.44.8",
+        "Prov.10.19"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.24.1-Lev.25.46",
+        "Mark.10.13-Mark.10.31",
+        "Ps.44.9-Ps.44.26",
+        "Prov.10.20-Prov.10.21"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.25.47-Lev.27.13",
+        "Mark.10.32-Mark.10.52",
+        "Ps.45.1-Ps.45.17",
+        "Prov.10.22"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.27.14-Lev.27.34",
+        "Num.1.1-Num.1.54",
+        "Mark.11.1-Mark.11.25",
+        "Ps.46.1-Ps.46.11",
+        "Prov.10.23"
+      ]
+    },
+    {
+      "passages": [
+        "Num.2.1-Num.3.51",
+        "Mark.11.27-Mark.12.17",
+        "Ps.47.1-Ps.47.9",
+        "Prov.10.24-Prov.10.25"
+      ]
+    },
+    {
+      "passages": [
+        "Num.4.1-Num.5.31",
+        "Mark.12.18-Mark.12.37",
+        "Ps.48.1-Ps.48.14",
+        "Prov.10.26"
+      ]
+    },
+    {
+      "passages": [
+        "Num.6.1-Num.7.89",
+        "Mark.12.38-Mark.13.13",
+        "Ps.49.1-Ps.49.20",
+        "Prov.10.27-Prov.10.28"
+      ]
+    },
+    {
+      "passages": [
+        "Num.8.1-Num.9.23",
+        "Mark.13.14-Mark.13.37",
+        "Ps.50.1-Ps.50.23",
+        "Prov.10.29-Prov.10.30"
+      ]
+    },
+    {
+      "passages": [
+        "Num.10.1-Num.11.23",
+        "Mark.14.1-Mark.14.21",
+        "Ps.51.1-Ps.51.19",
+        "Prov.10.31-Prov.10.32"
+      ]
+    },
+    {
+      "passages": [
+        "Num.11.24-Num.13.33",
+        "Mark.14.22-Mark.14.52",
+        "Ps.52.1-Ps.52.9",
+        "Prov.11.1-Prov.11.3"
+      ]
+    },
+    {
+      "passages": [
+        "Num.14.1-Num.15.16",
+        "Mark.14.53-Mark.14.72",
+        "Ps.53.1-Ps.53.6",
+        "Prov.11.4"
+      ]
+    },
+    {
+      "passages": [
+        "Num.15.17-Num.16.40",
+        "Mark.15.1-Mark.15.47",
+        "Ps.54.1-Ps.54.7",
+        "Prov.11.5-Prov.11.6"
+      ]
+    },
+    {
+      "passages": [
+        "Num.16.41-Num.18.32",
+        "Mark.16.1-Mark.16.20",
+        "Ps.55.1-Ps.55.23",
+        "Prov.11.7"
+      ]
+    },
+    {
+      "passages": [
+        "Num.19.1-Num.20.29",
+        "Luke.1.1-Luke.1.25",
+        "Ps.56.1-Ps.56.13",
+        "Prov.11.8"
+      ]
+    },
+    {
+      "passages": [
+        "Num.21.1-Num.22.20",
+        "Luke.1.26-Luke.1.56",
+        "Ps.57.1-Ps.57.11",
+        "Prov.11.9-Prov.11.11"
+      ]
+    },
+    {
+      "passages": [
+        "Num.22.21-Num.23.30",
+        "Luke.1.57-Luke.1.80",
+        "Ps.58.1-Ps.58.11",
+        "Prov.11.12-Prov.11.13"
+      ]
+    },
+    {
+      "passages": [
+        "Num.24.1-Num.25.18",
+        "Luke.2.1-Luke.2.35",
+        "Ps.59.1-Ps.59.17",
+        "Prov.11.14"
+      ]
+    },
+    {
+      "passages": [
+        "Num.26.1-Num.26.51",
+        "Luke.2.36-Luke.2.52",
+        "Ps.60.1-Ps.60.12",
+        "Prov.11.15"
+      ]
+    },
+    {
+      "passages": [
+        "Num.26.52-Num.28.15",
+        "Luke.3.1-Luke.3.22",
+        "Ps.61.1-Ps.61.8",
+        "Prov.11.16-Prov.11.17"
+      ]
+    },
+    {
+      "passages": [
+        "Num.28.16-Num.29.40",
+        "Luke.3.23-Luke.3.38",
+        "Ps.62.1-Ps.62.12",
+        "Prov.11.18-Prov.11.19"
+      ]
+    },
+    {
+      "passages": [
+        "Num.30.1-Num.31.54",
+        "Luke.4.1-Luke.4.30",
+        "Ps.63.1-Ps.63.11",
+        "Prov.11.20-Prov.11.21"
+      ]
+    },
+    {
+      "passages": [
+        "Num.32.1-Num.33.39",
+        "Luke.4.31-Luke.5.11",
+        "Ps.64.1-Ps.64.10",
+        "Prov.11.22"
+      ]
+    },
+    {
+      "passages": [
+        "Num.33.40-Num.35.34",
+        "Luke.5.12-Luke.5.28",
+        "Ps.65.1-Ps.65.13",
+        "Prov.11.23"
+      ]
+    },
+    {
+      "passages": [
+        "Num.36.1-Num.36.13",
+        "Deut.1.1-Deut.1.46",
+        "Luke.5.29-Luke.6.11",
+        "Ps.66.1-Ps.66.20",
+        "Prov.11.24-Prov.11.26"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.2.1-Deut.3.29",
+        "Luke.6.12-Luke.6.38",
+        "Ps.67.1-Ps.67.7",
+        "Prov.11.27"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.4.1-Deut.4.49",
+        "Luke.6.39-Luke.7.10",
+        "Ps.68.1-Ps.68.18",
+        "Prov.11.28"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.5.1-Deut.6.25",
+        "Luke.7.11-Luke.7.35",
+        "Ps.68.19-Ps.68.35",
+        "Prov.11.29-Prov.11.31"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.7.1-Deut.8.20",
+        "Luke.7.36-Luke.8.3",
+        "Ps.69.1-Ps.69.18",
+        "Prov.12.1"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.9.1-Deut.10.22",
+        "Luke.8.4-Luke.8.21",
+        "Ps.69.19-Ps.69.36",
+        "Prov.12.2-Prov.12.3"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.11.1-Deut.12.32",
+        "Luke.8.22-Luke.8.39",
+        "Ps.70.1-Ps.70.5",
+        "Prov.12.4"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.13.1-Deut.15.23",
+        "Luke.8.40-Luke.9.6",
+        "Ps.71.1-Ps.71.24",
+        "Prov.12.5-Prov.12.7"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.16.1-Deut.17.20",
+        "Luke.9.7-Luke.9.27",
+        "Ps.72.1-Ps.72.20",
+        "Prov.12.8-Prov.12.9"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.18.1-Deut.20.20",
+        "Luke.9.28-Luke.9.50",
+        "Ps.73.1-Ps.73.28",
+        "Prov.12.10"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.21.1-Deut.22.30",
+        "Luke.9.51-Luke.10.12",
+        "Ps.74.1-Ps.74.23",
+        "Prov.12.11"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.23.1-Deut.25.19",
+        "Luke.10.13-Luke.10.37",
+        "Ps.75.1-Ps.75.10",
+        "Prov.12.12-Prov.12.14"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.26.1-Deut.27.26",
+        "Luke.10.38-Luke.11.13",
+        "Ps.76.1-Ps.76.12",
+        "Prov.12.15-Prov.12.17"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.28.1-Deut.28.68",
+        "Luke.11.14-Luke.11.36",
+        "Ps.77.1-Ps.77.20",
+        "Prov.12.18"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.29.1-Deut.30.20",
+        "Luke.11.37-Luke.12.7",
+        "Ps.78.1-Ps.78.31",
+        "Prov.12.19-Prov.12.20"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.31.1-Deut.32.27",
+        "Luke.12.8-Luke.12.34",
+        "Ps.78.32-Ps.78.55",
+        "Prov.12.21-Prov.12.23"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.32.28-Deut.32.52",
+        "Luke.12.35-Luke.12.59",
+        "Ps.78.56-Ps.78.64",
+        "Prov.12.24"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.33.1-Deut.33.29",
+        "Luke.13.1-Luke.13.21",
+        "Ps.78.65-Ps.78.72",
+        "Prov.12.25"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.34.1-Deut.34.12",
+        "Josh.1.1-Josh.2.24",
+        "Luke.13.22-Luke.14.6",
+        "Ps.79.1-Ps.79.13",
+        "Prov.12.26"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.3.1-Josh.4.24",
+        "Luke.14.7-Luke.14.35",
+        "Ps.80.1-Ps.80.19",
+        "Prov.12.27-Prov.12.28"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.5.1-Josh.7.15",
+        "Luke.15.1-Luke.15.32",
+        "Ps.81.1-Ps.81.16",
+        "Prov.13.1"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.7.16-Josh.9.2",
+        "Luke.16.1-Luke.16.18",
+        "Ps.82.1-Ps.82.8",
+        "Prov.13.2-Prov.13.3"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.9.3-Josh.10.43",
+        "Luke.16.19-Luke.17.10",
+        "Ps.83.1-Ps.83.18",
+        "Prov.13.4"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.11.1-Josh.12.24",
+        "Luke.17.11-Luke.17.37",
+        "Ps.84.1-Ps.84.12",
+        "Prov.13.5-Prov.13.6"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.13.1-Josh.14.15",
+        "Luke.18.1-Luke.18.17",
+        "Ps.85.1-Ps.85.13",
+        "Prov.13.7-Prov.13.8"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.15.1-Josh.15.63",
+        "Luke.18.18-Luke.18.43",
+        "Ps.86.1-Ps.86.17",
+        "Prov.13.9-Prov.13.10"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.16.1-Josh.18.28",
+        "Luke.19.1-Luke.19.27",
+        "Ps.87.1-Ps.87.7",
+        "Prov.13.11"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.19.1-Josh.20.9",
+        "Luke.19.28-Luke.19.48",
+        "Ps.88.1-Ps.88.18",
+        "Prov.13.12-Prov.13.14"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.21.1-Josh.22.20",
+        "Luke.20.1-Luke.20.26",
+        "Ps.89.1-Ps.89.13",
+        "Prov.13.15-Prov.13.16"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.22.21-Josh.23.16",
+        "Luke.20.27-Luke.20.47",
+        "Ps.89.14-Ps.89.37",
+        "Prov.13.17-Prov.13.19"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.24.1-Josh.24.33",
+        "Luke.21.1-Luke.21.28",
+        "Ps.89.38-Ps.89.52",
+        "Prov.13.20-Prov.13.23"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.1.1-Judg.2.9",
+        "Luke.21.29-Luke.22.13",
+        "Ps.90.1-Ps.91.16",
+        "Prov.13.24-Prov.13.25"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.2.10-Judg.3.31",
+        "Luke.22.14-Luke.22.34",
+        "Ps.92.1-Ps.93.5",
+        "Prov.14.1-Prov.14.2"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.4.1-Judg.5.31",
+        "Luke.22.35-Luke.22.53",
+        "Ps.94.1-Ps.94.23",
+        "Prov.14.3-Prov.14.4"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.6.1-Judg.6.40",
+        "Luke.22.54-Luke.23.12",
+        "Ps.95.1-Ps.96.13",
+        "Prov.14.5-Prov.14.6"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.7.1-Judg.8.17",
+        "Luke.23.13-Luke.23.43",
+        "Ps.97.1-Ps.98.9",
+        "Prov.14.7-Prov.14.8"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.8.18-Judg.9.21",
+        "Luke.23.44-Luke.24.12",
+        "Ps.99.1-Ps.99.9",
+        "Prov.14.9-Prov.14.10"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.9.22-Judg.10.18",
+        "Luke.24.13-Luke.24.53",
+        "Ps.100.1-Ps.100.5",
+        "Prov.14.11-Prov.14.12"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.11.1-Judg.12.15",
+        "John.1.1-John.1.28",
+        "Ps.101.1-Ps.101.8",
+        "Prov.14.13-Prov.14.14"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.13.1-Judg.14.20",
+        "John.1.29-John.1.51",
+        "Ps.102.1-Ps.102.28",
+        "Prov.14.15-Prov.14.16"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.15.1-Judg.16.31",
+        "John.2.1-John.2.25",
+        "Ps.103.1-Ps.103.22",
+        "Prov.14.17-Prov.14.19"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.17.1-Judg.18.31",
+        "John.3.1-John.3.21",
+        "Ps.104.1-Ps.104.23",
+        "Prov.14.20-Prov.14.21"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.19.1-Judg.20.48",
+        "John.3.22-John.4.3",
+        "Ps.104.24-Ps.104.35",
+        "Prov.14.22-Prov.14.24"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.21.1-Judg.21.25",
+        "Ruth.1.1-Ruth.1.22",
+        "John.4.4-John.4.42",
+        "Ps.105.1-Ps.105.15",
+        "Prov.14.25"
+      ]
+    },
+    {
+      "passages": [
+        "Ruth.2.1-Ruth.4.22",
+        "John.4.43-John.4.54",
+        "Ps.105.16-Ps.105.36",
+        "Prov.14.26-Prov.14.27"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.1.1-1Sam.2.21",
+        "John.5.1-John.5.23",
+        "Ps.105.37-Ps.105.45",
+        "Prov.14.28-Prov.14.29"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.2.22-1Sam.4.22",
+        "John.5.24-John.5.47",
+        "Ps.106.1-Ps.106.12",
+        "Prov.14.30-Prov.14.31"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.5.1-1Sam.7.17",
+        "John.6.1-John.6.21",
+        "Ps.106.13-Ps.106.31",
+        "Prov.14.32-Prov.14.33"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.8.1-1Sam.9.27",
+        "John.6.22-John.6.42",
+        "Ps.106.32-Ps.106.48",
+        "Prov.14.34-Prov.14.35"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.10.1-1Sam.11.15",
+        "John.6.43-John.6.71",
+        "Ps.107.1-Ps.107.43",
+        "Prov.15.1-Prov.15.3"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.12.1-1Sam.13.22",
+        "John.7.1-John.7.29",
+        "Ps.108.1-Ps.108.13",
+        "Prov.15.4"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.13.23-1Sam.14.52",
+        "John.7.30-John.7.52",
+        "Ps.109.1-Ps.109.31",
+        "Prov.15.5-Prov.15.7"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.15.1-1Sam.16.23",
+        "John.7.53-John.8.20",
+        "Ps.110.1-Ps.110.7",
+        "Prov.15.8-Prov.15.10"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.17.1-1Sam.18.4",
+        "John.8.21-John.8.30",
+        "Ps.111.1-Ps.111.10",
+        "Prov.15.11"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.18.5-1Sam.19.24",
+        "John.8.31-John.8.59",
+        "Ps.112.1-Ps.112.10",
+        "Prov.15.12-Prov.15.14"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.20.1-1Sam.21.15",
+        "John.9.1-John.9.41",
+        "Ps.113.1-Ps.114.8",
+        "Prov.15.15-Prov.15.17"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.22.1-1Sam.23.29",
+        "John.10.1-John.10.21",
+        "Ps.115.1-Ps.115.18",
+        "Prov.15.18-Prov.15.19"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.24.1-1Sam.25.44",
+        "John.10.22-John.10.42",
+        "Ps.116.1-Ps.116.19",
+        "Prov.15.20-Prov.15.21"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.26.1-1Sam.28.25",
+        "John.11.1-John.11.53",
+        "Ps.117.1-Ps.117.2",
+        "Prov.15.22-Prov.15.23"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.29.1-1Sam.31.13",
+        "John.11.54-John.12.19",
+        "Ps.118.1-Ps.118.18",
+        "Prov.15.24-Prov.15.26"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.1.1-2Sam.2.11",
+        "John.12.20-John.12.50",
+        "Ps.118.19-Ps.118.29",
+        "Prov.15.27-Prov.15.28"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.2.12-2Sam.3.39",
+        "John.13.1-John.13.30",
+        "Ps.119.1-Ps.119.16",
+        "Prov.15.29-Prov.15.30"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.4.1-2Sam.6.23",
+        "John.13.31-John.14.14",
+        "Ps.119.17-Ps.119.32",
+        "Prov.15.32"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.7.1-2Sam.8.18",
+        "John.14.15-John.14.31",
+        "Ps.119.33-Ps.119.48",
+        "Prov.15.33"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.9.1-2Sam.11.27",
+        "John.15.1-John.15.27",
+        "Ps.119.49-Ps.119.64",
+        "Prov.16.1-Prov.16.3"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.12.1-2Sam.12.31",
+        "John.16.1-John.16.33",
+        "Ps.119.65-Ps.119.80",
+        "Prov.16.4-Prov.16.5"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.13.1-2Sam.13.39",
+        "John.17.1-John.17.26",
+        "Ps.119.81-Ps.119.96",
+        "Prov.16.6-Prov.16.7"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.14.1-2Sam.15.22",
+        "John.18.1-John.18.24",
+        "Ps.119.97-Ps.119.112",
+        "Prov.16.8-Prov.16.9"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.15.23-2Sam.16.23",
+        "John.18.25-John.19.22",
+        "Ps.119.113-Ps.119.128",
+        "Prov.16.10-Prov.16.11"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.17.1-2Sam.17.29",
+        "John.19.23-John.19.42",
+        "Ps.119.129-Ps.119.152",
+        "Prov.16.12-Prov.16.13"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.18.1-2Sam.19.10",
+        "John.20.1-John.20.31",
+        "Ps.119.153-Ps.119.176",
+        "Prov.16.14-Prov.16.15"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.19.11-2Sam.20.13",
+        "John.21.1-John.21.25",
+        "Ps.120.1-Ps.120.7",
+        "Prov.16.16-Prov.16.17"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.20.14-2Sam.22.20",
+        "Acts.1.1-Acts.1.26",
+        "Ps.121.1-Ps.121.8",
+        "Prov.16.18"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.22.21-2Sam.23.23",
+        "Acts.2.1-Acts.2.47",
+        "Ps.122.1-Ps.122.9",
+        "Prov.16.19-Prov.16.20"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.23.24-2Sam.24.25",
+        "Acts.3.1-Acts.3.26",
+        "Ps.123.1-Ps.123.4",
+        "Prov.16.21-Prov.16.23"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.1.1-1Kgs.1.53",
+        "Acts.4.1-Acts.4.37",
+        "Ps.124.1-Ps.124.8",
+        "Prov.16.24"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.2.1-1Kgs.3.3",
+        "Acts.5.1-Acts.5.42",
+        "Ps.125.1-Ps.125.5",
+        "Prov.16.25"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.3.4-1Kgs.4.34",
+        "Acts.6.1-Acts.6.15",
+        "Ps.126.1-Ps.126.6",
+        "Prov.16.26-Prov.16.27"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.5.1-1Kgs.6.38",
+        "Acts.7.1-Acts.7.29",
+        "Ps.127.1-Ps.127.5",
+        "Prov.16.28-Prov.16.30"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.7.1-1Kgs.7.51",
+        "Acts.7.30-Acts.7.50",
+        "Ps.128.1-Ps.128.6",
+        "Prov.16.31-Prov.16.33"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.8.1-1Kgs.8.66",
+        "Acts.7.51-Acts.8.13",
+        "Ps.129.1-Ps.129.8",
+        "Prov.17.1"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.9.1-1Kgs.10.29",
+        "Acts.8.14-Acts.8.40",
+        "Ps.130.1-Ps.130.8",
+        "Prov.17.2-Prov.17.3"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.11.1-1Kgs.12.19",
+        "Acts.9.1-Acts.9.25",
+        "Ps.131.1-Ps.131.3",
+        "Prov.17.4-Prov.17.5"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.12.20-1Kgs.13.34",
+        "Acts.9.26-Acts.9.43",
+        "Ps.132.1-Ps.132.18",
+        "Prov.17.6"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.14.1-1Kgs.15.24",
+        "Acts.10.1-Acts.10.23",
+        "Ps.133.1-Ps.133.3",
+        "Prov.17.7-Prov.17.8"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.15.25-1Kgs.17.24",
+        "Acts.10.23-Acts.10.48",
+        "Ps.134.1-Ps.134.3",
+        "Prov.17.9-Prov.17.11"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.18.1-1Kgs.18.46",
+        "Acts.11.1-Acts.11.30",
+        "Ps.135.1-Ps.135.21",
+        "Prov.17.12-Prov.17.13"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.19.1-1Kgs.19.21",
+        "Acts.12.1-Acts.12.23",
+        "Ps.136.1-Ps.136.26",
+        "Prov.17.14-Prov.17.15"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.20.1-1Kgs.21.29",
+        "Acts.12.24-Acts.13.15",
+        "Ps.137.1-Ps.137.9",
+        "Prov.17.16"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.22.1-1Kgs.22.53",
+        "Acts.13.16-Acts.13.41",
+        "Ps.138.1-Ps.138.8",
+        "Prov.17.17-Prov.17.18"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.1.1-2Kgs.2.25",
+        "Acts.13.42-Acts.14.7",
+        "Ps.139.1-Ps.139.24",
+        "Prov.17.19-Prov.17.21"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.3.1-2Kgs.4.17",
+        "Acts.14.8-Acts.14.28",
+        "Ps.140.1-Ps.140.13",
+        "Prov.17.22"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.4.18-2Kgs.5.27",
+        "Acts.15.1-Acts.15.35",
+        "Ps.141.1-Ps.141.10",
+        "Prov.17.23"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.6.1-2Kgs.7.20",
+        "Acts.15.36-Acts.16.15",
+        "Ps.142.1-Ps.142.7",
+        "Prov.17.24-Prov.17.25"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.8.1-2Kgs.9.13",
+        "Acts.16.16-Acts.16.40",
+        "Ps.143.1-Ps.143.12",
+        "Prov.17.26"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.9.14-2Kgs.10.31",
+        "Acts.17.1-Acts.17.34",
+        "Ps.144.1-Ps.144.15",
+        "Prov.17.27-Prov.17.28"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.10.32-2Kgs.12.21",
+        "Acts.18.1-Acts.18.22",
+        "Ps.145.1-Ps.145.21",
+        "Prov.18.1"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.13.1-2Kgs.14.29",
+        "Acts.18.23-Acts.19.12",
+        "Ps.146.1-Ps.146.10",
+        "Prov.18.2-Prov.18.3"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.15.1-2Kgs.16.20",
+        "Acts.19.13-Acts.19.41",
+        "Ps.147.1-Ps.147.20",
+        "Prov.18.4-Prov.18.5"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.17.1-2Kgs.18.12",
+        "Acts.20.1-Acts.20.38",
+        "Ps.148.1-Ps.148.14",
+        "Prov.18.6-Prov.18.7"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.18.13-2Kgs.19.37",
+        "Acts.21.1-Acts.21.16",
+        "Ps.149.1-Ps.149.9",
+        "Prov.18.8"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.20.1-2Kgs.22.2",
+        "Acts.21.17-Acts.21.36",
+        "Ps.150.1-Ps.150.6",
+        "Prov.18.9-Prov.18.10"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.22.3-2Kgs.23.30",
+        "Acts.21.37-Acts.22.16",
+        "Ps.1.1-Ps.1.6",
+        "Prov.18.11-Prov.18.12"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.23.31-2Kgs.25.30",
+        "Acts.22.17-Acts.23.10",
+        "Ps.2.1-Ps.2.12",
+        "Prov.18.13"
+      ]
+    },
+    {
+      "passages": [
+        "1Chr.1.1-1Chr.2.17",
+        "Acts.23.11-Acts.23.35",
+        "Ps.3.1-Ps.3.8",
+        "Prov.18.14-Prov.18.15"
+      ]
+    },
+    {
+      "passages": [
+        "1Chr.2.18-1Chr.4.4",
+        "Acts.24.1-Acts.24.27",
+        "Ps.4.1-Ps.4.8",
+        "Prov.18.16-Prov.18.18"
+      ]
+    },
+    {
+      "passages": [
+        "1Chr.4.5-1Chr.5.17",
+        "Acts.25.1-Acts.25.27",
+        "Ps.5.1-Ps.5.12",
+        "Prov.18.19"
+      ]
+    },
+    {
+      "passages": [
+        "1Chr.5.18-1Chr.6.81",
+        "Acts.26.1-Acts.26.32",
+        "Ps.6.1-Ps.6.10",
+        "Prov.18.20-Prov.18.21"
+      ]
+    },
+    {
+      "passages": [
+        "1Chr.7.1-1Chr.8.40",
+        "Acts.27.1-Acts.27.20",
+        "Ps.7.1-Ps.7.17",
+        "Prov.18.22"
+      ]
+    },
+    {
+      "passages": [
+        "1Chr.9.1-1Chr.10.14",
+        "Acts.27.21-Acts.27.44",
+        "Ps.8.1-Ps.8.9",
+        "Prov.18.23-Prov.18.24"
+      ]
+    },
+    {
+      "passages": [
+        "1Chr.11.1-1Chr.12.18",
+        "Acts.28.1-Acts.28.31",
+        "Ps.9.1-Ps.9.12",
+        "Prov.19.1-Prov.19.3"
+      ]
+    },
+    {
+      "passages": [
+        "1Chr.12.19-1Chr.14.17",
+        "Rom.1.1-Rom.1.17",
+        "Ps.9.13-Ps.9.20",
+        "Prov.19.4-Prov.19.5"
+      ]
+    },
+    {
+      "passages": [
+        "1Chr.15.1-1Chr.16.36",
+        "Rom.1.18-Rom.1.32",
+        "Ps.10.1-Ps.10.15",
+        "Prov.19.6-Prov.19.7"
+      ]
+    },
+    {
+      "passages": [
+        "1Chr.16.37-1Chr.18.17",
+        "Rom.2.1-Rom.2.24",
+        "Ps.10.16-Ps.10.18",
+        "Prov.19.8-Prov.19.9"
+      ]
+    },
+    {
+      "passages": [
+        "1Chr.19.1-1Chr.21.30",
+        "Rom.2.25-Rom.3.8",
+        "Ps.11.1-Ps.11.7",
+        "Prov.19.10-Prov.19.12"
+      ]
+    },
+    {
+      "passages": [
+        "1Chr.22.1-1Chr.23.32",
+        "Rom.3.9-Rom.3.31",
+        "Ps.12.1-Ps.12.8",
+        "Prov.19.13-Prov.19.14"
+      ]
+    },
+    {
+      "passages": [
+        "1Chr.24.1-1Chr.26.11",
+        "Rom.4.1-Rom.4.12",
+        "Ps.13.1-Ps.13.6",
+        "Prov.19.15-Prov.19.16"
+      ]
+    },
+    {
+      "passages": [
+        "1Chr.26.12-1Chr.27.34",
+        "Rom.4.13-Rom.5.5",
+        "Ps.14.1-Ps.14.7",
+        "Prov.19.17"
+      ]
+    },
+    {
+      "passages": [
+        "1Chr.28.1-1Chr.29.30",
+        "Rom.5.6-Rom.5.21",
+        "Ps.15.1-Ps.15.5",
+        "Prov.19.18-Prov.19.19"
+      ]
+    },
+    {
+      "passages": [
+        "2Chr.1.1-2Chr.3.17",
+        "Rom.6.1-Rom.6.23",
+        "Ps.16.1-Ps.16.11",
+        "Prov.19.20-Prov.19.21"
+      ]
+    },
+    {
+      "passages": [
+        "2Chr.4.1-2Chr.6.11",
+        "Rom.7.1-Rom.7.13",
+        "Ps.17.1-Ps.17.15",
+        "Prov.19.22-Prov.19.23"
+      ]
+    },
+    {
+      "passages": [
+        "2Chr.6.12-2Chr.8.10",
+        "Rom.7.14-Rom.8.8",
+        "Ps.18.1-Ps.18.15",
+        "Prov.19.24-Prov.19.25"
+      ]
+    },
+    {
+      "passages": [
+        "2Chr.8.11-2Chr.10.19",
+        "Rom.8.9-Rom.8.21",
+        "Ps.18.16-Ps.18.36",
+        "Prov.19.26"
+      ]
+    },
+    {
+      "passages": [
+        "2Chr.11.1-2Chr.13.22",
+        "Rom.8.22-Rom.8.39",
+        "Ps.18.37-Ps.18.50",
+        "Prov.19.27-Prov.19.29"
+      ]
+    },
+    {
+      "passages": [
+        "2Chr.14.1-2Chr.16.14",
+        "Rom.9.1-Rom.9.21",
+        "Ps.19.1-Ps.19.14",
+        "Prov.20.1"
+      ]
+    },
+    {
+      "passages": [
+        "2Chr.17.1-2Chr.18.34",
+        "Rom.9.22-Rom.10.13",
+        "Ps.20.1-Ps.20.9",
+        "Prov.20.2-Prov.20.3"
+      ]
+    },
+    {
+      "passages": [
+        "2Chr.19.1-2Chr.20.37",
+        "Rom.10.14-Rom.11.12",
+        "Ps.21.1-Ps.21.13",
+        "Prov.20.4-Prov.20.6"
+      ]
+    },
+    {
+      "passages": [
+        "2Chr.21.1-2Chr.23.21",
+        "Rom.11.13-Rom.11.36",
+        "Ps.22.1-Ps.22.18",
+        "Prov.20.7"
+      ]
+    },
+    {
+      "passages": [
+        "2Chr.24.1-2Chr.25.28",
+        "Rom.12.1-Rom.12.21",
+        "Ps.22.19-Ps.22.31",
+        "Prov.20.8-Prov.20.10"
+      ]
+    },
+    {
+      "passages": [
+        "2Chr.26.1-2Chr.28.27",
+        "Rom.13.1-Rom.13.14",
+        "Ps.23.1-Ps.23.6",
+        "Prov.20.11"
+      ]
+    },
+    {
+      "passages": [
+        "2Chr.29.1-2Chr.29.36",
+        "Rom.14.1-Rom.14.23",
+        "Ps.24.1-Ps.24.10",
+        "Prov.20.12"
+      ]
+    },
+    {
+      "passages": [
+        "2Chr.30.1-2Chr.31.21",
+        "Rom.15.1-Rom.15.22",
+        "Ps.25.1-Ps.25.15",
+        "Prov.20.13-Prov.20.15"
+      ]
+    },
+    {
+      "passages": [
+        "2Chr.32.1-2Chr.33.13",
+        "Rom.15.23-Rom.16.7",
+        "Ps.25.16-Ps.25.22",
+        "Prov.20.16-Prov.20.18"
+      ]
+    },
+    {
+      "passages": [
+        "2Chr.33.14-2Chr.34.33",
+        "Rom.16.8-Rom.16.27",
+        "Ps.26.1-Ps.26.12",
+        "Prov.20.19"
+      ]
+    },
+    {
+      "passages": [
+        "2Chr.35.1-2Chr.36.23",
+        "1Cor.1.1-1Cor.1.17",
+        "Ps.27.1-Ps.27.6",
+        "Prov.20.20-Prov.20.21"
+      ]
+    },
+    {
+      "passages": [
+        "Ezra.1.1-Ezra.2.70",
+        "1Cor.1.18-1Cor.2.5",
+        "Ps.27.7-Ps.27.14",
+        "Prov.20.22-Prov.20.23"
+      ]
+    },
+    {
+      "passages": [
+        "Ezra.3.1-Ezra.4.24",
+        "1Cor.2.6-1Cor.3.4",
+        "Ps.28.1-Ps.28.9",
+        "Prov.20.24-Prov.20.25"
+      ]
+    },
+    {
+      "passages": [
+        "Ezra.5.1-Ezra.6.22",
+        "1Cor.3.5-1Cor.3.23",
+        "Ps.29.1-Ps.29.11",
+        "Prov.20.26-Prov.20.27"
+      ]
+    },
+    {
+      "passages": [
+        "Ezra.7.1-Ezra.8.20",
+        "1Cor.4.1-1Cor.4.21",
+        "Ps.30.1-Ps.30.12",
+        "Prov.20.28-Prov.20.30"
+      ]
+    },
+    {
+      "passages": [
+        "Ezra.8.21-Ezra.9.15",
+        "1Cor.5.1-1Cor.5.13",
+        "Ps.31.1-Ps.31.8",
+        "Prov.21.1-Prov.21.2"
+      ]
+    },
+    {
+      "passages": [
+        "Ezra.10.1-Ezra.10.44",
+        "1Cor.6.1-1Cor.6.20",
+        "Ps.31.9-Ps.31.18",
+        "Prov.21.3"
+      ]
+    },
+    {
+      "passages": [
+        "Neh.1.1-Neh.3.14",
+        "1Cor.7.1-1Cor.7.24",
+        "Ps.31.19-Ps.31.24",
+        "Prov.21.4"
+      ]
+    },
+    {
+      "passages": [
+        "Neh.3.15-Neh.5.13",
+        "1Cor.7.25-1Cor.7.40",
+        "Ps.32.1-Ps.32.11",
+        "Prov.21.5-Prov.21.7"
+      ]
+    },
+    {
+      "passages": [
+        "Neh.5.14-Neh.7.60",
+        "1Cor.8.1-1Cor.8.13",
+        "Ps.33.1-Ps.33.11",
+        "Prov.21.8-Prov.21.10"
+      ]
+    },
+    {
+      "passages": [
+        "Neh.7.61-Neh.9.21",
+        "1Cor.9.1-1Cor.9.18",
+        "Ps.33.12-Ps.33.22",
+        "Prov.21.11-Prov.21.12"
+      ]
+    },
+    {
+      "passages": [
+        "Neh.9.22-Neh.10.39",
+        "1Cor.9.19-1Cor.10.13",
+        "Ps.34.1-Ps.34.10",
+        "Prov.21.13"
+      ]
+    },
+    {
+      "passages": [
+        "Neh.11.1-Neh.12.26",
+        "1Cor.10.14-1Cor.11.2",
+        "Ps.34.11-Ps.34.22",
+        "Prov.21.14-Prov.21.16"
+      ]
+    },
+    {
+      "passages": [
+        "Neh.12.27-Neh.13.31",
+        "1Cor.11.3-1Cor.11.16",
+        "Ps.35.1-Ps.35.16",
+        "Prov.21.17-Prov.21.18"
+      ]
+    },
+    {
+      "passages": [
+        "Esth.1.1-Esth.3.15",
+        "1Cor.11.17-1Cor.11.34",
+        "Ps.35.17-Ps.35.28",
+        "Prov.21.19-Prov.21.20"
+      ]
+    },
+    {
+      "passages": [
+        "Esth.4.1-Esth.7.10",
+        "1Cor.12.1-1Cor.12.26",
+        "Ps.36.1-Ps.36.12",
+        "Prov.21.21-Prov.21.22"
+      ]
+    },
+    {
+      "passages": [
+        "Esth.8.1-Esth.10.3",
+        "1Cor.12.27-1Cor.13.13",
+        "Ps.37.1-Ps.37.11",
+        "Prov.21.23-Prov.21.24"
+      ]
+    },
+    {
+      "passages": [
+        "Job.1.1-Job.3.26",
+        "1Cor.14.1-1Cor.14.17",
+        "Ps.37.12-Ps.37.29",
+        "Prov.21.25-Prov.21.26"
+      ]
+    },
+    {
+      "passages": [
+        "Job.4.1-Job.7.21",
+        "1Cor.14.18-1Cor.14.40",
+        "Ps.37.30-Ps.37.40",
+        "Prov.21.27"
+      ]
+    },
+    {
+      "passages": [
+        "Job.8.1-Job.11.20",
+        "1Cor.15.1-1Cor.15.28",
+        "Ps.38.1-Ps.38.22",
+        "Prov.21.28-Prov.21.29"
+      ]
+    },
+    {
+      "passages": [
+        "Job.12.1-Job.15.35",
+        "1Cor.15.29-1Cor.15.58",
+        "Ps.39.1-Ps.39.13",
+        "Prov.21.30-Prov.21.31"
+      ]
+    },
+    {
+      "passages": [
+        "Job.16.1-Job.19.29",
+        "1Cor.16.1-1Cor.16.24",
+        "Ps.40.1-Ps.40.10",
+        "Prov.22.1"
+      ]
+    },
+    {
+      "passages": [
+        "Job.20.1-Job.22.30",
+        "2Cor.1.1-2Cor.1.11",
+        "Ps.40.11-Ps.40.17",
+        "Prov.22.2-Prov.22.4"
+      ]
+    },
+    {
+      "passages": [
+        "Job.23.1-Job.27.23",
+        "2Cor.1.12-2Cor.2.11",
+        "Ps.41.1-Ps.41.13",
+        "Prov.22.5-Prov.22.6"
+      ]
+    },
+    {
+      "passages": [
+        "Job.28.1-Job.30.31",
+        "2Cor.2.12-2Cor.2.17",
+        "Ps.42.1-Ps.42.11",
+        "Prov.22.7"
+      ]
+    },
+    {
+      "passages": [
+        "Job.31.1-Job.33.33",
+        "2Cor.3.1-2Cor.3.18",
+        "Ps.43.1-Ps.43.5",
+        "Prov.22.8-Prov.22.9"
+      ]
+    },
+    {
+      "passages": [
+        "Job.34.1-Job.36.33",
+        "2Cor.4.1-2Cor.4.12",
+        "Ps.44.1-Ps.44.8",
+        "Prov.22.10-Prov.22.12"
+      ]
+    },
+    {
+      "passages": [
+        "Job.37.1-Job.39.30",
+        "2Cor.4.13-2Cor.5.10",
+        "Ps.44.9-Ps.44.26",
+        "Prov.22.13"
+      ]
+    },
+    {
+      "passages": [
+        "Job.40.1-Job.42.17",
+        "2Cor.5.11-2Cor.5.21",
+        "Ps.45.1-Ps.45.17",
+        "Prov.22.14"
+      ]
+    },
+    {
+      "passages": [
+        "Eccl.1.1-Eccl.3.22",
+        "2Cor.6.1-2Cor.6.13",
+        "Ps.46.1-Ps.46.11",
+        "Prov.22.15"
+      ]
+    },
+    {
+      "passages": [
+        "Eccl.4.1-Eccl.6.12",
+        "2Cor.6.14-2Cor.7.7",
+        "Ps.47.1-Ps.47.9",
+        "Prov.22.16"
+      ]
+    },
+    {
+      "passages": [
+        "Eccl.7.1-Eccl.9.18",
+        "2Cor.7.8-2Cor.7.16",
+        "Ps.48.1-Ps.48.14",
+        "Prov.22.17-Prov.22.19"
+      ]
+    },
+    {
+      "passages": [
+        "Eccl.10.1-Eccl.12.14",
+        "2Cor.8.1-2Cor.8.15",
+        "Ps.49.1-Ps.49.20",
+        "Prov.22.20-Prov.22.21"
+      ]
+    },
+    {
+      "passages": [
+        "Song.1.1-Song.4.15",
+        "2Cor.8.16-2Cor.8.24",
+        "Ps.50.1-Ps.50.23",
+        "Prov.22.22-Prov.22.23"
+      ]
+    },
+    {
+      "passages": [
+        "Song.5.1-Song.8.14",
+        "2Cor.9.1-2Cor.9.15",
+        "Ps.51.1-Ps.51.19",
+        "Prov.22.24-Prov.22.25"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.1.1-Isa.2.22",
+        "2Cor.10.1-2Cor.10.18",
+        "Ps.52.1-Ps.52.9",
+        "Prov.22.26-Prov.22.27"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.3.1-Isa.5.30",
+        "2Cor.11.1-2Cor.11.15",
+        "Ps.53.1-Ps.53.6",
+        "Prov.22.28-Prov.22.29"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.6.1-Isa.7.25",
+        "2Cor.11.16-2Cor.11.33",
+        "Ps.54.1-Ps.54.7",
+        "Prov.23.1-Prov.23.3"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.8.1-Isa.9.21",
+        "2Cor.12.1-2Cor.12.10",
+        "Ps.55.1-Ps.55.23",
+        "Prov.23.4-Prov.23.5"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.10.1-Isa.11.16",
+        "2Cor.12.11-2Cor.12.21",
+        "Ps.56.1-Ps.56.13",
+        "Prov.23.6-Prov.23.8"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.12.1-Isa.14.32",
+        "2Cor.13.1-2Cor.13.14",
+        "Ps.57.1-Ps.57.11",
+        "Prov.23.9-Prov.23.11"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.15.1-Isa.18.7",
+        "Gal.1.1-Gal.1.24",
+        "Ps.58.1-Ps.58.11",
+        "Prov.23.12"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.19.1-Isa.21.17",
+        "Gal.2.1-Gal.2.16",
+        "Ps.59.1-Ps.59.17",
+        "Prov.23.13-Prov.23.14"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.22.1-Isa.24.23",
+        "Gal.2.17-Gal.3.9",
+        "Ps.60.1-Ps.60.12",
+        "Prov.23.15-Prov.23.16"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.25.1-Isa.28.13",
+        "Gal.3.10-Gal.3.22",
+        "Ps.61.1-Ps.61.8",
+        "Prov.23.17-Prov.23.18"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.28.14-Isa.30.11",
+        "Gal.3.23-Gal.4.31",
+        "Ps.62.1-Ps.62.12",
+        "Prov.23.19-Prov.23.21"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.30.12-Isa.33.12",
+        "Gal.5.1-Gal.5.12",
+        "Ps.63.1-Ps.63.11",
+        "Prov.23.22"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.33.13-Isa.36.22",
+        "Gal.5.13-Gal.5.26",
+        "Ps.64.1-Ps.64.10",
+        "Prov.23.23"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.37.1-Isa.38.22",
+        "Gal.6.1-Gal.6.18",
+        "Ps.65.1-Ps.65.13",
+        "Prov.23.24"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.39.1-Isa.41.16",
+        "Eph.1.1-Eph.1.23",
+        "Ps.66.1-Ps.66.20",
+        "Prov.23.25-Prov.23.28"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.41.17-Isa.43.13",
+        "Eph.2.1-Eph.2.22",
+        "Ps.67.1-Ps.67.7",
+        "Prov.23.29-Prov.23.35"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.43.14-Isa.45.10",
+        "Eph.3.1-Eph.3.21",
+        "Ps.68.1-Ps.68.18",
+        "Prov.24.1-Prov.24.2"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.45.11-Isa.48.11",
+        "Eph.4.1-Eph.4.16",
+        "Ps.68.19-Ps.68.35",
+        "Prov.24.3-Prov.24.4"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.48.12-Isa.50.11",
+        "Eph.4.17-Eph.4.32",
+        "Ps.69.1-Ps.69.18",
+        "Prov.24.5-Prov.24.6"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.51.1-Isa.53.12",
+        "Eph.5.1-Eph.5.33",
+        "Ps.69.19-Ps.69.36",
+        "Prov.24.7"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.54.1-Isa.57.13",
+        "Eph.6.1-Eph.6.24",
+        "Ps.70.1-Ps.70.5",
+        "Prov.24.8"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.57.14-Isa.59.21",
+        "Phil.1.1-Phil.1.26",
+        "Ps.71.1-Ps.71.24",
+        "Prov.24.9-Prov.24.10"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.60.1-Isa.62.5",
+        "Phil.1.27-Phil.2.18",
+        "Ps.72.1-Ps.72.20",
+        "Prov.24.11-Prov.24.12"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.62.6-Isa.65.25",
+        "Phil.2.19-Phil.3.4",
+        "Ps.73.1-Ps.73.28",
+        "Prov.24.13-Prov.24.14"
+      ]
+    },
+    {
+      "passages": [
+        "Isa.66.1-Isa.66.24",
+        "Phil.3.4-Phil.3.21",
+        "Ps.74.1-Ps.74.23",
+        "Prov.24.15-Prov.24.16"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.1.1-Jer.2.30",
+        "Phil.4.1-Phil.4.23",
+        "Ps.75.1-Ps.75.10",
+        "Prov.24.17-Prov.24.20"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.2.31-Jer.4.18",
+        "Col.1.1-Col.1.20",
+        "Ps.76.1-Ps.76.12",
+        "Prov.24.21-Prov.24.22"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.4.19-Jer.6.14",
+        "Col.1.21-Col.2.7",
+        "Ps.77.1-Ps.77.20",
+        "Prov.24.23-Prov.24.25"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.6.15-Jer.8.7",
+        "Col.2.8-Col.2.23",
+        "Ps.78.1-Ps.78.31",
+        "Prov.24.26"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.8.8-Jer.9.26",
+        "Col.3.1-Col.3.17",
+        "Ps.78.32-Ps.78.55",
+        "Prov.24.27"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.10.1-Jer.11.23",
+        "Col.3.18-Col.4.18",
+        "Ps.78.56-Ps.78.72",
+        "Prov.24.28-Prov.24.29"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.12.1-Jer.14.10",
+        "1Thess.1.1-1Thess.2.9",
+        "Ps.79.1-Ps.79.13",
+        "Prov.24.30-Prov.24.34"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.14.11-Jer.16.15",
+        "1Thess.2.10-1Thess.3.13",
+        "Ps.80.1-Ps.80.19",
+        "Prov.25.1-Prov.25.5"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.16.16-Jer.18.23",
+        "1Thess.4.1-1Thess.5.3",
+        "Ps.81.1-Ps.81.16",
+        "Prov.25.6-Prov.25.7"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.19.1-Jer.21.14",
+        "1Thess.5.4-1Thess.5.28",
+        "Ps.82.1-Ps.82.8",
+        "Prov.25.7-Prov.25.10"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.22.1-Jer.23.20",
+        "2Thess.1.1-2Thess.1.12",
+        "Ps.83.1-Ps.83.18",
+        "Prov.25.11-Prov.25.14"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.23.21-Jer.25.38",
+        "2Thess.2.1-2Thess.2.17",
+        "Ps.84.1-Ps.84.12",
+        "Prov.25.15"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.26.1-Jer.27.22",
+        "2Thess.3.1-2Thess.3.18",
+        "Ps.85.1-Ps.85.13",
+        "Prov.25.16"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.28.1-Jer.29.32",
+        "1Tim.1.1-1Tim.1.20",
+        "Ps.86.1-Ps.86.17",
+        "Prov.25.17"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.30.1-Jer.31.26",
+        "1Tim.2.1-1Tim.2.15",
+        "Ps.87.1-Ps.87.7",
+        "Prov.25.18-Prov.25.19"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.31.27-Jer.32.44",
+        "1Tim.3.1-1Tim.3.16",
+        "Ps.88.1-Ps.88.18",
+        "Prov.25.20-Prov.25.22"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.33.1-Jer.34.22",
+        "1Tim.4.1-1Tim.4.16",
+        "Ps.89.1-Ps.89.13",
+        "Prov.25.23-Prov.25.24"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.35.1-Jer.36.32",
+        "1Tim.5.1-1Tim.5.25",
+        "Ps.89.14-Ps.89.37",
+        "Prov.25.25-Prov.25.27"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.37.1-Jer.38.28",
+        "1Tim.6.1-1Tim.6.21",
+        "Ps.89.38-Ps.89.52",
+        "Prov.25.28"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.39.1-Jer.41.18",
+        "2Tim.1.1-2Tim.1.18",
+        "Ps.90.1-Ps.91.16",
+        "Prov.26.1-Prov.26.2"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.42.1-Jer.44.23",
+        "2Tim.2.1-2Tim.2.21",
+        "Ps.92.1-Ps.93.5",
+        "Prov.26.3-Prov.26.5"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.44.24-Jer.47.7",
+        "2Tim.2.22-2Tim.3.17",
+        "Ps.94.1-Ps.94.23",
+        "Prov.26.6-Prov.26.8"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.48.1-Jer.49.22",
+        "2Tim.4.1-2Tim.4.22",
+        "Ps.95.1-Ps.96.13",
+        "Prov.26.9-Prov.26.12"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.49.23-Jer.50.46",
+        "Titus.1.1-Titus.1.16",
+        "Ps.97.1-Ps.98.9",
+        "Prov.26.13-Prov.26.16"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.51.1-Jer.51.53",
+        "Titus.2.1-Titus.2.15",
+        "Ps.99.1-Ps.99.9",
+        "Prov.26.17"
+      ]
+    },
+    {
+      "passages": [
+        "Jer.51.54-Jer.52.34",
+        "Titus.3.1-Titus.3.15",
+        "Ps.100.1-Ps.100.5",
+        "Prov.26.18-Prov.26.19"
+      ]
+    },
+    {
+      "passages": [
+        "Lam.1.1-Lam.2.19",
+        "Phlm.1.1-Phlm.1.25",
+        "Ps.101.1-Ps.101.8",
+        "Prov.26.20"
+      ]
+    },
+    {
+      "passages": [
+        "Lam.2.20-Lam.3.66",
+        "Heb.1.1-Heb.1.14",
+        "Ps.102.1-Ps.102.28",
+        "Prov.26.21-Prov.26.22"
+      ]
+    },
+    {
+      "passages": [
+        "Lam.4.1-Lam.5.22",
+        "Heb.2.1-Heb.2.18",
+        "Ps.103.1-Ps.103.22",
+        "Prov.26.23"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.1.1-Ezek.3.15",
+        "Heb.3.1-Heb.3.19",
+        "Ps.104.1-Ps.104.23",
+        "Prov.26.24-Prov.26.26"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.3.16-Ezek.6.14",
+        "Heb.4.1-Heb.4.16",
+        "Ps.104.24-Ps.104.35",
+        "Prov.26.27"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.7.1-Ezek.9.11",
+        "Heb.5.1-Heb.5.14",
+        "Ps.105.1-Ps.105.15",
+        "Prov.26.28"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.10.1-Ezek.11.25",
+        "Heb.6.1-Heb.6.20",
+        "Ps.105.16-Ps.105.36",
+        "Prov.27.1-Prov.27.2"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.12.1-Ezek.14.11",
+        "Heb.7.1-Heb.7.17",
+        "Ps.105.37-Ps.105.45",
+        "Prov.27.3"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.14.12-Ezek.16.42",
+        "Heb.7.18-Heb.7.28",
+        "Ps.106.1-Ps.106.12",
+        "Prov.27.4-Prov.27.6"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.16.43-Ezek.17.24",
+        "Heb.8.1-Heb.8.13",
+        "Ps.106.13-Ps.106.31",
+        "Prov.27.7-Prov.27.9"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.18.1-Ezek.19.14",
+        "Heb.9.1-Heb.9.10",
+        "Ps.106.32-Ps.106.48",
+        "Prov.27.10"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.20.1-Ezek.20.49",
+        "Heb.9.11-Heb.9.28",
+        "Ps.107.1-Ps.107.43",
+        "Prov.27.11"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.21.1-Ezek.22.31",
+        "Heb.10.1-Heb.10.17",
+        "Ps.108.1-Ps.108.13",
+        "Prov.27.12"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.23.1-Ezek.23.49",
+        "Heb.10.18-Heb.10.39",
+        "Ps.109.1-Ps.109.31",
+        "Prov.27.13"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.24.1-Ezek.26.21",
+        "Heb.11.1-Heb.11.16",
+        "Ps.110.1-Ps.110.7",
+        "Prov.27.14"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.27.1-Ezek.28.26",
+        "Heb.11.17-Heb.11.31",
+        "Ps.111.1-Ps.111.10",
+        "Prov.27.15-Prov.27.16"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.29.1-Ezek.30.26",
+        "Heb.11.32-Heb.12.13",
+        "Ps.112.1-Ps.112.10",
+        "Prov.27.17"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.31.1-Ezek.32.32",
+        "Heb.12.14-Heb.12.29",
+        "Ps.113.1-Ps.114.8",
+        "Prov.27.18-Prov.27.20"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.33.1-Ezek.34.31",
+        "Heb.13.1-Heb.13.25",
+        "Ps.115.1-Ps.115.18",
+        "Prov.27.21-Prov.27.22"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.35.1-Ezek.36.38",
+        "Jas.1.1-Jas.1.18",
+        "Ps.116.1-Ps.116.19",
+        "Prov.27.23-Prov.27.27"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.37.1-Ezek.38.23",
+        "Jas.1.19-Jas.2.17",
+        "Ps.117.1-Ps.117.2",
+        "Prov.28.1"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.39.1-Ezek.40.27",
+        "Jas.2.18-Jas.3.18",
+        "Ps.118.1-Ps.118.18",
+        "Prov.28.2"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.40.28-Ezek.41.26",
+        "Jas.4.1-Jas.4.17",
+        "Ps.118.19-Ps.118.29",
+        "Prov.28.3-Prov.28.5"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.42.1-Ezek.43.27",
+        "Jas.5.1-Jas.5.20",
+        "Ps.119.1-Ps.119.16",
+        "Prov.28.6-Prov.28.7"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.44.1-Ezek.45.12",
+        "1Pet.1.1-1Pet.1.12",
+        "Ps.119.17-Ps.119.32",
+        "Prov.28.8-Prov.28.10"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.45.13-Ezek.46.24",
+        "1Pet.1.13-1Pet.2.10",
+        "Ps.119.33-Ps.119.48",
+        "Prov.28.11"
+      ]
+    },
+    {
+      "passages": [
+        "Ezek.47.1-Ezek.48.35",
+        "1Pet.2.11-1Pet.3.7",
+        "Ps.119.49-Ps.119.64",
+        "Prov.28.12-Prov.28.13"
+      ]
+    },
+    {
+      "passages": [
+        "Dan.1.1-Dan.2.23",
+        "1Pet.3.8-1Pet.4.6",
+        "Ps.119.65-Ps.119.80",
+        "Prov.28.14"
+      ]
+    },
+    {
+      "passages": [
+        "Dan.2.24-Dan.3.30",
+        "1Pet.4.7-1Pet.5.14",
+        "Ps.119.81-Ps.119.96",
+        "Prov.28.15-Prov.28.16"
+      ]
+    },
+    {
+      "passages": [
+        "Dan.4.1-Dan.4.37",
+        "2Pet.1.1-2Pet.1.21",
+        "Ps.119.97-Ps.119.112",
+        "Prov.28.17-Prov.28.18"
+      ]
+    },
+    {
+      "passages": [
+        "Dan.5.1-Dan.5.31",
+        "2Pet.2.1-2Pet.2.22",
+        "Ps.119.113-Ps.119.128",
+        "Prov.28.19-Prov.28.20"
+      ]
+    },
+    {
+      "passages": [
+        "Dan.6.1-Dan.6.28",
+        "2Pet.3.1-2Pet.3.18",
+        "Ps.119.129-Ps.119.152",
+        "Prov.28.21-Prov.28.22"
+      ]
+    },
+    {
+      "passages": [
+        "Dan.7.1-Dan.7.28",
+        "1John.1.1-1John.1.10",
+        "Ps.119.153-Ps.119.176",
+        "Prov.28.23-Prov.28.24"
+      ]
+    },
+    {
+      "passages": [
+        "Dan.8.1-Dan.8.27",
+        "1John.2.1-1John.2.17",
+        "Ps.120.1-Ps.120.7",
+        "Prov.28.25-Prov.28.26"
+      ]
+    },
+    {
+      "passages": [
+        "Dan.9.1-Dan.11.1",
+        "1John.2.18-1John.3.6",
+        "Ps.121.1-Ps.121.8",
+        "Prov.28.27-Prov.28.28"
+      ]
+    },
+    {
+      "passages": [
+        "Dan.11.2-Dan.11.35",
+        "1John.3.7-1John.3.24",
+        "Ps.122.1-Ps.122.9",
+        "Prov.29.1"
+      ]
+    },
+    {
+      "passages": [
+        "Dan.11.36-Dan.12.13",
+        "1John.4.1-1John.4.21",
+        "Ps.123.1-Ps.123.4",
+        "Prov.29.2-Prov.29.4"
+      ]
+    },
+    {
+      "passages": [
+        "Hos.1.1-Hos.3.5",
+        "1John.5.1-1John.5.21",
+        "Ps.124.1-Ps.124.8",
+        "Prov.29.5-Prov.29.8"
+      ]
+    },
+    {
+      "passages": [
+        "Hos.4.1-Hos.5.15",
+        "2John.1.1-2John.1.13",
+        "Ps.125.1-Ps.125.5",
+        "Prov.29.9-Prov.29.11"
+      ]
+    },
+    {
+      "passages": [
+        "Hos.6.1-Hos.9.17",
+        "3John.1.1-3John.1.14",
+        "Ps.126.1-Ps.126.6",
+        "Prov.29.12-Prov.29.14"
+      ]
+    },
+    {
+      "passages": [
+        "Hos.10.1-Hos.14.9",
+        "Jude.1.1-Jude.1.25",
+        "Ps.127.1-Ps.127.5",
+        "Prov.29.15-Prov.29.17"
+      ]
+    },
+    {
+      "passages": [
+        "Joel.1.1-Joel.3.21",
+        "Rev.1.1-Rev.1.20",
+        "Ps.128.1-Ps.128.6",
+        "Prov.29.18"
+      ]
+    },
+    {
+      "passages": [
+        "Amos.1.1-Amos.3.15",
+        "Rev.2.1-Rev.2.17",
+        "Ps.129.1-Ps.129.8",
+        "Prov.29.19-Prov.29.20"
+      ]
+    },
+    {
+      "passages": [
+        "Amos.4.1-Amos.6.14",
+        "Rev.2.18-Rev.3.6",
+        "Ps.130.1-Ps.130.8",
+        "Prov.29.21-Prov.29.22"
+      ]
+    },
+    {
+      "passages": [
+        "Amos.7.1-Amos.9.15",
+        "Rev.3.7-Rev.3.22",
+        "Ps.131.1-Ps.131.3",
+        "Prov.29.23"
+      ]
+    },
+    {
+      "passages": [
+        "Obad.1.1-Obad.1.21",
+        "Rev.4.1-Rev.4.11",
+        "Ps.132.1-Ps.132.18",
+        "Prov.29.24-Prov.29.25"
+      ]
+    },
+    {
+      "passages": [
+        "Jonah.1.1-Jonah.4.11",
+        "Rev.5.1-Rev.5.14",
+        "Ps.133.1-Ps.133.3",
+        "Prov.29.26-Prov.29.27"
+      ]
+    },
+    {
+      "passages": [
+        "Mic.1.1-Mic.4.13",
+        "Rev.6.1-Rev.6.17",
+        "Ps.134.1-Ps.134.3",
+        "Prov.30.1-Prov.30.4"
+      ]
+    },
+    {
+      "passages": [
+        "Mic.5.1-Mic.7.20",
+        "Rev.7.1-Rev.7.17",
+        "Ps.135.1-Ps.135.21",
+        "Prov.30.5-Prov.30.6"
+      ]
+    },
+    {
+      "passages": [
+        "Nah.1.1-Nah.3.19",
+        "Rev.8.1-Rev.8.13",
+        "Ps.136.1-Ps.136.26",
+        "Prov.30.7-Prov.30.9"
+      ]
+    },
+    {
+      "passages": [
+        "Hab.1.1-Hab.3.19",
+        "Rev.9.1-Rev.9.21",
+        "Ps.137.1-Ps.137.9",
+        "Prov.30.10"
+      ]
+    },
+    {
+      "passages": [
+        "Zeph.1.1-Zeph.3.20",
+        "Rev.10.1-Rev.10.11",
+        "Ps.138.1-Ps.138.8",
+        "Prov.30.11-Prov.30.14"
+      ]
+    },
+    {
+      "passages": [
+        "Hag.1.1-Hag.2.23",
+        "Rev.11.1-Rev.11.19",
+        "Ps.139.1-Ps.139.24",
+        "Prov.30.15-Prov.30.16"
+      ]
+    },
+    {
+      "passages": [
+        "Zech.1.1-Zech.1.21",
+        "Rev.12.1-Rev.12.17",
+        "Ps.140.1-Ps.140.13",
+        "Prov.30.17"
+      ]
+    },
+    {
+      "passages": [
+        "Zech.2.1-Zech.3.10",
+        "Rev.13.1-Rev.13.18",
+        "Ps.141.1-Ps.141.10",
+        "Prov.30.18-Prov.30.20"
+      ]
+    },
+    {
+      "passages": [
+        "Zech.4.1-Zech.5.11",
+        "Rev.14.1-Rev.14.20",
+        "Ps.142.1-Ps.142.7",
+        "Prov.30.21-Prov.30.23"
+      ]
+    },
+    {
+      "passages": [
+        "Zech.6.1-Zech.7.14",
+        "Rev.15.1-Rev.15.8",
+        "Ps.143.1-Ps.143.12",
+        "Prov.30.24-Prov.30.28"
+      ]
+    },
+    {
+      "passages": [
+        "Zech.8.1-Zech.8.23",
+        "Rev.16.1-Rev.16.21",
+        "Ps.144.1-Ps.144.15",
+        "Prov.30.29-Prov.30.31"
+      ]
+    },
+    {
+      "passages": [
+        "Zech.9.1-Zech.9.17",
+        "Rev.17.1-Rev.17.18",
+        "Ps.145.1-Ps.145.21",
+        "Prov.30.32"
+      ]
+    },
+    {
+      "passages": [
+        "Zech.10.1-Zech.11.17",
+        "Rev.18.1-Rev.18.24",
+        "Ps.146.1-Ps.146.10",
+        "Prov.30.33"
+      ]
+    },
+    {
+      "passages": [
+        "Zech.12.1-Zech.13.9",
+        "Rev.19.1-Rev.19.21",
+        "Ps.147.1-Ps.147.20",
+        "Prov.31.1-Prov.31.7"
+      ]
+    },
+    {
+      "passages": [
+        "Zech.14.1-Zech.14.21",
+        "Rev.20.1-Rev.20.15",
+        "Ps.148.1-Ps.148.14",
+        "Prov.31.8-Prov.31.9"
+      ]
+    },
+    {
+      "passages": [
+        "Mal.1.1-Mal.2.17",
+        "Rev.21.1-Rev.21.27",
+        "Ps.149.1-Ps.149.9",
+        "Prov.31.10-Prov.31.24"
+      ]
+    },
+    {
+      "passages": [
+        "Mal.3.1-Mal.4.6",
+        "Rev.22.1-Rev.22.21",
+        "Ps.150.1-Ps.150.6",
+        "Prov.31.25-Prov.31.31"
+      ]
+    }
+  ]
+}

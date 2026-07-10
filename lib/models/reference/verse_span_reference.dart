@@ -1,3 +1,4 @@
+import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
@@ -19,6 +20,46 @@ class VerseSpanReference extends Equatable {
     } else {
       throw Exception('Cannot convert `$id` to VerseSpanReference');
     }
+  }
+
+  factory VerseSpanReference.parse(String range, {required BookType book}) {
+    ({int chapter, int? verse}) parsePart(String part) {
+      final split = part.split(':');
+      return (chapter: int.parse(split[0]), verse: split.length > 1 ? int.parse(split[1]) : null);
+    }
+
+    final parts = range.split('-');
+    var start = parsePart(parts.first);
+    var end = parts.length > 1 ? parsePart(parts[1]) : null;
+
+    // For single-chapter books a bare number is a verse within chapter 1, not a chapter:
+    // "Philemon 1-25" == Philemon 1:1-25.
+    if (book.isSingleChapter) {
+      ({int chapter, int? verse}) asVerse(({int chapter, int? verse}) part) =>
+          part.verse == null ? (chapter: 1, verse: part.chapter) : part;
+      start = asVerse(start);
+      if (end != null) end = asVerse(end);
+    }
+
+    final startHasVerse = start.verse != null;
+    final endHasVerse = end?.verse != null;
+
+    final startReference = Reference(book: book, chapterNum: start.chapter, verseNum: start.verse ?? 1).clamped;
+
+    final endReference = end == null
+        ? startHasVerse
+              ? startReference // Genesis 1:1
+              : Reference.lastVerseFor(book: book, chapterNum: start.chapter) // Genesis 1
+        : endHasVerse // Genesis 1:10-2:4
+        ? Reference(book: book, chapterNum: end.chapter, verseNum: end.verse!).clamped
+        : startHasVerse // Genesis 1:10-12
+        ? Reference(book: book, chapterNum: start.chapter, verseNum: end.chapter).clamped
+        : Reference.lastVerseFor(book: book, chapterNum: end.chapter); // Genesis 1-2
+
+    return VerseSpanReference(
+      start: VerseBiblePointer(reference: startReference),
+      end: VerseBiblePointer(reference: endReference),
+    );
   }
 
   @override

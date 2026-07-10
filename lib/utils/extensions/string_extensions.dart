@@ -5,6 +5,9 @@ extension StringExtensions on String {
   String get onlyLetters => replaceAll(RegExp(r"[^a-zA-ZͰ-Ͽἀ-῿֐-׿ ]"), "");
   bool get isLetterOnly => contains(RegExp(r"[^a-zA-ZͰ-Ͽἀ-῿֐-׿'\-]"));
 
+  String get withCollapsedWhitespace => replaceAll(RegExp(r'\s+'), ' ');
+  String get withStrippedWhitespace => replaceAll(RegExp(r'\s+'), '');
+
   String withLength(int length) => this.length > length ? '${substring(0, length - 3)}...' : this;
 
   bool get isStrongId => RegExp(r'^[GH]\d{1,4}$').hasMatch(this);

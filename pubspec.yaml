@@ -79,6 +79,7 @@ flutter:
     - assets/dictionary/
     - assets/commentary/
     - assets/cross_references/
+    - assets/bible_plans/
     - fonts/
   fonts:
     - family: Inter

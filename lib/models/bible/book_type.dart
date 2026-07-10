@@ -1,4 +1,6 @@
+import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/testament.dart';
+import 'package:bible/utils/range.dart';
 import 'package:utils_core/utils_core.dart';
 
 enum BookType {
@@ -1250,6 +1252,17 @@ enum BookType {
       chapterVerseLengths: [20, 29, 22, 11, 14, 17, 17, 13, 21, 11, 19, 17, 18, 20, 8, 21, 18, 24, 21, 15, 27, 21],
     ),
   };
+
+  bool get isSingleChapter => bookInfo.numChapters == 1;
+
+  List<Reference> get allReferences => Range.generate(1, bookInfo.numChapters)
+      .expand(
+        (chapterNum) => Range.generate(
+          1,
+          bookInfo.getNumVerses(chapterNum),
+        ).map((verseNum) => Reference(book: this, chapterNum: chapterNum, verseNum: verseNum)),
+      )
+      .toList();
 }
 
 class BookTypeInfo {

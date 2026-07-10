@@ -17,7 +17,7 @@ import 'package:utils_core/utils_core.dart';
 
 class ChapterPreviewPage extends HookConsumerWidget {
   final VerseSelection verseSelection;
-  final VoidCallback onNavigateToPassage;
+  final Function() onNavigateToPassage;
 
   const ChapterPreviewPage({super.key, required this.verseSelection, required this.onNavigateToPassage});
 
@@ -103,7 +103,6 @@ class ChapterPreviewPage extends HookConsumerWidget {
                         user: user,
                         chapter: chapter,
                         underlinedReferences: scrollToSelection?.references ?? const [],
-                        onHandleLongPress: (_) => false,
                         keyByReference: keyByReference,
                       ),
                       Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).bottom + 24)),

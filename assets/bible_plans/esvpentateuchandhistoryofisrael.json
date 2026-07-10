@@ -1,0 +1,1832 @@
+{
+  "id": "esvpentateuchandhistoryofisrael",
+  "name": "Pentateuch and History of Israel",
+  "description": "Pentateuch and History of Israel www.esv.org",
+  "days": [
+    {
+      "passages": [
+        "Gen.1"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.2"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.3"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.4"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.5"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.6"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.7"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.8.1-Gen.8.19"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.8.20-Gen.9.19"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.9.20-Gen.10.32"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.11"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.12.1-Gen.13.1"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.13.2-Gen.13.18"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.14"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.15"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.16"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.17"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.18.1-Gen.18.15"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.18.16-Gen.18.33"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.19"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.20"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.21.1-Gen.21.21"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.21.22-Gen.21.34"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.22"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.23"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.24"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.25.1-Gen.25.18"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.25.19-Gen.25.34"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.26"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.27.1-Gen.27.40"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.27.41-Gen.28.9"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.28.10-Gen.28.22"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.29.1-Gen.29.30"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.29.31-Gen.30.43"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.31"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.32"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.33"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.34"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.35"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.36"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.37"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.38"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.39"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.40"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.41.1-Gen.41.36"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.41.37-Gen.41.57"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.42"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.43"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.44"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.45"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.46.1-Gen.47.12"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.47.13-Gen.47.26"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.47.27-Gen.48.22"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.49"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.50.1-Gen.50.14"
+      ]
+    },
+    {
+      "passages": [
+        "Gen.50.15-Gen.50.26"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.1.1-Exod.1.21"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.1.22-Exod.2.22"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.2.23-Exod.3.22"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.4"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.5.1-Exod.6.9"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.6.10-Exod.7.13"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.7.14-Exod.8.19"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.8.20-Exod.9.12"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.9.13-Exod.10.29"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.11.1-Exod.12.30"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.12.31-Exod.13.22"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.14"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.15.1-Exod.15.21"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.15.22-Exod.16.36"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.17"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.18"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.19"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.20.1-Exod.20.17"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.20.18-Exod.21.11"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.21.12-Exod.22.15"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.22.16-Exod.23.9"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.23.10-Exod.23.33"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.24"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.25"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.26"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.27.1-Exod.27.19"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.27.20-Exod.28.43"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.29"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.30-Exod.31"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.32"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.33"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.34"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.35.1-Exod.35.29"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.35.30-Exod.36.38"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.37"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.38"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.39"
+      ]
+    },
+    {
+      "passages": [
+        "Exod.40"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.1"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.2"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.3"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.4.1-Lev.5.13"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.5.14-Lev.6.7"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.6.8-Lev.7.38"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.8"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.9"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.10"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.11"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.12"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.13"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.14.1-Lev.14.32"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.14.33-Lev.14.57"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.15"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.16"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.17"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.18"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.19"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.20"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.21.1-Lev.22.16"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.22.17-Lev.22.33"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.23"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.24"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.25"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.26"
+      ]
+    },
+    {
+      "passages": [
+        "Lev.27"
+      ]
+    },
+    {
+      "passages": [
+        "Num.1"
+      ]
+    },
+    {
+      "passages": [
+        "Num.2"
+      ]
+    },
+    {
+      "passages": [
+        "Num.3-Num.4"
+      ]
+    },
+    {
+      "passages": [
+        "Num.5"
+      ]
+    },
+    {
+      "passages": [
+        "Num.6"
+      ]
+    },
+    {
+      "passages": [
+        "Num.7"
+      ]
+    },
+    {
+      "passages": [
+        "Num.8"
+      ]
+    },
+    {
+      "passages": [
+        "Num.9.1-Num.9.14"
+      ]
+    },
+    {
+      "passages": [
+        "Num.9.15-Num.10.10"
+      ]
+    },
+    {
+      "passages": [
+        "Num.10.11-Num.10.36"
+      ]
+    },
+    {
+      "passages": [
+        "Num.11"
+      ]
+    },
+    {
+      "passages": [
+        "Num.12"
+      ]
+    },
+    {
+      "passages": [
+        "Num.13-Num.14"
+      ]
+    },
+    {
+      "passages": [
+        "Num.15"
+      ]
+    },
+    {
+      "passages": [
+        "Num.16-Num.17"
+      ]
+    },
+    {
+      "passages": [
+        "Num.18-Num.19"
+      ]
+    },
+    {
+      "passages": [
+        "Num.20-Num.21"
+      ]
+    },
+    {
+      "passages": [
+        "Num.22"
+      ]
+    },
+    {
+      "passages": [
+        "Num.23-Num.24"
+      ]
+    },
+    {
+      "passages": [
+        "Num.25"
+      ]
+    },
+    {
+      "passages": [
+        "Num.26"
+      ]
+    },
+    {
+      "passages": [
+        "Num.27"
+      ]
+    },
+    {
+      "passages": [
+        "Num.28-Num.29"
+      ]
+    },
+    {
+      "passages": [
+        "Num.30"
+      ]
+    },
+    {
+      "passages": [
+        "Num.31"
+      ]
+    },
+    {
+      "passages": [
+        "Num.32"
+      ]
+    },
+    {
+      "passages": [
+        "Num.33.1-Num.33.49"
+      ]
+    },
+    {
+      "passages": [
+        "Num.33.50-Num.34.29"
+      ]
+    },
+    {
+      "passages": [
+        "Num.35-Num.36"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.1"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.2"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.3"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.4"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.5"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.6"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.7"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.8.1-Deut.9.5"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.9.6-Deut.10.11"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.10.12-Deut.11.32"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.12"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.13"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.14"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.15.1-Deut.15.18"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.15.19-Deut.16.17"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.16.18-Deut.17.20"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.18"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.19"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.20"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.21.1-Deut.22.12"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.22.13-Deut.22.30"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.23.1-Deut.23.14"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.23.15-Deut.25.19"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.26"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.27"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.28.1-Deut.28.14"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.28.15-Deut.28.68"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.29.1-Deut.30.10"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.30.11-Deut.30.20"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.31.1-Deut.31.29"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.31.30-Deut.32.47"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.32.48-Deut.33.29"
+      ]
+    },
+    {
+      "passages": [
+        "Deut.34"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.1"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.2"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.3"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.4"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.5"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.6"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.7"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.8"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.9"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.10"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.11-Josh.12"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.13-Josh.14"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.15"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.16-Josh.17"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.18-Josh.19"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.20"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.21"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.22"
+      ]
+    },
+    {
+      "passages": [
+        "Josh.23-Josh.24"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.1"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.2.1-Judg.3.6"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.3.7-Judg.3.31"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.4"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.5"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.6"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.7"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.8"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.9"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.10.1-Judg.11.3"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.11.4-Judg.11.40"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.12"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.13"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.14"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.15"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.16"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.17"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.18"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.19"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.20"
+      ]
+    },
+    {
+      "passages": [
+        "Judg.21"
+      ]
+    },
+    {
+      "passages": [
+        "Ruth.1"
+      ]
+    },
+    {
+      "passages": [
+        "Ruth.2"
+      ]
+    },
+    {
+      "passages": [
+        "Ruth.3"
+      ]
+    },
+    {
+      "passages": [
+        "Ruth.4"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.1.1-1Sam.2.11"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.2.12-1Sam.2.36"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.3"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.4"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.5.1-1Sam.7.2"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.7.3-1Sam.7.17"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.8"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.9.1-1Sam.10.16"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.10.17-1Sam.11.15"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.12"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.13"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.14"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.15"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.16"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.17"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.18"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.19"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.20"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.21-1Sam.22"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.23-1Sam.24"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.25"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.26"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.27"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.28"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.29-1Sam.30"
+      ]
+    },
+    {
+      "passages": [
+        "1Sam.31"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.1"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.2"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.3"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.4"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.5"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.6"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.7"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.8"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.9"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.10"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.11"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.12"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.13"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.14.1-2Sam.14.24"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.14.25-2Sam.15.12"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.15.13-2Sam.16.14"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.16.15-2Sam.17.23"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.17.24-2Sam.18.33"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.19"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.20"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.21"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.22.1-2Sam.23.7"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.23.8-2Sam.23.39"
+      ]
+    },
+    {
+      "passages": [
+        "2Sam.24"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.1.1-1Kgs.1.27"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.1.28-1Kgs.1.53"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.2"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.3"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.4"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.5"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.6"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.7"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.8.1-1Kgs.8.21"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.8.22-1Kgs.8.66"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.9.1-1Kgs.9.9"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.9.10-1Kgs.10.29"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.11"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.12.1-1Kgs.12.15"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.12.16-1Kgs.12.33"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.13"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.14.1-1Kgs.14.20"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.14.21-1Kgs.15.24"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.15.25-1Kgs.16.34"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.17"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.18.1-1Kgs.18.19"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.18.20-1Kgs.18.46"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.19"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.20"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.21"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.22.1-1Kgs.22.40"
+      ]
+    },
+    {
+      "passages": [
+        "1Kgs.22.41-1Kgs.22.53"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.1"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.2"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.3"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.4"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.5"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.6.1-2Kgs.6.23"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.6.24-2Kgs.7.20"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.8"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.9"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.10"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.11"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.12"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.13"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.14.1-2Kgs.14.22"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.14.23-2Kgs.15.38"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.16"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.17.1-2Kgs.17.23"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.17.24-2Kgs.17.41"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.18"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.19"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.20"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.21"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.22"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.23.1-2Kgs.23.30"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.23.31-2Kgs.24.17"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.24.18-2Kgs.25.21"
+      ]
+    },
+    {
+      "passages": [
+        "2Kgs.25.22-2Kgs.25.30"
+      ]
+    },
+    {
+      "passages": [
+        "Job.1"
+      ]
+    },
+    {
+      "passages": [
+        "Job.2"
+      ]
+    },
+    {
+      "passages": [
+        "Job.3"
+      ]
+    },
+    {
+      "passages": [
+        "Job.4-Job.5"
+      ]
+    },
+    {
+      "passages": [
+        "Job.6-Job.7"
+      ]
+    },
+    {
+      "passages": [
+        "Job.8"
+      ]
+    },
+    {
+      "passages": [
+        "Job.9-Job.10"
+      ]
+    },
+    {
+      "passages": [
+        "Job.11"
+      ]
+    },
+    {
+      "passages": [
+        "Job.12"
+      ]
+    },
+    {
+      "passages": [
+        "Job.13"
+      ]
+    },
+    {
+      "passages": [
+        "Job.14"
+      ]
+    },
+    {
+      "passages": [
+        "Job.15"
+      ]
+    },
+    {
+      "passages": [
+        "Job.16-Job.17"
+      ]
+    },
+    {
+      "passages": [
+        "Job.18"
+      ]
+    },
+    {
+      "passages": [
+        "Job.19"
+      ]
+    },
+    {
+      "passages": [
+        "Job.20"
+      ]
+    },
+    {
+      "passages": [
+        "Job.21"
+      ]
+    },
+    {
+      "passages": [
+        "Job.22"
+      ]
+    },
+    {
+      "passages": [
+        "Job.23-Job.24"
+      ]
+    },
+    {
+      "passages": [
+        "Job.25-Job.26"
+      ]
+    },
+    {
+      "passages": [
+        "Job.27"
+      ]
+    },
+    {
+      "passages": [
+        "Job.28"
+      ]
+    },
+    {
+      "passages": [
+        "Job.29"
+      ]
+    },
+    {
+      "passages": [
+        "Job.30"
+      ]
+    },
+    {
+      "passages": [
+        "Job.31"
+      ]
+    },
+    {
+      "passages": [
+        "Job.32"
+      ]
+    },
+    {
+      "passages": [
+        "Job.33"
+      ]
+    },
+    {
+      "passages": [
+        "Job.34-Job.35"
+      ]
+    },
+    {
+      "passages": [
+        "Job.36.1-Job.36.21"
+      ]
+    },
+    {
+      "passages": [
+        "Job.36.22-Job.37.24"
+      ]
+    },
+    {
+      "passages": [
+        "Job.38"
+      ]
+    },
+    {
+      "passages": [
+        "Job.39.1-Job.40.5"
+      ]
+    },
+    {
+      "passages": [
+        "Job.40.6-Job.42.6"
+      ]
+    },
+    {
+      "passages": [
+        "Job.42.7-Job.42.17"
+      ]
+    }
+  ]
+}

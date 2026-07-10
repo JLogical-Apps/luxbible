@@ -1,12 +1,13 @@
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bible/chapter.dart';
-import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/paragraphs_builder.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
@@ -18,12 +19,10 @@ class ChapterBuilder extends HookConsumerWidget {
   final ChapterReference chapterReference;
   final User user;
 
-  final Function(Reference)? onReferencePressed;
   final List<Reference> underlinedReferences;
 
-  final bool Function(BibleTextSelection textSelection) onHandleLongPress;
-  final BibleTextSelection? textSelection;
-  final Function(BibleTextSelection?, bool isNewSelection)? onTextSelectionUpdated;
+  final BibleSelection? selection;
+  final Function(VerseSelection)? onNavigateToVerseSelection;
 
   final Map<Reference, GlobalKey>? keyByReference;
 
@@ -33,11 +32,9 @@ class ChapterBuilder extends HookConsumerWidget {
     super.key,
     required this.chapterReference,
     required this.user,
-    this.onReferencePressed,
     this.underlinedReferences = const [],
-    required this.onHandleLongPress,
-    this.textSelection,
-    this.onTextSelectionUpdated,
+    this.selection,
+    this.onNavigateToVerseSelection,
     this.keyByReference,
     this.chapter,
   });
@@ -80,11 +77,9 @@ class ChapterBuilder extends HookConsumerWidget {
           chapterReference: chapterReference,
           user: user,
           translation: translation,
-          onReferencePressed: onReferencePressed,
           underlinedReferences: underlinedReferences,
-          onHandleLongPress: onHandleLongPress,
-          textSelection: textSelection,
-          onTextSelectionUpdated: onTextSelectionUpdated,
+          selection: selection,
+          onNavigateToVerseSelection: onNavigateToVerseSelection,
           keyByReference: keyByReference,
         ),
         if (translation.copyright case final copyright?)

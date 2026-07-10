@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bible/style/animated_grow.dart';
 import 'package:bible/style/gap.dart';
 import 'package:bible/style/keyed_scroll_notification.dart';
 import 'package:bible/style/style_context_extensions.dart';
@@ -37,11 +38,12 @@ class StyledDock extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final buttons = buttonsBuilder?.call(context) ?? [];
+    final aboveButtons = this.aboveButtons;
 
     final bottomChildren = buttons.isEmpty && aboveButtons == null
         ? <Widget>[]
         : [
-            if (aboveButtons case final aboveButtons?) aboveButtons else gapH16,
+            AnimatedGrow(child: aboveButtons ?? gapH16),
             if (buttons.isNotEmpty)
               Padding(
                 padding: .symmetric(horizontal: 16),

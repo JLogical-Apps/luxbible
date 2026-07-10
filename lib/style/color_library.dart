@@ -6,20 +6,25 @@ import 'package:flutter_tailwind_colors/flutter_tailwind_colors.dart';
 class ColorLibrary {
   final Brightness brightness;
 
-  const ColorLibrary({required this.brightness});
+  ColorLibrary._({required this.brightness});
+
+  static final ColorLibrary _light = ColorLibrary._(brightness: .light);
+  static final ColorLibrary _dark = ColorLibrary._(brightness: .dark);
+
+  factory ColorLibrary({required Brightness brightness}) => brightness.when(light: _light, dark: _dark);
 
   factory ColorLibrary.fromBackground(Color color) => ColorLibrary(brightness: color.brightness);
 
   ColorLibrary get inverted => ColorLibrary(brightness: brightness.inverted);
 
-  Hue get zinc => TWColors.zinc.asHue(brightness);
-  Hue get stone => TWColors.stone.asHue(brightness);
-  Hue get red => TWColors.red.asHue(brightness);
-  Hue get orange => TWColors.orange.asHue(brightness);
-  Hue get yellow => TWColors.yellow.asHue(brightness);
-  Hue get green => TWColors.green.asHue(brightness);
-  Hue get blue => TWColors.blue.asHue(brightness);
-  Hue get violet => TWColors.violet.asHue(brightness);
+  late final Hue zinc = TWColors.zinc.asHue(brightness);
+  late final Hue stone = TWColors.stone.asHue(brightness);
+  late final Hue red = TWColors.red.asHue(brightness);
+  late final Hue orange = TWColors.orange.asHue(brightness);
+  late final Hue yellow = TWColors.yellow.asHue(brightness);
+  late final Hue green = TWColors.green.asHue(brightness);
+  late final Hue blue = TWColors.blue.asHue(brightness);
+  late final Hue violet = TWColors.violet.asHue(brightness);
 
   Color get backgroundPrimary => brightness.when(light: zinc.shade100, dark: zinc.shade900);
   Color get backgroundCritical => brightness.when(light: red.shade600, dark: red.shade700);

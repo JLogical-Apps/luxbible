@@ -21,6 +21,9 @@ class Reference extends Equatable with ComparableOperators<Reference> {
     );
   }
 
+  factory Reference.lastVerseFor({required BookType book, required int chapterNum}) =>
+      Reference(book: book, chapterNum: chapterNum, verseNum: book.bookInfo.getNumVerses(chapterNum));
+
   static List<Reference> get values => BookType.values
       .expand(
         (book) => book.bookInfo.chapterVerseLengths.mapIndexed(
@@ -49,6 +52,12 @@ class Reference extends Equatable with ComparableOperators<Reference> {
     }
 
     return Reference(book: book.next, chapterNum: 1, verseNum: 1);
+  }
+
+  Reference get clamped {
+    final clampedChapter = chapterNum.clamp(1, book.bookInfo.numChapters);
+    final clampedVerse = verseNum.clamp(1, book.bookInfo.getNumVerses(clampedChapter));
+    return Reference(book: book, chapterNum: clampedChapter, verseNum: clampedVerse);
   }
 
   static Iterable<Reference> getReferencesBetween(Reference start, Reference end) sync* {

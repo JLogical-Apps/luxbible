@@ -18,6 +18,7 @@ import 'package:bible/providers/root_ref.dart' as root_ref;
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/widgets/annotated_span.dart';
+import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/highlight_underline.dart';
 import 'package:bible/ui/widgets/simple_markdown.dart';
 import 'package:bible/ui/widgets/sized_widget_span.dart';
@@ -45,12 +46,10 @@ class ParagraphsBuilder extends HookWidget {
   final User user;
   final BibleTranslation translation;
 
-  final Function(Reference)? onReferencePressed;
   final List<Reference> underlinedReferences;
 
-  final bool Function(BibleTextSelection textSelection)? onHandleLongPress;
-  final BibleTextSelection? textSelection;
-  final Function(BibleTextSelection?, bool isNewSelection)? onTextSelectionUpdated;
+  final BibleSelection? selection;
+  final Function(VerseSelection)? onNavigateToVerseSelection;
 
   final Map<Reference, GlobalKey>? keyByReference;
 
@@ -60,13 +59,15 @@ class ParagraphsBuilder extends HookWidget {
     required this.chapterReference,
     required this.user,
     required this.translation,
-    this.onReferencePressed,
     this.underlinedReferences = const [],
-    this.onHandleLongPress,
-    this.textSelection,
-    this.onTextSelectionUpdated,
+    this.selection,
+    this.onNavigateToVerseSelection,
     this.keyByReference,
   });
+
+  BibleTextSelection? get textSelection => selection?.textSelection;
+
+  List<Reference> get highlightedReferences => selection?.references ?? underlinedReferences;
 
   BookType get book => chapterReference.book;
 
@@ -87,7 +88,7 @@ class ParagraphsBuilder extends HookWidget {
 
     final paragraphSpansByParagraph = useMemoized(
       () => getParagraphSpansByParagraph(context, chapter: chapter, keyByReference: keyByReference),
-      [paragraphs, user, translation, chapterReference, underlinedReferences, keyByReference, context.brightness],
+      [paragraphs, user, translation, chapterReference, highlightedReferences, keyByReference, context.brightness],
     );
 
     final paragraphHitTesters = <ParagraphHitTester>[];
@@ -96,7 +97,9 @@ class ParagraphsBuilder extends HookWidget {
 
     return GestureDetector(
       onLongPressStart: (details) {
-        if (onHandleLongPress == null) return;
+        final selection = this.selection;
+        final onNavigateToVerseSelection = this.onNavigateToVerseSelection;
+        if (selection == null || onNavigateToVerseSelection == null) return;
 
         final anchor = getAnchorAtGlobalPosition(details.globalPosition);
         if (anchor == null) return;
@@ -105,11 +108,16 @@ class ParagraphsBuilder extends HookWidget {
           BibleTextSelection.character(anchor: anchor, translation: translation),
         );
 
-        if (!onHandleLongPress!(wordTextSelection)) {
+        if (!selection.onHandleLongPress(
+          context,
+          selection: wordTextSelection,
+          user: user,
+          onNavigateToVerseSelection: onNavigateToVerseSelection,
+        )) {
           return;
         }
 
-        onTextSelectionUpdated?.call(wordTextSelection, true);
+        selection.onTextSelectionUpdated(selection: wordTextSelection, isNewSelection: true, user: user);
         textSelectionStartAnchorState.value = anchor;
       },
       onLongPressMoveUpdate: (details) {
@@ -123,15 +131,15 @@ class ParagraphsBuilder extends HookWidget {
         final wordsTextSelection = chapter.getWordsSelection(
           BibleTextSelection(start: anchors.first, end: anchors.last, translation: translation),
         );
-        onTextSelectionUpdated?.call(wordsTextSelection, false);
+        selection?.onTextSelectionUpdated(selection: wordsTextSelection, isNewSelection: false, user: user);
       },
       onLongPressEnd: (_) => textSelectionStartAnchorState.value = null,
       onTapUp: (details) {
         final anchor = getAnchorAtGlobalPosition(details.globalPosition);
         if (anchor != null) {
-          onReferencePressed?.call(anchor.toReference());
+          selection?.onReferencePressed(anchor.toReference(), user: user);
         } else {
-          onTextSelectionUpdated?.call(null, true);
+          selection?.onTextSelectionUpdated(selection: null, isNewSelection: true, user: user);
         }
       },
       child: Column(
@@ -347,7 +355,7 @@ class ParagraphsBuilder extends HookWidget {
           annotation: annotation,
           toRect: (box) => box.asTextSelection(multiplier: sizeMultiplier),
           buildChild: () =>
-              buildAnnotationChild(context, annotation: annotation, isDimmed: underlinedReferences.isNotEmpty),
+              buildAnnotationChild(context, annotation: annotation, isDimmed: highlightedReferences.isNotEmpty),
         );
       })
       .nonNulls
@@ -509,7 +517,7 @@ class ParagraphsBuilder extends HookWidget {
                               child: Text(
                                 verse.verseNum.toString(),
                                 style: bibleTextStyle.verseNumber.copyWith(
-                                  decoration: underlinedReferences.contains(reference) ? .underline : null,
+                                  decoration: highlightedReferences.contains(reference) ? .underline : null,
                                 ),
                               ),
                             ),
@@ -558,7 +566,7 @@ class ParagraphsBuilder extends HookWidget {
                               isLeading: true,
                             ),
                             annotations: verseSelectionAnnotationsWithNote,
-                            isUnderlined: underlinedReferences.contains(reference),
+                            isUnderlined: highlightedReferences.contains(reference),
                           ),
                       ].maybeReversed(!isLtr),
                     ...verse.words.expandIndexed((wordIndex, word) {
@@ -582,7 +590,7 @@ class ParagraphsBuilder extends HookWidget {
                           fontFamily: isLtr ? null : hebrewFontFamily,
                           color: word.redLetters && user.themeLayout.redLetters ? context.colors.red.dark : null,
                           fontStyle: word.italic ? .italic : null,
-                          decoration: underlinedReferences.contains(reference) ? .underline : null,
+                          decoration: highlightedReferences.contains(reference) ? .underline : null,
                         ),
                       ).withInjectedSpans(
                         [
@@ -609,7 +617,7 @@ class ParagraphsBuilder extends HookWidget {
                                       isBoundInSelection: true,
                                     ),
                                     annotations: annotations,
-                                    isUnderlined: underlinedReferences.contains(reference),
+                                    isUnderlined: highlightedReferences.contains(reference),
                                   ),
                                 ),
                               ),
@@ -634,7 +642,7 @@ class ParagraphsBuilder extends HookWidget {
                                         isBoundInSelection: false,
                                       ),
                                       footnotes: footnotes,
-                                      isUnderlined: underlinedReferences.contains(reference),
+                                      isUnderlined: highlightedReferences.contains(reference),
                                     ),
                                   ),
                                 ),
