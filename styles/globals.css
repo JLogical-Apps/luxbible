@@ -4,17 +4,28 @@
 
 @layer base {
     :root {
-        --background: 0 0% 100%;
-        --background-soft: 0 0% 95%;
-        --foreground: 0 0% 5%;
-        --foreground-soft: 0 0% 10%;
-        --primary: 37 84% 64%;
-        --primary-foreground: 200 7% 8%;
-        --emphasis: var(--primary);
-        --emphasis-soft: var(--primary)/80;
-        --on-emphasis: var(--primary-foreground);
-        --on-emphasis-soft: var(--primary-foreground)/80;
+        /* Dark palette — the page default */
+        --background: 240 6% 4%;
+        --background-soft: 240 6% 10%;
+        --foreground: 0 0% 100%;
+        --foreground-soft: 240 5% 96%;
+        --emphasis: 48 96% 53%;
+        --emphasis-soft: 45 93% 47%;
+        --on-emphasis: 240 6% 4%;
+        --on-emphasis-soft: 240 6% 10%;
         --radius: 0.5rem;
+    }
+
+    /* Light palette — used for contained cards (e.g. the download card) */
+    .palette-light {
+        --background: 0 0% 100%;
+        --background-soft: 240 5% 96%;
+        --foreground: 240 6% 4%;
+        --foreground-soft: 240 6% 10%;
+        --emphasis: 48 96% 53%;
+        --emphasis-soft: 45 93% 47%;
+        --on-emphasis: 240 6% 4%;
+        --on-emphasis-soft: 240 6% 10%;
     }
 }
 
@@ -28,24 +39,12 @@
     }
 
     a {
-        @apply hover:text-emphasis transition underline break-words;
+        @apply hover:text-emphasis transition break-words;
         word-break: break-word;
     }
 
     a img {
-        @apply hover:brightness-95 active:brightness-90 transition ;
-    }
-
-    input[type="text"], input[type="email"] {
-        @apply w-full rounded-md border-none ring-1 ring-foreground-soft/20 px-3.5 py-2 bg-background-soft text-foreground shadow-sm ring-inset hover:ring-1 hover:ring-foreground-soft/80 placeholder:text-foreground-soft/80 focus:ring-2 focus:ring-inset focus:ring-emphasis sm:text-sm sm:leading-6 transition;
-    }
-
-    input[type="checkbox"] {
-        @apply h-5 w-5 shrink-0 rounded-sm border border-emphasis accent-emphasis text-emphasis shadow hover:ring-1 hover:ring-emphasis/50 focus:outline-none focus:ring-1 focus:ring-emphasis disabled:cursor-not-allowed disabled:opacity-50;
-    }
-
-    textarea {
-        @apply w-full rounded-md border-none ring-1 ring-foreground-soft/20 px-3.5 py-2 bg-background-soft text-foreground shadow-sm ring-inset hover:ring-1 hover:ring-foreground-soft/80 placeholder:text-foreground-soft/80 focus:ring-2 focus:ring-inset focus:ring-emphasis sm:text-sm sm:leading-6 transition;
+        @apply hover:brightness-95 active:brightness-90 transition;
     }
 }
 
@@ -69,10 +68,5 @@
 
 .gradient-heading {
     @apply bg-clip-text text-transparent box-decoration-clone;
-    @apply bg-gradient-to-r;
-    @apply from-emphasis to-emphasis;
-}
-
-.grecaptcha-badge {
-    visibility: hidden !important;
+    @apply bg-gradient-to-r from-emphasis to-emphasis-soft;
 }

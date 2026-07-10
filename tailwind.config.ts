@@ -3,7 +3,6 @@ import { Config } from 'tailwindcss/types/config';
 
 const svgToDataUri = require('mini-svg-data-uri');
 
-const colors = require('tailwindcss/colors');
 const {
   default: flattenColorPalette,
 } = require('tailwindcss/lib/util/flattenColorPalette');
@@ -11,7 +10,6 @@ const {
 export default {
   darkMode: ['class'],
   content: ['./components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}'],
-  prefix: '',
   theme: {
     container: {
       center: true,
@@ -42,10 +40,6 @@ export default {
           DEFAULT: 'hsl(var(--on-emphasis))',
           soft: 'hsl(var(--on-emphasis-soft))',
         },
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
-        },
         border: 'hsl(var(--background-soft))',
         input: 'hsl(var(--background-soft))',
         ring: 'hsl(var(--foreground-soft))',
@@ -55,25 +49,10 @@ export default {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
-      keyframes: {
-        'accordion-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' },
-        },
-        'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' },
-        },
-      },
-      animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
-      },
     },
   },
   plugins: [
-    require('tailwindcss-animate'),
-    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
     function ({ matchUtilities, theme }: any) {
       matchUtilities(
         {
