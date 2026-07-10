@@ -45,6 +45,8 @@ extension BibleListExtensions<T> on List<T> {
 
   T get random => this[Random().nextInt(length)];
 
+  T loopedElementAt(int index) => this[index % length];
+
   bool containsInOrder(List<T> list) => Iterable.generate(
     max(0, length - list.length + 1),
     (i) => i,

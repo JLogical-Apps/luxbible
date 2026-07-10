@@ -13,6 +13,7 @@ class TextStyleLibrary {
   TextStyle get displayBase => base.bold.copyWith(fontFamily: 'Bitter');
   TextStyle get displaySm => displayBase.copyWith(fontSize: 44, height: 52 / 44);
   TextStyle get displayXs => displayBase.copyWith(fontSize: 36, height: 44 / 36);
+  TextStyle get displayXxs => displayBase.copyWith(fontSize: 32, height: 40 / 32);
 
   TextStyle get headingSm => base.bold.copyWith(fontSize: 24, height: 32 / 24, letterSpacing: 0.3);
   TextStyle get headingXs => base.bold.copyWith(fontSize: 20, height: 28 / 20, letterSpacing: 0.3);

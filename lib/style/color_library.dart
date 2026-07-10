@@ -26,6 +26,8 @@ class ColorLibrary {
   late final Hue blue = TWColors.blue.asHue(brightness);
   late final Hue violet = TWColors.violet.asHue(brightness);
 
+  List<Hue> get vibrantHues => [red, orange, yellow, green, blue, violet];
+
   Color get backgroundPrimary => brightness.when(light: zinc.shade100, dark: zinc.shade900);
   Color get backgroundCritical => brightness.when(light: red.shade600, dark: red.shade700);
 

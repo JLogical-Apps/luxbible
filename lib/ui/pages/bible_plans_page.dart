@@ -5,6 +5,7 @@ import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/bible_plan_page.dart';
 import 'package:bible/ui/pages/bible_plan_read_page.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
+import 'package:bible/ui/widgets/bible_plan_thumbnail.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
@@ -56,6 +57,7 @@ class BiblePlansPage extends ConsumerWidget {
                 padding: .only(left: 16, right: 16, bottom: 16),
                 child: StyledCard.child(
                   child: StyledExpandablePanel(
+                    leading: BiblePlanThumbnail(plan: plan),
                     title: plan.name.toText(),
                     subtitle: (isCompleted ? 'Completed' : 'Day ${currentDayIndex + 1} of ${plan.dayCount}').toText(),
                     isInitiallyExpanded: progress.progress.isExpanded,
