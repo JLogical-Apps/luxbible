@@ -397,20 +397,6 @@ sealed class User with _$User {
         dayProgress.copyWith(completedPassages: {...dayProgress.completedPassages}..remove(passage)),
   );
 
-  User withJumpedToDay({required BiblePlanType planType, required BiblePlan plan, required int dayIndex}) =>
-      withUpdatePlanProgress(
-        planType,
-        (progress) => progress.copyWith(
-          days: plan.days
-              .mapIndexed(
-                (dayIndex, day) => dayIndex < dayIndex
-                    ? BiblePlanDayProgress(completedPassages: day.passages.toSet())
-                    : BiblePlanDayProgress(),
-              )
-              .toList(),
-        ),
-      );
-
   User withUpdatePlanProgress(BiblePlanType planType, BiblePlanProgress Function(BiblePlanProgress) update) =>
       copyWith(planProgressByType: planProgressByType.withUpdate(planType, update));
 }
