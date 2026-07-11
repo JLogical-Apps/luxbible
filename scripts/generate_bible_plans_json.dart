@@ -32,6 +32,12 @@ void main() {
               'Spend the year in the Psalms and wisdom books like Proverbs, Job, and Ecclesiastes.',
             .heartlight_ot_and_nt =>
               'Read through both the Old and New Testaments together, with a passage from each every day.',
+            .heartlight_different_topics =>
+              'Rotate through a different section of Scripture each day, exploring every book of the Bible over a year.',
+            .heartlight_nt_psalms_proverbs =>
+              'Read the New Testament alongside Psalms and Proverbs over the course of a year.',
+            .navigators_5x5x5_nt =>
+              'Read one New Testament chapter a day, five days a week, with room each week to reflect or catch up.',
           },
           days: (raw['data2'] as List).map((day) {
             final references = (day as List)
@@ -40,6 +46,7 @@ void main() {
                   (passage) => VerseSelection.parse(
                     passage,
                     bookToName: {
+                      .psalms: 'Psalms',
                       .songOfSolomon: 'Song of Songs',
                       .thessalonians1: '1 Thes',
                       .thessalonians2: '2 Thes',

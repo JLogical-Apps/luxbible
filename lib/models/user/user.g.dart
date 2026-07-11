@@ -252,4 +252,7 @@ const _$BiblePlanTypeEnumMap = {
   BiblePlanType.esv_chronicles_and_prophets: 'esv_chronicles_and_prophets',
   BiblePlanType.esv_psalms_and_wisdom_literature:
       'esv_psalms_and_wisdom_literature',
+  BiblePlanType.heartlight_different_topics: 'heartlight_different_topics',
+  BiblePlanType.heartlight_nt_psalms_proverbs: 'heartlight_nt_psalms_proverbs',
+  BiblePlanType.navigators_5x5x5_nt: 'navigators_5x5x5_nt',
 };

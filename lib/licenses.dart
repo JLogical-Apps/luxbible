@@ -110,7 +110,9 @@ Through the Bible; Gospels and Epistles; Every Day in the Word; Literary Study B
 
 One Year Chronological — The One Year Bible, Tyndale House Publishers. https://www.oneyearbibleonline.com
 
-Old and New Testament — Heartlight, Inc. https://www.heartlight.org
+Old and New Testament; Different Topics; New Testament, Psalms & Proverbs: Heartlight, Inc. https://www.heartlight.org
+
+5x5x5 New Testament Bible Reading Plan: Copyright © 2005 by The Navigators. All Rights Reserved. Adapted from the Discipleship Journal 5x5x5 Bible Reading Plan. Permission is granted to reprint unlimited copies for non-commercial use. All copyright information must be retained. https://www.navigators.org/resource/bible-reading-plans/
 
 Only the daily passage references are used; the Scripture text is provided under the Bible translation licenses.''',
     );

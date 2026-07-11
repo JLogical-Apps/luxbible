@@ -29,6 +29,6 @@ class BiblePlanThumbnail extends StatelessWidget {
   }
 }
 
-extension on BiblePlan {
+extension BiblePlanColorExtension on BiblePlan {
   Hue getHue(ColorLibrary colors) => colors.vibrantHues.loopedElementAt(name.codeUnits.sum);
 }

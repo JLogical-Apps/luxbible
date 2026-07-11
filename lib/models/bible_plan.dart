@@ -96,7 +96,10 @@ enum BiblePlanType {
   esv_gospels_and_epistles,
   esv_pentateuch_and_history_of_israel,
   esv_chronicles_and_prophets,
-  esv_psalms_and_wisdom_literature;
+  esv_psalms_and_wisdom_literature,
+  heartlight_different_topics,
+  heartlight_nt_psalms_proverbs,
+  navigators_5x5x5_nt;
 
   String get assetPath => 'assets/bible_plans/$name.json';
 
@@ -107,21 +110,27 @@ enum BiblePlanType {
     esv_every_day_in_word ||
     esv_literary_study_bible ||
     heartlight_ot_and_nt => .wholeBible,
-    esv_gospels_and_epistles => .newTestament,
+    heartlight_different_topics || heartlight_nt_psalms_proverbs => .wholeBible,
+    esv_gospels_and_epistles || navigators_5x5x5_nt => .newTestament,
     esv_chronicles_and_prophets ||
     esv_pentateuch_and_history_of_israel ||
     esv_psalms_and_wisdom_literature => .oldTestament,
   };
 
   BiblePlanSearchType get searchType => switch (this) {
-    esv_chronicles_and_prophets || esv_pentateuch_and_history_of_israel || esv_psalms_and_wisdom_literature => .focused,
+    esv_chronicles_and_prophets ||
+    esv_pentateuch_and_history_of_israel ||
+    esv_psalms_and_wisdom_literature ||
+    heartlight_nt_psalms_proverbs => .focused,
     mcheyne ||
     one_year_chronological ||
     esv_through_the_bible ||
     esv_gospels_and_epistles ||
     esv_every_day_in_word ||
     esv_literary_study_bible ||
-    heartlight_ot_and_nt => .comprehensive,
+    heartlight_ot_and_nt ||
+    heartlight_different_topics ||
+    navigators_5x5x5_nt => .comprehensive,
   };
 }
 

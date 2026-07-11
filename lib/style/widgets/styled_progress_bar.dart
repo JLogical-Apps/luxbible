@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 class StyledProgressBar extends StatelessWidget {
   final double value;
+  final Color? color;
 
-  const StyledProgressBar({super.key, required this.value});
+  const StyledProgressBar({super.key, required this.value, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class StyledProgressBar extends StatelessWidget {
         builder: (context, value, child) => LinearProgressIndicator(
           value: value,
           backgroundColor: context.colors.borderOpaque,
-          color: context.colors.borderSelected,
+          color: color ?? context.colors.borderSelected,
         ),
       ),
     );
