@@ -46,7 +46,7 @@ class BiblePlanTile extends ConsumerWidget {
           ],
         ),
       ),
-      subtitle: plan.description.toText(),
+      subtitle: planType.description().toText(),
       trailing: trailing,
       thirdLine: showTags
           ? Padding(

@@ -137,34 +137,47 @@ class BiblePlansPage extends ConsumerWidget {
                               }).toList(),
                             ),
                             StyledList(
-                              children: day.passages
-                                  .mapIndexed(
-                                    (passageIndex, passage) => StyledListItem(
-                                      title: passage.format().toText(),
-                                      onPressed: () async {
-                                        final result = await context.push<VerseSelection>(
-                                          BiblePlanReadPage(
-                                            planType: planType,
-                                            dayIndex: dayIndex,
-                                            initialPassageIndex: passageIndex,
-                                          ),
-                                        );
-                                        if (result != null && context.mounted) context.pop(result);
-                                      },
-                                      trailing: StyledCheckbox(
-                                        isSelected: progress.isPassageComplete(dayIndex: dayIndex, passage: passage),
-                                        onChanged: (_) => ref.updateUser(
-                                          (user) => user.withPassageToggled(
-                                            planType: planType,
-                                            dayIndex: dayIndex,
-                                            day: day,
-                                            passage: passage,
-                                          ),
+                              children: day.isReviewAndReflect
+                                  ? [
+                                      StyledListItem.checkbox(
+                                        title: 'Review & Reflect'.toText(),
+                                        isSelected: progress.isDayComplete(dayIndex: dayIndex),
+                                        onSelected: (_) => ref.updateUser(
+                                          (user) => user.withPlanDayToggled(planType: planType, dayIndex: dayIndex),
                                         ),
                                       ),
-                                    ),
-                                  )
-                                  .toList(),
+                                    ]
+                                  : day.passages
+                                        .mapIndexed(
+                                          (passageIndex, passage) => StyledListItem(
+                                            title: passage.format().toText(),
+                                            onPressed: () async {
+                                              final result = await context.push<VerseSelection>(
+                                                BiblePlanReadPage(
+                                                  planType: planType,
+                                                  dayIndex: dayIndex,
+                                                  initialPassageIndex: passageIndex,
+                                                ),
+                                              );
+                                              if (result != null && context.mounted) context.pop(result);
+                                            },
+                                            trailing: StyledCheckbox(
+                                              isSelected: progress.isPassageComplete(
+                                                dayIndex: dayIndex,
+                                                passage: passage,
+                                              ),
+                                              onChanged: (_) => ref.updateUser(
+                                                (user) => user.withPassageToggled(
+                                                  planType: planType,
+                                                  dayIndex: dayIndex,
+                                                  day: day,
+                                                  passage: passage,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                        .toList(),
                             ),
                             if (progress.isCompleted)
                               Padding(

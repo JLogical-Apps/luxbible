@@ -347,6 +347,9 @@ sealed class User with _$User {
   bool hasCompletedPassage({required BiblePlanType planType, required int dayIndex, required VerseSelection passage}) =>
       planProgressByType[planType]?.days[dayIndex].isPassageComplete(passage) ?? false;
 
+  bool hasCompletedPlanDay({required BiblePlanType planType, required int dayIndex}) =>
+      planProgressByType[planType]?.days[dayIndex].isComplete ?? false;
+
   User withStartedPlan({required BiblePlanType planType, required BiblePlan plan}) =>
       planProgressByType.containsKey(planType)
       ? this
@@ -373,6 +376,12 @@ sealed class User with _$User {
   }) => hasCompletedPassage(planType: planType, dayIndex: dayIndex, passage: passage)
       ? withPassageUncompleted(planType: planType, dayIndex: dayIndex, day: day, passage: passage)
       : withPassageCompleted(planType: planType, dayIndex: dayIndex, day: day, passage: passage);
+
+  User withPlanDayToggled({required BiblePlanType planType, required int dayIndex}) => withProgressDayUpdated(
+    planType: planType,
+    dayIndex: dayIndex,
+    updater: (dayProgress) => dayProgress.withCompletionToggled(),
+  );
 
   User withProgressDayUpdated({
     required BiblePlanType planType,

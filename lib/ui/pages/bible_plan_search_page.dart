@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:utils_core/utils_core.dart';
 
 class BiblePlanSearchPage extends HookConsumerWidget {
@@ -141,6 +142,14 @@ class BiblePlanSearchPage extends HookConsumerWidget {
                               title: 'Duration'.toText(),
                               subtitle: '${plan.dayCount} days'.toText(),
                             ),
+                            if (type.source case final source?)
+                              StyledListItem(
+                                leading: Symbols.source.toIcon(),
+                                title: 'Source'.toText(),
+                                subtitle: source.name.toText(),
+                                trailing: Symbols.arrow_outward.toIcon(),
+                                onPressed: () => launchUrl(Uri.parse(source.link)),
+                              ),
                             StyledDivider(height: 2),
                             ...StyledSection(
                               padding: .only(top: 24),
@@ -149,7 +158,9 @@ class BiblePlanSearchPage extends HookConsumerWidget {
                                   .mapIndexed<Widget>(
                                     (dayIndex, day) => StyledListItem(
                                       title: 'Day ${dayIndex + 1}'.toText(),
-                                      subtitle: Text(day.passages.map((passage) => passage.format()).join(' • ')),
+                                      subtitle: day.isReviewAndReflect
+                                          ? 'Review & Reflect'.toText()
+                                          : Text(day.passages.map((passage) => passage.format()).join(' • ')),
                                     ),
                                   )
                                   .toList(),

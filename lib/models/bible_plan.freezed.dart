@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BiblePlan {
 
- String get name; String get description; List<BiblePlanDay> get days;
+ String get name; List<BiblePlanDay> get days;
 /// Create a copy of BiblePlan
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $BiblePlanCopyWith<BiblePlan> get copyWith => _$BiblePlanCopyWithImpl<BiblePlan>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlan&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other.days, days));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlan&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.days, days));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,description,const DeepCollectionEquality().hash(days));
+int get hashCode => Object.hash(runtimeType,name,const DeepCollectionEquality().hash(days));
 
 @override
 String toString() {
-  return 'BiblePlan(name: $name, description: $description, days: $days)';
+  return 'BiblePlan(name: $name, days: $days)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $BiblePlanCopyWith<$Res>  {
   factory $BiblePlanCopyWith(BiblePlan value, $Res Function(BiblePlan) _then) = _$BiblePlanCopyWithImpl;
 @useResult
 $Res call({
- String name, String description, List<BiblePlanDay> days
+ String name, List<BiblePlanDay> days
 });
 
 
@@ -65,10 +65,9 @@ class _$BiblePlanCopyWithImpl<$Res>
 
 /// Create a copy of BiblePlan
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? description = null,Object? days = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? days = null,}) {
   return _then(_self.copyWith(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,days: null == days ? _self.days : days // ignore: cast_nullable_to_non_nullable
 as List<BiblePlanDay>,
   ));
@@ -152,10 +151,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String description,  List<BiblePlanDay> days)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  List<BiblePlanDay> days)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BiblePlan() when $default != null:
-return $default(_that.name,_that.description,_that.days);case _:
+return $default(_that.name,_that.days);case _:
   return orElse();
 
 }
@@ -173,10 +172,10 @@ return $default(_that.name,_that.description,_that.days);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String description,  List<BiblePlanDay> days)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  List<BiblePlanDay> days)  $default,) {final _that = this;
 switch (_that) {
 case _BiblePlan():
-return $default(_that.name,_that.description,_that.days);}
+return $default(_that.name,_that.days);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -190,10 +189,10 @@ return $default(_that.name,_that.description,_that.days);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String description,  List<BiblePlanDay> days)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  List<BiblePlanDay> days)?  $default,) {final _that = this;
 switch (_that) {
 case _BiblePlan() when $default != null:
-return $default(_that.name,_that.description,_that.days);case _:
+return $default(_that.name,_that.days);case _:
   return null;
 
 }
@@ -205,11 +204,10 @@ return $default(_that.name,_that.description,_that.days);case _:
 @JsonSerializable()
 
 class _BiblePlan extends BiblePlan {
-  const _BiblePlan({required this.name, this.description = '', required final  List<BiblePlanDay> days}): _days = days,super._();
+  const _BiblePlan({required this.name, required final  List<BiblePlanDay> days}): _days = days,super._();
   factory _BiblePlan.fromJson(Map<String, dynamic> json) => _$BiblePlanFromJson(json);
 
 @override final  String name;
-@override@JsonKey() final  String description;
  final  List<BiblePlanDay> _days;
 @override List<BiblePlanDay> get days {
   if (_days is EqualUnmodifiableListView) return _days;
@@ -231,16 +229,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BiblePlan&&(identical(other.name, name) || other.name == name)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other._days, _days));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BiblePlan&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other._days, _days));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,name,description,const DeepCollectionEquality().hash(_days));
+int get hashCode => Object.hash(runtimeType,name,const DeepCollectionEquality().hash(_days));
 
 @override
 String toString() {
-  return 'BiblePlan(name: $name, description: $description, days: $days)';
+  return 'BiblePlan(name: $name, days: $days)';
 }
 
 
@@ -251,7 +249,7 @@ abstract mixin class _$BiblePlanCopyWith<$Res> implements $BiblePlanCopyWith<$Re
   factory _$BiblePlanCopyWith(_BiblePlan value, $Res Function(_BiblePlan) _then) = __$BiblePlanCopyWithImpl;
 @override @useResult
 $Res call({
- String name, String description, List<BiblePlanDay> days
+ String name, List<BiblePlanDay> days
 });
 
 
@@ -268,10 +266,9 @@ class __$BiblePlanCopyWithImpl<$Res>
 
 /// Create a copy of BiblePlan
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? description = null,Object? days = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? days = null,}) {
   return _then(_BiblePlan(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
 as String,days: null == days ? _self._days : days // ignore: cast_nullable_to_non_nullable
 as List<BiblePlanDay>,
   ));

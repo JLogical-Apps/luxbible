@@ -8,7 +8,6 @@ part of 'bible_plan.dart';
 
 _BiblePlan _$BiblePlanFromJson(Map<String, dynamic> json) => _BiblePlan(
   name: json['name'] as String,
-  description: json['description'] as String? ?? '',
   days: (json['days'] as List<dynamic>)
       .map((e) => BiblePlanDay.fromJson(e as Map<String, dynamic>))
       .toList(),
@@ -17,7 +16,6 @@ _BiblePlan _$BiblePlanFromJson(Map<String, dynamic> json) => _BiblePlan(
 Map<String, dynamic> _$BiblePlanToJson(_BiblePlan instance) =>
     <String, dynamic>{
       'name': instance.name,
-      'description': instance.description,
       'days': instance.days.map((e) => e.toJson()).toList(),
     };
 
