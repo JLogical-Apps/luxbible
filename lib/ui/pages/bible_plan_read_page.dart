@@ -52,7 +52,10 @@ class BiblePlanReadPage extends HookConsumerWidget {
       initialIndex: initialPassageIndex.clamp(0, passages.isEmpty ? 0 : passages.length - 1),
     );
     final currentIndex = useListenableSelector(tabController, () => tabController.index);
-    final isLastTab = currentIndex == passages.length - 1;
+    final nextIncompletePassageIndex = currentProgress.nextIncompletePassageIndex(
+      passages: passages,
+      currentIndex: currentIndex,
+    );
 
     useValueChanged<int, void>(currentIndex, (oldIndex, _) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -143,16 +146,16 @@ class BiblePlanReadPage extends HookConsumerWidget {
             : null,
         buttonsBuilder: (context) => [
           StyledRectButton.primary(
-            label: (isLastTab ? 'Done' : 'Next').toText(),
+            label: (nextIncompletePassageIndex == null ? 'Done' : 'Next').toText(),
             onPressed: () {
               ref.updateUser(
                 (user) =>
                     user.withPassageCompleted(planType: planType, dayIndex: dayIndex, passage: passages[currentIndex]),
               );
-              if (isLastTab) {
-                context.pop();
+              if (nextIncompletePassageIndex != null) {
+                tabController.animateTo(nextIncompletePassageIndex);
               } else {
-                tabController.animateTo(currentIndex + 1);
+                context.pop();
               }
             },
           ),

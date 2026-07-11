@@ -1,5 +1,8 @@
 import 'package:bible/models/reference/verse_selection.dart';
+import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:utils_core/utils_core.dart';
 
 part 'bible_plan.freezed.dart';
 part 'bible_plan.g.dart';
@@ -43,6 +46,13 @@ sealed class BiblePlanDayProgress with _$BiblePlanDayProgress {
   const factory BiblePlanDayProgress({@Default({}) Set<VerseSelection> completedPassages}) = _BiblePlanDayProgress;
 
   factory BiblePlanDayProgress.fromJson(Map<String, dynamic> json) => _$BiblePlanDayProgressFromJson(json);
+
+  int? nextIncompletePassageIndex({required List<VerseSelection> passages, required int currentIndex}) => passages
+      .asMap()
+      .where((index, passage) => index != currentIndex && !completedPassages.contains(passage))
+      .sortedBy((index, passage) => index - currentIndex)
+      .keys
+      .firstOrNull;
 }
 
 // ignore_for_file: constant_identifier_names
