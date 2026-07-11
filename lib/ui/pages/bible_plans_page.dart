@@ -81,8 +81,10 @@ class _BiblePlanCard extends HookConsumerWidget {
           StyledListItem(
             leading: BiblePlanThumbnail(plan: plan),
             title: plan.name.toText(),
-            subtitle: (progress.isCompleted ? 'Completed' : 'Day ${progress.currentDayIndex + 1} of ${plan.dayCount}')
-                .toText(),
+            subtitle: Padding(
+              padding: .symmetric(vertical: 4),
+              child: StyledProgressBar(value: progress.numCompletedDays / plan.dayCount),
+            ),
             showDividerOverride: false,
             trailing: StyledCircleButton.md(
               child: Symbols.more_vert.toIcon(),
