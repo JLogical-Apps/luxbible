@@ -14,8 +14,16 @@ class BiblePlanTile extends ConsumerWidget {
 
   final Widget? trailing;
   final Function()? onPressed;
+  final bool showTags;
 
-  const BiblePlanTile({super.key, required this.planType, required this.plan, this.trailing, this.onPressed});
+  const BiblePlanTile({
+    super.key,
+    required this.planType,
+    required this.plan,
+    this.trailing,
+    this.onPressed,
+    this.showTags = true,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,16 +48,18 @@ class BiblePlanTile extends ConsumerWidget {
       ),
       subtitle: plan.description.toText(),
       trailing: trailing,
-      thirdLine: Padding(
-        padding: .only(top: 4),
-        child: Row(
-          spacing: 4,
-          children: [
-            StyledTag.sm(isEnabled: !hasStarted, child: planType.scope.title().toText()),
-            StyledTag.sm(isEnabled: !hasStarted, child: planType.searchType.title().toText()),
-          ],
-        ),
-      ),
+      thirdLine: showTags
+          ? Padding(
+              padding: .only(top: 4),
+              child: Row(
+                spacing: 4,
+                children: [
+                  StyledTag.sm(isEnabled: !hasStarted, child: planType.scope.title().toText()),
+                  StyledTag.sm(isEnabled: !hasStarted, child: planType.searchType.title().toText()),
+                ],
+              ),
+            )
+          : null,
       isEnabled: !hasStarted,
       onPressed: hasStarted ? null : onPressed,
     );

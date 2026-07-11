@@ -125,7 +125,22 @@ class BiblePlanSearchPage extends HookConsumerWidget {
                         (context) => StyledSheet(
                           title: 'Start Plan?'.toText(),
                           children: [
-                            BiblePlanTile(planType: type, plan: plan),
+                            BiblePlanTile(planType: type, plan: plan, showTags: false),
+                            StyledListItem(
+                              leading: Symbols.book_6.toIcon(),
+                              title: 'Scope'.toText(),
+                              subtitle: type.scope.title().toText(),
+                            ),
+                            StyledListItem(
+                              leading: Symbols.category.toIcon(),
+                              title: 'Type'.toText(),
+                              subtitle: type.searchType.title().toText(),
+                            ),
+                            StyledListItem(
+                              leading: Symbols.calendar_month.toIcon(),
+                              title: 'Duration'.toText(),
+                              subtitle: '${plan.dayCount} days'.toText(),
+                            ),
                             StyledDivider(height: 2),
                             ...StyledSection(
                               padding: .only(top: 24),
