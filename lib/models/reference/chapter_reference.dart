@@ -36,7 +36,7 @@ class ChapterReference extends Equatable with ComparableOperators<ChapterReferen
   String osisId() => '${book.osisId()}.$chapterNum';
   String usxId() => '${book.usxCode()}.$chapterNum';
 
-  String format() => '${book.title()} $chapterNum';
+  String format() => '${book.title()}\u{00A0}$chapterNum';
 
   List<Reference> get references => List.generate(numVerses, (i) => getReference(i + 1));
 

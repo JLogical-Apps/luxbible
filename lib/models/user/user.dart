@@ -362,9 +362,6 @@ sealed class User with _$User {
   User withStoppedPlan(BiblePlanType planType) =>
       copyWith(planProgressByType: {...planProgressByType}..remove(planType));
 
-  User withPlanExpanded(BiblePlanType planType, bool isExpanded) =>
-      withUpdatePlanProgress(planType, (progress) => progress.copyWith(isExpanded: isExpanded));
-
   User withPassageToggled({required BiblePlanType planType, required int dayIndex, required VerseSelection passage}) =>
       hasCompletedPassage(planType: planType, dayIndex: dayIndex, passage: passage)
       ? withPassageUncompleted(planType: planType, dayIndex: dayIndex, passage: passage)

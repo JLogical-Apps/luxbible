@@ -38,7 +38,7 @@ class Reference extends Equatable with ComparableOperators<Reference> {
 
   String osisId() => [book.osisId(), chapterNum, verseNum].join('.');
 
-  String format() => '${book.title()} $chapterNum:$verseNum';
+  String format() => '${book.title()}\u{00A0}$chapterNum:$verseNum';
 
   Reference get next {
     final nextVerseNum = verseNum + 1;

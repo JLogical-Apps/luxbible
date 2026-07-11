@@ -31,8 +31,7 @@ sealed class BiblePlanDay with _$BiblePlanDay {
 sealed class BiblePlanProgress with _$BiblePlanProgress {
   const BiblePlanProgress._();
 
-  const factory BiblePlanProgress({required List<BiblePlanDayProgress> days, @Default(true) bool isExpanded}) =
-      _BiblePlanProgress;
+  const factory BiblePlanProgress({required List<BiblePlanDayProgress> days}) = _BiblePlanProgress;
 
   factory BiblePlanProgress.fromJson(Map<String, dynamic> json) => _$BiblePlanProgressFromJson(json);
 }

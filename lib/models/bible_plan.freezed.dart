@@ -547,7 +547,7 @@ as List<VerseSelection>,
 /// @nodoc
 mixin _$BiblePlanProgress {
 
- List<BiblePlanDayProgress> get days; bool get isExpanded;
+ List<BiblePlanDayProgress> get days;
 /// Create a copy of BiblePlanProgress
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -560,16 +560,16 @@ $BiblePlanProgressCopyWith<BiblePlanProgress> get copyWith => _$BiblePlanProgres
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlanProgress&&const DeepCollectionEquality().equals(other.days, days)&&(identical(other.isExpanded, isExpanded) || other.isExpanded == isExpanded));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlanProgress&&const DeepCollectionEquality().equals(other.days, days));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(days),isExpanded);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(days));
 
 @override
 String toString() {
-  return 'BiblePlanProgress(days: $days, isExpanded: $isExpanded)';
+  return 'BiblePlanProgress(days: $days)';
 }
 
 
@@ -580,7 +580,7 @@ abstract mixin class $BiblePlanProgressCopyWith<$Res>  {
   factory $BiblePlanProgressCopyWith(BiblePlanProgress value, $Res Function(BiblePlanProgress) _then) = _$BiblePlanProgressCopyWithImpl;
 @useResult
 $Res call({
- List<BiblePlanDayProgress> days, bool isExpanded
+ List<BiblePlanDayProgress> days
 });
 
 
@@ -597,11 +597,10 @@ class _$BiblePlanProgressCopyWithImpl<$Res>
 
 /// Create a copy of BiblePlanProgress
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? days = null,Object? isExpanded = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? days = null,}) {
   return _then(_self.copyWith(
 days: null == days ? _self.days : days // ignore: cast_nullable_to_non_nullable
-as List<BiblePlanDayProgress>,isExpanded: null == isExpanded ? _self.isExpanded : isExpanded // ignore: cast_nullable_to_non_nullable
-as bool,
+as List<BiblePlanDayProgress>,
   ));
 }
 
@@ -683,10 +682,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<BiblePlanDayProgress> days,  bool isExpanded)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<BiblePlanDayProgress> days)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BiblePlanProgress() when $default != null:
-return $default(_that.days,_that.isExpanded);case _:
+return $default(_that.days);case _:
   return orElse();
 
 }
@@ -704,10 +703,10 @@ return $default(_that.days,_that.isExpanded);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<BiblePlanDayProgress> days,  bool isExpanded)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<BiblePlanDayProgress> days)  $default,) {final _that = this;
 switch (_that) {
 case _BiblePlanProgress():
-return $default(_that.days,_that.isExpanded);}
+return $default(_that.days);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -721,10 +720,10 @@ return $default(_that.days,_that.isExpanded);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<BiblePlanDayProgress> days,  bool isExpanded)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<BiblePlanDayProgress> days)?  $default,) {final _that = this;
 switch (_that) {
 case _BiblePlanProgress() when $default != null:
-return $default(_that.days,_that.isExpanded);case _:
+return $default(_that.days);case _:
   return null;
 
 }
@@ -736,7 +735,7 @@ return $default(_that.days,_that.isExpanded);case _:
 @JsonSerializable()
 
 class _BiblePlanProgress extends BiblePlanProgress {
-  const _BiblePlanProgress({required final  List<BiblePlanDayProgress> days, this.isExpanded = true}): _days = days,super._();
+  const _BiblePlanProgress({required final  List<BiblePlanDayProgress> days}): _days = days,super._();
   factory _BiblePlanProgress.fromJson(Map<String, dynamic> json) => _$BiblePlanProgressFromJson(json);
 
  final  List<BiblePlanDayProgress> _days;
@@ -746,7 +745,6 @@ class _BiblePlanProgress extends BiblePlanProgress {
   return EqualUnmodifiableListView(_days);
 }
 
-@override@JsonKey() final  bool isExpanded;
 
 /// Create a copy of BiblePlanProgress
 /// with the given fields replaced by the non-null parameter values.
@@ -761,16 +759,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BiblePlanProgress&&const DeepCollectionEquality().equals(other._days, _days)&&(identical(other.isExpanded, isExpanded) || other.isExpanded == isExpanded));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BiblePlanProgress&&const DeepCollectionEquality().equals(other._days, _days));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_days),isExpanded);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_days));
 
 @override
 String toString() {
-  return 'BiblePlanProgress(days: $days, isExpanded: $isExpanded)';
+  return 'BiblePlanProgress(days: $days)';
 }
 
 
@@ -781,7 +779,7 @@ abstract mixin class _$BiblePlanProgressCopyWith<$Res> implements $BiblePlanProg
   factory _$BiblePlanProgressCopyWith(_BiblePlanProgress value, $Res Function(_BiblePlanProgress) _then) = __$BiblePlanProgressCopyWithImpl;
 @override @useResult
 $Res call({
- List<BiblePlanDayProgress> days, bool isExpanded
+ List<BiblePlanDayProgress> days
 });
 
 
@@ -798,11 +796,10 @@ class __$BiblePlanProgressCopyWithImpl<$Res>
 
 /// Create a copy of BiblePlanProgress
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? days = null,Object? isExpanded = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? days = null,}) {
   return _then(_BiblePlanProgress(
 days: null == days ? _self._days : days // ignore: cast_nullable_to_non_nullable
-as List<BiblePlanDayProgress>,isExpanded: null == isExpanded ? _self.isExpanded : isExpanded // ignore: cast_nullable_to_non_nullable
-as bool,
+as List<BiblePlanDayProgress>,
   ));
 }
 

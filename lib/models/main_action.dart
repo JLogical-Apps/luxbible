@@ -1,3 +1,4 @@
+import 'package:bible/models/bible_plan.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
@@ -6,6 +7,7 @@ import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/pages/bible_plan_search_page.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:bible/ui/pages/dictionary_page.dart';
 import 'package:bible/ui/pages/lexicon_page.dart';
@@ -243,6 +245,13 @@ enum MainAction {
           onNavigateToVerseSelection(result);
         }
       case plans:
+        if (user.planProgressByType.isEmpty) {
+          final newPlan = await context.push<BiblePlanType>(BiblePlanSearchPage());
+          if (newPlan == null || !context.mounted) {
+            return;
+          }
+        }
+
         final result = await context.push<VerseSelection>(BiblePlansPage());
         if (result != null) {
           onNavigateToVerseSelection(result);

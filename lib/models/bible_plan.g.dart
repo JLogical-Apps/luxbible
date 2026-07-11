@@ -40,14 +40,10 @@ _BiblePlanProgress _$BiblePlanProgressFromJson(Map<String, dynamic> json) =>
       days: (json['days'] as List<dynamic>)
           .map((e) => BiblePlanDayProgress.fromJson(e as Map<String, dynamic>))
           .toList(),
-      isExpanded: json['isExpanded'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$BiblePlanProgressToJson(_BiblePlanProgress instance) =>
-    <String, dynamic>{
-      'days': instance.days.map((e) => e.toJson()).toList(),
-      'isExpanded': instance.isExpanded,
-    };
+    <String, dynamic>{'days': instance.days.map((e) => e.toJson()).toList()};
 
 _BiblePlanDayProgress _$BiblePlanDayProgressFromJson(
   Map<String, dynamic> json,

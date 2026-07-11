@@ -1,8 +1,8 @@
+import 'package:bible/models/hydrated_bible_plan_progress.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
-import 'package:bible/ui/pages/bible_plan_page.dart';
 import 'package:bible/ui/pages/bible_plan_read_page.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
 import 'package:bible/ui/widgets/bible_plan_thumbnail.dart';
@@ -13,6 +13,7 @@ import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
@@ -27,8 +28,11 @@ class BiblePlansPage extends ConsumerWidget {
     return StyledPage(
       title: 'Bible Plans'.toText(),
       backgroundColor: .backgroundPrimary,
-      body: StyledDock(
-        shrinkWrap: false,
+      trailing: Tooltip(
+        message: 'Add Bible plan',
+        child: StyledCircleButton.lg(child: Symbols.add.toIcon(), onPressed: () => context.push(BiblePlanSearchPage())),
+      ),
+      body: StyledListView(
         children: [
           gapH16,
           if (user.planProgressByType.isEmpty)
@@ -45,63 +49,117 @@ class BiblePlansPage extends ConsumerWidget {
             showProxyBackground: false,
             onReorder: (a, b) =>
                 ref.updateUser((user) => user.copyWith(planProgressByType: user.planProgressByType.withReorder(a, b))),
-            children: user.getHydratedPlanProgresses(plans).map((progress) {
-              final plan = progress.plan;
-              final planType = progress.type;
-              final currentDayIndex = progress.currentDayIndex;
-              final currentDay = progress.plan.days[currentDayIndex];
-              final isCompleted = progress.isCompleted;
+            children: user
+                .getHydratedPlanProgresses(plans)
+                .map((progress) => _BiblePlanCard(key: ValueKey(progress.type), progress: progress))
+                .toList(),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-              return Padding(
-                key: ValueKey(progress.type),
-                padding: .only(left: 16, right: 16, bottom: 16),
-                child: StyledCard.child(
-                  child: StyledExpandablePanel(
-                    leading: BiblePlanThumbnail(plan: plan),
-                    title: plan.name.toText(),
-                    subtitle: (isCompleted ? 'Completed' : 'Day ${currentDayIndex + 1} of ${plan.dayCount}').toText(),
-                    isInitiallyExpanded: progress.progress.isExpanded,
-                    onExpandedChanged: (isExpanded) =>
-                        ref.updateUser((user) => user.withPlanExpanded(planType, isExpanded)),
-                    onHeaderPressed: () async {
-                      final result = await context.push<VerseSelection>(BiblePlanPage(planType: planType));
-                      if (result != null && context.mounted) context.pop(result);
-                    },
-                    children: currentDay.passages
-                        .mapIndexed(
-                          (passageIndex, passage) => StyledListItem(
-                            title: passage.format().toText(),
-                            onPressed: () async {
-                              final result = await context.push<VerseSelection>(
-                                BiblePlanReadPage(
-                                  planType: planType,
-                                  dayIndex: currentDayIndex,
-                                  initialPassageIndex: passageIndex,
-                                ),
-                              );
-                              if (result != null && context.mounted) context.pop(result);
-                            },
-                            trailing: StyledCheckbox(
-                              isSelected: progress.isPassageComplete(dayIndex: currentDayIndex, passage: passage),
-                              onChanged: (_) => ref.updateUser(
-                                (user) => user.withPassageToggled(
-                                  planType: planType,
-                                  dayIndex: currentDayIndex,
-                                  passage: passage,
-                                ),
-                              ),
-                            ),
+class _BiblePlanCard extends HookConsumerWidget {
+  final HydratedBiblePlanProgress progress;
+
+  const _BiblePlanCard({super.key, required this.progress});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final plan = progress.plan;
+    final planType = progress.type;
+
+    final tabController = useTabController(initialLength: plan.dayCount, initialIndex: progress.currentDayIndex);
+    final dayIndex = useListenableSelector(tabController, () => tabController.index);
+    final day = plan.days[dayIndex];
+
+    return Padding(
+      padding: .only(left: 16, right: 16, bottom: 16),
+      child: StyledCard(
+        children: [
+          StyledListItem(
+            leading: BiblePlanThumbnail(plan: plan),
+            title: plan.name.toText(),
+            subtitle: (progress.isCompleted ? 'Completed' : 'Day ${progress.currentDayIndex + 1} of ${plan.dayCount}')
+                .toText(),
+            showDividerOverride: false,
+            trailing: StyledCircleButton.md(
+              child: Symbols.more_vert.toIcon(),
+              onPressed: () => context.showStyledSheet(
+                (_) => StyledSheet(
+                  title: plan.name.toText(),
+                  children: [
+                    StyledListItem(
+                      leading: Icon(Symbols.stop_circle, color: context.colors.contentCritical),
+                      title: 'Stop Plan'.toText(),
+                      subtitle: 'Remove this plan and its progress.'.toText(),
+                      onPressed: () async {
+                        context.pop();
+                        final confirmed = await context.showStyledDialog(
+                          (context) => StyledDialog.confirmDelete(
+                            title: 'Stop Plan'.toText(),
+                            body: 'Are you sure you want to stop "${plan.name}"? Your progress will be lost.'.toText(),
+                            deleteLabel: 'Stop'.toText(),
                           ),
-                        )
-                        .toList(),
-                  ),
+                        );
+                        if (confirmed == true) {
+                          ref.updateUser((user) => user.withStoppedPlan(planType));
+                        }
+                      },
+                    ),
+                  ],
                 ),
+              ),
+            ),
+          ),
+          StyledTabBar.scrollable(
+            tabController: tabController,
+            tabTitles: plan.dayIndexes.map((dayIndex) {
+              final isCompleted = progress.isDayComplete(dayIndex: dayIndex);
+              final isFuture = dayIndex > progress.currentDayIndex;
+              return Row(
+                spacing: 8,
+                children: [
+                  Text(
+                    'Day ${dayIndex + 1}',
+                    style: TextStyle(color: isFuture ? context.colors.contentDisabled : null),
+                  ),
+                  Icon(
+                    isCompleted ? Symbols.check_circle : Symbols.circle,
+                    fill: isCompleted ? 1 : 0,
+                    color: isCompleted
+                        ? context.colors.contentPrimary
+                        : isFuture
+                        ? context.colors.contentDisabled
+                        : context.colors.contentSecondary,
+                    size: 16,
+                  ),
+                ],
               );
             }).toList(),
           ),
-        ],
-        buttonsBuilder: (context) => [
-          StyledRectButton.primary(label: 'Find Plans'.toText(), onPressed: () => context.push(BiblePlanSearchPage())),
+          StyledList(
+            children: day.passages
+                .mapIndexed(
+                  (passageIndex, passage) => StyledListItem(
+                    title: passage.format().toText(),
+                    onPressed: () async {
+                      final result = await context.push<VerseSelection>(
+                        BiblePlanReadPage(planType: planType, dayIndex: dayIndex, initialPassageIndex: passageIndex),
+                      );
+                      if (result != null && context.mounted) context.pop(result);
+                    },
+                    trailing: StyledCheckbox(
+                      isSelected: progress.isPassageComplete(dayIndex: dayIndex, passage: passage),
+                      onChanged: (_) => ref.updateUser(
+                        (user) => user.withPassageToggled(planType: planType, dayIndex: dayIndex, passage: passage),
+                      ),
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
         ],
       ),
     );

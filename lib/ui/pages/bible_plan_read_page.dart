@@ -80,7 +80,7 @@ class BiblePlanReadPage extends HookConsumerWidget {
                   Icon(
                     isCompleted ? Symbols.check_circle : Symbols.circle,
                     fill: isCompleted ? 1 : 0,
-                    color: isCompleted ? context.colors.contentPrimary : context.colors.contentDisabled,
+                    color: isCompleted ? context.colors.contentPrimary : context.colors.contentSecondary,
                     size: 16,
                   ),
                 ],

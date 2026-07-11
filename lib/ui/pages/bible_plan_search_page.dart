@@ -20,35 +20,36 @@ class BiblePlanSearchPage extends ConsumerWidget {
     final planByType = ref.watch(biblePlansProvider);
 
     return StyledPage(
-      title: 'Find Plans'.toText(),
+      title: 'Find A Bible Plan'.toText(),
       body: StyledListView(
         padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
-        children: planByType
-            .mapToIterable(
-              (type, plan) => StyledListItem.navigation(
-                leading: BiblePlanThumbnail(plan: plan),
-                title: SingleChildScrollView(
-                  scrollDirection: .horizontal,
-                  child: Row(
-                    spacing: 8,
-                    children: [
-                      plan.name.toText(),
-                      if (user.hasStartedPlan(type))
-                        StyledTag.sm(leading: Symbols.check.toIcon(), child: 'Following'.toText()),
-                    ],
-                  ),
-                ),
-                subtitle: plan.description.toText(),
-                thirdLine: '${plan.dayCount} days'.toText(),
-                onPressed: () async {
-                  final newPlan = await context.push(BiblePlanPage(planType: type));
-                  if (newPlan != null && context.mounted) {
-                    context.pop();
-                  }
-                },
+        children: planByType.mapToIterable((type, plan) {
+          final hasStarted = user.hasStartedPlan(type);
+          return StyledListItem.navigation(
+            leading: BiblePlanThumbnail(plan: plan, isEnabled: !hasStarted),
+            title: SingleChildScrollView(
+              scrollDirection: .horizontal,
+              child: Row(
+                spacing: 8,
+                children: [
+                  plan.name.toText(),
+                  if (hasStarted) StyledTag.sm(leading: Symbols.check.toIcon(), child: 'Following'.toText()),
+                ],
               ),
-            )
-            .toList(),
+            ),
+            subtitle: plan.description.toText(),
+            thirdLine: '${plan.dayCount} days'.toText(),
+            isEnabled: !hasStarted,
+            onPressed: hasStarted
+                ? null
+                : () async {
+                    final newPlan = await context.push(BiblePlanPage(planType: type));
+                    if (newPlan != null && context.mounted) {
+                      context.pop(newPlan);
+                    }
+                  },
+          );
+        }).toList(),
       ),
     );
   }
