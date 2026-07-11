@@ -73,7 +73,10 @@ class BiblePlansPage extends ConsumerWidget {
                               title: plan.name.toText(),
                               subtitle: Padding(
                                 padding: .symmetric(vertical: 4),
-                                child: StyledProgressBar(value: progress.numCompletedDays / plan.dayCount),
+                                child: StyledProgressBar(
+                                  value: progress.numCompletedDays / plan.dayCount,
+                                  color: plan.getHue(context.colors).primary,
+                                ),
                               ),
                               showDividerOverride: false,
                               trailing: StyledCircleButton.md(
