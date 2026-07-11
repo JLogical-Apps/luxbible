@@ -1,23 +1,23 @@
 import 'package:bible/models/bible_plan.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
-import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
-import 'package:bible/ui/pages/bible_plan_page.dart';
-import 'package:bible/ui/widgets/bible_plan_thumbnail.dart';
+import 'package:bible/ui/widgets/bible_plan_tile.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
+import 'package:bible/utils/extensions/ref_extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:utils_core/utils_core.dart';
 
 class BiblePlanSearchPage extends HookConsumerWidget {
   const BiblePlanSearchPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider);
     final planByType = ref.watch(biblePlansProvider);
 
     final scopeState = useState<BiblePlanScope?>(null);
@@ -26,10 +26,9 @@ class BiblePlanSearchPage extends HookConsumerWidget {
     final typeState = useState<BiblePlanSearchType?>(null);
     final type = typeState.value;
 
-    final matchingPlans = planByType.entries
-        .where((entry) => scope == null || entry.key.scope == scope)
-        .where((entry) => type == null || entry.key.searchType == type)
-        .toList();
+    final matchingPlanByType = planByType
+        .where((planType, plan) => scope == null || planType.scope == scope)
+        .where((planType, plan) => type == null || planType.searchType == type);
 
     return StyledPage(
       title: 'Find A Bible Plan'.toText(),
@@ -108,7 +107,7 @@ class BiblePlanSearchPage extends HookConsumerWidget {
             child: StyledListView(
               padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
               children: [
-                if (matchingPlans.isEmpty)
+                if (matchingPlanByType.isEmpty)
                   Padding(
                     padding: .all(16),
                     child: StyledTile.message(
@@ -116,49 +115,43 @@ class BiblePlanSearchPage extends HookConsumerWidget {
                       title: 'No matching Bible plans.'.toText(),
                     ),
                   ),
-                ...matchingPlans.map((entry) {
-                  final type = entry.key;
-                  final plan = entry.value;
-                  final hasStarted = user.hasStartedPlan(type);
-                  return StyledListItem.navigation(
-                    leading: BiblePlanThumbnail(plan: plan, isEnabled: !hasStarted),
-                    title: SingleChildScrollView(
-                      scrollDirection: .horizontal,
-                      child: Row(
-                        spacing: 8,
-                        children: [
-                          plan.name.toText(),
-                          if (hasStarted)
-                            StyledTag.sm(
-                              leading: Symbols.check.toIcon(),
-                              child: 'Following'.toText(),
-                              isEnabled: false,
-                            ),
-                        ],
-                      ),
-                    ),
-                    subtitle: plan.description.toText(),
-                    thirdLine: Padding(
-                      padding: .only(top: 4),
-                      child: Row(
-                        spacing: 4,
-                        children: [
-                          StyledTag.sm(isEnabled: !hasStarted, child: type.scope.title().toText()),
-                          StyledTag.sm(isEnabled: !hasStarted, child: type.searchType.title().toText()),
-                        ],
-                      ),
-                    ),
-                    isEnabled: !hasStarted,
-                    onPressed: hasStarted
-                        ? null
-                        : () async {
-                            final newPlan = await context.push(BiblePlanPage(planType: type));
-                            if (newPlan != null && context.mounted) {
-                              context.pop(newPlan);
-                            }
-                          },
-                  );
-                }),
+                ...matchingPlanByType.mapToIterable(
+                  (type, plan) => BiblePlanTile(
+                    planType: type,
+                    plan: plan,
+                    trailing: Icon(Symbols.chevron_right),
+                    onPressed: () async {
+                      final shouldStartPlan = await context.showStyledSheet(
+                        (context) => StyledSheet(
+                          title: 'Start Plan?'.toText(),
+                          children: [
+                            BiblePlanTile(planType: type, plan: plan),
+                            StyledDivider(height: 2),
+                            ...StyledSection(
+                              padding: .only(top: 24),
+                              title: 'Days'.toText(),
+                              children: plan.days
+                                  .mapIndexed<Widget>(
+                                    (dayIndex, day) => StyledListItem(
+                                      title: 'Day ${dayIndex + 1}'.toText(),
+                                      subtitle: Text(day.passages.map((passage) => passage.format()).join(' • ')),
+                                    ),
+                                  )
+                                  .toList(),
+                            ).buildChildren(context),
+                          ],
+                          buttonsBuilder: (context) => [
+                            StyledRectButton.primary(label: 'Start Plan'.toText(), onPressed: () => context.pop(true)),
+                          ],
+                        ),
+                      );
+                      if (shouldStartPlan == true && context.mounted) {
+                        ref.updateUser((user) => user.withStartedPlan(planType: type, plan: plan));
+                        context.pop(type);
+                      }
+                    },
+                  ),
+                ),
               ],
             ),
           ),

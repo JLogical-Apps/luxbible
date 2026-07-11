@@ -1,0 +1,55 @@
+import 'package:bible/models/bible_plan.dart';
+import 'package:bible/providers/user_provider.dart';
+import 'package:bible/style/style.dart';
+import 'package:bible/ui/widgets/bible_plan_thumbnail.dart';
+import 'package:bible/utils/extensions/flutter_string_extensions.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:material_symbols_icons/symbols.dart';
+
+class BiblePlanTile extends ConsumerWidget {
+  final BiblePlanType planType;
+  final BiblePlan plan;
+
+  final Widget? trailing;
+  final Function()? onPressed;
+
+  const BiblePlanTile({super.key, required this.planType, required this.plan, this.trailing, this.onPressed});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userProvider);
+
+    final hasStarted = user.hasStartedPlan(planType);
+
+    return StyledListItem(
+      leading: BiblePlanThumbnail(plan: plan, isEnabled: !hasStarted),
+      title: SingleChildScrollView(
+        scrollDirection: .horizontal,
+        child: Row(
+          spacing: 8,
+          children: [
+            plan.name.toText(),
+            if (hasStarted)
+              StyledTag.sm(leading: Symbols.check.toIcon(), child: 'Following'.toText(), isEnabled: false),
+          ],
+        ),
+      ),
+      subtitle: plan.description.toText(),
+      trailing: trailing,
+      thirdLine: Padding(
+        padding: .only(top: 4),
+        child: Row(
+          spacing: 4,
+          children: [
+            StyledTag.sm(isEnabled: !hasStarted, child: planType.scope.title().toText()),
+            StyledTag.sm(isEnabled: !hasStarted, child: planType.searchType.title().toText()),
+          ],
+        ),
+      ),
+      isEnabled: !hasStarted,
+      onPressed: hasStarted ? null : onPressed,
+    );
+  }
+}
