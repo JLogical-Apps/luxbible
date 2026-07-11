@@ -138,6 +138,11 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
         ),
       ) ??
       const {},
+  completedPlans:
+      (json['completedPlans'] as List<dynamic>?)
+          ?.map((e) => $enumDecode(_$BiblePlanTypeEnumMap, e))
+          .toSet() ??
+      const {},
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -176,6 +181,9 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'planProgressByType': instance.planProgressByType.map(
     (k, e) => MapEntry(_$BiblePlanTypeEnumMap[k]!, e.toJson()),
   ),
+  'completedPlans': instance.completedPlans
+      .map((e) => _$BiblePlanTypeEnumMap[e]!)
+      .toList(),
 };
 
 const _$BibleTranslationEnumMap = {

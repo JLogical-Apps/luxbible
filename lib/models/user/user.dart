@@ -67,6 +67,7 @@ sealed class User with _$User {
     List<OnboardingStep>? completedOnboardingSteps,
     @Default(HighlightStyle.defaultValues) List<(HighlightStyle, String label)> highlightStyles,
     @Default({}) Map<BiblePlanType, BiblePlanProgress> planProgressByType,
+    @Default({}) Set<BiblePlanType> completedPlans,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -361,6 +362,11 @@ sealed class User with _$User {
 
   User withStoppedPlan(BiblePlanType planType) =>
       copyWith(planProgressByType: {...planProgressByType}..remove(planType));
+
+  User withCompletedPlan(BiblePlanType planType) => copyWith(
+    planProgressByType: {...planProgressByType}..remove(planType),
+    completedPlans: {...completedPlans, planType},
+  );
 
   User withPassageToggled({required BiblePlanType planType, required int dayIndex, required VerseSelection passage}) =>
       hasCompletedPassage(planType: planType, dayIndex: dayIndex, passage: passage)
