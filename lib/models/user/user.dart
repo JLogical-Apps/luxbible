@@ -348,7 +348,7 @@ sealed class User with _$User {
   bool hasStartedPlan(BiblePlanType planType) => planProgressByType.containsKey(planType);
 
   bool hasCompletedPassage({required BiblePlanType planType, required int dayIndex, required VerseSelection passage}) =>
-      planProgressByType[planType]?.days[dayIndex].completedPassages.contains(passage) ?? false;
+      planProgressByType[planType]?.days[dayIndex].isPassageComplete(passage) ?? false;
 
   User withStartedPlan({required BiblePlanType planType, required BiblePlan plan}) =>
       planProgressByType.containsKey(planType)
@@ -356,7 +356,7 @@ sealed class User with _$User {
       : copyWith(
           planProgressByType: {
             ...planProgressByType,
-            planType: BiblePlanProgress(days: plan.days.map((day) => BiblePlanDayProgress()).toList()),
+            planType: BiblePlanProgress(days: plan.days.map((day) => BiblePlanDayProgress.incomplete()).toList()),
           },
         );
 
@@ -368,10 +368,14 @@ sealed class User with _$User {
     completedPlans: {...completedPlans, planType},
   );
 
-  User withPassageToggled({required BiblePlanType planType, required int dayIndex, required VerseSelection passage}) =>
-      hasCompletedPassage(planType: planType, dayIndex: dayIndex, passage: passage)
-      ? withPassageUncompleted(planType: planType, dayIndex: dayIndex, passage: passage)
-      : withPassageCompleted(planType: planType, dayIndex: dayIndex, passage: passage);
+  User withPassageToggled({
+    required BiblePlanType planType,
+    required int dayIndex,
+    required BiblePlanDay day,
+    required VerseSelection passage,
+  }) => hasCompletedPassage(planType: planType, dayIndex: dayIndex, passage: passage)
+      ? withPassageUncompleted(planType: planType, dayIndex: dayIndex, day: day, passage: passage)
+      : withPassageCompleted(planType: planType, dayIndex: dayIndex, day: day, passage: passage);
 
   User withProgressDayUpdated({
     required BiblePlanType planType,
@@ -385,22 +389,23 @@ sealed class User with _$User {
   User withPassageCompleted({
     required BiblePlanType planType,
     required int dayIndex,
+    required BiblePlanDay day,
     required VerseSelection passage,
   }) => withProgressDayUpdated(
     planType: planType,
     dayIndex: dayIndex,
-    updater: (dayProgress) => dayProgress.copyWith(completedPassages: {...dayProgress.completedPassages, passage}),
+    updater: (dayProgress) => dayProgress.withPassageCompleted(day: day, passage: passage),
   );
 
   User withPassageUncompleted({
     required BiblePlanType planType,
     required int dayIndex,
+    required BiblePlanDay day,
     required VerseSelection passage,
   }) => withProgressDayUpdated(
     planType: planType,
     dayIndex: dayIndex,
-    updater: (dayProgress) =>
-        dayProgress.copyWith(completedPassages: {...dayProgress.completedPassages}..remove(passage)),
+    updater: (dayProgress) => dayProgress.withPassageUncompleted(day: day, passage: passage),
   );
 
   User withUpdatePlanProgress(BiblePlanType planType, BiblePlanProgress Function(BiblePlanProgress) update) =>

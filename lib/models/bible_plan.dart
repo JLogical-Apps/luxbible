@@ -43,16 +43,46 @@ sealed class BiblePlanProgress with _$BiblePlanProgress {
 sealed class BiblePlanDayProgress with _$BiblePlanDayProgress {
   const BiblePlanDayProgress._();
 
-  const factory BiblePlanDayProgress({@Default({}) Set<VerseSelection> completedPassages}) = _BiblePlanDayProgress;
+  const factory BiblePlanDayProgress.incomplete({@Default({}) Set<VerseSelection> completedPassages}) =
+      IncompleteBiblePlanDayProgress;
+
+  const factory BiblePlanDayProgress.complete() = CompleteBiblePlanDayProgress;
 
   factory BiblePlanDayProgress.fromJson(Map<String, dynamic> json) => _$BiblePlanDayProgressFromJson(json);
 
-  int? nextIncompletePassageIndex({required List<VerseSelection> passages, required int currentIndex}) => passages
+  bool isPassageComplete(VerseSelection passage) => switch (this) {
+    IncompleteBiblePlanDayProgress(:final completedPassages) => completedPassages.contains(passage),
+    CompleteBiblePlanDayProgress() => true,
+  };
+
+  bool get isComplete => this is CompleteBiblePlanDayProgress;
+
+  int? getNextIncompletePassageIndex({required List<VerseSelection> passages, required int currentIndex}) => passages
       .asMap()
-      .where((index, passage) => index != currentIndex && !completedPassages.contains(passage))
+      .where((index, passage) => index != currentIndex && !isPassageComplete(passage))
       .sortedBy((index, passage) => index - currentIndex)
       .keys
       .firstOrNull;
+
+  BiblePlanDayProgress withPassageCompleted({required BiblePlanDay day, required VerseSelection passage}) {
+    final completedPassages = switch (this) {
+      IncompleteBiblePlanDayProgress(:final completedPassages) => {...completedPassages, passage},
+      CompleteBiblePlanDayProgress() => day.passages.toSet(),
+    };
+    return day.passages.every((passage) => completedPassages.contains(passage))
+        ? BiblePlanDayProgress.complete()
+        : BiblePlanDayProgress.incomplete(completedPassages: completedPassages);
+  }
+
+  BiblePlanDayProgress withPassageUncompleted({required BiblePlanDay day, required VerseSelection passage}) =>
+      BiblePlanDayProgress.incomplete(
+        completedPassages: {
+          ...switch (this) {
+            IncompleteBiblePlanDayProgress(:final completedPassages) => completedPassages,
+            CompleteBiblePlanDayProgress() => day.passages.toSet(),
+          },
+        }..remove(passage),
+      );
 }
 
 // ignore_for_file: constant_identifier_names

@@ -10,21 +10,9 @@ class HydratedBiblePlanProgress {
   const HydratedBiblePlanProgress({required this.type, required this.plan, required this.progress});
 
   bool isPassageComplete({required int dayIndex, required VerseSelection passage}) =>
-      progress.days[dayIndex].completedPassages.contains(passage);
+      progress.days[dayIndex].isPassageComplete(passage);
 
-  bool isDayComplete({required int dayIndex}) {
-    final day = plan.days[dayIndex];
-    return day.passages.isNotEmpty &&
-        day.passages.every((passage) => isPassageComplete(dayIndex: dayIndex, passage: passage));
-  }
-
-  bool isDayPartial({required int dayIndex}) {
-    final day = plan.days[dayIndex];
-    final numCompleted = day.passages
-        .where((passage) => isPassageComplete(dayIndex: dayIndex, passage: passage))
-        .length;
-    return numCompleted > 0 && numCompleted < day.passages.length;
-  }
+  bool isDayComplete({required int dayIndex}) => progress.days[dayIndex].isComplete;
 
   int get currentDayIndex =>
       plan.dayIndexes.firstWhereOrNull((index) => !isDayComplete(dayIndex: index)) ?? (plan.days.length - 1);

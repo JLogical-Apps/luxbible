@@ -45,20 +45,30 @@ _BiblePlanProgress _$BiblePlanProgressFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$BiblePlanProgressToJson(_BiblePlanProgress instance) =>
     <String, dynamic>{'days': instance.days.map((e) => e.toJson()).toList()};
 
-_BiblePlanDayProgress _$BiblePlanDayProgressFromJson(
+IncompleteBiblePlanDayProgress _$IncompleteBiblePlanDayProgressFromJson(
   Map<String, dynamic> json,
-) => _BiblePlanDayProgress(
+) => IncompleteBiblePlanDayProgress(
   completedPassages:
       (json['completedPassages'] as List<dynamic>?)
           ?.map((e) => VerseSelection.fromJson(e as String))
           .toSet() ??
       const {},
+  $type: json['runtimeType'] as String?,
 );
 
-Map<String, dynamic> _$BiblePlanDayProgressToJson(
-  _BiblePlanDayProgress instance,
+Map<String, dynamic> _$IncompleteBiblePlanDayProgressToJson(
+  IncompleteBiblePlanDayProgress instance,
 ) => <String, dynamic>{
   'completedPassages': instance.completedPassages
       .map((e) => e.toJson())
       .toList(),
+  'runtimeType': instance.$type,
 };
+
+CompleteBiblePlanDayProgress _$CompleteBiblePlanDayProgressFromJson(
+  Map<String, dynamic> json,
+) => CompleteBiblePlanDayProgress($type: json['runtimeType'] as String?);
+
+Map<String, dynamic> _$CompleteBiblePlanDayProgressToJson(
+  CompleteBiblePlanDayProgress instance,
+) => <String, dynamic>{'runtimeType': instance.$type};

@@ -806,16 +806,34 @@ as List<BiblePlanDayProgress>,
 
 }
 
+BiblePlanDayProgress _$BiblePlanDayProgressFromJson(
+  Map<String, dynamic> json
+) {
+        switch (json['runtimeType']) {
+                  case 'incomplete':
+          return IncompleteBiblePlanDayProgress.fromJson(
+            json
+          );
+                case 'complete':
+          return CompleteBiblePlanDayProgress.fromJson(
+            json
+          );
+
+          default:
+            throw CheckedFromJsonException(
+  json,
+  'runtimeType',
+  'BiblePlanDayProgress',
+  'Invalid union type "${json['runtimeType']}"!'
+);
+        }
+
+}
 
 /// @nodoc
 mixin _$BiblePlanDayProgress {
 
- Set<VerseSelection> get completedPassages;
-/// Create a copy of BiblePlanDayProgress
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$BiblePlanDayProgressCopyWith<BiblePlanDayProgress> get copyWith => _$BiblePlanDayProgressCopyWithImpl<BiblePlanDayProgress>(this as BiblePlanDayProgress, _$identity);
+
 
   /// Serializes this BiblePlanDayProgress to a JSON map.
   Map<String, dynamic> toJson();
@@ -823,50 +841,24 @@ $BiblePlanDayProgressCopyWith<BiblePlanDayProgress> get copyWith => _$BiblePlanD
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlanDayProgress&&const DeepCollectionEquality().equals(other.completedPassages, completedPassages));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlanDayProgress);
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(completedPassages));
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'BiblePlanDayProgress(completedPassages: $completedPassages)';
+  return 'BiblePlanDayProgress()';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $BiblePlanDayProgressCopyWith<$Res>  {
-  factory $BiblePlanDayProgressCopyWith(BiblePlanDayProgress value, $Res Function(BiblePlanDayProgress) _then) = _$BiblePlanDayProgressCopyWithImpl;
-@useResult
-$Res call({
- Set<VerseSelection> completedPassages
-});
-
-
-
-
-}
-/// @nodoc
-class _$BiblePlanDayProgressCopyWithImpl<$Res>
-    implements $BiblePlanDayProgressCopyWith<$Res> {
-  _$BiblePlanDayProgressCopyWithImpl(this._self, this._then);
-
-  final BiblePlanDayProgress _self;
-  final $Res Function(BiblePlanDayProgress) _then;
-
-/// Create a copy of BiblePlanDayProgress
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? completedPassages = null,}) {
-  return _then(_self.copyWith(
-completedPassages: null == completedPassages ? _self.completedPassages : completedPassages // ignore: cast_nullable_to_non_nullable
-as Set<VerseSelection>,
-  ));
-}
-
+class $BiblePlanDayProgressCopyWith<$Res>  {
+$BiblePlanDayProgressCopyWith(BiblePlanDayProgress _, $Res Function(BiblePlanDayProgress) __);
 }
 
 
@@ -884,11 +876,12 @@ extension BiblePlanDayProgressPatterns on BiblePlanDayProgress {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _BiblePlanDayProgress value)?  $default,{required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( IncompleteBiblePlanDayProgress value)?  incomplete,TResult Function( CompleteBiblePlanDayProgress value)?  complete,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
-case _BiblePlanDayProgress() when $default != null:
-return $default(_that);case _:
+case IncompleteBiblePlanDayProgress() when incomplete != null:
+return incomplete(_that);case CompleteBiblePlanDayProgress() when complete != null:
+return complete(_that);case _:
   return orElse();
 
 }
@@ -906,11 +899,12 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _BiblePlanDayProgress value)  $default,){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( IncompleteBiblePlanDayProgress value)  incomplete,required TResult Function( CompleteBiblePlanDayProgress value)  complete,}){
 final _that = this;
 switch (_that) {
-case _BiblePlanDayProgress():
-return $default(_that);}
+case IncompleteBiblePlanDayProgress():
+return incomplete(_that);case CompleteBiblePlanDayProgress():
+return complete(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -924,11 +918,12 @@ return $default(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _BiblePlanDayProgress value)?  $default,){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( IncompleteBiblePlanDayProgress value)?  incomplete,TResult? Function( CompleteBiblePlanDayProgress value)?  complete,}){
 final _that = this;
 switch (_that) {
-case _BiblePlanDayProgress() when $default != null:
-return $default(_that);case _:
+case IncompleteBiblePlanDayProgress() when incomplete != null:
+return incomplete(_that);case CompleteBiblePlanDayProgress() when complete != null:
+return complete(_that);case _:
   return null;
 
 }
@@ -945,10 +940,11 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Set<VerseSelection> completedPassages)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( Set<VerseSelection> completedPassages)?  incomplete,TResult Function()?  complete,required TResult orElse(),}) {final _that = this;
 switch (_that) {
-case _BiblePlanDayProgress() when $default != null:
-return $default(_that.completedPassages);case _:
+case IncompleteBiblePlanDayProgress() when incomplete != null:
+return incomplete(_that.completedPassages);case CompleteBiblePlanDayProgress() when complete != null:
+return complete();case _:
   return orElse();
 
 }
@@ -966,10 +962,11 @@ return $default(_that.completedPassages);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Set<VerseSelection> completedPassages)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( Set<VerseSelection> completedPassages)  incomplete,required TResult Function()  complete,}) {final _that = this;
 switch (_that) {
-case _BiblePlanDayProgress():
-return $default(_that.completedPassages);}
+case IncompleteBiblePlanDayProgress():
+return incomplete(_that.completedPassages);case CompleteBiblePlanDayProgress():
+return complete();}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -983,10 +980,11 @@ return $default(_that.completedPassages);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Set<VerseSelection> completedPassages)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( Set<VerseSelection> completedPassages)?  incomplete,TResult? Function()?  complete,}) {final _that = this;
 switch (_that) {
-case _BiblePlanDayProgress() when $default != null:
-return $default(_that.completedPassages);case _:
+case IncompleteBiblePlanDayProgress() when incomplete != null:
+return incomplete(_that.completedPassages);case CompleteBiblePlanDayProgress() when complete != null:
+return complete();case _:
   return null;
 
 }
@@ -997,32 +995,36 @@ return $default(_that.completedPassages);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _BiblePlanDayProgress extends BiblePlanDayProgress {
-  const _BiblePlanDayProgress({final  Set<VerseSelection> completedPassages = const {}}): _completedPassages = completedPassages,super._();
-  factory _BiblePlanDayProgress.fromJson(Map<String, dynamic> json) => _$BiblePlanDayProgressFromJson(json);
+class IncompleteBiblePlanDayProgress extends BiblePlanDayProgress {
+  const IncompleteBiblePlanDayProgress({final  Set<VerseSelection> completedPassages = const {}, final  String? $type}): _completedPassages = completedPassages,$type = $type ?? 'incomplete',super._();
+  factory IncompleteBiblePlanDayProgress.fromJson(Map<String, dynamic> json) => _$IncompleteBiblePlanDayProgressFromJson(json);
 
  final  Set<VerseSelection> _completedPassages;
-@override@JsonKey() Set<VerseSelection> get completedPassages {
+@JsonKey() Set<VerseSelection> get completedPassages {
   if (_completedPassages is EqualUnmodifiableSetView) return _completedPassages;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableSetView(_completedPassages);
 }
 
 
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
 /// Create a copy of BiblePlanDayProgress
 /// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
+@JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-_$BiblePlanDayProgressCopyWith<_BiblePlanDayProgress> get copyWith => __$BiblePlanDayProgressCopyWithImpl<_BiblePlanDayProgress>(this, _$identity);
+$IncompleteBiblePlanDayProgressCopyWith<IncompleteBiblePlanDayProgress> get copyWith => _$IncompleteBiblePlanDayProgressCopyWithImpl<IncompleteBiblePlanDayProgress>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
-  return _$BiblePlanDayProgressToJson(this, );
+  return _$IncompleteBiblePlanDayProgressToJson(this, );
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BiblePlanDayProgress&&const DeepCollectionEquality().equals(other._completedPassages, _completedPassages));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is IncompleteBiblePlanDayProgress&&const DeepCollectionEquality().equals(other._completedPassages, _completedPassages));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1031,16 +1033,16 @@ int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(
 
 @override
 String toString() {
-  return 'BiblePlanDayProgress(completedPassages: $completedPassages)';
+  return 'BiblePlanDayProgress.incomplete(completedPassages: $completedPassages)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$BiblePlanDayProgressCopyWith<$Res> implements $BiblePlanDayProgressCopyWith<$Res> {
-  factory _$BiblePlanDayProgressCopyWith(_BiblePlanDayProgress value, $Res Function(_BiblePlanDayProgress) _then) = __$BiblePlanDayProgressCopyWithImpl;
-@override @useResult
+abstract mixin class $IncompleteBiblePlanDayProgressCopyWith<$Res> implements $BiblePlanDayProgressCopyWith<$Res> {
+  factory $IncompleteBiblePlanDayProgressCopyWith(IncompleteBiblePlanDayProgress value, $Res Function(IncompleteBiblePlanDayProgress) _then) = _$IncompleteBiblePlanDayProgressCopyWithImpl;
+@useResult
 $Res call({
  Set<VerseSelection> completedPassages
 });
@@ -1050,17 +1052,17 @@ $Res call({
 
 }
 /// @nodoc
-class __$BiblePlanDayProgressCopyWithImpl<$Res>
-    implements _$BiblePlanDayProgressCopyWith<$Res> {
-  __$BiblePlanDayProgressCopyWithImpl(this._self, this._then);
+class _$IncompleteBiblePlanDayProgressCopyWithImpl<$Res>
+    implements $IncompleteBiblePlanDayProgressCopyWith<$Res> {
+  _$IncompleteBiblePlanDayProgressCopyWithImpl(this._self, this._then);
 
-  final _BiblePlanDayProgress _self;
-  final $Res Function(_BiblePlanDayProgress) _then;
+  final IncompleteBiblePlanDayProgress _self;
+  final $Res Function(IncompleteBiblePlanDayProgress) _then;
 
 /// Create a copy of BiblePlanDayProgress
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? completedPassages = null,}) {
-  return _then(_BiblePlanDayProgress(
+@pragma('vm:prefer-inline') $Res call({Object? completedPassages = null,}) {
+  return _then(IncompleteBiblePlanDayProgress(
 completedPassages: null == completedPassages ? _self._completedPassages : completedPassages // ignore: cast_nullable_to_non_nullable
 as Set<VerseSelection>,
   ));
@@ -1068,5 +1070,44 @@ as Set<VerseSelection>,
 
 
 }
+
+/// @nodoc
+@JsonSerializable()
+
+class CompleteBiblePlanDayProgress extends BiblePlanDayProgress {
+  const CompleteBiblePlanDayProgress({final  String? $type}): $type = $type ?? 'complete',super._();
+  factory CompleteBiblePlanDayProgress.fromJson(Map<String, dynamic> json) => _$CompleteBiblePlanDayProgressFromJson(json);
+
+
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+
+@override
+Map<String, dynamic> toJson() {
+  return _$CompleteBiblePlanDayProgressToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CompleteBiblePlanDayProgress);
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'BiblePlanDayProgress.complete()';
+}
+
+
+}
+
+
+
 
 // dart format on

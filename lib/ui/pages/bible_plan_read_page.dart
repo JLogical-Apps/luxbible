@@ -38,11 +38,12 @@ class BiblePlanReadPage extends HookConsumerWidget {
       return SizedBox.shrink();
     }
 
-    final passages = plan.days[dayIndex].passages;
+    final day = plan.days[dayIndex];
+    final passages = day.passages;
 
     final user = ref.watch(userProvider);
     final progress = user.getHydratedPlanProgress(planType: planType, planByType: plans);
-    final currentProgress = progress?.progress.days[dayIndex] ?? BiblePlanDayProgress();
+    final currentProgress = progress?.progress.days[dayIndex] ?? BiblePlanDayProgress.incomplete();
 
     final selection = useBibleSelection();
     void navigateToVerseSelection(VerseSelection verseSelection) => context.pop(verseSelection);
@@ -52,7 +53,7 @@ class BiblePlanReadPage extends HookConsumerWidget {
       initialIndex: initialPassageIndex.clamp(0, passages.isEmpty ? 0 : passages.length - 1),
     );
     final currentIndex = useListenableSelector(tabController, () => tabController.index);
-    final nextIncompletePassageIndex = currentProgress.nextIncompletePassageIndex(
+    final nextIncompletePassageIndex = currentProgress.getNextIncompletePassageIndex(
       passages: passages,
       currentIndex: currentIndex,
     );
@@ -61,7 +62,8 @@ class BiblePlanReadPage extends HookConsumerWidget {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         selection.clear();
         ref.updateUser(
-          (user) => user.withPassageCompleted(planType: planType, dayIndex: dayIndex, passage: passages[oldIndex]),
+          (user) =>
+              user.withPassageCompleted(planType: planType, dayIndex: dayIndex, day: day, passage: passages[oldIndex]),
         );
       });
     });
@@ -75,7 +77,7 @@ class BiblePlanReadPage extends HookConsumerWidget {
           StyledTabBar.scrollable(
             tabController: tabController,
             tabTitles: passages.map((passage) {
-              final isCompleted = currentProgress.completedPassages.contains(passage);
+              final isCompleted = currentProgress.isPassageComplete(passage);
               return Row(
                 spacing: 8,
                 children: [
@@ -149,8 +151,12 @@ class BiblePlanReadPage extends HookConsumerWidget {
             label: (nextIncompletePassageIndex == null ? 'Done' : 'Next').toText(),
             onPressed: () {
               ref.updateUser(
-                (user) =>
-                    user.withPassageCompleted(planType: planType, dayIndex: dayIndex, passage: passages[currentIndex]),
+                (user) => user.withPassageCompleted(
+                  planType: planType,
+                  dayIndex: dayIndex,
+                  day: day,
+                  passage: passages[currentIndex],
+                ),
               );
               if (nextIncompletePassageIndex != null) {
                 tabController.animateTo(nextIncompletePassageIndex);

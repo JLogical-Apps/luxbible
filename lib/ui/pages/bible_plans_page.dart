@@ -154,6 +154,7 @@ class BiblePlansPage extends ConsumerWidget {
                                           (user) => user.withPassageToggled(
                                             planType: planType,
                                             dayIndex: dayIndex,
+                                            day: day,
                                             passage: passage,
                                           ),
                                         ),
