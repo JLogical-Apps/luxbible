@@ -6,6 +6,7 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/keyed_scroll_transformer.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/chapter_preview_page.dart';
+import 'package:bible/ui/widgets/bible_loading_error.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/paragraphs_builder.dart';
 import 'package:bible/ui/widgets/selection_toolbar.dart';
@@ -99,9 +100,19 @@ class BiblePlanReadPage extends HookConsumerWidget {
                 final chapterReference = passage.references.first.toChapterReference();
                 final translation = user.translation.effectiveFor(chapterReference.book);
 
-                final paragraphs = ref
-                    .watch(verseSelectionParagraphsProvider(selection: passage, translation: translation))
-                    .value;
+                final paragraphsValue = ref.watch(
+                  verseSelectionParagraphsProvider(selection: passage, translation: translation),
+                );
+                if (paragraphsValue.hasError) {
+                  return BibleLoadingError(
+                    translation: translation,
+                    onRetry: () => ref.invalidate(
+                      chapterProvider(chapterReference: chapterReference, translation: translation),
+                      asReload: true,
+                    ),
+                  );
+                }
+                final paragraphs = paragraphsValue.value;
 
                 return KeyedScrollTransformer(
                   scrollKey: 'passage',

@@ -2,15 +2,11 @@ import 'package:bible/models/bible/chapter.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/bibles_provider.dart';
-import 'package:bible/style/style.dart';
+import 'package:bible/ui/widgets/bible_loading_error.dart';
 import 'package:bible/ui/widgets/hook_consumer_builder.dart';
 import 'package:bible/ui/widgets/swipe_page_view.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
-import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:material_symbols_icons/symbols.dart';
 
 class ChapterPageView extends StatelessWidget {
   final PageController controller;
@@ -42,29 +38,12 @@ class ChapterPageView extends StatelessWidget {
           final chapterValue = ref.watch(chapterProvider(translation: translation, chapterReference: chapterReference));
 
           if (chapterValue.hasError) {
-            return StyledListView.child(
+            return BibleLoadingError(
+              translation: translation,
               padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top + 24) + .symmetric(horizontal: 16),
-              child: Column(
-                spacing: 12,
-                children: [
-                  StyledTile.message(
-                    leading: Symbols.error.toIcon(),
-                    title: 'Something went wrong'.toText(),
-                    subtitle: 'Make sure you are connected to the internet or try again later.'.toText(),
-                  ),
-                  if (!user.translation.isStudy)
-                    StyledRectButton.secondary(
-                      label: 'Switch to ${user.studyTranslation.title()}'.toText(),
-                      onPressed: () => ref.updateUser((user) => user.withTranslation(user.studyTranslation)),
-                    ),
-                  StyledRectButton.secondary(
-                    label: 'Try Again'.toText(),
-                    onPressed: () => ref.invalidate(
-                      chapterProvider(translation: translation, chapterReference: chapterReference),
-                      asReload: true,
-                    ),
-                  ),
-                ],
+              onRetry: () => ref.invalidate(
+                chapterProvider(chapterReference: chapterReference, translation: translation),
+                asReload: true,
               ),
             );
           }
