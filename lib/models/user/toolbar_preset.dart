@@ -22,7 +22,7 @@ enum ToolbarPreset {
   };
 
   List<MainToolbarShortcut> get mainPinnedShortcuts => [.bookmark, .search];
-  MainToolbarShortcut get mainLongPressShortcut => .studyPanel;
+  MainToolbarShortcut get mainLongPressShortcut => this == reader ? .plans : .studyPanel;
 
   List<VerseSelectionShortcut> get versePinnedShortcuts => switch (this) {
     reader => [.annotate, .commentary, .compare],
