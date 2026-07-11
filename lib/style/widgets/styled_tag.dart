@@ -9,6 +9,7 @@ class StyledTag extends StatelessWidget {
   final Widget child;
   final Widget? leading;
   final Function()? onPressed;
+  final bool isEnabled;
 
   final ColorBuilder? colorBuilder;
 
@@ -16,12 +17,12 @@ class StyledTag extends StatelessWidget {
   final TextStyle Function(TextStyleLibrary) textStyleBuilder;
   final double iconSize;
 
-  StyledTag.sm({super.key, required this.child, this.leading, this.colorBuilder, this.onPressed})
+  StyledTag.sm({super.key, required this.child, this.leading, this.colorBuilder, this.onPressed, this.isEnabled = true})
     : padding = .symmetric(vertical: 4, horizontal: 6),
       textStyleBuilder = ((textStyle) => textStyle.labelXs),
       iconSize = 12;
 
-  StyledTag.md({super.key, required this.child, this.leading, this.colorBuilder, this.onPressed})
+  StyledTag.md({super.key, required this.child, this.leading, this.colorBuilder, this.onPressed, this.isEnabled = true})
     : padding = .symmetric(vertical: 6, horizontal: 8),
       textStyleBuilder = ((textStyle) => textStyle.labelSm),
       iconSize = 16;
@@ -31,28 +32,31 @@ class StyledTag extends StatelessWidget {
     final color = colorBuilder?.call(context.colors) ?? context.colors.surfaceSecondary;
     final foregroundColor = ColorLibrary.fromBackground(color).contentPrimary;
 
-    return StyledMaterial(
-      colorBuilder: colorBuilder ?? .surfaceSecondary,
-      padding: padding,
-      onPressed: onPressed,
-      isEnabled: true,
-      borderRadius: .circular(999),
-      child: Row(
-        spacing: 4,
-        children: [
-          if (leading case final leading?)
-            IconTheme.merge(
-              data: IconThemeData(size: iconSize, color: foregroundColor),
-              child: leading,
+    return Opacity(
+      opacity: isEnabled ? 1 : 0.5,
+      child: StyledMaterial(
+        colorBuilder: colorBuilder ?? .surfaceSecondary,
+        padding: padding,
+        onPressed: onPressed,
+        isEnabled: true,
+        borderRadius: .circular(999),
+        child: Row(
+          spacing: 4,
+          children: [
+            if (leading case final leading?)
+              IconTheme.merge(
+                data: IconThemeData(size: iconSize, color: foregroundColor),
+                child: leading,
+              ),
+            DefaultTextStyle(
+              style: textStyleBuilder(context.textStyle).copyWith(color: foregroundColor),
+              child: IconTheme.merge(
+                data: IconThemeData(size: iconSize, color: foregroundColor),
+                child: child,
+              ),
             ),
-          DefaultTextStyle(
-            style: textStyleBuilder(context.textStyle).copyWith(color: foregroundColor),
-            child: IconTheme.merge(
-              data: IconThemeData(size: iconSize, color: foregroundColor),
-              child: child,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

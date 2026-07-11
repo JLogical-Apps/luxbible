@@ -47,16 +47,73 @@ sealed class BiblePlanDayProgress with _$BiblePlanDayProgress {
 
 // ignore_for_file: constant_identifier_names
 enum BiblePlanType {
-  mcheyne,
-  one_year_chronological,
   esv_through_the_bible,
-  esv_gospels_and_epistles,
+  one_year_chronological,
+  heartlight_ot_and_nt,
   esv_every_day_in_word,
+  mcheyne,
   esv_literary_study_bible,
-  esv_chronicles_and_prophets,
+  esv_gospels_and_epistles,
   esv_pentateuch_and_history_of_israel,
-  esv_psalms_and_wisdom_literature,
-  heartlight_ot_and_nt;
+  esv_chronicles_and_prophets,
+  esv_psalms_and_wisdom_literature;
 
   String get assetPath => 'assets/bible_plans/$name.json';
+
+  BiblePlanScope get scope => switch (this) {
+    mcheyne ||
+    one_year_chronological ||
+    esv_through_the_bible ||
+    esv_every_day_in_word ||
+    esv_literary_study_bible ||
+    heartlight_ot_and_nt => .wholeBible,
+    esv_gospels_and_epistles => .newTestament,
+    esv_chronicles_and_prophets ||
+    esv_pentateuch_and_history_of_israel ||
+    esv_psalms_and_wisdom_literature => .oldTestament,
+  };
+
+  BiblePlanSearchType get searchType => switch (this) {
+    esv_chronicles_and_prophets || esv_pentateuch_and_history_of_israel || esv_psalms_and_wisdom_literature => .focused,
+    mcheyne ||
+    one_year_chronological ||
+    esv_through_the_bible ||
+    esv_gospels_and_epistles ||
+    esv_every_day_in_word ||
+    esv_literary_study_bible ||
+    heartlight_ot_and_nt => .comprehensive,
+  };
+}
+
+enum BiblePlanScope {
+  oldTestament,
+  newTestament,
+  wholeBible;
+
+  String title() => switch (this) {
+    oldTestament => 'Old Testament',
+    newTestament => 'New Testament',
+    wholeBible => 'Whole Bible',
+  };
+
+  String description() => switch (this) {
+    oldTestament => 'Reads from books in the Old Testament.',
+    newTestament => 'Reads from books in the New Testament.',
+    wholeBible => 'Reads from both the Old and New Testaments.',
+  };
+}
+
+enum BiblePlanSearchType {
+  focused,
+  comprehensive;
+
+  String title() => switch (this) {
+    focused => 'Focused',
+    comprehensive => 'Comprehensive',
+  };
+
+  String description() => switch (this) {
+    focused => 'Covers a specific section or collection within its scope.',
+    comprehensive => 'Covers every book within its scope.',
+  };
 }

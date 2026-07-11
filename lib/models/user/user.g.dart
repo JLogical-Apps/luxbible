@@ -231,16 +231,16 @@ $Rec _$recordConvert<$Rec>(Object? value, $Rec Function(Map) convert) =>
     convert(value as Map<String, dynamic>);
 
 const _$BiblePlanTypeEnumMap = {
-  BiblePlanType.mcheyne: 'mcheyne',
-  BiblePlanType.one_year_chronological: 'one_year_chronological',
   BiblePlanType.esv_through_the_bible: 'esv_through_the_bible',
-  BiblePlanType.esv_gospels_and_epistles: 'esv_gospels_and_epistles',
+  BiblePlanType.one_year_chronological: 'one_year_chronological',
+  BiblePlanType.heartlight_ot_and_nt: 'heartlight_ot_and_nt',
   BiblePlanType.esv_every_day_in_word: 'esv_every_day_in_word',
+  BiblePlanType.mcheyne: 'mcheyne',
   BiblePlanType.esv_literary_study_bible: 'esv_literary_study_bible',
-  BiblePlanType.esv_chronicles_and_prophets: 'esv_chronicles_and_prophets',
+  BiblePlanType.esv_gospels_and_epistles: 'esv_gospels_and_epistles',
   BiblePlanType.esv_pentateuch_and_history_of_israel:
       'esv_pentateuch_and_history_of_israel',
+  BiblePlanType.esv_chronicles_and_prophets: 'esv_chronicles_and_prophets',
   BiblePlanType.esv_psalms_and_wisdom_literature:
       'esv_psalms_and_wisdom_literature',
-  BiblePlanType.heartlight_ot_and_nt: 'heartlight_ot_and_nt',
 };

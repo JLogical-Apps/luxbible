@@ -18,22 +18,25 @@ class BibleTile extends StatelessWidget {
   Widget build(BuildContext context) => StyledListItem(
     title: translation.title().toText(),
     subtitle: translation.fullName().toText(),
-    thirdLine: Row(
-      spacing: 4,
-      children: [
-        if (translation.isOnline)
-          StyledTag.sm(
-            child: 'Online Only'.toText(),
-            leading: Symbols.cloud.toIcon(),
-            colorBuilder: ColorBuilder((colors) => colors.blue.tertiary),
-          ),
-        if (translation.isStudy)
-          StyledTag.sm(
-            child: 'Study Bible'.toText(),
-            leading: Symbols.school.toIcon(),
-            colorBuilder: ColorBuilder((colors) => colors.green.tertiary),
-          ),
-      ],
+    thirdLine: Padding(
+      padding: .only(top: 4),
+      child: Row(
+        spacing: 4,
+        children: [
+          if (translation.isOnline)
+            StyledTag.sm(
+              child: 'Online Only'.toText(),
+              leading: Symbols.cloud.toIcon(),
+              colorBuilder: ColorBuilder((colors) => colors.blue.tertiary),
+            ),
+          if (translation.isStudy)
+            StyledTag.sm(
+              child: 'Study Bible'.toText(),
+              leading: Symbols.school.toIcon(),
+              colorBuilder: ColorBuilder((colors) => colors.green.tertiary),
+            ),
+        ],
+      ),
     ),
     trailing: trailing,
     onPressed: isEnabled ? onPressedOverride ?? () => showInfo(context) : null,
