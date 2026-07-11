@@ -23,7 +23,7 @@ enum BibleTranslation {
 
   String title() => switch (this) {
     bsb => 'BSB',
-    nasb95 => 'NASB',
+    nasb95 => 'NASB95',
     niv11 => 'NIV',
     kjv => 'KJV',
     asv => 'ASV',
