@@ -137,7 +137,7 @@ class BiblePlanReadPage extends HookConsumerWidget {
                               onNavigateToVerseSelection: navigateToVerseSelection,
                             ),
                             StyledRectButton.secondary(
-                              label: 'Read entire chapter'.toText(),
+                              label: 'Read Entire Chapter'.toText(),
                               onPressed: () => ChapterPreviewPage.show(
                                 context,
                                 verseSelection: passage,
