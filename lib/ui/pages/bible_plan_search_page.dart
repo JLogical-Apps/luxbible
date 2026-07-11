@@ -146,7 +146,11 @@ class BiblePlanSearchPage extends HookConsumerWidget {
                         ),
                       );
                       if (shouldStartPlan == true && context.mounted) {
-                        ref.updateUser((user) => user.withStartedPlan(planType: type, plan: plan));
+                        ref.updateUser(
+                          (user) => user
+                              .withStartedPlan(planType: type, plan: plan)
+                              .withOnboardingStepCompleted(.startBiblePlan),
+                        );
                         context.pop(type);
                       }
                     },

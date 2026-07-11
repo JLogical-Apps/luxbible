@@ -36,7 +36,8 @@ enum OnboardingMicroStep {
   goBack,
   swipeChapter,
   viewStudyPanel,
-  customizeToolbar;
+  customizeToolbar,
+  startBiblePlan;
 
   List<InlineSpan> description({required BibleTranslation translation}) {
     WidgetSpan icon(IconData icon) => WidgetSpan(alignment: .middle, child: Icon(icon, size: 18));
@@ -78,6 +79,11 @@ enum OnboardingMicroStep {
         icon(Symbols.settings),
         TextSpan(text: ' > Toolbars and pick a toolbar preset or change any of your toolbar shortcuts'),
       ],
+      startBiblePlan => [
+        TextSpan(text: 'Open '),
+        icon(Symbols.more_vert),
+        TextSpan(text: ' → Bible Plans and start any Bible plan'),
+      ],
     };
   }
 
@@ -96,7 +102,8 @@ enum OnboardingMicroStep {
     goBack ||
     swipeChapter ||
     viewStudyPanel ||
-    customizeToolbar => false,
+    customizeToolbar ||
+    startBiblePlan => false,
   };
 }
 
@@ -109,7 +116,8 @@ enum OnboardingStep {
   goBack,
   swipeChapter,
   addStudyPanel,
-  customizeToolbar;
+  customizeToolbar,
+  startBiblePlan;
 
   String title() => switch (this) {
     crossReferences => 'View cross references',
@@ -121,6 +129,7 @@ enum OnboardingStep {
     swipeChapter => 'Swipe to change chapter',
     addStudyPanel => 'Add a study panel',
     customizeToolbar => 'Customize your toolbars',
+    startBiblePlan => 'Start a Bible plan',
   };
 
   IconData get icon => switch (this) {
@@ -133,6 +142,7 @@ enum OnboardingStep {
     swipeChapter => Symbols.swipe,
     addStudyPanel => Symbols.add_notes,
     customizeToolbar => Symbols.tune,
+    startBiblePlan => Symbols.calendar_month,
   };
 
   List<OnboardingMicroStep> get microSteps => switch (this) {
@@ -145,5 +155,6 @@ enum OnboardingStep {
     swipeChapter => [.swipeChapter],
     addStudyPanel => [.deselectEverything, .revealMainToolbar, .addStudyPanel, .viewStudyPanel],
     customizeToolbar => [.deselectEverything, .revealMainToolbar, .customizeToolbar],
+    startBiblePlan => [.deselectEverything, .revealMainToolbar, .startBiblePlan],
   };
 }

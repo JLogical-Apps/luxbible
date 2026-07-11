@@ -233,6 +233,7 @@ const _$OnboardingStepEnumMap = {
   OnboardingStep.swipeChapter: 'swipeChapter',
   OnboardingStep.addStudyPanel: 'addStudyPanel',
   OnboardingStep.customizeToolbar: 'customizeToolbar',
+  OnboardingStep.startBiblePlan: 'startBiblePlan',
 };
 
 $Rec _$recordConvert<$Rec>(Object? value, $Rec Function(Map) convert) =>
