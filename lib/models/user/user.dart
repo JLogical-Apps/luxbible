@@ -226,6 +226,7 @@ sealed class User with _$User {
   User withAnnotationUpdated(Annotation oldAnnotation, Annotation newAnnotation) => copyWith(
     annotations: annotations.withRemoved(oldAnnotation) + [newAnnotation],
     lastHighlightStyle: newAnnotation.style,
+    lastNotebookId: newAnnotation.notebookId,
   );
 
   User withRemovedSelectionAnnotations(AnnotationSelection selection) => selection.when(

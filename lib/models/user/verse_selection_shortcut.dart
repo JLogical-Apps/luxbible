@@ -91,6 +91,7 @@ enum VerseSelectionShortcut {
           final annotation = Annotation(
             createdAt: .now(),
             style: user.lastHighlightStyle,
+            notebookId: user.lastNotebookId,
             selection: AnnotationSelection.verses(verseSelection: verseSelection),
           );
           ref.updateUser((user) => user.withAnnotation(annotation));

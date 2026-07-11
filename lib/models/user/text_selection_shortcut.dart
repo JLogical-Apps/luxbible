@@ -79,6 +79,7 @@ enum TextSelectionShortcut {
           final annotation = Annotation(
             createdAt: .now(),
             style: user.lastHighlightStyle,
+            notebookId: user.lastNotebookId,
             selection: AnnotationSelection.text(textSelection: textSelection),
           );
           ref.updateUser((user) => user.withAnnotation(annotation));
