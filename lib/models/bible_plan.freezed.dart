@@ -818,7 +818,7 @@ BiblePlanDayProgress _$BiblePlanDayProgressFromJson(
           return CompleteBiblePlanDayProgress.fromJson(
             json
           );
-
+        
           default:
             throw CheckedFromJsonException(
   json,
@@ -827,7 +827,7 @@ BiblePlanDayProgress _$BiblePlanDayProgressFromJson(
   'Invalid union type "${json['runtimeType']}"!'
 );
         }
-
+      
 }
 
 /// @nodoc

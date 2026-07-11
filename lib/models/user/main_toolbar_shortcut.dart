@@ -5,11 +5,8 @@ import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
-import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/ui/pages/bible_plan_read_page.dart';
-import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:bible/ui/pages/dictionary_page.dart';
 import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/theme_settings_page.dart';
@@ -35,7 +32,6 @@ enum MainToolbarShortcut {
   dictionary,
   lexicon,
   plans,
-  startPlanReading,
   themeAndLayout;
 
   String title() =>
@@ -45,7 +41,6 @@ enum MainToolbarShortcut {
         switchBible => 'Switch Bible',
         dictionary => 'Dictionary',
         lexicon => 'Lexicon',
-        startPlanReading => 'Start Reading',
         _ => 'Theme & Layout',
       };
 
@@ -56,7 +51,6 @@ enum MainToolbarShortcut {
         switchBible => 'Switch the Bible translation.',
         dictionary => 'Look up people, places, and topics in Easton\'s Bible Dictionary.',
         lexicon => 'Study the original Hebrew and Greek words with Strong\'s Lexicon.',
-        startPlanReading => 'Jump straight into your first reading plan\'s reading for the day.',
         _ => 'Customize the theme & layout of the Bible.',
       };
 
@@ -67,7 +61,6 @@ enum MainToolbarShortcut {
         switchBible => Symbols.book.toIcon(),
         dictionary => Symbols.menu_book.toIcon(),
         lexicon => Symbols.translate.toIcon(),
-        startPlanReading => Symbols.auto_stories.toIcon(),
         _ => Symbols.custom_typography.toIcon(),
       };
 
@@ -104,22 +97,8 @@ enum MainToolbarShortcut {
             onNavigateToVerseSelection(result);
           }
         }(),
-        startPlanReading => () async {
-          final user = ref.read(userProvider);
-          final progress = user.getFirstHydratedPlanProgress(ref.read(biblePlansProvider));
-          if (progress == null) {
-            await context.push(BiblePlansPage());
-            return;
-          }
-
-          final result = await context.push<VerseSelection>(
-            BiblePlanReadPage(planType: progress.type, dayIndex: progress.currentDayIndex, initialPassageIndex: 0),
-          );
-          if (result != null) {
-            onNavigateToVerseSelection(result);
-          }
-        }(),
-        _ => context.push(ThemeSettingsPage()),
+        themeAndLayout => context.push(ThemeSettingsPage()),
+        _ => throw UnimplementedError(),
       };
 
   MainAction? toMainAction() => switch (this) {

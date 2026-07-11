@@ -54,6 +54,5 @@ const _$MainToolbarShortcutEnumMap = {
   MainToolbarShortcut.dictionary: 'dictionary',
   MainToolbarShortcut.lexicon: 'lexicon',
   MainToolbarShortcut.plans: 'plans',
-  MainToolbarShortcut.startPlanReading: 'startPlanReading',
   MainToolbarShortcut.themeAndLayout: 'themeAndLayout',
 };

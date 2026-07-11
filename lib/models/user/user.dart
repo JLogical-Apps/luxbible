@@ -337,9 +337,6 @@ sealed class User with _$User {
           )
           .toList();
 
-  HydratedBiblePlanProgress? getFirstHydratedPlanProgress(Map<BiblePlanType, BiblePlan> planByType) =>
-      getHydratedPlanProgresses(planByType).firstOrNull;
-
   HydratedBiblePlanProgress? getHydratedPlanProgress({
     required BiblePlanType planType,
     required Map<BiblePlanType, BiblePlan> planByType,
