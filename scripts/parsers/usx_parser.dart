@@ -54,7 +54,10 @@ Book parseUsxBook(BookType type, String rawXml) {
                                     ? InterlinearData(
                                         originalPosition: int.parse(node.getAttribute('x-position')!),
                                         inflection: node.getAttribute('x-lemma'),
-                                        morphology: node.getAttribute('x-morph'),
+                                        morphology: switch (node.getAttribute('x-morph')) {
+                                          'None' => null,
+                                          final morphology => morphology,
+                                        },
                                         strongId: node.getAttribute('strong')?.nullIfBlank,
                                         transliteration: node.getAttribute('x-translit'),
                                       )
