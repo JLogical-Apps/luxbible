@@ -80,7 +80,7 @@ export default function Section({
   const inner = (
     <div className="container py-16 lg:py-20 xl:py-24">
       {contained ? (
-        <GridBackground className="palette-light rounded-3xl px-4 md:px-6 py-16 w-full">
+        <GridBackground className="palette-light rounded-3xl px-4 md:px-6 pt-16 pb-4 w-full">
           {body}
         </GridBackground>
       ) : (
