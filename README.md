@@ -31,6 +31,5 @@ npm run build   # outputs a static site to ./out
 
 ## Deploy
 
-Static `out/` folder — host anywhere. Configured for Cloudflare Pages
-(framework preset: **Next.js (Static HTML Export)**, build `npm run build`,
-output directory `out`).
+Deployed on Vercel as a static Next.js site. The `npm run build` command exports
+the site to the `out/` directory.

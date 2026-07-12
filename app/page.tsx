@@ -87,25 +87,25 @@ export default function HomePage() {
               title: 'Read without distraction',
               subtitle:
                 'The Bible takes center stage. Toolbars stay out of your way until you need them.',
-              video: '/media/read-without-distraction.webm',
+              video: '/media/videos/read-without-distraction.webm',
             },
             {
-              title: 'Follow a plan, one day at a time',
+              title: 'Follow a Bible plan',
               subtitle:
-                'Build a steady reading rhythm with Bible plans that guide you through Scripture, one meaningful passage at a time.',
-              video: '/media/go-anywhere.webm',
+                'Follow guided Bible plans that give your reading a clear path and a simple next step.',
+              video: '/media/videos/bible-plans.webm',
             },
             {
               title: 'Go anywhere, instantly',
               subtitle:
                 'Jump to any chapter by typing a reference. Your recent passages and bookmarks are always a tap away. Swipe the toolbar to go back.',
-              video: '/media/go-anywhere.webm',
+              video: '/media/videos/go-anywhere.webm',
             },
             {
               title: 'Your tools, your way',
               subtitle:
                 "Whether you're a note-taker or a deep studier, Lux puts the right tools within reach.",
-              video: '/media/your-tools.webm',
+              video: '/media/videos/toolbars.webm',
             },
           ]}
         />
@@ -122,25 +122,25 @@ export default function HomePage() {
               title: 'Annotate verses and phrases',
               subtitle:
                 'Add your thoughts to a whole verse or a specific phrase, so the details that matter stay connected to the text.',
-              video: '/media/highlights.webm',
+              video: '/media/videos/annotate-verses-or-phrases.webm',
             },
             {
               title: 'Make highlights your own',
               subtitle:
-                'Choose highlight styles that fit the way you read and make important words and passages easy to find again.',
-              video: '/media/highlights.webm',
+                'Give each highlight style a name and a purpose, so the patterns in your reading begin to stand out.',
+              video: '/media/videos/highlight-styles.webm',
             },
             {
               title: 'Keep notes in notebooks',
               subtitle:
-                'Organize annotations into notebooks for studies, sermons, questions, and everything else you want to return to.',
-              video: '/media/your-tools.webm',
+                'Keep related annotations together in notebooks, and toggle any notebook off when you want to focus on something else.',
+              video: '/media/videos/notebooks.webm',
             },
             {
               title: 'See every annotation together',
               subtitle:
                 'Review all your notes and highlights in one place, then jump right back to the verse that sparked them.',
-              video: '/media/search.webm',
+              video: '/media/videos/view-annotations.webm',
             },
           ]}
         />
@@ -157,25 +157,25 @@ export default function HomePage() {
               title: 'Dig deeper, right where you are',
               subtitle:
                 'Dig into the original language, read trusted commentary, or see relevant cross-references, all in the same place as the text.',
-              video: '/media/dig-deeper.webm',
+              video: '/media/videos/study-tools.webm',
             },
             {
               title: 'Search the whole Bible',
               subtitle:
                 "Search any word, phrase, or Strongs word across the entire Bible. Find the verse you're thinking of in seconds.",
-              video: '/media/search.webm',
+              video: '/media/videos/search.webm',
             },
             {
               title: 'Keep your study in view',
               subtitle:
-                'Open a study panel alongside Scripture, so cross-references, commentary, and word details stay in view as you read.',
-              video: '/media/dig-deeper.webm',
+                'Open a study panel alongside Scripture, so cross-references, commentaries, or the original language stay in view as you read.',
+              video: '/media/videos/study-panels.webm',
             },
             {
               title: 'Explore the words behind the text',
               subtitle:
-                'Look up words in the built-in lexicon and dictionary to bring context and meaning closer to the passage.',
-              video: '/media/dig-deeper.webm',
+                'Look up words in the built-in lexicon and dictionary to bring context and shed light on Scripture.',
+              video: '/media/videos/word-lookup.webm',
             },
           ]}
         />

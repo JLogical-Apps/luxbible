@@ -2,25 +2,37 @@ import Image from 'next/image';
 
 const screenshots = [
   {
-    src: '/media/app-store-screenshots/read-scripture.png',
+    src: '/media/app-store-screenshots/Screenshot 1.png',
     alt: 'Lux Bible reading experience',
   },
   {
-    src: '/media/app-store-screenshots/bible-plans.png',
-    alt: 'Lux Bible reading plans',
+    src: '/media/app-store-screenshots/Screenshot 2.png',
+    alt: 'Lux Bible search',
   },
   {
-    src: '/media/app-store-screenshots/annotations.png',
+    src: '/media/app-store-screenshots/Screenshot 3.png',
+    alt: 'Lux Bible bible plans',
+  },
+  {
+    src: '/media/app-store-screenshots/Screenshot 4.png',
     alt: 'Lux Bible annotations',
   },
   {
-    src: '/media/app-store-screenshots/study-tools.png',
-    alt: 'Lux Bible study tools',
+    src: '/media/app-store-screenshots/Screenshot 5.png',
+    alt: 'Lux Bible cross references',
   },
-  { src: '/media/app-store-screenshots/search.png', alt: 'Lux Bible search' },
-  { src: '/media/app-store-screenshots/lexicon.png', alt: 'Lux Bible lexicon' },
-  { src: '/media/app-store-screenshots/lexicon.png', alt: 'Lux Bible lexicon' },
-  { src: '/media/app-store-screenshots/lexicon.png', alt: 'Lux Bible lexicon' },
+  {
+    src: '/media/app-store-screenshots/Screenshot 6.png',
+    alt: 'Lux Bible navigation',
+  },
+  {
+    src: '/media/app-store-screenshots/Screenshot 7.png',
+    alt: 'Lux Bible study panels',
+  },
+  {
+    src: '/media/app-store-screenshots/Screenshot 8.png',
+    alt: 'Lux Bible toolbars',
+  },
 ];
 
 export default function AppStoreScreenshots() {
