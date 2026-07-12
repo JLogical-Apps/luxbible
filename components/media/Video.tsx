@@ -9,6 +9,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { cn } from '@/lib/utils';
 
 const loopFadeDuration = 260;
+const controlDismissDelay = 1000;
 
 export default function Video({
   src,
@@ -31,6 +32,8 @@ export default function Video({
   const videoRef = useRef<HTMLVideoElement>(null);
   const loopFadeStartedAtRef = useRef<number>();
   const loopRestartTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const controlDismissTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
+  const shouldDismissControlAfterPlayRef = useRef(false);
 
   useEffect(() => {
     const el = videoRef.current;
@@ -51,7 +54,9 @@ export default function Video({
       return;
     }
     clearTimeout(loopRestartTimeoutRef.current);
+    clearTimeout(controlDismissTimeoutRef.current);
     loopFadeStartedAtRef.current = undefined;
+    shouldDismissControlAfterPlayRef.current = false;
     setIsLoopFading(false);
     if (!active || !inView) {
       video.currentTime = 0;
@@ -65,7 +70,13 @@ export default function Video({
     }
   }, [active, inView]);
 
-  useEffect(() => () => clearTimeout(loopRestartTimeoutRef.current), []);
+  useEffect(
+    () => () => {
+      clearTimeout(loopRestartTimeoutRef.current);
+      clearTimeout(controlDismissTimeoutRef.current);
+    },
+    [],
+  );
 
   const beginLoopFade = useCallback(() => {
     if (loopFadeStartedAtRef.current) {
@@ -107,10 +118,27 @@ export default function Video({
       return;
     }
     if (video.paused) {
+      shouldDismissControlAfterPlayRef.current = true;
       void video.play();
     } else {
+      clearTimeout(controlDismissTimeoutRef.current);
+      shouldDismissControlAfterPlayRef.current = false;
+      setControlHidden(false);
       video.pause();
     }
+  }, []);
+
+  const handlePlay = useCallback(() => {
+    setIsPlaying(true);
+    if (!shouldDismissControlAfterPlayRef.current) {
+      return;
+    }
+    shouldDismissControlAfterPlayRef.current = false;
+    clearTimeout(controlDismissTimeoutRef.current);
+    controlDismissTimeoutRef.current = setTimeout(
+      () => setControlHidden(true),
+      controlDismissDelay,
+    );
   }, []);
 
   const isControlVisible =
@@ -123,7 +151,10 @@ export default function Video({
       className={cn('relative w-auto h-full cursor-pointer', className)}
       style={{ aspectRatio }}
       onClick={handleClick}
-      onMouseEnter={() => setIsHovering(true)}
+      onMouseEnter={() => {
+        setIsHovering(true);
+        setControlHidden(false);
+      }}
       onMouseLeave={() => setIsHovering(false)}
     >
       <div
@@ -168,7 +199,7 @@ export default function Video({
         preload="metadata"
         aria-label={ariaLabel}
         style={{ aspectRatio }}
-        onPlay={() => setIsPlaying(true)}
+        onPlay={handlePlay}
         onPause={() => setIsPlaying(false)}
         onTimeUpdate={handleTimeUpdate}
         onEnded={handleEnded}

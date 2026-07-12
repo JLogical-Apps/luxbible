@@ -61,7 +61,7 @@ export default function FeatureShowcase({ features }: { features: Feature[] }) {
             ariaLabel={feature.title}
             active={selectedIndex === i}
             className={cn(
-              'w-auto h-full max-h-[44rem] mx-auto',
+              'w-auto h-full max-h-[40rem] mx-auto',
               selectedIndex === i ? 'block' : 'hidden',
             )}
           />
