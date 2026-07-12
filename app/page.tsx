@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { CSSProperties } from 'react';
 
 import AppStoreButtons from '@/components/blocks/AppStoreButtons';
+import AppStoreScreenshots from '@/components/blocks/AppStoreScreenshots';
 import CtaButton from '@/components/blocks/CtaButton';
 import FeatureShowcase from '@/components/blocks/FeatureShowcase';
 import InstagramFeed from '@/components/blocks/InstagramFeed';
@@ -216,10 +217,13 @@ export default function HomePage() {
         }
         subtitle={site.description}
       >
-        <AppStoreButtons
-          appStoreUrl={site.appStoreUrl}
-          googlePlayUrl={site.googlePlayUrl}
-        />
+        <div className="flex flex-col gap-12">
+          <AppStoreButtons
+            appStoreUrl={site.appStoreUrl}
+            googlePlayUrl={site.googlePlayUrl}
+          />
+          <AppStoreScreenshots />
+        </div>
       </Section>
 
       <Section
