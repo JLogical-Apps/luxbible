@@ -80,7 +80,12 @@ class HighlightStylesPage extends HookConsumerWidget {
                           ),
                         ),
                       ),
-                      onPressed: () => context.push(AnnotationsPage(initialStyle: entry.$1)),
+                      onPressed: () async {
+                        final result = await context.push(AnnotationsPage(initialStyle: entry.$1));
+                        if (result != null && context.mounted) {
+                          context.pop(result);
+                        }
+                      },
                     ),
                   ),
                 )

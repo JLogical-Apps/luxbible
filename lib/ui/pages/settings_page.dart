@@ -154,7 +154,12 @@ class SettingsPage extends HookConsumerWidget {
                 StyledListItem.navigation(
                   title: 'Highlight Styles'.toText(),
                   leading: Symbols.format_ink_highlighter.toIcon(),
-                  onPressed: () => context.push(HighlightStylesPage()),
+                  onPressed: () async {
+                    final result = await context.push(HighlightStylesPage());
+                    if (result != null && context.mounted) {
+                      context.pop(result);
+                    }
+                  },
                 ),
                 StyledListItem.navigation(
                   title: 'Bookmarks'.toText(),
