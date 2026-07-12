@@ -205,6 +205,7 @@ class BiblePlansPage extends ConsumerWidget {
                 )
                 .toList(),
           ),
+          SizedBox(height: MediaQuery.paddingOf(context).bottom),
         ],
       ),
     );
