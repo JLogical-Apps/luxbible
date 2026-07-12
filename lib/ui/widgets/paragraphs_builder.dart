@@ -459,7 +459,9 @@ class ParagraphsBuilder extends HookWidget {
                 ? type.isLarge
                       ? [
                           if (paragraphIndex != 0)
-                            TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 1.5)),
+                            if (paragraphs[paragraphIndex - 1] case SectionParagraph(type: final previousType))
+                              if (type > previousType)
+                                TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 1.5)),
                           TextSpan(
                             text: text,
                             style: type == .ms ? bibleTextStyle.majorSection : bibleTextStyle.section,

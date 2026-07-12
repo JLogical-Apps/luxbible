@@ -147,6 +147,7 @@ class YouVersion {
       final paragraph = div.localName == 'table'
           ? tableParagraph()
           : switch (style) {
+              'ms' => sectionParagraph(.ms),
               's' || 's1' || 'cl' => sectionParagraph(.s1),
               's2' => sectionParagraph(.s2),
               'd' || 'qd' => sectionParagraph(.d),
