@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { CSSProperties, ReactNode } from 'react';
 
 import DotsBackground from '@/components/backgrounds/DotsBackground';
 import GridBackground from '@/components/backgrounds/GridBackground';
@@ -26,6 +26,7 @@ export default function Section({
   subtitle,
   children,
   mediaBelow,
+  paletteVars,
 }: {
   id?: string;
   background?: 'dots';
@@ -38,6 +39,7 @@ export default function Section({
   subtitle?: ReactNode;
   children?: ReactNode;
   mediaBelow?: ReactNode;
+  paletteVars?: CSSProperties;
 }) {
   const heading =
     titleSize === 'lg' || useH1 ? (
@@ -88,7 +90,7 @@ export default function Section({
   );
 
   return (
-    <section id={id}>
+    <section id={id} style={paletteVars}>
       {background === 'dots' ? <DotsBackground>{inner}</DotsBackground> : inner}
     </section>
   );

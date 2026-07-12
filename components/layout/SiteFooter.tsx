@@ -1,4 +1,10 @@
-import { IconBrandInstagram, IconMail } from '@tabler/icons-react';
+import {
+  IconBrandFacebook,
+  IconBrandInstagram,
+  IconBrandTiktok,
+  IconBrandYoutube,
+  IconMail,
+} from '@tabler/icons-react';
 import Link from 'next/link';
 
 import { site } from '@/lib/site';
@@ -9,6 +15,24 @@ const socials = [
     href: site.social.instagram,
     color: '#ec4899',
     icon: <IconBrandInstagram />,
+  },
+  {
+    name: 'Facebook',
+    href: site.social.facebook,
+    color: '#1877f2',
+    icon: <IconBrandFacebook />,
+  },
+  {
+    name: 'YouTube',
+    href: site.social.youtube,
+    color: '#ff0000',
+    icon: <IconBrandYoutube />,
+  },
+  {
+    name: 'TikTok',
+    href: site.social.tiktok,
+    color: '#25f4ee',
+    icon: <IconBrandTiktok />,
   },
   {
     name: 'Email',

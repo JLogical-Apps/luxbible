@@ -12,6 +12,9 @@ export const site = {
 
   social: {
     instagram: 'https://www.instagram.com/luxbible.app/',
+    facebook: 'https://www.facebook.com/people/Lux-Bible/61591758211559/',
+    youtube: 'https://www.youtube.com/@luxbibleapp',
+    tiktok: 'https://www.tiktok.com/@lux.bible',
     email: 'contact@luxbible.app',
   },
 
