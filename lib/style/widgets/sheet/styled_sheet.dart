@@ -35,6 +35,7 @@ class StyledSheet<T> extends HookConsumerWidget {
   final List<Widget> Function(BuildContext)? buttonsBuilder;
 
   final bool shrinkWrap;
+  final bool forceHeight;
 
   StyledSheet({
     super.key,
@@ -50,6 +51,7 @@ class StyledSheet<T> extends HookConsumerWidget {
     this.aboveButtons,
     this.buttonsBuilder,
     this.shrinkWrap = true,
+    this.forceHeight = false,
   }) : childrenBuilder = ((context, ref) => children);
 
   StyledSheet.child({
@@ -66,6 +68,7 @@ class StyledSheet<T> extends HookConsumerWidget {
     this.aboveButtons,
     this.buttonsBuilder,
     this.shrinkWrap = true,
+    this.forceHeight = false,
   }) : childrenBuilder = ((context, ref) => [child]);
 
   const StyledSheet.builder({
@@ -82,6 +85,7 @@ class StyledSheet<T> extends HookConsumerWidget {
     this.aboveButtons,
     this.buttonsBuilder,
     this.shrinkWrap = true,
+    this.forceHeight = false,
   });
 
   @override
@@ -243,6 +247,7 @@ class StyledSheet<T> extends HookConsumerWidget {
                 buttonsBuilder: buttonsBuilder,
                 children: children,
                 shrinkWrap: shrinkWrap,
+                forceHeight: forceHeight,
               ),
             ),
           ),
