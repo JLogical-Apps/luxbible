@@ -8,6 +8,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 
+const loopFadeDuration = 260;
+
 export default function Video({
   src,
   className,
@@ -25,7 +27,10 @@ export default function Video({
   const [isPlaying, setIsPlaying] = useState(true);
   const [controlHidden, setControlHidden] = useState(true);
   const [inView, setInView] = useState(false);
+  const [isLoopFading, setIsLoopFading] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const loopFadeStartedAtRef = useRef<number>();
+  const loopRestartTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
     const el = videoRef.current;
@@ -45,6 +50,9 @@ export default function Video({
     if (!video) {
       return;
     }
+    clearTimeout(loopRestartTimeoutRef.current);
+    loopFadeStartedAtRef.current = undefined;
+    setIsLoopFading(false);
     if (!active || !inView) {
       video.currentTime = 0;
       video.pause();
@@ -56,6 +64,42 @@ export default function Video({
       return () => clearTimeout(timeout);
     }
   }, [active, inView]);
+
+  useEffect(() => () => clearTimeout(loopRestartTimeoutRef.current), []);
+
+  const beginLoopFade = useCallback(() => {
+    if (loopFadeStartedAtRef.current) {
+      return;
+    }
+    loopFadeStartedAtRef.current = performance.now();
+    setIsLoopFading(true);
+  }, []);
+
+  const handleTimeUpdate = useCallback(() => {
+    const video = videoRef.current;
+    if (!video || !Number.isFinite(video.duration)) {
+      return;
+    }
+    if (video.duration - video.currentTime <= loopFadeDuration / 1000) {
+      beginLoopFade();
+    }
+  }, [beginLoopFade]);
+
+  const handleEnded = useCallback(() => {
+    beginLoopFade();
+    const fadeElapsed = performance.now() - (loopFadeStartedAtRef.current ?? 0);
+    const restartDelay = Math.max(0, loopFadeDuration - fadeElapsed);
+    loopRestartTimeoutRef.current = setTimeout(() => {
+      const video = videoRef.current;
+      if (!video) {
+        return;
+      }
+      video.currentTime = 0;
+      void video.play();
+      loopFadeStartedAtRef.current = undefined;
+      setIsLoopFading(false);
+    }, restartDelay);
+  }, [beginLoopFade]);
 
   const handleClick = useCallback(() => {
     const video = videoRef.current;
@@ -70,7 +114,9 @@ export default function Video({
   }, []);
 
   const isControlVisible =
-    ((isPlaying && isHovering) || !isPlaying) && !controlHidden;
+    ((isPlaying && isHovering) || !isPlaying) &&
+    !controlHidden &&
+    !isLoopFading;
 
   return (
     <div
@@ -80,6 +126,12 @@ export default function Video({
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
+      <div
+        className={cn(
+          'pointer-events-none absolute inset-0 z-20 rounded-2xl bg-background transition-opacity duration-300 ease-out',
+          isLoopFading ? 'opacity-100' : 'opacity-0',
+        )}
+      />
       <div className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
         <div
           className={cn(
@@ -112,13 +164,14 @@ export default function Video({
         className="h-full w-auto rounded-2xl"
         autoPlay
         muted
-        loop
         playsInline
         preload="metadata"
         aria-label={ariaLabel}
         style={{ aspectRatio }}
         onPlay={() => setIsPlaying(true)}
         onPause={() => setIsPlaying(false)}
+        onTimeUpdate={handleTimeUpdate}
+        onEnded={handleEnded}
       >
         <source src={src} type="video/webm" />
       </video>
