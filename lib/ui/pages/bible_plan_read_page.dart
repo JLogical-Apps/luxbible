@@ -1,14 +1,12 @@
 import 'package:bible/models/bible_plan.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
-import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/keyed_scroll_transformer.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/chapter_preview_page.dart';
-import 'package:bible/ui/widgets/bible_loading_error.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
-import 'package:bible/ui/widgets/paragraphs_builder.dart';
+import 'package:bible/ui/widgets/passage_builder.dart';
 import 'package:bible/ui/widgets/selection_toolbar.dart';
 import 'package:bible/ui/widgets/swipe_tab_view.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
@@ -96,61 +94,39 @@ class BiblePlanReadPage extends HookConsumerWidget {
           Expanded(
             child: SwipeTabView(
               controller: tabController,
-              children: passages.map((passage) {
-                final chapterReference = passage.references.first.toChapterReference();
-                final translation = user.translation.effectiveFor(chapterReference.book);
-
-                final paragraphsValue = ref.watch(
-                  verseSelectionParagraphsProvider(selection: passage, translation: translation),
-                );
-                if (paragraphsValue.hasError) {
-                  return BibleLoadingError(
-                    translation: translation,
-                    onRetry: () => ref.invalidate(
-                      chapterProvider(chapterReference: chapterReference, translation: translation),
-                      asReload: true,
-                    ),
-                  );
-                }
-                final paragraphs = paragraphsValue.value;
-
-                return KeyedScrollTransformer(
-                  scrollKey: 'passage',
-                  child: AnimatedOpacity(
-                    opacity: paragraphs == null ? 0 : 1,
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeInOutCubic,
-                    child: StyledScrollbar(
-                      child: SingleChildScrollView(
-                        physics: AlwaysScrollableScrollPhysics(),
-                        padding: .symmetric(horizontal: 24, vertical: 16),
-                        child: Column(
-                          crossAxisAlignment: .start,
-                          spacing: 16,
-                          children: [
-                            ParagraphsBuilder(
-                              paragraphs: paragraphs ?? [],
-                              chapterReference: chapterReference,
-                              user: user,
-                              translation: translation,
-                              selection: selection,
-                              onNavigateToVerseSelection: navigateToVerseSelection,
+              children: passages
+                  .map(
+                    (passage) => PassageBuilder(
+                      verseSelection: passage,
+                      selection: selection,
+                      onNavigateToVerseSelection: navigateToVerseSelection,
+                      contentBuilder: (context, passageContent) => KeyedScrollTransformer(
+                        scrollKey: 'passage',
+                        child: StyledScrollbar(
+                          child: SingleChildScrollView(
+                            physics: AlwaysScrollableScrollPhysics(),
+                            padding: .symmetric(horizontal: 24, vertical: 16),
+                            child: Column(
+                              crossAxisAlignment: .start,
+                              spacing: 16,
+                              children: [
+                                passageContent,
+                                StyledRectButton.secondary(
+                                  label: 'Read Entire Chapter'.toText(),
+                                  onPressed: () => ChapterPreviewPage.show(
+                                    context,
+                                    verseSelection: passage,
+                                    onNavigateToPassage: () => context.pop(passage),
+                                  ),
+                                ),
+                              ],
                             ),
-                            StyledRectButton.secondary(
-                              label: 'Read Entire Chapter'.toText(),
-                              onPressed: () => ChapterPreviewPage.show(
-                                context,
-                                verseSelection: passage,
-                                onNavigateToPassage: () => context.pop(passage),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              }).toList(),
+                  )
+                  .toList(),
             ),
           ),
         ],

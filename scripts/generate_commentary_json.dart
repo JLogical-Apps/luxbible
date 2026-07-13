@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/commentary_type.dart';
 import 'package:bible/models/reference/reference.dart';
+import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/range.dart';
 import 'package:collection/collection.dart';
@@ -98,17 +99,43 @@ String _inlineMarkdown(XmlNode node) => node.children
     .map(
       (node) => switch (node) {
         XmlText() => node.value,
-        XmlElement() => _wrapEmphasis(node.name.local, _inlineMarkdown(node)),
+        XmlElement() => _wrapInlineElement(node, _inlineMarkdown(node)),
         _ => '',
       },
     )
     .join();
 
-String _wrapEmphasis(String tag, String inner) => switch (tag) {
+String _wrapInlineElement(XmlElement element, String inner) => switch (element.name.local) {
+  'scripRef' => _wrapScriptureReference(element, inner),
   'b' || 'strong' => inner.trim().isEmpty ? '' : '**${inner.trim()}**',
   'i' || 'em' => inner.trim().isEmpty ? '' : '*${inner.trim()}*',
   _ => inner,
 };
+
+String _wrapScriptureReference(XmlElement element, String inner) {
+  final text = inner.trim();
+  final osisId = _supportedOsisId(element);
+  return text.isEmpty || osisId == null ? inner : '[${_escapeLinkText(text)}]($osisId)';
+}
+
+String? _supportedOsisId(XmlElement element) {
+  final osisRef = element.getAttribute('osisRef');
+  if (osisRef == null) return null;
+
+  final osisId = osisRef
+      .trim()
+      .split(RegExp(r'\s+'))
+      .map((reference) => reference.replaceFirst('Bible:', ''))
+      .join(' ');
+  try {
+    VerseSelection.fromOsisId(osisId);
+    return osisId;
+  } catch (_) {
+    return null;
+  }
+}
+
+String _escapeLinkText(String text) => text.replaceAll(r'\', r'\\').replaceAll('[', r'\[').replaceAll(']', r'\]');
 
 class CommentarySource {
   final CommentaryType type;

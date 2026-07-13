@@ -248,6 +248,10 @@ enum StudyAction {
             context,
             verseSelection: verseSelection,
             commentary: selectedCommentary,
+            onNavigateToVerseSelection: (verseSelection) {
+              context.pop();
+              onNavigateToVerseSelection(verseSelection);
+            },
           ),
         );
       });

@@ -76,6 +76,7 @@ sealed class StudyPanel with _$StudyPanel {
       context,
       verseSelection: verseSelection,
       commentary: type,
+      onNavigateToVerseSelection: onNavigateToVerseSelection,
     ),
     NotesStudyPanel() => () {
       final noteAnnotations = [

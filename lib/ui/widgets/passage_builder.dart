@@ -1,0 +1,63 @@
+import 'package:bible/models/bible/bible_translation.dart';
+import 'package:bible/models/reference/verse_selection.dart';
+import 'package:bible/providers/bibles_provider.dart';
+import 'package:bible/providers/user_provider.dart';
+import 'package:bible/style/style.dart';
+import 'package:bible/ui/widgets/bible_loading_error.dart';
+import 'package:bible/ui/widgets/bible_selection.dart';
+import 'package:bible/ui/widgets/paragraphs_builder.dart';
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+
+class PassageBuilder extends ConsumerWidget {
+  final VerseSelection verseSelection;
+  final BibleTranslation? translation;
+
+  final BibleSelection? selection;
+  final Function(VerseSelection)? onNavigateToVerseSelection;
+
+  final Widget Function(BuildContext context, Widget passage)? contentBuilder;
+
+  const PassageBuilder({
+    super.key,
+    required this.verseSelection,
+    this.translation,
+    this.selection,
+    this.onNavigateToVerseSelection,
+    this.contentBuilder,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (verseSelection.isEmpty) return SizedBox.shrink();
+
+    final chapterReference = verseSelection.references.first.toChapterReference();
+    final user = ref.watch(userProvider);
+    final translation = (this.translation ?? user.translation).effectiveFor(chapterReference.book);
+    final paragraphsValue = ref.watch(
+      verseSelectionParagraphsProvider(selection: verseSelection, translation: translation),
+    );
+    if (paragraphsValue.hasError) {
+      return BibleLoadingError(
+        translation: translation,
+        onRetry: () => ref.invalidate(
+          chapterProvider(chapterReference: chapterReference, translation: translation),
+          asReload: true,
+        ),
+      );
+    }
+
+    if (paragraphsValue.value case final paragraphs?) {
+      final passage = ParagraphsBuilder(
+        paragraphs: paragraphs,
+        chapterReference: chapterReference,
+        user: user,
+        translation: translation,
+        selection: selection,
+        onNavigateToVerseSelection: onNavigateToVerseSelection,
+      );
+      return StyledLoading(child: contentBuilder?.call(context, passage) ?? passage);
+    }
+    return StyledLoading();
+  }
+}
