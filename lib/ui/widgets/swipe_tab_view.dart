@@ -11,7 +11,7 @@ class SwipeTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SwipeGestureDetector(
-      index: controller.index,
+      index: () => controller.index,
       maxIndex: controller.length,
       onSwipe: (newIndex) =>
           controller.animateTo(newIndex, duration: Duration(milliseconds: 300), curve: Curves.easeInOutCubic),

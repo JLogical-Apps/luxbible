@@ -238,7 +238,7 @@ enum StudyAction {
           ),
           showDivider: false,
           childrenWrapper: (context, child) => SwipeGestureDetector(
-            index: index,
+            index: () => index,
             maxIndex: tabController.length,
             onSwipe: (newIndex) =>
                 tabController.animateTo(newIndex, duration: Duration(milliseconds: 300), curve: Curves.easeInOutCubic),

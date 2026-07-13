@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SwipeGestureDetector extends StatelessWidget {
-  final int index;
+  final int Function() index;
   final int maxIndex;
   final Function(int) onSwipe;
 
@@ -23,9 +23,9 @@ class SwipeGestureDetector extends StatelessWidget {
         const sensitivity = 8;
 
         final newIndex = delta.dx > sensitivity
-            ? index - 1
+            ? index() - 1
             : delta.dx < -sensitivity
-            ? index + 1
+            ? index() + 1
             : null;
 
         if (newIndex == null || newIndex < 0 || newIndex >= maxIndex) {
