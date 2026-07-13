@@ -444,11 +444,9 @@ class ParagraphsBuilder extends HookWidget {
 
     var maxPreviousVerseNum = 0;
     return chapter.paragraphs.mapIndexed((paragraphIndex, paragraph) {
-      final previousParagraph = paragraphIndex == 0
-          ? null
-          : chapter.paragraphs[paragraphIndex - 1].as<VersesParagraph>();
+      final previousParagraph = paragraphIndex == 0 ? null : chapter.paragraphs[paragraphIndex - 1];
       return MapEntry(paragraph, [
-        if (previousParagraph?.type.isPoetic == true &&
+        if (previousParagraph?.as<VersesParagraph>()?.type.isPoetic == true &&
             paragraph is VersesParagraph &&
             !paragraph.type.isPoetic &&
             user.themeLayout.paragraphs)
@@ -459,9 +457,8 @@ class ParagraphsBuilder extends HookWidget {
                 ? type.isLarge
                       ? [
                           if (paragraphIndex != 0)
-                            if (paragraphs[paragraphIndex - 1] case SectionParagraph(type: final previousType))
-                              if (type > previousType)
-                                TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 1.5)),
+                            if ((previousParagraph is! SectionParagraph || type > previousParagraph.type))
+                              TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 1.5)),
                           TextSpan(
                             text: text,
                             style: type == .ms ? bibleTextStyle.majorSection : bibleTextStyle.section,
