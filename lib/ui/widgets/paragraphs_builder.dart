@@ -17,6 +17,7 @@ import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/root_ref.dart' as root_ref;
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
+import 'package:bible/ui/sheets/preview_passage_sheet.dart';
 import 'package:bible/ui/widgets/annotated_span.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/highlight_underline.dart';
@@ -817,7 +818,18 @@ class ParagraphsBuilder extends HookWidget {
                 (context) => StyledSheet(
                   title: 'Footnotes'.toText(),
                   children: footnotes
-                      .map((footnote) => StyledListItem(title: SimpleMarkdown(text: footnote.text)))
+                      .map(
+                        (footnote) => StyledListItem(
+                          title: SimpleMarkdown(
+                            text: footnote.text,
+                            onLinkPressed: (text, link) => PreviewPassageSheet.show(
+                              context,
+                              verseSelection: VerseSelection.fromOsisId(link),
+                              onNavigateToVerseSelection: onNavigateToVerseSelection,
+                            ),
+                          ),
+                        ),
+                      )
                       .toList(),
                 ),
               ),

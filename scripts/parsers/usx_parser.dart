@@ -132,23 +132,25 @@ Book parseUsxBook(BookType type, String rawXml) {
 }
 
 String _footnoteMarkdown(XmlElement note) {
-  final runs = <(String, bool)>[];
-  void walk(XmlNode node, bool italic) {
+  final runs = <FootnoteMarkdownRun>[];
+  void walk(XmlNode node, bool italic, String? link) {
     for (final child in node.children) {
       switch (child) {
         case XmlText(:final value):
-          runs.add((value, italic));
+          runs.add((text: value, italic: italic, link: link));
         case XmlElement element when element.getAttribute('style') == 'fr':
           break;
+        case XmlElement element when element.localName == 'ref':
+          walk(element, italic, FootnoteMarkdown.osisIdFromUsxReference(element.getAttribute('loc')));
         case XmlElement element:
-          walk(element, italic || FootnoteMarkdown.italicStyles.contains(element.getAttribute('style')));
+          walk(element, italic || FootnoteMarkdown.italicStyles.contains(element.getAttribute('style')), link);
         default:
           break;
       }
     }
   }
 
-  walk(note, false);
+  walk(note, false, null);
   return FootnoteMarkdown.runsToMarkdown(runs);
 }
 

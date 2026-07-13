@@ -176,17 +176,21 @@ class YouVersion {
 }
 
 String _footnoteMarkdown(dom.Element note) {
-  final runs = <(String, bool)>[];
-  void walk(dom.Node node, bool italic) {
+  final runs = <FootnoteMarkdownRun>[];
+  void walk(dom.Node node, bool italic, String? link) {
     for (final child in node.nodes) {
       if (child is dom.Text) {
-        runs.add((child.data, italic));
+        runs.add((text: child.data, italic: italic, link: link));
       } else if (child is dom.Element && !child.classes.contains('fr')) {
-        walk(child, italic || child.classes.any((clazz) => FootnoteMarkdown.italicStyles.contains(clazz)));
+        walk(
+          child,
+          italic || child.classes.any((clazz) => FootnoteMarkdown.italicStyles.contains(clazz)),
+          child.classes.contains('ref') ? FootnoteMarkdown.osisIdFromUsxReference(child.attributes['usfm']) : link,
+        );
       }
     }
   }
 
-  walk(note, false);
+  walk(note, false, null);
   return FootnoteMarkdown.runsToMarkdown(runs);
 }

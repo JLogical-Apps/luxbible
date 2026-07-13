@@ -11,7 +11,7 @@ class PreviewPassageSheet {
   static Future<void> show(
     BuildContext context, {
     required VerseSelection verseSelection,
-    required Function(VerseSelection) onNavigateToVerseSelection,
+    Function(VerseSelection)? onNavigateToVerseSelection,
   }) => context.showStyledSheet(
     (context) => StyledSheet(
       title: verseSelection.format().toText(),
@@ -20,7 +20,7 @@ class PreviewPassageSheet {
           .map<Widget>(
             (selection) => Padding(
               padding: .all(16),
-              child: PassageBuilder(verseSelection: selection),
+              child: PassageBuilder(verseSelection: selection, onNavigateToVerseSelection: onNavigateToVerseSelection),
             ),
           )
           .intersperse(StyledDivider(height: 2))
@@ -33,7 +33,7 @@ class PreviewPassageSheet {
             ChapterPreviewPage.show(
               context,
               verseSelection: verseSelection,
-              onNavigateToPassage: () => onNavigateToVerseSelection(verseSelection),
+              onNavigateToPassage: () => onNavigateToVerseSelection?.call(verseSelection),
             );
           },
         ),
