@@ -15,7 +15,7 @@ import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
-import 'package:bible/ui/widgets/swipe_tab_view.dart';
+import 'package:bible/ui/widgets/swipe_gesture_detector.dart';
 import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
@@ -27,7 +27,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 enum StudyAction {
   compare,
@@ -226,39 +225,30 @@ enum StudyAction {
     } else if (this == .commentary) {
       context.showStyledSheet((context) {
         final tabController = useTabController(initialLength: user.commentariesOrDefault.length);
-        final selectedCommentary =
-            user.commentariesOrDefault[useListenableSelector(tabController, () => tabController.index)];
-
-        final controller = ModalScrollController.of(context);
+        final index = useListenableSelector(tabController, () => tabController.index);
+        final selectedCommentary = user.commentariesOrDefault[index];
 
         return StyledSheet(
           title: title().toText(),
           subtitle: regionFormat.toText(),
-          forceHeight: true,
+          shrinkWrap: false,
+          aboveDivider: StyledTabBar.scrollable(
+            tabController: tabController,
+            tabTitles: user.commentariesOrDefault.map((type) => type.title().toText()).toList(),
+          ),
           showDivider: false,
-          children: [
-            StyledTabBar.scrollable(
-              tabController: tabController,
-              tabTitles: user.commentariesOrDefault.map((type) => type.title().toText()).toList(),
-            ),
-            Expanded(
-              child: SwipeTabView(
-                controller: tabController,
-                children: user.commentariesOrDefault
-                    .map(
-                      (commentary) => StyledListView(
-                        controller: selectedCommentary == commentary ? controller : null,
-                        children: CommentarySheet.buildSheetChildren(
-                          context,
-                          verseSelection: verseSelection,
-                          commentary: commentary,
-                        ),
-                      ),
-                    )
-                    .toList(),
-              ),
-            ),
-          ],
+          childrenWrapper: (context, child) => SwipeGestureDetector(
+            index: index,
+            maxIndex: tabController.length,
+            onSwipe: (newIndex) =>
+                tabController.animateTo(newIndex, duration: Duration(milliseconds: 300), curve: Curves.easeInOutCubic),
+            child: child,
+          ),
+          children: CommentarySheet.buildSheetChildren(
+            context,
+            verseSelection: verseSelection,
+            commentary: selectedCommentary,
+          ),
         );
       });
     } else {

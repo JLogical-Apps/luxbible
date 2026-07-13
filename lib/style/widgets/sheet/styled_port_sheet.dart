@@ -12,7 +12,7 @@ class StyledPortSheet<T> extends StyledSheet<T> {
   final Port<T> port;
   final EdgeInsets bodyPadding;
 
-  const StyledPortSheet({
+  StyledPortSheet({
     super.key,
     required this.port,
     this.bodyPadding = const .only(left: 16, right: 16, top: 16),

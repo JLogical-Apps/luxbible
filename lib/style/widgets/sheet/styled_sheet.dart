@@ -29,7 +29,8 @@ class StyledSheet<T> extends HookConsumerWidget {
   final bool showDragHandle;
 
   final Key? childrenKey;
-  final List<Widget> Function(BuildContext context, WidgetRef ref) childrenBuilder;
+  final List<Widget> Function(BuildContext, WidgetRef) childrenBuilder;
+  final Widget Function(BuildContext, Widget child) childrenWrapper;
 
   final Widget? aboveButtons;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
@@ -48,11 +49,13 @@ class StyledSheet<T> extends HookConsumerWidget {
     this.showDragHandle = true,
     this.childrenKey,
     List<Widget> children = const [],
+    Widget Function(BuildContext, Widget child)? childrenWrapper,
     this.aboveButtons,
     this.buttonsBuilder,
     this.shrinkWrap = true,
     this.forceHeight = false,
-  }) : childrenBuilder = ((context, ref) => children);
+  }) : childrenBuilder = ((context, ref) => children),
+       childrenWrapper = childrenWrapper ?? ((context, child) => child);
 
   StyledSheet.child({
     super.key,
@@ -65,13 +68,15 @@ class StyledSheet<T> extends HookConsumerWidget {
     this.showDragHandle = true,
     this.childrenKey,
     required Widget child,
+    Widget Function(BuildContext, Widget child)? childrenWrapper,
     this.aboveButtons,
     this.buttonsBuilder,
     this.shrinkWrap = true,
     this.forceHeight = false,
-  }) : childrenBuilder = ((context, ref) => [child]);
+  }) : childrenBuilder = ((context, ref) => [child]),
+       childrenWrapper = childrenWrapper ?? ((context, child) => child);
 
-  const StyledSheet.builder({
+  StyledSheet.builder({
     super.key,
     required this.title,
     this.subtitle,
@@ -82,11 +87,12 @@ class StyledSheet<T> extends HookConsumerWidget {
     this.showDragHandle = true,
     this.childrenKey,
     required this.childrenBuilder,
+    Widget Function(BuildContext, Widget child)? childrenWrapper,
     this.aboveButtons,
     this.buttonsBuilder,
     this.shrinkWrap = true,
     this.forceHeight = false,
-  });
+  }) : childrenWrapper = childrenWrapper ?? ((context, child) => child);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -240,14 +246,17 @@ class StyledSheet<T> extends HookConsumerWidget {
           Flexible(
             child: DefaultTextStyle(
               style: context.textStyle.paragraphMd,
-              child: StyledDock(
-                key: childrenKey,
-                controller: scrollController,
-                aboveButtons: aboveButtons,
-                buttonsBuilder: buttonsBuilder,
-                children: children,
-                shrinkWrap: shrinkWrap,
-                forceHeight: forceHeight,
+              child: childrenWrapper(
+                context,
+                StyledDock(
+                  key: childrenKey,
+                  controller: scrollController,
+                  aboveButtons: aboveButtons,
+                  buttonsBuilder: buttonsBuilder,
+                  children: children,
+                  shrinkWrap: shrinkWrap,
+                  forceHeight: forceHeight,
+                ),
               ),
             ),
           ),
