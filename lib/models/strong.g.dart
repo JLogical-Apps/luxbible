@@ -12,7 +12,14 @@ _Strong _$StrongFromJson(Map<String, dynamic> json) => _Strong(
   pronunciation: json['p'] as String,
   transliteration: json['x'] as String,
   definition: json['d'] as String,
-  glossary: (json['g'] as List<dynamic>).map((e) => e as String).toList(),
+  description: json['s'] as String,
+  derivation: json['o'] as String?,
+  partOfSpeech: json['t'] as String?,
+  lexiconReference: json['r'] as String?,
+  relatedStrongIds: (json['g'] as List<dynamic>)
+      .map((e) => e as String)
+      .toList(),
+  kjvUsage: Map<String, int>.from(json['k'] as Map),
 );
 
 Map<String, dynamic> _$StrongToJson(_Strong instance) => <String, dynamic>{
@@ -21,5 +28,10 @@ Map<String, dynamic> _$StrongToJson(_Strong instance) => <String, dynamic>{
   'p': instance.pronunciation,
   'x': instance.transliteration,
   'd': instance.definition,
-  'g': instance.glossary,
+  's': instance.description,
+  'o': ?instance.derivation,
+  't': ?instance.partOfSpeech,
+  'r': ?instance.lexiconReference,
+  'g': instance.relatedStrongIds,
+  'k': instance.kjvUsage,
 };

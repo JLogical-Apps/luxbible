@@ -821,7 +821,7 @@ class ParagraphsBuilder extends HookWidget {
                       .map(
                         (footnote) => StyledListItem(
                           title: SimpleMarkdown(
-                            text: footnote.text,
+                            footnote.text,
                             onLinkPressed: (text, link) => PreviewPassageSheet.show(
                               context,
                               verseSelection: VerseSelection.fromOsisId(link),

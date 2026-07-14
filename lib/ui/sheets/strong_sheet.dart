@@ -8,9 +8,12 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
+import 'package:bible/ui/widgets/simple_markdown.dart';
 import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
+import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -26,12 +29,21 @@ class StrongSheet {
     final strongs = ref.read(strongsProvider);
     final strong = strongs[strongId];
 
-    final seeMoreStrongs = strong?.glossary.map((glossary) => strongs[glossary]).nonNulls.toList();
+    final seeMoreStrongs = strong?.relatedStrongIds.map((strongId) => strongs[strongId]).nonNulls.toList();
 
     final morphologyCode = word?.data?.morphology;
     final morphologyCodes = morphologyCode == null ? null : Morphology.splitCode(morphologyCode);
 
     final user = ref.read(userProvider);
+
+    void openStrong(BuildContext context, String strongId) {
+      context.pop();
+      StrongSheet.showWithBreadcrumbs(
+        context,
+        strongId: strongId,
+        onNavigateToVerseSelection: onNavigateToVerseSelection,
+      );
+    }
 
     await context.showStyledSheetWithBreadcrumbs(breadcrumbText: word?.data?.inflection ?? strong?.id ?? '', (context) {
       final selectedMorphologyCodeState = useState(morphologyCodes?.firstOrNull);
@@ -74,7 +86,30 @@ class StrongSheet {
                   StyledListItem(title: 'Root Word'.toText(), subtitle: strong.languageText.toText()),
                   StyledListItem(title: 'Transliteration'.toText(), subtitle: strong.transliteration.toText()),
                   StyledListItem(title: 'Pronunciation'.toText(), subtitle: strong.pronunciation.toText()),
-                  StyledListItem(title: 'Definition'.toText(), subtitle: strong.definition.toText()),
+                  if (strong.partOfSpeech case final partOfSpeech?)
+                    StyledListItem(title: 'Part of Speech'.toText(), subtitle: partOfSpeech.toText()),
+                  if (strong.lexiconReference case final lexiconReference?)
+                    StyledListItem(title: 'Lexicon Reference'.toText(), subtitle: lexiconReference.toText()),
+                  if (strong.derivation case final derivation?)
+                    StyledListItem(
+                      title: 'Derivation'.toText(),
+                      subtitle: SimpleMarkdown(derivation, onLinkPressed: (text, link) => openStrong(context, link)),
+                    ),
+                  StyledListItem(
+                    title: 'Definition'.toText(),
+                    subtitle: IndentedSimpleMarkdown(
+                      text: strong.definition,
+                      onLinkPressed: (text, link) => openStrong(context, link),
+                    ),
+                  ),
+                  if (strong.description != strong.definition)
+                    StyledListItem(
+                      title: 'Strong\'s Description'.toText(),
+                      subtitle: SimpleMarkdown(
+                        strong.description,
+                        onLinkPressed: (text, link) => openStrong(context, link),
+                      ),
+                    ),
                 ],
               ),
             if (morphologyCode != null && morphologyCodes != null && selectedMorphologyCode != null)
@@ -136,20 +171,22 @@ class StrongSheet {
                     .map(
                       (strong) => StyledListItem.navigation(
                         title: strong.id.toText(),
-                        subtitle: Text(
-                          '${strong.languageText}: ${strong.definition}',
-                          maxLines: 1,
-                          overflow: .ellipsis,
-                        ),
-                        onPressed: () {
-                          context.pop();
-                          StrongSheet.showWithBreadcrumbs(
-                            context,
-                            strongId: strong.id,
-                            onNavigateToVerseSelection: onNavigateToVerseSelection,
-                          );
-                        },
+                        subtitle: SimpleMarkdown('${strong.languageText}: ${strong.description}', maxLines: 1),
+                        onPressed: () => openStrong(context, strong.id),
                       ),
+                    )
+                    .toList(),
+              ),
+            if (strong != null && strong.kjvUsage.isNotEmpty)
+              StyledSection(
+                title: 'KJV Usage'.toText(),
+                subtitle: '${strong.kjvUsage.values.sum} occurrences'.toText(),
+                padding: .only(top: 24),
+                children: strong.kjvUsage
+                    .sortedByDescending((word, count) => count)
+                    .mapToIterable(
+                      (word, count) =>
+                          StyledListItem(size: .sm, title: word.toText(), trailing: count.toString().toText()),
                     )
                     .toList(),
               ),

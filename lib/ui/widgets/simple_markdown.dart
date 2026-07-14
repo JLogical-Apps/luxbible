@@ -16,9 +16,14 @@ class SimpleMarkdown extends HookWidget {
   final String text;
   final void Function(String text, String link)? onLinkPressed;
 
-  const SimpleMarkdown({super.key, required this.text, this.onLinkPressed});
+  final int? maxLines;
 
-  static final pattern = RegExp(r'\[((?:\\.|[^\]])*)\]\((.+?)\)|\*\*(.+?)\*\*|\*(.+?)\*', dotAll: true);
+  const SimpleMarkdown(this.text, {super.key, this.onLinkPressed, this.maxLines});
+
+  static final pattern = RegExp(
+    r'(?<!\\)\[((?:\\.|[^\]])*)\]\((.+?)\)|(?<!\\)\*\*(.+?)(?<!\\)\*\*|(?<!\\)\*(.+?)(?<!\\)\*',
+    dotAll: true,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +48,8 @@ class SimpleMarkdown extends HookWidget {
     );
 
     return Text.rich(
+      maxLines: maxLines,
+      overflow: .ellipsis,
       TextSpan(
         children: segments
             .mapIndexed(
@@ -138,4 +145,23 @@ class SimpleMarkdown extends HookWidget {
 
   String unescapeSimpleMarkdown(String text) =>
       text.replaceAllMapped(RegExp(r'\\(.)'), (match) => match.group(1) ?? '');
+}
+
+class IndentedSimpleMarkdown extends StatelessWidget {
+  final String text;
+  final void Function(String text, String link)? onLinkPressed;
+
+  const IndentedSimpleMarkdown({super.key, required this.text, this.onLinkPressed});
+
+  @override
+  Widget build(BuildContext context) => Column(
+    crossAxisAlignment: .stretch,
+    children: text.split('\n').map((line) {
+      final content = line.trimLeft();
+      return Padding(
+        padding: .only(left: (line.length - content.length) * 8),
+        child: SimpleMarkdown(content, onLinkPressed: onLinkPressed),
+      );
+    }).toList(),
+  );
 }

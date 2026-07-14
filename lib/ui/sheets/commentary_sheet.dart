@@ -39,7 +39,7 @@ class CommentarySheet {
                       child: DefaultTextStyle(
                         style: context.textStyle.paragraphMd,
                         child: SimpleMarkdown(
-                          text: note,
+                          note,
                           onLinkPressed: (text, link) => PreviewPassageSheet.show(
                             context,
                             verseSelection: VerseSelection.fromOsisId(link),
