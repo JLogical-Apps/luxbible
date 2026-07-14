@@ -276,3 +276,7 @@ extension on Iterable<MarkdownElement> {
     return combined == null ? [...normalized, element] : [...normalized.take(normalized.length - 1), combined];
   });
 }
+
+extension MarkdownStringExtensions on String {
+  String get withStrippedMarkdown => MarkdownUtils.fromSimpleMarkdown(this).plainText;
+}

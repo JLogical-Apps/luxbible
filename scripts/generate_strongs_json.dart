@@ -65,13 +65,14 @@ Map<String, dynamic> enrichStrong(
       .join('\n');
 
   final derivation = optionalField(bdbParagraphs, 'Origin');
-  final partOfSpeech = optionalField(bdbParagraphs, 'Part(s) of speech')?.cleanedPartOfSpeech;
+  final partOfSpeech = optionalField(bdbParagraphs, 'Part(s) of speech')?.cleanedPartOfSpeech?.withStrippedMarkdown;
   final lexiconReference = ['TDNT', 'TWOT']
       .map((name) => optionalField(bdbParagraphs, '$name entry'))
       .nonNulls
       .where((value) => value.toLowerCase() != 'none')
       .map((value) => '${strong['i'].toString().startsWith('G') ? 'TDNT' : 'TWOT'} $value')
-      .firstOrNull;
+      .firstOrNull
+      ?.withStrippedMarkdown;
 
   final lxxIndex = plusParagraphs.indexWhereOrNull((paragraph) => paragraph.text.contains('LXX related word'));
   final description = plusParagraphs.length > 3
