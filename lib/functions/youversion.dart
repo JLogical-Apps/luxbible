@@ -4,11 +4,10 @@ import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/models/bible/verse.dart';
 import 'package:bible/models/bible/word.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/utils/footnote_markdown.dart';
+import 'package:bible/utils/usx_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
-import 'package:html/dom.dart' as dom;
-import 'package:html/parser.dart' as html_parser;
+import 'package:xml/xml.dart';
 
 class YouVersion {
   static final Dio dio = Dio(
@@ -28,60 +27,67 @@ class YouVersion {
   }
 
   static Chapter parseChapter(String content) {
-    final fragment = html_parser.parseFragment(content);
-
-    final root = fragment.children.length == 1 && fragment.children.single.localName == 'div'
-        ? fragment.children.single
-        : fragment;
+    final root = XmlDocument.parse(content).rootElement;
 
     int? lastVerseNum;
 
-    List<Verse> parseVerses(dom.Node node, {bool isRedLetters = false, bool isItalic = false}) => node.nodes
+    List<Verse> parseVerses(XmlNode node, {bool isRedLetters = false, bool isItalic = false}) => node.children
         .expand<Verse>(
           (child) => switch (child) {
-            dom.Text() when lastVerseNum != null => [
+            XmlText(:final value) when lastVerseNum != null => [
               Verse(
                 verseNum: lastVerseNum!,
-                words: [Word(text: child.text, redLetters: isRedLetters, italic: isItalic)],
+                words: [Word(text: value, redLetters: isRedLetters, italic: isItalic)],
               ),
             ],
-            dom.Element child when child.classes.contains('yv-v') => () {
-              lastVerseNum = int.parse(child.attributes['v']!);
+            XmlElement child when child.classNames.contains('yv-v') => () {
+              lastVerseNum = int.parse(child.getAttribute('v')!);
               return <Verse>[];
             }(),
-            dom.Element child when child.classes.contains('yv-vlbl') => [],
-            dom.Element child when child.classes.contains('wj') => parseVerses(
+            XmlElement child when child.classNames.contains('yv-vlbl') => [],
+            XmlElement child when child.classNames.contains('wj') => parseVerses(
               child,
               isRedLetters: true,
               isItalic: isItalic,
             ),
-            dom.Element child when child.classes.contains('it') => parseVerses(
+            XmlElement child when child.classNames.contains('it') => parseVerses(
               child,
               isRedLetters: isRedLetters,
               isItalic: true,
             ),
-            dom.Element child when child.classes.contains('yv-n') => [
+            XmlElement child when child.classNames.contains('yv-n') => [
               Verse(
                 verseNum: lastVerseNum ?? 0,
                 words: [],
-                footnotes: [Footnote(offset: 0, text: _footnoteMarkdown(child))],
+                footnotes: [Footnote(offset: 0, text: UsxUtils.noteToMarkdown(child))],
               ),
             ],
-            dom.Element child => parseVerses(child, isRedLetters: isRedLetters, isItalic: isItalic),
+            XmlElement child => parseVerses(child, isRedLetters: isRedLetters, isItalic: isItalic),
             _ => [],
           },
         )
         .withSameVersesCombined()
         .toList();
 
-    final paragraphs = root.children.fold(<Paragraph>[], (paragraphs, div) {
+    final paragraphs = root.childElements.fold(<Paragraph>[], (paragraphs, div) {
       // Class is e.g. "s1 yv-h" or "p"; the USX-style token is the non-`yv-` one.
-      final style = div.classes.firstWhereOrNull((className) => !className.startsWith('yv-'));
+      final style = div.classNames.firstWhereOrNull((className) => !className.startsWith('yv-'));
 
       SectionParagraph sectionParagraph(SectionType sectionType) => SectionParagraph(
-        text: div.nodes
-            .where((node) => node.attributes['class']?.startsWith('yv-') != true)
-            .map((node) => node.text)
+        text: div.children
+            .where(
+              (node) => switch (node) {
+                XmlElement() => node.getAttribute('class')?.startsWith('yv-') != true,
+                _ => true,
+              },
+            )
+            .map(
+              (node) => switch (node) {
+                XmlText(:final value) => value,
+                XmlElement() => node.innerText,
+                _ => '',
+              },
+            )
             .join(),
         type: sectionType,
       );
@@ -117,9 +123,9 @@ class YouVersion {
       VersesParagraph? tableParagraph() {
         final previousLastVerseNum = lastVerseNum;
         final verses = div
-            .querySelectorAll('tr')
+            .findAllElements('tr')
             .expandIndexed<Verse>((rowIndex, row) {
-              final cells = row.children.where((cell) => cell.localName == 'td').toList();
+              final cells = row.childElements.where((cell) => cell.localName == 'td').toList();
               return [
                 if (rowIndex != 0)
                   Verse(
@@ -175,22 +181,7 @@ class YouVersion {
   }
 }
 
-String _footnoteMarkdown(dom.Element note) {
-  final runs = <FootnoteMarkdownRun>[];
-  void walk(dom.Node node, bool italic, String? link) {
-    for (final child in node.nodes) {
-      if (child is dom.Text) {
-        runs.add((text: child.data, italic: italic, link: link));
-      } else if (child is dom.Element && !child.classes.contains('fr')) {
-        walk(
-          child,
-          italic || child.classes.any((clazz) => FootnoteMarkdown.italicStyles.contains(clazz)),
-          child.classes.contains('ref') ? FootnoteMarkdown.osisIdFromUsxReference(child.attributes['usfm']) : link,
-        );
-      }
-    }
-  }
-
-  walk(note, false, null);
-  return FootnoteMarkdown.runsToMarkdown(runs);
+extension on XmlElement {
+  Set<String> get classNames =>
+      (getAttribute('class') ?? '').split(RegExp(r'\s+')).where((name) => name.isNotEmpty).toSet();
 }

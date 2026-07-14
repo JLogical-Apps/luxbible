@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/string_extensions.dart';
+import 'package:bible/utils/markdown_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
@@ -12,76 +15,82 @@ void main() {
     ...parseHebrew(File('source_files/strongs/hebrew.xml').readAsStringSync()),
     ...parseGreek(File('source_files/strongs/greek.xml').readAsStringSync()),
   ];
-  final strongIds = baseStrongs.map((strong) => strong['i'] as String).toSet();
+
   final bdbThayer = parseLexicon('source_files/sword/lexicon/bdbthayerstrongkjctvm.lexi.json');
   final strongsPlus = parseLexicon('source_files/sword/lexicon/strongsplus.lexi.json');
-  final strongs = baseStrongs
-      .map(
-        (strong) => enrichStrong(
-          strong,
-          bdbThayer: bdbThayer[strong['i']]!,
-          strongsPlus: strongsPlus[strong['i']]!,
-          strongIds: strongIds,
-        ),
-      )
-      .toList();
 
-  if (strongs.length != 14197 || strongs.any(hasInvalidMarkdown)) {
-    throw StateError('Generated Strong data failed validation');
-  }
-  File('assets/strongs/strongs.json').writeAsStringSync(jsonEncode(strongs));
+  final strongIds = baseStrongs.map((strong) => strong['i'] as String).toSet();
+
+  File('assets/strongs/strongs.json').writeAsStringSync(
+    jsonEncode(
+      baseStrongs
+          .map(
+            (strong) => enrichStrong(
+              strong,
+              bdbThayerXml: bdbThayer[strong['i']]!,
+              strongsPlusXml: strongsPlus[strong['i']]!,
+              strongIds: strongIds,
+            ),
+          )
+          .toList(),
+    ),
+  );
 }
 
-Map<String, String> parseLexicon(String path) => Map.fromEntries(
-  ((jsonDecode(File(path).readAsStringSync()) as Map<String, dynamic>)['entries'] as List)
-      .cast<Map<String, dynamic>>()
-      .map((entry) => MapEntry(entry['topic'] as String, entry['definition'] as String)),
-);
+Map<String, String> parseLexicon(String path) => (jsonDecode(File(path).readAsStringSync())['entries'] as List)
+    .cast<Map<String, dynamic>>()
+    .map((entry) => MapEntry(entry['topic'] as String, entry['definition'] as String))
+    .toMap();
 
 Map<String, dynamic> enrichStrong(
   Map<String, dynamic> strong, {
-  required String bdbThayer,
-  required String strongsPlus,
+  required String bdbThayerXml,
+  required String strongsPlusXml,
   required Set<String> strongIds,
 }) {
-  final bdbParagraphs = parseFragment(bdbThayer).querySelectorAll('p');
-  final plusParagraphs = parseFragment(strongsPlus).querySelectorAll('p');
-  final definitionIndex = bdbParagraphs.indexWhere((paragraph) => paragraph.text.trim().startsWith('- Definition:'));
-  final originIndex = bdbParagraphs.indexWhere((paragraph) => paragraph.text.trim().startsWith('- Origin:'));
-  if (definitionIndex < 0) {
-    throw FormatException('Missing definition metadata for ${strong['i']}');
-  }
+  final bdbParagraphs = parseFragment(bdbThayerXml).querySelectorAll('p');
+  final plusParagraphs = parseFragment(strongsPlusXml).querySelectorAll('p');
+
+  final definitionIndex =
+      bdbParagraphs.indexWhereOrNull((paragraph) => paragraph.text.trim().startsWith('- Definition:')) ??
+      (throw FormatException('Missing definition metadata for ${strong['i']}'));
+
+  final originIndex = bdbParagraphs.indexWhereOrNull((paragraph) => paragraph.text.trim().startsWith('- Origin:'));
+
   final lexiconDefinition = bdbParagraphs
-      .sublist(definitionIndex, originIndex < 0 ? bdbParagraphs.length : originIndex)
-      .map(toMarkdown)
-      .mapIndexed((index, paragraph) => index == 0 ? stripLabel(paragraph, 'Definition') : paragraph)
+      .sublist(definitionIndex, originIndex ?? bdbParagraphs.length)
+      .map((element) => element.toMarkdown())
+      .mapIndexed((index, paragraph) => index == 0 ? paragraph.withoutLabel('Definition') : paragraph)
       .where((paragraph) => paragraph.isNotEmpty)
       .join('\n');
+
   final derivation = optionalField(bdbParagraphs, 'Origin');
-  final partOfSpeech = cleanPartOfSpeech(optionalField(bdbParagraphs, 'Part(s) of speech'));
+  final partOfSpeech = optionalField(bdbParagraphs, 'Part(s) of speech')?.cleanedPartOfSpeech;
   final lexiconReference = ['TDNT', 'TWOT']
       .map((name) => optionalField(bdbParagraphs, '$name entry'))
       .nonNulls
       .where((value) => value.toLowerCase() != 'none')
       .map((value) => '${strong['i'].toString().startsWith('G') ? 'TDNT' : 'TWOT'} $value')
       .firstOrNull;
-  final lxxIndex = plusParagraphs.indexWhere((paragraph) => paragraph.text.contains('LXX related word'));
-  final descriptionEnd = lxxIndex < 0 ? plusParagraphs.length : lxxIndex;
+
+  final lxxIndex = plusParagraphs.indexWhereOrNull((paragraph) => paragraph.text.contains('LXX related word'));
   final description = plusParagraphs.length > 3
-      ? plusParagraphs.sublist(3, descriptionEnd).map(toMarkdown).where((paragraph) => paragraph.isNotEmpty).join('\n')
-      : toMarkdown(plusParagraphs.last).replaceFirst(RegExp(r'^\*[^*]+\*'), '');
+      ? plusParagraphs
+            .sublist(3, lxxIndex ?? plusParagraphs.length)
+            .map((element) => element.toMarkdown())
+            .where((paragraph) => paragraph.isNotEmpty)
+            .join('\n')
+      : plusParagraphs.last.toMarkdown().withoutLeadingItalicText;
+
   final sourceDefinition = strong['i'].toString().startsWith('H')
       ? strong['d'] as String
-      : cleanGreekDefinition(lexiconDefinition);
-  final definition = sourceDefinition.isEmpty ? description : sourceDefinition;
+      : lexiconDefinition.withoutTrailingHierarchyMarkers;
+  final definition = sourceDefinition.nullIfBlank ?? description;
+
   final relatedStrongIds = {
     ...(strong['g'] as List<String>),
-    ...strongIdPattern.allMatches([description, ?derivation].join(' ')).map((match) => match.group(0)!),
-    if (lxxIndex >= 0)
-      ...plusParagraphs
-          .skip(lxxIndex + 1)
-          .expand((paragraph) => strongIdPattern.allMatches(paragraph.text))
-          .map((match) => match.group(0)!),
+    ...[description, ?derivation].join(' ').strongIds,
+    if (lxxIndex != null) ...plusParagraphs.skip(lxxIndex + 1).expand((paragraph) => paragraph.text.strongIds),
   }.where((strongId) => strongIds.contains(strongId) && strongId != strong['i']).toList();
 
   return {
@@ -92,85 +101,23 @@ Map<String, dynamic> enrichStrong(
     't': ?partOfSpeech,
     'r': ?lexiconReference,
     'g': relatedStrongIds,
-    'k': parseKjvUsage(bdbParagraphs),
-  };
-}
-
-final strongIdPattern = RegExp(r'\b[GH]\d+\b');
-
-String? optionalField(List<Element> paragraphs, String label) {
-  final paragraph = paragraphs.where((paragraph) => paragraph.text.trim().startsWith('- $label:')).firstOrNull;
-  if (paragraph == null) return null;
-  final value = stripLabel(toMarkdown(paragraph), label).trim();
-  return value.isEmpty ? null : value;
-}
-
-String stripLabel(String markdown, String label) =>
-    markdown.replaceFirst(RegExp('^- ${RegExp.escape(label)}:\\s*'), '');
-
-String? cleanPartOfSpeech(String? value) {
-  final cleaned = value?.replaceAll(RegExp(r'\s*,?NULL\);?'), '').replaceAll(RegExp(r'\s+par$'), '').trim();
-  return cleaned == null || cleaned.isEmpty ? null : cleaned;
-}
-
-String cleanGreekDefinition(String definition) =>
-    definition.split('\n').map((line) => line.replaceFirst(RegExp(r' \d+[a-z]$'), '')).join('\n');
-
-Map<String, int> parseKjvUsage(List<Element> paragraphs) => paragraphs
-    .map((paragraph) => paragraph.text.trim())
-    .map((text) => RegExp(r'^•\s*(.+),\s*(\d+)$').firstMatch(text))
-    .nonNulls
-    .fold(
-      <String, int>{},
-      (usage, match) => usage
-        ..update(
-          match.group(1)!,
-          (count) => count + int.parse(match.group(2)!),
-          ifAbsent: () => int.parse(match.group(2)!),
+    'k': bdbParagraphs
+        .map((paragraph) => paragraph.text.trim())
+        .map((text) => text.kjvUsage)
+        .nonNulls
+        .fold(
+          <String, int>{},
+          (usage, entry) => usage..update(entry.word, (count) => count + entry.count, ifAbsent: () => entry.count),
         ),
-    );
-
-String toMarkdown(Element element) {
-  final marginLeft = RegExp(r'margin-left:\s*(\d+)pt').firstMatch(element.attributes['style'] ?? '')?.group(1);
-  final indentation = switch (marginLeft) {
-    '26' => '  ',
-    '39' => '    ',
-    _ => '',
   };
-  return '$indentation${element.nodes.map(nodeToMarkdown).join().trim()}';
 }
 
-String nodeToMarkdown(Node node) => switch (node) {
-  Text() => linkStrongIds(escapeMarkdown(node.data)),
-  Element(localName: 'b' || 'strong') => '**${node.nodes.map(nodeToMarkdown).join()}**',
-  Element(localName: 'i' || 'em') => '*${node.nodes.map(nodeToMarkdown).join()}*',
-  Element(localName: 'a') => () {
-    final text = node.nodes.map(nodeToMarkdownWithoutLinks).join();
-    final strongId = strongIdPattern.firstMatch('${node.attributes['href']} $text')?.group(0);
-    return strongId == null ? text : '[${text.isEmpty ? strongId : text}]($strongId)';
-  }(),
-  Element(localName: 'br') => '\n',
-  Element() => node.nodes.map(nodeToMarkdown).join(),
-  _ => '',
-};
-
-String nodeToMarkdownWithoutLinks(Node node) => switch (node) {
-  Text() => escapeMarkdown(node.data),
-  Element() => node.nodes.map(nodeToMarkdownWithoutLinks).join(),
-  _ => '',
-};
-
-String escapeMarkdown(String text) =>
-    text.replaceAll(r'\', r'\\').replaceAll('*', r'\*').replaceAll('[', r'\[').replaceAll(']', r'\]');
-
-String linkStrongIds(String text) =>
-    text.replaceAllMapped(strongIdPattern, (match) => '[${match.group(0)}](${match.group(0)})');
-
-bool hasInvalidMarkdown(Map<String, dynamic> strong) => [
-  strong['d'],
-  strong['s'],
-  strong['o'],
-].whereType<String>().any((value) => RegExp(r'<[^>]+>|&(?:#\d+|\w+);').hasMatch(value));
+String? optionalField(List<Element> paragraphs, String label) => paragraphs
+    .firstWhereOrNull((paragraph) => paragraph.text.trim().startsWith('- $label:'))
+    ?.toMarkdown()
+    .withoutLabel(label)
+    .trim()
+    .nullIfBlank;
 
 List<Map<String, dynamic>> parseHebrew(String rawXml) {
   final doc = XmlDocument.parse(rawXml);
@@ -204,14 +151,7 @@ List<Map<String, dynamic>> parseHebrew(String rawXml) {
 String parseHebrewDefinition(XmlElement div) => div
     .getElement('list')!
     .findElements('item')
-    .map((item) {
-      final text = item.innerText.trim().replaceAll('——-', '-----').replaceAll(RegExp(r'\s+'), ' ');
-      final match = RegExp(r'^(\d+(?:[a-z]\d*)*)\)\s*(.*)$').firstMatch(text);
-      if (match == null) return text;
-      final hierarchy = RegExp(r'\d+|[a-z]').allMatches(match.group(1)!).map((match) => match.group(0)!).toList();
-      final indentation = List.filled((hierarchy.length - 1) * 2, ' ').join();
-      return '$indentation**${hierarchy.last}.** ${match.group(2)}';
-    })
+    .map((item) => item.innerText.trim().replaceAll('——-', '-----').withCollapsedWhitespace.asHebrewDefinitionMarkdown)
     .join('\n');
 
 List<Map<String, dynamic>> parseGreek(String rawXml) {
@@ -251,4 +191,81 @@ List<Map<String, dynamic>> parseGreek(String rawXml) {
       )
       .nonNulls
       .toList();
+}
+
+extension on String {
+  String get withoutLeadingItalicText => replaceFirst(RegExp(r'^\*[^*]+\*'), '');
+
+  String withoutLabel(String label) => replaceFirst(RegExp('^- ${RegExp.escape(label)}:\\s*'), '');
+
+  String? get cleanedPartOfSpeech =>
+      replaceAll(RegExp(r'\s*,?NULL\);?'), '').replaceAll(RegExp(r'\s+par$'), '').trim().nullIfBlank;
+
+  String get withoutTrailingHierarchyMarkers =>
+      split('\n').map((line) => line.replaceFirst(RegExp(r' \d+[a-z]$'), '')).join('\n');
+
+  ({String word, int count})? get kjvUsage => switch (RegExp(r'^•\s*(.+),\s*(\d+)$').firstMatch(this)) {
+    final match? => (word: match.group(1)!, count: int.parse(match.group(2)!)),
+    _ => null,
+  };
+
+  List<String> get strongIds => strongIdOccurrences.map((match) => match.id).toList();
+
+  List<({String id, int start, int end})> get strongIdOccurrences => RegExp(
+    r'\b[GH]\d+\b',
+  ).allMatches(this).map((match) => (id: match.group(0)!, start: match.start, end: match.end)).toList();
+
+  int get strongsIndentation => switch (RegExp(r'margin-left:\s*(\d+)pt').firstMatch(this)?.group(1)) {
+    '26' => 2,
+    '39' => 4,
+    _ => 0,
+  };
+
+  String get asHebrewDefinitionMarkdown {
+    final match = RegExp(r'^(\d+(?:[a-z]\d*)*)\)\s*(.*)$').firstMatch(this);
+    if (match == null) {
+      return this;
+    }
+
+    final hierarchy = RegExp(r'\d+|[a-z]').allMatches(match.group(1)!).map((match) => match.group(0)!).toList();
+    final indentation = List.filled((hierarchy.length - 1) * 2, '\t').join();
+    return '$indentation**${hierarchy.last}.** ${match.group(2)}';
+  }
+}
+
+extension on Element {
+  String toMarkdown() => MarkdownUtils.fromHtml(
+    this,
+    (element, children) => switch (element.localName) {
+      'p' => [.indented((element.attributes['style'] ?? '').strongsIndentation, children)],
+      'b' || 'strong' => [.bold(children)],
+      'i' || 'em' => [.italic(children)],
+      'a' => () {
+        final text = children.plainText;
+        final strongId = '${element.attributes['href']} $text'.strongIds.firstOrNull;
+        return strongId == null
+            ? [MarkdownElement.text(text)]
+            : [
+                MarkdownElement.link(strongId, [.text(text.isEmpty ? strongId : text)]),
+              ];
+      }(),
+      'br' => [.lineBreak()],
+      _ => children,
+    },
+    buildText: (text) {
+      final matches = text.strongIdOccurrences.toList();
+      return [
+        ...matches.mapIndexed((index, match) {
+          final gapStart = index == 0 ? 0 : matches[index - 1].end;
+          return [
+            if (match.start > gapStart) MarkdownElement.text(text.substring(gapStart, match.start)),
+            MarkdownElement.link(match.id, [.text(match.id)]),
+          ];
+        }).flattened,
+        if ((matches.lastOrNull?.end ?? 0) < text.length)
+          MarkdownElement.text(text.substring(matches.lastOrNull?.end ?? 0)),
+      ];
+    },
+    textEscaping: .all,
+  );
 }

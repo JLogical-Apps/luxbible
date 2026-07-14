@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:collection/collection.dart';
+import 'package:utils_core/utils_core.dart';
 
 extension BibleListExtensions<T> on List<T> {
   List<T> withToggle(T item) => contains(item) ? ([...this]..remove(item)) : [...this, item];
@@ -110,10 +111,6 @@ extension BibleIterableExtensions<T> on Iterable<T> {
   T minBy(num Function(T) numMapper) => reduce((a, b) => numMapper(a) < numMapper(b) ? a : b);
   T? maxByOrNull(num Function(T) numMapper) => isEmpty ? null : reduce((a, b) => numMapper(a) > numMapper(b) ? a : b);
   T? minByOrNull(num Function(T) numMapper) => isEmpty ? null : reduce((a, b) => numMapper(a) < numMapper(b) ? a : b);
-}
-
-extension BibleMapEntryIterableExtensions<K, V> on Iterable<MapEntry<K, V>> {
-  Map<K, V> toMap() => Map.fromEntries(this);
 }
 
 extension BibleFutureMapEntryIterableExtensions<K, V> on Iterable<Future<MapEntry<K, V>>> {

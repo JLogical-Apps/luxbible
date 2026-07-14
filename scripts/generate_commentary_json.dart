@@ -6,6 +6,7 @@ import 'package:bible/models/commentary_type.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/markdown_utils.dart';
 import 'package:bible/utils/range.dart';
 import 'package:collection/collection.dart';
 import 'package:utils_core/utils_core.dart';
@@ -56,7 +57,7 @@ Map<String, String> _extractNotes(XmlDocument doc, CommentaryType type) {
         pendingRef = element.getAttribute('osisRef')?.split(':').last;
       case 'div' when element.getAttribute('class') == 'Commentary':
         if (pendingRef case final ref?) {
-          final markdown = _divToMarkdown(element);
+          final markdown = _commentaryMarkdown(element.findAllElements('p'));
           if (markdown.isNotEmpty) {
             notes.update(ref, (existing) => '$existing\n\n$markdown', ifAbsent: () => markdown);
           }
@@ -78,47 +79,37 @@ String? _referenceOf(XmlNode? container) => container
     .first
     .mapIfNonNull((book) => Reference(book: BookType.fromOsisId(book), chapterNum: 1, verseNum: 0).osisId());
 
-String _introMarkdown(Iterable<XmlElement> elements) => elements
-    .expand((element) => element.name.local == 'p' ? [element] : element.findAllElements('p'))
-    .where((p) => !_isSkippedParagraph(p.getAttribute('class') ?? ''))
-    .map((p) => _inlineMarkdown(p).replaceAll(RegExp(r'\s+'), ' ').trim())
-    .where((markdown) => markdown.isNotEmpty && markdown.toUpperCase() != 'INTRODUCTION')
-    .join('\n\n');
+String _introMarkdown(Iterable<XmlElement> elements) => _commentaryMarkdown(
+  elements.expand((element) => element.name.local == 'p' ? [element] : element.findAllElements('p')),
+  skipIntroduction: true,
+);
 
-String _divToMarkdown(XmlElement div) => div
-    .findAllElements('p')
-    .where((p) => !_isSkippedParagraph(p.getAttribute('class') ?? ''))
-    .map((p) => _inlineMarkdown(p).replaceAll(RegExp(r'\s+'), ' ').trim())
-    .where((markdown) => markdown.isNotEmpty)
-    .join('\n\n');
+String _commentaryMarkdown(Iterable<XmlElement> paragraphs, {bool skipIntroduction = false}) =>
+    MarkdownUtils.fromXmlNodes(paragraphs, (element, children) {
+      if (element.name.local == 'p') {
+        if (_isSkippedParagraph(element.getAttribute('class') ?? '') ||
+            (skipIntroduction && children.plainText.trim().toUpperCase() == 'INTRODUCTION')) {
+          return [];
+        }
+        return [.paragraph(children)];
+      }
+      if (element.name.local == 'scripRef') {
+        if (_getSupportedOsisId(element) case final osisId?) {
+          return [.link(osisId, children)];
+        }
+        return children;
+      }
+      return switch (element.name.local) {
+        'b' || 'strong' => [.bold(children)],
+        'i' || 'em' => [.italic(children)],
+        _ => children,
+      };
+    }).trim();
 
 bool _isSkippedParagraph(String className) =>
     className == 'Footnote' || className == 'Center' || className.startsWith('TableCaption');
 
-String _inlineMarkdown(XmlNode node) => node.children
-    .map(
-      (node) => switch (node) {
-        XmlText() => node.value,
-        XmlElement() => _wrapInlineElement(node, _inlineMarkdown(node)),
-        _ => '',
-      },
-    )
-    .join();
-
-String _wrapInlineElement(XmlElement element, String inner) => switch (element.name.local) {
-  'scripRef' => _wrapScriptureReference(element, inner),
-  'b' || 'strong' => inner.trim().isEmpty ? '' : '**${inner.trim()}**',
-  'i' || 'em' => inner.trim().isEmpty ? '' : '*${inner.trim()}*',
-  _ => inner,
-};
-
-String _wrapScriptureReference(XmlElement element, String inner) {
-  final text = inner.trim();
-  final osisId = _supportedOsisId(element);
-  return text.isEmpty || osisId == null ? inner : '[${_escapeLinkText(text)}]($osisId)';
-}
-
-String? _supportedOsisId(XmlElement element) {
+String? _getSupportedOsisId(XmlElement element) {
   final osisRef = element.getAttribute('osisRef');
   if (osisRef == null) return null;
 
@@ -134,8 +125,6 @@ String? _supportedOsisId(XmlElement element) {
     return null;
   }
 }
-
-String _escapeLinkText(String text) => text.replaceAll(r'\', r'\\').replaceAll('[', r'\[').replaceAll(']', r'\]');
 
 class CommentarySource {
   final CommentaryType type;

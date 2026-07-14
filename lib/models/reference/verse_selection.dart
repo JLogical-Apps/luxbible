@@ -16,6 +16,44 @@ class VerseSelection extends Equatable {
   factory VerseSelection.fromOsisId(String key) =>
       VerseSelection(spans: key.split(' ').map((span) => VerseSpanReference.fromOsisId(span)).toList());
 
+  factory VerseSelection.fromUsxId(String value) => VerseSelection.fromOsisId(
+    value
+        .split('+')
+        .map((reference) {
+          final match = RegExp(r'^([1-3]?[A-Z]{2,3})[ .](.+)$').firstMatch(reference.trim().toUpperCase());
+          if (match == null) throw FormatException('Invalid USX reference: $reference');
+
+          final usxCode = match.group(1)!;
+          final book = BookType.values.firstWhereOrNull((book) => book.usxCode() == usxCode);
+          if (book == null) throw FormatException('Unknown USX book: $usxCode');
+
+          final range = match.group(2)!.replaceAll('$usxCode.', '').replaceAll('.', ':');
+          final parts = range.split('-');
+          if (parts.length > 2) throw FormatException('Invalid USX range: $range');
+
+          final start = parts.first.split(':');
+          final startOsis = [book.osisId(), ...start].join('.');
+          if (parts.length == 1) return startOsis;
+
+          final end = parts.last.split(':');
+          final endOsis = end.length == 1 && start.length == 2
+              ? [book.osisId(), start.first, end.first].join('.')
+              : [book.osisId(), ...end].join('.');
+          return '$startOsis-$endOsis';
+        })
+        .join(' '),
+  );
+
+  static VerseSelection? tryFromUsxId(String? value) {
+    if (value == null) return null;
+
+    try {
+      return VerseSelection.fromUsxId(value);
+    } catch (_) {
+      return null;
+    }
+  }
+
   factory VerseSelection.fromReferences(List<Reference> references) =>
       VerseSelection(spans: VerseSpanReference.listFromReferences(references));
 

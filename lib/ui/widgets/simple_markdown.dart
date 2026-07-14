@@ -1,16 +1,8 @@
 import 'package:bible/utils/hook_utils.dart';
-import 'package:collection/collection.dart';
+import 'package:bible/utils/markdown_utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-
-typedef SimpleMarkdownSegment = ({
-  String text,
-  FontWeight? fontWeight,
-  FontStyle? fontStyle,
-  String? link,
-  String? linkText,
-});
 
 class SimpleMarkdown extends HookWidget {
   final String text;
@@ -20,28 +12,17 @@ class SimpleMarkdown extends HookWidget {
 
   const SimpleMarkdown(this.text, {super.key, this.onLinkPressed, this.maxLines});
 
-  static final pattern = RegExp(
-    r'(?<!\\)\[((?:\\.|[^\]])*)\]\((.+?)\)|(?<!\\)\*\*(.+?)(?<!\\)\*\*|(?<!\\)\*(.+?)(?<!\\)\*',
-    dotAll: true,
-  );
-
   @override
   Widget build(BuildContext context) {
-    final segments = useMemoized(() => parseSimpleMarkdown(text), [text]);
-    final linkRecognizers = useDisposable(
-      useMemoized(
-        () => segments.map((segment) {
-          final link = segment.link;
-          final linkText = segment.linkText;
-          final onLinkPressed = this.onLinkPressed;
-          return link == null || linkText == null || onLinkPressed == null
-              ? null
-              : (TapGestureRecognizer()..onTap = () => onLinkPressed(linkText, link));
-        }).toList(),
-        [segments, onLinkPressed],
-      ),
-      (recognizers) {
-        for (var recognizer in recognizers.nonNulls) {
+    final elements = useMemoized(() => MarkdownUtils.fromSimpleMarkdown(text), [text]);
+    final (:spans, :recognizers) = useDisposable(
+      useMemoized(() {
+        final recognizers = <TapGestureRecognizer>[];
+        final spans = getTextSpans(elements, recognizers);
+        return (spans: spans, recognizers: recognizers);
+      }, [elements, onLinkPressed]),
+      (rendered) {
+        for (final recognizer in rendered.recognizers) {
           recognizer.dispose();
         }
       },
@@ -49,119 +30,72 @@ class SimpleMarkdown extends HookWidget {
 
     return Text.rich(
       maxLines: maxLines,
-      overflow: .ellipsis,
-      TextSpan(
-        children: segments
-            .mapIndexed(
-              (index, segment) => TextSpan(
-                text: segment.text,
-                style: TextStyle(
-                  fontWeight: segment.fontWeight,
-                  fontStyle: segment.fontStyle,
-                  decoration: segment.link == null ? null : .underline,
-                ),
-                recognizer: linkRecognizers[index],
-              ),
-            )
-            .toList(),
-      ),
+      overflow: maxLines == null ? null : .ellipsis,
+      TextSpan(children: spans),
     );
   }
 
-  List<SimpleMarkdownSegment> parseSimpleMarkdown(
-    String text, {
+  List<InlineSpan> getTextSpans(
+    Iterable<MarkdownElement> elements,
+    List<TapGestureRecognizer> recognizers, {
     FontWeight? fontWeight,
     FontStyle? fontStyle,
     String? link,
     String? linkText,
-  }) {
-    final matches = SimpleMarkdown.pattern.allMatches(text).toList();
-    return [
-      ...matches.mapIndexed((index, match) {
-        final gapStart = index == 0 ? 0 : matches[index - 1].end;
-        final linkedText = match.group(1);
-        final linkedTarget = match.group(2);
-        final bold = match.group(3);
-        final italic = match.group(4);
-        final formatted = switch ((linkedText, linkedTarget, bold, italic)) {
-          (final linkedText?, final linkedTarget?, _, _) => () {
-            final segments = parseSimpleMarkdown(
-              linkedText,
-              fontWeight: fontWeight,
-              fontStyle: fontStyle,
-              link: linkedTarget,
-            );
-            final linkText = segments.map((segment) => segment.text).join();
-            return segments
-                .map(
-                  (segment) => (
-                    text: segment.text,
-                    fontWeight: segment.fontWeight,
-                    fontStyle: segment.fontStyle,
-                    link: segment.link,
-                    linkText: linkText,
-                  ),
-                )
-                .toList();
-          }(),
-          (_, _, final bold?, _) => parseSimpleMarkdown(
-            bold,
+  }) => elements
+      .expand(
+        (element) => switch (element) {
+          MarkdownText(:final text) => [
+            TextSpan(
+              text: text.replaceAll('\t', ''.padLeft(3)),
+              style: TextStyle(
+                fontWeight: fontWeight,
+                fontStyle: fontStyle,
+                decoration: link == null ? null : .underline,
+              ),
+              recognizer: link == null || linkText == null ? null : linkRecognizer(linkText, link, recognizers),
+            ),
+          ],
+          MarkdownBold(:final children) => getTextSpans(
+            children,
+            recognizers,
             fontWeight: .bold,
             fontStyle: fontStyle,
             link: link,
             linkText: linkText,
           ),
-          (_, _, _, final italic?) => parseSimpleMarkdown(
-            italic,
+          MarkdownItalic(:final children) => getTextSpans(
+            children,
+            recognizers,
             fontWeight: fontWeight,
             fontStyle: .italic,
             link: link,
             linkText: linkText,
           ),
-          _ => [],
-        };
-        return [
-          if (match.start > gapStart)
-            (
-              text: unescapeSimpleMarkdown(text.substring(gapStart, match.start)),
-              fontWeight: fontWeight,
-              fontStyle: fontStyle,
-              link: link,
-              linkText: linkText,
-            ),
-          ...formatted,
-        ];
-      }).flattened,
-      if ((matches.lastOrNull?.end ?? 0) < text.length)
-        (
-          text: unescapeSimpleMarkdown(text.substring(matches.lastOrNull?.end ?? 0)),
-          fontWeight: fontWeight,
-          fontStyle: fontStyle,
-          link: link,
-          linkText: linkText,
-        ),
-    ];
+          MarkdownLink(:final target, :final children) => getTextSpans(
+            children,
+            recognizers,
+            fontWeight: fontWeight,
+            fontStyle: fontStyle,
+            link: target,
+            linkText: children.plainText,
+          ),
+          MarkdownLineBreak() => [TextSpan(text: '\n')],
+          MarkdownParagraph(:final children) => [...getTextSpans(children, recognizers), TextSpan(text: '\n\n')],
+          MarkdownIndented(:final spaces, :final children) => [
+            TextSpan(text: ''.padLeft(spaces)),
+            ...getTextSpans(children, recognizers),
+          ],
+        },
+      )
+      .toList();
+
+  TapGestureRecognizer? linkRecognizer(String linkText, String link, List<TapGestureRecognizer> recognizers) {
+    final onLinkPressed = this.onLinkPressed;
+    if (onLinkPressed == null) return null;
+
+    final recognizer = TapGestureRecognizer()..onTap = () => onLinkPressed(linkText, link);
+    recognizers.add(recognizer);
+    return recognizer;
   }
-
-  String unescapeSimpleMarkdown(String text) =>
-      text.replaceAllMapped(RegExp(r'\\(.)'), (match) => match.group(1) ?? '');
-}
-
-class IndentedSimpleMarkdown extends StatelessWidget {
-  final String text;
-  final void Function(String text, String link)? onLinkPressed;
-
-  const IndentedSimpleMarkdown({super.key, required this.text, this.onLinkPressed});
-
-  @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: .stretch,
-    children: text.split('\n').map((line) {
-      final content = line.trimLeft();
-      return Padding(
-        padding: .only(left: (line.length - content.length) * 8),
-        child: SimpleMarkdown(content, onLinkPressed: onLinkPressed),
-      );
-    }).toList(),
-  );
 }

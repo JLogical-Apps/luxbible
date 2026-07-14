@@ -6,7 +6,7 @@ import 'package:bible/models/bible/interlinear_data.dart';
 import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/models/bible/verse.dart';
 import 'package:bible/models/bible/word.dart';
-import 'package:bible/utils/footnote_markdown.dart';
+import 'package:bible/utils/usx_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
@@ -72,7 +72,7 @@ Book parseUsxBook(BookType type, String rawXml) {
                                   Verse(
                                     verseNum: lastVerseNum ?? 0,
                                     words: [],
-                                    footnotes: [Footnote(offset: 0, text: _footnoteMarkdown(node))],
+                                    footnotes: [Footnote(offset: 0, text: UsxUtils.noteToMarkdown(node))],
                                   ),
                                 ],
                               _ => [],
@@ -129,29 +129,6 @@ Book parseUsxBook(BookType type, String rawXml) {
       );
     }).toList(),
   );
-}
-
-String _footnoteMarkdown(XmlElement note) {
-  final runs = <FootnoteMarkdownRun>[];
-  void walk(XmlNode node, bool italic, String? link) {
-    for (final child in node.children) {
-      switch (child) {
-        case XmlText(:final value):
-          runs.add((text: value, italic: italic, link: link));
-        case XmlElement element when element.getAttribute('style') == 'fr':
-          break;
-        case XmlElement element when element.localName == 'ref':
-          walk(element, italic, FootnoteMarkdown.osisIdFromUsxReference(element.getAttribute('loc')));
-        case XmlElement element:
-          walk(element, italic || FootnoteMarkdown.italicStyles.contains(element.getAttribute('style')), link);
-        default:
-          break;
-      }
-    }
-  }
-
-  walk(note, false, null);
-  return FootnoteMarkdown.runsToMarkdown(runs);
 }
 
 extension on XmlElement {

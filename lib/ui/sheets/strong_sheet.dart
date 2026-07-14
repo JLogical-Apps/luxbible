@@ -97,8 +97,8 @@ class StrongSheet {
                     ),
                   StyledListItem(
                     title: 'Definition'.toText(),
-                    subtitle: IndentedSimpleMarkdown(
-                      text: strong.definition,
+                    subtitle: SimpleMarkdown(
+                      strong.definition,
                       onLinkPressed: (text, link) => openStrong(context, link),
                     ),
                   ),
