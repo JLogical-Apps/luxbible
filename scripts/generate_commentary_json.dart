@@ -6,7 +6,7 @@ import 'package:bible/models/commentary_type.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
-import 'package:bible/utils/markdown_utils.dart';
+import 'package:bible/utils/markdown.dart';
 import 'package:bible/utils/range.dart';
 import 'package:collection/collection.dart';
 import 'package:utils_core/utils_core.dart';
@@ -85,7 +85,7 @@ String _introMarkdown(Iterable<XmlElement> elements) => _commentaryMarkdown(
 );
 
 String _commentaryMarkdown(Iterable<XmlElement> paragraphs, {bool skipIntroduction = false}) =>
-    MarkdownUtils.fromXmlNodes(paragraphs, (element, children) {
+    Markdown.fromXmlNodes(paragraphs, (element, children) {
       if (element.name.local == 'p') {
         if (_isSkippedParagraph(element.getAttribute('class') ?? '') ||
             (skipIntroduction && children.plainText.trim().toUpperCase() == 'INTRODUCTION')) {
@@ -104,7 +104,7 @@ String _commentaryMarkdown(Iterable<XmlElement> paragraphs, {bool skipIntroducti
         'i' || 'em' => [.italic(children)],
         _ => children,
       };
-    }).trim();
+    }).text.trim();
 
 bool _isSkippedParagraph(String className) =>
     className == 'Footnote' || className == 'Center' || className.startsWith('TableCaption');

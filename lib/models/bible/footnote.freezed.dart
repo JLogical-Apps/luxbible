@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Footnote {
 
-@JsonKey(name: 'o') int get offset;@JsonKey(name: 't') String get text;
+@JsonKey(name: 'o') int get offset;@JsonKey(name: 't', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown get text;
 /// Create a copy of Footnote
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $FootnoteCopyWith<$Res>  {
   factory $FootnoteCopyWith(Footnote value, $Res Function(Footnote) _then) = _$FootnoteCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'o') int offset,@JsonKey(name: 't') String text
+@JsonKey(name: 'o') int offset,@JsonKey(name: 't', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown text
 });
 
 
@@ -69,7 +69,7 @@ class _$FootnoteCopyWithImpl<$Res>
   return _then(_self.copyWith(
 offset: null == offset ? _self.offset : offset // ignore: cast_nullable_to_non_nullable
 as int,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
-as String,
+as Markdown,
   ));
 }
 
@@ -151,7 +151,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'o')  int offset, @JsonKey(name: 't')  String text)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'o')  int offset, @JsonKey(name: 't', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown text)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Footnote() when $default != null:
 return $default(_that.offset,_that.text);case _:
@@ -172,7 +172,7 @@ return $default(_that.offset,_that.text);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'o')  int offset, @JsonKey(name: 't')  String text)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'o')  int offset, @JsonKey(name: 't', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown text)  $default,) {final _that = this;
 switch (_that) {
 case _Footnote():
 return $default(_that.offset,_that.text);}
@@ -189,7 +189,7 @@ return $default(_that.offset,_that.text);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'o')  int offset, @JsonKey(name: 't')  String text)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'o')  int offset, @JsonKey(name: 't', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown text)?  $default,) {final _that = this;
 switch (_that) {
 case _Footnote() when $default != null:
 return $default(_that.offset,_that.text);case _:
@@ -204,11 +204,11 @@ return $default(_that.offset,_that.text);case _:
 @JsonSerializable()
 
 class _Footnote implements Footnote {
-  const _Footnote({@JsonKey(name: 'o') required this.offset, @JsonKey(name: 't') required this.text});
+  const _Footnote({@JsonKey(name: 'o') required this.offset, @JsonKey(name: 't', toJson: Markdown.toJson, fromJson: Markdown.fromJson) required this.text});
   factory _Footnote.fromJson(Map<String, dynamic> json) => _$FootnoteFromJson(json);
 
 @override@JsonKey(name: 'o') final  int offset;
-@override@JsonKey(name: 't') final  String text;
+@override@JsonKey(name: 't', toJson: Markdown.toJson, fromJson: Markdown.fromJson) final  Markdown text;
 
 /// Create a copy of Footnote
 /// with the given fields replaced by the non-null parameter values.
@@ -243,7 +243,7 @@ abstract mixin class _$FootnoteCopyWith<$Res> implements $FootnoteCopyWith<$Res>
   factory _$FootnoteCopyWith(_Footnote value, $Res Function(_Footnote) _then) = __$FootnoteCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'o') int offset,@JsonKey(name: 't') String text
+@JsonKey(name: 'o') int offset,@JsonKey(name: 't', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown text
 });
 
 
@@ -264,7 +264,7 @@ class __$FootnoteCopyWithImpl<$Res>
   return _then(_Footnote(
 offset: null == offset ? _self.offset : offset // ignore: cast_nullable_to_non_nullable
 as int,text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
-as String,
+as Markdown,
   ));
 }
 

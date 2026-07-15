@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Strong {
 
-@JsonKey(name: 'i') String get id;@JsonKey(name: 'l') String get languageText;@JsonKey(name: 'p') String get pronunciation;@JsonKey(name: 'x') String get transliteration;@JsonKey(name: 'd') String get definition;@JsonKey(name: 's') String get description;@JsonKey(name: 'o', includeIfNull: false) String? get derivation;@JsonKey(name: 't', includeIfNull: false) String? get partOfSpeech;@JsonKey(name: 'r', includeIfNull: false) String? get lexiconReference;@JsonKey(name: 'g') List<String> get relatedStrongIds;@JsonKey(name: 'k') Map<String, int> get kjvUsage;
+@JsonKey(name: 'i') String get id;@JsonKey(name: 'l') String get languageText;@JsonKey(name: 'p') String get pronunciation;@JsonKey(name: 'x') String get transliteration;@JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown get definition;@JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown get description;@JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable) Markdown? get derivation;@JsonKey(name: 't', includeIfNull: false) String? get partOfSpeech;@JsonKey(name: 'r', includeIfNull: false) String? get lexiconReference;@JsonKey(name: 'g') List<String> get relatedStrongIds;@JsonKey(name: 'k') Map<String, int> get kjvUsage;
 /// Create a copy of Strong
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $StrongCopyWith<$Res>  {
   factory $StrongCopyWith(Strong value, $Res Function(Strong) _then) = _$StrongCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'i') String id,@JsonKey(name: 'l') String languageText,@JsonKey(name: 'p') String pronunciation,@JsonKey(name: 'x') String transliteration,@JsonKey(name: 'd') String definition,@JsonKey(name: 's') String description,@JsonKey(name: 'o', includeIfNull: false) String? derivation,@JsonKey(name: 't', includeIfNull: false) String? partOfSpeech,@JsonKey(name: 'r', includeIfNull: false) String? lexiconReference,@JsonKey(name: 'g') List<String> relatedStrongIds,@JsonKey(name: 'k') Map<String, int> kjvUsage
+@JsonKey(name: 'i') String id,@JsonKey(name: 'l') String languageText,@JsonKey(name: 'p') String pronunciation,@JsonKey(name: 'x') String transliteration,@JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown definition,@JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown description,@JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable) Markdown? derivation,@JsonKey(name: 't', includeIfNull: false) String? partOfSpeech,@JsonKey(name: 'r', includeIfNull: false) String? lexiconReference,@JsonKey(name: 'g') List<String> relatedStrongIds,@JsonKey(name: 'k') Map<String, int> kjvUsage
 });
 
 
@@ -72,9 +72,9 @@ as String,languageText: null == languageText ? _self.languageText : languageText
 as String,pronunciation: null == pronunciation ? _self.pronunciation : pronunciation // ignore: cast_nullable_to_non_nullable
 as String,transliteration: null == transliteration ? _self.transliteration : transliteration // ignore: cast_nullable_to_non_nullable
 as String,definition: null == definition ? _self.definition : definition // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,derivation: freezed == derivation ? _self.derivation : derivation // ignore: cast_nullable_to_non_nullable
-as String?,partOfSpeech: freezed == partOfSpeech ? _self.partOfSpeech : partOfSpeech // ignore: cast_nullable_to_non_nullable
+as Markdown,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as Markdown,derivation: freezed == derivation ? _self.derivation : derivation // ignore: cast_nullable_to_non_nullable
+as Markdown?,partOfSpeech: freezed == partOfSpeech ? _self.partOfSpeech : partOfSpeech // ignore: cast_nullable_to_non_nullable
 as String?,lexiconReference: freezed == lexiconReference ? _self.lexiconReference : lexiconReference // ignore: cast_nullable_to_non_nullable
 as String?,relatedStrongIds: null == relatedStrongIds ? _self.relatedStrongIds : relatedStrongIds // ignore: cast_nullable_to_non_nullable
 as List<String>,kjvUsage: null == kjvUsage ? _self.kjvUsage : kjvUsage // ignore: cast_nullable_to_non_nullable
@@ -160,7 +160,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 'l')  String languageText, @JsonKey(name: 'p')  String pronunciation, @JsonKey(name: 'x')  String transliteration, @JsonKey(name: 'd')  String definition, @JsonKey(name: 's')  String description, @JsonKey(name: 'o', includeIfNull: false)  String? derivation, @JsonKey(name: 't', includeIfNull: false)  String? partOfSpeech, @JsonKey(name: 'r', includeIfNull: false)  String? lexiconReference, @JsonKey(name: 'g')  List<String> relatedStrongIds, @JsonKey(name: 'k')  Map<String, int> kjvUsage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 'l')  String languageText, @JsonKey(name: 'p')  String pronunciation, @JsonKey(name: 'x')  String transliteration, @JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown definition, @JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown description, @JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable)  Markdown? derivation, @JsonKey(name: 't', includeIfNull: false)  String? partOfSpeech, @JsonKey(name: 'r', includeIfNull: false)  String? lexiconReference, @JsonKey(name: 'g')  List<String> relatedStrongIds, @JsonKey(name: 'k')  Map<String, int> kjvUsage)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Strong() when $default != null:
 return $default(_that.id,_that.languageText,_that.pronunciation,_that.transliteration,_that.definition,_that.description,_that.derivation,_that.partOfSpeech,_that.lexiconReference,_that.relatedStrongIds,_that.kjvUsage);case _:
@@ -181,7 +181,7 @@ return $default(_that.id,_that.languageText,_that.pronunciation,_that.transliter
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 'l')  String languageText, @JsonKey(name: 'p')  String pronunciation, @JsonKey(name: 'x')  String transliteration, @JsonKey(name: 'd')  String definition, @JsonKey(name: 's')  String description, @JsonKey(name: 'o', includeIfNull: false)  String? derivation, @JsonKey(name: 't', includeIfNull: false)  String? partOfSpeech, @JsonKey(name: 'r', includeIfNull: false)  String? lexiconReference, @JsonKey(name: 'g')  List<String> relatedStrongIds, @JsonKey(name: 'k')  Map<String, int> kjvUsage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 'l')  String languageText, @JsonKey(name: 'p')  String pronunciation, @JsonKey(name: 'x')  String transliteration, @JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown definition, @JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown description, @JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable)  Markdown? derivation, @JsonKey(name: 't', includeIfNull: false)  String? partOfSpeech, @JsonKey(name: 'r', includeIfNull: false)  String? lexiconReference, @JsonKey(name: 'g')  List<String> relatedStrongIds, @JsonKey(name: 'k')  Map<String, int> kjvUsage)  $default,) {final _that = this;
 switch (_that) {
 case _Strong():
 return $default(_that.id,_that.languageText,_that.pronunciation,_that.transliteration,_that.definition,_that.description,_that.derivation,_that.partOfSpeech,_that.lexiconReference,_that.relatedStrongIds,_that.kjvUsage);}
@@ -198,7 +198,7 @@ return $default(_that.id,_that.languageText,_that.pronunciation,_that.transliter
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 'l')  String languageText, @JsonKey(name: 'p')  String pronunciation, @JsonKey(name: 'x')  String transliteration, @JsonKey(name: 'd')  String definition, @JsonKey(name: 's')  String description, @JsonKey(name: 'o', includeIfNull: false)  String? derivation, @JsonKey(name: 't', includeIfNull: false)  String? partOfSpeech, @JsonKey(name: 'r', includeIfNull: false)  String? lexiconReference, @JsonKey(name: 'g')  List<String> relatedStrongIds, @JsonKey(name: 'k')  Map<String, int> kjvUsage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 'l')  String languageText, @JsonKey(name: 'p')  String pronunciation, @JsonKey(name: 'x')  String transliteration, @JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown definition, @JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown description, @JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable)  Markdown? derivation, @JsonKey(name: 't', includeIfNull: false)  String? partOfSpeech, @JsonKey(name: 'r', includeIfNull: false)  String? lexiconReference, @JsonKey(name: 'g')  List<String> relatedStrongIds, @JsonKey(name: 'k')  Map<String, int> kjvUsage)?  $default,) {final _that = this;
 switch (_that) {
 case _Strong() when $default != null:
 return $default(_that.id,_that.languageText,_that.pronunciation,_that.transliteration,_that.definition,_that.description,_that.derivation,_that.partOfSpeech,_that.lexiconReference,_that.relatedStrongIds,_that.kjvUsage);case _:
@@ -213,16 +213,16 @@ return $default(_that.id,_that.languageText,_that.pronunciation,_that.transliter
 @JsonSerializable()
 
 class _Strong implements Strong {
-  const _Strong({@JsonKey(name: 'i') required this.id, @JsonKey(name: 'l') required this.languageText, @JsonKey(name: 'p') required this.pronunciation, @JsonKey(name: 'x') required this.transliteration, @JsonKey(name: 'd') required this.definition, @JsonKey(name: 's') required this.description, @JsonKey(name: 'o', includeIfNull: false) this.derivation, @JsonKey(name: 't', includeIfNull: false) this.partOfSpeech, @JsonKey(name: 'r', includeIfNull: false) this.lexiconReference, @JsonKey(name: 'g') required final  List<String> relatedStrongIds, @JsonKey(name: 'k') required final  Map<String, int> kjvUsage}): _relatedStrongIds = relatedStrongIds,_kjvUsage = kjvUsage;
+  const _Strong({@JsonKey(name: 'i') required this.id, @JsonKey(name: 'l') required this.languageText, @JsonKey(name: 'p') required this.pronunciation, @JsonKey(name: 'x') required this.transliteration, @JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson) required this.definition, @JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson) required this.description, @JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable) this.derivation, @JsonKey(name: 't', includeIfNull: false) this.partOfSpeech, @JsonKey(name: 'r', includeIfNull: false) this.lexiconReference, @JsonKey(name: 'g') required final  List<String> relatedStrongIds, @JsonKey(name: 'k') required final  Map<String, int> kjvUsage}): _relatedStrongIds = relatedStrongIds,_kjvUsage = kjvUsage;
   factory _Strong.fromJson(Map<String, dynamic> json) => _$StrongFromJson(json);
 
 @override@JsonKey(name: 'i') final  String id;
 @override@JsonKey(name: 'l') final  String languageText;
 @override@JsonKey(name: 'p') final  String pronunciation;
 @override@JsonKey(name: 'x') final  String transliteration;
-@override@JsonKey(name: 'd') final  String definition;
-@override@JsonKey(name: 's') final  String description;
-@override@JsonKey(name: 'o', includeIfNull: false) final  String? derivation;
+@override@JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson) final  Markdown definition;
+@override@JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson) final  Markdown description;
+@override@JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable) final  Markdown? derivation;
 @override@JsonKey(name: 't', includeIfNull: false) final  String? partOfSpeech;
 @override@JsonKey(name: 'r', includeIfNull: false) final  String? lexiconReference;
  final  List<String> _relatedStrongIds;
@@ -273,7 +273,7 @@ abstract mixin class _$StrongCopyWith<$Res> implements $StrongCopyWith<$Res> {
   factory _$StrongCopyWith(_Strong value, $Res Function(_Strong) _then) = __$StrongCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'i') String id,@JsonKey(name: 'l') String languageText,@JsonKey(name: 'p') String pronunciation,@JsonKey(name: 'x') String transliteration,@JsonKey(name: 'd') String definition,@JsonKey(name: 's') String description,@JsonKey(name: 'o', includeIfNull: false) String? derivation,@JsonKey(name: 't', includeIfNull: false) String? partOfSpeech,@JsonKey(name: 'r', includeIfNull: false) String? lexiconReference,@JsonKey(name: 'g') List<String> relatedStrongIds,@JsonKey(name: 'k') Map<String, int> kjvUsage
+@JsonKey(name: 'i') String id,@JsonKey(name: 'l') String languageText,@JsonKey(name: 'p') String pronunciation,@JsonKey(name: 'x') String transliteration,@JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown definition,@JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown description,@JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable) Markdown? derivation,@JsonKey(name: 't', includeIfNull: false) String? partOfSpeech,@JsonKey(name: 'r', includeIfNull: false) String? lexiconReference,@JsonKey(name: 'g') List<String> relatedStrongIds,@JsonKey(name: 'k') Map<String, int> kjvUsage
 });
 
 
@@ -297,9 +297,9 @@ as String,languageText: null == languageText ? _self.languageText : languageText
 as String,pronunciation: null == pronunciation ? _self.pronunciation : pronunciation // ignore: cast_nullable_to_non_nullable
 as String,transliteration: null == transliteration ? _self.transliteration : transliteration // ignore: cast_nullable_to_non_nullable
 as String,definition: null == definition ? _self.definition : definition // ignore: cast_nullable_to_non_nullable
-as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,derivation: freezed == derivation ? _self.derivation : derivation // ignore: cast_nullable_to_non_nullable
-as String?,partOfSpeech: freezed == partOfSpeech ? _self.partOfSpeech : partOfSpeech // ignore: cast_nullable_to_non_nullable
+as Markdown,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as Markdown,derivation: freezed == derivation ? _self.derivation : derivation // ignore: cast_nullable_to_non_nullable
+as Markdown?,partOfSpeech: freezed == partOfSpeech ? _self.partOfSpeech : partOfSpeech // ignore: cast_nullable_to_non_nullable
 as String?,lexiconReference: freezed == lexiconReference ? _self.lexiconReference : lexiconReference // ignore: cast_nullable_to_non_nullable
 as String?,relatedStrongIds: null == relatedStrongIds ? _self._relatedStrongIds : relatedStrongIds // ignore: cast_nullable_to_non_nullable
 as List<String>,kjvUsage: null == kjvUsage ? _self._kjvUsage : kjvUsage // ignore: cast_nullable_to_non_nullable

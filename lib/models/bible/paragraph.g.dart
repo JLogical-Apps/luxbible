@@ -54,9 +54,9 @@ Map<String, dynamic> _$SectionParagraphToJson(SectionParagraph instance) =>
     };
 
 const _$SectionTypeEnumMap = {
+  SectionType.ms: 'ms',
   SectionType.s1: 's1',
   SectionType.s2: 's2',
-  SectionType.ms: 'ms',
   SectionType.d: 'd',
   SectionType.qa: 'qa',
 };

@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
-import 'package:bible/utils/markdown_utils.dart';
+import 'package:bible/utils/markdown.dart';
 import 'package:collection/collection.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
@@ -65,13 +65,18 @@ Map<String, dynamic> enrichStrong(
       .join('\n');
 
   final derivation = optionalField(bdbParagraphs, 'Origin');
-  final partOfSpeech = optionalField(bdbParagraphs, 'Part(s) of speech')?.cleanedPartOfSpeech?.withStrippedMarkdown;
+  final partOfSpeech = optionalField(
+    bdbParagraphs,
+    'Part(s) of speech',
+  )?.cleanedPartOfSpeech?.asMarkdown()?.withStrippedMarkdown;
+
   final lexiconReference = ['TDNT', 'TWOT']
       .map((name) => optionalField(bdbParagraphs, '$name entry'))
       .nonNulls
       .where((value) => value.toLowerCase() != 'none')
       .map((value) => '${strong['i'].toString().startsWith('G') ? 'TDNT' : 'TWOT'} $value')
       .firstOrNull
+      ?.asMarkdown()
       ?.withStrippedMarkdown;
 
   final lxxIndex = plusParagraphs.indexWhereOrNull((paragraph) => paragraph.text.contains('LXX related word'));
@@ -235,7 +240,7 @@ extension on String {
 }
 
 extension on Element {
-  String toMarkdown() => MarkdownUtils.fromHtml(
+  String toMarkdown() => Markdown.fromHtml(
     this,
     (element, children) => switch (element.localName) {
       'p' => [.indented((element.attributes['style'] ?? '').strongsIndentation, children)],
@@ -268,5 +273,5 @@ extension on Element {
       ];
     },
     textEscaping: .all,
-  );
+  ).text;
 }

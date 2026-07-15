@@ -4,7 +4,7 @@ import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
-import 'package:bible/ui/widgets/simple_markdown.dart';
+import 'package:bible/ui/widgets/markdown_builder.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:utils_core/utils_core.dart';
@@ -38,7 +38,7 @@ class CommentarySheet {
                       padding: .only(bottom: 16),
                       child: DefaultTextStyle(
                         style: context.textStyle.paragraphMd,
-                        child: SimpleMarkdown(
+                        child: MarkdownBuilder(
                           note,
                           onLinkPressed: (text, link) => PreviewPassageSheet.show(
                             context,

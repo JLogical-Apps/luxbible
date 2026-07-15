@@ -1,10 +1,10 @@
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
-import 'package:bible/utils/markdown_utils.dart';
+import 'package:bible/utils/markdown.dart';
 import 'package:xml/xml.dart';
 
 abstract final class UsxUtils {
-  static String noteToMarkdown(XmlElement note) => MarkdownUtils.fromXml(note, (element, children) {
+  static Markdown noteToMarkdown(XmlElement note) => Markdown.fromXml(note, (element, children) {
     final styles = _stylesOf(element);
     if (styles.contains('fr')) return [];
     if (element.localName == 'ref' || styles.contains('ref')) {
@@ -15,7 +15,7 @@ abstract final class UsxUtils {
       return children;
     }
     return styles.any(isItalicStyle) ? [.italic(children)] : children;
-  }).withCollapsedWhitespace.trim();
+  }).text.withCollapsedWhitespace.trim().asMarkdown();
 
   static bool isItalicStyle(String? style) => switch (style) {
     'fqa' || 'fq' || 'fqb' || 'fk' || 'bk' || 'add' || 'tl' || 'qt' || 'it' || 'k' => true,

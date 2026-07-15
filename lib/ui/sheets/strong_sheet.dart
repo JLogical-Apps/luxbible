@@ -8,11 +8,12 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
-import 'package:bible/ui/widgets/simple_markdown.dart';
+import 'package:bible/ui/widgets/markdown_builder.dart';
 import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
+import 'package:bible/utils/markdown.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -93,11 +94,11 @@ class StrongSheet {
                   if (strong.derivation case final derivation?)
                     StyledListItem(
                       title: 'Derivation'.toText(),
-                      subtitle: SimpleMarkdown(derivation, onLinkPressed: (text, link) => openStrong(context, link)),
+                      subtitle: MarkdownBuilder(derivation, onLinkPressed: (text, link) => openStrong(context, link)),
                     ),
                   StyledListItem(
                     title: 'Definition'.toText(),
-                    subtitle: SimpleMarkdown(
+                    subtitle: MarkdownBuilder(
                       strong.definition,
                       onLinkPressed: (text, link) => openStrong(context, link),
                     ),
@@ -105,7 +106,7 @@ class StrongSheet {
                   if (strong.description != strong.definition)
                     StyledListItem(
                       title: 'Strong\'s Description'.toText(),
-                      subtitle: SimpleMarkdown(
+                      subtitle: MarkdownBuilder(
                         strong.description,
                         onLinkPressed: (text, link) => openStrong(context, link),
                       ),
@@ -171,7 +172,10 @@ class StrongSheet {
                     .map(
                       (strong) => StyledListItem.navigation(
                         title: strong.id.toText(),
-                        subtitle: SimpleMarkdown('${strong.languageText}: ${strong.description}', maxLines: 1),
+                        subtitle: MarkdownBuilder(
+                          Markdown('${strong.languageText}: ${strong.description.text}'),
+                          maxLines: 1,
+                        ),
                         onPressed: () => openStrong(context, strong.id),
                       ),
                     )

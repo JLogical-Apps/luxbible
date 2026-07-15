@@ -8,6 +8,120 @@ typedef MarkdownTextBuilder = List<MarkdownElement> Function(String text);
 
 enum MarkdownTextEscaping { none, linkText, all }
 
+extension type Markdown(String text) {
+  static Markdown fromJson(String text) => Markdown(text);
+  static String toJson(Markdown markdown) => markdown.text;
+
+  static Markdown? fromJsonNullable(String? text) => text == null ? null : Markdown(text);
+  static String? toJsonNullable(Markdown? markdown) => markdown?.text;
+
+  static final markdownElementsPattern = RegExp(
+    r'(?<!\\)\[((?:\\.|[^\]])*)\]\((.+?)\)|(?<!\\)\*\*(.+?)(?<!\\)\*\*|(?<!\\)\*(.+?)(?<!\\)\*',
+    dotAll: true,
+  );
+
+  static Markdown fromXml(
+    XmlNode node,
+    XmlMarkdownBuilder buildElement, {
+    MarkdownTextBuilder? buildText,
+    MarkdownTextEscaping textEscaping = .linkText,
+  }) => fromXmlNodes([node], buildElement, buildText: buildText, textEscaping: textEscaping);
+
+  static Markdown fromXmlNodes(
+    Iterable<XmlNode> nodes,
+    XmlMarkdownBuilder buildElement, {
+    MarkdownTextBuilder? buildText,
+    MarkdownTextEscaping textEscaping = .linkText,
+  }) => Markdown(
+    nodes.expand((node) => _fromXml(node, buildElement, buildText)).toList().render(textEscaping: textEscaping),
+  );
+
+  static Markdown fromHtml(
+    dom.Node node,
+    HtmlMarkdownBuilder buildElement, {
+    MarkdownTextBuilder? buildText,
+    MarkdownTextEscaping textEscaping = .linkText,
+  }) => fromHtmlNodes([node], buildElement, buildText: buildText, textEscaping: textEscaping);
+
+  static Markdown fromHtmlNodes(
+    Iterable<dom.Node> nodes,
+    HtmlMarkdownBuilder buildElement, {
+    MarkdownTextBuilder? buildText,
+    MarkdownTextEscaping textEscaping = .linkText,
+  }) => Markdown(
+    nodes.expand((node) => _fromHtml(node, buildElement, buildText)).toList().render(textEscaping: textEscaping),
+  );
+
+  static List<MarkdownElement> _fromXml(
+    XmlNode node,
+    XmlMarkdownBuilder buildElement,
+    MarkdownTextBuilder? buildText,
+  ) => switch (node) {
+    XmlText(:final value) => buildText?.call(value) ?? [.text(value)],
+    XmlElement() => buildElement(
+      node,
+      node.children.expand((child) => _fromXml(child, buildElement, buildText)).toList(),
+    ),
+    _ => node.children.expand((child) => _fromXml(child, buildElement, buildText)).toList(),
+  };
+
+  static List<MarkdownElement> _fromHtml(
+    dom.Node node,
+    HtmlMarkdownBuilder buildElement,
+    MarkdownTextBuilder? buildText,
+  ) => switch (node) {
+    dom.Text(:final data) => buildText?.call(data) ?? [.text(data)],
+    dom.Element() => buildElement(
+      node,
+      node.nodes.expand((child) => _fromHtml(child, buildElement, buildText)).toList(),
+    ),
+    _ => node.nodes.expand((child) => _fromHtml(child, buildElement, buildText)).toList(),
+  };
+
+  static String _escape(String text) =>
+      text.replaceAll(r'\', r'\\').replaceAll('*', r'\*').replaceAll('[', r'\[').replaceAll(']', r'\]');
+
+  static String _escapeLinkText(String text) =>
+      text.replaceAll(r'\', r'\\').replaceAll('[', r'\[').replaceAll(']', r'\]');
+
+  static String _unescape(String text) => text.replaceAllMapped(RegExp(r'\\(.)'), (match) => match.group(1) ?? '');
+
+  static String _wrap(String text, String prefix, String suffix) {
+    final core = text.trim();
+    if (core.isEmpty) return text;
+
+    final leading = text.substring(0, text.length - text.trimLeft().length);
+    final trailing = text.substring(text.trimRight().length);
+    return '$leading$prefix$core$suffix$trailing';
+  }
+
+  String get withStrippedMarkdown => elements.plainText;
+
+  List<MarkdownElement> get elements {
+    final matches = markdownElementsPattern.allMatches(text).toList();
+    return [
+      ...matches.indexed.expand((entry) {
+        final (index, match) = entry;
+        final gapStart = index == 0 ? 0 : matches[index - 1].end;
+        final linkedText = match.group(1);
+        final linkedTarget = match.group(2);
+        final bold = match.group(3);
+        final italic = match.group(4);
+        final formatted = switch ((linkedText, linkedTarget, bold, italic)) {
+          (final linkedText?, final linkedTarget?, _, _) => [
+            MarkdownElement.link(linkedTarget, Markdown(linkedText).elements),
+          ],
+          (_, _, final bold?, _) => [MarkdownElement.bold(Markdown(bold).elements)],
+          (_, _, _, final italic?) => [MarkdownElement.italic(Markdown(italic).elements)],
+          _ => <MarkdownElement>[],
+        };
+        return [if (match.start > gapStart) .text(_unescape(text.substring(gapStart, match.start))), ...formatted];
+      }),
+      if ((matches.lastOrNull?.end ?? 0) < text.length) .text(_unescape(text.substring(matches.lastOrNull?.end ?? 0))),
+    ];
+  }
+}
+
 sealed class MarkdownElement {
   const MarkdownElement();
 
@@ -89,123 +203,16 @@ extension MarkdownElementsExtension on Iterable<MarkdownElement> {
   String get plainText => map((element) => element.plainText).join();
 }
 
-class MarkdownUtils {
-  static final simpleMarkdownPattern = RegExp(
-    r'(?<!\\)\[((?:\\.|[^\]])*)\]\((.+?)\)|(?<!\\)\*\*(.+?)(?<!\\)\*\*|(?<!\\)\*(.+?)(?<!\\)\*',
-    dotAll: true,
-  );
-
-  static List<MarkdownElement> fromSimpleMarkdown(String text) {
-    final matches = simpleMarkdownPattern.allMatches(text).toList();
-    return [
-      ...matches.indexed.expand((entry) {
-        final (index, match) = entry;
-        final gapStart = index == 0 ? 0 : matches[index - 1].end;
-        final linkedText = match.group(1);
-        final linkedTarget = match.group(2);
-        final bold = match.group(3);
-        final italic = match.group(4);
-        final formatted = switch ((linkedText, linkedTarget, bold, italic)) {
-          (final linkedText?, final linkedTarget?, _, _) => [
-            MarkdownElement.link(linkedTarget, fromSimpleMarkdown(linkedText)),
-          ],
-          (_, _, final bold?, _) => [MarkdownElement.bold(fromSimpleMarkdown(bold))],
-          (_, _, _, final italic?) => [MarkdownElement.italic(fromSimpleMarkdown(italic))],
-          _ => <MarkdownElement>[],
-        };
-        return [
-          if (match.start > gapStart) .text(_unescapeSimpleMarkdown(text.substring(gapStart, match.start))),
-          ...formatted,
-        ];
-      }),
-      if ((matches.lastOrNull?.end ?? 0) < text.length)
-        .text(_unescapeSimpleMarkdown(text.substring(matches.lastOrNull?.end ?? 0))),
-    ];
-  }
-
-  static String fromXml(
-    XmlNode node,
-    XmlMarkdownBuilder buildElement, {
-    MarkdownTextBuilder? buildText,
-    MarkdownTextEscaping textEscaping = .linkText,
-  }) => fromXmlNodes([node], buildElement, buildText: buildText, textEscaping: textEscaping);
-
-  static String fromXmlNodes(
-    Iterable<XmlNode> nodes,
-    XmlMarkdownBuilder buildElement, {
-    MarkdownTextBuilder? buildText,
-    MarkdownTextEscaping textEscaping = .linkText,
-  }) => nodes.expand((node) => _fromXml(node, buildElement, buildText)).toList().render(textEscaping: textEscaping);
-
-  static String fromHtml(
-    dom.Node node,
-    HtmlMarkdownBuilder buildElement, {
-    MarkdownTextBuilder? buildText,
-    MarkdownTextEscaping textEscaping = .linkText,
-  }) => fromHtmlNodes([node], buildElement, buildText: buildText, textEscaping: textEscaping);
-
-  static String fromHtmlNodes(
-    Iterable<dom.Node> nodes,
-    HtmlMarkdownBuilder buildElement, {
-    MarkdownTextBuilder? buildText,
-    MarkdownTextEscaping textEscaping = .linkText,
-  }) => nodes.expand((node) => _fromHtml(node, buildElement, buildText)).toList().render(textEscaping: textEscaping);
-
-  static List<MarkdownElement> _fromXml(
-    XmlNode node,
-    XmlMarkdownBuilder buildElement,
-    MarkdownTextBuilder? buildText,
-  ) => switch (node) {
-    XmlText(:final value) => buildText?.call(value) ?? [.text(value)],
-    XmlElement() => buildElement(
-      node,
-      node.children.expand((child) => _fromXml(child, buildElement, buildText)).toList(),
-    ),
-    _ => node.children.expand((child) => _fromXml(child, buildElement, buildText)).toList(),
-  };
-
-  static List<MarkdownElement> _fromHtml(
-    dom.Node node,
-    HtmlMarkdownBuilder buildElement,
-    MarkdownTextBuilder? buildText,
-  ) => switch (node) {
-    dom.Text(:final data) => buildText?.call(data) ?? [.text(data)],
-    dom.Element() => buildElement(
-      node,
-      node.nodes.expand((child) => _fromHtml(child, buildElement, buildText)).toList(),
-    ),
-    _ => node.nodes.expand((child) => _fromHtml(child, buildElement, buildText)).toList(),
-  };
-
-  static String _escapeMarkdown(String text) =>
-      text.replaceAll(r'\', r'\\').replaceAll('*', r'\*').replaceAll('[', r'\[').replaceAll(']', r'\]');
-
-  static String _escapeLinkText(String text) =>
-      text.replaceAll(r'\', r'\\').replaceAll('[', r'\[').replaceAll(']', r'\]');
-
-  static String _unescapeSimpleMarkdown(String text) =>
-      text.replaceAllMapped(RegExp(r'\\(.)'), (match) => match.group(1) ?? '');
-
-  static String _wrap(String text, String prefix, String suffix) {
-    final core = text.trim();
-    if (core.isEmpty) return text;
-
-    final leading = text.substring(0, text.length - text.trimLeft().length);
-    final trailing = text.substring(text.trimRight().length);
-    return '$leading$prefix$core$suffix$trailing';
-  }
-}
-
 extension on List<MarkdownElement> {
   String render({required MarkdownTextEscaping textEscaping}) => normalized
       .map(
         (element) => switch (element) {
-          MarkdownText(:final text) => textEscaping == .all ? MarkdownUtils._escapeMarkdown(text) : text,
-          MarkdownBold(:final children) => MarkdownUtils._wrap(children.render(textEscaping: textEscaping), '**', '**'),
-          MarkdownItalic(:final children) => MarkdownUtils._wrap(children.render(textEscaping: textEscaping), '*', '*'),
-          MarkdownLink(:final target, :final children) => MarkdownUtils._wrap(
+          MarkdownText(:final text) => textEscaping == .all ? Markdown._escape(text) : text,
+          MarkdownBold(:final children) => Markdown._wrap(children.render(textEscaping: textEscaping), '**', '**'),
+          MarkdownItalic(:final children) => Markdown._wrap(children.render(textEscaping: textEscaping), '*', '*'),
+          MarkdownLink(:final target, :final children) => Markdown._wrap(
             switch (textEscaping) {
-              .linkText => MarkdownUtils._escapeLinkText(children.render(textEscaping: textEscaping)),
+              .linkText => Markdown._escapeLinkText(children.render(textEscaping: textEscaping)),
               .none || .all => children.render(textEscaping: textEscaping),
             },
             '[',
@@ -278,5 +285,5 @@ extension on Iterable<MarkdownElement> {
 }
 
 extension MarkdownStringExtensions on String {
-  String get withStrippedMarkdown => MarkdownUtils.fromSimpleMarkdown(this).plainText;
+  Markdown asMarkdown() => Markdown(this);
 }

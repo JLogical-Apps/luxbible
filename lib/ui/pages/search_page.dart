@@ -11,6 +11,7 @@ import 'package:bible/ui/dialogs/tutorial_dialog.dart';
 import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/sheets/dictionary_sheet.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
+import 'package:bible/ui/widgets/markdown_builder.dart';
 import 'package:bible/ui/widgets/search_location_button.dart';
 import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
@@ -235,7 +236,7 @@ class SearchPage extends HookConsumerWidget {
                                   ],
                                 ),
                               ),
-                              subtitle: strong.definition.toText(),
+                              subtitle: MarkdownBuilder(strong.description),
                               onPressed: () => StrongSheet.showWithBreadcrumbs(context, strongId: strong.id),
                             ),
                           ),

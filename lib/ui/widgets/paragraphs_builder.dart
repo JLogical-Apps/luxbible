@@ -21,7 +21,7 @@ import 'package:bible/ui/sheets/preview_passage_sheet.dart';
 import 'package:bible/ui/widgets/annotated_span.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/highlight_underline.dart';
-import 'package:bible/ui/widgets/simple_markdown.dart';
+import 'package:bible/ui/widgets/markdown_builder.dart';
 import 'package:bible/ui/widgets/sized_widget_span.dart';
 import 'package:bible/ui/widgets/underline.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
@@ -820,7 +820,7 @@ class ParagraphsBuilder extends HookWidget {
                   children: footnotes
                       .map(
                         (footnote) => StyledListItem(
-                          title: SimpleMarkdown(
+                          title: MarkdownBuilder(
                             footnote.text,
                             onLinkPressed: (text, link) => PreviewPassageSheet.show(
                               context,

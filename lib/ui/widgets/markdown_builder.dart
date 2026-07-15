@@ -1,20 +1,20 @@
 import 'package:bible/utils/hook_utils.dart';
-import 'package:bible/utils/markdown_utils.dart';
+import 'package:bible/utils/markdown.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-class SimpleMarkdown extends HookWidget {
-  final String text;
+class MarkdownBuilder extends HookWidget {
+  final Markdown markdown;
   final void Function(String text, String link)? onLinkPressed;
 
   final int? maxLines;
 
-  const SimpleMarkdown(this.text, {super.key, this.onLinkPressed, this.maxLines});
+  const MarkdownBuilder(this.markdown, {super.key, this.onLinkPressed, this.maxLines});
 
   @override
   Widget build(BuildContext context) {
-    final elements = useMemoized(() => MarkdownUtils.fromSimpleMarkdown(text), [text]);
+    final elements = useMemoized(() => markdown.elements, [markdown]);
     final (:spans, :recognizers) = useDisposable(
       useMemoized(() {
         final recognizers = <TapGestureRecognizer>[];
