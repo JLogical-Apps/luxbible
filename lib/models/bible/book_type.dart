@@ -81,6 +81,7 @@ enum BookType {
   String jsonKey() => this == songOfSolomon ? 'song_of_solomon' : name;
 
   BookType get next => values[index + 1];
+  BookType? get nextOrNull => values.elementAtOrNull(index + 1);
 
   Testament get testament => index < matthew.index ? Testament.oldTestament : Testament.newTestament;
 

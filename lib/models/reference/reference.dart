@@ -40,7 +40,7 @@ class Reference extends Equatable with ComparableOperators<Reference> {
 
   String format() => '${book.title()}\u{00A0}$chapterNum:$verseNum';
 
-  Reference get next {
+  Reference? get nextOrNull {
     final nextVerseNum = verseNum + 1;
     if (nextVerseNum <= book.bookInfo.getNumVerses(chapterNum)) {
       return Reference(book: book, chapterNum: chapterNum, verseNum: nextVerseNum);
@@ -51,7 +51,8 @@ class Reference extends Equatable with ComparableOperators<Reference> {
       return Reference(book: book, chapterNum: nextChapterNum, verseNum: 1);
     }
 
-    return Reference(book: book.next, chapterNum: 1, verseNum: 1);
+    final nextBook = book.nextOrNull;
+    return nextBook == null ? null : Reference(book: nextBook, chapterNum: 1, verseNum: 1);
   }
 
   Reference get clamped {
@@ -64,7 +65,12 @@ class Reference extends Equatable with ComparableOperators<Reference> {
     var reference = start;
     yield reference;
     while (reference != end) {
-      reference = reference.next;
+      final nextReference = reference.nextOrNull;
+      if (nextReference == null) {
+        return;
+      }
+
+      reference = nextReference;
       yield reference;
     }
   }

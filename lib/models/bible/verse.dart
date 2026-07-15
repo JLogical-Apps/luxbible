@@ -48,16 +48,8 @@ extension IterableVerseExtensions on Iterable<Verse> {
   }
 
   List<Verse> trim() {
-    if (isEmpty) {
-      return toList();
-    }
-
-    final list = skipWhile((verse) => verse.text.isBlank).toList();
-    if (list.isEmpty) {
-      return list;
-    }
-    list[0] = list[0].trimStart();
-    return list;
+    final verses = skipWhile((verse) => verse.text.isBlank).toList();
+    return [if (verses.firstOrNull case final first?) first.trimStart(), ...verses.skip(1)];
   }
 
   Iterable<Verse> withSameVersesCombined() => isEmpty

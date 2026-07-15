@@ -65,60 +65,22 @@ class VerseSpanReference extends Equatable {
   @override
   List<Object> get props => [start, ?end];
 
-  static List<VerseSpanReference> listFromReferences(List<Reference> references) {
-    references = references.sorted();
-
-    if (references.isEmpty) {
-      return [];
-    } else if (references.length == 1) {
-      return [VerseSpanReference(start: VerseBiblePointer(reference: references.first), end: null)];
-    }
-
-    final spans = <VerseSpanReference>[];
-
-    var runStart = references.first;
-    for (var i = 1; i < references.length; i++) {
-      final previousReference = references[i - 1];
-      if (previousReference.next != references[i]) {
-        spans.add(
-          VerseSpanReference(
-            start: VerseBiblePointer(reference: runStart),
-            end: runStart == previousReference ? null : VerseBiblePointer(reference: previousReference),
-          ),
-        );
-        runStart = references[i];
-      }
-    }
-
-    spans.add(
-      VerseSpanReference(
-        start: VerseBiblePointer(reference: runStart),
-        end: runStart == references.last ? null : VerseBiblePointer(reference: references.last),
-      ),
-    );
-
-    return spans;
-  }
+  static List<VerseSpanReference> listFromReferences(List<Reference> references) => references
+      .sorted()
+      .splitBetween((previous, current) => previous.nextOrNull != current)
+      .map(
+        (run) => VerseSpanReference(
+          start: VerseBiblePointer(reference: run.first),
+          end: run.length == 1 ? null : VerseBiblePointer(reference: run.last),
+        ),
+      )
+      .toList();
 
   String toJson() => osisId();
   factory VerseSpanReference.fromJson(String json) = VerseSpanReference.fromOsisId;
 
-  List<Reference> get references {
-    final end = this.end;
-    final references = start.references;
-    if (end == null) {
-      return references;
-    }
-
-    var reference = references.last;
-    final lastReference = end.endReference;
-    while (reference != lastReference) {
-      reference = reference.next;
-      references.add(reference);
-    }
-
-    return references;
-  }
+  List<Reference> get references =>
+      Reference.getReferencesBetween(start.startReference, end?.endReference ?? start.endReference).toList();
 
   VerseSelection toVerseSelection() => VerseSelection(spans: [this]);
 

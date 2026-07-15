@@ -47,7 +47,7 @@ extension StrongDescriptionMarkdownExtension on Markdown {
   }
 }
 
-List<String> _splitRenderings(String text) => _mergeMarkedRenderingContinuations(_splitAtTopLevelDelimiters(text));
+List<String> _splitRenderings(String text) => _splitAtTopLevelDelimiters(text);
 
 List<String> _splitAtTopLevelDelimiters(String text) {
   var delimiterDepth = 0;
@@ -77,17 +77,6 @@ bool _isTopLevelDelimiter(String text, int index, String character, int delimite
         StrongDescriptionMarker.values.any(
           (marker) => index > 0 && text[index - 1] == ' ' && text.startsWith('${marker.symbol} ', index),
         ));
-
-List<String> _mergeMarkedRenderingContinuations(Iterable<String> renderings) =>
-    renderings.fold(<String>[], (mergedRenderings, rendering) {
-      final previous = mergedRenderings.lastOrNull;
-      if (previous != null && _isMarkedRendering(previous) && !_isMarkedRendering(rendering)) {
-        return [...mergedRenderings.take(mergedRenderings.length - 1), '$previous, $rendering'];
-      }
-      return [...mergedRenderings, rendering];
-    });
-
-bool _isMarkedRendering(String rendering) => StrongDescriptionMarker.fromRenderingOrNull(rendering) != null;
 
 String _formatRendering(String rendering) {
   final marker = StrongDescriptionMarker.fromRenderingOrNull(rendering);
