@@ -13,10 +13,9 @@ class NotebookIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = isInverted ? context.colors.inverted : context.colors;
     final notebook = this.notebook;
-    final hue = notebook?.color.toHue(colors);
     return Icon(
       Symbols.book_2,
-      color: hue?.medium.withValues(alpha: notebook == null || notebook.isVisible ? 1 : 1),
+      color: notebook?.color.toHue(colors).medium,
       fill: notebook == null || notebook.isVisible ? 1 : 0,
     );
   }
