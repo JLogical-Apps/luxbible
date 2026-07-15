@@ -87,4 +87,24 @@ void main() {
     expect(links.single.plainText, 'H1933');
     expect(links.single.target, 'H1933');
   });
+
+  test('formats Strong descriptions into linked rendering lines', () {
+    final description = strongs['H4310']!.formattedDescription;
+
+    expect(
+      description.text,
+      'An interrogitive pronoun of persons, as [H4100](H4100) is of things, *who*? '
+      '(occasionally, by a peculiar idiom, of things); also (indefinitely) *whoever*; often used in oblique '
+      'construction with prefix or suffix:\n'
+      '- any (man)\n'
+      '- [idiom:](strongs-description-marker:idiomaticRendering) he\n'
+      '- [idiom:](strongs-description-marker:idiomaticRendering) him\n'
+      '- [added:](strongs-description-marker:addedWord) O that! what, which, who (-m, -se, -soever)\n'
+      '- [added:](strongs-description-marker:addedWord) would to God.',
+    );
+    expect(
+      StrongDescriptionMarker.fromLinkTarget('strongs-description-marker:addedWord'),
+      StrongDescriptionMarker.addedWord,
+    );
+  });
 }

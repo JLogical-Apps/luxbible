@@ -1,6 +1,7 @@
 import 'package:bible/models/bible/word.dart';
 import 'package:bible/models/morphology.dart';
 import 'package:bible/models/reference/verse_selection.dart';
+import 'package:bible/models/strong.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/strongs_provider.dart';
@@ -13,11 +14,13 @@ import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
+import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/markdown.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:utils_core/utils_core.dart';
 
 class StrongSheet {
@@ -108,65 +111,19 @@ class StrongSheet {
                       title: Row(
                         children: [
                           Expanded(child: 'Strong\'s Description'.toText()),
-                          StyledLink(
-                            'Legend',
-                            onPressed: () => context.showStyledDialog(
-                              (context) => StyledDialog.confirm(
-                                title: 'Strong\'s Description Legend'.toText(),
-                                bodyPadding: .zero,
-                                body: StyledList(
-                                  children: [
-                                    StyledListItem(
-                                      leading: Text('+', style: context.textStyle.labelLg),
-                                      title: 'Added word'.toText(),
-                                      subtitle:
-                                          'Marks a word supplied in the Authorized Version alongside the Hebrew or Greek word being defined.'
-                                              .toText(),
-                                    ),
-                                    StyledListItem(
-                                      leading: Text('X', style: context.textStyle.labelLg),
-                                      title: 'Idiomatic rendering'.toText(),
-                                      subtitle:
-                                          'Marks a rendering that reflects an expression particular to Hebrew or Greek.'
-                                              .toText(),
-                                    ),
-                                    StyledListItem(
-                                      leading: Text('º', style: context.textStyle.labelLg),
-                                      title: 'Corrected vowel pointing'.toText(),
-                                      subtitle:
-                                          'After a Hebrew word, marks vowel pointing corrected from the text, usually based on the marginal reading.'
-                                              .toText(),
-                                    ),
-                                    StyledListItem(
-                                      leading: Text('()', style: context.textStyle.labelLg),
-                                      title: 'Optional word'.toText(),
-                                      subtitle: 'Marks a word or syllable that may be supplied with the main word.'
-                                          .toText(),
-                                    ),
-                                    StyledListItem(
-                                      leading: Text('[]', style: context.textStyle.labelLg),
-                                      title: 'Added word in Hebrew or Greek'.toText(),
-                                      subtitle:
-                                          'Marks a word included in the English rendering even though it is not present in the Hebrew or Greek.'
-                                              .toText(),
-                                    ),
-                                    StyledListItem(
-                                      leading: Text('Aa', style: context.textStyle.labelLg),
-                                      title: 'Explanation'.toText(),
-                                      subtitle:
-                                          'Italic text at the end of a rendering explains a variation from the usual form.'
-                                              .toText(),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                          StyledLink('Legend', onPressed: () => showDescriptionLegend(context)),
                         ],
                       ),
                       subtitle: MarkdownBuilder(
-                        strong.description,
-                        onLinkPressed: (text, link) => openStrong(context, link),
+                        strong.formattedDescription,
+                        onLinkPressed: (text, link) {
+                          final marker = StrongDescriptionMarker.fromLinkTarget(link);
+                          if (marker != null) {
+                            showDescriptionLegend(context, marker: marker);
+                            return;
+                          }
+                          openStrong(context, link);
+                        },
                       ),
                     ),
                 ],
@@ -263,6 +220,46 @@ class StrongSheet {
       );
     });
   }
+
+  static Future<void> showDescriptionLegend(
+    BuildContext context, {
+    StrongDescriptionMarker? marker,
+  }) => context.showStyledDialog(
+    (context) => StyledDialog.confirm(
+      title: (marker?.title ?? 'Strong\'s Description Legend').toText(),
+      bodyPadding: .zero,
+      body: StyledList(
+        children: [
+          ...(marker == null ? StrongDescriptionMarker.values : [marker]).map(
+            (marker) => StyledListItem(
+              leading: Text(marker.symbol, style: context.textStyle.labelLg),
+              title: marker.title.toText(),
+              subtitle: marker.description.toText(),
+            ),
+          ),
+          if (marker == null) ...[
+            StyledListItem(
+              leading: Text('()', style: context.textStyle.labelLg),
+              title: 'Optional word'.toText(),
+              subtitle: 'Marks a word or syllable that may be supplied with the main word.'.toText(),
+            ),
+            StyledListItem(
+              leading: Text('[]', style: context.textStyle.labelLg),
+              title: 'Added word in Hebrew or Greek'.toText(),
+              subtitle:
+                  'Marks a word included in the English rendering even though it is not present in the Hebrew or Greek.'
+                      .toText(),
+            ),
+            StyledListItem(
+              leading: Symbols.format_italic.toIcon(),
+              title: 'Explanation'.toText(),
+              subtitle: 'Italic text at the end of a rendering explains a variation from the usual form.'.toText(),
+            ),
+          ],
+        ],
+      ),
+    ),
+  );
 
   static List<Widget> concordanceChildren(
     BuildContext context,

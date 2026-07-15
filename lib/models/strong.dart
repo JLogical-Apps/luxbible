@@ -1,11 +1,16 @@
+import 'package:bible/models/strong_description.dart';
 import 'package:bible/utils/markdown.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+
+export 'strong_description.dart';
 
 part 'strong.freezed.dart';
 part 'strong.g.dart';
 
 @freezed
 sealed class Strong with _$Strong {
+  const Strong._();
+
   const factory Strong({
     @JsonKey(name: 'i') required String id,
     @JsonKey(name: 'l') required String languageText,
@@ -22,4 +27,6 @@ sealed class Strong with _$Strong {
   }) = _Strong;
 
   factory Strong.fromJson(Map<String, dynamic> json) => _$StrongFromJson(json);
+
+  Markdown get formattedDescription => description.withStrongDescriptionFormatting;
 }

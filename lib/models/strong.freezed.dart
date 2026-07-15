@@ -212,8 +212,8 @@ return $default(_that.id,_that.languageText,_that.pronunciation,_that.transliter
 /// @nodoc
 @JsonSerializable()
 
-class _Strong implements Strong {
-  const _Strong({@JsonKey(name: 'i') required this.id, @JsonKey(name: 'l') required this.languageText, @JsonKey(name: 'p') required this.pronunciation, @JsonKey(name: 'x') required this.transliteration, @JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson) required this.definition, @JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson) required this.description, @JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable) this.derivation, @JsonKey(name: 't', includeIfNull: false) this.partOfSpeech, @JsonKey(name: 'r', includeIfNull: false) this.lexiconReference, @JsonKey(name: 'g') required final  List<String> relatedStrongIds, @JsonKey(name: 'k') required final  Map<String, int> kjvUsage}): _relatedStrongIds = relatedStrongIds,_kjvUsage = kjvUsage;
+class _Strong extends Strong {
+  const _Strong({@JsonKey(name: 'i') required this.id, @JsonKey(name: 'l') required this.languageText, @JsonKey(name: 'p') required this.pronunciation, @JsonKey(name: 'x') required this.transliteration, @JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson) required this.definition, @JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson) required this.description, @JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable) this.derivation, @JsonKey(name: 't', includeIfNull: false) this.partOfSpeech, @JsonKey(name: 'r', includeIfNull: false) this.lexiconReference, @JsonKey(name: 'g') required final  List<String> relatedStrongIds, @JsonKey(name: 'k') required final  Map<String, int> kjvUsage}): _relatedStrongIds = relatedStrongIds,_kjvUsage = kjvUsage,super._();
   factory _Strong.fromJson(Map<String, dynamic> json) => _$StrongFromJson(json);
 
 @override@JsonKey(name: 'i') final  String id;
