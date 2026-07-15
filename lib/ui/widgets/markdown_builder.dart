@@ -1,5 +1,7 @@
+import 'package:bible/style/text_style_extensions.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:bible/utils/markdown.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -14,13 +16,17 @@ class MarkdownBuilder extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final elements = useMemoized(() => markdown.elements, [markdown]);
-    final (:spans, :recognizers) = useDisposable(
+    final lines = useMemoized(() => markdown.text.split('\n').map(MarkdownLine.fromText).toList(), [markdown]);
+    final hasIndentedLines = lines.any((line) => line.indentation > 0);
+
+    final (:spansByLine, :recognizers) = useDisposable(
       useMemoized(() {
         final recognizers = <TapGestureRecognizer>[];
-        final spans = getTextSpans(elements, recognizers);
-        return (spans: spans, recognizers: recognizers);
-      }, [elements, onLinkPressed]),
+        final spansByLine = hasIndentedLines
+            ? lines.map((line) => getTextSpans(line.markdown.elements, recognizers)).toList()
+            : [getTextSpans(markdown.elements, recognizers)];
+        return (spansByLine: spansByLine, recognizers: recognizers);
+      }, [lines, hasIndentedLines, onLinkPressed]),
       (rendered) {
         for (final recognizer in rendered.recognizers) {
           recognizer.dispose();
@@ -28,10 +34,17 @@ class MarkdownBuilder extends HookWidget {
       },
     );
 
-    return Text.rich(
-      maxLines: maxLines,
-      overflow: maxLines == null ? null : .ellipsis,
-      TextSpan(children: spans),
+    final indentationWidth = DefaultTextStyle.of(context).style.getWidth('   ');
+    return Column(
+      crossAxisAlignment: .stretch,
+      children: spansByLine
+          .mapIndexed(
+            (index, spans) => Padding(
+              padding: .only(left: lines[index].indentation * indentationWidth),
+              child: MarkdownRichText(spans: spans, maxLines: maxLines),
+            ),
+          )
+          .toList(),
     );
   }
 
@@ -98,4 +111,30 @@ class MarkdownBuilder extends HookWidget {
     recognizers.add(recognizer);
     return recognizer;
   }
+}
+
+class MarkdownLine {
+  final int indentation;
+  final Markdown markdown;
+
+  const MarkdownLine({required this.indentation, required this.markdown});
+
+  factory MarkdownLine.fromText(String text) {
+    final indentation = RegExp(r'^\t*').firstMatch(text)!.end;
+    return MarkdownLine(indentation: indentation, markdown: Markdown(text.substring(indentation)));
+  }
+}
+
+class MarkdownRichText extends StatelessWidget {
+  final List<InlineSpan> spans;
+  final int? maxLines;
+
+  const MarkdownRichText({super.key, required this.spans, this.maxLines});
+
+  @override
+  Widget build(BuildContext context) => Text.rich(
+    maxLines: maxLines,
+    overflow: maxLines == null ? null : .ellipsis,
+    TextSpan(children: spans),
+  );
 }
