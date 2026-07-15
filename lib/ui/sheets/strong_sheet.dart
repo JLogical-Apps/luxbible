@@ -105,7 +105,65 @@ class StrongSheet {
                   ),
                   if (strong.description != strong.definition)
                     StyledListItem(
-                      title: 'Strong\'s Description'.toText(),
+                      title: Row(
+                        children: [
+                          Expanded(child: 'Strong\'s Description'.toText()),
+                          StyledLink(
+                            'Legend',
+                            onPressed: () => context.showStyledDialog(
+                              (context) => StyledDialog.confirm(
+                                title: 'Strong\'s Description Legend'.toText(),
+                                bodyPadding: .zero,
+                                body: StyledList(
+                                  children: [
+                                    StyledListItem(
+                                      leading: Text('+', style: context.textStyle.labelLg),
+                                      title: 'Added word'.toText(),
+                                      subtitle:
+                                          'Marks a word supplied in the Authorized Version alongside the Hebrew or Greek word being defined.'
+                                              .toText(),
+                                    ),
+                                    StyledListItem(
+                                      leading: Text('X', style: context.textStyle.labelLg),
+                                      title: 'Idiomatic rendering'.toText(),
+                                      subtitle:
+                                          'Marks a rendering that reflects an expression particular to Hebrew or Greek.'
+                                              .toText(),
+                                    ),
+                                    StyledListItem(
+                                      leading: Text('º', style: context.textStyle.labelLg),
+                                      title: 'Corrected vowel pointing'.toText(),
+                                      subtitle:
+                                          'After a Hebrew word, marks vowel pointing corrected from the text, usually based on the marginal reading.'
+                                              .toText(),
+                                    ),
+                                    StyledListItem(
+                                      leading: Text('()', style: context.textStyle.labelLg),
+                                      title: 'Optional word'.toText(),
+                                      subtitle: 'Marks a word or syllable that may be supplied with the main word.'
+                                          .toText(),
+                                    ),
+                                    StyledListItem(
+                                      leading: Text('[]', style: context.textStyle.labelLg),
+                                      title: 'Added word in Hebrew or Greek'.toText(),
+                                      subtitle:
+                                          'Marks a word included in the English rendering even though it is not present in the Hebrew or Greek.'
+                                              .toText(),
+                                    ),
+                                    StyledListItem(
+                                      leading: Text('Aa', style: context.textStyle.labelLg),
+                                      title: 'Explanation'.toText(),
+                                      subtitle:
+                                          'Italic text at the end of a rendering explains a variation from the usual form.'
+                                              .toText(),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                       subtitle: MarkdownBuilder(
                         strong.description,
                         onLinkPressed: (text, link) => openStrong(context, link),

@@ -31,14 +31,9 @@ extension StyleContextExtensions on BuildContext {
     useRootNavigator: true,
     constraints: BoxConstraints(
       maxWidth: MediaQuery.sizeOf(this).width - 32,
-      maxHeight: MediaQuery.sizeOf(this).height - 48,
+      maxHeight: MediaQuery.sizeOf(this).height - MediaQuery.paddingOf(this).top - 48,
     ),
-    builder: (context) => Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.paddingOf(context).bottom + MediaQuery.viewInsetsOf(context).bottom + 16,
-      ),
-      child: dialogBuilder(context),
-    ),
+    builder: dialogBuilder,
   );
 
   Future<T?> showStyledSheet<T>(

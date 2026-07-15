@@ -64,38 +64,48 @@ class StyledDialog<T> extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(color: context.colors.surfacePrimary, borderRadius: .circular(16)),
-      padding: .symmetric(vertical: 16),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: .start,
-          children: [
-            Padding(
-              padding: .symmetric(horizontal: 16),
-              child: Row(
-                spacing: 8,
-                children: [
-                  Expanded(
-                    child: DefaultTextStyle(style: context.textStyle.headingSm, child: title),
-                  ),
-                  StyledCircleButton.md(child: Symbols.close.toIcon(), onPressed: () => Navigator.of(context).pop()),
-                ],
-              ),
-            ),
-            gapH8,
-            ...[
-              Padding(
-                padding: bodyPadding,
-                child: DefaultTextStyle(style: context.textStyle.paragraphMd, child: body),
-              ),
+    return Padding(
+      padding: .only(
+        bottom: MediaQuery.paddingOf(context.rootContext).bottom + MediaQuery.viewInsetsOf(context).bottom + 16,
+      ),
+      child: ClipRRect(
+        borderRadius: .circular(16),
+        child: Container(
+          decoration: BoxDecoration(color: context.colors.surfacePrimary, borderRadius: .circular(16)),
+          child: Column(
+            mainAxisSize: .min,
+            children: [
               gapH16,
+              Padding(
+                padding: .symmetric(horizontal: 16),
+                child: Row(
+                  spacing: 8,
+                  children: [
+                    Expanded(
+                      child: DefaultTextStyle(style: context.textStyle.headingSm, child: title),
+                    ),
+                    StyledCircleButton.md(child: Symbols.close.toIcon(), onPressed: () => Navigator.of(context).pop()),
+                  ],
+                ),
+              ),
+              gapH8,
+              Flexible(
+                child: MediaQuery.removeViewPadding(
+                  context: context,
+                  removeBottom: true,
+                  child: StyledDock(
+                    children: [
+                      Padding(
+                        padding: bodyPadding,
+                        child: DefaultTextStyle(style: context.textStyle.paragraphMd, child: body),
+                      ),
+                    ],
+                    buttonsBuilder: buttonsBuilder,
+                  ),
+                ),
+              ),
             ],
-            Padding(
-              padding: .symmetric(horizontal: 16),
-              child: Column(spacing: 8, children: buttonsBuilder(context)),
-            ),
-          ],
+          ),
         ),
       ),
     );
