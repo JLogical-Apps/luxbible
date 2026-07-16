@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Strong {
 
-@JsonKey(name: 'i') String get id;@JsonKey(name: 'l') String get languageText;@JsonKey(name: 'p') String get pronunciation;@JsonKey(name: 'x') String get transliteration;@JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown get usage;@JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown get definition;@JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable) Markdown? get derivation;@JsonKey(name: 't', includeIfNull: false) String? get partOfSpeech;@JsonKey(name: 'g') List<String> get relatedStrongIds;@JsonKey(name: 'k') Map<String, int> get kjvUsage;
+@JsonKey(name: 'i') String get id;@JsonKey(name: 'l') String get languageText;@JsonKey(name: 'p') String get pronunciation;@JsonKey(name: 'x') String get transliteration;@JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown get usage;@JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown get definition;@JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable) Markdown? get derivation;@JsonKey(name: 't', includeIfNull: false) String? get partOfSpeech;@JsonKey(name: 'g') List<String> get relatedStrongIds;
 /// Create a copy of Strong
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $StrongCopyWith<Strong> get copyWith => _$StrongCopyWithImpl<Strong>(this as Str
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Strong&&(identical(other.id, id) || other.id == id)&&(identical(other.languageText, languageText) || other.languageText == languageText)&&(identical(other.pronunciation, pronunciation) || other.pronunciation == pronunciation)&&(identical(other.transliteration, transliteration) || other.transliteration == transliteration)&&(identical(other.usage, usage) || other.usage == usage)&&(identical(other.definition, definition) || other.definition == definition)&&(identical(other.derivation, derivation) || other.derivation == derivation)&&(identical(other.partOfSpeech, partOfSpeech) || other.partOfSpeech == partOfSpeech)&&const DeepCollectionEquality().equals(other.relatedStrongIds, relatedStrongIds)&&const DeepCollectionEquality().equals(other.kjvUsage, kjvUsage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Strong&&(identical(other.id, id) || other.id == id)&&(identical(other.languageText, languageText) || other.languageText == languageText)&&(identical(other.pronunciation, pronunciation) || other.pronunciation == pronunciation)&&(identical(other.transliteration, transliteration) || other.transliteration == transliteration)&&(identical(other.usage, usage) || other.usage == usage)&&(identical(other.definition, definition) || other.definition == definition)&&(identical(other.derivation, derivation) || other.derivation == derivation)&&(identical(other.partOfSpeech, partOfSpeech) || other.partOfSpeech == partOfSpeech)&&const DeepCollectionEquality().equals(other.relatedStrongIds, relatedStrongIds));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,languageText,pronunciation,transliteration,usage,definition,derivation,partOfSpeech,const DeepCollectionEquality().hash(relatedStrongIds),const DeepCollectionEquality().hash(kjvUsage));
+int get hashCode => Object.hash(runtimeType,id,languageText,pronunciation,transliteration,usage,definition,derivation,partOfSpeech,const DeepCollectionEquality().hash(relatedStrongIds));
 
 @override
 String toString() {
-  return 'Strong(id: $id, languageText: $languageText, pronunciation: $pronunciation, transliteration: $transliteration, usage: $usage, definition: $definition, derivation: $derivation, partOfSpeech: $partOfSpeech, relatedStrongIds: $relatedStrongIds, kjvUsage: $kjvUsage)';
+  return 'Strong(id: $id, languageText: $languageText, pronunciation: $pronunciation, transliteration: $transliteration, usage: $usage, definition: $definition, derivation: $derivation, partOfSpeech: $partOfSpeech, relatedStrongIds: $relatedStrongIds)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $StrongCopyWith<$Res>  {
   factory $StrongCopyWith(Strong value, $Res Function(Strong) _then) = _$StrongCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'i') String id,@JsonKey(name: 'l') String languageText,@JsonKey(name: 'p') String pronunciation,@JsonKey(name: 'x') String transliteration,@JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown usage,@JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown definition,@JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable) Markdown? derivation,@JsonKey(name: 't', includeIfNull: false) String? partOfSpeech,@JsonKey(name: 'g') List<String> relatedStrongIds,@JsonKey(name: 'k') Map<String, int> kjvUsage
+@JsonKey(name: 'i') String id,@JsonKey(name: 'l') String languageText,@JsonKey(name: 'p') String pronunciation,@JsonKey(name: 'x') String transliteration,@JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown usage,@JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown definition,@JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable) Markdown? derivation,@JsonKey(name: 't', includeIfNull: false) String? partOfSpeech,@JsonKey(name: 'g') List<String> relatedStrongIds
 });
 
 
@@ -65,7 +65,7 @@ class _$StrongCopyWithImpl<$Res>
 
 /// Create a copy of Strong
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? languageText = null,Object? pronunciation = null,Object? transliteration = null,Object? usage = null,Object? definition = null,Object? derivation = freezed,Object? partOfSpeech = freezed,Object? relatedStrongIds = null,Object? kjvUsage = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? languageText = null,Object? pronunciation = null,Object? transliteration = null,Object? usage = null,Object? definition = null,Object? derivation = freezed,Object? partOfSpeech = freezed,Object? relatedStrongIds = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,languageText: null == languageText ? _self.languageText : languageText // ignore: cast_nullable_to_non_nullable
@@ -76,8 +76,7 @@ as Markdown,definition: null == definition ? _self.definition : definition // ig
 as Markdown,derivation: freezed == derivation ? _self.derivation : derivation // ignore: cast_nullable_to_non_nullable
 as Markdown?,partOfSpeech: freezed == partOfSpeech ? _self.partOfSpeech : partOfSpeech // ignore: cast_nullable_to_non_nullable
 as String?,relatedStrongIds: null == relatedStrongIds ? _self.relatedStrongIds : relatedStrongIds // ignore: cast_nullable_to_non_nullable
-as List<String>,kjvUsage: null == kjvUsage ? _self.kjvUsage : kjvUsage // ignore: cast_nullable_to_non_nullable
-as Map<String, int>,
+as List<String>,
   ));
 }
 
@@ -159,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 'l')  String languageText, @JsonKey(name: 'p')  String pronunciation, @JsonKey(name: 'x')  String transliteration, @JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown usage, @JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown definition, @JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable)  Markdown? derivation, @JsonKey(name: 't', includeIfNull: false)  String? partOfSpeech, @JsonKey(name: 'g')  List<String> relatedStrongIds, @JsonKey(name: 'k')  Map<String, int> kjvUsage)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 'l')  String languageText, @JsonKey(name: 'p')  String pronunciation, @JsonKey(name: 'x')  String transliteration, @JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown usage, @JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown definition, @JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable)  Markdown? derivation, @JsonKey(name: 't', includeIfNull: false)  String? partOfSpeech, @JsonKey(name: 'g')  List<String> relatedStrongIds)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Strong() when $default != null:
-return $default(_that.id,_that.languageText,_that.pronunciation,_that.transliteration,_that.usage,_that.definition,_that.derivation,_that.partOfSpeech,_that.relatedStrongIds,_that.kjvUsage);case _:
+return $default(_that.id,_that.languageText,_that.pronunciation,_that.transliteration,_that.usage,_that.definition,_that.derivation,_that.partOfSpeech,_that.relatedStrongIds);case _:
   return orElse();
 
 }
@@ -180,10 +179,10 @@ return $default(_that.id,_that.languageText,_that.pronunciation,_that.transliter
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 'l')  String languageText, @JsonKey(name: 'p')  String pronunciation, @JsonKey(name: 'x')  String transliteration, @JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown usage, @JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown definition, @JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable)  Markdown? derivation, @JsonKey(name: 't', includeIfNull: false)  String? partOfSpeech, @JsonKey(name: 'g')  List<String> relatedStrongIds, @JsonKey(name: 'k')  Map<String, int> kjvUsage)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 'l')  String languageText, @JsonKey(name: 'p')  String pronunciation, @JsonKey(name: 'x')  String transliteration, @JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown usage, @JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown definition, @JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable)  Markdown? derivation, @JsonKey(name: 't', includeIfNull: false)  String? partOfSpeech, @JsonKey(name: 'g')  List<String> relatedStrongIds)  $default,) {final _that = this;
 switch (_that) {
 case _Strong():
-return $default(_that.id,_that.languageText,_that.pronunciation,_that.transliteration,_that.usage,_that.definition,_that.derivation,_that.partOfSpeech,_that.relatedStrongIds,_that.kjvUsage);}
+return $default(_that.id,_that.languageText,_that.pronunciation,_that.transliteration,_that.usage,_that.definition,_that.derivation,_that.partOfSpeech,_that.relatedStrongIds);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -197,10 +196,10 @@ return $default(_that.id,_that.languageText,_that.pronunciation,_that.transliter
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 'l')  String languageText, @JsonKey(name: 'p')  String pronunciation, @JsonKey(name: 'x')  String transliteration, @JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown usage, @JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown definition, @JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable)  Markdown? derivation, @JsonKey(name: 't', includeIfNull: false)  String? partOfSpeech, @JsonKey(name: 'g')  List<String> relatedStrongIds, @JsonKey(name: 'k')  Map<String, int> kjvUsage)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 'l')  String languageText, @JsonKey(name: 'p')  String pronunciation, @JsonKey(name: 'x')  String transliteration, @JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown usage, @JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown definition, @JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable)  Markdown? derivation, @JsonKey(name: 't', includeIfNull: false)  String? partOfSpeech, @JsonKey(name: 'g')  List<String> relatedStrongIds)?  $default,) {final _that = this;
 switch (_that) {
 case _Strong() when $default != null:
-return $default(_that.id,_that.languageText,_that.pronunciation,_that.transliteration,_that.usage,_that.definition,_that.derivation,_that.partOfSpeech,_that.relatedStrongIds,_that.kjvUsage);case _:
+return $default(_that.id,_that.languageText,_that.pronunciation,_that.transliteration,_that.usage,_that.definition,_that.derivation,_that.partOfSpeech,_that.relatedStrongIds);case _:
   return null;
 
 }
@@ -212,7 +211,7 @@ return $default(_that.id,_that.languageText,_that.pronunciation,_that.transliter
 @JsonSerializable()
 
 class _Strong extends Strong {
-  const _Strong({@JsonKey(name: 'i') required this.id, @JsonKey(name: 'l') required this.languageText, @JsonKey(name: 'p') required this.pronunciation, @JsonKey(name: 'x') required this.transliteration, @JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson) required this.usage, @JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson) required this.definition, @JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable) this.derivation, @JsonKey(name: 't', includeIfNull: false) this.partOfSpeech, @JsonKey(name: 'g') required final  List<String> relatedStrongIds, @JsonKey(name: 'k') required final  Map<String, int> kjvUsage}): _relatedStrongIds = relatedStrongIds,_kjvUsage = kjvUsage,super._();
+  const _Strong({@JsonKey(name: 'i') required this.id, @JsonKey(name: 'l') required this.languageText, @JsonKey(name: 'p') required this.pronunciation, @JsonKey(name: 'x') required this.transliteration, @JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson) required this.usage, @JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson) required this.definition, @JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable) this.derivation, @JsonKey(name: 't', includeIfNull: false) this.partOfSpeech, @JsonKey(name: 'g') required final  List<String> relatedStrongIds}): _relatedStrongIds = relatedStrongIds,super._();
   factory _Strong.fromJson(Map<String, dynamic> json) => _$StrongFromJson(json);
 
 @override@JsonKey(name: 'i') final  String id;
@@ -230,13 +229,6 @@ class _Strong extends Strong {
   return EqualUnmodifiableListView(_relatedStrongIds);
 }
 
- final  Map<String, int> _kjvUsage;
-@override@JsonKey(name: 'k') Map<String, int> get kjvUsage {
-  if (_kjvUsage is EqualUnmodifiableMapView) return _kjvUsage;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableMapView(_kjvUsage);
-}
-
 
 /// Create a copy of Strong
 /// with the given fields replaced by the non-null parameter values.
@@ -251,16 +243,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Strong&&(identical(other.id, id) || other.id == id)&&(identical(other.languageText, languageText) || other.languageText == languageText)&&(identical(other.pronunciation, pronunciation) || other.pronunciation == pronunciation)&&(identical(other.transliteration, transliteration) || other.transliteration == transliteration)&&(identical(other.usage, usage) || other.usage == usage)&&(identical(other.definition, definition) || other.definition == definition)&&(identical(other.derivation, derivation) || other.derivation == derivation)&&(identical(other.partOfSpeech, partOfSpeech) || other.partOfSpeech == partOfSpeech)&&const DeepCollectionEquality().equals(other._relatedStrongIds, _relatedStrongIds)&&const DeepCollectionEquality().equals(other._kjvUsage, _kjvUsage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Strong&&(identical(other.id, id) || other.id == id)&&(identical(other.languageText, languageText) || other.languageText == languageText)&&(identical(other.pronunciation, pronunciation) || other.pronunciation == pronunciation)&&(identical(other.transliteration, transliteration) || other.transliteration == transliteration)&&(identical(other.usage, usage) || other.usage == usage)&&(identical(other.definition, definition) || other.definition == definition)&&(identical(other.derivation, derivation) || other.derivation == derivation)&&(identical(other.partOfSpeech, partOfSpeech) || other.partOfSpeech == partOfSpeech)&&const DeepCollectionEquality().equals(other._relatedStrongIds, _relatedStrongIds));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,languageText,pronunciation,transliteration,usage,definition,derivation,partOfSpeech,const DeepCollectionEquality().hash(_relatedStrongIds),const DeepCollectionEquality().hash(_kjvUsage));
+int get hashCode => Object.hash(runtimeType,id,languageText,pronunciation,transliteration,usage,definition,derivation,partOfSpeech,const DeepCollectionEquality().hash(_relatedStrongIds));
 
 @override
 String toString() {
-  return 'Strong(id: $id, languageText: $languageText, pronunciation: $pronunciation, transliteration: $transliteration, usage: $usage, definition: $definition, derivation: $derivation, partOfSpeech: $partOfSpeech, relatedStrongIds: $relatedStrongIds, kjvUsage: $kjvUsage)';
+  return 'Strong(id: $id, languageText: $languageText, pronunciation: $pronunciation, transliteration: $transliteration, usage: $usage, definition: $definition, derivation: $derivation, partOfSpeech: $partOfSpeech, relatedStrongIds: $relatedStrongIds)';
 }
 
 
@@ -271,7 +263,7 @@ abstract mixin class _$StrongCopyWith<$Res> implements $StrongCopyWith<$Res> {
   factory _$StrongCopyWith(_Strong value, $Res Function(_Strong) _then) = __$StrongCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'i') String id,@JsonKey(name: 'l') String languageText,@JsonKey(name: 'p') String pronunciation,@JsonKey(name: 'x') String transliteration,@JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown usage,@JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown definition,@JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable) Markdown? derivation,@JsonKey(name: 't', includeIfNull: false) String? partOfSpeech,@JsonKey(name: 'g') List<String> relatedStrongIds,@JsonKey(name: 'k') Map<String, int> kjvUsage
+@JsonKey(name: 'i') String id,@JsonKey(name: 'l') String languageText,@JsonKey(name: 'p') String pronunciation,@JsonKey(name: 'x') String transliteration,@JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown usage,@JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown definition,@JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable) Markdown? derivation,@JsonKey(name: 't', includeIfNull: false) String? partOfSpeech,@JsonKey(name: 'g') List<String> relatedStrongIds
 });
 
 
@@ -288,7 +280,7 @@ class __$StrongCopyWithImpl<$Res>
 
 /// Create a copy of Strong
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? languageText = null,Object? pronunciation = null,Object? transliteration = null,Object? usage = null,Object? definition = null,Object? derivation = freezed,Object? partOfSpeech = freezed,Object? relatedStrongIds = null,Object? kjvUsage = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? languageText = null,Object? pronunciation = null,Object? transliteration = null,Object? usage = null,Object? definition = null,Object? derivation = freezed,Object? partOfSpeech = freezed,Object? relatedStrongIds = null,}) {
   return _then(_Strong(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,languageText: null == languageText ? _self.languageText : languageText // ignore: cast_nullable_to_non_nullable
@@ -299,8 +291,7 @@ as Markdown,definition: null == definition ? _self.definition : definition // ig
 as Markdown,derivation: freezed == derivation ? _self.derivation : derivation // ignore: cast_nullable_to_non_nullable
 as Markdown?,partOfSpeech: freezed == partOfSpeech ? _self.partOfSpeech : partOfSpeech // ignore: cast_nullable_to_non_nullable
 as String?,relatedStrongIds: null == relatedStrongIds ? _self._relatedStrongIds : relatedStrongIds // ignore: cast_nullable_to_non_nullable
-as List<String>,kjvUsage: null == kjvUsage ? _self._kjvUsage : kjvUsage // ignore: cast_nullable_to_non_nullable
-as Map<String, int>,
+as List<String>,
   ));
 }
 

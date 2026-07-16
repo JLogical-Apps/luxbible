@@ -23,7 +23,6 @@ sealed class Strong with _$Strong {
     Markdown? derivation,
     @JsonKey(name: 't', includeIfNull: false) String? partOfSpeech,
     @JsonKey(name: 'g') required List<String> relatedStrongIds,
-    @JsonKey(name: 'k') required Map<String, int> kjvUsage,
   }) = _Strong;
 
   factory Strong.fromJson(Map<String, dynamic> json) => _$StrongFromJson(json);

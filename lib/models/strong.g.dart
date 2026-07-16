@@ -18,7 +18,6 @@ _Strong _$StrongFromJson(Map<String, dynamic> json) => _Strong(
   relatedStrongIds: (json['g'] as List<dynamic>)
       .map((e) => e as String)
       .toList(),
-  kjvUsage: Map<String, int>.from(json['k'] as Map),
 );
 
 Map<String, dynamic> _$StrongToJson(_Strong instance) => <String, dynamic>{
@@ -31,5 +30,4 @@ Map<String, dynamic> _$StrongToJson(_Strong instance) => <String, dynamic>{
   'o': ?Markdown.toJsonNullable(instance.derivation),
   't': ?instance.partOfSpeech,
   'g': instance.relatedStrongIds,
-  'k': instance.kjvUsage,
 };

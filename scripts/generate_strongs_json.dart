@@ -89,22 +89,7 @@ Map<String, dynamic> enrichStrong(
     if (lxxIndex != null) ...plusParagraphs.skip(lxxIndex + 1).expand((paragraph) => paragraph.text.strongIds),
   }.where((strongId) => strongIds.contains(strongId) && strongId != strong['i']).toList();
 
-  return {
-    ...strong,
-    'd': definition,
-    's': description,
-    'o': ?derivation,
-    't': ?partOfSpeech,
-    'g': relatedStrongIds,
-    'k': bdbParagraphs
-        .map((paragraph) => paragraph.text.trim())
-        .map((text) => text.kjvUsage)
-        .nonNulls
-        .fold(
-          <String, int>{},
-          (usage, entry) => usage..update(entry.word, (count) => count + entry.count, ifAbsent: () => entry.count),
-        ),
-  };
+  return {...strong, 'd': definition, 's': description, 'o': ?derivation, 't': ?partOfSpeech, 'g': relatedStrongIds};
 }
 
 String? optionalField(List<Element> paragraphs, String label) => paragraphs
@@ -198,11 +183,6 @@ extension on String {
 
   String get withoutTrailingHierarchyMarkers =>
       split('\n').map((line) => line.replaceFirst(RegExp(r' \d+[a-z]$'), '')).join('\n');
-
-  ({String word, int count})? get kjvUsage => switch (RegExp(r'^•\s*(.+),\s*(\d+)$').firstMatch(this)) {
-    final match? => (word: match.group(1)!, count: int.parse(match.group(2)!)),
-    _ => null,
-  };
 
   List<String> get strongIds => strongIdOccurrences.map((match) => match.id).toList();
 

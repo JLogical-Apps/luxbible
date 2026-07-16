@@ -12,7 +12,6 @@ import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/widgets/markdown_builder.dart';
 import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/markdown.dart';
@@ -191,22 +190,6 @@ class StrongSheet {
                         ),
                         subtitle: MarkdownBuilder(Markdown(strong.definition.text), maxLines: 2),
                         onPressed: () => openStrong(context, strong.id),
-                      ),
-                    )
-                    .toList(),
-              ),
-            if (strong != null && strong.kjvUsage.isNotEmpty)
-              StyledSection(
-                title: 'KJV Usage'.toText(),
-                subtitle: '${strong.kjvUsage.values.sum} occurrences'.toText(),
-                padding: .only(top: 24),
-                children: strong.kjvUsage
-                    .sortedByDescending((word, count) => count)
-                    .mapToIterable(
-                      (word, count) => StyledListItem(
-                        size: .sm,
-                        leading: Text(count.toString(), style: context.textStyle.labelLg),
-                        title: word.toText(),
                       ),
                     )
                     .toList(),
