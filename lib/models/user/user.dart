@@ -201,8 +201,20 @@ sealed class User with _$User {
   User withNewHighlightStyle((HighlightStyle, String label) style) =>
       copyWith(highlightStyles: [style, ...highlightStyles]);
 
-  User withUpdatedHighlightStyle(int index, (HighlightStyle, String label) style) =>
-      copyWith(highlightStyles: highlightStyles.mapIndexed((i, entry) => i == index ? style : entry).toList());
+  User withUpdatedHighlightStyle(int index, (HighlightStyle, String label) style, {required bool updateAnnotations}) {
+    final previousStyle = highlightStyles[index].$1;
+    return copyWith(
+      highlightStyles: highlightStyles.withSetAt(index, style),
+      lastHighlightStyle: lastHighlightStyle == previousStyle ? style.$1 : lastHighlightStyle,
+      annotations: updateAnnotations
+          ? annotations
+                .map(
+                  (annotation) => annotation.style == previousStyle ? annotation.copyWith(style: style.$1) : annotation,
+                )
+                .toList()
+          : annotations,
+    );
+  }
 
   User withRemovedHighlightStyle(int index, {required bool deleteAnnotations}) {
     final style = highlightStyles[index].$1;

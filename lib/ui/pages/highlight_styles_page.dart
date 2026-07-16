@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bible/models/highlight_style.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/root_ref.dart';
@@ -48,23 +50,38 @@ class HighlightStylesPage extends HookConsumerWidget {
                       trailing: StyledCircleButton.md(
                         child: Symbols.more_vert.toIcon(),
                         onPressed: () => context.showStyledSheet(
-                          (context) => StyledSheet(
+                          (sheetContext) => StyledSheet(
                             title: entry.$2.toText(),
                             children: [
                               StyledListItem(
                                 title: 'Edit'.toText(),
                                 leading: Symbols.edit.toIcon(),
                                 onPressed: () async {
-                                  context.pop();
+                                  sheetContext.pop();
+
                                   final user = ref.read(userProvider);
                                   final edited = await HighlightStyleSheet.show(
                                     context,
                                     initialStyle: entry,
                                     otherStyles: user.highlightStyles.whereNot((other) => other == entry).toList(),
                                   );
-                                  if (edited != null) {
-                                    ref.updateUser((user) => user.withUpdatedHighlightStyle(index, edited));
+                                  if (edited == null) return;
+
+                                  if (edited.$1 == entry.$1) {
+                                    ref.updateUser(
+                                      (user) => user.withUpdatedHighlightStyle(index, edited, updateAnnotations: false),
+                                    );
+                                    return;
                                   }
+
+                                  if (!context.mounted) return;
+                                  final shouldUpdate = await showUpdateAnnotationsDialog(context, entry: entry);
+                                  if (shouldUpdate == null) return;
+
+                                  ref.updateUser(
+                                    (user) =>
+                                        user.withUpdatedHighlightStyle(index, edited, updateAnnotations: shouldUpdate),
+                                  );
                                 },
                               ),
                               if (user.highlightStyles.length > 1)
@@ -157,6 +174,32 @@ class HighlightStylesPage extends HookConsumerWidget {
                   },
                 ),
               ],
+      ),
+    );
+  }
+
+  Future<bool?> showUpdateAnnotationsDialog(
+    BuildContext context, {
+    required (HighlightStyle, String label) entry,
+  }) async {
+    final numAnnotations = ref
+        .read(userProvider)
+        .annotations
+        .where((annotation) => annotation.style == entry.$1)
+        .length;
+
+    if (numAnnotations == 0) return false;
+
+    return await context.showStyledDialog(
+      (context) => StyledDialog(
+        title: 'Update Annotations'.toText(),
+        body:
+            '"${entry.$2}" has $numAnnotations ${numAnnotations == 1 ? 'annotation' : 'annotations'}. Would you like to update them to use the new style, or leave them as-is?'
+                .toText(),
+        buttonsBuilder: (context) => [
+          StyledRectButton.primary(label: 'Leave As-Is'.toText(), onPressed: () => context.pop(false)),
+          StyledRectButton.transparent(label: 'Update Annotations'.toText(), onPressed: () => context.pop(true)),
+        ],
       ),
     );
   }

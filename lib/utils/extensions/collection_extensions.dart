@@ -20,6 +20,7 @@ extension BibleListExtensions<T> on List<T> {
   List<T> withUpdate(bool Function(T) where, T Function(T) update) =>
       map((item) => where(item) ? update(item) : item).toList();
 
+  List<T> withSetAt(int index, T newValue) => [...this]..[index] = newValue;
   List<T> withUpdateAt(int index, T Function(T) update) => [...this]..[index] = update(this[index]);
 
   int? indexOfOrNull(T? item) {
