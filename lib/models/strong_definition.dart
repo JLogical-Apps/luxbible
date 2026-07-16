@@ -36,10 +36,10 @@ enum StrongDefinitionMarker {
 
 extension StrongDefinitionMarkdownExtension on Markdown {
   Markdown get withStrongDefinitionFormatting {
-    final separator = RegExp(r': -(\*)?\s*').allMatches(text).lastOrNull;
+    final separator = RegExp(r':(\*)? -(\*)?\s*').allMatches(text).lastOrNull;
     if (separator == null) return this;
 
-    final explanation = '${text.substring(0, separator.start)}${separator.group(1) ?? ''}:';
+    final explanation = '${text.substring(0, separator.start)}${separator.group(1) ?? separator.group(2) ?? ''}:';
     final renderings = _splitAtTopLevelDelimiters(text.substring(separator.end));
     if (renderings.isEmpty) return this;
 
