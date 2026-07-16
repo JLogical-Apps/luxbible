@@ -92,15 +92,13 @@ class StrongSheet {
                   StyledListItem(title: 'Pronunciation'.toText(), subtitle: strong.pronunciation.toText()),
                   if (strong.partOfSpeech case final partOfSpeech?)
                     StyledListItem(title: 'Part of Speech'.toText(), subtitle: partOfSpeech.toText()),
-                  if (strong.lexiconReference case final lexiconReference?)
-                    StyledListItem(title: 'Lexicon Reference'.toText(), subtitle: lexiconReference.toText()),
                   if (strong.derivation case final derivation?)
                     StyledListItem(
                       title: 'Derivation'.toText(),
                       subtitle: MarkdownBuilder(derivation, onLinkPressed: (text, link) => openStrong(context, link)),
                     ),
                   StyledListItem(
-                    title: 'Definition'.toText(),
+                    title: 'Biblical Usage'.toText(),
                     subtitle: MarkdownBuilder(
                       strong.definition,
                       onLinkPressed: (text, link) => openStrong(context, link),
@@ -186,11 +184,14 @@ class StrongSheet {
                 children: seeMoreStrongs
                     .map(
                       (strong) => StyledListItem.navigation(
-                        title: strong.id.toText(),
-                        subtitle: MarkdownBuilder(
-                          Markdown('${strong.languageText}: ${strong.description.text}'),
-                          maxLines: 1,
+                        title: Row(
+                          spacing: 8,
+                          children: [
+                            strong.languageText.toText(),
+                            StyledTag.sm(child: strong.id.toText()),
+                          ],
                         ),
+                        subtitle: MarkdownBuilder(Markdown(strong.description.text), maxLines: 2),
                         onPressed: () => openStrong(context, strong.id),
                       ),
                     )
@@ -204,8 +205,11 @@ class StrongSheet {
                 children: strong.kjvUsage
                     .sortedByDescending((word, count) => count)
                     .mapToIterable(
-                      (word, count) =>
-                          StyledListItem(size: .sm, title: word.toText(), trailing: count.toString().toText()),
+                      (word, count) => StyledListItem(
+                        size: .sm,
+                        leading: Text(count.toString(), style: context.textStyle.labelLg),
+                        title: word.toText(),
+                      ),
                     )
                     .toList(),
               ),

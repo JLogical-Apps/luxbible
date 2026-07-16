@@ -70,15 +70,6 @@ Map<String, dynamic> enrichStrong(
     'Part(s) of speech',
   )?.cleanedPartOfSpeech?.asMarkdown()?.withStrippedMarkdown;
 
-  final lexiconReference = ['TDNT', 'TWOT']
-      .map((name) => optionalField(bdbParagraphs, '$name entry'))
-      .nonNulls
-      .where((value) => value.toLowerCase() != 'none')
-      .map((value) => '${strong['i'].toString().startsWith('G') ? 'TDNT' : 'TWOT'} $value')
-      .firstOrNull
-      ?.asMarkdown()
-      ?.withStrippedMarkdown;
-
   final lxxIndex = plusParagraphs.indexWhereOrNull((paragraph) => paragraph.text.contains('LXX related word'));
   final description = plusParagraphs.length > 3
       ? plusParagraphs
@@ -95,7 +86,6 @@ Map<String, dynamic> enrichStrong(
 
   final relatedStrongIds = {
     ...(strong['g'] as List<String>),
-    ...[description, ?derivation].join(' ').strongIds,
     if (lxxIndex != null) ...plusParagraphs.skip(lxxIndex + 1).expand((paragraph) => paragraph.text.strongIds),
   }.where((strongId) => strongIds.contains(strongId) && strongId != strong['i']).toList();
 
@@ -105,7 +95,6 @@ Map<String, dynamic> enrichStrong(
     's': description,
     'o': ?derivation,
     't': ?partOfSpeech,
-    'r': ?lexiconReference,
     'g': relatedStrongIds,
     'k': bdbParagraphs
         .map((paragraph) => paragraph.text.trim())

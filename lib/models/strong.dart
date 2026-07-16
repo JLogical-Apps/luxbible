@@ -21,7 +21,6 @@ sealed class Strong with _$Strong {
     @JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable)
     Markdown? derivation,
     @JsonKey(name: 't', includeIfNull: false) String? partOfSpeech,
-    @JsonKey(name: 'r', includeIfNull: false) String? lexiconReference,
     @JsonKey(name: 'g') required List<String> relatedStrongIds,
     @JsonKey(name: 'k') required Map<String, int> kjvUsage,
   }) = _Strong;
