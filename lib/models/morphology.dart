@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 /// A value rendered as the right-hand side of a [Morphology.attributes] entry.
 /// Provides everything a UI needs to show a labeled, explained chip or list item.
 abstract interface class MorphologyAttributeValue {
@@ -388,6 +390,13 @@ enum HebrewStem implements MorphologyAttributeValue {
   hophal,
   hithpael,
   nithpael;
+
+  static HebrewStem? fromLinkTarget(String target) => values.firstWhereOrNull((stem) => stem.linkTarget == target);
+
+  static HebrewStem? fromDisplayName(String displayName) =>
+      values.firstWhereOrNull((stem) => stem.displayName.toLowerCase() == displayName.toLowerCase());
+
+  String get linkTarget => 'morphology:stem:$name';
 
   @override
   String get displayName => switch (this) {

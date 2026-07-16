@@ -100,8 +100,29 @@ class StrongSheet {
                   StyledListItem(
                     title: 'Biblical Usage'.toText(),
                     subtitle: MarkdownBuilder(
-                      strong.definition,
-                      onLinkPressed: (text, link) => openStrong(context, link),
+                      strong.formattedDefinition,
+                      onLinkPressed: (text, link) {
+                        final stem = HebrewStem.fromLinkTarget(link);
+                        if (stem != null) {
+                          context.showStyledDialog(
+                            (context) => StyledDialog.confirm(
+                              title: stem.displayName.toText(),
+                              bodyPadding: .zero,
+                              body: StyledList(
+                                children: [
+                                  StyledListItem(title: 'Definition'.toText(), subtitle: stem.description.toText()),
+                                  StyledListItem(
+                                    title: 'Examples'.toText(),
+                                    subtitle: stem.examples.map((example) => '"$example"').join(', ').toText(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        } else {
+                          openStrong(context, link);
+                        }
+                      },
                     ),
                   ),
                   if (strong.description != strong.definition)
@@ -118,9 +139,9 @@ class StrongSheet {
                           final marker = StrongDescriptionMarker.fromLinkTarget(link);
                           if (marker != null) {
                             showDescriptionLegend(context, marker: marker);
-                            return;
+                          } else {
+                            openStrong(context, link);
                           }
-                          openStrong(context, link);
                         },
                       ),
                     ),
@@ -148,30 +169,7 @@ class StrongSheet {
                       subtitle: value.displayName.toText(),
                       trailing: StyledPillButton.sm(
                         label: 'Learn More'.toText(),
-                        onPressed: () => context.showStyledDialog(
-                          (context) => StyledDialog.confirm(
-                            title: 'Morphology Info'.toText(),
-                            bodyPadding: .zero,
-                            body: StyledList(
-                              children: [
-                                StyledListItem(
-                                  title: attribute.displayName.toText(),
-                                  subtitle: attribute.description.toText(),
-                                ),
-                                StyledListItem(
-                                  title: value.displayName.toText(),
-                                  subtitle: value.description.toText(),
-                                  thirdLine: value.examples.isEmpty
-                                      ? null
-                                      : [
-                                          'Examples: ',
-                                          value.examples.map((example) => '"$example"').join(', '),
-                                        ].join().toText(),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        onPressed: () => showMorphologyInfo(context, attribute: attribute, value: value),
                       ),
                     ),
                   ),
@@ -224,6 +222,29 @@ class StrongSheet {
       );
     });
   }
+
+  static Future<void> showMorphologyInfo(
+    BuildContext context, {
+    required MorphologyAttribute attribute,
+    required MorphologyAttributeValue value,
+  }) => context.showStyledDialog(
+    (context) => StyledDialog.confirm(
+      title: 'Morphology Info'.toText(),
+      bodyPadding: .zero,
+      body: StyledList(
+        children: [
+          StyledListItem(title: attribute.displayName.toText(), subtitle: attribute.description.toText()),
+          StyledListItem(
+            title: value.displayName.toText(),
+            subtitle: value.description.toText(),
+            thirdLine: value.examples.isEmpty
+                ? null
+                : ['Examples: ', value.examples.map((example) => '"$example"').join(', ')].join().toText(),
+          ),
+        ],
+      ),
+    ),
+  );
 
   static Future<void> showDescriptionLegend(
     BuildContext context, {

@@ -1,4 +1,5 @@
 import 'package:bible/models/strong_description.dart';
+import 'package:bible/models/biblical_usage.dart';
 import 'package:bible/utils/markdown.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -28,4 +29,6 @@ sealed class Strong with _$Strong {
   factory Strong.fromJson(Map<String, dynamic> json) => _$StrongFromJson(json);
 
   Markdown get formattedDescription => description.withStrongDescriptionFormatting;
+
+  Markdown get formattedDefinition => definition.withMorphologyLinks;
 }
