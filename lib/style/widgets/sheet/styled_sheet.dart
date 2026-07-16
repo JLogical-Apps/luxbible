@@ -7,6 +7,7 @@ import 'package:bible/style/widgets/styled_circle_button.dart';
 import 'package:bible/style/widgets/styled_divider.dart';
 import 'package:bible/style/widgets/styled_dock.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
+import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:collection/collection.dart';
@@ -133,7 +134,7 @@ class StyledSheet<T> extends HookConsumerWidget {
         wrapper: (sheetBuilder) => provider.Provider.value(
           value: SheetNavigationBreadcrumbContext(
             breadcrumbs: sheetNavigationContext.breadcrumbs.take(breadcrumbIndex + 1).toList(),
-            scrollOffsetByDepth: sheetNavigationContext.scrollOffsetByDepth,
+            scrollOffsetByDepth: sheetNavigationContext.scrollOffsetByDepth.withRemoved(depth),
           ),
           child: HookBuilder(builder: sheetBuilder),
         ),
