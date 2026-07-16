@@ -35,6 +35,7 @@ class DictionaryPage extends HookConsumerWidget {
               text: searchState.value,
               hintText: 'Search for a word',
               onChanged: (text) => searchState.value = text,
+              autocorrect: false,
             ),
           ),
           Expanded(
