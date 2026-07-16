@@ -1,14 +1,14 @@
 import 'package:bible/utils/markdown.dart';
 import 'package:collection/collection.dart';
 
-enum StrongDescriptionMarker {
+enum StrongDefinitionMarker {
   addedWord,
   idiomaticRendering;
 
-  static StrongDescriptionMarker? fromRenderingOrNull(String rendering) =>
+  static StrongDefinitionMarker? fromRenderingOrNull(String rendering) =>
       values.firstWhereOrNull((marker) => rendering.startsWith('${marker.symbol} '));
 
-  static StrongDescriptionMarker? fromLinkTarget(String target) =>
+  static StrongDefinitionMarker? fromLinkTarget(String target) =>
       values.firstWhereOrNull((marker) => marker.linkTarget == target);
 
   String get symbol => switch (this) {
@@ -31,23 +31,21 @@ enum StrongDescriptionMarker {
     idiomaticRendering => 'Marks a rendering that reflects an expression particular to Hebrew or Greek.',
   };
 
-  String get linkTarget => 'strongs-description-marker:$name';
+  String get linkTarget => 'strongs-definition-marker:$name';
 }
 
-extension StrongDescriptionMarkdownExtension on Markdown {
-  Markdown get withStrongDescriptionFormatting {
+extension StrongDefinitionMarkdownExtension on Markdown {
+  Markdown get withStrongDefinitionFormatting {
     final separator = RegExp(r': -(\*)?\s*').allMatches(text).lastOrNull;
     if (separator == null) return this;
 
     final explanation = '${text.substring(0, separator.start)}${separator.group(1) ?? ''}:';
-    final renderings = _splitRenderings(text.substring(separator.end));
+    final renderings = _splitAtTopLevelDelimiters(text.substring(separator.end));
     if (renderings.isEmpty) return this;
 
     return Markdown('$explanation\n${renderings.map(_formatRendering).join('\n')}');
   }
 }
-
-List<String> _splitRenderings(String text) => _splitAtTopLevelDelimiters(text);
 
 List<String> _splitAtTopLevelDelimiters(String text) {
   var delimiterDepth = 0;
@@ -74,12 +72,12 @@ List<String> _splitAtTopLevelDelimiters(String text) {
 bool _isTopLevelDelimiter(String text, int index, String character, int delimiterDepth) =>
     delimiterDepth == 0 &&
     (character == ',' ||
-        StrongDescriptionMarker.values.any(
+        StrongDefinitionMarker.values.any(
           (marker) => index > 0 && text[index - 1] == ' ' && text.startsWith('${marker.symbol} ', index),
         ));
 
 String _formatRendering(String rendering) {
-  final marker = StrongDescriptionMarker.fromRenderingOrNull(rendering);
+  final marker = StrongDefinitionMarker.fromRenderingOrNull(rendering);
   final content = marker == null ? rendering : rendering.substring(marker.symbol.length).trimLeft();
   final prefix = marker == null ? '' : '[${marker.label}](${marker.linkTarget}) ';
 

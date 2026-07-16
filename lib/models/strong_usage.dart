@@ -1,7 +1,7 @@
 import 'package:bible/models/morphology.dart';
 import 'package:bible/utils/markdown.dart';
 
-extension BiblicalUsageMarkdownExtension on Markdown {
+extension StrongUsageMarkdownExtension on Markdown {
   Markdown get withMorphologyLinks => Markdown(
     text.replaceAllMapped(
       RegExp(r'\((qal passive|hithpael|nithpael|niphal|hiphil|hophal|piel|pual|qal)\)', caseSensitive: false),

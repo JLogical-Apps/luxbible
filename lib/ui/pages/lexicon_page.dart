@@ -126,7 +126,7 @@ class LexiconPage extends HookConsumerWidget {
                           ],
                         ),
                       ),
-                      subtitle: MarkdownBuilder(strong.description, maxLines: 2),
+                      subtitle: MarkdownBuilder(strong.definition, maxLines: 2),
                       onPressed: () => StrongSheet.showWithBreadcrumbs(
                         context,
                         strongId: strong.id,

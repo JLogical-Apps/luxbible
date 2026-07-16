@@ -90,60 +90,60 @@ class StrongSheet {
                   StyledListItem(title: 'Root Word'.toText(), subtitle: strong.languageText.toText()),
                   StyledListItem(title: 'Transliteration'.toText(), subtitle: strong.transliteration.toText()),
                   StyledListItem(title: 'Pronunciation'.toText(), subtitle: strong.pronunciation.toText()),
-                  if (strong.partOfSpeech case final partOfSpeech?)
-                    StyledListItem(title: 'Part of Speech'.toText(), subtitle: partOfSpeech.toText()),
-                  if (strong.derivation case final derivation?)
-                    StyledListItem(
-                      title: 'Derivation'.toText(),
-                      subtitle: MarkdownBuilder(derivation, onLinkPressed: (text, link) => openStrong(context, link)),
-                    ),
                   StyledListItem(
-                    title: 'Biblical Usage'.toText(),
+                    title: Row(
+                      children: [
+                        Expanded(child: 'Strong\'s Definition'.toText()),
+                        StyledLink('Legend', onPressed: () => showDefinitionLegend(context)),
+                      ],
+                    ),
                     subtitle: MarkdownBuilder(
                       strong.formattedDefinition,
                       onLinkPressed: (text, link) {
-                        final stem = HebrewStem.fromLinkTarget(link);
-                        if (stem != null) {
-                          context.showStyledDialog(
-                            (context) => StyledDialog.confirm(
-                              title: stem.displayName.toText(),
-                              bodyPadding: .zero,
-                              body: StyledList(
-                                children: [
-                                  StyledListItem(title: 'Definition'.toText(), subtitle: stem.description.toText()),
-                                  StyledListItem(
-                                    title: 'Examples'.toText(),
-                                    subtitle: stem.examples.map((example) => '"$example"').join(', ').toText(),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
+                        final marker = StrongDefinitionMarker.fromLinkTarget(link);
+                        if (marker != null) {
+                          showDefinitionLegend(context, marker: marker);
                         } else {
                           openStrong(context, link);
                         }
                       },
                     ),
                   ),
-                  if (strong.description != strong.definition)
+                  if (strong.definition != strong.usage)
                     StyledListItem(
-                      title: Row(
-                        children: [
-                          Expanded(child: 'Strong\'s Description'.toText()),
-                          StyledLink('Legend', onPressed: () => showDescriptionLegend(context)),
-                        ],
-                      ),
+                      title: 'Biblical Usage'.toText(),
                       subtitle: MarkdownBuilder(
-                        strong.formattedDescription,
+                        strong.formattedUsage,
                         onLinkPressed: (text, link) {
-                          final marker = StrongDescriptionMarker.fromLinkTarget(link);
-                          if (marker != null) {
-                            showDescriptionLegend(context, marker: marker);
+                          final stem = HebrewStem.fromLinkTarget(link);
+                          if (stem != null) {
+                            context.showStyledDialog(
+                              (context) => StyledDialog.confirm(
+                                title: stem.displayName.toText(),
+                                bodyPadding: .zero,
+                                body: StyledList(
+                                  children: [
+                                    StyledListItem(title: 'Definition'.toText(), subtitle: stem.description.toText()),
+                                    StyledListItem(
+                                      title: 'Examples'.toText(),
+                                      subtitle: stem.examples.map((example) => '"$example"').join(', ').toText(),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
                           } else {
                             openStrong(context, link);
                           }
                         },
                       ),
+                    ),
+                  if (strong.partOfSpeech case final partOfSpeech?)
+                    StyledListItem(title: 'Part of Speech'.toText(), subtitle: partOfSpeech.toText()),
+                  if (strong.derivation case final derivation?)
+                    StyledListItem(
+                      title: 'Derivation'.toText(),
+                      subtitle: MarkdownBuilder(derivation, onLinkPressed: (text, link) => openStrong(context, link)),
                     ),
                 ],
               ),
@@ -189,7 +189,7 @@ class StrongSheet {
                             StyledTag.sm(child: strong.id.toText()),
                           ],
                         ),
-                        subtitle: MarkdownBuilder(Markdown(strong.description.text), maxLines: 2),
+                        subtitle: MarkdownBuilder(Markdown(strong.definition.text), maxLines: 2),
                         onPressed: () => openStrong(context, strong.id),
                       ),
                     )
@@ -246,16 +246,16 @@ class StrongSheet {
     ),
   );
 
-  static Future<void> showDescriptionLegend(
+  static Future<void> showDefinitionLegend(
     BuildContext context, {
-    StrongDescriptionMarker? marker,
+    StrongDefinitionMarker? marker,
   }) => context.showStyledDialog(
     (context) => StyledDialog.confirm(
-      title: (marker?.title ?? 'Strong\'s Description Legend').toText(),
+      title: (marker?.title ?? 'Strong\'s Definition Legend').toText(),
       bodyPadding: .zero,
       body: StyledList(
         children: [
-          ...(marker == null ? StrongDescriptionMarker.values : [marker]).map(
+          ...(marker == null ? StrongDefinitionMarker.values : [marker]).map(
             (marker) => StyledListItem(
               leading: Text(marker.symbol, style: context.textStyle.labelLg),
               title: marker.title.toText(),

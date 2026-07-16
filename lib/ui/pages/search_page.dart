@@ -236,7 +236,7 @@ class SearchPage extends HookConsumerWidget {
                                   ],
                                 ),
                               ),
-                              subtitle: MarkdownBuilder(strong.description),
+                              subtitle: MarkdownBuilder(strong.definition, maxLines: 4),
                               onPressed: () => StrongSheet.showWithBreadcrumbs(context, strongId: strong.id),
                             ),
                           ),
