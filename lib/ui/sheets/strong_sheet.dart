@@ -101,7 +101,17 @@ class StrongSheet {
                       onLinkPressed: (text, link) {
                         final marker = StrongDefinitionMarker.fromLinkTarget(link);
                         if (marker != null) {
-                          showDefinitionLegend(context, marker: marker);
+                          context.showStyledDialog(
+                            (context) => StyledDialog.confirm(
+                              title: marker.title.toText(),
+                              bodyPadding: .zero,
+                              body: StyledListItem(
+                                leading: Text(marker.symbol, style: context.textStyle.labelLg),
+                                title: marker.title.toText(),
+                                subtitle: marker.description.toText(),
+                              ),
+                            ),
+                          );
                         } else {
                           openStrong(context, link);
                         }
@@ -229,41 +239,29 @@ class StrongSheet {
     ),
   );
 
-  static Future<void> showDefinitionLegend(
-    BuildContext context, {
-    StrongDefinitionMarker? marker,
-  }) => context.showStyledDialog(
+  static Future<void> showDefinitionLegend(BuildContext context) => context.showStyledDialog(
     (context) => StyledDialog.confirm(
-      title: (marker?.title ?? 'Strong\'s Definition Legend').toText(),
+      title: 'Strong\'s Definition Legend'.toText(),
       bodyPadding: .zero,
       body: StyledList(
         children: [
-          ...(marker == null ? StrongDefinitionMarker.values : [marker]).map(
-            (marker) => StyledListItem(
-              leading: Text(marker.symbol, style: context.textStyle.labelLg),
-              title: marker.title.toText(),
-              subtitle: marker.description.toText(),
-            ),
+          StyledListItem(
+            leading: Text('()', style: context.textStyle.labelLg),
+            title: 'Optional word'.toText(),
+            subtitle: 'Marks a word or syllable that may be supplied with the main word.'.toText(),
           ),
-          if (marker == null) ...[
-            StyledListItem(
-              leading: Text('()', style: context.textStyle.labelLg),
-              title: 'Optional word'.toText(),
-              subtitle: 'Marks a word or syllable that may be supplied with the main word.'.toText(),
-            ),
-            StyledListItem(
-              leading: Text('[]', style: context.textStyle.labelLg),
-              title: 'Added word in Hebrew or Greek'.toText(),
-              subtitle:
-                  'Marks a word included in the English rendering even though it is not present in the Hebrew or Greek.'
-                      .toText(),
-            ),
-            StyledListItem(
-              leading: Symbols.format_italic.toIcon(),
-              title: 'Explanation'.toText(),
-              subtitle: 'Italic text at the end of a rendering explains a variation from the usual form.'.toText(),
-            ),
-          ],
+          StyledListItem(
+            leading: Text('[]', style: context.textStyle.labelLg),
+            title: 'Added word in Hebrew or Greek'.toText(),
+            subtitle:
+                'Marks a word included in the English rendering even though it is not present in the Hebrew or Greek.'
+                    .toText(),
+          ),
+          StyledListItem(
+            leading: Symbols.format_italic.toIcon(),
+            title: 'Explanation'.toText(),
+            subtitle: 'Italic text at the end of a rendering explains a variation from the usual form.'.toText(),
+          ),
         ],
       ),
     ),

@@ -27,7 +27,7 @@ enum StrongDefinitionMarker {
   };
 
   String get description => switch (this) {
-    addedWord => 'Marks a word supplied in the Authorized Version alongside the Hebrew or Greek word being defined.',
+    addedWord => 'Marks a word supplied alongside the Hebrew or Greek word being defined.',
     idiomaticRendering => 'Marks a rendering that reflects an expression particular to Hebrew or Greek.',
   };
 
