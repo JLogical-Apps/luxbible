@@ -37,8 +37,10 @@ class SwipePageView extends StatelessWidget {
     return SwipeGestureDetector(
       index: () => controller.page!.round(),
       maxIndex: pageCount,
-      onSwipe: (newIndex) =>
-          controller.animateToPage(newIndex, duration: Duration(milliseconds: 300), curve: Curves.easeInOutCubic),
+      onSwipe: (newIndex) {
+        controller.animateToPage(newIndex, duration: Duration(milliseconds: 300), curve: Curves.easeInOutCubic);
+        onSwipe?.call(newIndex);
+      },
       child: children != null
           ? PageView(
               controller: controller,
