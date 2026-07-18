@@ -111,8 +111,16 @@ FutureOr<List<Paragraph>> verseSelectionParagraphs(
   }
 
   var startIndex = selectedIndices.first;
-  while (startIndex > 0 && paragraphs[startIndex - 1] is SectionParagraph) {
-    startIndex--;
+  while (startIndex > 0) {
+    var precedingIndex = startIndex - 1;
+    while (precedingIndex >= 0 && paragraphs[precedingIndex] is BreakParagraph) {
+      precedingIndex--;
+    }
+    if (precedingIndex >= 0 && paragraphs[precedingIndex] is SectionParagraph) {
+      startIndex = precedingIndex;
+    } else {
+      break;
+    }
   }
 
   return Range.generate(startIndex, selectedIndices.last)
