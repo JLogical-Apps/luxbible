@@ -2,7 +2,7 @@ import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style.dart';
+import 'package:bible/style/widgets/styled_loading.dart';
 import 'package:bible/ui/widgets/bible_loading_error.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/paragraphs_builder.dart';
@@ -16,6 +16,7 @@ class PassageBuilder extends ConsumerWidget {
   final BibleSelection? selection;
   final Function(VerseSelection)? onNavigateToVerseSelection;
 
+  final bool showLoading;
   final Widget Function(BuildContext context, Widget passage)? contentBuilder;
 
   const PassageBuilder({
@@ -24,6 +25,7 @@ class PassageBuilder extends ConsumerWidget {
     this.translation,
     this.selection,
     this.onNavigateToVerseSelection,
+    this.showLoading = false,
     this.contentBuilder,
   });
 
@@ -47,17 +49,23 @@ class PassageBuilder extends ConsumerWidget {
       );
     }
 
-    if (paragraphsValue.value case final paragraphs?) {
-      final passage = ParagraphsBuilder(
-        paragraphs: paragraphs,
-        chapterReference: chapterReference,
-        user: user,
-        translation: translation,
-        selection: selection,
-        onNavigateToVerseSelection: onNavigateToVerseSelection,
-      );
-      return StyledLoading(child: contentBuilder?.call(context, passage) ?? passage);
-    }
-    return StyledLoading();
+    final paragraphs = paragraphsValue.value ?? [];
+    final passage = ParagraphsBuilder(
+      paragraphs: paragraphs,
+      chapterReference: chapterReference,
+      user: user,
+      translation: translation,
+      selection: selection,
+      onNavigateToVerseSelection: onNavigateToVerseSelection,
+    );
+
+    return showLoading
+        ? StyledLoading(child: paragraphs.isEmpty ? null : contentBuilder?.call(context, passage) ?? passage)
+        : AnimatedOpacity(
+            opacity: paragraphs.isEmpty ? 0 : 1,
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOutCubic,
+            child: contentBuilder?.call(context, passage) ?? passage,
+          );
   }
 }

@@ -41,6 +41,7 @@ class CompareSheet {
         ? PassageBuilder(
             verseSelection: verseSelection,
             translation: translation,
+            showLoading: true,
             contentBuilder: (context, passage) => Padding(padding: .only(bottom: 16), child: passage),
           )
         : Padding(
