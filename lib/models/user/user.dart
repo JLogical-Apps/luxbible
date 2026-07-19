@@ -41,6 +41,8 @@ sealed class User with _$User {
   const factory User({
     @Default(BibleTranslation.bsb) BibleTranslation translation,
     @Default(BibleTranslation.bsb) BibleTranslation studyTranslation,
+    @Default(BibleTranslation.oshb) BibleTranslation oldTestamentTranslation,
+    @Default(BibleTranslation.statresgnt) BibleTranslation newTestamentTranslation,
     List<BibleTranslation>? bibles,
     List<CommentaryType>? commentaries,
     @ChapterPositionFromReference('lastReference')
@@ -73,6 +75,12 @@ sealed class User with _$User {
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
   List<BibleTranslation> get biblesOrDefault => bibles ?? BibleTranslation.defaultTranslations;
+
+  BibleTranslation translationFor(BookType book) => translation.effectiveFor(
+    book,
+    oldTestamentTranslation: oldTestamentTranslation,
+    newTestamentTranslation: newTestamentTranslation,
+  );
 
   List<CommentaryType> get commentariesOrDefault => commentaries ?? CommentaryType.values;
 
@@ -340,8 +348,12 @@ sealed class User with _$User {
     ),
   );
 
-  User withTranslation(BibleTranslation translation) =>
-      copyWith(translation: translation, studyTranslation: translation.isStudy ? translation : studyTranslation);
+  User withTranslation(BibleTranslation translation) => copyWith(
+    translation: translation,
+    studyTranslation: translation.isStudy ? translation : studyTranslation,
+    oldTestamentTranslation: translation.testament == .oldTestament ? translation : oldTestamentTranslation,
+    newTestamentTranslation: translation.testament == .newTestament ? translation : newTestamentTranslation,
+  );
 
   List<HydratedBiblePlanProgress> getHydratedPlanProgresses(Map<BiblePlanType, BiblePlan> planByType) =>
       planProgressByType

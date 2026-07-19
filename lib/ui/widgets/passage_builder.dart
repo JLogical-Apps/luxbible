@@ -35,7 +35,8 @@ class PassageBuilder extends ConsumerWidget {
 
     final chapterReference = verseSelection.references.first.toChapterReference();
     final user = ref.watch(userProvider);
-    final translation = (this.translation ?? user.translation).effectiveFor(chapterReference.book);
+    final translation =
+        this.translation?.effectiveFor(chapterReference.book) ?? user.translationFor(chapterReference.book);
     final paragraphsValue = ref.watch(
       verseSelectionParagraphsProvider(selection: verseSelection, translation: translation),
     );

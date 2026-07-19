@@ -525,7 +525,7 @@ final class VerseSelectionParagraphsProvider
 }
 
 String _$verseSelectionParagraphsHash() =>
-    r'ad25c369b07856d1cf4f8d7117f8e8259cccfe6e';
+    r'bb04ef674b82127c99b19447acef8c5eecca231c';
 
 final class VerseSelectionParagraphsFamily extends $Family
     with

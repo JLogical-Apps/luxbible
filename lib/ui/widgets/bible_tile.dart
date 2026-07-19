@@ -1,5 +1,6 @@
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/ui/widgets/testament_icon.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:flutter/material.dart';
@@ -18,26 +19,33 @@ class BibleTile extends StatelessWidget {
   Widget build(BuildContext context) => StyledListItem(
     title: translation.title().toText(),
     subtitle: translation.fullName().toText(),
-    thirdLine: Padding(
-      padding: .only(top: 4),
-      child: Row(
-        spacing: 4,
-        children: [
-          if (translation.isOnline)
-            StyledTag.sm(
-              child: 'Online Only'.toText(),
-              leading: Symbols.cloud.toIcon(),
-              colorBuilder: ColorBuilder((colors) => colors.blue.tertiary),
+    thirdLine: translation.isOnline || translation.isStudy || translation.testament != null
+        ? Padding(
+            padding: .only(top: 4),
+            child: Row(
+              spacing: 4,
+              children: [
+                if (translation.isOnline)
+                  StyledTag.sm(
+                    child: 'Online Only'.toText(),
+                    leading: Symbols.cloud.toIcon(),
+                    colorBuilder: ColorBuilder((colors) => colors.blue.tertiary),
+                  ),
+                if (translation.isStudy)
+                  StyledTag.sm(
+                    child: 'Study Bible'.toText(),
+                    leading: Symbols.school.toIcon(),
+                    colorBuilder: ColorBuilder((colors) => colors.green.tertiary),
+                  ),
+                if (translation.testament case final testament?)
+                  StyledTag.sm(
+                    child: translation.getTestamentTitle().toText(),
+                    leading: TestamentIcon(testament: testament),
+                  ),
+              ],
             ),
-          if (translation.isStudy)
-            StyledTag.sm(
-              child: 'Study Bible'.toText(),
-              leading: Symbols.school.toIcon(),
-              colorBuilder: ColorBuilder((colors) => colors.green.tertiary),
-            ),
-        ],
-      ),
-    ),
+          )
+        : null,
     trailing: trailing,
     onPressed: isEnabled ? onPressedOverride ?? () => showInfo(context) : null,
   );
@@ -73,6 +81,11 @@ class BibleTile extends StatelessWidget {
                   title: 'Reading Bible'.toText(),
                   subtitle: 'Doesn\'t include interlinear or morphology data.'.toText(),
                 ),
+          StyledListItem(
+            leading: TestamentIcon(testament: translation.testament),
+            title: translation.getTestamentTitle().toText(),
+            subtitle: translation.getTestamentDescription().toText(),
+          ),
           if (translation.hasNativeHeadings)
             StyledListItem(
               title: 'Native Headings'.toText(),

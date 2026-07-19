@@ -125,7 +125,12 @@ class BibleBody extends HookConsumerWidget {
       hardNavigateTo(ChapterPosition(reference: chapterReference));
       selection.selectReferences(verseSelection.references);
 
-      await ref.read(chapterProvider(translation: user.translation, chapterReference: chapterReference).future);
+      await ref.read(
+        chapterProvider(
+          translation: user.translationFor(chapterReference.book),
+          chapterReference: chapterReference,
+        ).future,
+      );
       await Future.delayed(Duration(milliseconds: 200));
 
       final keyByReference = keyByReferencePassthrough.value;
@@ -482,7 +487,10 @@ class BibleBody extends HookConsumerWidget {
         }
 
         final chapterValue = ref.watch(
-          chapterProvider(chapterReference: currentChapterReference, translation: user.translation),
+          chapterProvider(
+            chapterReference: currentChapterReference,
+            translation: user.translationFor(currentChapterReference.book),
+          ),
         );
         useOnListenableChange(currentScrollController, computeVisibleVerses);
         useOnListenableChange(isResizingState, computeVisibleVerses);

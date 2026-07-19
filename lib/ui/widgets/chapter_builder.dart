@@ -41,7 +41,7 @@ class ChapterBuilder extends HookConsumerWidget {
 
   BookType get book => chapterReference.book;
 
-  BibleTranslation get translation => user.translation.effectiveFor(book);
+  BibleTranslation get translation => user.translationFor(book);
   bool get isFallback => translation != user.translation;
 
   @override
@@ -70,7 +70,7 @@ class ChapterBuilder extends HookConsumerWidget {
           StyledTile.message(
             leading: Symbols.translate.toIcon(),
             title: "${user.translation.fullName()} doesn't include the ${book.testament.title()}.".toText(),
-            subtitle: 'Showing ${translation.fullName()}.'.toText(),
+            subtitle: 'Showing your most-recent ${book.testament.title()} Bible, ${translation.fullName()}.'.toText(),
           ),
         ParagraphsBuilder(
           paragraphs: chapter.paragraphs,

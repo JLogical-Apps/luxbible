@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bible/models/highlight_style.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/root_ref.dart';

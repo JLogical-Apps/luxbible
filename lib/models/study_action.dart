@@ -131,7 +131,9 @@ enum StudyAction {
                     builder: (context, ref, child) {
                       final verseSelection = crossReference.toVerseSelection();
                       final book = crossReference.references.first.book;
-                      final translation = crossReferenceTranslation.effectiveFor(book);
+                      final translation = crossReferenceTranslation == user.translation
+                          ? user.translationFor(book)
+                          : crossReferenceTranslation.effectiveFor(book);
                       final verses = ref
                           .watch(verseSelectionVersesProvider(translation: translation, selection: verseSelection))
                           .value;

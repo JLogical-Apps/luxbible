@@ -87,8 +87,12 @@ enum BibleTranslation {
 
   bool containsBook(BookType book) => testament == null || book.testament == testament;
 
-  BibleTranslation effectiveFor(BookType book) =>
-      containsBook(book) ? this : (book.testament == .oldTestament ? oshb : statresgnt);
+  BibleTranslation effectiveFor(
+    BookType book, {
+    BibleTranslation oldTestamentTranslation = .oshb,
+    BibleTranslation newTestamentTranslation = .statresgnt,
+  }) =>
+      containsBook(book) ? this : (book.testament == .oldTestament ? oldTestamentTranslation : newTestamentTranslation);
 
   bool get isLocal => source == .local;
   bool get isOnline => !isLocal;
@@ -118,6 +122,18 @@ enum BibleTranslation {
   bool get hasParagraphs => switch (this) {
     oshb || sv => false,
     _ => true,
+  };
+
+  String getTestamentTitle() => switch (testament) {
+    .oldTestament => 'Old Testament Only',
+    .newTestament => 'New Testament Only',
+    null => 'Whole Bible',
+  };
+
+  String getTestamentDescription() => switch (testament) {
+    .oldTestament => 'Only contains books in the Old Testament.',
+    .newTestament => 'Only contains books in the New Testament.',
+    null => 'Contains all the books in the Bible.',
   };
 }
 

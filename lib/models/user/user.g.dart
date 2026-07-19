@@ -16,6 +16,18 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
         json['studyTranslation'],
       ) ??
       BibleTranslation.bsb,
+  oldTestamentTranslation:
+      $enumDecodeNullable(
+        _$BibleTranslationEnumMap,
+        json['oldTestamentTranslation'],
+      ) ??
+      BibleTranslation.oshb,
+  newTestamentTranslation:
+      $enumDecodeNullable(
+        _$BibleTranslationEnumMap,
+        json['newTestamentTranslation'],
+      ) ??
+      BibleTranslation.statresgnt,
   bibles: (json['bibles'] as List<dynamic>?)
       ?.map((e) => $enumDecode(_$BibleTranslationEnumMap, e))
       .toList(),
@@ -148,6 +160,10 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'translation': _$BibleTranslationEnumMap[instance.translation]!,
   'studyTranslation': _$BibleTranslationEnumMap[instance.studyTranslation]!,
+  'oldTestamentTranslation':
+      _$BibleTranslationEnumMap[instance.oldTestamentTranslation]!,
+  'newTestamentTranslation':
+      _$BibleTranslationEnumMap[instance.newTestamentTranslation]!,
   'bibles': instance.bibles?.map((e) => _$BibleTranslationEnumMap[e]!).toList(),
   'commentaries': instance.commentaries
       ?.map((e) => _$CommentaryTypeEnumMap[e]!)
