@@ -72,7 +72,8 @@ class ParagraphsBuilder extends HookWidget {
 
   BookType get book => chapterReference.book;
 
-  double get sizeMultiplier => user.themeLayout.fontSizeSpacing.multiplier;
+  FontSizeSpacing get fontSizeSpacing => user.themeLayout.getFontSizeSpacingFor(translation.language);
+  double get sizeMultiplier => fontSizeSpacing.multiplier;
   double get underlineThickness => 4 * sizeMultiplier;
 
   static const hebrewFontFamily = 'Ezra SIL SR';
@@ -80,6 +81,9 @@ class ParagraphsBuilder extends HookWidget {
   TextDirection get textDirection => translation.isRtl && book.testament == .oldTestament ? .rtl : .ltr;
   bool get isLtr => textDirection == .ltr;
   bool get useParagraphs => user.themeLayout.paragraphs && isLtr;
+
+  BibleTextStyle getBibleTextStyle(BuildContext context) =>
+      BibleTextStyle(context, config: user.themeLayout, fontSizeSpacing: fontSizeSpacing);
 
   @override
   Widget build(BuildContext context) {
@@ -441,7 +445,7 @@ class ParagraphsBuilder extends HookWidget {
     required Chapter chapter,
     required Map<Reference, GlobalKey>? keyByReference,
   }) {
-    final bibleTextStyle = BibleTextStyle(context, config: user.themeLayout);
+    final bibleTextStyle = getBibleTextStyle(context);
 
     var maxPreviousVerseNum = 0;
     return chapter.paragraphs.mapIndexed((paragraphIndex, paragraph) {
@@ -679,7 +683,7 @@ class ParagraphsBuilder extends HookWidget {
     required List<Annotation> annotations,
     required bool isUnderlined,
   }) {
-    final bibleTextStyle = BibleTextStyle(context, config: user.themeLayout);
+    final bibleTextStyle = getBibleTextStyle(context);
     return AnnotatedSizedWidgetSpan<VerseElement>(
       annotation: element,
       size: Size(30, bibleTextStyle.body.fontSize!),
@@ -800,7 +804,7 @@ class ParagraphsBuilder extends HookWidget {
     required List<Footnote> footnotes,
     required bool isUnderlined,
   }) {
-    final bibleTextStyle = BibleTextStyle(context, config: user.themeLayout);
+    final bibleTextStyle = getBibleTextStyle(context);
     return AnnotatedSizedWidgetSpan<VerseElement>(
       annotation: element,
       size: Size(24, bibleTextStyle.body.fontSize!),
@@ -860,10 +864,11 @@ class ParagraphsBuilder extends HookWidget {
 }
 
 class BibleTextStyle {
-  final ThemeLayoutConfiguration config;
   final BuildContext context;
+  final ThemeLayoutConfiguration config;
+  final FontSizeSpacing fontSizeSpacing;
 
-  const BibleTextStyle(this.context, {required this.config});
+  const BibleTextStyle(this.context, {required this.config, required this.fontSizeSpacing});
 
   TextStyle get base => TextStyle(
     fontFamily: config.font.fontFamily,
@@ -871,7 +876,7 @@ class BibleTextStyle {
     decorationColor: context.colors.contentPrimary,
   );
 
-  double get multiplier => config.fontSizeSpacing.multiplier;
+  double get multiplier => fontSizeSpacing.multiplier;
 
   TextStyle get majorSection => base.extraBold.copyWith(fontSize: 28 * multiplier, height: 40 / 28);
   TextStyle get section => base.bold.copyWith(fontSize: 24 * multiplier, height: 40 / 24);

@@ -8,6 +8,7 @@ import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
+import 'package:bible/ui/widgets/font_size_spacing_zoom_gesture.dart';
 import 'package:bible/ui/widgets/paragraphs_builder.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
@@ -62,29 +63,32 @@ class ChapterBuilder extends HookConsumerWidget {
       ref.watch(chapterProvider(translation: translation, chapterReference: previousReference));
     }
 
-    return Column(
-      crossAxisAlignment: .stretch,
-      spacing: 12,
-      children: [
-        if (isFallback)
-          StyledTile.message(
-            leading: Symbols.translate.toIcon(),
-            title: "${user.translation.fullName()} doesn't include the ${book.testament.title()}.".toText(),
-            subtitle: 'Showing your most-recent ${book.testament.title()} Bible, ${translation.fullName()}.'.toText(),
+    return FontSizeSpacingZoomGesture(
+      language: translation.language,
+      child: Column(
+        crossAxisAlignment: .stretch,
+        spacing: 12,
+        children: [
+          if (isFallback)
+            StyledTile.message(
+              leading: Symbols.translate.toIcon(),
+              title: "${user.translation.fullName()} doesn't include the ${book.testament.title()}.".toText(),
+              subtitle: 'Showing your most-recent ${book.testament.title()} Bible, ${translation.fullName()}.'.toText(),
+            ),
+          ParagraphsBuilder(
+            paragraphs: chapter.paragraphs,
+            chapterReference: chapterReference,
+            user: user,
+            translation: translation,
+            underlinedReferences: underlinedReferences,
+            selection: selection,
+            onNavigateToVerseSelection: onNavigateToVerseSelection,
+            keyByReference: keyByReference,
           ),
-        ParagraphsBuilder(
-          paragraphs: chapter.paragraphs,
-          chapterReference: chapterReference,
-          user: user,
-          translation: translation,
-          underlinedReferences: underlinedReferences,
-          selection: selection,
-          onNavigateToVerseSelection: onNavigateToVerseSelection,
-          keyByReference: keyByReference,
-        ),
-        if (translation.copyright case final copyright?)
-          Text(copyright, style: context.textStyle.paragraphXs.subtle(), textAlign: .center),
-      ],
+          if (translation.copyright case final copyright?)
+            Text(copyright, style: context.textStyle.paragraphXs.subtle(), textAlign: .center),
+        ],
+      ),
     );
   }
 }

@@ -11,7 +11,9 @@ sealed class ThemeLayoutConfiguration with _$ThemeLayoutConfiguration {
 
   const factory ThemeLayoutConfiguration({
     @Default(ThemeFont.inter) ThemeFont font,
-    @Default(FontSizeSpacing.standard) FontSizeSpacing fontSizeSpacing,
+    @Default(FontSizeSpacing.standard) @JsonKey(fromJson: FontSizeSpacing.fromJson) FontSizeSpacing fontSizeSpacing,
+    @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? hebrewFontSizeSpacing,
+    @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? greekFontSizeSpacing,
     @Default(true) bool redLetters,
     @Default(SectionHeadings.all) @JsonKey(fromJson: _sectionHeadingsFromJson) SectionHeadings sections,
     @Default(true) bool verseNumbers,
@@ -20,6 +22,12 @@ sealed class ThemeLayoutConfiguration with _$ThemeLayoutConfiguration {
   }) = _ThemeLayoutConfiguration;
 
   factory ThemeLayoutConfiguration.fromJson(Map<String, dynamic> json) => _$ThemeLayoutConfigurationFromJson(json);
+
+  FontSizeSpacing getFontSizeSpacingFor(BibleLanguage language) => switch (language) {
+    .greek => greekFontSizeSpacing ?? fontSizeSpacing,
+    .hebrew => hebrewFontSizeSpacing ?? fontSizeSpacing,
+    _ => fontSizeSpacing,
+  };
 }
 
 enum ThemeFont {
@@ -53,27 +61,45 @@ enum ThemeFont {
 }
 
 enum FontSizeSpacing {
-  dense,
+  extraTiny,
+  tiny,
+  small,
   standard,
-  comfort;
+  large,
+  huge,
+  extraHuge;
 
-  String title() => switch (this) {
-    dense => 'Dense',
-    standard => 'Standard',
-    comfort => 'Comfort',
+  static FontSizeSpacing fromJson(Object? json) => switch (json) {
+    'dense' => .tiny,
+    'comfort' => .huge,
+    String value => values.byName(value),
+    _ => .standard,
   };
 
-  String description() => switch (this) {
-    dense => 'Smaller font size and spacing so more text can fit on your screen.',
-    standard => 'Font size and spacing balanced for legibility and spacing.',
-    comfort => 'Larger font size and spacing for enhanced legibility.',
+  static FontSizeSpacing? fromJsonNullable(Object? json) => json == null ? null : fromJson(json);
+
+  String title() => switch (this) {
+    extraTiny => 'Extra Tiny',
+    tiny => 'Tiny',
+    small => 'Small',
+    standard => 'Standard',
+    large => 'Large',
+    huge => 'Huge',
+    extraHuge => 'Extra Huge',
   };
 
   double get multiplier => switch (this) {
-    dense => 0.85,
+    extraTiny => 0.8,
+    tiny => 0.85,
+    small => 0.9,
     standard => 0.95,
-    comfort => 1.1,
+    large => 1.025,
+    huge => 1.1,
+    extraHuge => 1.175,
   };
+
+  FontSizeSpacing? get previous => this == extraTiny ? null : values[index - 1];
+  FontSizeSpacing? get next => this == extraHuge ? null : values[index + 1];
 }
 
 enum SectionHeadings {

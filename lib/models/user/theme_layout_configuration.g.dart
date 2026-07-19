@@ -11,9 +11,15 @@ _ThemeLayoutConfiguration _$ThemeLayoutConfigurationFromJson(
 ) => _ThemeLayoutConfiguration(
   font:
       $enumDecodeNullable(_$ThemeFontEnumMap, json['font']) ?? ThemeFont.inter,
-  fontSizeSpacing:
-      $enumDecodeNullable(_$FontSizeSpacingEnumMap, json['fontSizeSpacing']) ??
-      FontSizeSpacing.standard,
+  fontSizeSpacing: json['fontSizeSpacing'] == null
+      ? FontSizeSpacing.standard
+      : FontSizeSpacing.fromJson(json['fontSizeSpacing']),
+  hebrewFontSizeSpacing: FontSizeSpacing.fromJsonNullable(
+    json['hebrewFontSizeSpacing'],
+  ),
+  greekFontSizeSpacing: FontSizeSpacing.fromJsonNullable(
+    json['greekFontSizeSpacing'],
+  ),
   redLetters: json['redLetters'] as bool? ?? true,
   sections: json['sections'] == null
       ? SectionHeadings.all
@@ -28,6 +34,10 @@ Map<String, dynamic> _$ThemeLayoutConfigurationToJson(
 ) => <String, dynamic>{
   'font': _$ThemeFontEnumMap[instance.font]!,
   'fontSizeSpacing': _$FontSizeSpacingEnumMap[instance.fontSizeSpacing]!,
+  'hebrewFontSizeSpacing':
+      _$FontSizeSpacingEnumMap[instance.hebrewFontSizeSpacing],
+  'greekFontSizeSpacing':
+      _$FontSizeSpacingEnumMap[instance.greekFontSizeSpacing],
   'redLetters': instance.redLetters,
   'sections': _$SectionHeadingsEnumMap[instance.sections]!,
   'verseNumbers': instance.verseNumbers,
@@ -46,9 +56,13 @@ const _$ThemeFontEnumMap = {
 };
 
 const _$FontSizeSpacingEnumMap = {
-  FontSizeSpacing.dense: 'dense',
+  FontSizeSpacing.extraTiny: 'extraTiny',
+  FontSizeSpacing.tiny: 'tiny',
+  FontSizeSpacing.small: 'small',
   FontSizeSpacing.standard: 'standard',
-  FontSizeSpacing.comfort: 'comfort',
+  FontSizeSpacing.large: 'large',
+  FontSizeSpacing.huge: 'huge',
+  FontSizeSpacing.extraHuge: 'extraHuge',
 };
 
 const _$SectionHeadingsEnumMap = {

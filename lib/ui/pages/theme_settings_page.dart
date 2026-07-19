@@ -2,6 +2,7 @@ import 'package:bible/models/user/theme_layout_configuration.dart';
 import 'package:bible/models/user/theme_mode.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -14,6 +15,9 @@ class ThemeSettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
+    final hasGreekBible = user.biblesOrDefault.any((bible) => bible.language == .greek);
+    final hasHebrewBible = user.biblesOrDefault.any((bible) => bible.language == .hebrew);
+
     return StyledPage(
       title: 'Theme & Layout'.toText(),
       backgroundColor: .backgroundPrimary,
@@ -68,10 +72,7 @@ class ThemeSettingsPage extends ConsumerWidget {
                         (context) => StyledSelectionSheet(
                           title: 'Font Size & Spacing'.toText(),
                           options: FontSizeSpacing.values,
-                          optionMapper: (option) => StyledSelectOption(
-                            title: option.title().toText(),
-                            subtitle: option.description().toText(),
-                          ),
+                          optionMapper: (option) => StyledSelectOption(title: option.title().toText()),
                           initialOption: user.themeLayout.fontSizeSpacing,
                         ),
                       );
@@ -81,6 +82,22 @@ class ThemeSettingsPage extends ConsumerWidget {
                     },
                   ),
                 ),
+                if (hasGreekBible)
+                  getFontSizeSpacingItem(
+                    context,
+                    title: 'Greek Font Size & Spacing',
+                    value: user.themeLayout.greekFontSizeSpacing,
+                    onChanged: (value) =>
+                        ref.updateUser((user) => user.copyWith.themeLayout(greekFontSizeSpacing: value)),
+                  ),
+                if (hasHebrewBible)
+                  getFontSizeSpacingItem(
+                    context,
+                    title: 'Hebrew Font Size & Spacing',
+                    value: user.themeLayout.hebrewFontSizeSpacing,
+                    onChanged: (value) =>
+                        ref.updateUser((user) => user.copyWith.themeLayout(hebrewFontSizeSpacing: value)),
+                  ),
                 StyledListItem.switchControl(
                   title: 'Red Letters'.toText(),
                   subtitle: 'Show Jesus\' words in red.'.toText(),
@@ -144,4 +161,43 @@ class ThemeSettingsPage extends ConsumerWidget {
       ),
     );
   }
+
+  Widget getFontSizeSpacingItem(
+    BuildContext context, {
+    required String title,
+    required FontSizeSpacing? value,
+    required Function(FontSizeSpacing?) onChanged,
+  }) => StyledListItem(
+    title: title.toText(),
+    subtitle: (value?.title() ?? 'Default').toText(),
+    trailing: StyledPillButton.md(
+      label: 'Edit'.toText(),
+      onPressed: () => context.showStyledSheet(
+        (context) => StyledSheet(
+          title: title.toText(),
+          children: [
+            ...FontSizeSpacing.values.map(
+              (option) => StyledListItem.radio(
+                title: option.title().toText(),
+                isSelected: option == value,
+                onSelected: () {
+                  onChanged(option);
+                  context.pop();
+                },
+              ),
+            ),
+            StyledListItem.radio(
+              title: 'Default'.toText(),
+              subtitle: 'Use the default Font Size & Spacing.'.toText(),
+              isSelected: value == null,
+              onSelected: () {
+                onChanged(null);
+                context.pop();
+              },
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }
