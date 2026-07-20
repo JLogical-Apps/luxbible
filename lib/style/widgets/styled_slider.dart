@@ -25,8 +25,8 @@ class StyledSlider extends StatelessWidget {
         onChanged: onChanged,
         onChangeStart: onChangeStart,
         onChangeEnd: onChangeEnd,
-        max: bounds.$2,
         min: bounds.$1,
+        max: bounds.$2,
         padding: .symmetric(horizontal: 8),
       ),
     );

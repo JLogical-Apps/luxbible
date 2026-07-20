@@ -57,12 +57,16 @@ class AudioBiblePanel extends HookConsumerWidget {
                   ),
                   AsyncValue(:final value) => () {
                     final notifier = ref.read(audioBibleProvider.notifier);
+                    final maxValue = value?.duration?.inMilliseconds.toDouble() ?? 0.01;
                     return Column(
                       children: [
                         gapH12,
                         StyledSlider(
-                          value: positionOverrideState.value ?? value?.position.inMilliseconds.toDouble() ?? 0,
-                          bounds: (0, value?.duration.inMilliseconds.toDouble() ?? 1),
+                          value: (positionOverrideState.value ?? value?.position.inMilliseconds.toDouble() ?? 0).clamp(
+                            0,
+                            maxValue,
+                          ),
+                          bounds: (0, maxValue),
                           onChanged: value == null ? null : (value) => positionOverrideState.value = value,
                           onChangeEnd: value == null
                               ? null

@@ -10,7 +10,7 @@ part 'audio_bible_provider.g.dart';
 
 class AudioBibleState {
   final Duration position;
-  final Duration duration;
+  final Duration? duration;
   final bool isPlaying;
 
   const AudioBibleState({required this.position, required this.duration, this.isPlaying = false});
@@ -45,7 +45,6 @@ void audioAssetLoader(Ref ref) {
     final player = ref.read(audioBiblePlayerProvider);
     if (next != null) {
       await player.setAsset(next);
-      await player.seek(.zero);
     } else {
       player.pause();
     }
@@ -56,7 +55,7 @@ void audioAssetLoader(Ref ref) {
     final playerState = next.value;
     if (playerState != null && playerState.processingState == .completed && playerState.playing) {
       await player.pause();
-      await player.seek(Duration.zero);
+      await player.seek(.zero);
     }
   });
 }
@@ -76,8 +75,8 @@ class AudioBible extends _$AudioBible {
     }
 
     final playerState = ref.watch(audioBiblePlayerStateProvider).value;
-    final position = ref.watch(audioBiblePositionProvider).value ?? player.position;
-    final duration = ref.watch(audioBibleDurationProvider).value ?? player.duration ?? .zero;
+    final position = ref.watch(audioBiblePositionProvider).requireValue;
+    final duration = ref.watch(audioBibleDurationProvider).requireValue;
 
     return AudioBibleState(position: position, duration: duration, isPlaying: playerState?.playing ?? player.playing);
   }

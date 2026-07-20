@@ -10,4 +10,6 @@ extension DurationExtensions on Duration {
       : this > max
       ? max
       : this;
+
+  double operator /(Duration other) => inMicroseconds / other.inMicroseconds;
 }

@@ -18,6 +18,7 @@ import 'package:bible/ui/sheets/bookmark_sheet.dart';
 import 'package:bible/ui/sheets/study_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
+import 'package:bible/utils/extensions/duration_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -62,8 +63,24 @@ enum MainAction {
 
   Widget buildIcon(BuildContext context, {User? user}) => switch (this) {
     audio => Consumer(
-      builder: (context, ref, child) =>
-          Icon(ref.watch(isAudioBiblePlayingProvider) ? Symbols.pause : Symbols.play_arrow),
+      builder: (context, ref, child) {
+        final audioBible = ref.watch(audioBibleProvider).value;
+        return Stack(
+          clipBehavior: .none,
+          children: [
+            Icon(ref.watch(isAudioBiblePlayingProvider) ? Symbols.pause : Symbols.play_arrow),
+            if (audioBible != null && user?.isAudioOpen == true)
+              if (audioBible.duration case final duration? when duration != .zero)
+                Positioned(
+                  left: -4,
+                  right: -4,
+                  top: -4,
+                  bottom: -4,
+                  child: CircularProgressIndicator(value: audioBible.position / duration, strokeWidth: 2),
+                ),
+          ],
+        );
+      },
     ),
     bookmark => () {
       final bookmark = user?.currentBookmark;
