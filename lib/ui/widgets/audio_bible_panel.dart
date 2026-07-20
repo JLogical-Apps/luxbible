@@ -1,6 +1,7 @@
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
+import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/extensions/duration_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
@@ -32,7 +33,7 @@ class AudioBiblePanel extends HookConsumerWidget {
       leading: StyledCircleButton.md(
         child: Symbols.close.toIcon(),
         onPressed: () {
-          ref.updateUser((user) => user.copyWith(isAudioOpen: false));
+          ref.updateUser((user) => user.copyWith.audio(isOpen: false));
           ref.read(audioBibleProvider.notifier).close();
         },
       ),
@@ -88,8 +89,12 @@ class AudioBiblePanel extends HookConsumerWidget {
                           spacing: 16,
                           children: [
                             StyledCircleButton.lg(
-                              child: Symbols.one_x_mobiledata.toIcon(),
-                              onPressed: () => notifier.seekBy(Duration(seconds: -10)),
+                              child: getSpeedIcon(user.audio.speed).toIcon(),
+                              onPressed: () => ref.updateUser(
+                                (user) => user.copyWith.audio(
+                                  speed: speeds.loopedElementAt(speeds.indexOf(user.audio.speed) + 1),
+                                ),
+                              ),
                             ),
                             Spacer(),
                             StyledCircleButton.lg(
@@ -138,3 +143,14 @@ class AudioBiblePanel extends HookConsumerWidget {
     );
   }
 }
+
+IconData getSpeedIcon(double speed) => switch (speed) {
+  0.7 => Symbols.speed_0_7x,
+  1 => Symbols.one_x_mobiledata,
+  1.2 => Symbols.speed_1_2x,
+  1.5 => Symbols.speed_1_5x,
+  1.7 => Symbols.speed_1_7x,
+  _ => Symbols.speed_2x,
+};
+
+List<double> get speeds => [0.7, 1, 1.2, 1.5, 1.7, 2];

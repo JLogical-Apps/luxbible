@@ -14,6 +14,7 @@ import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_panel.dart';
+import 'package:bible/models/user/audio_bible_configuration.dart';
 import 'package:bible/models/user/main_toolbar_configuration.dart';
 import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/models/user/text_selection_configuration.dart';
@@ -70,7 +71,7 @@ sealed class User with _$User {
     @Default(HighlightStyle.defaultValues) List<(HighlightStyle, String label)> highlightStyles,
     @Default({}) Map<BiblePlanType, BiblePlanProgress> planProgressByType,
     @Default({}) Set<BiblePlanType> completedPlans,
-    @Default(false) bool isAudioOpen,
+    @Default(AudioBibleConfiguration()) AudioBibleConfiguration audio,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

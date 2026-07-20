@@ -241,7 +241,7 @@ final class AudioAssetLoaderProvider
   }
 }
 
-String _$audioAssetLoaderHash() => r'980ef28fde6497d7a11b101aad2144bdffacf99f';
+String _$audioAssetLoaderHash() => r'b3dc5bfe0cd42e5ee6df85e6402181cad38c04d4';
 
 @ProviderFor(AudioBible)
 final audioBibleProvider = AudioBibleProvider._();
@@ -267,7 +267,7 @@ final class AudioBibleProvider
   AudioBible create() => AudioBible();
 }
 
-String _$audioBibleHash() => r'60e22639c1df480ebc237900984a4fca4d368269';
+String _$audioBibleHash() => r'bc45b94810df49f79bbe97436624afe3c10a1fa8';
 
 abstract class _$AudioBible extends $AsyncNotifier<AudioBibleState> {
   FutureOr<AudioBibleState> build();

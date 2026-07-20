@@ -50,6 +50,15 @@ void audioAssetLoader(Ref ref) {
     }
   }, fireImmediately: true);
 
+  ref.listen(userProvider.select((user) => user.audio.speed), (prev, next) async {
+    if (prev == next) {
+      return;
+    }
+
+    final player = ref.read(audioBiblePlayerProvider);
+    await player.setSpeed(next);
+  }, fireImmediately: true);
+
   ref.listen(audioBiblePlayerStateProvider, (_, next) async {
     final player = ref.read(audioBiblePlayerProvider);
     final playerState = next.value;

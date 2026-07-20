@@ -69,7 +69,7 @@ enum MainAction {
           clipBehavior: .none,
           children: [
             Icon(ref.watch(isAudioBiblePlayingProvider) ? Symbols.pause : Symbols.play_arrow),
-            if (audioBible != null && user?.isAudioOpen == true)
+            if (audioBible != null && user?.audio.isOpen == true)
               if (audioBible.duration case final duration? when duration != .zero)
                 Positioned(
                   left: -4,
@@ -107,7 +107,7 @@ enum MainAction {
     final user = ref.read(userProvider);
     switch (this) {
       case audio:
-        ref.updateUser((user) => user.copyWith(isAudioOpen: true));
+        ref.updateUser((user) => user.copyWith.audio(isOpen: true));
         await ref.read(audioBibleProvider.notifier).toggle();
       case bookmark:
         final bookmarkId = user.currentBookmarkId;

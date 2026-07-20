@@ -148,16 +148,16 @@ class BibleBody extends HookConsumerWidget {
 
     final studyPanels = user.studyPanels;
     final onboardingOffset = user.isOnboardingActive ? 1 : 0;
-    final panelCount = studyPanels.length + onboardingOffset + (user.isAudioOpen ? 1 : 0);
+    final panelCount = studyPanels.length + onboardingOffset + (user.audio.isOpen ? 1 : 0);
     final studyPanelsPageController = usePageController(
       initialPage: user.isOnboardingActive
           ? 0
-          : user.isAudioOpen
+          : user.audio.isOpen
           ? panelCount - 1
           : studyPanels.isEmpty
           ? 0
           : (user.studyPanelIndex ?? (studyPanels.length - 1)),
-      keys: [studyPanels.join(','), user.isOnboardingActive, user.isAudioOpen, isSideLayout],
+      keys: [studyPanels.join(','), user.isOnboardingActive, user.audio.isOpen, isSideLayout],
     );
 
     void addStudyPanel(StudyPanel studyPanel) {
@@ -524,7 +524,7 @@ class BibleBody extends HookConsumerWidget {
         );
 
         Widget carousel() => SwipePageView(
-          key: ValueKey((studyPanels.join(','), user.isOnboardingActive, user.isAudioOpen)),
+          key: ValueKey((studyPanels.join(','), user.isOnboardingActive, user.audio.isOpen)),
           controller: studyPanelsPageController,
           pageCount: panelCount,
           onPageChanged: (page) {
@@ -587,7 +587,7 @@ class BibleBody extends HookConsumerWidget {
                 ),
               ),
             ),
-            if (user.isAudioOpen)
+            if (user.audio.isOpen)
               Padding(
                 padding: isSideLayout ? .symmetric(horizontal: 4) : .zero,
                 child: AudioBiblePanel(showDragHandle: !isSideLayout),
