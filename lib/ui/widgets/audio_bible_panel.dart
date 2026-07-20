@@ -52,27 +52,28 @@ class AudioBiblePanel extends HookConsumerWidget {
                       ),
                     ],
                   ),
-                  AsyncValue(value: null) => Padding(padding: .all(16), child: StyledLoading()),
-                  AsyncValue(:final value?) => () {
+                  AsyncValue(:final value) => () {
                     final notifier = ref.read(audioBibleProvider.notifier);
                     return Column(
                       children: [
                         gapH12,
                         StyledSlider(
-                          value: positionOverrideState.value ?? value.position.inMilliseconds.toDouble(),
-                          bounds: (0, value.duration.inMilliseconds.toDouble()),
-                          onChanged: (value) => positionOverrideState.value = value,
-                          onChangeEnd: (value) {
-                            positionOverrideState.value = null;
-                            notifier.seek(Duration(milliseconds: value.round()));
-                          },
+                          value: positionOverrideState.value ?? value?.position.inMilliseconds.toDouble() ?? 0,
+                          bounds: (0, value?.duration.inMilliseconds.toDouble() ?? 1),
+                          onChanged: value == null ? null : (value) => positionOverrideState.value = value,
+                          onChangeEnd: value == null
+                              ? null
+                              : (value) {
+                                  positionOverrideState.value = null;
+                                  notifier.seek(Duration(milliseconds: value.round()));
+                                },
                         ),
                         gapH8,
                         Row(
                           mainAxisAlignment: .spaceBetween,
                           children: [
-                            Text(value.position.format(), style: context.textStyle.labelSm.subtle()),
-                            Text(value.duration.format(), style: context.textStyle.labelSm.subtle()),
+                            Text((value?.position ?? .zero).format(), style: context.textStyle.labelSm.subtle()),
+                            Text((value?.duration ?? .zero).format(), style: context.textStyle.labelSm.subtle()),
                           ],
                         ),
                         gapH24,
@@ -90,7 +91,7 @@ class AudioBiblePanel extends HookConsumerWidget {
                             ),
                             StyledCircleButton.lg(
                               colorBuilder: .primary,
-                              child: (value.isPlaying ? Symbols.pause : Symbols.play_arrow).toIcon(),
+                              child: (value?.isPlaying == true ? Symbols.pause : Symbols.play_arrow).toIcon(),
                               onPressed: () => notifier.toggle(),
                             ),
                             StyledCircleButton.lg(
