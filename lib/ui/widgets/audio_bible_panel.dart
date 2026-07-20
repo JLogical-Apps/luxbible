@@ -117,19 +117,22 @@ class AudioBiblePanel extends HookConsumerWidget {
                   }(),
                 },
               )
-            : Column(
-                spacing: 12,
-                children: [
-                  StyledTile.message(
-                    leading: Symbols.headset_off.toIcon(),
-                    title: 'Audio is unavailable for this Bible'.toText(),
-                    subtitle: 'Choose an audio-enabled Bible to listen to this chapter.'.toText(),
-                  ),
-                  StyledRectButton.secondary(
-                    label: 'Switch to BSB'.toText(),
-                    onPressed: () => ref.updateUser((user) => user.withTranslation(.bsb)),
-                  ),
-                ],
+            : Padding(
+                padding: .all(16),
+                child: Column(
+                  spacing: 12,
+                  children: [
+                    StyledTile.message(
+                      leading: Symbols.headset_off.toIcon(),
+                      title: 'Audio is unavailable for this Bible'.toText(),
+                      subtitle: 'Choose an audio-enabled Bible to listen to this chapter.'.toText(),
+                    ),
+                    StyledRectButton.secondary(
+                      label: 'Switch to BSB'.toText(),
+                      onPressed: () => ref.updateUser((user) => user.withTranslation(.bsb)),
+                    ),
+                  ],
+                ),
               ),
       ],
     );
