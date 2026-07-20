@@ -31,7 +31,10 @@ class AudioBiblePanel extends HookConsumerWidget {
       subtitle: 'Audio Bible'.toText(),
       leading: StyledCircleButton.md(
         child: Symbols.close.toIcon(),
-        onPressed: () => ref.read(audioBibleProvider.notifier).close(),
+        onPressed: () {
+          ref.updateUser((user) => user.copyWith(isAudioOpen: false));
+          ref.read(audioBibleProvider.notifier).close();
+        },
       ),
       children: [
         translation.hasAudioBible
