@@ -95,14 +95,14 @@ class MainToolbar extends StatelessWidget {
                 isEdit: isEdit,
                 child: Tooltip(
                   message: shortcut.title(),
-                  child: StyledCircleButton.lg(
+                  child: StyledCircleButton.md(
                     onPressed: () => onShorcutPressed?.call(i, shortcut),
                     child: shortcut.buildIcon(context, user: user),
                   ),
                 ),
               ),
             ),
-            StyledCircleButton.lg(onPressed: () => onMorePressed?.call(), child: Symbols.more_vert.toIcon()),
+            StyledCircleButton.md(onPressed: () => onMorePressed?.call(), child: Symbols.more_vert.toIcon()),
           ],
         ),
       ),

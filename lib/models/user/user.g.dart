@@ -155,6 +155,7 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
           ?.map((e) => $enumDecode(_$BiblePlanTypeEnumMap, e))
           .toSet() ??
       const {},
+  isAudioOpen: json['isAudioOpen'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -200,6 +201,7 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'completedPlans': instance.completedPlans
       .map((e) => _$BiblePlanTypeEnumMap[e]!)
       .toList(),
+  'isAudioOpen': instance.isAudioOpen,
 };
 
 const _$BibleTranslationEnumMap = {

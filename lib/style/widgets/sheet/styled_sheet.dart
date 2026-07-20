@@ -179,13 +179,13 @@ class StyledSheet<T> extends HookConsumerWidget {
                             width: 48,
                             child: Center(
                               child: sheetNavigationContext != null && sheetNavigationContext.breadcrumbs.length > 1
-                                  ? StyledCircleButton.lg(
+                                  ? StyledCircleButton.md(
                                       child: Symbols.arrow_back.toIcon(),
                                       onPressed: () => navigateToBreadcrumb(
                                         breadcrumbIndex: sheetNavigationContext.breadcrumbs.length - 2,
                                       ),
                                     )
-                                  : StyledCircleButton.lg(
+                                  : StyledCircleButton.md(
                                       child: Symbols.close.toIcon(),
                                       onPressed: () => context.pop(),
                                     ),

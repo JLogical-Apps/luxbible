@@ -18,6 +18,7 @@ import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/path_service.dart';
 import 'package:bible/services/shared_preferences_service.dart';
+import 'package:bible/style/color_library.dart';
 import 'package:bible/ui/pages/bible_page.dart';
 import 'package:bible/utils/scroll_behavior.dart';
 import 'package:flutter/foundation.dart';
@@ -95,6 +96,7 @@ class BibleApp extends ConsumerWidget {
             selectionColor: Colors.black.withValues(alpha: 0.2),
             selectionHandleColor: Colors.black,
           ),
+          sliderTheme: SliderThemeData(inactiveTrackColor: ColorLibrary(brightness: .light).surfaceSecondary),
         ),
         darkTheme: ThemeData(
           colorScheme: ColorScheme.dark(brightness: Brightness.dark, primary: Colors.white),
@@ -106,6 +108,7 @@ class BibleApp extends ConsumerWidget {
             selectionColor: Colors.white.withValues(alpha: 0.2),
             selectionHandleColor: Colors.white,
           ),
+          sliderTheme: SliderThemeData(inactiveTrackColor: ColorLibrary(brightness: .dark).surfaceSecondary),
         ),
         scrollBehavior: BouncingScrollBehavior(),
         debugShowCheckedModeBanner: false,

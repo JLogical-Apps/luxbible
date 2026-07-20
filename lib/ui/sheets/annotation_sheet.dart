@@ -53,7 +53,7 @@ class AnnotationSheet {
         bodyPadding: .only(top: 16),
         trailing: onRemove == null
             ? null
-            : StyledCircleButton.lg(child: Symbols.ink_eraser.toIcon(), onPressed: () => onRemove(context)),
+            : StyledCircleButton.md(child: Symbols.ink_eraser.toIcon(), onPressed: () => onRemove(context)),
         port: port,
         childrenBuilder: (context, ref) {
           final user = ref.watch(userProvider);

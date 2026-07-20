@@ -29,7 +29,7 @@ class BiblePlansPage extends ConsumerWidget {
       backgroundColor: .backgroundPrimary,
       trailing: Tooltip(
         message: 'Add Bible plan',
-        child: StyledCircleButton.lg(child: Symbols.add.toIcon(), onPressed: () => context.push(BiblePlanSearchPage())),
+        child: StyledCircleButton.md(child: Symbols.add.toIcon(), onPressed: () => context.push(BiblePlanSearchPage())),
       ),
       body: StyledListView(
         children: [

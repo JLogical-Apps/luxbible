@@ -72,7 +72,7 @@ class MainToolbarSettingsPage extends ConsumerWidget {
                         subtitle: 'Shortcut when the toolbar is long-pressed.'.toText(),
                         leading: Symbols.touch_long.toIcon(),
                         trailing: StyledEditBadge(
-                          child: StyledCircleButton.lg(
+                          child: StyledCircleButton.md(
                             colorBuilder: .surfaceSecondary,
                             onPressed: () async {
                               ref.markOnboardingStep(.customizeToolbar);

@@ -64,7 +64,7 @@ class TextSelectionSettingsPage extends ConsumerWidget {
                         subtitle: 'Shortcut when a text selection is long-pressed.'.toText(),
                         leading: Symbols.touch_long.toIcon(),
                         trailing: StyledEditBadge(
-                          child: StyledCircleButton.lg(
+                          child: StyledCircleButton.md(
                             colorBuilder: .surfaceSecondary,
                             onPressed: () async {
                               ref.markOnboardingStep(.customizeToolbar);

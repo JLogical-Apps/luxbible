@@ -18,7 +18,7 @@ class BibleSheet {
     return context.showStyledSheet<BibleTranslation>(
       (context) => StyledSheet(
         title: 'Bible'.toText(),
-        trailing: StyledCircleButton.lg(
+        trailing: StyledCircleButton.md(
           child: Symbols.tune.toIcon(),
           onPressed: () {
             context.pop();

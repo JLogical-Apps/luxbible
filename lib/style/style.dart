@@ -48,6 +48,7 @@ export 'widgets/styled_scrollbar.dart';
 export 'widgets/styled_section.dart';
 export 'widgets/styled_segmented_control.dart';
 export 'widgets/styled_select.dart';
+export 'widgets/styled_slider.dart';
 export 'widgets/styled_sticky_header.dart';
 export 'widgets/styled_swipeable.dart';
 export 'widgets/styled_switch.dart';

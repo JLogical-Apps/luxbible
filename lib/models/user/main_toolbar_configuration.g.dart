@@ -41,6 +41,7 @@ Map<String, dynamic> _$MainToolbarConfigurationToJson(
 };
 
 const _$MainToolbarShortcutEnumMap = {
+  MainToolbarShortcut.audio: 'audio',
   MainToolbarShortcut.bookmark: 'bookmark',
   MainToolbarShortcut.study: 'study',
   MainToolbarShortcut.compare: 'compare',

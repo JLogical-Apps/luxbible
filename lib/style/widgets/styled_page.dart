@@ -35,7 +35,7 @@ class StyledPage extends StatelessWidget {
     final leading =
         this.leading ??
         (onBackPressed != null || ModalRoute.of(context)?.canPop == true
-            ? StyledCircleButton.lg(
+            ? StyledCircleButton.md(
                 child: Symbols.chevron_left.toIcon(),
                 onPressed: () => onBackPressed == null ? context.pop() : onBackPressed(context),
               )

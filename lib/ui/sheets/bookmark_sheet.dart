@@ -38,7 +38,7 @@ class BookmarkSheet {
                 mainAxisAlignment: .spaceBetween,
                 children: ColorEnum.values
                     .map(
-                      (color) => StyledCircleButton.lg(
+                      (color) => StyledCircleButton.md(
                         child: SelectableIcon(
                           Symbols.bookmark,
                           isSelected: color == value,

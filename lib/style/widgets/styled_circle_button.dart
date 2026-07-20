@@ -17,8 +17,8 @@ class StyledCircleButton extends StatelessWidget {
     required this.onPressed,
     this.colorBuilder,
     this.isSelected,
-  }) : iconSize = 24,
-       dimension = 40;
+  }) : iconSize = 30,
+       dimension = 48;
 
   const StyledCircleButton.md({
     super.key,

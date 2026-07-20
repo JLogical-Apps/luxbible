@@ -44,7 +44,7 @@ class OnboardingPanel extends HookConsumerWidget {
 
     return StyledSheet(
       showDragHandle: showDragHandle,
-      leading: StyledCircleButton.lg(
+      leading: StyledCircleButton.md(
         child: Symbols.close.toIcon(),
         onPressed: () async {
           final shouldSkip = await context.showStyledDialog(

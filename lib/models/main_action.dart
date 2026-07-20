@@ -4,6 +4,7 @@ import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
+import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
@@ -21,9 +22,11 @@ import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 enum MainAction {
+  audio,
   bookmark,
   study,
   studyPanel,
@@ -33,6 +36,7 @@ enum MainAction {
   settings;
 
   String title() => switch (this) {
+    audio => ref.read(isAudioBiblePlayingProvider) ? 'Pause Audio Bible' : 'Play Audio Bible',
     bookmark => 'Bookmark',
     study => 'Study',
     studyPanel => 'Add Study Panel',
@@ -43,6 +47,7 @@ enum MainAction {
   };
 
   String description({User? user}) => switch (this) {
+    audio => 'Listen to the current chapter with an audio-enabled Bible.',
     bookmark =>
       user?.currentBookmark == null
           ? 'Bookmark this chapter to easily access it from the search page.'
@@ -56,6 +61,10 @@ enum MainAction {
   };
 
   Widget buildIcon(BuildContext context, {User? user}) => switch (this) {
+    audio => Consumer(
+      builder: (context, ref, child) =>
+          Icon(ref.watch(isAudioBiblePlayingProvider) ? Symbols.pause : Symbols.play_arrow),
+    ),
     bookmark => () {
       final bookmark = user?.currentBookmark;
       return bookmark == null
@@ -80,6 +89,9 @@ enum MainAction {
   }) async {
     final user = ref.read(userProvider);
     switch (this) {
+      case audio:
+        ref.updateUser((user) => user.copyWith(isAudioOpen: true));
+        await ref.read(audioBibleProvider.notifier).toggle();
       case bookmark:
         final bookmarkId = user.currentBookmarkId;
         final bookmark = user.currentBookmark;

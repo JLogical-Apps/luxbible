@@ -70,6 +70,7 @@ sealed class User with _$User {
     @Default(HighlightStyle.defaultValues) List<(HighlightStyle, String label)> highlightStyles,
     @Default({}) Map<BiblePlanType, BiblePlanProgress> planProgressByType,
     @Default({}) Set<BiblePlanType> completedPlans,
+    @Default(false) bool isAudioOpen,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

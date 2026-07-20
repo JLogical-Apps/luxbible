@@ -31,7 +31,7 @@ class NotebookSheet {
               mainAxisAlignment: .spaceBetween,
               children: ColorEnum.values
                   .map(
-                    (color) => StyledCircleButton.lg(
+                    (color) => StyledCircleButton.md(
                       child: SelectableIcon(
                         Symbols.book_2,
                         isSelected: color == value,

@@ -42,7 +42,7 @@ class SelectionToolbar extends ConsumerWidget {
           (context) => StyledSheet(
             title: 'Verse Selection'.toText(),
             subtitle: verseSelection.format().toText(),
-            trailing: StyledCircleButton.lg(
+            trailing: StyledCircleButton.md(
               child: Symbols.tune.toIcon(),
               onPressed: () {
                 context.pop();
@@ -93,7 +93,7 @@ class SelectionToolbar extends ConsumerWidget {
             (context) => StyledSheet(
               title: 'Text Selection'.toText(),
               subtitle: '"$selectionText"'.toText(),
-              trailing: StyledCircleButton.lg(
+              trailing: StyledCircleButton.md(
                 child: Symbols.tune.toIcon(),
                 onPressed: () {
                   context.pop();

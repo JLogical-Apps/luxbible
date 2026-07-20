@@ -45,7 +45,7 @@ class VerseSelectionBottomBar extends StatelessWidget {
               isEdit: isEdit,
               child: Tooltip(
                 message: shortcut.title(user: user, verseSelection: verseSelection),
-                child: StyledCircleButton.lg(
+                child: StyledCircleButton.md(
                   child: shortcut.buildIcon(context, user: user, verseSelection: verseSelection),
                   onPressed: () => onShorcutPressed?.call(i, shortcut),
                 ),

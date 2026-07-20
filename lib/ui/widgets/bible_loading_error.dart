@@ -25,7 +25,7 @@ class BibleLoadingError extends ConsumerWidget {
           StyledTile.message(
             leading: Symbols.error.toIcon(),
             title: 'Something went wrong'.toText(),
-            subtitle: 'Make sure you are connected to the internet or try again later.'.toText(),
+            subtitle: 'Check your internet connection or try again later.'.toText(),
           ),
           if (translation != .bsb)
             StyledRectButton.secondary(

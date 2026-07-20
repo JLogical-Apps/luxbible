@@ -54,7 +54,7 @@ class TextSelectionBottomBar extends ConsumerWidget {
               isEdit: isEdit,
               child: Tooltip(
                 message: shortcut.title(user: user, textSelection: textSelection),
-                child: StyledCircleButton.lg(
+                child: StyledCircleButton.md(
                   child: shortcut.buildIcon(context, user: user, textSelection: textSelection),
                   onPressed: () => onShorcutPressed?.call(i, shortcut),
                 ),

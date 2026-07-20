@@ -19,7 +19,7 @@ class BibleTile extends StatelessWidget {
   Widget build(BuildContext context) => StyledListItem(
     title: translation.title().toText(),
     subtitle: translation.fullName().toText(),
-    thirdLine: translation.isOnline || translation.isStudy || translation.testament != null
+    thirdLine: translation.isOnline || translation.isStudy || translation.hasAudioBible || translation.testament != null
         ? Padding(
             padding: .only(top: 4),
             child: Row(
@@ -36,6 +36,12 @@ class BibleTile extends StatelessWidget {
                     child: 'Study Bible'.toText(),
                     leading: Symbols.school.toIcon(),
                     colorBuilder: ColorBuilder((colors) => colors.green.tertiary),
+                  ),
+                if (translation.hasAudioBible)
+                  StyledTag.sm(
+                    child: 'Audio Bible'.toText(),
+                    leading: Symbols.headphones.toIcon(),
+                    colorBuilder: ColorBuilder((colors) => colors.violet.tertiary),
                   ),
                 if (translation.testament case final testament?)
                   StyledTag.sm(
@@ -104,6 +110,11 @@ class BibleTile extends StatelessWidget {
               subtitle: 'No headings are included in this Bible.'.toText(),
               leading: Symbols.format_clear.toIcon(),
             ),
+          StyledListItem(
+            title: 'Audio Bible'.toText(),
+            subtitle: 'Whether this Bible includes an Audio Bible'.toText(),
+            trailing: StyledSwitch(isSelected: translation.hasAudioBible, isEnabled: true),
+          ),
           StyledListItem(
             trailing: StyledSwitch(isSelected: translation.hasRedLetters, isEnabled: true),
             title: 'Red Letters'.toText(),

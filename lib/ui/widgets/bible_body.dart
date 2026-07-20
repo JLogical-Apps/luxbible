@@ -9,6 +9,7 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
+import 'package:bible/ui/widgets/audio_bible_panel.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/chapter_builder.dart';
 import 'package:bible/ui/widgets/chapter_page_view.dart';
@@ -147,10 +148,16 @@ class BibleBody extends HookConsumerWidget {
 
     final studyPanels = user.studyPanels;
     final onboardingOffset = user.isOnboardingActive ? 1 : 0;
-    final panelCount = studyPanels.length + onboardingOffset;
+    final panelCount = studyPanels.length + onboardingOffset + (user.isAudioOpen ? 1 : 0);
     final studyPanelsPageController = usePageController(
-      initialPage: user.isOnboardingActive ? 0 : (user.studyPanelIndex ?? (studyPanels.length - 1)),
-      keys: [studyPanels.join(','), user.isOnboardingActive, isSideLayout],
+      initialPage: user.isOnboardingActive
+          ? 0
+          : user.isAudioOpen
+          ? panelCount - 1
+          : studyPanels.isEmpty
+          ? 0
+          : (user.studyPanelIndex ?? (studyPanels.length - 1)),
+      keys: [studyPanels.join(','), user.isOnboardingActive, user.isAudioOpen, isSideLayout],
     );
 
     void addStudyPanel(StudyPanel studyPanel) {
@@ -259,7 +266,7 @@ class BibleBody extends HookConsumerWidget {
                 ),
                 onMorePressed: () => context.showStyledSheet(
                   (_) => StyledSheet(
-                    trailing: StyledCircleButton.lg(
+                    trailing: StyledCircleButton.md(
                       child: Symbols.tune.toIcon(),
                       onPressed: () {
                         context.pop();
@@ -517,14 +524,13 @@ class BibleBody extends HookConsumerWidget {
         );
 
         Widget carousel() => SwipePageView(
-          key: ValueKey((studyPanels.join(','), user.isOnboardingActive)),
+          key: ValueKey((studyPanels.join(','), user.isOnboardingActive, user.isAudioOpen)),
           controller: studyPanelsPageController,
           pageCount: panelCount,
           onPageChanged: (page) {
-            ref.updateUser(
-              (user) => user.copyWith(studyPanelIndex: (page - onboardingOffset).clamp(0, studyPanels.length)),
-            );
-            if (studyPanels.isNotEmpty && page - onboardingOffset >= 0) {
+            final studyPanelIndex = page - onboardingOffset;
+            if (studyPanelIndex >= 0 && studyPanelIndex < studyPanels.length) {
+              ref.updateUser((user) => user.copyWith(studyPanelIndex: studyPanelIndex));
               ref.markOnboardingStep(.addStudyPanel);
             }
           },
@@ -560,7 +566,7 @@ class BibleBody extends HookConsumerWidget {
                       ],
                     ),
                   ),
-                  leading: StyledCircleButton.lg(
+                  leading: StyledCircleButton.md(
                     child: Symbols.close.toIcon(),
                     onPressed: () =>
                         ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
@@ -581,6 +587,11 @@ class BibleBody extends HookConsumerWidget {
                 ),
               ),
             ),
+            if (user.isAudioOpen)
+              Padding(
+                padding: isSideLayout ? .symmetric(horizontal: 4) : .zero,
+                child: AudioBiblePanel(showDragHandle: !isSideLayout),
+              ),
           ],
         );
 

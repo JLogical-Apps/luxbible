@@ -98,6 +98,7 @@ enum BibleTranslation {
   bool get isOnline => !isLocal;
 
   bool get isStudy => this == bsb || this == kjv;
+  bool get hasAudioBible => this == bsb;
 
   bool get hasRedLetters => switch (this) {
     bsb || kjv || nasb95 || niv11 => true,

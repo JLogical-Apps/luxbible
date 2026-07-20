@@ -19,6 +19,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 enum MainToolbarShortcut {
+  audio,
   bookmark,
   study,
   compare,
@@ -102,6 +103,7 @@ enum MainToolbarShortcut {
       };
 
   MainAction? toMainAction() => switch (this) {
+    audio => .audio,
     bookmark => .bookmark,
     study => .study,
     search => .search,
