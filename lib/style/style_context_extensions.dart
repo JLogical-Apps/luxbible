@@ -30,8 +30,8 @@ extension StyleContextExtensions on BuildContext {
     backgroundColor: Colors.transparent,
     useRootNavigator: true,
     constraints: BoxConstraints(
-      maxWidth: MediaQuery.sizeOf(this).width - 32,
-      maxHeight: MediaQuery.sizeOf(this).height - MediaQuery.paddingOf(this).top - 48,
+      maxWidth: MediaQuery.sizeOf(rootContext).width - 32,
+      maxHeight: MediaQuery.sizeOf(rootContext).height - MediaQuery.paddingOf(rootContext).top - 16,
     ),
     builder: dialogBuilder,
   );
