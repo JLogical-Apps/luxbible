@@ -86,7 +86,6 @@ class AudioBiblePanel extends HookConsumerWidget {
                         ),
                         gapH24,
                         Row(
-                          spacing: 16,
                           children: [
                             StyledCircleButton.lg(
                               child: getSpeedIcon(user.audio.speed).toIcon(),
@@ -97,15 +96,18 @@ class AudioBiblePanel extends HookConsumerWidget {
                               ),
                             ),
                             Spacer(),
+                            gapW16,
                             StyledCircleButton.lg(
                               child: Symbols.replay_10.toIcon(),
                               onPressed: () => notifier.seekBy(Duration(seconds: -10)),
                             ),
+                            gapW16,
                             StyledCircleButton.lg(
                               colorBuilder: .primary,
                               child: (value?.isPlaying == true ? Symbols.pause : Symbols.play_arrow).toIcon(),
                               onPressed: () => notifier.toggle(),
                             ),
+                            gapW16,
                             StyledCircleButton.lg(
                               child: Symbols.forward_10.toIcon(),
                               onPressed: () => notifier.seekBy(Duration(seconds: 10)),
