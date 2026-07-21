@@ -11,5 +11,7 @@ extension DurationExtensions on Duration {
       ? max
       : this;
 
+  Duration get clampZero => this < .zero ? .zero : this;
+
   double operator /(Duration other) => inMicroseconds / other.inMicroseconds;
 }

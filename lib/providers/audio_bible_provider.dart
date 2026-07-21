@@ -1,11 +1,11 @@
 import 'dart:async';
 
+import 'package:audio_service/audio_service.dart';
 import 'package:bible/models/reference/chapter_position.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/audio_bible_handler.dart';
 import 'package:bible/services/path_service.dart';
 import 'package:bible/utils/extensions/duration_extensions.dart';
-import 'package:audio_service/audio_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -35,6 +35,32 @@ Stream<PlayerState> audioBiblePlayerState(Ref ref) => ref.watch(audioBibleHandle
 
 @riverpod
 bool isAudioBiblePlaying(Ref ref) => ref.watch(audioBibleProvider).value?.isPlaying == true;
+
+@Riverpod(keepAlive: true)
+class AudioBibleTimer extends _$AudioBibleTimer {
+  Timer? timer;
+
+  @override
+  DateTime? build() {
+    ref.onDispose(() => timer?.cancel());
+    return null;
+  }
+
+  void update(Duration? duration) {
+    timer?.cancel();
+
+    if (duration == null) {
+      state = null;
+      timer = null;
+    } else {
+      state = DateTime.now().add(duration);
+      timer = Timer(duration, () async {
+        state = null;
+        await ref.read(audioBibleHandlerProvider).stop();
+      });
+    }
+  }
+}
 
 @riverpod
 void audioAssetLoader(Ref ref) {

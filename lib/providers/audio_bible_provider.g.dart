@@ -208,6 +208,58 @@ final class IsAudioBiblePlayingProvider
 String _$isAudioBiblePlayingHash() =>
     r'7947cfb894303fb511adeb94b6d2e7328c003b24';
 
+@ProviderFor(AudioBibleTimer)
+final audioBibleTimerProvider = AudioBibleTimerProvider._();
+
+final class AudioBibleTimerProvider
+    extends $NotifierProvider<AudioBibleTimer, DateTime?> {
+  AudioBibleTimerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'audioBibleTimerProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$audioBibleTimerHash();
+
+  @$internal
+  @override
+  AudioBibleTimer create() => AudioBibleTimer();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DateTime? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<DateTime?>(value),
+    );
+  }
+}
+
+String _$audioBibleTimerHash() => r'100474d39a3453e487fb7484336d491e1549ea13';
+
+abstract class _$AudioBibleTimer extends $Notifier<DateTime?> {
+  DateTime? build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<DateTime?, DateTime?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<DateTime?, DateTime?>,
+              DateTime?,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
+
 @ProviderFor(audioAssetLoader)
 final audioAssetLoaderProvider = AudioAssetLoaderProvider._();
 

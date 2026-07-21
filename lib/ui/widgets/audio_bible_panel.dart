@@ -20,6 +20,11 @@ class AudioBiblePanel extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
     final audioBible = ref.watch(audioBibleProvider);
+    final timerEndTime = ref.watch(audioBibleTimerProvider);
+
+    useStream(
+      useMemoized(() => timerEndTime == null ? Stream.empty() : Stream.periodic(Duration(seconds: 1)), [timerEndTime]),
+    );
 
     final chapterReference = user.lastReference;
     final translation = user.translationFor(chapterReference.book);
@@ -81,7 +86,19 @@ class AudioBiblePanel extends HookConsumerWidget {
                           mainAxisAlignment: .spaceBetween,
                           children: [
                             Text((value?.position ?? .zero).format(), style: context.textStyle.labelSm.subtle()),
-                            Text((value?.duration ?? .zero).format(), style: context.textStyle.labelSm.subtle()),
+                            if (timerEndTime != null)
+                              Row(
+                                spacing: 4,
+                                children: [
+                                  Icon(Symbols.timer, size: 14, color: context.colors.contentSecondary),
+                                  Text(
+                                    timerEndTime.difference(DateTime.now()).clampZero.format(),
+                                    style: context.textStyle.labelSm.subtle(),
+                                  ),
+                                ],
+                              )
+                            else
+                              Text((value?.duration ?? .zero).format(), style: context.textStyle.labelSm.subtle()),
                           ],
                         ),
                         gapH24,
@@ -114,8 +131,20 @@ class AudioBiblePanel extends HookConsumerWidget {
                             ),
                             Spacer(),
                             StyledCircleButton.lg(
-                              child: Icon(Symbols.timer, fill: 0),
-                              onPressed: () => notifier.seekBy(Duration(seconds: -10)),
+                              child: Icon(Symbols.timer, fill: timerEndTime == null ? 0 : 1),
+                              onPressed: () async {
+                                final option = await context.showStyledSheet<AudioBibleTimerOption>(
+                                  (context) => StyledSelectionSheet<AudioBibleTimerOption>(
+                                    title: 'Audio Timer'.toText(),
+                                    options: AudioBibleTimerOption.values,
+                                    initialOption: timerEndTime == null ? .off : null,
+                                    optionMapper: (option) => StyledSelectOption(title: option.title().toText()),
+                                  ),
+                                );
+                                if (option != null) {
+                                  ref.read(audioBibleTimerProvider.notifier).update(option.duration);
+                                }
+                              },
                             ),
                           ],
                         ),
@@ -156,3 +185,30 @@ IconData getSpeedIcon(double speed) => switch (speed) {
 };
 
 List<double> get speeds => [0.7, 1, 1.2, 1.5, 1.7, 2];
+
+enum AudioBibleTimerOption {
+  off,
+  fiveMinutes,
+  tenMinutes,
+  fifteenMinutes,
+  thirtyMinutes,
+  oneHour;
+
+  String title() => switch (this) {
+    off => 'Off',
+    fiveMinutes => '5 minutes',
+    tenMinutes => '10 minutes',
+    fifteenMinutes => '15 minutes',
+    thirtyMinutes => '30 minutes',
+    oneHour => '1 hour',
+  };
+
+  Duration? get duration => switch (this) {
+    off => null,
+    fiveMinutes => Duration(minutes: 5),
+    tenMinutes => Duration(minutes: 10),
+    fifteenMinutes => Duration(minutes: 15),
+    thirtyMinutes => Duration(minutes: 30),
+    oneHour => Duration(hours: 1),
+  };
+}
