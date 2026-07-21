@@ -51,6 +51,18 @@ class BibleBody extends HookConsumerWidget {
       keys: [isSideLayout],
     );
 
+    usePostFrameEffect(() {
+      final currentPage = pageController.pageOrNull?.round();
+      final targetPage = user.lastReference.bibleChapterIndex;
+      if (currentPage != null && currentPage != targetPage && !pageController.position.isScrollingNotifier.value) {
+        if ((currentPage - targetPage).abs() == 1) {
+          pageController.animateToPage(targetPage, duration: Duration(milliseconds: 300), curve: Curves.easeInOutCubic);
+        } else {
+          pageController.jumpToPage(targetPage);
+        }
+      }
+    }, [pageController, user.lastReference]);
+
     final currentPage = (pageController.pageOrNull ?? initialPosition.reference.bibleChapterIndex).round();
     final currentChapterReference = ChapterReference.fromBibleChapterIndex(currentPage);
 

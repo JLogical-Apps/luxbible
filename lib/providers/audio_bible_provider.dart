@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bible/models/reference/chapter_position.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/utils/extensions/duration_extensions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -46,7 +47,7 @@ void audioAssetLoader(Ref ref) {
     if (next != null) {
       await player.setAsset(next);
     } else {
-      player.pause();
+      await player.pause();
     }
   }, fireImmediately: true);
 
@@ -63,8 +64,14 @@ void audioAssetLoader(Ref ref) {
     final player = ref.read(audioBiblePlayerProvider);
     final playerState = next.value;
     if (playerState != null && playerState.processingState == .completed && playerState.playing) {
-      await player.pause();
-      await player.seek(.zero);
+      final nextReference = ref.read(userProvider).lastReference.next;
+      if (nextReference != null) {
+        await ref
+            .read(userProvider.notifier)
+            .update((user) => user.withSoftNavigation(ChapterPosition(reference: nextReference)));
+      } else {
+        await player.pause();
+      }
     }
   });
 }
