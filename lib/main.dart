@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
+import 'package:audio_service/audio_service.dart';
 import 'package:bible/functions/bible_plan_importer.dart';
 import 'package:bible/functions/commentary_importer.dart';
 import 'package:bible/functions/cross_references_importer.dart';
 import 'package:bible/functions/dictionary_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
 import 'package:bible/licenses.dart';
+import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/commentaries_provider.dart';
@@ -16,6 +18,7 @@ import 'package:bible/providers/package_info_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/services/audio_bible_handler.dart';
 import 'package:bible/services/path_service.dart';
 import 'package:bible/services/shared_preferences_service.dart';
 import 'package:bible/style/color_library.dart';
@@ -24,7 +27,6 @@ import 'package:bible/utils/scroll_behavior.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:just_audio_background/just_audio_background.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,13 +35,17 @@ Future<void> main() async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      await JustAudioBackground.init(
-        androidNotificationChannelId: 'app.luxbible.app.channel.audio',
-        androidNotificationChannelName: 'Audio Bible playback',
-        androidNotificationChannelDescription: 'Audio Bible playback controls',
-        androidStopForegroundOnPause: true,
-        fastForwardInterval: Duration(seconds: 10),
-        rewindInterval: Duration(seconds: 10),
+      final audioBibleHandler = await AudioService.init(
+        builder: () => AudioBibleHandler(),
+        config: AudioServiceConfig(
+          androidNotificationChannelId: 'app.luxbible.app.channel.audio',
+          androidNotificationChannelName: 'Audio Bible playback',
+          androidNotificationChannelDescription: 'Audio Bible playback controls',
+          androidNotificationIcon: 'drawable/ic_notification',
+          androidStopForegroundOnPause: true,
+          fastForwardInterval: Duration(seconds: 10),
+          rewindInterval: Duration(seconds: 10),
+        ),
       );
 
       await registerLicenses();
@@ -56,14 +62,15 @@ Future<void> main() async {
 
       ref = ProviderContainer(
         overrides: [
-          strongsProvider.overrideWith((ref) => strongs),
-          dictionaryProvider.overrideWith((ref) => dictionary),
-          crossReferencesProvider.overrideWith((ref) => crossReferences),
-          commentariesProvider.overrideWith((ref) => commentaries),
-          biblePlansProvider.overrideWith((ref) => biblePlans),
-          pathServiceProvider.overrideWith((ref) => paths),
-          sharedPreferencesServiceProvider.overrideWith((ref) => sharedPreferences),
-          packageInfoProvider.overrideWith((ref) => packageInfo),
+          audioBibleHandlerProvider.overrideWithValue(audioBibleHandler),
+          strongsProvider.overrideWithValue(strongs),
+          dictionaryProvider.overrideWithValue(dictionary),
+          crossReferencesProvider.overrideWithValue(crossReferences),
+          commentariesProvider.overrideWithValue(commentaries),
+          biblePlansProvider.overrideWithValue(biblePlans),
+          pathServiceProvider.overrideWithValue(paths),
+          sharedPreferencesServiceProvider.overrideWithValue(sharedPreferences),
+          packageInfoProvider.overrideWithValue(packageInfo),
         ],
         observers: [ProviderErrorObserver()],
       );

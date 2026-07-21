@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:bible/models/reference/chapter_position.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/services/audio_bible_handler.dart';
 import 'package:bible/services/path_service.dart';
 import 'package:bible/utils/extensions/duration_extensions.dart';
+import 'package:audio_service/audio_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:just_audio_background/just_audio_background.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'audio_bible_provider.g.dart';
@@ -20,20 +21,17 @@ class AudioBibleState {
 }
 
 @Riverpod(keepAlive: true)
-AudioPlayer audioBiblePlayer(Ref ref) {
-  final player = AudioPlayer();
-  ref.onDispose(() => player.dispose());
-  return player;
-}
+AudioBibleHandler audioBibleHandler(Ref ref) =>
+    throw UnimplementedError('AudioBibleHandler must be initialized in main');
 
 @riverpod
-Stream<Duration> audioBiblePosition(Ref ref) => ref.watch(audioBiblePlayerProvider).positionStream;
+Stream<Duration> audioBiblePosition(Ref ref) => ref.watch(audioBibleHandlerProvider).player.positionStream;
 
 @riverpod
-Stream<Duration?> audioBibleDuration(Ref ref) => ref.watch(audioBiblePlayerProvider).durationStream;
+Stream<Duration?> audioBibleDuration(Ref ref) => ref.watch(audioBibleHandlerProvider).player.durationStream;
 
 @riverpod
-Stream<PlayerState> audioBiblePlayerState(Ref ref) => ref.watch(audioBiblePlayerProvider).playerStateStream;
+Stream<PlayerState> audioBiblePlayerState(Ref ref) => ref.watch(audioBibleHandlerProvider).player.playerStateStream;
 
 @riverpod
 bool isAudioBiblePlaying(Ref ref) => ref.watch(audioBibleProvider).value?.isPlaying == true;
@@ -47,20 +45,20 @@ void audioAssetLoader(Ref ref) {
       return;
     }
 
-    final player = ref.read(audioBiblePlayerProvider);
+    final handler = ref.read(audioBibleHandlerProvider);
     if (nextAssetPath != null) {
       final reference = next.lastReference;
-      await player.setAsset(
+      await handler.loadAsset(
         nextAssetPath,
-        tag: MediaItem(
+        MediaItem(
           id: reference.osisId(),
           album: next.translationFor(reference.book).fullName(),
           title: reference.format(),
-          artUri: (await ref.read(pathServiceProvider)?.getAssetAsFile('assets/images/lux-audio-artwork.png'))?.uri,
+          artUri: (await ref.read(pathServiceProvider)?.getAssetAsFile('assets/images/lux-logo-full.png'))?.uri,
         ),
       );
     } else {
-      await player.pause();
+      await handler.pause();
     }
   }, fireImmediately: true);
 
@@ -69,12 +67,11 @@ void audioAssetLoader(Ref ref) {
       return;
     }
 
-    final player = ref.read(audioBiblePlayerProvider);
-    await player.setSpeed(next);
+    await ref.read(audioBibleHandlerProvider).setSpeed(next);
   }, fireImmediately: true);
 
   ref.listen(audioBiblePlayerStateProvider, (_, next) async {
-    final player = ref.read(audioBiblePlayerProvider);
+    final player = ref.read(audioBibleHandlerProvider).player;
     final playerState = next.value;
     if (playerState != null && playerState.processingState == .completed && playerState.playing) {
       final nextReference = ref.read(userProvider).lastReference.next;
@@ -91,7 +88,8 @@ void audioAssetLoader(Ref ref) {
 
 @Riverpod(keepAlive: true)
 class AudioBible extends _$AudioBible {
-  AudioPlayer get player => ref.read(audioBiblePlayerProvider);
+  AudioBibleHandler get handler => ref.read(audioBibleHandlerProvider);
+  AudioPlayer get player => handler.player;
 
   @override
   Future<AudioBibleState> build() async {
@@ -117,7 +115,7 @@ class AudioBible extends _$AudioBible {
     }
 
     if (player.playing) {
-      await player.pause();
+      await handler.pause();
       return;
     }
 
@@ -133,12 +131,12 @@ class AudioBible extends _$AudioBible {
     if (player.processingState == .completed) {
       await player.seek(.zero);
     }
-    await player.play();
+    await handler.play();
   }
 
-  Future<void> seek(Duration position) => player.seek(position.clamp(.zero, player.duration ?? .zero));
+  Future<void> seek(Duration position) => handler.seek(position.clamp(.zero, player.duration ?? .zero));
 
   Future<void> seekBy(Duration offset) => seek(player.position + offset);
 
-  Future<void> close() => player.stop();
+  Future<void> close() => handler.stop();
 }

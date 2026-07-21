@@ -9,46 +9,52 @@ part of 'audio_bible_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(audioBiblePlayer)
-final audioBiblePlayerProvider = AudioBiblePlayerProvider._();
+@ProviderFor(audioBibleHandler)
+final audioBibleHandlerProvider = AudioBibleHandlerProvider._();
 
-final class AudioBiblePlayerProvider
-    extends $FunctionalProvider<AudioPlayer, AudioPlayer, AudioPlayer>
-    with $Provider<AudioPlayer> {
-  AudioBiblePlayerProvider._()
+final class AudioBibleHandlerProvider
+    extends
+        $FunctionalProvider<
+          AudioBibleHandler,
+          AudioBibleHandler,
+          AudioBibleHandler
+        >
+    with $Provider<AudioBibleHandler> {
+  AudioBibleHandlerProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'audioBiblePlayerProvider',
+        name: r'audioBibleHandlerProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$audioBiblePlayerHash();
+  String debugGetCreateSourceHash() => _$audioBibleHandlerHash();
 
   @$internal
   @override
-  $ProviderElement<AudioPlayer> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $ProviderElement<AudioBibleHandler> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
-  AudioPlayer create(Ref ref) {
-    return audioBiblePlayer(ref);
+  AudioBibleHandler create(Ref ref) {
+    return audioBibleHandler(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AudioPlayer value) {
+  Override overrideWithValue(AudioBibleHandler value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<AudioPlayer>(value),
+      providerOverride: $SyncValueProvider<AudioBibleHandler>(value),
     );
   }
 }
 
-String _$audioBiblePlayerHash() => r'8757b98da3cac5e9af39601bd2b6233885b91552';
+String _$audioBibleHandlerHash() => r'31afdaaf95e858333197535c5fd93a5e647b85ba';
 
 @ProviderFor(audioBiblePosition)
 final audioBiblePositionProvider = AudioBiblePositionProvider._();
@@ -83,7 +89,7 @@ final class AudioBiblePositionProvider
 }
 
 String _$audioBiblePositionHash() =>
-    r'008b9d17ba2956f0f270199e80d38c0c4eb2528e';
+    r'e8eebed54303b9662f31c7a517bf254e3ab2f540';
 
 @ProviderFor(audioBibleDuration)
 final audioBibleDurationProvider = AudioBibleDurationProvider._();
@@ -118,7 +124,7 @@ final class AudioBibleDurationProvider
 }
 
 String _$audioBibleDurationHash() =>
-    r'5277cdc8ae7b02e60ae4b21a777f75ddc358b8d3';
+    r'd6be3f7beb5e3281b77373b3d31c15c435dc02bc';
 
 @ProviderFor(audioBiblePlayerState)
 final audioBiblePlayerStateProvider = AudioBiblePlayerStateProvider._();
@@ -158,7 +164,7 @@ final class AudioBiblePlayerStateProvider
 }
 
 String _$audioBiblePlayerStateHash() =>
-    r'867f2e8c6f1d1c07fdb24f1d6495fbfa9a8b2b70';
+    r'cf769f4d1edb9c72fa73c80c5c59f634c941428b';
 
 @ProviderFor(isAudioBiblePlaying)
 final isAudioBiblePlayingProvider = IsAudioBiblePlayingProvider._();
@@ -241,7 +247,7 @@ final class AudioAssetLoaderProvider
   }
 }
 
-String _$audioAssetLoaderHash() => r'b3dc5bfe0cd42e5ee6df85e6402181cad38c04d4';
+String _$audioAssetLoaderHash() => r'629e50e5e90aa6d66b625df30e214bba11b5eac6';
 
 @ProviderFor(AudioBible)
 final audioBibleProvider = AudioBibleProvider._();
@@ -267,7 +273,7 @@ final class AudioBibleProvider
   AudioBible create() => AudioBible();
 }
 
-String _$audioBibleHash() => r'bc45b94810df49f79bbe97436624afe3c10a1fa8';
+String _$audioBibleHash() => r'4d7d8bf06c9b90f7ee61caf1675fa5fff86c7cfd';
 
 abstract class _$AudioBible extends $AsyncNotifier<AudioBibleState> {
   FutureOr<AudioBibleState> build();
