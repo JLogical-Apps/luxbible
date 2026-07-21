@@ -260,8 +260,11 @@ class BibleBody extends HookConsumerWidget {
                     ChapterReferenceSearchPage(initialReference: currentChapterReference),
                   );
                   if (result != null) {
-                    hardNavigateTo(result.position, bookmarkId: result.bookmarkId);
-                    ref.markOnboardingStep(.navigateChapter);
+                    // addPostFrameCallback until https://github.com/rrousselGit/riverpod/issues/4812
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      hardNavigateTo(result.position, bookmarkId: result.bookmarkId);
+                      ref.markOnboardingStep(.navigateChapter);
+                    });
                   }
                 },
                 onLongPressed: () => user.mainToolbar.longPressShortcut.onPressed(
@@ -536,7 +539,6 @@ class BibleBody extends HookConsumerWidget {
         );
 
         Widget carousel() => SwipePageView(
-          key: ValueKey((studyPanels.join(','), user.isOnboardingActive, user.audio.isOpen)),
           controller: studyPanelsPageController,
           pageCount: panelCount,
           onPageChanged: (page) {
@@ -561,6 +563,7 @@ class BibleBody extends HookConsumerWidget {
               ),
             ...studyPanels.mapIndexed(
               (i, studyPanel) => Padding(
+                key: ValueKey((i, studyPanel)),
                 padding: isSideLayout ? .symmetric(horizontal: 4) : .zero,
                 child: StyledSheet.builder(
                   key: ValueKey((i, visibleVerseSelection)),
