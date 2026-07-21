@@ -140,7 +140,7 @@ class BibleBody extends HookConsumerWidget {
 
       await ref.read(
         chapterProvider(
-          translation: user.translationFor(chapterReference.book),
+          translation: user.getTranslationFor(chapterReference.book),
           chapterReference: chapterReference,
         ).future,
       );
@@ -511,7 +511,7 @@ class BibleBody extends HookConsumerWidget {
         final chapterValue = ref.watch(
           chapterProvider(
             chapterReference: currentChapterReference,
-            translation: user.translationFor(currentChapterReference.book),
+            translation: user.getTranslationFor(currentChapterReference.book),
           ),
         );
         useOnListenableChange(currentScrollController, computeVisibleVerses);

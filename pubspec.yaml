@@ -83,6 +83,7 @@ flutter:
     - assets/cross_references/
     - assets/bible_plans/
     - assets/audio/bsb/
+    - assets/audio/kjv/
     - assets/images/
     - fonts/
   fonts:

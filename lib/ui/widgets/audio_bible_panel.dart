@@ -27,7 +27,7 @@ class AudioBiblePanel extends HookConsumerWidget {
     );
 
     final chapterReference = user.lastReference;
-    final translation = user.translationFor(chapterReference.book);
+    final translation = user.getTranslationFor(chapterReference.book);
 
     final positionOverrideState = useState<double?>(null);
 

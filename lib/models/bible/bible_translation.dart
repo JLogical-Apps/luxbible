@@ -98,7 +98,12 @@ enum BibleTranslation {
   bool get isOnline => !isLocal;
 
   bool get isStudy => this == bsb || this == kjv;
-  bool get hasAudioBible => this == bsb;
+  bool get hasAudioBible => this == bsb || this == kjv;
+
+  String? getAudioAssetPath(ChapterReference reference) => switch ((this, reference.book)) {
+    (bsb || kjv, .galatians) => 'assets/audio/$name/galatians-${reference.chapterNum}.mp3',
+    _ => null,
+  };
 
   bool get hasRedLetters => switch (this) {
     bsb || kjv || nasb95 || niv11 => true,

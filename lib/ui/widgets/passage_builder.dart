@@ -37,7 +37,7 @@ class PassageBuilder extends HookConsumerWidget {
     final chapterReference = verseSelection.references.first.toChapterReference();
     final user = ref.watch(userProvider);
     final translation =
-        this.translation?.effectiveFor(chapterReference.book) ?? user.translationFor(chapterReference.book);
+        this.translation?.effectiveFor(chapterReference.book) ?? user.getTranslationFor(chapterReference.book);
     final paragraphsValue = ref.watch(
       verseSelectionParagraphsProvider(selection: verseSelection, translation: translation),
     );

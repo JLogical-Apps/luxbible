@@ -42,7 +42,7 @@ class ChapterBuilder extends HookConsumerWidget {
 
   BookType get book => chapterReference.book;
 
-  BibleTranslation get translation => user.translationFor(book);
+  BibleTranslation get translation => user.getTranslationFor(book);
   bool get isFallback => translation != user.translation;
 
   @override

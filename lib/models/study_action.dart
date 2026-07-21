@@ -132,7 +132,7 @@ enum StudyAction {
                       final verseSelection = crossReference.toVerseSelection();
                       final book = crossReference.references.first.book;
                       final translation = crossReferenceTranslation == user.translation
-                          ? user.translationFor(book)
+                          ? user.getTranslationFor(book)
                           : crossReferenceTranslation.effectiveFor(book);
                       final verses = ref
                           .watch(verseSelectionVersesProvider(translation: translation, selection: verseSelection))

@@ -78,7 +78,7 @@ sealed class User with _$User {
 
   List<BibleTranslation> get biblesOrDefault => bibles ?? BibleTranslation.defaultTranslations;
 
-  BibleTranslation translationFor(BookType book) => translation.effectiveFor(
+  BibleTranslation getTranslationFor(BookType book) => translation.effectiveFor(
     book,
     oldTestamentTranslation: oldTestamentTranslation,
     newTestamentTranslation: newTestamentTranslation,
@@ -87,6 +87,8 @@ sealed class User with _$User {
   List<CommentaryType> get commentariesOrDefault => commentaries ?? CommentaryType.values;
 
   ChapterReference get lastReference => lastPosition.reference;
+
+  String? get audioAssetPath => getTranslationFor(lastReference.book).getAudioAssetPath(lastReference);
 
   Bookmark? get currentBookmark => bookmarkById[currentBookmarkId];
 

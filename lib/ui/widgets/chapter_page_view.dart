@@ -34,7 +34,7 @@ class ChapterPageView extends StatelessWidget {
       itemBuilder: (context, pageIndex) => HookConsumerBuilder(
         builder: (context, ref) {
           final chapterReference = ChapterReference.fromBibleChapterIndex(pageIndex);
-          final translation = user.translationFor(chapterReference.book);
+          final translation = user.getTranslationFor(chapterReference.book);
           final chapterValue = ref.watch(chapterProvider(translation: translation, chapterReference: chapterReference));
 
           if (chapterValue.hasError) {

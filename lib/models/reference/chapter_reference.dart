@@ -54,7 +54,4 @@ class ChapterReference extends Equatable with ComparableOperators<ChapterReferen
 
   ChapterReference? get next => values.elementAtOrNull(bibleChapterIndex + 1);
   ChapterReference? get previous => bibleChapterIndex == 0 ? null : values[bibleChapterIndex - 1];
-
-  String? get audioAssetPath =>
-      book == .galatians ? 'assets/audio/bsb/GAL_${chapterNum.toString().padLeft(3, '0')}.mp3' : null;
 }

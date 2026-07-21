@@ -65,8 +65,8 @@ class AudioBibleTimer extends _$AudioBibleTimer {
 @riverpod
 void audioAssetLoader(Ref ref) {
   ref.listen(userProvider, (prev, next) async {
-    final previousAssetPath = prev?.lastReference.audioAssetPath;
-    final nextAssetPath = next.lastReference.audioAssetPath;
+    final previousAssetPath = prev?.audioAssetPath;
+    final nextAssetPath = next.audioAssetPath;
     if (previousAssetPath == nextAssetPath) {
       return;
     }
@@ -78,7 +78,7 @@ void audioAssetLoader(Ref ref) {
         nextAssetPath,
         MediaItem(
           id: reference.osisId(),
-          album: next.translationFor(reference.book).fullName(),
+          album: next.getTranslationFor(reference.book).fullName(),
           title: reference.format(),
           artUri: (await ref.read(pathServiceProvider)?.getAssetAsFile('assets/images/lux-logo-full.png'))?.uri,
         ),
@@ -122,7 +122,7 @@ class AudioBible extends _$AudioBible {
     ref.watch(audioAssetLoaderProvider);
 
     final user = ref.watch(userProvider);
-    final assetPath = user.lastReference.audioAssetPath;
+    final assetPath = user.audioAssetPath;
     if (assetPath == null) {
       throw UnsupportedError('Unsupported chapter');
     }
@@ -136,7 +136,7 @@ class AudioBible extends _$AudioBible {
 
   Future<void> toggle() async {
     final user = ref.read(userProvider);
-    if (user.lastReference.audioAssetPath == null) {
+    if (user.audioAssetPath == null) {
       return;
     }
 
