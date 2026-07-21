@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:utils_core/utils_core.dart';
 
 part 'path_service.g.dart';
 
@@ -13,6 +15,16 @@ class Paths {
   final Directory applicationSupport;
 
   const Paths({required this.applicationSupport});
+
+  Future<File?> getAssetAsFile(String assetPath) async {
+    final file = applicationSupport - assetPath;
+    if (!await file.exists()) {
+      final data = await rootBundle.load(assetPath);
+      await file.create(recursive: true);
+      await file.writeAsBytes(data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes));
+    }
+    return file;
+  }
 }
 
 Future<Paths?> getPaths() async {

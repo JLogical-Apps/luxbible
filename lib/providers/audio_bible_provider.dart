@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:bible/models/reference/chapter_position.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/services/path_service.dart';
 import 'package:bible/utils/extensions/duration_extensions.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'audio_bible_provider.g.dart';
@@ -38,14 +40,25 @@ bool isAudioBiblePlaying(Ref ref) => ref.watch(audioBibleProvider).value?.isPlay
 
 @riverpod
 void audioAssetLoader(Ref ref) {
-  ref.listen(userProvider.select((user) => user.lastReference.audioAssetPath), (prev, next) async {
-    if (prev == next) {
+  ref.listen(userProvider, (prev, next) async {
+    final previousAssetPath = prev?.lastReference.audioAssetPath;
+    final nextAssetPath = next.lastReference.audioAssetPath;
+    if (previousAssetPath == nextAssetPath) {
       return;
     }
 
     final player = ref.read(audioBiblePlayerProvider);
-    if (next != null) {
-      await player.setAsset(next);
+    if (nextAssetPath != null) {
+      final reference = next.lastReference;
+      await player.setAsset(
+        nextAssetPath,
+        tag: MediaItem(
+          id: reference.osisId(),
+          album: next.translationFor(reference.book).fullName(),
+          title: reference.format(),
+          artUri: (await ref.read(pathServiceProvider)?.getAssetAsFile('assets/images/lux-audio-artwork.png'))?.uri,
+        ),
+      );
     } else {
       await player.pause();
     }

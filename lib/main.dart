@@ -24,6 +24,7 @@ import 'package:bible/utils/scroll_behavior.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:just_audio_background/just_audio_background.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,6 +32,15 @@ Future<void> main() async {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+
+      await JustAudioBackground.init(
+        androidNotificationChannelId: 'app.luxbible.app.channel.audio',
+        androidNotificationChannelName: 'Audio Bible playback',
+        androidNotificationChannelDescription: 'Audio Bible playback controls',
+        androidStopForegroundOnPause: true,
+        fastForwardInterval: Duration(seconds: 10),
+        rewindInterval: Duration(seconds: 10),
+      );
 
       await registerLicenses();
 

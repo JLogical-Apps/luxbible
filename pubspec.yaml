@@ -54,6 +54,7 @@ dependencies:
   html: ^0.15.6
   modal_bottom_sheet: ^3.0.0
   just_audio: ^0.10.6
+  just_audio_background: ^0.0.1-beta.17
 
 dependency_overrides:
   path_provider_foundation: 2.5.1 # https://stackoverflow.com/questions/79893370/ios-transporter-executable-references-an-unsupported-platform-in-the-arm64-s
@@ -82,6 +83,7 @@ flutter:
     - assets/cross_references/
     - assets/bible_plans/
     - assets/audio/bsb/
+    - assets/images/lux-audio-artwork.png
     - fonts/
   fonts:
     - family: Inter
