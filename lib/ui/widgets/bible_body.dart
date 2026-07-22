@@ -51,20 +51,10 @@ class BibleBody extends HookConsumerWidget {
       keys: [isSideLayout],
     );
 
-    usePostFrameEffect(() {
-      final currentPage = pageController.pageOrNull?.round();
-      final targetPage = user.lastReference.bibleChapterIndex;
-      if (currentPage != null && currentPage != targetPage && !pageController.position.isScrollingNotifier.value) {
-        if ((currentPage - targetPage).abs() == 1) {
-          pageController.animateToPage(targetPage, duration: Duration(milliseconds: 300), curve: Curves.easeInOutCubic);
-        } else {
-          pageController.jumpToPage(targetPage);
-        }
-      }
-    }, [pageController, user.lastReference]);
-
     final currentPage = (pageController.pageOrNull ?? initialPosition.reference.bibleChapterIndex).round();
     final currentChapterReference = ChapterReference.fromBibleChapterIndex(currentPage);
+
+    final selection = useBibleSelection();
 
     final navigationHistoryState = useState(
       NavigationHistory(
@@ -94,32 +84,29 @@ class BibleBody extends HookConsumerWidget {
 
     usePeriodic(Duration(seconds: 5), () => saveScroll());
 
-    final selection = useBibleSelection();
-
-    final isScrollingDownState = useState(true);
-    final isAtBottom = useListenableSelector(currentScrollController, () {
-      final scrollPosition = currentScrollController.positionOrNull;
-      return scrollPosition == null || !scrollPosition.hasContentDimensions
-          ? false
-          : scrollPosition.pixels >= scrollPosition.maxScrollExtent;
-    });
-
-    final showBottomBar =
-        (isScrollingDownState.value || user.mainToolbar.pinToBottom || isAtBottom) && !selection.hasSelection;
-
-    useOnStickyScrollDirectionChanged(
-      currentScrollController,
-      (direction) => isScrollingDownState.value = direction == .forward,
-      [pageController.pageOrNull],
-    );
-
     final keyByReference = useMemoized(
       () => currentChapterReference.references.mapToMap((reference) => MapEntry(reference, GlobalKey())),
       [currentChapterReference],
     );
     final keyByReferencePassthrough = usePassthrough(keyByReference);
 
-    final onboardingPanelKey = useMemoized(() => GlobalKey());
+    void softNavigateTo(ChapterReference reference) {
+      saveScroll();
+
+      final scrollPosition = currentScrollController.positionOrNull;
+      final position = ChapterPosition(
+        reference: reference,
+        scrollPercent: scrollPosition == null
+            ? 0
+            : (scrollPosition.pixels / scrollPosition.maxScrollExtent).clamp(0, 1),
+      );
+
+      ref.updateUser((user) => user.withSoftNavigation(position));
+      ref.markOnboardingStep(.swipeChapter);
+      navigationHistoryState.value = navigationHistoryState.value.withCurrent(
+        NavigationState(position: position, bookmarkId: user.currentBookmarkId),
+      );
+    }
 
     void hardNavigateTo(ChapterPosition position, {String? bookmarkId, bool updateNavigationState = true}) {
       saveScroll();
@@ -157,6 +144,38 @@ class BibleBody extends HookConsumerWidget {
         );
       }
     }
+
+    usePostFrameEffect(() {
+      final currentPage = pageController.pageOrNull?.round();
+      final targetPage = user.lastReference.bibleChapterIndex;
+      if (currentPage != null && currentPage != targetPage && !pageController.position.isScrollingNotifier.value) {
+        softNavigateTo(user.lastReference);
+        if ((currentPage - targetPage).abs() == 1) {
+          pageController.animateToPage(targetPage, duration: Duration(milliseconds: 300), curve: Curves.easeInOutCubic);
+        } else {
+          pageController.jumpToPage(targetPage);
+        }
+      }
+    }, [pageController, user.lastReference]);
+
+    final isScrollingDownState = useState(true);
+    final isAtBottom = useListenableSelector(currentScrollController, () {
+      final scrollPosition = currentScrollController.positionOrNull;
+      return scrollPosition == null || !scrollPosition.hasContentDimensions
+          ? false
+          : scrollPosition.pixels >= scrollPosition.maxScrollExtent;
+    });
+
+    final showBottomBar =
+        (isScrollingDownState.value || user.mainToolbar.pinToBottom || isAtBottom) && !selection.hasSelection;
+
+    useOnStickyScrollDirectionChanged(
+      currentScrollController,
+      (direction) => isScrollingDownState.value = direction == .forward,
+      [pageController.pageOrNull],
+    );
+
+    final onboardingPanelKey = useMemoized(() => GlobalKey());
 
     final studyPanels = user.studyPanels;
     final onboardingOffset = user.isOnboardingActive ? 1 : 0;
@@ -342,21 +361,8 @@ class BibleBody extends HookConsumerWidget {
       controller: pageController,
       user: user,
       onSwipe: (reference) {
-        saveScroll();
-
-        final scrollPosition = currentScrollController.positionOrNull;
-        final position = ChapterPosition(
-          reference: reference,
-          scrollPercent: scrollPosition == null
-              ? 0
-              : (scrollPosition.pixels / scrollPosition.maxScrollExtent).clamp(0, 1),
-        );
-
-        ref.updateUser((user) => user.withSoftNavigation(position));
+        softNavigateTo(reference);
         ref.markOnboardingStep(.swipeChapter);
-        navigationHistoryState.value = navigationHistoryState.value.withCurrent(
-          NavigationState(position: position, bookmarkId: user.currentBookmarkId),
-        );
       },
       onPageChanged: (reference) {
         isScrollingDownState.value = true;
