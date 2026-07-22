@@ -1,3 +1,4 @@
+import 'package:animated_size_and_fade/animated_size_and_fade.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
@@ -20,7 +21,13 @@ class AudioBiblePanel extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
     final audioBible = ref.watch(audioBibleProvider);
+    final isPlaying = ref.watch(isAudioBiblePlayingProvider);
     final timerEndTime = ref.watch(audioBibleTimerProvider);
+
+    final showPlaybackControls = switch (audioBible) {
+      AsyncValue(hasError: false) || AsyncValue(isLoading: true, retrying: false) => true,
+      _ => false,
+    };
 
     useStream(
       useMemoized(() => timerEndTime == null ? Stream.empty() : Stream.periodic(Duration(seconds: 1)), [timerEndTime]),
@@ -44,114 +51,118 @@ class AudioBiblePanel extends HookConsumerWidget {
       ),
       children: [
         translation.hasAudioBible
-            ? Padding(
-                padding: .all(16),
-                child: switch (audioBible) {
-                  AsyncValue(error: final _?) => Column(
-                    spacing: 12,
-                    children: [
-                      StyledTile.message(
-                        leading: Symbols.error.toIcon(),
-                        title: 'The audio could not be loaded'.toText(),
-                        subtitle: 'Check your internet connection or try again later.'.toText(),
-                      ),
-                      StyledRectButton.secondary(
-                        label: 'Try Again'.toText(),
-                        onPressed: () => ref.read(audioBibleProvider.notifier).toggle(),
-                      ),
-                    ],
-                  ),
-                  AsyncValue(:final value) => () {
-                    final notifier = ref.read(audioBibleProvider.notifier);
-                    final maxValue = value?.duration?.inMilliseconds.toDouble() ?? 0.01;
-                    return Column(
-                      children: [
-                        gapH12,
-                        StyledSlider(
-                          value: (positionOverrideState.value ?? value?.position.inMilliseconds.toDouble() ?? 0).clamp(
-                            0,
-                            maxValue,
-                          ),
-                          bounds: (0, maxValue),
-                          onChanged: value == null ? null : (value) => positionOverrideState.value = value,
-                          onChangeEnd: value == null
-                              ? null
-                              : (value) {
-                                  positionOverrideState.value = null;
-                                  notifier.seek(Duration(milliseconds: value.round()));
-                                },
-                        ),
-                        gapH8,
-                        Row(
-                          mainAxisAlignment: .spaceBetween,
-                          children: [
-                            Text((value?.position ?? .zero).format(), style: context.textStyle.labelSm.subtle()),
-                            if (timerEndTime != null)
+            ? AnimatedSizeAndFade(
+                child: Padding(
+                  key: ValueKey(showPlaybackControls),
+                  padding: .all(16),
+                  child: showPlaybackControls
+                      ? () {
+                          final value = audioBible.value;
+                          final notifier = ref.read(audioBibleProvider.notifier);
+                          final maxValue = value?.duration?.inMilliseconds.toDouble() ?? 0.01;
+                          return Column(
+                            children: [
+                              gapH12,
+                              StyledSlider(
+                                value: (positionOverrideState.value ?? value?.position.inMilliseconds.toDouble() ?? 0)
+                                    .clamp(0, maxValue),
+                                bounds: (0, maxValue),
+                                onChanged: value == null ? null : (value) => positionOverrideState.value = value,
+                                onChangeEnd: value == null
+                                    ? null
+                                    : (value) {
+                                        positionOverrideState.value = null;
+                                        notifier.seek(Duration(milliseconds: value.round()));
+                                      },
+                              ),
+                              gapH8,
                               Row(
-                                spacing: 4,
+                                mainAxisAlignment: .spaceBetween,
                                 children: [
-                                  Icon(Symbols.timer, size: 14, color: context.colors.contentSecondary),
-                                  Text(
-                                    timerEndTime.difference(DateTime.now()).clampZero.format(),
-                                    style: context.textStyle.labelSm.subtle(),
+                                  Text((value?.position ?? .zero).format(), style: context.textStyle.labelSm.subtle()),
+                                  if (timerEndTime != null)
+                                    Row(
+                                      spacing: 4,
+                                      children: [
+                                        Icon(Symbols.timer, size: 14, color: context.colors.contentSecondary),
+                                        Text(
+                                          timerEndTime.difference(DateTime.now()).clampZero.format(),
+                                          style: context.textStyle.labelSm.subtle(),
+                                        ),
+                                      ],
+                                    )
+                                  else
+                                    Text(
+                                      (value?.duration ?? .zero).format(),
+                                      style: context.textStyle.labelSm.subtle(),
+                                    ),
+                                ],
+                              ),
+                              gapH24,
+                              Row(
+                                children: [
+                                  StyledCircleButton.lg(
+                                    child: getSpeedIcon(user.audio.speed).toIcon(),
+                                    onPressed: () => ref.updateUser(
+                                      (user) => user.copyWith.audio(
+                                        speed: speeds.loopedElementAt(speeds.indexOf(user.audio.speed) + 1),
+                                      ),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  gapW16,
+                                  StyledCircleButton.lg(
+                                    child: Symbols.replay_10.toIcon(),
+                                    onPressed: () => notifier.seekBy(Duration(seconds: -10)),
+                                  ),
+                                  gapW16,
+                                  StyledCircleButton.lg(
+                                    colorBuilder: .primary,
+                                    child: (isPlaying ? Symbols.pause : Symbols.play_arrow).toIcon(),
+                                    onPressed: () => notifier.toggle(),
+                                  ),
+                                  gapW16,
+                                  StyledCircleButton.lg(
+                                    child: Symbols.forward_10.toIcon(),
+                                    onPressed: () => notifier.seekBy(Duration(seconds: 10)),
+                                  ),
+                                  Spacer(),
+                                  StyledCircleButton.lg(
+                                    child: Icon(Symbols.timer, fill: timerEndTime == null ? 0 : 1),
+                                    onPressed: () async {
+                                      final option = await context.showStyledSheet<AudioBibleTimerOption>(
+                                        (context) => StyledSelectionSheet<AudioBibleTimerOption>(
+                                          title: 'Audio Timer'.toText(),
+                                          options: AudioBibleTimerOption.values,
+                                          initialOption: timerEndTime == null ? .off : null,
+                                          optionMapper: (option) => StyledSelectOption(title: option.title().toText()),
+                                        ),
+                                      );
+                                      if (option != null) {
+                                        ref.read(audioBibleTimerProvider.notifier).update(option.duration);
+                                      }
+                                    },
                                   ),
                                 ],
-                              )
-                            else
-                              Text((value?.duration ?? .zero).format(), style: context.textStyle.labelSm.subtle()),
-                          ],
-                        ),
-                        gapH24,
-                        Row(
-                          children: [
-                            StyledCircleButton.lg(
-                              child: getSpeedIcon(user.audio.speed).toIcon(),
-                              onPressed: () => ref.updateUser(
-                                (user) => user.copyWith.audio(
-                                  speed: speeds.loopedElementAt(speeds.indexOf(user.audio.speed) + 1),
-                                ),
                               ),
+                            ],
+                          );
+                        }()
+                      : Column(
+                          spacing: 12,
+                          children: [
+                            StyledTile.message(
+                              leading: Symbols.error.toIcon(),
+                              title: 'The audio could not be loaded'.toText(),
+                              subtitle: 'Check your internet connection or try again later.'.toText(),
                             ),
-                            Spacer(),
-                            gapW16,
-                            StyledCircleButton.lg(
-                              child: Symbols.replay_10.toIcon(),
-                              onPressed: () => notifier.seekBy(Duration(seconds: -10)),
-                            ),
-                            gapW16,
-                            StyledCircleButton.lg(
-                              colorBuilder: .primary,
-                              child: (value?.isPlaying == true ? Symbols.pause : Symbols.play_arrow).toIcon(),
-                              onPressed: () => notifier.toggle(),
-                            ),
-                            gapW16,
-                            StyledCircleButton.lg(
-                              child: Symbols.forward_10.toIcon(),
-                              onPressed: () => notifier.seekBy(Duration(seconds: 10)),
-                            ),
-                            Spacer(),
-                            StyledCircleButton.lg(
-                              child: Icon(Symbols.timer, fill: timerEndTime == null ? 0 : 1),
-                              onPressed: () async {
-                                final option = await context.showStyledSheet<AudioBibleTimerOption>(
-                                  (context) => StyledSelectionSheet<AudioBibleTimerOption>(
-                                    title: 'Audio Timer'.toText(),
-                                    options: AudioBibleTimerOption.values,
-                                    initialOption: timerEndTime == null ? .off : null,
-                                    optionMapper: (option) => StyledSelectOption(title: option.title().toText()),
-                                  ),
-                                );
-                                if (option != null) {
-                                  ref.read(audioBibleTimerProvider.notifier).update(option.duration);
-                                }
-                              },
+                            StyledRectButton.secondary(
+                              label: 'Try Again'.toText(),
+                              onPressed: () => ref.read(audioBibleProvider.notifier).toggle(),
                             ),
                           ],
                         ),
-                      ],
-                    );
-                  }(),
-                },
+                ),
               )
             : Padding(
                 padding: .all(16),

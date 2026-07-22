@@ -15,9 +15,8 @@ part 'audio_bible_provider.g.dart';
 class AudioBibleState {
   final Duration position;
   final Duration? duration;
-  final bool isPlaying;
 
-  const AudioBibleState({required this.position, required this.duration, this.isPlaying = false});
+  const AudioBibleState({required this.position, required this.duration});
 }
 
 @Riverpod(keepAlive: true)
@@ -39,7 +38,7 @@ class AudioBiblePlaybackError extends _$AudioBiblePlaybackError {
   PlayerException? build() {
     final player = ref.watch(audioBibleHandlerProvider).player;
     final subscription = player.errorStream.listen((error) {
-      unawaited(player.pause());
+      player.pause();
       state = error;
     });
     ref.onDispose(subscription.cancel);
@@ -49,10 +48,8 @@ class AudioBiblePlaybackError extends _$AudioBiblePlaybackError {
   void clear() => state = null;
 }
 
-Duration? noAudioBibleLoadRetry(int retryCount, Object error) => null;
-
 @riverpod
-bool isAudioBiblePlaying(Ref ref) => ref.watch(audioBibleProvider).value?.isPlaying == true;
+bool isAudioBiblePlaying(Ref ref) => ref.watch(audioBiblePlayerStateProvider).value?.playing == true;
 
 @Riverpod(keepAlive: true)
 class AudioBibleTimer extends _$AudioBibleTimer {
@@ -80,7 +77,7 @@ class AudioBibleTimer extends _$AudioBibleTimer {
   }
 }
 
-@Riverpod(retry: noAudioBibleLoadRetry)
+@riverpod
 Future<void> loadedAudioBible(Ref ref) async {
   final source = ref.watch(
     userProvider.select((user) {
@@ -112,17 +109,16 @@ Future<void> loadedAudioBible(Ref ref) async {
 
 @riverpod
 void audioBibleListeners(Ref ref) {
-  ref.listen(userProvider.select((user) => user.audioUri), (_, _) {
-    ref.read(audioBiblePlaybackErrorProvider.notifier).clear();
-  });
+  ref.listen(
+    userProvider.select((user) => user.audioUri),
+    (_, _) => ref.read(audioBiblePlaybackErrorProvider.notifier).clear(),
+  );
 
-  ref.listen(userProvider.select((user) => user.audio.speed), (prev, next) async {
-    if (prev == next) {
-      return;
-    }
-
-    await ref.read(audioBibleHandlerProvider).setSpeed(next);
-  }, fireImmediately: true);
+  ref.listen(
+    userProvider.select((user) => user.audio.speed),
+    (prev, next) => ref.read(audioBibleHandlerProvider).setSpeed(next),
+    fireImmediately: true,
+  );
 
   ref.listen(audioBiblePlayerStateProvider, (_, next) async {
     final player = ref.read(audioBibleHandlerProvider).player;
@@ -146,24 +142,24 @@ class AudioBible extends _$AudioBible {
   AudioPlayer get player => handler.player;
 
   @override
-  Future<AudioBibleState> build() async {
+  FutureOr<AudioBibleState> build() async {
     ref.watch(audioBibleListenersProvider);
-    final playbackError = ref.watch(audioBiblePlaybackErrorProvider);
-    await ref.watch(loadedAudioBibleProvider.future);
+    ref.watch(loadedAudioBibleProvider).requireValue;
 
     final user = ref.watch(userProvider);
     if (user.audioUri == null) {
-      throw UnsupportedError('Unsupported chapter');
+      throw UnsupportedError('Unsupported translation');
     }
+
+    final playbackError = ref.watch(audioBiblePlaybackErrorProvider);
     if (playbackError != null) {
       throw playbackError;
     }
 
-    final playerState = ref.watch(audioBiblePlayerStateProvider).value;
     final position = ref.watch(audioBiblePositionProvider).requireValue;
     final duration = ref.watch(audioBibleDurationProvider).requireValue;
 
-    return AudioBibleState(position: position, duration: duration, isPlaying: playerState?.playing ?? player.playing);
+    return AudioBibleState(position: position, duration: duration);
   }
 
   Future<void> toggle() async {
