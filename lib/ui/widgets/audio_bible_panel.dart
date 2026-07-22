@@ -175,8 +175,8 @@ class AudioBiblePanel extends HookConsumerWidget {
                       subtitle: 'Choose an audio-enabled Bible to listen to this chapter.'.toText(),
                     ),
                     StyledRectButton.secondary(
-                      label: 'Switch to BSB'.toText(),
-                      onPressed: () => ref.updateUser((user) => user.withTranslation(.bsb)),
+                      label: 'Switch to ${user.audioTranslation.title()}'.toText(),
+                      onPressed: () => ref.updateUser((user) => user.withTranslation(user.audioTranslation)),
                     ),
                   ],
                 ),

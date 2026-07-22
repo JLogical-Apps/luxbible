@@ -16,6 +16,12 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
         json['studyTranslation'],
       ) ??
       BibleTranslation.bsb,
+  audioTranslation:
+      $enumDecodeNullable(
+        _$BibleTranslationEnumMap,
+        json['audioTranslation'],
+      ) ??
+      BibleTranslation.bsb,
   oldTestamentTranslation:
       $enumDecodeNullable(
         _$BibleTranslationEnumMap,
@@ -163,6 +169,7 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'translation': _$BibleTranslationEnumMap[instance.translation]!,
   'studyTranslation': _$BibleTranslationEnumMap[instance.studyTranslation]!,
+  'audioTranslation': _$BibleTranslationEnumMap[instance.audioTranslation]!,
   'oldTestamentTranslation':
       _$BibleTranslationEnumMap[instance.oldTestamentTranslation]!,
   'newTestamentTranslation':

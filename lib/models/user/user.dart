@@ -42,6 +42,7 @@ sealed class User with _$User {
   const factory User({
     @Default(BibleTranslation.bsb) BibleTranslation translation,
     @Default(BibleTranslation.bsb) BibleTranslation studyTranslation,
+    @Default(BibleTranslation.bsb) BibleTranslation audioTranslation,
     @Default(BibleTranslation.oshb) BibleTranslation oldTestamentTranslation,
     @Default(BibleTranslation.statresgnt) BibleTranslation newTestamentTranslation,
     List<BibleTranslation>? bibles,
@@ -355,6 +356,7 @@ sealed class User with _$User {
   User withTranslation(BibleTranslation translation) => copyWith(
     translation: translation,
     studyTranslation: translation.isStudy ? translation : studyTranslation,
+    audioTranslation: translation.hasAudioBible ? translation : audioTranslation,
     oldTestamentTranslation: translation.testament == .oldTestament ? translation : oldTestamentTranslation,
     newTestamentTranslation: translation.testament == .newTestament ? translation : newTestamentTranslation,
   );
