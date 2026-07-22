@@ -166,6 +166,46 @@ final class AudioBiblePlayerStateProvider
 String _$audioBiblePlayerStateHash() =>
     r'cf769f4d1edb9c72fa73c80c5c59f634c941428b';
 
+@ProviderFor(audioBibleErrorState)
+final audioBibleErrorStateProvider = AudioBibleErrorStateProvider._();
+
+final class AudioBibleErrorStateProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<PlayerException>,
+          PlayerException,
+          Stream<PlayerException>
+        >
+    with $FutureModifier<PlayerException>, $StreamProvider<PlayerException> {
+  AudioBibleErrorStateProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'audioBibleErrorStateProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$audioBibleErrorStateHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<PlayerException> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<PlayerException> create(Ref ref) {
+    return audioBibleErrorState(ref);
+  }
+}
+
+String _$audioBibleErrorStateHash() =>
+    r'bf020601382e91d1adee289d4cf1507e3a1fc7c5';
+
 @ProviderFor(isAudioBiblePlaying)
 final isAudioBiblePlayingProvider = IsAudioBiblePlayingProvider._();
 
@@ -240,7 +280,7 @@ final class AudioBibleTimerProvider
   }
 }
 
-String _$audioBibleTimerHash() => r'100474d39a3453e487fb7484336d491e1549ea13';
+String _$audioBibleTimerHash() => r'728886af1d25000126265863b618381211d2462a';
 
 abstract class _$AudioBibleTimer extends $Notifier<DateTime?> {
   DateTime? build();
@@ -299,7 +339,7 @@ final class AudioAssetLoaderProvider
   }
 }
 
-String _$audioAssetLoaderHash() => r'629e50e5e90aa6d66b625df30e214bba11b5eac6';
+String _$audioAssetLoaderHash() => r'a1639ef7747d26f9c0285e7e13b18a7feb8b49c6';
 
 @ProviderFor(AudioBible)
 final audioBibleProvider = AudioBibleProvider._();
@@ -325,7 +365,7 @@ final class AudioBibleProvider
   AudioBible create() => AudioBible();
 }
 
-String _$audioBibleHash() => r'4d7d8bf06c9b90f7ee61caf1675fa5fff86c7cfd';
+String _$audioBibleHash() => r'3914ec5f12c35a82ad32caf7bf3ce0da66a733fb';
 
 abstract class _$AudioBible extends $AsyncNotifier<AudioBibleState> {
   FutureOr<AudioBibleState> build();

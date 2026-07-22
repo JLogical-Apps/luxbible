@@ -47,7 +47,7 @@ class AudioBiblePanel extends HookConsumerWidget {
             ? Padding(
                 padding: .all(16),
                 child: switch (audioBible) {
-                  AsyncError() => Column(
+                  AsyncValue(error: final _?) => Column(
                     spacing: 12,
                     children: [
                       StyledTile.message(

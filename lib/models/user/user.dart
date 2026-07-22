@@ -88,7 +88,7 @@ sealed class User with _$User {
 
   ChapterReference get lastReference => lastPosition.reference;
 
-  String? get audioAssetPath => getTranslationFor(lastReference.book).getAudioAssetPath(lastReference);
+  Uri? get audioUri => getTranslationFor(lastReference.book).getAudioAssetUri(lastReference);
 
   Bookmark? get currentBookmark => bookmarkById[currentBookmarkId];
 

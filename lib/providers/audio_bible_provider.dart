@@ -34,6 +34,9 @@ Stream<Duration?> audioBibleDuration(Ref ref) => ref.watch(audioBibleHandlerProv
 Stream<PlayerState> audioBiblePlayerState(Ref ref) => ref.watch(audioBibleHandlerProvider).player.playerStateStream;
 
 @riverpod
+Stream<PlayerException> audioBibleErrorState(Ref ref) => ref.watch(audioBibleHandlerProvider).player.errorStream;
+
+@riverpod
 bool isAudioBiblePlaying(Ref ref) => ref.watch(audioBibleProvider).value?.isPlaying == true;
 
 @Riverpod(keepAlive: true)
@@ -65,17 +68,17 @@ class AudioBibleTimer extends _$AudioBibleTimer {
 @riverpod
 void audioAssetLoader(Ref ref) {
   ref.listen(userProvider, (prev, next) async {
-    final previousAssetPath = prev?.audioAssetPath;
-    final nextAssetPath = next.audioAssetPath;
-    if (previousAssetPath == nextAssetPath) {
+    final previousAudioUri = prev?.audioUri;
+    final nextAudioUri = next.audioUri;
+    if (previousAudioUri == nextAudioUri) {
       return;
     }
 
     final handler = ref.read(audioBibleHandlerProvider);
-    if (nextAssetPath != null) {
+    if (nextAudioUri != null) {
       final reference = next.lastReference;
-      await handler.loadAsset(
-        nextAssetPath,
+      await handler.loadUrl(
+        nextAudioUri.toString(),
         MediaItem(
           id: reference.osisId(),
           album: next.getTranslationFor(reference.book).fullName(),
@@ -122,8 +125,7 @@ class AudioBible extends _$AudioBible {
     ref.watch(audioAssetLoaderProvider);
 
     final user = ref.watch(userProvider);
-    final assetPath = user.audioAssetPath;
-    if (assetPath == null) {
+    if (user.audioUri == null) {
       throw UnsupportedError('Unsupported chapter');
     }
 
@@ -136,7 +138,7 @@ class AudioBible extends _$AudioBible {
 
   Future<void> toggle() async {
     final user = ref.read(userProvider);
-    if (user.audioAssetPath == null) {
+    if (user.audioUri == null) {
       return;
     }
 
