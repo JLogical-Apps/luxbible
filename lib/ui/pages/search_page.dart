@@ -28,9 +28,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 class SearchPageResult {
-  final Reference reference;
+  final VerseSelection selection;
 
-  const SearchPageResult({required this.reference});
+  const SearchPageResult({required this.selection});
 }
 
 class SearchPage extends HookConsumerWidget {
@@ -247,8 +247,13 @@ class SearchPage extends HookConsumerWidget {
                         child: StyledTile(
                           child: StyledListItem.navigation(
                             title: entry.title.toText(),
-                            subtitle: Text(entry.definition, maxLines: 2, overflow: .ellipsis),
-                            onPressed: () => DictionarySheet.show(context, entry: entry),
+                            subtitle: MarkdownBuilder(entry.definitions.first.withCollapsedWhitespace, maxLines: 2),
+                            onPressed: () => DictionarySheet.show(
+                              context,
+                              entry: entry,
+                              onNavigateToVerseSelection: (verseSelection) =>
+                                  context.pop(SearchPageResult(selection: verseSelection)),
+                            ),
                           ),
                         ),
                       ),
@@ -270,7 +275,7 @@ class SearchPage extends HookConsumerWidget {
                         onPressed: () => ChapterPreviewPage.show(
                           context,
                           verseSelection: VerseSelection.reference(result),
-                          onNavigateToPassage: () => context.pop(SearchPageResult(reference: result)),
+                          onNavigateToPassage: () => context.pop(SearchPageResult(selection: .reference(result))),
                         ),
                       );
                     }).nonNulls,

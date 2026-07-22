@@ -12,6 +12,9 @@ extension type Markdown(String text) {
   static Markdown fromJson(String text) => Markdown(text);
   static String toJson(Markdown markdown) => markdown.text;
 
+  static List<Markdown> fromJsonList(List<dynamic> texts) => texts.cast<String>().map(Markdown.fromJson).toList();
+  static List<String> toJsonList(List<Markdown> markdown) => markdown.map(toJson).toList();
+
   static Markdown? fromJsonNullable(String? text) => text == null ? null : Markdown(text);
   static String? toJsonNullable(Markdown? markdown) => markdown?.text;
 
@@ -96,6 +99,8 @@ extension type Markdown(String text) {
   }
 
   String get withStrippedMarkdown => elements.plainText;
+
+  Markdown get withCollapsedWhitespace => Markdown(text.replaceAll(RegExp(r'\s+'), ' ').trim());
 
   List<MarkdownElement> get elements {
     final matches = markdownElementsPattern.allMatches(text).toList();

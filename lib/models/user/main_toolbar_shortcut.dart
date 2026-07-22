@@ -91,7 +91,12 @@ enum MainToolbarShortcut {
             ref.updateUser((user) => user.withTranslation(newTranslation));
           }
         }(),
-        dictionary => context.push(DictionaryPage()),
+        dictionary => () async {
+          final result = await context.push<VerseSelection>(DictionaryPage());
+          if (result != null) {
+            onNavigateToVerseSelection(result);
+          }
+        }(),
         lexicon => () async {
           final result = await context.push<VerseSelection>(LexiconPage());
           if (result != null) {

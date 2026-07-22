@@ -118,12 +118,7 @@ String? _getSupportedOsisId(XmlElement element) {
       .split(RegExp(r'\s+'))
       .map((reference) => reference.replaceFirst('Bible:', ''))
       .join(' ');
-  try {
-    VerseSelection.fromOsisId(osisId);
-    return osisId;
-  } catch (_) {
-    return null;
-  }
+  return VerseSelection.isOsisId(osisId) ? osisId : null;
 }
 
 class CommentarySource {

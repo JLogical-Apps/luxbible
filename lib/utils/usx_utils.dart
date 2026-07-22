@@ -15,7 +15,7 @@ abstract final class UsxUtils {
       return children;
     }
     return styles.any(isItalicStyle) ? [.italic(children)] : children;
-  }).text.withCollapsedWhitespace.trim().asMarkdown();
+  }).text.withCollapsedWhitespace.asMarkdown();
 
   static bool isItalicStyle(String? style) => switch (style) {
     'fqa' || 'fq' || 'fqb' || 'fk' || 'bk' || 'add' || 'tl' || 'qt' || 'it' || 'k' => true,

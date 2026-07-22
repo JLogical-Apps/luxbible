@@ -300,7 +300,7 @@ class StrongSheet {
             SearchPage(initialSearch: strongId, currentChapterReference: user.lastReference),
           );
           if (result != null) {
-            onNavigateToVerseSelection(VerseSelection.reference(result.reference));
+            onNavigateToVerseSelection(result.selection);
           }
         },
       ),

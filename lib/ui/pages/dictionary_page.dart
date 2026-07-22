@@ -1,6 +1,8 @@
 import 'package:bible/providers/dictionary_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/dictionary_sheet.dart';
+import 'package:bible/ui/widgets/markdown_builder.dart';
+import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:collection/collection.dart';
@@ -54,8 +56,12 @@ class DictionaryPage extends HookConsumerWidget {
                   ...matchingEntries.map(
                     (entry) => StyledListItem.navigation(
                       title: entry.title.toText(),
-                      subtitle: Text(entry.definition, maxLines: 2, overflow: .ellipsis),
-                      onPressed: () => DictionarySheet.show(context, entry: entry),
+                      subtitle: MarkdownBuilder(entry.definitions.first.withCollapsedWhitespace, maxLines: 2),
+                      onPressed: () => DictionarySheet.show(
+                        context,
+                        entry: entry,
+                        onNavigateToVerseSelection: (verseSelection) => context.pop(verseSelection),
+                      ),
                     ),
                   ),
                 ],

@@ -16,6 +16,23 @@ class VerseSelection extends Equatable {
   factory VerseSelection.fromOsisId(String key) =>
       VerseSelection(spans: key.split(' ').map((span) => VerseSpanReference.fromOsisId(span)).toList());
 
+  static bool isOsisId(String value) {
+    try {
+      final selection = VerseSelection.fromOsisId(value);
+      return selection.osisId() == value &&
+          selection.spans.every(
+            (span) =>
+                [span.start, ?span.end].every((pointer) {
+                  final reference = pointer.startReference;
+                  return reference == reference.clamped;
+                }) &&
+                (span.end == null || span.start.startReference <= span.end!.endReference),
+          );
+    } catch (_) {
+      return false;
+    }
+  }
+
   factory VerseSelection.fromUsxId(String value) => VerseSelection.fromOsisId(
     value
         .split('+')

@@ -120,7 +120,7 @@ enum TextSelectionAction {
           SearchPage(initialSearch: text, currentChapterReference: textSelection.start.toChapterReference()),
         );
         if (result != null) {
-          onNavigateToVerseSelection(VerseSelection.reference(result.reference));
+          onNavigateToVerseSelection(result.selection);
         }
       case copy:
         final text = await ref.read(textSelectionTextProvider(textSelection).future);

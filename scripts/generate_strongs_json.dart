@@ -131,7 +131,7 @@ List<Map<String, dynamic>> parseHebrew(String rawXml) {
 String parseHebrewDefinition(XmlElement div) => div
     .getElement('list')!
     .findElements('item')
-    .map((item) => item.innerText.trim().replaceAll('——-', '-----').withCollapsedWhitespace.asHebrewDefinitionMarkdown)
+    .map((item) => item.innerText.replaceAll('——-', '-----').withCollapsedWhitespace.asHebrewDefinitionMarkdown)
     .join('\n');
 
 List<Map<String, dynamic>> parseGreek(String rawXml) {

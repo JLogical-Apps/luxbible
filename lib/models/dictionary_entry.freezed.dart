@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$DictionaryEntry {
 
-@JsonKey(name: 't') String get title;@JsonKey(name: 'd') String get definition;
+@JsonKey(name: 't') String get title;@JsonKey(name: 'd', toJson: Markdown.toJsonList, fromJson: Markdown.fromJsonList) List<Markdown> get definitions;
 /// Create a copy of DictionaryEntry
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $DictionaryEntryCopyWith<DictionaryEntry> get copyWith => _$DictionaryEntryCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DictionaryEntry&&(identical(other.title, title) || other.title == title)&&(identical(other.definition, definition) || other.definition == definition));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DictionaryEntry&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other.definitions, definitions));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,title,definition);
+int get hashCode => Object.hash(runtimeType,title,const DeepCollectionEquality().hash(definitions));
 
 @override
 String toString() {
-  return 'DictionaryEntry(title: $title, definition: $definition)';
+  return 'DictionaryEntry(title: $title, definitions: $definitions)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $DictionaryEntryCopyWith<$Res>  {
   factory $DictionaryEntryCopyWith(DictionaryEntry value, $Res Function(DictionaryEntry) _then) = _$DictionaryEntryCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 't') String title,@JsonKey(name: 'd') String definition
+@JsonKey(name: 't') String title,@JsonKey(name: 'd', toJson: Markdown.toJsonList, fromJson: Markdown.fromJsonList) List<Markdown> definitions
 });
 
 
@@ -65,11 +65,11 @@ class _$DictionaryEntryCopyWithImpl<$Res>
 
 /// Create a copy of DictionaryEntry
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? definition = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? definitions = null,}) {
   return _then(_self.copyWith(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,definition: null == definition ? _self.definition : definition // ignore: cast_nullable_to_non_nullable
-as String,
+as String,definitions: null == definitions ? _self.definitions : definitions // ignore: cast_nullable_to_non_nullable
+as List<Markdown>,
   ));
 }
 
@@ -151,10 +151,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 't')  String title, @JsonKey(name: 'd')  String definition)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 't')  String title, @JsonKey(name: 'd', toJson: Markdown.toJsonList, fromJson: Markdown.fromJsonList)  List<Markdown> definitions)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _DictionaryEntry() when $default != null:
-return $default(_that.title,_that.definition);case _:
+return $default(_that.title,_that.definitions);case _:
   return orElse();
 
 }
@@ -172,10 +172,10 @@ return $default(_that.title,_that.definition);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 't')  String title, @JsonKey(name: 'd')  String definition)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 't')  String title, @JsonKey(name: 'd', toJson: Markdown.toJsonList, fromJson: Markdown.fromJsonList)  List<Markdown> definitions)  $default,) {final _that = this;
 switch (_that) {
 case _DictionaryEntry():
-return $default(_that.title,_that.definition);}
+return $default(_that.title,_that.definitions);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -189,10 +189,10 @@ return $default(_that.title,_that.definition);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 't')  String title, @JsonKey(name: 'd')  String definition)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 't')  String title, @JsonKey(name: 'd', toJson: Markdown.toJsonList, fromJson: Markdown.fromJsonList)  List<Markdown> definitions)?  $default,) {final _that = this;
 switch (_that) {
 case _DictionaryEntry() when $default != null:
-return $default(_that.title,_that.definition);case _:
+return $default(_that.title,_that.definitions);case _:
   return null;
 
 }
@@ -203,12 +203,18 @@ return $default(_that.title,_that.definition);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _DictionaryEntry implements DictionaryEntry {
-  const _DictionaryEntry({@JsonKey(name: 't') required this.title, @JsonKey(name: 'd') required this.definition});
+class _DictionaryEntry extends DictionaryEntry {
+  const _DictionaryEntry({@JsonKey(name: 't') required this.title, @JsonKey(name: 'd', toJson: Markdown.toJsonList, fromJson: Markdown.fromJsonList) required final  List<Markdown> definitions}): _definitions = definitions,super._();
   factory _DictionaryEntry.fromJson(Map<String, dynamic> json) => _$DictionaryEntryFromJson(json);
 
 @override@JsonKey(name: 't') final  String title;
-@override@JsonKey(name: 'd') final  String definition;
+ final  List<Markdown> _definitions;
+@override@JsonKey(name: 'd', toJson: Markdown.toJsonList, fromJson: Markdown.fromJsonList) List<Markdown> get definitions {
+  if (_definitions is EqualUnmodifiableListView) return _definitions;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_definitions);
+}
+
 
 /// Create a copy of DictionaryEntry
 /// with the given fields replaced by the non-null parameter values.
@@ -223,16 +229,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DictionaryEntry&&(identical(other.title, title) || other.title == title)&&(identical(other.definition, definition) || other.definition == definition));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DictionaryEntry&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other._definitions, _definitions));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,title,definition);
+int get hashCode => Object.hash(runtimeType,title,const DeepCollectionEquality().hash(_definitions));
 
 @override
 String toString() {
-  return 'DictionaryEntry(title: $title, definition: $definition)';
+  return 'DictionaryEntry(title: $title, definitions: $definitions)';
 }
 
 
@@ -243,7 +249,7 @@ abstract mixin class _$DictionaryEntryCopyWith<$Res> implements $DictionaryEntry
   factory _$DictionaryEntryCopyWith(_DictionaryEntry value, $Res Function(_DictionaryEntry) _then) = __$DictionaryEntryCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 't') String title,@JsonKey(name: 'd') String definition
+@JsonKey(name: 't') String title,@JsonKey(name: 'd', toJson: Markdown.toJsonList, fromJson: Markdown.fromJsonList) List<Markdown> definitions
 });
 
 
@@ -260,11 +266,11 @@ class __$DictionaryEntryCopyWithImpl<$Res>
 
 /// Create a copy of DictionaryEntry
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? definition = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? definitions = null,}) {
   return _then(_DictionaryEntry(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,definition: null == definition ? _self.definition : definition // ignore: cast_nullable_to_non_nullable
-as String,
+as String,definitions: null == definitions ? _self._definitions : definitions // ignore: cast_nullable_to_non_nullable
+as List<Markdown>,
   ));
 }
 

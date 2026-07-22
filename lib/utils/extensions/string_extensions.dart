@@ -5,8 +5,8 @@ extension StringExtensions on String {
   String get onlyLetters => replaceAll(RegExp(r"[^a-zA-ZͰ-Ͽἀ-῿֐-׿ ]"), "");
   bool get isLetterOnly => contains(RegExp(r"[^a-zA-ZͰ-Ͽἀ-῿֐-׿'\-]"));
 
-  String get withCollapsedWhitespace => replaceAll(RegExp(r'\s+'), ' ');
-  String get withStrippedWhitespace => replaceAll(RegExp(r'\s+'), '');
+  String get withCollapsedWhitespace => replaceAll(RegExp(r'\s+'), ' ').trim();
+  String get withStrippedWhitespace => replaceAll(RegExp(r'\s+'), '').trim();
 
   String withLength(int length) => this.length > length ? '${substring(0, length - 3)}...' : this;
 

@@ -240,7 +240,7 @@ enum MainAction {
       case search:
         final result = await context.push<SearchPageResult>(SearchPage(currentChapterReference: reference));
         if (result != null) {
-          onNavigateToVerseSelection(VerseSelection.reference(result.reference));
+          onNavigateToVerseSelection(result.selection);
         }
       case resources:
         final resource = await context.showStyledSheet<_Resource>(

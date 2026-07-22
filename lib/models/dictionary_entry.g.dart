@@ -9,8 +9,11 @@ part of 'dictionary_entry.dart';
 _DictionaryEntry _$DictionaryEntryFromJson(Map<String, dynamic> json) =>
     _DictionaryEntry(
       title: json['t'] as String,
-      definition: json['d'] as String,
+      definitions: Markdown.fromJsonList(json['d'] as List),
     );
 
 Map<String, dynamic> _$DictionaryEntryToJson(_DictionaryEntry instance) =>
-    <String, dynamic>{'t': instance.title, 'd': instance.definition};
+    <String, dynamic>{
+      't': instance.title,
+      'd': Markdown.toJsonList(instance.definitions),
+    };
