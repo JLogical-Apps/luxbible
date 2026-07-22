@@ -34,7 +34,22 @@ Stream<Duration?> audioBibleDuration(Ref ref) => ref.watch(audioBibleHandlerProv
 Stream<PlayerState> audioBiblePlayerState(Ref ref) => ref.watch(audioBibleHandlerProvider).player.playerStateStream;
 
 @riverpod
-Stream<PlayerException> audioBibleErrorState(Ref ref) => ref.watch(audioBibleHandlerProvider).player.errorStream;
+class AudioBiblePlaybackError extends _$AudioBiblePlaybackError {
+  @override
+  PlayerException? build() {
+    final player = ref.watch(audioBibleHandlerProvider).player;
+    final subscription = player.errorStream.listen((error) {
+      unawaited(player.pause());
+      state = error;
+    });
+    ref.onDispose(subscription.cancel);
+    return null;
+  }
+
+  void clear() => state = null;
+}
+
+Duration? noAudioBibleLoadRetry(int retryCount, Object error) => null;
 
 @riverpod
 bool isAudioBiblePlaying(Ref ref) => ref.watch(audioBibleProvider).value?.isPlaying == true;
@@ -65,31 +80,41 @@ class AudioBibleTimer extends _$AudioBibleTimer {
   }
 }
 
-@riverpod
-void audioAssetLoader(Ref ref) {
-  ref.listen(userProvider, (prev, next) async {
-    final previousAudioUri = prev?.audioUri;
-    final nextAudioUri = next.audioUri;
-    if (previousAudioUri == nextAudioUri) {
-      return;
-    }
-
-    final handler = ref.read(audioBibleHandlerProvider);
-    if (nextAudioUri != null) {
-      final reference = next.lastReference;
-      await handler.loadUrl(
-        nextAudioUri.toString(),
-        MediaItem(
-          id: reference.osisId(),
-          album: next.getTranslationFor(reference.book).fullName(),
-          title: reference.format(),
-          artUri: (await ref.read(pathServiceProvider)?.getAssetAsFile('assets/images/lux-logo-full.png'))?.uri,
-        ),
+@Riverpod(retry: noAudioBibleLoadRetry)
+Future<void> loadedAudioBible(Ref ref) async {
+  final source = ref.watch(
+    userProvider.select((user) {
+      final reference = user.lastReference;
+      return (
+        uri: user.audioUri,
+        id: reference.osisId(),
+        album: user.getTranslationFor(reference.book).fullName(),
+        title: reference.format(),
       );
-    } else {
-      await handler.pause();
-    }
-  }, fireImmediately: true);
+    }),
+  );
+  final handler = ref.read(audioBibleHandlerProvider);
+
+  if (source.uri case final uri?) {
+    await handler.loadUrl(
+      uri.toString(),
+      MediaItem(
+        id: source.id,
+        album: source.album,
+        title: source.title,
+        artUri: (await ref.read(pathServiceProvider)?.getAssetAsFile('assets/images/lux-logo-full.png'))?.uri,
+      ),
+    );
+  } else {
+    await handler.pause();
+  }
+}
+
+@riverpod
+void audioBibleListeners(Ref ref) {
+  ref.listen(userProvider.select((user) => user.audioUri), (_, _) {
+    ref.read(audioBiblePlaybackErrorProvider.notifier).clear();
+  });
 
   ref.listen(userProvider.select((user) => user.audio.speed), (prev, next) async {
     if (prev == next) {
@@ -122,11 +147,16 @@ class AudioBible extends _$AudioBible {
 
   @override
   Future<AudioBibleState> build() async {
-    ref.watch(audioAssetLoaderProvider);
+    ref.watch(audioBibleListenersProvider);
+    final playbackError = ref.watch(audioBiblePlaybackErrorProvider);
+    await ref.watch(loadedAudioBibleProvider.future);
 
     final user = ref.watch(userProvider);
     if (user.audioUri == null) {
       throw UnsupportedError('Unsupported chapter');
+    }
+    if (playbackError != null) {
+      throw playbackError;
     }
 
     final playerState = ref.watch(audioBiblePlayerStateProvider).value;
@@ -142,13 +172,13 @@ class AudioBible extends _$AudioBible {
       return;
     }
 
-    if (player.playing) {
+    if (state.hasError) {
+      await handler.pause();
+      ref.read(audioBiblePlaybackErrorProvider.notifier).clear();
+      ref.invalidate(loadedAudioBibleProvider);
+    } else if (player.playing) {
       await handler.pause();
       return;
-    }
-
-    if (state.hasError) {
-      ref.invalidate(audioBibleProvider);
     }
     try {
       await future;

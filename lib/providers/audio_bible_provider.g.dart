@@ -166,45 +166,58 @@ final class AudioBiblePlayerStateProvider
 String _$audioBiblePlayerStateHash() =>
     r'cf769f4d1edb9c72fa73c80c5c59f634c941428b';
 
-@ProviderFor(audioBibleErrorState)
-final audioBibleErrorStateProvider = AudioBibleErrorStateProvider._();
+@ProviderFor(AudioBiblePlaybackError)
+final audioBiblePlaybackErrorProvider = AudioBiblePlaybackErrorProvider._();
 
-final class AudioBibleErrorStateProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<PlayerException>,
-          PlayerException,
-          Stream<PlayerException>
-        >
-    with $FutureModifier<PlayerException>, $StreamProvider<PlayerException> {
-  AudioBibleErrorStateProvider._()
+final class AudioBiblePlaybackErrorProvider
+    extends $NotifierProvider<AudioBiblePlaybackError, PlayerException?> {
+  AudioBiblePlaybackErrorProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'audioBibleErrorStateProvider',
+        name: r'audioBiblePlaybackErrorProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$audioBibleErrorStateHash();
+  String debugGetCreateSourceHash() => _$audioBiblePlaybackErrorHash();
 
   @$internal
   @override
-  $StreamProviderElement<PlayerException> $createElement(
-    $ProviderPointer pointer,
-  ) => $StreamProviderElement(pointer);
+  AudioBiblePlaybackError create() => AudioBiblePlaybackError();
 
-  @override
-  Stream<PlayerException> create(Ref ref) {
-    return audioBibleErrorState(ref);
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(PlayerException? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<PlayerException?>(value),
+    );
   }
 }
 
-String _$audioBibleErrorStateHash() =>
-    r'bf020601382e91d1adee289d4cf1507e3a1fc7c5';
+String _$audioBiblePlaybackErrorHash() =>
+    r'932dbebacfb283b51141fd88dcd819372fb9a510';
+
+abstract class _$AudioBiblePlaybackError extends $Notifier<PlayerException?> {
+  PlayerException? build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<PlayerException?, PlayerException?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<PlayerException?, PlayerException?>,
+              PlayerException?,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
 
 @ProviderFor(isAudioBiblePlaying)
 final isAudioBiblePlayingProvider = IsAudioBiblePlayingProvider._();
@@ -300,25 +313,58 @@ abstract class _$AudioBibleTimer extends $Notifier<DateTime?> {
   }
 }
 
-@ProviderFor(audioAssetLoader)
-final audioAssetLoaderProvider = AudioAssetLoaderProvider._();
+@ProviderFor(loadedAudioBible)
+final loadedAudioBibleProvider = LoadedAudioBibleProvider._();
 
-final class AudioAssetLoaderProvider
-    extends $FunctionalProvider<void, void, void>
-    with $Provider<void> {
-  AudioAssetLoaderProvider._()
+final class LoadedAudioBibleProvider
+    extends $FunctionalProvider<AsyncValue<void>, void, FutureOr<void>>
+    with $FutureModifier<void>, $FutureProvider<void> {
+  LoadedAudioBibleProvider._()
     : super(
         from: null,
         argument: null,
-        retry: null,
-        name: r'audioAssetLoaderProvider',
+        retry: noAudioBibleLoadRetry,
+        name: r'loadedAudioBibleProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$audioAssetLoaderHash();
+  String debugGetCreateSourceHash() => _$loadedAudioBibleHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<void> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<void> create(Ref ref) {
+    return loadedAudioBible(ref);
+  }
+}
+
+String _$loadedAudioBibleHash() => r'35a57232d70fe71af871dd76428bba015e906045';
+
+@ProviderFor(audioBibleListeners)
+final audioBibleListenersProvider = AudioBibleListenersProvider._();
+
+final class AudioBibleListenersProvider
+    extends $FunctionalProvider<void, void, void>
+    with $Provider<void> {
+  AudioBibleListenersProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'audioBibleListenersProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$audioBibleListenersHash();
 
   @$internal
   @override
@@ -327,7 +373,7 @@ final class AudioAssetLoaderProvider
 
   @override
   void create(Ref ref) {
-    return audioAssetLoader(ref);
+    return audioBibleListeners(ref);
   }
 
   /// {@macro riverpod.override_with_value}
@@ -339,7 +385,8 @@ final class AudioAssetLoaderProvider
   }
 }
 
-String _$audioAssetLoaderHash() => r'a1639ef7747d26f9c0285e7e13b18a7feb8b49c6';
+String _$audioBibleListenersHash() =>
+    r'aa46f2cf764942351caa7067c28f40f9e3125a2d';
 
 @ProviderFor(AudioBible)
 final audioBibleProvider = AudioBibleProvider._();
@@ -365,7 +412,7 @@ final class AudioBibleProvider
   AudioBible create() => AudioBible();
 }
 
-String _$audioBibleHash() => r'3914ec5f12c35a82ad32caf7bf3ce0da66a733fb';
+String _$audioBibleHash() => r'30df69085c99b6bf8c43aad0a0528fcd93d3f525';
 
 abstract class _$AudioBible extends $AsyncNotifier<AudioBibleState> {
   FutureOr<AudioBibleState> build();
