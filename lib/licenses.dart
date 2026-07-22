@@ -33,6 +33,22 @@ Source: https://www.crosswire.org''',
     );
 
     yield const LicenseEntryWithLineBreaks(
+      ['King James Version (KJV) Audio Bible'],
+      '''
+Audio Bible files retrieved from MP3Bible.ca.
+
+Source: https://www.mp3bible.ca/''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
+      ['Berean Standard Bible (BSB) Audio Bible'],
+      '''
+Narration by Barry Hays, retrieved from Berean Bible.
+
+Source: https://berean.bible/''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
       ['American Standard Version (ASV)'],
       '''
 The Holy Bible, American Standard Version (ASV), 1901.
