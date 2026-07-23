@@ -55,6 +55,7 @@ dependencies:
   modal_bottom_sheet: ^3.0.0
   audio_service: ^0.18.19
   just_audio: ^0.10.6
+  in_app_review: ^2.0.10
 
 dependency_overrides:
   path_provider_foundation: 2.5.1 # https://stackoverflow.com/questions/79893370/ios-transporter-executable-references-an-unsupported-platform-in-the-arm64-s

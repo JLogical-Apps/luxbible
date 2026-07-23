@@ -19,8 +19,11 @@ import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:in_app_review/in_app_review.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+final discordUri = Uri.parse('https://discord.gg/C4zfZDpZMB');
 
 class SettingsPage extends HookConsumerWidget {
   const SettingsPage({super.key});
@@ -177,7 +180,7 @@ class SettingsPage extends HookConsumerWidget {
                   title: 'Discord'.toText(),
                   subtitle: 'Discussion and announcements'.toText(),
                   leading: FaIcon(FontAwesomeIcons.discord),
-                  onPressed: () => launchUrl(Uri.parse('https://discord.gg/C4zfZDpZMB')),
+                  onPressed: () => launchUrl(discordUri),
                   trailing: Symbols.arrow_outward.toIcon(),
                 ),
                 StyledListItem(
@@ -185,6 +188,43 @@ class SettingsPage extends HookConsumerWidget {
                   subtitle: 'Tips and updates'.toText(),
                   leading: FaIcon(FontAwesomeIcons.instagram),
                   onPressed: () => launchUrl(Uri.parse('https://www.instagram.com/luxbible.app/')),
+                  trailing: Symbols.arrow_outward.toIcon(),
+                ),
+              ],
+            ),
+          ),
+          StyledSection.child(
+            title: 'Support Lux'.toText(),
+            child: StyledCard(
+              children: [
+                StyledListItem(
+                  title: 'Rate Lux'.toText(),
+                  subtitle: 'Leave a review on the App Store.'.toText(),
+                  leading: Symbols.star.toIcon(),
+                  onPressed: () => context.showStyledDialog(
+                    (context) => StyledDialog(
+                      title: 'Support Lux'.toText(),
+                      body:
+                          'Lux is a passion project built on the conviction that Scripture should be freely available to all. The best way to support Lux is by leaving a review on the App Store.\n\nIf there is anything keeping you from leaving a 5-star review, please join our Discord and share your feedback so we can address it quickly.'
+                              .toText(),
+                      buttonsBuilder: (context) => [
+                        StyledRectButton.primary(
+                          label: 'Leave a Rating'.toText(),
+                          onPressed: () {
+                            context.pop();
+                            InAppReview.instance.requestReview();
+                          },
+                        ),
+                        StyledRectButton.transparent(
+                          label: 'Join Discord'.toText(),
+                          onPressed: () {
+                            context.pop();
+                            launchUrl(discordUri);
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                   trailing: Symbols.arrow_outward.toIcon(),
                 ),
               ],
