@@ -210,9 +210,14 @@ class SettingsPage extends HookConsumerWidget {
                       buttonsBuilder: (context) => [
                         StyledRectButton.primary(
                           label: 'Leave a Rating'.toText(),
-                          onPressed: () {
+                          onPressed: () async {
                             context.pop();
-                            InAppReview.instance.requestReview();
+                            final appReview = InAppReview.instance;
+                            if (await appReview.isAvailable()) {
+                              await appReview.requestReview();
+                            } else {
+                              await appReview.openStoreListing(appStoreId: 'id6759510218');
+                            }
                           },
                         ),
                         StyledRectButton.transparent(
