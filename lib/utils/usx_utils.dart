@@ -1,6 +1,7 @@
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:bible/utils/markdown.dart';
+import 'package:bible/utils/xml_bible_parser.dart';
 import 'package:xml/xml.dart';
 
 abstract final class UsxUtils {
@@ -22,8 +23,5 @@ abstract final class UsxUtils {
     _ => false,
   };
 
-  static Set<String> _stylesOf(XmlElement element) => {
-    ?element.getAttribute('style'),
-    ...(element.getAttribute('class') ?? '').split(RegExp(r'\s+')).where((name) => name.isNotEmpty),
-  };
+  static Set<String> _stylesOf(XmlElement element) => {?element.getAttribute('style'), ...element.classNames};
 }

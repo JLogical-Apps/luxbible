@@ -66,8 +66,9 @@ class BibleTile extends StatelessWidget {
               ? StyledListItem(
                   leading: Symbols.cloud.toIcon(),
                   title: 'Online Only'.toText(),
-                  subtitle: 'This Bible is streamed from YouVersion Platform, so it requires an internet connection.'
-                      .toText(),
+                  subtitle:
+                      'This Bible is streamed from ${translation.onlineSourceName}, so it requires an internet connection.'
+                          .toText(),
                 )
               : StyledListItem(
                   leading: Symbols.book_4.toIcon(),

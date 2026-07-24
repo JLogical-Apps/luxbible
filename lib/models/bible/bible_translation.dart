@@ -1,3 +1,4 @@
+import 'package:bible/functions/api_bible.dart';
 import 'package:bible/functions/youversion.dart';
 import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/bible/book_type.dart';
@@ -9,6 +10,9 @@ enum BibleTranslation {
   bsb,
   nasb95,
   niv11,
+  csb,
+  nlt,
+  nkjv,
   kjv,
   asv,
   lxx,
@@ -25,6 +29,9 @@ enum BibleTranslation {
     bsb => 'BSB',
     nasb95 => 'NASB95',
     niv11 => 'NIV',
+    csb => 'CSB',
+    nlt => 'NLT',
+    nkjv => 'NKJV',
     kjv => 'KJV',
     asv => 'ASV',
     oshb => 'OSHB',
@@ -39,6 +46,9 @@ enum BibleTranslation {
     bsb => 'Berean Standard Bible',
     nasb95 => 'New American Standard Bible 1995',
     niv11 => 'New International Version 2011',
+    csb => 'Christian Standard Bible',
+    nlt => 'New Living Translation',
+    nkjv => 'New King James Version',
     kjv => 'King James Version',
     asv => 'American Standard Version',
     oshb => 'Open Scriptures Hebrew Bible',
@@ -53,6 +63,9 @@ enum BibleTranslation {
     bsb || asv || kjv || oshb || lxx || tr || byz || statresgnt || sv => .local,
     nasb95 => .youVersion(100),
     niv11 => .youVersion(111),
+    csb => .apiBible('a556c5305ee15c3f-01'),
+    nlt => .apiBible('d6e14a625393b4da-01'),
+    nkjv => .apiBible('63097d2a0a2f7db3-01'),
   };
 
   BibleLanguage get language => switch (this) {
@@ -67,6 +80,10 @@ enum BibleTranslation {
       'NEW AMERICAN STANDARD BIBLE®\nCopyright © 1960, 1962, 1963, 1968, 1971, 1972, 1973, 1975, 1977, 1995 by THE LOCKMAN FOUNDATION\nA Corporation Not for Profit\nLA HABRA, CA\nAll Rights Reserved\nhttp://www.lockman.org',
     niv11 =>
       'The Holy Bible, New International Version® NIV®\nCopyright © 1973, 1978, 1984, 2011 by Biblica, Inc.®\nUsed by Permission of Biblica, Inc.® All rights reserved worldwide.',
+    csb => '© 2017 Holman Bible Publishers',
+    nlt =>
+      'Holy Bible, New Living Translation, copyright © 1996, 2004, 2015 by Tyndale House Foundation. All rights reserved. Used by permission of Tyndale House Publishers, Carol Stream, Illinois 60188. All rights reserved.',
+    nkjv => 'New King James Version®, Copyright© 1982, Thomas Nelson. All rights reserved.',
     lxx =>
       'Septuagint, Morphologically Tagged Rahlfs\'\nCopyrighted; free non-commercial distribution\nhttp://ccat.sas.upenn.edu',
     tr => 'Textus Receptus (1550/1894)\nCreative Commons: BY-NC-SA 4.0',
@@ -97,6 +114,12 @@ enum BibleTranslation {
   bool get isLocal => source == .local;
   bool get isOnline => !isLocal;
 
+  String get onlineSourceName => switch (source) {
+    YouVersionTranslationSource() => 'YouVersion Platform',
+    ApiBibleTranslationSource() => 'API.Bible',
+    _ => throw StateError('$this is not an online translation'),
+  };
+
   bool get isStudy => this == bsb || this == kjv;
   bool get hasAudioBible => this == bsb || this == kjv;
 
@@ -108,12 +131,12 @@ enum BibleTranslation {
       : null;
 
   bool get hasRedLetters => switch (this) {
-    bsb || kjv || nasb95 || niv11 => true,
+    bsb || kjv || nasb95 || niv11 || csb || nlt || nkjv => true,
     _ => false,
   };
 
   bool get hasNativeHeadings => switch (this) {
-    bsb || nasb95 || niv11 => true,
+    bsb || nasb95 || niv11 || csb || nlt || nkjv => true,
     _ => false,
   };
 
@@ -123,7 +146,7 @@ enum BibleTranslation {
   };
 
   bool get hasFootnotes => switch (this) {
-    bsb || kjv || nasb95 || niv11 || asv => true,
+    bsb || kjv || nasb95 || niv11 || csb || nlt || nkjv || asv => true,
     _ => false,
   };
 
@@ -148,6 +171,7 @@ enum BibleTranslation {
 sealed class BibleTranslationSource {
   static BibleTranslationSource local = LocalTranslationSource();
   factory BibleTranslationSource.youVersion(int bibleId) => YouVersionTranslationSource(bibleId);
+  factory BibleTranslationSource.apiBible(String bibleId) => ApiBibleTranslationSource(bibleId);
 
   const BibleTranslationSource();
 
@@ -178,6 +202,19 @@ class YouVersionTranslationSource implements BibleTranslationSource {
     required BibleTranslation translation,
     required Bible? localBible,
   }) => YouVersion.fetchChapter(bibleId: bibleId, chapterReference: chapterReference);
+}
+
+class ApiBibleTranslationSource implements BibleTranslationSource {
+  final String bibleId;
+
+  const ApiBibleTranslationSource(this.bibleId);
+
+  @override
+  Future<Chapter> getChapter({
+    required ChapterReference chapterReference,
+    required BibleTranslation translation,
+    required Bible? localBible,
+  }) => ApiBible.fetchChapter(bibleId: bibleId, chapterReference: chapterReference);
 }
 
 enum BibleLanguage {
