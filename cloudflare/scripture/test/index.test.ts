@@ -2,8 +2,10 @@ import { createLocalJWKSet, exportJWK, generateKeyPair, SignJWT } from "jose";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { handleAuthenticatedRequest, handleRequest, verifyAppCheckToken } from "../src/index";
 
+const limit = vi.fn(async () => ({ success: true }));
 const env: Cloudflare.Env = {
   API_BIBLE_KEY: "test-api-key",
+  APP_CHECK_RATE_LIMITER: { limit },
   FIREBASE_PROJECT_NUMBER: "365679413474",
   FIREBASE_ANDROID_APP_ID: "1:365679413474:android:5b19dac485b52fe1d2b6bb",
   FIREBASE_IOS_APP_ID: "1:365679413474:ios:241c176505a41fedd2b6bb",
@@ -52,6 +54,8 @@ async function createAppCheckToken({
 
 afterEach(() => {
   vi.restoreAllMocks();
+  limit.mockClear();
+  limit.mockResolvedValue({ success: true });
 });
 
 describe("scripture worker", () => {
@@ -90,6 +94,8 @@ describe("scripture worker", () => {
     ["https://scripture.luxbible.app/esv/JHN.3", 404],
     ["https://scripture.luxbible.app/csb/jhn.3", 400],
     ["https://scripture.luxbible.app/csb/JHN.0", 400],
+    ["https://scripture.luxbible.app/csb/JHN.22", 404],
+    ["https://scripture.luxbible.app/csb/ZZZ.1", 404],
     ["https://scripture.luxbible.app/csb/JHN.3?notes=false", 400],
     ["https://scripture.luxbible.app/csb/JHN.3/", 404],
   ])("rejects invalid request %s", async (url, status) => {
@@ -116,10 +122,19 @@ describe("scripture worker", () => {
     expect(fetchSpy).not.toHaveBeenCalled();
   });
 
-  it("passes through an upstream missing chapter as a non-cacheable 404", async () => {
+  it.each(["GEN.50", "OBA.1", "REV.22"])("accepts canonical boundary chapter %s", async (usx) => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValue(apiBibleResponse());
+
+    const response = await handleRequest(new Request(`https://scripture.luxbible.app/csb/${usx}`), env);
+
+    expect(response.status).toBe(200);
+    expect(fetchSpy).toHaveBeenCalledOnce();
+  });
+
+  it("passes through an upstream missing canonical chapter as a non-cacheable 404", async () => {
     vi.spyOn(globalThis, "fetch").mockResolvedValue(new Response(null, { status: 404 }));
 
-    const response = await handleRequest(new Request("https://scripture.luxbible.app/csb/JHN.999"), env);
+    const response = await handleRequest(new Request("https://scripture.luxbible.app/csb/JHN.21"), env);
 
     expect(response.status).toBe(404);
     expect(response.headers.get("Cache-Control")).toBe("no-store");
@@ -207,11 +222,38 @@ describe("App Check authentication", () => {
     expect(fetchScripture).not.toHaveBeenCalled();
   });
 
-  it("strips the token before invoking the cached entrypoint", async () => {
+  it("strips all caller-controlled headers before invoking the cached entrypoint", async () => {
     const fetchScripture = vi.fn(async (request: Request) => {
-      expect(request.headers.has("X-Firebase-AppCheck")).toBe(false);
+      expect([...request.headers]).toEqual([]);
       return new Response(chapterContent, { headers: { "Cache-Control": cacheControl } });
     });
+    const response = await handleAuthenticatedRequest(
+      new Request("https://scripture.luxbible.app/csb/JHN.3", {
+        headers: {
+          Authorization: "Bearer force-cache-bypass",
+          Cookie: "caller-controlled=true",
+          "X-Firebase-AppCheck": "token",
+        },
+      }),
+      env,
+      fetchScripture,
+      async () => "valid",
+    );
+
+    expect(fetchScripture).toHaveBeenCalledOnce();
+    expect(limit).toHaveBeenCalledOnce();
+    expect(limit).toHaveBeenCalledWith({
+      key: expect.stringMatching(/^[0-9a-f]{64}$/),
+    });
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Cache-Control")).toBe("no-store");
+    expect(await response.text()).toBe(chapterContent);
+  });
+
+  it("rejects rate-limited tokens before invoking the cached entrypoint", async () => {
+    limit.mockResolvedValueOnce({ success: false });
+    const fetchScripture = vi.fn();
+
     const response = await handleAuthenticatedRequest(
       new Request("https://scripture.luxbible.app/csb/JHN.3", {
         headers: { "X-Firebase-AppCheck": "token" },
@@ -221,10 +263,27 @@ describe("App Check authentication", () => {
       async () => "valid",
     );
 
-    expect(fetchScripture).toHaveBeenCalledOnce();
-    expect(response.status).toBe(200);
+    expect(response.status).toBe(429);
     expect(response.headers.get("Cache-Control")).toBe("no-store");
-    expect(await response.text()).toBe(chapterContent);
+    expect(fetchScripture).not.toHaveBeenCalled();
+  });
+
+  it("fails closed when rate limiting is unavailable", async () => {
+    limit.mockRejectedValueOnce(new Error("rate limiter failed"));
+    const fetchScripture = vi.fn();
+
+    const response = await handleAuthenticatedRequest(
+      new Request("https://scripture.luxbible.app/csb/JHN.3", {
+        headers: { "X-Firebase-AppCheck": "token" },
+      }),
+      env,
+      fetchScripture,
+      async () => "valid",
+    );
+
+    expect(response.status).toBe(503);
+    expect(response.headers.get("Cache-Control")).toBe("no-store");
+    expect(fetchScripture).not.toHaveBeenCalled();
   });
 
   it.each([env.FIREBASE_ANDROID_APP_ID, env.FIREBASE_IOS_APP_ID])(

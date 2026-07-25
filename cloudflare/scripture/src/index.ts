@@ -10,6 +10,75 @@ const cacheControl = "public, max-age=2419200, stale-while-revalidate=86400, sta
 const noStore = "no-store";
 const usxPattern = /^[1-3A-Z][A-Z]{2}\.[1-9]\d{0,2}$/;
 
+const chapterCounts = {
+  GEN: 50,
+  EXO: 40,
+  LEV: 27,
+  NUM: 36,
+  DEU: 34,
+  JOS: 24,
+  JDG: 21,
+  RUT: 4,
+  "1SA": 31,
+  "2SA": 24,
+  "1KI": 22,
+  "2KI": 25,
+  "1CH": 29,
+  "2CH": 36,
+  EZR: 10,
+  NEH: 13,
+  EST: 10,
+  JOB: 42,
+  PSA: 150,
+  PRO: 31,
+  ECC: 12,
+  SNG: 8,
+  ISA: 66,
+  JER: 52,
+  LAM: 5,
+  EZK: 48,
+  DAN: 12,
+  HOS: 14,
+  JOL: 3,
+  AMO: 9,
+  OBA: 1,
+  JON: 4,
+  MIC: 7,
+  NAM: 3,
+  HAB: 3,
+  ZEP: 3,
+  HAG: 2,
+  ZEC: 14,
+  MAL: 4,
+  MAT: 28,
+  MRK: 16,
+  LUK: 24,
+  JHN: 21,
+  ACT: 28,
+  ROM: 16,
+  "1CO": 16,
+  "2CO": 13,
+  GAL: 6,
+  EPH: 6,
+  PHP: 4,
+  COL: 4,
+  "1TH": 5,
+  "2TH": 3,
+  "1TI": 6,
+  "2TI": 4,
+  TIT: 3,
+  PHM: 1,
+  HEB: 13,
+  JAS: 5,
+  "1PE": 5,
+  "2PE": 3,
+  "1JN": 5,
+  "2JN": 1,
+  "3JN": 1,
+  JUD: 1,
+  REV: 22,
+} as const;
+
 const firebaseJwks = createRemoteJWKSet(appCheckJwksUrl, {
   cacheMaxAge: 21_600_000,
   cooldownDuration: 30_000,
@@ -43,6 +112,12 @@ function isTranslation(value: string): value is Translation {
   return Object.hasOwn(bibleIds, value);
 }
 
+function isChapter(usx: string): boolean {
+  const [book, chapter] = usx.split(".");
+  const count = chapterCounts[book as keyof typeof chapterCounts];
+  return count !== undefined && Number(chapter) <= count;
+}
+
 function getApiBibleKey(env: Cloudflare.Env): string | null {
   if (!("API_BIBLE_KEY" in env)) return null;
   return typeof env.API_BIBLE_KEY === "string" && env.API_BIBLE_KEY.length > 0 ? env.API_BIBLE_KEY : null;
@@ -57,6 +132,11 @@ function getContent(value: unknown): string | null {
 
 function logError(event: string, details: Record<string, string | number>): void {
   console.error({ event, ...details });
+}
+
+async function rateLimitKey(token: string): Promise<string> {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(token));
+  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
 export async function verifyAppCheckToken(
@@ -174,6 +254,7 @@ export async function handleRequest(request: Request, env: Cloudflare.Env): Prom
   const [translation, usx] = segments;
   if (!isTranslation(translation)) return errorResponse("Translation not found", 404);
   if (!usxPattern.test(usx)) return errorResponse("Invalid USX chapter identifier", 400);
+  if (!isChapter(usx)) return errorResponse("Chapter not found", 404);
 
   const apiBibleKey = getApiBibleKey(env);
   if (apiBibleKey === null) {
@@ -197,10 +278,19 @@ export async function handleAuthenticatedRequest(
   if (verification === "invalid") return errorResponse("Unauthorized", 401);
   if (verification === "unavailable") return errorResponse("App Check verification is unavailable", 503);
 
-  const headers = new Headers(request.headers);
-  headers.delete(appCheckHeader);
+  let rateLimit;
+  try {
+    rateLimit = await env.APP_CHECK_RATE_LIMITER.limit({ key: await rateLimitKey(token) });
+  } catch (error) {
+    logError("rate_limit_unavailable", {
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return errorResponse("Rate limiting is unavailable", 503);
+  }
 
-  const response = await fetchScripture(new Request(request, { headers }));
+  if (!rateLimit.success) return errorResponse("Too many requests", 429);
+
+  const response = await fetchScripture(new Request(request, { headers: new Headers() }));
   const responseHeaders = new Headers(response.headers);
   responseHeaders.set("Cache-Control", noStore);
 

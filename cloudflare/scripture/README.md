@@ -15,7 +15,9 @@ Supported translation slugs are `csb`, `nlt`, and `nkjv`.
 
 The public entrypoint verifies the token's Google signature, JWT type, algorithm, issuer, audience, expiration, issued-at time, and app ID. It accepts only the Android and iOS Firebase App IDs configured in `wrangler.jsonc`. Missing and invalid tokens receive `401`; a temporary JWKS retrieval failure receives `503`.
 
-After verification, the public entrypoint removes the App Check header and invokes the cache-enabled `Scripture` entrypoint. This ordering prevents cached content from bypassing authentication and prevents tokens from becoming cache-key material. On a cache miss, the Worker requests:
+After verification, the public entrypoint rate-limits the SHA-256 digest of the App Check token to 120 requests per minute. Requests over the limit receive `429`. The raw token is not used as rate-limit state.
+
+The public entrypoint then removes all caller-controlled headers before invoking the cache-enabled `Scripture` entrypoint. This prevents authentication headers from bypassing the cache and prevents tokens from becoming cache-key material. The inner entrypoint accepts only canonical Protestant book codes and existing chapter numbers. On a cache miss, the Worker requests:
 
 ```text
 GET https://rest.api.bible/v1/bibles/{bibleId}/chapters/{usx}?include-notes=true
@@ -40,6 +42,7 @@ API.Bible documents the chapter endpoint and `include-notes` behavior in its [ch
 - `exports.default.cache.enabled` keeps the authentication gateway out of cache.
 - `exports.Scripture.cache.enabled` caches only requests that already passed App Check.
 - `vars` configures the Firebase project number and allowed Android and iOS app IDs. These identifiers are not secrets.
+- `ratelimits` allows 120 requests per minute for each verified App Check token digest.
 - `secrets.required` declares that deployment requires `API_BIBLE_KEY`.
 - `observability` enables searchable logs and sampled traces.
 
@@ -47,6 +50,7 @@ Cloudflare documents these features in:
 
 - [Wrangler configuration](https://developers.cloudflare.com/workers/wrangler/configuration/)
 - [Workers Cache](https://developers.cloudflare.com/workers/cache/)
+- [Workers Rate Limiting](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/)
 - [Worker secrets](https://developers.cloudflare.com/workers/configuration/secrets/)
 - [Custom Domains](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/)
 - [Workers observability](https://developers.cloudflare.com/workers/observability/)
@@ -213,6 +217,7 @@ Open the Worker in the Cloudflare dashboard, select **Observability**, and filte
 
 - `app_check_invalid_configuration`
 - `app_check_verification_unavailable`
+- `rate_limit_unavailable`
 - `api_bible_network_error`
 - `api_bible_response_error`
 - `api_bible_invalid_json`
