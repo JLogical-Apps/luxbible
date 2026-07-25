@@ -3,6 +3,7 @@ import 'package:bible/models/bible/footnote.dart';
 import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/models/bible/verse.dart';
 import 'package:bible/models/bible/word.dart';
+import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:bible/utils/markdown.dart';
 import 'package:collection/collection.dart';
 import 'package:xml/xml.dart';
@@ -20,6 +21,19 @@ abstract final class XmlBibleParser {
     required String Function(String) buildText,
   }) {
     int? lastVerseNum;
+
+    XmlElement sectionWithoutNotes(XmlElement element) => XmlElement(
+      element.name,
+      element.attributes.map((attribute) => attribute.copy()),
+      element.children.expand(
+        (child) => switch (child) {
+          XmlElement child when shouldIgnore(child) || buildFootnote(child) != null => [],
+          XmlElement child => [sectionWithoutNotes(child)],
+          _ => [child.copy()],
+        },
+      ),
+      element.isSelfClosing,
+    );
 
     List<Verse> parseVerses(XmlNode node, {bool redLetters = false, bool italic = false}) => node.children
         .expand<Verse>(
@@ -57,9 +71,31 @@ abstract final class XmlBibleParser {
         .withSameVersesCombined()
         .toList();
 
-    final paragraphs = root.childElements.fold(<Paragraph>[], (paragraphs, element) {
+    Iterable<XmlElement> splitInlineParagraph(XmlElement element) {
+      final inlineParagraphIndex = element.children.indexWhereOrNull(
+        (child) => child is XmlElement && getParagraphStyle(child) == 'qs',
+      );
+      if (inlineParagraphIndex == null) return [element];
+
+      return [
+        XmlElement(
+          element.name,
+          element.attributes.map((attribute) => attribute.copy()),
+          element.children.take(inlineParagraphIndex).map((child) => child.copy()),
+          element.isSelfClosing,
+        ),
+        XmlElement.tag(
+          'p',
+          attributes: [XmlAttribute(XmlName.parts('class'), 'qs')],
+          children: element.children.skip(inlineParagraphIndex).map((child) => child.copy()),
+          isSelfClosing: false,
+        ),
+      ];
+    }
+
+    final paragraphs = root.childElements.expand(splitInlineParagraph).fold(<Paragraph>[], (paragraphs, element) {
       SectionParagraph sectionParagraph(SectionType sectionType) =>
-          SectionParagraph(text: buildSectionText(element), type: sectionType);
+          SectionParagraph(text: buildSectionText(sectionWithoutNotes(element)), type: sectionType);
 
       VersesParagraph? buildVersesParagraph(
         ParagraphType paragraphType,
@@ -122,15 +158,17 @@ abstract final class XmlBibleParser {
               's' || 's1' || 'cl' => sectionParagraph(.s1),
               's2' => sectionParagraph(.s2),
               'd' || 'qd' => sectionParagraph(.d),
-              'p' || 'pm' || 'pmo' || 'pmc' => versesParagraph(.p),
+              'p' || 'pmo' || 'pmc' => versesParagraph(.p),
+              'pm' => versesParagraph(.pm),
               'pc' => versesParagraph(.pc),
               'nb' => versesParagraph(.nb),
               'pr' || 'pmr' || 'cls' => versesParagraph(.pr),
               'pi' || 'pi1' => versesParagraph(.pi),
               'm' || 'mi' => versesParagraph(.m),
-              'q' || 'q1' => versesParagraph(.q1),
-              'q2' => versesParagraph(.q2),
+              'q' || 'q1' || 'qm1' => versesParagraph(.q1),
+              'q2' || 'qm2' => versesParagraph(.q2),
               'qr' => versesParagraph(.qr),
+              'qs' => versesParagraph(.qs),
               'qc' => versesParagraph(.qc),
               'qa' => sectionParagraph(.qa),
               'li' || 'li1' => versesParagraph(.li1),

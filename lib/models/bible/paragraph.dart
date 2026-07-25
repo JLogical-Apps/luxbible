@@ -42,27 +42,30 @@ enum SectionType {
 
 enum ParagraphType {
   p,
+  pm,
   pi,
   pc,
   pr,
   q1,
   q2,
   qr,
+  qs,
   qc,
   m,
   li1,
   li2,
   nb;
 
-  bool get isPoetic => this == q1 || this == q2 || this == qr || this == qc;
+  bool get isPoetic => this == q1 || this == q2 || this == qr || this == qs || this == qc;
+  bool get isItalic => this == qs;
 
   double get indent => switch (this) {
-    q1 || li1 || m || qc || pc || nb => 0,
+    q1 || li1 || pm || m || qc || pc || nb => 0,
     pi => 40,
     _ => 20,
   };
 
-  double get hangingIndent => this == q1 || this == q2 ? 30 : 0;
+  double get hangingIndent => this == q1 || this == q2 || this == li1 ? 30 : 0;
   double get blockIndent => hangingIndent == 0 ? 0 : indent;
 }
 

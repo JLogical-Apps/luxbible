@@ -32,6 +32,7 @@ const _$ParagraphTypeEnumMap = {
   ParagraphType.q1: 'q1',
   ParagraphType.q2: 'q2',
   ParagraphType.qr: 'qr',
+  ParagraphType.qs: 'qs',
   ParagraphType.qc: 'qc',
   ParagraphType.m: 'm',
   ParagraphType.li1: 'li1',

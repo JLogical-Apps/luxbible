@@ -112,6 +112,7 @@ Book parseUsxBook(BookType type, String rawXml) {
                 's1' => sectionParagraph(.s1),
                 's2' => sectionParagraph(.s2),
                 'ms' => sectionParagraph(.ms),
+                'qa' => sectionParagraph(.qa),
                 'mr' => sectionParagraph(.d),
                 'd' => versesParagraph(.p, onlyIfValidVerse: false)?.toSectionParagraph(.d),
                 'p' || 'pmo' || 'pc' => versesParagraph(.p),

@@ -269,10 +269,7 @@ class ParagraphsBuilder extends HookWidget {
                       Text.rich(
                         key: textKey,
                         TextSpan(children: renderSpans),
-                        textAlign:
-                            paragraph.as<VersesParagraph>()?.type.textAlign ??
-                            paragraph.as<SectionParagraph>()?.type.textAlign ??
-                            .start,
+                        textAlign: paragraph.as<VersesParagraph>()?.type.textAlign ?? .start,
                         textDirection: textDirection,
                       ),
                     ],
@@ -470,7 +467,12 @@ class ParagraphsBuilder extends HookWidget {
                           ),
                           TextSpan(text: '\n ', style: bibleTextStyle.body.copyWith(height: 0.8)),
                         ]
-                      : [TextSpan(text: text, style: bibleTextStyle.smallHeading)]
+                      : [
+                          TextSpan(
+                            text: text,
+                            style: type == .qa ? bibleTextStyle.smallSection : bibleTextStyle.smallHeading,
+                          ),
+                        ]
                 : <InlineSpan>[],
           VersesParagraph(:final verses, :final type, :final preventIndent) => [
             if (useParagraphs && !preventIndent)
@@ -593,7 +595,7 @@ class ParagraphsBuilder extends HookWidget {
                         style: bibleTextStyle.body.copyWith(
                           fontFamily: isLtr ? null : hebrewFontFamily,
                           color: word.redLetters && user.themeLayout.redLetters ? context.colors.red.dark : null,
-                          fontStyle: word.italic ? .italic : null,
+                          fontStyle: word.italic || type.isItalic ? .italic : null,
                           decoration: highlightedReferences.contains(reference) ? .underline : null,
                         ),
                       ).withInjectedSpans(
@@ -669,7 +671,7 @@ class ParagraphsBuilder extends HookWidget {
                 .flattenedToList,
           ],
           BreakParagraph() =>
-            user.themeLayout.paragraphs
+            user.themeLayout.paragraphs && previousParagraph is! SectionParagraph
                 ? [TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 0.75))]
                 : <InlineSpan>[],
         },
@@ -882,6 +884,7 @@ class BibleTextStyle {
   TextStyle get section => base.bold.copyWith(fontSize: 24 * multiplier, height: 40 / 24);
   TextStyle get smallHeading =>
       base.regular.copyWith(fontSize: 20 * multiplier, letterSpacing: 0, height: 40 / 20, fontStyle: .italic);
+  TextStyle get smallSection => base.bold.copyWith(fontSize: 20 * multiplier, letterSpacing: 0, height: 40 / 20);
   TextStyle get verseNumber =>
       base.bold.copyWith(fontSize: 14 * multiplier, letterSpacing: 0, decorationStyle: .dotted);
   TextStyle get body =>

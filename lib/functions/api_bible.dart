@@ -19,7 +19,10 @@ class ApiBible {
       '/$translationSlug/${chapterReference.usxId()}',
       options: Options(responseType: .plain),
     );
-    final content = response.data!;
+    return parseChapter(response.data!);
+  }
+
+  static Chapter parseChapter(String content) {
     final root = XmlDocument.parse('<root>$content</root>').rootElement;
 
     String cleanText(String text) => text.replaceAll('#', '');
