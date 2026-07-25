@@ -122,7 +122,7 @@ final class ChapterProvider
     required ({ChapterReference chapterReference, BibleTranslation translation})
     super.argument,
   }) : super(
-         retry: null,
+         retry: RiverpodUtils.noRetry,
          name: r'chapterProvider',
          isAutoDispose: false,
          dependencies: null,
@@ -170,7 +170,7 @@ final class ChapterProvider
   }
 }
 
-String _$chapterHash() => r'd3d606407b4e45d1a85bb380752d6313cfc3610d';
+String _$chapterHash() => r'fc45d312979eb33021b3f91308778eb0a5f9c2ca';
 
 final class ChapterFamily extends $Family
     with
@@ -180,7 +180,7 @@ final class ChapterFamily extends $Family
         > {
   ChapterFamily._()
     : super(
-        retry: null,
+        retry: RiverpodUtils.noRetry,
         name: r'chapterProvider',
         dependencies: null,
         $allTransitiveDependencies: null,

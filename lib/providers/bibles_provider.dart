@@ -11,6 +11,7 @@ import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/utils/range.dart';
+import 'package:bible/utils/riverpod_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:utils_core/utils_core.dart';
@@ -27,7 +28,7 @@ FutureOr<Bible> studyBible(Ref ref) {
   return ref.watch(localBibleProvider(translation: user.studyTranslation)).requireValue;
 }
 
-@Riverpod(keepAlive: true)
+@Riverpod(keepAlive: true, retry: RiverpodUtils.noRetry)
 FutureOr<Chapter> chapter(
   Ref ref, {
   required ChapterReference chapterReference,

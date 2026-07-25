@@ -199,7 +199,7 @@ final class AudioBiblePlaybackErrorProvider
 }
 
 String _$audioBiblePlaybackErrorHash() =>
-    r'932dbebacfb283b51141fd88dcd819372fb9a510';
+    r'5f2480b046852c7b67581d65a12991811efc1c9a';
 
 abstract class _$AudioBiblePlaybackError extends $Notifier<PlayerException?> {
   PlayerException? build();
@@ -386,7 +386,7 @@ final class AudioBibleListenersProvider
 }
 
 String _$audioBibleListenersHash() =>
-    r'aa46f2cf764942351caa7067c28f40f9e3125a2d';
+    r'6649be0ae717475c7529b5f1e5ad6db603219b91';
 
 @ProviderFor(AudioBible)
 final audioBibleProvider = AudioBibleProvider._();
