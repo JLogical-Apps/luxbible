@@ -1,7 +1,20 @@
+import { WorkerEntrypoint } from "cloudflare:workers";
+import { createRemoteJWKSet, errors, jwtVerify, type JWTVerifyGetKey } from "jose";
+
 const apiBibleOrigin = "https://rest.api.bible";
+
+const appCheckJwksUrl = new URL("https://firebaseappcheck.googleapis.com/v1/jwks");
+const appCheckHeader = "X-Firebase-AppCheck";
+
 const cacheControl = "public, max-age=2419200, stale-while-revalidate=86400, stale-if-error=2419200";
 const noStore = "no-store";
 const usxPattern = /^[1-3A-Z][A-Z]{2}\.[1-9]\d{0,2}$/;
+
+const firebaseJwks = createRemoteJWKSet(appCheckJwksUrl, {
+  cacheMaxAge: 21_600_000,
+  cooldownDuration: 30_000,
+  timeoutDuration: 5_000,
+});
 
 const bibleIds = {
   csb: "a556c5305ee15c3f-01",
@@ -10,6 +23,8 @@ const bibleIds = {
 } as const;
 
 type Translation = keyof typeof bibleIds;
+
+export type AppCheckVerification = "valid" | "invalid" | "unavailable";
 
 function errorResponse(error: string, status: number): Response {
   return Response.json(
@@ -42,6 +57,45 @@ function getContent(value: unknown): string | null {
 
 function logError(event: string, details: Record<string, string | number>): void {
   console.error({ event, ...details });
+}
+
+export async function verifyAppCheckToken(
+  token: string,
+  env: Cloudflare.Env,
+  getKey: JWTVerifyGetKey = firebaseJwks,
+): Promise<AppCheckVerification> {
+  if (
+    !/^\d+$/.test(env.FIREBASE_PROJECT_NUMBER) ||
+    env.FIREBASE_ANDROID_APP_ID.length === 0 ||
+    env.FIREBASE_IOS_APP_ID.length === 0
+  ) {
+    logError("app_check_invalid_configuration", {});
+    return "unavailable";
+  }
+
+  try {
+    const { payload } = await jwtVerify(token, getKey, {
+      algorithms: ["RS256"],
+      audience: `projects/${env.FIREBASE_PROJECT_NUMBER}`,
+      issuer: `https://firebaseappcheck.googleapis.com/${env.FIREBASE_PROJECT_NUMBER}`,
+      requiredClaims: ["exp", "iat", "sub"],
+      typ: "JWT",
+    });
+
+    return payload.iat! <= Math.floor(Date.now() / 1000) &&
+      (payload.sub === env.FIREBASE_ANDROID_APP_ID || payload.sub === env.FIREBASE_IOS_APP_ID)
+      ? "valid"
+      : "invalid";
+  } catch (error) {
+    if (error instanceof errors.JWKSTimeout || !(error instanceof errors.JOSEError)) {
+      logError("app_check_verification_unavailable", {
+        error: error instanceof Error ? error.message : String(error),
+      });
+      return "unavailable";
+    }
+
+    return "invalid";
+  }
 }
 
 async function fetchChapter(translation: Translation, usx: string, apiBibleKey: string): Promise<Response> {
@@ -130,8 +184,41 @@ export async function handleRequest(request: Request, env: Cloudflare.Env): Prom
   return fetchChapter(translation, usx, apiBibleKey);
 }
 
+export async function handleAuthenticatedRequest(
+  request: Request,
+  env: Cloudflare.Env,
+  fetchScripture: (request: Request) => Promise<Response>,
+  verifyToken: (token: string, env: Cloudflare.Env) => Promise<AppCheckVerification> = verifyAppCheckToken,
+): Promise<Response> {
+  const token = request.headers.get(appCheckHeader);
+  if (token === null || token.length === 0) return errorResponse("Unauthorized", 401);
+
+  const verification = await verifyToken(token, env);
+  if (verification === "invalid") return errorResponse("Unauthorized", 401);
+  if (verification === "unavailable") return errorResponse("App Check verification is unavailable", 503);
+
+  const headers = new Headers(request.headers);
+  headers.delete(appCheckHeader);
+
+  const response = await fetchScripture(new Request(request, { headers }));
+  const responseHeaders = new Headers(response.headers);
+  responseHeaders.set("Cache-Control", noStore);
+
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: responseHeaders,
+  });
+}
+
+export class Scripture extends WorkerEntrypoint<Cloudflare.Env> {
+  override async fetch(request: Request): Promise<Response> {
+    return handleRequest(request, this.env);
+  }
+}
+
 export default {
-  async fetch(request, env): Promise<Response> {
-    return handleRequest(request, env);
+  async fetch(request, env, ctx): Promise<Response> {
+    return handleAuthenticatedRequest(request, env, (scriptureRequest) => ctx.exports.Scripture.fetch(scriptureRequest));
   },
 } satisfies ExportedHandler<Cloudflare.Env>;

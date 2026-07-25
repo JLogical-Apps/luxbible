@@ -26,5 +26,8 @@
         "description": "API.Bible key used only for server-side chapter requests."
       }
     }
+  },
+  "dependencies": {
+    "jose": "^6.2.4"
   }
 }

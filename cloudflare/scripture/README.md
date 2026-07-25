@@ -1,6 +1,6 @@
 # Lux Scripture Worker
 
-This Worker proxies Lux's API.Bible chapter requests through `scripture.luxbible.app`. It keeps the API key on Cloudflare, returns only the chapter content used by the Flutter parser, and caches successful chapters for 28 days.
+This Worker proxies Lux's API.Bible chapter requests through `scripture.luxbible.app`. It requires a valid Firebase App Check token from the Lux Android or iOS app, keeps the API key on Cloudflare, returns only the chapter content used by the Flutter parser, and caches successful chapters for 28 days.
 
 ## Request flow
 
@@ -8,11 +8,14 @@ The public endpoint uses a translation slug followed by an uppercase USX chapter
 
 ```text
 GET https://scripture.luxbible.app/csb/JHN.3
+X-Firebase-AppCheck: <Firebase App Check token>
 ```
 
 Supported translation slugs are `csb`, `nlt`, and `nkjv`.
 
-On a cache miss, the Worker requests:
+The public entrypoint verifies the token's Google signature, JWT type, algorithm, issuer, audience, expiration, issued-at time, and app ID. It accepts only the Android and iOS Firebase App IDs configured in `wrangler.jsonc`. Missing and invalid tokens receive `401`; a temporary JWKS retrieval failure receives `503`.
+
+After verification, the public entrypoint removes the App Check header and invokes the cache-enabled `Scripture` entrypoint. This ordering prevents cached content from bypassing authentication and prevents tokens from becoming cache-key material. On a cache miss, the Worker requests:
 
 ```text
 GET https://rest.api.bible/v1/bibles/{bibleId}/chapters/{usx}?include-notes=true
@@ -32,9 +35,11 @@ API.Bible documents the chapter endpoint and `include-notes` behavior in its [ch
 - `main` points to the TypeScript entry point.
 - `compatibility_date` selects the Workers runtime behavior.
 - `nodejs_compat` enables Cloudflare's current Node.js compatibility layer.
-- `workers_dev` keeps a `workers.dev` address available for testing.
+- `workers_dev` disables a public `workers.dev` address.
 - `routes` attaches the Worker to `scripture.luxbible.app` as a Custom Domain.
-- `cache.enabled` enables Workers Cache in front of the Worker.
+- `exports.default.cache.enabled` keeps the authentication gateway out of cache.
+- `exports.Scripture.cache.enabled` caches only requests that already passed App Check.
+- `vars` configures the Firebase project number and allowed Android and iOS app IDs. These identifiers are not secrets.
 - `secrets.required` declares that deployment requires `API_BIBLE_KEY`.
 - `observability` enables searchable logs and sampled traces.
 
@@ -83,10 +88,14 @@ npm run dev
 
 This runs `wrangler dev`. It executes the Worker locally and reads `API_BIBLE_KEY` from `.dev.vars`. The API.Bible request is real, so it consumes your API allowance.
 
-In another terminal, request a chapter:
+The local Worker enforces App Check too. To exercise the complete request from Flutter, run the app with its registered Firebase App Check debug token and point it at the local Worker.
+
+If you have a short-lived App Check JWT for manual testing, pass it in the same header used by the app:
 
 ```sh
-curl --silent --show-error --dump-header - http://localhost:8787/csb/JHN.3
+curl --silent --show-error --dump-header - \
+  --header "X-Firebase-AppCheck: $APP_CHECK_TOKEN" \
+  http://localhost:8787/csb/JHN.3
 ```
 
 The response body should be the HTML-like chapter fragment that the Flutter app parses.
@@ -99,7 +108,7 @@ Run the Worker unit tests and TypeScript checks without contacting Cloudflare or
 npm run check
 ```
 
-The tests replace the outbound API.Bible request with a local mock. They verify translation mapping, the exact upstream query, response extraction, cache headers, validation, and error behavior.
+The tests replace the outbound API.Bible request with a local mock and verify App Check JWTs using local RSA keys. They cover the authentication and cache boundary, both allowed app IDs, invalid claims, translation mapping, the exact upstream query, response extraction, cache headers, validation, and error behavior.
 
 ## Authenticate Wrangler
 
@@ -158,11 +167,23 @@ The Flutter app should not be released with its new URL until this deployment an
 
 ## Verify production
 
-Request the same chapter twice:
+First confirm that an unauthenticated request is rejected:
 
 ```sh
-curl --silent --show-error --dump-header /tmp/lux-scripture-first.headers --output /tmp/lux-scripture-first.txt https://scripture.luxbible.app/csb/JHN.3
-curl --silent --show-error --dump-header /tmp/lux-scripture-second.headers --output /tmp/lux-scripture-second.txt https://scripture.luxbible.app/csb/JHN.3
+curl --silent --show-error --dump-header - https://scripture.luxbible.app/csb/JHN.3
+```
+
+The response should be `401` with `Cache-Control: no-store`.
+
+Then request the same chapter twice with short-lived App Check JWTs obtained by the Flutter app:
+
+```sh
+curl --silent --show-error --dump-header /tmp/lux-scripture-first.headers --output /tmp/lux-scripture-first.txt \
+  --header "X-Firebase-AppCheck: $FIRST_APP_CHECK_TOKEN" \
+  https://scripture.luxbible.app/csb/JHN.3
+curl --silent --show-error --dump-header /tmp/lux-scripture-second.headers --output /tmp/lux-scripture-second.txt \
+  --header "X-Firebase-AppCheck: $SECOND_APP_CHECK_TOKEN" \
+  https://scripture.luxbible.app/csb/JHN.3
 ```
 
 Inspect the cache headers:
@@ -182,7 +203,7 @@ cmp /tmp/lux-scripture-first.txt /tmp/lux-scripture-second.txt
 
 No output from `cmp` means the bodies match.
 
-Repeat the request for `nlt` and `nkjv`, then try an invalid translation and malformed USX identifier to confirm that errors are not cached.
+Use a fresh token if one expires during testing. Repeat the request for `nlt` and `nkjv`, then try an invalid translation and malformed USX identifier to confirm that errors are not cached.
 
 Cloudflare documents cache status troubleshooting in [Workers Cache debugging](https://developers.cloudflare.com/workers/cache/debugging/).
 
@@ -190,6 +211,8 @@ Cloudflare documents cache status troubleshooting in [Workers Cache debugging](h
 
 Open the Worker in the Cloudflare dashboard, select **Observability**, and filter logs by the structured `event` field. Events include:
 
+- `app_check_invalid_configuration`
+- `app_check_verification_unavailable`
 - `api_bible_network_error`
 - `api_bible_response_error`
 - `api_bible_invalid_json`

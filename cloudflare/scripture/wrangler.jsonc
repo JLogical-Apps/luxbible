@@ -13,7 +13,26 @@
     }
   ],
   "cache": {
-    "enabled": true
+    "enabled": false
+  },
+  "exports": {
+    "default": {
+      "type": "worker",
+      "cache": {
+        "enabled": false
+      }
+    },
+    "Scripture": {
+      "type": "worker",
+      "cache": {
+        "enabled": true
+      }
+    }
+  },
+  "vars": {
+    "FIREBASE_PROJECT_NUMBER": "365679413474",
+    "FIREBASE_ANDROID_APP_ID": "1:365679413474:android:5b19dac485b52fe1d2b6bb",
+    "FIREBASE_IOS_APP_ID": "1:365679413474:ios:241c176505a41fedd2b6bb"
   },
   "secrets": {
     "required": ["API_BIBLE_KEY"]

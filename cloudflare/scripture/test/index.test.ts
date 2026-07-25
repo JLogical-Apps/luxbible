@@ -1,12 +1,53 @@
+import { createLocalJWKSet, exportJWK, generateKeyPair, SignJWT } from "jose";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { handleRequest } from "../src/index";
+import { handleAuthenticatedRequest, handleRequest, verifyAppCheckToken } from "../src/index";
 
-const env = { API_BIBLE_KEY: "test-api-key" };
+const env: Cloudflare.Env = {
+  API_BIBLE_KEY: "test-api-key",
+  FIREBASE_PROJECT_NUMBER: "365679413474",
+  FIREBASE_ANDROID_APP_ID: "1:365679413474:android:5b19dac485b52fe1d2b6bb",
+  FIREBASE_IOS_APP_ID: "1:365679413474:ios:241c176505a41fedd2b6bb",
+};
 const chapterContent = '<p class="p"><span class="v" data-number="1">1</span>In the beginning</p>';
 const cacheControl = "public, max-age=2419200, stale-while-revalidate=86400, stale-if-error=2419200";
 
 function apiBibleResponse(content: string = chapterContent): Response {
   return Response.json({ data: { content } });
+}
+
+async function createAppCheckToken({
+  audience = `projects/${env.FIREBASE_PROJECT_NUMBER}`,
+  expiresIn = "5m" as string | null,
+  includeIssuedAt = true,
+  issuer = `https://firebaseappcheck.googleapis.com/${env.FIREBASE_PROJECT_NUMBER}`,
+  subject = env.FIREBASE_ANDROID_APP_ID,
+  typ = "JWT",
+}: {
+  audience?: string;
+  expiresIn?: string | null;
+  includeIssuedAt?: boolean;
+  issuer?: string;
+  subject?: string;
+  typ?: string;
+} = {}) {
+  const { privateKey, publicKey } = await generateKeyPair("RS256");
+  const publicJwk = await exportJWK(publicKey);
+  const getKey = createLocalJWKSet({
+    keys: [{ ...publicJwk, alg: "RS256", kid: "test-key", use: "sig" }],
+  });
+  let signer = new SignJWT()
+    .setProtectedHeader({ alg: "RS256", kid: "test-key", typ })
+    .setAudience(audience)
+    .setIssuer(issuer)
+    .setSubject(subject);
+
+  if (includeIssuedAt) signer = signer.setIssuedAt();
+  if (expiresIn !== null) signer = signer.setExpirationTime(expiresIn);
+
+  return {
+    getKey,
+    token: await signer.sign(privateKey),
+  };
 }
 
 afterEach(() => {
@@ -119,11 +160,100 @@ describe("scripture worker", () => {
     const fetchSpy = vi.spyOn(globalThis, "fetch");
 
     const response = await handleRequest(new Request("https://scripture.luxbible.app/csb/JHN.3"), {
+      ...env,
       API_BIBLE_KEY: "",
     });
 
     expect(response.status).toBe(500);
     expect(response.headers.get("Cache-Control")).toBe("no-store");
     expect(fetchSpy).not.toHaveBeenCalled();
+  });
+});
+
+describe("App Check authentication", () => {
+  it("rejects requests without an App Check token before reaching the cached entrypoint", async () => {
+    const fetchScripture = vi.fn();
+    const verifyToken = vi.fn();
+
+    const response = await handleAuthenticatedRequest(
+      new Request("https://scripture.luxbible.app/csb/JHN.3"),
+      env,
+      fetchScripture,
+      verifyToken,
+    );
+
+    expect(response.status).toBe(401);
+    expect(response.headers.get("Cache-Control")).toBe("no-store");
+    expect(fetchScripture).not.toHaveBeenCalled();
+    expect(verifyToken).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["invalid", 401],
+    ["unavailable", 503],
+  ] as const)("maps %s verification to a non-cacheable %s response", async (verification, status) => {
+    const fetchScripture = vi.fn();
+    const response = await handleAuthenticatedRequest(
+      new Request("https://scripture.luxbible.app/csb/JHN.3", {
+        headers: { "X-Firebase-AppCheck": "token" },
+      }),
+      env,
+      fetchScripture,
+      async () => verification,
+    );
+
+    expect(response.status).toBe(status);
+    expect(response.headers.get("Cache-Control")).toBe("no-store");
+    expect(fetchScripture).not.toHaveBeenCalled();
+  });
+
+  it("strips the token before invoking the cached entrypoint", async () => {
+    const fetchScripture = vi.fn(async (request: Request) => {
+      expect(request.headers.has("X-Firebase-AppCheck")).toBe(false);
+      return new Response(chapterContent, { headers: { "Cache-Control": cacheControl } });
+    });
+    const response = await handleAuthenticatedRequest(
+      new Request("https://scripture.luxbible.app/csb/JHN.3", {
+        headers: { "X-Firebase-AppCheck": "token" },
+      }),
+      env,
+      fetchScripture,
+      async () => "valid",
+    );
+
+    expect(fetchScripture).toHaveBeenCalledOnce();
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Cache-Control")).toBe("no-store");
+    expect(await response.text()).toBe(chapterContent);
+  });
+
+  it.each([env.FIREBASE_ANDROID_APP_ID, env.FIREBASE_IOS_APP_ID])(
+    "accepts a signed token for app %s",
+    async (subject) => {
+      const { getKey, token } = await createAppCheckToken({ subject });
+
+      await expect(verifyAppCheckToken(token, env, getKey)).resolves.toBe("valid");
+    },
+  );
+
+  it.each([
+    { audience: "projects/999" },
+    { issuer: "https://firebaseappcheck.googleapis.com/999" },
+    { subject: "1:365679413474:web:not-allowed" },
+    { typ: "NOT-JWT" },
+    { expiresIn: "-1s" },
+    { expiresIn: null },
+    { includeIssuedAt: false },
+  ])("rejects a signed token with invalid Firebase claims: %j", async (claims) => {
+    const { getKey, token } = await createAppCheckToken(claims);
+
+    await expect(verifyAppCheckToken(token, env, getKey)).resolves.toBe("invalid");
+  });
+
+  it("treats an invalid Worker configuration as unavailable", async () => {
+    const { getKey, token } = await createAppCheckToken();
+    const invalidEnv = { ...env, FIREBASE_PROJECT_NUMBER: "" } as unknown as Cloudflare.Env;
+
+    await expect(verifyAppCheckToken(token, invalidEnv, getKey)).resolves.toBe("unavailable");
   });
 });
