@@ -118,7 +118,7 @@ abstract final class XmlBibleParser {
       final paragraph = element.localName == 'table'
           ? tableParagraph()
           : switch (getParagraphStyle(element)) {
-              'ms' => sectionParagraph(.ms),
+              'ms' || 'ms1' => sectionParagraph(.ms),
               's' || 's1' || 'cl' => sectionParagraph(.s1),
               's2' => sectionParagraph(.s2),
               'd' || 'qd' => sectionParagraph(.d),
