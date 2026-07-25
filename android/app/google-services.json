@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "365679413474",
+    "project_id": "lux-bible",
+    "storage_bucket": "lux-bible.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:365679413474:android:5b19dac485b52fe1d2b6bb",
+        "android_client_info": {
+          "package_name": "app.luxbible.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5eSzEPWqAYNa9s0Vo7vzv8HkgJPaXpqo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

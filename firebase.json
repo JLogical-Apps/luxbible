@@ -1,0 +1,30 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "lux-bible",
+          "appId": "1:365679413474:android:5b19dac485b52fe1d2b6bb",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "lux-bible",
+          "appId": "1:365679413474:ios:241c176505a41fedd2b6bb",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "lux-bible",
+          "configurations": {
+            "android": "1:365679413474:android:5b19dac485b52fe1d2b6bb",
+            "ios": "1:365679413474:ios:241c176505a41fedd2b6bb"
+          }
+        }
+      }
+    }
+  }
+}

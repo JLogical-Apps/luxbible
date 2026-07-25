@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:audio_service/audio_service.dart';
+import 'package:bible/firebase_options.dart';
 import 'package:bible/functions/bible_plan_importer.dart';
 import 'package:bible/functions/commentary_importer.dart';
 import 'package:bible/functions/cross_references_importer.dart';
@@ -24,6 +25,8 @@ import 'package:bible/services/shared_preferences_service.dart';
 import 'package:bible/style/color_library.dart';
 import 'package:bible/ui/pages/bible_page.dart';
 import 'package:bible/utils/scroll_behavior.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -34,6 +37,20 @@ Future<void> main() async {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+
+      await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+      const androidDebugToken = String.fromEnvironment('APP_CHECK_ANDROID_DEBUG_TOKEN');
+      const appleDebugToken = String.fromEnvironment('APP_CHECK_APPLE_DEBUG_TOKEN');
+
+      await FirebaseAppCheck.instance.activate(
+        providerAndroid: kDebugMode
+            ? AndroidDebugProvider(debugToken: androidDebugToken.isEmpty ? null : androidDebugToken)
+            : AndroidPlayIntegrityProvider(),
+        providerApple: kDebugMode
+            ? AppleDebugProvider(debugToken: appleDebugToken.isEmpty ? null : appleDebugToken)
+            : AppleAppAttestWithDeviceCheckFallbackProvider(),
+      );
 
       final audioBibleHandler = await AudioService.init(
         builder: () => AudioBibleHandler(),

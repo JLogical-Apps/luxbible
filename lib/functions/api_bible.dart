@@ -1,3 +1,4 @@
+import 'package:bible/functions/app_check_interceptor.dart';
 import 'package:bible/models/bible/chapter.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/utils/usx_utils.dart';
@@ -8,7 +9,7 @@ import 'package:xml/xml.dart';
 
 class ApiBible {
   static final Dio dio = Dio(BaseOptions(baseUrl: 'https://scripture.luxbible.app'))
-    ..interceptors.add(LogInterceptor(responseBody: false));
+    ..interceptors.addAll([AppCheckInterceptor(), LogInterceptor(requestHeader: false, responseBody: false)]);
 
   static Future<Chapter> fetchChapter({
     required String translationSlug,
