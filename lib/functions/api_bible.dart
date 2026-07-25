@@ -7,17 +7,18 @@ import 'package:dio/dio.dart';
 import 'package:xml/xml.dart';
 
 class ApiBible {
-  static final Dio dio = Dio(
-    BaseOptions(baseUrl: 'https://rest.api.bible', headers: {'api-key': '19JTfW6nY4d_mB9RaSQ3y'}),
-  )..interceptors.add(LogInterceptor(responseBody: false));
+  static final Dio dio = Dio(BaseOptions(baseUrl: 'https://scripture.luxbible.app'))
+    ..interceptors.add(LogInterceptor(responseBody: false));
 
-  static Future<Chapter> fetchChapter({required String bibleId, required ChapterReference chapterReference}) async {
-    final response = await dio.get(
-      '/v1/bibles/$bibleId/chapters/${chapterReference.usxId()}',
-      queryParameters: {'include-notes': true},
+  static Future<Chapter> fetchChapter({
+    required String translationSlug,
+    required ChapterReference chapterReference,
+  }) async {
+    final response = await dio.get<String>(
+      '/$translationSlug/${chapterReference.usxId()}',
+      options: Options(responseType: .plain),
     );
-    final data = response.data['data'] as Map<String, dynamic>;
-    final content = data['content'] as String;
+    final content = response.data!;
     final root = XmlDocument.parse('<root>$content</root>').rootElement;
 
     String cleanText(String text) => text.replaceAll('#', '');

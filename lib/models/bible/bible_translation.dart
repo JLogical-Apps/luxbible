@@ -63,9 +63,7 @@ enum BibleTranslation {
     bsb || asv || kjv || oshb || lxx || tr || byz || statresgnt || sv => .local,
     nasb95 => .youVersion(100),
     niv11 => .youVersion(111),
-    csb => .apiBible('a556c5305ee15c3f-01'),
-    nlt => .apiBible('d6e14a625393b4da-01'),
-    nkjv => .apiBible('63097d2a0a2f7db3-01'),
+    csb || nlt || nkjv => .apiBible(),
   };
 
   BibleLanguage get language => switch (this) {
@@ -171,7 +169,7 @@ enum BibleTranslation {
 sealed class BibleTranslationSource {
   static BibleTranslationSource local = LocalTranslationSource();
   factory BibleTranslationSource.youVersion(int bibleId) => YouVersionTranslationSource(bibleId);
-  factory BibleTranslationSource.apiBible(String bibleId) => ApiBibleTranslationSource(bibleId);
+  factory BibleTranslationSource.apiBible() => ApiBibleTranslationSource();
 
   const BibleTranslationSource();
 
@@ -205,16 +203,14 @@ class YouVersionTranslationSource implements BibleTranslationSource {
 }
 
 class ApiBibleTranslationSource implements BibleTranslationSource {
-  final String bibleId;
-
-  const ApiBibleTranslationSource(this.bibleId);
+  const ApiBibleTranslationSource();
 
   @override
   Future<Chapter> getChapter({
     required ChapterReference chapterReference,
     required BibleTranslation translation,
     required Bible? localBible,
-  }) => ApiBible.fetchChapter(bibleId: bibleId, chapterReference: chapterReference);
+  }) => ApiBible.fetchChapter(translationSlug: translation.name, chapterReference: chapterReference);
 }
 
 enum BibleLanguage {
