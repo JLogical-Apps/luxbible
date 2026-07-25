@@ -40,6 +40,7 @@ class ChapterPageView extends StatelessWidget {
           if (chapterValue.hasError) {
             return BibleLoadingError(
               translation: translation,
+              error: chapterValue.error,
               padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top + 24) + .symmetric(horizontal: 16),
               onRetry: () => ref.invalidate(
                 chapterProvider(chapterReference: chapterReference, translation: translation),

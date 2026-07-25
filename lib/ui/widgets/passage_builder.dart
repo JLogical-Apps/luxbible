@@ -44,6 +44,7 @@ class PassageBuilder extends HookConsumerWidget {
     if (paragraphsValue.hasError) {
       return BibleLoadingError(
         translation: translation,
+        error: paragraphsValue.error,
         onRetry: () => ref.invalidate(
           chapterProvider(chapterReference: chapterReference, translation: translation),
           asReload: true,
