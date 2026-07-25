@@ -32,6 +32,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:utils_core/utils_core.dart';
 
 Future<void> main() async {
   runZonedGuarded(
@@ -45,10 +46,10 @@ Future<void> main() async {
 
       await FirebaseAppCheck.instance.activate(
         providerAndroid: kDebugMode
-            ? AndroidDebugProvider(debugToken: androidDebugToken.isEmpty ? null : androidDebugToken)
+            ? AndroidDebugProvider(debugToken: androidDebugToken.nullIfBlank)
             : AndroidPlayIntegrityProvider(),
         providerApple: kDebugMode
-            ? AppleDebugProvider(debugToken: appleDebugToken.isEmpty ? null : appleDebugToken)
+            ? AppleDebugProvider(debugToken: appleDebugToken.nullIfBlank)
             : AppleAppAttestWithDeviceCheckFallbackProvider(),
       );
 

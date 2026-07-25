@@ -53,4 +53,4 @@ source_files/sword/
 scripts/sword/data/TVTMS.txt
 
 .tmp/
-/env.json
+/.env
