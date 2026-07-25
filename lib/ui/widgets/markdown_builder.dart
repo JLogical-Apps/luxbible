@@ -11,9 +11,10 @@ class MarkdownBuilder extends HookWidget {
   final void Function(String text, String link)? onLinkPressed;
 
   final TextStyle? style;
+  final TextAlign? textAlign;
   final int? maxLines;
 
-  const MarkdownBuilder(this.markdown, {super.key, this.onLinkPressed, this.style, this.maxLines});
+  const MarkdownBuilder(this.markdown, {super.key, this.onLinkPressed, this.style, this.textAlign, this.maxLines});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,7 @@ class MarkdownBuilder extends HookWidget {
           .mapIndexed(
             (index, spans) => Padding(
               padding: .only(left: lines[index].indentation * indentationWidth),
-              child: MarkdownRichText(spans: spans, maxLines: maxLines, style: style),
+              child: MarkdownRichText(spans: spans, maxLines: maxLines, style: style, textAlign: textAlign),
             ),
           )
           .toList(),
@@ -129,9 +130,10 @@ class MarkdownLine {
 class MarkdownRichText extends StatelessWidget {
   final List<InlineSpan> spans;
   final TextStyle? style;
+  final TextAlign? textAlign;
   final int? maxLines;
 
-  const MarkdownRichText({super.key, required this.spans, this.style, this.maxLines});
+  const MarkdownRichText({super.key, required this.spans, this.style, this.textAlign, this.maxLines});
 
   @override
   Widget build(BuildContext context) => Text.rich(
@@ -139,5 +141,6 @@ class MarkdownRichText extends StatelessWidget {
     maxLines: maxLines,
     overflow: maxLines == null ? null : .ellipsis,
     style: style,
+    textAlign: textAlign,
   );
 }

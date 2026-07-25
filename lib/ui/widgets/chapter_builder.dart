@@ -9,12 +9,15 @@ import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/font_size_spacing_zoom_gesture.dart';
+import 'package:bible/ui/widgets/markdown_builder.dart';
 import 'package:bible/ui/widgets/paragraphs_builder.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
+import 'package:bible/utils/markdown.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ChapterBuilder extends HookConsumerWidget {
   final ChapterReference chapterReference;
@@ -87,6 +90,13 @@ class ChapterBuilder extends HookConsumerWidget {
           ),
           if (translation.copyright case final copyright?)
             Text(copyright, style: context.textStyle.paragraphXs.subtle(), textAlign: .center),
+          if (translation.source is ApiBibleTranslationSource)
+            MarkdownBuilder(
+              Markdown('Sourced from [https://api.bible](https://api.bible)'),
+              style: context.textStyle.paragraphXs.subtle(),
+              onLinkPressed: (_, _) => launchUrl(Uri.https('api.bible')),
+              textAlign: .center,
+            ),
         ],
       ),
     );
