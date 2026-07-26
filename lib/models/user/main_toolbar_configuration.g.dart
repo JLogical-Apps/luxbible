@@ -26,7 +26,7 @@ _MainToolbarConfiguration _$MainToolbarConfigurationFromJson(
         _$MainToolbarShortcutEnumMap,
         json['longPressShortcut'],
       ) ??
-      MainToolbarShortcut.studyPanel,
+      MainToolbarShortcut.plans,
   pinToBottom: json['pinToBottom'] as bool? ?? false,
 );
 

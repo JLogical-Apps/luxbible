@@ -170,7 +170,7 @@ final class ChapterProvider
   }
 }
 
-String _$chapterHash() => r'fc45d312979eb33021b3f91308778eb0a5f9c2ca';
+String _$chapterHash() => r'2231b1ddca1da80bfdae53e9ea3d7e8e78783897';
 
 final class ChapterFamily extends $Family
     with
