@@ -23,7 +23,7 @@ class YouVersion {
     final content = response.data['content'] as String;
     final root = XmlDocument.parse(content).rootElement;
     return XmlBibleParser.parse(
-      root,
+      root.childElements,
       getVerseNumber: (element) => element.classNames.contains('yv-v') ? int.parse(element.getAttribute('v')!) : null,
       shouldIgnore: (element) => element.classNames.contains('yv-vlbl'),
       buildFootnote: (element) => element.classNames.contains('yv-n') ? UsxUtils.noteToMarkdown(element) : null,

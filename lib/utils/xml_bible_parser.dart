@@ -1,5 +1,6 @@
 import 'package:bible/models/bible/chapter.dart';
 import 'package:bible/models/bible/footnote.dart';
+import 'package:bible/models/bible/interlinear_data.dart';
 import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/models/bible/verse.dart';
 import 'package:bible/models/bible/word.dart';
@@ -10,12 +11,13 @@ import 'package:xml/xml.dart';
 
 abstract final class XmlBibleParser {
   static Chapter parse(
-    XmlElement root, {
+    Iterable<XmlElement> elements, {
     required int? Function(XmlElement) getVerseNumber,
     required bool Function(XmlElement) shouldIgnore,
     required Markdown? Function(XmlElement) buildFootnote,
     required bool Function(XmlElement) isRedLetters,
     required bool Function(XmlElement) isItalic,
+    InterlinearData? Function(XmlElement)? getInterlinearData,
     required String? Function(XmlElement) getParagraphStyle,
     required String Function(XmlElement) buildSectionText,
     required String Function(String) buildText,
@@ -35,41 +37,56 @@ abstract final class XmlBibleParser {
       element.isSelfClosing,
     );
 
-    List<Verse> parseVerses(XmlNode node, {bool redLetters = false, bool italic = false}) => node.children
-        .expand<Verse>(
-          (child) => switch (child) {
-            XmlText(:final value) when lastVerseNum != null => [
-              Verse(
-                verseNum: lastVerseNum!,
-                words: [Word(text: buildText(value), redLetters: redLetters, italic: italic)],
-              ),
-            ],
-            XmlElement child => () {
-              if (shouldIgnore(child)) return <Verse>[];
-              if (getVerseNumber(child) case final verseNum?) {
-                lastVerseNum = verseNum;
-                return <Verse>[];
-              }
-              if (buildFootnote(child) case final footnote?) {
-                return [
-                  Verse(
-                    verseNum: lastVerseNum ?? 0,
-                    words: [],
-                    footnotes: [Footnote(offset: 0, text: footnote)],
-                  ),
-                ];
-              }
-              return parseVerses(
-                child,
-                redLetters: redLetters || isRedLetters(child),
-                italic: italic || isItalic(child),
-              );
-            }(),
-            _ => [],
-          },
-        )
-        .withSameVersesCombined()
-        .toList();
+    List<Verse> parseVerses(
+      XmlNode node, {
+      bool redLetters = false,
+      bool italic = false,
+      InterlinearData? interlinearData,
+    }) => node.children.isEmpty && interlinearData != null && lastVerseNum != null
+        ? [
+            Verse(
+              verseNum: lastVerseNum!,
+              words: [Word(data: interlinearData, redLetters: redLetters, italic: italic)],
+            ),
+          ]
+        : node.children
+              .expand<Verse>(
+                (child) => switch (child) {
+                  XmlText(:final value) when lastVerseNum != null => [
+                    Verse(
+                      verseNum: lastVerseNum!,
+                      words: [
+                        Word(text: buildText(value), data: interlinearData, redLetters: redLetters, italic: italic),
+                      ],
+                    ),
+                  ],
+                  XmlElement child => () {
+                    if (shouldIgnore(child)) return <Verse>[];
+                    if (getVerseNumber(child) case final verseNum?) {
+                      lastVerseNum = verseNum;
+                      return <Verse>[];
+                    }
+                    if (buildFootnote(child) case final footnote?) {
+                      return [
+                        Verse(
+                          verseNum: lastVerseNum ?? 0,
+                          words: [],
+                          footnotes: [Footnote(offset: 0, text: footnote)],
+                        ),
+                      ];
+                    }
+                    return parseVerses(
+                      child,
+                      redLetters: redLetters || isRedLetters(child),
+                      italic: italic || isItalic(child),
+                      interlinearData: getInterlinearData?.call(child) ?? interlinearData,
+                    );
+                  }(),
+                  _ => [],
+                },
+              )
+              .withSameVersesCombined()
+              .toList();
 
     Iterable<XmlElement> splitInlineParagraph(XmlElement element) {
       final inlineParagraphIndex = element.children.indexWhereOrNull(
@@ -93,9 +110,11 @@ abstract final class XmlBibleParser {
       ];
     }
 
-    final paragraphs = root.childElements.expand(splitInlineParagraph).fold(<Paragraph>[], (paragraphs, element) {
-      SectionParagraph sectionParagraph(SectionType sectionType) =>
-          SectionParagraph(text: buildSectionText(sectionWithoutNotes(element)), type: sectionType);
+    final paragraphs = elements.expand(splitInlineParagraph).fold(<Paragraph>[], (paragraphs, element) {
+      SectionParagraph sectionParagraph(SectionType sectionType) {
+        parseVerses(element);
+        return SectionParagraph(text: buildSectionText(sectionWithoutNotes(element)), type: sectionType);
+      }
 
       VersesParagraph? buildVersesParagraph(
         ParagraphType paragraphType,

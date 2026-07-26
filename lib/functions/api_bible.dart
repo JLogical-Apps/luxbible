@@ -47,7 +47,7 @@ class ApiBible {
     }
 
     return XmlBibleParser.parse(
-      root,
+      root.childElements,
       getVerseNumber: (element) =>
           element.classNames.contains('v') ? int.parse(element.getAttribute('data-number')!) : null,
       shouldIgnore: isOnlyCrossReference,
