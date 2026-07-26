@@ -123,10 +123,11 @@ abstract final class XmlBibleParser {
 
       VersesParagraph? tableParagraph() {
         final previousLastVerseNum = lastVerseNum;
-        final verses = element
-            .findAllElements('tr')
+        final verses = element.descendants
+            .whereType<XmlElement>()
+            .where((element) => {'tr', 'row'}.contains(element.localName))
             .expandIndexed<Verse>((rowIndex, row) {
-              final cells = row.childElements.where((cell) => cell.localName == 'td').toList();
+              final cells = row.childElements.where((cell) => {'td', 'cell'}.contains(cell.localName)).toList();
               return [
                 if (rowIndex != 0)
                   Verse(
