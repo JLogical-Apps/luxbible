@@ -473,6 +473,7 @@ class ParagraphsBuilder extends HookWidget {
                             text: text,
                             style: type == .qa ? bibleTextStyle.smallSection : bibleTextStyle.smallHeading,
                           ),
+                          TextSpan(text: '\n ', style: bibleTextStyle.body.copyWith(height: 0.8)),
                         ]
                 : <InlineSpan>[],
           VersesParagraph(:final verses, :final type, :final preventIndent) => [
