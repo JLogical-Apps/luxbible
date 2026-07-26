@@ -1,8 +1,4 @@
-import 'package:bible/functions/api_bible.dart';
-import 'package:bible/functions/youversion.dart';
-import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/bible/book_type.dart';
-import 'package:bible/models/bible/chapter.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/testament.dart';
 
@@ -172,46 +168,17 @@ sealed class BibleTranslationSource {
   factory BibleTranslationSource.apiBible() => ApiBibleTranslationSource();
 
   const BibleTranslationSource();
-
-  Future<Chapter> getChapter({
-    required ChapterReference chapterReference,
-    required BibleTranslation translation,
-    required Bible? localBible,
-  });
 }
 
-class LocalTranslationSource implements BibleTranslationSource {
-  @override
-  Future<Chapter> getChapter({
-    required ChapterReference chapterReference,
-    required BibleTranslation translation,
-    required Bible? localBible,
-  }) => Future.syncValue(localBible!.getChapterByReference(chapterReference));
-}
+class LocalTranslationSource implements BibleTranslationSource {}
 
 class YouVersionTranslationSource implements BibleTranslationSource {
   final int bibleId;
 
   const YouVersionTranslationSource(this.bibleId);
-
-  @override
-  Future<Chapter> getChapter({
-    required ChapterReference chapterReference,
-    required BibleTranslation translation,
-    required Bible? localBible,
-  }) => YouVersion.fetchChapter(bibleId: bibleId, chapterReference: chapterReference);
 }
 
-class ApiBibleTranslationSource implements BibleTranslationSource {
-  const ApiBibleTranslationSource();
-
-  @override
-  Future<Chapter> getChapter({
-    required ChapterReference chapterReference,
-    required BibleTranslation translation,
-    required Bible? localBible,
-  }) => ApiBible.fetchChapter(translationSlug: translation.name, chapterReference: chapterReference);
-}
+class ApiBibleTranslationSource implements BibleTranslationSource {}
 
 enum BibleLanguage {
   english,

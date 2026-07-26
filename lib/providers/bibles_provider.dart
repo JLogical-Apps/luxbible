@@ -1,4 +1,6 @@
+import 'package:bible/functions/api_bible.dart';
 import 'package:bible/functions/bible_importer.dart';
+import 'package:bible/functions/youversion.dart';
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/bible/bible.dart';
 import 'package:bible/models/bible/bible_translation.dart';
@@ -38,11 +40,18 @@ FutureOr<Chapter> chapter(
   final localBible = effectiveTranslation.isLocal
       ? ref.watch(localBibleProvider(translation: effectiveTranslation)).requireValue
       : null;
-  return effectiveTranslation.source.getChapter(
-    chapterReference: chapterReference,
-    translation: effectiveTranslation,
-    localBible: localBible,
-  );
+
+  return switch (effectiveTranslation.source) {
+    LocalTranslationSource() => localBible!.getChapterByReference(chapterReference),
+    YouVersionTranslationSource(:final bibleId) => YouVersion.fetchChapter(
+      bibleId: bibleId,
+      chapterReference: chapterReference,
+    ),
+    ApiBibleTranslationSource() => ApiBible.fetchChapter(
+      translationSlug: translation.name,
+      chapterReference: chapterReference,
+    ),
+  };
 }
 
 @Riverpod(keepAlive: true)
