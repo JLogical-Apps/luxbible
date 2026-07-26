@@ -2,7 +2,9 @@ import 'package:bible/models/bible/footnote.dart';
 import 'package:bible/models/bible/word.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/reference/reference.dart';
+import 'package:bible/utils/extensions/num_extensions.dart';
 import 'package:bible/utils/extensions/string_extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:utils_core/utils_core.dart';
 
@@ -27,12 +29,19 @@ sealed class Verse with _$Verse {
   List<String> get searchTerms =>
       text.onlyLetters.toLowerCase().split(' ').where((string) => string.isNotBlank).toList();
 
-  Verse trimStart() => Verse(
-    verseNum: verseNum,
-    words: words.skipWhile((word) => word.text?.isBlank == true && word.data == null).toList(),
-    originalVerse: originalVerse,
-    footnotes: footnotes,
-  );
+  Verse trimStart() {
+    final trimmedWords = words.skipWhile((word) => word.text?.isBlank == true && word.data == null).toList();
+    final removedTextLength = words.take(words.length - trimmedWords.length).map((word) => word.text?.length ?? 0).sum;
+
+    return Verse(
+      verseNum: verseNum,
+      words: trimmedWords,
+      originalVerse: originalVerse,
+      footnotes: footnotes
+          ?.map((footnote) => footnote.copyWith(offset: (footnote.offset - removedTextLength).clampZero))
+          .toList(),
+    );
+  }
 }
 
 extension IterableVerseExtensions on Iterable<Verse> {
