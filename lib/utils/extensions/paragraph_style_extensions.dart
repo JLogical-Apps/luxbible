@@ -2,7 +2,8 @@ import 'package:bible/models/bible/paragraph.dart';
 import 'package:flutter/cupertino.dart';
 
 extension SectionTypeStyleExtensions on SectionType {
-  bool get isLarge => this != .qa && this != .d;
+  bool get isLarge => this != .qa && this != .d && this != .sp;
+  bool get isInline => this == .sp;
 }
 
 extension ParagraphTypeStyleExtensions on ParagraphType {

@@ -35,7 +35,8 @@ enum SectionType {
   s1,
   s2,
   d,
-  qa;
+  qa,
+  sp;
 
   bool operator >(SectionType type) => index < type.index;
 }

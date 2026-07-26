@@ -459,9 +459,9 @@ class ParagraphsBuilder extends HookWidget {
             user.themeLayout.sections.showFor(translation: translation, sectionType: type)
                 ? type.isLarge
                       ? [
-                          if (paragraphIndex != 0)
-                            if ((previousParagraph is! SectionParagraph || type > previousParagraph.type))
-                              TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 1.5)),
+                          if (paragraphIndex != 0 &&
+                              ((previousParagraph is! SectionParagraph || type > previousParagraph.type)))
+                            TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 1.5)),
                           TextSpan(
                             text: text,
                             style: type == .ms ? bibleTextStyle.majorSection : bibleTextStyle.section,
@@ -469,11 +469,17 @@ class ParagraphsBuilder extends HookWidget {
                           TextSpan(text: '\n ', style: bibleTextStyle.body.copyWith(height: 0.8)),
                         ]
                       : [
+                          if (type.isInline) TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 0.5)),
                           TextSpan(
                             text: text,
-                            style: type == .qa ? bibleTextStyle.smallSection : bibleTextStyle.smallHeading,
+                            style: switch (type) {
+                              .d => bibleTextStyle.smallHeading,
+                              .qa => bibleTextStyle.smallSection,
+                              .sp => bibleTextStyle.speakerHeading,
+                              _ => throw UnimplementedError(),
+                            },
                           ),
-                          TextSpan(text: '\n ', style: bibleTextStyle.body.copyWith(height: 0.8)),
+                          if (!type.isInline) TextSpan(text: '\n ', style: bibleTextStyle.body.copyWith(height: 0.1)),
                         ]
                 : <InlineSpan>[],
           VersesParagraph(:final verses, :final type, :final preventIndent) => [
@@ -887,6 +893,8 @@ class BibleTextStyle {
   TextStyle get smallHeading =>
       base.regular.copyWith(fontSize: 20 * multiplier, letterSpacing: 0, height: 40 / 20, fontStyle: .italic);
   TextStyle get smallSection => base.bold.copyWith(fontSize: 20 * multiplier, letterSpacing: 0, height: 40 / 20);
+  TextStyle get speakerHeading =>
+      base.bold.copyWith(fontSize: 20 * multiplier, letterSpacing: 0, height: 40 / 20, fontStyle: .italic);
   TextStyle get verseNumber =>
       base.bold.copyWith(fontSize: 14 * multiplier, letterSpacing: 0, decorationStyle: .dotted);
   TextStyle get body =>

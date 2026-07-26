@@ -172,6 +172,7 @@ abstract final class XmlBibleParser {
               'qs' => versesParagraph(.qs),
               'qc' => versesParagraph(.qc),
               'qa' => sectionParagraph(.qa),
+              'sp' => sectionParagraph(.sp),
               'li' || 'li1' => versesParagraph(.li1),
               'li2' || 'lim' => versesParagraph(.li2),
               'b' => BreakParagraph(),
