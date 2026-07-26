@@ -92,7 +92,11 @@ class ParagraphsBuilder extends HookWidget {
     final textSelectionStartAnchorState = useState<BibleTextSelectionWordAnchor?>(null);
 
     final paragraphSpansByParagraph = useMemoized(
-      () => getParagraphSpansByParagraph(context, chapter: chapter, keyByReference: keyByReference),
+      () => getParagraphSpansByParagraph(
+        context,
+        chapter: chapter,
+        keyByReference: keyByReference,
+      ).where((entry) => entry.value.isNotEmpty).toList(),
       [paragraphs, user, translation, chapterReference, highlightedReferences, keyByReference, context.brightness],
     );
 
@@ -149,10 +153,7 @@ class ParagraphsBuilder extends HookWidget {
       },
       child: Column(
         crossAxisAlignment: .stretch,
-        children: paragraphSpansByParagraph.where((entry) => entry.value.isNotEmpty).mapEntries((
-          paragraph,
-          originalSpans,
-        ) {
+        children: paragraphSpansByParagraph.mapEntries((paragraph, originalSpans) {
           final versesParagraph = paragraph.as<VersesParagraph>();
           final blockIndent = user.themeLayout.paragraphs && versesParagraph != null
               ? versesParagraph.type.blockIndent
@@ -172,7 +173,7 @@ class ParagraphsBuilder extends HookWidget {
                               .withHangingIndent<VerseElement>(
                                 width: constraints.maxWidth,
                                 textAlign: versesParagraph.type.textAlign,
-                                hangingIndent: versesParagraph.type.hangingIndent,
+                                hangingIndent: hangingIndent,
                                 annotationModifier: (element, charactersAdded) =>
                                     element.copyWith(anchor: element.anchor.withCharactersAdded(charactersAdded)),
                               )

@@ -66,7 +66,7 @@ enum ParagraphType {
   };
 
   double get hangingIndent => this == q1 || this == q2 || this == li1 ? 30 : 0;
-  double get blockIndent => hangingIndent == 0 ? 0 : indent;
+  double get blockIndent => this == q2 ? 20 : 0;
 }
 
 int? _firstVerseOffsetToJson(int firstVerseOffset) => firstVerseOffset.nullIfZero;
