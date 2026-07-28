@@ -14,12 +14,8 @@ final crossReferencesProvider = CrossReferencesProvider._();
 
 final class CrossReferencesProvider
     extends
-        $FunctionalProvider<
-          Map<Reference, Map<VerseSpanReference, int>>,
-          Map<Reference, Map<VerseSpanReference, int>>,
-          Map<Reference, Map<VerseSpanReference, int>>
-        >
-    with $Provider<Map<Reference, Map<VerseSpanReference, int>>> {
+        $FunctionalProvider<CrossReferences, CrossReferences, CrossReferences>
+    with $Provider<CrossReferences> {
   CrossReferencesProvider._()
     : super(
         from: null,
@@ -36,27 +32,21 @@ final class CrossReferencesProvider
 
   @$internal
   @override
-  $ProviderElement<Map<Reference, Map<VerseSpanReference, int>>> $createElement(
-    $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  $ProviderElement<CrossReferences> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
-  Map<Reference, Map<VerseSpanReference, int>> create(Ref ref) {
+  CrossReferences create(Ref ref) {
     return crossReferences(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(
-    Map<Reference, Map<VerseSpanReference, int>> value,
-  ) {
+  Override overrideWithValue(CrossReferences value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride:
-          $SyncValueProvider<Map<Reference, Map<VerseSpanReference, int>>>(
-            value,
-          ),
+      providerOverride: $SyncValueProvider<CrossReferences>(value),
     );
   }
 }
 
-String _$crossReferencesHash() => r'778f912ac1871d3d50df0f669e0849d4282943e7';
+String _$crossReferencesHash() => r'1fc18e429e03fc0541e0af7b3c3b2fc1be522247';
