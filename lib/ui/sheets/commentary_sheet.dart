@@ -1,24 +1,29 @@
 import 'package:bible/models/commentary_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/commentaries_provider.dart';
-import 'package:bible/providers/root_ref.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
 import 'package:bible/ui/widgets/markdown_builder.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:utils_core/utils_core.dart';
 
 class CommentarySheet {
   static List<Widget> buildSheetChildren(
-    BuildContext context, {
+    BuildContext context,
+    WidgetRef ref, {
     required VerseSelection verseSelection,
-    required CommentaryType commentary,
+    required CommentaryType commentaryType,
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) {
-    final commentaries = ref.read(commentariesProvider);
-    final notes = commentaries[commentary]?.getNotesFor(verseSelection);
-    return notes == null || notes.isEmpty
+    final commentary = ref.watch(commentaryProvider(type: commentaryType)).value;
+    if (commentary == null) {
+      return [Padding(padding: .all(16), child: StyledLoading())];
+    }
+
+    final notes = commentary.getNotesFor(verseSelection);
+    return notes.isEmpty
         ? [
             Padding(
               padding: .all(16),

@@ -2,13 +2,11 @@ import 'dart:convert';
 
 import 'package:bible/models/commentary.dart';
 import 'package:bible/models/commentary_type.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:flutter/services.dart';
 
 class CommentaryImporter {
-  Future<Map<CommentaryType, Commentary>> import() async => CommentaryType.values
-      .map((type) async => MapEntry(type, Commentary.fromJson(jsonDecode(await rootBundle.loadString(type.assetPath)))))
-      .waitToMap;
+  Future<Commentary> import({required CommentaryType type}) async =>
+      Commentary.fromJson(jsonDecode(await rootBundle.loadString(type.assetPath)));
 }
 
 extension on CommentaryType {

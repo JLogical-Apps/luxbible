@@ -50,7 +50,8 @@ sealed class StudyPanel with _$StudyPanel {
   };
 
   List<Widget> buildSheetChildren(
-    BuildContext context, {
+    BuildContext context,
+    WidgetRef ref, {
     required VerseSelection verseSelection,
     required Function(VerseSelection) onNavigateToVerseSelection,
     required User user,
@@ -74,8 +75,9 @@ sealed class StudyPanel with _$StudyPanel {
     ),
     CommentaryStudyPanel(:final type) => CommentarySheet.buildSheetChildren(
       context,
+      ref,
       verseSelection: verseSelection,
-      commentary: type,
+      commentaryType: type,
       onNavigateToVerseSelection: onNavigateToVerseSelection,
     ),
     NotesStudyPanel() => () {

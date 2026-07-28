@@ -599,6 +599,7 @@ class BibleBody extends HookConsumerWidget {
                     }
                     return studyPanel.buildSheetChildren(
                       context,
+                      ref,
                       verseSelection: visibleVerseSelection,
                       onNavigateToVerseSelection: navigateToVerseSelection,
                       user: user,

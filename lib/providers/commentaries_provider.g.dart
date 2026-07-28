@@ -9,51 +9,76 @@ part of 'commentaries_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(commentaries)
-final commentariesProvider = CommentariesProvider._();
+@ProviderFor(commentary)
+final commentaryProvider = CommentaryFamily._();
 
-final class CommentariesProvider
+final class CommentaryProvider
     extends
         $FunctionalProvider<
-          Map<CommentaryType, Commentary>,
-          Map<CommentaryType, Commentary>,
-          Map<CommentaryType, Commentary>
+          AsyncValue<Commentary>,
+          Commentary,
+          FutureOr<Commentary>
         >
-    with $Provider<Map<CommentaryType, Commentary>> {
-  CommentariesProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'commentariesProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
+    with $FutureModifier<Commentary>, $FutureProvider<Commentary> {
+  CommentaryProvider._({
+    required CommentaryFamily super.from,
+    required CommentaryType super.argument,
+  }) : super(
+         retry: null,
+         name: r'commentaryProvider',
+         isAutoDispose: false,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
-  String debugGetCreateSourceHash() => _$commentariesHash();
+  String debugGetCreateSourceHash() => _$commentaryHash();
+
+  @override
+  String toString() {
+    return r'commentaryProvider'
+        ''
+        '($argument)';
+  }
 
   @$internal
   @override
-  $ProviderElement<Map<CommentaryType, Commentary>> $createElement(
-    $ProviderPointer pointer,
-  ) => $ProviderElement(pointer);
+  $FutureProviderElement<Commentary> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
 
   @override
-  Map<CommentaryType, Commentary> create(Ref ref) {
-    return commentaries(ref);
+  FutureOr<Commentary> create(Ref ref) {
+    final argument = this.argument as CommentaryType;
+    return commentary(ref, type: argument);
   }
 
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(Map<CommentaryType, Commentary> value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<Map<CommentaryType, Commentary>>(
-        value,
-      ),
-    );
+  @override
+  bool operator ==(Object other) {
+    return other is CommentaryProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
   }
 }
 
-String _$commentariesHash() => r'384be5eb1d172fad96dad1e3890c3bb03e107c11';
+String _$commentaryHash() => r'684a8103311907d7562cd734cb1e6b8cc66c23e0';
+
+final class CommentaryFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<Commentary>, CommentaryType> {
+  CommentaryFamily._()
+    : super(
+        retry: null,
+        name: r'commentaryProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: false,
+      );
+
+  CommentaryProvider call({required CommentaryType type}) =>
+      CommentaryProvider._(argument: type, from: this);
+
+  @override
+  String toString() => r'commentaryProvider';
+}

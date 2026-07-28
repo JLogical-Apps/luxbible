@@ -230,7 +230,7 @@ enum StudyAction {
         final index = useListenableSelector(tabController, () => tabController.index);
         final selectedCommentary = user.commentariesOrDefault[index];
 
-        return StyledSheet(
+        return StyledSheet.builder(
           title: title().toText(),
           subtitle: regionFormat.toText(),
           shrinkWrap: false,
@@ -246,10 +246,11 @@ enum StudyAction {
                 tabController.animateTo(newIndex, duration: Duration(milliseconds: 300), curve: Curves.easeInOutCubic),
             child: child,
           ),
-          children: CommentarySheet.buildSheetChildren(
+          childrenBuilder: (context, ref) => CommentarySheet.buildSheetChildren(
             context,
+            ref,
             verseSelection: verseSelection,
-            commentary: selectedCommentary,
+            commentaryType: selectedCommentary,
             onNavigateToVerseSelection: (verseSelection) {
               context.pop();
               onNavigateToVerseSelection(verseSelection);

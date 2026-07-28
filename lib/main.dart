@@ -4,7 +4,6 @@ import 'dart:developer' as developer;
 import 'package:audio_service/audio_service.dart';
 import 'package:bible/firebase_options.dart';
 import 'package:bible/functions/bible_plan_importer.dart';
-import 'package:bible/functions/commentary_importer.dart';
 import 'package:bible/functions/cross_references_importer.dart';
 import 'package:bible/functions/dictionary_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
@@ -12,7 +11,6 @@ import 'package:bible/licenses.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/bibles_provider.dart';
-import 'package:bible/providers/commentaries_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/dictionary_provider.dart';
 import 'package:bible/providers/package_info_provider.dart';
@@ -68,7 +66,6 @@ Future<void> main() async {
 
       await registerLicenses();
 
-      final commentaries = await CommentaryImporter().import();
       final strongs = await StrongImporter().import();
       final dictionary = await DictionaryImporter().import();
       final crossReferences = await CrossReferencesImporter().import();
@@ -84,7 +81,6 @@ Future<void> main() async {
           strongsProvider.overrideWithValue(strongs),
           dictionaryProvider.overrideWithValue(dictionary),
           crossReferencesProvider.overrideWithValue(crossReferences),
-          commentariesProvider.overrideWithValue(commentaries),
           biblePlansProvider.overrideWithValue(biblePlans),
           pathServiceProvider.overrideWithValue(paths),
           sharedPreferencesServiceProvider.overrideWithValue(sharedPreferences),
