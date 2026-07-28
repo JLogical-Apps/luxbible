@@ -21,9 +21,9 @@ class ApiBible {
     );
 
     final content = response.data!;
-    final root = XmlDocument.parse('<root>$content</root>').rootElement;
+    final root = XmlDocument.parse('<root>${content.withoutWhitespaceBeforeFootnotes}</root>').rootElement;
 
-    String cleanText(String text) => text.replaceAll('#', '');
+    String cleanText(String text) => text.replaceAll('#', '').withRegularSpaces;
 
     bool hasHelpfulText(XmlNode node, {bool isInsideReference = false}) => node.children.any(
       (child) => switch (child) {
@@ -59,4 +59,10 @@ class ApiBible {
       buildText: cleanText,
     );
   }
+}
+
+extension on String {
+  String get withoutWhitespaceBeforeFootnotes => replaceAll(RegExp(r'\s+(?=<span[^>]*class="[^"]*\bf\b[^"]*")'), '');
+
+  String get withRegularSpaces => replaceAll('\u00a0', ' ');
 }
