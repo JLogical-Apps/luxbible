@@ -56,6 +56,7 @@ BSB and KJV are the two study Bibles. LXX and OSHB contain the Old Testament, wh
 Lux supports:
 
 - Light, dark, and system appearance
+- System accessibility text sizing for interface text, clamped to Lux's designed minimum size
 - Selectable reading fonts, including OpenDyslexic
 - Seven font size and spacing levels from Extra Tiny through Extra Huge
 - Independent Greek and Hebrew font size and spacing overrides
@@ -65,6 +66,8 @@ Lux supports:
 - Paragraph or verse-by-verse layout
 - Optional footnote markers
 - Psalm superscriptions and other supported section types
+
+Bible text uses the closest Lux reading size to the system accessibility text size by default. Users can override it with one of seven independent font size and spacing levels. Lux controls the final Bible text size so its layout, selection, and annotations stay aligned.
 
 KJV and ASV can use section headings synthetically inserted from BSB. Footnote markers open their content without leaving the passage.
 

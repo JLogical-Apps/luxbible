@@ -11,9 +11,7 @@ _ThemeLayoutConfiguration _$ThemeLayoutConfigurationFromJson(
 ) => _ThemeLayoutConfiguration(
   font:
       $enumDecodeNullable(_$ThemeFontEnumMap, json['font']) ?? ThemeFont.inter,
-  fontSizeSpacing: json['fontSizeSpacing'] == null
-      ? FontSizeSpacing.standard
-      : FontSizeSpacing.fromJson(json['fontSizeSpacing']),
+  fontSizeSpacing: FontSizeSpacing.fromJsonNullable(json['fontSizeSpacing']),
   hebrewFontSizeSpacing: FontSizeSpacing.fromJsonNullable(
     json['hebrewFontSizeSpacing'],
   ),
@@ -33,7 +31,7 @@ Map<String, dynamic> _$ThemeLayoutConfigurationToJson(
   _ThemeLayoutConfiguration instance,
 ) => <String, dynamic>{
   'font': _$ThemeFontEnumMap[instance.font]!,
-  'fontSizeSpacing': _$FontSizeSpacingEnumMap[instance.fontSizeSpacing]!,
+  'fontSizeSpacing': _$FontSizeSpacingEnumMap[instance.fontSizeSpacing],
   'hebrewFontSizeSpacing':
       _$FontSizeSpacingEnumMap[instance.hebrewFontSizeSpacing],
   'greekFontSizeSpacing':

@@ -167,8 +167,8 @@ class StyledSheet<T> extends HookConsumerWidget {
                   ),
                 ),
               gapH8,
-              SizedBox(
-                height: subtitle == null ? 48 : 52,
+              ConstrainedBox(
+                constraints: BoxConstraints(minHeight: subtitle == null ? 48 : 52),
                 child: Padding(
                   padding: .symmetric(horizontal: 8),
                   child: Row(

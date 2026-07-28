@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/paragraph.dart';
+import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'theme_layout_configuration.freezed.dart';
@@ -11,7 +14,7 @@ sealed class ThemeLayoutConfiguration with _$ThemeLayoutConfiguration {
 
   const factory ThemeLayoutConfiguration({
     @Default(ThemeFont.inter) ThemeFont font,
-    @Default(FontSizeSpacing.standard) @JsonKey(fromJson: FontSizeSpacing.fromJson) FontSizeSpacing fontSizeSpacing,
+    @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? fontSizeSpacing,
     @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? hebrewFontSizeSpacing,
     @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? greekFontSizeSpacing,
     @Default(true) bool redLetters,
@@ -23,10 +26,13 @@ sealed class ThemeLayoutConfiguration with _$ThemeLayoutConfiguration {
 
   factory ThemeLayoutConfiguration.fromJson(Map<String, dynamic> json) => _$ThemeLayoutConfigurationFromJson(json);
 
-  FontSizeSpacing getFontSizeSpacingFor(BibleLanguage language) => switch (language) {
-    .greek => greekFontSizeSpacing ?? fontSizeSpacing,
-    .hebrew => hebrewFontSizeSpacing ?? fontSizeSpacing,
-    _ => fontSizeSpacing,
+  FontSizeSpacing getFontSizeSpacingOrSystem(double textScaling) =>
+      fontSizeSpacing ?? FontSizeSpacing.closestTo(textScaling);
+
+  FontSizeSpacing getFontSizeSpacingFor(BibleLanguage language, double textScaling) => switch (language) {
+    .greek => greekFontSizeSpacing ?? getFontSizeSpacingOrSystem(textScaling),
+    .hebrew => hebrewFontSizeSpacing ?? getFontSizeSpacingOrSystem(textScaling),
+    _ => getFontSizeSpacingOrSystem(textScaling),
   };
 }
 
@@ -78,6 +84,8 @@ enum FontSizeSpacing {
 
   static FontSizeSpacing? fromJsonNullable(Object? json) => json == null ? null : fromJson(json);
 
+  static FontSizeSpacing closestTo(double multiplier) => values.minBy((value) => (value.multiplier - multiplier).abs());
+
   String title() => switch (this) {
     extraTiny => 'Extra Tiny',
     tiny => 'Tiny',
@@ -88,15 +96,7 @@ enum FontSizeSpacing {
     extraHuge => 'Extra Huge',
   };
 
-  double get multiplier => switch (this) {
-    extraTiny => 0.8,
-    tiny => 0.85,
-    small => 0.9,
-    standard => 0.95,
-    large => 1.025,
-    huge => 1.1,
-    extraHuge => 1.175,
-  };
+  double get multiplier => pow(1.09, index - standard.index).toDouble();
 
   FontSizeSpacing? get previous => this == extraTiny ? null : values[index - 1];
   FontSizeSpacing? get next => this == extraHuge ? null : values[index + 1];

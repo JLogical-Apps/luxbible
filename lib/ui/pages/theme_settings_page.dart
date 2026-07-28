@@ -62,25 +62,13 @@ class ThemeSettingsPage extends ConsumerWidget {
                     },
                   ),
                 ),
-                StyledListItem(
-                  title: 'Font Size & Spacing'.toText(),
-                  subtitle: user.themeLayout.fontSizeSpacing.title().toText(),
-                  trailing: StyledPillButton.md(
-                    label: 'Edit'.toText(),
-                    onPressed: () async {
-                      final newFontSizeSpacing = await context.showStyledSheet(
-                        (context) => StyledSelectionSheet(
-                          title: 'Font Size & Spacing'.toText(),
-                          options: FontSizeSpacing.values,
-                          optionMapper: (option) => StyledSelectOption(title: option.title().toText()),
-                          initialOption: user.themeLayout.fontSizeSpacing,
-                        ),
-                      );
-                      if (newFontSizeSpacing != null) {
-                        ref.updateUser((user) => user.copyWith.themeLayout(fontSizeSpacing: newFontSizeSpacing));
-                      }
-                    },
-                  ),
+                getFontSizeSpacingItem(
+                  context,
+                  title: 'Font Size & Spacing',
+                  value: user.themeLayout.fontSizeSpacing,
+                  fallbackTitle: 'System',
+                  fallbackDescription: 'Use your device’s preferred text size.',
+                  onChanged: (value) => ref.updateUser((user) => user.copyWith.themeLayout(fontSizeSpacing: value)),
                 ),
                 if (hasGreekBible)
                   getFontSizeSpacingItem(
@@ -167,9 +155,11 @@ class ThemeSettingsPage extends ConsumerWidget {
     required String title,
     required FontSizeSpacing? value,
     required Function(FontSizeSpacing?) onChanged,
+    String fallbackTitle = 'Default',
+    String fallbackDescription = 'Use the default Font Size & Spacing.',
   }) => StyledListItem(
     title: title.toText(),
-    subtitle: (value?.title() ?? 'Default').toText(),
+    subtitle: (value?.title() ?? fallbackTitle).toText(),
     trailing: StyledPillButton.md(
       label: 'Edit'.toText(),
       onPressed: () => context.showStyledSheet(
@@ -187,8 +177,8 @@ class ThemeSettingsPage extends ConsumerWidget {
               ),
             ),
             StyledListItem.radio(
-              title: 'Default'.toText(),
-              subtitle: 'Use the default Font Size & Spacing.'.toText(),
+              title: fallbackTitle.toText(),
+              subtitle: fallbackDescription.toText(),
               isSelected: value == null,
               onSelected: () {
                 onChanged(null);

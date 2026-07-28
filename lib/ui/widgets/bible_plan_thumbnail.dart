@@ -22,6 +22,7 @@ class BiblePlanThumbnail extends StatelessWidget {
           child: Text(
             plan.name[0].toUpperCase(),
             style: context.textStyle.displayXxs.copyWith(color: plan.getHue(context.colors).primary),
+            textScaler: .noScaling,
           ),
         ),
       ),

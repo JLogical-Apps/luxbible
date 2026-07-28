@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ThemeLayoutConfiguration {
 
- ThemeFont get font;@JsonKey(fromJson: FontSizeSpacing.fromJson) FontSizeSpacing get fontSizeSpacing;@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? get hebrewFontSizeSpacing;@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? get greekFontSizeSpacing; bool get redLetters;@JsonKey(fromJson: _sectionHeadingsFromJson) SectionHeadings get sections; bool get verseNumbers; bool get paragraphs; bool get footnotes;
+ ThemeFont get font;@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? get fontSizeSpacing;@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? get hebrewFontSizeSpacing;@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? get greekFontSizeSpacing; bool get redLetters;@JsonKey(fromJson: _sectionHeadingsFromJson) SectionHeadings get sections; bool get verseNumbers; bool get paragraphs; bool get footnotes;
 /// Create a copy of ThemeLayoutConfiguration
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -48,7 +48,7 @@ abstract mixin class $ThemeLayoutConfigurationCopyWith<$Res>  {
   factory $ThemeLayoutConfigurationCopyWith(ThemeLayoutConfiguration value, $Res Function(ThemeLayoutConfiguration) _then) = _$ThemeLayoutConfigurationCopyWithImpl;
 @useResult
 $Res call({
- ThemeFont font,@JsonKey(fromJson: FontSizeSpacing.fromJson) FontSizeSpacing fontSizeSpacing,@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? hebrewFontSizeSpacing,@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? greekFontSizeSpacing, bool redLetters,@JsonKey(fromJson: _sectionHeadingsFromJson) SectionHeadings sections, bool verseNumbers, bool paragraphs, bool footnotes
+ ThemeFont font,@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? fontSizeSpacing,@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? hebrewFontSizeSpacing,@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? greekFontSizeSpacing, bool redLetters,@JsonKey(fromJson: _sectionHeadingsFromJson) SectionHeadings sections, bool verseNumbers, bool paragraphs, bool footnotes
 });
 
 
@@ -65,11 +65,11 @@ class _$ThemeLayoutConfigurationCopyWithImpl<$Res>
 
 /// Create a copy of ThemeLayoutConfiguration
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? font = null,Object? fontSizeSpacing = null,Object? hebrewFontSizeSpacing = freezed,Object? greekFontSizeSpacing = freezed,Object? redLetters = null,Object? sections = null,Object? verseNumbers = null,Object? paragraphs = null,Object? footnotes = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? font = null,Object? fontSizeSpacing = freezed,Object? hebrewFontSizeSpacing = freezed,Object? greekFontSizeSpacing = freezed,Object? redLetters = null,Object? sections = null,Object? verseNumbers = null,Object? paragraphs = null,Object? footnotes = null,}) {
   return _then(_self.copyWith(
 font: null == font ? _self.font : font // ignore: cast_nullable_to_non_nullable
-as ThemeFont,fontSizeSpacing: null == fontSizeSpacing ? _self.fontSizeSpacing : fontSizeSpacing // ignore: cast_nullable_to_non_nullable
-as FontSizeSpacing,hebrewFontSizeSpacing: freezed == hebrewFontSizeSpacing ? _self.hebrewFontSizeSpacing : hebrewFontSizeSpacing // ignore: cast_nullable_to_non_nullable
+as ThemeFont,fontSizeSpacing: freezed == fontSizeSpacing ? _self.fontSizeSpacing : fontSizeSpacing // ignore: cast_nullable_to_non_nullable
+as FontSizeSpacing?,hebrewFontSizeSpacing: freezed == hebrewFontSizeSpacing ? _self.hebrewFontSizeSpacing : hebrewFontSizeSpacing // ignore: cast_nullable_to_non_nullable
 as FontSizeSpacing?,greekFontSizeSpacing: freezed == greekFontSizeSpacing ? _self.greekFontSizeSpacing : greekFontSizeSpacing // ignore: cast_nullable_to_non_nullable
 as FontSizeSpacing?,redLetters: null == redLetters ? _self.redLetters : redLetters // ignore: cast_nullable_to_non_nullable
 as bool,sections: null == sections ? _self.sections : sections // ignore: cast_nullable_to_non_nullable
@@ -158,7 +158,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ThemeFont font, @JsonKey(fromJson: FontSizeSpacing.fromJson)  FontSizeSpacing fontSizeSpacing, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable)  FontSizeSpacing? hebrewFontSizeSpacing, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable)  FontSizeSpacing? greekFontSizeSpacing,  bool redLetters, @JsonKey(fromJson: _sectionHeadingsFromJson)  SectionHeadings sections,  bool verseNumbers,  bool paragraphs,  bool footnotes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ThemeFont font, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable)  FontSizeSpacing? fontSizeSpacing, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable)  FontSizeSpacing? hebrewFontSizeSpacing, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable)  FontSizeSpacing? greekFontSizeSpacing,  bool redLetters, @JsonKey(fromJson: _sectionHeadingsFromJson)  SectionHeadings sections,  bool verseNumbers,  bool paragraphs,  bool footnotes)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ThemeLayoutConfiguration() when $default != null:
 return $default(_that.font,_that.fontSizeSpacing,_that.hebrewFontSizeSpacing,_that.greekFontSizeSpacing,_that.redLetters,_that.sections,_that.verseNumbers,_that.paragraphs,_that.footnotes);case _:
@@ -179,7 +179,7 @@ return $default(_that.font,_that.fontSizeSpacing,_that.hebrewFontSizeSpacing,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ThemeFont font, @JsonKey(fromJson: FontSizeSpacing.fromJson)  FontSizeSpacing fontSizeSpacing, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable)  FontSizeSpacing? hebrewFontSizeSpacing, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable)  FontSizeSpacing? greekFontSizeSpacing,  bool redLetters, @JsonKey(fromJson: _sectionHeadingsFromJson)  SectionHeadings sections,  bool verseNumbers,  bool paragraphs,  bool footnotes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ThemeFont font, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable)  FontSizeSpacing? fontSizeSpacing, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable)  FontSizeSpacing? hebrewFontSizeSpacing, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable)  FontSizeSpacing? greekFontSizeSpacing,  bool redLetters, @JsonKey(fromJson: _sectionHeadingsFromJson)  SectionHeadings sections,  bool verseNumbers,  bool paragraphs,  bool footnotes)  $default,) {final _that = this;
 switch (_that) {
 case _ThemeLayoutConfiguration():
 return $default(_that.font,_that.fontSizeSpacing,_that.hebrewFontSizeSpacing,_that.greekFontSizeSpacing,_that.redLetters,_that.sections,_that.verseNumbers,_that.paragraphs,_that.footnotes);}
@@ -196,7 +196,7 @@ return $default(_that.font,_that.fontSizeSpacing,_that.hebrewFontSizeSpacing,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ThemeFont font, @JsonKey(fromJson: FontSizeSpacing.fromJson)  FontSizeSpacing fontSizeSpacing, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable)  FontSizeSpacing? hebrewFontSizeSpacing, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable)  FontSizeSpacing? greekFontSizeSpacing,  bool redLetters, @JsonKey(fromJson: _sectionHeadingsFromJson)  SectionHeadings sections,  bool verseNumbers,  bool paragraphs,  bool footnotes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ThemeFont font, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable)  FontSizeSpacing? fontSizeSpacing, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable)  FontSizeSpacing? hebrewFontSizeSpacing, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable)  FontSizeSpacing? greekFontSizeSpacing,  bool redLetters, @JsonKey(fromJson: _sectionHeadingsFromJson)  SectionHeadings sections,  bool verseNumbers,  bool paragraphs,  bool footnotes)?  $default,) {final _that = this;
 switch (_that) {
 case _ThemeLayoutConfiguration() when $default != null:
 return $default(_that.font,_that.fontSizeSpacing,_that.hebrewFontSizeSpacing,_that.greekFontSizeSpacing,_that.redLetters,_that.sections,_that.verseNumbers,_that.paragraphs,_that.footnotes);case _:
@@ -211,11 +211,11 @@ return $default(_that.font,_that.fontSizeSpacing,_that.hebrewFontSizeSpacing,_th
 @JsonSerializable()
 
 class _ThemeLayoutConfiguration extends ThemeLayoutConfiguration {
-  const _ThemeLayoutConfiguration({this.font = ThemeFont.inter, @JsonKey(fromJson: FontSizeSpacing.fromJson) this.fontSizeSpacing = FontSizeSpacing.standard, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) this.hebrewFontSizeSpacing, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) this.greekFontSizeSpacing, this.redLetters = true, @JsonKey(fromJson: _sectionHeadingsFromJson) this.sections = SectionHeadings.all, this.verseNumbers = true, this.paragraphs = true, this.footnotes = true}): super._();
+  const _ThemeLayoutConfiguration({this.font = ThemeFont.inter, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) this.fontSizeSpacing, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) this.hebrewFontSizeSpacing, @JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) this.greekFontSizeSpacing, this.redLetters = true, @JsonKey(fromJson: _sectionHeadingsFromJson) this.sections = SectionHeadings.all, this.verseNumbers = true, this.paragraphs = true, this.footnotes = true}): super._();
   factory _ThemeLayoutConfiguration.fromJson(Map<String, dynamic> json) => _$ThemeLayoutConfigurationFromJson(json);
 
 @override@JsonKey() final  ThemeFont font;
-@override@JsonKey(fromJson: FontSizeSpacing.fromJson) final  FontSizeSpacing fontSizeSpacing;
+@override@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) final  FontSizeSpacing? fontSizeSpacing;
 @override@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) final  FontSizeSpacing? hebrewFontSizeSpacing;
 @override@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) final  FontSizeSpacing? greekFontSizeSpacing;
 @override@JsonKey() final  bool redLetters;
@@ -257,7 +257,7 @@ abstract mixin class _$ThemeLayoutConfigurationCopyWith<$Res> implements $ThemeL
   factory _$ThemeLayoutConfigurationCopyWith(_ThemeLayoutConfiguration value, $Res Function(_ThemeLayoutConfiguration) _then) = __$ThemeLayoutConfigurationCopyWithImpl;
 @override @useResult
 $Res call({
- ThemeFont font,@JsonKey(fromJson: FontSizeSpacing.fromJson) FontSizeSpacing fontSizeSpacing,@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? hebrewFontSizeSpacing,@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? greekFontSizeSpacing, bool redLetters,@JsonKey(fromJson: _sectionHeadingsFromJson) SectionHeadings sections, bool verseNumbers, bool paragraphs, bool footnotes
+ ThemeFont font,@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? fontSizeSpacing,@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? hebrewFontSizeSpacing,@JsonKey(fromJson: FontSizeSpacing.fromJsonNullable) FontSizeSpacing? greekFontSizeSpacing, bool redLetters,@JsonKey(fromJson: _sectionHeadingsFromJson) SectionHeadings sections, bool verseNumbers, bool paragraphs, bool footnotes
 });
 
 
@@ -274,11 +274,11 @@ class __$ThemeLayoutConfigurationCopyWithImpl<$Res>
 
 /// Create a copy of ThemeLayoutConfiguration
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? font = null,Object? fontSizeSpacing = null,Object? hebrewFontSizeSpacing = freezed,Object? greekFontSizeSpacing = freezed,Object? redLetters = null,Object? sections = null,Object? verseNumbers = null,Object? paragraphs = null,Object? footnotes = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? font = null,Object? fontSizeSpacing = freezed,Object? hebrewFontSizeSpacing = freezed,Object? greekFontSizeSpacing = freezed,Object? redLetters = null,Object? sections = null,Object? verseNumbers = null,Object? paragraphs = null,Object? footnotes = null,}) {
   return _then(_ThemeLayoutConfiguration(
 font: null == font ? _self.font : font // ignore: cast_nullable_to_non_nullable
-as ThemeFont,fontSizeSpacing: null == fontSizeSpacing ? _self.fontSizeSpacing : fontSizeSpacing // ignore: cast_nullable_to_non_nullable
-as FontSizeSpacing,hebrewFontSizeSpacing: freezed == hebrewFontSizeSpacing ? _self.hebrewFontSizeSpacing : hebrewFontSizeSpacing // ignore: cast_nullable_to_non_nullable
+as ThemeFont,fontSizeSpacing: freezed == fontSizeSpacing ? _self.fontSizeSpacing : fontSizeSpacing // ignore: cast_nullable_to_non_nullable
+as FontSizeSpacing?,hebrewFontSizeSpacing: freezed == hebrewFontSizeSpacing ? _self.hebrewFontSizeSpacing : hebrewFontSizeSpacing // ignore: cast_nullable_to_non_nullable
 as FontSizeSpacing?,greekFontSizeSpacing: freezed == greekFontSizeSpacing ? _self.greekFontSizeSpacing : greekFontSizeSpacing // ignore: cast_nullable_to_non_nullable
 as FontSizeSpacing?,redLetters: null == redLetters ? _self.redLetters : redLetters // ignore: cast_nullable_to_non_nullable
 as bool,sections: null == sections ? _self.sections : sections // ignore: cast_nullable_to_non_nullable

@@ -3,6 +3,7 @@ import 'package:utils_core/utils_core.dart';
 
 extension BuildContextExtensions on BuildContext {
   BuildContext get rootContext => Navigator.of(this, rootNavigator: true).context;
+  double get textScaling => MediaQuery.textScalerOf(this).scale(20) / 20;
 
   Future<void> go(Widget page) =>
       Navigator.of(this).pushAndRemoveUntil(MaterialPageRoute(builder: (_) => page), (_) => false);

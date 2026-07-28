@@ -72,10 +72,6 @@ class ParagraphsBuilder extends HookWidget {
 
   BookType get book => chapterReference.book;
 
-  FontSizeSpacing get fontSizeSpacing => user.themeLayout.getFontSizeSpacingFor(translation.language);
-  double get sizeMultiplier => fontSizeSpacing.multiplier;
-  double get underlineThickness => 4 * sizeMultiplier;
-
   static const hebrewFontFamily = 'Ezra SIL SR';
 
   TextDirection get textDirection => translation.isRtl && book.testament == .oldTestament ? .rtl : .ltr;
@@ -83,7 +79,15 @@ class ParagraphsBuilder extends HookWidget {
   bool get useParagraphs => user.themeLayout.paragraphs && isLtr;
 
   BibleTextStyle getBibleTextStyle(BuildContext context) =>
-      BibleTextStyle(context, config: user.themeLayout, fontSizeSpacing: fontSizeSpacing);
+      BibleTextStyle(context, config: user.themeLayout, fontSizeSpacing: getFontSizeSpacing(context));
+
+  FontSizeSpacing getFontSizeSpacing(BuildContext context) =>
+      user.themeLayout.getFontSizeSpacingFor(translation.language, context.textScaling);
+
+  double getSizeMultiplier(BuildContext context) =>
+      BibleTextStyle.baseMultiplier * getFontSizeSpacing(context).multiplier;
+
+  double getUnderlineThickness(BuildContext context) => 4 * getSizeMultiplier(context);
 
   @override
   Widget build(BuildContext context) {
@@ -104,182 +108,184 @@ class ParagraphsBuilder extends HookWidget {
     BibleTextSelectionWordAnchor? getAnchorAtGlobalPosition(Offset globalPosition) =>
         paragraphHitTesters.map((tester) => tester.getAnchorAt(globalPosition)).nonNulls.firstOrNull;
 
-    return GestureDetector(
-      onLongPressStart: (details) {
-        final selection = this.selection;
-        final onNavigateToVerseSelection = this.onNavigateToVerseSelection;
-        if (selection == null || onNavigateToVerseSelection == null) return;
+    return MediaQuery.withNoTextScaling(
+      child: GestureDetector(
+        onLongPressStart: (details) {
+          final selection = this.selection;
+          final onNavigateToVerseSelection = this.onNavigateToVerseSelection;
+          if (selection == null || onNavigateToVerseSelection == null) return;
 
-        final anchor = getAnchorAtGlobalPosition(details.globalPosition);
-        if (anchor == null) return;
+          final anchor = getAnchorAtGlobalPosition(details.globalPosition);
+          if (anchor == null) return;
 
-        final wordTextSelection = chapter.getWordsSelection(
-          BibleTextSelection.character(anchor: anchor, translation: translation),
-        );
+          final wordTextSelection = chapter.getWordsSelection(
+            BibleTextSelection.character(anchor: anchor, translation: translation),
+          );
 
-        if (!selection.onHandleLongPress(
-          context,
-          selection: wordTextSelection,
-          user: user,
-          onNavigateToVerseSelection: onNavigateToVerseSelection,
-        )) {
-          return;
-        }
+          if (!selection.onHandleLongPress(
+            context,
+            selection: wordTextSelection,
+            user: user,
+            onNavigateToVerseSelection: onNavigateToVerseSelection,
+          )) {
+            return;
+          }
 
-        selection.onTextSelectionUpdated(selection: wordTextSelection, isNewSelection: true, user: user);
-        textSelectionStartAnchorState.value = anchor;
-      },
-      onLongPressMoveUpdate: (details) {
-        final startAnchor = textSelectionStartAnchorState.value;
-        if (startAnchor == null) return;
+          selection.onTextSelectionUpdated(selection: wordTextSelection, isNewSelection: true, user: user);
+          textSelectionStartAnchorState.value = anchor;
+        },
+        onLongPressMoveUpdate: (details) {
+          final startAnchor = textSelectionStartAnchorState.value;
+          if (startAnchor == null) return;
 
-        final anchor = getAnchorAtGlobalPosition(details.globalPosition);
-        if (anchor == null) return;
+          final anchor = getAnchorAtGlobalPosition(details.globalPosition);
+          if (anchor == null) return;
 
-        final anchors = [startAnchor, anchor]..sort();
-        final wordsTextSelection = chapter.getWordsSelection(
-          BibleTextSelection(start: anchors.first, end: anchors.last, translation: translation),
-        );
-        selection?.onTextSelectionUpdated(selection: wordsTextSelection, isNewSelection: false, user: user);
-      },
-      onLongPressEnd: (_) => textSelectionStartAnchorState.value = null,
-      onTapUp: (details) {
-        final anchor = getAnchorAtGlobalPosition(details.globalPosition);
-        if (anchor != null) {
-          selection?.onReferencePressed(anchor.toReference(), user: user);
-        } else {
-          selection?.onTextSelectionUpdated(selection: null, isNewSelection: true, user: user);
-        }
-      },
-      child: Column(
-        crossAxisAlignment: .stretch,
-        children: paragraphSpansByParagraph.mapEntries((paragraph, originalSpans) {
-          final versesParagraph = paragraph.as<VersesParagraph>();
-          final blockIndent = user.themeLayout.paragraphs && versesParagraph != null
-              ? versesParagraph.type.blockIndent
-              : 0.0;
-          final hangingIndent = versesParagraph?.type.hangingIndent ?? 0.0;
+          final anchors = [startAnchor, anchor]..sort();
+          final wordsTextSelection = chapter.getWordsSelection(
+            BibleTextSelection(start: anchors.first, end: anchors.last, translation: translation),
+          );
+          selection?.onTextSelectionUpdated(selection: wordsTextSelection, isNewSelection: false, user: user);
+        },
+        onLongPressEnd: (_) => textSelectionStartAnchorState.value = null,
+        onTapUp: (details) {
+          final anchor = getAnchorAtGlobalPosition(details.globalPosition);
+          if (anchor != null) {
+            selection?.onReferencePressed(anchor.toReference(), user: user);
+          } else {
+            selection?.onTextSelectionUpdated(selection: null, isNewSelection: true, user: user);
+          }
+        },
+        child: Column(
+          crossAxisAlignment: .stretch,
+          children: paragraphSpansByParagraph.mapEntries((paragraph, originalSpans) {
+            final versesParagraph = paragraph.as<VersesParagraph>();
+            final blockIndent = user.themeLayout.paragraphs && versesParagraph != null
+                ? versesParagraph.type.blockIndent
+                : 0.0;
+            final hangingIndent = versesParagraph?.type.hangingIndent ?? 0.0;
 
-          return Padding(
-            padding: useParagraphs ? (versesParagraph?.type.padding ?? .zero).copyWith(left: blockIndent) : .zero,
-            child: LayoutBuilder(
-              builder: (context, constraints) => HookBuilder(
-                builder: (context) {
-                  final textKey = GlobalKey(debugLabel: versesParagraph?.verses.first.verseNum.toString());
+            return Padding(
+              padding: useParagraphs ? (versesParagraph?.type.padding ?? .zero).copyWith(left: blockIndent) : .zero,
+              child: LayoutBuilder(
+                builder: (context, constraints) => HookBuilder(
+                  builder: (context) {
+                    final textKey = GlobalKey(debugLabel: versesParagraph?.verses.first.verseNum.toString());
 
-                  final renderSpans = useMemoized(
-                    () => versesParagraph != null && useParagraphs
-                        ? originalSpans
-                              .withHangingIndent<VerseElement>(
-                                width: constraints.maxWidth,
-                                textAlign: versesParagraph.type.textAlign,
-                                hangingIndent: hangingIndent,
-                                annotationModifier: (element, charactersAdded) =>
-                                    element.copyWith(anchor: element.anchor.withCharactersAdded(charactersAdded)),
-                              )
-                              .withUnorphanedLeadingSpans(
-                                width: constraints.maxWidth,
-                                textAlign: versesParagraph.type.textAlign,
-                                textDirection: textDirection,
-                                isLeadingSpan: (span) =>
-                                    span is IsAnnotatedSpan<VerseElement> && span.annotation.isLeading,
-                              )
-                        : originalSpans,
-                    [originalSpans, constraints.maxWidth],
-                  );
-
-                  if (paragraph is VersesParagraph) {
-                    paragraphHitTesters.add(
-                      ParagraphHitTester(
-                        textKey: textKey,
-                        resolve: (localPosition) => getOffsetAnchor(
-                          characterOffset: renderSpans.getCharacterOffsetFromPosition(
-                            width: constraints.maxWidth,
-                            localPosition: localPosition,
-                            textAlign: paragraph.type.textAlign,
-                            textDirection: textDirection,
-                          ),
-                          paragraph: paragraph,
-                        ),
-                      ),
-                    );
-                  }
-
-                  return Stack(
-                    clipBehavior: .none,
-                    fit: .passthrough,
-                    children: [
-                      if (paragraph is VersesParagraph) ...[
-                        ...buildVerseAnnotationOverlays(
-                          context,
-                          renderSpans: renderSpans,
-                          paragraph: paragraph,
-                          chapter: chapter,
-                          maxWidth: constraints.maxWidth,
-                          hangingIndent: hangingIndent,
-                        ),
-                        ...buildTextSelectionAnnotationOverlays(
-                          context,
-                          renderSpans: renderSpans,
-                          paragraph: paragraph,
-                          maxWidth: constraints.maxWidth,
-                          hangingIndent: hangingIndent,
-                        ),
-                        if (textSelection case final textSelection?)
-                          ...?() {
-                            final (base, extent) =
-                                renderSpans.getTextSelectionCharacterOffsets(
-                                  textSelection: textSelection,
-                                  translation: translation,
-                                  isParagraphs: user.themeLayout.paragraphs,
-                                ) ??
-                                (null, null);
-                            if (base == null || extent == null) {
-                              return null;
-                            }
-
-                            return renderSpans
-                                .getBoxesForSelection(
-                                  baseOffset: base,
-                                  extentOffset: extent,
+                    final renderSpans = useMemoized(
+                      () => versesParagraph != null && useParagraphs
+                          ? originalSpans
+                                .withHangingIndent<VerseElement>(
                                   width: constraints.maxWidth,
-                                  textAlign: paragraph.type.textAlign,
-                                  textDirection: textDirection,
+                                  textAlign: versesParagraph.type.textAlign,
+                                  hangingIndent: hangingIndent,
+                                  annotationModifier: (element, charactersAdded) =>
+                                      element.copyWith(anchor: element.anchor.withCharactersAdded(charactersAdded)),
                                 )
-                                .map((box) => box.toRect())
-                                .withMergedLines()
-                                .withHangingIndent(hangingIndent)
-                                .map(
-                                  (box) => Positioned.fromRect(
-                                    key: ValueKey(box),
-                                    rect: box.asTextSelection(multiplier: sizeMultiplier),
-                                    child: IgnorePointer(
-                                      child: AnimatedContainer(
-                                        duration: Duration(milliseconds: 300),
-                                        curve: Curves.easeInOutCubic,
-                                        decoration: BoxDecoration(
-                                          borderRadius: .circular(4),
-                                          color: context.colors.contentPrimary.withValues(alpha: 0.2),
+                                .withUnorphanedLeadingSpans(
+                                  width: constraints.maxWidth,
+                                  textAlign: versesParagraph.type.textAlign,
+                                  textDirection: textDirection,
+                                  isLeadingSpan: (span) =>
+                                      span is IsAnnotatedSpan<VerseElement> && span.annotation.isLeading,
+                                )
+                          : originalSpans,
+                      [originalSpans, constraints.maxWidth],
+                    );
+
+                    if (paragraph is VersesParagraph) {
+                      paragraphHitTesters.add(
+                        ParagraphHitTester(
+                          textKey: textKey,
+                          resolve: (localPosition) => getOffsetAnchor(
+                            characterOffset: renderSpans.getCharacterOffsetFromPosition(
+                              width: constraints.maxWidth,
+                              localPosition: localPosition,
+                              textAlign: paragraph.type.textAlign,
+                              textDirection: textDirection,
+                            ),
+                            paragraph: paragraph,
+                          ),
+                        ),
+                      );
+                    }
+
+                    return Stack(
+                      clipBehavior: .none,
+                      fit: .passthrough,
+                      children: [
+                        if (paragraph is VersesParagraph) ...[
+                          ...buildVerseAnnotationOverlays(
+                            context,
+                            renderSpans: renderSpans,
+                            paragraph: paragraph,
+                            chapter: chapter,
+                            maxWidth: constraints.maxWidth,
+                            hangingIndent: hangingIndent,
+                          ),
+                          ...buildTextSelectionAnnotationOverlays(
+                            context,
+                            renderSpans: renderSpans,
+                            paragraph: paragraph,
+                            maxWidth: constraints.maxWidth,
+                            hangingIndent: hangingIndent,
+                          ),
+                          if (textSelection case final textSelection?)
+                            ...?() {
+                              final (base, extent) =
+                                  renderSpans.getTextSelectionCharacterOffsets(
+                                    textSelection: textSelection,
+                                    translation: translation,
+                                    isParagraphs: user.themeLayout.paragraphs,
+                                  ) ??
+                                  (null, null);
+                              if (base == null || extent == null) {
+                                return null;
+                              }
+
+                              return renderSpans
+                                  .getBoxesForSelection(
+                                    baseOffset: base,
+                                    extentOffset: extent,
+                                    width: constraints.maxWidth,
+                                    textAlign: paragraph.type.textAlign,
+                                    textDirection: textDirection,
+                                  )
+                                  .map((box) => box.toRect())
+                                  .withMergedLines()
+                                  .withHangingIndent(hangingIndent)
+                                  .map(
+                                    (box) => Positioned.fromRect(
+                                      key: ValueKey(box),
+                                      rect: box.asTextSelection(multiplier: getSizeMultiplier(context)),
+                                      child: IgnorePointer(
+                                        child: AnimatedContainer(
+                                          duration: Duration(milliseconds: 300),
+                                          curve: Curves.easeInOutCubic,
+                                          decoration: BoxDecoration(
+                                            borderRadius: .circular(4),
+                                            color: context.colors.contentPrimary.withValues(alpha: 0.2),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                          }(),
+                                  );
+                            }(),
+                        ],
+                        Text.rich(
+                          key: textKey,
+                          TextSpan(children: renderSpans),
+                          textAlign: paragraph.as<VersesParagraph>()?.type.textAlign ?? .start,
+                          textDirection: textDirection,
+                        ),
                       ],
-                      Text.rich(
-                        key: textKey,
-                        TextSpan(children: renderSpans),
-                        textAlign: paragraph.as<VersesParagraph>()?.type.textAlign ?? .start,
-                        textDirection: textDirection,
-                      ),
-                    ],
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-          );
-        }).toList(),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
@@ -319,7 +325,7 @@ class ParagraphsBuilder extends HookWidget {
             base: offsets.$1,
             extent: offsets.$2,
             annotation: annotation,
-            toRect: (box) => box.asVerseSelection(multiplier: sizeMultiplier),
+            toRect: (box) => box.asVerseSelection(multiplier: getSizeMultiplier(context)),
             buildChild: () => buildAnnotationChild(context, annotation: annotation, isDimmed: textSelection != null),
           );
         })
@@ -356,7 +362,7 @@ class ParagraphsBuilder extends HookWidget {
           base: base,
           extent: extent,
           annotation: annotation,
-          toRect: (box) => box.asTextSelection(multiplier: sizeMultiplier),
+          toRect: (box) => box.asTextSelection(multiplier: getSizeMultiplier(context)),
           buildChild: () =>
               buildAnnotationChild(context, annotation: annotation, isDimmed: highlightedReferences.isNotEmpty),
         );
@@ -378,7 +384,7 @@ class ParagraphsBuilder extends HookWidget {
         : HighlightUnderline(
             color: color.withValues(alpha: isDimmed ? 0.35 : 0.9),
             wavy: annotation.style.type == .wavyUnderline,
-            thickness: underlineThickness,
+            thickness: getUnderlineThickness(context),
           );
   }
 
@@ -549,11 +555,15 @@ class ParagraphsBuilder extends HookWidget {
                             size: Size(
                               context.textStyle.labelXs.getWidth('${translation.title()} ${originalVerse.format()}') +
                                   18,
-                              22 + 2 * sizeMultiplier,
+                              22 + 2 * getSizeMultiplier(context),
                             ),
                             alignment: .middle,
                             child: Padding(
-                              padding: .only(right: isLtr ? 4 : 0, left: isLtr ? 0 : 4, bottom: 2 * sizeMultiplier),
+                              padding: .only(
+                                right: isLtr ? 4 : 0,
+                                left: isLtr ? 0 : 4,
+                                bottom: 2 * getSizeMultiplier(context),
+                              ),
                               child: StyledTag.sm(
                                 child: '${translation.title()} ${originalVerse.format()}'.toText(),
                                 onPressed: () => context.showStyledDialog(
@@ -874,6 +884,8 @@ class ParagraphsBuilder extends HookWidget {
 }
 
 class BibleTextStyle {
+  static const baseMultiplier = 0.95;
+
   final BuildContext context;
   final ThemeLayoutConfiguration config;
   final FontSizeSpacing fontSizeSpacing;
@@ -886,7 +898,7 @@ class BibleTextStyle {
     decorationColor: context.colors.contentPrimary,
   );
 
-  double get multiplier => fontSizeSpacing.multiplier;
+  double get multiplier => baseMultiplier * fontSizeSpacing.multiplier;
 
   TextStyle get majorSection => base.extraBold.copyWith(fontSize: 28 * multiplier, height: 40 / 28);
   TextStyle get section => base.bold.copyWith(fontSize: 24 * multiplier, height: 40 / 24);
