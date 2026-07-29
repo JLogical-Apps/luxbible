@@ -1,4 +1,5 @@
 import 'package:bible/models/bible/bible_translation.dart';
+import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/style/style.dart';
@@ -14,12 +15,17 @@ class CompareSheet {
     required VerseSelection verseSelection,
     BibleTranslation? translation,
     required User user,
+    Map<Reference, GlobalKey>? keyByReference,
   }) {
     if (translation != null) {
       return [
         Padding(
           padding: .all(16),
-          child: _bibleParagraphs(translation: translation, verseSelection: verseSelection),
+          child: _bibleParagraphs(
+            translation: translation,
+            verseSelection: verseSelection,
+            keyByReference: keyByReference,
+          ),
         ),
       ];
     }
@@ -36,20 +42,23 @@ class CompareSheet {
     );
   }
 
-  static Widget _bibleParagraphs({required BibleTranslation translation, required VerseSelection verseSelection}) {
-    return verseSelection.isInTranslation(translation)
-        ? PassageBuilder(
-            verseSelection: verseSelection,
-            translation: translation,
-            showLoading: true,
-            contentBuilder: (context, passage) => Padding(padding: .only(bottom: 16), child: passage),
-          )
-        : Padding(
-            padding: .only(bottom: 16),
-            child: StyledTile.message(
-              leading: Symbols.translate.toIcon(),
-              title: "${translation.fullName()} doesn't include this selection.".toText(),
-            ),
-          );
-  }
+  static Widget _bibleParagraphs({
+    required BibleTranslation translation,
+    required VerseSelection verseSelection,
+    Map<Reference, GlobalKey>? keyByReference,
+  }) => verseSelection.isInTranslation(translation)
+      ? PassageBuilder(
+          verseSelection: verseSelection,
+          translation: translation,
+          showLoading: true,
+          keyByReference: keyByReference,
+          contentBuilder: (context, passage) => Padding(padding: .only(bottom: 16), child: passage),
+        )
+      : Padding(
+          padding: .only(bottom: 16),
+          child: StyledTile.message(
+            leading: Symbols.translate.toIcon(),
+            title: "${translation.fullName()} doesn't include this selection.".toText(),
+          ),
+        );
 }

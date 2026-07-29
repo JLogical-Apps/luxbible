@@ -38,6 +38,7 @@ class StyledSheet<T> extends HookConsumerWidget {
 
   final bool shrinkWrap;
   final bool forceHeight;
+  final ScrollController? controller;
 
   StyledSheet({
     super.key,
@@ -55,6 +56,7 @@ class StyledSheet<T> extends HookConsumerWidget {
     this.buttonsBuilder,
     this.shrinkWrap = true,
     this.forceHeight = false,
+    this.controller,
   }) : childrenBuilder = ((context, ref) => children),
        childrenWrapper = childrenWrapper ?? ((context, child) => child);
 
@@ -74,6 +76,7 @@ class StyledSheet<T> extends HookConsumerWidget {
     this.buttonsBuilder,
     this.shrinkWrap = true,
     this.forceHeight = false,
+    this.controller,
   }) : childrenBuilder = ((context, ref) => [child]),
        childrenWrapper = childrenWrapper ?? ((context, child) => child);
 
@@ -93,6 +96,7 @@ class StyledSheet<T> extends HookConsumerWidget {
     this.buttonsBuilder,
     this.shrinkWrap = true,
     this.forceHeight = false,
+    this.controller,
   }) : childrenWrapper = childrenWrapper ?? ((context, child) => child);
 
   @override
@@ -103,7 +107,7 @@ class StyledSheet<T> extends HookConsumerWidget {
 
     final depth = (sheetNavigationContext?.breadcrumbs.length ?? 1) - 1;
 
-    final scrollController = ModalScrollController.of(context);
+    final scrollController = controller ?? ModalScrollController.of(context);
 
     useOnListenableChange(scrollController, () {
       if (scrollController != null && scrollController.hasClients && sheetNavigationContext != null) {

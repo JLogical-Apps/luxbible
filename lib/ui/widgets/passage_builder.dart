@@ -1,4 +1,5 @@
 import 'package:bible/models/bible/bible_translation.dart';
+import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -19,6 +20,7 @@ class PassageBuilder extends HookConsumerWidget {
 
   final bool showLoading;
   final Widget Function(BuildContext context, Widget passage)? contentBuilder;
+  final Map<Reference, GlobalKey>? keyByReference;
 
   const PassageBuilder({
     super.key,
@@ -28,6 +30,7 @@ class PassageBuilder extends HookConsumerWidget {
     this.onNavigateToVerseSelection,
     this.showLoading = false,
     this.contentBuilder,
+    this.keyByReference,
   });
 
   @override
@@ -60,6 +63,7 @@ class PassageBuilder extends HookConsumerWidget {
       translation: translation,
       selection: selection,
       onNavigateToVerseSelection: onNavigateToVerseSelection,
+      keyByReference: keyByReference,
     );
 
     return FontSizeSpacingZoomGesture(

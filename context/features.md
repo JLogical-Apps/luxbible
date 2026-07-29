@@ -201,7 +201,7 @@ Compare displays the selected chapter, verses, or passage in every active Bible,
 
 - Local and online Bibles are supported.
 - Testament-limited Bibles show an unavailable message for passages they do not contain.
-- A Compare study panel can pin one selected parallel Bible beside the reading text.
+- A Compare study panel pins one selected parallel Bible beside the reading text and links their chapter scrolling.
 
 ## Interlinear
 
@@ -311,7 +311,11 @@ The Dictionary and Lexicon are also available as independent main-toolbar shortc
 
 ## Study Panels
 
-Study panels stay visible while the user reads and follow the currently visible verses or active selection.
+Study panels stay visible while the user reads. Most show the currently visible verses or active selection.
+
+Compare panels are linked reading surfaces. They show the entire current chapter and remain aligned to the top visible
+verse in the main Bible. Scrolling either the Bible or the Compare panel moves the other surface to the corresponding
+verse.
 
 Available panel types are:
 

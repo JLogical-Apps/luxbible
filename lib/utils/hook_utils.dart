@@ -67,6 +67,11 @@ void usePostFrameEffect(Function() effect, [List<Object?>? keys]) {
   }, keys ?? []);
 }
 
+void useOnPostFrameListenableChange(Listenable? listenable, Function() listener, [List<Object?> keys = const []]) {
+  usePostFrameEffect(() => listener(), [listenable, ...keys]);
+  useOnListenableChange(listenable, () => WidgetsBinding.instance.addPostFrameCallback((_) => listener()));
+}
+
 bool useIsFirstFrame() {
   final isFirstFrameState = useState(true);
   usePostFrameEffect(() => isFirstFrameState.value = false);

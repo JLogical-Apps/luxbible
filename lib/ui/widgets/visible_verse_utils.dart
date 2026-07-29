@@ -1,0 +1,16 @@
+import 'package:bible/models/reference/reference.dart';
+import 'package:bible/utils/extensions/key_extensions.dart';
+import 'package:flutter/material.dart';
+import 'package:utils_core/utils_core.dart';
+
+List<Reference> getVisibleReferencesInViewport({
+  required Map<Reference, GlobalKey> keyByReference,
+  required double viewportTop,
+  required double viewportBottom,
+}) => keyByReference
+    .where((reference, key) {
+      final top = key.globalTop;
+      return top != null && top >= viewportTop && top <= viewportBottom;
+    })
+    .keys
+    .toList();
