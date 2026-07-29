@@ -1,6 +1,6 @@
 import 'package:bible/models/commentary_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
-import 'package:bible/providers/commentaries_provider.dart';
+import 'package:bible/providers/commentary_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
 import 'package:bible/ui/widgets/markdown_builder.dart';
