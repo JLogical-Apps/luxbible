@@ -1,6 +1,7 @@
 import 'package:bible/models/bible/verse.dart';
 import 'package:bible/utils/extensions/num_extensions.dart';
 import 'package:bible/utils/serialization_utils.dart';
+import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'paragraph.freezed.dart';
@@ -28,6 +29,17 @@ sealed class Paragraph with _$Paragraph {
   const factory Paragraph.lineBreak() = BreakParagraph;
 
   factory Paragraph.fromJson(Map<String, dynamic> json) => _$ParagraphFromJson(json);
+}
+
+extension ParagraphListExtensions on List<Paragraph> {
+  Verse? getVerseIntroducedBySectionAt(int index) => this[index] is SectionParagraph
+      ? skip(index + 1).whereType<VersesParagraph>().firstOrNull?.verses.firstOrNull
+      : null;
+
+  int? getFirstSectionIndexIntroducingVerse(int verseNum) => indexed
+      .where((entry) => entry.$2 is SectionParagraph)
+      .firstWhereOrNull((entry) => getVerseIntroducedBySectionAt(entry.$1)?.verseNum == verseNum)
+      ?.$1;
 }
 
 enum SectionType {

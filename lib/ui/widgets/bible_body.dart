@@ -95,6 +95,10 @@ class BibleBody extends HookConsumerWidget {
       () => currentChapterReference.references.mapToMap((reference) => MapEntry(reference, GlobalKey())),
       [currentChapterReference],
     );
+    final keyBySectionReference = useMemoized(
+      () => currentChapterReference.references.mapToMap((reference) => MapEntry(reference, GlobalKey())),
+      [currentChapterReference],
+    );
     final keyByReferencePassthrough = usePassthrough(keyByReference);
 
     void softNavigateTo(ChapterReference reference) {
@@ -417,6 +421,7 @@ class BibleBody extends HookConsumerWidget {
                           selection: selection,
                           onNavigateToVerseSelection: navigateToVerseSelection,
                           keyByReference: keyByReference,
+                          keyBySectionReference: keyBySectionReference,
                         ),
                         Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).bottom + 88)),
                       ],
@@ -579,7 +584,9 @@ class BibleBody extends HookConsumerWidget {
                     chapterReference: currentChapterReference,
                     passageTopReference: visibleVerseSelection.references.firstOrNull,
                     onScrollToReference: (reference) {
-                      if (keyByReference[reference]?.currentContext case final referenceContext?) {
+                      final referenceContext =
+                          keyBySectionReference[reference]?.currentContext ?? keyByReference[reference]?.currentContext;
+                      if (referenceContext != null) {
                         Scrollable.ensureVisible(
                           referenceContext,
                           alignment:
@@ -599,13 +606,16 @@ class BibleBody extends HookConsumerWidget {
                       onPressed: () =>
                           ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
                     ),
-                    childrenBuilder: (context, ref, keyByReference) => CompareSheet.buildSheetChildren(
-                      context,
-                      verseSelection: currentChapterReference.toVerseSelection(),
-                      translation: translation,
-                      user: user,
-                      keyByReference: keyByReference,
-                    ),
+                    childrenBuilder: (context, ref, keyByReference, keyBySectionReference, onContentLoaded) =>
+                        CompareSheet.buildSheetChildren(
+                          context,
+                          verseSelection: currentChapterReference.toVerseSelection(),
+                          translation: translation,
+                          user: user,
+                          keyByReference: keyByReference,
+                          keyBySectionReference: keyBySectionReference,
+                          onContentLoaded: onContentLoaded,
+                        ),
                   ),
                   _ => StyledSheet.builder(
                     key: ValueKey((i, visibleVerseSelection)),

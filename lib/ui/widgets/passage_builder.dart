@@ -8,6 +8,7 @@ import 'package:bible/ui/widgets/bible_loading_error.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/font_size_spacing_zoom_gesture.dart';
 import 'package:bible/ui/widgets/paragraphs_builder.dart';
+import 'package:bible/utils/hook_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -21,6 +22,8 @@ class PassageBuilder extends HookConsumerWidget {
   final bool showLoading;
   final Widget Function(BuildContext context, Widget passage)? contentBuilder;
   final Map<Reference, GlobalKey>? keyByReference;
+  final Map<Reference, GlobalKey>? keyBySectionReference;
+  final VoidCallback? onContentLoaded;
 
   const PassageBuilder({
     super.key,
@@ -31,6 +34,8 @@ class PassageBuilder extends HookConsumerWidget {
     this.showLoading = false,
     this.contentBuilder,
     this.keyByReference,
+    this.keyBySectionReference,
+    this.onContentLoaded,
   });
 
   @override
@@ -56,6 +61,12 @@ class PassageBuilder extends HookConsumerWidget {
     }
 
     final paragraphs = paragraphsValue.value ?? [];
+    usePostFrameEffect(() {
+      if (paragraphs.isNotEmpty) {
+        onContentLoaded?.call();
+      }
+    }, [paragraphs.isNotEmpty]);
+
     final passage = ParagraphsBuilder(
       paragraphs: paragraphs,
       chapterReference: chapterReference,
@@ -64,6 +75,7 @@ class PassageBuilder extends HookConsumerWidget {
       selection: selection,
       onNavigateToVerseSelection: onNavigateToVerseSelection,
       keyByReference: keyByReference,
+      keyBySectionReference: keyBySectionReference,
     );
 
     return FontSizeSpacingZoomGesture(

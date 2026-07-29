@@ -22,7 +22,14 @@ class LinkedStudyPanel extends HookWidget {
   final bool isActive;
   final bool showDragHandle;
 
-  final List<Widget> Function(BuildContext, WidgetRef, Map<Reference, GlobalKey>) childrenBuilder;
+  final List<Widget> Function(
+    BuildContext,
+    WidgetRef,
+    Map<Reference, GlobalKey> keyByReference,
+    Map<Reference, GlobalKey> keyBySectionReference,
+    Function() onContentLoaded,
+  )
+  childrenBuilder;
 
   const LinkedStudyPanel({
     super.key,
@@ -42,26 +49,45 @@ class LinkedStudyPanel extends HookWidget {
     final scrollController = useScrollController();
     final panelKeyByReference = useMemoized(
       () => chapterReference.references.mapToMap((reference) => MapEntry(reference, GlobalKey())),
-      [],
+      [chapterReference],
+    );
+    final panelKeyBySectionReference = useMemoized(
+      () => chapterReference.references.mapToMap((reference) => MapEntry(reference, GlobalKey())),
+      [chapterReference],
     );
     final panelViewportKey = useMemoized(() => GlobalKey());
 
-    final topReferenceState = useState<Reference?>(null);
+    final topReferenceState = useState(passageTopReference);
+    final isContentLoadedState = useState(false);
 
     final isTouchingRef = useRef(false);
 
-    useValueChanged(passageTopReference, (_, dynamic _) async {
-      if (passageTopReference case final passageTopReference? when !isTouchingRef.value) {
-        if (panelKeyByReference[passageTopReference]?.currentContext case final referenceContext?) {
-          await Scrollable.ensureVisible(
-            referenceContext,
-            alignment: 32 / (panelViewportKey.renderBox?.size.height ?? 120),
-            duration: Duration(milliseconds: 200),
-            curve: Curves.easeInOutCubic,
-          );
-        }
+    usePostFrameEffect(() async {
+      final reference = passageTopReference;
+      if (reference != null && !isTouchingRef.value) {
+        topReferenceState.value = reference;
       }
-    });
+
+      if (!isContentLoadedState.value || isTouchingRef.value) {
+        return;
+      }
+
+      final viewportHeight = panelViewportKey.renderBox?.size.height;
+      if (reference == null || viewportHeight == null) {
+        return;
+      }
+
+      final referenceContext =
+          panelKeyBySectionReference[reference]?.currentContext ?? panelKeyByReference[reference]?.currentContext;
+      if (referenceContext != null && referenceContext.mounted) {
+        await Scrollable.ensureVisible(
+          referenceContext,
+          alignment: 32 / viewportHeight,
+          duration: Duration(milliseconds: 200),
+          curve: Curves.easeInOutCubic,
+        );
+      }
+    }, [passageTopReference, isContentLoadedState.value]);
 
     useOnPostFrameListenableChange(scrollController, () async {
       final visibleReferences = getVisibleReferencesInViewport(
@@ -69,6 +95,7 @@ class LinkedStudyPanel extends HookWidget {
         viewportTop: panelViewportKey.globalBounds?.top ?? 0,
         viewportBottom: panelViewportKey.globalBounds?.bottom ?? 0,
       );
+      if (visibleReferences.isEmpty) return;
 
       final topReference = topReferenceState.value;
       topReferenceState.value = visibleReferences.firstOrNull;
@@ -87,7 +114,13 @@ class LinkedStudyPanel extends HookWidget {
         controller: scrollController,
         leading: leading,
         childrenKey: panelViewportKey,
-        childrenBuilder: (context, ref) => childrenBuilder(context, ref, panelKeyByReference),
+        childrenBuilder: (context, ref) => childrenBuilder(
+          context,
+          ref,
+          panelKeyByReference,
+          panelKeyBySectionReference,
+          () => isContentLoadedState.value = true,
+        ),
       ),
     );
   }

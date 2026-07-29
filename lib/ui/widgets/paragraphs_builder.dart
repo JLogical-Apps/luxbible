@@ -53,6 +53,7 @@ class ParagraphsBuilder extends HookWidget {
   final Function(VerseSelection)? onNavigateToVerseSelection;
 
   final Map<Reference, GlobalKey>? keyByReference;
+  final Map<Reference, GlobalKey>? keyBySectionReference;
 
   const ParagraphsBuilder({
     super.key,
@@ -64,6 +65,7 @@ class ParagraphsBuilder extends HookWidget {
     this.selection,
     this.onNavigateToVerseSelection,
     this.keyByReference,
+    this.keyBySectionReference,
   });
 
   BibleTextSelection? get textSelection => selection?.textSelection;
@@ -100,8 +102,18 @@ class ParagraphsBuilder extends HookWidget {
         context,
         chapter: chapter,
         keyByReference: keyByReference,
+        keyBySectionReference: keyBySectionReference,
       ).where((entry) => entry.value.isNotEmpty).toList(),
-      [paragraphs, user, translation, chapterReference, highlightedReferences, keyByReference, context.brightness],
+      [
+        paragraphs,
+        user,
+        translation,
+        chapterReference,
+        highlightedReferences,
+        keyByReference,
+        keyBySectionReference,
+        context.brightness,
+      ],
     );
 
     final paragraphHitTesters = <ParagraphHitTester>[];
@@ -448,6 +460,7 @@ class ParagraphsBuilder extends HookWidget {
     BuildContext context, {
     required Chapter chapter,
     required Map<Reference, GlobalKey>? keyByReference,
+    required Map<Reference, GlobalKey>? keyBySectionReference,
   }) {
     final bibleTextStyle = getBibleTextStyle(context);
 
@@ -463,30 +476,37 @@ class ParagraphsBuilder extends HookWidget {
         ...switch (paragraph) {
           SectionParagraph(:final text, :final type) =>
             user.themeLayout.sections.showFor(translation: translation, sectionType: type)
-                ? type.isLarge
-                      ? [
-                          if (paragraphIndex != 0 &&
-                              ((previousParagraph is! SectionParagraph || type > previousParagraph.type)))
-                            TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 1.5)),
-                          TextSpan(
-                            text: text,
-                            style: type == .ms ? bibleTextStyle.majorSection : bibleTextStyle.section,
-                          ),
-                          TextSpan(text: '\n ', style: bibleTextStyle.body.copyWith(height: 0.8)),
-                        ]
-                      : [
-                          if (type.isInline) TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 0.5)),
-                          TextSpan(
-                            text: text,
-                            style: switch (type) {
+                ? [
+                    if (type.isLarge &&
+                        paragraphIndex != 0 &&
+                        ((previousParagraph is! SectionParagraph || type > previousParagraph.type)))
+                      TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 1.5))
+                    else if (type.isInline)
+                      TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 0.5)),
+                    if (chapter.paragraphs.getVerseIntroducedBySectionAt(paragraphIndex) case final verse?
+                        when chapter.paragraphs.getFirstSectionIndexIntroducingVerse(verse.verseNum) == paragraphIndex)
+                      SizedWidgetSpan(
+                        child: SizedBox.shrink(key: keyBySectionReference?[getVerseReference(verse)]),
+                        size: Size.zero,
+                      ),
+                    TextSpan(
+                      text: text,
+                      style: type.isLarge
+                          ? type == .ms
+                                ? bibleTextStyle.majorSection
+                                : bibleTextStyle.section
+                          : switch (type) {
                               .d => bibleTextStyle.smallHeading,
                               .qa => bibleTextStyle.smallSection,
                               .sp => bibleTextStyle.speakerHeading,
                               _ => throw UnimplementedError(),
                             },
-                          ),
-                          if (!type.isInline) TextSpan(text: '\n ', style: bibleTextStyle.body.copyWith(height: 0.1)),
-                        ]
+                    ),
+                    if (type.isLarge)
+                      TextSpan(text: '\n ', style: bibleTextStyle.body.copyWith(height: 0.8))
+                    else if (!type.isInline)
+                      TextSpan(text: '\n ', style: bibleTextStyle.body.copyWith(height: 0.1)),
+                  ]
                 : <InlineSpan>[],
           VersesParagraph(:final verses, :final type, :final preventIndent) => [
             if (useParagraphs && !preventIndent)
@@ -513,7 +533,15 @@ class ParagraphsBuilder extends HookWidget {
                   final spans = [
                     if (verse.verseNum > maxPreviousVerseNum)
                       ...[
-                        SizedWidgetSpan(
+                        AnnotatedSizedWidgetSpan<VerseElement>(
+                          annotation: VerseElement(
+                            anchor: BibleTextSelectionWordAnchor.fromReference(
+                              reference: reference,
+                              characterOffset: 0,
+                            ),
+                            isBoundInSelection: false,
+                            isLeading: true,
+                          ),
                           child: SizedBox.shrink(key: keyByReference?[reference]),
                           size: Size.zero,
                         ),

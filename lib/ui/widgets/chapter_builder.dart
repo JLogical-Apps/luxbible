@@ -29,6 +29,7 @@ class ChapterBuilder extends HookConsumerWidget {
   final Function(VerseSelection)? onNavigateToVerseSelection;
 
   final Map<Reference, GlobalKey>? keyByReference;
+  final Map<Reference, GlobalKey>? keyBySectionReference;
 
   final Chapter? chapter;
 
@@ -40,6 +41,7 @@ class ChapterBuilder extends HookConsumerWidget {
     this.selection,
     this.onNavigateToVerseSelection,
     this.keyByReference,
+    this.keyBySectionReference,
     this.chapter,
   });
 
@@ -87,6 +89,7 @@ class ChapterBuilder extends HookConsumerWidget {
             selection: selection,
             onNavigateToVerseSelection: onNavigateToVerseSelection,
             keyByReference: keyByReference,
+            keyBySectionReference: keyBySectionReference,
           ),
           if (translation.copyright case final copyright?)
             Text(copyright, style: context.textStyle.paragraphXs.subtle(), textAlign: .center),

@@ -16,6 +16,8 @@ class CompareSheet {
     BibleTranslation? translation,
     required User user,
     Map<Reference, GlobalKey>? keyByReference,
+    Map<Reference, GlobalKey>? keyBySectionReference,
+    Function()? onContentLoaded,
   }) {
     if (translation != null) {
       return [
@@ -25,6 +27,8 @@ class CompareSheet {
             translation: translation,
             verseSelection: verseSelection,
             keyByReference: keyByReference,
+            keyBySectionReference: keyBySectionReference,
+            onContentLoaded: onContentLoaded,
           ),
         ),
       ];
@@ -46,12 +50,16 @@ class CompareSheet {
     required BibleTranslation translation,
     required VerseSelection verseSelection,
     Map<Reference, GlobalKey>? keyByReference,
+    Map<Reference, GlobalKey>? keyBySectionReference,
+    Function()? onContentLoaded,
   }) => verseSelection.isInTranslation(translation)
       ? PassageBuilder(
           verseSelection: verseSelection,
           translation: translation,
           showLoading: true,
           keyByReference: keyByReference,
+          keyBySectionReference: keyBySectionReference,
+          onContentLoaded: onContentLoaded,
           contentBuilder: (context, passage) => Padding(padding: .only(bottom: 16), child: passage),
         )
       : Padding(

@@ -115,10 +115,8 @@ FutureOr<List<Paragraph>> verseSelectionParagraphs(
       .toList();
   if (selectedIndices.isEmpty) return [];
 
-  bool sectionIntroducesShownParagraph(int index) {
-    final firstVerse = paragraphs.skip(index + 1).whereType<VersesParagraph>().firstOrNull?.verses.firstOrNull;
-    return firstVerse != null && isSelected(firstVerse);
-  }
+  bool sectionIntroducesShownParagraph(int index) =>
+      paragraphs.getVerseIntroducedBySectionAt(index)?.mapIfNonNull((verse) => isSelected(verse)) ?? false;
 
   var startIndex = selectedIndices.first;
   while (startIndex > 0) {

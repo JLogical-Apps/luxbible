@@ -172,7 +172,7 @@ extension ListSpanExtensions on List<InlineSpan> {
         final start = offsetOf(groupStart);
         final groupSize = spans.skip(groupStart).takeWhile(isLeadingSpan).length;
 
-        final groupTop = topAt(start);
+        final groupTop = List.generate(groupSize, (offset) => topAt(start + offset)).nonNulls.firstOrNull;
         final wordTop = topAt(start + groupSize);
         if (groupTop == null || wordTop == null) {
           return false;
