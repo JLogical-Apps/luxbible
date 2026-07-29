@@ -9,13 +9,14 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
+import 'package:bible/ui/sheets/compare_sheet.dart';
 import 'package:bible/ui/widgets/audio_bible_panel.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/chapter_builder.dart';
 import 'package:bible/ui/widgets/chapter_page_view.dart';
 import 'package:bible/ui/widgets/hook_consumer_builder.dart';
 import 'package:bible/ui/widgets/keep_alive_container.dart';
-import 'package:bible/ui/widgets/linked_compare_study_panel.dart';
+import 'package:bible/ui/widgets/linked_study_panel.dart';
 import 'package:bible/ui/widgets/main_toolbar.dart';
 import 'package:bible/ui/widgets/onboarding_panel.dart';
 import 'package:bible/ui/widgets/resizable_container.dart';
@@ -573,10 +574,9 @@ class BibleBody extends HookConsumerWidget {
                 key: ValueKey((i, studyPanel)),
                 padding: isSideLayout ? .symmetric(horizontal: 4) : .zero,
                 child: switch (studyPanel) {
-                  CompareStudyPanel(:final translation) => LinkedCompareStudyPanel(
+                  CompareStudyPanel(:final translation) => LinkedStudyPanel(
                     key: ValueKey((i, currentChapterReference)),
                     chapterReference: currentChapterReference,
-                    translation: translation,
                     passageTopReference: visibleVerseSelection.references.firstOrNull,
                     onScrollToReference: (reference) {
                       if (keyByReference[reference]?.currentContext case final referenceContext?) {
@@ -592,8 +592,20 @@ class BibleBody extends HookConsumerWidget {
                     },
                     isActive: currentCarouselPage == i + onboardingOffset,
                     showDragHandle: !isSideLayout,
-                    onClose: () =>
-                        ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
+                    title: currentChapterReference.format().toText(),
+                    subtitle: 'Compare with ${translation.title()}'.toText(),
+                    leading: StyledCircleButton.md(
+                      child: Symbols.close.toIcon(),
+                      onPressed: () =>
+                          ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
+                    ),
+                    childrenBuilder: (context, ref, keyByReference) => CompareSheet.buildSheetChildren(
+                      context,
+                      verseSelection: currentChapterReference.toVerseSelection(),
+                      translation: translation,
+                      user: user,
+                      keyByReference: keyByReference,
+                    ),
                   ),
                   _ => StyledSheet.builder(
                     key: ValueKey((i, visibleVerseSelection)),
