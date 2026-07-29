@@ -951,15 +951,11 @@ class VerseElement {
 }
 
 extension on Rect {
-  Rect asVerseSelection({required double multiplier}) => Rect.fromLTWH(
-    left - 1,
-    top + 3 * (multiplier * 2.5 + 1) / 2,
-    width + 4 * multiplier,
-    min(32 * multiplier, height),
-  );
+  Rect asVerseSelection({required double multiplier}) =>
+      .fromCenter(center: center, width: width + 4 * multiplier, height: min(32 * multiplier, height));
 
   Rect asTextSelection({required double multiplier}) =>
-      Rect.fromLTWH(left, top + 4 * (multiplier * 2.5 + 1) / 2, width + 2 * multiplier, min(28 * multiplier, height));
+      .fromCenter(center: center, width: width + 2 * multiplier, height: min(28 * multiplier, height));
 }
 
 extension on List<InlineSpan> {
