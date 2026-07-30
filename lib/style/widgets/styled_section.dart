@@ -53,7 +53,7 @@ class StyledSection extends StatelessWidget {
             ),
           ),
           ?trailing,
-          SizedBox(width: MediaQuery.viewPaddingOf(context).left),
+          SizedBox(width: MediaQuery.viewPaddingOf(context).right),
         ],
       ),
     ),
