@@ -9,6 +9,7 @@ import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/widgets/highlight_style_icon.dart';
 import 'package:bible/ui/widgets/search_location_button.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
+import 'package:bible/utils/extensions/edge_insets_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -60,7 +61,7 @@ class AnnotationsPage extends HookConsumerWidget {
         children: [
           SingleChildScrollView(
             scrollDirection: .horizontal,
-            padding: .symmetric(horizontal: 16),
+            padding: MediaQuery.viewPaddingOf(context).onlyHorizontal + .symmetric(horizontal: 16),
             child: Row(
               spacing: 8,
               children: [
@@ -202,19 +203,23 @@ class AnnotationsPage extends HookConsumerWidget {
               padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
               children: [
                 if (user.annotations.isEmpty)
-                  Padding(
-                    padding: .all(16),
-                    child: StyledTile.message(
-                      leading: Symbols.note_stack.toIcon(),
-                      title: "You haven't created any annotations.".toText(),
+                  SafeArea(
+                    child: Padding(
+                      padding: .all(16),
+                      child: StyledTile.message(
+                        leading: Symbols.note_stack.toIcon(),
+                        title: "You haven't created any annotations.".toText(),
+                      ),
                     ),
                   )
                 else if (matchingAnnotations.isEmpty)
-                  Padding(
-                    padding: .all(16),
-                    child: StyledTile.message(
-                      leading: Symbols.note_stack.toIcon(),
-                      title: "No matching annotations.".toText(),
+                  SafeArea(
+                    child: Padding(
+                      padding: .all(16),
+                      child: StyledTile.message(
+                        leading: Symbols.note_stack.toIcon(),
+                        title: "No matching annotations.".toText(),
+                      ),
                     ),
                   ),
                 ...matchingAnnotations

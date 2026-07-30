@@ -16,6 +16,7 @@ import 'package:bible/ui/widgets/search_location_button.dart';
 import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/edge_insets_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -111,7 +112,7 @@ class SearchPage extends HookConsumerWidget {
       body: Column(
         children: [
           Container(
-            padding: .all(16),
+            padding: MediaQuery.viewPaddingOf(context).onlyHorizontal + .all(16),
             decoration: BoxDecoration(color: context.colors.surfacePrimary, boxShadow: [StyledShadow.down(context)]),
             child: Column(
               spacing: 12,
@@ -171,13 +172,15 @@ class SearchPage extends HookConsumerWidget {
                     Column(
                       crossAxisAlignment: .start,
                       children: [
-                        Padding(
-                          padding: .all(16),
-                          child: StyledTile.message(
-                            title: 'Start a search'.toText(),
-                            subtitle: 'Enter a keyword like light, word, or wisdom, then hit enter on the keyboard.'
-                                .toText(),
-                            leading: Symbols.search.toIcon(),
+                        SafeArea(
+                          child: Padding(
+                            padding: .all(16),
+                            child: StyledTile.message(
+                              title: 'Start a search'.toText(),
+                              subtitle: 'Enter a keyword like light, word, or wisdom, then hit enter on the keyboard.'
+                                  .toText(),
+                              leading: Symbols.search.toIcon(),
+                            ),
                           ),
                         ),
                         if (user.searchHistory.isNotEmpty)

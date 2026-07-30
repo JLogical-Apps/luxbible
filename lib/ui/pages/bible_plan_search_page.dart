@@ -3,6 +3,7 @@ import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/bible_plan_tile.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
+import 'package:bible/utils/extensions/edge_insets_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -38,7 +39,7 @@ class BiblePlanSearchPage extends HookConsumerWidget {
         children: [
           SingleChildScrollView(
             scrollDirection: .horizontal,
-            padding: .symmetric(horizontal: 16),
+            padding: MediaQuery.viewPaddingOf(context).onlyHorizontal + .symmetric(horizontal: 16),
             child: Row(
               spacing: 8,
               children: [

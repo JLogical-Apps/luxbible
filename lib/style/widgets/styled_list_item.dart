@@ -106,13 +106,14 @@ class StyledListItem extends StatelessWidget {
             child: ConstrainedBox(
               constraints: BoxConstraints(
                 minHeight: switch (size) {
-                  ComponentSize.sm => 56,
-                  ComponentSize.md => 64,
-                  ComponentSize.lg => 80,
+                  .sm => 56,
+                  .md => 64,
+                  .lg => 80,
                 },
               ),
               child: Row(
                 children: [
+                  SizedBox(width: MediaQuery.viewPaddingOf(context).left),
                   if (leading case final leading?)
                     SizedBox(
                       width: 64,
@@ -171,12 +172,18 @@ class StyledListItem extends StatelessWidget {
                       ],
                     ),
                   ),
+                  SizedBox(width: MediaQuery.viewPaddingOf(context).right),
                 ],
               ),
             ),
           ),
           if ((showDividerOverride ?? itemContext?.showDivider) == true)
-            Positioned(left: leading == null ? 16 : 64, right: 0, bottom: 0, child: StyledDivider()),
+            Positioned(
+              left: (leading == null ? 16 : 64) + MediaQuery.viewPaddingOf(context).left,
+              right: 0,
+              bottom: 0,
+              child: StyledDivider(),
+            ),
         ],
       ),
     );

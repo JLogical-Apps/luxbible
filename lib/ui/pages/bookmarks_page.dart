@@ -19,11 +19,13 @@ class BookmarksPage extends HookConsumerWidget {
       title: 'Your Bookmarks'.toText(),
       body: user.bookmarkById.isEmpty
           ? StyledListView.child(
-              child: Padding(
-                padding: .all(16),
-                child: StyledTile.message(
-                  leading: Symbols.bookmark.toIcon(),
-                  title: "You haven't created any bookmarks.".toText(),
+              child: SafeArea(
+                child: Padding(
+                  padding: .all(16),
+                  child: StyledTile.message(
+                    leading: Symbols.bookmark.toIcon(),
+                    title: "You haven't created any bookmarks.".toText(),
+                  ),
                 ),
               ),
             )

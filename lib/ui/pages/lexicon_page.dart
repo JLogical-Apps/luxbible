@@ -4,6 +4,7 @@ import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
 import 'package:bible/ui/widgets/markdown_builder.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
+import 'package:bible/utils/extensions/edge_insets_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:collection/collection.dart';
@@ -59,7 +60,7 @@ class LexiconPage extends HookConsumerWidget {
       body: Column(
         children: [
           Container(
-            padding: .all(16),
+            padding: MediaQuery.viewPaddingOf(context).onlyHorizontal + .all(16),
             decoration: BoxDecoration(color: context.colors.surfacePrimary, boxShadow: [StyledShadow.down(context)]),
             child: Column(
               spacing: 12,

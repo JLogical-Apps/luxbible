@@ -33,7 +33,7 @@ extension StyleContextExtensions on BuildContext {
       maxWidth: MediaQuery.sizeOf(rootContext).width - 32,
       maxHeight: MediaQuery.sizeOf(rootContext).height - MediaQuery.paddingOf(rootContext).top - 16,
     ),
-    builder: dialogBuilder,
+    builder: (context) => SafeArea(child: dialogBuilder(context)),
   );
 
   Future<T?> showStyledSheet<T>(
@@ -49,7 +49,11 @@ extension StyleContextExtensions on BuildContext {
     useRootNavigator: true,
     builder: (context) => ConstrainedBox(
       constraints: BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).top - 8),
-      child: wrapper == null ? HookBuilder(builder: sheetBuilder) : wrapper(sheetBuilder),
+      child: SafeArea(
+        top: false,
+        bottom: false,
+        child: wrapper == null ? HookBuilder(builder: sheetBuilder) : wrapper(sheetBuilder),
+      ),
     ),
   );
 
@@ -70,11 +74,15 @@ extension StyleContextExtensions on BuildContext {
         constraints: BoxConstraints(
           maxHeight: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).top - 8,
         ),
-        child: Provider.value(
-          value: sheetContext.withBreadcrumb(
-            SheetNavigationBreadcrumb(text: breadcrumbText, sheetBuilder: sheetBuilder),
+        child: SafeArea(
+          top: false,
+          bottom: false,
+          child: Provider.value(
+            value: sheetContext.withBreadcrumb(
+              SheetNavigationBreadcrumb(text: breadcrumbText, sheetBuilder: sheetBuilder),
+            ),
+            child: HookBuilder(builder: sheetBuilder),
           ),
-          child: HookBuilder(builder: sheetBuilder),
         ),
       ),
     );

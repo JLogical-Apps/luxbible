@@ -19,4 +19,19 @@ extension GlobalKeyExtensions on GlobalKey {
             renderBox.localToGlobal(Offset(renderBox.size.width, renderBox.size.height)),
           );
   }
+
+  Future<void> scrollIntoView({double alignment = 0.5, Axis? axis, required Duration duration}) async {
+    final context = currentContext;
+    if (context == null || !context.mounted) return;
+
+    final scrollable = Scrollable.maybeOf(context, axis: axis);
+    if (scrollable == null) return;
+
+    scrollable.position.ensureVisible(
+      context.findRenderObject()!,
+      alignment: alignment,
+      duration: duration,
+      curve: Curves.easeInOutCubic,
+    );
+  }
 }

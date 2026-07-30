@@ -7,4 +7,6 @@ extension EdgeInsetsExtensions on EdgeInsets {
     right: right ?? this.right,
     top: top ?? this.top,
   );
+
+  EdgeInsets get onlyHorizontal => copyWith(top: 0, bottom: 0);
 }

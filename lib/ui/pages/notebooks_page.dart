@@ -28,11 +28,14 @@ class NotebooksPage extends HookConsumerWidget {
         children: [
           ...user.notebooks.isEmpty
               ? [
-                  Padding(
-                    padding: .symmetric(horizontal: 16),
-                    child: StyledTile.message(
-                      leading: Symbols.book_2.toIcon(),
-                      title: "You haven't created any notebooks. Notebooks let you organize your annotations.".toText(),
+                  SafeArea(
+                    child: Padding(
+                      padding: .symmetric(horizontal: 16),
+                      child: StyledTile.message(
+                        leading: Symbols.book_2.toIcon(),
+                        title: "You haven't created any notebooks. Notebooks let you organize your annotations."
+                            .toText(),
+                      ),
                     ),
                   ),
                 ]

@@ -3,6 +3,7 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
+import 'package:bible/utils/extensions/key_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:bible/utils/hook_utils.dart';
 import 'package:collection/collection.dart';
@@ -31,15 +32,7 @@ class OnboardingPanel extends HookConsumerWidget {
     usePostFrameEffect(() async {
       if (currentStep == null || !isVisible) return;
       await Future.delayed(Duration(milliseconds: 200));
-      final stepContext = keyByStep[currentStep]?.currentContext;
-      if (stepContext != null && stepContext.mounted) {
-        Scrollable.ensureVisible(
-          stepContext,
-          alignment: 0.5,
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeInOutCubic,
-        );
-      }
+      keyByStep[currentStep]?.scrollIntoView(alignment: 0.5, duration: Duration(milliseconds: 300));
     }, [currentStep]);
 
     return StyledSheet(

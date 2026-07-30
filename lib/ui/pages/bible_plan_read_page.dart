@@ -96,30 +96,34 @@ class BiblePlanReadPage extends HookConsumerWidget {
               controller: tabController,
               children: passages
                   .map(
-                    (passage) => PassageBuilder(
-                      verseSelection: passage,
-                      selection: selection,
-                      onNavigateToVerseSelection: navigateToVerseSelection,
-                      contentBuilder: (context, passageContent) => KeyedScrollTransformer(
-                        scrollKey: 'passage',
-                        child: StyledScrollbar(
-                          child: SingleChildScrollView(
-                            physics: AlwaysScrollableScrollPhysics(),
-                            padding: .symmetric(horizontal: 24, vertical: 16),
-                            child: Column(
-                              crossAxisAlignment: .start,
-                              spacing: 16,
-                              children: [
-                                passageContent,
-                                StyledRectButton.secondary(
-                                  label: 'Read Entire Chapter'.toText(),
-                                  onPressed: () => ChapterPreviewPage.show(
-                                    context,
-                                    verseSelection: passage,
-                                    onNavigateToPassage: () => context.pop(passage),
+                    (passage) => SafeArea(
+                      top: false,
+                      bottom: false,
+                      child: PassageBuilder(
+                        verseSelection: passage,
+                        selection: selection,
+                        onNavigateToVerseSelection: navigateToVerseSelection,
+                        contentBuilder: (context, passageContent) => KeyedScrollTransformer(
+                          scrollKey: 'passage',
+                          child: StyledScrollbar(
+                            child: SingleChildScrollView(
+                              physics: AlwaysScrollableScrollPhysics(),
+                              padding: .symmetric(horizontal: 24, vertical: 16),
+                              child: Column(
+                                crossAxisAlignment: .start,
+                                spacing: 16,
+                                children: [
+                                  passageContent,
+                                  StyledRectButton.secondary(
+                                    label: 'Read Entire Chapter'.toText(),
+                                    onPressed: () => ChapterPreviewPage.show(
+                                      context,
+                                      verseSelection: passage,
+                                      onNavigateToPassage: () => context.pop(passage),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),

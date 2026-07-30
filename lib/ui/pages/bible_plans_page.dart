@@ -64,140 +64,143 @@ class BiblePlansPage extends ConsumerWidget {
                       final dayIndex = useListenableSelector(tabController, () => tabController.index);
                       final day = plan.days[dayIndex];
 
-                      return Padding(
-                        padding: .only(left: 16, right: 16, bottom: 16),
-                        child: StyledCard(
-                          children: [
-                            StyledListItem(
-                              leading: BiblePlanThumbnail(plan: plan),
-                              title: plan.name.toText(),
-                              subtitle: Padding(
-                                padding: .symmetric(vertical: 4),
-                                child: StyledProgressBar(
-                                  value: progress.numCompletedDays / plan.dayCount,
-                                  color: plan.getHue(context.colors).primary,
+                      return SafeArea(
+                        bottom: false,
+                        child: Padding(
+                          padding: .only(left: 16, right: 16, bottom: 16),
+                          child: StyledCard(
+                            children: [
+                              StyledListItem(
+                                leading: BiblePlanThumbnail(plan: plan),
+                                title: plan.name.toText(),
+                                subtitle: Padding(
+                                  padding: .symmetric(vertical: 4),
+                                  child: StyledProgressBar(
+                                    value: progress.numCompletedDays / plan.dayCount,
+                                    color: plan.getHue(context.colors).primary,
+                                  ),
                                 ),
-                              ),
-                              showDividerOverride: false,
-                              trailing: StyledCircleButton.md(
-                                child: Symbols.more_vert.toIcon(),
-                                onPressed: () => context.showStyledSheet(
-                                  (_) => StyledSheet(
-                                    title: plan.name.toText(),
-                                    children: [
-                                      StyledListItem(
-                                        leading: Icon(Symbols.stop_circle, color: context.colors.contentCritical),
-                                        title: 'Stop Plan'.toText(),
-                                        subtitle: 'Remove this plan and its progress.'.toText(),
-                                        onPressed: () async {
-                                          context.pop();
-                                          final confirmed = await context.showStyledDialog(
-                                            (context) => StyledDialog.confirmDelete(
-                                              title: 'Stop Plan'.toText(),
-                                              body:
-                                                  'Are you sure you want to stop "${plan.name}"? Your progress will be lost.'
-                                                      .toText(),
-                                              deleteLabel: 'Stop'.toText(),
-                                            ),
-                                          );
-                                          if (confirmed == true) {
-                                            ref.updateUser((user) => user.withStoppedPlan(planType));
-                                          }
-                                        },
-                                      ),
-                                    ],
+                                showDividerOverride: false,
+                                trailing: StyledCircleButton.md(
+                                  child: Symbols.more_vert.toIcon(),
+                                  onPressed: () => context.showStyledSheet(
+                                    (_) => StyledSheet(
+                                      title: plan.name.toText(),
+                                      children: [
+                                        StyledListItem(
+                                          leading: Icon(Symbols.stop_circle, color: context.colors.contentCritical),
+                                          title: 'Stop Plan'.toText(),
+                                          subtitle: 'Remove this plan and its progress.'.toText(),
+                                          onPressed: () async {
+                                            context.pop();
+                                            final confirmed = await context.showStyledDialog(
+                                              (context) => StyledDialog.confirmDelete(
+                                                title: 'Stop Plan'.toText(),
+                                                body:
+                                                    'Are you sure you want to stop "${plan.name}"? Your progress will be lost.'
+                                                        .toText(),
+                                                deleteLabel: 'Stop'.toText(),
+                                              ),
+                                            );
+                                            if (confirmed == true) {
+                                              ref.updateUser((user) => user.withStoppedPlan(planType));
+                                            }
+                                          },
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            StyledTabBar.scrollable(
-                              tabController: tabController,
-                              tabTitles: plan.dayIndexes.map((dayIndex) {
-                                final isCompleted = progress.isDayComplete(dayIndex: dayIndex);
-                                final isFuture = dayIndex > progress.currentDayIndex;
-                                return Row(
-                                  spacing: 8,
-                                  children: [
-                                    Text(
-                                      'Day ${dayIndex + 1}',
-                                      style: TextStyle(color: isFuture ? context.colors.contentDisabled : null),
-                                    ),
-                                    Icon(
-                                      isCompleted ? Symbols.check_circle : Symbols.circle,
-                                      fill: isCompleted ? 1 : 0,
-                                      color: isCompleted
-                                          ? context.colors.contentPrimary
-                                          : isFuture
-                                          ? context.colors.contentDisabled
-                                          : context.colors.contentSecondary,
-                                      size: 16,
-                                    ),
-                                  ],
-                                );
-                              }).toList(),
-                            ),
-                            StyledList(
-                              children: day.isReviewAndReflect
-                                  ? [
-                                      StyledListItem.checkbox(
-                                        title: 'Review & Reflect'.toText(),
-                                        isSelected: progress.isDayComplete(dayIndex: dayIndex),
-                                        onSelected: (_) => ref.updateUser(
-                                          (user) => user.withPlanDayToggled(planType: planType, dayIndex: dayIndex),
-                                        ),
+                              StyledTabBar.scrollable(
+                                tabController: tabController,
+                                tabTitles: plan.dayIndexes.map((dayIndex) {
+                                  final isCompleted = progress.isDayComplete(dayIndex: dayIndex);
+                                  final isFuture = dayIndex > progress.currentDayIndex;
+                                  return Row(
+                                    spacing: 8,
+                                    children: [
+                                      Text(
+                                        'Day ${dayIndex + 1}',
+                                        style: TextStyle(color: isFuture ? context.colors.contentDisabled : null),
                                       ),
-                                    ]
-                                  : day.passages
-                                        .mapIndexed(
-                                          (passageIndex, passage) => StyledListItem(
-                                            title: passage.format().toText(),
-                                            onPressed: () async {
-                                              final result = await context.push<VerseSelection>(
-                                                BiblePlanReadPage(
-                                                  planType: planType,
+                                      Icon(
+                                        isCompleted ? Symbols.check_circle : Symbols.circle,
+                                        fill: isCompleted ? 1 : 0,
+                                        color: isCompleted
+                                            ? context.colors.contentPrimary
+                                            : isFuture
+                                            ? context.colors.contentDisabled
+                                            : context.colors.contentSecondary,
+                                        size: 16,
+                                      ),
+                                    ],
+                                  );
+                                }).toList(),
+                              ),
+                              StyledList(
+                                children: day.isReviewAndReflect
+                                    ? [
+                                        StyledListItem.checkbox(
+                                          title: 'Review & Reflect'.toText(),
+                                          isSelected: progress.isDayComplete(dayIndex: dayIndex),
+                                          onSelected: (_) => ref.updateUser(
+                                            (user) => user.withPlanDayToggled(planType: planType, dayIndex: dayIndex),
+                                          ),
+                                        ),
+                                      ]
+                                    : day.passages
+                                          .mapIndexed(
+                                            (passageIndex, passage) => StyledListItem(
+                                              title: passage.format().toText(),
+                                              onPressed: () async {
+                                                final result = await context.push<VerseSelection>(
+                                                  BiblePlanReadPage(
+                                                    planType: planType,
+                                                    dayIndex: dayIndex,
+                                                    initialPassageIndex: passageIndex,
+                                                  ),
+                                                );
+                                                if (result != null && context.mounted) context.pop(result);
+                                              },
+                                              trailing: StyledCheckbox(
+                                                isSelected: progress.isPassageComplete(
                                                   dayIndex: dayIndex,
-                                                  initialPassageIndex: passageIndex,
-                                                ),
-                                              );
-                                              if (result != null && context.mounted) context.pop(result);
-                                            },
-                                            trailing: StyledCheckbox(
-                                              isSelected: progress.isPassageComplete(
-                                                dayIndex: dayIndex,
-                                                passage: passage,
-                                              ),
-                                              onChanged: (_) => ref.updateUser(
-                                                (user) => user.withPassageToggled(
-                                                  planType: planType,
-                                                  dayIndex: dayIndex,
-                                                  day: day,
                                                   passage: passage,
+                                                ),
+                                                onChanged: (_) => ref.updateUser(
+                                                  (user) => user.withPassageToggled(
+                                                    planType: planType,
+                                                    dayIndex: dayIndex,
+                                                    day: day,
+                                                    passage: passage,
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
-                                        )
-                                        .toList(),
-                            ),
-                            if (progress.isCompleted)
-                              Padding(
-                                padding: .all(16),
-                                child: StyledRectButton.primary(
-                                  label: 'Finish'.toText(),
-                                  onPressed: () {
-                                    ref.updateUser((user) => user.withCompletedPlan(planType));
-                                    context.showStyledSnackbar(
-                                      message: '"${plan.name}" completed.'.toText(),
-                                      action: StyledTextAction(
-                                        label: 'Start New'.toText(),
-                                        onPressed: () => context.push(BiblePlanSearchPage()),
-                                      ),
-                                      duration: Duration(seconds: 10),
-                                    );
-                                  },
-                                ),
+                                          )
+                                          .toList(),
                               ),
-                          ],
+                              if (progress.isCompleted)
+                                Padding(
+                                  padding: .all(16),
+                                  child: StyledRectButton.primary(
+                                    label: 'Finish'.toText(),
+                                    onPressed: () {
+                                      ref.updateUser((user) => user.withCompletedPlan(planType));
+                                      context.showStyledSnackbar(
+                                        message: '"${plan.name}" completed.'.toText(),
+                                        action: StyledTextAction(
+                                          label: 'Start New'.toText(),
+                                          onPressed: () => context.push(BiblePlanSearchPage()),
+                                        ),
+                                        duration: Duration(seconds: 10),
+                                      );
+                                    },
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
                       );
                     },

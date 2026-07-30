@@ -110,7 +110,6 @@ class AudioBiblePanel extends HookConsumerWidget {
                                     ),
                                   ),
                                   Spacer(),
-                                  gapW16,
                                   StyledCircleButton.lg(
                                     child: Symbols.replay_10.toIcon(),
                                     onPressed: () => notifier.seekBy(Duration(seconds: -10)),

@@ -79,15 +79,14 @@ class LinkedStudyPanel extends HookWidget {
         return;
       }
 
-      final sectionContext = panelKeyBySectionReference[reference]?.currentContext;
-      final verseContext = panelKeyByReference[reference]?.currentContext;
-      final referenceContext = sectionContext ?? verseContext;
-      if (referenceContext != null && referenceContext.mounted) {
-        await Scrollable.ensureVisible(
-          referenceContext,
-          alignment: sectionContext != null ? (32 / viewportHeight) : 0,
+      final key = panelKeyBySectionReference[reference]?.currentContext != null
+          ? panelKeyBySectionReference[reference]
+          : panelKeyByReference[reference];
+      if (key != null) {
+        key.scrollIntoView(
+          axis: .vertical,
           duration: Duration(milliseconds: 200),
-          curve: Curves.easeInOutCubic,
+          alignment: key == panelKeyBySectionReference[reference] ? (32 / viewportHeight) : 0,
         );
       }
     }, [passageTopReference, isContentLoadedState.value, isActive]);

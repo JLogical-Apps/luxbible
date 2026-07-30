@@ -1,4 +1,5 @@
 import 'package:bible/style/style.dart';
+import 'package:bible/utils/extensions/edge_insets_extensions.dart';
 import 'package:flutter/material.dart';
 
 class StyledSection extends StatelessWidget {
@@ -31,6 +32,8 @@ class StyledSection extends StatelessWidget {
     this.childPadding = const .symmetric(horizontal: 16),
   }) : children = [child];
 
+  bool get useSafeChildren => childPadding != .zero;
+
   List<Widget> buildChildren(BuildContext context) => [
     SizedBox(height: padding.top),
     Padding(
@@ -38,6 +41,7 @@ class StyledSection extends StatelessWidget {
       child: Row(
         spacing: 8,
         children: [
+          SizedBox(width: MediaQuery.viewPaddingOf(context).left),
           Expanded(
             child: Column(
               crossAxisAlignment: .start,
@@ -49,6 +53,7 @@ class StyledSection extends StatelessWidget {
             ),
           ),
           ?trailing,
+          SizedBox(width: MediaQuery.viewPaddingOf(context).left),
         ],
       ),
     ),
@@ -56,7 +61,19 @@ class StyledSection extends StatelessWidget {
     SizedBox(height: childPadding.top),
     ...StyledList.dividedItems(
       children: children
-          .map((child) => Padding(padding: childPadding.copyWith(top: 0, bottom: 0), child: child))
+          .map(
+            (child) => MediaQuery.removeViewPadding(
+              context: context,
+              removeLeft: useSafeChildren,
+              removeRight: useSafeChildren,
+              child: Padding(
+                padding:
+                    childPadding.copyWith(top: 0, bottom: 0) +
+                    (useSafeChildren ? MediaQuery.viewPaddingOf(context).onlyHorizontal : .zero),
+                child: child,
+              ),
+            ),
+          )
           .toList(),
     ),
     SizedBox(height: childPadding.bottom + padding.bottom),
