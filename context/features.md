@@ -8,7 +8,7 @@ This file describes user-facing behavior implemented in the current working tree
 - iPad
 - Android
 
-Lux uses a single reading area with optional study panels. Panels appear below the Bible on narrower layouts and to its right on layouts at least 800 logical pixels wide.
+Lux uses a single reading area with optional study panels. Panels appear below the Bible on narrower layouts and to its right when the available width is at least 700 logical pixels.
 
 ## Bible Library
 
