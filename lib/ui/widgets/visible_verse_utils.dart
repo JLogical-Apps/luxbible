@@ -9,7 +9,7 @@ List<Reference> getVisibleReferencesInViewport({
   required double viewportBottom,
 }) => keyByReference
     .where((reference, key) {
-      final top = key.globalTop;
+      final top = key.globalTop?.mapIfNonNull((top) => top + 32);
       return top != null && top >= viewportTop && top <= viewportBottom;
     })
     .keys

@@ -32,9 +32,12 @@ sealed class Paragraph with _$Paragraph {
 }
 
 extension ParagraphListExtensions on List<Paragraph> {
-  Verse? getVerseIntroducedBySectionAt(int index) => this[index] is SectionParagraph
-      ? skip(index + 1).whereType<VersesParagraph>().firstOrNull?.verses.firstOrNull
-      : null;
+  Verse? getVerseIntroducedBySectionAt(int index) {
+    final versesParagraph = this[index] is SectionParagraph
+        ? skip(index + 1).whereType<VersesParagraph>().firstOrNull
+        : null;
+    return versesParagraph?.firstVerseOffset == 0 ? versesParagraph?.verses.firstOrNull : null;
+  }
 
   int? getFirstSectionIndexIntroducingVerse(int verseNum) => indexed
       .where((entry) => entry.$2 is SectionParagraph)

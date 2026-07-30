@@ -584,13 +584,14 @@ class BibleBody extends HookConsumerWidget {
                     chapterReference: currentChapterReference,
                     passageTopReference: visibleVerseSelection.references.firstOrNull,
                     onScrollToReference: (reference) {
-                      final referenceContext =
-                          keyBySectionReference[reference]?.currentContext ?? keyByReference[reference]?.currentContext;
+                      final sectionContext = keyBySectionReference[reference]?.currentContext;
+                      final verseContext = keyByReference[reference]?.currentContext;
+                      final referenceContext = sectionContext ?? verseContext;
                       if (referenceContext != null) {
                         Scrollable.ensureVisible(
                           referenceContext,
                           alignment:
-                              (24 + MediaQuery.paddingOf(context).top + topBarHeight) /
+                              ((sectionContext != null ? 24 : 0) + MediaQuery.paddingOf(context).top + topBarHeight) /
                               (passageKey.renderBox?.size.height ?? 128),
                           duration: Duration(milliseconds: 200),
                           curve: Curves.easeInOutCubic,

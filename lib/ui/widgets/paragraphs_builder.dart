@@ -227,6 +227,11 @@ class ParagraphsBuilder extends HookWidget {
                       fit: .passthrough,
                       children: [
                         if (paragraph is VersesParagraph) ...[
+                          ...buildVerseAnchorOverlays(
+                            renderSpans: renderSpans,
+                            paragraph: paragraph,
+                            maxWidth: constraints.maxWidth,
+                          ),
                           ...buildVerseAnnotationOverlays(
                             context,
                             renderSpans: renderSpans,
@@ -344,6 +349,47 @@ class ParagraphsBuilder extends HookWidget {
         .nonNulls
         .flattened;
   }
+
+  Iterable<Widget> buildVerseAnchorOverlays({
+    required List<InlineSpan> renderSpans,
+    required VersesParagraph paragraph,
+    required double maxWidth,
+  }) => paragraph.verses
+      .map(getVerseReference)
+      .distinct
+      .where(
+        (reference) =>
+            paragraphs.whereType<VersesParagraph>().firstWhereOrNull(
+              (candidate) => candidate.verses.any((verse) => verse.verseNum == reference.verseNum),
+            ) ==
+            paragraph,
+      )
+      .map((reference) {
+        final key = keyByReference?[reference];
+        final position = renderSpans.getFirstSpanPositionForReference(reference);
+        if (key == null || position == null) {
+          return null;
+        }
+
+        final box = renderSpans
+            .getBoxesForSelection(
+              baseOffset: position,
+              extentOffset: position + 1,
+              width: maxWidth,
+              textAlign: paragraph.type.textAlign,
+              textDirection: textDirection,
+            )
+            .firstOrNull;
+        if (box == null) {
+          return null;
+        }
+
+        return Positioned.fromRect(
+          rect: box.toRect(),
+          child: ExcludeSemantics(child: SizedBox.expand(key: key)),
+        );
+      })
+      .nonNulls;
 
   Iterable<Widget> buildTextSelectionAnnotationOverlays(
     BuildContext context, {
@@ -487,6 +533,7 @@ class ParagraphsBuilder extends HookWidget {
                         when chapter.paragraphs.getFirstSectionIndexIntroducingVerse(verse.verseNum) == paragraphIndex)
                       SizedWidgetSpan(
                         child: SizedBox.shrink(key: keyBySectionReference?[getVerseReference(verse)]),
+                        alignment: .top,
                         size: Size.zero,
                       ),
                     TextSpan(
@@ -533,18 +580,6 @@ class ParagraphsBuilder extends HookWidget {
                   final spans = [
                     if (verse.verseNum > maxPreviousVerseNum)
                       ...[
-                        AnnotatedSizedWidgetSpan<VerseElement>(
-                          annotation: VerseElement(
-                            anchor: BibleTextSelectionWordAnchor.fromReference(
-                              reference: reference,
-                              characterOffset: 0,
-                            ),
-                            isBoundInSelection: false,
-                            isLeading: true,
-                          ),
-                          child: SizedBox.shrink(key: keyByReference?[reference]),
-                          size: Size.zero,
-                        ),
                         if (user.themeLayout.verseNumbers)
                           AnnotatedSizedWidgetSpan<VerseElement>(
                             annotation: VerseElement(
@@ -987,6 +1022,20 @@ extension on Rect {
 }
 
 extension on List<InlineSpan> {
+  int? getFirstSpanPositionForReference(Reference reference) {
+    var cursor = 0;
+    return map((span) {
+      final position =
+          span is IsAnnotatedSpan<VerseElement> &&
+              span.annotation.anchor.toReference() == reference &&
+              span.textLength > 0
+          ? cursor
+          : null;
+      cursor += span.textLength;
+      return position;
+    }).nonNulls.firstOrNull;
+  }
+
   BibleTextSelection getContainedTextSelection({required BibleTranslation translation}) {
     final lastAnchor = whereType<IsAnnotatedSpan<VerseElement>>().last;
     return BibleTextSelection(
