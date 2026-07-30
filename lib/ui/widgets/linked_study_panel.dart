@@ -63,6 +63,8 @@ class LinkedStudyPanel extends HookWidget {
     final isTouchingRef = useRef(false);
 
     usePostFrameEffect(() async {
+      if (!isActive) return;
+
       final reference = passageTopReference;
       if (reference != null && !isTouchingRef.value) {
         topReferenceState.value = reference;
@@ -88,9 +90,11 @@ class LinkedStudyPanel extends HookWidget {
           curve: Curves.easeInOutCubic,
         );
       }
-    }, [passageTopReference, isContentLoadedState.value]);
+    }, [passageTopReference, isContentLoadedState.value, isActive]);
 
-    useOnPostFrameListenableChange(scrollController, () async {
+    useOnPostFrameListenableChange(isActive ? scrollController : null, () async {
+      if (!isActive) return;
+
       final visibleReferences = getVisibleReferencesInViewport(
         keyByReference: panelKeyByReference,
         viewportTop: panelViewportKey.globalBounds?.top ?? 0,

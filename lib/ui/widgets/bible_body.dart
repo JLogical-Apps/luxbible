@@ -563,15 +563,13 @@ class BibleBody extends HookConsumerWidget {
           },
           children: [
             if (user.isOnboardingActive)
-              KeepAliveContainer(
-                child: Padding(
-                  padding: isSideLayout ? .symmetric(horizontal: 4) : .zero,
-                  child: OnboardingPanel(
-                    key: onboardingPanelKey,
-                    showDragHandle: !isSideLayout,
-                    state: onboardingState,
-                    isVisible: currentCarouselPage == 0,
-                  ),
+              Padding(
+                padding: isSideLayout ? .symmetric(horizontal: 4) : .zero,
+                child: OnboardingPanel(
+                  key: onboardingPanelKey,
+                  showDragHandle: !isSideLayout,
+                  state: onboardingState,
+                  isVisible: currentCarouselPage == 0,
                 ),
               ),
             ...studyPanels.mapIndexed(
@@ -658,7 +656,7 @@ class BibleBody extends HookConsumerWidget {
                 padding: isSideLayout ? .symmetric(horizontal: 4) : .zero,
                 child: AudioBiblePanel(showDragHandle: !isSideLayout),
               ),
-          ],
+          ].map((child) => KeepAliveContainer(child: child)).toList(),
         );
 
         if (isSideLayout) {

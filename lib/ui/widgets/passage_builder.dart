@@ -3,7 +3,6 @@ import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/widgets/styled_loading.dart';
 import 'package:bible/ui/widgets/bible_loading_error.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/font_size_spacing_zoom_gesture.dart';
@@ -19,7 +18,6 @@ class PassageBuilder extends HookConsumerWidget {
   final BibleSelection? selection;
   final Function(VerseSelection)? onNavigateToVerseSelection;
 
-  final bool showLoading;
   final Widget Function(BuildContext context, Widget passage)? contentBuilder;
   final Map<Reference, GlobalKey>? keyByReference;
   final Map<Reference, GlobalKey>? keyBySectionReference;
@@ -31,7 +29,6 @@ class PassageBuilder extends HookConsumerWidget {
     this.translation,
     this.selection,
     this.onNavigateToVerseSelection,
-    this.showLoading = false,
     this.contentBuilder,
     this.keyByReference,
     this.keyBySectionReference,
@@ -80,14 +77,12 @@ class PassageBuilder extends HookConsumerWidget {
 
     return FontSizeSpacingZoomGesture(
       language: translation.language,
-      child: showLoading
-          ? StyledLoading(child: paragraphs.isEmpty ? null : contentBuilder?.call(context, passage) ?? passage)
-          : AnimatedOpacity(
-              opacity: paragraphs.isEmpty ? 0 : 1,
-              duration: Duration(milliseconds: 300),
-              curve: Curves.easeInOutCubic,
-              child: contentBuilder?.call(context, passage) ?? passage,
-            ),
+      child: AnimatedOpacity(
+        opacity: paragraphs.isEmpty ? 0 : 1,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOutCubic,
+        child: contentBuilder?.call(context, passage) ?? passage,
+      ),
     );
   }
 }

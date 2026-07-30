@@ -56,7 +56,6 @@ class CompareSheet {
       ? PassageBuilder(
           verseSelection: verseSelection,
           translation: translation,
-          showLoading: true,
           keyByReference: keyByReference,
           keyBySectionReference: keyBySectionReference,
           onContentLoaded: onContentLoaded,
