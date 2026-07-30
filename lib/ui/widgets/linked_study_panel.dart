@@ -60,17 +60,17 @@ class LinkedStudyPanel extends HookWidget {
     final topReferenceState = useState(passageTopReference);
     final isContentLoadedState = useState(false);
 
-    final isTouchingRef = useRef(false);
+    final ownsScrollRef = useRef(false);
 
     usePostFrameEffect(() async {
       if (!isActive) return;
 
       final reference = passageTopReference;
-      if (reference != null && !isTouchingRef.value) {
+      if (reference != null && !ownsScrollRef.value) {
         topReferenceState.value = reference;
       }
 
-      if (!isContentLoadedState.value || isTouchingRef.value) {
+      if (!isContentLoadedState.value || ownsScrollRef.value) {
         return;
       }
 
@@ -104,14 +104,14 @@ class LinkedStudyPanel extends HookWidget {
 
       final topReference = topReferenceState.value;
       topReferenceState.value = visibleReferences.firstOrNull;
-      if (topReference != passageTopReference && topReference != null && isTouchingRef.value) {
+      if (topReference != passageTopReference && topReference != null && ownsScrollRef.value) {
         onScrollToReference(topReference);
       }
     }, [MediaQuery.sizeOf(context)]);
 
-    return Listener(
-      onPointerDown: (_) => isTouchingRef.value = true,
-      onPointerUp: (_) => isTouchingRef.value = false,
+    return TapRegion(
+      onTapInside: (_) => ownsScrollRef.value = true,
+      onTapOutside: (_) => ownsScrollRef.value = false,
       child: StyledSheet.builder(
         showDragHandle: showDragHandle,
         title: chapterReference.format().toText(),
