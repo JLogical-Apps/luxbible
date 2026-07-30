@@ -43,6 +43,7 @@ class SwipePageView extends StatelessWidget {
       },
       child: children != null
           ? PageView(
+              key: ValueKey(pageCount),
               controller: controller,
               physics: NeverScrollableScrollPhysics(),
               onPageChanged: onPageChanged,

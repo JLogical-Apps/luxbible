@@ -222,6 +222,7 @@ class BibleBody extends HookConsumerWidget {
           color: context.colors.surfaceSecondary.withValues(alpha: 0.5),
         ),
         child: SmoothPageIndicator(
+          key: ValueKey(panelCount),
           controller: studyPanelsPageController,
           count: panelCount,
           effect: WormEffect(
