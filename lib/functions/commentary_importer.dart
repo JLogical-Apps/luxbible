@@ -6,8 +6,10 @@ import 'package:bible/models/commentary_type.dart';
 import 'package:flutter/services.dart';
 
 class CommentaryImporter {
-  Future<Commentary> import({required CommentaryType type}) async =>
-      Isolate.run(() async => Commentary.fromJson(jsonDecode(await rootBundle.loadString(type.assetPath))));
+  Future<Commentary> import({required CommentaryType type}) async {
+    final json = await rootBundle.loadString(type.assetPath);
+    return Isolate.run(() => Commentary.fromJson(jsonDecode(json)));
+  }
 }
 
 extension on CommentaryType {
