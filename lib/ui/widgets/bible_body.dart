@@ -600,13 +600,9 @@ class BibleBody extends HookConsumerWidget {
                     },
                     isActive: currentCarouselPage == i + onboardingOffset,
                     showDragHandle: !isSideLayout,
-                    title: currentChapterReference.format().toText(),
                     subtitle: 'Compare with ${translation.title()}'.toText(),
-                    leading: StyledCircleButton.md(
-                      child: Symbols.close.toIcon(),
-                      onPressed: () =>
-                          ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
-                    ),
+                    onClose: () =>
+                        ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
                     childrenBuilder: (context, ref, keyByReference, keyBySectionReference, onContentLoaded) =>
                         CompareSheet.buildSheetChildren(
                           context,
