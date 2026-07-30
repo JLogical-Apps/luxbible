@@ -292,6 +292,7 @@ class ParagraphsBuilder extends HookWidget {
                         Text.rich(
                           key: textKey,
                           TextSpan(children: renderSpans),
+                          style: TextStyle(inherit: false),
                           textAlign: paragraph.as<VersesParagraph>()?.type.textAlign ?? .start,
                           textDirection: textDirection,
                         ),
@@ -1015,10 +1016,10 @@ class VerseElement {
 
 extension on Rect {
   Rect asVerseSelection({required double multiplier}) =>
-      .fromCenter(center: center, width: width + 4 * multiplier, height: min(32 * multiplier, height));
+      .fromCenter(center: center + Offset(0, 2), width: width + 4 * multiplier, height: min(32 * multiplier, height));
 
   Rect asTextSelection({required double multiplier}) =>
-      .fromCenter(center: center, width: width + 2 * multiplier, height: min(28 * multiplier, height));
+      .fromCenter(center: center + Offset(0, 2), width: width + 2 * multiplier, height: min(28 * multiplier, height));
 }
 
 extension on List<InlineSpan> {
