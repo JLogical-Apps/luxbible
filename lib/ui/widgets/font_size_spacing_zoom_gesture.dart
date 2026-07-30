@@ -1,6 +1,7 @@
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/ui/widgets/pinch_detector.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
@@ -15,9 +16,9 @@ class FontSizeSpacingZoomGesture extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final lastScale = useRef(1.0);
-    return GestureDetector(
-      onScaleStart: (_) => lastScale.value = 1,
-      onScaleUpdate: (details) {
+    return PinchDetector(
+      onStart: (_) => lastScale.value = 1,
+      onUpdate: (details) {
         final user = ref.read(userProvider);
         final currentValue = user.themeLayout.getFontSizeSpacingFor(language, context.textScaling);
 

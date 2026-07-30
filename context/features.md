@@ -69,6 +69,8 @@ Lux supports:
 
 Bible text uses the closest Lux reading size to the system accessibility text size by default. Users can override it with one of seven independent font size and spacing levels. Lux controls the final Bible text size so its layout, selection, and annotations stay aligned.
 
+Users can pinch Bible text with two fingers to change its font size and spacing.
+
 KJV and ASV can use section headings synthetically inserted from BSB. Footnote markers open their content without leaving the passage.
 
 ### Immersive Reading
