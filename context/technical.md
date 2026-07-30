@@ -8,7 +8,7 @@ This file records architectural constraints, data boundaries, and external servi
 
 - Flutter application
 - Supported targets: iPhone, iPad, and Android
-- Responsive study layout changes at 800 logical pixels
+- Responsive study layout changes at 700 logical pixels of available width
 - No intentionally supported macOS, Apple Vision, desktop, or web build
 - Web remains exploratory and is not currently configured
 
@@ -152,8 +152,8 @@ Search does not download or index online translations and does not search all ac
 
 ## Responsive Layout
 
-- Below 800 logical pixels, study panels dock below the Bible and can be resized up to 75 percent of the screen height.
-- At 800 logical pixels and above, study panels appear to the right of the Bible in a 3:2 reading-to-panel layout.
+- Below 700 logical pixels of available width, study panels dock below the Bible and can be resized up to 75 percent of the screen height.
+- At 700 logical pixels and above, study panels appear to the right of the Bible in a 4:3 reading-to-panel layout.
 - Orientation alone does not determine placement.
 
 ## Current Architectural Limitations
