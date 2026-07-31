@@ -50,7 +50,7 @@ class BibleBody extends HookConsumerWidget {
 
     final initialPosition = user.lastPosition;
 
-    final isSideLayout = MediaQuery.sizeOf(context).width - MediaQuery.paddingOf(context).horizontal >= 700;
+    final isSideLayout = MediaQuery.sizeOf(context).width - MediaQuery.viewPaddingOf(context).horizontal >= 700;
 
     final pageController = usePageController(
       initialPage: initialPosition.reference.bibleChapterIndex,
@@ -497,212 +497,216 @@ class BibleBody extends HookConsumerWidget {
       ],
     );
 
-    Widget studyPanelSection() => MediaQuery.removeViewPadding(
-      context: context,
-      removeLeft: true,
-      removeRight: true,
-      child: HookConsumerBuilder(
-        builder: (context, ref) {
-          final minStudyPanelHeight = 82.0;
-          final maxStudyPanelHeight = MediaQuery.sizeOf(context).height * 0.75;
+    Widget studyPanelSection() => Builder(
+      builder: (context) => MediaQuery.removeViewPadding(
+        context: context,
+        removeLeft: true,
+        removeRight: true,
+        child: HookConsumerBuilder(
+          builder: (context, ref) {
+            final minStudyPanelHeight = 82.0;
+            final maxStudyPanelHeight = MediaQuery.sizeOf(context).height * 0.75;
 
-          final studyPanelHeightRef = useRef(
-            (maxStudyPanelHeight * user.studyPanelBottomPosition).clamp(minStudyPanelHeight, maxStudyPanelHeight),
-          );
-          final isResizingState = useState(false);
+            final studyPanelHeightRef = useRef(
+              (maxStudyPanelHeight * user.studyPanelBottomPosition).clamp(minStudyPanelHeight, maxStudyPanelHeight),
+            );
+            final isResizingState = useState(false);
 
-          final visibleVerseSelectionState = useState(VerseSelection.empty());
-          final visibleVerseSelection = selection.verseSelection ?? visibleVerseSelectionState.value;
+            final visibleVerseSelectionState = useState(VerseSelection.empty());
+            final visibleVerseSelection = selection.verseSelection ?? visibleVerseSelectionState.value;
 
-          final chapterValue = ref.watch(
-            chapterProvider(
-              chapterReference: currentChapterReference,
-              translation: user.getTranslationFor(currentChapterReference.book),
-            ),
-          );
-
-          useOnPostFrameListenableChange(currentScrollController, () {
-            final studyPanelHeight = studyPanelHeightRef.value.clamp(minStudyPanelHeight, maxStudyPanelHeight);
-
-            final visibleReferences = getVisibleReferencesInViewport(
-              keyByReference: keyByReference,
-              viewportTop: MediaQuery.paddingOf(context).top + topBarHeight,
-              viewportBottom: isSideLayout
-                  ? MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).bottom
-                  : MediaQuery.sizeOf(context).height - studyPanelHeight,
+            final chapterValue = ref.watch(
+              chapterProvider(
+                chapterReference: currentChapterReference,
+                translation: user.getTranslationFor(currentChapterReference.book),
+              ),
             );
 
-            visibleVerseSelectionState.value = VerseSelection.fromReferences(visibleReferences);
-          }, [chapterValue.value, isResizingState.value, MediaQuery.sizeOf(context)]);
+            useOnPostFrameListenableChange(currentScrollController, () {
+              final studyPanelHeight = studyPanelHeightRef.value.clamp(minStudyPanelHeight, maxStudyPanelHeight);
 
-          usePeriodic(Duration(seconds: 1), () {
-            if (isSideLayout) {
-              return;
-            }
+              final visibleReferences = getVisibleReferencesInViewport(
+                keyByReference: keyByReference,
+                viewportTop: MediaQuery.paddingOf(context).top + topBarHeight,
+                viewportBottom: isSideLayout
+                    ? MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).bottom
+                    : MediaQuery.sizeOf(context).height - studyPanelHeight,
+              );
 
-            final studyPanelPercentVisible = studyPanelHeightRef.value / maxStudyPanelHeight;
-            if (studyPanelPercentVisible != user.studyPanelBottomPosition) {
-              ref.updateUser((user) => user.copyWith(studyPanelBottomPosition: studyPanelPercentVisible));
-            }
-          });
+              visibleVerseSelectionState.value = VerseSelection.fromReferences(visibleReferences);
+            }, [chapterValue.value, isResizingState.value, MediaQuery.sizeOf(context)]);
 
-          final currentCarouselPage = useListenableSelector(
-            studyPanelsPageController,
-            () => studyPanelsPageController.pageOrNull?.round() ?? studyPanelsPageController.initialPage,
-          );
-          final onboardingState = OnboardingState(
-            isVerseSelected: selection.verseSelection != null,
-            isWordSelected: selection.textSelection != null,
-            isMainToolbarVisible: showBottomBar,
-            hasStudyPanel: studyPanels.isNotEmpty,
-            hasHistory: navigationHistoryState.value.canUndo,
-          );
-
-          Widget carousel() => SwipePageView(
-            controller: studyPanelsPageController,
-            pageCount: panelCount,
-            onPageChanged: (page) {
-              final studyPanelIndex = page - onboardingOffset;
-              if (studyPanelIndex >= 0 && studyPanelIndex < studyPanels.length) {
-                ref.updateUser((user) => user.copyWith(studyPanelIndex: studyPanelIndex));
-                ref.markOnboardingStep(.addStudyPanel);
+            usePeriodic(Duration(seconds: 1), () {
+              if (isSideLayout) {
+                return;
               }
-            },
-            children: [
-              if (user.isOnboardingActive)
-                Padding(
-                  padding: isSideLayout ? .symmetric(horizontal: 4) : .zero,
-                  child: OnboardingPanel(
-                    key: onboardingPanelKey,
-                    showDragHandle: !isSideLayout,
-                    state: onboardingState,
-                    isVisible: currentCarouselPage == 0,
+
+              final studyPanelPercentVisible = studyPanelHeightRef.value / maxStudyPanelHeight;
+              if (studyPanelPercentVisible != user.studyPanelBottomPosition) {
+                ref.updateUser((user) => user.copyWith(studyPanelBottomPosition: studyPanelPercentVisible));
+              }
+            });
+
+            final currentCarouselPage = useListenableSelector(
+              studyPanelsPageController,
+              () => studyPanelsPageController.pageOrNull?.round() ?? studyPanelsPageController.initialPage,
+            );
+            final onboardingState = OnboardingState(
+              isVerseSelected: selection.verseSelection != null,
+              isWordSelected: selection.textSelection != null,
+              isMainToolbarVisible: showBottomBar,
+              hasStudyPanel: studyPanels.isNotEmpty,
+              hasHistory: navigationHistoryState.value.canUndo,
+            );
+
+            Widget carousel() => SwipePageView(
+              controller: studyPanelsPageController,
+              pageCount: panelCount,
+              onPageChanged: (page) {
+                final studyPanelIndex = page - onboardingOffset;
+                if (studyPanelIndex >= 0 && studyPanelIndex < studyPanels.length) {
+                  ref.updateUser((user) => user.copyWith(studyPanelIndex: studyPanelIndex));
+                  ref.markOnboardingStep(.addStudyPanel);
+                }
+              },
+              children: [
+                if (user.isOnboardingActive)
+                  Padding(
+                    padding: isSideLayout ? .symmetric(horizontal: 4) : .zero,
+                    child: OnboardingPanel(
+                      key: onboardingPanelKey,
+                      showDragHandle: !isSideLayout,
+                      state: onboardingState,
+                      isVisible: currentCarouselPage == 0,
+                    ),
+                  ),
+                ...studyPanels.mapIndexed(
+                  (i, studyPanel) => Padding(
+                    key: ValueKey((i, studyPanel)),
+                    padding: isSideLayout ? .symmetric(horizontal: 4) : .zero,
+                    child: switch (studyPanel) {
+                      CompareStudyPanel(:final translation) => LinkedStudyPanel(
+                        key: ValueKey((i, currentChapterReference)),
+                        chapterReference: currentChapterReference,
+                        passageTopReference: visibleVerseSelection.references.firstOrNull,
+                        onScrollToReference: (reference) {
+                          final key = keyBySectionReference[reference]?.currentContext != null
+                              ? keyBySectionReference[reference]
+                              : keyByReference[reference];
+                          if (key != null) {
+                            key.scrollIntoView(
+                              axis: .vertical,
+                              duration: Duration(milliseconds: 200),
+                              alignment:
+                                  ((key == keyBySectionReference[reference] ? 24 : 0) +
+                                      MediaQuery.paddingOf(context).top +
+                                      topBarHeight) /
+                                  (passageKey.renderBox?.size.height ?? 128),
+                            );
+                          }
+                        },
+                        isActive: currentCarouselPage == i + onboardingOffset,
+                        showDragHandle: !isSideLayout,
+                        subtitle: t.studyPanels.compareWith(translation: translation.title()).toText(),
+                        onClose: () =>
+                            ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
+                        childrenBuilder: (context, ref, keyByReference, keyBySectionReference, onContentLoaded) =>
+                            CompareSheet.buildSheetChildren(
+                              context,
+                              verseSelection: currentChapterReference.toVerseSelection(),
+                              translation: translation,
+                              user: user,
+                              keyByReference: keyByReference,
+                              keyBySectionReference: keyBySectionReference,
+                              onContentLoaded: onContentLoaded,
+                            ),
+                      ),
+                      _ => StyledSheet.builder(
+                        key: ValueKey((i, visibleVerseSelection)),
+                        showDragHandle: !isSideLayout,
+                        title: visibleVerseSelection.format().toText(),
+                        subtitle: SingleChildScrollView(
+                          scrollDirection: .horizontal,
+                          child: Row(
+                            mainAxisAlignment: .center,
+                            spacing: 8,
+                            children: [
+                              studyPanel.title().toText(),
+                              if (studyPanel.studyAction?.getTranslationOverride(user: user) case final override?)
+                                StyledTag.sm(child: override.title().toText()),
+                            ],
+                          ),
+                        ),
+                        leading: StyledCircleButton.md(
+                          child: Symbols.close.toIcon(),
+                          onPressed: () =>
+                              ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
+                        ),
+                        childrenBuilder: (context, ref) {
+                          final studyBible = ref.watch(studyBibleProvider).value;
+                          if (studyBible == null) {
+                            return [Padding(padding: .all(16), child: StyledLoading())];
+                          }
+                          return studyPanel.buildSheetChildren(
+                            context,
+                            ref,
+                            verseSelection: visibleVerseSelection,
+                            onNavigateToVerseSelection: navigateToVerseSelection,
+                            user: user,
+                            studyBible: studyBible,
+                          );
+                        },
+                      ),
+                    },
                   ),
                 ),
-              ...studyPanels.mapIndexed(
-                (i, studyPanel) => Padding(
-                  key: ValueKey((i, studyPanel)),
-                  padding: isSideLayout ? .symmetric(horizontal: 4) : .zero,
-                  child: switch (studyPanel) {
-                    CompareStudyPanel(:final translation) => LinkedStudyPanel(
-                      key: ValueKey((i, currentChapterReference)),
-                      chapterReference: currentChapterReference,
-                      passageTopReference: visibleVerseSelection.references.firstOrNull,
-                      onScrollToReference: (reference) {
-                        final key = keyBySectionReference[reference]?.currentContext != null
-                            ? keyBySectionReference[reference]
-                            : keyByReference[reference];
-                        if (key != null) {
-                          key.scrollIntoView(
-                            axis: .vertical,
-                            duration: Duration(milliseconds: 200),
-                            alignment:
-                                ((key == keyBySectionReference[reference] ? 24 : 0) +
-                                    MediaQuery.paddingOf(context).top +
-                                    topBarHeight) /
-                                (passageKey.renderBox?.size.height ?? 128),
-                          );
-                        }
-                      },
-                      isActive: currentCarouselPage == i + onboardingOffset,
-                      showDragHandle: !isSideLayout,
-                      subtitle: t.studyPanels.compareWith(translation: translation.title()).toText(),
-                      onClose: () =>
-                          ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
-                      childrenBuilder: (context, ref, keyByReference, keyBySectionReference, onContentLoaded) =>
-                          CompareSheet.buildSheetChildren(
-                            context,
-                            verseSelection: currentChapterReference.toVerseSelection(),
-                            translation: translation,
-                            user: user,
-                            keyByReference: keyByReference,
-                            keyBySectionReference: keyBySectionReference,
-                            onContentLoaded: onContentLoaded,
-                          ),
-                    ),
-                    _ => StyledSheet.builder(
-                      key: ValueKey((i, visibleVerseSelection)),
-                      showDragHandle: !isSideLayout,
-                      title: visibleVerseSelection.format().toText(),
-                      subtitle: SingleChildScrollView(
-                        scrollDirection: .horizontal,
-                        child: Row(
-                          mainAxisAlignment: .center,
-                          spacing: 8,
-                          children: [
-                            studyPanel.title().toText(),
-                            if (studyPanel.studyAction?.getTranslationOverride(user: user) case final override?)
-                              StyledTag.sm(child: override.title().toText()),
-                          ],
-                        ),
-                      ),
-                      leading: StyledCircleButton.md(
-                        child: Symbols.close.toIcon(),
-                        onPressed: () =>
-                            ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
-                      ),
-                      childrenBuilder: (context, ref) {
-                        final studyBible = ref.watch(studyBibleProvider).value;
-                        if (studyBible == null) {
-                          return [Padding(padding: .all(16), child: StyledLoading())];
-                        }
-                        return studyPanel.buildSheetChildren(
-                          context,
-                          ref,
-                          verseSelection: visibleVerseSelection,
-                          onNavigateToVerseSelection: navigateToVerseSelection,
-                          user: user,
-                          studyBible: studyBible,
-                        );
-                      },
-                    ),
-                  },
-                ),
-              ),
-              if (user.audio.isOpen)
-                Padding(
-                  padding: isSideLayout ? .symmetric(horizontal: 4) : .zero,
-                  child: AudioBiblePanel(showDragHandle: !isSideLayout),
-                ),
-            ].map((child) => KeepAliveContainer(child: child)).toList(),
-          );
+                if (user.audio.isOpen)
+                  Padding(
+                    padding: isSideLayout ? .symmetric(horizontal: 4) : .zero,
+                    child: AudioBiblePanel(showDragHandle: !isSideLayout),
+                  ),
+              ].map((child) => KeepAliveContainer(child: child)).toList(),
+            );
 
-          if (isSideLayout) {
-            if (panelCount == 0) {
-              return SizedBox.shrink();
+            if (isSideLayout) {
+              if (panelCount == 0) {
+                return SizedBox.shrink();
+              }
+
+              return Builder(
+                builder: (context) => Padding(
+                  padding: .only(
+                    top: MediaQuery.paddingOf(context).top + 8,
+                    bottom: MediaQuery.paddingOf(context).bottom + 8,
+                    left: 4,
+                    right: 4,
+                  ),
+                  child: Stack(
+                    children: [
+                      carousel(),
+                      if (panelCount > 1) Positioned(bottom: 2, left: 0, right: 0, child: studyPanelIndicator()),
+                    ],
+                  ),
+                ),
+              );
             }
 
-            return Padding(
-              padding: .only(
-                top: MediaQuery.paddingOf(context).top + 8,
-                bottom: MediaQuery.paddingOf(context).bottom + 8,
-                left: 4,
-                right: 4,
-              ),
-              child: Stack(
-                children: [
-                  carousel(),
-                  if (panelCount > 1) Positioned(bottom: 2, left: 0, right: 0, child: studyPanelIndicator()),
-                ],
-              ),
+            return AnimatedGrow(
+              duration: isResizingState.value ? Duration(milliseconds: 1) : Duration(milliseconds: 300),
+              child: panelCount == 0
+                  ? SizedBox.shrink(key: ValueKey('empty'))
+                  : ResizableContainer(
+                      initialHeight: studyPanelHeightRef.value,
+                      minHeight: minStudyPanelHeight,
+                      maxHeight: maxStudyPanelHeight,
+                      onResizeStart: () => isResizingState.value = true,
+                      onResizeEnd: () => isResizingState.value = false,
+                      onHeightUpdated: (size) => studyPanelHeightRef.value = size,
+                      child: Container(width: double.infinity, color: context.colors.surfacePrimary, child: carousel()),
+                    ),
             );
-          }
-
-          return AnimatedGrow(
-            duration: isResizingState.value ? Duration(milliseconds: 1) : Duration(milliseconds: 300),
-            child: panelCount == 0
-                ? SizedBox.shrink(key: ValueKey('empty'))
-                : ResizableContainer(
-                    initialHeight: studyPanelHeightRef.value,
-                    minHeight: minStudyPanelHeight,
-                    maxHeight: maxStudyPanelHeight,
-                    onResizeStart: () => isResizingState.value = true,
-                    onResizeEnd: () => isResizingState.value = false,
-                    onHeightUpdated: (size) => studyPanelHeightRef.value = size,
-                    child: Container(width: double.infinity, color: context.colors.surfacePrimary, child: carousel()),
-                  ),
-          );
-        },
+          },
+        ),
       ),
     );
 
@@ -711,7 +715,10 @@ class BibleBody extends HookConsumerWidget {
             children: [
               Expanded(
                 flex: 4,
-                child: MediaQuery.removeViewPadding(context: context, child: mainArea(), removeRight: panelCount > 0),
+                child: Builder(
+                  builder: (context) =>
+                      MediaQuery.removeViewPadding(context: context, child: mainArea(), removeRight: panelCount > 0),
+                ),
               ),
               if (panelCount > 0) ...[
                 Expanded(flex: 3, child: studyPanelSection()),
