@@ -379,6 +379,7 @@ class BibleBody extends HookConsumerWidget {
       itemBuilder: (context, chapterReference, chapter) => SafeArea(
         left: true,
         right: !isSideLayout || panelCount == 0,
+        bottom: false,
         child: HookBuilder(
           builder: (context) {
             final scrollController = chapterReference == currentChapterReference ? currentScrollController : null;
