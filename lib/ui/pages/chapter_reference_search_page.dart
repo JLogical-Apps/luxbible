@@ -6,6 +6,7 @@ import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/bible_sheet.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:bible/utils/extensions/edge_insets_extensions.dart';
 import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -207,7 +208,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                             children: [
                               SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
-                                padding: .symmetric(horizontal: 16),
+                                padding: MediaQuery.viewPaddingOf(context).onlyHorizontal + .symmetric(horizontal: 16),
                                 child: Row(
                                   spacing: 16,
                                   children: user.bookmarkById
