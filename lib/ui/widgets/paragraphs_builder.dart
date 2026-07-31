@@ -84,7 +84,7 @@ class ParagraphsBuilder extends HookWidget {
       BibleTextStyle(context, config: user.themeLayout, fontSizeSpacing: getFontSizeSpacing(context));
 
   FontSizeSpacing getFontSizeSpacing(BuildContext context) =>
-      user.themeLayout.getFontSizeSpacingFor(translation.language, context.textScaling);
+      user.themeLayout.getFontSizeSpacingFor(translation.bibleLanguage, context.textScaling);
 
   double getSizeMultiplier(BuildContext context) =>
       BibleTextStyle.baseMultiplier * getFontSizeSpacing(context).multiplier;
@@ -617,7 +617,12 @@ class ParagraphsBuilder extends HookWidget {
                               isLeading: true,
                             ),
                             size: Size(
-                              context.textStyle.labelXs.getWidth('${translation.title()} ${originalVerse.format()}') +
+                              context.textStyle.labelXs.getWidth(
+                                    t.verseNumbering.referenceLabel(
+                                      translation: translation.title(),
+                                      reference: originalVerse.format(),
+                                    ),
+                                  ) +
                                   18,
                               22 + 2 * getSizeMultiplier(context),
                             ),
@@ -629,14 +634,19 @@ class ParagraphsBuilder extends HookWidget {
                                 bottom: 2 * getSizeMultiplier(context),
                               ),
                               child: StyledTag.sm(
-                                child: '${translation.title()} ${originalVerse.format()}'.toText(),
+                                child: t.verseNumbering
+                                    .referenceLabel(translation: translation.title(), reference: originalVerse.format())
+                                    .toText(),
                                 onPressed: () => context.showStyledDialog(
                                   (context) => StyledDialog.confirm(
-                                    title: 'Verse Numbering'.toText(),
-                                    body:
-                                        'The ${translation.title()} numbers its chapters and verses differently from most English translations use.\n\n'
-                                                'The text shown here at ${reference.format()} comes from ${originalVerse.format()} in the ${translation.title()}, remapped so it lines up with the other translations.'
-                                            .toText(),
+                                    title: t.bibleDetails.verseNumbering.toText(),
+                                    body: t.verseNumbering
+                                        .explanation(
+                                          translation: translation.title(),
+                                          reference: reference.format(),
+                                          originalReference: originalVerse.format(),
+                                        )
+                                        .toText(),
                                   ),
                                 ),
                               ),
@@ -783,7 +793,7 @@ class ParagraphsBuilder extends HookWidget {
             child: StyledCircleButton.sm(
               onPressed: () => context.showStyledSheet(
                 (context) => StyledSheet(
-                  title: 'Notes'.toText(),
+                  title: t.labels.notes.toText(),
                   children: annotations
                       .map(
                         (annotation) => Consumer(
@@ -803,8 +813,8 @@ class ParagraphsBuilder extends HookWidget {
                                   onPressed: () async {
                                     final confirmed = await context.showStyledDialog(
                                       (context) => StyledDialog.confirmDelete(
-                                        title: 'Delete Annotation'.toText(),
-                                        body: 'Are you sure you want to delete this annotation?'.toText(),
+                                        title: t.annotationUi.deleteAnnotation.toText(),
+                                        body: t.annotationUi.deleteConfirmation.toText(),
                                       ),
                                     );
                                     if (confirmed == true && context.mounted) {
@@ -825,10 +835,10 @@ class ParagraphsBuilder extends HookWidget {
                                   child: Symbols.more_vert.toIcon(),
                                   onPressed: () => context.showStyledSheet(
                                     (context) => StyledSheet(
-                                      title: 'Annotation'.toText(),
+                                      title: t.labels.annotation.toText(),
                                       children: [
                                         StyledListItem(
-                                          title: 'Edit'.toText(),
+                                          title: t.common.edit.toText(),
                                           leading: Symbols.edit.toIcon(),
                                           onPressed: () async {
                                             context.pop();
@@ -846,13 +856,13 @@ class ParagraphsBuilder extends HookWidget {
                                           },
                                         ),
                                         StyledListItem(
-                                          title: 'Delete'.toText(),
+                                          title: t.common.delete.toText(),
                                           leading: Icon(Symbols.delete, color: context.colors.contentCritical),
                                           onPressed: () async {
                                             final confirmed = await context.showStyledDialog(
                                               (context) => StyledDialog.confirmDelete(
-                                                title: 'Delete Annotation'.toText(),
-                                                body: 'Are you sure you want to delete this annotation?'.toText(),
+                                                title: t.annotationUi.deleteAnnotation.toText(),
+                                                body: t.annotationUi.deleteConfirmation.toText(),
                                               ),
                                             );
                                             if (confirmed == true && context.mounted) {
@@ -904,7 +914,7 @@ class ParagraphsBuilder extends HookWidget {
             child: StyledCircleButton.sm(
               onPressed: () => context.showStyledSheet(
                 (context) => StyledSheet(
-                  title: 'Footnotes'.toText(),
+                  title: t.labels.footnotes.toText(),
                   children: footnotes
                       .map(
                         (footnote) => StyledListItem(

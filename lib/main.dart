@@ -7,7 +7,9 @@ import 'package:bible/functions/bible_plan_importer.dart';
 import 'package:bible/functions/cross_references_importer.dart';
 import 'package:bible/functions/dictionary_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
+import 'package:bible/i18n/strings.g.dart';
 import 'package:bible/licenses.dart';
+import 'package:bible/models/user/language.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/bibles_provider.dart';
@@ -22,20 +24,27 @@ import 'package:bible/services/path_service.dart';
 import 'package:bible/services/shared_preferences_service.dart';
 import 'package:bible/style/color_library.dart';
 import 'package:bible/ui/pages/bible_page.dart';
+import 'package:bible/utils/hook_utils.dart';
 import 'package:bible/utils/scroll_behavior.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:utils_core/utils_core.dart';
 
 Future<void> main() async {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+
+      LocaleSettings.setLocaleSync(Language.device.appLocale);
+      timeago.setLocaleMessages('nl', timeago.NlMessages());
 
       await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
@@ -55,8 +64,8 @@ Future<void> main() async {
         builder: () => AudioBibleHandler(),
         config: AudioServiceConfig(
           androidNotificationChannelId: 'app.luxbible.app.channel.audio',
-          androidNotificationChannelName: 'Audio Bible playback',
-          androidNotificationChannelDescription: 'Audio Bible playback controls',
+          androidNotificationChannelName: t.audio.notificationChannelName,
+          androidNotificationChannelDescription: t.audio.notificationChannelDescription,
           androidNotificationIcon: 'drawable/ic_notification',
           androidStopForegroundOnPause: true,
           fastForwardInterval: Duration(seconds: 10),
@@ -89,9 +98,15 @@ Future<void> main() async {
         observers: [ProviderErrorObserver()],
       );
 
+      LocaleSettings.setLocaleSync(ref.read(userProvider).language.appLocale);
+
       eagerlyLoad();
 
-      runApp(UncontrolledProviderScope(container: ref, child: BibleApp()));
+      runApp(
+        TranslationProvider(
+          child: UncontrolledProviderScope(container: ref, child: BibleApp()),
+        ),
+      );
     },
     (error, stack) {
       if (kDebugMode) {
@@ -106,12 +121,22 @@ void eagerlyLoad() {
   ref.read(studyBibleProvider);
 }
 
-class BibleApp extends ConsumerWidget {
+class BibleApp extends HookConsumerWidget {
   const BibleApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final deviceLanguageState = useState(Language.device);
+    useOnLocalesChanged((locales) {
+      if (ref.read(userProvider).languageOverride == null) {
+        final language = Language.fromLocale(locales?.firstOrNull ?? .new('en'));
+        LocaleSettings.setLocaleSync(language.appLocale);
+        deviceLanguageState.value = language;
+      }
+    });
+
     final user = ref.watch(userProvider);
+    final language = user.languageOverride ?? deviceLanguageState.value;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: MediaQuery.withClampedTextScaling(
@@ -119,6 +144,9 @@ class BibleApp extends ConsumerWidget {
         maxScaleFactor: 1.8,
         child: MaterialApp(
           title: 'Lux Bible',
+          locale: language.appLocale.flutterLocale,
+          supportedLocales: AppLocaleUtils.supportedLocales,
+          localizationsDelegates: GlobalMaterialLocalizations.delegates,
           themeMode: user.theme,
           theme: ThemeData(
             colorScheme: ColorScheme.highContrastLight(brightness: Brightness.light, primary: Colors.black),

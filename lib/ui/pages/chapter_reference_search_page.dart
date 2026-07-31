@@ -121,7 +121,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                           onTextEditValueChanged: (value) => bookTextSelectionState.value = value.selection,
                           autofocus: true,
                           suggestedText: book?.title(isPlural: true),
-                          hintText: 'Book',
+                          hintText: t.navigation.book,
                           autocorrect: false,
                           textStyle: context.textStyle.paragraphLg,
                           textCapitalization: .words,
@@ -143,7 +143,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                     child: StyledTextField(
                       text: chapterNumState.value?.toString() ?? '',
                       onChanged: book == null ? null : (text) => chapterNumState.value = int.tryParse(text),
-                      hintText: 'Chapter',
+                      hintText: t.navigation.chapter,
                       textStyle: context.textStyle.paragraphLg,
                       textInputType: .numberWithOptions(signed: true),
                       focusNode: chapterFocusNode,
@@ -202,7 +202,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                       if (getMatchingBooks().isNotEmpty && (isBookFullySelected || bookTextState.value.isEmpty)) ...[
                         if (user.bookmarkById.isNotEmpty)
                           StyledSection(
-                            title: 'Bookmarks'.toText(),
+                            title: t.labels.bookmarks.toText(),
                             padding: .only(top: 24),
                             children: [
                               SingleChildScrollView(
@@ -245,7 +245,7 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                           ),
                         if (recents.isNotEmpty)
                           StyledSection(
-                            title: 'Recents'.toText(),
+                            title: t.navigation.recents.toText(),
                             padding: .only(top: 24),
                             children: recents
                                 .map(
@@ -273,11 +273,11 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
                       if (getMatchingBooks().isEmpty)
                         Padding(
                           padding: .all(16),
-                          child: StyledBanner(message: 'No Matches'.toText()),
+                          child: StyledBanner(message: t.common.noMatches.toText()),
                         )
                       else
                         ...StyledSection(
-                          title: 'Books'.toText(),
+                          title: t.labels.books.toText(),
                           padding: .only(top: 24),
                           children: (isBookFullySelected ? BookType.values : getMatchingBooks())
                               .map(

@@ -42,10 +42,10 @@ sealed class StudyPanel with _$StudyPanel {
   };
 
   String title() => switch (this) {
-    CompareStudyPanel(:final translation) => 'Compare with ${translation.title()}',
-    InterlinearStudyPanel(:final direction) => '${direction.title()} Interlinear',
-    CommentaryStudyPanel(:final type) => '${type.title()} Commentary',
-    NotesStudyPanel() => 'Notes',
+    CompareStudyPanel(:final translation) => t.studyPanels.compareWith(translation: translation.title()),
+    InterlinearStudyPanel(:final direction) => t.studyPanels.directionInterlinear(direction: direction.title()),
+    CommentaryStudyPanel(:final type) => t.studyPanels.commentaryName(commentary: type.title()),
+    NotesStudyPanel() => t.studyPanels.notes,
     _ => studyAction?.title() ?? '',
   };
 
@@ -92,7 +92,7 @@ sealed class StudyPanel with _$StudyPanel {
           ? [
               Padding(
                 padding: .all(16),
-                child: StyledBanner(message: 'No Notes Found'.toText()),
+                child: StyledBanner(message: t.studyPanels.noNotes.toText()),
               ),
             ]
           : noteAnnotations
@@ -145,8 +145,8 @@ enum StudyPanelType {
     _ => null,
   };
 
-  String title() => studyAction?.title() ?? 'Notes';
+  String title() => studyAction?.title() ?? t.studyPanels.notes;
   String description() =>
-      studyAction?.description(regionFormat: null, regionType: .visibleVerses) ?? 'View your notes in visible verses.';
+      studyAction?.description(regionFormat: null, regionType: .visibleVerses) ?? t.studyPanels.notesDescription;
   IconData get icon => studyAction?.icon ?? Symbols.note_stack;
 }

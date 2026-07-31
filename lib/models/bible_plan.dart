@@ -1,3 +1,4 @@
+import 'package:bible/i18n/strings.g.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
 import 'package:collection/collection.dart';
@@ -107,6 +108,22 @@ enum BiblePlanType {
 
   String get assetPath => 'assets/bible_plans/$name.json';
 
+  String title() => switch (this) {
+    esv_through_the_bible => t.planTypes.throughTheBible,
+    one_year_chronological => t.planTypes.chronological,
+    heartlight_ot_and_nt => t.planTypes.oldAndNewTestament,
+    esv_every_day_in_word => t.planTypes.everyDayInTheWord,
+    mcheyne => t.planTypes.mcheyne,
+    esv_literary_study_bible => t.planTypes.literaryStudy,
+    heartlight_different_topics => t.planTypes.differentTopics,
+    heartlight_nt_psalms_proverbs => t.planTypes.newTestamentPsalmsProverbs,
+    navigators_5x5x5_nt => t.planTypes.fiveByFiveByFive,
+    esv_gospels_and_epistles => t.planTypes.gospelsAndEpistles,
+    esv_pentateuch_and_history_of_israel => t.planTypes.pentateuchAndHistory,
+    esv_chronicles_and_prophets => t.planTypes.chroniclesAndProphets,
+    esv_psalms_and_wisdom_literature => t.planTypes.psalmsAndWisdom,
+  };
+
   BiblePlanScope get scope => switch (this) {
     mcheyne ||
     one_year_chronological ||
@@ -138,28 +155,19 @@ enum BiblePlanType {
   };
 
   String description() => switch (this) {
-    mcheyne =>
-      'A classic plan with four short readings a day. You read through the Old Testament once and the New Testament and Psalms twice in a year.',
-    one_year_chronological => 'Read the whole Bible in a year, arranged in the order the events actually happened.',
-    esv_through_the_bible => 'Read straight through the whole Bible in a year, from Genesis to Revelation.',
-    esv_gospels_and_epistles =>
-      'Spend the year in the New Testament, journeying through the Gospels and the letters of the apostles.',
-    esv_every_day_in_word =>
-      'Four readings a day from the Old Testament, New Testament, Psalms, and Proverbs, covering the whole Bible in a year, with Psalms & Proverbs twice.',
-    esv_literary_study_bible =>
-      'Experience the Bible over a year grouped by its literary styles, moving through story, poetry, and letters.',
-    esv_chronicles_and_prophets => 'A year that pairs the history in Chronicles with the messages of the Prophets.',
-    esv_pentateuch_and_history_of_israel =>
-      'Journey through the five books of Moses and the history of Israel over a year.',
-    esv_psalms_and_wisdom_literature =>
-      'Spend the year in the Psalms and wisdom books like Proverbs, Job, and Ecclesiastes.',
-    heartlight_ot_and_nt =>
-      'Read through both the Old and New Testaments together, with a passage from each every day.',
-    heartlight_different_topics =>
-      'Rotate through a different section of Scripture each day, exploring every book of the Bible over a year.',
-    heartlight_nt_psalms_proverbs => 'Read the New Testament alongside Psalms and Proverbs over the course of a year.',
-    navigators_5x5x5_nt =>
-      'Read one New Testament chapter a day, five days a week, followed by two days to review and reflect.',
+    mcheyne => t.planTypes.mcheyneDescription,
+    one_year_chronological => t.planTypes.chronologicalDescription,
+    esv_through_the_bible => t.planTypes.throughTheBibleDescription,
+    esv_gospels_and_epistles => t.planTypes.gospelsAndEpistlesDescription,
+    esv_every_day_in_word => t.planTypes.everyDayInTheWordDescription,
+    esv_literary_study_bible => t.planTypes.literaryStudyDescription,
+    esv_chronicles_and_prophets => t.planTypes.chroniclesAndProphetsDescription,
+    esv_pentateuch_and_history_of_israel => t.planTypes.pentateuchAndHistoryDescription,
+    esv_psalms_and_wisdom_literature => t.planTypes.psalmsAndWisdomDescription,
+    heartlight_ot_and_nt => t.planTypes.oldAndNewTestamentDescription,
+    heartlight_different_topics => t.planTypes.differentTopicsDescription,
+    heartlight_nt_psalms_proverbs => t.planTypes.newTestamentPsalmsProverbsDescription,
+    navigators_5x5x5_nt => t.planTypes.fiveByFiveByFiveDescription,
   };
 
   BiblePlanSource? get source => switch (this) {
@@ -200,15 +208,15 @@ enum BiblePlanScope {
   wholeBible;
 
   String title() => switch (this) {
-    oldTestament => 'Old Testament',
-    newTestament => 'New Testament',
-    wholeBible => 'Whole Bible',
+    oldTestament => t.testaments.old,
+    newTestament => t.testaments.newTestament,
+    wholeBible => t.testaments.wholeBible,
   };
 
   String description() => switch (this) {
-    oldTestament => 'Reads from books in the Old Testament.',
-    newTestament => 'Reads from books in the New Testament.',
-    wholeBible => 'Reads from both the Old and New Testaments.',
+    oldTestament => t.planTypes.oldScopeDescription,
+    newTestament => t.planTypes.newScopeDescription,
+    wholeBible => t.planTypes.wholeScopeDescription,
   };
 }
 
@@ -217,13 +225,13 @@ enum BiblePlanSearchType {
   comprehensive;
 
   String title() => switch (this) {
-    focused => 'Focused',
-    comprehensive => 'Comprehensive',
+    focused => t.planTypes.focused,
+    comprehensive => t.planTypes.comprehensive,
   };
 
   String description() => switch (this) {
-    focused => 'Covers a specific section or collection within its scope.',
-    comprehensive => 'Covers every book within its scope.',
+    focused => t.planTypes.focusedDescription,
+    comprehensive => t.planTypes.comprehensiveDescription,
   };
 }
 

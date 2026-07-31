@@ -27,19 +27,19 @@ class BibleTile extends StatelessWidget {
               children: [
                 if (translation.isOnline)
                   StyledTag.sm(
-                    child: 'Online Only'.toText(),
+                    child: t.bibleDetails.onlineOnly.toText(),
                     leading: Symbols.cloud.toIcon(),
                     colorBuilder: ColorBuilder((colors) => colors.blue.tertiary),
                   ),
                 if (translation.isStudy)
                   StyledTag.sm(
-                    child: 'Study Bible'.toText(),
+                    child: t.bibleDetails.studyBible.toText(),
                     leading: Symbols.school.toIcon(),
                     colorBuilder: ColorBuilder((colors) => colors.green.tertiary),
                   ),
                 if (translation.hasAudioBible)
                   StyledTag.sm(
-                    child: 'Audio Bible'.toText(),
+                    child: t.labels.audioBible.toText(),
                     leading: Symbols.headphones.toIcon(),
                     colorBuilder: ColorBuilder((colors) => colors.violet.tertiary),
                   ),
@@ -65,28 +65,24 @@ class BibleTile extends StatelessWidget {
           translation.isOnline
               ? StyledListItem(
                   leading: Symbols.cloud.toIcon(),
-                  title: 'Online Only'.toText(),
-                  subtitle:
-                      'This Bible is streamed from ${translation.onlineSourceName}, so it requires an internet connection.'
-                          .toText(),
+                  title: t.bibleDetails.onlineOnly.toText(),
+                  subtitle: t.bibleDetails.onlineDescription(source: translation.onlineSourceName).toText(),
                 )
               : StyledListItem(
                   leading: Symbols.book_4.toIcon(),
-                  title: 'On Device'.toText(),
-                  subtitle: 'This Bible is downloaded to your device, so you can search it and read offline.'.toText(),
+                  title: t.bibleDetails.onDevice.toText(),
+                  subtitle: t.bibleDetails.onDeviceDescription.toText(),
                 ),
           translation.isStudy
               ? StyledListItem(
                   leading: Symbols.school.toIcon(),
-                  title: 'Study Bible'.toText(),
-                  subtitle:
-                      'Includes interlinear and morphology data. Long-press any word while reading to see the original Greek or Hebrew.'
-                          .toText(),
+                  title: t.bibleDetails.studyBible.toText(),
+                  subtitle: t.bibleDetails.studyBibleDescription.toText(),
                 )
               : StyledListItem(
                   leading: Symbols.auto_stories.toIcon(),
-                  title: 'Reading Bible'.toText(),
-                  subtitle: 'Doesn\'t include interlinear or morphology data.'.toText(),
+                  title: t.bibleDetails.readingBible.toText(),
+                  subtitle: t.bibleDetails.readingBibleDescription.toText(),
                 ),
           StyledListItem(
             leading: TestamentIcon(testament: translation.testament),
@@ -95,41 +91,41 @@ class BibleTile extends StatelessWidget {
           ),
           if (translation.hasNativeHeadings)
             StyledListItem(
-              title: 'Native Headings'.toText(),
-              subtitle: 'Headings are included with this Bible.'.toText(),
+              title: t.bibleDetails.nativeHeadings.toText(),
+              subtitle: t.bibleDetails.nativeHeadingsDescription.toText(),
               leading: Symbols.title.toIcon(),
             )
           else if (translation.hasSyntheticHeadings)
             StyledListItem(
-              title: 'Synthetic Headings'.toText(),
-              subtitle: 'Headings are synthetically inserted into this Bible from the BSB.'.toText(),
+              title: t.bibleDetails.syntheticHeadings.toText(),
+              subtitle: t.bibleDetails.syntheticHeadingsDescription.toText(),
               leading: Symbols.labs.toIcon(),
             )
           else
             StyledListItem(
-              title: 'No Headings'.toText(),
-              subtitle: 'No headings are included in this Bible.'.toText(),
+              title: t.bibleDetails.noHeadings.toText(),
+              subtitle: t.bibleDetails.noHeadingsDescription.toText(),
               leading: Symbols.format_clear.toIcon(),
             ),
           StyledListItem(
-            title: 'Audio Bible'.toText(),
-            subtitle: 'Whether this Bible includes an Audio Bible'.toText(),
+            title: t.labels.audioBible.toText(),
+            subtitle: t.bibleDetails.audioSupportDescription.toText(),
             trailing: StyledSwitch(isSelected: translation.hasAudioBible, isEnabled: true),
           ),
           StyledListItem(
             trailing: StyledSwitch(isSelected: translation.hasRedLetters, isEnabled: true),
-            title: 'Red Letters'.toText(),
-            subtitle: 'Whether Red Letters are supported in this Bible.'.toText(),
+            title: t.bibleDetails.redLetters.toText(),
+            subtitle: t.bibleDetails.redLettersDescription.toText(),
           ),
           StyledListItem(
             trailing: StyledSwitch(isSelected: translation.hasFootnotes, isEnabled: true),
-            title: 'Footnotes'.toText(),
-            subtitle: 'Whether this Bible includes footnotes.'.toText(),
+            title: t.labels.footnotes.toText(),
+            subtitle: t.bibleDetails.footnotesDescription.toText(),
           ),
           StyledListItem(
             trailing: StyledSwitch(isSelected: translation.hasParagraphs, isEnabled: true),
-            title: 'Paragraphs'.toText(),
-            subtitle: 'Whether this Bible includes paragraphs.'.toText(),
+            title: t.labels.paragraphs.toText(),
+            subtitle: t.bibleDetails.paragraphsDescription.toText(),
           ),
         ],
       ),

@@ -35,19 +35,19 @@ enum StudyAction {
   crossReferences;
 
   String title() => switch (this) {
-    compare => 'Compare',
-    interlinear => 'Interlinear',
-    commentary => 'Commentary',
-    crossReferences => 'Cross References',
+    compare => t.studyActions.compare,
+    interlinear => t.studyActions.interlinear,
+    commentary => t.studyActions.commentary,
+    crossReferences => t.studyActions.crossReferences,
   };
 
   String description({required String? regionFormat, required RegionType regionType}) {
     final regionText = regionFormat ?? regionType.formatThis();
     return switch (this) {
-      compare => 'Compare $regionText across a variety of translations.',
-      interlinear => 'View a lexical breakdown of $regionText using Strongs.',
-      commentary => 'View commentaries of $regionText.',
-      crossReferences => 'View cross references of $regionText.',
+      compare => t.studyActions.compareDescription(region: regionText),
+      interlinear => t.studyActions.interlinearDescription(region: regionText),
+      commentary => t.studyActions.commentaryDescription(region: regionText),
+      crossReferences => t.studyActions.crossReferencesDescription(region: regionText),
     };
   }
 
@@ -100,7 +100,7 @@ enum StudyAction {
             ? [
                 Padding(
                   padding: .all(16),
-                  child: StyledBanner(message: 'No Cross References Found'.toText()),
+                  child: StyledBanner(message: t.studyActions.noCrossReferences.toText()),
                 ),
               ]
             : [
@@ -110,15 +110,13 @@ enum StudyAction {
                     child: StyledBanner(
                       colorBuilder: .surfaceTertiary,
                       leading: Symbols.book.toIcon(),
-                      message: 'Cross references use ${user.studyTranslation.title()}'.toText(),
+                      message: t.studyActions.crossReferencesUse(translation: user.studyTranslation.title()).toText(),
                       action: StyledTextAction(
-                        label: 'Learn More'.toText(),
+                        label: t.common.learnMore.toText(),
                         onPressed: () => context.showStyledDialog(
                           (context) => TutorialDialog(
-                            title: 'Cross References'.toText(),
-                            body:
-                                'Because your selected translation is only available online, cross references are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app.'
-                                    .toText(),
+                            title: t.studyActions.crossReferences.toText(),
+                            body: t.studyActions.onlineCrossReferencesExplanation.toText(),
                             tutorial: .crossReferencesStudy,
                           ),
                         ),
@@ -193,7 +191,7 @@ enum StudyAction {
             InterlinearDirection.values[useListenableSelector(tabController, () => tabController.index)];
 
         return StyledSheet.builder(
-          title: 'Interlinear'.toText(),
+          title: t.labels.interlinear.toText(),
           subtitle: Row(
             mainAxisAlignment: .center,
             spacing: 8,

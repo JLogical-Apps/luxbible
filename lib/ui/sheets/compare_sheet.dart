@@ -65,7 +65,7 @@ class CompareSheet {
           padding: .only(bottom: 16),
           child: StyledTile.message(
             leading: Symbols.translate.toIcon(),
-            title: "${translation.fullName()} doesn't include this selection.".toText(),
+            title: t.compare.unavailable(translation: translation.fullName()).toText(),
           ),
         );
 }

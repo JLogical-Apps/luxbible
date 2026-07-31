@@ -1,3 +1,4 @@
+import 'package:bible/i18n/strings.g.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/highlight_style.dart';
 import 'package:bible/models/reference/bible_text_selection.dart';
@@ -31,7 +32,9 @@ sealed class Annotation with _$Annotation {
 
   String formatLocation() => switch (selection) {
     VersesAnnotationSelection s => s.verseSelection.format(),
-    TextAnnotationSelection s => 'Text in ${s.textSelection.toVerseSelection().format()}',
+    TextAnnotationSelection s => t.selectionActions.textInReference(
+      reference: s.textSelection.toVerseSelection().format(),
+    ),
   };
 }
 

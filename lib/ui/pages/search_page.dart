@@ -108,7 +108,7 @@ class SearchPage extends HookConsumerWidget {
     }
 
     return StyledPage(
-      title: 'Search'.toText(),
+      title: t.labels.search.toText(),
       body: Column(
         children: [
           Container(
@@ -119,7 +119,7 @@ class SearchPage extends HookConsumerWidget {
               crossAxisAlignment: .start,
               children: [
                 StyledTextField(
-                  label: 'Search'.toText(),
+                  label: t.labels.search.toText(),
                   text: textState.value,
                   autofocus: initialSearch == null,
                   onChanged: (text) {
@@ -127,7 +127,7 @@ class SearchPage extends HookConsumerWidget {
                     searchState.value = '';
                     searchResultsState.value = [];
                   },
-                  hintText: 'Search for a word or phrase',
+                  hintText: t.searchUi.wordOrPhraseHint,
                   onSubmit: (newText) {
                     textState.value = newText;
                     searchState.value = newText;
@@ -146,15 +146,13 @@ class SearchPage extends HookConsumerWidget {
                 if (user.translation.isOnline && !user.tutorials.contains(Tutorial.searchStudy))
                   StyledBanner(
                     leading: Symbols.book.toIcon(),
-                    message: 'Using ${user.studyTranslation.title()} for search'.toText(),
+                    message: t.searchUi.usingTranslation(translation: user.studyTranslation.title()).toText(),
                     action: StyledTextAction(
-                      label: 'Learn More'.toText(),
+                      label: t.common.learnMore.toText(),
                       onPressed: () => context.showStyledDialog(
                         (context) => TutorialDialog(
-                          title: 'Search Bible'.toText(),
-                          body:
-                              '${user.translation.title()} does not currently support search. Using your most-recent Study Bible instead.'
-                                  .toText(),
+                          title: t.searchUi.searchBible.toText(),
+                          body: t.searchUi.unsupportedTranslation(translation: user.translation.title()).toText(),
                           tutorial: .searchStudy,
                         ),
                       ),
@@ -176,16 +174,15 @@ class SearchPage extends HookConsumerWidget {
                           child: Padding(
                             padding: .all(16),
                             child: StyledTile.message(
-                              title: 'Start a search'.toText(),
-                              subtitle: 'Enter a keyword like light, word, or wisdom, then hit enter on the keyboard.'
-                                  .toText(),
+                              title: t.searchUi.startSearch.toText(),
+                              subtitle: t.searchUi.searchPrompt.toText(),
                               leading: Symbols.search.toIcon(),
                             ),
                           ),
                         ),
                         if (user.searchHistory.isNotEmpty)
                           StyledSection(
-                            title: Text('Recents'),
+                            title: Text(t.navigation.recents),
                             children: user.searchHistory
                                 .mapIndexed(
                                   (i, searchResult) => StyledSwipeable(
@@ -217,8 +214,8 @@ class SearchPage extends HookConsumerWidget {
                     Padding(
                       padding: .all(16),
                       child: StyledTile.message(
-                        title: 'No Search Results Found'.toText(),
-                        subtitle: 'Try another search'.toText(),
+                        title: t.emptyStates.noSearchResults.toText(),
+                        subtitle: t.emptyStates.tryAnotherSearch.toText(),
                         leading: Symbols.search.toIcon(),
                       ),
                     )

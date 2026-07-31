@@ -33,7 +33,7 @@ class BiblePlanSearchPage extends HookConsumerWidget {
         .where((planType, plan) => type == null || planType.searchType == type);
 
     return StyledPage(
-      title: 'Find A Bible Plan'.toText(),
+      title: t.biblePlans.find.toText(),
       body: Column(
         crossAxisAlignment: .start,
         children: [
@@ -46,12 +46,12 @@ class BiblePlanSearchPage extends HookConsumerWidget {
                 StyledPillButton.md(
                   colorBuilder: scope == null ? null : .surfacePrimaryInverted,
                   leading: Symbols.book_6.toIcon(),
-                  label: (scope?.title() ?? 'Scope').toText(),
+                  label: (scope?.title() ?? t.labels.scope).toText(),
                   trailing: Symbols.keyboard_arrow_down.toIcon(),
                   onPressed: () async {
                     final newScope = await context.showStyledSheet(
                       (context) => StyledSelectionSheet<BiblePlanScope>(
-                        title: 'Scope'.toText(),
+                        title: t.labels.scope.toText(),
                         options: BiblePlanScope.values,
                         optionMapper: (scope) =>
                             StyledSelectOption(title: scope.title().toText(), subtitle: scope.description().toText()),
@@ -75,12 +75,12 @@ class BiblePlanSearchPage extends HookConsumerWidget {
                 StyledPillButton.md(
                   colorBuilder: type == null ? null : .surfacePrimaryInverted,
                   leading: Symbols.category.toIcon(),
-                  label: (type?.title() ?? 'Type').toText(),
+                  label: (type?.title() ?? t.labels.type).toText(),
                   trailing: Symbols.keyboard_arrow_down.toIcon(),
                   onPressed: () async {
                     final newType = await context.showStyledSheet(
                       (context) => StyledSelectionSheet<BiblePlanSearchType>(
-                        title: 'Type'.toText(),
+                        title: t.labels.type.toText(),
                         options: BiblePlanSearchType.values,
                         optionMapper: (type) =>
                             StyledSelectOption(title: type.title().toText(), subtitle: type.description().toText()),
@@ -114,7 +114,7 @@ class BiblePlanSearchPage extends HookConsumerWidget {
                     padding: .all(16),
                     child: StyledTile.message(
                       leading: Symbols.search_off.toIcon(),
-                      title: 'No matching Bible plans.'.toText(),
+                      title: t.emptyStates.noMatchingPlans.toText(),
                     ),
                   ),
                 ...matchingPlanByType.mapToIterable(
@@ -125,28 +125,28 @@ class BiblePlanSearchPage extends HookConsumerWidget {
                     onPressed: () async {
                       final shouldStartPlan = await context.showStyledSheet(
                         (context) => StyledSheet(
-                          title: 'Start Plan?'.toText(),
+                          title: t.biblePlans.startPlanQuestion.toText(),
                           children: [
                             BiblePlanTile(planType: type, plan: plan, showTags: false),
                             StyledListItem(
                               leading: Symbols.book_6.toIcon(),
-                              title: 'Scope'.toText(),
+                              title: t.labels.scope.toText(),
                               subtitle: type.scope.title().toText(),
                             ),
                             StyledListItem(
                               leading: Symbols.category.toIcon(),
-                              title: 'Type'.toText(),
+                              title: t.labels.type.toText(),
                               subtitle: type.searchType.title().toText(),
                             ),
                             StyledListItem(
                               leading: Symbols.calendar_month.toIcon(),
-                              title: 'Duration'.toText(),
-                              subtitle: '${plan.dayCount} days'.toText(),
+                              title: t.labels.duration.toText(),
+                              subtitle: t.biblePlans.dayCount(count: plan.dayCount).toText(),
                             ),
                             if (type.source case final source?)
                               StyledListItem(
                                 leading: Symbols.source.toIcon(),
-                                title: 'Source'.toText(),
+                                title: t.labels.source.toText(),
                                 subtitle: source.name.toText(),
                                 trailing: Symbols.arrow_outward.toIcon(),
                                 onPressed: () => launchUrl(Uri.parse(source.link)),
@@ -154,13 +154,13 @@ class BiblePlanSearchPage extends HookConsumerWidget {
                             StyledDivider(height: 2),
                             ...StyledSection(
                               padding: .only(top: 24),
-                              title: 'Days'.toText(),
+                              title: t.labels.days.toText(),
                               children: plan.days
                                   .mapIndexed<Widget>(
                                     (dayIndex, day) => StyledListItem(
-                                      title: 'Day ${dayIndex + 1}'.toText(),
+                                      title: t.biblePlans.day(day: dayIndex + 1).toText(),
                                       subtitle: day.isReviewAndReflect
-                                          ? 'Review & Reflect'.toText()
+                                          ? t.biblePlans.reviewAndReflect.toText()
                                           : Text(day.passages.map((passage) => passage.format()).join(' • ')),
                                     ),
                                   )
@@ -168,7 +168,10 @@ class BiblePlanSearchPage extends HookConsumerWidget {
                             ).buildChildren(context),
                           ],
                           buttonsBuilder: (context) => [
-                            StyledRectButton.primary(label: 'Start Plan'.toText(), onPressed: () => context.pop(true)),
+                            StyledRectButton.primary(
+                              label: t.biblePlans.startPlan.toText(),
+                              onPressed: () => context.pop(true),
+                            ),
                           ],
                         ),
                       );

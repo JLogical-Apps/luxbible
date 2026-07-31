@@ -26,7 +26,7 @@ class SearchLocationButton extends StatelessWidget {
       trailing: Symbols.keyboard_arrow_down.toIcon(),
       label:
           (locations.isEmpty
-                  ? 'Locations'
+                  ? t.labels.locations
                   : locations
                         .sortedByIndexIn(SearchLocationFilter.values)
                         .map((location) => location.title())
@@ -37,7 +37,7 @@ class SearchLocationButton extends StatelessWidget {
         FocusManager.instance.primaryFocus?.unfocus();
         final newLocations = await context.showStyledSheet(
           (context) => StyledMultiSelectionSheet<SearchLocationFilter>(
-            title: 'Locations'.toText(),
+            title: t.labels.locations.toText(),
             trailing: locations.isEmpty
                 ? null
                 : StyledCircleButton.md(
@@ -54,9 +54,9 @@ class SearchLocationButton extends StatelessWidget {
                 StyledListItem(
                   title: Text(
                     [
-                      'Selected: ',
+                      t.selectionUi.selected,
                       selectedOptions.isEmpty
-                          ? 'None'
+                          ? t.common.none
                           : selectedOptions
                                 .sortedByIndexIn(SearchLocationFilter.values)
                                 .map((option) => option.title())
@@ -67,7 +67,7 @@ class SearchLocationButton extends StatelessWidget {
                   ),
                   trailing: selectedOptions.isEmpty
                       ? null
-                      : StyledLink('Clear', onPressed: () => updateSelectedOptions([])),
+                      : StyledLink(t.common.clear, onPressed: () => updateSelectedOptions([])),
                 ),
                 StyledDivider(height: 2),
               ],
@@ -138,8 +138,8 @@ enum SearchLocationFilterGroup {
   };
 
   String title() => switch (this) {
-    currentBook => 'Current Book',
-    testaments => 'Testaments',
-    books => 'Books',
+    currentBook => t.searchLocations.currentBook,
+    testaments => t.searchLocations.testaments,
+    books => t.searchLocations.books,
   };
 }

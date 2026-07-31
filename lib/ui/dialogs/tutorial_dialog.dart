@@ -10,13 +10,13 @@ class TutorialDialog extends StyledDialog {
     : super(
         buttonsBuilder: (context) => [
           StyledRectButton.secondary(
-            label: "Don't Show Again".toText(),
+            label: t.tutorials.dontShowAgain.toText(),
             onPressed: () {
               ref.updateUser((user) => user.withTutorial(tutorial));
               context.pop();
             },
           ),
-          StyledRectButton.primary(label: 'Ok'.toText(), onPressed: () => context.pop()),
+          StyledRectButton.primary(label: t.common.ok.toText(), onPressed: () => context.pop()),
         ],
       );
 }

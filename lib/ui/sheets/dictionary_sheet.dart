@@ -21,7 +21,7 @@ class DictionarySheet {
     breadcrumbText: entry.title,
     (context) => StyledSheet(
       title: entry.title.toText(),
-      subtitle: "Easton's Bible Dictionary".toText(),
+      subtitle: t.dictionary.eastons.toText(),
       children: entry.definitions
           .map<Widget>(
             (definition) => Padding(

@@ -27,7 +27,7 @@ class PreviewPassageSheet {
           .toList(),
       buttonsBuilder: (context) => [
         StyledRectButton.secondary(
-          label: 'Read Entire Chapter'.toText(),
+          label: t.biblePlans.readEntireChapter.toText(),
           onPressed: () {
             context.pop();
             ChapterPreviewPage.show(

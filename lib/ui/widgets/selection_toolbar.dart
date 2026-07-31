@@ -40,7 +40,7 @@ class SelectionToolbar extends ConsumerWidget {
         ),
         onMorePressed: () => context.showStyledSheet(
           (context) => StyledSheet(
-            title: 'Verse Selection'.toText(),
+            title: t.toolbarSettings.verseSelection.toText(),
             subtitle: verseSelection.format().toText(),
             trailing: StyledCircleButton.md(
               child: Symbols.tune.toIcon(),
@@ -91,7 +91,7 @@ class SelectionToolbar extends ConsumerWidget {
 
           await context.showStyledSheet(
             (context) => StyledSheet(
-              title: 'Text Selection'.toText(),
+              title: t.toolbarSettings.textSelection.toText(),
               subtitle: '"$selectionText"'.toText(),
               trailing: StyledCircleButton.md(
                 child: Symbols.tune.toIcon(),

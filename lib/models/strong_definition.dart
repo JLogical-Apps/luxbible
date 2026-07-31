@@ -1,3 +1,4 @@
+import 'package:bible/i18n/strings.g.dart';
 import 'package:bible/utils/markdown.dart';
 import 'package:collection/collection.dart';
 
@@ -17,18 +18,18 @@ enum StrongDefinitionMarker {
   };
 
   String get label => switch (this) {
-    addedWord => 'added:',
-    idiomaticRendering => 'idiom:',
+    addedWord => t.strongDefinition.addedLabel,
+    idiomaticRendering => t.strongDefinition.idiomLabel,
   };
 
   String get title => switch (this) {
-    addedWord => 'Added word',
-    idiomaticRendering => 'Idiomatic rendering',
+    addedWord => t.strongDefinition.addedWord,
+    idiomaticRendering => t.strongDefinition.idiomaticRendering,
   };
 
   String get description => switch (this) {
-    addedWord => 'Marks a word supplied alongside the Hebrew or Greek word being defined.',
-    idiomaticRendering => 'Marks a rendering that reflects an expression particular to Hebrew or Greek.',
+    addedWord => t.strongDefinition.addedWordDescription,
+    idiomaticRendering => t.strongDefinition.idiomaticRenderingDescription,
   };
 
   String get linkTarget => 'strongs-definition-marker:$name';

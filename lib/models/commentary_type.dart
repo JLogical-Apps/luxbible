@@ -1,3 +1,5 @@
+import 'package:bible/i18n/strings.g.dart';
+
 enum CommentaryType {
   matthewHenry,
   jamiesonFaussetBrown,
@@ -10,9 +12,8 @@ enum CommentaryType {
   };
 
   String description() => switch (this) {
-    matthewHenry =>
-      'A concise, devotional commentary on the whole Bible from the Puritan tradition. Warm, practical, and easy to read.',
-    jamiesonFaussetBrown => 'A compact, verse-by-verse commentary on the whole Bible. Balanced and accessible.',
-    calvin => "The Reformer's classic exposition. Deep and doctrinal. ",
+    matthewHenry => t.commentaryTypes.matthewHenryDescription,
+    jamiesonFaussetBrown => t.commentaryTypes.jamiesonFaussetBrownDescription,
+    calvin => t.commentaryTypes.calvinDescription,
   };
 }

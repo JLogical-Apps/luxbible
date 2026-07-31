@@ -1,3 +1,5 @@
+import 'package:bible/i18n/strings.g.dart';
+
 enum RegionType {
   chapter,
   verses,
@@ -5,9 +7,9 @@ enum RegionType {
   text;
 
   String formatThis() => switch (this) {
-    chapter => 'this chapter',
-    verses => 'these verses',
-    visibleVerses => 'visible verses',
-    text => 'this text',
+    chapter => t.regionTypes.chapter,
+    verses => t.regionTypes.verses,
+    visibleVerses => t.regionTypes.visibleVerses,
+    text => t.regionTypes.text,
   };
 }

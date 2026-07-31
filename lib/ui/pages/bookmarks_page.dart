@@ -16,7 +16,7 @@ class BookmarksPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
     return StyledPage(
-      title: 'Your Bookmarks'.toText(),
+      title: t.bookmarkPage.title.toText(),
       body: user.bookmarkById.isEmpty
           ? StyledListView.child(
               child: SafeArea(
@@ -24,7 +24,7 @@ class BookmarksPage extends HookConsumerWidget {
                   padding: .all(16),
                   child: StyledTile.message(
                     leading: Symbols.bookmark.toIcon(),
-                    title: "You haven't created any bookmarks.".toText(),
+                    title: t.emptyStates.noBookmarks.toText(),
                   ),
                 ),
               ),
@@ -39,8 +39,8 @@ class BookmarksPage extends HookConsumerWidget {
                           onPressed: () async {
                             final confirmed = await context.showStyledDialog(
                               (context) => StyledDialog.confirmDelete(
-                                title: 'Delete Bookmark'.toText(),
-                                body: 'Are you sure you want to delete "${bookmark.name}"?'.toText(),
+                                title: t.bookmarks.delete.toText(),
+                                body: t.bookmarks.deleteNamedConfirmation(name: bookmark.name).toText(),
                               ),
                             );
                             if (confirmed == true) {

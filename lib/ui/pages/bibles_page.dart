@@ -22,7 +22,7 @@ class BiblesPage extends HookConsumerWidget {
     final bibles = user.biblesOrDefault;
 
     return StyledPage(
-      title: 'Bibles'.toText(),
+      title: t.labels.bibles.toText(),
       body: StyledDock(
         shrinkWrap: false,
         children: [
@@ -53,13 +53,13 @@ class BiblesPage extends HookConsumerWidget {
         ],
         buttonsBuilder: (context) => [
           StyledRectButton.secondary(
-            label: 'Add & Remove Bibles'.toText(),
+            label: t.bibleDetails.addRemoveBibles.toText(),
             onPressed: () => context.showStyledSheet((context) {
               final selectedBiblesState = useState(user.biblesOrDefault);
               return StyledSheet(
-                title: 'Add & Remove Bibles'.toText(),
+                title: t.bibleDetails.addRemoveBibles.toText(),
                 children: BibleTranslation.values
-                    .groupListsBy((translation) => translation.language)
+                    .groupListsBy((translation) => translation.bibleLanguage)
                     .mapToIterable(
                       (language, translations) => StyledStickyHeader(
                         title: language.title().toText(),
@@ -85,7 +85,7 @@ class BiblesPage extends HookConsumerWidget {
                     .toList(),
                 buttonsBuilder: (context) => [
                   StyledRectButton.primary(
-                    label: 'Save'.toText(),
+                    label: t.common.save.toText(),
                     onPressed: () {
                       ref.updateUser((user) => user.copyWith(bibles: selectedBiblesState.value));
                       context.pop();

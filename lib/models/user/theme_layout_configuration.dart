@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:bible/i18n/strings.g.dart';
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/bible/paragraph.dart';
 import 'package:bible/utils/extensions/collection_extensions.dart';
@@ -87,13 +88,13 @@ enum FontSizeSpacing {
   static FontSizeSpacing closestTo(double multiplier) => values.minBy((value) => (value.multiplier - multiplier).abs());
 
   String title() => switch (this) {
-    extraTiny => 'Extra Tiny',
-    tiny => 'Tiny',
-    small => 'Small',
-    standard => 'Standard',
-    large => 'Large',
-    huge => 'Huge',
-    extraHuge => 'Extra Huge',
+    extraTiny => t.themeOptions.extraTiny,
+    tiny => t.themeOptions.tiny,
+    small => t.themeOptions.small,
+    standard => t.themeOptions.standard,
+    large => t.themeOptions.large,
+    huge => t.themeOptions.huge,
+    extraHuge => t.themeOptions.extraHuge,
   };
 
   double get multiplier => pow(1.09, index - standard.index).toDouble();
@@ -108,16 +109,15 @@ enum SectionHeadings {
   none;
 
   String title() => switch (this) {
-    all => 'Native & Synthetic',
-    native => 'Native',
-    none => 'None',
+    all => t.themeOptions.nativeAndSynthetic,
+    native => t.themeOptions.native,
+    none => t.themeOptions.none,
   };
 
   String description() => switch (this) {
-    all =>
-      'Show headings in translations that support them, and synthetically insert BSB\'s section headings into English translations without them natively.',
-    native => 'Show headings in translations that support them.',
-    none => 'Do not show section headings',
+    all => t.themeOptions.allHeadingsDescription,
+    native => t.themeOptions.nativeHeadingsDescription,
+    none => t.themeOptions.noHeadingsDescription,
   };
 
   bool showFor({required BibleTranslation translation, required SectionType sectionType}) =>

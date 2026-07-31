@@ -19,15 +19,15 @@ enum VerseSelectionAction {
   copy;
 
   String title() => switch (this) {
-    annotate => 'Annotate',
-    study => 'Study',
-    copy => 'Copy',
+    annotate => t.selectionActions.annotate,
+    study => t.selectionActions.study,
+    copy => t.selectionActions.copy,
   };
 
   String description() => switch (this) {
-    annotate => 'Annotate these verses.',
-    study => 'Study these verses.',
-    copy => 'Copy these verses to your clipboard.',
+    annotate => t.selectionActions.annotateVersesDescription,
+    study => t.selectionActions.studyVersesDescription,
+    copy => t.selectionActions.copyVersesDescription,
   };
 
   IconData get icon => switch (this) {
@@ -65,7 +65,9 @@ enum VerseSelectionAction {
         if (!context.mounted) return;
 
         onDeselect();
-        context.showStyledSnackbar(message: '${selectedVerseSelection.format()} copied to clipboard.'.toText());
+        context.showStyledSnackbar(
+          message: t.selectionActions.copiedVerses(reference: selectedVerseSelection.format()).toText(),
+        );
         await Clipboard.setData(
           ClipboardData(text: selectedVerseSelection.references.map((reference) => text).nonNulls.join()),
         );

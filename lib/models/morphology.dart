@@ -1,4 +1,10 @@
 import 'package:collection/collection.dart';
+import 'package:bible/i18n/strings.g.dart';
+
+typedef MorphologyTranslation = ({String name, String description, String examples});
+typedef MorphologyAttributeTranslation = ({String name, String description});
+
+List<String> morphologyExamples(String examples) => examples.split('|');
 
 /// A value rendered as the right-hand side of a [Morphology.attributes] entry.
 /// Provides everything a UI needs to show a labeled, explained chip or list item.
@@ -41,50 +47,18 @@ enum MorphologyAttribute {
   particle,
   code;
 
-  String get displayName => switch (this) {
-    type => 'Type',
-    grammaticalCase => 'Case',
-    gender => 'Gender',
-    number => 'Number',
-    person => 'Person',
-    state => 'State',
-    tense => 'Tense',
-    mood => 'Mood',
-    voice => 'Voice',
-    degree => 'Degree',
-    stem => 'Stem',
-    aspect => 'Aspect',
-    prefix => 'Prefix',
-    particle => 'Particle',
-    code => 'Code',
-  };
+  String get displayName => morphologyAttributeTranslation(this).name;
 
-  String get description => switch (this) {
-    type => 'The grammatical category of the word.',
-    grammaticalCase => 'The case marks the syntactic role — subject, object, possession, etc.',
-    gender => 'Grammatical gender — masculine, feminine, neuter (Greek), or common (Hebrew).',
-    number => 'Whether the word refers to one (singular), two (dual), or many (plural).',
-    person => 'Who the word refers to — 1st (I/we), 2nd (you), or 3rd (he/she/it/they).',
-    state => 'The state of a noun — absolute, construct, or determined.',
-    tense => 'The verb tense — combines time and aspect.',
-    mood => 'How the action is expressed — fact, command, possibility, etc.',
-    voice => 'The voice — active, middle, or passive.',
-    degree => 'The degree of an adjective or adverb — positive, comparative, or superlative.',
-    stem => 'The verb stem (binyan) — qal, niphal, piel, etc.',
-    aspect => 'The verb aspect — perfect, imperfect, participle, etc.',
-    prefix => 'A Hebrew prefixed preposition letter.',
-    particle => 'A small uninflected word — often a conjunction or marker.',
-    code => 'The raw morphology code as it appears in the source text.',
-  };
+  String get description => morphologyAttributeTranslation(this).description;
 }
 
-enum Language {
+enum MorphologyLanguage {
   hebrew,
   greek;
 
   String get displayName => switch (this) {
-    .hebrew => 'Hebrew',
-    .greek => 'Greek',
+    .hebrew => t.languages.hebrew,
+    .greek => t.languages.greek,
   };
 }
 
@@ -124,112 +98,13 @@ enum MorphologyType implements MorphologyAttributeValue {
   unknown;
 
   @override
-  String get displayName => switch (this) {
-    article => 'Article',
-    conjunction => 'Conjunction',
-    preposition => 'Preposition',
-    adverb => 'Adverb',
-    negativeAdverb => 'Negative adverb',
-    adjective => 'Adjective',
-    noun => 'Noun',
-    properNoun => 'Proper noun',
-    number => 'Number',
-    ordinalNumber => 'Ordinal number',
-    pronoun => 'Pronoun',
-    personalPronoun => 'Personal pronoun',
-    demonstrativePronoun => 'Demonstrative pronoun',
-    interrogativePronoun => 'Interrogative pronoun',
-    indefinitePronoun => 'Indefinite pronoun',
-    reciprocalPronoun => 'Reciprocal pronoun',
-    reflexivePronoun => 'Reflexive pronoun',
-    relativePronoun => 'Relative pronoun',
-    particle => 'Particle',
-    negativeParticle => 'Negative particle',
-    interrogativeParticle => 'Interrogative particle',
-    demonstrativeParticle => 'Demonstrative particle',
-    genericParticle => 'Generic particle',
-    relativeParticle => 'Relative particle',
-    verb => 'Verb',
-    pronominalSuffix => 'Pronominal suffix',
-    directObjectMarker => 'Direct object marker',
-    punctuation => 'Punctuation',
-    interjection => 'Interjection',
-    indeclinable => 'Indeclinable',
-    hebraism => 'Hebrew loanword',
-    unknown => 'Unknown',
-  };
+  String get displayName => morphologyTypeTranslation(this).name;
 
   @override
-  String get description => switch (this) {
-    article => 'A definite article — "the".',
-    conjunction => 'A word that joins other words or clauses.',
-    preposition => 'Relates a noun or pronoun to other words.',
-    adverb => 'Modifies a verb, adjective, or another adverb.',
-    negativeAdverb => 'An adverb expressing negation.',
-    adjective => 'A word that describes a noun.',
-    noun => 'A person, place, thing, or idea.',
-    properNoun => 'A specific name of a person, place, or thing.',
-    number => 'A cardinal number.',
-    ordinalNumber => 'An ordinal number — "first", "second", and so on.',
-    pronoun => 'A word that stands in for a noun.',
-    personalPronoun => 'A pronoun that refers to a specific person — I, you, he, she.',
-    demonstrativePronoun => 'A pronoun that points to something — "this", "that".',
-    interrogativePronoun => 'A pronoun used to ask a question — "who", "what".',
-    indefinitePronoun => 'A pronoun referring to non-specific entities.',
-    reciprocalPronoun => 'A pronoun expressing mutual action — "one another".',
-    reflexivePronoun => 'A pronoun referring back to the subject — "himself", "themselves".',
-    relativePronoun => 'A pronoun introducing a subordinate clause — "who", "which", "that".',
-    particle => 'A small uninflected word.',
-    negativeParticle => 'A particle that marks negation.',
-    interrogativeParticle => 'A particle that marks a question.',
-    demonstrativeParticle => 'A pointing particle — "behold".',
-    genericParticle => 'A general-purpose particle.',
-    relativeParticle => 'A particle that introduces a relative clause.',
-    verb => 'A word expressing an action or state.',
-    pronominalSuffix => 'A pronoun fused to the end of a verb or noun (Hebrew).',
-    directObjectMarker => 'The Hebrew אֵת that marks a definite direct object.',
-    punctuation => 'A punctuation mark.',
-    interjection => 'A short exclamation expressing emotion.',
-    indeclinable => 'A word that does not change form by inflection.',
-    hebraism => 'A Hebrew or Aramaic loanword carried into Greek.',
-    unknown => 'A morphology code that the parser did not recognize.',
-  };
+  String get description => morphologyTypeTranslation(this).description;
 
   @override
-  List<String> get examples => switch (this) {
-    article => ['the king', 'the Lord'],
-    conjunction => ['and', 'but', 'for'],
-    preposition => ['in', 'to', 'with'],
-    adverb => ['quickly', 'now', 'there'],
-    negativeAdverb => ['not', 'never'],
-    adjective => ['great', 'holy', 'wise'],
-    noun => ['city', 'water', 'love'],
-    properNoun => ['David', 'Jerusalem', 'Israel'],
-    number => ['three', 'twelve', 'thousand'],
-    ordinalNumber => ['first', 'tenth', 'seventieth'],
-    pronoun => ['he', 'she', 'they'],
-    personalPronoun => ['I', 'you', 'we'],
-    demonstrativePronoun => ['this', 'these', 'those'],
-    interrogativePronoun => ['who?', 'what?', 'which?'],
-    indefinitePronoun => ['someone', 'anyone', 'nothing'],
-    reciprocalPronoun => ['one another', 'each other'],
-    reflexivePronoun => ['himself', 'themselves'],
-    relativePronoun => ['who', 'which', 'that'],
-    particle => ['indeed', 'now'],
-    negativeParticle => ['not', 'no'],
-    interrogativeParticle => ['(Hebrew prefix ה, no English equivalent)'],
-    demonstrativeParticle => ['behold', 'lo'],
-    genericParticle => ['indeed', 'truly'],
-    relativeParticle => ['that', 'which'],
-    verb => ['write', 'be', 'go'],
-    pronominalSuffix => ['his hand', 'their land', 'her voice'],
-    directObjectMarker => ['אֵת (no English equivalent)'],
-    punctuation => ['.', ',', ';'],
-    interjection => ['oh!', 'alas!'],
-    indeclinable => ['Hosanna', 'Hallelujah'],
-    hebraism => ['Amen', 'Hosanna', 'Sabaoth'],
-    unknown => [],
-  };
+  List<String> get examples => this == unknown ? [] : morphologyExamples(morphologyTypeTranslation(this).examples);
 }
 
 enum Person implements MorphologyAttributeValue {
@@ -238,25 +113,13 @@ enum Person implements MorphologyAttributeValue {
   third;
 
   @override
-  String get displayName => switch (this) {
-    first => '1st person',
-    second => '2nd person',
-    third => '3rd person',
-  };
+  String get displayName => morphologyPersonTranslation(this).name;
 
   @override
-  String get description => switch (this) {
-    first => 'The speaker — "I" or "we".',
-    second => 'The addressee — "you" (singular or plural).',
-    third => 'The party being spoken about — "he", "she", "it", "they".',
-  };
+  String get description => morphologyPersonTranslation(this).description;
 
   @override
-  List<String> get examples => switch (this) {
-    first => ['I am', 'we walk', 'I have spoken'],
-    second => ['you go', 'you (pl.) listen', 'you have seen'],
-    third => ['he runs', 'she speaks', 'they gathered'],
-  };
+  List<String> get examples => morphologyExamples(morphologyPersonTranslation(this).examples);
 }
 
 enum GrammaticalGender implements MorphologyAttributeValue {
@@ -266,28 +129,13 @@ enum GrammaticalGender implements MorphologyAttributeValue {
   common;
 
   @override
-  String get displayName => switch (this) {
-    masculine => 'Masculine',
-    feminine => 'Feminine',
-    neuter => 'Neuter',
-    common => 'Common',
-  };
+  String get displayName => morphologyGenderTranslation(this).name;
 
   @override
-  String get description => switch (this) {
-    masculine => 'Masculine grammatical gender — used for male persons and many nouns by convention.',
-    feminine => 'Feminine grammatical gender — used for female persons and many nouns by convention.',
-    neuter => 'Greek neuter gender — neither masculine nor feminine.',
-    common => 'Hebrew common gender — the form serves both masculine and feminine.',
-  };
+  String get description => morphologyGenderTranslation(this).description;
 
   @override
-  List<String> get examples => switch (this) {
-    masculine => ['father', 'son', 'king'],
-    feminine => ['mother', 'daughter', 'queen'],
-    neuter => ['child (τέκνον)', 'gift (δῶρον)'],
-    common => ['cattle', 'voice'],
-  };
+  List<String> get examples => morphologyExamples(morphologyGenderTranslation(this).examples);
 }
 
 enum GrammaticalNumber implements MorphologyAttributeValue {
@@ -296,25 +144,13 @@ enum GrammaticalNumber implements MorphologyAttributeValue {
   dual;
 
   @override
-  String get displayName => switch (this) {
-    singular => 'Singular',
-    plural => 'Plural',
-    dual => 'Dual',
-  };
+  String get displayName => morphologyNumberTranslation(this).name;
 
   @override
-  String get description => switch (this) {
-    singular => 'Refers to one.',
-    plural => 'Refers to two or more.',
-    dual => 'Refers to a natural pair (Hebrew only).',
-  };
+  String get description => morphologyNumberTranslation(this).description;
 
   @override
-  List<String> get examples => switch (this) {
-    singular => ['the book', 'a man', 'one stone'],
-    plural => ['the books', 'men', 'stones'],
-    dual => ['hands', 'eyes', 'two days'],
-  };
+  List<String> get examples => morphologyExamples(morphologyNumberTranslation(this).examples);
 }
 
 enum GrammaticalCase implements MorphologyAttributeValue {
@@ -325,31 +161,13 @@ enum GrammaticalCase implements MorphologyAttributeValue {
   vocative;
 
   @override
-  String get displayName => switch (this) {
-    nominative => 'Nominative',
-    genitive => 'Genitive',
-    dative => 'Dative',
-    accusative => 'Accusative',
-    vocative => 'Vocative',
-  };
+  String get displayName => morphologyCaseTranslation(this).name;
 
   @override
-  String get description => switch (this) {
-    nominative => 'Marks the subject of a sentence.',
-    genitive => 'Indicates possession or origin — often translated "of".',
-    dative => 'Marks the indirect object — often "to" or "for".',
-    accusative => 'Marks the direct object.',
-    vocative => 'Used in direct address.',
-  };
+  String get description => morphologyCaseTranslation(this).description;
 
   @override
-  List<String> get examples => switch (this) {
-    nominative => ['God created', 'the king sees'],
-    genitive => ['the Son of God', 'kingdom of heaven'],
-    dative => ['gave to him', 'spoke to them'],
-    accusative => ['saw him', 'love your neighbor'],
-    vocative => ['Lord!', 'Father!', 'Friend!'],
-  };
+  List<String> get examples => morphologyExamples(morphologyCaseTranslation(this).examples);
 }
 
 enum HebrewState implements MorphologyAttributeValue {
@@ -358,25 +176,13 @@ enum HebrewState implements MorphologyAttributeValue {
   determined;
 
   @override
-  String get displayName => switch (this) {
-    absolute => 'Absolute',
-    construct => 'Construct',
-    determined => 'Determined',
-  };
+  String get displayName => morphologyStateTranslation(this).name;
 
   @override
-  String get description => switch (this) {
-    absolute => 'The default form of a noun — independent.',
-    construct => 'Bound to a following noun, expressing "X of Y".',
-    determined => 'Marked as definite (often by the article).',
-  };
+  String get description => morphologyStateTranslation(this).description;
 
   @override
-  List<String> get examples => switch (this) {
-    absolute => ['a king', 'a word'],
-    construct => ['king of Israel', 'word of the LORD'],
-    determined => ['the king', 'the word'],
-  };
+  List<String> get examples => morphologyExamples(morphologyStateTranslation(this).examples);
 }
 
 /// Hebrew verb stem (binyan).
@@ -399,43 +205,13 @@ enum HebrewStem implements MorphologyAttributeValue {
   String get linkTarget => 'morphology:stem:$name';
 
   @override
-  String get displayName => switch (this) {
-    qal => 'Qal',
-    qalPassive => 'Qal passive',
-    niphal => 'Niphal',
-    piel => 'Piel',
-    pual => 'Pual',
-    hiphil => 'Hiphil',
-    hophal => 'Hophal',
-    hithpael => 'Hithpael',
-    nithpael => 'Nithpael',
-  };
+  String get displayName => morphologyStemTranslation(this).name;
 
   @override
-  String get description => switch (this) {
-    qal => 'The simple active stem — the basic action of the verb.',
-    qalPassive => 'A rare passive of the simple stem.',
-    niphal => 'The simple passive or reflexive stem.',
-    piel => 'The intensive or factitive active stem.',
-    pual => 'The passive of the piel.',
-    hiphil => 'The causative active stem.',
-    hophal => 'The passive of the hiphil.',
-    hithpael => 'The reflexive or reciprocal of the piel.',
-    nithpael => 'A rare reflexive-passive stem.',
-  };
+  String get description => morphologyStemTranslation(this).description;
 
   @override
-  List<String> get examples => switch (this) {
-    qal => ['he wrote', 'she heard'],
-    qalPassive => ['it was taken'],
-    niphal => ['he was killed', 'they gathered themselves'],
-    piel => ['he praised', 'he blessed', 'he shattered'],
-    pual => ['he was praised'],
-    hiphil => ['he caused to write', 'he led out'],
-    hophal => ['he was caused to write'],
-    hithpael => ['he sanctified himself', 'they walked about'],
-    nithpael => ['it was atoned for'],
-  };
+  List<String> get examples => morphologyExamples(morphologyStemTranslation(this).examples);
 }
 
 enum HebrewAspect implements MorphologyAttributeValue {
@@ -451,46 +227,13 @@ enum HebrewAspect implements MorphologyAttributeValue {
   passiveParticiple;
 
   @override
-  String get displayName => switch (this) {
-    perfect => 'Perfect',
-    imperfect => 'Imperfect',
-    imperative => 'Imperative',
-    infinitiveConstruct => 'Infinitive construct',
-    infinitiveAbsolute => 'Infinitive absolute',
-    participle => 'Participle',
-    consecutiveImperfect => 'Consecutive imperfect',
-    conjunctiveImperfect => 'Conjunctive imperfect',
-    conjunctivePerfect => 'Conjunctive perfect',
-    passiveParticiple => 'Passive participle',
-  };
+  String get displayName => morphologyAspectTranslation(this).name;
 
   @override
-  String get description => switch (this) {
-    perfect => 'Completed action — typically translated as past.',
-    imperfect => 'Incomplete or future action — often translated as future or habitual.',
-    imperative => 'A direct command.',
-    infinitiveConstruct => 'A verbal noun in construct form, often used with prepositions.',
-    infinitiveAbsolute => 'An independent verbal noun, often emphatic.',
-    participle => 'A verbal adjective — "one who Xs", or ongoing action.',
-    consecutiveImperfect => 'Past narrative form — waw + imperfect.',
-    conjunctiveImperfect => 'Imperfect with conjunctive waw — future or modal sense.',
-    conjunctivePerfect => 'Perfect with conjunctive waw — often future or sequential.',
-    passiveParticiple => 'The passive form of the qal participle.',
-  };
+  String get description => morphologyAspectTranslation(this).description;
 
   @override
-  List<String> get examples => switch (this) {
-    perfect => ['he wrote', 'she has spoken'],
-    imperfect => ['he will write', 'he writes'],
-    imperative => ['Write!', 'Listen!'],
-    infinitiveConstruct => ['to write', 'when writing'],
-    infinitiveAbsolute => ['surely die', 'write thoroughly'],
-    participle => ['writing', 'the one who hears'],
-    consecutiveImperfect => ['and he said', 'and they went'],
-    conjunctiveImperfect => ['and he will write'],
-    conjunctivePerfect => ['and you shall do', 'and he will judge'],
-    passiveParticiple => ['written', 'kept'],
-  };
+  List<String> get examples => morphologyExamples(morphologyAspectTranslation(this).examples);
 }
 
 /// Sub-mood modifying a Hebrew imperfect form (jussive, cohortative, h-suffix).
@@ -500,25 +243,13 @@ enum HebrewVerbMood implements MorphologyAttributeValue {
   hSuffix;
 
   @override
-  String get displayName => switch (this) {
-    jussive => 'Jussive',
-    cohortative => 'Cohortative',
-    hSuffix => 'h-suffix',
-  };
+  String get displayName => morphologyHebrewMoodTranslation(this).name;
 
   @override
-  String get description => switch (this) {
-    jussive => 'A 3rd-person command or wish — "let him do".',
-    cohortative => 'A 1st-person volitional — "let us" or "I will".',
-    hSuffix => 'An emphatic -ah ending on the imperfect, often cohortative-like.',
-  };
+  String get description => morphologyHebrewMoodTranslation(this).description;
 
   @override
-  List<String> get examples => switch (this) {
-    jussive => ['Let there be light', 'May the LORD bless you'],
-    cohortative => ['Let us go', 'I will praise'],
-    hSuffix => ['I will surely come', 'let me draw near'],
-  };
+  List<String> get examples => morphologyExamples(morphologyHebrewMoodTranslation(this).examples);
 }
 
 enum GreekTense implements MorphologyAttributeValue {
@@ -530,34 +261,13 @@ enum GreekTense implements MorphologyAttributeValue {
   pluperfect;
 
   @override
-  String get displayName => switch (this) {
-    present => 'Present',
-    imperfect => 'Imperfect',
-    future => 'Future',
-    aorist => 'Aorist',
-    perfect => 'Perfect',
-    pluperfect => 'Pluperfect',
-  };
+  String get displayName => morphologyTenseTranslation(this).name;
 
   @override
-  String get description => switch (this) {
-    present => 'Ongoing or general action.',
-    imperfect => 'Continuous or repeated past action.',
-    future => 'Action that will happen.',
-    aorist => 'Simple past action — viewed as a whole.',
-    perfect => 'Past action with continuing present consequence.',
-    pluperfect => 'Past action prior to another past event.',
-  };
+  String get description => morphologyTenseTranslation(this).description;
 
   @override
-  List<String> get examples => switch (this) {
-    present => ['he loves', 'they walk'],
-    imperfect => ['he was teaching', 'they used to gather'],
-    future => ['he will come', 'they shall see'],
-    aorist => ['he said', 'they went'],
-    perfect => ['has been written', 'has come'],
-    pluperfect => ['had been written', 'had departed'],
-  };
+  List<String> get examples => morphologyExamples(morphologyTenseTranslation(this).examples);
 }
 
 enum GreekMood implements MorphologyAttributeValue {
@@ -569,34 +279,13 @@ enum GreekMood implements MorphologyAttributeValue {
   participle;
 
   @override
-  String get displayName => switch (this) {
-    indicative => 'Indicative',
-    imperative => 'Imperative',
-    subjunctive => 'Subjunctive',
-    optative => 'Optative',
-    infinitive => 'Infinitive',
-    participle => 'Participle',
-  };
+  String get displayName => morphologyMoodTranslation(this).name;
 
   @override
-  String get description => switch (this) {
-    indicative => 'States a fact.',
-    imperative => 'Issues a command.',
-    subjunctive => 'Expresses possibility, purpose, or contingency.',
-    optative => 'Expresses a wish or remote possibility.',
-    infinitive => 'A verbal noun — "to do".',
-    participle => 'A verbal adjective — "doing" or "having done".',
-  };
+  String get description => morphologyMoodTranslation(this).description;
 
   @override
-  List<String> get examples => switch (this) {
-    indicative => ['he is', 'they wrote'],
-    imperative => ['Go!', 'Believe!', 'Do not fear!'],
-    subjunctive => ['that he might write', 'if he goes'],
-    optative => ['may it be so', 'may you have grace'],
-    infinitive => ['to write', 'to believe'],
-    participle => ['the one writing', 'having spoken'],
-  };
+  List<String> get examples => morphologyExamples(morphologyMoodTranslation(this).examples);
 }
 
 enum GreekVoice implements MorphologyAttributeValue {
@@ -606,28 +295,13 @@ enum GreekVoice implements MorphologyAttributeValue {
   middleOrPassive;
 
   @override
-  String get displayName => switch (this) {
-    active => 'Active',
-    middle => 'Middle',
-    passive => 'Passive',
-    middleOrPassive => 'Middle/Passive',
-  };
+  String get displayName => morphologyVoiceTranslation(this).name;
 
   @override
-  String get description => switch (this) {
-    active => 'The subject performs the action.',
-    middle => 'The subject acts on or for itself.',
-    passive => 'The subject receives the action.',
-    middleOrPassive => 'The form is ambiguous between middle and passive.',
-  };
+  String get description => morphologyVoiceTranslation(this).description;
 
   @override
-  List<String> get examples => switch (this) {
-    active => ['he writes', 'they teach'],
-    middle => ['he washes himself', 'they obtained for themselves'],
-    passive => ['he was sent', 'they were taught'],
-    middleOrPassive => ['was raised / raised himself', 'was assembled / assembled themselves'],
-  };
+  List<String> get examples => morphologyExamples(morphologyVoiceTranslation(this).examples);
 }
 
 enum Degree implements MorphologyAttributeValue {
@@ -636,26 +310,529 @@ enum Degree implements MorphologyAttributeValue {
   superlative;
 
   @override
-  String get displayName => switch (this) {
-    positive => 'Positive',
-    comparative => 'Comparative',
-    superlative => 'Superlative',
-  };
+  String get displayName => morphologyDegreeTranslation(this).name;
 
   @override
-  String get description => switch (this) {
-    positive => 'The plain form — neither comparative nor superlative.',
-    comparative => 'Compares two — "X-er than".',
-    superlative => 'The extreme — "most" or "-est".',
-  };
+  String get description => morphologyDegreeTranslation(this).description;
 
   @override
-  List<String> get examples => switch (this) {
-    positive => ['great', 'good'],
-    comparative => ['greater', 'better than'],
-    superlative => ['greatest', 'best'],
-  };
+  List<String> get examples => morphologyExamples(morphologyDegreeTranslation(this).examples);
 }
+
+MorphologyAttributeTranslation morphologyAttributeTranslation(MorphologyAttribute attribute) => switch (attribute) {
+  .type => (name: t.morphology.attributes.type.name, description: t.morphology.attributes.type.description),
+  .grammaticalCase => (
+    name: t.morphology.attributes.grammaticalCase.name,
+    description: t.morphology.attributes.grammaticalCase.description,
+  ),
+  .gender => (name: t.morphology.attributes.gender.name, description: t.morphology.attributes.gender.description),
+  .number => (name: t.morphology.attributes.number.name, description: t.morphology.attributes.number.description),
+  .person => (name: t.morphology.attributes.person.name, description: t.morphology.attributes.person.description),
+  .state => (name: t.morphology.attributes.state.name, description: t.morphology.attributes.state.description),
+  .tense => (name: t.morphology.attributes.tense.name, description: t.morphology.attributes.tense.description),
+  .mood => (name: t.morphology.attributes.mood.name, description: t.morphology.attributes.mood.description),
+  .voice => (name: t.morphology.attributes.voice.name, description: t.morphology.attributes.voice.description),
+  .degree => (name: t.morphology.attributes.degree.name, description: t.morphology.attributes.degree.description),
+  .stem => (name: t.morphology.attributes.stem.name, description: t.morphology.attributes.stem.description),
+  .aspect => (name: t.morphology.attributes.aspect.name, description: t.morphology.attributes.aspect.description),
+  .prefix => (name: t.morphology.attributes.prefix.name, description: t.morphology.attributes.prefix.description),
+  .particle => (name: t.morphology.attributes.particle.name, description: t.morphology.attributes.particle.description),
+  .code => (name: t.morphology.attributes.code.name, description: t.morphology.attributes.code.description),
+};
+
+MorphologyTranslation morphologyTypeTranslation(MorphologyType type) => switch (type) {
+  .article => (
+    name: t.morphology.types.article.name,
+    description: t.morphology.types.article.description,
+    examples: t.morphology.types.article.examples,
+  ),
+  .conjunction => (
+    name: t.morphology.types.conjunction.name,
+    description: t.morphology.types.conjunction.description,
+    examples: t.morphology.types.conjunction.examples,
+  ),
+  .preposition => (
+    name: t.morphology.types.preposition.name,
+    description: t.morphology.types.preposition.description,
+    examples: t.morphology.types.preposition.examples,
+  ),
+  .adverb => (
+    name: t.morphology.types.adverb.name,
+    description: t.morphology.types.adverb.description,
+    examples: t.morphology.types.adverb.examples,
+  ),
+  .negativeAdverb => (
+    name: t.morphology.types.negativeAdverb.name,
+    description: t.morphology.types.negativeAdverb.description,
+    examples: t.morphology.types.negativeAdverb.examples,
+  ),
+  .adjective => (
+    name: t.morphology.types.adjective.name,
+    description: t.morphology.types.adjective.description,
+    examples: t.morphology.types.adjective.examples,
+  ),
+  .noun => (
+    name: t.morphology.types.noun.name,
+    description: t.morphology.types.noun.description,
+    examples: t.morphology.types.noun.examples,
+  ),
+  .properNoun => (
+    name: t.morphology.types.properNoun.name,
+    description: t.morphology.types.properNoun.description,
+    examples: t.morphology.types.properNoun.examples,
+  ),
+  .number => (
+    name: t.morphology.types.number.name,
+    description: t.morphology.types.number.description,
+    examples: t.morphology.types.number.examples,
+  ),
+  .ordinalNumber => (
+    name: t.morphology.types.ordinalNumber.name,
+    description: t.morphology.types.ordinalNumber.description,
+    examples: t.morphology.types.ordinalNumber.examples,
+  ),
+  .pronoun => (
+    name: t.morphology.types.pronoun.name,
+    description: t.morphology.types.pronoun.description,
+    examples: t.morphology.types.pronoun.examples,
+  ),
+  .personalPronoun => (
+    name: t.morphology.types.personalPronoun.name,
+    description: t.morphology.types.personalPronoun.description,
+    examples: t.morphology.types.personalPronoun.examples,
+  ),
+  .demonstrativePronoun => (
+    name: t.morphology.types.demonstrativePronoun.name,
+    description: t.morphology.types.demonstrativePronoun.description,
+    examples: t.morphology.types.demonstrativePronoun.examples,
+  ),
+  .interrogativePronoun => (
+    name: t.morphology.types.interrogativePronoun.name,
+    description: t.morphology.types.interrogativePronoun.description,
+    examples: t.morphology.types.interrogativePronoun.examples,
+  ),
+  .indefinitePronoun => (
+    name: t.morphology.types.indefinitePronoun.name,
+    description: t.morphology.types.indefinitePronoun.description,
+    examples: t.morphology.types.indefinitePronoun.examples,
+  ),
+  .reciprocalPronoun => (
+    name: t.morphology.types.reciprocalPronoun.name,
+    description: t.morphology.types.reciprocalPronoun.description,
+    examples: t.morphology.types.reciprocalPronoun.examples,
+  ),
+  .reflexivePronoun => (
+    name: t.morphology.types.reflexivePronoun.name,
+    description: t.morphology.types.reflexivePronoun.description,
+    examples: t.morphology.types.reflexivePronoun.examples,
+  ),
+  .relativePronoun => (
+    name: t.morphology.types.relativePronoun.name,
+    description: t.morphology.types.relativePronoun.description,
+    examples: t.morphology.types.relativePronoun.examples,
+  ),
+  .particle => (
+    name: t.morphology.types.particle.name,
+    description: t.morphology.types.particle.description,
+    examples: t.morphology.types.particle.examples,
+  ),
+  .negativeParticle => (
+    name: t.morphology.types.negativeParticle.name,
+    description: t.morphology.types.negativeParticle.description,
+    examples: t.morphology.types.negativeParticle.examples,
+  ),
+  .interrogativeParticle => (
+    name: t.morphology.types.interrogativeParticle.name,
+    description: t.morphology.types.interrogativeParticle.description,
+    examples: t.morphology.types.interrogativeParticle.examples,
+  ),
+  .demonstrativeParticle => (
+    name: t.morphology.types.demonstrativeParticle.name,
+    description: t.morphology.types.demonstrativeParticle.description,
+    examples: t.morphology.types.demonstrativeParticle.examples,
+  ),
+  .genericParticle => (
+    name: t.morphology.types.genericParticle.name,
+    description: t.morphology.types.genericParticle.description,
+    examples: t.morphology.types.genericParticle.examples,
+  ),
+  .relativeParticle => (
+    name: t.morphology.types.relativeParticle.name,
+    description: t.morphology.types.relativeParticle.description,
+    examples: t.morphology.types.relativeParticle.examples,
+  ),
+  .verb => (
+    name: t.morphology.types.verb.name,
+    description: t.morphology.types.verb.description,
+    examples: t.morphology.types.verb.examples,
+  ),
+  .pronominalSuffix => (
+    name: t.morphology.types.pronominalSuffix.name,
+    description: t.morphology.types.pronominalSuffix.description,
+    examples: t.morphology.types.pronominalSuffix.examples,
+  ),
+  .directObjectMarker => (
+    name: t.morphology.types.directObjectMarker.name,
+    description: t.morphology.types.directObjectMarker.description,
+    examples: t.morphology.types.directObjectMarker.examples,
+  ),
+  .punctuation => (
+    name: t.morphology.types.punctuation.name,
+    description: t.morphology.types.punctuation.description,
+    examples: t.morphology.types.punctuation.examples,
+  ),
+  .interjection => (
+    name: t.morphology.types.interjection.name,
+    description: t.morphology.types.interjection.description,
+    examples: t.morphology.types.interjection.examples,
+  ),
+  .indeclinable => (
+    name: t.morphology.types.indeclinable.name,
+    description: t.morphology.types.indeclinable.description,
+    examples: t.morphology.types.indeclinable.examples,
+  ),
+  .hebraism => (
+    name: t.morphology.types.hebraism.name,
+    description: t.morphology.types.hebraism.description,
+    examples: t.morphology.types.hebraism.examples,
+  ),
+  .unknown => (
+    name: t.morphology.types.unknown.name,
+    description: t.morphology.types.unknown.description,
+    examples: t.morphology.types.unknown.examples,
+  ),
+};
+
+MorphologyTranslation morphologyPersonTranslation(Person person) => switch (person) {
+  .first => (
+    name: t.morphology.person.first.name,
+    description: t.morphology.person.first.description,
+    examples: t.morphology.person.first.examples,
+  ),
+  .second => (
+    name: t.morphology.person.second.name,
+    description: t.morphology.person.second.description,
+    examples: t.morphology.person.second.examples,
+  ),
+  .third => (
+    name: t.morphology.person.third.name,
+    description: t.morphology.person.third.description,
+    examples: t.morphology.person.third.examples,
+  ),
+};
+
+MorphologyTranslation morphologyGenderTranslation(GrammaticalGender gender) => switch (gender) {
+  .masculine => (
+    name: t.morphology.gender.masculine.name,
+    description: t.morphology.gender.masculine.description,
+    examples: t.morphology.gender.masculine.examples,
+  ),
+  .feminine => (
+    name: t.morphology.gender.feminine.name,
+    description: t.morphology.gender.feminine.description,
+    examples: t.morphology.gender.feminine.examples,
+  ),
+  .neuter => (
+    name: t.morphology.gender.neuter.name,
+    description: t.morphology.gender.neuter.description,
+    examples: t.morphology.gender.neuter.examples,
+  ),
+  .common => (
+    name: t.morphology.gender.common.name,
+    description: t.morphology.gender.common.description,
+    examples: t.morphology.gender.common.examples,
+  ),
+};
+
+MorphologyTranslation morphologyNumberTranslation(GrammaticalNumber number) => switch (number) {
+  .singular => (
+    name: t.morphology.number.singular.name,
+    description: t.morphology.number.singular.description,
+    examples: t.morphology.number.singular.examples,
+  ),
+  .plural => (
+    name: t.morphology.number.plural.name,
+    description: t.morphology.number.plural.description,
+    examples: t.morphology.number.plural.examples,
+  ),
+  .dual => (
+    name: t.morphology.number.dual.name,
+    description: t.morphology.number.dual.description,
+    examples: t.morphology.number.dual.examples,
+  ),
+};
+
+MorphologyTranslation morphologyCaseTranslation(GrammaticalCase grammaticalCase) => switch (grammaticalCase) {
+  .nominative => (
+    name: t.morphology.kCase.nominative.name,
+    description: t.morphology.kCase.nominative.description,
+    examples: t.morphology.kCase.nominative.examples,
+  ),
+  .genitive => (
+    name: t.morphology.kCase.genitive.name,
+    description: t.morphology.kCase.genitive.description,
+    examples: t.morphology.kCase.genitive.examples,
+  ),
+  .dative => (
+    name: t.morphology.kCase.dative.name,
+    description: t.morphology.kCase.dative.description,
+    examples: t.morphology.kCase.dative.examples,
+  ),
+  .accusative => (
+    name: t.morphology.kCase.accusative.name,
+    description: t.morphology.kCase.accusative.description,
+    examples: t.morphology.kCase.accusative.examples,
+  ),
+  .vocative => (
+    name: t.morphology.kCase.vocative.name,
+    description: t.morphology.kCase.vocative.description,
+    examples: t.morphology.kCase.vocative.examples,
+  ),
+};
+
+MorphologyTranslation morphologyStateTranslation(HebrewState state) => switch (state) {
+  .absolute => (
+    name: t.morphology.state.absolute.name,
+    description: t.morphology.state.absolute.description,
+    examples: t.morphology.state.absolute.examples,
+  ),
+  .construct => (
+    name: t.morphology.state.construct.name,
+    description: t.morphology.state.construct.description,
+    examples: t.morphology.state.construct.examples,
+  ),
+  .determined => (
+    name: t.morphology.state.determined.name,
+    description: t.morphology.state.determined.description,
+    examples: t.morphology.state.determined.examples,
+  ),
+};
+
+MorphologyTranslation morphologyStemTranslation(HebrewStem stem) => switch (stem) {
+  .qal => (
+    name: t.morphology.stem.qal.name,
+    description: t.morphology.stem.qal.description,
+    examples: t.morphology.stem.qal.examples,
+  ),
+  .qalPassive => (
+    name: t.morphology.stem.qalPassive.name,
+    description: t.morphology.stem.qalPassive.description,
+    examples: t.morphology.stem.qalPassive.examples,
+  ),
+  .niphal => (
+    name: t.morphology.stem.niphal.name,
+    description: t.morphology.stem.niphal.description,
+    examples: t.morphology.stem.niphal.examples,
+  ),
+  .piel => (
+    name: t.morphology.stem.piel.name,
+    description: t.morphology.stem.piel.description,
+    examples: t.morphology.stem.piel.examples,
+  ),
+  .pual => (
+    name: t.morphology.stem.pual.name,
+    description: t.morphology.stem.pual.description,
+    examples: t.morphology.stem.pual.examples,
+  ),
+  .hiphil => (
+    name: t.morphology.stem.hiphil.name,
+    description: t.morphology.stem.hiphil.description,
+    examples: t.morphology.stem.hiphil.examples,
+  ),
+  .hophal => (
+    name: t.morphology.stem.hophal.name,
+    description: t.morphology.stem.hophal.description,
+    examples: t.morphology.stem.hophal.examples,
+  ),
+  .hithpael => (
+    name: t.morphology.stem.hithpael.name,
+    description: t.morphology.stem.hithpael.description,
+    examples: t.morphology.stem.hithpael.examples,
+  ),
+  .nithpael => (
+    name: t.morphology.stem.nithpael.name,
+    description: t.morphology.stem.nithpael.description,
+    examples: t.morphology.stem.nithpael.examples,
+  ),
+};
+
+MorphologyTranslation morphologyAspectTranslation(HebrewAspect aspect) => switch (aspect) {
+  .perfect => (
+    name: t.morphology.aspect.perfect.name,
+    description: t.morphology.aspect.perfect.description,
+    examples: t.morphology.aspect.perfect.examples,
+  ),
+  .imperfect => (
+    name: t.morphology.aspect.imperfect.name,
+    description: t.morphology.aspect.imperfect.description,
+    examples: t.morphology.aspect.imperfect.examples,
+  ),
+  .imperative => (
+    name: t.morphology.aspect.imperative.name,
+    description: t.morphology.aspect.imperative.description,
+    examples: t.morphology.aspect.imperative.examples,
+  ),
+  .infinitiveConstruct => (
+    name: t.morphology.aspect.infinitiveConstruct.name,
+    description: t.morphology.aspect.infinitiveConstruct.description,
+    examples: t.morphology.aspect.infinitiveConstruct.examples,
+  ),
+  .infinitiveAbsolute => (
+    name: t.morphology.aspect.infinitiveAbsolute.name,
+    description: t.morphology.aspect.infinitiveAbsolute.description,
+    examples: t.morphology.aspect.infinitiveAbsolute.examples,
+  ),
+  .participle => (
+    name: t.morphology.aspect.participle.name,
+    description: t.morphology.aspect.participle.description,
+    examples: t.morphology.aspect.participle.examples,
+  ),
+  .consecutiveImperfect => (
+    name: t.morphology.aspect.consecutiveImperfect.name,
+    description: t.morphology.aspect.consecutiveImperfect.description,
+    examples: t.morphology.aspect.consecutiveImperfect.examples,
+  ),
+  .conjunctiveImperfect => (
+    name: t.morphology.aspect.conjunctiveImperfect.name,
+    description: t.morphology.aspect.conjunctiveImperfect.description,
+    examples: t.morphology.aspect.conjunctiveImperfect.examples,
+  ),
+  .conjunctivePerfect => (
+    name: t.morphology.aspect.conjunctivePerfect.name,
+    description: t.morphology.aspect.conjunctivePerfect.description,
+    examples: t.morphology.aspect.conjunctivePerfect.examples,
+  ),
+  .passiveParticiple => (
+    name: t.morphology.aspect.passiveParticiple.name,
+    description: t.morphology.aspect.passiveParticiple.description,
+    examples: t.morphology.aspect.passiveParticiple.examples,
+  ),
+};
+
+MorphologyTranslation morphologyHebrewMoodTranslation(HebrewVerbMood mood) => switch (mood) {
+  .jussive => (
+    name: t.morphology.hebrewMood.jussive.name,
+    description: t.morphology.hebrewMood.jussive.description,
+    examples: t.morphology.hebrewMood.jussive.examples,
+  ),
+  .cohortative => (
+    name: t.morphology.hebrewMood.cohortative.name,
+    description: t.morphology.hebrewMood.cohortative.description,
+    examples: t.morphology.hebrewMood.cohortative.examples,
+  ),
+  .hSuffix => (
+    name: t.morphology.hebrewMood.hSuffix.name,
+    description: t.morphology.hebrewMood.hSuffix.description,
+    examples: t.morphology.hebrewMood.hSuffix.examples,
+  ),
+};
+
+MorphologyTranslation morphologyTenseTranslation(GreekTense tense) => switch (tense) {
+  .present => (
+    name: t.morphology.tense.present.name,
+    description: t.morphology.tense.present.description,
+    examples: t.morphology.tense.present.examples,
+  ),
+  .imperfect => (
+    name: t.morphology.tense.imperfect.name,
+    description: t.morphology.tense.imperfect.description,
+    examples: t.morphology.tense.imperfect.examples,
+  ),
+  .future => (
+    name: t.morphology.tense.future.name,
+    description: t.morphology.tense.future.description,
+    examples: t.morphology.tense.future.examples,
+  ),
+  .aorist => (
+    name: t.morphology.tense.aorist.name,
+    description: t.morphology.tense.aorist.description,
+    examples: t.morphology.tense.aorist.examples,
+  ),
+  .perfect => (
+    name: t.morphology.tense.perfect.name,
+    description: t.morphology.tense.perfect.description,
+    examples: t.morphology.tense.perfect.examples,
+  ),
+  .pluperfect => (
+    name: t.morphology.tense.pluperfect.name,
+    description: t.morphology.tense.pluperfect.description,
+    examples: t.morphology.tense.pluperfect.examples,
+  ),
+};
+
+MorphologyTranslation morphologyMoodTranslation(GreekMood mood) => switch (mood) {
+  .indicative => (
+    name: t.morphology.mood.indicative.name,
+    description: t.morphology.mood.indicative.description,
+    examples: t.morphology.mood.indicative.examples,
+  ),
+  .imperative => (
+    name: t.morphology.mood.imperative.name,
+    description: t.morphology.mood.imperative.description,
+    examples: t.morphology.mood.imperative.examples,
+  ),
+  .subjunctive => (
+    name: t.morphology.mood.subjunctive.name,
+    description: t.morphology.mood.subjunctive.description,
+    examples: t.morphology.mood.subjunctive.examples,
+  ),
+  .optative => (
+    name: t.morphology.mood.optative.name,
+    description: t.morphology.mood.optative.description,
+    examples: t.morphology.mood.optative.examples,
+  ),
+  .infinitive => (
+    name: t.morphology.mood.infinitive.name,
+    description: t.morphology.mood.infinitive.description,
+    examples: t.morphology.mood.infinitive.examples,
+  ),
+  .participle => (
+    name: t.morphology.mood.participle.name,
+    description: t.morphology.mood.participle.description,
+    examples: t.morphology.mood.participle.examples,
+  ),
+};
+
+MorphologyTranslation morphologyVoiceTranslation(GreekVoice voice) => switch (voice) {
+  .active => (
+    name: t.morphology.voice.active.name,
+    description: t.morphology.voice.active.description,
+    examples: t.morphology.voice.active.examples,
+  ),
+  .middle => (
+    name: t.morphology.voice.middle.name,
+    description: t.morphology.voice.middle.description,
+    examples: t.morphology.voice.middle.examples,
+  ),
+  .passive => (
+    name: t.morphology.voice.passive.name,
+    description: t.morphology.voice.passive.description,
+    examples: t.morphology.voice.passive.examples,
+  ),
+  .middleOrPassive => (
+    name: t.morphology.voice.middleOrPassive.name,
+    description: t.morphology.voice.middleOrPassive.description,
+    examples: t.morphology.voice.middleOrPassive.examples,
+  ),
+};
+
+MorphologyTranslation morphologyDegreeTranslation(Degree degree) => switch (degree) {
+  .positive => (
+    name: t.morphology.degree.positive.name,
+    description: t.morphology.degree.positive.description,
+    examples: t.morphology.degree.positive.examples,
+  ),
+  .comparative => (
+    name: t.morphology.degree.comparative.name,
+    description: t.morphology.degree.comparative.description,
+    examples: t.morphology.degree.comparative.examples,
+  ),
+  .superlative => (
+    name: t.morphology.degree.superlative.name,
+    description: t.morphology.degree.superlative.description,
+    examples: t.morphology.degree.superlative.examples,
+  ),
+};
 
 sealed class Morphology {
   const Morphology();
@@ -715,7 +892,7 @@ sealed class Morphology {
 }
 
 class MorphologyArticle extends Morphology {
-  final Language language;
+  final MorphologyLanguage language;
   final GrammaticalCase? grammaticalCase;
   final GrammaticalGender? gender;
   final GrammaticalNumber? number;
@@ -798,7 +975,7 @@ class MorphologyAdverb extends Morphology {
 }
 
 class MorphologyAdjective extends Morphology {
-  final Language language;
+  final MorphologyLanguage language;
   final GrammaticalCase? grammaticalCase;
   final GrammaticalGender? gender;
   final GrammaticalNumber? number;
@@ -849,7 +1026,7 @@ class MorphologyAdjective extends Morphology {
 }
 
 class MorphologyNoun extends Morphology {
-  final Language language;
+  final MorphologyLanguage language;
   final GrammaticalCase? grammaticalCase;
   final GrammaticalGender? gender;
   final GrammaticalNumber? number;
@@ -938,7 +1115,7 @@ class MorphologyPronoun extends Morphology {
   /// `demonstrativePronoun`, `interrogativePronoun`, `indefinitePronoun`,
   /// `reciprocalPronoun`, `reflexivePronoun`, `relativePronoun`.
   final MorphologyType kind;
-  final Language language;
+  final MorphologyLanguage language;
   final Person? person;
   final GrammaticalCase? grammaticalCase;
   final GrammaticalGender? gender;
@@ -1261,10 +1438,7 @@ class MorphologyUnknown extends Morphology {
   @override
   Map<MorphologyAttribute, MorphologyAttributeValue> get attributes => {
     .type: MorphologyType.unknown,
-    .code: MorphologyAttributeLiteral(
-      displayName: code,
-      description: 'The raw morphology code as it appeared in the source.',
-    ),
+    .code: MorphologyAttributeLiteral(displayName: code, description: t.morphology.literals.rawCode),
   };
 }
 
@@ -1274,35 +1448,35 @@ MorphologyAttributeValue? _conjunctionParticleValue(String? particle) => switch 
   null => null,
   'w' => MorphologyAttributeLiteral(
     displayName: 'w',
-    description: 'The Hebrew waw (וְ) conjunction, meaning "and".',
-    examples: ['and', 'now', 'but'],
+    description: t.morphology.literals.waw,
+    examples: morphologyExamples(t.morphology.literals.wawExamples),
   ),
-  final p => MorphologyAttributeLiteral(displayName: p, description: 'A conjunction marker.'),
+  final p => MorphologyAttributeLiteral(displayName: p, description: t.morphology.literals.conjunction),
 };
 
 MorphologyAttributeValue? _prepositionPrefixValue(String? prefix) => switch (prefix) {
   null => null,
   'b' => MorphologyAttributeLiteral(
     displayName: 'b',
-    description: 'The Hebrew bet (בְּ) prefix preposition, meaning "in", "at", or "with".',
-    examples: ['in the beginning', 'with strength'],
+    description: t.morphology.literals.bet,
+    examples: morphologyExamples(t.morphology.literals.betExamples),
   ),
   'k' => MorphologyAttributeLiteral(
     displayName: 'k',
-    description: 'The Hebrew kaf (כְּ) prefix preposition, meaning "as" or "like".',
-    examples: ['like a lion', 'as a shepherd'],
+    description: t.morphology.literals.kaf,
+    examples: morphologyExamples(t.morphology.literals.kafExamples),
   ),
   'l' => MorphologyAttributeLiteral(
     displayName: 'l',
-    description: 'The Hebrew lamed (לְ) prefix preposition, meaning "to", "for", or "belonging to".',
-    examples: ['to David', 'for the king'],
+    description: t.morphology.literals.lamed,
+    examples: morphologyExamples(t.morphology.literals.lamedExamples),
   ),
   'm' => MorphologyAttributeLiteral(
     displayName: 'm',
-    description: 'The Hebrew mem (מִן) prefix preposition, meaning "from" or "out of".',
-    examples: ['from Egypt', 'out of the land'],
+    description: t.morphology.literals.mem,
+    examples: morphologyExamples(t.morphology.literals.memExamples),
   ),
-  final p => MorphologyAttributeLiteral(displayName: p, description: 'A prefix preposition letter.'),
+  final p => MorphologyAttributeLiteral(displayName: p, description: t.morphology.literals.preposition),
 };
 
 class _GreekCgn {

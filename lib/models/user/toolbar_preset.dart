@@ -1,3 +1,4 @@
+import 'package:bible/i18n/strings.g.dart';
 import 'package:bible/models/user/main_toolbar_shortcut.dart';
 import 'package:bible/models/user/text_selection_shortcut.dart';
 import 'package:bible/models/user/user.dart';
@@ -10,15 +11,15 @@ enum ToolbarPreset {
   studier;
 
   String title() => switch (this) {
-    reader => 'Reader',
-    noteTaker => 'Note-taker',
-    studier => 'Studier',
+    reader => t.toolbarPresets.reader,
+    noteTaker => t.toolbarPresets.noteTaker,
+    studier => t.toolbarPresets.studier,
   };
 
   String description() => switch (this) {
-    reader => 'Tuned for distraction-free reading and quick navigation.',
-    noteTaker => 'Tuned for highlighting and taking notes.',
-    studier => 'Tuned for cross-references, commentary, and deep study.',
+    reader => t.toolbarPresets.readerDescription,
+    noteTaker => t.toolbarPresets.noteTakerDescription,
+    studier => t.toolbarPresets.studierDescription,
   };
 
   List<MainToolbarShortcut> get mainPinnedShortcuts => [.bookmark, .search];

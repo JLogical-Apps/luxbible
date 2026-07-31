@@ -6,6 +6,7 @@ import 'package:bible/models/text_selection_action.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/i18n/strings.g.dart';
 import 'package:bible/style/style_context_extensions.dart';
 import 'package:bible/style/styled_text_action.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
@@ -27,7 +28,10 @@ enum TextSelectionShortcut {
   String title({User? user, BibleTextSelection? textSelection}) =>
       toTextSelectionAction()?.title() ??
       switch (this) {
-        highlight => _isAnnotated(user: user, textSelection: textSelection) ? 'Remove Annotations' : 'Highlight',
+        highlight =>
+          _isAnnotated(user: user, textSelection: textSelection)
+              ? t.selectionActions.removeAnnotations
+              : t.selectionActions.highlight,
         _ => throw UnimplementedError(),
       };
 
@@ -36,8 +40,8 @@ enum TextSelectionShortcut {
       switch (this) {
         highlight =>
           _isAnnotated(user: user, textSelection: textSelection)
-              ? 'Remove text selection annotations from ${RegionType.text.formatThis()}.'
-              : 'Highlight ${RegionType.text.formatThis()} with the last color you used.',
+              ? t.selectionActions.removeTextAnnotationsDescription(region: RegionType.text.formatThis())
+              : t.selectionActions.highlightTextDescription(region: RegionType.text.formatThis()),
         _ => throw UnimplementedError(),
       };
 
@@ -86,10 +90,10 @@ enum TextSelectionShortcut {
 
           if (!context.mounted) return;
           context.showStyledSnackbar(
-            message: 'Highlighted text in ${textSelection.toVerseSelection().format()}.'.toText(),
+            message: t.selectionActions.highlightedText(reference: textSelection.toVerseSelection().format()).toText(),
             duration: Duration(seconds: 8),
             action: StyledTextAction(
-              label: 'Edit'.toText(),
+              label: t.common.edit.toText(),
               onPressed: () => AnnotationSheet.edit(rootContext, annotation: annotation),
             ),
           );

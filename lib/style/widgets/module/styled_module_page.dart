@@ -188,7 +188,7 @@ class _NextStyledModuleButtons implements StyledModuleButtons {
   @override
   List<Widget> buildButtons(BuildContext context, Function() goNext) => [
     StyledRectButton.primary(
-      label: label ?? 'Next'.toText(),
+      label: label ?? t.common.next.toText(),
       onPressed: canGoNext
           ? () async {
               await onGoNext?.call();

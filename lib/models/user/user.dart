@@ -15,6 +15,7 @@ import 'package:bible/models/reference/reference.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/audio_bible_configuration.dart';
+import 'package:bible/models/user/language.dart';
 import 'package:bible/models/user/main_toolbar_configuration.dart';
 import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/models/user/text_selection_configuration.dart';
@@ -40,7 +41,7 @@ sealed class User with _$User {
   const User._();
 
   const factory User({
-    @Default(BibleTranslation.bsb) BibleTranslation translation,
+    @JsonKey(name: 'translation') BibleTranslation? translationOverride,
     @Default(BibleTranslation.bsb) BibleTranslation studyTranslation,
     @Default(BibleTranslation.bsb) BibleTranslation audioTranslation,
     @Default(BibleTranslation.oshb) BibleTranslation oldTestamentTranslation,
@@ -69,15 +70,21 @@ sealed class User with _$User {
     @Default(0.5) double studyPanelBottomPosition,
     @Default({}) @nullUnknownEnum Set<Tutorial?> tutorials,
     List<OnboardingStep>? completedOnboardingSteps,
-    @Default(HighlightStyle.defaultValues) List<(HighlightStyle, String label)> highlightStyles,
+    @JsonKey(name: 'highlightStyles') List<(HighlightStyle, String label)>? highlightStyleOverrides,
     @Default({}) Map<BiblePlanType, BiblePlanProgress> planProgressByType,
     @Default({}) Set<BiblePlanType> completedPlans,
     @Default(AudioBibleConfiguration()) AudioBibleConfiguration audio,
+    Language? languageOverride,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  List<BibleTranslation> get biblesOrDefault => bibles ?? BibleTranslation.defaultTranslations;
+  BibleTranslation get translation => translationOverride ?? biblesOrDefault.firstOrNull ?? .bsb;
+  Language get language => languageOverride ?? Language.device;
+
+  List<BibleTranslation> get biblesOrDefault => bibles ?? BibleTranslation.defaultsFor(language);
+  List<(HighlightStyle, String label)> get highlightStyles =>
+      highlightStyleOverrides ?? HighlightStyle.defaultsFor(language);
 
   BibleTranslation getTranslationFor(BookType book) => translation.effectiveFor(
     book,
@@ -212,12 +219,12 @@ sealed class User with _$User {
       hasHighlightStyle(lastHighlightStyle) ? lastHighlightStyle : highlightStyles.firstOrNull?.$1 ?? .fallback;
 
   User withNewHighlightStyle((HighlightStyle, String label) style) =>
-      copyWith(highlightStyles: [style, ...highlightStyles]);
+      copyWith(highlightStyleOverrides: [style, ...highlightStyles]);
 
   User withUpdatedHighlightStyle(int index, (HighlightStyle, String label) style, {required bool updateAnnotations}) {
     final previousStyle = highlightStyles[index].$1;
     return copyWith(
-      highlightStyles: highlightStyles.withSetAt(index, style),
+      highlightStyleOverrides: highlightStyles.withSetAt(index, style),
       lastHighlightStyle: lastHighlightStyle == previousStyle ? style.$1 : lastHighlightStyle,
       annotations: updateAnnotations
           ? annotations
@@ -232,7 +239,7 @@ sealed class User with _$User {
   User withRemovedHighlightStyle(int index, {required bool deleteAnnotations}) {
     final style = highlightStyles[index].$1;
     return copyWith(
-      highlightStyles: highlightStyles.whereIndexed((i, _) => i != index).toList(),
+      highlightStyleOverrides: highlightStyles.whereIndexed((i, _) => i != index).toList(),
       annotations: deleteAnnotations
           ? annotations.where((annotation) => annotation.style != style).toList()
           : annotations,
@@ -240,7 +247,7 @@ sealed class User with _$User {
   }
 
   User withReorderedHighlightStyles(int oldIndex, int newIndex) =>
-      copyWith(highlightStyles: highlightStyles.withReorder(oldIndex, newIndex));
+      copyWith(highlightStyleOverrides: highlightStyles.withReorder(oldIndex, newIndex));
 
   User withAnnotation(Annotation annotation) => copyWith(
     annotations: [...annotations, annotation],
@@ -354,12 +361,14 @@ sealed class User with _$User {
   );
 
   User withTranslation(BibleTranslation translation) => copyWith(
-    translation: translation,
+    translationOverride: translation,
     studyTranslation: translation.isStudy ? translation : studyTranslation,
     audioTranslation: translation.hasAudioBible ? translation : audioTranslation,
     oldTestamentTranslation: translation.testament == .oldTestament ? translation : oldTestamentTranslation,
     newTestamentTranslation: translation.testament == .newTestament ? translation : newTestamentTranslation,
   );
+
+  User withLanguage(Language language) => copyWith(languageOverride: language, translationOverride: translation);
 
   List<HydratedBiblePlanProgress> getHydratedPlanProgresses(Map<BiblePlanType, BiblePlan> planByType) =>
       planProgressByType

@@ -55,7 +55,7 @@ class AnnotationsPage extends HookConsumerWidget {
         .toList();
 
     return StyledPage(
-      title: 'Your Annotations'.toText(),
+      title: t.annotationUi.yourAnnotations.toText(),
       body: Column(
         crossAxisAlignment: .start,
         children: [
@@ -72,7 +72,7 @@ class AnnotationsPage extends HookConsumerWidget {
                   onPressed: () async {
                     final newSort = await context.showStyledSheet(
                       (context) => StyledSelectionSheet(
-                        title: 'Sort'.toText(),
+                        title: t.common.sort.toText(),
                         options: AnnotationSort.values,
                         optionMapper: (sort) => StyledSelectOption(title: sort.title().toText()),
                         initialOption: sortState.value,
@@ -89,12 +89,12 @@ class AnnotationsPage extends HookConsumerWidget {
                     leading: notebookId == null
                         ? Icon(Symbols.book_2)
                         : NotebookIcon(notebook: notebook, isInverted: true),
-                    label: (notebookId == null ? 'Notebook' : notebook?.name ?? 'Default').toText(),
+                    label: (notebookId == null ? t.labels.notebook : notebook?.name ?? t.common.defaultLabel).toText(),
                     trailing: Symbols.keyboard_arrow_down.toIcon(),
                     onPressed: () async {
                       final result = await context.showStyledSheet(
                         (context) => StyledSelectionSheet<(String?,)>(
-                          title: 'Notebook'.toText(),
+                          title: t.labels.notebook.toText(),
                           trailing: notebookId == null
                               ? null
                               : StyledCircleButton.md(
@@ -108,7 +108,7 @@ class AnnotationsPage extends HookConsumerWidget {
                           optionMapper: (option) {
                             final notebook = user.getNotebookById(option.$1);
                             return StyledSelectOption(
-                              title: (notebook?.name ?? 'Default').toText(),
+                              title: (notebook?.name ?? t.common.defaultLabel).toText(),
                               leading: NotebookIcon(notebook: notebook),
                             );
                           },
@@ -125,12 +125,13 @@ class AnnotationsPage extends HookConsumerWidget {
                   leading: style == null
                       ? Icon(Symbols.format_ink_highlighter)
                       : HighlightStyleIcon(style: style, size: .sm),
-                  label: (style == null ? 'Style' : user.labelForHighlightStyle(style) ?? 'Style').toText(),
+                  label: (style == null ? t.labels.style : user.labelForHighlightStyle(style) ?? t.labels.style)
+                      .toText(),
                   trailing: Symbols.keyboard_arrow_down.toIcon(),
                   onPressed: () async {
                     final newStyle = await context.showStyledSheet(
                       (context) => StyledSelectionSheet<HighlightStyle>(
-                        title: 'Style'.toText(),
+                        title: t.labels.style.toText(),
                         options: user.highlightStyles.map((entry) => entry.$1).toList(),
                         optionMapper: (option) => StyledSelectOption(
                           title: (user.labelForHighlightStyle(option) ?? '').toText(),
@@ -157,15 +158,15 @@ class AnnotationsPage extends HookConsumerWidget {
                   colorBuilder: hasNoteState.value == null ? null : .primary,
                   leading: Symbols.note.toIcon(),
                   label: switch (hasNoteState.value) {
-                    true => 'With Notes',
-                    false => 'Without Notes',
-                    null => 'Notes',
+                    true => t.annotationUi.withNotes,
+                    false => t.annotationUi.withoutNotes,
+                    null => t.labels.notes,
                   }.toText(),
                   trailing: Symbols.keyboard_arrow_down.toIcon(),
                   onPressed: () async {
                     final newHasNotes = await context.showStyledSheet(
                       (context) => StyledSelectionSheet(
-                        title: 'Notes'.toText(),
+                        title: t.labels.notes.toText(),
                         trailing: hasNoteState.value == null
                             ? null
                             : StyledCircleButton.md(
@@ -178,8 +179,8 @@ class AnnotationsPage extends HookConsumerWidget {
                         options: [true, false],
                         optionMapper: (option) => StyledSelectOption(
                           title: switch (option) {
-                            true => 'With Notes',
-                            false => 'Without Notes',
+                            true => t.annotationUi.withNotes,
+                            false => t.annotationUi.withoutNotes,
                           }.toText(),
                         ),
                         initialOption: hasNoteState.value,
@@ -208,7 +209,7 @@ class AnnotationsPage extends HookConsumerWidget {
                       padding: .all(16),
                       child: StyledTile.message(
                         leading: Symbols.note_stack.toIcon(),
-                        title: "You haven't created any annotations.".toText(),
+                        title: t.emptyStates.noAnnotations.toText(),
                       ),
                     ),
                   )
@@ -218,7 +219,7 @@ class AnnotationsPage extends HookConsumerWidget {
                       padding: .all(16),
                       child: StyledTile.message(
                         leading: Symbols.note_stack.toIcon(),
-                        title: "No matching annotations.".toText(),
+                        title: t.emptyStates.noMatchingAnnotations.toText(),
                       ),
                     ),
                   ),
@@ -242,8 +243,8 @@ class AnnotationsPage extends HookConsumerWidget {
                                 onPressed: () async {
                                   final confirmed = await context.showStyledDialog(
                                     (context) => StyledDialog.confirmDelete(
-                                      title: 'Delete Annotation'.toText(),
-                                      body: 'Are you sure you want to delete this annotation?'.toText(),
+                                      title: t.annotationUi.deleteAnnotation.toText(),
+                                      body: t.annotationUi.deleteConfirmation.toText(),
                                     ),
                                   );
                                   if (confirmed == true) {
@@ -298,15 +299,17 @@ class AnnotationsPage extends HookConsumerWidget {
                                     ),
                                 ],
                               ),
-                              thirdLine: 'Annotated ${timeago.format(annotation.createdAt)}'.toText(),
+                              thirdLine: t.annotationUi
+                                  .annotatedTime(time: timeago.format(annotation.createdAt, locale: user.language.code))
+                                  .toText(),
                               trailing: StyledCircleButton.md(
                                 child: Symbols.more_vert.toIcon(),
                                 onPressed: () => context.showStyledSheet(
                                   (context) => StyledSheet(
-                                    title: 'Annotation'.toText(),
+                                    title: t.labels.annotation.toText(),
                                     children: [
                                       StyledListItem(
-                                        title: 'Edit'.toText(),
+                                        title: t.common.edit.toText(),
                                         leading: Symbols.edit.toIcon(),
                                         onPressed: () async {
                                           context.pop();
@@ -323,14 +326,14 @@ class AnnotationsPage extends HookConsumerWidget {
                                         },
                                       ),
                                       StyledListItem(
-                                        title: 'Delete'.toText(),
+                                        title: t.common.delete.toText(),
                                         leading: Icon(Symbols.delete, color: context.colors.contentCritical),
                                         onPressed: () async {
                                           context.pop();
                                           final confirmed = await context.showStyledDialog(
                                             (context) => StyledDialog.confirmDelete(
-                                              title: 'Delete Annotation'.toText(),
-                                              body: 'Are you sure you want to delete this annotation?'.toText(),
+                                              title: t.annotationUi.deleteAnnotation.toText(),
+                                              body: t.annotationUi.deleteConfirmation.toText(),
                                             ),
                                           );
                                           if (confirmed == true) {
@@ -369,8 +372,8 @@ enum AnnotationSort {
   location;
 
   String title() => switch (this) {
-    mostRecent => 'Most Recent',
-    location => 'Location',
+    mostRecent => t.annotationUi.mostRecent,
+    location => t.annotationUi.location,
   };
 
   Comparator<Annotation> get comparator => switch (this) {

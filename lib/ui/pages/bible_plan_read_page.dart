@@ -68,7 +68,7 @@ class BiblePlanReadPage extends HookConsumerWidget {
     });
 
     return StyledPage(
-      title: 'Day ${dayIndex + 1}'.toText(),
+      title: t.biblePlans.day(day: dayIndex + 1).toText(),
       body: StyledDock(
         forceHeight: true,
         activeScrollKey: 'passage',
@@ -115,7 +115,7 @@ class BiblePlanReadPage extends HookConsumerWidget {
                                 children: [
                                   passageContent,
                                   StyledRectButton.secondary(
-                                    label: 'Read Entire Chapter'.toText(),
+                                    label: t.biblePlans.readEntireChapter.toText(),
                                     onPressed: () => ChapterPreviewPage.show(
                                       context,
                                       verseSelection: passage,
@@ -139,7 +139,7 @@ class BiblePlanReadPage extends HookConsumerWidget {
             : null,
         buttonsBuilder: (context) => [
           StyledRectButton.primary(
-            label: (nextIncompletePassageIndex == null ? 'Done' : 'Next').toText(),
+            label: (nextIncompletePassageIndex == null ? t.common.done : t.common.next).toText(),
             onPressed: () {
               ref.updateUser(
                 (user) => user.withPassageCompleted(

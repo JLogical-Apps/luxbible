@@ -41,15 +41,13 @@ class InterlinearSheet {
                 StyledBanner(
                   colorBuilder: .surfaceTertiary,
                   leading: Symbols.book.toIcon(),
-                  message: 'Using ${user.studyTranslation.title()} for interlinear'.toText(),
+                  message: t.interlinearUi.usingTranslation(translation: user.studyTranslation.title()).toText(),
                   action: StyledTextAction(
-                    label: 'Learn More'.toText(),
+                    label: t.common.learnMore.toText(),
                     onPressed: () => context.showStyledDialog(
                       (context) => TutorialDialog(
-                        title: 'Interlinear Bible'.toText(),
-                        body:
-                            "Study Bibles are designed with word-for-word Strong's and morphology tagging, which is what makes the Interlinear lexical breakdown possible. Using your most-recent Study Bible instead."
-                                .toText(),
+                        title: t.interlinearUi.interlinearBible.toText(),
+                        body: t.interlinearUi.studyBibleExplanation.toText(),
                         tutorial: .interlinearStudy,
                       ),
                     ),

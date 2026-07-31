@@ -110,13 +110,13 @@ enum InterlinearDirection {
   forward;
 
   String title() => switch (this) {
-    reverse => 'Reverse',
-    forward => 'Forward',
+    reverse => t.interlinearUi.reverse,
+    forward => t.interlinearUi.forward,
   };
 
   String description() => switch (this) {
-    reverse => 'Words appear in the English reading order.',
-    forward => 'Words appear in the original Hebrew or Greek order.',
+    reverse => t.interlinearUi.reverseDescription,
+    forward => t.interlinearUi.forwardDescription,
   };
 
   IconData get icon => switch (this) {

@@ -1,9 +1,11 @@
+import 'package:bible/i18n/strings.g.dart';
+
 enum Testament {
   oldTestament,
   newTestament;
 
   String title() => switch (this) {
-    oldTestament => 'Old Testament',
-    newTestament => 'New Testament',
+    oldTestament => t.testaments.old,
+    newTestament => t.testaments.newTestament,
   };
 }

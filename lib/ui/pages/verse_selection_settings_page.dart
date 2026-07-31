@@ -19,14 +19,14 @@ class VerseSelectionSettingsPage extends ConsumerWidget {
 
     return StyledPage(
       backgroundColor: .backgroundPrimary,
-      title: 'Verse Selection'.toText(),
+      title: t.toolbarSettings.verseSelection.toText(),
       body: Column(
         children: [
           ColoredBox(
             color: context.colors.surfacePrimary,
             child: StyledSection.child(
-              title: 'Toolbar'.toText(),
-              subtitle: 'Shown when a verse is selected.'.toText(),
+              title: t.labels.toolbar.toText(),
+              subtitle: t.toolbarSettings.shownForVerses.toText(),
               padding: .symmetric(vertical: 16),
               childPadding: .symmetric(horizontal: 8),
               child: VerseSelectionBottomBar(
@@ -55,12 +55,12 @@ class VerseSelectionSettingsPage extends ConsumerWidget {
             child: ListView(
               children: [
                 StyledSection.child(
-                  title: 'Gestures'.toText(),
+                  title: t.toolbarSettings.gestures.toText(),
                   child: StyledCard(
                     children: [
                       StyledListItem(
-                        title: 'Long Press'.toText(),
-                        subtitle: 'Shortcut when a verse selection is long-pressed.'.toText(),
+                        title: t.toolbarSettings.longPress.toText(),
+                        subtitle: t.toolbarSettings.verseLongPressDescription.toText(),
                         leading: Symbols.touch_long.toIcon(),
                         trailing: StyledEditBadge(
                           child: StyledCircleButton.md(
@@ -83,20 +83,20 @@ class VerseSelectionSettingsPage extends ConsumerWidget {
                   ),
                 ),
                 StyledSection.child(
-                  title: 'Selection'.toText(),
+                  title: t.labels.selection.toText(),
                   child: StyledCard(
                     children: [
                       StyledListItem.switchControl(
-                        title: 'Expand to Annotation'.toText(),
-                        subtitle: 'Tapping a verse selects its full annotated verse selection.'.toText(),
+                        title: t.toolbarSettings.expandToAnnotation.toText(),
+                        subtitle: t.toolbarSettings.expandVerseDescription.toText(),
                         leading: Symbols.aspect_ratio.toIcon(),
                         isSelected: verseSelectionConfiguration.expandToAnnotation,
                         onSelected: (newValue) =>
                             ref.updateUser((user) => user.copyWith.verseSelection(expandToAnnotation: newValue)),
                       ),
                       StyledListItem.switchControl(
-                        title: 'Range Selection'.toText(),
-                        subtitle: 'Tapping a second verse selects all verses between it and the first.'.toText(),
+                        title: t.toolbarSettings.rangeSelection.toText(),
+                        subtitle: t.toolbarSettings.rangeSelectionDescription.toText(),
                         leading: Symbols.format_letter_spacing.toIcon(),
                         isSelected: verseSelectionConfiguration.rangeSelection,
                         onSelected: (newValue) =>
@@ -118,7 +118,7 @@ class VerseSelectionSettingsPage extends ConsumerWidget {
     required VerseSelectionShortcut initialShortcut,
   }) => context.showStyledSheet(
     (context) => StyledSelectionSheet(
-      title: 'Verse Selection Shortcut'.toText(),
+      title: t.toolbarSettings.verseShortcut.toText(),
       options: VerseSelectionShortcut.values,
       initialOption: initialShortcut,
       optionMapper: (shortcut) => StyledSelectOption(

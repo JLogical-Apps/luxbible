@@ -17,7 +17,7 @@ class BookmarkSheet {
   }) async {
     return await context.showStyledSheet(
       (context) => StyledPortSheet(
-        title: Text(initialBookmark == null ? 'Create Bookmark' : 'Edit Bookmark'),
+        title: Text(initialBookmark == null ? t.bookmarks.create : t.bookmarks.edit),
         port:
             Port.of({
               'color': SimplePortField<ColorEnum>(value: initialBookmark?.color ?? ColorEnum.stone),
@@ -33,7 +33,7 @@ class BookmarkSheet {
           StyledPortFieldBuilder<ColorEnum>(
             fieldPath: 'color',
             builder: (context, value, errorText, onChanged) => StyledFormInput(
-              label: 'Color'.toText(),
+              label: t.labels.color.toText(),
               child: Row(
                 mainAxisAlignment: .spaceBetween,
                 children: ColorEnum.values
@@ -53,8 +53,12 @@ class BookmarkSheet {
           ),
           StyledPortFieldBuilder<String>(
             fieldPath: 'name',
-            builder: (context, value, errorText, onChanged) =>
-                StyledTextField(text: value, label: 'Name'.toText(), error: errorText?.toText(), onChanged: onChanged),
+            builder: (context, value, errorText, onChanged) => StyledTextField(
+              text: value,
+              label: t.labels.name.toText(),
+              error: errorText?.toText(),
+              onChanged: onChanged,
+            ),
           ),
         ],
       ),

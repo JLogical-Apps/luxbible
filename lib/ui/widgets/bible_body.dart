@@ -606,7 +606,7 @@ class BibleBody extends HookConsumerWidget {
                       },
                       isActive: currentCarouselPage == i + onboardingOffset,
                       showDragHandle: !isSideLayout,
-                      subtitle: 'Compare with ${translation.title()}'.toText(),
+                      subtitle: t.studyPanels.compareWith(translation: translation.title()).toText(),
                       onClose: () =>
                           ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
                       childrenBuilder: (context, ref, keyByReference, keyBySectionReference, onContentLoaded) =>

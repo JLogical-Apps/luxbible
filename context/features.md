@@ -10,11 +10,17 @@ This file describes user-facing behavior implemented in the current working tree
 
 Lux uses a single reading area with optional study panels. Panels appear below the Bible on narrower layouts and to its right when the available width is at least 700 logical pixels.
 
+## Languages
+
+Lux supports English and Dutch. By default, it follows the device language when that language is supported and otherwise uses English. Users can select English or Dutch from Settings > Customize to override the device language.
+
+The selected language controls Lux's interface, Bible book names, reference formatting, reading-plan metadata, study terminology, and other app-authored text. It does not translate Bible text, translation names, user-created content, imported study-resource bodies, or legal copy.
+
 ## Bible Library
 
 ### Offline Bibles
 
-- BSB: Berean Standard Bible and the default Bible
+- BSB: Berean Standard Bible and the default English Bible
 - KJV: King James Version
 - ASV: American Standard Version
 - SV: Statenvertaling in Dutch
@@ -46,6 +52,8 @@ The Bibles page lets users:
 - Review copyright information where applicable
 
 At least one Bible must remain active. The order of active Bibles controls their order in translation selectors and Compare.
+
+For a new or uncustomized Bible list, English activates BSB followed by the other English Bibles, matching the existing default order. Dutch activates SV followed by BSB. Changing the app language updates this language-based default list only while the user has not customized their active Bibles. It does not change the currently selected translation.
 
 BSB and KJV are the two study Bibles. LXX and OSHB contain the Old Testament, while TR, BYZ, and SR contain the New Testament.
 

@@ -18,8 +18,8 @@ enum StrongLanguage {
   greek;
 
   String title() => switch (this) {
-    hebrew => 'Hebrew',
-    greek => 'Greek',
+    hebrew => t.languages.hebrew,
+    greek => t.languages.greek,
   };
 
   bool matches(Strong strong) => switch (this) {
@@ -56,7 +56,7 @@ class LexiconPage extends HookConsumerWidget {
         .toList();
 
     return StyledPage(
-      title: 'Lexicon'.toText(),
+      title: t.labels.lexicon.toText(),
       body: Column(
         children: [
           Container(
@@ -68,18 +68,18 @@ class LexiconPage extends HookConsumerWidget {
               children: [
                 StyledTextField(
                   text: searchState.value,
-                  hintText: 'Search for a Strong\'s number (e.g. H125)',
+                  hintText: t.searchUi.strongNumberHint,
                   onChanged: (text) => searchState.value = text,
                 ),
                 StyledPillButton.md(
                   colorBuilder: language == null ? null : .primary,
                   leading: Symbols.translate.toIcon(),
-                  label: (language?.title() ?? 'Language').toText(),
+                  label: (language?.title() ?? t.labels.language).toText(),
                   trailing: Symbols.keyboard_arrow_down.toIcon(),
                   onPressed: () async {
                     final newLanguage = await context.showStyledSheet(
                       (context) => StyledSelectionSheet(
-                        title: 'Language'.toText(),
+                        title: t.labels.language.toText(),
                         trailing: language == null
                             ? null
                             : StyledCircleButton.md(
@@ -110,8 +110,8 @@ class LexiconPage extends HookConsumerWidget {
                     Padding(
                       padding: .all(16),
                       child: StyledTile.message(
-                        title: 'No matching terms'.toText(),
-                        subtitle: 'Try another search'.toText(),
+                        title: t.emptyStates.noMatchingTerms.toText(),
+                        subtitle: t.emptyStates.tryAnotherSearch.toText(),
                         leading: Symbols.search.toIcon(),
                       ),
                     ),

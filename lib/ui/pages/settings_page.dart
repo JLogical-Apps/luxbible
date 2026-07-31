@@ -1,3 +1,4 @@
+import 'package:bible/models/user/language.dart';
 import 'package:bible/models/user/toolbar_preset.dart';
 import 'package:bible/providers/package_info_provider.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -35,50 +36,71 @@ class SettingsPage extends HookConsumerWidget {
 
     return StyledPage(
       backgroundColor: .backgroundPrimary,
-      title: 'Settings'.toText(),
+      title: t.settings.title.toText(),
       body: ListView(
         children: [
           StyledSection.child(
-            title: 'Customize'.toText(),
+            title: t.settings.customize.toText(),
             child: StyledCard(
               children: [
                 StyledListItem.navigation(
-                  title: 'Theme & Layout'.toText(),
+                  title: t.themeSettings.title.toText(),
                   leading: Symbols.custom_typography.toIcon(),
                   onPressed: () => context.push(ThemeSettingsPage()),
                 ),
                 StyledListItem.navigation(
-                  title: 'Bibles'.toText(),
+                  title: t.labels.bibles.toText(),
                   leading: Symbols.book.toIcon(),
                   onPressed: () => context.push(BiblesPage()),
                 ),
                 StyledListItem.navigation(
-                  title: 'Commentaries'.toText(),
+                  title: t.labels.commentaries.toText(),
                   leading: Symbols.tooltip_2.toIcon(),
                   onPressed: () => context.push(CommentariesPage()),
+                ),
+                StyledListItem(
+                  title: t.settings.language.toText(),
+                  subtitle: user.language.title().toText(),
+                  trailing: StyledPillButton.md(
+                    label: t.settings.select.toText(),
+                    onPressed: () async {
+                      final language = await context.showStyledSheet(
+                        (context) => StyledSelectionSheet(
+                          title: t.settings.languageSelectionTitle.toText(),
+                          options: Language.values,
+                          initialOption: user.language,
+                          optionMapper: (language) => StyledSelectOption(title: language.title().toText()),
+                        ),
+                      );
+                      if (language != null) {
+                        LocaleSettings.setLocaleSync(language.appLocale);
+                        await ref.updateUser((user) => user.withLanguage(language));
+                      }
+                    },
+                  ),
                 ),
               ],
             ),
           ),
           StyledSection.child(
-            title: 'Toolbars'.toText(),
+            title: t.labels.toolbars.toText(),
             child: StyledCard(
               children: [
                 StyledListItem(
-                  title: 'Toolbar Presets'.toText(),
-                  subtitle: (user.toolbarPreset?.title() ?? 'Custom').toText(),
+                  title: t.settings.toolbarPresets.toText(),
+                  subtitle: (user.toolbarPreset?.title() ?? t.common.custom).toText(),
                   trailing: StyledPillButton.md(
-                    label: 'Select'.toText(),
+                    label: t.common.select.toText(),
                     onPressed: () async {
                       ref.markOnboardingStep(.customizeToolbar);
                       final preset = await context.showStyledSheet(
                         (context) => StyledSelectionSheet(
-                          title: 'Toolbar Preset'.toText(),
+                          title: t.settings.toolbarPreset.toText(),
                           aboveOptions: Padding(
                             padding: .all(16),
                             child: StyledTile.message(
                               leading: Symbols.info.toIcon(),
-                              title: 'Selecting a preset will override the shortcuts in all your toolbars.'.toText(),
+                              title: t.settings.presetWarning.toText(),
                             ),
                           ),
                           options: ToolbarPreset.values,
@@ -113,17 +135,17 @@ class SettingsPage extends HookConsumerWidget {
                   ),
                 ),
                 StyledListItem.navigation(
-                  title: 'Main Toolbar'.toText(),
+                  title: t.toolbarSettings.mainToolbar.toText(),
                   leading: RotatedBox(quarterTurns: 2, child: Symbols.toolbar.toIcon()),
                   onPressed: () => context.push(MainToolbarSettingsPage()),
                 ),
                 StyledListItem.navigation(
-                  title: 'Verse Selection'.toText(),
+                  title: t.toolbarSettings.verseSelection.toText(),
                   leading: Symbols.text_ad.toIcon(),
                   onPressed: () => context.push(VerseSelectionSettingsPage()),
                 ),
                 StyledListItem.navigation(
-                  title: 'Text Selection'.toText(),
+                  title: t.toolbarSettings.textSelection.toText(),
                   leading: Symbols.text_select_start.toIcon(),
                   onPressed: () => context.push(TextSelectionSettingsPage()),
                 ),
@@ -131,11 +153,11 @@ class SettingsPage extends HookConsumerWidget {
             ),
           ),
           StyledSection.child(
-            title: 'Your Content'.toText(),
+            title: t.settings.yourContent.toText(),
             child: StyledCard(
               children: [
                 StyledListItem.navigation(
-                  title: 'Annotations'.toText(),
+                  title: t.labels.annotations.toText(),
                   leading: Symbols.note_stack.toIcon(),
                   onPressed: () async {
                     final result = await context.push(AnnotationsPage());
@@ -145,7 +167,7 @@ class SettingsPage extends HookConsumerWidget {
                   },
                 ),
                 StyledListItem.navigation(
-                  title: 'Notebooks'.toText(),
+                  title: t.labels.notebooks.toText(),
                   leading: Symbols.book_2.toIcon(),
                   onPressed: () async {
                     final result = await context.push(NotebooksPage());
@@ -155,7 +177,7 @@ class SettingsPage extends HookConsumerWidget {
                   },
                 ),
                 StyledListItem.navigation(
-                  title: 'Highlight Styles'.toText(),
+                  title: t.labels.highlightStyles.toText(),
                   leading: Symbols.format_ink_highlighter.toIcon(),
                   onPressed: () async {
                     final result = await context.push(HighlightStylesPage());
@@ -165,7 +187,7 @@ class SettingsPage extends HookConsumerWidget {
                   },
                 ),
                 StyledListItem.navigation(
-                  title: 'Bookmarks'.toText(),
+                  title: t.labels.bookmarks.toText(),
                   leading: Symbols.bookmark.toIcon(),
                   onPressed: () => context.push(BookmarksPage()),
                 ),
@@ -173,19 +195,19 @@ class SettingsPage extends HookConsumerWidget {
             ),
           ),
           StyledSection.child(
-            title: 'Community'.toText(),
+            title: t.labels.community.toText(),
             child: StyledCard(
               children: [
                 StyledListItem(
-                  title: 'Discord'.toText(),
-                  subtitle: 'Discussion and announcements'.toText(),
+                  title: t.labels.discord.toText(),
+                  subtitle: t.settings.discussionAndAnnouncements.toText(),
                   leading: FaIcon(FontAwesomeIcons.discord),
                   onPressed: () => launchUrl(discordUri),
                   trailing: Symbols.arrow_outward.toIcon(),
                 ),
                 StyledListItem(
-                  title: 'Instagram'.toText(),
-                  subtitle: 'Tips and updates'.toText(),
+                  title: t.labels.instagram.toText(),
+                  subtitle: t.settings.tipsAndUpdates.toText(),
                   leading: FaIcon(FontAwesomeIcons.instagram),
                   onPressed: () => launchUrl(Uri.parse('https://www.instagram.com/luxbible.app/')),
                   trailing: Symbols.arrow_outward.toIcon(),
@@ -194,22 +216,20 @@ class SettingsPage extends HookConsumerWidget {
             ),
           ),
           StyledSection.child(
-            title: 'Support Lux'.toText(),
+            title: t.settings.supportLux.toText(),
             child: StyledCard(
               children: [
                 StyledListItem(
-                  title: 'Rate Lux'.toText(),
-                  subtitle: 'Leave a review on the App Store.'.toText(),
+                  title: t.settings.rateLux.toText(),
+                  subtitle: t.settings.leaveReview.toText(),
                   leading: Symbols.star.toIcon(),
                   onPressed: () => context.showStyledDialog(
                     (context) => StyledDialog(
-                      title: 'Support Lux'.toText(),
-                      body:
-                          'Lux is a passion project built on the conviction that Scripture should be freely available to all. The best way to support Lux is by leaving a review on the App Store.\n\nIf there is anything keeping you from leaving a 5-star review, please join our Discord and share your feedback so we can address it quickly.'
-                              .toText(),
+                      title: t.settings.supportLux.toText(),
+                      body: t.settings.supportMessage.toText(),
                       buttonsBuilder: (context) => [
                         StyledRectButton.primary(
-                          label: 'Leave a Rating'.toText(),
+                          label: t.settings.leaveRating.toText(),
                           onPressed: () async {
                             context.pop();
                             final appReview = InAppReview.instance;
@@ -221,7 +241,7 @@ class SettingsPage extends HookConsumerWidget {
                           },
                         ),
                         StyledRectButton.transparent(
-                          label: 'Join Discord'.toText(),
+                          label: t.settings.joinDiscord.toText(),
                           onPressed: () {
                             context.pop();
                             launchUrl(discordUri);
@@ -236,12 +256,12 @@ class SettingsPage extends HookConsumerWidget {
             ),
           ),
           StyledSection.child(
-            title: 'Help'.toText(),
+            title: t.labels.help.toText(),
             child: StyledCard(
               children: [
                 StyledListItem(
-                  title: 'Restart Get Started'.toText(),
-                  subtitle: 'Show the Get Started checklist again'.toText(),
+                  title: t.settings.restartGetStarted.toText(),
+                  subtitle: t.settings.restartGetStartedDescription.toText(),
                   leading: Symbols.data_info_alert.toIcon(),
                   onPressed: () {
                     ref.updateUser((user) => user.withOnboardingReset());
@@ -249,28 +269,28 @@ class SettingsPage extends HookConsumerWidget {
                   },
                 ),
                 StyledListItem(
-                  title: 'Reset Tutorials'.toText(),
-                  subtitle: 'Show helpful hints throughout the app again'.toText(),
+                  title: t.settings.resetTutorials.toText(),
+                  subtitle: t.settings.resetTutorialsDescription.toText(),
                   leading: Symbols.help.toIcon(),
                   onPressed: () {
                     ref.updateUser((user) => user.withTutorialsReset());
-                    context.showStyledSnackbar(message: 'Tutorials have been reset.'.toText());
+                    context.showStyledSnackbar(message: t.settings.tutorialsReset.toText());
                   },
                 ),
               ],
             ),
           ),
           StyledSection.child(
-            title: 'About'.toText(),
+            title: t.labels.about.toText(),
             child: StyledCard(
               children: [
                 StyledListItem(
-                  title: 'Version'.toText(),
+                  title: t.labels.version.toText(),
                   subtitle: packageInfo.version.toText(),
                   leading: Symbols.perm_device_information.toIcon(),
                 ),
                 StyledListItem.navigation(
-                  title: 'Licenses'.toText(),
+                  title: t.labels.licenses.toText(),
                   leading: Symbols.license.toIcon(),
                   onPressed: () => showLicensePage(context: context),
                 ),

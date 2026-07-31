@@ -1,3 +1,4 @@
+import 'package:bible/i18n/strings.g.dart';
 import 'package:bible/style/widgets/sheet/styled_sheet.dart';
 import 'package:bible/style/widgets/styled_rect_button.dart';
 import 'package:bible/utils/extensions/build_context_extensions.dart';
@@ -39,7 +40,7 @@ class StyledPortSheet<T> extends StyledSheet<T> {
       ),
       buttonsBuilder: (context) => [
         StyledRectButton.primary(
-          label: 'Save'.toText(),
+          label: t.common.save.toText(),
           onPressed: () async {
             final result = await port.submitIfNoErrors();
             if (!result.isValid) {

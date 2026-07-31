@@ -51,13 +51,16 @@ class StyledMultiSelectionSheet<T> extends StyledSheet<List<T>> {
               child: StyledTextField(
                 text: searchState.value,
                 onChanged: (text) => searchState.value = text,
-                hintText: 'Search',
+                hintText: t.common.search,
               ),
             ),
         ],
       ),
       buttonsBuilder: (context) => [
-        StyledRectButton.primary(onPressed: () => context.pop(selectedOptionsState.value), label: 'Save'.toText()),
+        StyledRectButton.primary(
+          onPressed: () => context.pop(selectedOptionsState.value),
+          label: t.common.save.toText(),
+        ),
       ],
       children:
           optionsByCategory
@@ -95,8 +98,8 @@ class StyledMultiSelectionSheet<T> extends StyledSheet<List<T>> {
             Padding(
               padding: .all(16),
               child: StyledTile.message(
-                title: 'No Search Results Found'.toText(),
-                subtitle: 'Try another search'.toText(),
+                title: t.emptyStates.noSearchResults.toText(),
+                subtitle: t.emptyStates.tryAnotherSearch.toText(),
                 leading: Symbols.search.toIcon(),
               ),
             ),

@@ -13,7 +13,7 @@ class HighlightStyleSheet {
     required List<(HighlightStyle, String label)> otherStyles,
   }) => context.showStyledSheet(
     (context) => StyledPortSheet(
-      title: (initialStyle == null ? 'Create Style' : 'Edit Style').toText(),
+      title: (initialStyle == null ? t.highlightStyleUi.create : t.highlightStyleUi.edit).toText(),
       port: Port.of({
         'label': PortField.string(initialValue: initialStyle?.$2).isNotBlank(),
         'style':
@@ -22,20 +22,24 @@ class HighlightStyleSheet {
             ).withValidator(
               Validator(
                 (context) =>
-                    otherStyles.any((entry) => entry.$1 == context.value) ? 'You already have this style' : null,
+                    otherStyles.any((entry) => entry.$1 == context.value) ? t.highlightStyleUi.duplicate : null,
               ),
             ),
       }).map((values, port) => (values['style'] as HighlightStyle, (values['label'] as String).trim())),
       childrenBuilder: (context, ref) => [
         StyledPortFieldBuilder<String>(
           fieldPath: 'label',
-          builder: (context, value, errorText, onChanged) =>
-              StyledTextField(text: value, label: 'Label'.toText(), error: errorText?.toText(), onChanged: onChanged),
+          builder: (context, value, errorText, onChanged) => StyledTextField(
+            text: value,
+            label: t.highlightStyleUi.label.toText(),
+            error: errorText?.toText(),
+            onChanged: onChanged,
+          ),
         ),
         StyledPortFieldBuilder<HighlightStyle>(
           fieldPath: 'style',
           builder: (context, selectedStyle, error, onChanged) => StyledFormInput(
-            label: 'Style'.toText(),
+            label: t.labels.style.toText(),
             error: error?.toText(),
             child: Column(
               spacing: 12,

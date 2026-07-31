@@ -30,7 +30,9 @@ class StyledDialog<T> extends HookWidget {
     title: title,
     body: body,
     bodyPadding: bodyPadding,
-    buttonsBuilder: ((context) => [StyledRectButton.primary(label: 'Ok'.toText(), onPressed: () => context.pop())]),
+    buttonsBuilder: ((context) => [
+      StyledRectButton.primary(label: t.common.ok.toText(), onPressed: () => context.pop()),
+    ]),
   );
 
   static StyledDialog<bool> confirmOrCancel({
@@ -42,8 +44,8 @@ class StyledDialog<T> extends HookWidget {
     body: body,
     bodyPadding: bodyPadding,
     buttonsBuilder: ((context) => [
-      StyledRectButton.primary(label: 'Ok'.toText(), onPressed: () => context.pop(true)),
-      StyledRectButton.transparent(label: 'Nevermind'.toText(), onPressed: () => context.pop(false)),
+      StyledRectButton.primary(label: t.common.ok.toText(), onPressed: () => context.pop(true)),
+      StyledRectButton.transparent(label: t.common.nevermind.toText(), onPressed: () => context.pop(false)),
     ]),
   );
 
@@ -57,8 +59,8 @@ class StyledDialog<T> extends HookWidget {
     body: body,
     bodyPadding: bodyPadding,
     buttonsBuilder: ((context) => [
-      StyledRectButton.critical(label: deleteLabel ?? 'Delete'.toText(), onPressed: () => context.pop(true)),
-      StyledRectButton.transparent(label: 'Nevermind'.toText(), onPressed: () => context.pop(false)),
+      StyledRectButton.critical(label: deleteLabel ?? t.common.delete.toText(), onPressed: () => context.pop(true)),
+      StyledRectButton.transparent(label: t.common.nevermind.toText(), onPressed: () => context.pop(false)),
     ]),
   );
 

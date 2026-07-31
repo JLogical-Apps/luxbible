@@ -1,3 +1,4 @@
+import 'package:bible/i18n/strings.g.dart';
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_action.dart';
@@ -20,7 +21,7 @@ class StudySheet {
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) => context.showStyledSheet(
     (context) => StyledSheet(
-      title: 'Study'.toText(),
+      title: t.labels.study.toText(),
       subtitle: regionFormat.toText(),
       children: StudyAction.values
           .map(

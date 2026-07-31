@@ -7,6 +7,7 @@ import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/i18n/strings.g.dart';
 import 'package:bible/ui/pages/dictionary_page.dart';
 import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/theme_settings_page.dart';
@@ -39,20 +40,20 @@ enum MainToolbarShortcut {
       toStudyAction()?.title() ??
       toMainAction()?.title() ??
       switch (this) {
-        switchBible => 'Switch Bible',
-        dictionary => 'Dictionary',
-        lexicon => 'Lexicon',
-        _ => 'Theme & Layout',
+        switchBible => t.toolbarShortcuts.switchBible,
+        dictionary => t.toolbarShortcuts.dictionary,
+        lexicon => t.toolbarShortcuts.lexicon,
+        _ => t.toolbarShortcuts.themeAndLayout,
       };
 
   String description({User? user}) =>
       toStudyAction()?.description(regionFormat: null, regionType: RegionType.chapter) ??
       toMainAction()?.description(user: user) ??
       switch (this) {
-        switchBible => 'Switch the Bible translation.',
-        dictionary => 'Look up people, places, and topics in Easton\'s Bible Dictionary.',
-        lexicon => 'Study the original Hebrew and Greek words with Strong\'s Lexicon.',
-        _ => 'Customize the theme & layout of the Bible.',
+        switchBible => t.toolbarShortcuts.switchBibleDescription,
+        dictionary => t.toolbarShortcuts.dictionaryDescription,
+        lexicon => t.toolbarShortcuts.lexiconDescription,
+        _ => t.toolbarShortcuts.themeAndLayoutDescription,
       };
 
   Widget buildIcon(BuildContext context, {User? user}) =>

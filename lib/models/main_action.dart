@@ -37,28 +37,26 @@ enum MainAction {
   settings;
 
   String title() => switch (this) {
-    audio => ref.read(isAudioBiblePlayingProvider) ? 'Pause Audio Bible' : 'Play Audio Bible',
-    bookmark => 'Bookmark',
-    study => 'Study',
-    studyPanel => 'Add Study Panel',
-    search => 'Search',
-    resources => 'Resources',
-    plans => 'Bible Plans',
-    settings => 'Settings',
+    audio => ref.read(isAudioBiblePlayingProvider) ? t.mainActions.pauseAudio : t.mainActions.playAudio,
+    bookmark => t.mainActions.bookmark,
+    study => t.mainActions.study,
+    studyPanel => t.mainActions.addStudyPanel,
+    search => t.mainActions.search,
+    resources => t.mainActions.resources,
+    plans => t.mainActions.plans,
+    settings => t.mainActions.settings,
   };
 
   String description({User? user}) => switch (this) {
-    audio => 'Listen to the current chapter with an audio-enabled Bible.',
+    audio => t.mainActions.audioDescription,
     bookmark =>
-      user?.currentBookmark == null
-          ? 'Bookmark this chapter to easily access it from the search page.'
-          : 'Manage this bookmark.',
-    study => 'View study tools for this chapter.',
-    studyPanel => 'Pin a panel beside the text that follows along and shows study tools for whatever you\'re reading.',
-    search => 'Search for words across the Bible.',
-    resources => 'Look up words in the dictionary and lexicon.',
-    plans => 'Read through the Bible with guided reading plans.',
-    settings => 'View the settings for Lux.',
+      user?.currentBookmark == null ? t.mainActions.bookmarkDescription : t.mainActions.manageBookmarkDescription,
+    study => t.mainActions.studyDescription,
+    studyPanel => t.mainActions.studyPanelDescription,
+    search => t.mainActions.searchDescription,
+    resources => t.mainActions.resourcesDescription,
+    plans => t.mainActions.plansDescription,
+    settings => t.mainActions.settingsDescription,
   };
 
   Widget buildIcon(BuildContext context, {User? user}) => switch (this) {
@@ -120,11 +118,11 @@ enum MainAction {
         } else {
           await context.showStyledSheet(
             (context) => StyledSheet(
-              title: 'Manage Bookmark'.toText(),
+              title: t.bookmarks.manage.toText(),
               children: [
                 StyledListItem(
-                  title: 'Stop Following'.toText(),
-                  subtitle: 'Stop this bookmark from following you.'.toText(),
+                  title: t.bookmarks.stopFollowing.toText(),
+                  subtitle: t.bookmarks.stopFollowingDescription.toText(),
                   leading: Symbols.keep_off.toIcon(),
                   onPressed: () {
                     context.pop();
@@ -132,7 +130,7 @@ enum MainAction {
                   },
                 ),
                 StyledListItem(
-                  title: 'Edit Bookmark'.toText(),
+                  title: t.bookmarks.edit.toText(),
                   leading: Symbols.edit.toIcon(),
                   onPressed: () async {
                     context.pop();
@@ -147,14 +145,14 @@ enum MainAction {
                   },
                 ),
                 StyledListItem(
-                  title: 'Delete Bookmark'.toText(),
+                  title: t.bookmarks.delete.toText(),
                   leading: Icon(Symbols.delete, color: context.colors.contentCritical),
                   onPressed: () async {
                     context.pop();
                     final confirmed = await context.showStyledDialog(
                       (context) => StyledDialog.confirmDelete(
-                        title: 'Delete Bookmark'.toText(),
-                        body: 'Are you sure you want to delete this bookmark?'.toText(),
+                        title: t.bookmarks.delete.toText(),
+                        body: t.bookmarks.deleteConfirmation.toText(),
                       ),
                     );
                     if (confirmed == true) {
@@ -177,7 +175,7 @@ enum MainAction {
       case studyPanel:
         final studyPanelType = await context.showStyledSheet<StudyPanelType>(
           (context) => StyledSheet(
-            title: 'Study Panel'.toText(),
+            title: t.studyPanels.title.toText(),
             children: StudyPanelType.values
                 .map(
                   (studyAction) => StyledListItem(
@@ -195,7 +193,7 @@ enum MainAction {
             case .compare:
               final translation = await context.showStyledSheet(
                 (context) => StyledSelectionSheet(
-                  title: 'Compare With'.toText(),
+                  title: t.studyActions.compare.toText(),
                   options: user.biblesOrDefault,
                   optionMapper: (option) =>
                       StyledSelectOption(title: option.title().toText(), subtitle: option.fullName().toText()),
@@ -207,7 +205,7 @@ enum MainAction {
             case .interlinear:
               final direction = await context.showStyledSheet(
                 (context) => StyledSelectionSheet(
-                  title: 'Interlinear Direction'.toText(),
+                  title: t.interlinearUi.direction.toText(),
                   options: InterlinearDirection.values,
                   optionMapper: (option) => StyledSelectOption(
                     title: option.title().toText(),
@@ -222,7 +220,7 @@ enum MainAction {
             case .commentary:
               final commentaryType = await context.showStyledSheet(
                 (context) => StyledSelectionSheet(
-                  title: 'Commentary'.toText(),
+                  title: t.labels.commentary.toText(),
                   options: user.commentariesOrDefault,
                   optionMapper: (option) =>
                       StyledSelectOption(title: option.title().toText(), subtitle: option.description().toText()),
@@ -245,16 +243,16 @@ enum MainAction {
       case resources:
         final resource = await context.showStyledSheet<_Resource>(
           (context) => StyledSheet(
-            title: 'Resources'.toText(),
+            title: t.labels.resources.toText(),
             children: [
               StyledListItem.navigation(
-                title: 'Dictionary'.toText(),
+                title: t.labels.dictionary.toText(),
                 subtitle: "Look up people, places, and topics in Easton's Bible Dictionary.".toText(),
                 leading: Symbols.menu_book.toIcon(),
                 onPressed: () => context.pop(_Resource.dictionary),
               ),
               StyledListItem.navigation(
-                title: 'Lexicon'.toText(),
+                title: t.labels.lexicon.toText(),
                 subtitle: "Study the original Hebrew and Greek words with Strong's Lexicon.".toText(),
                 leading: Symbols.translate.toIcon(),
                 onPressed: () => context.pop(_Resource.lexicon),

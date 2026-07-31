@@ -25,10 +25,10 @@ class BiblePlansPage extends ConsumerWidget {
     final plans = ref.watch(biblePlansProvider);
 
     return StyledPage(
-      title: 'Bible Plans'.toText(),
+      title: t.labels.biblePlans.toText(),
       backgroundColor: .backgroundPrimary,
       trailing: Tooltip(
-        message: 'Add Bible plan',
+        message: t.biblePlans.addPlan,
         child: StyledCircleButton.md(child: Symbols.add.toIcon(), onPressed: () => context.push(BiblePlanSearchPage())),
       ),
       body: StyledListView(
@@ -39,8 +39,7 @@ class BiblePlansPage extends ConsumerWidget {
               padding: .symmetric(horizontal: 16),
               child: StyledTile.message(
                 leading: Symbols.calendar_month.toIcon(),
-                title: "You aren't following any reading plans yet. Find one to start reading through the Bible."
-                    .toText(),
+                title: t.emptyStates.noPlans.toText(),
               ),
             ),
           StyledReorderableList(
@@ -71,8 +70,8 @@ class BiblePlansPage extends ConsumerWidget {
                           child: StyledCard(
                             children: [
                               StyledListItem(
-                                leading: BiblePlanThumbnail(plan: plan),
-                                title: plan.name.toText(),
+                                leading: BiblePlanThumbnail(plan: plan, planType: planType),
+                                title: planType.title().toText(),
                                 subtitle: Padding(
                                   padding: .symmetric(vertical: 4),
                                   child: StyledProgressBar(
@@ -85,21 +84,19 @@ class BiblePlansPage extends ConsumerWidget {
                                   child: Symbols.more_vert.toIcon(),
                                   onPressed: () => context.showStyledSheet(
                                     (_) => StyledSheet(
-                                      title: plan.name.toText(),
+                                      title: planType.title().toText(),
                                       children: [
                                         StyledListItem(
                                           leading: Icon(Symbols.stop_circle, color: context.colors.contentCritical),
-                                          title: 'Stop Plan'.toText(),
-                                          subtitle: 'Remove this plan and its progress.'.toText(),
+                                          title: t.biblePlans.stopPlan.toText(),
+                                          subtitle: t.biblePlans.stopPlanDescription.toText(),
                                           onPressed: () async {
                                             context.pop();
                                             final confirmed = await context.showStyledDialog(
                                               (context) => StyledDialog.confirmDelete(
-                                                title: 'Stop Plan'.toText(),
-                                                body:
-                                                    'Are you sure you want to stop "${plan.name}"? Your progress will be lost.'
-                                                        .toText(),
-                                                deleteLabel: 'Stop'.toText(),
+                                                title: t.biblePlans.stopPlan.toText(),
+                                                body: t.biblePlans.stopConfirmation(name: planType.title()).toText(),
+                                                deleteLabel: t.common.stop.toText(),
                                               ),
                                             );
                                             if (confirmed == true) {
@@ -121,7 +118,7 @@ class BiblePlansPage extends ConsumerWidget {
                                     spacing: 8,
                                     children: [
                                       Text(
-                                        'Day ${dayIndex + 1}',
+                                        t.biblePlans.day(day: dayIndex + 1),
                                         style: TextStyle(color: isFuture ? context.colors.contentDisabled : null),
                                       ),
                                       Icon(
@@ -142,7 +139,7 @@ class BiblePlansPage extends ConsumerWidget {
                                 children: day.isReviewAndReflect
                                     ? [
                                         StyledListItem.checkbox(
-                                          title: 'Review & Reflect'.toText(),
+                                          title: t.biblePlans.reviewAndReflect.toText(),
                                           isSelected: progress.isDayComplete(dayIndex: dayIndex),
                                           onSelected: (_) => ref.updateUser(
                                             (user) => user.withPlanDayToggled(planType: planType, dayIndex: dayIndex),
@@ -185,13 +182,13 @@ class BiblePlansPage extends ConsumerWidget {
                                 Padding(
                                   padding: .all(16),
                                   child: StyledRectButton.primary(
-                                    label: 'Finish'.toText(),
+                                    label: t.common.finish.toText(),
                                     onPressed: () {
                                       ref.updateUser((user) => user.withCompletedPlan(planType));
                                       context.showStyledSnackbar(
-                                        message: '"${plan.name}" completed.'.toText(),
+                                        message: t.biblePlans.completed(name: planType.title()).toText(),
                                         action: StyledTextAction(
-                                          label: 'Start New'.toText(),
+                                          label: t.biblePlans.startNew.toText(),
                                           onPressed: () => context.push(BiblePlanSearchPage()),
                                         ),
                                         duration: Duration(seconds: 10),

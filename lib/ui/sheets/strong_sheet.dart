@@ -53,7 +53,7 @@ class StrongSheet {
       final selectedMorphologyCode = selectedMorphologyCodeState.value;
 
       return StyledSheet.builder(
-        title: (word != null ? 'Interlinear Word' : 'Lexicon').toText(),
+        title: (word != null ? t.strongSheet.interlinearWord : t.strongSheet.lexicon).toText(),
         subtitle: SingleChildScrollView(
           scrollDirection: .horizontal,
           child: Row(
@@ -69,31 +69,35 @@ class StrongSheet {
           return [
             if (word != null)
               StyledSection(
-                title: 'Usage'.toText(),
+                title: t.strongSheet.usage.toText(),
                 padding: .only(top: 24),
                 children: [
-                  if (word.text case final text?) StyledListItem(title: 'English'.toText(), subtitle: text.toText()),
+                  if (word.text case final text?)
+                    StyledListItem(title: t.languages.english.toText(), subtitle: text.toText()),
                   if (word.data case final data?) ...[
-                    StyledListItem(title: 'Inflected'.toText(), subtitle: data.inflection?.toText()),
+                    StyledListItem(title: t.strongSheet.inflected.toText(), subtitle: data.inflection?.toText()),
                     if (data.transliteration case final transliteration?)
-                      StyledListItem(title: 'Transliteration'.toText(), subtitle: transliteration.toText()),
+                      StyledListItem(title: t.strongSheet.transliteration.toText(), subtitle: transliteration.toText()),
                   ],
                 ],
               ),
             if (strongId != null && strong != null)
               StyledSection(
-                title: 'Root'.toText(),
-                subtitle: 'Strongs $strongId'.toText(),
+                title: t.strongSheet.root.toText(),
+                subtitle: t.strongSheet.strongsId(id: strongId).toText(),
                 padding: .only(top: 24),
                 children: [
-                  StyledListItem(title: 'Root Word'.toText(), subtitle: strong.languageText.toText()),
-                  StyledListItem(title: 'Transliteration'.toText(), subtitle: strong.transliteration.toText()),
-                  StyledListItem(title: 'Pronunciation'.toText(), subtitle: strong.pronunciation.toText()),
+                  StyledListItem(title: t.strongSheet.rootWord.toText(), subtitle: strong.languageText.toText()),
+                  StyledListItem(
+                    title: t.strongSheet.transliteration.toText(),
+                    subtitle: strong.transliteration.toText(),
+                  ),
+                  StyledListItem(title: t.strongSheet.pronunciation.toText(), subtitle: strong.pronunciation.toText()),
                   StyledListItem(
                     title: Row(
                       children: [
-                        Expanded(child: 'Strong\'s Definition'.toText()),
-                        StyledLink('Legend', onPressed: () => showDefinitionLegend(context)),
+                        Expanded(child: t.strongSheet.strongsDefinition.toText()),
+                        StyledLink(t.strongSheet.legend, onPressed: () => showDefinitionLegend(context)),
                       ],
                     ),
                     subtitle: MarkdownBuilder(
@@ -120,7 +124,7 @@ class StrongSheet {
                   ),
                   if (strong.definition != strong.usage)
                     StyledListItem(
-                      title: 'Biblical Usage'.toText(),
+                      title: t.strongSheet.biblicalUsage.toText(),
                       subtitle: MarkdownBuilder(
                         strong.formattedUsage,
                         onLinkPressed: (text, link) {
@@ -132,9 +136,12 @@ class StrongSheet {
                                 bodyPadding: .zero,
                                 body: StyledList(
                                   children: [
-                                    StyledListItem(title: 'Definition'.toText(), subtitle: stem.description.toText()),
                                     StyledListItem(
-                                      title: 'Examples'.toText(),
+                                      title: t.strongSheet.definition.toText(),
+                                      subtitle: stem.description.toText(),
+                                    ),
+                                    StyledListItem(
+                                      title: t.strongSheet.examples.toText(),
                                       subtitle: stem.examples.map((example) => '"$example"').join(', ').toText(),
                                     ),
                                   ],
@@ -148,17 +155,17 @@ class StrongSheet {
                       ),
                     ),
                   if (strong.partOfSpeech case final partOfSpeech?)
-                    StyledListItem(title: 'Part of Speech'.toText(), subtitle: partOfSpeech.toText()),
+                    StyledListItem(title: t.strongSheet.partOfSpeech.toText(), subtitle: partOfSpeech.toText()),
                   if (strong.derivation case final derivation?)
                     StyledListItem(
-                      title: 'Derivation'.toText(),
+                      title: t.strongSheet.derivation.toText(),
                       subtitle: MarkdownBuilder(derivation, onLinkPressed: (text, link) => openStrong(context, link)),
                     ),
                 ],
               ),
             if (morphologyCode != null && morphologyCodes != null && selectedMorphologyCode != null)
               StyledSection(
-                title: 'Morphology'.toText(),
+                title: t.strongSheet.morphology.toText(),
                 subtitle: morphologyCode.toText(),
                 padding: .only(top: 24),
                 children: [
@@ -177,7 +184,7 @@ class StrongSheet {
                       title: attribute.displayName.toText(),
                       subtitle: value.displayName.toText(),
                       trailing: StyledPillButton.sm(
-                        label: 'Learn More'.toText(),
+                        label: t.common.learnMore.toText(),
                         onPressed: () => showMorphologyInfo(context, attribute: attribute, value: value),
                       ),
                     ),
@@ -186,7 +193,7 @@ class StrongSheet {
               ),
             if (seeMoreStrongs != null && seeMoreStrongs.isNotEmpty)
               StyledSection(
-                title: 'Related Terms'.toText(),
+                title: t.strongSheet.relatedTerms.toText(),
                 padding: .only(top: 24),
                 children: seeMoreStrongs
                     .map(
@@ -222,7 +229,7 @@ class StrongSheet {
     required MorphologyAttributeValue value,
   }) => context.showStyledDialog(
     (context) => StyledDialog.confirm(
-      title: 'Morphology Info'.toText(),
+      title: t.strongSheet.morphologyInfo.toText(),
       bodyPadding: .zero,
       body: StyledList(
         children: [
@@ -232,7 +239,10 @@ class StrongSheet {
             subtitle: value.description.toText(),
             thirdLine: value.examples.isEmpty
                 ? null
-                : ['Examples: ', value.examples.map((example) => '"$example"').join(', ')].join().toText(),
+                : [
+                    t.strongSheet.examplesPrefix,
+                    value.examples.map((example) => '"$example"').join(', '),
+                  ].join().toText(),
           ),
         ],
       ),
@@ -241,26 +251,24 @@ class StrongSheet {
 
   static Future<void> showDefinitionLegend(BuildContext context) => context.showStyledDialog(
     (context) => StyledDialog.confirm(
-      title: 'Strong\'s Definition Legend'.toText(),
+      title: t.strongSheet.definitionLegend.toText(),
       bodyPadding: .zero,
       body: StyledList(
         children: [
           StyledListItem(
             leading: Text('()', style: context.textStyle.labelLg),
-            title: 'Optional word'.toText(),
-            subtitle: 'Marks a word or syllable that may be supplied with the main word.'.toText(),
+            title: t.strongSheet.optionalWord.toText(),
+            subtitle: t.strongSheet.optionalWordDescription.toText(),
           ),
           StyledListItem(
             leading: Text('[]', style: context.textStyle.labelLg),
-            title: 'Added word in Hebrew or Greek'.toText(),
-            subtitle:
-                'Marks a word included in the English rendering even though it is not present in the Hebrew or Greek.'
-                    .toText(),
+            title: t.strongSheet.addedWord.toText(),
+            subtitle: t.strongSheet.addedWordDescription.toText(),
           ),
           StyledListItem(
             leading: Symbols.format_italic.toIcon(),
-            title: 'Explanation'.toText(),
-            subtitle: 'Italic text at the end of a rendering explains a variation from the usual form.'.toText(),
+            title: t.strongSheet.explanation.toText(),
+            subtitle: t.strongSheet.renderingExplanation.toText(),
           ),
         ],
       ),
@@ -290,10 +298,10 @@ class StrongSheet {
     }
 
     return StyledSection(
-      title: 'Concordance'.toText(),
+      title: t.strongSheet.concordance.toText(),
       padding: .only(top: 24),
       trailing: StyledLink(
-        'Open In Search',
+        t.strongSheet.openInSearch,
         onPressed: () async {
           context.pop();
           final result = await context.push<SearchPageResult>(

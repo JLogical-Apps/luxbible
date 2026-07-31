@@ -31,13 +31,8 @@ class BibleLoadingError extends ConsumerWidget {
     final (:title, :subtitle) = switch (error) {
       DioException(response: final response?)
           when response.statusCode == 401 && translation.source is ApiBibleTranslationSource =>
-        (
-          title: 'Device verification failed',
-          subtitle:
-              'Access to this online Bible requires a valid device and legitimate installation of Lux. '
-              'Make sure you installed Lux from an official app store, then try again.',
-        ),
-      _ => (title: 'Something went wrong', subtitle: 'Check your internet connection or try again later.'),
+        (title: t.errors.deviceVerificationFailed, subtitle: t.errors.deviceVerificationDescription),
+      _ => (title: t.errors.generic, subtitle: t.errors.connection),
     };
 
     return StyledListView.child(
@@ -48,10 +43,10 @@ class BibleLoadingError extends ConsumerWidget {
           StyledTile.message(leading: Symbols.error.toIcon(), title: title.toText(), subtitle: subtitle.toText()),
           if (translation != user.studyTranslation)
             StyledRectButton.secondary(
-              label: 'Switch to ${user.studyTranslation.title()}'.toText(),
+              label: t.common.switchTo(translation: user.studyTranslation.title()).toText(),
               onPressed: () => ref.updateUser((user) => user.withTranslation(user.studyTranslation)),
             ),
-          StyledRectButton.secondary(label: 'Try Again'.toText(), onPressed: onRetry),
+          StyledRectButton.secondary(label: t.common.tryAgain.toText(), onPressed: onRetry),
         ],
       ),
     );

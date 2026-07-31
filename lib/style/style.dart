@@ -1,3 +1,5 @@
+export 'package:bible/i18n/strings.g.dart';
+
 export 'animated_grow.dart';
 export 'color_builder.dart';
 export 'color_library.dart';

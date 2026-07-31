@@ -10,6 +10,9 @@ class CommentaryTile extends StatelessWidget {
   const CommentaryTile({super.key, required this.commentary, this.trailing});
 
   @override
-  Widget build(BuildContext context) =>
-      StyledListItem(title: commentary.title().toText(), subtitle: commentary.description().toText(), trailing: trailing);
+  Widget build(BuildContext context) => StyledListItem(
+    title: commentary.title().toText(),
+    subtitle: commentary.description().toText(),
+    trailing: trailing,
+  );
 }

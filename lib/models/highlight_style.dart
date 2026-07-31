@@ -1,4 +1,5 @@
 import 'package:bible/models/color_enum.dart';
+import 'package:bible/models/user/language.dart';
 import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/highlight_underline.dart';
 import 'package:flutter/widgets.dart';
@@ -10,16 +11,19 @@ part 'highlight_style.g.dart';
 
 @freezed
 sealed class HighlightStyle with _$HighlightStyle {
-  static const List<(HighlightStyle, String label)> defaultValues = [
-    (HighlightStyle(color: .red, type: .highlight), 'Red'),
-    (HighlightStyle(color: .orange, type: .highlight), 'Orange'),
-    (HighlightStyle(color: .yellow, type: .highlight), 'Yellow'),
-    (HighlightStyle(color: .green, type: .highlight), 'Green'),
-    (HighlightStyle(color: .blue, type: .highlight), 'Blue'),
-    (HighlightStyle(color: .violet, type: .highlight), 'Violet'),
-    (HighlightStyle(color: .stone, type: .straightUnderline), 'Underline'),
-    (HighlightStyle(color: .red, type: .wavyUnderline), 'Important'),
-  ];
+  static List<(HighlightStyle, String label)> defaultsFor(Language language) {
+    final translations = language.appLocale.translations.highlightStyles;
+    return [
+      (HighlightStyle(color: .red, type: .highlight), translations.red),
+      (HighlightStyle(color: .orange, type: .highlight), translations.orange),
+      (HighlightStyle(color: .yellow, type: .highlight), translations.yellow),
+      (HighlightStyle(color: .green, type: .highlight), translations.green),
+      (HighlightStyle(color: .blue, type: .highlight), translations.blue),
+      (HighlightStyle(color: .violet, type: .highlight), translations.violet),
+      (HighlightStyle(color: .stone, type: .straightUnderline), translations.underline),
+      (HighlightStyle(color: .red, type: .wavyUnderline), translations.important),
+    ];
+  }
 
   static const HighlightStyle fallback = HighlightStyle(color: .blue, type: .highlight);
 
@@ -42,9 +46,9 @@ enum HighlightStyleType {
   };
 
   String get title => switch (this) {
-    highlight => 'Highlight',
-    straightUnderline => 'Underline',
-    wavyUnderline => 'Squiggle',
+    highlight => t.highlightStyles.highlight,
+    straightUnderline => t.highlightStyles.underline,
+    wavyUnderline => t.highlightStyles.squiggle,
   };
 
   Widget buildPreview(BuildContext context, {required ColorEnum color, ComponentSize size = .md}) => SizedBox(

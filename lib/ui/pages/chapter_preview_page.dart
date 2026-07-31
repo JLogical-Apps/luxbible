@@ -46,7 +46,7 @@ class ChapterPreviewPage extends HookConsumerWidget {
       leading: StyledCircleButton.md(child: Symbols.close.toIcon(), onPressed: () => context.pop()),
       showTopShadow: true,
       trailing: Tooltip(
-        message: 'Navigate',
+        message: t.navigation.navigate,
         child: StyledCircleButton.md(
           child: Symbols.expand_circle_right.toIcon(),
           onPressed: () {

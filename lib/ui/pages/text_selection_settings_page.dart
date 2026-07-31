@@ -20,14 +20,14 @@ class TextSelectionSettingsPage extends ConsumerWidget {
 
     return StyledPage(
       backgroundColor: .backgroundPrimary,
-      title: 'Text Selection'.toText(),
+      title: t.toolbarSettings.textSelection.toText(),
       body: Column(
         children: [
           ColoredBox(
             color: context.colors.surfacePrimary,
             child: StyledSection.child(
-              title: 'Toolbar'.toText(),
-              subtitle: 'Shown when long-pressing text within verses.'.toText(),
+              title: t.labels.toolbar.toText(),
+              subtitle: t.toolbarSettings.shownForText.toText(),
               padding: .symmetric(vertical: 16),
               childPadding: .symmetric(horizontal: 8),
               child: TextSelectionBottomBar(
@@ -56,12 +56,12 @@ class TextSelectionSettingsPage extends ConsumerWidget {
             child: ListView(
               children: [
                 StyledSection.child(
-                  title: 'Gestures'.toText(),
+                  title: t.toolbarSettings.gestures.toText(),
                   child: StyledCard(
                     children: [
                       StyledListItem(
-                        title: 'Long Press'.toText(),
-                        subtitle: 'Shortcut when a text selection is long-pressed.'.toText(),
+                        title: t.toolbarSettings.longPress.toText(),
+                        subtitle: t.toolbarSettings.textLongPressDescription.toText(),
                         leading: Symbols.touch_long.toIcon(),
                         trailing: StyledEditBadge(
                           child: StyledCircleButton.md(
@@ -84,12 +84,12 @@ class TextSelectionSettingsPage extends ConsumerWidget {
                   ),
                 ),
                 StyledSection.child(
-                  title: 'Selection'.toText(),
+                  title: t.labels.selection.toText(),
                   child: StyledCard(
                     children: [
                       StyledListItem.switchControl(
-                        title: 'Expand to Annotation'.toText(),
-                        subtitle: 'Long-pressing an annotated word selects its full highlighted range.'.toText(),
+                        title: t.toolbarSettings.expandToAnnotation.toText(),
+                        subtitle: t.toolbarSettings.expandTextDescription.toText(),
                         leading: Symbols.aspect_ratio.toIcon(),
                         isSelected: textSelectionConfiguration.expandToAnnotation,
                         onSelected: (newValue) =>
@@ -111,7 +111,7 @@ class TextSelectionSettingsPage extends ConsumerWidget {
     required TextSelectionShortcut initialShortcut,
   }) => context.showStyledSheet(
     (context) => StyledSelectionSheet(
-      title: 'Text Selection Shortcut'.toText(),
+      title: t.toolbarSettings.textShortcut.toText(),
       options: TextSelectionShortcut.values,
       initialOption: initialShortcut,
       optionMapper: (shortcut) => StyledSelectOption(

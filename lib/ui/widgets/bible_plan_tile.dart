@@ -32,17 +32,21 @@ class BiblePlanTile extends ConsumerWidget {
     final hasStarted = user.hasStartedPlan(planType);
 
     return StyledListItem(
-      leading: BiblePlanThumbnail(plan: plan, isEnabled: !hasStarted),
+      leading: BiblePlanThumbnail(plan: plan, planType: planType, isEnabled: !hasStarted),
       title: SingleChildScrollView(
         scrollDirection: .horizontal,
         child: Row(
           spacing: 8,
           children: [
-            plan.name.toText(),
+            planType.title().toText(),
             if (hasStarted)
-              StyledTag.sm(leading: Symbols.check.toIcon(), child: 'Following'.toText(), isEnabled: false),
+              StyledTag.sm(leading: Symbols.check.toIcon(), child: t.labels.following.toText(), isEnabled: false),
             if (user.completedPlans.contains(planType))
-              StyledTag.sm(leading: Symbols.history.toIcon(), child: 'Completed'.toText(), isEnabled: !hasStarted),
+              StyledTag.sm(
+                leading: Symbols.history.toIcon(),
+                child: t.labels.completed.toText(),
+                isEnabled: !hasStarted,
+              ),
           ],
         ),
       ),

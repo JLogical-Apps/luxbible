@@ -23,7 +23,7 @@ class HighlightStylesPage extends HookConsumerWidget {
     final user = ref.watch(userProvider);
 
     return StyledPage(
-      title: 'Your Highlight Styles'.toText(),
+      title: t.highlightStyleUi.yourStyles.toText(),
       body: StyledDock(
         shrinkWrap: false,
         children: [
@@ -52,7 +52,7 @@ class HighlightStylesPage extends HookConsumerWidget {
                             title: entry.$2.toText(),
                             children: [
                               StyledListItem(
-                                title: 'Edit'.toText(),
+                                title: t.common.edit.toText(),
                                 leading: Symbols.edit.toIcon(),
                                 onPressed: () async {
                                   sheetContext.pop();
@@ -84,7 +84,7 @@ class HighlightStylesPage extends HookConsumerWidget {
                               ),
                               if (user.highlightStyles.length > 1)
                                 StyledListItem(
-                                  title: 'Delete'.toText(),
+                                  title: t.common.delete.toText(),
                                   leading: Icon(Symbols.delete, color: context.colors.contentCritical),
                                   onPressed: () {
                                     context.pop();
@@ -109,7 +109,7 @@ class HighlightStylesPage extends HookConsumerWidget {
         ],
         buttonsBuilder: (context) => [
           StyledRectButton.secondary(
-            label: 'Create Style'.toText(),
+            label: t.highlightStyleUi.create.toText(),
             onPressed: () async {
               final style = await HighlightStyleSheet.show(context, otherStyles: user.highlightStyles);
               if (style != null) {
@@ -124,7 +124,7 @@ class HighlightStylesPage extends HookConsumerWidget {
 
   String getNumAnnotationsText({required User user, required HighlightStyle style}) {
     final numAnnotations = user.annotations.where((annotation) => annotation.style == style).length;
-    return '$numAnnotations ${numAnnotations == 1 ? 'annotation' : 'annotations'}';
+    return t.annotationUi.annotationCount(count: numAnnotations);
   }
 
   void showDeleteDialog(
@@ -140,15 +140,19 @@ class HighlightStylesPage extends HookConsumerWidget {
 
     await context.showStyledDialog(
       (context) => StyledDialog(
-        title: 'Delete Style'.toText(),
+        title: t.highlightStyleUi.delete.toText(),
         body: numAnnotations == 0
-            ? 'Are you sure you want to delete "${entry.$2}"?'.toText()
-            : '"${entry.$2}" has $numAnnotations ${numAnnotations == 1 ? 'annotation' : 'annotations'}. Would you like to delete them too, or keep them?'
+            ? t.highlightStyleUi.deleteNamedConfirmation(name: entry.$2).toText()
+            : t.highlightStyleUi
+                  .deleteWithAnnotations(
+                    name: entry.$2,
+                    annotations: t.annotationUi.annotationCount(count: numAnnotations),
+                  )
                   .toText(),
         buttonsBuilder: (context) => numAnnotations == 0
             ? [
                 StyledRectButton.critical(
-                  label: 'Delete'.toText(),
+                  label: t.common.delete.toText(),
                   onPressed: () {
                     ref.updateUser((user) => user.withRemovedHighlightStyle(index, deleteAnnotations: true));
                     context.pop();
@@ -157,14 +161,14 @@ class HighlightStylesPage extends HookConsumerWidget {
               ]
             : [
                 StyledRectButton.primary(
-                  label: 'Keep Annotations'.toText(),
+                  label: t.highlightStyleUi.keepAnnotations.toText(),
                   onPressed: () {
                     ref.updateUser((user) => user.withRemovedHighlightStyle(index, deleteAnnotations: false));
                     context.pop();
                   },
                 ),
                 StyledRectButton.transparent(
-                  label: 'Delete Annotations'.toText(),
+                  label: t.notebookUi.deleteAnnotations.toText(),
                   isCritical: true,
                   onPressed: () {
                     ref.updateUser((user) => user.withRemovedHighlightStyle(index, deleteAnnotations: true));
@@ -190,13 +194,19 @@ class HighlightStylesPage extends HookConsumerWidget {
 
     return await context.showStyledDialog(
       (context) => StyledDialog(
-        title: 'Update Annotations'.toText(),
-        body:
-            '"${entry.$2}" has $numAnnotations ${numAnnotations == 1 ? 'annotation' : 'annotations'}. Would you like to update them to use the new style, or leave them as-is?'
-                .toText(),
+        title: t.highlightStyleUi.updateAnnotations.toText(),
+        body: t.highlightStyleUi
+            .updateWithAnnotations(
+              name: entry.$2,
+              annotations: t.annotationUi.annotationCount(count: numAnnotations),
+            )
+            .toText(),
         buttonsBuilder: (context) => [
-          StyledRectButton.primary(label: 'Leave As-Is'.toText(), onPressed: () => context.pop(false)),
-          StyledRectButton.transparent(label: 'Update Annotations'.toText(), onPressed: () => context.pop(true)),
+          StyledRectButton.primary(label: t.highlightStyleUi.leaveAsIs.toText(), onPressed: () => context.pop(false)),
+          StyledRectButton.transparent(
+            label: t.highlightStyleUi.updateAnnotations.toText(),
+            onPressed: () => context.pop(true),
+          ),
         ],
       ),
     );

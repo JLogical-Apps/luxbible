@@ -7,9 +7,10 @@ part of 'user.dart';
 // **************************************************************************
 
 _User _$UserFromJson(Map<String, dynamic> json) => _User(
-  translation:
-      $enumDecodeNullable(_$BibleTranslationEnumMap, json['translation']) ??
-      BibleTranslation.bsb,
+  translationOverride: $enumDecodeNullable(
+    _$BibleTranslationEnumMap,
+    json['translation'],
+  ),
   studyTranslation:
       $enumDecodeNullable(
         _$BibleTranslationEnumMap,
@@ -133,21 +134,17 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   completedOnboardingSteps: (json['completedOnboardingSteps'] as List<dynamic>?)
       ?.map((e) => $enumDecode(_$OnboardingStepEnumMap, e))
       .toList(),
-  highlightStyles:
-      (json['highlightStyles'] as List<dynamic>?)
-          ?.map(
-            (e) => _$recordConvert(
-              e,
-              ($jsonValue) => (
-                HighlightStyle.fromJson(
-                  $jsonValue[r'$1'] as Map<String, dynamic>,
-                ),
-                $jsonValue[r'$2'] as String,
-              ),
-            ),
-          )
-          .toList() ??
-      HighlightStyle.defaultValues,
+  highlightStyleOverrides: (json['highlightStyles'] as List<dynamic>?)
+      ?.map(
+        (e) => _$recordConvert(
+          e,
+          ($jsonValue) => (
+            HighlightStyle.fromJson($jsonValue[r'$1'] as Map<String, dynamic>),
+            $jsonValue[r'$2'] as String,
+          ),
+        ),
+      )
+      .toList(),
   planProgressByType:
       (json['planProgressByType'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(
@@ -164,10 +161,14 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   audio: json['audio'] == null
       ? const AudioBibleConfiguration()
       : AudioBibleConfiguration.fromJson(json['audio'] as Map<String, dynamic>),
+  languageOverride: $enumDecodeNullable(
+    _$LanguageEnumMap,
+    json['languageOverride'],
+  ),
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
-  'translation': _$BibleTranslationEnumMap[instance.translation]!,
+  'translation': _$BibleTranslationEnumMap[instance.translationOverride],
   'studyTranslation': _$BibleTranslationEnumMap[instance.studyTranslation]!,
   'audioTranslation': _$BibleTranslationEnumMap[instance.audioTranslation]!,
   'oldTestamentTranslation':
@@ -201,8 +202,8 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'completedOnboardingSteps': instance.completedOnboardingSteps
       ?.map((e) => _$OnboardingStepEnumMap[e]!)
       .toList(),
-  'highlightStyles': instance.highlightStyles
-      .map((e) => <String, dynamic>{r'$1': e.$1.toJson(), r'$2': e.$2})
+  'highlightStyles': instance.highlightStyleOverrides
+      ?.map((e) => <String, dynamic>{r'$1': e.$1.toJson(), r'$2': e.$2})
       .toList(),
   'planProgressByType': instance.planProgressByType.map(
     (k, e) => MapEntry(_$BiblePlanTypeEnumMap[k]!, e.toJson()),
@@ -211,6 +212,7 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
       .map((e) => _$BiblePlanTypeEnumMap[e]!)
       .toList(),
   'audio': instance.audio.toJson(),
+  'languageOverride': _$LanguageEnumMap[instance.languageOverride],
 };
 
 const _$BibleTranslationEnumMap = {
@@ -285,4 +287,9 @@ const _$BiblePlanTypeEnumMap = {
   BiblePlanType.esv_chronicles_and_prophets: 'esv_chronicles_and_prophets',
   BiblePlanType.esv_psalms_and_wisdom_literature:
       'esv_psalms_and_wisdom_literature',
+};
+
+const _$LanguageEnumMap = {
+  Language.english: 'english',
+  Language.dutch: 'dutch',
 };

@@ -1,3 +1,4 @@
+import 'package:bible/i18n/strings.g.dart';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/user/main_toolbar_shortcut.dart';
@@ -30,14 +31,14 @@ class MainToolbarSettingsPage extends ConsumerWidget {
 
     return StyledPage(
       backgroundColor: .backgroundPrimary,
-      title: 'Main Toolbar'.toText(),
+      title: t.toolbarSettings.mainToolbar.toText(),
       body: Column(
         children: [
           ColoredBox(
             color: context.colors.surfacePrimary,
             child: StyledSection.child(
-              title: 'Toolbar'.toText(),
-              subtitle: 'Shown when nothing is selected.'.toText(),
+              title: t.labels.toolbar.toText(),
+              subtitle: t.toolbarSettings.shownForMain.toText(),
               padding: .symmetric(vertical: 16),
               child: MainToolbar(
                 mainToolbar: mainToolbar,
@@ -64,12 +65,12 @@ class MainToolbarSettingsPage extends ConsumerWidget {
             child: ListView(
               children: [
                 StyledSection.child(
-                  title: 'Gestures'.toText(),
+                  title: t.toolbarSettings.gestures.toText(),
                   child: StyledCard(
                     children: [
                       StyledListItem(
-                        title: 'Long Press'.toText(),
-                        subtitle: 'Shortcut when the toolbar is long-pressed.'.toText(),
+                        title: t.toolbarSettings.longPress.toText(),
+                        subtitle: t.toolbarSettings.mainLongPressDescription.toText(),
                         leading: Symbols.touch_long.toIcon(),
                         trailing: StyledEditBadge(
                           child: StyledCircleButton.md(
@@ -95,19 +96,19 @@ class MainToolbarSettingsPage extends ConsumerWidget {
                   ),
                 ),
                 StyledSection.child(
-                  title: 'Visibility'.toText(),
+                  title: t.labels.visibility.toText(),
                   child: StyledCard(
                     children: [
                       StyledListItem.radio(
-                        title: 'Hide'.toText(),
-                        subtitle: 'Hide the toolbar while scrolling down for an immersive view of the Bible.'.toText(),
+                        title: t.toolbarSettings.hideToolbar.toText(),
+                        subtitle: t.toolbarSettings.hideToolbarDescription.toText(),
                         leading: Symbols.bottom_panel_close.toIcon(),
                         isSelected: mainToolbar.pinToBottom == false,
                         onSelected: () => ref.updateUser((user) => user.copyWith.mainToolbar(pinToBottom: false)),
                       ),
                       StyledListItem.radio(
-                        title: 'Pin'.toText(),
-                        subtitle: 'Pin the toolbar to the bottom of the page.'.toText(),
+                        title: t.toolbarSettings.pinToolbar.toText(),
+                        subtitle: t.toolbarSettings.pinToolbarDescription.toText(),
                         leading: Symbols.pin_drop.toIcon(),
                         isSelected: mainToolbar.pinToBottom == true,
                         onSelected: () => ref.updateUser((user) => user.copyWith.mainToolbar(pinToBottom: true)),
@@ -130,7 +131,7 @@ class MainToolbarSettingsPage extends ConsumerWidget {
     final user = ref.read(userProvider);
     return context.showStyledSheet(
       (context) => StyledSelectionSheet(
-        title: 'Main Toolbar Shortcut'.toText(),
+        title: t.toolbarSettings.mainShortcut.toText(),
         options: MainToolbarShortcut.values,
         initialOption: initialShortcut,
         optionMapper: (shortcut) => StyledSelectOption(

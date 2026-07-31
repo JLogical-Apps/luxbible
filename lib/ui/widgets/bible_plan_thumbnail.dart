@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 
 class BiblePlanThumbnail extends StatelessWidget {
   final BiblePlan plan;
+  final BiblePlanType planType;
   final bool isEnabled;
 
-  const BiblePlanThumbnail({super.key, required this.plan, this.isEnabled = true});
+  const BiblePlanThumbnail({super.key, required this.plan, required this.planType, this.isEnabled = true});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class BiblePlanThumbnail extends StatelessWidget {
         decoration: BoxDecoration(color: plan.getHue(context.colors).tertiary, borderRadius: .circular(8)),
         child: Center(
           child: Text(
-            plan.name[0].toUpperCase(),
+            planType.title()[0].toUpperCase(),
             style: context.textStyle.displayXxs.copyWith(color: plan.getHue(context.colors).primary),
             textScaler: .noScaling,
           ),

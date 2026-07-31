@@ -41,7 +41,7 @@ class AudioBiblePanel extends HookConsumerWidget {
     return StyledSheet(
       showDragHandle: showDragHandle,
       title: chapterReference.format().toText(),
-      subtitle: 'Audio Bible'.toText(),
+      subtitle: t.labels.audioBible.toText(),
       leading: StyledCircleButton.md(
         child: Symbols.close.toIcon(),
         onPressed: () {
@@ -131,7 +131,7 @@ class AudioBiblePanel extends HookConsumerWidget {
                                     onPressed: () async {
                                       final option = await context.showStyledSheet<AudioBibleTimerOption>(
                                         (context) => StyledSelectionSheet<AudioBibleTimerOption>(
-                                          title: 'Audio Timer'.toText(),
+                                          title: t.audio.timer.toText(),
                                           options: AudioBibleTimerOption.values,
                                           initialOption: timerEndTime == null ? .off : null,
                                           optionMapper: (option) => StyledSelectOption(title: option.title().toText()),
@@ -152,11 +152,11 @@ class AudioBiblePanel extends HookConsumerWidget {
                           children: [
                             StyledTile.message(
                               leading: Symbols.error.toIcon(),
-                              title: 'The audio could not be loaded'.toText(),
-                              subtitle: 'Check your internet connection or try again later.'.toText(),
+                              title: t.audio.loadError.toText(),
+                              subtitle: t.audio.connectionError.toText(),
                             ),
                             StyledRectButton.secondary(
-                              label: 'Try Again'.toText(),
+                              label: t.common.tryAgain.toText(),
                               onPressed: () => ref.read(audioBibleProvider.notifier).toggle(),
                             ),
                           ],
@@ -170,11 +170,11 @@ class AudioBiblePanel extends HookConsumerWidget {
                   children: [
                     StyledTile.message(
                       leading: Symbols.headset_off.toIcon(),
-                      title: 'Audio is unavailable for this Bible'.toText(),
-                      subtitle: 'Choose an audio-enabled Bible to listen to this chapter.'.toText(),
+                      title: t.audio.unavailable.toText(),
+                      subtitle: t.audio.chooseBible.toText(),
                     ),
                     StyledRectButton.secondary(
-                      label: 'Switch to ${user.audioTranslation.title()}'.toText(),
+                      label: t.common.switchTo(translation: user.audioTranslation.title()).toText(),
                       onPressed: () => ref.updateUser((user) => user.withTranslation(user.audioTranslation)),
                     ),
                   ],
@@ -205,12 +205,12 @@ enum AudioBibleTimerOption {
   oneHour;
 
   String title() => switch (this) {
-    off => 'Off',
-    fiveMinutes => '5 minutes',
-    tenMinutes => '10 minutes',
-    fifteenMinutes => '15 minutes',
-    thirtyMinutes => '30 minutes',
-    oneHour => '1 hour',
+    off => t.common.off,
+    fiveMinutes => t.audio.fiveMinutes,
+    tenMinutes => t.audio.tenMinutes,
+    fifteenMinutes => t.audio.fifteenMinutes,
+    thirtyMinutes => t.audio.thirtyMinutes,
+    oneHour => t.audio.oneHour,
   };
 
   Duration? get duration => switch (this) {

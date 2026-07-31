@@ -10,13 +10,13 @@ enum ColorEnum {
   stone;
 
   String title() => switch (this) {
-    red => 'Red',
-    orange => 'Orange',
-    yellow => 'Yellow',
-    green => 'Green',
-    blue => 'Blue',
-    violet => 'Violet',
-    stone => 'Silver',
+    red => t.colors.red,
+    orange => t.colors.orange,
+    yellow => t.colors.yellow,
+    green => t.colors.green,
+    blue => t.colors.blue,
+    violet => t.colors.violet,
+    stone => t.colors.silver,
   };
 
   Hue toHue(ColorLibrary colors) => switch (this) {

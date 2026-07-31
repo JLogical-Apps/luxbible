@@ -27,7 +27,7 @@ class CommentarySheet {
         ? [
             Padding(
               padding: .all(16),
-              child: StyledBanner(message: 'No Commentaries Found'.toText()),
+              child: StyledBanner(message: t.emptyStates.noCommentaries.toText()),
             ),
           ]
         : StyledDivider(height: 2).wrapPositioned(
@@ -36,7 +36,7 @@ class CommentarySheet {
                   (verseSelection, note) => StyledStickyHeader.child(
                     title:
                         (verseSelection.isIntro
-                                ? 'Intro to ${verseSelection.references.first.book.title()}'
+                                ? t.commentaryUi.introTo(book: verseSelection.references.first.book.title())
                                 : verseSelection.format())
                             .toText(),
                     child: Padding(

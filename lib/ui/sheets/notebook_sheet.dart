@@ -11,7 +11,7 @@ import 'package:uuid/uuid.dart';
 class NotebookSheet {
   static Future<Notebook?> show(BuildContext context, {Notebook? initialNotebook}) => context.showStyledSheet(
     (context) => StyledPortSheet(
-      title: (initialNotebook == null ? 'Create Notebook' : 'Edit Notebook').toText(),
+      title: (initialNotebook == null ? t.notebookUi.create : t.notebookUi.edit).toText(),
       port:
           Port.of({
             'color': SimplePortField<ColorEnum>(value: initialNotebook?.color ?? ColorEnum.stone),
@@ -26,7 +26,7 @@ class NotebookSheet {
         StyledPortFieldBuilder<ColorEnum>(
           fieldPath: 'color',
           builder: (context, value, errorText, onChanged) => StyledFormInput(
-            label: 'Color'.toText(),
+            label: t.labels.color.toText(),
             child: Row(
               mainAxisAlignment: .spaceBetween,
               children: ColorEnum.values
@@ -46,8 +46,12 @@ class NotebookSheet {
         ),
         StyledPortFieldBuilder<String>(
           fieldPath: 'name',
-          builder: (context, value, errorText, onChanged) =>
-              StyledTextField(text: value, label: 'Name'.toText(), error: errorText?.toText(), onChanged: onChanged),
+          builder: (context, value, errorText, onChanged) => StyledTextField(
+            text: value,
+            label: t.labels.name.toText(),
+            error: errorText?.toText(),
+            onChanged: onChanged,
+          ),
         ),
       ],
     ),

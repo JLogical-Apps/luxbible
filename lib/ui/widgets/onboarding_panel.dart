@@ -42,8 +42,8 @@ class OnboardingPanel extends HookConsumerWidget {
         onPressed: () async {
           final shouldSkip = await context.showStyledDialog(
             (context) => StyledDialog.confirmOrCancel(
-              title: 'Skip Onboarding?'.toText(),
-              body: 'Are you sure you want to skip the onboarding? You can restart it from Settings > Help.'.toText(),
+              title: t.onboarding.skipQuestion.toText(),
+              body: t.onboarding.skipConfirmation.toText(),
             ),
           );
           if (shouldSkip == true) {
@@ -51,15 +51,15 @@ class OnboardingPanel extends HookConsumerWidget {
           }
         },
       ),
-      title: 'Get Started'.toText(),
-      subtitle: 'Learn how to use Lux'.toText(),
+      title: t.onboarding.getStarted.toText(),
+      subtitle: t.onboarding.learnLux.toText(),
       children: [
         Padding(
           padding: .all(16),
           child: StyledTile.message(
             leading: Symbols.info.toIcon(),
-            title: 'Complete the checklist below to learn how to use Lux.'.toText(),
-            subtitle: 'In a hurry? Tap ✕ to skip.'.toText(),
+            title: t.onboarding.checklistDescription.toText(),
+            subtitle: t.onboarding.skipHint.toText(),
           ),
         ),
         ...OnboardingStep.values.mapIndexed((stepIndex, step) {
@@ -100,7 +100,7 @@ class OnboardingPanel extends HookConsumerWidget {
       buttonsBuilder: (context) => [
         if (isComplete)
           StyledRectButton.primary(
-            label: 'Finish'.toText(),
+            label: t.common.finish.toText(),
             onPressed: () => ref.updateUser((user) => user.withOnboardingDismissed()),
           ),
       ],

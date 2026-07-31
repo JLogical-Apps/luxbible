@@ -1,6 +1,8 @@
+import 'package:bible/i18n/strings.g.dart';
 import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/testament.dart';
+import 'package:bible/models/user/language.dart';
 
 enum BibleTranslation {
   bsb,
@@ -18,8 +20,10 @@ enum BibleTranslation {
   oshb,
   sv;
 
-  static List<BibleTranslation> get defaultTranslations =>
-      values.where((translation) => translation.language == .english).toList();
+  static List<BibleTranslation> defaultsFor(Language language) => switch (language) {
+    .english => [bsb, ...values.where((translation) => translation != bsb && translation.language == language)],
+    .dutch => [sv, bsb],
+  };
 
   String title() => switch (this) {
     bsb => 'BSB',
@@ -62,12 +66,14 @@ enum BibleTranslation {
     csb || nlt || nkjv => .apiBible(),
   };
 
-  BibleLanguage get language => switch (this) {
+  BibleLanguage get bibleLanguage => switch (this) {
     lxx || tr || byz || statresgnt => .greek,
     oshb => .hebrew,
     sv => .dutch,
     _ => .english,
   };
+
+  Language? get language => bibleLanguage.language;
 
   String? get copyright => switch (this) {
     nasb95 =>
@@ -150,15 +156,15 @@ enum BibleTranslation {
   };
 
   String getTestamentTitle() => switch (testament) {
-    .oldTestament => 'Old Testament Only',
-    .newTestament => 'New Testament Only',
-    null => 'Whole Bible',
+    .oldTestament => t.testaments.oldOnly,
+    .newTestament => t.testaments.newOnly,
+    null => t.testaments.wholeBible,
   };
 
   String getTestamentDescription() => switch (testament) {
-    .oldTestament => 'Only contains books in the Old Testament.',
-    .newTestament => 'Only contains books in the New Testament.',
-    null => 'Contains all the books in the Bible.',
+    .oldTestament => t.testaments.oldOnlyDescription,
+    .newTestament => t.testaments.newOnlyDescription,
+    null => t.testaments.wholeBibleDescription,
   };
 }
 
@@ -187,9 +193,15 @@ enum BibleLanguage {
   dutch;
 
   String title() => switch (this) {
-    english => 'English',
-    greek => 'Greek',
-    hebrew => 'Hebrew',
-    dutch => 'Dutch',
+    english => t.languages.english,
+    greek => t.languages.greek,
+    hebrew => t.languages.hebrew,
+    dutch => t.languages.dutch,
+  };
+
+  Language? get language => switch (this) {
+    english => .english,
+    dutch => .dutch,
+    _ => null,
   };
 }

@@ -28,7 +28,7 @@ class DictionaryPage extends HookConsumerWidget {
         : entries.where((entry) => entry.title.toUpperCase().startsWith(search)).toList();
 
     return StyledPage(
-      title: 'Dictionary'.toText(),
+      title: t.labels.dictionary.toText(),
       body: Column(
         children: [
           Container(
@@ -36,7 +36,7 @@ class DictionaryPage extends HookConsumerWidget {
             decoration: BoxDecoration(color: context.colors.surfacePrimary, boxShadow: [StyledShadow.down(context)]),
             child: StyledTextField(
               text: searchState.value,
-              hintText: 'Search for a word',
+              hintText: t.searchUi.wordHint,
               onChanged: (text) => searchState.value = text,
               autocorrect: false,
             ),
@@ -49,8 +49,8 @@ class DictionaryPage extends HookConsumerWidget {
                     Padding(
                       padding: .all(16),
                       child: StyledTile.message(
-                        title: 'No matching words'.toText(),
-                        subtitle: 'Try another search'.toText(),
+                        title: t.emptyStates.noMatchingWords.toText(),
+                        subtitle: t.emptyStates.tryAnotherSearch.toText(),
                         leading: Symbols.search.toIcon(),
                       ),
                     ),

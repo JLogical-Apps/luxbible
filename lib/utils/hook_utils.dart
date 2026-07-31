@@ -13,6 +13,21 @@ void useOnFocusNodeFocused(FocusNode focusNode, Function() onFocused) {
   });
 }
 
+void useOnLocalesChanged(Function(List<Locale>?) onLocalesChanged) => useEffect(() {
+  final observer = _LocalesObserver(onLocalesChanged);
+  WidgetsBinding.instance.addObserver(observer);
+  return () => WidgetsBinding.instance.removeObserver(observer);
+}, []);
+
+class _LocalesObserver with WidgetsBindingObserver {
+  final Function(List<Locale>?) onLocalesChanged;
+
+  _LocalesObserver(this.onLocalesChanged);
+
+  @override
+  void didChangeLocales(List<Locale>? locales) => onLocalesChanged(locales);
+}
+
 ScrollController useUnfocusOnScrollDown(ScrollController scrollController) {
   useOnListenableChange(scrollController, () {
     if (scrollController.position.userScrollDirection == ScrollDirection.reverse) {

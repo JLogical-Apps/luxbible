@@ -22,7 +22,7 @@ class NotebooksPage extends HookConsumerWidget {
     final user = ref.watch(userProvider);
 
     return StyledPage(
-      title: 'Your Notebooks'.toText(),
+      title: t.notebookUi.yourNotebooks.toText(),
       body: StyledDock(
         shrinkWrap: false,
         children: [
@@ -33,8 +33,7 @@ class NotebooksPage extends HookConsumerWidget {
                       padding: .symmetric(horizontal: 16),
                       child: StyledTile.message(
                         leading: Symbols.book_2.toIcon(),
-                        title: "You haven't created any notebooks. Notebooks let you organize your annotations."
-                            .toText(),
+                        title: t.emptyStates.noNotebooks.toText(),
                       ),
                     ),
                   ),
@@ -54,7 +53,10 @@ class NotebooksPage extends HookConsumerWidget {
                                 children: [
                                   notebook.name.toText(),
                                   if (!notebook.isVisible)
-                                    StyledTag.sm(leading: Symbols.visibility_off.toIcon(), child: 'Hidden'.toText()),
+                                    StyledTag.sm(
+                                      leading: Symbols.visibility_off.toIcon(),
+                                      child: t.notebookUi.hidden.toText(),
+                                    ),
                                 ],
                               ),
                               subtitle: getNumAnnotationsText(user: user, notebook: notebook).toText(),
@@ -66,9 +68,8 @@ class NotebooksPage extends HookConsumerWidget {
                                     children: [
                                       if (notebook.isVisible)
                                         StyledListItem(
-                                          title: 'Hide'.toText(),
-                                          subtitle: 'Hide the annotations in this notebook from appearing in the Bible.'
-                                              .toText(),
+                                          title: t.common.hide.toText(),
+                                          subtitle: t.notebookUi.hideDescription.toText(),
                                           leading: Symbols.visibility_off.toIcon(),
                                           onPressed: () {
                                             context.pop();
@@ -79,8 +80,8 @@ class NotebooksPage extends HookConsumerWidget {
                                         )
                                       else
                                         StyledListItem(
-                                          title: 'Show'.toText(),
-                                          subtitle: 'Show the annotations from this notebook in the Bible.'.toText(),
+                                          title: t.common.show.toText(),
+                                          subtitle: t.notebookUi.showDescription.toText(),
                                           leading: Symbols.visibility.toIcon(),
                                           onPressed: () {
                                             context.pop();
@@ -90,7 +91,7 @@ class NotebooksPage extends HookConsumerWidget {
                                           },
                                         ),
                                       StyledListItem(
-                                        title: 'Edit'.toText(),
+                                        title: t.common.edit.toText(),
                                         leading: Symbols.edit.toIcon(),
                                         onPressed: () async {
                                           context.pop();
@@ -101,7 +102,7 @@ class NotebooksPage extends HookConsumerWidget {
                                         },
                                       ),
                                       StyledListItem(
-                                        title: 'Delete'.toText(),
+                                        title: t.common.delete.toText(),
                                         leading: Icon(Symbols.delete, color: context.colors.contentCritical),
                                         onPressed: () {
                                           context.pop();
@@ -128,9 +129,9 @@ class NotebooksPage extends HookConsumerWidget {
                   Padding(padding: .only(left: 64), child: StyledDivider()),
                   StyledListItem(
                     leading: NotebookIcon(notebook: null),
-                    title: 'Default'.toText(),
+                    title: t.common.defaultLabel.toText(),
                     subtitle: getNumAnnotationsText(user: user, notebook: null).toText(),
-                    thirdLine: 'The permanent notebook for unassigned annotations.'.toText(),
+                    thirdLine: t.notebookUi.defaultDescription.toText(),
                     trailing: Symbols.lock.toIcon(),
                     onPressed: () async {
                       final result = await context.push(AnnotationsPage(initialNotebookId: (null,)));
@@ -143,7 +144,7 @@ class NotebooksPage extends HookConsumerWidget {
         ],
         buttonsBuilder: (context) => [
           StyledRectButton.secondary(
-            label: 'Create Notebook'.toText(),
+            label: t.notebookUi.create.toText(),
             onPressed: () async {
               final notebook = await NotebookSheet.show(context);
               if (notebook != null) {
@@ -160,7 +161,7 @@ class NotebooksPage extends HookConsumerWidget {
     final numAnnotations = user.annotations
         .where((annotation) => user.getNotebookById(annotation.notebookId)?.id == notebook?.id)
         .length;
-    return '$numAnnotations ${numAnnotations == 1 ? 'annotation' : 'annotations'}';
+    return t.annotationUi.annotationCount(count: numAnnotations);
   }
 
   void showDeleteDialog(BuildContext context, {required Notebook notebook}) async {
@@ -172,15 +173,19 @@ class NotebooksPage extends HookConsumerWidget {
 
     await context.showStyledDialog(
       (context) => StyledDialog(
-        title: 'Delete Notebook'.toText(),
+        title: t.notebookUi.delete.toText(),
         body: numAnnotations == 0
-            ? 'Are you sure you want to delete "${notebook.name}"?'.toText()
-            : '"${notebook.name}" has $numAnnotations ${numAnnotations == 1 ? 'annotation' : 'annotations'}. Would you like to delete them too, or keep them in the Default notebook?'
+            ? t.notebookUi.deleteNamedConfirmation(name: notebook.name).toText()
+            : t.notebookUi
+                  .deleteWithAnnotations(
+                    name: notebook.name,
+                    annotations: t.annotationUi.annotationCount(count: numAnnotations),
+                  )
                   .toText(),
         buttonsBuilder: (context) => numAnnotations == 0
             ? [
                 StyledRectButton.critical(
-                  label: 'Delete'.toText(),
+                  label: t.common.delete.toText(),
                   onPressed: () {
                     ref.updateUser((user) => user.withRemovedNotebook(notebook.id, deleteAnnotations: true));
                     context.pop();
@@ -189,14 +194,14 @@ class NotebooksPage extends HookConsumerWidget {
               ]
             : [
                 StyledRectButton.primary(
-                  label: 'Keep in Default'.toText(),
+                  label: t.notebookUi.keepInDefault.toText(),
                   onPressed: () {
                     ref.updateUser((user) => user.withRemovedNotebook(notebook.id, deleteAnnotations: false));
                     context.pop();
                   },
                 ),
                 StyledRectButton.transparent(
-                  label: 'Delete Annotations'.toText(),
+                  label: t.notebookUi.deleteAnnotations.toText(),
                   isCritical: true,
                   onPressed: () {
                     ref.updateUser((user) => user.withRemovedNotebook(notebook.id, deleteAnnotations: true));

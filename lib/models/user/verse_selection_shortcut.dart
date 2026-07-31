@@ -30,7 +30,10 @@ enum VerseSelectionShortcut {
       toStudyAction()?.title() ??
       toVerseSelectionAction()?.title() ??
       switch (this) {
-        highlight => _isAnnotated(user: user, verseSelection: verseSelection) ? 'Remove Annotations' : 'Highlight',
+        highlight =>
+          _isAnnotated(user: user, verseSelection: verseSelection)
+              ? t.selectionActions.removeAnnotations
+              : t.selectionActions.highlight,
         _ => throw UnimplementedError(),
       };
 
@@ -40,8 +43,8 @@ enum VerseSelectionShortcut {
       switch (this) {
         highlight =>
           _isAnnotated(user: user, verseSelection: verseSelection)
-              ? 'Remove verse selection annotations from ${RegionType.verses.formatThis()}.'
-              : 'Highlight ${RegionType.verses.formatThis()} with the last color you used.',
+              ? t.selectionActions.removeVerseAnnotationsDescription(region: RegionType.verses.formatThis())
+              : t.selectionActions.highlightVersesDescription(region: RegionType.verses.formatThis()),
         _ => throw UnimplementedError(),
       };
 
@@ -98,10 +101,10 @@ enum VerseSelectionShortcut {
 
           if (!context.mounted) return;
           context.showStyledSnackbar(
-            message: 'Highlighted ${verseSelection.format()}.'.toText(),
+            message: t.selectionActions.highlightedVerses(reference: verseSelection.format()).toText(),
             duration: Duration(seconds: 8),
             action: StyledTextAction(
-              label: 'Edit'.toText(),
+              label: t.common.edit.toText(),
               onPressed: () => AnnotationSheet.edit(rootContext, annotation: annotation),
             ),
           );

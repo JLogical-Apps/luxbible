@@ -58,8 +58,13 @@ dependencies:
   in_app_review: ^2.0.10
   firebase_core: ^4.12.1
   firebase_app_check: ^0.4.5+2
+  slang: ^4.18.0
+  slang_flutter: ^4.18.0
+  flutter_localizations:
+    sdk: flutter
 
 dependency_overrides:
+  intl: 0.20.2
   path_provider_foundation: 2.5.1 # https://stackoverflow.com/questions/79893370/ios-transporter-executable-references-an-unsupported-platform-in-the-arm64-s
 
 dev_dependencies:
@@ -73,7 +78,6 @@ dev_dependencies:
   json_serializable: ^6.11.1
   googleapis: ^16.0.0
   googleapis_auth: ^2.0.0
-
 flutter:
   uses-material-design: true
   config:

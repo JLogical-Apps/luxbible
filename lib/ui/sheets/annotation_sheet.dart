@@ -48,7 +48,7 @@ class AnnotationSheet {
 
     return context.showStyledSheet(
       (context) => StyledPortSheet(
-        title: (annotation == null ? 'Annotate' : 'Annotation').toText(),
+        title: (annotation == null ? t.annotationUi.annotate : t.labels.annotation).toText(),
         subtitle: subtitle,
         bodyPadding: .only(top: 16),
         trailing: onRemove == null
@@ -62,7 +62,7 @@ class AnnotationSheet {
               StyledPortFieldBuilder<String?>(
                 fieldPath: 'notebookId',
                 builder: (context, value, errorText, onChanged) => StyledFormInput(
-                  label: 'Notebook'.toText(),
+                  label: t.labels.notebook.toText(),
                   labelPadding: .symmetric(horizontal: 16),
                   error: errorText?.toText(),
                   child: SingleChildScrollView(
@@ -75,13 +75,13 @@ class AnnotationSheet {
                         ...[...user.notebooks, null].map(
                           (notebook) => StyledChip(
                             leading: NotebookIcon(notebook: notebook),
-                            child: (notebook?.name ?? 'Default').withLength(12).toText(),
+                            child: (notebook?.name ?? t.common.defaultLabel).withLength(12).toText(),
                             isSelected: notebook?.id == value,
                             onPressed: () => onChanged(notebook?.id),
                           ),
                         ),
                         StyledTextButton(
-                          child: 'Add New'.toText(),
+                          child: t.common.addNew.toText(),
                           leading: Symbols.add.toIcon(),
                           onPressed: () async {
                             final newNotebook = await NotebookSheet.show(context);
@@ -99,7 +99,7 @@ class AnnotationSheet {
             StyledPortFieldBuilder<HighlightStyle>(
               fieldPath: 'style',
               builder: (context, value, errorText, onChanged) => StyledFormInput(
-                label: 'Style'.toText(),
+                label: t.labels.style.toText(),
                 labelPadding: .symmetric(horizontal: 16),
                 error: errorText?.toText(),
                 child: SingleChildScrollView(
@@ -118,7 +118,7 @@ class AnnotationSheet {
                         ),
                       ),
                       StyledTextButton(
-                        child: 'Add New'.toText(),
+                        child: t.common.addNew.toText(),
                         leading: Symbols.add.toIcon(),
                         onPressed: () async {
                           final newStyle = await HighlightStyleSheet.show(context, otherStyles: user.highlightStyles);
@@ -139,7 +139,7 @@ class AnnotationSheet {
                 padding: .symmetric(horizontal: 16),
                 child: StyledTextField.multiline(
                   text: value,
-                  label: 'Note'.toText(),
+                  label: t.labels.note.toText(),
                   error: errorText?.toText(),
                   onChanged: onChanged,
                 ),

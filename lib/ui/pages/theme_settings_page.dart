@@ -15,16 +15,16 @@ class ThemeSettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final hasGreekBible = user.biblesOrDefault.any((bible) => bible.language == .greek);
-    final hasHebrewBible = user.biblesOrDefault.any((bible) => bible.language == .hebrew);
+    final hasGreekBible = user.biblesOrDefault.any((bible) => bible.bibleLanguage == .greek);
+    final hasHebrewBible = user.biblesOrDefault.any((bible) => bible.bibleLanguage == .hebrew);
 
     return StyledPage(
-      title: 'Theme & Layout'.toText(),
+      title: t.themeSettings.title.toText(),
       backgroundColor: .backgroundPrimary,
       body: ListView(
         children: [
           StyledSection.child(
-            title: 'Brightness'.toText(),
+            title: t.themeSettings.brightness.toText(),
             child: StyledCard.child(
               padding: .all(4),
               child: StyledSegmentedControl(
@@ -37,18 +37,18 @@ class ThemeSettingsPage extends ConsumerWidget {
             ),
           ),
           StyledSection.child(
-            title: 'Text'.toText(),
+            title: t.labels.text.toText(),
             child: StyledCard(
               children: [
                 StyledListItem(
-                  title: 'Font'.toText(),
+                  title: t.themeSettings.font.toText(),
                   subtitle: user.themeLayout.font.title().toText(),
                   trailing: StyledPillButton.md(
-                    label: 'Edit'.toText(),
+                    label: t.common.edit.toText(),
                     onPressed: () async {
                       final newFont = await context.showStyledSheet(
                         (context) => StyledSelectionSheet(
-                          title: 'Font'.toText(),
+                          title: t.themeSettings.font.toText(),
                           options: ThemeFont.values,
                           optionMapper: (option) => StyledSelectOption(
                             title: Text(option.title(), style: TextStyle(fontFamily: option.fontFamily)),
@@ -64,16 +64,16 @@ class ThemeSettingsPage extends ConsumerWidget {
                 ),
                 getFontSizeSpacingItem(
                   context,
-                  title: 'Font Size & Spacing',
+                  title: t.themeSettings.fontSizeSpacing,
                   value: user.themeLayout.fontSizeSpacing,
-                  fallbackTitle: 'System',
-                  fallbackDescription: 'Use your device’s preferred text size.',
+                  fallbackTitle: t.themeSettings.system,
+                  fallbackDescription: t.themeSettings.systemTextSizeDescription,
                   onChanged: (value) => ref.updateUser((user) => user.copyWith.themeLayout(fontSizeSpacing: value)),
                 ),
                 if (hasGreekBible)
                   getFontSizeSpacingItem(
                     context,
-                    title: 'Greek Font Size & Spacing',
+                    title: t.themeSettings.greekFontSizeSpacing,
                     value: user.themeLayout.greekFontSizeSpacing,
                     onChanged: (value) =>
                         ref.updateUser((user) => user.copyWith.themeLayout(greekFontSizeSpacing: value)),
@@ -81,17 +81,17 @@ class ThemeSettingsPage extends ConsumerWidget {
                 if (hasHebrewBible)
                   getFontSizeSpacingItem(
                     context,
-                    title: 'Hebrew Font Size & Spacing',
+                    title: t.themeSettings.hebrewFontSizeSpacing,
                     value: user.themeLayout.hebrewFontSizeSpacing,
                     onChanged: (value) =>
                         ref.updateUser((user) => user.copyWith.themeLayout(hebrewFontSizeSpacing: value)),
                   ),
                 StyledListItem.switchControl(
-                  title: 'Red Letters'.toText(),
-                  subtitle: 'Show Jesus\' words in red.'.toText(),
+                  title: t.themeSettings.redLetters.toText(),
+                  subtitle: t.themeSettings.redLettersDescription.toText(),
                   thirdLine: user.translation.hasRedLetters
                       ? null
-                      : 'This is not available in ${user.translation.title()}.'.toText(),
+                      : t.common.notAvailableIn(translation: user.translation.title()).toText(),
                   isSelected: user.themeLayout.redLetters,
                   onSelected: (newValue) => ref.updateUser((user) => user.copyWith.themeLayout(redLetters: newValue)),
                 ),
@@ -99,18 +99,18 @@ class ThemeSettingsPage extends ConsumerWidget {
             ),
           ),
           StyledSection.child(
-            title: 'Layout'.toText(),
+            title: t.labels.layout.toText(),
             child: StyledCard(
               children: [
                 StyledListItem(
-                  title: 'Section Headings'.toText(),
+                  title: t.themeSettings.sectionHeadings.toText(),
                   subtitle: user.themeLayout.sections.title().toText(),
                   trailing: StyledPillButton.md(
-                    label: 'Edit'.toText(),
+                    label: t.common.edit.toText(),
                     onPressed: () async {
                       final newSectionHeadings = await context.showStyledSheet(
                         (context) => StyledSelectionSheet(
-                          title: 'Section Headings'.toText(),
+                          title: t.themeSettings.sectionHeadings.toText(),
                           options: SectionHeadings.values,
                           optionMapper: (option) => StyledSelectOption(
                             title: option.title().toText(),
@@ -126,19 +126,19 @@ class ThemeSettingsPage extends ConsumerWidget {
                   ),
                 ),
                 StyledListItem.switchControl(
-                  title: 'Verse Numbers'.toText(),
+                  title: t.themeSettings.verseNumbers.toText(),
                   isSelected: user.themeLayout.verseNumbers,
                   onSelected: (newValue) => ref.updateUser((user) => user.copyWith.themeLayout(verseNumbers: newValue)),
                 ),
                 StyledListItem.switchControl(
-                  title: 'Paragraphs'.toText(),
-                  subtitle: 'Format verses into paragraphs.'.toText(),
+                  title: t.labels.paragraphs.toText(),
+                  subtitle: t.themeSettings.paragraphsDescription.toText(),
                   isSelected: user.themeLayout.paragraphs,
                   onSelected: (newValue) => ref.updateUser((user) => user.copyWith.themeLayout(paragraphs: newValue)),
                 ),
                 StyledListItem.switchControl(
-                  title: 'Footnotes'.toText(),
-                  subtitle: 'Show footnote markers within the text.'.toText(),
+                  title: t.labels.footnotes.toText(),
+                  subtitle: t.themeSettings.footnotesDescription.toText(),
                   isSelected: user.themeLayout.footnotes,
                   onSelected: (newValue) => ref.updateUser((user) => user.copyWith.themeLayout(footnotes: newValue)),
                 ),
@@ -155,13 +155,13 @@ class ThemeSettingsPage extends ConsumerWidget {
     required String title,
     required FontSizeSpacing? value,
     required Function(FontSizeSpacing?) onChanged,
-    String fallbackTitle = 'Default',
-    String fallbackDescription = 'Use the default Font Size & Spacing.',
+    String? fallbackTitle,
+    String? fallbackDescription,
   }) => StyledListItem(
     title: title.toText(),
-    subtitle: (value?.title() ?? fallbackTitle).toText(),
+    subtitle: (value?.title() ?? fallbackTitle ?? t.common.defaultLabel).toText(),
     trailing: StyledPillButton.md(
-      label: 'Edit'.toText(),
+      label: t.common.edit.toText(),
       onPressed: () => context.showStyledSheet(
         (context) => StyledSheet(
           title: title.toText(),
@@ -177,8 +177,8 @@ class ThemeSettingsPage extends ConsumerWidget {
               ),
             ),
             StyledListItem.radio(
-              title: fallbackTitle.toText(),
-              subtitle: fallbackDescription.toText(),
+              title: (fallbackTitle ?? t.common.defaultLabel).toText(),
+              subtitle: (fallbackDescription ?? t.themeSettings.defaultSizeDescription).toText(),
               isSelected: value == null,
               onSelected: () {
                 onChanged(null);

@@ -23,17 +23,17 @@ enum TextSelectionAction {
   copy;
 
   String title() => switch (this) {
-    annotate => 'Annotate',
-    interlinear => 'Interlinear',
-    search => 'Search',
-    copy => 'Copy',
+    annotate => t.selectionActions.annotate,
+    interlinear => t.selectionActions.interlinear,
+    search => t.selectionActions.search,
+    copy => t.selectionActions.copy,
   };
 
   String description() => switch (this) {
-    annotate => 'Annotate this text.',
-    interlinear => 'View a lexical breakdown of this text using Strongs.',
-    search => 'Search for other usages of this text in the Bible.',
-    copy => 'Copy this text to your clipboard.',
+    annotate => t.selectionActions.annotateTextDescription,
+    interlinear => t.selectionActions.interlinearTextDescription,
+    search => t.selectionActions.searchTextDescription,
+    copy => t.selectionActions.copyTextDescription,
   };
 
   IconData get icon => switch (this) {
@@ -56,10 +56,8 @@ enum TextSelectionAction {
         if (!textSelection.translation.isStudy) {
           context.showStyledDialog(
             (context) => StyledDialog.confirm(
-              title: 'Interlinear'.toText(),
-              body:
-                  "Interlinear by text selection is only available in Study Bibles, which was designed with word-for-word Strong's and morphology tagging. Switch your translation to a Study Bible to use this action."
-                      .toText(),
+              title: t.selectionActions.interlinear.toText(),
+              body: t.selectionActions.interlinearUnavailable.toText(),
             ),
           );
           return;
@@ -70,7 +68,7 @@ enum TextSelectionAction {
 
         final studyWords = studyBible.getTextSelectionWords(textSelection).where((word) => word.data != null).toList();
         if (studyWords.isEmpty) {
-          context.showStyledSnackbar(message: 'No interlinear words found in this selection.'.toText());
+          context.showStyledSnackbar(message: t.selectionActions.noInterlinearWords.toText());
           return;
         }
 
@@ -86,8 +84,10 @@ enum TextSelectionAction {
           await context.showStyledSheetWithBreadcrumbs(
             breadcrumbText: (await ref.read(textSelectionTextProvider(textSelection).future)).withLength(24),
             (context) => StyledSheet(
-              title: 'Interlinear'.toText(),
-              subtitle: 'Text in ${textSelection.toVerseSelection().format()}'.toText(),
+              title: t.selectionActions.interlinear.toText(),
+              subtitle: t.selectionActions
+                  .textInReference(reference: textSelection.toVerseSelection().format())
+                  .toText(),
               children: studyWords
                   .map(
                     (word) => InterlinearWordTile(
@@ -127,7 +127,7 @@ enum TextSelectionAction {
         onDeselect();
 
         if (!context.mounted) return;
-        context.showStyledSnackbar(message: 'Text selection copied to clipboard.'.toText());
+        context.showStyledSnackbar(message: t.selectionActions.copiedText.toText());
         await Clipboard.setData(ClipboardData(text: text));
     }
   }

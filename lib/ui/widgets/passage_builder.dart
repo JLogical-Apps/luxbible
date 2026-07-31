@@ -76,7 +76,7 @@ class PassageBuilder extends HookConsumerWidget {
     );
 
     return FontSizeSpacingZoomGesture(
-      language: translation.language,
+      language: translation.bibleLanguage,
       child: AnimatedOpacity(
         opacity: paragraphs.isEmpty ? 0 : 1,
         duration: Duration(milliseconds: 300),

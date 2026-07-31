@@ -69,7 +69,7 @@ class ChapterBuilder extends HookConsumerWidget {
     }
 
     return FontSizeSpacingZoomGesture(
-      language: translation.language,
+      language: translation.bibleLanguage,
       child: Column(
         crossAxisAlignment: .stretch,
         spacing: 12,
@@ -77,8 +77,12 @@ class ChapterBuilder extends HookConsumerWidget {
           if (isFallback)
             StyledTile.message(
               leading: Symbols.translate.toIcon(),
-              title: "${user.translation.fullName()} doesn't include the ${book.testament.title()}.".toText(),
-              subtitle: 'Showing your most-recent ${book.testament.title()} Bible, ${translation.fullName()}.'.toText(),
+              title: t.chapterUnavailable
+                  .title(selectedTranslation: user.translation.fullName(), testament: book.testament.title())
+                  .toText(),
+              subtitle: t.chapterUnavailable
+                  .subtitle(testament: book.testament.title(), fallbackTranslation: translation.fullName())
+                  .toText(),
             ),
           ParagraphsBuilder(
             paragraphs: chapter.paragraphs,
@@ -95,7 +99,7 @@ class ChapterBuilder extends HookConsumerWidget {
             Text(copyright, style: context.textStyle.paragraphXs.subtle(), textAlign: .center),
           if (translation.source is ApiBibleTranslationSource)
             MarkdownBuilder(
-              Markdown('Sourced from [https://api.bible](https://api.bible)'),
+              Markdown(t.selectionUi.sourceApiBible),
               style: context.textStyle.paragraphXs.subtle(),
               onLinkPressed: (_, _) => launchUrl(Uri.https('api.bible')),
               textAlign: .center,

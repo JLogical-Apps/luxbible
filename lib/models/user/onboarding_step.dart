@@ -1,3 +1,4 @@
+import 'package:bible/i18n/strings.g.dart';
 import 'package:bible/models/bible/bible_translation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -42,47 +43,51 @@ enum OnboardingMicroStep {
   List<InlineSpan> description({required BibleTranslation translation}) {
     WidgetSpan icon(IconData icon) => WidgetSpan(alignment: .middle, child: Icon(icon, size: 18));
     return switch (this) {
-      selectVerse => [TextSpan(text: 'Tap a verse to select it')],
-      selectWord => [TextSpan(text: 'Long-press a word')],
+      selectVerse => [TextSpan(text: t.onboardingSteps.selectVerse)],
+      selectWord => [TextSpan(text: t.onboardingSteps.selectWord)],
       deselectEverything => [
-        TextSpan(text: 'Tap '),
+        TextSpan(text: t.onboardingSteps.deselectPrefix),
         icon(Symbols.close),
-        TextSpan(text: ' next to your selection to deselect'),
+        TextSpan(text: t.onboardingSteps.deselectSuffix),
       ],
-      revealMainToolbar => [TextSpan(text: 'Scroll up to reveal the main toolbar')],
+      revealMainToolbar => [TextSpan(text: t.onboardingSteps.revealToolbar)],
       addStudyPanel => [
-        TextSpan(text: 'Tap '),
+        TextSpan(text: t.onboardingSteps.addPanelPrefix),
         icon(Symbols.more_vert),
-        TextSpan(text: ' → Add Study Panel and add any Study Panel'),
+        TextSpan(text: t.onboardingSteps.addPanelSuffix),
       ],
-      navigateSomewhere => [TextSpan(text: 'Go to another chapter')],
+      navigateSomewhere => [TextSpan(text: t.onboardingSteps.goToChapter)],
       viewCrossReferences => [
-        TextSpan(text: 'Open '),
+        TextSpan(text: t.onboardingSteps.openPrefix),
         icon(Symbols.more_vert),
-        TextSpan(text: ' → Study → Cross References'),
+        TextSpan(text: t.onboardingSteps.crossReferencesSuffix),
       ],
       annotateVerse => [
-        TextSpan(text: 'Tap '),
+        TextSpan(text: t.onboardingSteps.annotatePrefix),
         icon(Symbols.note_stack),
-        TextSpan(text: ' to highlight or add a note'),
+        TextSpan(text: t.onboardingSteps.annotateSuffix),
       ],
-      searchWord => [TextSpan(text: 'Tap '), icon(Symbols.search), TextSpan(text: ' to look the word up everywhere')],
-      switchBible => [TextSpan(text: 'Tap the main toolbar → ${translation.title()} to switch Bibles')],
-      goToChapter => [TextSpan(text: 'Tap the main toolbar to go to another chapter')],
-      goBack => [TextSpan(text: 'Swipe right on the toolbar to go back')],
-      swipeChapter => [TextSpan(text: 'Swipe the Bible left or right to change chapter')],
-      viewStudyPanel => [TextSpan(text: 'Swipe this panel right to view your study panel')],
+      searchWord => [
+        TextSpan(text: t.onboardingSteps.searchPrefix),
+        icon(Symbols.search),
+        TextSpan(text: t.onboardingSteps.searchSuffix),
+      ],
+      switchBible => [TextSpan(text: t.onboardingSteps.switchBibleDescription(translation: translation.title()))],
+      goToChapter => [TextSpan(text: t.onboardingSteps.goToChapterDescription)],
+      goBack => [TextSpan(text: t.onboardingSteps.goBackDescription)],
+      swipeChapter => [TextSpan(text: t.onboardingSteps.swipeChapterDescription)],
+      viewStudyPanel => [TextSpan(text: t.onboardingSteps.viewPanelDescription)],
       customizeToolbar => [
-        TextSpan(text: 'Open '),
+        TextSpan(text: t.onboardingSteps.openPrefix),
         icon(Symbols.more_vert),
-        TextSpan(text: ' → '),
+        TextSpan(text: t.onboardingSteps.settingsSeparator),
         icon(Symbols.settings),
-        TextSpan(text: ' > Toolbars and pick a toolbar preset or change any of your toolbar shortcuts'),
+        TextSpan(text: t.onboardingSteps.customizeToolbarSuffix),
       ],
       startBiblePlan => [
-        TextSpan(text: 'Open '),
+        TextSpan(text: t.onboardingSteps.openPrefix),
         icon(Symbols.more_vert),
-        TextSpan(text: ' → Bible Plans and start any Bible plan'),
+        TextSpan(text: t.onboardingSteps.startPlanSuffix),
       ],
     };
   }
@@ -120,16 +125,16 @@ enum OnboardingStep {
   startBiblePlan;
 
   String title() => switch (this) {
-    crossReferences => 'View cross references',
-    annotateVerse => 'Annotate a verse',
-    searchWord => 'Search for a word',
-    changeBible => 'Switch your Bible',
-    navigateChapter => 'Go to another chapter',
-    goBack => 'Go back',
-    swipeChapter => 'Swipe to change chapter',
-    addStudyPanel => 'Add a study panel',
-    customizeToolbar => 'Customize your toolbars',
-    startBiblePlan => 'Start a Bible plan',
+    crossReferences => t.onboardingSteps.viewCrossReferences,
+    annotateVerse => t.onboardingSteps.annotateVerse,
+    searchWord => t.onboardingSteps.searchWord,
+    changeBible => t.onboardingSteps.switchBible,
+    navigateChapter => t.onboardingSteps.navigateChapter,
+    goBack => t.onboardingSteps.goBack,
+    swipeChapter => t.onboardingSteps.swipeChapter,
+    addStudyPanel => t.onboardingSteps.addStudyPanel,
+    customizeToolbar => t.onboardingSteps.customizeToolbar,
+    startBiblePlan => t.onboardingSteps.startBiblePlan,
   };
 
   IconData get icon => switch (this) {

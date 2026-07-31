@@ -22,7 +22,7 @@ class CommentariesPage extends HookConsumerWidget {
     final commentaries = user.commentariesOrDefault;
 
     return StyledPage(
-      title: 'Commentaries'.toText(),
+      title: t.labels.commentaries.toText(),
       body: StyledDock(
         forceHeight: true,
         shrinkWrap: false,
@@ -33,7 +33,7 @@ class CommentariesPage extends HookConsumerWidget {
               padding: .all(16),
               child: StyledTile.message(
                 leading: Symbols.tooltip_2.toIcon(),
-                title: "You haven't added any commentaries.".toText(),
+                title: t.emptyStates.noCommentariesAdded.toText(),
               ),
             ),
           Expanded(
@@ -68,11 +68,11 @@ class CommentariesPage extends HookConsumerWidget {
         ],
         buttonsBuilder: (context) => [
           StyledRectButton.secondary(
-            label: 'Add & Remove Commentaries'.toText(),
+            label: t.commentaries.addRemove.toText(),
             onPressed: () => context.showStyledSheet((context) {
               final selectedCommentariesState = useState(user.commentariesOrDefault);
               return StyledSheet(
-                title: 'Add & Remove Commentaries'.toText(),
+                title: t.commentaries.addRemove.toText(),
                 children: CommentaryType.values
                     .map(
                       (commentary) => CommentaryTile(
@@ -83,17 +83,16 @@ class CommentariesPage extends HookConsumerWidget {
                               selectedCommentariesState.value.length <= 1 &&
                                   selectedCommentariesState.value.contains(commentary)
                               ? null
-                              : (_) =>
-                                    selectedCommentariesState.value = selectedCommentariesState.value.withToggle(
-                                      commentary,
-                                    ),
+                              : (_) => selectedCommentariesState.value = selectedCommentariesState.value.withToggle(
+                                  commentary,
+                                ),
                         ),
                       ),
                     )
                     .toList(),
                 buttonsBuilder: (context) => [
                   StyledRectButton.primary(
-                    label: 'Save'.toText(),
+                    label: t.common.save.toText(),
                     onPressed: () {
                       ref.updateUser((user) => user.copyWith(commentaries: selectedCommentariesState.value));
                       context.pop();
