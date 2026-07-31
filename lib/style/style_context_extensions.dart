@@ -33,7 +33,7 @@ extension StyleContextExtensions on BuildContext {
       maxWidth: MediaQuery.sizeOf(rootContext).width - 32,
       maxHeight: MediaQuery.sizeOf(rootContext).height - MediaQuery.paddingOf(rootContext).top - 16,
     ),
-    builder: (context) => SafeArea(child: dialogBuilder(context)),
+    builder: (context) => SafeArea(top: false, bottom: false, child: dialogBuilder(context)),
   );
 
   Future<T?> showStyledSheet<T>(
