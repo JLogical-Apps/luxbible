@@ -2218,11 +2218,11 @@ class Translations$settings$en {
 	/// en: 'Language'
 	String get language => 'Language';
 
-	/// en: 'Select'
-	String get select => 'Select';
+	/// en: 'System'
+	String get system => 'System';
 
-	/// en: 'Language'
-	String get languageSelectionTitle => 'Language';
+	/// en: 'Match your system's locale.'
+	String get systemLanguageDescription => 'Match your system\'s locale.';
 
 	/// en: 'Toolbar Presets'
 	String get toolbarPresets => 'Toolbar Presets';
@@ -5307,8 +5307,8 @@ extension on Translations {
 			'settings.title' => 'Settings',
 			'settings.customize' => 'Customize',
 			'settings.language' => 'Language',
-			'settings.select' => 'Select',
-			'settings.languageSelectionTitle' => 'Language',
+			'settings.system' => 'System',
+			'settings.systemLanguageDescription' => 'Match your system\'s locale.',
 			'settings.toolbarPresets' => 'Toolbar Presets',
 			'settings.toolbarPreset' => 'Toolbar Preset',
 			'settings.presetWarning' => 'Selecting a preset will override the shortcuts in all your toolbars.',

@@ -52,7 +52,7 @@ class UserNotifier extends _$UserNotifier {
 
   User get userOrDefault =>
       userOrNull ??
-      User(translationOverride: BibleTranslation.defaultsFor(Language.device).first, completedOnboardingSteps: []);
+      User(translation: BibleTranslation.defaultsFor(Language.device).first, completedOnboardingSteps: []);
 
   Future<void> update(User Function(User) updater) async {
     state = updater(state);

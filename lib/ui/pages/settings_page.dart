@@ -1,4 +1,3 @@
-import 'package:bible/models/user/language.dart';
 import 'package:bible/models/user/toolbar_preset.dart';
 import 'package:bible/providers/package_info_provider.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -8,6 +7,7 @@ import 'package:bible/ui/pages/bibles_page.dart';
 import 'package:bible/ui/pages/bookmarks_page.dart';
 import 'package:bible/ui/pages/commentaries_page.dart';
 import 'package:bible/ui/pages/highlight_styles_page.dart';
+import 'package:bible/ui/pages/language_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/pages/notebooks_page.dart';
 import 'package:bible/ui/pages/text_selection_settings_page.dart';
@@ -58,26 +58,10 @@ class SettingsPage extends HookConsumerWidget {
                   leading: Symbols.tooltip_2.toIcon(),
                   onPressed: () => context.push(CommentariesPage()),
                 ),
-                StyledListItem(
+                StyledListItem.navigation(
                   title: t.settings.language.toText(),
-                  subtitle: user.language.title().toText(),
-                  trailing: StyledPillButton.md(
-                    label: t.settings.select.toText(),
-                    onPressed: () async {
-                      final language = await context.showStyledSheet(
-                        (context) => StyledSelectionSheet(
-                          title: t.settings.languageSelectionTitle.toText(),
-                          options: Language.values,
-                          initialOption: user.language,
-                          optionMapper: (language) => StyledSelectOption(title: language.title().toText()),
-                        ),
-                      );
-                      if (language != null) {
-                        LocaleSettings.setLocaleSync(language.appLocale);
-                        await ref.updateUser((user) => user.withLanguage(language));
-                      }
-                    },
-                  ),
+                  leading: Symbols.language.toIcon(),
+                  onPressed: () => context.push(LanguagePage()),
                 ),
               ],
             ),

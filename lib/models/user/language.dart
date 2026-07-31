@@ -20,6 +20,11 @@ enum Language {
 
   String get code => appLocale.languageCode;
 
+  String get nativeTitle => switch (this) {
+    english => 'English',
+    dutch => 'Nederlands',
+  };
+
   String title() => switch (this) {
     english => t.languages.english,
     dutch => t.languages.dutch,

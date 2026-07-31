@@ -7,10 +7,7 @@ part of 'user.dart';
 // **************************************************************************
 
 _User _$UserFromJson(Map<String, dynamic> json) => _User(
-  translationOverride: $enumDecodeNullable(
-    _$BibleTranslationEnumMap,
-    json['translation'],
-  ),
+  translation: $enumDecode(_$BibleTranslationEnumMap, json['translation']),
   studyTranslation:
       $enumDecodeNullable(
         _$BibleTranslationEnumMap,
@@ -168,7 +165,7 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
-  'translation': _$BibleTranslationEnumMap[instance.translationOverride],
+  'translation': _$BibleTranslationEnumMap[instance.translation]!,
   'studyTranslation': _$BibleTranslationEnumMap[instance.studyTranslation]!,
   'audioTranslation': _$BibleTranslationEnumMap[instance.audioTranslation]!,
   'oldTestamentTranslation':

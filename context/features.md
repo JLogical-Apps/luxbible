@@ -12,7 +12,7 @@ Lux uses a single reading area with optional study panels. Panels appear below t
 
 ## Languages
 
-Lux supports English and Dutch. By default, it follows the device language when that language is supported and otherwise uses English. Users can select English or Dutch from Settings > Customize to override the device language.
+Lux supports English and Dutch. By default, it follows the device language when that language is supported and otherwise uses English. Users can select System, English, or Dutch from Settings > Customize > Language. System follows the device locale; English and Dutch override it.
 
 The selected language controls Lux's interface, Bible book names, reference formatting, reading-plan metadata, study terminology, and other app-authored text. It does not translate Bible text, translation names, user-created content, imported study-resource bodies, or legal copy.
 

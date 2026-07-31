@@ -1092,8 +1092,8 @@ class _Translations$settings$nl extends Translations$settings$en {
 	@override String get title => 'Instellingen';
 	@override String get customize => 'Aanpassen';
 	@override String get language => 'Taal';
-	@override String get select => 'Selecteren';
-	@override String get languageSelectionTitle => 'Taal';
+	@override String get system => 'Systeem';
+	@override String get systemLanguageDescription => 'Komt overeen met de taalinstelling van je systeem.';
 	@override String get toolbarPresets => 'Werkbalkpresets';
 	@override String get toolbarPreset => 'Werkbalkpreset';
 	@override String get presetWarning => 'Als je een preset selecteert, worden de snelkoppelingen in al je werkbalken overschreven.';
@@ -3512,8 +3512,8 @@ extension on TranslationsNl {
 			'settings.title' => 'Instellingen',
 			'settings.customize' => 'Aanpassen',
 			'settings.language' => 'Taal',
-			'settings.select' => 'Selecteren',
-			'settings.languageSelectionTitle' => 'Taal',
+			'settings.system' => 'Systeem',
+			'settings.systemLanguageDescription' => 'Komt overeen met de taalinstelling van je systeem.',
 			'settings.toolbarPresets' => 'Werkbalkpresets',
 			'settings.toolbarPreset' => 'Werkbalkpreset',
 			'settings.presetWarning' => 'Als je een preset selecteert, worden de snelkoppelingen in al je werkbalken overschreven.',

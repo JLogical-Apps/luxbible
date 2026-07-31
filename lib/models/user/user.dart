@@ -41,7 +41,7 @@ sealed class User with _$User {
   const User._();
 
   const factory User({
-    @JsonKey(name: 'translation') BibleTranslation? translationOverride,
+    required BibleTranslation translation,
     @Default(BibleTranslation.bsb) BibleTranslation studyTranslation,
     @Default(BibleTranslation.bsb) BibleTranslation audioTranslation,
     @Default(BibleTranslation.oshb) BibleTranslation oldTestamentTranslation,
@@ -79,7 +79,6 @@ sealed class User with _$User {
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  BibleTranslation get translation => translationOverride ?? biblesOrDefault.firstOrNull ?? .bsb;
   Language get language => languageOverride ?? Language.device;
 
   List<BibleTranslation> get biblesOrDefault => bibles ?? BibleTranslation.defaultsFor(language);
@@ -361,14 +360,14 @@ sealed class User with _$User {
   );
 
   User withTranslation(BibleTranslation translation) => copyWith(
-    translationOverride: translation,
+    translation: translation,
     studyTranslation: translation.isStudy ? translation : studyTranslation,
     audioTranslation: translation.hasAudioBible ? translation : audioTranslation,
     oldTestamentTranslation: translation.testament == .oldTestament ? translation : oldTestamentTranslation,
     newTestamentTranslation: translation.testament == .newTestament ? translation : newTestamentTranslation,
   );
 
-  User withLanguage(Language language) => copyWith(languageOverride: language, translationOverride: translation);
+  User withLanguage(Language? language) => copyWith(languageOverride: language);
 
   List<HydratedBiblePlanProgress> getHydratedPlanProgresses(Map<BiblePlanType, BiblePlan> planByType) =>
       planProgressByType
