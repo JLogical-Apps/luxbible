@@ -210,6 +210,7 @@ enum BibleLanguage {
   Language? get language => switch (this) {
     english => .english,
     dutch => .dutch,
+    .russian => .russian,
     _ => null,
   };
 }
