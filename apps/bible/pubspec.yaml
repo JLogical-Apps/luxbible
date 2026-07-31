@@ -2,7 +2,7 @@ name: bible
 description: "A new Flutter project."
 publish_to: 'none'
 
-version: 1.1.0+55
+version: 1.1.0+56
 
 environment:
   sdk: ^3.10.0
