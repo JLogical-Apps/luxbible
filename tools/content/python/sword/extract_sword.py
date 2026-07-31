@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Stage 1 of the original-language pipeline.
 
-Reads the five SWORD modules from ../source_files/sword/<MODULE>/ and writes one
-faithful per-book OSIS XML file per translation into ../source_files/bibles/<name>/.
+Reads the five SWORD modules from content/sources/sword/<MODULE>/ and writes one
+faithful per-book OSIS XML file per translation into content/sources/bibles/<name>/.
 
 All versification work happens here so the Dart stage never touches it:
   * OSHB  (MT)  -> KJV via the module's own inline <note>KJV:Bk.Ch.Vs</note>
@@ -17,7 +17,7 @@ All versification work happens here so the Dart stage never touches it:
 Each <verse> carries osisID="<KJV destination>" and, when the source verse
 differs, origin="<native reference>".
 
-Run from the scripts/sword/ directory:  .venv/bin/python extract_sword.py
+Run from this directory: .venv/bin/python extract_sword.py
 """
 import os
 import re
@@ -27,8 +27,9 @@ from pysword.modules import SwordModules
 from pysword.canons import canons
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT_ROOT = os.path.join(HERE, "..", "..", "source_files", "bibles")
-SWORD_ROOT = os.path.join(HERE, "..", "..", "source_files", "sword")
+ROOT = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
+OUT_ROOT = os.path.join(ROOT, "content", "sources", "bibles")
+SWORD_ROOT = os.path.join(ROOT, "content", "sources", "sword")
 TVTMS_PATH = os.path.join(HERE, "data", "TVTMS.txt")
 
 OT_OSIS = [

@@ -2,21 +2,23 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
+import 'package:lux_content_tools/repository_paths.dart';
 
-import 'parsers/osis_parser.dart';
+import 'package:lux_content_tools/src/parsers/osis_parser.dart';
 
 void main() {
   for (final name in ['oshb', 'lxx', 'tr', 'byz', 'statresgnt', 'sv', 'nrt']) {
-    File('assets/translations/$name.json').writeAsStringSync(
+    appAssetFile('translations/$name.json').writeAsStringSync(
       jsonEncode(
-        Directory('source_files/bibles/$name')
+        sourceDirectory('bibles/$name')
             .listSync()
             .whereType<File>()
             .where((file) => file.path.endsWith('.xml'))
             .map(
               (file) => parseOsisBook(
                 file.readAsStringSync(),
-                verseParagraphs: name == 'oshb' || name == 'sv' || name == 'nrt',
+                verseParagraphs:
+                    name == 'oshb' || name == 'sv' || name == 'nrt',
               ),
             )
             .sortedBy((a) => a.bookType.index)

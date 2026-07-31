@@ -60,7 +60,7 @@ Cloudflare documents these features in:
 Install Node.js 22 or newer, then run these commands from the repository root:
 
 ```sh
-cd cloudflare/scripture
+cd services/scripture
 npm install
 ```
 

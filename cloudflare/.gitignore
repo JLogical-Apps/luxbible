@@ -1,6 +1,0 @@
-**/.dev.vars*
-**/.env*
-**/.wrangler/
-**/node_modules/
-!**/.dev.vars.example
-!**/.env.example

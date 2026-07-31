@@ -9,10 +9,13 @@ import 'package:collection/collection.dart';
 import 'package:xml/xml.dart';
 
 Book parseOsisBook(String rawXml, {bool verseParagraphs = false}) {
-  final bookElement = XmlDocument.parse(rawXml).rootElement.findElements('div').first;
+  final bookElement = XmlDocument.parse(
+    rawXml,
+  ).rootElement.findElements('div').first;
 
   bool isParagraphMarker(XmlElement element) => element.localName == 'milestone'
-      ? (element.getAttribute('type')?.contains('x-p') ?? false) || element.getAttribute('marker') == '¶'
+      ? (element.getAttribute('type')?.contains('x-p') ?? false) ||
+            element.getAttribute('marker') == '¶'
       : element.localName == 'div' && element.getAttribute('type') == 'x-p';
 
   // Plain surface text: `<w>`/`<seg>` content and the whitespace between, with
@@ -21,8 +24,13 @@ Book parseOsisBook(String rawXml, {bool verseParagraphs = false}) {
       .map(
         (child) => switch (child) {
           XmlText(:final value) => value,
-          XmlElement(:final localName) when const {'note', 'title', 'milestone'}.contains(localName) => null,
-          XmlElement() when child.getAttribute('type') == 'x-variant' && child.getAttribute('subType') == 'x-2' => null,
+          XmlElement(:final localName)
+              when const {'note', 'title', 'milestone'}.contains(localName) =>
+            null,
+          XmlElement()
+              when child.getAttribute('type') == 'x-variant' &&
+                  child.getAttribute('subType') == 'x-2' =>
+            null,
           _ => verseText(child),
         },
       )
@@ -35,12 +43,17 @@ Book parseOsisBook(String rawXml, {bool verseParagraphs = false}) {
     bookType: BookType.fromOsisId(bookElement.getAttribute('osisID')!),
     chapters: bookElement
         .findElements('verse')
-        .groupListsBy((verse) => int.parse(verse.getAttribute('osisID')!.split('.')[1]))
+        .groupListsBy(
+          (verse) => int.parse(verse.getAttribute('osisID')!.split('.')[1]),
+        )
         .values
         .map((verseElements) {
           var current = <Verse>[];
           return Chapter(
-            paragraphs: verseElements.fold(<Paragraph>[], (paragraphs, verseElement) {
+            paragraphs: verseElements.fold(<Paragraph>[], (
+              paragraphs,
+              verseElement,
+            ) {
               void flush() {
                 if (current.isNotEmpty) {
                   paragraphs.add(VersesParagraph(type: .p, verses: current));
@@ -49,13 +62,19 @@ Book parseOsisBook(String rawXml, {bool verseParagraphs = false}) {
               }
 
               // A section heading or paragraph marker starts a new block.
-              for (final title in verseElement.descendants.whereType<XmlElement>().where(
-                (e) => e.localName == 'title',
-              )) {
+              for (final title
+                  in verseElement.descendants.whereType<XmlElement>().where(
+                    (e) => e.localName == 'title',
+                  )) {
                 flush();
-                paragraphs.add(SectionParagraph(type: .s1, text: title.innerText.trim()));
+                paragraphs.add(
+                  SectionParagraph(type: .s1, text: title.innerText.trim()),
+                );
               }
-              if (verseElement.descendants.whereType<XmlElement>().any(isParagraphMarker)) flush();
+              if (verseElement.descendants.whereType<XmlElement>().any(
+                isParagraphMarker,
+              ))
+                flush();
 
               final text = verseText(verseElement);
               if (text.isNotEmpty) {
@@ -65,7 +84,9 @@ Book parseOsisBook(String rawXml, {bool verseParagraphs = false}) {
                   Verse(
                     verseNum: int.parse(id[2]),
                     words: [Word(text: text)],
-                    originalVerse: origin == null ? null : Reference.fromOsisId(origin),
+                    originalVerse: origin == null
+                        ? null
+                        : Reference.fromOsisId(origin),
                   ),
                 );
                 if (verseParagraphs) flush();

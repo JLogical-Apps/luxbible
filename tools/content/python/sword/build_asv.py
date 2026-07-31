@@ -7,10 +7,10 @@ positions, so it is dropped entirely. What is kept is the ASV's own structure �
 `<title>`s — plus the BSB section headings, anchored to the verse they precede
 (the same heading process used for the KJV).
 
-Output: one USX file per book in ../../source_files/bibles/asv/<USX>.usx, parsed
-by scripts/generate_asv_json.dart via the shared USX parser.
+Output: one USX file per book in content/sources/bibles/asv/<USX>.usx, parsed
+by tools/content/bin/generate_asv_json.dart via the shared USX parser.
 
-Run from scripts/sword/:  .venv/bin/python build_asv.py
+Run from this directory: .venv/bin/python build_asv.py
 """
 import os
 import re
@@ -22,8 +22,8 @@ from pysword.canons import canons
 
 from build_kjv_interlinear import ROOT, OSIS_USX, local, sanitize, load_bsb_headings, convert_note
 
-ASV_MODULE = os.path.join(ROOT, "source_files", "sword", "ASV")
-OUT_DIR = os.path.join(ROOT, "source_files", "bibles", "asv")
+ASV_MODULE = os.path.join(ROOT, "content", "sources", "sword", "ASV")
+OUT_DIR = os.path.join(ROOT, "content", "sources", "bibles", "asv")
 
 # The module uses typographic quotes; the app's ASV text uses straight ones.
 QUOTES = str.maketrans({"’": "'", "‘": "'", "“": '"', "”": '"'})

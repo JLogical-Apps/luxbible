@@ -1,17 +1,22 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bible/models/bible_plan.dart';
 import 'package:bible/models/reference/verse_selection.dart';
+import 'package:lux_content_tools/repository_paths.dart';
 
 void main() {
   for (final type in BiblePlanType.values) {
     final raw =
-        jsonDecode(File('source_files/reading_plans/${type.name}.json').readAsStringSync()) as Map<String, dynamic>;
-    File('assets/bible_plans/${type.name}.json').writeAsStringSync(
+        jsonDecode(
+              sourceFile('reading_plans/${type.name}.json').readAsStringSync(),
+            )
+            as Map<String, dynamic>;
+    appAssetFile('bible_plans/${type.name}.json').writeAsStringSync(
       jsonEncode(
         BiblePlan(
-          name: type == .esv_literary_study_bible ? 'Literary Study' : (raw['name'] as String).trim(),
+          name: type == .esv_literary_study_bible
+              ? 'Literary Study'
+              : (raw['name'] as String).trim(),
           days: (raw['data2'] as List).map((day) {
             final references = (day as List)
                 .cast<String>()
@@ -31,7 +36,11 @@ void main() {
                   ).references,
                 )
                 .toList();
-            return BiblePlanDay(passages: VerseSelection.fromReferences(references).splitByChapter());
+            return BiblePlanDay(
+              passages: VerseSelection.fromReferences(
+                references,
+              ).splitByChapter(),
+            );
           }).toList(),
         ).toJson(),
       ),

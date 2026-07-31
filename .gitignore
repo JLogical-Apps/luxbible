@@ -26,12 +26,12 @@ migrate_working_dir/
 # Flutter/Dart/Pub related
 **/doc/api/
 **/ios/Flutter/.last_build_id
-.dart_tool/
+**/.dart_tool/
 .flutter-plugins-dependencies
 .pub-cache/
 .pub/
-/build/
-/coverage/
+**/build/
+**/coverage/
 
 # Symbolication related
 app.*.symbols
@@ -40,17 +40,21 @@ app.*.symbols
 app.*.map.json
 
 # Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
 
 .venv/
 
-# Raw SWORD modules (build input for scripts/sword/extract_sword.py)
-source_files/sword/
-
-# STEPBible TVTMS download (re-downloadable build input)
-scripts/sword/data/TVTMS.txt
+# Raw SWORD modules and downloads used by the content pipeline
+content/sources/sword/
+tools/content/python/sword/data/TVTMS.txt
 
 .tmp/
 /.env
+**/.dev.vars*
+**/.env*
+**/.wrangler/
+**/node_modules/
+!**/.dev.vars.example
+!**/.env.example

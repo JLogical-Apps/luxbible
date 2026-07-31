@@ -6,7 +6,7 @@ Original-language data is sourced *directly*, not via the BSB:
   * NT  -> the KJV module already embeds the Textus Receptus layer on each word:
            src="<TR word position>", lemma.TR:<Greek form>, morph="robinson:<code>".
            So position/lemma/morph come straight from the KJV module (== the TR).
-  * OT  -> the KJV-versified OSHB (source_files/bibles/oshb/<Book>.xml). KJV English
+  * OT  -> the KJV-versified OSHB (content/sources/bibles/oshb/<Book>.xml). KJV English
            words are matched to OSHB tokens by Strong's number; the token gives the
            Hebrew position, lemma, and morphology.
 
@@ -21,8 +21,8 @@ Sectioning (words of Christ, pilcrow paragraphs, Psalm titles) comes from the
 KJV module; section headings are carried over from the BSB, anchored to the
 verse they precede.
 
-Output: one USX file per book in ../../source_files/bibles/kjv/<USX>.usx.
-Run from scripts/sword/:  .venv/bin/python build_kjv_interlinear.py
+Output: one USX file per book in content/sources/bibles/kjv/<USX>.usx.
+Run from this directory: .venv/bin/python build_kjv_interlinear.py
 """
 import os
 import re
@@ -33,11 +33,11 @@ from pysword.modules import SwordModules
 from pysword.canons import canons
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.join(HERE, "..", "..")
-KJV_MODULE = os.path.join(ROOT, "source_files", "sword", "KJV")
-OSHB_DIR = os.path.join(ROOT, "source_files", "bibles", "oshb")
-BSB_DIR = os.path.join(ROOT, "source_files", "bibles", "bsb")
-OUT_DIR = os.path.join(ROOT, "source_files", "bibles", "kjv")
+ROOT = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
+KJV_MODULE = os.path.join(ROOT, "content", "sources", "sword", "KJV")
+OSHB_DIR = os.path.join(ROOT, "content", "sources", "bibles", "oshb")
+BSB_DIR = os.path.join(ROOT, "content", "sources", "bibles", "bsb")
+OUT_DIR = os.path.join(ROOT, "content", "sources", "bibles", "kjv")
 
 # (OSIS id, USX code); first 39 are the Old Testament. Mirrors book_type.dart.
 OSIS_USX = [

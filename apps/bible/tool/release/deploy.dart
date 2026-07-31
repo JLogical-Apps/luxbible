@@ -6,11 +6,11 @@ import 'package:googleapis_auth/auth_io.dart';
 /// Builds release artifacts and deploys them to the stores.
 ///
 /// Usage:
-///   dart run scripts/deploy/deploy.dart            # both platforms
-///   dart run scripts/deploy/deploy.dart --ios      # iOS only -> TestFlight
-///   dart run scripts/deploy/deploy.dart --android  # Android only -> Play internal
+///   dart run tool/release/deploy.dart            # both platforms
+///   dart run tool/release/deploy.dart --ios      # iOS only -> TestFlight
+///   dart run tool/release/deploy.dart --android  # Android only -> Play internal
 ///
-/// Configuration lives in scripts/deploy/.env (see scripts/deploy/.env.example).
+/// Configuration lives in tool/release/.env (see tool/release/.env.example).
 Future<void> main(List<String> args) async {
   final unknown = args.where((a) => a != '--ios' && a != '--android').toList();
   if (unknown.isNotEmpty) {
@@ -140,9 +140,9 @@ Future<void> _deployIos(Map<String, String> env) async {
 // ---------------------------------------------------------------------------
 
 Map<String, String> _loadEnv() {
-  final file = File('scripts/deploy/.env');
+  final file = File('tool/release/.env');
   if (!file.existsSync()) {
-    _fail('Missing scripts/deploy/.env. Copy scripts/deploy/.env.example and fill it in.');
+    _fail('Missing tool/release/.env. Copy tool/release/.env.example and fill it in.');
   }
   final env = <String, String>{};
   for (final raw in file.readAsLinesSync()) {
@@ -187,7 +187,7 @@ extension on Map<String, String> {
   String require(String key) {
     final value = this[key];
     if (value == null || value.isEmpty) {
-      _fail('Missing required value "$key" in scripts/deploy/.env');
+      _fail('Missing required value "$key" in tool/release/.env');
     }
     return value;
   }

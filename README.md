@@ -1,16 +1,36 @@
-# bible
+# Lux
 
-A new Flutter project.
+Lux is a product family for focused Bible reading and study. This repository contains the Lux Bible app, its marketing website, content pipeline, and Scripture service.
 
-## Getting Started
+## Repository layout
 
-This project is a starting point for a Flutter application.
+- [`apps/bible/`](apps/bible/) contains the Flutter application and its release tooling.
+- [`websites/bible/`](websites/bible/) contains the Lux Bible marketing site.
+- [`services/scripture/`](services/scripture/) contains the Cloudflare Worker used for licensed Bible-text requests.
+- [`content/sources/`](content/sources/) contains authoritative Bible, commentary, dictionary, and reading-plan source files.
+- [`tools/content/`](tools/content/) contains generators that turn source content into app runtime assets.
+- [`context/`](context/) contains product context, organized by product.
 
-A few resources to get you started if this is your first Flutter project:
+The repository root is not a Flutter or Node workspace. Run commands from the relevant component directory.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Common commands
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```sh
+cd apps/bible
+flutter pub get
+flutter analyze
+
+cd ../../tools/content
+flutter pub get
+dart run bin/generate_bsb_json.dart
+
+cd ../../services/scripture
+npm install
+npm run check
+
+cd ../../websites/bible
+npm install
+npm run build
+```
+
+See each component’s README for its full workflow. The product documentation index is [`context/README.md`](context/README.md).

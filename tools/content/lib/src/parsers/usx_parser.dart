@@ -12,19 +12,27 @@ Book parseUsxBook(BookType type, String rawXml) {
   return Book(
     bookType: type,
     chapters: document.findAllElements('chapter').map((chapter) {
-      final elements = chapter.nextElementSiblings.takeWhile((element) => element.localName != 'chapter');
+      final elements = chapter.nextElementSiblings.takeWhile(
+        (element) => element.localName != 'chapter',
+      );
       return XmlBibleParser.parse(
         elements,
-        getVerseNumber: (element) => element.localName == 'verse' ? int.parse(element.getAttribute('number')!) : null,
+        getVerseNumber: (element) => element.localName == 'verse'
+            ? int.parse(element.getAttribute('number')!)
+            : null,
         shouldIgnore: (element) => false,
-        buildFootnote: (element) => element.localName == 'note' && element.getAttribute('style') == 'f'
+        buildFootnote: (element) =>
+            element.localName == 'note' && element.getAttribute('style') == 'f'
             ? UsxUtils.noteToMarkdown(element)
             : null,
         isRedLetters: (element) => element.getAttribute('style') == 'wj',
-        isItalic: (element) => UsxUtils.isItalicStyle(element.getAttribute('style')),
+        isItalic: (element) =>
+            UsxUtils.isItalicStyle(element.getAttribute('style')),
         getInterlinearData: (element) => element.getAttribute('style') == 'w'
             ? InterlinearData(
-                originalPosition: int.parse(element.getAttribute('x-position')!),
+                originalPosition: int.parse(
+                  element.getAttribute('x-position')!,
+                ),
                 inflection: element.getAttribute('x-lemma'),
                 morphology: switch (element.getAttribute('x-morph')) {
                   'None' => null,
@@ -34,7 +42,8 @@ Book parseUsxBook(BookType type, String rawXml) {
                 transliteration: element.getAttribute('x-translit'),
               )
             : null,
-        getParagraphStyle: (element) => element.getAttribute('style') ?? element.classNames.firstOrNull,
+        getParagraphStyle: (element) =>
+            element.getAttribute('style') ?? element.classNames.firstOrNull,
         buildSectionText: (element) => element.innerText.trim(),
         buildText: (text) => text,
       );
