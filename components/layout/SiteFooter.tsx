@@ -63,7 +63,10 @@ export default function SiteFooter() {
             </p>
             <div className="flex flex-row gap-2 text-sm">
               {socials.map((s) => (
-                <div key={s.name} style={{ ['--icon-hover' as string]: s.color }}>
+                <div
+                  key={s.name}
+                  style={{ ['--icon-hover' as string]: s.color }}
+                >
                   <Link
                     href={s.href}
                     target={s.href.startsWith('mailto:') ? undefined : '_blank'}
@@ -74,21 +77,6 @@ export default function SiteFooter() {
                   </Link>
                 </div>
               ))}
-            </div>
-          </div>
-
-          <div className="flex flex-grow flex-col items-center justify-center gap-8">
-            <div className="flex flex-wrap items-center justify-center px-6">
-              <p className="mr-2 text-sm text-foreground-soft">Built by</p>
-              <a href={site.builtBy.url} target="_blank" rel="noreferrer">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={site.builtBy.logo}
-                  alt={`${site.builtBy.name} logo`}
-                  className="grayscale transition hover:grayscale-0"
-                  style={{ width: 'auto', height: '30px' }}
-                />
-              </a>
             </div>
           </div>
         </div>
