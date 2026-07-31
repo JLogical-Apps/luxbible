@@ -377,10 +377,8 @@ class BibleBody extends HookConsumerWidget {
         selection.clear();
       },
       itemBuilder: (context, chapterReference, chapter) => SafeArea(
-        top: false,
-        bottom: false,
         left: true,
-        right: true,
+        right: !isSideLayout || panelCount == 0,
         child: HookBuilder(
           builder: (context) {
             final scrollController = chapterReference == currentChapterReference ? currentScrollController : null;
@@ -407,6 +405,7 @@ class BibleBody extends HookConsumerWidget {
                 children: [
                   StyledScrollbar(
                     controller: scrollController,
+                    removePadding: isSideLayout && panelCount > 0,
                     child: SingleChildScrollView(
                       physics: AlwaysScrollableScrollPhysics(),
                       controller: scrollController,
@@ -713,13 +712,7 @@ class BibleBody extends HookConsumerWidget {
     return isSideLayout
         ? Row(
             children: [
-              Expanded(
-                flex: 4,
-                child: Builder(
-                  builder: (context) =>
-                      MediaQuery.removeViewPadding(context: context, child: mainArea(), removeRight: panelCount > 0),
-                ),
-              ),
+              Expanded(flex: 4, child: mainArea()),
               if (panelCount > 0) ...[
                 Expanded(flex: 3, child: studyPanelSection()),
                 SizedBox(width: MediaQuery.viewPaddingOf(context).right),
