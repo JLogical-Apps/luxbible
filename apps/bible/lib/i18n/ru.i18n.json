@@ -1,0 +1,1246 @@
+{
+  "languages": {
+    "english": "Английский",
+    "dutch": "Нидерландский",
+    "greek": "Греческий",
+    "hebrew": "Иврит",
+    "russian": "Русский"
+  },
+  "highlightStyles": {
+    "red": "Красный",
+    "orange": "Оранжевый",
+    "yellow": "Желтый",
+    "green": "Зеленый",
+    "blue": "Синий",
+    "violet": "Фиолетовый",
+    "underline": "Подчёркивание",
+    "important": "Важное",
+    "highlight": "Выделение",
+    "squiggle": "Волнистая линия"
+  },
+  "colors": {
+    "red": "Красный",
+    "orange": "Оранжевый",
+    "yellow": "Желтый",
+    "green": "Зеленый",
+    "blue": "Синий",
+    "violet": "Фиолетовый",
+    "silver": "Серебряный"
+  },
+  "testaments": {
+    "old": "Ветхий Завет",
+    "newTestament": "Новый Завет",
+    "oldOnly": "Только Ветхий Завет",
+    "newOnly": "Только Новый Завет",
+    "wholeBible": "Вся Библия",
+    "oldOnlyDescription": "Содержит только книги Ветхого Завета.",
+    "newOnlyDescription": "Содержит только книги Нового Завета.",
+    "wholeBibleDescription": "Содержит все книги Библии."
+  },
+  "books": {
+    "genesis": "Бытие",
+    "exodus": "Исход",
+    "leviticus": "Левит",
+    "numbers": "Числа",
+    "deuteronomy": "Второзаконие",
+    "joshua": "Иисус Навин",
+    "judges": "Судьи",
+    "ruth": "Руфь",
+    "samuel1": "1 Царств",
+    "samuel2": "2 Царств",
+    "kings1": "3 Царств",
+    "kings2": "4 Царств",
+    "chronicles1": "1 Паралипоменон",
+    "chronicles2": "2 Паралипоменон",
+    "ezra": "Ездра",
+    "nehemiah": "Неемия",
+    "esther": "Есфирь",
+    "job": "Иов",
+    "psalm": "Псалом",
+    "psalms": "Псалмы",
+    "proverbs": "Притчи",
+    "ecclesiastes": "Екклесиаст",
+    "songOfSolomon": "Песнь песней",
+    "isaiah": "Исаия",
+    "jeremiah": "Иеремия",
+    "lamentations": "Плач Иеремии",
+    "ezekiel": "Иезекииль",
+    "daniel": "Даниил",
+    "hosea": "Осия",
+    "joel": "Иоиль",
+    "amos": "Амос",
+    "obadiah": "Авдий",
+    "jonah": "Иона",
+    "micah": "Михей",
+    "nahum": "Наум",
+    "habakkuk": "Аввакум",
+    "zephaniah": "Софония",
+    "haggai": "Аггей",
+    "zechariah": "Захария",
+    "malachi": "Малахия",
+    "matthew": "Матфей",
+    "mark": "Марк",
+    "luke": "Лука",
+    "john": "Иоанн",
+    "acts": "Деяния",
+    "romans": "Римлянам",
+    "corinthians1": "1 Коринфянам",
+    "corinthians2": "2 Коринфянам",
+    "galatians": "Галатам",
+    "ephesians": "Ефесянам",
+    "philippians": "Филиппийцам",
+    "colossians": "Колоссянам",
+    "thessalonians1": "1 Фессалоникийцам",
+    "thessalonians2": "2 Фессалоникийцам",
+    "timothy1": "1 Тимофею",
+    "timothy2": "2 Тимофею",
+    "titus": "Тит",
+    "philemon": "Филимон",
+    "hebrews": "Евреям",
+    "james": "Иаков",
+    "peter1": "1 Петра",
+    "peter2": "2 Петра",
+    "john1": "1 Иоанна",
+    "john2": "2 Иоанна",
+    "john3": "3 Иоанна",
+    "jude": "Иуда",
+    "revelation": "Откровение"
+  },
+  "common": {
+    "addNew": "Добавить",
+    "cancel": "Отмена",
+    "close": "Закрыть",
+    "copy": "Копировать",
+    "create": "Создать",
+    "custom": "Пользовательский",
+    "defaultLabel": "По умолчанию",
+    "delete": "Удалить",
+    "done": "Готово",
+    "edit": "Редактировать",
+    "finish": "Завершить",
+    "learnMore": "Узнать больше",
+    "nevermind": "Неважно",
+    "next": "Далее",
+    "noMatches": "Нет совпадений",
+    "ok": "Хорошо",
+    "off": "Выкл.",
+    "none": "Нет",
+    "clear": "Очистить",
+    "remove": "Удалить",
+    "save": "Сохранить",
+    "search": "Поиск",
+    "select": "Выбрать",
+    "show": "Показать",
+    "hide": "Скрыть",
+    "sort": "Сортировать",
+    "stop": "Остановить",
+    "tryAgain": "Попробуйте еще раз",
+    "switchTo": "Переключиться на {translation}",
+    "notAvailableIn": "Это недоступно в {translation}."
+  },
+  "regionTypes": {
+    "chapter": "эта глава",
+    "verses": "эти стихи",
+    "visibleVerses": "видимые стихи",
+    "text": "этот текст"
+  },
+  "mainActions": {
+    "pauseAudio": "Пауза Аудио Библия",
+    "playAudio": "Воспроизвести аудио Библию",
+    "bookmark": "Закладка",
+    "study": "Изучение",
+    "addStudyPanel": "Добавить панель исследования",
+    "search": "Поиск",
+    "resources": "Ресурсы",
+    "plans": "Библейские планы",
+    "settings": "Настройки",
+    "audioDescription": "Слушайте текущую главу с помощью Библии с поддержкой аудио.",
+    "bookmarkDescription": "Добавьте эту главу в закладки, чтобы легко получить к ней доступ со страницы поиска.",
+    "manageBookmarkDescription": "Управляйте этой закладкой.",
+    "studyDescription": "Просмотрите инструменты обучения для этой главы.",
+    "studyPanelDescription": "Прикрепите панель рядом с текстом, который следует по тексту и на котором показаны инструменты изучения того, что вы читаете.",
+    "searchDescription": "Ищите слова в Библии.",
+    "resourcesDescription": "Найдите слова в словаре и лексиконе.",
+    "plansDescription": "Читайте Библию с помощью управляемых планов чтения.",
+    "settingsDescription": "Откройте настройки Lux."
+  },
+  "studyActions": {
+    "compare": "Сравнивать",
+    "interlinear": "Подстрочный",
+    "commentary": "Комментарий",
+    "crossReferences": "Перекрестные ссылки",
+    "compareDescription": "Сравните {region} в различных переводах.",
+    "interlinearDescription": "Просмотрите лексическую разбивку {region} с помощью Strong's.",
+    "commentaryDescription": "Посмотреть комментарии {region}.",
+    "crossReferencesDescription": "Просмотрите перекрестные ссылки {region}.",
+    "noCrossReferences": "Перекрестных ссылок не найдено",
+    "crossReferencesUse": "В перекрестных ссылках используется {translation}.",
+    "onlineCrossReferencesExplanation": "Поскольку выбранный вами перевод доступен только в Интернете, перекрестные ссылки показаны с использованием последней версии Учебной Библии, которую вы использовали, чтобы сэкономить на производительности и затратах. Выбранный вами перевод используется повсюду в приложении."
+  },
+  "selectionActions": {
+    "annotate": "Аннотировать",
+    "study": "Изучать",
+    "copy": "Копировать",
+    "highlight": "Выделить",
+    "removeAnnotations": "Удалить аннотации",
+    "interlinear": "Подстрочник",
+    "search": "Поиск",
+    "annotateVersesDescription": "Прокомментируйте эти стихи.",
+    "studyVersesDescription": "Изучите эти стихи.",
+    "copyVersesDescription": "Скопируйте эти стихи в буфер обмена.",
+    "annotateTextDescription": "Прокомментируйте этот текст.",
+    "interlinearTextDescription": "Посмотрите лексическую разбивку этого текста.",
+    "searchTextDescription": "Найдите в Библии этот текст.",
+    "copyTextDescription": "Скопируйте этот текст в буфер обмена.",
+    "removeTextAnnotationsDescription": "Удалите аннотации выделения текста из {region}.",
+    "highlightTextDescription": "Выделите {region} последним использованным цветом.",
+    "removeVerseAnnotationsDescription": "Удалите аннотации выбора стихов из {region}.",
+    "highlightVersesDescription": "Выделите {region} последним использованным цветом.",
+    "highlightedText": "Выделенный текст в {reference}.",
+    "highlightedVerses": "Выделен {reference}.",
+    "copiedVerses": "{reference} скопировано в буфер обмена.",
+    "copiedText": "Выделенный текст скопирован в буфер обмена.",
+    "interlinearUnavailable": "Подстрочный выбор текста доступен только в Учебных Библиях, которые разработаны с использованием дословных тегов Стронга и морфологических тегов. Чтобы использовать это действие, переключите свой перевод на Учебную Библию.",
+    "noInterlinearWords": "В этой выборке не найдено подстрочных слов.",
+    "textInReference": "Текст в {reference}"
+  },
+  "studyPanels": {
+    "title": "Панель изучения",
+    "compareWith": "Сравнение с {translation}",
+    "directionInterlinear": "{direction} подстрочник",
+    "commentaryName": "Комментарий {commentary}",
+    "notes": "Примечания",
+    "noNotes": "Заметки не найдены",
+    "notesDescription": "Просматривайте свои заметки в видимых стихах."
+  },
+  "bookmarks": {
+    "create": "Создать закладку",
+    "manage": "Управление закладками",
+    "stopFollowing": "Открепить",
+    "stopFollowingDescription": "Не перемещать эту закладку вслед за текущей главой.",
+    "edit": "Изменить закладку",
+    "delete": "Удалить закладку",
+    "deleteConfirmation": "Вы уверены, что хотите удалить эту закладку?",
+    "deleteNamedConfirmation": "Вы уверены, что хотите удалить «{name}»?"
+  },
+  "bookmarkPage": {
+    "title": "Ваши закладки"
+  },
+  "commentaries": {
+    "addRemove": "Добавить и удалить комментарии"
+  },
+  "toolbarShortcuts": {
+    "switchBible": "Переключить Библию",
+    "dictionary": "Словарь",
+    "lexicon": "Лексикон",
+    "themeAndLayout": "Тема и макет",
+    "switchBibleDescription": "Переключите перевод Библии.",
+    "dictionaryDescription": "Ищите людей, места и темы в Библейском словаре Истона.",
+    "lexiconDescription": "Изучите оригинальные еврейские и греческие слова с помощью «Лексикона Стронга».",
+    "themeAndLayoutDescription": "Настройте тему и макет Библии."
+  },
+  "labels": {
+    "about": "О приложении",
+    "annotation": "Аннотация",
+    "annotations": "Аннотации",
+    "audioBible": "Аудио Библия",
+    "bible": "Библия",
+    "bibles": "Библии",
+    "biblePlans": "Библейские планы",
+    "bookmarks": "Закладки",
+    "books": "Книги",
+    "color": "Цвет",
+    "commentaries": "Комментарии",
+    "commentary": "Комментарий",
+    "community": "Сообщество",
+    "completed": "Завершено",
+    "crossReferences": "Перекрестные ссылки",
+    "days": "Дни",
+    "dictionary": "Словарь",
+    "discord": "Discord",
+    "duration": "Продолжительность",
+    "following": "Активные",
+    "footnotes": "Сноски",
+    "help": "Помощь",
+    "highlightStyles": "Стили выделения",
+    "instagram": "Инстаграм",
+    "interlinear": "Подстрочный",
+    "language": "Язык",
+    "layout": "Макет",
+    "lexicon": "Лексикон",
+    "licenses": "Лицензии",
+    "locations": "Локации",
+    "name": "Имя",
+    "note": "Примечание",
+    "notebook": "Блокнот",
+    "notebooks": "Блокноты",
+    "notes": "Примечания",
+    "paragraphs": "Абзацы",
+    "resources": "Ресурсы",
+    "scope": "Объем",
+    "search": "Поиск",
+    "selection": "Выбор",
+    "settings": "Настройки",
+    "source": "Источник",
+    "study": "Изучение",
+    "style": "Стиль",
+    "text": "Текст",
+    "toolbar": "Панель инструментов",
+    "toolbars": "Панели инструментов",
+    "type": "Тип",
+    "version": "Версия",
+    "visibility": "Видимость"
+  },
+  "strongSheet": {
+    "interlinearWord": "Подстрочное слово",
+    "lexicon": "Лексикон",
+    "legend": "Легенда",
+    "openInSearch": "Открыть в поиске",
+    "usage": "Использование",
+    "inflected": "измененный",
+    "transliteration": "Транслитерация",
+    "root": "Корень",
+    "strongsId": "Стронга {id}",
+    "rootWord": "Корневое слово",
+    "pronunciation": "Произношение",
+    "strongsDefinition": "Определение Стронга",
+    "biblicalUsage": "Библейское использование",
+    "definition": "Определение",
+    "examples": "Примеры",
+    "examplesPrefix": "Примеры:",
+    "partOfSpeech": "Часть речи",
+    "derivation": "Вывод",
+    "morphology": "Морфология",
+    "relatedTerms": "Связанные термины",
+    "morphologyInfo": "Информация о морфологии",
+    "definitionLegend": "Легенда определения Стронга",
+    "optionalWord": "Необязательное слово",
+    "optionalWordDescription": "Отмечает слово или слог, который может быть дополнен основным словом.",
+    "addedWord": "Добавлено слово на иврите или греческом языке.",
+    "addedWordDescription": "Отмечает слово, включенное в английский перевод, даже если оно отсутствует в иврите или греческом языке.",
+    "explanation": "Объяснение",
+    "renderingExplanation": "Курсив в конце изображения объясняет отличие от обычной формы.",
+    "concordance": "Согласие"
+  },
+  "bibleDetails": {
+    "onlineOnly": "Только онлайн",
+    "onlineDescription": "Эта Библия транслируется с {source}, поэтому для нее требуется подключение к Интернету.",
+    "studyBible": "Учебная Библия",
+    "audioBible": "Аудио Библия",
+    "onDevice": "На устройстве",
+    "onDeviceDescription": "Эта Библия загружена на ваше устройство, поэтому вы можете искать ее и читать в автономном режиме.",
+    "studyBibleDescription": "Включает подстрочные и морфологические данные. Нажмите и удерживайте любое слово во время чтения, чтобы увидеть оригинал на греческом или иврите.",
+    "readingBible": "Библия для чтения",
+    "readingBibleDescription": "Не включает подстрочные или морфологические данные.",
+    "nativeHeadings": "Исходные заголовки",
+    "nativeHeadingsDescription": "В эту Библию включены заголовки.",
+    "syntheticHeadings": "Синтетические заголовки",
+    "syntheticHeadingsDescription": "Заголовки синтетически вставлены в эту Библию из BSB.",
+    "noHeadings": "Нет заголовков",
+    "noHeadingsDescription": "В этой Библии нет заголовков.",
+    "audioSupportDescription": "Поддерживает ли эта Библия аудиовоспроизведение.",
+    "redLetters": "Красные буквы",
+    "redLettersDescription": "Поддерживаются ли красные буквы в этой Библии.",
+    "footnotesDescription": "Есть ли в этой Библии сноски.",
+    "paragraphsDescription": "Включает ли эта Библия абзацы.",
+    "addRemoveBibles": "Добавить и удалить Библии",
+    "verseNumbering": "Нумерация стихов"
+  },
+  "emptyStates": {
+    "noCommentaries": "Комментарии не найдены",
+    "noMatchingWords": "Нет подходящих слов",
+    "noMatchingTerms": "Нет соответствующих условий",
+    "noMatchingPlans": "Нет подходящих библейских планов.",
+    "noMatchingAnnotations": "Нет соответствующих аннотаций.",
+    "noSearchResults": "Результаты поиска не найдены",
+    "tryAnotherSearch": "Попробуйте другой поиск",
+    "noCommentariesAdded": "Вы не добавили ни одного комментария.",
+    "noAnnotations": "Вы не создали ни одной аннотации.",
+    "noBookmarks": "Вы не создали ни одной закладки.",
+    "noNotebooks": "Вы не создали ни одного блокнота. Блокноты позволяют систематизировать ваши аннотации.",
+    "noPlans": "Вы пока не выполняете ни одного плана чтения. Найдите один, чтобы начать читать Библию."
+  },
+  "annotationUi": {
+    "yourAnnotations": "Ваши аннотации",
+    "annotate": "Аннотировать",
+    "withNotes": "С примечаниями",
+    "withoutNotes": "Без примечаний",
+    "mostRecent": "Самый последний",
+    "location": "Расположение",
+    "deleteAnnotation": "Удалить аннотацию",
+    "deleteConfirmation": "Вы уверены, что хотите удалить эту аннотацию?",
+    "annotationCount(param=count)": {
+      "one": "{count} аннотация",
+      "few": "{count} аннотации",
+      "many": "{count} аннотаций",
+      "other": "{count} аннотации"
+    },
+    "annotatedTime": "С аннотацией {time}"
+  },
+  "notebookUi": {
+    "yourNotebooks": "Ваши блокноты",
+    "hidden": "Скрытый",
+    "hideDescription": "Скройте аннотации в этом блокноте, чтобы они не появлялись в Библии.",
+    "showDescription": "Покажите аннотации из этой тетради в Библии.",
+    "defaultDescription": "Постоянный блокнот для неназначенных аннотаций.",
+    "create": "Создать блокнот",
+    "edit": "Редактировать блокнот",
+    "delete": "Удалить блокнот",
+    "deleteNamedConfirmation": "Вы уверены, что хотите удалить «{name}»?",
+    "deleteWithAnnotations": "«{name}» имеет {annotations}. Хотите ли вы также удалить их или оставить в блокноте по умолчанию?",
+    "keepInDefault": "Оставить по умолчанию",
+    "deleteAnnotations": "Удалить аннотации"
+  },
+  "highlightStyleUi": {
+    "yourStyles": "Ваши стили выделения",
+    "create": "Создать стиль",
+    "edit": "Редактировать стиль",
+    "duplicate": "У вас уже есть этот стиль",
+    "delete": "Удалить стиль",
+    "deleteNamedConfirmation": "Вы уверены, что хотите удалить «{name}»?",
+    "deleteWithAnnotations": "«{name}» имеет {annotations}. Вы хотите их тоже удалить или оставить?",
+    "keepAnnotations": "Сохранять аннотации",
+    "deleteAnnotations": "Удалить аннотации",
+    "updateAnnotations": "Обновить аннотации",
+    "updateWithAnnotations": "«{name}» имеет {annotations}. Хотите обновить их, чтобы использовать новый стиль, или оставить как есть?",
+    "leaveAsIs": "Оставить как есть",
+    "label": "Название"
+  },
+  "toolbarSettings": {
+    "mainToolbar": "Главная панель инструментов",
+    "verseSelection": "Выбор стиха",
+    "textSelection": "Выбор текста",
+    "shownForMain": "Отображается, когда ничего не выбрано.",
+    "shownForVerses": "Отображается, когда выбран стих.",
+    "shownForText": "Отображается при длительном нажатии текста внутри стихов.",
+    "gestures": "Жесты",
+    "longPress": "Длительное нажатие",
+    "mainLongPressDescription": "Ярлык при длительном нажатии на панель инструментов.",
+    "verseLongPressDescription": "Ярлык при длительном нажатии выбора стиха.",
+    "textLongPressDescription": "Ярлык при длительном нажатии на выделенный текст.",
+    "hideToolbar": "Скрывать",
+    "hideToolbarDescription": "Скройте панель инструментов при прокрутке вниз, чтобы получить захватывающий вид Библии.",
+    "pinToolbar": "Закрепить",
+    "pinToolbarDescription": "Закрепите панель инструментов внизу страницы.",
+    "expandToAnnotation": "Развернуть до аннотации",
+    "expandTextDescription": "Длительное нажатие на аннотированное слово выделяет весь выделенный диапазон.",
+    "expandVerseDescription": "Нажатие на стих выбирает полный аннотированный стих.",
+    "rangeSelection": "Выбор диапазона",
+    "rangeSelectionDescription": "Нажатие на второй стих выбирает все стихи между ним и первым.",
+    "mainShortcut": "Ярлык на главной панели инструментов",
+    "verseShortcut": "Ярлык выбора стиха",
+    "textShortcut": "Ярлык выбора текста"
+  },
+  "themeSettings": {
+    "title": "Тема и макет",
+    "brightness": "Яркость",
+    "font": "Шрифт",
+    "fontSizeSpacing": "Размер шрифта и интервал",
+    "greekFontSizeSpacing": "Размер и интервал греческого шрифта",
+    "hebrewFontSizeSpacing": "Размер и интервал ивритского шрифта",
+    "system": "Система",
+    "systemTextSizeDescription": "Используйте предпочтительный размер текста вашего устройства.",
+    "defaultSizeDescription": "Используйте размер и интервал шрифта по умолчанию.",
+    "redLetters": "Красные буквы",
+    "redLettersDescription": "Покажите слова Иисуса красным цветом.",
+    "sectionHeadings": "Заголовки разделов",
+    "verseNumbers": "Номера стихов",
+    "paragraphsDescription": "Разбейте стихи на абзацы.",
+    "footnotesDescription": "Показывать маркеры сносок внутри текста."
+  },
+  "biblePlans": {
+    "find": "Найдите библейский план",
+    "startPlanQuestion": "Начать план?",
+    "reviewAndReflect": "Обзор и размышление",
+    "startPlan": "Начать план",
+    "stopPlan": "Остановить план",
+    "stopPlanDescription": "Удалите этот план и его ход.",
+    "readEntireChapter": "Читать всю главу",
+    "startNew": "Начать заново",
+    "day": "День {day}",
+    "dayCount(param=count)": {
+      "one": "{count} день",
+      "few": "{count} дня",
+      "many": "{count} дней",
+      "other": "{count} дня"
+    },
+    "stopConfirmation": "Вы уверены, что хотите остановить \"{name}\"? Ваш прогресс будет потерян.",
+    "completed": "«{name}» завершено.",
+    "addPlan": "Добавить библейский план"
+  },
+  "searchUi": {
+    "searchBible": "Поиск в Библии",
+    "startSearch": "Начать поиск",
+    "searchPrompt": "Введите ключевое слово, например свет, слово или мудрость, затем нажмите Enter на клавиатуре.",
+    "usingTranslation": "Использование {translation} для поиска",
+    "unsupportedTranslation": "{translation} в настоящее время не поддерживает поиск. Вместо этого используйте самую последнюю Учебную Библию.",
+    "wordOrPhraseHint": "Поиск слова или фразы",
+    "wordHint": "Поиск слова",
+    "strongNumberHint": "Найдите номер Стронга (например, H125)"
+  },
+  "onboarding": {
+    "skipQuestion": "Пропустить адаптацию?",
+    "skipConfirmation": "Вы уверены, что хотите пропустить знакомство с приложением? Его можно запустить снова в разделе «Настройки» > «Справка».",
+    "getStarted": "Начать",
+    "learnLux": "Узнайте, как использовать Lux",
+    "checklistDescription": "Заполните контрольный список ниже, чтобы узнать, как использовать Lux.",
+    "skipHint": "Торопитесь? Нажмите ✕, чтобы пропустить."
+  },
+  "tutorials": {
+    "dontShowAgain": "Больше не показывать"
+  },
+  "audio": {
+    "timer": "Аудио Таймер",
+    "fiveMinutes": "5 минут",
+    "tenMinutes": "10 минут",
+    "fifteenMinutes": "15 минут",
+    "thirtyMinutes": "30 минут",
+    "oneHour": "1 час",
+    "loadError": "Не удалось загрузить аудио",
+    "connectionError": "Проверьте подключение к Интернету или повторите попытку позже.",
+    "unavailable": "Звук для этой Библии недоступен.",
+    "chooseBible": "Чтобы прослушать эту главу, выберите Библию с аудиозаписью.",
+    "notificationChannelName": "Аудио воспроизведение Библии",
+    "notificationChannelDescription": "Элементы управления воспроизведением аудио Библии"
+  },
+  "interlinearUi": {
+    "interlinearBible": "Подстрочная Библия",
+    "direction": "Направление подстрочника",
+    "reverse": "Обратное",
+    "forward": "Вперед",
+    "reverseDescription": "Слова появляются в английском порядке чтения.",
+    "forwardDescription": "Слова появляются в исходном еврейском или греческом порядке.",
+    "studyBibleExplanation": "Учебные Библии составлены с использованием дословных тегов Стронга и морфологических тегов, что делает возможной подстрочную лексическую разбивку. Вместо этого используйте самую последнюю Учебную Библию.",
+    "usingTranslation": "Использование {translation} для подстрочного текста"
+  },
+  "chapterUnavailable": {
+    "title": "{selectedTranslation} не включает {testament}.",
+    "subtitle": "Показываем вашу последнюю {testament} Библию, {fallbackTranslation}."
+  },
+  "verseNumbering": {
+    "referenceLabel": "{translation} {reference}",
+    "explanation": "{translation} нумерует главы и стихи иначе, чем в большинстве английских переводов.\n\nТекст, показанный здесь в {reference}, взят из {originalReference} в {translation} и переназначен, чтобы соответствовать другим переводам."
+  },
+  "compare": {
+    "unavailable": "{translation} не включает этот выбор."
+  },
+  "commentaryUi": {
+    "introTo": "Знакомство с {book}"
+  },
+  "searchLocations": {
+    "currentBook": "Текущая книга",
+    "testaments": "Заветы",
+    "books": "Книги"
+  },
+  "themeOptions": {
+    "auto": "Авто",
+    "light": "Светлая",
+    "dark": "Тёмная",
+    "extraTiny": "Очень мелкий",
+    "tiny": "Мелкий",
+    "small": "Маленький",
+    "standard": "Стандартный",
+    "large": "Большой",
+    "huge": "Огромный",
+    "extraHuge": "Очень крупный",
+    "nativeAndSynthetic": "Исходные и добавленные",
+    "native": "Исходные",
+    "none": "Нет",
+    "allHeadingsDescription": "Покажите заголовки в переводах, которые их поддерживают, и синтетически вставляйте заголовки разделов BSB в английские переводы без них изначально.",
+    "nativeHeadingsDescription": "Показывать заголовки в переводах, которые их поддерживают.",
+    "noHeadingsDescription": "Не показывать заголовки разделов"
+  },
+  "toolbarPresets": {
+    "reader": "Читатель",
+    "noteTaker": "Блокнот",
+    "studier": "Студент",
+    "readerDescription": "Настроен для чтения без отвлекающих факторов и быстрой навигации.",
+    "noteTakerDescription": "Настроен для выделения и создания заметок.",
+    "studierDescription": "Настроен на перекрестные ссылки, комментарии и глубокое изучение."
+  },
+  "commentaryTypes": {
+    "matthewHenryDescription": "Краткий, религиозный комментарий ко всей Библии пуританской традиции. Теплый, практичный и легко читаемый.",
+    "jamiesonFaussetBrownDescription": "Компактный, поэтапный комментарий ко всей Библии. Сбалансированный и доступный.",
+    "calvinDescription": "Классическое изложение реформатора. Глубокий и доктринальный."
+  },
+  "strongDefinition": {
+    "addedLabel": "добавлен:",
+    "idiomLabel": "идиома:",
+    "addedWord": "Добавлено слово",
+    "idiomaticRendering": "Идиоматический рендеринг",
+    "addedWordDescription": "Отмечает слово, указанное рядом с определяемым еврейским или греческим словом.",
+    "idiomaticRenderingDescription": "Отмечает перевод, который отражает выражение, характерное для иврита или греческого языка."
+  },
+  "planTypes": {
+    "throughTheBible": "Через Библию",
+    "chronological": "Один год в хронологическом порядке",
+    "oldAndNewTestament": "Ветхий и Новый Завет",
+    "everyDayInTheWord": "Каждый день в слове",
+    "mcheyne": "М'Чейн",
+    "literaryStudy": "Литературное исследование",
+    "differentTopics": "Разные темы",
+    "newTestamentPsalmsProverbs": "Новый Завет, Псалмы и Притчи",
+    "fiveByFiveByFive": "5x5x5 Новый Завет",
+    "gospelsAndEpistles": "Евангелие и послания",
+    "pentateuchAndHistory": "Пятикнижие и история Израиля",
+    "chroniclesAndProphets": "Летописи и Пророки",
+    "psalmsAndWisdom": "Псалмы и литература мудрости",
+    "mcheyneDescription": "Классический план с четырьмя короткими чтениями в день. Вы читаете Ветхий Завет один раз, а Новый Завет и Псалмы — два раза в год.",
+    "chronologicalDescription": "Прочитайте всю Библию за год, расположив ее в том порядке, в котором события действительно произошли.",
+    "throughTheBibleDescription": "Прочтите всю Библию за год, от Бытия до Откровения.",
+    "gospelsAndEpistlesDescription": "Проведите год в Новом Завете, путешествуя по Евангелиям и посланиям апостолов.",
+    "everyDayInTheWordDescription": "Четыре чтения в день Ветхого Завета, Нового Завета, Псалмов и Притчей, охватывающих всю Библию за год, плюс Псалмы и Притчи дважды.",
+    "literaryStudyDescription": "Изучите Библию в течение года, сгруппированную по литературным стилям, проходя через рассказы, поэзию и письма.",
+    "chroniclesAndProphetsDescription": "Год, в котором история Хроник сочетается с посланиями Пророков.",
+    "pentateuchAndHistoryDescription": "Путешествие по пяти книгам Моисея и истории Израиля за год.",
+    "psalmsAndWisdomDescription": "Проведите год за чтением псалмов и книг мудрости, таких как Притчи, Иов и Экклезиаст.",
+    "oldAndNewTestamentDescription": "Читайте вместе Ветхий и Новый Заветы, каждый день по отрывку из каждого.",
+    "differentTopicsDescription": "Каждый день просматривайте разные разделы Священного Писания, исследуя каждую книгу Библии в течение года.",
+    "newTestamentPsalmsProverbsDescription": "Читайте Новый Завет вместе с Псалмами и Притчами в течение года.",
+    "fiveByFiveByFiveDescription": "Читайте по одной главе Нового Завета в день, пять дней в неделю, а затем два дня для повторения и размышления.",
+    "oldScopeDescription": "Читает книги Ветхого Завета.",
+    "newScopeDescription": "Читает книги Нового Завета.",
+    "wholeScopeDescription": "Читает как Ветхий, так и Новый Завет.",
+    "focused": "Сосредоточенный",
+    "comprehensive": "Всесторонний",
+    "focusedDescription": "Охватывает определенный раздел или коллекцию в пределах своей области действия.",
+    "comprehensiveDescription": "Охватывает каждую книгу в пределах своей компетенции."
+  },
+  "onboardingSteps": {
+    "viewCrossReferences": "Просмотр перекрестных ссылок",
+    "annotateVerse": "Комментировать стих",
+    "searchWord": "Поиск слова",
+    "switchBible": "Переключите свою Библию",
+    "navigateChapter": "Перейти в другую главу",
+    "goBack": "Возвращаться",
+    "swipeChapter": "Проведите пальцем по экрану, чтобы изменить главу",
+    "addStudyPanel": "Добавить панель исследований",
+    "customizeToolbar": "Настройте свои панели инструментов",
+    "startBiblePlan": "Начать библейский план",
+    "selectVerse": "Коснитесь стиха, чтобы выбрать его.",
+    "selectWord": "Длительное нажатие слова",
+    "deselectPrefix": "Нажмите",
+    "deselectSuffix": "рядом с вашим выбором, чтобы отменить выбор",
+    "revealToolbar": "Прокрутите вверх, чтобы открыть главную панель инструментов.",
+    "addPanelPrefix": "Нажмите",
+    "addPanelSuffix": "→ Добавить исследовательскую панель и добавить любую исследовательскую панель.",
+    "goToChapter": "Перейти в другую главу",
+    "openPrefix": "Открыть",
+    "crossReferencesSuffix": "→ Исследование → Перекрестные ссылки",
+    "annotatePrefix": "Нажмите",
+    "annotateSuffix": "выделить или добавить заметку",
+    "searchPrefix": "Нажмите",
+    "searchSuffix": "искать это слово повсюду",
+    "switchBibleDescription": "Коснитесь главной панели инструментов → {translation}, чтобы переключить Библию.",
+    "goToChapterDescription": "Коснитесь главной панели инструментов, чтобы перейти к другой главе.",
+    "goBackDescription": "Проведите пальцем вправо по панели инструментов, чтобы вернуться назад.",
+    "swipeChapterDescription": "Проведите по Библии влево или вправо, чтобы изменить главу.",
+    "viewPanelDescription": "Проведите пальцем по этой панели вправо, чтобы просмотреть панель исследования.",
+    "settingsSeparator": "→",
+    "customizeToolbarSuffix": "> Панели инструментов и выберите предустановку панели инструментов или измените любые ярлыки панели инструментов.",
+    "startPlanSuffix": "→ Библейские планы и начните любой библейский план"
+  },
+  "dictionary": {
+    "eastons": "Библейский словарь Истона"
+  },
+  "navigation": {
+    "recents": "Недавние",
+    "navigate": "Навигация",
+    "book": "Книга",
+    "chapter": "Глава"
+  },
+  "selectionUi": {
+    "selected": "Выбрано:",
+    "sourceApiBible": "Источник: [https://api.bible](https://api.bible)."
+  },
+  "errors": {
+    "deviceVerificationFailed": "Проверка устройства не удалась",
+    "deviceVerificationDescription": "Для доступа к этой онлайн-Библии требуется действующее устройство и законная установка Lux. Убедитесь, что вы установили Lux из официального магазина приложений, а затем повторите попытку.",
+    "generic": "Что-то пошло не так",
+    "connection": "Проверьте подключение к Интернету или повторите попытку позже."
+  },
+  "morphology": {
+    "attributes": {
+      "type": {
+        "name": "Тип",
+        "description": "Грамматическая категория слова."
+      },
+      "grammaticalCase": {
+        "name": "Падеж",
+        "description": "Синтаксическая роль, такая как субъект, объект или владение."
+      },
+      "gender": {
+        "name": "Род",
+        "description": "Грамматический род: мужской, женский, средний (греческий) или общий (иврит)."
+      },
+      "number": {
+        "name": "Число",
+        "description": "Относится ли слово к одному (единственное число), двум (двойственное) или многим (множественное число)."
+      },
+      "person": {
+        "name": "Лицо",
+        "description": "К кому относится это слово: 1-й (я/мы), 2-й (вы) или 3-й (он/она/оно/они)."
+      },
+      "state": {
+        "name": "Состояние",
+        "description": "Состояние существительного: абсолютное, конструктное или определенное."
+      },
+      "tense": {
+        "name": "Время",
+        "description": "Глагол – время, сочетающее в себе время и вид."
+      },
+      "mood": {
+        "name": "Наклонение",
+        "description": "Как выражается действие, например факт, команда или возможность."
+      },
+      "voice": {
+        "name": "Залог",
+        "description": "Голос: активный, средний или пассивный."
+      },
+      "degree": {
+        "name": "Степень",
+        "description": "Степень прилагательного или наречия: положительная, сравнительная или превосходная степень."
+      },
+      "stem": {
+        "name": "Корень",
+        "description": "Основа глагола (биньян), например qal, niphal или piel."
+      },
+      "aspect": {
+        "name": "Аспект",
+        "description": "Вид глагола, например совершенный, несовершенный или причастие."
+      },
+      "prefix": {
+        "name": "Префикс",
+        "description": "Еврейская буква-предлог с префиксом."
+      },
+      "particle": {
+        "name": "Частица",
+        "description": "Небольшое неизменяемое слово, часто союз или маркер."
+      },
+      "code": {
+        "name": "Код",
+        "description": "Необработанный код морфологии в том виде, в каком он представлен в исходном тексте."
+      }
+    },
+    "types": {
+      "article": {
+        "name": "Артикль",
+        "description": "Определенный артикль «the».",
+        "examples": "король | Господь"
+      },
+      "conjunction": {
+        "name": "Союз",
+        "description": "Слово, которое объединяет другие слова или предложения.",
+        "examples": "и|но|для"
+      },
+      "preposition": {
+        "name": "Предлог",
+        "description": "Связывает существительное или местоимение с другими словами.",
+        "examples": "в|в|с"
+      },
+      "adverb": {
+        "name": "Наречие",
+        "description": "Изменяет глагол, прилагательное или другое наречие.",
+        "examples": "быстро|сейчас|там"
+      },
+      "negativeAdverb": {
+        "name": "Отрицательное наречие",
+        "description": "Наречие, выражающее отрицание.",
+        "examples": "нет|никогда"
+      },
+      "adjective": {
+        "name": "Прилагательное",
+        "description": "Слово, описывающее существительное.",
+        "examples": "великий|святой|мудрый"
+      },
+      "noun": {
+        "name": "Существительное",
+        "description": "Человек, место, вещь или идея.",
+        "examples": "город|вода|любовь"
+      },
+      "properNoun": {
+        "name": "Имя собственное",
+        "description": "Конкретное имя человека, места или предмета.",
+        "examples": "Давид|Иерусалим|Израиль"
+      },
+      "number": {
+        "name": "Число",
+        "description": "Кардинальное число.",
+        "examples": "три|двенадцать|тысячи"
+      },
+      "ordinalNumber": {
+        "name": "Порядковый номер",
+        "description": "Порядковый номер, например «первый» или «второй».",
+        "examples": "первый|десятый|семидесятый"
+      },
+      "pronoun": {
+        "name": "Местоимение",
+        "description": "Слово, заменяющее существительное.",
+        "examples": "он|она|они"
+      },
+      "personalPronoun": {
+        "name": "Личное местоимение",
+        "description": "Местоимение, обозначающее конкретного человека.",
+        "examples": "я|ты|мы"
+      },
+      "demonstrativePronoun": {
+        "name": "Указательное местоимение",
+        "description": "Местоимение, указывающее на что-либо.",
+        "examples": "это|эти|те"
+      },
+      "interrogativePronoun": {
+        "name": "Вопросительное местоимение",
+        "description": "Местоимение, используемое для задания вопроса.",
+        "examples": "кто?|что?|что?"
+      },
+      "indefinitePronoun": {
+        "name": "Неопределённое местоимение",
+        "description": "Местоимение, обозначающее неспецифические сущности.",
+        "examples": "кто-то|кто-то|ничего"
+      },
+      "reciprocalPronoun": {
+        "name": "Взаимное местоимение",
+        "description": "Местоимение, выражающее взаимное действие.",
+        "examples": "друг друга | друг друга"
+      },
+      "reflexivePronoun": {
+        "name": "Возвратное местоимение",
+        "description": "Местоимение, возвращающее к предмету.",
+        "examples": "сам|сами"
+      },
+      "relativePronoun": {
+        "name": "Относительное местоимение",
+        "description": "Местоимение, вводящее придаточное предложение.",
+        "examples": "кто|который|что"
+      },
+      "particle": {
+        "name": "Частица",
+        "description": "Небольшое неизменяемое слово.",
+        "examples": "действительно|сейчас"
+      },
+      "negativeParticle": {
+        "name": "Отрицательная частица",
+        "description": "Частица, обозначающая отрицание.",
+        "examples": "нет|нет"
+      },
+      "interrogativeParticle": {
+        "name": "Вопросительная частица",
+        "description": "Частица, обозначающая вопрос.",
+        "examples": "(префикс на иврите ה, английского эквивалента нет)"
+      },
+      "demonstrativeParticle": {
+        "name": "Демонстративная частица",
+        "description": "Указательная частица, например «вот».",
+        "examples": "вот | вот"
+      },
+      "genericParticle": {
+        "name": "Родовая частица",
+        "description": "Частица общего назначения.",
+        "examples": "действительно | действительно"
+      },
+      "relativeParticle": {
+        "name": "Относительная частица",
+        "description": "Частица, вводящая придаточное предложение.",
+        "examples": "то, что | что"
+      },
+      "verb": {
+        "name": "Глагол",
+        "description": "Слово, выражающее действие или состояние.",
+        "examples": "писать|быть|идти"
+      },
+      "pronominalSuffix": {
+        "name": "Местоименный суффикс",
+        "description": "Местоимение, слитое с окончанием глагола или существительного (иврит).",
+        "examples": "его рука|их земля|ее голос"
+      },
+      "directObjectMarker": {
+        "name": "Прямой маркер объекта",
+        "description": "Еврейское אֵת, обозначающее определенный прямой объект.",
+        "examples": "אֵת (нет английского эквивалента)"
+      },
+      "punctuation": {
+        "name": "Пунктуация",
+        "description": "Знак препинания.",
+        "examples": ".|,|;"
+      },
+      "interjection": {
+        "name": "Междометие",
+        "description": "Короткое восклицание, выражающее эмоции.",
+        "examples": "о!|увы!"
+      },
+      "indeclinable": {
+        "name": "Несклоняемый",
+        "description": "Слово, не меняющее форму при изменении.",
+        "examples": "Осанна|Аллилуйя"
+      },
+      "hebraism": {
+        "name": "заимствованное слово на иврите",
+        "description": "Заимствованное слово из иврита или арамейского языка, перенесенное в греческий язык.",
+        "examples": "Аминь|Осанна|Саваоф"
+      },
+      "unknown": {
+        "name": "Неизвестный",
+        "description": "Морфологический код, который не распознан синтаксическим анализатором.",
+        "examples": ""
+      }
+    },
+    "person": {
+      "first": {
+        "name": "1-й человек",
+        "description": "Говорящий: «Я» или «мы».",
+        "examples": "Я|мы идем|я говорил"
+      },
+      "second": {
+        "name": "2-й человек",
+        "description": "Адресат, «вы» (единственное или множественное число).",
+        "examples": "ты идешь|вы (мн.) слушаете|вы видели"
+      },
+      "third": {
+        "name": "3-е лицо",
+        "description": "Вечеринка, о которой идет речь.",
+        "examples": "он бежит|она говорит|они собрались"
+      }
+    },
+    "gender": {
+      "masculine": {
+        "name": "Мужской род",
+        "description": "Мужской грамматический род, по традиции используется для лиц мужского пола и многих существительных.",
+        "examples": "отец|сын|король"
+      },
+      "feminine": {
+        "name": "Женственный",
+        "description": "Женский грамматический род, по традиции используется для обозначения лиц женского пола и многих существительных.",
+        "examples": "мать|дочь|королева"
+      },
+      "neuter": {
+        "name": "Средний",
+        "description": "Греческий средний род, ни мужской, ни женский.",
+        "examples": "ребенок (τέκνον)|подарок (δῶρον)"
+      },
+      "common": {
+        "name": "Общий",
+        "description": "Общий род в иврите, где форма служит как мужскому, так и женскому роду.",
+        "examples": "крупный рогатый скот|голос"
+      }
+    },
+    "number": {
+      "singular": {
+        "name": "Единственное число",
+        "description": "Относится к одному.",
+        "examples": "книга|мужчина|один камень"
+      },
+      "plural": {
+        "name": "Множественное число",
+        "description": "Относится к двум и более.",
+        "examples": "книги|мужчины|камни"
+      },
+      "dual": {
+        "name": "Двойной",
+        "description": "Относится к натуральной паре (только на иврите).",
+        "examples": "руки|глаза|два дня"
+      }
+    },
+    "case": {
+      "nominative": {
+        "name": "Именительный падеж",
+        "description": "Обозначает подлежащее предложения.",
+        "examples": "Бог создал|царь видит"
+      },
+      "genitive": {
+        "name": "Родительный падеж",
+        "description": "Указывает на владение или происхождение, часто переводится как «из».",
+        "examples": "Сын Божий|Царство Небесное"
+      },
+      "dative": {
+        "name": "Дательный падеж",
+        "description": "Обозначает косвенный объект, часто «кому» или «за».",
+        "examples": "дал ему | поговорил с ними"
+      },
+      "accusative": {
+        "name": "Винительный падеж",
+        "description": "Отмечает прямой объект.",
+        "examples": "видел его|люби своего соседа"
+      },
+      "vocative": {
+        "name": "Звательный падеж",
+        "description": "Используется по прямому адресу.",
+        "examples": "Господи!|Отец!|Друг!"
+      }
+    },
+    "state": {
+      "absolute": {
+        "name": "Абсолютный",
+        "description": "Независимая форма существительного по умолчанию.",
+        "examples": "король | слово"
+      },
+      "construct": {
+        "name": "Построить",
+        "description": "Связан со следующим существительным, выражающим «X из Y».",
+        "examples": "царь Израиля | слово Господне"
+      },
+      "determined": {
+        "name": "Определенный",
+        "description": "Помечено как определенное, часто по артиклю.",
+        "examples": "король|слово"
+      }
+    },
+    "stem": {
+      "qal": {
+        "name": "Кал",
+        "description": "Простая активная основа, основное действие глагола.",
+        "examples": "он написал|она услышала"
+      },
+      "qalPassive": {
+        "name": "Кал пассивный",
+        "description": "Редкий пассив простой основы.",
+        "examples": "это было принято"
+      },
+      "niphal": {
+        "name": "Нифаль",
+        "description": "Простая пассивная или рефлексивная основа.",
+        "examples": "его убили|они собрались сами"
+      },
+      "piel": {
+        "name": "Пиль",
+        "description": "Интенсивная или фактивная активная основа.",
+        "examples": "он похвалил|он благословил|он разбил"
+      },
+      "pual": {
+        "name": "Пуал",
+        "description": "Пассив пиеля.",
+        "examples": "его хвалили"
+      },
+      "hiphil": {
+        "name": "Хифил",
+        "description": "Причинно-активная основа.",
+        "examples": "он заставил написать|он вывел"
+      },
+      "hophal": {
+        "name": "Хофал",
+        "description": "Пассив Хифила.",
+        "examples": "его заставили написать"
+      },
+      "hithpael": {
+        "name": "Хитпаэль",
+        "description": "Рефлекторный или реципрокный пилель.",
+        "examples": "он освятил себя | они гуляли"
+      },
+      "nithpael": {
+        "name": "Нитпаэль",
+        "description": "Редкий рефлексивно-пассивный стебель.",
+        "examples": "это было искуплено"
+      }
+    },
+    "aspect": {
+      "perfect": {
+        "name": "Совершенный вид",
+        "description": "Завершенное действие обычно переводится как прошлое.",
+        "examples": "он написал|она говорила"
+      },
+      "imperfect": {
+        "name": "Несовершенный",
+        "description": "Незавершенное или будущее действие, часто переводится как будущее или привычное.",
+        "examples": "он напишет | он напишет"
+      },
+      "imperative": {
+        "name": "Императив",
+        "description": "Прямой приказ.",
+        "examples": "Пишите!|Слушайте!"
+      },
+      "infinitiveConstruct": {
+        "name": "Инфинитивная конструкция",
+        "description": "Отглагольное существительное в форме конструкции, часто употребляемое с предлогами.",
+        "examples": "писать | когда пишешь"
+      },
+      "infinitiveAbsolute": {
+        "name": "Инфинитив абсолютный",
+        "description": "Самостоятельное отглагольное существительное, часто эмфатическое.",
+        "examples": "обязательно умру|напиши тщательно"
+      },
+      "participle": {
+        "name": "Причастие",
+        "description": "Глагольное прилагательное, описывающее продолжающееся действие.",
+        "examples": "пишу|тот, кто слышит"
+      },
+      "consecutiveImperfect": {
+        "name": "Последовательный несовершенный",
+        "description": "Форма прошедшего повествования: waw + несовершенный.",
+        "examples": "и он сказал|и они пошли"
+      },
+      "conjunctiveImperfect": {
+        "name": "Союзный имперфект",
+        "description": "Несовершенный вид с союзным союзом waw, с будущим или модальным значением.",
+        "examples": "и он напишет"
+      },
+      "conjunctivePerfect": {
+        "name": "Союзный совершенный",
+        "description": "Идеально сочетается с союзным союзом waw, часто будущим или последовательным.",
+        "examples": "и ты сделаешь, и он будет судить"
+      },
+      "passiveParticiple": {
+        "name": "Пассивное причастие",
+        "description": "Пассивная форма причастия qal.",
+        "examples": "написано|сохранено"
+      }
+    },
+    "hebrewMood": {
+      "jussive": {
+        "name": "Юссив",
+        "description": "Команда или желание от третьего лица.",
+        "examples": "Да будет свет|Да благословит тебя Господь"
+      },
+      "cohortative": {
+        "name": "когортативный",
+        "description": "Волевой глагол от 1-го лица, например «давайте» или «я буду».",
+        "examples": "Пойдём|Я похвалю"
+      },
+      "hSuffix": {
+        "name": "h-суффикс",
+        "description": "Упорное -ah, оканчивающееся на несовершенном, часто похожем на когортативное.",
+        "examples": "Я обязательно приду|позволь мне приблизиться"
+      }
+    },
+    "tense": {
+      "present": {
+        "name": "Настоящее",
+        "description": "Текущее или общее действие.",
+        "examples": "он любит|они гуляют"
+      },
+      "imperfect": {
+        "name": "Несовершенный",
+        "description": "Непрерывное или повторяющееся действие в прошлом.",
+        "examples": "он преподавал|они собирались"
+      },
+      "future": {
+        "name": "Будущее",
+        "description": "Действие, которое произойдет.",
+        "examples": "он придет|они увидят"
+      },
+      "aorist": {
+        "name": "Аорист",
+        "description": "Простое прошедшее действие, рассматриваемое в целом.",
+        "examples": "он сказал|они пошли"
+      },
+      "perfect": {
+        "name": "Перфект",
+        "description": "Прошлое действие с продолжающимися последствиями в настоящем.",
+        "examples": "было написано | пришло"
+      },
+      "pluperfect": {
+        "name": "Плюперфект",
+        "description": "Прошлое действие, предшествовавшее другому прошлому событию.",
+        "examples": "было написано|ушло"
+      }
+    },
+    "mood": {
+      "indicative": {
+        "name": "Изъявительное",
+        "description": "Констатирует факт.",
+        "examples": "он | они написали"
+      },
+      "imperative": {
+        "name": "Императив",
+        "description": "Выдает команду.",
+        "examples": "Идите!|Верьте!|Не бойтесь!"
+      },
+      "subjunctive": {
+        "name": "Сослагательное наклонение",
+        "description": "Выражает возможность, цель или непредвиденное обстоятельство.",
+        "examples": "что он мог бы написать|если пойдёт"
+      },
+      "optative": {
+        "name": "Оптатив",
+        "description": "Выражает желание или отдаленную возможность.",
+        "examples": "да будет так | да будет тебе милость"
+      },
+      "infinitive": {
+        "name": "инфинитив",
+        "description": "Отглагольное существительное, например «делать».",
+        "examples": "писать|верить"
+      },
+      "participle": {
+        "name": "Причастие",
+        "description": "Отглагольное прилагательное, например «делать» или «сделать».",
+        "examples": "тот, кто пишет|говорит"
+      }
+    },
+    "voice": {
+      "active": {
+        "name": "Активный",
+        "description": "Субъект выполняет действие.",
+        "examples": "он пишет|они учат"
+      },
+      "middle": {
+        "name": "Средний",
+        "description": "Субъект действует сам по себе или для себя.",
+        "examples": "он моется|они достали себе"
+      },
+      "passive": {
+        "name": "Пассивный",
+        "description": "Субъект получает действие.",
+        "examples": "его послали|их научили"
+      },
+      "middleOrPassive": {
+        "name": "Средний/Пассивный",
+        "description": "Форма неоднозначна между средней и пассивной.",
+        "examples": "был поднят / поднял сам | был собран / собрался сам"
+      }
+    },
+    "degree": {
+      "positive": {
+        "name": "Позитивный",
+        "description": "Простая форма, ни сравнительная, ни превосходная степень.",
+        "examples": "отлично|хорошо"
+      },
+      "comparative": {
+        "name": "Сравнительный",
+        "description": "Сравнивает двоих.",
+        "examples": "больше | лучше, чем"
+      },
+      "superlative": {
+        "name": "превосходная степень",
+        "description": "Выражает наибольшую степень.",
+        "examples": "величайший|лучший"
+      }
+    },
+    "literals": {
+      "rawCode": "Необработанный код морфологии в том виде, в котором он указан в исходном коде.",
+      "waw": "Еврейский союз вау (וְ) означает «и».",
+      "conjunction": "Маркер соединения.",
+      "bet": "Префикс-префикс на иврите (בְּ), означающий «в», «в» или «с».",
+      "kaf": "Еврейский префикс-предлог каф (כְּ), означающий «как» или «подобно».",
+      "lamed": "Еврейский префикс-предлог ламед (לְ), означающий «кому», «для» или «принадлежащий».",
+      "mem": "Еврейский префикс-предлог мем (מִן), означающий «из» или «из».",
+      "preposition": "Префиксная буква-предлог.",
+      "wawExamples": "и|сейчас|но",
+      "betExamples": "вначале|с силой",
+      "kafExamples": "как лев|как пастух",
+      "lamedExamples": "Давиду|за царя",
+      "memExamples": "из Египта|из земли"
+    }
+  },
+  "settings": {
+    "title": "Настройки",
+    "customize": "Настроить",
+    "language": "Язык",
+    "system": "Система",
+    "systemLanguageDescription": "Использовать язык системы.",
+    "toolbarPresets": "Наборы панелей инструментов",
+    "toolbarPreset": "Набор панели инструментов",
+    "presetWarning": "Выбор набора заменит ярлыки на всех панелях инструментов.",
+    "yourContent": "Ваш контент",
+    "discussionAndAnnouncements": "Обсуждение и анонсы",
+    "tipsAndUpdates": "Советы и обновления",
+    "supportLux": "Поддержать Lux",
+    "rateLux": "Оценить Lux",
+    "leaveReview": "Оставить отзыв в App Store.",
+    "supportMessage": "Lux создан с убеждением, что Священное Писание должно быть доступно каждому. Лучший способ поддержать Lux — оставить отзыв в App Store.\n\nЕсли что-то мешает вам поставить 5 звёзд, присоединитесь к нашему Discord и расскажите об этом, чтобы мы могли быстро решить проблему.",
+    "leaveRating": "Оставить оценку",
+    "joinDiscord": "Присоединиться к Discord",
+    "restartGetStarted": "Начать знакомство заново",
+    "restartGetStartedDescription": "Снова показать контрольный список знакомства с приложением.",
+    "resetTutorials": "Сбросить подсказки",
+    "resetTutorialsDescription": "Снова показывать полезные подсказки в приложении.",
+    "tutorialsReset": "Подсказки сброшены."
+  }
+}

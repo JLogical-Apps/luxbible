@@ -6,8 +6,8 @@ Before making product-facing changes to Lux Bible, read `context/README.md`, the
 - Current user-facing behavior: `context/bible/features.md`
 - Architecture, data, and platform constraints: `context/bible/technical.md`
 - Exploratory future work: `context/bible/roadmap.md`
-- Pending App Store metadata and copy: `context/bible/appstore.md`
-- Pending Google Play metadata and copy: `context/bible/play_store.md`
+- Pending App Store metadata and copy: `context/bible/appstore/`
+- Pending Google Play metadata and copy: `context/bible/play_store/`
 
 Treat the current source code as authoritative for implementation details. The context describes the intended product behavior of the upcoming release, which can include completed work that has not reached the public stores yet.
 

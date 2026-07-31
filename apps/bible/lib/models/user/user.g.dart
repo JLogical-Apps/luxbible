@@ -290,4 +290,5 @@ const _$BiblePlanTypeEnumMap = {
 const _$LanguageEnumMap = {
   Language.english: 'english',
   Language.dutch: 'dutch',
+  Language.russian: 'russian',
 };

@@ -58,3 +58,7 @@ tools/content/python/sword/data/TVTMS.txt
 **/node_modules/
 !**/.dev.vars.example
 !**/.env.example
+
+# Generated store release notes
+context/bible/appstore/changelog/
+context/bible/play_store/changelog.xml

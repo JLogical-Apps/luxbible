@@ -24,6 +24,7 @@ enum BibleTranslation {
   static List<BibleTranslation> defaultsFor(Language language) => switch (language) {
     .english => [bsb, ...values.where((translation) => translation != bsb && translation.language == language)],
     .dutch => [sv, bsb],
+    .russian => [nrt, bsb],
   };
 
   String title() => switch (this) {
