@@ -58,6 +58,7 @@ The following are bundled with the app and work offline:
 - KJV
 - ASV
 - SV
+- NRT
 - LXX
 - TR
 - BYZ
@@ -132,8 +133,8 @@ Capabilities vary by translation:
 - Synthetic BSB headings: KJV, ASV
 - Footnotes: BSB, KJV, ASV, NASB95, NIV, CSB, NLT, NKJV
 - Red letters: BSB, KJV, NASB95, NIV, CSB, NLT, NKJV
-- Native headings: BSB, NASB95, NIV, CSB, NLT, NKJV
-- Paragraph formatting: all except OSHB and SV
+- Native headings: BSB, NRT, NASB95, NIV, CSB, NLT, NKJV
+- Paragraph formatting: all except OSHB, SV, and NRT
 
 ## Study Data Sources
 

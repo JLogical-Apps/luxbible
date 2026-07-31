@@ -99,6 +99,7 @@ class _Translations$languages$nl extends Translations$languages$en {
 	@override String get dutch => 'Nederlands';
 	@override String get greek => 'Grieks';
 	@override String get hebrew => 'Hebreeuws';
+	@override String get russian => 'Russisch';
 }
 
 // Path: highlightStyles
@@ -2636,6 +2637,7 @@ extension on TranslationsNl {
 			'languages.dutch' => 'Nederlands',
 			'languages.greek' => 'Grieks',
 			'languages.hebrew' => 'Hebreeuws',
+			'languages.russian' => 'Russisch',
 			'highlightStyles.red' => 'Rood',
 			'highlightStyles.orange' => 'Oranje',
 			'highlightStyles.yellow' => 'Geel',
@@ -3143,9 +3145,9 @@ extension on TranslationsNl {
 			'planTypes.fiveByFiveByFiveDescription' => 'Lees vijf dagen per week één hoofdstuk uit het Nieuwe Testament, gevolgd door twee dagen om terug te kijken en te overdenken.',
 			'planTypes.oldScopeDescription' => 'Leest uit boeken van het Oude Testament.',
 			'planTypes.newScopeDescription' => 'Leest uit boeken van het Nieuwe Testament.',
-			'planTypes.wholeScopeDescription' => 'Leest uit het Oude en Nieuwe Testament.',
 			_ => null,
 		} ?? switch (path) {
+			'planTypes.wholeScopeDescription' => 'Leest uit het Oude en Nieuwe Testament.',
 			'planTypes.focused' => 'Gericht',
 			'planTypes.comprehensive' => 'Volledig',
 			'planTypes.focusedDescription' => 'Behandelt een specifiek gedeelte of een specifieke verzameling binnen het bereik.',

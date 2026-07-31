@@ -108,6 +108,9 @@ class Translations$languages$en {
 
 	/// en: 'Hebrew'
 	String get hebrew => 'Hebrew';
+
+	/// en: 'Russian'
+	String get russian => 'Russian';
 }
 
 // Path: highlightStyles
@@ -4431,6 +4434,7 @@ extension on Translations {
 			'languages.dutch' => 'Dutch',
 			'languages.greek' => 'Greek',
 			'languages.hebrew' => 'Hebrew',
+			'languages.russian' => 'Russian',
 			'highlightStyles.red' => 'Red',
 			'highlightStyles.orange' => 'Orange',
 			'highlightStyles.yellow' => 'Yellow',
@@ -4938,9 +4942,9 @@ extension on Translations {
 			'planTypes.fiveByFiveByFiveDescription' => 'Read one New Testament chapter a day, five days a week, followed by two days to review and reflect.',
 			'planTypes.oldScopeDescription' => 'Reads from books in the Old Testament.',
 			'planTypes.newScopeDescription' => 'Reads from books in the New Testament.',
-			'planTypes.wholeScopeDescription' => 'Reads from both the Old and New Testaments.',
 			_ => null,
 		} ?? switch (path) {
+			'planTypes.wholeScopeDescription' => 'Reads from both the Old and New Testaments.',
 			'planTypes.focused' => 'Focused',
 			'planTypes.comprehensive' => 'Comprehensive',
 			'planTypes.focusedDescription' => 'Covers a specific section or collection within its scope.',

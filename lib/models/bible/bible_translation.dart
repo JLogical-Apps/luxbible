@@ -18,7 +18,8 @@ enum BibleTranslation {
   byz,
   statresgnt,
   oshb,
-  sv;
+  sv,
+  nrt;
 
   static List<BibleTranslation> defaultsFor(Language language) => switch (language) {
     .english => [bsb, ...values.where((translation) => translation != bsb && translation.language == language)],
@@ -40,6 +41,7 @@ enum BibleTranslation {
     byz => 'BYZ',
     statresgnt => 'SR',
     sv => 'SV',
+    nrt => 'NRT',
   };
 
   String fullName() => switch (this) {
@@ -57,10 +59,11 @@ enum BibleTranslation {
     byz => 'Byzantine Textform 2013',
     statresgnt => 'Statistical Restoration Greek New Testament',
     sv => 'Statenvertaling',
+    nrt => 'New Russian Translation 2010',
   };
 
   BibleTranslationSource get source => switch (this) {
-    bsb || asv || kjv || oshb || lxx || tr || byz || statresgnt || sv => .local,
+    bsb || asv || kjv || oshb || lxx || tr || byz || statresgnt || sv || nrt => .local,
     nasb95 => .youVersion(100),
     niv11 => .youVersion(111),
     csb || nlt || nkjv => .apiBible(),
@@ -70,6 +73,7 @@ enum BibleTranslation {
     lxx || tr || byz || statresgnt => .greek,
     oshb => .hebrew,
     sv => .dutch,
+    nrt => .russian,
     _ => .english,
   };
 
@@ -91,6 +95,7 @@ enum BibleTranslation {
       'The New Testament in the Original Greek: Byzantine Textform 2013\nby Maurice A. Robinson and William G. Pierpont\nCreative Commons: BY-NC-SA 4.0',
     statresgnt =>
       'Statistical Restoration Greek New Testament\nby Alan Bunning, Center for New Testament Restoration\nCreative Commons: BY 4.0',
+    nrt => 'New Russian Translation NRT\nIBS, 2010',
     _ => null,
   };
 
@@ -136,7 +141,7 @@ enum BibleTranslation {
   };
 
   bool get hasNativeHeadings => switch (this) {
-    bsb || nasb95 || niv11 || csb || nlt || nkjv => true,
+    bsb || nasb95 || niv11 || csb || nlt || nkjv || nrt => true,
     _ => false,
   };
 
@@ -151,7 +156,7 @@ enum BibleTranslation {
   };
 
   bool get hasParagraphs => switch (this) {
-    oshb || sv => false,
+    oshb || sv || nrt => false,
     _ => true,
   };
 
@@ -190,13 +195,15 @@ enum BibleLanguage {
   english,
   greek,
   hebrew,
-  dutch;
+  dutch,
+  russian;
 
   String title() => switch (this) {
     english => t.languages.english,
     greek => t.languages.greek,
     hebrew => t.languages.hebrew,
     dutch => t.languages.dutch,
+    russian => t.languages.russian,
   };
 
   Language? get language => switch (this) {
