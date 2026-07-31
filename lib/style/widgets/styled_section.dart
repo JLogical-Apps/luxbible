@@ -38,23 +38,23 @@ class StyledSection extends StatelessWidget {
     SizedBox(height: padding.top),
     Padding(
       padding: .symmetric(horizontal: 16),
-      child: Row(
-        spacing: 8,
-        children: [
-          SizedBox(width: MediaQuery.viewPaddingOf(context).left),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: .start,
-              children: [
-                DefaultTextStyle(style: context.textStyle.headingXs, child: title),
-                if (subtitle case final subtitle?)
-                  DefaultTextStyle(style: context.textStyle.paragraphSm.subtle(), child: subtitle),
-              ],
+      child: Padding(
+        padding: MediaQuery.viewPaddingOf(context).onlyHorizontal,
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: .start,
+                children: [
+                  DefaultTextStyle(style: context.textStyle.headingXs, child: title),
+                  if (subtitle case final subtitle?)
+                    DefaultTextStyle(style: context.textStyle.paragraphSm.subtle(), child: subtitle),
+                ],
+              ),
             ),
-          ),
-          ?trailing,
-          SizedBox(width: MediaQuery.viewPaddingOf(context).right),
-        ],
+            ?trailing,
+          ],
+        ),
       ),
     ),
     gapH12,
