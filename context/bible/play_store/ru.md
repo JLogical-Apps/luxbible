@@ -1,7 +1,7 @@
 # General Info
 
 **App Name**: Lux Bible: Читать и изучать
-**Short Description**: Новый русский перевод офлайн, заметки, аудио, изучение и планы чтения
+**Short Description**: Читайте и изучайте Библию: подстрочник, заметки, аудио и планы чтения
 
 # Full Description
 

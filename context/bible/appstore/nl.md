@@ -1,7 +1,7 @@
 # General Info
 
 **Name**: Lux Bible: Lees, Noteer, Leer
-**Subtitle**: Statenvertaling offline
+**Subtitle**: Lees, noteer en bestudeer
 **Keywords**: bijbel,Statenvertaling,SV,offline,commentaar,audio,woordenboek,zoeken,Grieks,Hebreeuws,Strong
 
 # Description

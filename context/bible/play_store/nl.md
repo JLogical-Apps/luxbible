@@ -1,7 +1,7 @@
 # General Info
 
 **App Name**: Lux Bible: Lees, Noteer, Leer
-**Short Description**: Statenvertaling offline, met notities, audio, studie en leesplannen
+**Short Description**: Lees, noteer en bestudeer de Bijbel met interlineair, audio en leesplannen
 
 # Full Description
 
