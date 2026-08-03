@@ -1,5 +1,5 @@
-import 'package:bible/i18n/strings.g.dart';
-import 'package:bible/utils/markdown.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
 
 enum StrongDefinitionMarker {

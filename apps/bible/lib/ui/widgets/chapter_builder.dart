@@ -1,22 +1,13 @@
-import 'package:bible/models/bible/bible_translation.dart';
-import 'package:bible/models/bible/book_type.dart';
-import 'package:bible/models/bible/chapter.dart';
-import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/user/user.dart';
-import 'package:bible/providers/bibles_provider.dart';
-import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/font_size_spacing_zoom_gesture.dart';
-import 'package:bible/ui/widgets/markdown_builder.dart';
 import 'package:bible/ui/widgets/paragraphs_builder.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
-import 'package:bible/utils/markdown.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:style/style.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ChapterBuilder extends HookConsumerWidget {

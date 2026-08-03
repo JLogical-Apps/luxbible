@@ -1,13 +1,11 @@
+import 'package:lux/lux.dart';
+import 'package:lux/i18n.dart';
+import 'package:flutter/material.dart';
 import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/color_enum.dart';
-import 'package:bible/models/reference/chapter_position.dart';
-import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/style/style.dart';
-import 'package:bible/ui/widgets/selectable_icon.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:port/port.dart';
+import 'package:style/style.dart';
 
 class BookmarkSheet {
   static Future<Bookmark?> show(

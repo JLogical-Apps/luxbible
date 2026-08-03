@@ -1,0 +1,43 @@
+name: style
+description: Shared visual language and Flutter widgets for Lux apps.
+publish_to: none
+version: 0.0.1
+resolution: workspace
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  lux:
+    path: ../lux
+  another_flushbar: ^2.2.4
+  animated_size_and_fade: ^5.1.1
+  collection: ^1.19.1
+  flutter:
+    sdk: flutter
+  flutter_hooks: ^0.21.3+1
+  flutter_slidable: ^4.0.3
+  flutter_sticky_header: ^0.8.0
+  flutter_tailwind_colors: ^0.0.3
+  hooks_riverpod: ^3.3.2
+  intersperse: ^2.0.0
+  material_symbols_icons: ^4.2928.0
+  modal_bottom_sheet: ^3.0.0
+  port:
+    git:
+      url: https://github.com/JLogical-Apps/flood.git
+      ref: 89a170167523e52354afe3646841e28216b9210a
+      path: packages/port/port
+  provider: ^6.1.5+1
+  shimmer: ^3.0.0
+  sticky_headers: ^0.3.0+2
+  utils_core:
+    git:
+      url: https://github.com/JLogical-Apps/flood.git
+      ref: 89a170167523e52354afe3646841e28216b9210a
+      path: packages/utils/utils_core
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter

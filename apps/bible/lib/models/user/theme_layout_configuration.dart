@@ -1,9 +1,7 @@
 import 'dart:math';
 
-import 'package:bible/i18n/strings.g.dart';
-import 'package:bible/models/bible/bible_translation.dart';
-import 'package:bible/models/bible/paragraph.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:lux/lux.dart';
+import 'package:lux/i18n.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'theme_layout_configuration.freezed.dart';

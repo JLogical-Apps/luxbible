@@ -1,15 +1,11 @@
-import 'package:bible/models/bible/bible_translation.dart';
-import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/verse_selection.dart';
-import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/widgets/bible_loading_error.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/font_size_spacing_zoom_gesture.dart';
 import 'package:bible/ui/widgets/paragraphs_builder.dart';
-import 'package:bible/utils/hook_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lux/lux.dart';
 
 class PassageBuilder extends HookConsumerWidget {
   final VerseSelection verseSelection;

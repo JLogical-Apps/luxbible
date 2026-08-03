@@ -1,6 +1,6 @@
 import 'package:bible/models/bible_plan.dart';
-import 'package:bible/style/style.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:style/style.dart';
+import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 

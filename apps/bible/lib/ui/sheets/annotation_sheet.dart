@@ -1,21 +1,19 @@
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/highlight_style.dart';
-import 'package:bible/providers/bibles_provider.dart';
+import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/notebook_icon.dart';
 import 'package:bible/ui/sheets/highlight_style_sheet.dart';
 import 'package:bible/ui/sheets/notebook_sheet.dart';
 import 'package:bible/ui/widgets/highlight_style_icon.dart';
-import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
-import 'package:bible/utils/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:port/port.dart';
+import 'package:style/style.dart';
 
 class AnnotationSheet {
   static Future<Annotation?> show(

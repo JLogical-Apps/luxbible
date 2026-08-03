@@ -1,11 +1,8 @@
-import 'package:bible/models/reference/bible_text_selection.dart';
-import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/verse_selection.dart';
-import 'package:bible/models/user/user.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:bible/models/user/user.dart';
 
 class BibleSelection {
   final ValueNotifier<List<Reference>> referencesState;

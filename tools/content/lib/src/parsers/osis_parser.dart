@@ -1,10 +1,4 @@
-import 'package:bible/models/bible/book.dart';
-import 'package:bible/models/bible/book_type.dart';
-import 'package:bible/models/bible/chapter.dart';
-import 'package:bible/models/bible/paragraph.dart';
-import 'package:bible/models/bible/verse.dart';
-import 'package:bible/models/bible/word.dart';
-import 'package:bible/models/reference/reference.dart';
+import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
 import 'package:xml/xml.dart';
 

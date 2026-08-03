@@ -1,5 +1,5 @@
 import 'package:bible/models/highlight_style.dart';
-import 'package:bible/style/style.dart';
+import 'package:style/style.dart';
 import 'package:flutter/material.dart';
 
 class HighlightStyleIcon extends StatelessWidget {

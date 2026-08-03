@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:bible/models/bible/book_type.dart';
+import 'package:lux/lux.dart';
 import 'package:lux_content_tools/repository_paths.dart';
 
 import 'package:lux_content_tools/src/parsers/usx_parser.dart';

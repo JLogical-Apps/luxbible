@@ -1,6 +1,6 @@
-import 'package:bible/models/cross_references.dart';
-import 'package:bible/models/reference/reference.dart';
+import 'package:lux/lux.dart';
 import 'package:flutter/services.dart';
+import 'package:bible/models/cross_references.dart';
 
 class CrossReferencesImporter {
   Future<CrossReferences> import() async => CrossReferences(

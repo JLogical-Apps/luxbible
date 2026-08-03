@@ -1,10 +1,9 @@
-import 'package:bible/models/bible/bible_translation.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
+import 'package:bible/models/user/language.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style.dart';
+import 'package:style/style.dart';
 import 'package:bible/ui/widgets/bible_tile.dart';
-import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +59,7 @@ class BiblesPage extends HookConsumerWidget {
                 title: t.bibleDetails.addRemoveBibles.toText(),
                 children: BibleTranslation.values
                     .groupListsBy((translation) => translation.bibleLanguage)
-                    .sortedBy((language, _) => language.language == user.language ? 0 : 1)
+                    .sortedBy((language, _) => language.appLanguage == user.language ? 0 : 1)
                     .mapToIterable(
                       (language, translations) => StyledStickyHeader(
                         title: language.title().toText(),

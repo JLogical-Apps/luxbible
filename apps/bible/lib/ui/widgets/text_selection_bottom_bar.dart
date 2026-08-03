@@ -1,14 +1,12 @@
-import 'package:bible/models/bible/book_type.dart';
-import 'package:bible/models/reference/bible_text_selection.dart';
 import 'package:bible/models/user/text_selection_configuration.dart';
 import 'package:bible/models/user/text_selection_shortcut.dart';
 import 'package:bible/models/user/user.dart';
-import 'package:bible/providers/bibles_provider.dart';
-import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/bottom_bar.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lux/lux.dart';
+import 'package:style/style.dart';
 
 class TextSelectionBottomBar extends ConsumerWidget {
   final BibleTextSelection? textSelection;

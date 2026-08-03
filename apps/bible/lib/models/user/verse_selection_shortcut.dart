@@ -1,20 +1,19 @@
+import 'package:lux/lux.dart';
+import 'package:lux/i18n.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/reference/region_type.dart';
-import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/models/verse_selection_action.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/widgets/highlight_style_icon.dart';
-import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:style/style.dart';
+import 'package:utils_core/utils_core.dart';
 
 enum VerseSelectionShortcut {
   study,

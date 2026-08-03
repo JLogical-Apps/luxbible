@@ -1,13 +1,14 @@
+import 'package:lux/lux.dart';
+import 'package:lux/i18n.dart';
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:bible/models/bible_plan.dart';
-import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/reference/region_type.dart';
-import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:bible/ui/pages/dictionary_page.dart';
@@ -17,14 +18,9 @@ import 'package:bible/ui/pages/settings_page.dart';
 import 'package:bible/ui/sheets/bookmark_sheet.dart';
 import 'package:bible/ui/sheets/study_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
-import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/duration_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:style/style.dart';
 
 enum MainAction {
   audio,
@@ -151,6 +147,7 @@ enum MainAction {
                     context.pop();
                     final confirmed = await context.showStyledDialog(
                       (context) => StyledDialog.confirmDelete(
+                        cancelLabel: t.common.nevermind.toText(),
                         title: t.bookmarks.delete.toText(),
                         body: t.bookmarks.deleteConfirmation.toText(),
                       ),

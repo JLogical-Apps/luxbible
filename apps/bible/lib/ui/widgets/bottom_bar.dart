@@ -1,5 +1,5 @@
-import 'package:bible/style/style.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
+import 'package:style/style.dart';
+import 'package:lux/lux.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 

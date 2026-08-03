@@ -1,6 +1,6 @@
-import 'package:bible/models/bible_plan.dart';
-import 'package:bible/models/reference/verse_selection.dart';
+import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
+import 'package:bible/models/bible_plan.dart';
 
 class HydratedBiblePlanProgress {
   final BiblePlanType type;

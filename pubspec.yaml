@@ -1,0 +1,16 @@
+name: lux_workspace
+publish_to: none
+
+environment:
+  sdk: ^3.10.0
+
+workspace:
+  - apps/bible
+  - apps/memory
+  - packages/lux
+  - packages/style
+  - tools/content
+
+dependency_overrides:
+  intl: 0.20.2
+  path_provider_foundation: 2.5.1

@@ -1,18 +1,15 @@
 import 'dart:collection';
 
-import 'package:bible/models/bible/bible.dart';
-import 'package:bible/models/reference/verse_selection.dart';
+import 'package:lux/lux.dart';
+import 'package:collection/collection.dart';
+import 'package:lux/i18n.dart';
+import 'package:flutter/material.dart';
 import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/models/user/user.dart';
-import 'package:bible/style/style.dart';
 import 'package:bible/ui/dialogs/tutorial_dialog.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
-import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:style/style.dart';
 import 'package:utils_core/utils_core.dart';
 
 class InterlinearSheet {

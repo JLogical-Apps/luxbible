@@ -1,4 +1,4 @@
-import 'package:bible/style/style.dart';
+import 'package:style/style.dart';
 import 'package:bible/ui/widgets/bible_body.dart';
 import 'package:flutter/material.dart';
 

@@ -1,7 +1,8 @@
+import 'package:lux/i18n.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/highlight_style.dart';
-import 'package:bible/style/style.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
+import 'package:style/style.dart';
+import 'package:lux/lux.dart';
 import 'package:flutter/material.dart';
 import 'package:port/port.dart';
 import 'package:utils_core/utils_core.dart';

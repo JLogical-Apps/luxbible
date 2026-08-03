@@ -1,12 +1,9 @@
+import 'package:lux/i18n.dart';
 import 'package:bible/models/commentary_type.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/keyed_scroll_transformer.dart';
-import 'package:bible/style/style.dart';
+import 'package:lux/lux.dart';
+import 'package:style/style.dart';
 import 'package:bible/ui/widgets/commentary_tile.dart';
-import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

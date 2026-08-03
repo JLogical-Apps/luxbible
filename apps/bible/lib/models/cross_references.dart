@@ -1,5 +1,4 @@
-import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/verse_span_reference.dart';
+import 'package:lux/lux.dart';
 
 class CrossReferences {
   final List<(Reference, String rawRange, int rating)> rawCrossReferences;

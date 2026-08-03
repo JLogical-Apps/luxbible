@@ -1,11 +1,10 @@
-import 'package:bible/models/reference/verse_selection.dart';
-import 'package:bible/style/style.dart';
-import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/widgets/passage_builder.dart';
-import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
+import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intersperse/intersperse.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
+import 'package:style/style.dart';
 
 class PreviewPassageSheet {
   static Future<void> show(

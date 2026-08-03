@@ -1,20 +1,17 @@
-import 'package:bible/models/reference/verse_selection.dart';
-import 'package:bible/providers/bible_plans_provider.dart';
-import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style.dart';
-import 'package:bible/ui/pages/bible_plan_read_page.dart';
-import 'package:bible/ui/pages/bible_plan_search_page.dart';
-import 'package:bible/ui/widgets/bible_plan_thumbnail.dart';
-import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
-import 'package:bible/utils/extensions/ref_extensions.dart';
+import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
+import 'package:lux/i18n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:bible/providers/bible_plans_provider.dart';
+import 'package:bible/providers/user_provider.dart';
+import 'package:bible/ui/pages/bible_plan_read_page.dart';
+import 'package:bible/ui/pages/bible_plan_search_page.dart';
+import 'package:bible/ui/widgets/bible_plan_thumbnail.dart';
+import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:style/style.dart';
 
 class BiblePlansPage extends ConsumerWidget {
   const BiblePlansPage({super.key});
@@ -94,6 +91,7 @@ class BiblePlansPage extends ConsumerWidget {
                                             context.pop();
                                             final confirmed = await context.showStyledDialog(
                                               (context) => StyledDialog.confirmDelete(
+                                                cancelLabel: t.common.nevermind.toText(),
                                                 title: t.biblePlans.stopPlan.toText(),
                                                 body: t.biblePlans.stopConfirmation(name: planType.title()).toText(),
                                                 deleteLabel: t.common.stop.toText(),

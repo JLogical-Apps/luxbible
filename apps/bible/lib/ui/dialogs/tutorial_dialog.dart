@@ -1,8 +1,8 @@
+import 'package:lux/i18n.dart';
 import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/providers/root_ref.dart';
-import 'package:bible/style/style.dart';
-import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
+import 'package:lux/lux.dart';
+import 'package:style/style.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 
 class TutorialDialog extends StyledDialog {

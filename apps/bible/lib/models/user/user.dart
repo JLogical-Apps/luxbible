@@ -1,6 +1,4 @@
 import 'package:bible/models/annotation.dart';
-import 'package:bible/models/bible/bible_translation.dart';
-import 'package:bible/models/bible/book_type.dart';
 import 'package:bible/models/bible_plan.dart';
 import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/color_enum.dart';
@@ -8,11 +6,6 @@ import 'package:bible/models/commentary_type.dart';
 import 'package:bible/models/highlight_style.dart';
 import 'package:bible/models/hydrated_bible_plan_progress.dart';
 import 'package:bible/models/notebook.dart';
-import 'package:bible/models/reference/bible_text_selection.dart';
-import 'package:bible/models/reference/chapter_position.dart';
-import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/audio_bible_configuration.dart';
 import 'package:bible/models/user/language.dart';
@@ -24,9 +17,7 @@ import 'package:bible/models/user/toolbar_preset.dart';
 import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/models/user/verse_selection_configuration.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
-import 'package:bible/utils/extensions/object_extensions.dart';
-import 'package:bible/utils/serialization_utils.dart';
+import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -81,7 +72,7 @@ sealed class User with _$User {
 
   Language get language => languageOverride ?? Language.device;
 
-  List<BibleTranslation> get biblesOrDefault => bibles ?? BibleTranslation.defaultsFor(language);
+  List<BibleTranslation> get biblesOrDefault => bibles ?? defaultBibleTranslations(language);
   List<(HighlightStyle, String label)> get highlightStyles =>
       highlightStyleOverrides ?? HighlightStyle.defaultsFor(language);
 

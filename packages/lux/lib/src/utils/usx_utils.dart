@@ -1,0 +1,39 @@
+import 'package:lux/lux.dart';
+import 'package:xml/xml.dart';
+
+abstract final class UsxUtils {
+  static Markdown noteToMarkdown(XmlElement note) =>
+      Markdown.fromXml(note, (element, children) {
+        final styles = _stylesOf(element);
+        if (styles.contains('fr')) return [];
+        if (element.localName == 'ref' || styles.contains('ref')) {
+          if (VerseSelection.tryFromUsxId(
+                element.getAttribute('loc') ?? element.getAttribute('usfm'),
+              )
+              case final selection?) {
+            return [.link(selection.osisId(), children)];
+          }
+          return children;
+        }
+        return styles.any(isItalicStyle) ? [.italic(children)] : children;
+      }).text.withCollapsedWhitespace.asMarkdown();
+
+  static bool isItalicStyle(String? style) => switch (style) {
+    'fqa' ||
+    'fq' ||
+    'fqb' ||
+    'fk' ||
+    'bk' ||
+    'add' ||
+    'tl' ||
+    'qt' ||
+    'it' ||
+    'k' => true,
+    _ => false,
+  };
+
+  static Set<String> _stylesOf(XmlElement element) => {
+    ?element.getAttribute('style'),
+    ...element.classNames,
+  };
+}

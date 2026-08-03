@@ -1,8 +1,7 @@
+import 'package:lux/i18n.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
+import 'package:style/style.dart';
+import 'package:lux/lux.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -39,6 +38,7 @@ class BookmarksPage extends HookConsumerWidget {
                           onPressed: () async {
                             final confirmed = await context.showStyledDialog(
                               (context) => StyledDialog.confirmDelete(
+                                cancelLabel: t.common.nevermind.toText(),
                                 title: t.bookmarks.delete.toText(),
                                 body: t.bookmarks.deleteNamedConfirmation(name: bookmark.name).toText(),
                               ),

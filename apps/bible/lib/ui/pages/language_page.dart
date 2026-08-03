@@ -1,7 +1,8 @@
+import 'package:lux/i18n.dart';
 import 'package:bible/models/user/language.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
+import 'package:style/style.dart';
+import 'package:lux/lux.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

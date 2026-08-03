@@ -1,8 +1,4 @@
-import 'package:bible/models/bible/book.dart';
-import 'package:bible/models/bible/book_type.dart';
-import 'package:bible/models/bible/interlinear_data.dart';
-import 'package:bible/utils/usx_utils.dart';
-import 'package:bible/utils/xml_bible_parser.dart';
+import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
 import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';

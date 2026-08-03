@@ -1,4 +1,4 @@
-import 'package:bible/utils/markdown.dart';
+import 'package:lux/lux.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'dictionary_entry.freezed.dart';

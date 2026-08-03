@@ -1,4 +1,4 @@
-import 'package:bible/i18n/strings.g.dart';
+import 'package:lux/i18n.dart';
 
 enum CommentaryType {
   matthewHenry,

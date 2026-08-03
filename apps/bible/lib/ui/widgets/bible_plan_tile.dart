@@ -1,9 +1,9 @@
+import 'package:lux/i18n.dart';
 import 'package:bible/models/bible_plan.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style.dart';
+import 'package:style/style.dart';
 import 'package:bible/ui/widgets/bible_plan_thumbnail.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
+import 'package:lux/lux.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';

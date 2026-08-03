@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:bible/models/bible_plan.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:lux/lux.dart';
 import 'package:flutter/services.dart';
 
 class BiblePlanImporter {

@@ -1,5 +1,5 @@
 import 'package:bible/models/morphology.dart';
-import 'package:bible/utils/markdown.dart';
+import 'package:lux/lux.dart';
 
 extension StrongUsageMarkdownExtension on Markdown {
   Markdown get withMorphologyLinks => Markdown(

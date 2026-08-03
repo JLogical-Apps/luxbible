@@ -1,12 +1,8 @@
-import 'package:bible/models/bible/chapter.dart';
-import 'package:bible/models/reference/chapter_reference.dart';
 import 'package:bible/models/user/user.dart';
-import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/ui/widgets/bible_loading_error.dart';
-import 'package:bible/ui/widgets/hook_consumer_builder.dart';
-import 'package:bible/ui/widgets/swipe_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lux/lux.dart';
 
 class ChapterPageView extends StatelessWidget {
   final PageController controller;
@@ -31,8 +27,8 @@ class ChapterPageView extends StatelessWidget {
       pageCount: ChapterReference.values.length,
       onSwipe: (pageIndex) => onSwipe?.call(ChapterReference.fromBibleChapterIndex(pageIndex)),
       onPageChanged: (pageIndex) => onPageChanged?.call(ChapterReference.fromBibleChapterIndex(pageIndex)),
-      itemBuilder: (context, pageIndex) => HookConsumerBuilder(
-        builder: (context, ref) {
+      itemBuilder: (context, pageIndex) => Consumer(
+        builder: (context, ref, child) {
           final chapterReference = ChapterReference.fromBibleChapterIndex(pageIndex);
           final translation = user.getTranslationFor(chapterReference.book);
           final chapterValue = ref.watch(chapterProvider(translation: translation, chapterReference: chapterReference));

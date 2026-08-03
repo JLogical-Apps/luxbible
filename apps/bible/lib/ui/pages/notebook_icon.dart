@@ -1,5 +1,5 @@
 import 'package:bible/models/notebook.dart';
-import 'package:bible/style/style.dart';
+import 'package:style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 

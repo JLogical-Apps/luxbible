@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:lux/lux.dart';
 import 'package:bible/models/bible_plan.dart';
-import 'package:bible/models/reference/verse_selection.dart';
 import 'package:lux_content_tools/repository_paths.dart';
 
 void main() {

@@ -1,7 +1,6 @@
-import 'package:bible/i18n/strings.g.dart';
-import 'package:bible/models/reference/verse_selection.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
+import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
+import 'package:lux/i18n.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:utils_core/utils_core.dart';
 

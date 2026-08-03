@@ -1,32 +1,26 @@
-import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/reference/region_type.dart';
-import 'package:bible/models/reference/verse_selection.dart';
-import 'package:bible/models/reference/verse_span_reference.dart';
 import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/models/user/user.dart';
-import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
+import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style.dart';
 import 'package:bible/ui/dialogs/tutorial_dialog.dart';
 import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
-import 'package:bible/ui/widgets/swipe_gesture_detector.dart';
 import 'package:bible/ui/widgets/verse_text.dart';
-import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
-import 'package:bible/utils/extensions/object_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:style/style.dart';
+import 'package:utils_core/utils_core.dart';
 
 enum StudyAction {
   compare,

@@ -1,13 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bible/models/bible/book_type.dart';
+import 'package:lux/lux.dart';
 import 'package:bible/models/commentary_type.dart';
-import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/verse_selection.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
-import 'package:bible/utils/markdown.dart';
-import 'package:bible/utils/range.dart';
 import 'package:collection/collection.dart';
 import 'package:lux_content_tools/repository_paths.dart';
 import 'package:utils_core/utils_core.dart';

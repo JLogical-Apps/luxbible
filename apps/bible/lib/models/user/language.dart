@@ -1,6 +1,7 @@
 import 'dart:ui';
 
-import 'package:bible/i18n/strings.g.dart';
+import 'package:lux/lux.dart';
+import 'package:lux/i18n.dart';
 
 enum Language {
   english,
@@ -33,5 +34,25 @@ enum Language {
     english => t.languages.english,
     dutch => t.languages.dutch,
     russian => t.languages.russian,
+  };
+}
+
+List<BibleTranslation> defaultBibleTranslations(Language language) => switch (language) {
+  .english => [
+    .bsb,
+    ...BibleTranslation.values.where(
+      (translation) => translation != .bsb && translation.bibleLanguage.appLanguage == language,
+    ),
+  ],
+  .dutch => [.sv, .bsb],
+  .russian => [.nrt, .bsb],
+};
+
+extension BibleLanguageAppExtensions on BibleLanguage {
+  Language? get appLanguage => switch (this) {
+    .english => .english,
+    .dutch => .dutch,
+    .russian => .russian,
+    _ => null,
   };
 }

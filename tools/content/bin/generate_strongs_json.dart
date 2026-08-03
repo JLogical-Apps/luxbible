@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bible/utils/extensions/collection_extensions.dart';
-import 'package:bible/utils/extensions/string_extensions.dart';
-import 'package:bible/utils/markdown.dart';
 import 'package:collection/collection.dart';
+import 'package:lux/lux.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:lux_content_tools/repository_paths.dart';

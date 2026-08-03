@@ -1,16 +1,11 @@
-import 'package:bible/i18n/strings.g.dart';
+import 'package:lux/lux.dart';
+import 'package:lux/i18n.dart';
+import 'package:flutter/material.dart';
 import 'package:bible/models/reference/region_type.dart';
-import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style_context_extensions.dart';
-import 'package:bible/style/widgets/sheet/styled_sheet.dart';
-import 'package:bible/style/widgets/styled_list_item.dart';
-import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
-import 'package:flutter/material.dart';
+import 'package:style/style.dart';
 
 class StudySheet {
   static Future<void> show(

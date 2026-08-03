@@ -1,6 +1,7 @@
 name: lux_content_tools
 description: Content generators for Lux Bible runtime assets.
 publish_to: none
+resolution: workspace
 
 environment:
   sdk: ^3.10.0
@@ -8,10 +9,8 @@ environment:
 dependencies:
   bible:
     path: ../../apps/bible
+  lux:
+    path: ../../packages/lux
   collection: ^1.19.1
   html: ^0.15.6
   xml: ^7.0.1
-
-dependency_overrides:
-  intl: 0.20.2
-  path_provider_foundation: 2.5.1

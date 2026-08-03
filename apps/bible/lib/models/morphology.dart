@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:bible/i18n/strings.g.dart';
+import 'package:lux/i18n.dart';
 
 typedef MorphologyTranslation = ({String name, String description, String examples});
 typedef MorphologyAttributeTranslation = ({String name, String description});

@@ -1,22 +1,19 @@
-import 'package:bible/models/bible/bible.dart';
-import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/commentary_type.dart';
-import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/models/user/user.dart';
-import 'package:bible/providers/bibles_provider.dart';
-import 'package:bible/style/style.dart';
+import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_sheet.dart';
-import 'package:bible/ui/widgets/colored_circle.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:style/style.dart';
 
 part 'study_panel.freezed.dart';
 part 'study_panel.g.dart';

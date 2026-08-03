@@ -1,19 +1,13 @@
-import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/chapter_builder.dart';
 import 'package:bible/ui/widgets/chapter_page_view.dart';
-import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/controller_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
-import 'package:bible/utils/extensions/key_extensions.dart';
-import 'package:bible/utils/hook_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:style/style.dart';
 import 'package:utils_core/utils_core.dart';
 
 class ChapterPreviewPage extends HookConsumerWidget {

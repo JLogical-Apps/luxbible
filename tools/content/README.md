@@ -2,10 +2,12 @@
 
 This Dart package generates the Lux Bible runtime assets in [`apps/bible/assets/`](../../apps/bible/assets/). It reads the authoritative inputs in [`content/sources/`](../../content/sources/) and depends on the app’s existing Bible models without extracting a shared package prematurely.
 
-Run all Dart commands from this directory. The scripts locate the repository root themselves, so their input and output paths do not depend on the shell working directory.
+Resolve workspace dependencies from the repository root, then run generator commands from this directory. The scripts locate the repository root themselves, so their input and output paths do not depend on the shell working directory.
 
 ```sh
-flutter pub get
+cd ../..
+dart pub get
+cd tools/content
 dart run bin/generate_bsb_json.dart
 dart run bin/generate_kjv_json.dart
 dart run bin/generate_asv_json.dart

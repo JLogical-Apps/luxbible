@@ -1,14 +1,13 @@
+import 'package:lux/i18n.dart';
 import 'package:bible/models/notebook.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/root_ref.dart';
+import 'package:lux/lux.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style.dart';
+import 'package:style/style.dart';
 import 'package:bible/ui/pages/annotations_page.dart';
 import 'package:bible/ui/pages/notebook_icon.dart';
 import 'package:bible/ui/sheets/notebook_sheet.dart';
-import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

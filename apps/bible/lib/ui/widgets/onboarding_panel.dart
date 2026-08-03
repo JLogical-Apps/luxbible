@@ -1,11 +1,9 @@
+import 'package:lux/i18n.dart';
 import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
-import 'package:bible/utils/extensions/key_extensions.dart';
+import 'package:style/style.dart';
+import 'package:lux/lux.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
-import 'package:bible/utils/hook_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -42,6 +40,7 @@ class OnboardingPanel extends HookConsumerWidget {
         onPressed: () async {
           final shouldSkip = await context.showStyledDialog(
             (context) => StyledDialog.confirmOrCancel(
+              cancelLabel: t.common.nevermind.toText(),
               title: t.onboarding.skipQuestion.toText(),
               body: t.onboarding.skipConfirmation.toText(),
             ),

@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bible/models/bible/bible_translation.dart';
 import 'package:bible/models/user/language.dart';
 import 'package:bible/models/user/user.dart';
-import 'package:bible/services/path_service.dart';
-import 'package:bible/services/shared_preferences_service.dart';
+import 'package:lux/lux.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,8 +49,7 @@ class UserNotifier extends _$UserNotifier {
   }
 
   User get userOrDefault =>
-      userOrNull ??
-      User(translation: BibleTranslation.defaultsFor(Language.device).first, completedOnboardingSteps: []);
+      userOrNull ?? User(translation: defaultBibleTranslations(Language.device).first, completedOnboardingSteps: []);
 
   Future<void> update(User Function(User) updater) async {
     state = updater(state);

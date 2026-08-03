@@ -1,44 +1,24 @@
 import 'dart:math';
 
 import 'package:bible/models/annotation.dart';
-import 'package:bible/models/bible/bible_translation.dart';
-import 'package:bible/models/bible/book_type.dart';
-import 'package:bible/models/bible/chapter.dart';
-import 'package:bible/models/bible/footnote.dart';
-import 'package:bible/models/bible/paragraph.dart';
-import 'package:bible/models/bible/verse.dart';
-import 'package:bible/models/reference/bible_text_selection.dart';
-import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/user/theme_layout_configuration.dart';
 import 'package:bible/models/user/user.dart';
-import 'package:bible/providers/bibles_provider.dart';
+import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/root_ref.dart' as root_ref;
-import 'package:bible/style/style.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
-import 'package:bible/ui/widgets/annotated_span.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/highlight_underline.dart';
-import 'package:bible/ui/widgets/markdown_builder.dart';
-import 'package:bible/ui/widgets/sized_widget_span.dart';
-import 'package:bible/ui/widgets/underline.dart';
-import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
-import 'package:bible/utils/extensions/num_extensions.dart';
-import 'package:bible/utils/extensions/paragraph_style_extensions.dart';
-import 'package:bible/utils/extensions/rect_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
-import 'package:bible/utils/extensions/span_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intersperse/intersperse.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:style/style.dart';
 import 'package:utils_core/utils_core.dart';
 
 class ParagraphsBuilder extends HookWidget {
@@ -81,7 +61,7 @@ class ParagraphsBuilder extends HookWidget {
   bool get useParagraphs => user.themeLayout.paragraphs && isLtr;
 
   BibleTextStyle getBibleTextStyle(BuildContext context) =>
-      BibleTextStyle(context, config: user.themeLayout, fontSizeSpacing: getFontSizeSpacing(context));
+      BibleTextStyle(context, fontFamily: user.themeLayout.font.fontFamily, multiplier: getSizeMultiplier(context));
 
   FontSizeSpacing getFontSizeSpacing(BuildContext context) =>
       user.themeLayout.getFontSizeSpacingFor(translation.bibleLanguage, context.textScaling);
@@ -170,142 +150,124 @@ class ParagraphsBuilder extends HookWidget {
         },
         child: Column(
           crossAxisAlignment: .stretch,
-          children: paragraphSpansByParagraph.mapEntries((paragraph, originalSpans) {
-            final versesParagraph = paragraph.as<VersesParagraph>();
-            final blockIndent = user.themeLayout.paragraphs && versesParagraph != null
-                ? versesParagraph.type.blockIndent
-                : 0.0;
-            final hangingIndent = versesParagraph?.type.hangingIndent ?? 0.0;
-
-            return Padding(
-              padding: useParagraphs ? (versesParagraph?.type.padding ?? .zero).copyWith(left: blockIndent) : .zero,
-              child: LayoutBuilder(
-                builder: (context, constraints) => HookBuilder(
-                  builder: (context) {
-                    final textKey = GlobalKey(debugLabel: versesParagraph?.verses.first.verseNum.toString());
-
-                    final renderSpans = useMemoized(
-                      () => versesParagraph != null && useParagraphs
-                          ? originalSpans
-                                .withHangingIndent<VerseElement>(
-                                  width: constraints.maxWidth,
-                                  textAlign: versesParagraph.type.textAlign,
-                                  hangingIndent: hangingIndent,
-                                  annotationModifier: (element, charactersAdded) =>
-                                      element.copyWith(anchor: element.anchor.withCharactersAdded(charactersAdded)),
-                                )
-                                .withUnorphanedLeadingSpans(
-                                  width: constraints.maxWidth,
-                                  textAlign: versesParagraph.type.textAlign,
-                                  textDirection: textDirection,
-                                  isLeadingSpan: (span) =>
-                                      span is IsAnnotatedSpan<VerseElement> && span.annotation.isLeading,
-                                )
-                          : originalSpans,
-                      [originalSpans, constraints.maxWidth],
-                    );
-
-                    if (paragraph is VersesParagraph) {
-                      paragraphHitTesters.add(
-                        ParagraphHitTester(
-                          textKey: textKey,
-                          resolve: (localPosition) => getOffsetAnchor(
-                            characterOffset: renderSpans.getCharacterOffsetFromPosition(
-                              width: constraints.maxWidth,
-                              localPosition: localPosition,
-                              textAlign: paragraph.type.textAlign,
-                              textDirection: textDirection,
-                            ),
-                            paragraph: paragraph,
-                          ),
-                        ),
-                      );
-                    }
-
-                    return Stack(
-                      clipBehavior: .none,
-                      fit: .passthrough,
-                      children: [
-                        if (paragraph is VersesParagraph) ...[
-                          ...buildVerseAnchorOverlays(
-                            renderSpans: renderSpans,
-                            paragraph: paragraph,
-                            maxWidth: constraints.maxWidth,
-                          ),
-                          ...buildVerseAnnotationOverlays(
-                            context,
-                            renderSpans: renderSpans,
-                            paragraph: paragraph,
-                            chapter: chapter,
-                            maxWidth: constraints.maxWidth,
-                            hangingIndent: hangingIndent,
-                          ),
-                          ...buildTextSelectionAnnotationOverlays(
-                            context,
-                            renderSpans: renderSpans,
-                            paragraph: paragraph,
-                            maxWidth: constraints.maxWidth,
-                            hangingIndent: hangingIndent,
-                          ),
-                          if (textSelection case final textSelection?)
-                            ...?() {
-                              final (base, extent) =
-                                  renderSpans.getTextSelectionCharacterOffsets(
-                                    textSelection: textSelection,
-                                    translation: translation,
-                                    isParagraphs: user.themeLayout.paragraphs,
-                                  ) ??
-                                  (null, null);
-                              if (base == null || extent == null) {
-                                return null;
-                              }
-
-                              return renderSpans
-                                  .getBoxesForSelection(
-                                    baseOffset: base,
-                                    extentOffset: extent,
-                                    width: constraints.maxWidth,
-                                    textAlign: paragraph.type.textAlign,
-                                    textDirection: textDirection,
-                                  )
-                                  .map((box) => box.toRect())
-                                  .withMergedLines()
-                                  .withHangingIndent(hangingIndent)
-                                  .map(
-                                    (box) => Positioned.fromRect(
-                                      key: ValueKey(box),
-                                      rect: box.asTextSelection(multiplier: getSizeMultiplier(context)),
-                                      child: IgnorePointer(
-                                        child: AnimatedContainer(
-                                          duration: Duration(milliseconds: 300),
-                                          curve: Curves.easeInOutCubic,
-                                          decoration: BoxDecoration(
-                                            borderRadius: .circular(4),
-                                            color: context.colors.contentPrimary.withValues(alpha: 0.2),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                            }(),
-                        ],
-                        Text.rich(
-                          key: textKey,
-                          TextSpan(children: renderSpans),
-                          style: TextStyle(inherit: false),
-                          textAlign: paragraph.as<VersesParagraph>()?.type.textAlign ?? .start,
-                          textDirection: textDirection,
-                        ),
-                      ],
-                    );
-                  },
+          children: paragraphSpansByParagraph
+              .mapEntries(
+                (paragraph, originalSpans) => ParagraphText(
+                  paragraph: paragraph,
+                  originalSpans: originalSpans,
+                  useParagraphLayout: useParagraphs,
+                  textDirection: textDirection,
+                  overlayBuilder: (context, layout) => buildParagraphOverlays(
+                    context,
+                    layout: layout,
+                    chapter: chapter,
+                    paragraphHitTesters: paragraphHitTesters,
+                  ),
                 ),
-              ),
-            );
-          }).toList(),
+              )
+              .toList(),
         ),
       ),
     );
+  }
+
+  Iterable<Widget> buildParagraphOverlays(
+    BuildContext context, {
+    required ParagraphTextLayout layout,
+    required Chapter chapter,
+    required List<ParagraphHitTester> paragraphHitTesters,
+  }) {
+    final paragraph = layout.paragraph.as<VersesParagraph>();
+    if (paragraph == null) return [];
+
+    paragraphHitTesters.add(
+      ParagraphHitTester(
+        textKey: layout.textKey,
+        resolve: (localPosition) => getOffsetAnchor(
+          characterOffset: layout.renderSpans.getCharacterOffsetFromPosition(
+            width: layout.maxWidth,
+            localPosition: localPosition,
+            textAlign: paragraph.type.textAlign,
+            textDirection: textDirection,
+          ),
+          paragraph: paragraph,
+        ),
+      ),
+    );
+
+    return [
+      ...buildVerseAnchorOverlays(
+        paragraphs: paragraphs,
+        paragraph: paragraph,
+        renderSpans: layout.renderSpans,
+        maxWidth: layout.maxWidth,
+        textDirection: textDirection,
+        keyByReference: keyByReference,
+        getVerseReference: getVerseReference,
+      ),
+      ...buildVerseAnnotationOverlays(
+        context,
+        renderSpans: layout.renderSpans,
+        paragraph: paragraph,
+        chapter: chapter,
+        maxWidth: layout.maxWidth,
+        hangingIndent: layout.hangingIndent,
+      ),
+      ...buildTextSelectionAnnotationOverlays(
+        context,
+        renderSpans: layout.renderSpans,
+        paragraph: paragraph,
+        maxWidth: layout.maxWidth,
+        hangingIndent: layout.hangingIndent,
+      ),
+      ...buildActiveTextSelectionOverlays(context, layout: layout, paragraph: paragraph),
+    ];
+  }
+
+  Iterable<Widget> buildActiveTextSelectionOverlays(
+    BuildContext context, {
+    required ParagraphTextLayout layout,
+    required VersesParagraph paragraph,
+  }) {
+    final textSelection = this.textSelection;
+    if (textSelection == null) return [];
+
+    final (base, extent) =
+        layout.renderSpans.getTextSelectionCharacterOffsets(
+          textSelection: textSelection,
+          translation: translation,
+          isParagraphs: user.themeLayout.paragraphs,
+        ) ??
+        (null, null);
+    if (base == null || extent == null) return [];
+
+    return layout.renderSpans
+        .getBoxesForSelection(
+          baseOffset: base,
+          extentOffset: extent,
+          width: layout.maxWidth,
+          textAlign: paragraph.type.textAlign,
+          textDirection: textDirection,
+        )
+        .map((box) => box.toRect())
+        .withMergedLines()
+        .withHangingIndent(layout.hangingIndent)
+        .map(
+          (box) => Positioned.fromRect(
+            key: ValueKey(box),
+            rect: box.asTextSelection(multiplier: getSizeMultiplier(context)),
+            child: IgnorePointer(
+              child: AnimatedContainer(
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeInOutCubic,
+                decoration: BoxDecoration(
+                  borderRadius: .circular(4),
+                  color: context.colors.contentPrimary.withValues(alpha: 0.2),
+                ),
+              ),
+            ),
+          ),
+        );
   }
 
   Iterable<Widget> buildVerseAnnotationOverlays(
@@ -350,47 +312,6 @@ class ParagraphsBuilder extends HookWidget {
         .nonNulls
         .flattened;
   }
-
-  Iterable<Widget> buildVerseAnchorOverlays({
-    required List<InlineSpan> renderSpans,
-    required VersesParagraph paragraph,
-    required double maxWidth,
-  }) => paragraph.verses
-      .map(getVerseReference)
-      .distinct
-      .where(
-        (reference) =>
-            paragraphs.whereType<VersesParagraph>().firstWhereOrNull(
-              (candidate) => candidate.verses.any((verse) => verse.verseNum == reference.verseNum),
-            ) ==
-            paragraph,
-      )
-      .map((reference) {
-        final key = keyByReference?[reference];
-        final position = renderSpans.getFirstSpanPositionForReference(reference);
-        if (key == null || position == null) {
-          return null;
-        }
-
-        final box = renderSpans
-            .getBoxesForSelection(
-              baseOffset: position,
-              extentOffset: position + 1,
-              width: maxWidth,
-              textAlign: paragraph.type.textAlign,
-              textDirection: textDirection,
-            )
-            .firstOrNull;
-        if (box == null) {
-          return null;
-        }
-
-        return Positioned.fromRect(
-          rect: box.toRect(),
-          child: ExcludeSemantics(child: SizedBox.expand(key: key)),
-        );
-      })
-      .nonNulls;
 
   Iterable<Widget> buildTextSelectionAnnotationOverlays(
     BuildContext context, {
@@ -521,40 +442,24 @@ class ParagraphsBuilder extends HookWidget {
             user.themeLayout.paragraphs)
           TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 1.5)),
         ...switch (paragraph) {
-          SectionParagraph(:final text, :final type) =>
+          SectionParagraph(:final type) =>
             user.themeLayout.sections.showFor(translation: translation, sectionType: type)
-                ? [
-                    if (type.isLarge &&
-                        paragraphIndex != 0 &&
-                        ((previousParagraph is! SectionParagraph || type > previousParagraph.type)))
-                      TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 1.5))
-                    else if (type.isInline)
-                      TextSpan(text: '\n', style: bibleTextStyle.body.copyWith(height: 0.5)),
-                    if (chapter.paragraphs.getVerseIntroducedBySectionAt(paragraphIndex) case final verse?
-                        when chapter.paragraphs.getFirstSectionIndexIntroducingVerse(verse.verseNum) == paragraphIndex)
-                      SizedWidgetSpan(
-                        child: SizedBox.shrink(key: keyBySectionReference?[getVerseReference(verse)]),
-                        alignment: .top,
-                        size: Size.zero,
-                      ),
-                    TextSpan(
-                      text: text,
-                      style: type.isLarge
-                          ? type == .ms
-                                ? bibleTextStyle.majorSection
-                                : bibleTextStyle.section
-                          : switch (type) {
-                              .d => bibleTextStyle.smallHeading,
-                              .qa => bibleTextStyle.smallSection,
-                              .sp => bibleTextStyle.speakerHeading,
-                              _ => throw UnimplementedError(),
-                            },
-                    ),
-                    if (type.isLarge)
-                      TextSpan(text: '\n ', style: bibleTextStyle.body.copyWith(height: 0.8))
-                    else if (!type.isInline)
-                      TextSpan(text: '\n ', style: bibleTextStyle.body.copyWith(height: 0.1)),
-                  ]
+                ? buildSectionParagraphSpans(
+                    paragraph: paragraph,
+                    paragraphIndex: paragraphIndex,
+                    previousParagraph: previousParagraph,
+                    bibleTextStyle: bibleTextStyle,
+                    leadingSpans: [
+                      if (chapter.paragraphs.getVerseIntroducedBySectionAt(paragraphIndex) case final verse?
+                          when chapter.paragraphs.getFirstSectionIndexIntroducingVerse(verse.verseNum) ==
+                              paragraphIndex)
+                        SizedWidgetSpan(
+                          child: SizedBox.shrink(key: keyBySectionReference?[getVerseReference(verse)]),
+                          alignment: .top,
+                          size: Size.zero,
+                        ),
+                    ],
+                  )
                 : <InlineSpan>[],
           VersesParagraph(:final verses, :final type, :final preventIndent) => [
             if (useParagraphs && !preventIndent)
@@ -582,29 +487,12 @@ class ParagraphsBuilder extends HookWidget {
                     if (verse.verseNum > maxPreviousVerseNum)
                       ...[
                         if (user.themeLayout.verseNumbers)
-                          AnnotatedSizedWidgetSpan<VerseElement>(
-                            annotation: VerseElement(
-                              anchor: BibleTextSelectionWordAnchor.fromReference(
-                                reference: reference,
-                                characterOffset: 0,
-                              ),
-                              isBoundInSelection: false,
-                              isLeading: true,
-                            ),
-                            size: Size(
-                              bibleTextStyle.verseNumber.getWidth(verse.verseNum.toString()) + 6,
-                              bibleTextStyle.body.fontSize! + 6,
-                            ),
-                            alignment: .middle,
-                            child: Padding(
-                              padding: .only(right: isLtr ? 4 : 0, left: isLtr ? 0 : 4),
-                              child: Text(
-                                verse.verseNum.toString(),
-                                style: bibleTextStyle.verseNumber.copyWith(
-                                  decoration: highlightedReferences.contains(reference) ? .underline : null,
-                                ),
-                              ),
-                            ),
+                          buildVerseNumberSpan(
+                            reference: reference,
+                            verseNumber: verse.verseNum,
+                            bibleTextStyle: bibleTextStyle,
+                            isUnderlined: highlightedReferences.contains(reference),
+                            textDirection: textDirection,
                           ),
                         if (verse.originalVerse case final originalVerse?)
                           AnnotatedSizedWidgetSpan<VerseElement>(
@@ -813,6 +701,7 @@ class ParagraphsBuilder extends HookWidget {
                                   onPressed: () async {
                                     final confirmed = await context.showStyledDialog(
                                       (context) => StyledDialog.confirmDelete(
+                                        cancelLabel: t.common.nevermind.toText(),
                                         title: t.annotationUi.deleteAnnotation.toText(),
                                         body: t.annotationUi.deleteConfirmation.toText(),
                                       ),
@@ -861,6 +750,7 @@ class ParagraphsBuilder extends HookWidget {
                                           onPressed: () async {
                                             final confirmed = await context.showStyledDialog(
                                               (context) => StyledDialog.confirmDelete(
+                                                cancelLabel: t.common.nevermind.toText(),
                                                 title: t.annotationUi.deleteAnnotation.toText(),
                                                 body: t.annotationUi.deleteConfirmation.toText(),
                                               ),
@@ -957,36 +847,6 @@ class ParagraphsBuilder extends HookWidget {
   }
 }
 
-class BibleTextStyle {
-  static const baseMultiplier = 0.95;
-
-  final BuildContext context;
-  final ThemeLayoutConfiguration config;
-  final FontSizeSpacing fontSizeSpacing;
-
-  const BibleTextStyle(this.context, {required this.config, required this.fontSizeSpacing});
-
-  TextStyle get base => TextStyle(
-    fontFamily: config.font.fontFamily,
-    color: context.colors.contentPrimary,
-    decorationColor: context.colors.contentPrimary,
-  );
-
-  double get multiplier => baseMultiplier * fontSizeSpacing.multiplier;
-
-  TextStyle get majorSection => base.extraBold.copyWith(fontSize: 28 * multiplier, height: 40 / 28);
-  TextStyle get section => base.bold.copyWith(fontSize: 24 * multiplier, height: 40 / 24);
-  TextStyle get smallHeading =>
-      base.regular.copyWith(fontSize: 20 * multiplier, letterSpacing: 0, height: 40 / 20, fontStyle: .italic);
-  TextStyle get smallSection => base.bold.copyWith(fontSize: 20 * multiplier, letterSpacing: 0, height: 40 / 20);
-  TextStyle get speakerHeading =>
-      base.bold.copyWith(fontSize: 20 * multiplier, letterSpacing: 0, height: 40 / 20, fontStyle: .italic);
-  TextStyle get verseNumber =>
-      base.bold.copyWith(fontSize: 14 * multiplier, letterSpacing: 0, decorationStyle: .dotted);
-  TextStyle get body =>
-      base.regular.copyWith(fontSize: 20 * multiplier, letterSpacing: 0, height: 40 / 20, decorationStyle: .dotted);
-}
-
 class ParagraphHitTester {
   final GlobalKey textKey;
   final BibleTextSelectionWordAnchor? Function(Offset localPosition) resolve;
@@ -1009,132 +869,10 @@ class ParagraphHitTester {
   }
 }
 
-class VerseElement {
-  final BibleTextSelectionWordAnchor anchor;
-  final bool isBoundInSelection;
-  final bool isLeading;
-
-  const VerseElement({required this.anchor, required this.isBoundInSelection, this.isLeading = false});
-
-  VerseElement copyWith({BibleTextSelectionWordAnchor? anchor, bool? isBoundInSelection, bool? isLeading}) =>
-      VerseElement(
-        anchor: anchor ?? this.anchor,
-        isBoundInSelection: isBoundInSelection ?? this.isBoundInSelection,
-        isLeading: isLeading ?? this.isLeading,
-      );
-}
-
 extension on Rect {
   Rect asVerseSelection({required double multiplier}) =>
       .fromCenter(center: center + Offset(0, 2), width: width + 4 * multiplier, height: min(32 * multiplier, height));
 
   Rect asTextSelection({required double multiplier}) =>
       .fromCenter(center: center + Offset(0, 2), width: width + 2 * multiplier, height: min(28 * multiplier, height));
-}
-
-extension on List<InlineSpan> {
-  int? getFirstSpanPositionForReference(Reference reference) {
-    var cursor = 0;
-    return map((span) {
-      final position =
-          span is IsAnnotatedSpan<VerseElement> &&
-              span.annotation.anchor.toReference() == reference &&
-              span.textLength > 0
-          ? cursor
-          : null;
-      cursor += span.textLength;
-      return position;
-    }).nonNulls.firstOrNull;
-  }
-
-  BibleTextSelection getContainedTextSelection({required BibleTranslation translation}) {
-    final lastAnchor = whereType<IsAnnotatedSpan<VerseElement>>().last;
-    return BibleTextSelection(
-      start: whereType<IsAnnotatedSpan<VerseElement>>().first.annotation.anchor,
-      end: lastAnchor.annotation.anchor.withCharactersAdded(lastAnchor.textLength),
-      translation: translation,
-    );
-  }
-
-  int get maxTextPosition => map((span) => span.textLength).sum;
-
-  int? getTextPosition({required BibleTextSelectionWordAnchor anchor, bool onlyBound = false}) {
-    if (whereType<IsAnnotatedSpan<VerseElement>>().firstOrNull case final startingSpan?) {
-      if (startingSpan.annotation.anchor > anchor) {
-        return null;
-      }
-    }
-
-    if (whereType<IsAnnotatedSpan<VerseElement>>().every(
-      (span) => span.annotation.anchor.withCharactersAdded(span.textLength) < anchor,
-    )) {
-      return null;
-    }
-
-    var cursor = 0;
-    final equalBoundPosition = map((span) {
-      final start = cursor;
-      cursor += span.textLength;
-      return span is IsAnnotatedSpan<VerseElement> &&
-              span.annotation.anchor == anchor &&
-              (!onlyBound || span.annotation.isBoundInSelection)
-          ? start - span.annotation.anchor.characterOffset + anchor.characterOffset
-          : null;
-    }).toList().nonNulls.firstOrNull;
-
-    if (equalBoundPosition != null) {
-      return equalBoundPosition;
-    }
-
-    cursor = 0;
-    return map((span) {
-      final start = cursor;
-      cursor += span.textLength;
-      return span is IsAnnotatedSpan<VerseElement> && span.annotation.anchor <= anchor
-          ? start - span.annotation.anchor.characterOffset + anchor.characterOffset
-          : null;
-    }).toList().nonNulls.lastOrNull;
-  }
-
-  (int, int)? getReferenceCharacterOffsets({
-    required Chapter chapter,
-    required Reference reference,
-    required BibleTranslation translation,
-    required bool isParagraphs,
-  }) {
-    if (!getContainedTextSelection(translation: translation).isInReference(reference)) {
-      return null;
-    }
-
-    return (
-      getTextPosition(
-            anchor: BibleTextSelectionWordAnchor.fromReference(reference: reference, characterOffset: 0),
-            onlyBound: false,
-          ) ??
-          (isParagraphs ? 1 : 0),
-      getTextPosition(
-            anchor: BibleTextSelectionWordAnchor.fromReference(
-              reference: reference,
-              characterOffset: chapter.getVerseByReference(reference)?.text.length ?? 0,
-            ),
-            onlyBound: false,
-          ) ??
-          maxTextPosition,
-    );
-  }
-
-  (int, int)? getTextSelectionCharacterOffsets({
-    required BibleTextSelection textSelection,
-    required BibleTranslation translation,
-    required bool isParagraphs,
-  }) {
-    if (!getContainedTextSelection(translation: translation).intersects(textSelection)) {
-      return null;
-    }
-
-    return (
-      getTextPosition(anchor: textSelection.start, onlyBound: true) ?? (isParagraphs ? 1 : 0),
-      (getTextPosition(anchor: textSelection.end, onlyBound: true) ?? (maxTextPosition - 1)) + 1,
-    );
-  }
 }

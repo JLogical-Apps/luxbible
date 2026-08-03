@@ -1,32 +1,23 @@
-import 'package:bible/models/reference/chapter_reference.dart';
-import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/verse_selection.dart';
 import 'package:bible/models/user/tutorial.dart';
-import 'package:bible/providers/bibles_provider.dart';
 import 'package:bible/providers/dictionary_provider.dart';
+import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style.dart';
 import 'package:bible/ui/dialogs/tutorial_dialog.dart';
 import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/sheets/dictionary_sheet.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
-import 'package:bible/ui/widgets/markdown_builder.dart';
 import 'package:bible/ui/widgets/search_location_button.dart';
 import 'package:bible/ui/widgets/verse_text.dart';
-import 'package:bible/utils/extensions/build_context_extensions.dart';
-import 'package:bible/utils/extensions/collection_extensions.dart';
-import 'package:bible/utils/extensions/edge_insets_extensions.dart';
-import 'package:bible/utils/extensions/flutter_string_extensions.dart';
-import 'package:bible/utils/extensions/icon_data_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
-import 'package:bible/utils/extensions/string_extensions.dart';
-import 'package:bible/utils/hook_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:style/style.dart';
 
 class SearchPageResult {
   final VerseSelection selection;

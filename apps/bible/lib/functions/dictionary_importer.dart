@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 import 'package:bible/models/dictionary_entry.dart';
-import 'package:bible/utils/extensions/string_extensions.dart';
-import 'package:bible/utils/markdown.dart';
+import 'package:lux/lux.dart';
 import 'package:flutter/services.dart';
 
 class DictionaryImporter {

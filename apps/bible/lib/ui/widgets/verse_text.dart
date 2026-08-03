@@ -1,11 +1,10 @@
-import 'package:bible/models/bible/verse.dart';
-import 'package:bible/providers/user_provider.dart';
-import 'package:bible/style/style.dart';
-import 'package:bible/ui/widgets/word_substring_text.dart';
-import 'package:bible/utils/extensions/string_extensions.dart';
+import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:bible/providers/user_provider.dart';
+import 'package:bible/ui/widgets/word_substring_text.dart';
+import 'package:style/style.dart';
 import 'package:utils_core/utils_core.dart';
 
 class VerseText extends ConsumerWidget {

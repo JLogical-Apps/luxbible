@@ -1,13 +1,11 @@
-import 'package:bible/models/bible/book_type.dart';
-import 'package:bible/models/reference/reference.dart';
-import 'package:bible/models/reference/verse_selection.dart';
+import 'package:lux/lux.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/models/user/verse_selection_configuration.dart';
 import 'package:bible/models/user/verse_selection_shortcut.dart';
-import 'package:bible/style/style.dart';
 import 'package:bible/ui/widgets/bottom_bar.dart';
-import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
+import 'package:style/style.dart';
 
 class VerseSelectionBottomBar extends StatelessWidget {
   final VerseSelection? verseSelection;

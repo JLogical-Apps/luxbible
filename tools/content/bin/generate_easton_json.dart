@@ -1,9 +1,7 @@
 import 'dart:convert';
 
+import 'package:lux/lux.dart';
 import 'package:bible/models/dictionary_entry.dart';
-import 'package:bible/models/reference/verse_selection.dart';
-import 'package:bible/utils/extensions/string_extensions.dart';
-import 'package:bible/utils/markdown.dart';
 import 'package:collection/collection.dart';
 import 'package:lux_content_tools/repository_paths.dart';
 import 'package:utils_core/utils_core.dart';

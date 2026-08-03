@@ -1,4 +1,5 @@
-import 'package:bible/style/style.dart';
+import 'package:lux/i18n.dart';
+import 'package:style/style.dart';
 
 enum ColorEnum {
   red,

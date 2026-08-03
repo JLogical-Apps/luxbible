@@ -1,0 +1,54 @@
+name: lux
+description: Shared Bible models, application infrastructure, and utilities for Lux apps.
+publish_to: none
+version: 0.0.1
+resolution: workspace
+
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  collection: ^1.19.1
+  equatable: ^2.0.5
+  firebase_app_check: ^0.4.5+2
+  flutter:
+    sdk: flutter
+  flutter_hooks: ^0.21.3+1
+  freezed_annotation: ^3.1.0
+  fuzzywuzzy: ^1.2.0
+  hooks_riverpod: ^3.3.2
+  html: ^0.15.6
+  intl: ^0.20.2
+  intersperse: ^2.0.0
+  json_annotation: ^4.9.0
+  package_info_plus: ^10.1.0
+  path_provider: ^2.1.5
+  port:
+    git:
+      url: https://github.com/JLogical-Apps/flood.git
+      ref: 89a170167523e52354afe3646841e28216b9210a
+      path: packages/port/port
+  riverpod_annotation: ^4.0.3
+  shared_preferences: ^2.5.3
+  slang: ^4.18.0
+  slang_flutter: ^4.18.0
+  utils_core:
+    git:
+      url: https://github.com/JLogical-Apps/flood.git
+      ref: 89a170167523e52354afe3646841e28216b9210a
+      path: packages/utils/utils_core
+  xml: ^7.0.1
+  dio: ^5.11.0
+  material_symbols_icons: ^4.2960.0
+  style:
+    path: ../../packages/style
+  url_launcher: ^6.3.2
+
+dev_dependencies:
+  build_runner: ^2.7.1
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+  freezed: ^3.2.3
+  json_serializable: ^6.11.1
+  riverpod_generator: ^4.0.0+1

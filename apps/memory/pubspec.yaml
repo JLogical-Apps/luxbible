@@ -1,0 +1,59 @@
+name: memory
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+resolution: workspace
+
+version: 0.0.1+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  bible:
+    path: ../bible
+  collection: ^1.19.1
+  lux:
+    path: ../../packages/lux
+  flutter:
+    sdk: flutter
+  hooks_riverpod: ^3.3.2
+  style:
+    path: ../../packages/style
+  flutter_native_splash: ^2.4.7
+  flutter_hooks: ^0.21.3+1
+  freezed_annotation: ^3.1.0
+  package_info_plus: ^10.2.1
+  shared_preferences: ^2.5.5
+  riverpod_annotation: ^4.0.3
+  utils_core:
+    git:
+      url: https://github.com/JLogical-Apps/flood.git
+      ref: "89a170167523e52354afe3646841e28216b9210a"
+      path: packages/utils/utils_core
+  material_symbols_icons: ^4.2960.0
+  intersperse: ^2.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  riverpod_generator: ^4.0.0+1
+  build_runner: ^2.7.1
+  riverpod_lint: ^3.0.3
+  freezed: ^3.2.3
+  json_serializable: ^6.11.1
+  googleapis: ^16.0.0
+  googleapis_auth: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/translations/
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: fonts/Inter-Regular.ttf
+        - asset: fonts/Inter-Italic.ttf
+          style: italic
