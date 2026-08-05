@@ -1,1 +1,1 @@
-source_files/** filter=lfs diff=lfs merge=lfs -text
+content/sources/** filter=lfs diff=lfs merge=lfs -text
