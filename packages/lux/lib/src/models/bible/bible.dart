@@ -1,5 +1,5 @@
-import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
+import 'package:lux/lux.dart';
 import 'package:utils_core/utils_core.dart';
 
 class Bible {
@@ -10,24 +10,17 @@ class Bible {
 
   List<ChapterReference> get chapterReferences => books
       .expand(
-        (book) => List.generate(
-          book.chapters.length,
-          (i) => ChapterReference(book: book.bookType, chapterNum: i + 1),
-        ),
+        (book) => List.generate(book.chapters.length, (i) => ChapterReference(book: book.bookType, chapterNum: i + 1)),
       )
       .toList();
 
-  late final List<Reference> references = chapterReferences
-      .expand((chapter) => chapter.references)
-      .toList();
+  late final List<Reference> references = chapterReferences.expand((chapter) => chapter.references).toList();
 
   late final Map<Reference, Verse> _verseByReference = references
       .mapToMap(
         (reference) => MapEntry(
           reference,
-          getBookByType(
-            reference.book,
-          ).chapters[reference.chapterNum - 1].verses[reference.verseNum],
+          getBookByType(reference.book).chapters[reference.chapterNum - 1].verses[reference.verseNum],
         ),
       )
       .withoutNullValues;
@@ -35,28 +28,18 @@ class Bible {
   Chapter getChapterByReference(ChapterReference reference) =>
       getBookByType(reference.book).chapters[reference.chapterNum - 1];
 
-  Verse? getVerseByReference(Reference reference) =>
-      _verseByReference[reference];
+  Verse? getVerseByReference(Reference reference) => _verseByReference[reference];
 
   late final Map<BookType, Book> _bookByType = BookType.values
-      .mapToMap(
-        (bookType) => MapEntry(
-          bookType,
-          books.firstWhereOrNull((book) => book.bookType == bookType),
-        ),
-      )
+      .mapToMap((bookType) => MapEntry(bookType, books.firstWhereOrNull((book) => book.bookType == bookType)))
       .withoutNullValues;
   Book getBookByType(BookType bookType) => _bookByType[bookType]!;
 
   String getTextSelectionText(BibleTextSelection selection) {
-    final verseTexts =
-        Reference.getReferencesBetween(
-              selection.start.toReference(),
-              selection.end.toReference(),
-            )
-            .map((reference) => getVerseByReference(reference)?.text)
-            .nonNulls
-            .toList();
+    final verseTexts = Reference.getReferencesBetween(
+      selection.start.toReference(),
+      selection.end.toReference(),
+    ).map((reference) => getVerseByReference(reference)?.text).nonNulls.toList();
     final lastVerse = verseTexts[verseTexts.length - 1];
     verseTexts[verseTexts.length - 1] = lastVerse.substring(
       0,
@@ -78,32 +61,22 @@ class Bible {
       if (i + 1 == verses.length) {
         words = words
             .mapWithPrevious<(int, Word)>(
-              (previousOffsetAndWord, word) => (
-                (previousOffsetAndWord?.$1 ?? 0) +
-                    (previousOffsetAndWord?.$2.text?.length ?? 0),
-                word,
-              ),
+              (previousOffsetAndWord, word) =>
+                  ((previousOffsetAndWord?.$1 ?? 0) + (previousOffsetAndWord?.$2.text?.length ?? 0), word),
             )
-            .where(
-              (offsetAndWord) =>
-                  offsetAndWord.$1 <= selection.end.characterOffset + 1,
-            )
+            .where((offsetAndWord) => offsetAndWord.$1 <= selection.end.characterOffset + 1)
             .map((offsetAndWord) => offsetAndWord.$2)
             .toList();
       }
       if (i == 0) {
         words = words
             .mapWithPrevious<(int, Word)>(
-              (previousOffsetAndWord, word) => (
-                (previousOffsetAndWord?.$1 ?? 0) +
-                    (previousOffsetAndWord?.$2.text?.length ?? 0),
-                word,
-              ),
+              (previousOffsetAndWord, word) =>
+                  ((previousOffsetAndWord?.$1 ?? 0) + (previousOffsetAndWord?.$2.text?.length ?? 0), word),
             )
             .where(
               (offsetAndWord) =>
-                  offsetAndWord.$1 + (offsetAndWord.$2.text?.length ?? 0) >=
-                  selection.start.characterOffset,
+                  offsetAndWord.$1 + (offsetAndWord.$2.text?.length ?? 0) >= selection.start.characterOffset,
             )
             .map((offsetAndWord) => offsetAndWord.$2)
             .toList();
@@ -112,9 +85,6 @@ class Bible {
     }).toList();
   }
 
-  List<Verse> getVersesBySpan(VerseSpanReference reference) => reference
-      .references
-      .map((reference) => getVerseByReference(reference))
-      .nonNulls
-      .toList();
+  List<Verse> getVersesBySpan(VerseSpanReference reference) =>
+      reference.references.map((reference) => getVerseByReference(reference)).nonNulls.toList();
 }

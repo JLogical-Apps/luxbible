@@ -1,6 +1,6 @@
-import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:lux/lux.dart';
 import 'package:utils_core/utils_core.dart';
 
 class VerseSelection extends Equatable {
@@ -8,12 +8,8 @@ class VerseSelection extends Equatable {
 
   VerseSelection({required this.spans});
 
-  factory VerseSelection.fromOsisId(String key) => VerseSelection(
-    spans: key
-        .split(' ')
-        .map((span) => VerseSpanReference.fromOsisId(span))
-        .toList(),
-  );
+  factory VerseSelection.fromOsisId(String key) =>
+      VerseSelection(spans: key.split(' ').map((span) => VerseSpanReference.fromOsisId(span)).toList());
 
   static bool isOsisId(String value) {
     try {
@@ -25,8 +21,7 @@ class VerseSelection extends Equatable {
                   final reference = pointer.startReference;
                   return reference == reference.clamped;
                 }) &&
-                (span.end == null ||
-                    span.start.startReference <= span.end!.endReference),
+                (span.end == null || span.start.startReference <= span.end!.endReference),
           );
     } catch (_) {
       return false;
@@ -37,23 +32,16 @@ class VerseSelection extends Equatable {
     value
         .split('+')
         .map((reference) {
-          final match = RegExp(
-            r'^([1-3]?[A-Z]{2,3})[ .](.+)$',
-          ).firstMatch(reference.trim().toUpperCase());
+          final match = RegExp(r'^([1-3]?[A-Z]{2,3})[ .](.+)$').firstMatch(reference.trim().toUpperCase());
           if (match == null) {
             throw FormatException('Invalid USX reference: $reference');
           }
 
           final usxCode = match.group(1)!;
-          final book = BookType.values.firstWhereOrNull(
-            (book) => book.usxCode() == usxCode,
-          );
+          final book = BookType.values.firstWhereOrNull((book) => book.usxCode() == usxCode);
           if (book == null) throw FormatException('Unknown USX book: $usxCode');
 
-          final range = match
-              .group(2)!
-              .replaceAll('$usxCode.', '')
-              .replaceAll('.', ':');
+          final range = match.group(2)!.replaceAll('$usxCode.', '').replaceAll('.', ':');
           final parts = range.split('-');
           if (parts.length > 2) {
             throw FormatException('Invalid USX range: $range');
@@ -91,14 +79,9 @@ class VerseSelection extends Equatable {
 
   factory VerseSelection.empty() => VerseSelection(spans: []);
 
-  factory VerseSelection.parse(
-    String input, {
-    Map<BookType, String> bookToName = const {},
-  }) {
+  factory VerseSelection.parse(String input, {Map<BookType, String> bookToName = const {}}) {
     /// Captures the book name (group 1) and an optional chapter/verse range (group 2).
-    final referencePattern = RegExp(
-      r'^(.*?)\s*(\d+(?::\d+)?(?:\s*-\s*\d+(?::\d+)?)?)?$',
-    );
+    final referencePattern = RegExp(r'^(.*?)\s*(\d+(?::\d+)?(?:\s*-\s*\d+(?::\d+)?)?)?$');
 
     final match = referencePattern.firstMatch(input.trim());
     if (match == null) {
@@ -108,18 +91,10 @@ class VerseSelection extends Equatable {
     final (rawBook, range) = (match.group(1)!.normalized, match.group(2));
 
     final book =
-        BookType.values.firstWhereOrNull(
-          (type) => type.title().normalized == rawBook,
-        ) ??
-        BookType.values.firstWhereOrNull(
-          (type) => type.osisId().toLowerCase().normalized == rawBook,
-        ) ??
-        BookType.values.firstWhereOrNull(
-          (type) => bookToName[type]?.normalized == rawBook,
-        ) ??
-        (throw FormatException(
-          'Unknown book "$rawBook" in reference "$input"',
-        ));
+        BookType.values.firstWhereOrNull((type) => type.title().normalized == rawBook) ??
+        BookType.values.firstWhereOrNull((type) => type.osisId().toLowerCase().normalized == rawBook) ??
+        BookType.values.firstWhereOrNull((type) => bookToName[type]?.normalized == rawBook) ??
+        (throw FormatException('Unknown book "$rawBook" in reference "$input"'));
 
     if (range == null || range.isEmpty) {
       return VerseSelection.fromReferences(book.allReferences);
@@ -145,10 +120,8 @@ class VerseSelection extends Equatable {
   bool get isEmpty => spans.isEmpty;
   bool get isNotEmpty => spans.isNotEmpty;
 
-  bool hasReference(Reference reference) =>
-      spans.any((span) => span.containsReference(reference));
-  bool hasAnyOf(VerseSelection verseSelection) =>
-      verseSelection.references.any((reference) => hasReference(reference));
+  bool hasReference(Reference reference) => spans.any((span) => span.containsReference(reference));
+  bool hasAnyOf(VerseSelection verseSelection) => verseSelection.references.any((reference) => hasReference(reference));
 
   List<VerseSelection> splitByChapter() => references
       .groupListsBy((reference) => reference.toChapterReference())
@@ -161,13 +134,11 @@ class VerseSelection extends Equatable {
 
   bool isInTranslation(BibleTranslation translation) =>
       references.isEmpty ||
-      (translation.containsBook(references.first.book) &&
-          translation.containsBook(references.last.book));
+      (translation.containsBook(references.first.book) && translation.containsBook(references.last.book));
 
   String format() => spans.mapIndexed((spanIndex, span) {
     final previousSpan = spanIndex == 0 ? null : spans[spanIndex - 1];
-    final previousEnd =
-        previousSpan?.end?.endReference ?? previousSpan?.start.endReference;
+    final previousEnd = previousSpan?.end?.endReference ?? previousSpan?.start.endReference;
     return [
       if (previousEnd != null)
         previousEnd.book != span.start.startReference.book ||

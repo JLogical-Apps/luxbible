@@ -1,6 +1,6 @@
-import 'package:lux/lux.dart';
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lux/lux.dart';
 
 part 'bible_text_selection.freezed.dart';
 part 'bible_text_selection.g.dart';
@@ -18,29 +18,20 @@ sealed class BibleTextSelection with _$BibleTextSelection {
   factory BibleTextSelection.character({
     required BibleTextSelectionWordAnchor anchor,
     required BibleTranslation translation,
-  }) =>
-      BibleTextSelection(start: anchor, end: anchor, translation: translation);
+  }) => BibleTextSelection(start: anchor, end: anchor, translation: translation);
 
-  factory BibleTextSelection.fromJson(Map<String, dynamic> json) =>
-      _$BibleTextSelectionFromJson(json);
+  factory BibleTextSelection.fromJson(Map<String, dynamic> json) => _$BibleTextSelectionFromJson(json);
 
-  bool intersects(BibleTextSelection textSelection) =>
-      end >= textSelection.start && textSelection.end >= start;
-  bool isInReference(Reference reference) =>
-      reference >= start.toReference() && reference <= end.toReference();
+  bool intersects(BibleTextSelection textSelection) => end >= textSelection.start && textSelection.end >= start;
+  bool isInReference(Reference reference) => reference >= start.toReference() && reference <= end.toReference();
   bool isInVerseSelection(VerseSelection verseSelection) =>
       verseSelection.references.any((reference) => isInReference(reference));
 
-  VerseSelection toVerseSelection() => VerseSelection.fromReferences(
-    Reference.getReferencesBetween(
-      start.toReference(),
-      end.toReference(),
-    ).toList(),
-  );
+  VerseSelection toVerseSelection() =>
+      VerseSelection.fromReferences(Reference.getReferencesBetween(start.toReference(), end.toReference()).toList());
 }
 
-class BibleTextSelectionWordAnchor extends Equatable
-    with ComparableOperators<BibleTextSelectionWordAnchor> {
+class BibleTextSelectionWordAnchor extends Equatable with ComparableOperators<BibleTextSelectionWordAnchor> {
   final BookType book;
   final int chapterNum;
   final int verseNum;
@@ -53,15 +44,13 @@ class BibleTextSelectionWordAnchor extends Equatable
     required this.characterOffset,
   });
 
-  factory BibleTextSelectionWordAnchor.fromReference({
-    required Reference reference,
-    required int characterOffset,
-  }) => BibleTextSelectionWordAnchor(
-    book: reference.book,
-    chapterNum: reference.chapterNum,
-    verseNum: reference.verseNum,
-    characterOffset: characterOffset,
-  );
+  factory BibleTextSelectionWordAnchor.fromReference({required Reference reference, required int characterOffset}) =>
+      BibleTextSelectionWordAnchor(
+        book: reference.book,
+        chapterNum: reference.chapterNum,
+        verseNum: reference.verseNum,
+        characterOffset: characterOffset,
+      );
 
   factory BibleTextSelectionWordAnchor.fromKey(String key) {
     final items = key.split('.');
@@ -73,18 +62,15 @@ class BibleTextSelectionWordAnchor extends Equatable
     );
   }
 
-  factory BibleTextSelectionWordAnchor.fromJson(String json) =
-      BibleTextSelectionWordAnchor.fromKey;
+  factory BibleTextSelectionWordAnchor.fromJson(String json) = BibleTextSelectionWordAnchor.fromKey;
   String toJson() => toKey();
 
   @override
   List<Object> get props => [book, chapterNum, verseNum, characterOffset];
 
-  String toKey() =>
-      [book.osisId(), chapterNum, verseNum, characterOffset].join('.');
+  String toKey() => [book.osisId(), chapterNum, verseNum, characterOffset].join('.');
 
-  Reference toReference() =>
-      Reference(book: book, chapterNum: chapterNum, verseNum: verseNum);
+  Reference toReference() => Reference(book: book, chapterNum: chapterNum, verseNum: verseNum);
   ChapterReference toChapterReference() => toReference().toChapterReference();
 
   @override
@@ -97,15 +83,11 @@ class BibleTextSelectionWordAnchor extends Equatable
   BibleTextSelectionWordAnchor withCharactersAdded(int characters) =>
       copyWith(characterOffset: characterOffset + characters);
 
-  BibleTextSelectionWordAnchor copyWith({
-    BookType? book,
-    int? chapterNum,
-    int? verseNum,
-    int? characterOffset,
-  }) => BibleTextSelectionWordAnchor(
-    book: book ?? this.book,
-    chapterNum: chapterNum ?? this.chapterNum,
-    verseNum: verseNum ?? this.verseNum,
-    characterOffset: characterOffset ?? this.characterOffset,
-  );
+  BibleTextSelectionWordAnchor copyWith({BookType? book, int? chapterNum, int? verseNum, int? characterOffset}) =>
+      BibleTextSelectionWordAnchor(
+        book: book ?? this.book,
+        chapterNum: chapterNum ?? this.chapterNum,
+        verseNum: verseNum ?? this.verseNum,
+        characterOffset: characterOffset ?? this.characterOffset,
+      );
 }

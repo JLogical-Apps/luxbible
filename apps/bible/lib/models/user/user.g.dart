@@ -8,124 +8,62 @@ part of 'user.dart';
 
 _User _$UserFromJson(Map<String, dynamic> json) => _User(
   translation: $enumDecode(_$BibleTranslationEnumMap, json['translation']),
-  studyTranslation:
-      $enumDecodeNullable(
-        _$BibleTranslationEnumMap,
-        json['studyTranslation'],
-      ) ??
-      BibleTranslation.bsb,
-  audioTranslation:
-      $enumDecodeNullable(
-        _$BibleTranslationEnumMap,
-        json['audioTranslation'],
-      ) ??
-      BibleTranslation.bsb,
+  studyTranslation: $enumDecodeNullable(_$BibleTranslationEnumMap, json['studyTranslation']) ?? BibleTranslation.bsb,
+  audioTranslation: $enumDecodeNullable(_$BibleTranslationEnumMap, json['audioTranslation']) ?? BibleTranslation.bsb,
   oldTestamentTranslation:
-      $enumDecodeNullable(
-        _$BibleTranslationEnumMap,
-        json['oldTestamentTranslation'],
-      ) ??
-      BibleTranslation.oshb,
+      $enumDecodeNullable(_$BibleTranslationEnumMap, json['oldTestamentTranslation']) ?? BibleTranslation.oshb,
   newTestamentTranslation:
-      $enumDecodeNullable(
-        _$BibleTranslationEnumMap,
-        json['newTestamentTranslation'],
-      ) ??
-      BibleTranslation.statresgnt,
-  bibles: (json['bibles'] as List<dynamic>?)
-      ?.map((e) => $enumDecode(_$BibleTranslationEnumMap, e))
-      .toList(),
-  commentaries: (json['commentaries'] as List<dynamic>?)
-      ?.map((e) => $enumDecode(_$CommentaryTypeEnumMap, e))
-      .toList(),
+      $enumDecodeNullable(_$BibleTranslationEnumMap, json['newTestamentTranslation']) ?? BibleTranslation.statresgnt,
+  bibles: (json['bibles'] as List<dynamic>?)?.map((e) => $enumDecode(_$BibleTranslationEnumMap, e)).toList(),
+  commentaries: (json['commentaries'] as List<dynamic>?)?.map((e) => $enumDecode(_$CommentaryTypeEnumMap, e)).toList(),
   lastPosition: ChapterPositionFromReference.read(json, 'lastReference') == null
-      ? const ChapterPosition(
-          reference: ChapterReference(chapterNum: 1, book: BookType.genesis),
-        )
-      : ChapterPosition.fromJson(
-          ChapterPositionFromReference.read(json, 'lastReference')
-              as Map<String, dynamic>,
-        ),
+      ? const ChapterPosition(reference: ChapterReference(chapterNum: 1, book: BookType.genesis))
+      : ChapterPosition.fromJson(ChapterPositionFromReference.read(json, 'lastReference') as Map<String, dynamic>),
   currentBookmarkId: json['currentBookmarkId'] as String?,
   viewHistory:
       (ChapterPositionFromReference.read(json, 'viewHistory') as List<dynamic>?)
           ?.map((e) => ChapterPosition.fromJson(e as Map<String, dynamic>))
           .toList() ??
       const [],
-  lastHighlightStyle:
-      _readLastHighlightStyle(json, 'lastHighlightStyle') == null
+  lastHighlightStyle: _readLastHighlightStyle(json, 'lastHighlightStyle') == null
       ? HighlightStyle.fallback
-      : HighlightStyle.fromJson(
-          _readLastHighlightStyle(json, 'lastHighlightStyle')
-              as Map<String, dynamic>,
-        ),
+      : HighlightStyle.fromJson(_readLastHighlightStyle(json, 'lastHighlightStyle') as Map<String, dynamic>),
   bookmarkById:
       (json['bookmarkById'] as Map<String, dynamic>?)?.map(
         (k, e) => MapEntry(k, Bookmark.fromJson(e as Map<String, dynamic>)),
       ) ??
       const {},
   annotations:
-      (json['annotations'] as List<dynamic>?)
-          ?.map((e) => Annotation.fromJson(e as Map<String, dynamic>))
-          .toList() ??
+      (json['annotations'] as List<dynamic>?)?.map((e) => Annotation.fromJson(e as Map<String, dynamic>)).toList() ??
       const [],
   notebooks:
-      (json['notebooks'] as List<dynamic>?)
-          ?.map((e) => Notebook.fromJson(e as Map<String, dynamic>))
-          .toList() ??
+      (json['notebooks'] as List<dynamic>?)?.map((e) => Notebook.fromJson(e as Map<String, dynamic>)).toList() ??
       const [],
   lastNotebookId: json['lastNotebookId'] as String?,
   mainToolbar: json['mainToolbar'] == null
       ? const MainToolbarConfiguration()
-      : MainToolbarConfiguration.fromJson(
-          json['mainToolbar'] as Map<String, dynamic>,
-        ),
+      : MainToolbarConfiguration.fromJson(json['mainToolbar'] as Map<String, dynamic>),
   verseSelection: json['verseSelection'] == null
       ? const VerseSelectionConfiguration()
-      : VerseSelectionConfiguration.fromJson(
-          json['verseSelection'] as Map<String, dynamic>,
-        ),
+      : VerseSelectionConfiguration.fromJson(json['verseSelection'] as Map<String, dynamic>),
   textSelection: json['textSelection'] == null
       ? const TextSelectionConfiguration()
-      : TextSelectionConfiguration.fromJson(
-          json['textSelection'] as Map<String, dynamic>,
-        ),
-  searchHistory:
-      (json['searchHistory'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toList() ??
-      const [],
+      : TextSelectionConfiguration.fromJson(json['textSelection'] as Map<String, dynamic>),
+  searchHistory: (json['searchHistory'] as List<dynamic>?)?.map((e) => e as String).toList() ?? const [],
   interlinearDirection:
-      $enumDecodeNullable(
-        _$InterlinearDirectionEnumMap,
-        json['interlinearDirection'],
-      ) ??
-      InterlinearDirection.reverse,
-  theme:
-      $enumDecodeNullable(_$ThemeModeEnumMap, json['theme']) ??
-      ThemeMode.system,
+      $enumDecodeNullable(_$InterlinearDirectionEnumMap, json['interlinearDirection']) ?? InterlinearDirection.reverse,
+  theme: $enumDecodeNullable(_$ThemeModeEnumMap, json['theme']) ?? ThemeMode.system,
   themeLayout: json['themeLayout'] == null
       ? const ThemeLayoutConfiguration()
-      : ThemeLayoutConfiguration.fromJson(
-          json['themeLayout'] as Map<String, dynamic>,
-        ),
+      : ThemeLayoutConfiguration.fromJson(json['themeLayout'] as Map<String, dynamic>),
   studyPanels:
-      (json['studyPanels'] as List<dynamic>?)
-          ?.map((e) => StudyPanel.fromJson(e as Map<String, dynamic>))
-          .toList() ??
+      (json['studyPanels'] as List<dynamic>?)?.map((e) => StudyPanel.fromJson(e as Map<String, dynamic>)).toList() ??
       const [],
   studyPanelIndex: (json['studyPanelIndex'] as num?)?.toInt(),
-  studyPanelBottomPosition:
-      (json['studyPanelBottomPosition'] as num?)?.toDouble() ?? 0.5,
+  studyPanelBottomPosition: (json['studyPanelBottomPosition'] as num?)?.toDouble() ?? 0.5,
   tutorials:
       (json['tutorials'] as List<dynamic>?)
-          ?.map(
-            (e) => $enumDecodeNullable(
-              _$TutorialEnumMap,
-              e,
-              unknownValue: JsonKey.nullForUndefinedEnumValue,
-            ),
-          )
+          ?.map((e) => $enumDecodeNullable(_$TutorialEnumMap, e, unknownValue: JsonKey.nullForUndefinedEnumValue))
           .toSet() ??
       const {},
   completedOnboardingSteps: (json['completedOnboardingSteps'] as List<dynamic>?)
@@ -135,47 +73,34 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
       ?.map(
         (e) => _$recordConvert(
           e,
-          ($jsonValue) => (
-            HighlightStyle.fromJson($jsonValue[r'$1'] as Map<String, dynamic>),
-            $jsonValue[r'$2'] as String,
-          ),
+          ($jsonValue) =>
+              (HighlightStyle.fromJson($jsonValue[r'$1'] as Map<String, dynamic>), $jsonValue[r'$2'] as String),
         ),
       )
       .toList(),
   planProgressByType:
       (json['planProgressByType'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(
-          $enumDecode(_$BiblePlanTypeEnumMap, k),
-          BiblePlanProgress.fromJson(e as Map<String, dynamic>),
-        ),
+        (k, e) =>
+            MapEntry($enumDecode(_$BiblePlanTypeEnumMap, k), BiblePlanProgress.fromJson(e as Map<String, dynamic>)),
       ) ??
       const {},
   completedPlans:
-      (json['completedPlans'] as List<dynamic>?)
-          ?.map((e) => $enumDecode(_$BiblePlanTypeEnumMap, e))
-          .toSet() ??
+      (json['completedPlans'] as List<dynamic>?)?.map((e) => $enumDecode(_$BiblePlanTypeEnumMap, e)).toSet() ??
       const {},
   audio: json['audio'] == null
       ? const AudioBibleConfiguration()
       : AudioBibleConfiguration.fromJson(json['audio'] as Map<String, dynamic>),
-  languageOverride: $enumDecodeNullable(
-    _$LanguageEnumMap,
-    json['languageOverride'],
-  ),
+  languageOverride: $enumDecodeNullable(_$LanguageEnumMap, json['languageOverride']),
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'translation': _$BibleTranslationEnumMap[instance.translation]!,
   'studyTranslation': _$BibleTranslationEnumMap[instance.studyTranslation]!,
   'audioTranslation': _$BibleTranslationEnumMap[instance.audioTranslation]!,
-  'oldTestamentTranslation':
-      _$BibleTranslationEnumMap[instance.oldTestamentTranslation]!,
-  'newTestamentTranslation':
-      _$BibleTranslationEnumMap[instance.newTestamentTranslation]!,
+  'oldTestamentTranslation': _$BibleTranslationEnumMap[instance.oldTestamentTranslation]!,
+  'newTestamentTranslation': _$BibleTranslationEnumMap[instance.newTestamentTranslation]!,
   'bibles': instance.bibles?.map((e) => _$BibleTranslationEnumMap[e]!).toList(),
-  'commentaries': instance.commentaries
-      ?.map((e) => _$CommentaryTypeEnumMap[e]!)
-      .toList(),
+  'commentaries': instance.commentaries?.map((e) => _$CommentaryTypeEnumMap[e]!).toList(),
   'lastReference': instance.lastPosition.toJson(),
   'currentBookmarkId': instance.currentBookmarkId,
   'viewHistory': instance.viewHistory.map((e) => e.toJson()).toList(),
@@ -188,26 +113,19 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'verseSelection': instance.verseSelection.toJson(),
   'textSelection': instance.textSelection.toJson(),
   'searchHistory': instance.searchHistory,
-  'interlinearDirection':
-      _$InterlinearDirectionEnumMap[instance.interlinearDirection]!,
+  'interlinearDirection': _$InterlinearDirectionEnumMap[instance.interlinearDirection]!,
   'theme': _$ThemeModeEnumMap[instance.theme]!,
   'themeLayout': instance.themeLayout.toJson(),
   'studyPanels': instance.studyPanels.map((e) => e.toJson()).toList(),
   'studyPanelIndex': instance.studyPanelIndex,
   'studyPanelBottomPosition': instance.studyPanelBottomPosition,
   'tutorials': instance.tutorials.map((e) => _$TutorialEnumMap[e]).toList(),
-  'completedOnboardingSteps': instance.completedOnboardingSteps
-      ?.map((e) => _$OnboardingStepEnumMap[e]!)
-      .toList(),
+  'completedOnboardingSteps': instance.completedOnboardingSteps?.map((e) => _$OnboardingStepEnumMap[e]!).toList(),
   'highlightStyles': instance.highlightStyleOverrides
       ?.map((e) => <String, dynamic>{r'$1': e.$1.toJson(), r'$2': e.$2})
       .toList(),
-  'planProgressByType': instance.planProgressByType.map(
-    (k, e) => MapEntry(_$BiblePlanTypeEnumMap[k]!, e.toJson()),
-  ),
-  'completedPlans': instance.completedPlans
-      .map((e) => _$BiblePlanTypeEnumMap[e]!)
-      .toList(),
+  'planProgressByType': instance.planProgressByType.map((k, e) => MapEntry(_$BiblePlanTypeEnumMap[k]!, e.toJson())),
+  'completedPlans': instance.completedPlans.map((e) => _$BiblePlanTypeEnumMap[e]!).toList(),
   'audio': instance.audio.toJson(),
   'languageOverride': _$LanguageEnumMap[instance.languageOverride],
 };
@@ -241,11 +159,7 @@ const _$InterlinearDirectionEnumMap = {
   InterlinearDirection.forward: 'forward',
 };
 
-const _$ThemeModeEnumMap = {
-  ThemeMode.system: 'system',
-  ThemeMode.light: 'light',
-  ThemeMode.dark: 'dark',
-};
+const _$ThemeModeEnumMap = {ThemeMode.system: 'system', ThemeMode.light: 'light', ThemeMode.dark: 'dark'};
 
 const _$TutorialEnumMap = {
   Tutorial.interlinearStudy: 'interlinearStudy',
@@ -266,8 +180,7 @@ const _$OnboardingStepEnumMap = {
   OnboardingStep.startBiblePlan: 'startBiblePlan',
 };
 
-$Rec _$recordConvert<$Rec>(Object? value, $Rec Function(Map) convert) =>
-    convert(value as Map<String, dynamic>);
+$Rec _$recordConvert<$Rec>(Object? value, $Rec Function(Map) convert) => convert(value as Map<String, dynamic>);
 
 const _$BiblePlanTypeEnumMap = {
   BiblePlanType.esv_through_the_bible: 'esv_through_the_bible',
@@ -280,15 +193,9 @@ const _$BiblePlanTypeEnumMap = {
   BiblePlanType.heartlight_nt_psalms_proverbs: 'heartlight_nt_psalms_proverbs',
   BiblePlanType.navigators_5x5x5_nt: 'navigators_5x5x5_nt',
   BiblePlanType.esv_gospels_and_epistles: 'esv_gospels_and_epistles',
-  BiblePlanType.esv_pentateuch_and_history_of_israel:
-      'esv_pentateuch_and_history_of_israel',
+  BiblePlanType.esv_pentateuch_and_history_of_israel: 'esv_pentateuch_and_history_of_israel',
   BiblePlanType.esv_chronicles_and_prophets: 'esv_chronicles_and_prophets',
-  BiblePlanType.esv_psalms_and_wisdom_literature:
-      'esv_psalms_and_wisdom_literature',
+  BiblePlanType.esv_psalms_and_wisdom_literature: 'esv_psalms_and_wisdom_literature',
 };
 
-const _$LanguageEnumMap = {
-  Language.english: 'english',
-  Language.dutch: 'dutch',
-  Language.russian: 'russian',
-};
+const _$LanguageEnumMap = {Language.english: 'english', Language.dutch: 'dutch', Language.russian: 'russian'};

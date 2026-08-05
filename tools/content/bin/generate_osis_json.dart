@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:collection/collection.dart';
 import 'package:lux_content_tools/repository_paths.dart';
-
 import 'package:lux_content_tools/src/parsers/osis_parser.dart';
 
 void main() {
@@ -17,8 +16,7 @@ void main() {
             .map(
               (file) => parseOsisBook(
                 file.readAsStringSync(),
-                verseParagraphs:
-                    name == 'oshb' || name == 'sv' || name == 'nrt',
+                verseParagraphs: name == 'oshb' || name == 'sv' || name == 'nrt',
               ),
             )
             .sortedBy((a) => a.bookType.index)

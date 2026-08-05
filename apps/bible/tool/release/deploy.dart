@@ -118,19 +118,23 @@ Future<void> _deployIos(Map<String, String> env) async {
   final ipaDir = Directory('build/ios/ipa');
   final ipa = ipaDir.existsSync()
       ? ipaDir.listSync().whereType<File>().firstWhere(
-            (f) => f.path.endsWith('.ipa'),
-            orElse: () => _fail('No .ipa found in ${ipaDir.path}'),
-          )
+          (f) => f.path.endsWith('.ipa'),
+          orElse: () => _fail('No .ipa found in ${ipaDir.path}'),
+        )
       : _fail('Expected IPA directory not found at ${ipaDir.path}');
 
   stdout.writeln('Uploading ${ipa.path} (${_mb(ipa.lengthSync())}) to TestFlight...');
   _run('xcrun', [
     'altool',
     '--upload-app',
-    '--type', 'ios',
-    '--file', ipa.path,
-    '--apiKey', keyId,
-    '--apiIssuer', issuerId,
+    '--type',
+    'ios',
+    '--file',
+    ipa.path,
+    '--apiKey',
+    keyId,
+    '--apiIssuer',
+    issuerId,
   ]);
   stdout.writeln('iOS build uploaded. It will appear in TestFlight after Apple finishes processing.');
 }

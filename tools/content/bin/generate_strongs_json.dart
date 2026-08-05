@@ -15,12 +15,8 @@ void main() {
     ...parseGreek(sourceFile('strongs/greek.xml').readAsStringSync()),
   ];
 
-  final bdbThayer = parseLexicon(
-    sourceFile('sword/lexicon/bdbthayerstrongkjctvm.lexi.json').path,
-  );
-  final strongsPlus = parseLexicon(
-    sourceFile('sword/lexicon/strongsplus.lexi.json').path,
-  );
+  final bdbThayer = parseLexicon(sourceFile('sword/lexicon/bdbthayerstrongkjctvm.lexi.json').path);
+  final strongsPlus = parseLexicon(sourceFile('sword/lexicon/strongsplus.lexi.json').path);
 
   final strongIds = baseStrongs.map((strong) => strong['i'] as String).toSet();
 
@@ -40,14 +36,10 @@ void main() {
   );
 }
 
-Map<String, String> parseLexicon(String path) =>
-    (jsonDecode(File(path).readAsStringSync())['entries'] as List)
-        .cast<Map<String, dynamic>>()
-        .map(
-          (entry) =>
-              MapEntry(entry['topic'] as String, entry['definition'] as String),
-        )
-        .toMap();
+Map<String, String> parseLexicon(String path) => (jsonDecode(File(path).readAsStringSync())['entries'] as List)
+    .cast<Map<String, dynamic>>()
+    .map((entry) => MapEntry(entry['topic'] as String, entry['definition'] as String))
+    .toMap();
 
 Map<String, dynamic> enrichStrong(
   Map<String, dynamic> strong, {
@@ -59,22 +51,15 @@ Map<String, dynamic> enrichStrong(
   final plusParagraphs = parseFragment(strongsPlusXml).querySelectorAll('p');
 
   final definitionIndex =
-      bdbParagraphs.indexWhereOrNull(
-        (paragraph) => paragraph.text.trim().startsWith('- Definition:'),
-      ) ??
+      bdbParagraphs.indexWhereOrNull((paragraph) => paragraph.text.trim().startsWith('- Definition:')) ??
       (throw FormatException('Missing definition metadata for ${strong['i']}'));
 
-  final originIndex = bdbParagraphs.indexWhereOrNull(
-    (paragraph) => paragraph.text.trim().startsWith('- Origin:'),
-  );
+  final originIndex = bdbParagraphs.indexWhereOrNull((paragraph) => paragraph.text.trim().startsWith('- Origin:'));
 
   final lexiconDefinition = bdbParagraphs
       .sublist(definitionIndex, originIndex ?? bdbParagraphs.length)
       .map((element) => element.toMarkdown())
-      .mapIndexed(
-        (index, paragraph) =>
-            index == 0 ? paragraph.withoutLabel('Definition') : paragraph,
-      )
+      .mapIndexed((index, paragraph) => index == 0 ? paragraph.withoutLabel('Definition') : paragraph)
       .where((paragraph) => paragraph.isNotEmpty)
       .join('\n');
 
@@ -84,9 +69,7 @@ Map<String, dynamic> enrichStrong(
     'Part(s) of speech',
   )?.cleanedPartOfSpeech?.asMarkdown()?.withStrippedMarkdown;
 
-  final lxxIndex = plusParagraphs.indexWhereOrNull(
-    (paragraph) => paragraph.text.contains('LXX related word'),
-  );
+  final lxxIndex = plusParagraphs.indexWhereOrNull((paragraph) => paragraph.text.contains('LXX related word'));
   final description = plusParagraphs.length > 3
       ? plusParagraphs
             .sublist(3, lxxIndex ?? plusParagraphs.length)
@@ -100,34 +83,16 @@ Map<String, dynamic> enrichStrong(
       : lexiconDefinition.withoutTrailingHierarchyMarkers;
   final definition = sourceDefinition.nullIfBlank ?? description;
 
-  final relatedStrongIds =
-      {
-            ...(strong['g'] as List<String>),
-            if (lxxIndex != null)
-              ...plusParagraphs
-                  .skip(lxxIndex + 1)
-                  .expand((paragraph) => paragraph.text.strongIds),
-          }
-          .where(
-            (strongId) =>
-                strongIds.contains(strongId) && strongId != strong['i'],
-          )
-          .toList();
+  final relatedStrongIds = {
+    ...(strong['g'] as List<String>),
+    if (lxxIndex != null) ...plusParagraphs.skip(lxxIndex + 1).expand((paragraph) => paragraph.text.strongIds),
+  }.where((strongId) => strongIds.contains(strongId) && strongId != strong['i']).toList();
 
-  return {
-    ...strong,
-    'd': definition,
-    's': description,
-    'o': ?derivation,
-    't': ?partOfSpeech,
-    'g': relatedStrongIds,
-  };
+  return {...strong, 'd': definition, 's': description, 'o': ?derivation, 't': ?partOfSpeech, 'g': relatedStrongIds};
 }
 
 String? optionalField(List<Element> paragraphs, String label) => paragraphs
-    .firstWhereOrNull(
-      (paragraph) => paragraph.text.trim().startsWith('- $label:'),
-    )
+    .firstWhereOrNull((paragraph) => paragraph.text.trim().startsWith('- $label:'))
     ?.toMarkdown()
     .withoutLabel(label)
     .trim()
@@ -165,12 +130,7 @@ List<Map<String, dynamic>> parseHebrew(String rawXml) {
 String parseHebrewDefinition(XmlElement div) => div
     .getElement('list')!
     .findElements('item')
-    .map(
-      (item) => item.innerText
-          .replaceAll('——-', '-----')
-          .withCollapsedWhitespace
-          .asHebrewDefinitionMarkdown,
-    )
+    .map((item) => item.innerText.replaceAll('——-', '-----').withCollapsedWhitespace.asHebrewDefinitionMarkdown)
     .join('\n');
 
 List<Map<String, dynamic>> parseGreek(String rawXml) {
@@ -213,39 +173,27 @@ List<Map<String, dynamic>> parseGreek(String rawXml) {
 }
 
 extension on String {
-  String get withoutLeadingItalicText =>
-      replaceFirst(RegExp(r'^\*[^*]+\*'), '');
+  String get withoutLeadingItalicText => replaceFirst(RegExp(r'^\*[^*]+\*'), '');
 
-  String withoutLabel(String label) =>
-      replaceFirst(RegExp('^- ${RegExp.escape(label)}:\\s*'), '');
+  String withoutLabel(String label) => replaceFirst(RegExp('^- ${RegExp.escape(label)}:\\s*'), '');
 
-  String? get cleanedPartOfSpeech => replaceAll(
-    RegExp(r'\s*,?NULL\);?'),
-    '',
-  ).replaceAll(RegExp(r'\s+par$'), '').trim().nullIfBlank;
+  String? get cleanedPartOfSpeech =>
+      replaceAll(RegExp(r'\s*,?NULL\);?'), '').replaceAll(RegExp(r'\s+par$'), '').trim().nullIfBlank;
 
-  String get withoutTrailingHierarchyMarkers => split(
-    '\n',
-  ).map((line) => line.replaceFirst(RegExp(r' \d+[a-z]$'), '')).join('\n');
+  String get withoutTrailingHierarchyMarkers =>
+      split('\n').map((line) => line.replaceFirst(RegExp(r' \d+[a-z]$'), '')).join('\n');
 
-  List<String> get strongIds =>
-      strongIdOccurrences.map((match) => match.id).toList();
+  List<String> get strongIds => strongIdOccurrences.map((match) => match.id).toList();
 
-  List<({String id, int start, int end})> get strongIdOccurrences =>
-      RegExp(r'\b[GH]\d+\b')
-          .allMatches(this)
-          .map(
-            (match) =>
-                (id: match.group(0)!, start: match.start, end: match.end),
-          )
-          .toList();
+  List<({String id, int start, int end})> get strongIdOccurrences => RegExp(
+    r'\b[GH]\d+\b',
+  ).allMatches(this).map((match) => (id: match.group(0)!, start: match.start, end: match.end)).toList();
 
-  int get strongsIndentation =>
-      switch (RegExp(r'margin-left:\s*(\d+)pt').firstMatch(this)?.group(1)) {
-        '26' => 2,
-        '39' => 4,
-        _ => 0,
-      };
+  int get strongsIndentation => switch (RegExp(r'margin-left:\s*(\d+)pt').firstMatch(this)?.group(1)) {
+    '26' => 2,
+    '39' => 4,
+    _ => 0,
+  };
 
   String get asHebrewDefinitionMarkdown {
     final match = RegExp(r'^(\d+(?:[a-z]\d*)*)\)\s*(.*)$').firstMatch(this);
@@ -253,9 +201,7 @@ extension on String {
       return this;
     }
 
-    final hierarchy = RegExp(
-      r'\d+|[a-z]',
-    ).allMatches(match.group(1)!).map((match) => match.group(0)!).toList();
+    final hierarchy = RegExp(r'\d+|[a-z]').allMatches(match.group(1)!).map((match) => match.group(0)!).toList();
     final indentation = List.filled((hierarchy.length - 1) * 2, '\t').join();
     return '$indentation**${hierarchy.last}.** ${match.group(2)}';
   }
@@ -265,24 +211,16 @@ extension on Element {
   String toMarkdown() => Markdown.fromHtml(
     this,
     (element, children) => switch (element.localName) {
-      'p' => [
-        .indented(
-          (element.attributes['style'] ?? '').strongsIndentation,
-          children,
-        ),
-      ],
+      'p' => [.indented((element.attributes['style'] ?? '').strongsIndentation, children)],
       'b' || 'strong' => [.bold(children)],
       'i' || 'em' => [.italic(children)],
       'a' => () {
         final text = children.plainText;
-        final strongId =
-            '${element.attributes['href']} $text'.strongIds.firstOrNull;
+        final strongId = '${element.attributes['href']} $text'.strongIds.firstOrNull;
         return strongId == null
             ? [MarkdownElement.text(text)]
             : [
-                MarkdownElement.link(strongId, [
-                  .text(text.isEmpty ? strongId : text),
-                ]),
+                MarkdownElement.link(strongId, [.text(text.isEmpty ? strongId : text)]),
               ];
       }(),
       'br' => [.lineBreak()],
@@ -294,8 +232,7 @@ extension on Element {
         ...matches.mapIndexed((index, match) {
           final gapStart = index == 0 ? 0 : matches[index - 1].end;
           return [
-            if (match.start > gapStart)
-              MarkdownElement.text(text.substring(gapStart, match.start)),
+            if (match.start > gapStart) MarkdownElement.text(text.substring(gapStart, match.start)),
             MarkdownElement.link(match.id, [.text(match.id)]),
           ];
         }).flattened,

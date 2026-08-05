@@ -1,8 +1,7 @@
-import 'package:lux/lux.dart';
 import 'package:equatable/equatable.dart';
+import 'package:lux/lux.dart';
 
-class ChapterReference extends Equatable
-    with ComparableOperators<ChapterReference> {
+class ChapterReference extends Equatable with ComparableOperators<ChapterReference> {
   final BookType book;
   final int chapterNum;
 
@@ -10,10 +9,7 @@ class ChapterReference extends Equatable
 
   factory ChapterReference.fromOsisId(String key) {
     final items = key.split('.');
-    return ChapterReference(
-      book: BookType.fromOsisId(items[0]),
-      chapterNum: int.parse(items[1]),
-    );
+    return ChapterReference(book: BookType.fromOsisId(items[0]), chapterNum: int.parse(items[1]));
   }
 
   factory ChapterReference.fromBibleChapterIndex(int index) => values[index];
@@ -26,32 +22,24 @@ class ChapterReference extends Equatable
 
   @override
   int compareTo(ChapterReference other) =>
-      book.index.compareTo(other.book.index).nullIfZero ??
-      chapterNum.compareTo(other.chapterNum).nullIfZero ??
-      0;
+      book.index.compareTo(other.book.index).nullIfZero ?? chapterNum.compareTo(other.chapterNum).nullIfZero ?? 0;
 
-  Reference getReference(int verseNum) =>
-      Reference(book: book, chapterNum: chapterNum, verseNum: verseNum);
+  Reference getReference(int verseNum) => Reference(book: book, chapterNum: chapterNum, verseNum: verseNum);
 
-  VerseSelection toVerseSelection() =>
-      VerseSelection(spans: [VerseSpanReference(start: asPointer())]);
+  VerseSelection toVerseSelection() => VerseSelection(spans: [VerseSpanReference(start: asPointer())]);
 
   String osisId() => '${book.osisId()}.$chapterNum';
   String usxId() => '${book.usxCode()}.$chapterNum';
 
   String format() => '${book.title()}\u{00A0}$chapterNum';
 
-  List<Reference> get references =>
-      List.generate(numVerses, (i) => getReference(i + 1));
+  List<Reference> get references => List.generate(numVerses, (i) => getReference(i + 1));
 
   int get numVerses => book.bookInfo.getNumVerses(chapterNum);
 
   static final List<ChapterReference> values = BookType.values
       .expand(
-        (book) => List.generate(
-          book.bookInfo.numChapters,
-          (i) => ChapterReference(book: book, chapterNum: i + 1),
-        ),
+        (book) => List.generate(book.bookInfo.numChapters, (i) => ChapterReference(book: book, chapterNum: i + 1)),
       )
       .toList();
 
@@ -60,6 +48,5 @@ class ChapterReference extends Equatable
   BiblePointer asPointer() => ChapterBiblePointer(reference: this);
 
   ChapterReference? get next => values.elementAtOrNull(bibleChapterIndex + 1);
-  ChapterReference? get previous =>
-      bibleChapterIndex == 0 ? null : values[bibleChapterIndex - 1];
+  ChapterReference? get previous => bibleChapterIndex == 0 ? null : values[bibleChapterIndex - 1];
 }

@@ -12,19 +12,16 @@ part of 'bibles_provider.dart';
 @ProviderFor(localBible)
 final localBibleProvider = LocalBibleFamily._();
 
-final class LocalBibleProvider
-    extends $FunctionalProvider<AsyncValue<Bible>, Bible, FutureOr<Bible>>
+final class LocalBibleProvider extends $FunctionalProvider<AsyncValue<Bible>, Bible, FutureOr<Bible>>
     with $FutureModifier<Bible>, $FutureProvider<Bible> {
-  LocalBibleProvider._({
-    required LocalBibleFamily super.from,
-    required BibleTranslation super.argument,
-  }) : super(
-         retry: null,
-         name: r'localBibleProvider',
-         isAutoDispose: false,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
+  LocalBibleProvider._({required LocalBibleFamily super.from, required BibleTranslation super.argument})
+    : super(
+        retry: null,
+        name: r'localBibleProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$localBibleHash();
@@ -38,8 +35,7 @@ final class LocalBibleProvider
 
   @$internal
   @override
-  $FutureProviderElement<Bible> $createElement($ProviderPointer pointer) =>
-      $FutureProviderElement(pointer);
+  $FutureProviderElement<Bible> $createElement($ProviderPointer pointer) => $FutureProviderElement(pointer);
 
   @override
   FutureOr<Bible> create(Ref ref) {
@@ -60,8 +56,7 @@ final class LocalBibleProvider
 
 String _$localBibleHash() => r'f4ee81d6d88803abe9aa50e2ff78e9bab1ffc892';
 
-final class LocalBibleFamily extends $Family
-    with $FunctionalFamilyOverride<FutureOr<Bible>, BibleTranslation> {
+final class LocalBibleFamily extends $Family with $FunctionalFamilyOverride<FutureOr<Bible>, BibleTranslation> {
   LocalBibleFamily._()
     : super(
         retry: null,
@@ -81,13 +76,11 @@ final class LocalBibleFamily extends $Family
 @ProviderFor(chapter)
 final chapterProvider = ChapterFamily._();
 
-final class ChapterProvider
-    extends $FunctionalProvider<AsyncValue<Chapter>, Chapter, FutureOr<Chapter>>
+final class ChapterProvider extends $FunctionalProvider<AsyncValue<Chapter>, Chapter, FutureOr<Chapter>>
     with $FutureModifier<Chapter>, $FutureProvider<Chapter> {
   ChapterProvider._({
     required ChapterFamily super.from,
-    required ({ChapterReference chapterReference, BibleTranslation translation})
-    super.argument,
+    required ({ChapterReference chapterReference, BibleTranslation translation}) super.argument,
   }) : super(
          retry: RiverpodUtils.noRetry,
          name: r'chapterProvider',
@@ -108,22 +101,12 @@ final class ChapterProvider
 
   @$internal
   @override
-  $FutureProviderElement<Chapter> $createElement($ProviderPointer pointer) =>
-      $FutureProviderElement(pointer);
+  $FutureProviderElement<Chapter> $createElement($ProviderPointer pointer) => $FutureProviderElement(pointer);
 
   @override
   FutureOr<Chapter> create(Ref ref) {
-    final argument =
-        this.argument
-            as ({
-              ChapterReference chapterReference,
-              BibleTranslation translation,
-            });
-    return chapter(
-      ref,
-      chapterReference: argument.chapterReference,
-      translation: argument.translation,
-    );
+    final argument = this.argument as ({ChapterReference chapterReference, BibleTranslation translation});
+    return chapter(ref, chapterReference: argument.chapterReference, translation: argument.translation);
   }
 
   @override
@@ -154,13 +137,8 @@ final class ChapterFamily extends $Family
         isAutoDispose: false,
       );
 
-  ChapterProvider call({
-    required ChapterReference chapterReference,
-    required BibleTranslation translation,
-  }) => ChapterProvider._(
-    argument: (chapterReference: chapterReference, translation: translation),
-    from: this,
-  );
+  ChapterProvider call({required ChapterReference chapterReference, required BibleTranslation translation}) =>
+      ChapterProvider._(argument: (chapterReference: chapterReference, translation: translation), from: this);
 
   @override
   String toString() => r'chapterProvider';
@@ -169,13 +147,11 @@ final class ChapterFamily extends $Family
 @ProviderFor(verse)
 final verseProvider = VerseFamily._();
 
-final class VerseProvider
-    extends $FunctionalProvider<AsyncValue<Verse?>, Verse?, FutureOr<Verse?>>
+final class VerseProvider extends $FunctionalProvider<AsyncValue<Verse?>, Verse?, FutureOr<Verse?>>
     with $FutureModifier<Verse?>, $FutureProvider<Verse?> {
   VerseProvider._({
     required VerseFamily super.from,
-    required ({Reference reference, BibleTranslation translation})
-    super.argument,
+    required ({Reference reference, BibleTranslation translation}) super.argument,
   }) : super(
          retry: null,
          name: r'verseProvider',
@@ -196,18 +172,12 @@ final class VerseProvider
 
   @$internal
   @override
-  $FutureProviderElement<Verse?> $createElement($ProviderPointer pointer) =>
-      $FutureProviderElement(pointer);
+  $FutureProviderElement<Verse?> $createElement($ProviderPointer pointer) => $FutureProviderElement(pointer);
 
   @override
   FutureOr<Verse?> create(Ref ref) {
-    final argument =
-        this.argument as ({Reference reference, BibleTranslation translation});
-    return verse(
-      ref,
-      reference: argument.reference,
-      translation: argument.translation,
-    );
+    final argument = this.argument as ({Reference reference, BibleTranslation translation});
+    return verse(ref, reference: argument.reference, translation: argument.translation);
   }
 
   @override
@@ -224,11 +194,7 @@ final class VerseProvider
 String _$verseHash() => r'62a672b86ae9979cf573111e53db36902f2ed22c';
 
 final class VerseFamily extends $Family
-    with
-        $FunctionalFamilyOverride<
-          FutureOr<Verse?>,
-          ({Reference reference, BibleTranslation translation})
-        > {
+    with $FunctionalFamilyOverride<FutureOr<Verse?>, ({Reference reference, BibleTranslation translation})> {
   VerseFamily._()
     : super(
         retry: null,
@@ -238,13 +204,8 @@ final class VerseFamily extends $Family
         isAutoDispose: false,
       );
 
-  VerseProvider call({
-    required Reference reference,
-    required BibleTranslation translation,
-  }) => VerseProvider._(
-    argument: (reference: reference, translation: translation),
-    from: this,
-  );
+  VerseProvider call({required Reference reference, required BibleTranslation translation}) =>
+      VerseProvider._(argument: (reference: reference, translation: translation), from: this);
 
   @override
   String toString() => r'verseProvider';
@@ -254,17 +215,11 @@ final class VerseFamily extends $Family
 final verseSelectionVersesProvider = VerseSelectionVersesFamily._();
 
 final class VerseSelectionVersesProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<Verse>>,
-          List<Verse>,
-          FutureOr<List<Verse>>
-        >
+    extends $FunctionalProvider<AsyncValue<List<Verse>>, List<Verse>, FutureOr<List<Verse>>>
     with $FutureModifier<List<Verse>>, $FutureProvider<List<Verse>> {
   VerseSelectionVersesProvider._({
     required VerseSelectionVersesFamily super.from,
-    required ({VerseSelection selection, BibleTranslation translation})
-    super.argument,
+    required ({VerseSelection selection, BibleTranslation translation}) super.argument,
   }) : super(
          retry: null,
          name: r'verseSelectionVersesProvider',
@@ -285,20 +240,12 @@ final class VerseSelectionVersesProvider
 
   @$internal
   @override
-  $FutureProviderElement<List<Verse>> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
+  $FutureProviderElement<List<Verse>> $createElement($ProviderPointer pointer) => $FutureProviderElement(pointer);
 
   @override
   FutureOr<List<Verse>> create(Ref ref) {
-    final argument =
-        this.argument
-            as ({VerseSelection selection, BibleTranslation translation});
-    return verseSelectionVerses(
-      ref,
-      selection: argument.selection,
-      translation: argument.translation,
-    );
+    final argument = this.argument as ({VerseSelection selection, BibleTranslation translation});
+    return verseSelectionVerses(ref, selection: argument.selection, translation: argument.translation);
   }
 
   @override
@@ -312,15 +259,10 @@ final class VerseSelectionVersesProvider
   }
 }
 
-String _$verseSelectionVersesHash() =>
-    r'84a76410248b909a13c3acbb6bab1bbf4815478a';
+String _$verseSelectionVersesHash() => r'84a76410248b909a13c3acbb6bab1bbf4815478a';
 
 final class VerseSelectionVersesFamily extends $Family
-    with
-        $FunctionalFamilyOverride<
-          FutureOr<List<Verse>>,
-          ({VerseSelection selection, BibleTranslation translation})
-        > {
+    with $FunctionalFamilyOverride<FutureOr<List<Verse>>, ({VerseSelection selection, BibleTranslation translation})> {
   VerseSelectionVersesFamily._()
     : super(
         retry: null,
@@ -330,13 +272,8 @@ final class VerseSelectionVersesFamily extends $Family
         isAutoDispose: true,
       );
 
-  VerseSelectionVersesProvider call({
-    required VerseSelection selection,
-    required BibleTranslation translation,
-  }) => VerseSelectionVersesProvider._(
-    argument: (selection: selection, translation: translation),
-    from: this,
-  );
+  VerseSelectionVersesProvider call({required VerseSelection selection, required BibleTranslation translation}) =>
+      VerseSelectionVersesProvider._(argument: (selection: selection, translation: translation), from: this);
 
   @override
   String toString() => r'verseSelectionVersesProvider';
@@ -345,13 +282,11 @@ final class VerseSelectionVersesFamily extends $Family
 @ProviderFor(verseSelectionText)
 final verseSelectionTextProvider = VerseSelectionTextFamily._();
 
-final class VerseSelectionTextProvider
-    extends $FunctionalProvider<AsyncValue<String>, String, FutureOr<String>>
+final class VerseSelectionTextProvider extends $FunctionalProvider<AsyncValue<String>, String, FutureOr<String>>
     with $FutureModifier<String>, $FutureProvider<String> {
   VerseSelectionTextProvider._({
     required VerseSelectionTextFamily super.from,
-    required ({VerseSelection selection, BibleTranslation translation})
-    super.argument,
+    required ({VerseSelection selection, BibleTranslation translation}) super.argument,
   }) : super(
          retry: null,
          name: r'verseSelectionTextProvider',
@@ -372,19 +307,12 @@ final class VerseSelectionTextProvider
 
   @$internal
   @override
-  $FutureProviderElement<String> $createElement($ProviderPointer pointer) =>
-      $FutureProviderElement(pointer);
+  $FutureProviderElement<String> $createElement($ProviderPointer pointer) => $FutureProviderElement(pointer);
 
   @override
   FutureOr<String> create(Ref ref) {
-    final argument =
-        this.argument
-            as ({VerseSelection selection, BibleTranslation translation});
-    return verseSelectionText(
-      ref,
-      selection: argument.selection,
-      translation: argument.translation,
-    );
+    final argument = this.argument as ({VerseSelection selection, BibleTranslation translation});
+    return verseSelectionText(ref, selection: argument.selection, translation: argument.translation);
   }
 
   @override
@@ -398,15 +326,10 @@ final class VerseSelectionTextProvider
   }
 }
 
-String _$verseSelectionTextHash() =>
-    r'02ecc53b6324f1e9d15ac193185943e51586bccc';
+String _$verseSelectionTextHash() => r'02ecc53b6324f1e9d15ac193185943e51586bccc';
 
 final class VerseSelectionTextFamily extends $Family
-    with
-        $FunctionalFamilyOverride<
-          FutureOr<String>,
-          ({VerseSelection selection, BibleTranslation translation})
-        > {
+    with $FunctionalFamilyOverride<FutureOr<String>, ({VerseSelection selection, BibleTranslation translation})> {
   VerseSelectionTextFamily._()
     : super(
         retry: null,
@@ -416,13 +339,8 @@ final class VerseSelectionTextFamily extends $Family
         isAutoDispose: true,
       );
 
-  VerseSelectionTextProvider call({
-    required VerseSelection selection,
-    required BibleTranslation translation,
-  }) => VerseSelectionTextProvider._(
-    argument: (selection: selection, translation: translation),
-    from: this,
-  );
+  VerseSelectionTextProvider call({required VerseSelection selection, required BibleTranslation translation}) =>
+      VerseSelectionTextProvider._(argument: (selection: selection, translation: translation), from: this);
 
   @override
   String toString() => r'verseSelectionTextProvider';
@@ -432,17 +350,11 @@ final class VerseSelectionTextFamily extends $Family
 final verseSelectionParagraphsProvider = VerseSelectionParagraphsFamily._();
 
 final class VerseSelectionParagraphsProvider
-    extends
-        $FunctionalProvider<
-          AsyncValue<List<Paragraph>>,
-          List<Paragraph>,
-          FutureOr<List<Paragraph>>
-        >
+    extends $FunctionalProvider<AsyncValue<List<Paragraph>>, List<Paragraph>, FutureOr<List<Paragraph>>>
     with $FutureModifier<List<Paragraph>>, $FutureProvider<List<Paragraph>> {
   VerseSelectionParagraphsProvider._({
     required VerseSelectionParagraphsFamily super.from,
-    required ({VerseSelection selection, BibleTranslation translation})
-    super.argument,
+    required ({VerseSelection selection, BibleTranslation translation}) super.argument,
   }) : super(
          retry: null,
          name: r'verseSelectionParagraphsProvider',
@@ -463,26 +375,17 @@ final class VerseSelectionParagraphsProvider
 
   @$internal
   @override
-  $FutureProviderElement<List<Paragraph>> $createElement(
-    $ProviderPointer pointer,
-  ) => $FutureProviderElement(pointer);
+  $FutureProviderElement<List<Paragraph>> $createElement($ProviderPointer pointer) => $FutureProviderElement(pointer);
 
   @override
   FutureOr<List<Paragraph>> create(Ref ref) {
-    final argument =
-        this.argument
-            as ({VerseSelection selection, BibleTranslation translation});
-    return verseSelectionParagraphs(
-      ref,
-      selection: argument.selection,
-      translation: argument.translation,
-    );
+    final argument = this.argument as ({VerseSelection selection, BibleTranslation translation});
+    return verseSelectionParagraphs(ref, selection: argument.selection, translation: argument.translation);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is VerseSelectionParagraphsProvider &&
-        other.argument == argument;
+    return other is VerseSelectionParagraphsProvider && other.argument == argument;
   }
 
   @override
@@ -491,8 +394,7 @@ final class VerseSelectionParagraphsProvider
   }
 }
 
-String _$verseSelectionParagraphsHash() =>
-    r'b82b2e2d3f37e53ba73f4bbe756342f2ba3c487e';
+String _$verseSelectionParagraphsHash() => r'b82b2e2d3f37e53ba73f4bbe756342f2ba3c487e';
 
 final class VerseSelectionParagraphsFamily extends $Family
     with
@@ -509,13 +411,8 @@ final class VerseSelectionParagraphsFamily extends $Family
         isAutoDispose: true,
       );
 
-  VerseSelectionParagraphsProvider call({
-    required VerseSelection selection,
-    required BibleTranslation translation,
-  }) => VerseSelectionParagraphsProvider._(
-    argument: (selection: selection, translation: translation),
-    from: this,
-  );
+  VerseSelectionParagraphsProvider call({required VerseSelection selection, required BibleTranslation translation}) =>
+      VerseSelectionParagraphsProvider._(argument: (selection: selection, translation: translation), from: this);
 
   @override
   String toString() => r'verseSelectionParagraphsProvider';
@@ -524,19 +421,16 @@ final class VerseSelectionParagraphsFamily extends $Family
 @ProviderFor(textSelectionText)
 final textSelectionTextProvider = TextSelectionTextFamily._();
 
-final class TextSelectionTextProvider
-    extends $FunctionalProvider<AsyncValue<String>, String, FutureOr<String>>
+final class TextSelectionTextProvider extends $FunctionalProvider<AsyncValue<String>, String, FutureOr<String>>
     with $FutureModifier<String>, $FutureProvider<String> {
-  TextSelectionTextProvider._({
-    required TextSelectionTextFamily super.from,
-    required BibleTextSelection super.argument,
-  }) : super(
-         retry: null,
-         name: r'textSelectionTextProvider',
-         isAutoDispose: true,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
+  TextSelectionTextProvider._({required TextSelectionTextFamily super.from, required BibleTextSelection super.argument})
+    : super(
+        retry: null,
+        name: r'textSelectionTextProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
   @override
   String debugGetCreateSourceHash() => _$textSelectionTextHash();
@@ -550,8 +444,7 @@ final class TextSelectionTextProvider
 
   @$internal
   @override
-  $FutureProviderElement<String> $createElement($ProviderPointer pointer) =>
-      $FutureProviderElement(pointer);
+  $FutureProviderElement<String> $createElement($ProviderPointer pointer) => $FutureProviderElement(pointer);
 
   @override
   FutureOr<String> create(Ref ref) {

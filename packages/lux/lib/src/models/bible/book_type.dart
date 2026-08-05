@@ -1,5 +1,5 @@
-import 'package:lux/lux.dart';
 import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:utils_core/utils_core.dart';
 
 enum BookType {
@@ -70,24 +70,19 @@ enum BookType {
   jude,
   revelation;
 
-  static Map<String, BookType> _bookTypeByOsisId = values.mapToMap(
-    (bookType) => MapEntry(bookType.osisId(), bookType),
-  );
+  static Map<String, BookType> _bookTypeByOsisId = values.mapToMap((bookType) => MapEntry(bookType.osisId(), bookType));
 
   static BookType fromOsisId(String id) =>
-      _bookTypeByOsisId[id] ??
-      (throw Exception('Could not find book with ID: $id'));
+      _bookTypeByOsisId[id] ?? (throw Exception('Could not find book with ID: $id'));
 
-  static BookType fromJsonKey(String key) =>
-      values.firstWhere((book) => book.jsonKey() == key);
+  static BookType fromJsonKey(String key) => values.firstWhere((book) => book.jsonKey() == key);
 
   String jsonKey() => this == songOfSolomon ? 'song_of_solomon' : name;
 
   BookType get next => values[index + 1];
   BookType? get nextOrNull => values.elementAtOrNull(index + 1);
 
-  Testament get testament =>
-      index < matthew.index ? Testament.oldTestament : Testament.newTestament;
+  Testament get testament => index < matthew.index ? Testament.oldTestament : Testament.newTestament;
 
   String title({bool isPlural = false}) => switch (this) {
     genesis => t.books.genesis,
@@ -533,29 +528,7 @@ enum BookType {
       ],
     ),
     judges => BookTypeInfo(
-      chapterVerseLengths: [
-        36,
-        23,
-        31,
-        24,
-        31,
-        40,
-        25,
-        35,
-        57,
-        18,
-        40,
-        15,
-        25,
-        20,
-        20,
-        31,
-        13,
-        31,
-        30,
-        48,
-        25,
-      ],
+      chapterVerseLengths: [36, 23, 31, 24, 31, 40, 25, 35, 57, 18, 40, 15, 25, 20, 20, 31, 13, 31, 30, 48, 25],
     ),
     ruth => BookTypeInfo(chapterVerseLengths: [22, 23, 18, 22]),
     samuel1 => BookTypeInfo(
@@ -622,30 +595,7 @@ enum BookType {
       ],
     ),
     kings1 => BookTypeInfo(
-      chapterVerseLengths: [
-        53,
-        46,
-        28,
-        34,
-        18,
-        38,
-        51,
-        66,
-        28,
-        29,
-        43,
-        33,
-        34,
-        31,
-        34,
-        34,
-        24,
-        46,
-        21,
-        43,
-        29,
-        53,
-      ],
+      chapterVerseLengths: [53, 46, 28, 34, 18, 38, 51, 66, 28, 29, 43, 33, 34, 31, 34, 34, 24, 46, 21, 43, 29, 53],
     ),
     kings2 => BookTypeInfo(
       chapterVerseLengths: [
@@ -749,15 +699,9 @@ enum BookType {
         23,
       ],
     ),
-    ezra => BookTypeInfo(
-      chapterVerseLengths: [11, 70, 13, 24, 17, 22, 28, 36, 15, 44],
-    ),
-    nehemiah => BookTypeInfo(
-      chapterVerseLengths: [11, 20, 32, 23, 19, 19, 73, 18, 38, 39, 36, 47, 31],
-    ),
-    esther => BookTypeInfo(
-      chapterVerseLengths: [22, 23, 15, 17, 14, 14, 10, 17, 32, 3],
-    ),
+    ezra => BookTypeInfo(chapterVerseLengths: [11, 70, 13, 24, 17, 22, 28, 36, 15, 44]),
+    nehemiah => BookTypeInfo(chapterVerseLengths: [11, 20, 32, 23, 19, 19, 73, 18, 38, 39, 36, 47, 31]),
+    esther => BookTypeInfo(chapterVerseLengths: [22, 23, 15, 17, 14, 14, 10, 17, 32, 3]),
     job => BookTypeInfo(
       chapterVerseLengths: [
         22,
@@ -993,12 +937,8 @@ enum BookType {
         31,
       ],
     ),
-    ecclesiastes => BookTypeInfo(
-      chapterVerseLengths: [18, 26, 22, 16, 20, 12, 29, 17, 18, 20, 10, 14],
-    ),
-    songOfSolomon => BookTypeInfo(
-      chapterVerseLengths: [17, 17, 11, 16, 16, 13, 13, 14],
-    ),
+    ecclesiastes => BookTypeInfo(chapterVerseLengths: [18, 26, 22, 16, 20, 12, 29, 17, 18, 20, 10, 14]),
+    songOfSolomon => BookTypeInfo(chapterVerseLengths: [17, 17, 11, 16, 16, 13, 13, 14]),
     isaiah => BookTypeInfo(
       chapterVerseLengths: [
         31,
@@ -1178,31 +1118,10 @@ enum BookType {
         35,
       ],
     ),
-    daniel => BookTypeInfo(
-      chapterVerseLengths: [21, 49, 30, 37, 31, 28, 28, 27, 27, 21, 45, 13],
-    ),
-    hosea => BookTypeInfo(
-      chapterVerseLengths: [
-        11,
-        23,
-        5,
-        19,
-        15,
-        11,
-        16,
-        14,
-        17,
-        15,
-        12,
-        14,
-        16,
-        9,
-      ],
-    ),
+    daniel => BookTypeInfo(chapterVerseLengths: [21, 49, 30, 37, 31, 28, 28, 27, 27, 21, 45, 13]),
+    hosea => BookTypeInfo(chapterVerseLengths: [11, 23, 5, 19, 15, 11, 16, 14, 17, 15, 12, 14, 16, 9]),
     joel => BookTypeInfo(chapterVerseLengths: [20, 32, 21]),
-    amos => BookTypeInfo(
-      chapterVerseLengths: [15, 16, 15, 13, 27, 14, 17, 14, 15],
-    ),
+    amos => BookTypeInfo(chapterVerseLengths: [15, 16, 15, 13, 27, 14, 17, 14, 15]),
     obadiah => BookTypeInfo(chapterVerseLengths: [21]),
     jonah => BookTypeInfo(chapterVerseLengths: [17, 10, 10, 11]),
     micah => BookTypeInfo(chapterVerseLengths: [16, 13, 12, 13, 15, 16, 20]),
@@ -1210,24 +1129,7 @@ enum BookType {
     habakkuk => BookTypeInfo(chapterVerseLengths: [17, 20, 19]),
     zephaniah => BookTypeInfo(chapterVerseLengths: [18, 15, 20]),
     haggai => BookTypeInfo(chapterVerseLengths: [15, 23]),
-    zechariah => BookTypeInfo(
-      chapterVerseLengths: [
-        21,
-        13,
-        10,
-        14,
-        11,
-        15,
-        14,
-        23,
-        17,
-        12,
-        17,
-        14,
-        9,
-        21,
-      ],
-    ),
+    zechariah => BookTypeInfo(chapterVerseLengths: [21, 13, 10, 14, 11, 15, 14, 23, 17, 12, 17, 14, 9, 21]),
     malachi => BookTypeInfo(chapterVerseLengths: [14, 17, 18, 6]),
     matthew => BookTypeInfo(
       chapterVerseLengths: [
@@ -1261,26 +1163,7 @@ enum BookType {
         20,
       ],
     ),
-    mark => BookTypeInfo(
-      chapterVerseLengths: [
-        45,
-        28,
-        35,
-        41,
-        43,
-        56,
-        37,
-        38,
-        50,
-        52,
-        33,
-        44,
-        37,
-        72,
-        47,
-        20,
-      ],
-    ),
+    mark => BookTypeInfo(chapterVerseLengths: [45, 28, 35, 41, 43, 56, 37, 38, 50, 52, 33, 44, 37, 72, 47, 20]),
     luke => BookTypeInfo(
       chapterVerseLengths: [
         80,
@@ -1310,29 +1193,7 @@ enum BookType {
       ],
     ),
     john => BookTypeInfo(
-      chapterVerseLengths: [
-        51,
-        25,
-        36,
-        54,
-        47,
-        71,
-        53,
-        59,
-        41,
-        42,
-        57,
-        50,
-        38,
-        31,
-        27,
-        33,
-        26,
-        40,
-        42,
-        31,
-        25,
-      ],
+      chapterVerseLengths: [51, 25, 36, 54, 47, 71, 53, 59, 41, 42, 57, 50, 38, 31, 27, 33, 26, 40, 42, 31, 25],
     ),
     acts => BookTypeInfo(
       chapterVerseLengths: [
@@ -1366,49 +1227,9 @@ enum BookType {
         31,
       ],
     ),
-    romans => BookTypeInfo(
-      chapterVerseLengths: [
-        32,
-        29,
-        31,
-        25,
-        21,
-        23,
-        25,
-        39,
-        33,
-        21,
-        36,
-        21,
-        14,
-        23,
-        33,
-        27,
-      ],
-    ),
-    corinthians1 => BookTypeInfo(
-      chapterVerseLengths: [
-        31,
-        16,
-        23,
-        21,
-        13,
-        20,
-        40,
-        13,
-        27,
-        33,
-        34,
-        31,
-        13,
-        40,
-        58,
-        24,
-      ],
-    ),
-    corinthians2 => BookTypeInfo(
-      chapterVerseLengths: [24, 17, 18, 18, 21, 18, 16, 24, 15, 18, 33, 21, 14],
-    ),
+    romans => BookTypeInfo(chapterVerseLengths: [32, 29, 31, 25, 21, 23, 25, 39, 33, 21, 36, 21, 14, 23, 33, 27]),
+    corinthians1 => BookTypeInfo(chapterVerseLengths: [31, 16, 23, 21, 13, 20, 40, 13, 27, 33, 34, 31, 13, 40, 58, 24]),
+    corinthians2 => BookTypeInfo(chapterVerseLengths: [24, 17, 18, 18, 21, 18, 16, 24, 15, 18, 33, 21, 14]),
     galatians => BookTypeInfo(chapterVerseLengths: [24, 21, 29, 31, 26, 18]),
     ephesians => BookTypeInfo(chapterVerseLengths: [23, 22, 21, 32, 33, 24]),
     philippians => BookTypeInfo(chapterVerseLengths: [30, 30, 21, 23]),
@@ -1419,9 +1240,7 @@ enum BookType {
     timothy2 => BookTypeInfo(chapterVerseLengths: [18, 26, 17, 22]),
     titus => BookTypeInfo(chapterVerseLengths: [16, 15, 15]),
     philemon => BookTypeInfo(chapterVerseLengths: [25]),
-    hebrews => BookTypeInfo(
-      chapterVerseLengths: [14, 18, 19, 16, 14, 20, 28, 13, 28, 39, 40, 29, 25],
-    ),
+    hebrews => BookTypeInfo(chapterVerseLengths: [14, 18, 19, 16, 14, 20, 28, 13, 28, 39, 40, 29, 25]),
     james => BookTypeInfo(chapterVerseLengths: [27, 26, 18, 17, 20]),
     peter1 => BookTypeInfo(chapterVerseLengths: [25, 25, 22, 19, 14]),
     peter2 => BookTypeInfo(chapterVerseLengths: [21, 22, 18]),
@@ -1430,30 +1249,7 @@ enum BookType {
     john3 => BookTypeInfo(chapterVerseLengths: [14]),
     jude => BookTypeInfo(chapterVerseLengths: [25]),
     revelation => BookTypeInfo(
-      chapterVerseLengths: [
-        20,
-        29,
-        22,
-        11,
-        14,
-        17,
-        17,
-        13,
-        21,
-        11,
-        19,
-        17,
-        18,
-        20,
-        8,
-        21,
-        18,
-        24,
-        21,
-        15,
-        27,
-        21,
-      ],
+      chapterVerseLengths: [20, 29, 22, 11, 14, 17, 17, 13, 21, 11, 19, 17, 18, 20, 8, 21, 18, 24, 21, 15, 27, 21],
     ),
   };
 
@@ -1461,14 +1257,10 @@ enum BookType {
 
   List<Reference> get allReferences => Range.generate(1, bookInfo.numChapters)
       .expand(
-        (chapterNum) =>
-            Range.generate(1, bookInfo.getNumVerses(chapterNum)).map(
-              (verseNum) => Reference(
-                book: this,
-                chapterNum: chapterNum,
-                verseNum: verseNum,
-              ),
-            ),
+        (chapterNum) => Range.generate(
+          1,
+          bookInfo.getNumVerses(chapterNum),
+        ).map((verseNum) => Reference(book: this, chapterNum: chapterNum, verseNum: verseNum)),
       )
       .toList();
 }

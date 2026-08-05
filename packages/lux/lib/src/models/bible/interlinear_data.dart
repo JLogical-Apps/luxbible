@@ -13,6 +13,5 @@ sealed class InterlinearData with _$InterlinearData {
     @JsonKey(name: 't', includeIfNull: false) String? transliteration,
   }) = _InterlinearData;
 
-  factory InterlinearData.fromJson(Map<String, dynamic> json) =>
-      _$InterlinearDataFromJson(json);
+  factory InterlinearData.fromJson(Map<String, dynamic> json) => _$InterlinearDataFromJson(json);
 }

@@ -6,19 +6,17 @@ part of 'bible_text_selection.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_BibleTextSelection _$BibleTextSelectionFromJson(Map<String, dynamic> json) =>
-    _BibleTextSelection(
-      start: BibleTextSelectionWordAnchor.fromJson(json['start'] as String),
-      end: BibleTextSelectionWordAnchor.fromJson(json['end'] as String),
-      translation: $enumDecode(_$BibleTranslationEnumMap, json['translation']),
-    );
+_BibleTextSelection _$BibleTextSelectionFromJson(Map<String, dynamic> json) => _BibleTextSelection(
+  start: BibleTextSelectionWordAnchor.fromJson(json['start'] as String),
+  end: BibleTextSelectionWordAnchor.fromJson(json['end'] as String),
+  translation: $enumDecode(_$BibleTranslationEnumMap, json['translation']),
+);
 
-Map<String, dynamic> _$BibleTextSelectionToJson(_BibleTextSelection instance) =>
-    <String, dynamic>{
-      'start': instance.start,
-      'end': instance.end,
-      'translation': _$BibleTranslationEnumMap[instance.translation]!,
-    };
+Map<String, dynamic> _$BibleTextSelectionToJson(_BibleTextSelection instance) => <String, dynamic>{
+  'start': instance.start,
+  'end': instance.end,
+  'translation': _$BibleTranslationEnumMap[instance.translation]!,
+};
 
 const _$BibleTranslationEnumMap = {
   BibleTranslation.bsb: 'bsb',

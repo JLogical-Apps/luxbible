@@ -10,40 +10,21 @@ _TextSelectionConfiguration _$TextSelectionConfigurationFromJson(
   Map<String, dynamic> json,
 ) => _TextSelectionConfiguration(
   pinnedShortcut1:
-      $enumDecodeNullable(
-        _$TextSelectionShortcutEnumMap,
-        json['pinnedShortcut1'],
-      ) ??
-      TextSelectionShortcut.annotate,
+      $enumDecodeNullable(_$TextSelectionShortcutEnumMap, json['pinnedShortcut1']) ?? TextSelectionShortcut.annotate,
   pinnedShortcut2:
-      $enumDecodeNullable(
-        _$TextSelectionShortcutEnumMap,
-        json['pinnedShortcut2'],
-      ) ??
-      TextSelectionShortcut.search,
+      $enumDecodeNullable(_$TextSelectionShortcutEnumMap, json['pinnedShortcut2']) ?? TextSelectionShortcut.search,
   pinnedShortcut3:
-      $enumDecodeNullable(
-        _$TextSelectionShortcutEnumMap,
-        json['pinnedShortcut3'],
-      ) ??
-      TextSelectionShortcut.copy,
+      $enumDecodeNullable(_$TextSelectionShortcutEnumMap, json['pinnedShortcut3']) ?? TextSelectionShortcut.copy,
   longPressShortcut:
-      $enumDecodeNullable(
-        _$TextSelectionShortcutEnumMap,
-        json['longPressShortcut'],
-      ) ??
-      TextSelectionShortcut.highlight,
+      $enumDecodeNullable(_$TextSelectionShortcutEnumMap, json['longPressShortcut']) ?? TextSelectionShortcut.highlight,
   expandToAnnotation: json['expandToAnnotation'] as bool? ?? false,
 );
 
-Map<String, dynamic> _$TextSelectionConfigurationToJson(
-  _TextSelectionConfiguration instance,
-) => <String, dynamic>{
+Map<String, dynamic> _$TextSelectionConfigurationToJson(_TextSelectionConfiguration instance) => <String, dynamic>{
   'pinnedShortcut1': _$TextSelectionShortcutEnumMap[instance.pinnedShortcut1]!,
   'pinnedShortcut2': _$TextSelectionShortcutEnumMap[instance.pinnedShortcut2]!,
   'pinnedShortcut3': _$TextSelectionShortcutEnumMap[instance.pinnedShortcut3]!,
-  'longPressShortcut':
-      _$TextSelectionShortcutEnumMap[instance.longPressShortcut]!,
+  'longPressShortcut': _$TextSelectionShortcutEnumMap[instance.longPressShortcut]!,
   'expandToAnnotation': instance.expandToAnnotation,
 };
 

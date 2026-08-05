@@ -7,11 +7,7 @@ part of 'chapter.dart';
 // **************************************************************************
 
 _Chapter _$ChapterFromJson(Map<String, dynamic> json) => _Chapter(
-  paragraphs: (json['p'] as List<dynamic>)
-      .map((e) => Paragraph.fromJson(e as Map<String, dynamic>))
-      .toList(),
+  paragraphs: (json['p'] as List<dynamic>).map((e) => Paragraph.fromJson(e as Map<String, dynamic>)).toList(),
 );
 
-Map<String, dynamic> _$ChapterToJson(_Chapter instance) => <String, dynamic>{
-  'p': instance.paragraphs,
-};
+Map<String, dynamic> _$ChapterToJson(_Chapter instance) => <String, dynamic>{'p': instance.paragraphs};

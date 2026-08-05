@@ -1,6 +1,6 @@
-import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lux/lux.dart';
 
 part 'paragraph.freezed.dart';
 part 'paragraph.g.dart';
@@ -12,9 +12,7 @@ sealed class Paragraph with _$Paragraph {
   @FreezedUnionValue('v')
   const factory Paragraph.verses({
     @JsonKey(name: 'v') required List<Verse> verses,
-    @JsonKey(name: 'o', toJson: _firstVerseOffsetToJson, includeIfNull: false)
-    @Default(0)
-    int firstVerseOffset,
+    @JsonKey(name: 'o', toJson: _firstVerseOffsetToJson, includeIfNull: false) @Default(0) int firstVerseOffset,
     @JsonKey(name: 't') required ParagraphType type,
     @jsonIgnore @Default(false) bool preventIndent,
   }) = VersesParagraph;
@@ -28,8 +26,7 @@ sealed class Paragraph with _$Paragraph {
   @FreezedUnionValue('b')
   const factory Paragraph.lineBreak() = BreakParagraph;
 
-  factory Paragraph.fromJson(Map<String, dynamic> json) =>
-      _$ParagraphFromJson(json);
+  factory Paragraph.fromJson(Map<String, dynamic> json) => _$ParagraphFromJson(json);
 }
 
 extension ParagraphListExtensions on List<Paragraph> {
@@ -37,17 +34,12 @@ extension ParagraphListExtensions on List<Paragraph> {
     final versesParagraph = this[index] is SectionParagraph
         ? skip(index + 1).whereType<VersesParagraph>().firstOrNull
         : null;
-    return versesParagraph?.firstVerseOffset == 0
-        ? versesParagraph?.verses.firstOrNull
-        : null;
+    return versesParagraph?.firstVerseOffset == 0 ? versesParagraph?.verses.firstOrNull : null;
   }
 
   int? getFirstSectionIndexIntroducingVerse(int verseNum) => indexed
       .where((entry) => entry.$2 is SectionParagraph)
-      .firstWhereOrNull(
-        (entry) =>
-            getVerseIntroducedBySectionAt(entry.$1)?.verseNum == verseNum,
-      )
+      .firstWhereOrNull((entry) => getVerseIntroducedBySectionAt(entry.$1)?.verseNum == verseNum)
       ?.$1;
 }
 
@@ -78,8 +70,7 @@ enum ParagraphType {
   li2,
   nb;
 
-  bool get isPoetic =>
-      this == q1 || this == q2 || this == qr || this == qs || this == qc;
+  bool get isPoetic => this == q1 || this == q2 || this == qr || this == qs || this == qc;
   bool get isItalic => this == qs;
 
   double get indent => switch (this) {
@@ -92,5 +83,4 @@ enum ParagraphType {
   double get blockIndent => this == q2 ? 20 : 0;
 }
 
-int? _firstVerseOffsetToJson(int firstVerseOffset) =>
-    firstVerseOffset.nullIfZero;
+int? _firstVerseOffsetToJson(int firstVerseOffset) => firstVerseOffset.nullIfZero;

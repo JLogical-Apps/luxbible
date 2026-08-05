@@ -1,6 +1,6 @@
-import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lux/lux.dart';
 import 'package:utils_core/utils_core.dart';
 
 part 'verse.freezed.dart';
@@ -20,33 +20,20 @@ sealed class Verse with _$Verse {
   factory Verse.fromJson(Map<String, dynamic> json) => _$VerseFromJson(json);
 
   String get text => words.map((word) => word.text).nonNulls.join();
-  List<String> get strongIds =>
-      words.map((word) => word.data?.strongId).nonNulls.toList();
-  List<String> get searchTerms => text.onlyLetters
-      .toLowerCase()
-      .split(' ')
-      .where((string) => string.isNotBlank)
-      .toList();
+  List<String> get strongIds => words.map((word) => word.data?.strongId).nonNulls.toList();
+  List<String> get searchTerms =>
+      text.onlyLetters.toLowerCase().split(' ').where((string) => string.isNotBlank).toList();
 
   Verse trimStart() {
-    final trimmedWords = words
-        .skipWhile((word) => word.text?.isBlank == true && word.data == null)
-        .toList();
-    final removedTextLength = words
-        .take(words.length - trimmedWords.length)
-        .map((word) => word.text?.length ?? 0)
-        .sum;
+    final trimmedWords = words.skipWhile((word) => word.text?.isBlank == true && word.data == null).toList();
+    final removedTextLength = words.take(words.length - trimmedWords.length).map((word) => word.text?.length ?? 0).sum;
 
     return Verse(
       verseNum: verseNum,
       words: trimmedWords,
       originalVerse: originalVerse,
       footnotes: footnotes
-          ?.map(
-            (footnote) => footnote.copyWith(
-              offset: (footnote.offset - removedTextLength).clampZero,
-            ),
-          )
+          ?.map((footnote) => footnote.copyWith(offset: (footnote.offset - removedTextLength).clampZero))
           .toList(),
     );
   }
@@ -55,8 +42,10 @@ sealed class Verse with _$Verse {
 extension IterableVerseExtensions on Iterable<Verse> {
   String getTextSelectionText(BibleTextSelection selection) {
     final verseTexts = map((verse) => verse.text).toList();
-    verseTexts[verseTexts.length - 1] = verseTexts[verseTexts.length - 1]
-        .substring(0, selection.end.characterOffset + 1);
+    verseTexts[verseTexts.length - 1] = verseTexts[verseTexts.length - 1].substring(
+      0,
+      selection.end.characterOffset + 1,
+    );
     verseTexts[0] = verseTexts[0].substring(selection.start.characterOffset);
 
     return verseTexts.join(' ');
@@ -64,10 +53,7 @@ extension IterableVerseExtensions on Iterable<Verse> {
 
   List<Verse> trim() {
     final verses = skipWhile((verse) => verse.text.isBlank).toList();
-    return [
-      if (verses.firstOrNull case final first?) first.trimStart(),
-      ...verses.skip(1),
-    ];
+    return [if (verses.firstOrNull case final first?) first.trimStart(), ...verses.skip(1)];
   }
 
   Iterable<Verse> withSameVersesCombined() => isEmpty
@@ -83,14 +69,11 @@ extension IterableVerseExtensions on Iterable<Verse> {
                   ..[verses.length - 1] = Verse(
                     verseNum: verse.verseNum,
                     words: lastVerse.words + verse.words,
-                    originalVerse:
-                        lastVerse.originalVerse ?? verse.originalVerse,
+                    originalVerse: lastVerse.originalVerse ?? verse.originalVerse,
                     footnotes: [
                       ...?lastVerse.footnotes,
                       ...?verse.footnotes?.map(
-                        (footnote) => footnote.copyWith(
-                          offset: lastVerse.text.length + footnote.offset,
-                        ),
+                        (footnote) => footnote.copyWith(offset: lastVerse.text.length + footnote.offset),
                       ),
                     ].nullIfEmpty?.toList(),
                   ))

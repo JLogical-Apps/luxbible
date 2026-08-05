@@ -1,17 +1,13 @@
-import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
+import 'package:lux/lux.dart';
 
 class Reference extends Equatable with ComparableOperators<Reference> {
   final BookType book;
   final int chapterNum;
   final int verseNum;
 
-  Reference({
-    required this.book,
-    required this.chapterNum,
-    required this.verseNum,
-  });
+  Reference({required this.book, required this.chapterNum, required this.verseNum});
 
   factory Reference.fromOsisId(String key) {
     final items = key.split('.');
@@ -22,23 +18,14 @@ class Reference extends Equatable with ComparableOperators<Reference> {
     );
   }
 
-  factory Reference.lastVerseFor({
-    required BookType book,
-    required int chapterNum,
-  }) => Reference(
-    book: book,
-    chapterNum: chapterNum,
-    verseNum: book.bookInfo.getNumVerses(chapterNum),
-  );
+  factory Reference.lastVerseFor({required BookType book, required int chapterNum}) =>
+      Reference(book: book, chapterNum: chapterNum, verseNum: book.bookInfo.getNumVerses(chapterNum));
 
   static List<Reference> get values => BookType.values
       .expand(
         (book) => book.bookInfo.chapterVerseLengths.mapIndexed(
-          (chapterIndex, chapterVerseLength) => Reference(
-            book: book,
-            chapterNum: chapterIndex + 1,
-            verseNum: chapterVerseLength,
-          ),
+          (chapterIndex, chapterVerseLength) =>
+              Reference(book: book, chapterNum: chapterIndex + 1, verseNum: chapterVerseLength),
         ),
       )
       .toList();
@@ -53,11 +40,7 @@ class Reference extends Equatable with ComparableOperators<Reference> {
   Reference? get nextOrNull {
     final nextVerseNum = verseNum + 1;
     if (nextVerseNum <= book.bookInfo.getNumVerses(chapterNum)) {
-      return Reference(
-        book: book,
-        chapterNum: chapterNum,
-        verseNum: nextVerseNum,
-      );
+      return Reference(book: book, chapterNum: chapterNum, verseNum: nextVerseNum);
     }
 
     final nextChapterNum = chapterNum + 1;
@@ -66,28 +49,16 @@ class Reference extends Equatable with ComparableOperators<Reference> {
     }
 
     final nextBook = book.nextOrNull;
-    return nextBook == null
-        ? null
-        : Reference(book: nextBook, chapterNum: 1, verseNum: 1);
+    return nextBook == null ? null : Reference(book: nextBook, chapterNum: 1, verseNum: 1);
   }
 
   Reference get clamped {
     final clampedChapter = chapterNum.clamp(1, book.bookInfo.numChapters);
-    final clampedVerse = verseNum.clamp(
-      1,
-      book.bookInfo.getNumVerses(clampedChapter),
-    );
-    return Reference(
-      book: book,
-      chapterNum: clampedChapter,
-      verseNum: clampedVerse,
-    );
+    final clampedVerse = verseNum.clamp(1, book.bookInfo.getNumVerses(clampedChapter));
+    return Reference(book: book, chapterNum: clampedChapter, verseNum: clampedVerse);
   }
 
-  static Iterable<Reference> getReferencesBetween(
-    Reference start,
-    Reference end,
-  ) sync* {
+  static Iterable<Reference> getReferencesBetween(Reference start, Reference end) sync* {
     var reference = start;
     yield reference;
     while (reference != end) {
@@ -110,6 +81,5 @@ class Reference extends Equatable with ComparableOperators<Reference> {
       chapterNum.compareTo(other.chapterNum).nullIfZero ??
       verseNum.compareTo(other.verseNum);
 
-  ChapterReference toChapterReference() =>
-      ChapterReference(book: book, chapterNum: chapterNum);
+  ChapterReference toChapterReference() => ChapterReference(book: book, chapterNum: chapterNum);
 }

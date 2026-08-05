@@ -19,9 +19,9 @@ class ChapterPageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageView.builder(
+    return SwipePageView.builder(
       controller: controller,
-      itemCount: ChapterReference.values.length,
+      pageCount: ChapterReference.values.length,
       onPageChanged: (pageIndex) => onPageChanged?.call(.fromBibleChapterIndex(pageIndex)),
       itemBuilder: (context, pageIndex) => Consumer(
         builder: (context, ref, child) {

@@ -1,9 +1,9 @@
+import 'package:collection/collection.dart';
+import 'package:equatable/equatable.dart';
 import 'package:lux/src/models/bible/book_type.dart';
 import 'package:lux/src/models/reference/chapter_reference.dart';
 import 'package:lux/src/models/reference/reference.dart';
 import 'package:lux/src/models/reference/verse_selection.dart';
-import 'package:collection/collection.dart';
-import 'package:equatable/equatable.dart';
 
 class VerseSpanReference extends Equatable {
   final BiblePointer start;
@@ -16,10 +16,7 @@ class VerseSpanReference extends Equatable {
     if (split case [final reference]) {
       return VerseSpanReference(start: BiblePointer.fromOsisId(reference));
     } else if (split case [final reference1, final reference2]) {
-      return VerseSpanReference(
-        start: BiblePointer.fromOsisId(reference1),
-        end: BiblePointer.fromOsisId(reference2),
-      );
+      return VerseSpanReference(start: BiblePointer.fromOsisId(reference1), end: BiblePointer.fromOsisId(reference2));
     } else {
       throw Exception('Cannot convert `$id` to VerseSpanReference');
     }
@@ -28,10 +25,7 @@ class VerseSpanReference extends Equatable {
   factory VerseSpanReference.parse(String range, {required BookType book}) {
     ({int chapter, int? verse}) parsePart(String part) {
       final split = part.split(':');
-      return (
-        chapter: int.parse(split[0]),
-        verse: split.length > 1 ? int.parse(split[1]) : null,
-      );
+      return (chapter: int.parse(split[0]), verse: split.length > 1 ? int.parse(split[1]) : null);
     }
 
     final parts = range.split('-');
@@ -50,35 +44,17 @@ class VerseSpanReference extends Equatable {
     final startHasVerse = start.verse != null;
     final endHasVerse = end?.verse != null;
 
-    final startReference = Reference(
-      book: book,
-      chapterNum: start.chapter,
-      verseNum: start.verse ?? 1,
-    ).clamped;
+    final startReference = Reference(book: book, chapterNum: start.chapter, verseNum: start.verse ?? 1).clamped;
 
     final endReference = end == null
         ? startHasVerse
               ? startReference // Genesis 1:1
-              : Reference.lastVerseFor(
-                  book: book,
-                  chapterNum: start.chapter,
-                ) // Genesis 1
+              : Reference.lastVerseFor(book: book, chapterNum: start.chapter) // Genesis 1
         : endHasVerse // Genesis 1:10-2:4
-        ? Reference(
-            book: book,
-            chapterNum: end.chapter,
-            verseNum: end.verse!,
-          ).clamped
+        ? Reference(book: book, chapterNum: end.chapter, verseNum: end.verse!).clamped
         : startHasVerse // Genesis 1:10-12
-        ? Reference(
-            book: book,
-            chapterNum: start.chapter,
-            verseNum: end.chapter,
-          ).clamped
-        : Reference.lastVerseFor(
-            book: book,
-            chapterNum: end.chapter,
-          ); // Genesis 1-2
+        ? Reference(book: book, chapterNum: start.chapter, verseNum: end.chapter).clamped
+        : Reference.lastVerseFor(book: book, chapterNum: end.chapter); // Genesis 1-2
 
     return VerseSpanReference(
       start: VerseBiblePointer(reference: startReference),
@@ -89,9 +65,7 @@ class VerseSpanReference extends Equatable {
   @override
   List<Object> get props => [start, ?end];
 
-  static List<VerseSpanReference> listFromReferences(
-    List<Reference> references,
-  ) => references
+  static List<VerseSpanReference> listFromReferences(List<Reference> references) => references
       .sorted()
       .splitBetween((previous, current) => previous.nextOrNull != current)
       .map(
@@ -103,18 +77,14 @@ class VerseSpanReference extends Equatable {
       .toList();
 
   String toJson() => osisId();
-  factory VerseSpanReference.fromJson(String json) =
-      VerseSpanReference.fromOsisId;
+  factory VerseSpanReference.fromJson(String json) = VerseSpanReference.fromOsisId;
 
-  List<Reference> get references => Reference.getReferencesBetween(
-    start.startReference,
-    end?.endReference ?? start.endReference,
-  ).toList();
+  List<Reference> get references =>
+      Reference.getReferencesBetween(start.startReference, end?.endReference ?? start.endReference).toList();
 
   VerseSelection toVerseSelection() => VerseSelection(spans: [this]);
 
-  String osisId() =>
-      [start, end].nonNulls.map((pointer) => pointer.osisId()).join('-');
+  String osisId() => [start, end].nonNulls.map((pointer) => pointer.osisId()).join('-');
 
   bool containsReference(Reference reference) => references.contains(reference);
 }

@@ -9,5 +9,4 @@ part of 'commentary.dart';
 _Commentary _$CommentaryFromJson(Map<String, dynamic> json) =>
     _Commentary(notes: _notesFromJson(json['v'] as Map<String, dynamic>));
 
-Map<String, dynamic> _$CommentaryToJson(_Commentary instance) =>
-    <String, dynamic>{'v': _notesToJson(instance.notes)};
+Map<String, dynamic> _$CommentaryToJson(_Commentary instance) => <String, dynamic>{'v': _notesToJson(instance.notes)};

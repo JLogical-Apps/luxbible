@@ -12,8 +12,7 @@ part of 'package_info_provider.dart';
 @ProviderFor(packageInfo)
 final packageInfoProvider = PackageInfoProvider._();
 
-final class PackageInfoProvider
-    extends $FunctionalProvider<PackageInfo, PackageInfo, PackageInfo>
+final class PackageInfoProvider extends $FunctionalProvider<PackageInfo, PackageInfo, PackageInfo>
     with $Provider<PackageInfo> {
   PackageInfoProvider._()
     : super(
@@ -31,8 +30,7 @@ final class PackageInfoProvider
 
   @$internal
   @override
-  $ProviderElement<PackageInfo> $createElement($ProviderPointer pointer) =>
-      $ProviderElement(pointer);
+  $ProviderElement<PackageInfo> $createElement($ProviderPointer pointer) => $ProviderElement(pointer);
 
   @override
   PackageInfo create(Ref ref) {
@@ -41,10 +39,7 @@ final class PackageInfoProvider
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(PackageInfo value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<PackageInfo>(value),
-    );
+    return $ProviderOverride(origin: this, providerOverride: $SyncValueProvider<PackageInfo>(value));
   }
 }
 

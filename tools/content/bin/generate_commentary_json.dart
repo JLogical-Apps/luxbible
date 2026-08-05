@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:lux/lux.dart';
 import 'package:bible/models/commentary_type.dart';
 import 'package:collection/collection.dart';
+import 'package:lux/lux.dart';
 import 'package:lux_content_tools/repository_paths.dart';
 import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
@@ -11,25 +11,12 @@ import 'package:xml/xml.dart';
 void main() {
   for (final source in sources) {
     final notes = source.inputs
-        .map(
-          (path) => _extractNotes(
-            XmlDocument.parse(File(path).readAsStringSync()),
-            source.type,
-          ),
-        )
+        .map((path) => _extractNotes(XmlDocument.parse(File(path).readAsStringSync()), source.type))
         .fold(<String, String>{}, (acc, notes) {
-          notes.forEach(
-            (key, value) => acc.update(
-              key,
-              (accNotes) => '$accNotes\n\n$value',
-              ifAbsent: () => value,
-            ),
-          );
+          notes.forEach((key, value) => acc.update(key, (accNotes) => '$accNotes\n\n$value', ifAbsent: () => value));
           return acc;
         });
-    appAssetFile(
-      'commentary/${source.output}',
-    ).writeAsStringSync(jsonEncode({'v': notes}));
+    appAssetFile('commentary/${source.output}').writeAsStringSync(jsonEncode({'v': notes}));
   }
 }
 
@@ -43,12 +30,7 @@ Map<String, String> _extractNotes(XmlDocument doc, CommentaryType type) {
       doc
           .findAllElements('div3')
           .where((div) => div.getAttribute('title') == 'Introduction')
-          .mapToMap(
-            (intro) => MapEntry(
-              _referenceOf(intro.parent),
-              _introMarkdown(intro.childElements),
-            ),
-          )
+          .mapToMap((intro) => MapEntry(_referenceOf(intro.parent), _introMarkdown(intro.childElements)))
           .withoutNullKeys,
     .matthewHenry =>
       doc
@@ -57,9 +39,7 @@ Map<String, String> _extractNotes(XmlDocument doc, CommentaryType type) {
           .mapToMap(
             (intro) => MapEntry(
               _referenceOf(intro),
-              _introMarkdown(
-                intro.childElements.takeWhile((e) => e.name.local != 'div2'),
-              ),
+              _introMarkdown(intro.childElements.takeWhile((e) => e.name.local != 'div2')),
             ),
           )
           .withoutNullKeys,
@@ -67,32 +47,22 @@ Map<String, String> _extractNotes(XmlDocument doc, CommentaryType type) {
   };
 
   String? pendingRef;
-  final notes = doc.descendants.whereType<XmlElement>().fold(
-    <String, String>{},
-    (notes, element) {
-      switch (element.name.local) {
-        case 'scripCom':
-          pendingRef = element.getAttribute('osisRef')?.split(':').last;
-        case 'div' when element.getAttribute('class') == 'Commentary':
-          if (pendingRef case final ref?) {
-            final markdown = _commentaryMarkdown(element.findAllElements('p'));
-            if (markdown.isNotEmpty) {
-              notes.update(
-                ref,
-                (existing) => '$existing\n\n$markdown',
-                ifAbsent: () => markdown,
-              );
-            }
-            pendingRef = null;
+  final notes = doc.descendants.whereType<XmlElement>().fold(<String, String>{}, (notes, element) {
+    switch (element.name.local) {
+      case 'scripCom':
+        pendingRef = element.getAttribute('osisRef')?.split(':').last;
+      case 'div' when element.getAttribute('class') == 'Commentary':
+        if (pendingRef case final ref?) {
+          final markdown = _commentaryMarkdown(element.findAllElements('p'));
+          if (markdown.isNotEmpty) {
+            notes.update(ref, (existing) => '$existing\n\n$markdown', ifAbsent: () => markdown);
           }
-      }
-      return notes;
-    },
-  );
-  return {
-    ...intros.where((reference, markdown) => markdown.isNotEmpty),
-    ...notes,
-  };
+          pendingRef = null;
+        }
+    }
+    return notes;
+  });
+  return {...intros.where((reference, markdown) => markdown.isNotEmpty), ...notes};
 }
 
 String? _referenceOf(XmlNode? container) => container
@@ -103,51 +73,37 @@ String? _referenceOf(XmlNode? container) => container
     .last
     .split('.')
     .first
-    .mapIfNonNull(
-      (book) => Reference(
-        book: BookType.fromOsisId(book),
-        chapterNum: 1,
-        verseNum: 0,
-      ).osisId(),
-    );
+    .mapIfNonNull((book) => Reference(book: BookType.fromOsisId(book), chapterNum: 1, verseNum: 0).osisId());
 
 String _introMarkdown(Iterable<XmlElement> elements) => _commentaryMarkdown(
-  elements.expand(
-    (element) =>
-        element.name.local == 'p' ? [element] : element.findAllElements('p'),
-  ),
+  elements.expand((element) => element.name.local == 'p' ? [element] : element.findAllElements('p')),
   skipIntroduction: true,
 );
 
-String _commentaryMarkdown(
-  Iterable<XmlElement> paragraphs, {
-  bool skipIntroduction = false,
-}) => Markdown.fromXmlNodes(paragraphs, (element, children) {
-  if (element.name.local == 'p') {
-    if (_isSkippedParagraph(element.getAttribute('class') ?? '') ||
-        (skipIntroduction &&
-            children.plainText.trim().toUpperCase() == 'INTRODUCTION')) {
-      return [];
-    }
-    return [.paragraph(children)];
-  }
-  if (element.name.local == 'scripRef') {
-    if (_getSupportedOsisId(element) case final osisId?) {
-      return [.link(osisId, children)];
-    }
-    return children;
-  }
-  return switch (element.name.local) {
-    'b' || 'strong' => [.bold(children)],
-    'i' || 'em' => [.italic(children)],
-    _ => children,
-  };
-}).text.trim();
+String _commentaryMarkdown(Iterable<XmlElement> paragraphs, {bool skipIntroduction = false}) =>
+    Markdown.fromXmlNodes(paragraphs, (element, children) {
+      if (element.name.local == 'p') {
+        if (_isSkippedParagraph(element.getAttribute('class') ?? '') ||
+            (skipIntroduction && children.plainText.trim().toUpperCase() == 'INTRODUCTION')) {
+          return [];
+        }
+        return [.paragraph(children)];
+      }
+      if (element.name.local == 'scripRef') {
+        if (_getSupportedOsisId(element) case final osisId?) {
+          return [.link(osisId, children)];
+        }
+        return children;
+      }
+      return switch (element.name.local) {
+        'b' || 'strong' => [.bold(children)],
+        'i' || 'em' => [.italic(children)],
+        _ => children,
+      };
+    }).text.trim();
 
 bool _isSkippedParagraph(String className) =>
-    className == 'Footnote' ||
-    className == 'Center' ||
-    className.startsWith('TableCaption');
+    className == 'Footnote' || className == 'Center' || className.startsWith('TableCaption');
 
 String? _getSupportedOsisId(XmlElement element) {
   final osisRef = element.getAttribute('osisRef');
@@ -166,11 +122,7 @@ class CommentarySource {
   final String output;
   final List<String> inputs;
 
-  const CommentarySource({
-    required this.type,
-    required this.output,
-    required this.inputs,
-  });
+  const CommentarySource({required this.type, required this.output, required this.inputs});
 }
 
 final sources = [
@@ -187,12 +139,9 @@ final sources = [
   CommentarySource(
     type: .calvin,
     output: 'calvin.json',
-    inputs: Range.generate(1, 45)
-        .map(
-          (i) => sourceFile(
-            'commentary/calvin/calcom${i.toString().padLeft(2, '0')}.xml',
-          ).path,
-        )
-        .toList(),
+    inputs: Range.generate(
+      1,
+      45,
+    ).map((i) => sourceFile('commentary/calvin/calcom${i.toString().padLeft(2, '0')}.xml').path).toList(),
   ),
 ];
