@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:lux/lux.dart';
+import 'package:lux/lux_core.dart';
 import 'package:xml/xml.dart';
 
 abstract final class XmlBibleParser {

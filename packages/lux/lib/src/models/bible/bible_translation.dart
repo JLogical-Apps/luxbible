@@ -1,7 +1,7 @@
+import 'package:lux/i18n.dart';
 import 'package:lux/src/models/bible/book_type.dart';
 import 'package:lux/src/models/reference/chapter_reference.dart';
 import 'package:lux/src/models/testament.dart';
-import 'package:lux/i18n.dart';
 
 enum BibleTranslation {
   bsb,

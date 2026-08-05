@@ -1,5 +1,7 @@
 import 'package:lux/i18n.dart';
-import 'package:lux/lux.dart';
+import 'package:lux/src/models/reference/reference.dart';
+import 'package:lux/src/models/testament.dart';
+import 'package:lux/src/utils/range.dart';
 import 'package:utils_core/utils_core.dart';
 
 enum BookType {

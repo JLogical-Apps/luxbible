@@ -1,4 +1,4 @@
-import 'package:lux/lux.dart';
+import 'package:lux/lux_core.dart';
 
 extension BibleTranslationExtensions on BibleTranslation {
   BibleTranslation effectiveFor(

@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:bible/models/bible_plan.dart';
-import 'package:lux/lux.dart';
+import 'package:lux/lux_core.dart';
 import 'package:lux_content_tools/repository_paths.dart';
 
 void main() {
   for (final type in BiblePlanType.values) {
     final raw = jsonDecode(sourceFile('reading_plans/${type.name}.json').readAsStringSync()) as Map<String, dynamic>;
-    appAssetFile('bible_plans/${type.name}.json').writeAsStringSync(
+    appAssetFile('bible_plans/${type.name}.json', app: .bible).writeAsStringSync(
       jsonEncode(
         BiblePlan(
           name: type == .esv_literary_study_bible ? 'Literary Study' : (raw['name'] as String).trim(),

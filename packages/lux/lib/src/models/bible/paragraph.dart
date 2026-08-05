@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:lux/lux.dart';
+import 'package:lux/lux_core.dart';
 
 part 'paragraph.freezed.dart';
 part 'paragraph.g.dart';

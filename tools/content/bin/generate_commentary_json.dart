@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:bible/models/commentary_type.dart';
 import 'package:collection/collection.dart';
-import 'package:lux/lux.dart';
+import 'package:lux/lux_core.dart';
 import 'package:lux_content_tools/repository_paths.dart';
 import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
@@ -16,7 +16,7 @@ void main() {
           notes.forEach((key, value) => acc.update(key, (accNotes) => '$accNotes\n\n$value', ifAbsent: () => value));
           return acc;
         });
-    appAssetFile('commentary/${source.output}').writeAsStringSync(jsonEncode({'v': notes}));
+    appAssetFile('commentary/${source.output}', app: .bible).writeAsStringSync(jsonEncode({'v': notes}));
   }
 }
 

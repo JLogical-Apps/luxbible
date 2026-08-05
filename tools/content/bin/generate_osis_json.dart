@@ -7,7 +7,7 @@ import 'package:lux_content_tools/src/parsers/osis_parser.dart';
 
 void main() {
   for (final name in ['oshb', 'lxx', 'tr', 'byz', 'statresgnt', 'sv', 'nrt']) {
-    appAssetFile('translations/$name.json').writeAsStringSync(
+    appAssetFile('translations/$name.json', app: .bible).writeAsStringSync(
       jsonEncode(
         sourceDirectory('bibles/$name')
             .listSync()

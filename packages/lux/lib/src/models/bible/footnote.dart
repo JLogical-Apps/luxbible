@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:lux/lux.dart';
+import 'package:lux/lux_core.dart';
 
 part 'footnote.freezed.dart';
 part 'footnote.g.dart';

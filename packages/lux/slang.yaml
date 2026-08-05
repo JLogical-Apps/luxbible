@@ -5,7 +5,7 @@ input_file_pattern: .i18n.json
 output_directory: lib/i18n
 output_file_name: strings.g.dart
 locale_handling: true
-flutter_integration: true
+flutter_integration: false
 lazy: false
 translate_var: t
 enum_name: AppLocale

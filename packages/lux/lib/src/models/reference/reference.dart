@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:lux/lux.dart';
+import 'package:lux/lux_core.dart';
 
 class Reference extends Equatable with ComparableOperators<Reference> {
   final BookType book;

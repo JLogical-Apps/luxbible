@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:bible/models/dictionary_entry.dart';
 import 'package:collection/collection.dart';
-import 'package:lux/lux.dart';
+import 'package:lux/lux_core.dart';
 import 'package:lux_content_tools/repository_paths.dart';
 import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
@@ -14,7 +14,7 @@ void main() {
 
   final keyLookup = buildKeyLookup(terms);
 
-  appAssetFile('dictionary/easton.json').writeAsStringSync(
+  appAssetFile('dictionary/easton.json', app: .bible).writeAsStringSync(
     jsonEncode(
       terms
           .map(

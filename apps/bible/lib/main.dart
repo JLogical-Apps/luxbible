@@ -26,7 +26,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lux/i18n.dart';
+import 'package:lux/i18n_flutter.dart';
 import 'package:lux/lux.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -98,11 +98,7 @@ Future<void> main() async {
 
       eagerlyLoad();
 
-      runApp(
-        TranslationProvider(
-          child: UncontrolledProviderScope(container: ref, child: BibleApp()),
-        ),
-      );
+      runApp(UncontrolledProviderScope(container: ref, child: BibleApp()));
     },
     (error, stack) {
       if (kDebugMode) {
@@ -141,7 +137,7 @@ class BibleApp extends HookConsumerWidget {
         child: MaterialApp(
           title: 'Lux Bible',
           locale: language.appLocale.flutterLocale,
-          supportedLocales: AppLocaleUtils.supportedLocales,
+          supportedLocales: AppLocaleUtils.instance.supportedLocales,
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
           themeMode: user.theme,
           theme: ThemeData(

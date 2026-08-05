@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:intersperse/intersperse.dart';
-import 'package:lux/lux.dart';
+import 'package:lux/lux_core.dart';
 import 'package:utils_core/utils_core.dart';
 
 part 'chapter.freezed.dart';

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:lux/lux.dart';
+import 'package:lux/lux_core.dart';
 
 part 'bible_text_selection.freezed.dart';
 part 'bible_text_selection.g.dart';

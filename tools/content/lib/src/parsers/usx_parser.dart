@@ -1,9 +1,9 @@
 import 'package:collection/collection.dart';
-import 'package:lux/lux.dart';
+import 'package:lux/lux_core.dart';
 import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
 
-Book parseUsxBook(BookType type, String rawXml) {
+Book parseUsxBook(BookType type, String rawXml, {bool includeInterlinear = true}) {
   final document = XmlDocument.parse(rawXml);
   return Book(
     bookType: type,
@@ -18,17 +18,19 @@ Book parseUsxBook(BookType type, String rawXml) {
             : null,
         isRedLetters: (element) => element.getAttribute('style') == 'wj',
         isItalic: (element) => UsxUtils.isItalicStyle(element.getAttribute('style')),
-        getInterlinearData: (element) => element.getAttribute('style') == 'w'
-            ? InterlinearData(
-                originalPosition: int.parse(element.getAttribute('x-position')!),
-                inflection: element.getAttribute('x-lemma'),
-                morphology: switch (element.getAttribute('x-morph')) {
-                  'None' => null,
-                  final morphology => morphology,
-                },
-                strongId: element.getAttribute('strong')?.nullIfBlank,
-                transliteration: element.getAttribute('x-translit'),
-              )
+        getInterlinearData: includeInterlinear
+            ? ((element) => element.getAttribute('style') == 'w'
+                  ? InterlinearData(
+                      originalPosition: int.parse(element.getAttribute('x-position')!),
+                      inflection: element.getAttribute('x-lemma'),
+                      morphology: switch (element.getAttribute('x-morph')) {
+                        'None' => null,
+                        final morphology => morphology,
+                      },
+                      strongId: element.getAttribute('strong')?.nullIfBlank,
+                      transliteration: element.getAttribute('x-translit'),
+                    )
+                  : null)
             : null,
         getParagraphStyle: (element) => element.getAttribute('style') ?? element.classNames.firstOrNull,
         buildSectionText: (element) => element.innerText.trim(),

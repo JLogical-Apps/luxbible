@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
-import 'package:lux/lux.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
+import 'package:lux/lux_core.dart';
 import 'package:lux_content_tools/repository_paths.dart';
 import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
@@ -20,7 +20,7 @@ void main() {
 
   final strongIds = baseStrongs.map((strong) => strong['i'] as String).toSet();
 
-  appAssetFile('strongs/strongs.json').writeAsStringSync(
+  appAssetFile('strongs/strongs.json', app: .bible).writeAsStringSync(
     jsonEncode(
       baseStrongs
           .map(

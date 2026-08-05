@@ -1,22 +1,32 @@
 import 'dart:io';
 
+import 'package:lux/lux_core.dart';
+
 final repositoryRoot = findRepositoryRoot(File.fromUri(Platform.script).parent);
 
-File sourceFile(String path) => File.fromUri(repositoryRoot.uri.resolve('content/sources/$path'));
+File sourceFile(String path) =>
+    File.fromUri(repositoryRoot.uri.resolve('content/sources/$path'));
 
-Directory sourceDirectory(String path) => Directory.fromUri(repositoryRoot.uri.resolve('content/sources/$path'));
+Directory sourceDirectory(String path) =>
+    Directory.fromUri(repositoryRoot.uri.resolve('content/sources/$path'));
 
-File appAssetFile(String path) => File.fromUri(repositoryRoot.uri.resolve('apps/bible/assets/$path'));
+File appAssetFile(String path, {required LuxApp app}) =>
+    File.fromUri(repositoryRoot.uri.resolve('apps/${app.name}/assets/$path'));
 
 Directory findRepositoryRoot(Directory start) {
   var directory = start;
 
   while (true) {
-    if (File.fromUri(directory.uri.resolve('apps/bible/pubspec.yaml')).existsSync()) return directory;
+    if (File.fromUri(
+      directory.uri.resolve('apps/bible/pubspec.yaml'),
+    ).existsSync())
+      return directory;
 
     final parent = directory.parent;
     if (parent.path == directory.path) {
-      throw StateError('Could not find the Lux repository root from ${start.path}.');
+      throw StateError(
+        'Could not find the Lux repository root from ${start.path}.',
+      );
     }
     directory = parent;
   }

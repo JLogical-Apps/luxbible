@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:lux/lux.dart';
+import 'package:lux/lux_core.dart';
 
 class ChapterReference extends Equatable with ComparableOperators<ChapterReference> {
   final BookType book;
