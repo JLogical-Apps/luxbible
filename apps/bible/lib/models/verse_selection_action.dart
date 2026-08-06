@@ -67,9 +67,8 @@ enum VerseSelectionAction {
         context.showStyledSnackbar(
           message: t.selectionActions.copiedVerses(reference: selectedVerseSelection.format()).toText(),
         );
-        await Clipboard.setData(
-          ClipboardData(text: selectedVerseSelection.references.map((reference) => text).nonNulls.join()),
-        );
+        await Clipboard.setData(ClipboardData(text: text));
+
       case study:
         StudySheet.show(
           context,
