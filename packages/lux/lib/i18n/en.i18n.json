@@ -454,6 +454,7 @@
     "stopPlan": "Stop Plan",
     "stopPlanDescription": "Remove this plan and its progress.",
     "readEntireChapter": "Read Entire Chapter",
+    "readInContext": "Read In Context",
     "startNew": "Start New",
     "day": "Day {day}",
     "dayCount(param=count)": {

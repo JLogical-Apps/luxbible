@@ -1519,6 +1519,9 @@ class Translations$biblePlans$en {
 	/// en: 'Read Entire Chapter'
 	String get readEntireChapter => 'Read Entire Chapter';
 
+	/// en: 'Read In Context'
+	String get readInContext => 'Read In Context';
+
 	/// en: 'Start New'
 	String get startNew => 'Start New';
 
@@ -4827,6 +4830,7 @@ extension on Translations {
 			'biblePlans.stopPlan' => 'Stop Plan',
 			'biblePlans.stopPlanDescription' => 'Remove this plan and its progress.',
 			'biblePlans.readEntireChapter' => 'Read Entire Chapter',
+			'biblePlans.readInContext' => 'Read In Context',
 			'biblePlans.startNew' => 'Start New',
 			'biblePlans.day' => ({required Object day}) => 'Day ${day}',
 			'biblePlans.dayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} day', other: '${count} days', ), 
@@ -4935,9 +4939,9 @@ extension on Translations {
 			'planTypes.newTestamentPsalmsProverbsDescription' => 'Read the New Testament alongside Psalms and Proverbs over the course of a year.',
 			'planTypes.fiveByFiveByFiveDescription' => 'Read one New Testament chapter a day, five days a week, followed by two days to review and reflect.',
 			'planTypes.oldScopeDescription' => 'Reads from books in the Old Testament.',
-			'planTypes.newScopeDescription' => 'Reads from books in the New Testament.',
 			_ => null,
 		} ?? switch (path) {
+			'planTypes.newScopeDescription' => 'Reads from books in the New Testament.',
 			'planTypes.wholeScopeDescription' => 'Reads from both the Old and New Testaments.',
 			'planTypes.focused' => 'Focused',
 			'planTypes.comprehensive' => 'Comprehensive',

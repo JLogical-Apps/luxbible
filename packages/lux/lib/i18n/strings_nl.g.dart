@@ -716,6 +716,7 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	@override String get stopPlan => 'Leesplan stoppen';
 	@override String get stopPlanDescription => 'Verwijder dit leesplan en de voortgang.';
 	@override String get readEntireChapter => 'Hele hoofdstuk lezen';
+	@override String get readInContext => 'In context lezen';
 	@override String get startNew => 'Nieuw starten';
 	@override String day({required Object day}) => 'Dag ${day}';
 	@override String dayCount({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count,
@@ -3035,6 +3036,7 @@ extension on TranslationsNl {
 			'biblePlans.stopPlan' => 'Leesplan stoppen',
 			'biblePlans.stopPlanDescription' => 'Verwijder dit leesplan en de voortgang.',
 			'biblePlans.readEntireChapter' => 'Hele hoofdstuk lezen',
+			'biblePlans.readInContext' => 'In context lezen',
 			'biblePlans.startNew' => 'Nieuw starten',
 			'biblePlans.day' => ({required Object day}) => 'Dag ${day}',
 			'biblePlans.dayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: '${count} dag', other: '${count} dagen', ), 
@@ -3143,9 +3145,9 @@ extension on TranslationsNl {
 			'planTypes.newTestamentPsalmsProverbsDescription' => 'Lees in één jaar het Nieuwe Testament naast Psalmen en Spreuken.',
 			'planTypes.fiveByFiveByFiveDescription' => 'Lees vijf dagen per week één hoofdstuk uit het Nieuwe Testament, gevolgd door twee dagen om terug te kijken en te overdenken.',
 			'planTypes.oldScopeDescription' => 'Leest uit boeken van het Oude Testament.',
-			'planTypes.newScopeDescription' => 'Leest uit boeken van het Nieuwe Testament.',
 			_ => null,
 		} ?? switch (path) {
+			'planTypes.newScopeDescription' => 'Leest uit boeken van het Nieuwe Testament.',
 			'planTypes.wholeScopeDescription' => 'Leest uit het Oude en Nieuwe Testament.',
 			'planTypes.focused' => 'Gericht',
 			'planTypes.comprehensive' => 'Volledig',

@@ -454,6 +454,7 @@
     "stopPlan": "Leesplan stoppen",
     "stopPlanDescription": "Verwijder dit leesplan en de voortgang.",
     "readEntireChapter": "Hele hoofdstuk lezen",
+    "readInContext": "In context lezen",
     "startNew": "Nieuw starten",
     "day": "Dag {day}",
     "dayCount(param=count)": {

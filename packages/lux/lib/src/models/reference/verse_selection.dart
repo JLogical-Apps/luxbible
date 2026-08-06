@@ -117,6 +117,8 @@ class VerseSelection extends Equatable {
       .sortedBy((reference) => reference)
       .toList();
 
+  bool get isChapter => spans.length == 1 && spans.first.start is ChapterBiblePointer;
+
   bool get isEmpty => spans.isEmpty;
   bool get isNotEmpty => spans.isNotEmpty;
 

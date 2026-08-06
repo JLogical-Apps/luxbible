@@ -449,6 +449,7 @@ Users can:
 - Finish a completed plan
 
 Daily passages open in a focused reading flow that retains access to normal Bible selection and study behavior.
+The chapter-preview action reads "Read In Context" when the assigned passage already covers the full chapter and "Read Entire Chapter" otherwise.
 
 ## Settings
 

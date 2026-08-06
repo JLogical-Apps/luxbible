@@ -718,6 +718,7 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	@override String get stopPlan => 'Остановить план';
 	@override String get stopPlanDescription => 'Удалите этот план и его ход.';
 	@override String get readEntireChapter => 'Читать всю главу';
+	@override String get readInContext => 'Читать в контексте';
 	@override String get startNew => 'Начать заново';
 	@override String day({required Object day}) => 'День ${day}';
 	@override String dayCount({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count,
@@ -3039,6 +3040,7 @@ extension on TranslationsRu {
 			'biblePlans.stopPlan' => 'Остановить план',
 			'biblePlans.stopPlanDescription' => 'Удалите этот план и его ход.',
 			'biblePlans.readEntireChapter' => 'Читать всю главу',
+			'biblePlans.readInContext' => 'Читать в контексте',
 			'biblePlans.startNew' => 'Начать заново',
 			'biblePlans.day' => ({required Object day}) => 'День ${day}',
 			'biblePlans.dayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: '${count} день', few: '${count} дня', many: '${count} дней', other: '${count} дня', ), 
@@ -3147,9 +3149,9 @@ extension on TranslationsRu {
 			'planTypes.newTestamentPsalmsProverbsDescription' => 'Читайте Новый Завет вместе с Псалмами и Притчами в течение года.',
 			'planTypes.fiveByFiveByFiveDescription' => 'Читайте по одной главе Нового Завета в день, пять дней в неделю, а затем два дня для повторения и размышления.',
 			'planTypes.oldScopeDescription' => 'Читает книги Ветхого Завета.',
-			'planTypes.newScopeDescription' => 'Читает книги Нового Завета.',
 			_ => null,
 		} ?? switch (path) {
+			'planTypes.newScopeDescription' => 'Читает книги Нового Завета.',
 			'planTypes.wholeScopeDescription' => 'Читает как Ветхий, так и Новый Завет.',
 			'planTypes.focused' => 'Сосредоточенный',
 			'planTypes.comprehensive' => 'Всесторонний',
