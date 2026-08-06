@@ -256,7 +256,7 @@ class ParagraphsBuilder extends HookWidget {
         .getBoxesForSelection(baseOffset: base, extentOffset: extent)
         .map((box) => box.toRect())
         .withMergedLines()
-        .withHangingIndent(layout.hangingIndent)
+        .withHangingIndent(useParagraphs ? layout.hangingIndent : 0)
         .map(
           (box) => Positioned.fromRect(
             key: ValueKey(box),
@@ -412,7 +412,7 @@ class ParagraphsBuilder extends HookWidget {
       .getBoxesForSelection(baseOffset: base, extentOffset: extent)
       .map((box) => box.toRect())
       .withMergedLines()
-      .withHangingIndent(hangingIndent)
+      .withHangingIndent(useParagraphs ? hangingIndent : 0)
       .map(
         (box) => Positioned.fromRect(
           key: ValueKey((annotation, box)),
