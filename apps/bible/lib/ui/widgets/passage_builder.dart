@@ -69,6 +69,7 @@ class PassageBuilder extends HookConsumerWidget {
       onNavigateToVerseSelection: onNavigateToVerseSelection,
       keyByReference: keyByReference,
       keyBySectionReference: keyBySectionReference,
+      shrinkWrap: true,
     );
 
     return FontSizeSpacingZoomGesture(

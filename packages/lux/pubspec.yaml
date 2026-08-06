@@ -43,6 +43,7 @@ dependencies:
   style:
     path: ../../packages/style
   url_launcher: ^6.3.2
+  super_sliver_list: ^0.4.1
 
 dev_dependencies:
   build_runner: ^2.7.1

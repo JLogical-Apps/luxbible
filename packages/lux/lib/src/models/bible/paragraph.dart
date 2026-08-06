@@ -37,10 +37,14 @@ extension ParagraphListExtensions on List<Paragraph> {
     return versesParagraph?.firstVerseOffset == 0 ? versesParagraph?.verses.firstOrNull : null;
   }
 
-  int? getFirstSectionIndexIntroducingVerse(int verseNum) => indexed
+  int? getSectionIndexForVerse(int verseNum) => indexed
       .where((entry) => entry.$2 is SectionParagraph)
       .firstWhereOrNull((entry) => getVerseIntroducedBySectionAt(entry.$1)?.verseNum == verseNum)
       ?.$1;
+
+  int? getIndexForVerse(int verseNum) => indexWhereOrNull(
+    (paragraph) => paragraph is VersesParagraph && paragraph.verses.any((verse) => verse.verseNum == verseNum),
+  );
 }
 
 enum SectionType {

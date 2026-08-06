@@ -19,6 +19,7 @@ import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
+import 'package:super_sliver_list/super_sliver_list.dart';
 import 'package:utils_core/utils_core.dart';
 
 class ParagraphsBuilder extends HookWidget {
@@ -35,6 +36,14 @@ class ParagraphsBuilder extends HookWidget {
   final Map<Reference, GlobalKey>? keyByReference;
   final Map<Reference, GlobalKey>? keyBySectionReference;
 
+  final ScrollController? controller;
+  final ListController? listController;
+  final EdgeInsetsGeometry? padding;
+  final bool shrinkWrap;
+
+  final Widget? header;
+  final Widget? footer;
+
   const ParagraphsBuilder({
     super.key,
     required this.paragraphs,
@@ -46,6 +55,12 @@ class ParagraphsBuilder extends HookWidget {
     this.onNavigateToVerseSelection,
     this.keyByReference,
     this.keyBySectionReference,
+    this.controller,
+    this.listController,
+    this.padding,
+    this.shrinkWrap = false,
+    this.header,
+    this.footer,
   });
 
   BibleTextSelection? get textSelection => selection?.textSelection;
@@ -78,19 +93,13 @@ class ParagraphsBuilder extends HookWidget {
     final textSelectionStartAnchorState = useState<BibleTextSelectionWordAnchor?>(null);
 
     final paragraphSpansByParagraph = useMemoized(
-      () => getParagraphSpansByParagraph(
-        context,
-        chapter: chapter,
-        keyByReference: keyByReference,
-        keyBySectionReference: keyBySectionReference,
-      ).where((entry) => entry.value.isNotEmpty).toList(),
+      () => getParagraphSpansByParagraph(context, chapter: chapter, keyBySectionReference: keyBySectionReference),
       [
         paragraphs,
         user,
         translation,
         chapterReference,
         highlightedReferences,
-        keyByReference,
         keyBySectionReference,
         context.brightness,
       ],
@@ -156,25 +165,46 @@ class ParagraphsBuilder extends HookWidget {
             selection?.onTextSelectionUpdated(selection: null, isNewSelection: true, user: user);
           }
         },
-        child: Column(
-          crossAxisAlignment: .stretch,
-          children: paragraphSpansByParagraph
-              .mapEntries(
-                (paragraph, originalSpans) => ParagraphText(
-                  paragraph: paragraph,
-                  originalSpans: originalSpans,
-                  useParagraphLayout: useParagraphs,
-                  textDirection: textDirection,
-                  overlayBuilder: (context, layout) => buildParagraphOverlays(
-                    context,
-                    layout: layout,
-                    chapter: chapter,
-                    paragraphHitTesters: paragraphHitTesters,
-                    textSelectionAnnotations: textSelectionAnnotations,
-                  ),
-                ),
-              )
-              .toList(),
+        child: SuperListView(
+          controller: controller,
+          listController: listController,
+          physics: shrinkWrap ? NeverScrollableScrollPhysics() : AlwaysScrollableScrollPhysics(),
+          primary: shrinkWrap ? false : null,
+          padding: padding ?? .zero,
+          shrinkWrap: shrinkWrap,
+          children: paragraphSpansByParagraph.mapIndexed((index, entry) {
+            final MapEntry(key: paragraph, value: originalSpans) = paragraphSpansByParagraph[index];
+
+            final paragraphText = originalSpans.isEmpty
+                ? SizedBox.shrink()
+                : ParagraphText(
+                    paragraph: paragraph,
+                    originalSpans: originalSpans,
+                    useParagraphLayout: useParagraphs,
+                    textDirection: textDirection,
+                    overlayBuilder: (context, layout) => buildParagraphOverlays(
+                      context,
+                      layout: layout,
+                      chapter: chapter,
+                      paragraphHitTesters: paragraphHitTesters,
+                      textSelectionAnnotations: textSelectionAnnotations,
+                    ),
+                  );
+
+            if (index == 0 || index == paragraphSpansByParagraph.length - 1) {
+              return Column(
+                crossAxisAlignment: .stretch,
+                spacing: 12,
+                children: [
+                  if (index == 0) ?header,
+                  paragraphText,
+                  if (index == paragraphSpansByParagraph.length - 1) ?footer,
+                ],
+              );
+            }
+
+            return paragraphText;
+          }).toList(),
         ),
       ),
     );
@@ -426,7 +456,6 @@ class ParagraphsBuilder extends HookWidget {
   List<MapEntry<Paragraph, List<InlineSpan>>> getParagraphSpansByParagraph(
     BuildContext context, {
     required Chapter chapter,
-    required Map<Reference, GlobalKey>? keyByReference,
     required Map<Reference, GlobalKey>? keyBySectionReference,
   }) {
     final bibleTextStyle = getBibleTextStyle(context);
@@ -450,8 +479,7 @@ class ParagraphsBuilder extends HookWidget {
                     bibleTextStyle: bibleTextStyle,
                     leadingSpans: [
                       if (chapter.paragraphs.getVerseIntroducedBySectionAt(paragraphIndex) case final verse?
-                          when chapter.paragraphs.getFirstSectionIndexIntroducingVerse(verse.verseNum) ==
-                              paragraphIndex)
+                          when chapter.paragraphs.getSectionIndexForVerse(verse.verseNum) == paragraphIndex)
                         SizedWidgetSpan(
                           child: SizedBox.shrink(key: keyBySectionReference?[getVerseReference(verse)]),
                           alignment: .top,

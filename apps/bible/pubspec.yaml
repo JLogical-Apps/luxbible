@@ -65,6 +65,7 @@ dependencies:
   firebase_app_check: ^0.4.5+2
   flutter_localizations:
     sdk: flutter
+  super_sliver_list: ^0.4.1
 
 dev_dependencies:
   flutter_test:

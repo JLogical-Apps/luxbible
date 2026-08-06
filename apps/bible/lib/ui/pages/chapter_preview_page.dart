@@ -8,7 +8,6 @@ import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
-import 'package:utils_core/utils_core.dart';
 
 class ChapterPreviewPage extends HookConsumerWidget {
   final VerseSelection verseSelection;
@@ -57,10 +56,7 @@ class ChapterPreviewPage extends HookConsumerWidget {
           itemBuilder: (context, chapterReference, chapter) => HookBuilder(
             builder: (context) {
               final scrollController = useScrollController();
-              final keyByReference = useMemoized(
-                () => chapterReference.references.mapToMap((reference) => MapEntry(reference, GlobalKey())),
-                [chapterReference],
-              );
+              final listController = useListController();
 
               final scrollToSelection = chapterReference == initialChapterReference ? verseSelection : null;
               final isLoaded = useOnContentLoaded(
@@ -70,7 +66,16 @@ class ChapterPreviewPage extends HookConsumerWidget {
                     return;
                   }
 
-                  keyByReference[scrollToSelection.references.first]?.scrollIntoView(alignment: 0.35, duration: .zero);
+                  final paragraphIndex = chapter.paragraphs.getIndexForVerse(
+                    scrollToSelection.references.first.verseNum,
+                  );
+                  if (paragraphIndex != null && listController.isAttached) {
+                    listController.jumpToItem(
+                      index: paragraphIndex,
+                      scrollController: scrollController,
+                      alignment: 0.35,
+                    );
+                  }
                 },
               );
 
@@ -80,23 +85,14 @@ class ChapterPreviewPage extends HookConsumerWidget {
                 curve: Curves.easeOutCubic,
                 child: StyledScrollbar(
                   controller: scrollController,
-                  child: SingleChildScrollView(
-                    physics: AlwaysScrollableScrollPhysics(),
+                  child: ChapterBuilder(
                     controller: scrollController,
-                    padding: .symmetric(horizontal: 24, vertical: 16),
-                    child: Column(
-                      crossAxisAlignment: .start,
-                      children: [
-                        ChapterBuilder(
-                          chapterReference: chapterReference,
-                          user: user,
-                          chapter: chapter,
-                          underlinedReferences: scrollToSelection?.references ?? const [],
-                          keyByReference: keyByReference,
-                        ),
-                        Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).bottom + 24)),
-                      ],
-                    ),
+                    listController: listController,
+                    padding: .only(left: 24, top: 16, right: 24, bottom: MediaQuery.paddingOf(context).bottom + 40),
+                    chapterReference: chapterReference,
+                    user: user,
+                    chapter: chapter,
+                    underlinedReferences: scrollToSelection?.references ?? const [],
                   ),
                 ),
               );

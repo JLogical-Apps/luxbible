@@ -1,8 +1,8 @@
-import 'package:lux/lux.dart';
+import 'package:bible/ui/widgets/visible_verse_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:bible/ui/widgets/visible_verse_utils.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 import 'package:utils_core/utils_core.dart';
@@ -86,7 +86,7 @@ class LinkedStudyPanel extends HookWidget {
       }
     }, [passageTopReference, isContentLoadedState.value, isActive]);
 
-    useOnPostFrameListenableChange(isActive ? scrollController : null, () async {
+    useOnListenableChange(isActive ? scrollController : null, () async {
       if (!isActive) return;
 
       final visibleReferences = getVisibleReferencesInViewport(
@@ -96,12 +96,15 @@ class LinkedStudyPanel extends HookWidget {
       );
       if (visibleReferences.isEmpty) return;
 
-      final topReference = topReferenceState.value;
       topReferenceState.value = visibleReferences.firstOrNull;
+    });
+
+    usePostFrameEffect(() {
+      final topReference = topReferenceState.value;
       if (topReference != passageTopReference && topReference != null && ownsScrollRef.value) {
         onScrollToReference(topReference);
       }
-    }, [MediaQuery.sizeOf(context)]);
+    }, [useDebounced<Reference?>(topReferenceState.value, Duration(milliseconds: 100))]);
 
     return TapRegion(
       onTapInside: (_) => ownsScrollRef.value = true,

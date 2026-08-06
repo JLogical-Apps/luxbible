@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lux/src/utils/extensions/controller_extensions.dart';
+import 'package:super_sliver_list/super_sliver_list.dart';
 
 void useOnFocusNodeFocused(FocusNode focusNode, Function() onFocused) {
   useOnListenableChange(focusNode, () {
@@ -133,3 +134,6 @@ bool useOnContentLoaded({ScrollController? controller, Function(double maxScroll
   }, [controller != null, controller?.positionOrNull != null]);
   return isLoadedState.value;
 }
+
+ListController useListController([List<Object> keys = const []]) =>
+    useDisposable(useMemoized(() => ListController(), keys), (controller) => controller.dispose());

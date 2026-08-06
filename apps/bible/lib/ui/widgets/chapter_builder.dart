@@ -8,6 +8,7 @@ import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
+import 'package:super_sliver_list/super_sliver_list.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ChapterBuilder extends HookConsumerWidget {
@@ -24,6 +25,11 @@ class ChapterBuilder extends HookConsumerWidget {
 
   final Chapter? chapter;
 
+  final ScrollController? controller;
+  final ListController? listController;
+  final EdgeInsetsGeometry? padding;
+  final bool shrinkWrap;
+
   const ChapterBuilder({
     super.key,
     required this.chapterReference,
@@ -34,6 +40,10 @@ class ChapterBuilder extends HookConsumerWidget {
     this.keyByReference,
     this.keyBySectionReference,
     this.chapter,
+    this.controller,
+    this.listController,
+    this.padding,
+    this.shrinkWrap = false,
   });
 
   BookType get book => chapterReference.book;
@@ -61,41 +71,47 @@ class ChapterBuilder extends HookConsumerWidget {
 
     return FontSizeSpacingZoomGesture(
       language: translation.bibleLanguage,
-      child: Column(
-        crossAxisAlignment: .stretch,
-        spacing: 12,
-        children: [
-          if (isFallback)
-            StyledTile.message(
-              leading: Symbols.translate.toIcon(),
-              title: t.chapterUnavailable
-                  .title(selectedTranslation: user.translation.fullName(), testament: book.testament.title())
-                  .toText(),
-              subtitle: t.chapterUnavailable
-                  .subtitle(testament: book.testament.title(), fallbackTranslation: translation.fullName())
-                  .toText(),
-            ),
-          ParagraphsBuilder(
-            paragraphs: chapter.paragraphs,
-            chapterReference: chapterReference,
-            user: user,
-            translation: translation,
-            underlinedReferences: underlinedReferences,
-            selection: selection,
-            onNavigateToVerseSelection: onNavigateToVerseSelection,
-            keyByReference: keyByReference,
-            keyBySectionReference: keyBySectionReference,
-          ),
-          if (translation.copyright case final copyright?)
-            Text(copyright, style: context.textStyle.paragraphXs.subtle(), textAlign: .center),
-          if (translation.source is ApiBibleTranslationSource)
-            MarkdownBuilder(
-              Markdown(t.selectionUi.sourceApiBible),
-              style: context.textStyle.paragraphXs.subtle(),
-              onLinkPressed: (_, _) => launchUrl(Uri.https('api.bible')),
-              textAlign: .center,
-            ),
-        ],
+      child: ParagraphsBuilder(
+        paragraphs: chapter.paragraphs,
+        chapterReference: chapterReference,
+        user: user,
+        translation: translation,
+        underlinedReferences: underlinedReferences,
+        selection: selection,
+        onNavigateToVerseSelection: onNavigateToVerseSelection,
+        keyByReference: keyByReference,
+        keyBySectionReference: keyBySectionReference,
+        controller: controller,
+        listController: listController,
+        padding: padding,
+        shrinkWrap: shrinkWrap,
+        header: isFallback
+            ? StyledTile.message(
+                leading: Symbols.translate.toIcon(),
+                title: t.chapterUnavailable
+                    .title(selectedTranslation: user.translation.fullName(), testament: book.testament.title())
+                    .toText(),
+                subtitle: t.chapterUnavailable
+                    .subtitle(testament: book.testament.title(), fallbackTranslation: translation.fullName())
+                    .toText(),
+              )
+            : null,
+        footer: translation.copyright == null && translation.source is! ApiBibleTranslationSource
+            ? null
+            : Column(
+                spacing: 12,
+                children: [
+                  if (translation.copyright case final copyright?)
+                    Text(copyright, style: context.textStyle.paragraphXs.subtle(), textAlign: .center),
+                  if (translation.source is ApiBibleTranslationSource)
+                    MarkdownBuilder(
+                      Markdown(t.selectionUi.sourceApiBible),
+                      style: context.textStyle.paragraphXs.subtle(),
+                      onLinkPressed: (_, _) => launchUrl(Uri.https('api.bible')),
+                      textAlign: .center,
+                    ),
+                ],
+              ),
       ),
     );
   }

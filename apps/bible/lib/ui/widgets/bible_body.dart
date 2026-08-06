@@ -58,6 +58,8 @@ class BibleBody extends HookConsumerWidget {
 
     final passageKey = useMemoized(() => GlobalKey());
     final currentScrollController = useScrollController(keys: [currentChapterReference]);
+    final currentListController = useListController([currentChapterReference]);
+    final currentControllersPassthrough = usePassthrough((currentScrollController, currentListController));
     final scrollPercentByReferenceRef = useRef({initialPosition.reference: initialPosition.scrollPercent});
 
     void saveScroll() {
@@ -87,7 +89,6 @@ class BibleBody extends HookConsumerWidget {
       () => currentChapterReference.references.mapToMap((reference) => MapEntry(reference, GlobalKey())),
       [currentChapterReference],
     );
-    final keyByReferencePassthrough = usePassthrough(keyByReference);
 
     void softNavigateTo(ChapterReference reference) {
       saveScroll();
@@ -124,7 +125,7 @@ class BibleBody extends HookConsumerWidget {
       hardNavigateTo(ChapterPosition(reference: chapterReference));
       selection.selectReferences(verseSelection.references);
 
-      await ref.read(
+      final chapter = await ref.read(
         chapterProvider(
           translation: user.getTranslationFor(chapterReference.book),
           chapterReference: chapterReference,
@@ -132,10 +133,18 @@ class BibleBody extends HookConsumerWidget {
       );
       await Future.delayed(Duration(milliseconds: 200));
 
-      final keyByReference = keyByReferencePassthrough.value;
-      keyByReference[verseSelection.references.first]?.scrollIntoView(
+      final paragraphIndex = chapter.paragraphs.getIndexForVerse(verseSelection.references.first.verseNum);
+      final (scrollController, listController) = currentControllersPassthrough.value;
+      if (paragraphIndex == null || !listController.isAttached || !scrollController.hasClients) {
+        return;
+      }
+
+      listController.animateToItem(
+        index: paragraphIndex,
+        scrollController: scrollController,
         alignment: 0.35,
-        duration: Duration(milliseconds: 500),
+        duration: (_) => Duration(milliseconds: 500),
+        curve: (_) => Curves.easeInOutCubic,
       );
     }
 
@@ -395,26 +404,22 @@ class BibleBody extends HookConsumerWidget {
                   StyledScrollbar(
                     controller: scrollController,
                     removePadding: isSideLayout && panelCount > 0,
-                    child: SingleChildScrollView(
-                      physics: AlwaysScrollableScrollPhysics(),
+                    child: ChapterBuilder(
                       controller: scrollController,
-                      padding: .symmetric(horizontal: 24, vertical: 8),
-                      child: Column(
-                        crossAxisAlignment: .start,
-                        children: [
-                          Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).top + 32)),
-                          ChapterBuilder(
-                            chapterReference: chapterReference,
-                            user: user,
-                            chapter: chapter,
-                            selection: selection,
-                            onNavigateToVerseSelection: navigateToVerseSelection,
-                            keyByReference: keyByReference,
-                            keyBySectionReference: keyBySectionReference,
-                          ),
-                          Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).bottom + 88)),
-                        ],
+                      listController: chapterReference == currentChapterReference ? currentListController : null,
+                      padding: .only(
+                        left: 24,
+                        top: MediaQuery.paddingOf(context).top + 40,
+                        right: 24,
+                        bottom: MediaQuery.paddingOf(context).bottom + 96,
                       ),
+                      chapterReference: chapterReference,
+                      user: user,
+                      chapter: chapter,
+                      selection: selection,
+                      onNavigateToVerseSelection: navigateToVerseSelection,
+                      keyByReference: keyByReference,
+                      keyBySectionReference: keyBySectionReference,
                     ),
                   ),
                   Positioned(
@@ -509,6 +514,7 @@ class BibleBody extends HookConsumerWidget {
                 translation: user.getTranslationFor(currentChapterReference.book),
               ),
             );
+            final chapter = chapterValue.value;
 
             useOnPostFrameListenableChange(currentScrollController, () {
               final studyPanelHeight = studyPanelHeightRef.value.clamp(minStudyPanelHeight, maxStudyPanelHeight);
@@ -578,18 +584,29 @@ class BibleBody extends HookConsumerWidget {
                         chapterReference: currentChapterReference,
                         passageTopReference: visibleVerseSelection.references.firstOrNull,
                         onScrollToReference: (reference) {
-                          final key = keyBySectionReference[reference]?.currentContext != null
-                              ? keyBySectionReference[reference]
-                              : keyByReference[reference];
-                          if (key != null) {
+                          final hasSection = chapter?.paragraphs.getSectionIndexForVerse(reference.verseNum) != null;
+                          final key = hasSection ? keyBySectionReference[reference] : keyByReference[reference];
+                          if (key != null && key.currentContext?.mounted == true) {
                             key.scrollIntoView(
                               axis: .vertical,
                               duration: Duration(milliseconds: 200),
                               alignment:
-                                  ((key == keyBySectionReference[reference] ? 24 : 0) +
-                                      MediaQuery.paddingOf(context).top +
-                                      topBarHeight) /
+                                  ((key == keyBySectionReference[reference] ? 24 : 0) + topBarHeight) /
                                   (passageKey.renderBox?.size.height ?? 128),
+                            );
+                            return;
+                          }
+
+                          final paragraphIndex =
+                              chapterValue.value?.paragraphs.getSectionIndexForVerse(reference.verseNum) ??
+                              chapterValue.value?.paragraphs.getIndexForVerse(reference.verseNum);
+                          if (paragraphIndex != null && currentListController.isAttached) {
+                            currentListController.animateToItem(
+                              index: paragraphIndex,
+                              scrollController: currentScrollController,
+                              alignment: topBarHeight / (passageKey.renderBox?.size.height ?? 128),
+                              duration: (_) => Duration(milliseconds: 200),
+                              curve: (_) => Curves.easeInOutCubic,
                             );
                           }
                         },
