@@ -10,8 +10,6 @@ environment:
   sdk: ^3.12.2
 
 dependencies:
-  bible:
-    path: ../bible
   collection: ^1.19.1
   lux:
     path: ../../packages/lux
@@ -33,6 +31,7 @@ dependencies:
       path: packages/utils/utils_core
   material_symbols_icons: ^4.2960.0
   intersperse: ^2.0.0
+  avatar_glow: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -57,3 +56,6 @@ flutter:
         - asset: fonts/Inter-Regular.ttf
         - asset: fonts/Inter-Italic.ttf
           style: italic
+    - family: Bitter
+      fonts:
+        - asset: fonts/Bitter-VariableFont_wght.ttf

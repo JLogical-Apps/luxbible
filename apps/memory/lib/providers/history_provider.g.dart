@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_provider.dart';
+part of 'history_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,50 +9,51 @@ part of 'user_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(UserNotifier)
-final userProvider = UserNotifierProvider._();
+@ProviderFor(HistoryNotifier)
+final historyProvider = HistoryNotifierProvider._();
 
-final class UserNotifierProvider extends $NotifierProvider<UserNotifier, User> {
-  UserNotifierProvider._()
+final class HistoryNotifierProvider
+    extends $NotifierProvider<HistoryNotifier, List<Activity>> {
+  HistoryNotifierProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'userProvider',
+        name: r'historyProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$userNotifierHash();
+  String debugGetCreateSourceHash() => _$historyNotifierHash();
 
   @$internal
   @override
-  UserNotifier create() => UserNotifier();
+  HistoryNotifier create() => HistoryNotifier();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(User value) {
+  Override overrideWithValue(List<Activity> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<User>(value),
+      providerOverride: $SyncValueProvider<List<Activity>>(value),
     );
   }
 }
 
-String _$userNotifierHash() => r'a4e5b2d2bce28737d15dfcaa1add8f70d6c61ee0';
+String _$historyNotifierHash() => r'caa4ce5254e80699bdd536f87aa789480e4bad98';
 
-abstract class _$UserNotifier extends $Notifier<User> {
-  User build();
+abstract class _$HistoryNotifier extends $Notifier<List<Activity>> {
+  List<Activity> build();
   @$mustCallSuper
   @override
   WhenComplete runBuild() {
-    final ref = this.ref as $Ref<User, User>;
+    final ref = this.ref as $Ref<List<Activity>, List<Activity>>;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<User, User>,
-              User,
+              AnyNotifier<List<Activity>, List<Activity>>,
+              List<Activity>,
               Object?,
               Object?
             >;

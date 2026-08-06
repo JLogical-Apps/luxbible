@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$User {
 
- ThemeMode get theme;
+ ThemeMode get theme; List<VerseSelection> get passages;
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserCopyWith<User> get copyWith => _$UserCopyWithImpl<User>(this as User, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.theme, theme) || other.theme == theme));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is User&&(identical(other.theme, theme) || other.theme == theme)&&const DeepCollectionEquality().equals(other.passages, passages));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,theme);
+int get hashCode => Object.hash(runtimeType,theme,const DeepCollectionEquality().hash(passages));
 
 @override
 String toString() {
-  return 'User(theme: $theme)';
+  return 'User(theme: $theme, passages: $passages)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserCopyWith<$Res>  {
   factory $UserCopyWith(User value, $Res Function(User) _then) = _$UserCopyWithImpl;
 @useResult
 $Res call({
- ThemeMode theme
+ ThemeMode theme, List<VerseSelection> passages
 });
 
 
@@ -65,10 +65,11 @@ class _$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? theme = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? theme = null,Object? passages = null,}) {
   return _then(_self.copyWith(
 theme: null == theme ? _self.theme : theme // ignore: cast_nullable_to_non_nullable
-as ThemeMode,
+as ThemeMode,passages: null == passages ? _self.passages : passages // ignore: cast_nullable_to_non_nullable
+as List<VerseSelection>,
   ));
 }
 
@@ -150,10 +151,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ThemeMode theme)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ThemeMode theme,  List<VerseSelection> passages)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.theme);case _:
+return $default(_that.theme,_that.passages);case _:
   return orElse();
 
 }
@@ -171,10 +172,10 @@ return $default(_that.theme);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ThemeMode theme)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ThemeMode theme,  List<VerseSelection> passages)  $default,) {final _that = this;
 switch (_that) {
 case _User():
-return $default(_that.theme);}
+return $default(_that.theme,_that.passages);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -188,10 +189,10 @@ return $default(_that.theme);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ThemeMode theme)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ThemeMode theme,  List<VerseSelection> passages)?  $default,) {final _that = this;
 switch (_that) {
 case _User() when $default != null:
-return $default(_that.theme);case _:
+return $default(_that.theme,_that.passages);case _:
   return null;
 
 }
@@ -203,10 +204,17 @@ return $default(_that.theme);case _:
 @JsonSerializable()
 
 class _User extends User {
-  const _User({this.theme = ThemeMode.system}): super._();
+  const _User({this.theme = ThemeMode.system, final  List<VerseSelection> passages = const []}): _passages = passages,super._();
   factory _User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
 @override@JsonKey() final  ThemeMode theme;
+ final  List<VerseSelection> _passages;
+@override@JsonKey() List<VerseSelection> get passages {
+  if (_passages is EqualUnmodifiableListView) return _passages;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_passages);
+}
+
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
@@ -221,16 +229,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.theme, theme) || other.theme == theme));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _User&&(identical(other.theme, theme) || other.theme == theme)&&const DeepCollectionEquality().equals(other._passages, _passages));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,theme);
+int get hashCode => Object.hash(runtimeType,theme,const DeepCollectionEquality().hash(_passages));
 
 @override
 String toString() {
-  return 'User(theme: $theme)';
+  return 'User(theme: $theme, passages: $passages)';
 }
 
 
@@ -241,7 +249,7 @@ abstract mixin class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   factory _$UserCopyWith(_User value, $Res Function(_User) _then) = __$UserCopyWithImpl;
 @override @useResult
 $Res call({
- ThemeMode theme
+ ThemeMode theme, List<VerseSelection> passages
 });
 
 
@@ -258,10 +266,11 @@ class __$UserCopyWithImpl<$Res>
 
 /// Create a copy of User
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? theme = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? theme = null,Object? passages = null,}) {
   return _then(_User(
 theme: null == theme ? _self.theme : theme // ignore: cast_nullable_to_non_nullable
-as ThemeMode,
+as ThemeMode,passages: null == passages ? _self._passages : passages // ignore: cast_nullable_to_non_nullable
+as List<VerseSelection>,
   ));
 }
 

@@ -9,4 +9,5 @@ extension EdgeInsetsExtensions on EdgeInsets {
   );
 
   EdgeInsets get onlyHorizontal => copyWith(top: 0, bottom: 0);
+  EdgeInsets get onlyVertical => copyWith(right: 0, left: 0);
 }

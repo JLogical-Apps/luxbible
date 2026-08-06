@@ -9,12 +9,12 @@ import 'package:bible/functions/dictionary_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
 import 'package:bible/licenses.dart';
 import 'package:bible/models/user/language.dart';
+import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/dictionary_provider.dart';
 import 'package:bible/providers/root_ref.dart';
-import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/audio_bible_handler.dart';
@@ -30,7 +30,6 @@ import 'package:lux/i18n_flutter.dart';
 import 'package:lux/lux.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:style/style.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:utils_core/utils_core.dart';
 
@@ -140,30 +139,8 @@ class BibleApp extends HookConsumerWidget {
           supportedLocales: AppLocaleUtils.instance.supportedLocales,
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
           themeMode: user.theme,
-          theme: ThemeData(
-            colorScheme: ColorScheme.highContrastLight(brightness: Brightness.light, primary: Colors.black),
-            cardColor: Colors.white,
-            appBarTheme: AppBarThemeData(scrolledUnderElevation: 0),
-            iconTheme: IconThemeData(fill: 1, weight: 400, size: 25, color: Colors.black, opticalSize: 24),
-            textSelectionTheme: TextSelectionThemeData(
-              cursorColor: Colors.black,
-              selectionColor: Colors.black.withValues(alpha: 0.2),
-              selectionHandleColor: Colors.black,
-            ),
-            sliderTheme: SliderThemeData(inactiveTrackColor: ColorLibrary(brightness: .light).surfaceSecondary),
-          ),
-          darkTheme: ThemeData(
-            colorScheme: ColorScheme.dark(brightness: Brightness.dark, primary: Colors.white),
-            cardColor: Colors.black,
-            appBarTheme: AppBarThemeData(scrolledUnderElevation: 0),
-            iconTheme: IconThemeData(fill: 1, weight: 400, size: 25, color: Colors.white, opticalSize: 24),
-            textSelectionTheme: TextSelectionThemeData(
-              cursorColor: Colors.white,
-              selectionColor: Colors.white.withValues(alpha: 0.2),
-              selectionHandleColor: Colors.white,
-            ),
-            sliderTheme: SliderThemeData(inactiveTrackColor: ColorLibrary(brightness: .dark).surfaceSecondary),
-          ),
+          theme: theme,
+          darkTheme: darkTheme,
           scrollBehavior: BouncingScrollBehavior(),
           debugShowCheckedModeBanner: false,
           home: BiblePage(),

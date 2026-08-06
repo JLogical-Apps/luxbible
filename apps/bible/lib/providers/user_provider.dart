@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:bible/models/user/language.dart';
 import 'package:bible/models/user/user.dart';
-import 'package:lux/lux.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:lux/lux.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utils_core/utils_core.dart';
@@ -22,23 +22,13 @@ class UserNotifier extends _$UserNotifier {
   bool updateShouldNotify(_, _) => true;
 
   User? get userOrNull {
-    final userFile = this.userFile;
-    if (userFile != null) {
-      if (userFile.existsSync()) {
-        final user = guard(
-          () => User.fromJson(jsonDecode(userFile.readAsStringSync())),
-          onException: (error, stackTrace) {
-            debugPrint(error.toString());
-            debugPrintStack(stackTrace: stackTrace);
-          },
-        );
-        if (user != null) {
-          return user;
-        }
-      }
-    } else {
+    if (userFile.existsSync()) {
       final user = guard(
-        () => sharedPreferences.getString('user')?.mapIfNonNull((rawUser) => User.fromJson(jsonDecode(rawUser))),
+        () => User.fromJson(jsonDecode(userFile.readAsStringSync())),
+        onException: (error, stackTrace) {
+          debugPrint(error.toString());
+          debugPrintStack(stackTrace: stackTrace);
+        },
       );
       if (user != null) {
         return user;
@@ -53,14 +43,8 @@ class UserNotifier extends _$UserNotifier {
 
   Future<void> update(User Function(User) updater) async {
     state = updater(state);
-
-    final userFile = this.userFile;
-    if (userFile != null) {
-      userFile.writeAsStringSync(jsonEncode(state.toJson()));
-    } else {
-      sharedPreferences.setString('user', jsonEncode(state.toJson()));
-    }
+    userFile.writeAsStringSync(jsonEncode(state.toJson()));
   }
 
-  File? get userFile => ref.read(pathServiceProvider)?.applicationSupport.mapIfNonNull((dir) => dir - 'user.json');
+  File get userFile => ref.read(pathServiceProvider)!.applicationSupport - 'user.json';
 }

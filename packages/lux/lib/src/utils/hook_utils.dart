@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:lux/src/utils/extensions/controller_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lux/src/utils/extensions/controller_extensions.dart';
 
 void useOnFocusNodeFocused(FocusNode focusNode, Function() onFocused) {
   useOnListenableChange(focusNode, () {

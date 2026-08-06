@@ -9,7 +9,9 @@ class ChapterPreviewPage extends HookWidget {
   final ChapterReference chapterReference;
   final BibleTranslation translation;
 
-  const ChapterPreviewPage({super.key, required this.chapterReference, required this.translation});
+  final VerseSelection? selection;
+
+  const ChapterPreviewPage({super.key, required this.chapterReference, required this.translation, this.selection});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,7 @@ class ChapterPreviewPage extends HookWidget {
       body: SafeArea(
         bottom: false,
         child: ChapterPageView(
+          chapterReference: chapterReference,
           translation: translation,
           onPageChanged: (reference) => currentReferenceState.value = reference,
           itemBuilder: (context, chapterReference, chapter) => StyledScrollbar(
@@ -31,7 +34,12 @@ class ChapterPreviewPage extends HookWidget {
               child: Column(
                 crossAxisAlignment: .stretch,
                 children: [
-                  ChapterBuilder(chapterReference: chapterReference, translation: translation, chapter: chapter),
+                  ChapterBuilder(
+                    chapterReference: chapterReference,
+                    translation: translation,
+                    chapter: chapter,
+                    selection: selection,
+                  ),
                   Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).bottom + 24)),
                 ],
               ),
