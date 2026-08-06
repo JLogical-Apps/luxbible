@@ -1,8 +1,8 @@
 import 'package:bible/models/main_action.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/onboarding_step.dart';
-import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/app_bible_provider.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';

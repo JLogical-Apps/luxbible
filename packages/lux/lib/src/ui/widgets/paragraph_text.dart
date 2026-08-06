@@ -6,7 +6,7 @@ import 'package:utils_core/utils_core.dart';
 
 class ParagraphTextLayout {
   final Paragraph paragraph;
-  final List<InlineSpan> renderSpans;
+  final LaidOutInlineSpans renderSpans;
   final double maxWidth;
   final double hangingIndent;
   final GlobalKey textKey;
@@ -47,26 +47,28 @@ class ParagraphText extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) => HookBuilder(
           builder: (context) {
-            final textKey = GlobalKey(debugLabel: versesParagraph?.verses.first.verseNum.toString());
-            final renderSpans = useMemoized(
-              () => versesParagraph != null && useParagraphLayout
-                  ? originalSpans
+            final textKey = useMemoized(() => GlobalKey(debugLabel: versesParagraph?.verses.first.verseNum.toString()));
+            final textAlign = versesParagraph?.type.textAlign ?? .start;
+
+            final renderSpans = useMemoized(() {
+              final spans = LaidOutInlineSpans(
+                width: constraints.maxWidth,
+                textAlign: textAlign,
+                textDirection: textDirection,
+                spans: originalSpans,
+              );
+              return versesParagraph != null && useParagraphLayout
+                  ? spans
                         .withHangingIndent<VerseElement>(
-                          width: constraints.maxWidth,
-                          textAlign: versesParagraph.type.textAlign,
                           hangingIndent: hangingIndent,
                           annotationModifier: (element, charactersAdded) =>
                               element.copyWith(anchor: element.anchor.withCharactersAdded(charactersAdded)),
                         )
                         .withUnorphanedLeadingSpans(
-                          width: constraints.maxWidth,
-                          textAlign: versesParagraph.type.textAlign,
-                          textDirection: textDirection,
                           isLeadingSpan: (span) => span is IsAnnotatedSpan<VerseElement> && span.annotation.isLeading,
                         )
-                  : originalSpans,
-              [originalSpans, constraints.maxWidth, useParagraphLayout, textDirection],
-            );
+                  : spans;
+            }, [originalSpans, constraints.maxWidth, useParagraphLayout, textDirection]);
 
             final layout = ParagraphTextLayout(
               paragraph: paragraph,
@@ -83,9 +85,9 @@ class ParagraphText extends StatelessWidget {
                 ...?overlayBuilder?.call(context, layout),
                 Text.rich(
                   key: textKey,
-                  TextSpan(children: renderSpans),
+                  TextSpan(children: renderSpans.spans),
                   style: TextStyle(inherit: false),
-                  textAlign: versesParagraph?.type.textAlign ?? .start,
+                  textAlign: textAlign,
                   textDirection: textDirection,
                 ),
               ],
@@ -100,7 +102,7 @@ class ParagraphText extends StatelessWidget {
 Iterable<Widget> buildVerseAnchorOverlays({
   required List<Paragraph> paragraphs,
   required VersesParagraph paragraph,
-  required List<InlineSpan> renderSpans,
+  required LaidOutInlineSpans renderSpans,
   required double maxWidth,
   TextDirection textDirection = .ltr,
   required Map<Reference, GlobalKey>? keyByReference,
@@ -117,20 +119,12 @@ Iterable<Widget> buildVerseAnchorOverlays({
     )
     .map((reference) {
       final key = keyByReference?[reference];
-      final position = renderSpans.getFirstSpanPositionForReference(reference);
+      final position = renderSpans.spans.getFirstSpanPositionForReference(reference);
       if (key == null || position == null) {
         return null;
       }
 
-      final box = renderSpans
-          .getBoxesForSelection(
-            baseOffset: position,
-            extentOffset: position + 1,
-            width: maxWidth,
-            textAlign: paragraph.type.textAlign,
-            textDirection: textDirection,
-          )
-          .firstOrNull;
+      final box = renderSpans.getBoxesForSelection(baseOffset: position, extentOffset: position + 1).firstOrNull;
       if (box == null) {
         return null;
       }

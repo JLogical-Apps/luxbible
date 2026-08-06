@@ -96,6 +96,14 @@ class ParagraphsBuilder extends HookWidget {
       ],
     );
 
+    final textSelectionAnnotations = useMemoized(
+      () => user.getTextSelectionAnnotationsInVerseSelection(
+        chapterReference.toVerseSelection(),
+        translation: translation,
+      ),
+      [user.annotations, user.notebooks, chapterReference, translation],
+    );
+
     final paragraphHitTesters = <ParagraphHitTester>[];
     BibleTextSelectionWordAnchor? getAnchorAtGlobalPosition(Offset globalPosition) =>
         paragraphHitTesters.map((tester) => tester.getAnchorAt(globalPosition)).nonNulls.firstOrNull;
@@ -162,6 +170,7 @@ class ParagraphsBuilder extends HookWidget {
                     layout: layout,
                     chapter: chapter,
                     paragraphHitTesters: paragraphHitTesters,
+                    textSelectionAnnotations: textSelectionAnnotations,
                   ),
                 ),
               )
@@ -176,6 +185,7 @@ class ParagraphsBuilder extends HookWidget {
     required ParagraphTextLayout layout,
     required Chapter chapter,
     required List<ParagraphHitTester> paragraphHitTesters,
+    required List<(Annotation, BibleTextSelection)> textSelectionAnnotations,
   }) {
     final paragraph = layout.paragraph.as<VersesParagraph>();
     if (paragraph == null) return [];
@@ -219,6 +229,7 @@ class ParagraphsBuilder extends HookWidget {
         paragraph: paragraph,
         maxWidth: layout.maxWidth,
         hangingIndent: layout.hangingIndent,
+        textSelectionAnnotations: textSelectionAnnotations,
       ),
       ...buildActiveTextSelectionOverlays(context, layout: layout, paragraph: paragraph),
     ];
@@ -233,7 +244,7 @@ class ParagraphsBuilder extends HookWidget {
     if (textSelection == null) return [];
 
     final (base, extent) =
-        layout.renderSpans.getTextSelectionCharacterOffsets(
+        layout.renderSpans.spans.getTextSelectionCharacterOffsets(
           textSelection: textSelection,
           translation: translation,
           isParagraphs: user.themeLayout.paragraphs,
@@ -242,13 +253,7 @@ class ParagraphsBuilder extends HookWidget {
     if (base == null || extent == null) return [];
 
     return layout.renderSpans
-        .getBoxesForSelection(
-          baseOffset: base,
-          extentOffset: extent,
-          width: layout.maxWidth,
-          textAlign: paragraph.type.textAlign,
-          textDirection: textDirection,
-        )
+        .getBoxesForSelection(baseOffset: base, extentOffset: extent)
         .map((box) => box.toRect())
         .withMergedLines()
         .withHangingIndent(layout.hangingIndent)
@@ -272,7 +277,7 @@ class ParagraphsBuilder extends HookWidget {
 
   Iterable<Widget> buildVerseAnnotationOverlays(
     BuildContext context, {
-    required List<InlineSpan> renderSpans,
+    required LaidOutInlineSpans renderSpans,
     required VersesParagraph paragraph,
     required Chapter chapter,
     required double maxWidth,
@@ -315,16 +320,16 @@ class ParagraphsBuilder extends HookWidget {
 
   Iterable<Widget> buildTextSelectionAnnotationOverlays(
     BuildContext context, {
-    required List<InlineSpan> renderSpans,
+    required LaidOutInlineSpans renderSpans,
     required VersesParagraph paragraph,
     required double maxWidth,
     required double hangingIndent,
-  }) => user
-      .getTextSelectionAnnotationsInVerseSelection(chapterReference.toVerseSelection(), translation: translation)
+    required List<(Annotation, BibleTextSelection)> textSelectionAnnotations,
+  }) => textSelectionAnnotations
       .map((record) {
         final (annotation, textSelection) = record;
         final (base, extent) =
-            renderSpans.getTextSelectionCharacterOffsets(
+            renderSpans.spans.getTextSelectionCharacterOffsets(
               textSelection: textSelection,
               translation: translation,
               isParagraphs: user.themeLayout.paragraphs,
@@ -369,12 +374,12 @@ class ParagraphsBuilder extends HookWidget {
   }
 
   (int, int)? referenceOffsets({
-    required List<InlineSpan> renderSpans,
+    required LaidOutInlineSpans renderSpans,
     required Chapter chapter,
     required Reference first,
     required Reference last,
   }) {
-    final base = renderSpans
+    final base = renderSpans.spans
         .getReferenceCharacterOffsets(
           reference: first,
           translation: translation,
@@ -382,7 +387,7 @@ class ParagraphsBuilder extends HookWidget {
           isParagraphs: user.themeLayout.paragraphs,
         )
         ?.$1;
-    final extent = renderSpans
+    final extent = renderSpans.spans
         .getReferenceCharacterOffsets(
           reference: last,
           translation: translation,
@@ -394,7 +399,7 @@ class ParagraphsBuilder extends HookWidget {
   }
 
   Iterable<Widget> buildOverlays({
-    required List<InlineSpan> renderSpans,
+    required LaidOutInlineSpans renderSpans,
     required VersesParagraph paragraph,
     required Annotation annotation,
     required double maxWidth,
@@ -404,13 +409,7 @@ class ParagraphsBuilder extends HookWidget {
     required Rect Function(Rect box) toRect,
     required Widget Function() buildChild,
   }) => renderSpans
-      .getBoxesForSelection(
-        baseOffset: base,
-        extentOffset: extent,
-        width: maxWidth,
-        textAlign: paragraph.type.textAlign,
-        textDirection: textDirection,
-      )
+      .getBoxesForSelection(baseOffset: base, extentOffset: extent)
       .map((box) => box.toRect())
       .withMergedLines()
       .withHangingIndent(hangingIndent)

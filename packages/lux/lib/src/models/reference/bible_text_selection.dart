@@ -24,8 +24,11 @@ sealed class BibleTextSelection with _$BibleTextSelection {
 
   bool intersects(BibleTextSelection textSelection) => end >= textSelection.start && textSelection.end >= start;
   bool isInReference(Reference reference) => reference >= start.toReference() && reference <= end.toReference();
-  bool isInVerseSelection(VerseSelection verseSelection) =>
-      verseSelection.references.any((reference) => isInReference(reference));
+  bool isInVerseSelection(VerseSelection verseSelection) => verseSelection.spans.any(
+    (span) =>
+        start.toReference() <= (span.end?.endReference ?? span.start.endReference) &&
+        end.toReference() >= span.start.startReference,
+  );
 
   VerseSelection toVerseSelection() =>
       VerseSelection.fromReferences(Reference.getReferencesBetween(start.toReference(), end.toReference()).toList());

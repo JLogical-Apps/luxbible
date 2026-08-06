@@ -6,6 +6,7 @@ export 'src/services/bible_importer.dart';
 export 'src/services/path_service.dart';
 export 'src/services/shared_preferences_service.dart';
 export 'src/ui/utils/bible_text_style.dart';
+export 'src/ui/utils/laid_out_inline_span.dart';
 export 'src/ui/utils/paragraph_span_builders.dart';
 export 'src/ui/utils/verse_element.dart';
 export 'src/ui/widgets/animated_grow.dart';
