@@ -92,7 +92,7 @@ class HomePage extends ConsumerWidget {
                             leading: Symbols.exercise.toIcon(),
                             onPressed: () async {
                               context.pop();
-                              final activityType = await context.showStyledSheet(
+                              await context.showStyledSheet(
                                 (context) => StyledSelectionSheet(
                                   title: 'Practice Activity'.toText(),
                                   options: ActivityPlanType.values.where((type) => type.isPracticeActivity).toList(),
