@@ -1,6 +1,7 @@
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/widgets/chapter_builder.dart';
 import 'package:bible/ui/widgets/chapter_page_view.dart';
+import 'package:bible/ui/widgets/passage_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -55,8 +56,8 @@ class ChapterPreviewPage extends HookConsumerWidget {
           user: user,
           itemBuilder: (context, chapterReference, chapter) => HookBuilder(
             builder: (context) {
-              final scrollController = useScrollController();
-              final listController = useListController();
+              final passageController = usePassageController(chapterReference);
+              final scrollController = passageController.scrollController;
 
               final scrollToSelection = chapterReference == initialChapterReference ? verseSelection : null;
               final isLoaded = useOnContentLoaded(
@@ -66,16 +67,11 @@ class ChapterPreviewPage extends HookConsumerWidget {
                     return;
                   }
 
-                  final paragraphIndex = chapter.paragraphs.getIndexForVerse(
-                    scrollToSelection.references.first.verseNum,
+                  passageController.jumpToReference(
+                    scrollToSelection.references.first,
+                    paragraphs: chapter.paragraphs,
+                    alignment: 0.35,
                   );
-                  if (paragraphIndex != null && listController.isAttached) {
-                    listController.jumpToItem(
-                      index: paragraphIndex,
-                      scrollController: scrollController,
-                      alignment: 0.35,
-                    );
-                  }
                 },
               );
 
@@ -86,8 +82,7 @@ class ChapterPreviewPage extends HookConsumerWidget {
                 child: StyledScrollbar(
                   controller: scrollController,
                   child: ChapterBuilder(
-                    controller: scrollController,
-                    listController: listController,
+                    controller: passageController,
                     padding: .only(left: 24, top: 16, right: 24, bottom: MediaQuery.paddingOf(context).bottom + 40),
                     chapterReference: chapterReference,
                     user: user,

@@ -2,13 +2,13 @@ import 'package:bible/models/user/user.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/font_size_spacing_zoom_gesture.dart';
 import 'package:bible/ui/widgets/paragraphs_builder.dart';
+import 'package:bible/ui/widgets/passage_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
-import 'package:super_sliver_list/super_sliver_list.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ChapterBuilder extends HookConsumerWidget {
@@ -20,13 +20,9 @@ class ChapterBuilder extends HookConsumerWidget {
   final BibleSelection? selection;
   final Function(VerseSelection)? onNavigateToVerseSelection;
 
-  final Map<Reference, GlobalKey>? keyByReference;
-  final Map<Reference, GlobalKey>? keyBySectionReference;
-
   final Chapter? chapter;
 
-  final ScrollController? controller;
-  final ListController? listController;
+  final PassageController? controller;
   final EdgeInsetsGeometry? padding;
   final bool shrinkWrap;
 
@@ -37,11 +33,8 @@ class ChapterBuilder extends HookConsumerWidget {
     this.underlinedReferences = const [],
     this.selection,
     this.onNavigateToVerseSelection,
-    this.keyByReference,
-    this.keyBySectionReference,
     this.chapter,
     this.controller,
-    this.listController,
     this.padding,
     this.shrinkWrap = false,
   });
@@ -79,10 +72,7 @@ class ChapterBuilder extends HookConsumerWidget {
         underlinedReferences: underlinedReferences,
         selection: selection,
         onNavigateToVerseSelection: onNavigateToVerseSelection,
-        keyByReference: keyByReference,
-        keyBySectionReference: keyBySectionReference,
         controller: controller,
-        listController: listController,
         padding: padding,
         shrinkWrap: shrinkWrap,
         header: isFallback

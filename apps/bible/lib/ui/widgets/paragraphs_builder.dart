@@ -9,6 +9,7 @@ import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/highlight_underline.dart';
+import 'package:bible/ui/widgets/passage_controller.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -33,11 +34,7 @@ class ParagraphsBuilder extends HookWidget {
   final BibleSelection? selection;
   final Function(VerseSelection)? onNavigateToVerseSelection;
 
-  final Map<Reference, GlobalKey>? keyByReference;
-  final Map<Reference, GlobalKey>? keyBySectionReference;
-
-  final ScrollController? controller;
-  final ListController? listController;
+  final PassageController? controller;
   final EdgeInsetsGeometry? padding;
   final bool shrinkWrap;
 
@@ -53,10 +50,7 @@ class ParagraphsBuilder extends HookWidget {
     this.underlinedReferences = const [],
     this.selection,
     this.onNavigateToVerseSelection,
-    this.keyByReference,
-    this.keyBySectionReference,
     this.controller,
-    this.listController,
     this.padding,
     this.shrinkWrap = false,
     this.header,
@@ -93,14 +87,18 @@ class ParagraphsBuilder extends HookWidget {
     final textSelectionStartAnchorState = useState<BibleTextSelectionWordAnchor?>(null);
 
     final paragraphSpansByParagraph = useMemoized(
-      () => getParagraphSpansByParagraph(context, chapter: chapter, keyBySectionReference: keyBySectionReference),
+      () => getParagraphSpansByParagraph(
+        context,
+        chapter: chapter,
+        keyBySectionReference: controller?.keyBySectionReference,
+      ),
       [
         paragraphs,
         user,
         translation,
         chapterReference,
         highlightedReferences,
-        keyBySectionReference,
+        controller?.keyBySectionReference,
         context.brightness,
       ],
     );
@@ -166,8 +164,8 @@ class ParagraphsBuilder extends HookWidget {
           }
         },
         child: SuperListView(
-          controller: controller,
-          listController: listController,
+          controller: controller?.scrollController,
+          listController: controller?.listController,
           physics: shrinkWrap ? NeverScrollableScrollPhysics() : AlwaysScrollableScrollPhysics(),
           primary: shrinkWrap ? false : null,
           padding: padding ?? .zero,
@@ -242,7 +240,7 @@ class ParagraphsBuilder extends HookWidget {
         renderSpans: layout.renderSpans,
         maxWidth: layout.maxWidth,
         textDirection: textDirection,
-        keyByReference: keyByReference,
+        keyByReference: controller?.keyByReference,
         getVerseReference: getVerseReference,
       ),
       ...buildVerseAnnotationOverlays(

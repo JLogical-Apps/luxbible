@@ -1,11 +1,10 @@
+import 'package:bible/ui/widgets/passage_controller.dart';
 import 'package:bible/ui/widgets/visible_verse_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
-import 'package:utils_core/utils_core.dart';
 
 class LinkedStudyPanel extends HookWidget {
   final Widget? subtitle;
@@ -13,19 +12,14 @@ class LinkedStudyPanel extends HookWidget {
 
   final ChapterReference chapterReference;
   final Reference? passageTopReference;
-  final Function(Reference) onScrollToReference;
+
+  final Function(Reference) onScrollMainToReference;
+  final Function(Reference, double panelHeight, PassageController) onScrollPanelToReference;
 
   final bool isActive;
   final bool showDragHandle;
 
-  final List<Widget> Function(
-    BuildContext,
-    WidgetRef,
-    Map<Reference, GlobalKey> keyByReference,
-    Map<Reference, GlobalKey> keyBySectionReference,
-    Function() onContentLoaded,
-  )
-  childrenBuilder;
+  final Widget Function(BuildContext, PassageController, Function() onContentLoaded) builder;
 
   const LinkedStudyPanel({
     super.key,
@@ -33,23 +27,17 @@ class LinkedStudyPanel extends HookWidget {
     required this.onClose,
     required this.chapterReference,
     required this.passageTopReference,
-    required this.onScrollToReference,
+    required this.onScrollMainToReference,
+    required this.onScrollPanelToReference,
     required this.isActive,
     required this.showDragHandle,
-    required this.childrenBuilder,
+    required this.builder,
   });
 
   @override
   Widget build(BuildContext context) {
-    final scrollController = useScrollController();
-    final panelKeyByReference = useMemoized(
-      () => chapterReference.references.mapToMap((reference) => MapEntry(reference, GlobalKey())),
-      [chapterReference],
-    );
-    final panelKeyBySectionReference = useMemoized(
-      () => chapterReference.references.mapToMap((reference) => MapEntry(reference, GlobalKey())),
-      [chapterReference],
-    );
+    final controller = usePassageController(chapterReference);
+    final scrollController = controller.scrollController;
     final panelViewportKey = useMemoized(() => GlobalKey());
 
     final topReferenceState = useState(passageTopReference);
@@ -74,23 +62,14 @@ class LinkedStudyPanel extends HookWidget {
         return;
       }
 
-      final key = panelKeyBySectionReference[reference]?.currentContext != null
-          ? panelKeyBySectionReference[reference]
-          : panelKeyByReference[reference];
-      if (key != null) {
-        key.scrollIntoView(
-          axis: .vertical,
-          duration: Duration(milliseconds: 200),
-          alignment: key == panelKeyBySectionReference[reference] ? (32 / viewportHeight) : 0,
-        );
-      }
+      onScrollPanelToReference(reference, viewportHeight, controller);
     }, [passageTopReference, isContentLoadedState.value, isActive]);
 
     useOnListenableChange(isActive ? scrollController : null, () async {
       if (!isActive) return;
 
       final visibleReferences = getVisibleReferencesInViewport(
-        keyByReference: panelKeyByReference,
+        keyByReference: controller.keyByReference,
         viewportTop: panelViewportKey.globalBounds?.top ?? 0,
         viewportBottom: panelViewportKey.globalBounds?.bottom ?? 0,
       );
@@ -102,27 +81,28 @@ class LinkedStudyPanel extends HookWidget {
     usePostFrameEffect(() {
       final topReference = topReferenceState.value;
       if (topReference != passageTopReference && topReference != null && ownsScrollRef.value) {
-        onScrollToReference(topReference);
+        onScrollMainToReference(topReference);
       }
     }, [useDebounced<Reference?>(topReferenceState.value, Duration(milliseconds: 100))]);
 
     return TapRegion(
       onTapInside: (_) => ownsScrollRef.value = true,
       onTapOutside: (_) => ownsScrollRef.value = false,
-      child: StyledSheet.builder(
-        showDragHandle: showDragHandle,
-        title: chapterReference.format().toText(),
-        subtitle: subtitle,
-        controller: scrollController,
-        leading: StyledCircleButton.md(child: Symbols.close.toIcon(), onPressed: onClose),
-        childrenKey: panelViewportKey,
-        childrenBuilder: (context, ref) => childrenBuilder(
-          context,
-          ref,
-          panelKeyByReference,
-          panelKeyBySectionReference,
-          () => isContentLoadedState.value = true,
-        ),
+      child: Column(
+        children: [
+          StyledSheetHeader(
+            title: chapterReference.format().toText(),
+            subtitle: subtitle,
+            leading: StyledCircleButton.md(child: Symbols.close.toIcon(), onPressed: onClose),
+          ),
+          StyledDivider(height: 2),
+          Expanded(
+            child: KeyedSubtree(
+              key: panelViewportKey,
+              child: builder(context, controller, () => isContentLoadedState.value = true),
+            ),
+          ),
+        ],
       ),
     );
   }

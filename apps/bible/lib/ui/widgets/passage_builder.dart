@@ -3,6 +3,7 @@ import 'package:bible/ui/widgets/bible_loading_error.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/font_size_spacing_zoom_gesture.dart';
 import 'package:bible/ui/widgets/paragraphs_builder.dart';
+import 'package:bible/ui/widgets/passage_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/lux.dart';
@@ -15,9 +16,10 @@ class PassageBuilder extends HookConsumerWidget {
   final Function(VerseSelection)? onNavigateToVerseSelection;
 
   final Widget Function(BuildContext context, Widget passage)? contentBuilder;
-  final Map<Reference, GlobalKey>? keyByReference;
-  final Map<Reference, GlobalKey>? keyBySectionReference;
-  final VoidCallback? onContentLoaded;
+  final PassageController? controller;
+  final EdgeInsetsGeometry? padding;
+  final bool shrinkWrap;
+  final Function(List<Paragraph>)? onParagraphsLoaded;
 
   const PassageBuilder({
     super.key,
@@ -26,9 +28,10 @@ class PassageBuilder extends HookConsumerWidget {
     this.selection,
     this.onNavigateToVerseSelection,
     this.contentBuilder,
-    this.keyByReference,
-    this.keyBySectionReference,
-    this.onContentLoaded,
+    this.controller,
+    this.padding,
+    this.shrinkWrap = true,
+    this.onParagraphsLoaded,
   });
 
   @override
@@ -56,7 +59,7 @@ class PassageBuilder extends HookConsumerWidget {
     final paragraphs = paragraphsValue.value ?? [];
     usePostFrameEffect(() {
       if (paragraphs.isNotEmpty) {
-        onContentLoaded?.call();
+        onParagraphsLoaded?.call(paragraphs);
       }
     }, [paragraphs.isNotEmpty]);
 
@@ -67,9 +70,9 @@ class PassageBuilder extends HookConsumerWidget {
       translation: translation,
       selection: selection,
       onNavigateToVerseSelection: onNavigateToVerseSelection,
-      keyByReference: keyByReference,
-      keyBySectionReference: keyBySectionReference,
-      shrinkWrap: true,
+      controller: controller,
+      padding: padding,
+      shrinkWrap: shrinkWrap,
     );
 
     return FontSizeSpacingZoomGesture(

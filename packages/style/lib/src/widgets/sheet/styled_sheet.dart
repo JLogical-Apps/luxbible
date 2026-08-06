@@ -1,20 +1,20 @@
-import 'package:style/src/gap.dart';
-import 'package:style/src/style_context_extensions.dart';
-import 'package:style/src/text_style_extensions.dart';
-import 'package:style/src/widgets/sheet/styled_sheet_navigation_context.dart';
-import 'package:style/src/widgets/styled_chip.dart';
-import 'package:style/src/widgets/styled_circle_button.dart';
-import 'package:style/src/widgets/styled_divider.dart';
-import 'package:style/src/widgets/styled_dock.dart';
-import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intersperse/intersperse.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart' as provider;
+import 'package:style/src/gap.dart';
+import 'package:style/src/style_context_extensions.dart';
+import 'package:style/src/widgets/sheet/styled_sheet_header.dart';
+import 'package:style/src/widgets/sheet/styled_sheet_navigation_context.dart';
+import 'package:style/src/widgets/styled_chip.dart';
+import 'package:style/src/widgets/styled_circle_button.dart';
+import 'package:style/src/widgets/styled_divider.dart';
+import 'package:style/src/widgets/styled_dock.dart';
 
 class StyledSheet<T> extends HookConsumerWidget {
   final Widget? title;
@@ -151,74 +151,25 @@ class StyledSheet<T> extends HookConsumerWidget {
         crossAxisAlignment: .start,
         mainAxisSize: .min,
         children: [
-          Column(
-            crossAxisAlignment: .start,
-            mainAxisSize: .min,
-            children: [
-              if (showDragHandle)
+          StyledSheetHeader(
+            title: title,
+            subtitle: subtitle,
+            leading:
+                leading ??
                 SizedBox(
-                  height: 12,
-                  child: Align(
-                    alignment: .bottomCenter,
-                    child: Container(
-                      width: 48,
-                      height: 4,
-                      decoration: BoxDecoration(borderRadius: .circular(999), color: context.colors.borderOpaque),
-                    ),
+                  width: 48,
+                  child: Center(
+                    child: sheetNavigationContext != null && sheetNavigationContext.breadcrumbs.length > 1
+                        ? StyledCircleButton.md(
+                            child: Symbols.arrow_back.toIcon(),
+                            onPressed: () =>
+                                navigateToBreadcrumb(breadcrumbIndex: sheetNavigationContext.breadcrumbs.length - 2),
+                          )
+                        : StyledCircleButton.md(child: Symbols.close.toIcon(), onPressed: () => context.pop()),
                   ),
                 ),
-              gapH8,
-              ConstrainedBox(
-                constraints: BoxConstraints(minHeight: subtitle == null ? 48 : 52),
-                child: Padding(
-                  padding: .symmetric(horizontal: 8),
-                  child: Row(
-                    spacing: 8,
-                    children: [
-                      leading ??
-                          SizedBox(
-                            width: 48,
-                            child: Center(
-                              child: sheetNavigationContext != null && sheetNavigationContext.breadcrumbs.length > 1
-                                  ? StyledCircleButton.md(
-                                      child: Symbols.arrow_back.toIcon(),
-                                      onPressed: () => navigateToBreadcrumb(
-                                        breadcrumbIndex: sheetNavigationContext.breadcrumbs.length - 2,
-                                      ),
-                                    )
-                                  : StyledCircleButton.md(
-                                      child: Symbols.close.toIcon(),
-                                      onPressed: () => context.pop(),
-                                    ),
-                            ),
-                          ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: .center,
-                          children: [
-                            if (title case final title?)
-                              DefaultTextStyle(
-                                style: context.textStyle.headingXs,
-                                maxLines: 1,
-                                overflow: .ellipsis,
-                                child: title,
-                              ),
-                            if (subtitle case final subtitle?)
-                              DefaultTextStyle(
-                                style: context.textStyle.paragraphMd.subtle(),
-                                maxLines: 1,
-                                overflow: .ellipsis,
-                                child: subtitle,
-                              ),
-                          ],
-                        ),
-                      ),
-                      if (trailing case final trailing?) SizedBox(width: 48, child: trailing) else gapW48,
-                    ],
-                  ),
-                ),
-              ),
-            ],
+            trailing: trailing,
+            showDragHandle: showDragHandle,
           ),
           gapH8,
           if (sheetNavigationContext != null && sheetNavigationContext.breadcrumbs.length > 1) ...[
