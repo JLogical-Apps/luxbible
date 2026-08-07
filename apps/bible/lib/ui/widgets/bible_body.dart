@@ -372,10 +372,11 @@ class BibleBody extends HookConsumerWidget {
               onContentLoaded: (maxScrollExtent) {
                 final target = positionByReferenceRef.value[chapterReference];
                 if (target?.verseNum case final verseNum?) {
+                  final hasSection = chapter.paragraphs.getSectionIndexForVerse(verseNum) != null;
                   currentPassageController.jumpToReference(
                     chapterReference.getReference(verseNum),
                     paragraphs: chapter.paragraphs,
-                    alignment: (topBarHeight) / (passageKey.renderBox?.size.height ?? 128),
+                    alignment: ((hasSection ? 24 : 0) + topBarHeight) / (passageKey.renderBox?.size.height ?? 128),
                   );
                 }
               },

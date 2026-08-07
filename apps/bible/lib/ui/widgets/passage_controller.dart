@@ -48,13 +48,16 @@ class PassageController {
       listController.animateToItem(
         index: paragraphIndex,
         scrollController: scrollController,
-        alignment: alignment,
+        alignment: 0,
         duration: (_) => duration / 2,
         curve: (_) => Curves.easeInCubic,
       );
     }
 
-    await Future(() {});
+    // Ensure enough time for the key to be rendered
+    await Future.delayed(duration / 2);
+    await WidgetsBinding.instance.endOfFrame;
+    await WidgetsBinding.instance.endOfFrame;
 
     final actualKey = sectionKey?.currentContext == null ? keyByReference[reference] : sectionKey;
     if (actualKey?.currentContext?.mounted == true) {
