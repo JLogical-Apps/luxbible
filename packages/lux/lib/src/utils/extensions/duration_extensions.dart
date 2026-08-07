@@ -13,5 +13,5 @@ extension DurationExtensions on Duration {
 
   Duration get clampZero => this < .zero ? .zero : this;
 
-  double operator /(Duration other) => inMicroseconds / other.inMicroseconds;
+  Duration operator /(double num) => Duration(microseconds: (inMicroseconds / num).toInt());
 }

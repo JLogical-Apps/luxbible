@@ -49,8 +49,20 @@ class PassageController {
         index: paragraphIndex,
         scrollController: scrollController,
         alignment: alignment,
-        duration: (_) => duration,
-        curve: (_) => Curves.easeInOutCubic,
+        duration: (_) => duration / 2,
+        curve: (_) => Curves.easeInCubic,
+      );
+    }
+
+    await Future(() {});
+
+    final actualKey = sectionKey?.currentContext == null ? keyByReference[reference] : sectionKey;
+    if (actualKey?.currentContext?.mounted == true) {
+      await actualKey?.scrollIntoView(
+        axis: .vertical,
+        duration: duration / 2,
+        alignment: alignment,
+        curve: Curves.easeOutCubic,
       );
     }
   }

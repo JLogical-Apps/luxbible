@@ -1,7 +1,3 @@
-import 'package:lux/lux.dart';
-import 'package:lux/i18n.dart';
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:bible/models/bible_plan.dart';
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/study_panel.dart';
@@ -19,6 +15,10 @@ import 'package:bible/ui/sheets/bookmark_sheet.dart';
 import 'package:bible/ui/sheets/study_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
@@ -70,7 +70,10 @@ enum MainAction {
                   right: -4,
                   top: -4,
                   bottom: -4,
-                  child: CircularProgressIndicator(value: audioBible.position / duration, strokeWidth: 2),
+                  child: CircularProgressIndicator(
+                    value: audioBible.position.inMilliseconds / duration.inMilliseconds,
+                    strokeWidth: 2,
+                  ),
                 ),
           ],
         );

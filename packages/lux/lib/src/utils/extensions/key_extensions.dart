@@ -23,7 +23,12 @@ extension GlobalKeyExtensions on GlobalKey {
           );
   }
 
-  Future<void> scrollIntoView({double alignment = 0.5, Axis? axis, required Duration duration}) async {
+  Future<void> scrollIntoView({
+    double alignment = 0.5,
+    Axis? axis,
+    required Duration duration,
+    Curve curve = Curves.easeInOutCubic,
+  }) async {
     final context = currentContext;
     if (context == null || !context.mounted) return;
 
@@ -34,7 +39,7 @@ extension GlobalKeyExtensions on GlobalKey {
       context.findRenderObject()!,
       alignment: alignment,
       duration: duration,
-      curve: Curves.easeInOutCubic,
+      curve: curve,
     );
   }
 }

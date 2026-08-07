@@ -70,7 +70,7 @@ class ChapterPreviewPage extends HookConsumerWidget {
                   passageController.jumpToReference(
                     scrollToSelection.references.first,
                     paragraphs: chapter.paragraphs,
-                    alignment: 0.35,
+                    alignment: 0.25,
                   );
                 },
               );
