@@ -170,6 +170,7 @@ class ParagraphsBuilder extends HookWidget {
           primary: shrinkWrap ? false : null,
           padding: padding ?? .zero,
           shrinkWrap: shrinkWrap,
+          addSemanticIndexes: false,
           children: paragraphSpansByParagraph.mapIndexed((index, entry) {
             final MapEntry(key: paragraph, value: originalSpans) = paragraphSpansByParagraph[index];
 
