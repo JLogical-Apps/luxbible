@@ -1,5 +1,5 @@
-import 'package:lux/lux.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:lux/lux.dart';
 
 extension SectionTypeStyleExtensions on SectionType {
   bool get isLarge => this != .qa && this != .d && this != .sp;

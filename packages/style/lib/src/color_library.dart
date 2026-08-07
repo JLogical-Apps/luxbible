@@ -1,7 +1,7 @@
-import 'package:style/src/hue.dart';
-import 'package:lux/lux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tailwind_colors/flutter_tailwind_colors.dart';
+import 'package:lux/lux.dart';
+import 'package:style/src/hue.dart';
 
 class ColorLibrary {
   final Brightness brightness;

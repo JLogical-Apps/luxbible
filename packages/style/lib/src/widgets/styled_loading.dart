@@ -1,7 +1,7 @@
 import 'package:animated_size_and_fade/animated_size_and_fade.dart';
-import 'package:style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:style/style.dart';
 
 class StyledLoading extends StatelessWidget {
   final Widget? child;

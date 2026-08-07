@@ -1,8 +1,8 @@
-import 'package:lux/lux.dart';
+import 'package:bible/models/user/user.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:bible/models/user/user.dart';
+import 'package:lux/lux.dart';
 
 class BibleSelection {
   final ValueNotifier<List<Reference>> referencesState;

@@ -1,8 +1,8 @@
 import 'dart:math';
 
-import 'package:lux/lux.dart';
-import 'package:lux/i18n.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 
 part 'theme_layout_configuration.freezed.dart';
 part 'theme_layout_configuration.g.dart';

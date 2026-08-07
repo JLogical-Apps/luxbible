@@ -1,10 +1,10 @@
-import 'package:lux/lux.dart';
-import 'package:lux/i18n.dart';
-import 'package:flutter/material.dart';
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:style/style.dart';
 
 class StudySheet {

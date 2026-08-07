@@ -1,5 +1,5 @@
-import 'package:lux/lux.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lux/lux.dart';
 import 'package:utils_core/utils_core.dart';
 
 part 'commentary.freezed.dart';

@@ -1,6 +1,4 @@
-import 'package:lux/i18n.dart';
 import 'package:bible/models/annotation.dart';
-import 'package:lux/lux.dart';
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/text_selection_action.dart';
 import 'package:bible/models/user/user.dart';
@@ -10,6 +8,8 @@ import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/widgets/highlight_style_icon.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 import 'package:utils_core/utils_core.dart';

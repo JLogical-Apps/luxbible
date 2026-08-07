@@ -1,7 +1,7 @@
-import 'package:style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:style/style.dart';
 
 class StyledSwipeable extends StatelessWidget {
   final Widget child;

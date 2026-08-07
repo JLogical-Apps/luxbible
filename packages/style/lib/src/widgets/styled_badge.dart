@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:style/src/color_builder.dart';
 import 'package:style/src/color_library.dart';
 import 'package:style/src/style_context_extensions.dart';
-import 'package:flutter/material.dart';
 
 class StyledBadge extends StatelessWidget {
   final Widget child;

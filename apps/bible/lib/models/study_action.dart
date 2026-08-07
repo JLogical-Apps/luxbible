@@ -1,8 +1,8 @@
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/models/user/user.dart';
-import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/app_bible_provider.dart';
+import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/dialogs/tutorial_dialog.dart';

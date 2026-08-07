@@ -1,5 +1,5 @@
-import 'package:lux/src/ui/widgets/keyed_scroll_notification.dart';
 import 'package:flutter/material.dart';
+import 'package:lux/src/ui/widgets/keyed_scroll_notification.dart';
 
 class KeyedScrollTransformer extends StatelessWidget {
   final Object? scrollKey;

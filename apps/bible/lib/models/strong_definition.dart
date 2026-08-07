@@ -1,6 +1,6 @@
+import 'package:collection/collection.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
-import 'package:collection/collection.dart';
 
 enum StrongDefinitionMarker {
   addedWord,

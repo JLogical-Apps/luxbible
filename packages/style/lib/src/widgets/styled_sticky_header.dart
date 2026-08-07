@@ -1,8 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:sticky_headers/sticky_headers/widget.dart';
 import 'package:style/src/style_context_extensions.dart';
 import 'package:style/src/widgets/styled_divider.dart';
 import 'package:style/src/widgets/styled_list.dart';
-import 'package:flutter/material.dart';
-import 'package:sticky_headers/sticky_headers/widget.dart';
 
 class StyledStickyHeader extends StatelessWidget {
   final Widget title;

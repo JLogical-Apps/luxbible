@@ -1,6 +1,6 @@
 import 'package:bible/models/annotation.dart';
-import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/app_bible_provider.dart';
+import 'package:bible/providers/root_ref.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';

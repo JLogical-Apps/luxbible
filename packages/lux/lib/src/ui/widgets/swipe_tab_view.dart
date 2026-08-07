@@ -1,5 +1,5 @@
-import 'package:lux/lux.dart';
 import 'package:flutter/material.dart';
+import 'package:lux/lux.dart';
 
 class SwipeTabView extends StatelessWidget {
   final TabController controller;

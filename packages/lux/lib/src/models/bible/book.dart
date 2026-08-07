@@ -1,6 +1,6 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lux/src/models/bible/book_type.dart';
 import 'package:lux/src/models/bible/chapter.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'book.freezed.dart';
 part 'book.g.dart';

@@ -1,5 +1,5 @@
-import 'package:style/src/style_context_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:style/src/style_context_extensions.dart';
 
 class StyledShadow extends BoxShadow {
   final BuildContext context;

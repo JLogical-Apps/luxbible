@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:style/src/color_builder.dart';
 import 'package:style/src/widgets/styled_material.dart';
-import 'package:flutter/material.dart';
 
 class StyledRectButton extends StatelessWidget {
   final Widget label;

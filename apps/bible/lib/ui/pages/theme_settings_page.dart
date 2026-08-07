@@ -1,12 +1,12 @@
-import 'package:lux/i18n.dart';
 import 'package:bible/models/user/theme_layout_configuration.dart';
 import 'package:bible/models/user/theme_mode.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:style/style.dart';
-import 'package:lux/lux.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
+import 'package:style/style.dart';
 
 class ThemeSettingsPage extends ConsumerWidget {
   const ThemeSettingsPage({super.key});

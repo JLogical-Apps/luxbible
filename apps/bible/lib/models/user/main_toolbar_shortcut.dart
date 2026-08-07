@@ -1,6 +1,3 @@
-import 'package:lux/lux.dart';
-import 'package:lux/i18n.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:bible/models/main_action.dart';
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/study_action.dart';
@@ -13,6 +10,9 @@ import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/theme_settings_page.dart';
 import 'package:bible/ui/sheets/bible_sheet.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:utils_core/utils_core.dart';
 

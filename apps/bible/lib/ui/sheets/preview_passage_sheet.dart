@@ -1,5 +1,5 @@
-import 'package:bible/ui/widgets/passage_builder.dart';
 import 'package:bible/ui/pages/chapter_preview_page.dart';
+import 'package:bible/ui/widgets/passage_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:intersperse/intersperse.dart';
 import 'package:lux/i18n.dart';

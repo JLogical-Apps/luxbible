@@ -1,8 +1,8 @@
-import 'package:lux/lux.dart';
-import 'package:lux/i18n.dart';
-import 'package:flutter/material.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/ui/widgets/passage_builder.dart';
+import 'package:flutter/material.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
@@ -17,10 +17,7 @@ class CompareSheet {
       return [
         Padding(
           padding: .all(16),
-          child: _bibleParagraphs(
-            translation: translation,
-            verseSelection: verseSelection,
-          ),
+          child: _bibleParagraphs(translation: translation, verseSelection: verseSelection),
         ),
       ];
     }
@@ -37,10 +34,8 @@ class CompareSheet {
     );
   }
 
-  static Widget _bibleParagraphs({
-    required BibleTranslation translation,
-    required VerseSelection verseSelection,
-  }) => verseSelection.isInTranslation(translation)
+  static Widget _bibleParagraphs({required BibleTranslation translation, required VerseSelection verseSelection}) =>
+      verseSelection.isInTranslation(translation)
       ? PassageBuilder(
           verseSelection: verseSelection,
           translation: translation,

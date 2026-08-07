@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:lux/lux.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/audio_bible_handler.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:just_audio/just_audio.dart';
+import 'package:lux/lux.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'audio_bible_provider.g.dart';

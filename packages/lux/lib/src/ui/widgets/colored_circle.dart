@@ -1,5 +1,5 @@
-import 'package:style/style.dart';
 import 'package:flutter/material.dart';
+import 'package:style/style.dart';
 
 class ColoredCircle extends StatelessWidget {
   final double? size;

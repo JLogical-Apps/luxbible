@@ -1,5 +1,5 @@
-import 'package:style/src/color_library.dart';
 import 'package:flutter/material.dart';
+import 'package:style/src/color_library.dart';
 
 class ColorBuilder {
   final Color Function(ColorLibrary) builder;

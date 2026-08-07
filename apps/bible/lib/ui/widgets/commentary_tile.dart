@@ -1,7 +1,7 @@
 import 'package:bible/models/commentary_type.dart';
-import 'package:style/style.dart';
-import 'package:lux/lux.dart';
 import 'package:flutter/material.dart';
+import 'package:lux/lux.dart';
+import 'package:style/style.dart';
 
 class CommentaryTile extends StatelessWidget {
   final CommentaryType commentary;

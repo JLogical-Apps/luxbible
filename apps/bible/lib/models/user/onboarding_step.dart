@@ -1,6 +1,6 @@
-import 'package:lux/lux.dart';
-import 'package:lux/i18n.dart';
 import 'package:flutter/widgets.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 class OnboardingState {

@@ -1,6 +1,6 @@
 import 'package:bible/models/user/tutorial.dart';
-import 'package:bible/providers/dictionary_provider.dart';
 import 'package:bible/providers/app_bible_provider.dart';
+import 'package:bible/providers/dictionary_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/dialogs/tutorial_dialog.dart';

@@ -1,6 +1,6 @@
-import 'package:lux/lux.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:bible/models/color_enum.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lux/lux.dart';
 
 part 'bookmark.freezed.dart';
 part 'bookmark.g.dart';

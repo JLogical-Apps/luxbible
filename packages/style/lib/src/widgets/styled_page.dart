@@ -1,11 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:lux/lux.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/src/color_builder.dart';
 import 'package:style/src/gap.dart';
 import 'package:style/src/style_context_extensions.dart';
 import 'package:style/src/styled_shadow.dart';
 import 'package:style/src/widgets/styled_circle_button.dart';
-import 'package:lux/lux.dart';
-import 'package:flutter/material.dart';
-import 'package:material_symbols_icons/symbols.dart';
 
 class StyledPage extends StatelessWidget {
   final Widget? title;

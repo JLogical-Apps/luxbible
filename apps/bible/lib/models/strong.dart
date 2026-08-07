@@ -1,7 +1,7 @@
 import 'package:bible/models/strong_definition.dart';
 import 'package:bible/models/strong_usage.dart';
-import 'package:lux/lux.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lux/lux.dart';
 
 export 'strong_definition.dart';
 

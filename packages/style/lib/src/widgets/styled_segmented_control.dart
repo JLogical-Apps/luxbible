@@ -1,7 +1,7 @@
-import 'package:style/style.dart';
-import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:lux/lux.dart';
+import 'package:style/style.dart';
 
 class StyledSegmentedControl<T> extends StatelessWidget {
   final List<T> options;

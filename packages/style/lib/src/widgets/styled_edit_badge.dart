@@ -1,7 +1,7 @@
-import 'package:style/src/widgets/styled_badge.dart';
-import 'package:lux/lux.dart';
 import 'package:flutter/material.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:style/src/widgets/styled_badge.dart';
 
 class StyledEditBadge extends StatelessWidget {
   final Widget child;

@@ -1,11 +1,11 @@
-import 'package:lux/i18n.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/user/language.dart';
-import 'package:style/style.dart';
 import 'package:bible/ui/widgets/highlight_underline.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lux/i18n.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:style/style.dart';
 
 part 'highlight_style.freezed.dart';
 part 'highlight_style.g.dart';

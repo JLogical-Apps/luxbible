@@ -1,6 +1,6 @@
-import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
+import 'package:lux/lux.dart';
 import 'package:xml/xml.dart';
 
 class YouVersion {

@@ -1,8 +1,5 @@
-import 'package:lux/i18n.dart';
 import 'package:bible/models/user/toolbar_preset.dart';
-import 'package:lux/lux.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:style/style.dart';
 import 'package:bible/ui/pages/annotations_page.dart';
 import 'package:bible/ui/pages/bibles_page.dart';
 import 'package:bible/ui/pages/bookmarks_page.dart';
@@ -19,7 +16,10 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:style/style.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 final discordUri = Uri.parse('https://discord.gg/C4zfZDpZMB');

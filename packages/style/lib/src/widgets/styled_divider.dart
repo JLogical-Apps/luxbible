@@ -1,6 +1,6 @@
-import 'package:style/src/style_context_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:style/src/style_context_extensions.dart';
 
 class StyledDivider extends StatelessWidget {
   final double height;

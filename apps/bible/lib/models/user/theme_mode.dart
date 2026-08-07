@@ -1,5 +1,5 @@
-import 'package:lux/i18n.dart';
 import 'package:flutter/material.dart';
+import 'package:lux/i18n.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 extension ThemeModeExtensions on ThemeMode {

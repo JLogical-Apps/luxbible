@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:lux/lux.dart';
 import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 
 enum Language {
   english,

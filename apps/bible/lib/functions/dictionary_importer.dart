@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:bible/models/dictionary_entry.dart';
-import 'package:lux/lux.dart';
 import 'package:flutter/services.dart';
+import 'package:lux/lux.dart';
 
 class DictionaryImporter {
   Future<Map<String, DictionaryEntry>> import() async =>

@@ -1,9 +1,9 @@
-import 'package:lux/i18n.dart';
 import 'package:bible/models/user/main_toolbar_shortcut.dart';
 import 'package:bible/models/user/text_selection_shortcut.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/models/user/verse_selection_shortcut.dart';
 import 'package:collection/collection.dart';
+import 'package:lux/i18n.dart';
 
 enum ToolbarPreset {
   reader,

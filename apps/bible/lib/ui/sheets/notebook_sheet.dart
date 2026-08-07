@@ -1,11 +1,11 @@
-import 'package:lux/i18n.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/notebook.dart';
-import 'package:style/style.dart';
-import 'package:lux/lux.dart';
 import 'package:flutter/material.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:port/port.dart';
+import 'package:style/style.dart';
 import 'package:uuid/uuid.dart';
 
 class NotebookSheet {

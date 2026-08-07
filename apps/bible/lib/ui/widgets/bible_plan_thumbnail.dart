@@ -1,8 +1,8 @@
 import 'package:bible/models/bible_plan.dart';
-import 'package:style/style.dart';
-import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:lux/lux.dart';
+import 'package:style/style.dart';
 
 class BiblePlanThumbnail extends StatelessWidget {
   final BiblePlan plan;

@@ -1,15 +1,15 @@
-import 'package:lux/i18n.dart';
 import 'package:bible/models/bible_plan.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
-import 'package:style/style.dart';
 import 'package:bible/ui/widgets/bible_plan_tile.dart';
-import 'package:lux/lux.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:style/style.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:utils_core/utils_core.dart';
 

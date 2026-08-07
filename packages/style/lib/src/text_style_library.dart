@@ -1,6 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:style/src/color_library.dart';
 import 'package:style/src/text_style_extensions.dart';
-import 'package:flutter/material.dart';
 
 class TextStyleLibrary {
   final ColorLibrary colorLibrary;

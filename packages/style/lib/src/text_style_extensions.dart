@@ -1,5 +1,5 @@
-import 'package:style/src/color_library.dart';
 import 'package:flutter/material.dart';
+import 'package:style/src/color_library.dart';
 
 extension TextStyleExtensions on TextStyle {
   TextStyle subtle({bool isSubtle = true}) => isSubtle ? copyWith(color: colors.contentSecondary) : this;

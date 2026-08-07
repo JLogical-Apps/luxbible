@@ -1,7 +1,7 @@
-import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
-import 'package:lux/i18n.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/lux.dart';
 import 'package:utils_core/utils_core.dart';
 
 part 'bible_plan.freezed.dart';

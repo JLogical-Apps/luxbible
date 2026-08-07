@@ -1,9 +1,9 @@
-import 'package:lux/lux.dart';
-import 'package:collection/collection.dart';
-import 'package:flutter/material.dart';
 import 'package:bible/models/user/main_toolbar_configuration.dart';
 import 'package:bible/models/user/main_toolbar_shortcut.dart';
 import 'package:bible/models/user/user.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 

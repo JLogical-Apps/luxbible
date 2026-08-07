@@ -1,6 +1,6 @@
-import 'package:style/style.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:style/style.dart';
 
 class StyledListItem extends StatelessWidget {
   final Widget? title;

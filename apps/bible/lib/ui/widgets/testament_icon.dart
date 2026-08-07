@@ -1,5 +1,5 @@
-import 'package:lux/lux.dart';
 import 'package:flutter/material.dart';
+import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 class TestamentIcon extends StatelessWidget {
