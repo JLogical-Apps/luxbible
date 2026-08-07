@@ -142,9 +142,9 @@ enum StudyAction {
                         onPressed: () => ChapterPreviewPage.show(
                           context,
                           verseSelection: verseSelection,
-                          onNavigateToPassage: () {
+                          onNavigateToVerseSelection: (selection) {
                             if (popOnAction) context.pop();
-                            onNavigateToVerseSelection(verseSelection);
+                            onNavigateToVerseSelection(selection);
                           },
                         ),
                       );

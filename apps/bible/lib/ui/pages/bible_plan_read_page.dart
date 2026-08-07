@@ -120,7 +120,7 @@ class BiblePlanReadPage extends HookConsumerWidget {
                                     onPressed: () => ChapterPreviewPage.show(
                                       context,
                                       verseSelection: passage,
-                                      onNavigateToPassage: () => context.pop(passage),
+                                      onNavigateToVerseSelection: (selection) => context.pop(selection),
                                     ),
                                   ),
                                 ],

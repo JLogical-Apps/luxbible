@@ -266,7 +266,8 @@ class SearchPage extends HookConsumerWidget {
                         onPressed: () => ChapterPreviewPage.show(
                           context,
                           verseSelection: VerseSelection.reference(result),
-                          onNavigateToPassage: () => context.pop(SearchPageResult(selection: .reference(result))),
+                          onNavigateToVerseSelection: (selection) =>
+                              context.pop(SearchPageResult(selection: selection)),
                         ),
                       );
                     }).nonNulls,

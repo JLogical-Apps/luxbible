@@ -348,9 +348,9 @@ class AnnotationsPage extends HookConsumerWidget {
                               onPressed: () => ChapterPreviewPage.show(
                                 context,
                                 verseSelection: annotation.selection.toVerseSelection(),
-                                onNavigateToPassage: () {
+                                onNavigateToVerseSelection: (selection) {
                                   context.pop();
-                                  context.pop(annotation.selection.toVerseSelection());
+                                  context.pop(selection);
                                 },
                               ),
                             ),

@@ -19,7 +19,13 @@ class PreviewPassageSheet {
           .map<Widget>(
             (selection) => Padding(
               padding: .all(16),
-              child: PassageBuilder(verseSelection: selection, onNavigateToVerseSelection: onNavigateToVerseSelection),
+              child: PassageBuilder(
+                verseSelection: selection,
+                onNavigateToVerseSelection: (selection) {
+                  context.pop();
+                  onNavigateToVerseSelection?.call(selection);
+                },
+              ),
             ),
           )
           .intersperse(StyledDivider(height: 2))
@@ -32,7 +38,7 @@ class PreviewPassageSheet {
             ChapterPreviewPage.show(
               context,
               verseSelection: verseSelection,
-              onNavigateToPassage: () => onNavigateToVerseSelection?.call(verseSelection),
+              onNavigateToVerseSelection: (selection) => onNavigateToVerseSelection?.call(selection),
             );
           },
         ),

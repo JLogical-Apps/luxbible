@@ -319,9 +319,9 @@ class StrongSheet {
               onPressed: () => ChapterPreviewPage.show(
                 context,
                 verseSelection: VerseSelection.reference(reference),
-                onNavigateToPassage: () {
+                onNavigateToVerseSelection: (selection) {
                   context.pop();
-                  onNavigateToVerseSelection(VerseSelection.reference(reference));
+                  onNavigateToVerseSelection(selection);
                 },
               ),
             );

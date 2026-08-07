@@ -12,16 +12,17 @@ import 'package:style/style.dart';
 
 class ChapterPreviewPage extends HookConsumerWidget {
   final VerseSelection verseSelection;
-  final Function() onNavigateToPassage;
+  final Function(VerseSelection) onNavigateToVerseSelection;
 
-  const ChapterPreviewPage({super.key, required this.verseSelection, required this.onNavigateToPassage});
+  const ChapterPreviewPage({super.key, required this.verseSelection, required this.onNavigateToVerseSelection});
 
   static Future<void> show(
     BuildContext context, {
     required VerseSelection verseSelection,
-    required VoidCallback onNavigateToPassage,
-  }) =>
-      context.pushDialog(ChapterPreviewPage(verseSelection: verseSelection, onNavigateToPassage: onNavigateToPassage));
+    required Function(VerseSelection) onNavigateToVerseSelection,
+  }) => context.pushDialog(
+    ChapterPreviewPage(verseSelection: verseSelection, onNavigateToVerseSelection: onNavigateToVerseSelection),
+  );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,7 +46,7 @@ class ChapterPreviewPage extends HookConsumerWidget {
           child: Symbols.expand_circle_right.toIcon(),
           onPressed: () {
             context.pop();
-            onNavigateToPassage();
+            onNavigateToVerseSelection(verseSelection);
           },
         ),
       ),
@@ -87,6 +88,10 @@ class ChapterPreviewPage extends HookConsumerWidget {
                     chapterReference: chapterReference,
                     user: user,
                     chapter: chapter,
+                    onNavigateToVerseSelection: (selection) {
+                      context.pop();
+                      onNavigateToVerseSelection(selection);
+                    },
                     underlinedReferences: scrollToSelection?.references ?? const [],
                   ),
                 ),

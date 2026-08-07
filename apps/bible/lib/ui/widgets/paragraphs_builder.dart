@@ -838,7 +838,12 @@ class ParagraphsBuilder extends HookWidget {
                             onLinkPressed: (text, link) => PreviewPassageSheet.show(
                               context,
                               verseSelection: VerseSelection.fromOsisId(link),
-                              onNavigateToVerseSelection: onNavigateToVerseSelection,
+                              onNavigateToVerseSelection: (selection) {
+                                if (onNavigateToVerseSelection != null) {
+                                  context.pop();
+                                  onNavigateToVerseSelection?.call(selection);
+                                }
+                              },
                             ),
                           ),
                         ),
