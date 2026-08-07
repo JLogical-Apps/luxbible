@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:isolate';
 
 import 'package:flutter/services.dart';
 import 'package:lux/src/models/bible/bible.dart';
@@ -25,7 +26,7 @@ class BibleImporter {
     final raw = await rootBundle.loadString(BibleAssetPaths.translation(translation));
     return Bible(
       translation: translation,
-      books: (jsonDecode(raw) as List).map((bookJson) => Book.fromJson(bookJson)).toList(),
+      books: await Isolate.run(() => (jsonDecode(raw) as List).map((bookJson) => Book.fromJson(bookJson)).toList()),
     );
   }
 }
