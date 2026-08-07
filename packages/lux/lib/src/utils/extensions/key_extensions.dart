@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:utils_core/utils_core.dart';
 
 extension GlobalKeyExtensions on GlobalKey {
   RenderBox? get renderBox {
     final context = currentContext;
-    return context == null || !context.mounted ? null : context.findRenderObject()?.as<RenderBox>();
+    if (context == null || !context.mounted) return null;
+
+    var isActive = true;
+    assert(() {
+      isActive = context is Element && context.debugIsActive;
+      return true;
+    }());
+
+    if (!isActive) return null;
+
+    final renderObject = context.findRenderObject();
+    return renderObject is RenderBox && renderObject.attached ? renderObject : null;
   }
 
   double? get globalTop => renderBox?.localToGlobal(.zero).dy;
