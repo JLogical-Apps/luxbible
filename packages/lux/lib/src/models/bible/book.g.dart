@@ -8,7 +8,9 @@ part of 'book.dart';
 
 _Book _$BookFromJson(Map<String, dynamic> json) => _Book(
   bookType: $enumDecode(_$BookTypeEnumMap, json['b']),
-  chapters: (json['c'] as List<dynamic>).map((e) => Chapter.fromJson(e as Map<String, dynamic>)).toList(),
+  chapters: (json['c'] as List<dynamic>)
+      .map((e) => Chapter.fromJson(e as Map<String, dynamic>))
+      .toList(),
 );
 
 Map<String, dynamic> _$BookToJson(_Book instance) => <String, dynamic>{

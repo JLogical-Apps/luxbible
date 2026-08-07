@@ -17,10 +17,10 @@ import 'package:bible/models/user/toolbar_preset.dart';
 import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/models/user/verse_selection_configuration.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
-import 'package:lux/lux.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lux/lux.dart';
 import 'package:utils_core/utils_core.dart';
 import 'package:uuid/uuid.dart';
 
@@ -291,8 +291,8 @@ sealed class User with _$User {
     );
   }
 
-  User withScrollPercent(double percent) {
-    final updatedPosition = lastPosition.copyWith(scrollPercent: percent);
+  User withScrollVerse(int verseNum) {
+    final updatedPosition = lastPosition.copyWith(verseNum: verseNum);
     final currentBookmarkId = this.currentBookmarkId;
     final currentBookmark = this.currentBookmark;
     return copyWith(
@@ -304,7 +304,7 @@ sealed class User with _$User {
           ? bookmarkById
           : ({...bookmarkById}
               ..[currentBookmarkId] = currentBookmark.copyWith(
-                position: currentBookmark.position.copyWith(scrollPercent: percent),
+                position: currentBookmark.position.copyWith(verseNum: verseNum),
               )),
     );
   }

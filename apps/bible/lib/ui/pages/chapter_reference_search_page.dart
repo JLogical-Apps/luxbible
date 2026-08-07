@@ -320,11 +320,10 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
 enum _ViewMode { book, chapter }
 
 extension on ChapterReference {
-  ChapterReferenceSearchPageResult toResult({String? bookmarkId, double scrollPercent = 0}) =>
-      ChapterReferenceSearchPageResult(
-        position: ChapterPosition(reference: this, scrollPercent: scrollPercent),
-        bookmarkId: bookmarkId,
-      );
+  ChapterReferenceSearchPageResult toResult({String? bookmarkId}) => ChapterReferenceSearchPageResult(
+    position: ChapterPosition(reference: this),
+    bookmarkId: bookmarkId,
+  );
 }
 
 extension on ChapterPosition {

@@ -60,39 +60,38 @@ class BibleBody extends HookConsumerWidget {
     final currentPassageController = usePassageController(currentChapterReference);
     final currentScrollController = currentPassageController.scrollController;
     final currentControllerPassthrough = usePassthrough(currentPassageController);
-    final scrollPercentByReferenceRef = useRef({initialPosition.reference: initialPosition.scrollPercent});
+    final positionByReferenceRef = useRef({initialPosition.reference: initialPosition});
+
+    final keyByReference = currentPassageController.keyByReference;
 
     void saveScroll() {
-      final reference = currentChapterReference;
-      final position = currentScrollController.positionOrNull;
-      if (position == null || position.maxScrollExtent == 0) {
+      final topReference = getVisibleReferencesInViewport(
+        keyByReference: keyByReference,
+        viewportTop: MediaQuery.paddingOf(context).top + topBarHeight,
+        viewportBottom: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).bottom,
+      ).firstOrNull;
+
+      final viewportBounds = passageKey.globalBounds;
+      if (viewportBounds == null || topReference == null) {
         return;
       }
 
-      final percent = (position.pixels / position.maxScrollExtent).clamp(0.0, 1.0);
-      if (user.lastPosition.scrollPercent == percent) {
+      final position = ChapterPosition(reference: currentChapterReference, verseNum: topReference.verseNum);
+      if (user.lastPosition == position) {
         return;
       }
 
-      scrollPercentByReferenceRef.value[reference] = percent;
-      navigationHistoryState.value = navigationHistoryState.value.withScrollPercent(percent);
-      ref.updateUser((user) => user.withScrollPercent(percent));
+      positionByReferenceRef.value[currentChapterReference] = position;
+      navigationHistoryState.value = navigationHistoryState.value.withScrollPosition(position);
+      ref.updateUser((user) => user.withScrollVerse(position.verseNum ?? 0));
     }
 
     usePeriodic(Duration(seconds: 5), () => saveScroll());
 
-    final keyByReference = currentPassageController.keyByReference;
-
     void softNavigateTo(ChapterReference reference) {
       saveScroll();
 
-      final scrollPosition = currentScrollController.positionOrNull;
-      final position = ChapterPosition(
-        reference: reference,
-        scrollPercent: scrollPosition == null
-            ? 0
-            : (scrollPosition.pixels / scrollPosition.maxScrollExtent).clamp(0, 1),
-      );
+      final position = positionByReferenceRef.value[reference] ?? ChapterPosition(reference: reference);
 
       ref.updateUser((user) => user.withSoftNavigation(position));
       ref.markOnboardingStep(.swipeChapter);
@@ -103,7 +102,7 @@ class BibleBody extends HookConsumerWidget {
 
     void hardNavigateTo(ChapterPosition position, {String? bookmarkId, bool updateNavigationState = true}) {
       saveScroll();
-      scrollPercentByReferenceRef.value[position.reference] = position.scrollPercent;
+      positionByReferenceRef.value[position.reference] = position;
       pageController.jumpToPage(position.reference.bibleChapterIndex);
       ref.updateUser((user) => user.withHardNavigation(position, bookmarkId: bookmarkId));
       if (updateNavigationState) {
@@ -130,7 +129,7 @@ class BibleBody extends HookConsumerWidget {
       controller.scrollToReference(
         verseSelection.references.first,
         paragraphs: chapter.paragraphs,
-        alignment: 0.35,
+        alignment: 0.2,
         duration: Duration(milliseconds: 500),
       );
     }
@@ -371,8 +370,14 @@ class BibleBody extends HookConsumerWidget {
             final isLoaded = useOnContentLoaded(
               controller: scrollController,
               onContentLoaded: (maxScrollExtent) {
-                final target = scrollPercentByReferenceRef.value[chapterReference] ?? 0;
-                scrollController?.jumpTo((target * maxScrollExtent).clamp(0.0, maxScrollExtent));
+                final target = positionByReferenceRef.value[chapterReference];
+                if (target?.verseNum case final verseNum?) {
+                  currentPassageController.jumpToReference(
+                    chapterReference.getReference(verseNum),
+                    paragraphs: chapter.paragraphs,
+                    alignment: (topBarHeight) / (passageKey.renderBox?.size.height ?? 128),
+                  );
+                }
               },
             );
 
@@ -732,8 +737,7 @@ class NavigationHistory {
   NavigationHistory withCurrent(NavigationState state) => copyWith(current: state);
   NavigationHistory withUndo() => copyWith(undo: [...undo]..removeLast(), current: undo.last, redo: [current, ...redo]);
   NavigationHistory withRedo() => copyWith(undo: [...undo, current], current: redo.first, redo: [...redo]..removeAt(0));
-  NavigationHistory withScrollPercent(double percent) =>
-      withCurrent(current.copyWith(position: current.position.copyWith(scrollPercent: percent)));
+  NavigationHistory withScrollPosition(ChapterPosition position) => withCurrent(current.copyWith(position: position));
 
   NavigationHistory copyWith({NavigationState? current, List<NavigationState>? undo, List<NavigationState>? redo}) =>
       NavigationHistory(current: current ?? this.current, undo: undo ?? this.undo, redo: redo ?? this.redo);

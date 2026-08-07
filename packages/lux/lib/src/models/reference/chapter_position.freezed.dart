@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ChapterPosition {
 
- ChapterReference get reference; double get scrollPercent;
+ ChapterReference get reference; int? get verseNum;
 /// Create a copy of ChapterPosition
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ChapterPositionCopyWith<ChapterPosition> get copyWith => _$ChapterPositionCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChapterPosition&&(identical(other.reference, reference) || other.reference == reference)&&(identical(other.scrollPercent, scrollPercent) || other.scrollPercent == scrollPercent));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChapterPosition&&(identical(other.reference, reference) || other.reference == reference)&&(identical(other.verseNum, verseNum) || other.verseNum == verseNum));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,reference,scrollPercent);
+int get hashCode => Object.hash(runtimeType,reference,verseNum);
 
 @override
 String toString() {
-  return 'ChapterPosition(reference: $reference, scrollPercent: $scrollPercent)';
+  return 'ChapterPosition(reference: $reference, verseNum: $verseNum)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ChapterPositionCopyWith<$Res>  {
   factory $ChapterPositionCopyWith(ChapterPosition value, $Res Function(ChapterPosition) _then) = _$ChapterPositionCopyWithImpl;
 @useResult
 $Res call({
- ChapterReference reference, double scrollPercent
+ ChapterReference reference, int? verseNum
 });
 
 
@@ -65,11 +65,11 @@ class _$ChapterPositionCopyWithImpl<$Res>
 
 /// Create a copy of ChapterPosition
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? reference = null,Object? scrollPercent = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? reference = null,Object? verseNum = freezed,}) {
   return _then(_self.copyWith(
 reference: null == reference ? _self.reference : reference // ignore: cast_nullable_to_non_nullable
-as ChapterReference,scrollPercent: null == scrollPercent ? _self.scrollPercent : scrollPercent // ignore: cast_nullable_to_non_nullable
-as double,
+as ChapterReference,verseNum: freezed == verseNum ? _self.verseNum : verseNum // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 
@@ -151,10 +151,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ChapterReference reference,  double scrollPercent)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ChapterReference reference,  int? verseNum)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChapterPosition() when $default != null:
-return $default(_that.reference,_that.scrollPercent);case _:
+return $default(_that.reference,_that.verseNum);case _:
   return orElse();
 
 }
@@ -172,10 +172,10 @@ return $default(_that.reference,_that.scrollPercent);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ChapterReference reference,  double scrollPercent)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ChapterReference reference,  int? verseNum)  $default,) {final _that = this;
 switch (_that) {
 case _ChapterPosition():
-return $default(_that.reference,_that.scrollPercent);}
+return $default(_that.reference,_that.verseNum);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -189,10 +189,10 @@ return $default(_that.reference,_that.scrollPercent);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ChapterReference reference,  double scrollPercent)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ChapterReference reference,  int? verseNum)?  $default,) {final _that = this;
 switch (_that) {
 case _ChapterPosition() when $default != null:
-return $default(_that.reference,_that.scrollPercent);case _:
+return $default(_that.reference,_that.verseNum);case _:
   return null;
 
 }
@@ -204,11 +204,11 @@ return $default(_that.reference,_that.scrollPercent);case _:
 @JsonSerializable()
 
 class _ChapterPosition implements ChapterPosition {
-  const _ChapterPosition({required this.reference, this.scrollPercent = 0});
+  const _ChapterPosition({required this.reference, this.verseNum});
   factory _ChapterPosition.fromJson(Map<String, dynamic> json) => _$ChapterPositionFromJson(json);
 
 @override final  ChapterReference reference;
-@override@JsonKey() final  double scrollPercent;
+@override final  int? verseNum;
 
 /// Create a copy of ChapterPosition
 /// with the given fields replaced by the non-null parameter values.
@@ -223,16 +223,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChapterPosition&&(identical(other.reference, reference) || other.reference == reference)&&(identical(other.scrollPercent, scrollPercent) || other.scrollPercent == scrollPercent));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChapterPosition&&(identical(other.reference, reference) || other.reference == reference)&&(identical(other.verseNum, verseNum) || other.verseNum == verseNum));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,reference,scrollPercent);
+int get hashCode => Object.hash(runtimeType,reference,verseNum);
 
 @override
 String toString() {
-  return 'ChapterPosition(reference: $reference, scrollPercent: $scrollPercent)';
+  return 'ChapterPosition(reference: $reference, verseNum: $verseNum)';
 }
 
 
@@ -243,7 +243,7 @@ abstract mixin class _$ChapterPositionCopyWith<$Res> implements $ChapterPosition
   factory _$ChapterPositionCopyWith(_ChapterPosition value, $Res Function(_ChapterPosition) _then) = __$ChapterPositionCopyWithImpl;
 @override @useResult
 $Res call({
- ChapterReference reference, double scrollPercent
+ ChapterReference reference, int? verseNum
 });
 
 
@@ -260,11 +260,11 @@ class __$ChapterPositionCopyWithImpl<$Res>
 
 /// Create a copy of ChapterPosition
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? reference = null,Object? scrollPercent = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? reference = null,Object? verseNum = freezed,}) {
   return _then(_ChapterPosition(
 reference: null == reference ? _self.reference : reference // ignore: cast_nullable_to_non_nullable
-as ChapterReference,scrollPercent: null == scrollPercent ? _self.scrollPercent : scrollPercent // ignore: cast_nullable_to_non_nullable
-as double,
+as ChapterReference,verseNum: freezed == verseNum ? _self.verseNum : verseNum // ignore: cast_nullable_to_non_nullable
+as int?,
   ));
 }
 

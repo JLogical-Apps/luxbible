@@ -6,8 +6,7 @@ part 'chapter_position.g.dart';
 
 @freezed
 sealed class ChapterPosition with _$ChapterPosition {
-  const factory ChapterPosition({required ChapterReference reference, @Default(0) double scrollPercent}) =
-      _ChapterPosition;
+  const factory ChapterPosition({required ChapterReference reference, int? verseNum}) = _ChapterPosition;
 
   factory ChapterPosition.fromJson(Map<String, dynamic> json) => _$ChapterPositionFromJson(json);
 }
@@ -15,7 +14,7 @@ sealed class ChapterPosition with _$ChapterPosition {
 class ChapterPositionFromReference extends JsonKey {
   const ChapterPositionFromReference(String name) : super(name: name, readValue: read);
 
-  static Object? _migrate(Object? value) => value is String ? {'reference': value, 'scrollPercent': 0} : value;
+  static Object? _migrate(Object? value) => value is String ? {'reference': value} : value;
 
   static Object? read(Map<dynamic, dynamic> json, String key) {
     final value = json[key];

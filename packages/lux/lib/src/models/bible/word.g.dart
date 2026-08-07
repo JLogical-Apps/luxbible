@@ -8,7 +8,9 @@ part of 'word.dart';
 
 _Word _$WordFromJson(Map<String, dynamic> json) => _Word(
   text: json['t'] as String?,
-  data: json['d'] == null ? null : InterlinearData.fromJson(json['d'] as Map<String, dynamic>),
+  data: json['d'] == null
+      ? null
+      : InterlinearData.fromJson(json['d'] as Map<String, dynamic>),
   redLetters: json['r'] as bool? ?? false,
   italic: json['i'] as bool? ?? false,
 );
