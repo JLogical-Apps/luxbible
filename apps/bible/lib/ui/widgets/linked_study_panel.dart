@@ -88,21 +88,24 @@ class LinkedStudyPanel extends HookWidget {
     return TapRegion(
       onTapInside: (_) => ownsScrollRef.value = true,
       onTapOutside: (_) => ownsScrollRef.value = false,
-      child: Column(
-        children: [
-          StyledSheetHeader(
-            title: chapterReference.format().toText(),
-            subtitle: subtitle,
-            leading: StyledCircleButton.md(child: Symbols.close.toIcon(), onPressed: onClose),
-          ),
-          StyledDivider(height: 2),
-          Expanded(
-            child: KeyedSubtree(
-              key: panelViewportKey,
-              child: builder(context, controller, () => isContentLoadedState.value = true),
+      child: Container(
+        decoration: BoxDecoration(color: context.colors.surfacePrimary, borderRadius: .circular(16)),
+        child: Column(
+          children: [
+            StyledSheetHeader(
+              title: chapterReference.format().toText(),
+              subtitle: subtitle,
+              leading: StyledCircleButton.md(child: Symbols.close.toIcon(), onPressed: onClose),
             ),
-          ),
-        ],
+            StyledDivider(height: 2),
+            Expanded(
+              child: KeyedSubtree(
+                key: panelViewportKey,
+                child: builder(context, controller, () => isContentLoadedState.value = true),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
