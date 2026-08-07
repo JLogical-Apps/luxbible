@@ -7,6 +7,7 @@ import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/root_ref.dart' as root_ref;
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
+import 'package:bible/ui/utils/precalculation_policies.dart';
 import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/highlight_underline.dart';
 import 'package:bible/ui/widgets/passage_controller.dart';
@@ -85,6 +86,7 @@ class ParagraphsBuilder extends HookWidget {
     final chapter = Chapter(paragraphs: paragraphs);
 
     final textSelectionStartAnchorState = useState<BibleTextSelectionWordAnchor?>(null);
+    final extentPrecalculationPolicy = useMemoized(() => NumExtentPrecalculationPolicy(numItems: 100));
 
     final paragraphSpansByParagraph = useMemoized(
       () => getParagraphSpansByParagraph(
@@ -171,6 +173,7 @@ class ParagraphsBuilder extends HookWidget {
           padding: padding ?? .zero,
           shrinkWrap: shrinkWrap,
           addSemanticIndexes: false,
+          extentPrecalculationPolicy: extentPrecalculationPolicy,
           children: paragraphSpansByParagraph.mapIndexed((index, entry) {
             final MapEntry(key: paragraph, value: originalSpans) = paragraphSpansByParagraph[index];
 
