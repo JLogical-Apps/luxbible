@@ -26,7 +26,7 @@ sealed class HighlightStyle with _$HighlightStyle {
     ];
   }
 
-  static const HighlightStyle fallback = HighlightStyle(color: .blue, type: .highlight);
+  static const HighlightStyle fallback = HighlightStyle(color: .red, type: .highlight);
 
   const HighlightStyle._();
 
