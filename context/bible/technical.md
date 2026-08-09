@@ -60,7 +60,6 @@ The following are bundled with the app and work offline:
 - KJV
 - ASV
 - SV
-- NRT
 - LXX
 - TR
 - BYZ
@@ -82,6 +81,7 @@ These translations require a connection:
 
 - NASB95 through the YouVersion Platform
 - NIV through the YouVersion Platform
+- NRT through the YouVersion Platform
 - CSB through API.Bible
 - NLT through API.Bible
 - NKJV through API.Bible

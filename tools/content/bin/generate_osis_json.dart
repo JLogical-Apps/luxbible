@@ -6,7 +6,7 @@ import 'package:lux_content_tools/repository_paths.dart';
 import 'package:lux_content_tools/src/parsers/osis_parser.dart';
 
 void main() {
-  for (final name in ['oshb', 'lxx', 'tr', 'byz', 'statresgnt', 'sv', 'nrt']) {
+  for (final name in ['oshb', 'lxx', 'tr', 'byz', 'statresgnt', 'sv']) {
     appAssetFile('translations/$name.json', app: .bible).writeAsStringSync(
       jsonEncode(
         sourceDirectory('bibles/$name')
@@ -16,7 +16,7 @@ void main() {
             .map(
               (file) => parseOsisBook(
                 file.readAsStringSync(),
-                verseParagraphs: name == 'oshb' || name == 'sv' || name == 'nrt',
+                verseParagraphs: name == 'oshb' || name == 'sv',
               ),
             )
             .sortedBy((a) => a.bookType.index)

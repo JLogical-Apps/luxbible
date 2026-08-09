@@ -24,7 +24,6 @@ The selected language controls Lux's interface, Bible book names, reference form
 - KJV: King James Version
 - ASV: American Standard Version
 - SV: Statenvertaling in Dutch
-- NRT: New Russian Translation 2010 in Russian
 - LXX: Septuagint, Rahlfs
 - TR: Textus Receptus, Stephens 1550
 - BYZ: Robinson-Pierpont Byzantine Textform 2005
@@ -38,6 +37,7 @@ The selected language controls Lux's interface, Bible book names, reference form
 - CSB
 - NLT
 - NKJV
+- NRT: New Russian Translation 2010 in Russian
 
 ### Bible Management
 

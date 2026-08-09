@@ -57,9 +57,10 @@ enum BibleTranslation {
   };
 
   BibleTranslationSource get source => switch (this) {
-    bsb || asv || kjv || oshb || lxx || tr || byz || statresgnt || sv || nrt => .local,
+    bsb || asv || kjv || oshb || lxx || tr || byz || statresgnt || sv => .local,
     nasb95 => .youVersion(100),
     niv11 => .youVersion(111),
+    nrt => .youVersion(143),
     csb || nlt || nkjv => .apiBible(),
   };
 
@@ -80,7 +81,8 @@ enum BibleTranslation {
     nlt =>
       'Holy Bible, New Living Translation, copyright © 1996, 2004, 2015 by Tyndale House Foundation. All rights reserved. Used by permission of Tyndale House Publishers, Carol Stream, Illinois 60188. All rights reserved.',
     nkjv => 'New King James Version®, Copyright© 1982, Thomas Nelson. All rights reserved.',
-    nrt => 'New Russian Translation NRT\nIBS, 2010',
+    nrt =>
+      'Святая Библия, Новый русский перевод™ НРП™\n© Biblica, Inc., 2006, 2010, 2012, 2014, 2023\nИспользуется с разрешения. Все права защищены по всему миру.\nThe Holy Bible, New Russian Translation™ NRT™\nCopyright © 2006, 2010, 2012, 2014, 2023 by Biblica, Inc.\nUsed with permission. All rights reserved worldwide.',
     _ => null,
   };
 
