@@ -8,6 +8,7 @@ import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:memory/models/activity_plan.dart';
 import 'package:memory/providers/user_provider.dart';
+import 'package:memory/ui/pages/activity_page.dart';
 import 'package:memory/ui/pages/chapter_preview_page.dart';
 import 'package:memory/utils/extensions/ref_extensions.dart';
 import 'package:style/style.dart';
@@ -83,7 +84,7 @@ class HomePage extends ConsumerWidget {
                   trailing: StyledCircleButton.md(
                     child: Symbols.more_vert.toIcon(),
                     onPressed: () => context.showStyledSheet(
-                      (context) => StyledSheet(
+                      (sheetContext) => StyledSheet(
                         title: passage.format().toText(),
                         children: [
                           StyledListItem.navigation(
@@ -91,8 +92,8 @@ class HomePage extends ConsumerWidget {
                             subtitle: 'Play an activity to practice this passage.'.toText(),
                             leading: Symbols.exercise.toIcon(),
                             onPressed: () async {
-                              context.pop();
-                              await context.showStyledSheet(
+                              sheetContext.pop();
+                              final type = await context.showStyledSheet<ActivityPlanType>(
                                 (context) => StyledSheet(
                                   title: 'Practice Activity'.toText(),
                                   children: ActivityPlanType.values
@@ -102,14 +103,15 @@ class HomePage extends ConsumerWidget {
                                           title: type.title().toText(),
                                           subtitle: type.description().toText(),
                                           leading: type.icon.toIcon(),
-                                          onPressed: () {
-                                            context.pop();
-                                          },
+                                          onPressed: () => context.pop(type),
                                         ),
                                       )
                                       .toList(),
                                 ),
                               );
+                              if (type != null && context.mounted) {
+                                context.push(ActivityPage(plan: ActivityPlan.phraseRead(passage: passage)));
+                              }
                             },
                           ),
                           StyledListItem.navigation(

@@ -87,4 +87,7 @@ class Bible {
 
   List<Verse> getVersesBySpan(VerseSpanReference reference) =>
       reference.references.map((reference) => getVerseByReference(reference)).nonNulls.toList();
+
+  List<Verse> getPassageVerses(VerseSelection selection) =>
+      selection.references.map((reference) => getVerseByReference(reference)).nonNulls.toList();
 }

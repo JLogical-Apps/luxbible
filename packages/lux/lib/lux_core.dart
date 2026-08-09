@@ -7,6 +7,7 @@ export 'src/models/bible/chapter.dart';
 export 'src/models/bible/footnote.dart';
 export 'src/models/bible/interlinear_data.dart';
 export 'src/models/bible/paragraph.dart';
+export 'src/models/bible/phrase.dart';
 export 'src/models/bible/verse.dart';
 export 'src/models/bible/word.dart';
 export 'src/models/lux_app.dart';

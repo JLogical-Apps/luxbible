@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:lux/lux_core.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 part 'activity_plan.freezed.dart';
@@ -9,13 +10,13 @@ part 'activity_plan.g.dart';
 sealed class ActivityPlan with _$ActivityPlan {
   const ActivityPlan._();
 
-  const factory ActivityPlan.phraseRead() = PhraseReadActivityPlan;
-  const factory ActivityPlan.readContext() = ReadContextActivityPlan;
-  const factory ActivityPlan.phraseSelection() = PhraseSelectionActivityPlan;
-  const factory ActivityPlan.wordSelection() = WordSelectionActivityPlan;
-  const factory ActivityPlan.wordType() = WordTypeActivityPlan;
-  const factory ActivityPlan.referenceSelection() = ReferenceSelectionActivityPlan;
-  const factory ActivityPlan.referenceType() = ReferenceTypeActivityPlan;
+  const factory ActivityPlan.phraseRead({required VerseSelection passage}) = PhraseReadActivityPlan;
+  const factory ActivityPlan.readContext({required VerseSelection passage}) = ReadContextActivityPlan;
+  const factory ActivityPlan.phraseSelection({required VerseSelection passage}) = PhraseSelectionActivityPlan;
+  const factory ActivityPlan.wordSelection({required VerseSelection passage}) = WordSelectionActivityPlan;
+  const factory ActivityPlan.wordType({required VerseSelection passage}) = WordTypeActivityPlan;
+  const factory ActivityPlan.referenceSelection({required VerseSelection passage}) = ReferenceSelectionActivityPlan;
+  const factory ActivityPlan.referenceType({required VerseSelection passage}) = ReferenceTypeActivityPlan;
 
   factory ActivityPlan.fromJson(Map<String, dynamic> json) => _$ActivityPlanFromJson(json);
 }

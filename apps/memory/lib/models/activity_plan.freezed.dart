@@ -58,7 +58,12 @@ ActivityPlan _$ActivityPlanFromJson(
 /// @nodoc
 mixin _$ActivityPlan {
 
-
+ VerseSelection get passage;
+/// Create a copy of ActivityPlan
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ActivityPlanCopyWith<ActivityPlan> get copyWith => _$ActivityPlanCopyWithImpl<ActivityPlan>(this as ActivityPlan, _$identity);
 
   /// Serializes this ActivityPlan to a JSON map.
   Map<String, dynamic> toJson();
@@ -66,24 +71,50 @@ mixin _$ActivityPlan {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ActivityPlan);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ActivityPlan&&(identical(other.passage, passage) || other.passage == passage));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,passage);
 
 @override
 String toString() {
-  return 'ActivityPlan()';
+  return 'ActivityPlan(passage: $passage)';
 }
 
 
 }
 
 /// @nodoc
-class $ActivityPlanCopyWith<$Res>  {
-$ActivityPlanCopyWith(ActivityPlan _, $Res Function(ActivityPlan) __);
+abstract mixin class $ActivityPlanCopyWith<$Res>  {
+  factory $ActivityPlanCopyWith(ActivityPlan value, $Res Function(ActivityPlan) _then) = _$ActivityPlanCopyWithImpl;
+@useResult
+$Res call({
+ VerseSelection passage
+});
+
+
+
+
+}
+/// @nodoc
+class _$ActivityPlanCopyWithImpl<$Res>
+    implements $ActivityPlanCopyWith<$Res> {
+  _$ActivityPlanCopyWithImpl(this._self, this._then);
+
+  final ActivityPlan _self;
+  final $Res Function(ActivityPlan) _then;
+
+/// Create a copy of ActivityPlan
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? passage = null,}) {
+  return _then(_self.copyWith(
+passage: null == passage ? _self.passage : passage // ignore: cast_nullable_to_non_nullable
+as VerseSelection,
+  ));
+}
+
 }
 
 
@@ -180,16 +211,16 @@ return referenceType(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  phraseRead,TResult Function()?  readContext,TResult Function()?  phraseSelection,TResult Function()?  wordSelection,TResult Function()?  wordType,TResult Function()?  referenceSelection,TResult Function()?  referenceType,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( VerseSelection passage)?  phraseRead,TResult Function( VerseSelection passage)?  readContext,TResult Function( VerseSelection passage)?  phraseSelection,TResult Function( VerseSelection passage)?  wordSelection,TResult Function( VerseSelection passage)?  wordType,TResult Function( VerseSelection passage)?  referenceSelection,TResult Function( VerseSelection passage)?  referenceType,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case PhraseReadActivityPlan() when phraseRead != null:
-return phraseRead();case ReadContextActivityPlan() when readContext != null:
-return readContext();case PhraseSelectionActivityPlan() when phraseSelection != null:
-return phraseSelection();case WordSelectionActivityPlan() when wordSelection != null:
-return wordSelection();case WordTypeActivityPlan() when wordType != null:
-return wordType();case ReferenceSelectionActivityPlan() when referenceSelection != null:
-return referenceSelection();case ReferenceTypeActivityPlan() when referenceType != null:
-return referenceType();case _:
+return phraseRead(_that.passage);case ReadContextActivityPlan() when readContext != null:
+return readContext(_that.passage);case PhraseSelectionActivityPlan() when phraseSelection != null:
+return phraseSelection(_that.passage);case WordSelectionActivityPlan() when wordSelection != null:
+return wordSelection(_that.passage);case WordTypeActivityPlan() when wordType != null:
+return wordType(_that.passage);case ReferenceSelectionActivityPlan() when referenceSelection != null:
+return referenceSelection(_that.passage);case ReferenceTypeActivityPlan() when referenceType != null:
+return referenceType(_that.passage);case _:
   return orElse();
 
 }
@@ -207,16 +238,16 @@ return referenceType();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  phraseRead,required TResult Function()  readContext,required TResult Function()  phraseSelection,required TResult Function()  wordSelection,required TResult Function()  wordType,required TResult Function()  referenceSelection,required TResult Function()  referenceType,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( VerseSelection passage)  phraseRead,required TResult Function( VerseSelection passage)  readContext,required TResult Function( VerseSelection passage)  phraseSelection,required TResult Function( VerseSelection passage)  wordSelection,required TResult Function( VerseSelection passage)  wordType,required TResult Function( VerseSelection passage)  referenceSelection,required TResult Function( VerseSelection passage)  referenceType,}) {final _that = this;
 switch (_that) {
 case PhraseReadActivityPlan():
-return phraseRead();case ReadContextActivityPlan():
-return readContext();case PhraseSelectionActivityPlan():
-return phraseSelection();case WordSelectionActivityPlan():
-return wordSelection();case WordTypeActivityPlan():
-return wordType();case ReferenceSelectionActivityPlan():
-return referenceSelection();case ReferenceTypeActivityPlan():
-return referenceType();}
+return phraseRead(_that.passage);case ReadContextActivityPlan():
+return readContext(_that.passage);case PhraseSelectionActivityPlan():
+return phraseSelection(_that.passage);case WordSelectionActivityPlan():
+return wordSelection(_that.passage);case WordTypeActivityPlan():
+return wordType(_that.passage);case ReferenceSelectionActivityPlan():
+return referenceSelection(_that.passage);case ReferenceTypeActivityPlan():
+return referenceType(_that.passage);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -230,16 +261,16 @@ return referenceType();}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  phraseRead,TResult? Function()?  readContext,TResult? Function()?  phraseSelection,TResult? Function()?  wordSelection,TResult? Function()?  wordType,TResult? Function()?  referenceSelection,TResult? Function()?  referenceType,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( VerseSelection passage)?  phraseRead,TResult? Function( VerseSelection passage)?  readContext,TResult? Function( VerseSelection passage)?  phraseSelection,TResult? Function( VerseSelection passage)?  wordSelection,TResult? Function( VerseSelection passage)?  wordType,TResult? Function( VerseSelection passage)?  referenceSelection,TResult? Function( VerseSelection passage)?  referenceType,}) {final _that = this;
 switch (_that) {
 case PhraseReadActivityPlan() when phraseRead != null:
-return phraseRead();case ReadContextActivityPlan() when readContext != null:
-return readContext();case PhraseSelectionActivityPlan() when phraseSelection != null:
-return phraseSelection();case WordSelectionActivityPlan() when wordSelection != null:
-return wordSelection();case WordTypeActivityPlan() when wordType != null:
-return wordType();case ReferenceSelectionActivityPlan() when referenceSelection != null:
-return referenceSelection();case ReferenceTypeActivityPlan() when referenceType != null:
-return referenceType();case _:
+return phraseRead(_that.passage);case ReadContextActivityPlan() when readContext != null:
+return readContext(_that.passage);case PhraseSelectionActivityPlan() when phraseSelection != null:
+return phraseSelection(_that.passage);case WordSelectionActivityPlan() when wordSelection != null:
+return wordSelection(_that.passage);case WordTypeActivityPlan() when wordType != null:
+return wordType(_that.passage);case ReferenceSelectionActivityPlan() when referenceSelection != null:
+return referenceSelection(_that.passage);case ReferenceTypeActivityPlan() when referenceType != null:
+return referenceType(_that.passage);case _:
   return null;
 
 }
@@ -251,15 +282,20 @@ return referenceType();case _:
 @JsonSerializable()
 
 class PhraseReadActivityPlan extends ActivityPlan {
-  const PhraseReadActivityPlan({final  String? $type}): $type = $type ?? 'phraseRead',super._();
+  const PhraseReadActivityPlan({required this.passage, final  String? $type}): $type = $type ?? 'phraseRead',super._();
   factory PhraseReadActivityPlan.fromJson(Map<String, dynamic> json) => _$PhraseReadActivityPlanFromJson(json);
 
-
+@override final  VerseSelection passage;
 
 @JsonKey(name: 'runtimeType')
 final String $type;
 
 
+/// Create a copy of ActivityPlan
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PhraseReadActivityPlanCopyWith<PhraseReadActivityPlan> get copyWith => _$PhraseReadActivityPlanCopyWithImpl<PhraseReadActivityPlan>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
@@ -268,37 +304,71 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhraseReadActivityPlan);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhraseReadActivityPlan&&(identical(other.passage, passage) || other.passage == passage));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,passage);
 
 @override
 String toString() {
-  return 'ActivityPlan.phraseRead()';
+  return 'ActivityPlan.phraseRead(passage: $passage)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class $PhraseReadActivityPlanCopyWith<$Res> implements $ActivityPlanCopyWith<$Res> {
+  factory $PhraseReadActivityPlanCopyWith(PhraseReadActivityPlan value, $Res Function(PhraseReadActivityPlan) _then) = _$PhraseReadActivityPlanCopyWithImpl;
+@override @useResult
+$Res call({
+ VerseSelection passage
+});
 
 
+
+
+}
+/// @nodoc
+class _$PhraseReadActivityPlanCopyWithImpl<$Res>
+    implements $PhraseReadActivityPlanCopyWith<$Res> {
+  _$PhraseReadActivityPlanCopyWithImpl(this._self, this._then);
+
+  final PhraseReadActivityPlan _self;
+  final $Res Function(PhraseReadActivityPlan) _then;
+
+/// Create a copy of ActivityPlan
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? passage = null,}) {
+  return _then(PhraseReadActivityPlan(
+passage: null == passage ? _self.passage : passage // ignore: cast_nullable_to_non_nullable
+as VerseSelection,
+  ));
+}
+
+
+}
 
 /// @nodoc
 @JsonSerializable()
 
 class ReadContextActivityPlan extends ActivityPlan {
-  const ReadContextActivityPlan({final  String? $type}): $type = $type ?? 'readContext',super._();
+  const ReadContextActivityPlan({required this.passage, final  String? $type}): $type = $type ?? 'readContext',super._();
   factory ReadContextActivityPlan.fromJson(Map<String, dynamic> json) => _$ReadContextActivityPlanFromJson(json);
 
-
+@override final  VerseSelection passage;
 
 @JsonKey(name: 'runtimeType')
 final String $type;
 
 
+/// Create a copy of ActivityPlan
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ReadContextActivityPlanCopyWith<ReadContextActivityPlan> get copyWith => _$ReadContextActivityPlanCopyWithImpl<ReadContextActivityPlan>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
@@ -307,37 +377,71 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ReadContextActivityPlan);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ReadContextActivityPlan&&(identical(other.passage, passage) || other.passage == passage));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,passage);
 
 @override
 String toString() {
-  return 'ActivityPlan.readContext()';
+  return 'ActivityPlan.readContext(passage: $passage)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class $ReadContextActivityPlanCopyWith<$Res> implements $ActivityPlanCopyWith<$Res> {
+  factory $ReadContextActivityPlanCopyWith(ReadContextActivityPlan value, $Res Function(ReadContextActivityPlan) _then) = _$ReadContextActivityPlanCopyWithImpl;
+@override @useResult
+$Res call({
+ VerseSelection passage
+});
 
 
+
+
+}
+/// @nodoc
+class _$ReadContextActivityPlanCopyWithImpl<$Res>
+    implements $ReadContextActivityPlanCopyWith<$Res> {
+  _$ReadContextActivityPlanCopyWithImpl(this._self, this._then);
+
+  final ReadContextActivityPlan _self;
+  final $Res Function(ReadContextActivityPlan) _then;
+
+/// Create a copy of ActivityPlan
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? passage = null,}) {
+  return _then(ReadContextActivityPlan(
+passage: null == passage ? _self.passage : passage // ignore: cast_nullable_to_non_nullable
+as VerseSelection,
+  ));
+}
+
+
+}
 
 /// @nodoc
 @JsonSerializable()
 
 class PhraseSelectionActivityPlan extends ActivityPlan {
-  const PhraseSelectionActivityPlan({final  String? $type}): $type = $type ?? 'phraseSelection',super._();
+  const PhraseSelectionActivityPlan({required this.passage, final  String? $type}): $type = $type ?? 'phraseSelection',super._();
   factory PhraseSelectionActivityPlan.fromJson(Map<String, dynamic> json) => _$PhraseSelectionActivityPlanFromJson(json);
 
-
+@override final  VerseSelection passage;
 
 @JsonKey(name: 'runtimeType')
 final String $type;
 
 
+/// Create a copy of ActivityPlan
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PhraseSelectionActivityPlanCopyWith<PhraseSelectionActivityPlan> get copyWith => _$PhraseSelectionActivityPlanCopyWithImpl<PhraseSelectionActivityPlan>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
@@ -346,37 +450,71 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhraseSelectionActivityPlan);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PhraseSelectionActivityPlan&&(identical(other.passage, passage) || other.passage == passage));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,passage);
 
 @override
 String toString() {
-  return 'ActivityPlan.phraseSelection()';
+  return 'ActivityPlan.phraseSelection(passage: $passage)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class $PhraseSelectionActivityPlanCopyWith<$Res> implements $ActivityPlanCopyWith<$Res> {
+  factory $PhraseSelectionActivityPlanCopyWith(PhraseSelectionActivityPlan value, $Res Function(PhraseSelectionActivityPlan) _then) = _$PhraseSelectionActivityPlanCopyWithImpl;
+@override @useResult
+$Res call({
+ VerseSelection passage
+});
 
 
+
+
+}
+/// @nodoc
+class _$PhraseSelectionActivityPlanCopyWithImpl<$Res>
+    implements $PhraseSelectionActivityPlanCopyWith<$Res> {
+  _$PhraseSelectionActivityPlanCopyWithImpl(this._self, this._then);
+
+  final PhraseSelectionActivityPlan _self;
+  final $Res Function(PhraseSelectionActivityPlan) _then;
+
+/// Create a copy of ActivityPlan
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? passage = null,}) {
+  return _then(PhraseSelectionActivityPlan(
+passage: null == passage ? _self.passage : passage // ignore: cast_nullable_to_non_nullable
+as VerseSelection,
+  ));
+}
+
+
+}
 
 /// @nodoc
 @JsonSerializable()
 
 class WordSelectionActivityPlan extends ActivityPlan {
-  const WordSelectionActivityPlan({final  String? $type}): $type = $type ?? 'wordSelection',super._();
+  const WordSelectionActivityPlan({required this.passage, final  String? $type}): $type = $type ?? 'wordSelection',super._();
   factory WordSelectionActivityPlan.fromJson(Map<String, dynamic> json) => _$WordSelectionActivityPlanFromJson(json);
 
-
+@override final  VerseSelection passage;
 
 @JsonKey(name: 'runtimeType')
 final String $type;
 
 
+/// Create a copy of ActivityPlan
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$WordSelectionActivityPlanCopyWith<WordSelectionActivityPlan> get copyWith => _$WordSelectionActivityPlanCopyWithImpl<WordSelectionActivityPlan>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
@@ -385,37 +523,71 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is WordSelectionActivityPlan);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is WordSelectionActivityPlan&&(identical(other.passage, passage) || other.passage == passage));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,passage);
 
 @override
 String toString() {
-  return 'ActivityPlan.wordSelection()';
+  return 'ActivityPlan.wordSelection(passage: $passage)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class $WordSelectionActivityPlanCopyWith<$Res> implements $ActivityPlanCopyWith<$Res> {
+  factory $WordSelectionActivityPlanCopyWith(WordSelectionActivityPlan value, $Res Function(WordSelectionActivityPlan) _then) = _$WordSelectionActivityPlanCopyWithImpl;
+@override @useResult
+$Res call({
+ VerseSelection passage
+});
 
 
+
+
+}
+/// @nodoc
+class _$WordSelectionActivityPlanCopyWithImpl<$Res>
+    implements $WordSelectionActivityPlanCopyWith<$Res> {
+  _$WordSelectionActivityPlanCopyWithImpl(this._self, this._then);
+
+  final WordSelectionActivityPlan _self;
+  final $Res Function(WordSelectionActivityPlan) _then;
+
+/// Create a copy of ActivityPlan
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? passage = null,}) {
+  return _then(WordSelectionActivityPlan(
+passage: null == passage ? _self.passage : passage // ignore: cast_nullable_to_non_nullable
+as VerseSelection,
+  ));
+}
+
+
+}
 
 /// @nodoc
 @JsonSerializable()
 
 class WordTypeActivityPlan extends ActivityPlan {
-  const WordTypeActivityPlan({final  String? $type}): $type = $type ?? 'wordType',super._();
+  const WordTypeActivityPlan({required this.passage, final  String? $type}): $type = $type ?? 'wordType',super._();
   factory WordTypeActivityPlan.fromJson(Map<String, dynamic> json) => _$WordTypeActivityPlanFromJson(json);
 
-
+@override final  VerseSelection passage;
 
 @JsonKey(name: 'runtimeType')
 final String $type;
 
 
+/// Create a copy of ActivityPlan
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$WordTypeActivityPlanCopyWith<WordTypeActivityPlan> get copyWith => _$WordTypeActivityPlanCopyWithImpl<WordTypeActivityPlan>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
@@ -424,37 +596,71 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is WordTypeActivityPlan);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is WordTypeActivityPlan&&(identical(other.passage, passage) || other.passage == passage));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,passage);
 
 @override
 String toString() {
-  return 'ActivityPlan.wordType()';
+  return 'ActivityPlan.wordType(passage: $passage)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class $WordTypeActivityPlanCopyWith<$Res> implements $ActivityPlanCopyWith<$Res> {
+  factory $WordTypeActivityPlanCopyWith(WordTypeActivityPlan value, $Res Function(WordTypeActivityPlan) _then) = _$WordTypeActivityPlanCopyWithImpl;
+@override @useResult
+$Res call({
+ VerseSelection passage
+});
 
 
+
+
+}
+/// @nodoc
+class _$WordTypeActivityPlanCopyWithImpl<$Res>
+    implements $WordTypeActivityPlanCopyWith<$Res> {
+  _$WordTypeActivityPlanCopyWithImpl(this._self, this._then);
+
+  final WordTypeActivityPlan _self;
+  final $Res Function(WordTypeActivityPlan) _then;
+
+/// Create a copy of ActivityPlan
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? passage = null,}) {
+  return _then(WordTypeActivityPlan(
+passage: null == passage ? _self.passage : passage // ignore: cast_nullable_to_non_nullable
+as VerseSelection,
+  ));
+}
+
+
+}
 
 /// @nodoc
 @JsonSerializable()
 
 class ReferenceSelectionActivityPlan extends ActivityPlan {
-  const ReferenceSelectionActivityPlan({final  String? $type}): $type = $type ?? 'referenceSelection',super._();
+  const ReferenceSelectionActivityPlan({required this.passage, final  String? $type}): $type = $type ?? 'referenceSelection',super._();
   factory ReferenceSelectionActivityPlan.fromJson(Map<String, dynamic> json) => _$ReferenceSelectionActivityPlanFromJson(json);
 
-
+@override final  VerseSelection passage;
 
 @JsonKey(name: 'runtimeType')
 final String $type;
 
 
+/// Create a copy of ActivityPlan
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ReferenceSelectionActivityPlanCopyWith<ReferenceSelectionActivityPlan> get copyWith => _$ReferenceSelectionActivityPlanCopyWithImpl<ReferenceSelectionActivityPlan>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
@@ -463,37 +669,71 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ReferenceSelectionActivityPlan);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ReferenceSelectionActivityPlan&&(identical(other.passage, passage) || other.passage == passage));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,passage);
 
 @override
 String toString() {
-  return 'ActivityPlan.referenceSelection()';
+  return 'ActivityPlan.referenceSelection(passage: $passage)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class $ReferenceSelectionActivityPlanCopyWith<$Res> implements $ActivityPlanCopyWith<$Res> {
+  factory $ReferenceSelectionActivityPlanCopyWith(ReferenceSelectionActivityPlan value, $Res Function(ReferenceSelectionActivityPlan) _then) = _$ReferenceSelectionActivityPlanCopyWithImpl;
+@override @useResult
+$Res call({
+ VerseSelection passage
+});
 
 
+
+
+}
+/// @nodoc
+class _$ReferenceSelectionActivityPlanCopyWithImpl<$Res>
+    implements $ReferenceSelectionActivityPlanCopyWith<$Res> {
+  _$ReferenceSelectionActivityPlanCopyWithImpl(this._self, this._then);
+
+  final ReferenceSelectionActivityPlan _self;
+  final $Res Function(ReferenceSelectionActivityPlan) _then;
+
+/// Create a copy of ActivityPlan
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? passage = null,}) {
+  return _then(ReferenceSelectionActivityPlan(
+passage: null == passage ? _self.passage : passage // ignore: cast_nullable_to_non_nullable
+as VerseSelection,
+  ));
+}
+
+
+}
 
 /// @nodoc
 @JsonSerializable()
 
 class ReferenceTypeActivityPlan extends ActivityPlan {
-  const ReferenceTypeActivityPlan({final  String? $type}): $type = $type ?? 'referenceType',super._();
+  const ReferenceTypeActivityPlan({required this.passage, final  String? $type}): $type = $type ?? 'referenceType',super._();
   factory ReferenceTypeActivityPlan.fromJson(Map<String, dynamic> json) => _$ReferenceTypeActivityPlanFromJson(json);
 
-
+@override final  VerseSelection passage;
 
 @JsonKey(name: 'runtimeType')
 final String $type;
 
 
+/// Create a copy of ActivityPlan
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ReferenceTypeActivityPlanCopyWith<ReferenceTypeActivityPlan> get copyWith => _$ReferenceTypeActivityPlanCopyWithImpl<ReferenceTypeActivityPlan>(this, _$identity);
 
 @override
 Map<String, dynamic> toJson() {
@@ -502,22 +742,51 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ReferenceTypeActivityPlan);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ReferenceTypeActivityPlan&&(identical(other.passage, passage) || other.passage == passage));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,passage);
 
 @override
 String toString() {
-  return 'ActivityPlan.referenceType()';
+  return 'ActivityPlan.referenceType(passage: $passage)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class $ReferenceTypeActivityPlanCopyWith<$Res> implements $ActivityPlanCopyWith<$Res> {
+  factory $ReferenceTypeActivityPlanCopyWith(ReferenceTypeActivityPlan value, $Res Function(ReferenceTypeActivityPlan) _then) = _$ReferenceTypeActivityPlanCopyWithImpl;
+@override @useResult
+$Res call({
+ VerseSelection passage
+});
 
 
+
+
+}
+/// @nodoc
+class _$ReferenceTypeActivityPlanCopyWithImpl<$Res>
+    implements $ReferenceTypeActivityPlanCopyWith<$Res> {
+  _$ReferenceTypeActivityPlanCopyWithImpl(this._self, this._then);
+
+  final ReferenceTypeActivityPlan _self;
+  final $Res Function(ReferenceTypeActivityPlan) _then;
+
+/// Create a copy of ActivityPlan
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? passage = null,}) {
+  return _then(ReferenceTypeActivityPlan(
+passage: null == passage ? _self.passage : passage // ignore: cast_nullable_to_non_nullable
+as VerseSelection,
+  ));
+}
+
+
+}
 
 // dart format on
