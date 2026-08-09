@@ -112,8 +112,8 @@ When a feature requires study data while an online or non-study Bible is active,
 Lux includes these original-language reading texts:
 
 - LXX: Septuagint, Rahlfs
-- TR: Textus Receptus, 1550/1894
-- BYZ: Byzantine Textform 2013
+- TR: Textus Receptus, Stephens 1550
+- BYZ: Robinson-Pierpont Byzantine Textform 2005
 - SR: Statistical Restoration Greek New Testament
 - OSHB: Open Scriptures Hebrew Bible
 

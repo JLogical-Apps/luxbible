@@ -26,8 +26,8 @@ The selected language controls Lux's interface, Bible book names, reference form
 - SV: Statenvertaling in Dutch
 - NRT: New Russian Translation 2010 in Russian
 - LXX: Septuagint, Rahlfs
-- TR: Textus Receptus, 1550/1894
-- BYZ: Byzantine Textform 2013
+- TR: Textus Receptus, Stephens 1550
+- BYZ: Robinson-Pierpont Byzantine Textform 2005
 - SR: Statistical Restoration Greek New Testament
 - OSHB: Open Scriptures Hebrew Bible
 

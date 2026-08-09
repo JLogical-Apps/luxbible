@@ -61,6 +61,86 @@ Source: http://www.ebible.org/bible/asv/''',
     );
 
     yield const LicenseEntryWithLineBreaks(
+      ['Byzantine Textform 2005 (BYZ)'],
+      '''
+The New Testament in the Original Greek: Byzantine Textform 2005, edited by Maurice A. Robinson and William G. Pierpont.
+
+The editors released the Greek text into the public domain. It may be copied, distributed, stored in a database, incorporated into other works, and otherwise used without restriction. Attribution is retained to identify the edition and responsibility for the text. Lux's use does not imply the editors' or publisher's agreement with Lux's views.
+
+Lux converts the official one-verse-per-line ASCII edition to unaccented lowercase Unicode Greek and its bundled Bible data format.
+
+Sources:
+https://byzantinetext.com/study/editions/robinson-pierpont/
+https://www.dropbox.com/s/oil2m3la4vsnbpb/editions-rp2-ascii.zip?dl=0''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
+      ['Statenvertaling (SV)'],
+      '''
+The Holy Bible, Statenvertaling, 1637.
+
+The Statenvertaling is in the public domain.
+
+Text obtained from the DutSVV SWORD module distributed by the CrossWire Bible Society. CrossWire's module is based on the electronic edition from Statenvertaling online. Lux transforms the module into its bundled Bible data format.
+
+Sources:
+https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=DutSVV
+https://bijbel.coas.nl/''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
+      ['Septuagint, Rahlfs (LXX)'],
+      '''
+Septuagint, Morphologically Tagged Rahlfs' text.
+
+Copyrighted; free non-commercial distribution.
+
+Text obtained from the LXX SWORD module distributed by the CrossWire Bible Society. The module was built from data from the Center for Computer Analysis of Texts at the University of Pennsylvania. Lux transforms the module into its bundled Bible data format.
+
+Source: https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=LXX''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
+      ['Textus Receptus, Stephens 1550 (TR)'],
+      '''
+Textus Receptus, Stephens 1550, transcribed and proofed by Maurice A. Robinson. The source also records Scrivener 1894 variants.
+
+The electronic Greek text was released into the public domain and may be used for any purpose. Attribution is retained to identify the preparer and responsibility for the text.
+
+Lux converts the official ASCII source to unaccented lowercase Unicode Greek and its bundled Bible data format.
+
+Sources:
+https://byzantinetext.com/study/editions/scrivener/
+https://www.dropbox.com/s/dnlsgrcan5t36sk/editions-stevens-scrivener-parsed.zip?dl=0''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
+      ['Statistical Restoration Greek New Testament (SR)'],
+      '''
+Statistical Restoration Greek New Testament, edited by Alan Bunning, Center for New Testament Restoration.
+
+Copyright © 2022-2023 Alan Bunning. Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/
+
+Lux transforms the source text into its bundled Bible data format.
+
+Source: https://github.com/Center-for-New-Testament-Restoration/SR/blob/4be18e67c6870388d317d38d2b10a70e8b5e8775/SR.tsv''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
+      ['Open Scriptures Hebrew Bible (OSHB)'],
+      '''
+Open Scriptures Hebrew Bible, based on the public-domain Westminster Leningrad Codex.
+
+Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/
+
+Original work of the Open Scriptures Hebrew Bible available at https://github.com/openscriptures/morphhb
+
+Lux transforms the source text into its bundled Bible data format.
+
+Source: https://github.com/openscriptures/morphhb''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
       ["Matthew Henry's Commentary"],
       '''
 Matthew Henry's Commentary on the Whole Bible.
@@ -70,6 +150,28 @@ Written by Matthew Henry (1662–1714); first published in 1706. The work is in 
 Obtained from the Christian Classics Ethereal Library (CCEL). CCEL hosts editions based on books that are in the public domain in the United States, made available for personal, educational, or non-profit use.
 
 Source: https://ccel.org/ccel/henry/mhc''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
+      ["John Calvin's Commentaries"],
+      '''
+John Calvin's collected Bible commentaries.
+
+The commentary is in the public domain. Lux's electronic text was obtained from the Christian Classics Ethereal Library (CCEL).
+
+Sources:
+https://www.ccel.org/ccel/calvin
+https://crosswire.org/sword/modules/ModInfo.jsp?modName=CalvinCommentaries''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
+      ['Jamieson-Fausset-Brown Commentary'],
+      '''
+Commentary Critical and Explanatory on the Whole Bible by Robert Jamieson, A. R. Fausset, and David Brown, first published in 1871.
+
+The work is in the public domain. Lux's electronic text was obtained from the Christian Classics Ethereal Library (CCEL).
+
+Source: https://www.ccel.org/ccel/jamieson/jfb.html''',
     );
 
     yield const LicenseEntryWithLineBreaks(
@@ -95,7 +197,10 @@ Digital editions prepared and corrected by the OpenScriptures project (contribut
 
 Source: https://github.com/openscriptures/strongs
   - greek/StrongsGreekDictionaryXML_1.4/strongsgreek.xml
-  - hebrew/StrongHebrewG.xml''',
+  - hebrew/StrongHebrewG.xml
+
+The public-domain status of the Greek dictionary is also documented by the CrossWire Bible Society:
+https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=StrongsGreek''',
     );
 
     yield const LicenseEntryWithLineBreaks(

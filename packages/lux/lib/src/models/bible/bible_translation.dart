@@ -49,8 +49,8 @@ enum BibleTranslation {
     asv => 'American Standard Version',
     oshb => 'Open Scriptures Hebrew Bible',
     lxx => 'Septuagint (Rahlfs)',
-    tr => 'Textus Receptus (1550/1894)',
-    byz => 'Byzantine Textform 2013',
+    tr => 'Textus Receptus (Stephens 1550)',
+    byz => 'Byzantine Textform 2005',
     statresgnt => 'Statistical Restoration Greek New Testament',
     sv => 'Statenvertaling',
     nrt => 'New Russian Translation 2010',
@@ -80,13 +80,6 @@ enum BibleTranslation {
     nlt =>
       'Holy Bible, New Living Translation, copyright © 1996, 2004, 2015 by Tyndale House Foundation. All rights reserved. Used by permission of Tyndale House Publishers, Carol Stream, Illinois 60188. All rights reserved.',
     nkjv => 'New King James Version®, Copyright© 1982, Thomas Nelson. All rights reserved.',
-    lxx =>
-      'Septuagint, Morphologically Tagged Rahlfs\'\nCopyrighted; free non-commercial distribution\nhttp://ccat.sas.upenn.edu',
-    tr => 'Textus Receptus (1550/1894)\nCreative Commons: BY-NC-SA 4.0',
-    byz =>
-      'The New Testament in the Original Greek: Byzantine Textform 2013\nby Maurice A. Robinson and William G. Pierpont\nCreative Commons: BY-NC-SA 4.0',
-    statresgnt =>
-      'Statistical Restoration Greek New Testament\nby Alan Bunning, Center for New Testament Restoration\nCreative Commons: BY 4.0',
     nrt => 'New Russian Translation NRT\nIBS, 2010',
     _ => null,
   };
