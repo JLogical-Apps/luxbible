@@ -86,28 +86,35 @@ class HomePage extends ConsumerWidget {
                       (context) => StyledSheet(
                         title: passage.format().toText(),
                         children: [
-                          StyledListItem(
+                          StyledListItem.navigation(
                             title: 'Practice'.toText(),
                             subtitle: 'Play an activity to practice this passage.'.toText(),
                             leading: Symbols.exercise.toIcon(),
                             onPressed: () async {
                               context.pop();
                               await context.showStyledSheet(
-                                (context) => StyledSelectionSheet(
+                                (context) => StyledSheet(
                                   title: 'Practice Activity'.toText(),
-                                  options: ActivityPlanType.values.where((type) => type.isPracticeActivity).toList(),
-                                  optionMapper: (type) => StyledSelectOption(
-                                    title: type.title().toText(),
-                                    subtitle: type.description().toText(),
-                                    leading: type.icon.toIcon(),
-                                  ),
+                                  children: ActivityPlanType.values
+                                      .where((type) => type.isPracticeActivity)
+                                      .map(
+                                        (type) => StyledListItem.navigation(
+                                          title: type.title().toText(),
+                                          subtitle: type.description().toText(),
+                                          leading: type.icon.toIcon(),
+                                          onPressed: () {
+                                            context.pop();
+                                          },
+                                        ),
+                                      )
+                                      .toList(),
                                 ),
                               );
                             },
                           ),
-                          StyledListItem(
+                          StyledListItem.navigation(
                             title: 'Read'.toText(),
-                            subtitle: 'Read this passage'.toText(),
+                            subtitle: 'Read this passage.'.toText(),
                             leading: Symbols.book.toIcon(),
                             onPressed: () {
                               context.pop();
@@ -120,9 +127,9 @@ class HomePage extends ConsumerWidget {
                               );
                             },
                           ),
-                          StyledListItem(
+                          StyledListItem.externalNavigation(
                             title: 'Study'.toText(),
-                            subtitle: 'Study this passage with Lux'.toText(),
+                            subtitle: 'Study this passage with Lux.'.toText(),
                             leading: ClipRRect(
                               borderRadius: .circular(8),
                               child: ColorFiltered(
@@ -143,7 +150,7 @@ class HomePage extends ConsumerWidget {
                           ),
                           StyledListItem(
                             title: 'Remove'.toText(),
-                            subtitle: 'Removes this passage from your Library'.toText(),
+                            subtitle: 'Removes this passage from your Library.'.toText(),
                             leading: Icon(Symbols.delete, color: context.colors.contentCritical),
                             onPressed: () {
                               context.pop();

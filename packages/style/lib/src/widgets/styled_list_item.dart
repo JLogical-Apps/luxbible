@@ -40,6 +40,18 @@ class StyledListItem extends StatelessWidget {
     this.showDividerOverride,
   }) : trailing = Icon(Symbols.chevron_right);
 
+  StyledListItem.externalNavigation({
+    super.key,
+    this.title,
+    this.subtitle,
+    this.thirdLine,
+    this.leading,
+    this.onPressed,
+    this.size = ComponentSize.md,
+    this.isEnabled = true,
+    this.showDividerOverride,
+  }) : trailing = Icon(Symbols.exit_to_app);
+
   StyledListItem.radio({
     super.key,
     this.title,
