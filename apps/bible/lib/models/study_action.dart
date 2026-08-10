@@ -11,7 +11,6 @@ import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
-import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -138,7 +137,11 @@ enum StudyAction {
                               StyledTag.sm(child: translation.title().toText()),
                           ],
                         ),
-                        subtitle: StyledLoading(child: verses?.mapIfNonNull((verses) => VerseText(verses: verses))),
+                        subtitle: StyledLoading(
+                          child: verses?.mapIfNonNull(
+                            (verses) => VerseText(redLetters: user.themeLayout.redLetters, verses: verses),
+                          ),
+                        ),
                         onPressed: () => ChapterPreviewPage.show(
                           context,
                           verseSelection: verseSelection,

@@ -13,7 +13,6 @@ import 'package:bible/ui/widgets/linked_study_panel.dart';
 import 'package:bible/ui/widgets/main_toolbar.dart';
 import 'package:bible/ui/widgets/onboarding_panel.dart';
 import 'package:bible/ui/widgets/passage_builder.dart';
-import 'package:bible/ui/widgets/passage_controller.dart';
 import 'package:bible/ui/widgets/selection_toolbar.dart';
 import 'package:bible/ui/widgets/visible_verse_utils.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';

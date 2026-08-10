@@ -2,9 +2,6 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/sheets/bible_sheet.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
@@ -19,7 +16,7 @@ class ChapterReferenceSearchPageResult {
   const ChapterReferenceSearchPageResult({required this.position, this.bookmarkId});
 }
 
-class ChapterReferenceSearchPage extends HookConsumerWidget {
+class ChapterReferenceSearchPage extends ConsumerWidget {
   final ChapterReference initialReference;
 
   const ChapterReferenceSearchPage({super.key, required this.initialReference});
@@ -27,306 +24,107 @@ class ChapterReferenceSearchPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-
-    final bookTextState = useState(initialReference.book.title(isPlural: true));
-    final bookTextSelectionState = useState<TextSelection>(
-      TextSelection(baseOffset: 0, extentOffset: bookTextState.value.length),
-    );
-    final isBookFullySelected =
-        bookTextSelectionState.value.baseOffset == 0 &&
-        bookTextSelectionState.value.extentOffset == bookTextState.value.length;
-
-    final chapterNumState = useState<int?>(initialReference.chapterNum);
-
-    final bookFocusNode = useListenable(useFocusNode());
-    final chapterFocusNode = useListenable(useFocusNode());
-    final viewModeState = useState(_ViewMode.book);
-
-    List<BookType> getMatchingBooks({String? text, bool onlyEqual = false}) => BookType.values
-        .where(
-          (book) => onlyEqual
-              ? ((text ?? bookTextState.value).toLowerCase() == book.title(isPlural: true).toLowerCase())
-              : (text ?? bookTextState.value).passesSearch(book.title(isPlural: true).keywords, similarityLimit: null),
-        )
-        .toList();
-    BookType? getBook({String? text}) =>
-        getMatchingBooks(text: text, onlyEqual: true).singleOrNull ?? getMatchingBooks(text: text).singleOrNull;
-
-    final book = getBook();
-    final previousBook = usePrevious(book);
-
-    final isFirstFrame = useIsFirstFrame();
-    usePostFrameEffect(() {
-      if (book != previousBook && !isFirstFrame) {
-        chapterNumState.value = null;
-      }
-      return null;
-    }, [book, previousBook]);
-
-    useOnListenableChange(bookFocusNode, () {
-      final book = getBook();
-      if (bookFocusNode.hasPrimaryFocus) {
-        viewModeState.value = _ViewMode.book;
-      }
-
-      if (!bookFocusNode.hasPrimaryFocus && book != null) {
-        bookTextState.value = book.title(isPlural: true).titleCase;
-      }
-    });
-
-    useOnFocusNodeFocused(chapterFocusNode, () => viewModeState.value = _ViewMode.chapter);
-
-    final scrollController = useScrollController();
-    final isScrollingDownState = useState(true);
-    useOnStickyScrollDirectionChanged(
-      scrollController,
-      (direction) => isScrollingDownState.value = direction == ScrollDirection.forward,
-    );
-
     final recents = user.viewHistory.where((position) => position.reference != initialReference).toList();
 
     return StyledPage(
       leading: StyledCircleButton.md(child: Symbols.close.toIcon(), onPressed: () => context.pop()),
-      body: Column(
-        children: [
-          DecoratedBox(
-            decoration: BoxDecoration(boxShadow: [StyledShadow.down(context)], color: context.colors.surfacePrimary),
-            child: Padding(
-              padding: EdgeInsets.all(16).copyWith(top: 0),
-              child: Row(
-                spacing: 8,
-                children: [
-                  Expanded(
-                    child: Stack(
-                      children: [
-                        StyledTextField(
-                          text: bookTextState.value,
-                          readOnly: !isScrollingDownState.value,
-                          onChanged: (text) {
-                            if (text.endsWith(' ') && getBook(text: text.trim()) != null) {
-                              bookTextState.value = text.trim();
-                              chapterFocusNode.requestFocus();
-                            } else {
-                              bookTextState.value = text;
-                            }
-                          },
-                          onTextEditValueChanged: (value) => bookTextSelectionState.value = value.selection,
-                          autofocus: true,
-                          suggestedText: book?.title(isPlural: true),
-                          hintText: t.navigation.book,
-                          autocorrect: false,
-                          textStyle: context.textStyle.paragraphLg,
-                          textCapitalization: .words,
-                          action: .next,
-                          textInputType: .text,
-                          focusNode: bookFocusNode,
-                        ),
-                        Positioned.fill(
-                          child: GestureDetector(
-                            behavior: HitTestBehavior.translucent,
-                            onTap: !isScrollingDownState.value ? () => isScrollingDownState.value = true : null,
-                          ),
-                        ),
-                      ],
-                    ),
+      body: ChapterReferenceSelector(
+        initialReference: initialReference,
+        trailing: SizedBox(
+          width: 112,
+          child: StyledMaterial(
+            padding: .all(12),
+            colorBuilder: .surfaceSecondary,
+            borderRadius: .circular(8),
+            onPressed: () async {
+              final translation = await BibleSheet.show(context);
+              if (translation != null) {
+                ref.updateUser((user) => user.withTranslation(translation));
+              }
+            },
+            child: Row(
+              spacing: 8,
+              children: [
+                Expanded(
+                  child: Text(
+                    user.translation.title(),
+                    style: context.textStyle.paragraphLg,
+                    maxLines: 1,
+                    overflow: .clip,
                   ),
-                  SizedBox(
-                    width: 60,
-                    child: StyledTextField(
-                      text: chapterNumState.value?.toString() ?? '',
-                      onChanged: book == null ? null : (text) => chapterNumState.value = int.tryParse(text),
-                      hintText: t.navigation.chapter,
-                      textStyle: context.textStyle.paragraphLg,
-                      textInputType: .numberWithOptions(signed: true),
-                      focusNode: chapterFocusNode,
-                      onSubmit: (text) {
-                        final chapterNum = int.tryParse(text);
-                        if (book == null || chapterNum == null) {
-                          return;
-                        }
-
-                        context.pop(ChapterReference(book: book, chapterNum: chapterNum).toResult());
-                      },
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        if (book != null) RangeTextInputFormatter(min: 1, max: book.bookInfo.numChapters),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 112,
-                    child: StyledMaterial(
-                      padding: .all(12),
-                      colorBuilder: .surfaceSecondary,
-                      borderRadius: .circular(8),
-                      onPressed: () async {
-                        final newTranslation = await BibleSheet.show(context);
-                        if (newTranslation != null) {
-                          ref.updateUser((user) => user.withTranslation(newTranslation));
-                        }
-                      },
-                      child: Row(
-                        spacing: 8,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              user.translation.title(),
-                              style: context.textStyle.paragraphLg,
-                              maxLines: 1,
-                              overflow: TextOverflow.clip,
-                            ),
-                          ),
-                          Icon(Symbols.keyboard_arrow_down, color: context.colors.contentTertiary),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                Icon(Symbols.keyboard_arrow_down, color: context.colors.contentTertiary),
+              ],
             ),
           ),
-          Expanded(
-            child: viewModeState.value == _ViewMode.book || book == null
-                ? ListView(
-                    key: ValueKey(BookType),
-                    controller: scrollController,
-                    children: [
-                      if (getMatchingBooks().isNotEmpty && (isBookFullySelected || bookTextState.value.isEmpty)) ...[
-                        if (user.bookmarkById.isNotEmpty)
-                          StyledSection(
-                            title: t.labels.bookmarks.toText(),
-                            padding: .only(top: 24),
-                            children: [
-                              SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                padding: MediaQuery.viewPaddingOf(context).onlyHorizontal + .symmetric(horizontal: 16),
-                                child: Row(
-                                  spacing: 16,
-                                  children: user.bookmarkById
-                                      .mapToIterable(
-                                        (bookmarkId, bookmark) => StyledTile(
-                                          onPressed: () =>
-                                              context.pop(bookmark.position.toResult(bookmarkId: bookmarkId)),
-                                          padding: .all(16),
-                                          child: Row(
-                                            spacing: 12,
-                                            crossAxisAlignment: .center,
-                                            children: [
-                                              Icon(
-                                                Symbols.bookmark,
-                                                color: bookmark.color.toHue(context.colors).medium,
-                                              ),
-                                              Column(
-                                                crossAxisAlignment: .start,
-                                                children: [
-                                                  Text(bookmark.name, style: context.textStyle.labelMd),
-                                                  Text(
-                                                    bookmark.chapter.format(),
-                                                    style: context.textStyle.paragraphSm.subtle(),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                      .toList(),
+        ),
+        onSelect: (position) => context.pop(ChapterReferenceSearchPageResult(position: position)),
+        aboveBooksBuilder: (context, onSelect) => [
+          if (user.bookmarkById.isNotEmpty)
+            StyledSection(
+              title: t.labels.bookmarks.toText(),
+              padding: .only(top: 24),
+              children: [
+                SingleChildScrollView(
+                  scrollDirection: .horizontal,
+                  padding: MediaQuery.viewPaddingOf(context).onlyHorizontal + .symmetric(horizontal: 16),
+                  child: Row(
+                    spacing: 16,
+                    children: user.bookmarkById
+                        .mapToIterable(
+                          (bookmarkId, bookmark) => StyledTile(
+                            onPressed: () => context.pop(
+                              ChapterReferenceSearchPageResult(position: bookmark.position, bookmarkId: bookmarkId),
+                            ),
+                            padding: .all(16),
+                            child: Row(
+                              spacing: 12,
+                              crossAxisAlignment: .center,
+                              children: [
+                                Icon(Symbols.bookmark, color: bookmark.color.toHue(context.colors).medium),
+                                Column(
+                                  crossAxisAlignment: .start,
+                                  children: [
+                                    Text(bookmark.name, style: context.textStyle.labelMd),
+                                    Text(bookmark.chapter.format(), style: context.textStyle.paragraphSm.subtle()),
+                                  ],
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        if (recents.isNotEmpty)
-                          StyledSection(
-                            title: t.navigation.recents.toText(),
-                            padding: .only(top: 24),
-                            children: recents
-                                .map(
-                                  (position) => StyledSwipeable(
-                                    key: ValueKey(position.reference),
-                                    actions: [
-                                      StyledSwipeableAction.delete(
-                                        onPressed: () => ref.updateUser(
-                                          (user) => user.copyWith(viewHistory: user.viewHistory.withRemoved(position)),
-                                        ),
-                                      ),
-                                    ],
-                                    child: StyledListItem(
-                                      leading: Symbols.history.toIcon(),
-                                      title: position.reference.format().toText(),
-                                      trailing: Symbols.expand_circle_right.toIcon(),
-                                      onPressed: () => context.pop(position.toResult()),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                          ),
-                      ],
-
-                      if (getMatchingBooks().isEmpty)
-                        Padding(
-                          padding: .all(16),
-                          child: StyledBanner(message: t.common.noMatches.toText()),
                         )
-                      else
-                        ...StyledSection(
-                          title: t.labels.books.toText(),
-                          padding: .only(top: 24),
-                          children: (isBookFullySelected ? BookType.values : getMatchingBooks())
-                              .map(
-                                (book) => StyledListItem(
-                                  title: book.title(isPlural: true).toText(),
-                                  trailing: Symbols.chevron_right.toIcon(),
-                                  onPressed: () {
-                                    bookTextState.value = book.title(isPlural: true);
-                                    WidgetsBinding.instance.addPostFrameCallback(
-                                      (_) => chapterFocusNode.requestFocus(),
-                                    );
-                                  },
-                                ),
-                              )
-                              .toList(),
-                        ).buildChildren(context),
-                    ],
-                  )
-                : StyledListView(
-                    key: ValueKey(ChapterReference),
-                    controller: scrollController,
-                    children:
-                        List.generate(
-                              book.bookInfo.numChapters,
-                              (chapterIndex) => ChapterReference(book: book, chapterNum: chapterIndex + 1),
-                            )
-                            .where(
-                              (chapterReference) =>
-                                  chapterNumState.value == null ||
-                                  chapterReference.chapterNum.toString().startsWith(chapterNumState.value.toString()),
-                            )
-                            .map(
-                              (chapterReference) => StyledListItem(
-                                title: chapterReference.format().toText(),
-                                trailing: Symbols.expand_circle_right.toIcon(),
-                                onPressed: () => context.pop(chapterReference.toResult()),
-                              ),
-                            )
-                            .toList(),
+                        .toList(),
                   ),
-          ),
+                ),
+              ],
+            ),
+          if (recents.isNotEmpty)
+            StyledSection(
+              title: t.navigation.recents.toText(),
+              padding: .only(top: 24),
+              children: recents
+                  .map(
+                    (position) => StyledSwipeable(
+                      key: ValueKey(position.reference),
+                      actions: [
+                        .delete(
+                          onPressed: () => ref.updateUser(
+                            (user) => user.copyWith(viewHistory: user.viewHistory.withRemoved(position)),
+                          ),
+                        ),
+                      ],
+                      child: StyledListItem(
+                        leading: Symbols.history.toIcon(),
+                        title: position.reference.format().toText(),
+                        trailing: Symbols.expand_circle_right.toIcon(),
+                        onPressed: () => onSelect(position),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
         ],
       ),
     );
   }
-}
-
-enum _ViewMode { book, chapter }
-
-extension on ChapterReference {
-  ChapterReferenceSearchPageResult toResult({String? bookmarkId}) => ChapterReferenceSearchPageResult(
-    position: ChapterPosition(reference: this),
-    bookmarkId: bookmarkId,
-  );
-}
-
-extension on ChapterPosition {
-  ChapterReferenceSearchPageResult toResult({String? bookmarkId}) =>
-      ChapterReferenceSearchPageResult(position: this, bookmarkId: bookmarkId);
 }

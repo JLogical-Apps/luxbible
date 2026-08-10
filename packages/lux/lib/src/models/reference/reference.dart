@@ -83,3 +83,24 @@ class Reference extends Equatable with ComparableOperators<Reference> {
 
   ChapterReference toChapterReference() => ChapterReference(book: book, chapterNum: chapterNum);
 }
+
+extension ReferenceListExtension on List<Reference> {
+  List<Reference> withPressedReference({
+    required Reference pressedReference,
+    bool rangeSelection = true,
+    List<Reference> Function(Reference reference)? expandReferences,
+  }) {
+    if (isEmpty && expandReferences != null) {
+      return expandReferences(pressedReference);
+    } else if (!contains(pressedReference) && isNotEmpty && rangeSelection) {
+      final anchorReference = first;
+      final anchors = [anchorReference, pressedReference];
+      return Reference.getReferencesBetween(
+        anchors.min,
+        anchors.max,
+      ).toList().withRemoved(anchorReference).withInsert(0, anchorReference);
+    } else {
+      return withToggle(pressedReference);
+    }
+  }
+}

@@ -1,5 +1,4 @@
 import 'package:bible/models/user/user.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lux/lux.dart';
@@ -34,17 +33,12 @@ class BibleSelection {
   void onReferencePressed(Reference reference, {required User user}) {
     if (textSelection != null) {
       textSelectionState.value = null;
-    } else if (references.isEmpty && user.verseSelection.expandToAnnotation) {
-      referencesState.value = user.getExpandedReferences(reference);
-    } else if (!references.contains(reference) && references.isNotEmpty && user.verseSelection.rangeSelection) {
-      final anchorReference = references.first;
-      final anchors = [anchorReference, reference];
-      referencesState.value = Reference.getReferencesBetween(
-        anchors.min,
-        anchors.max,
-      ).toList().withRemoved(anchorReference).withInsert(0, anchorReference);
     } else {
-      referencesState.value = references.withToggle(reference);
+      referencesState.value = references.withPressedReference(
+        pressedReference: reference,
+        rangeSelection: user.verseSelection.rangeSelection,
+        expandReferences: user.verseSelection.expandToAnnotation ? user.getExpandedReferences : null,
+      );
     }
   }
 

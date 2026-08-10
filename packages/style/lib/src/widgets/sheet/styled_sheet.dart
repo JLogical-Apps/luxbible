@@ -171,7 +171,6 @@ class StyledSheet<T> extends HookConsumerWidget {
             trailing: trailing,
             showDragHandle: showDragHandle,
           ),
-          gapH8,
           if (sheetNavigationContext != null && sheetNavigationContext.breadcrumbs.length > 1) ...[
             SingleChildScrollView(
               scrollDirection: .horizontal,

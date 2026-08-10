@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/lux.dart';
+import 'package:memory/licenses.dart';
 import 'package:memory/providers/root_ref.dart';
 import 'package:memory/providers/user_provider.dart';
 import 'package:memory/ui/pages/home_page.dart';
@@ -15,6 +16,8 @@ Future<void> main() async {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
+
+      await registerLicenses();
 
       final paths = await getPaths();
       final sharedPreferences = await SharedPreferences.getInstance();

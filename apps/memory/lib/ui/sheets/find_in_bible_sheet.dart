@@ -1,0 +1,72 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lux/lux.dart';
+import 'package:memory/ui/widgets/chapter_builder.dart';
+import 'package:style/style.dart';
+
+class FindInBibleSheet {
+  static Future<VerseSelection?> show(BuildContext context) => context.showStyledSheet<VerseSelection>((context) {
+    final chapterReferenceState = useState<ChapterReference?>(null);
+
+    final referencesState = useState(<Reference>[]);
+    final selection = referencesState.value.isEmpty ? null : VerseSelection.fromReferences(referencesState.value);
+
+    void deselectChapter() {
+      referencesState.value = [];
+      chapterReferenceState.value = null;
+    }
+
+    void selectChapter(ChapterPosition position) {
+      FocusManager.instance.primaryFocus?.unfocus();
+      referencesState.value = [];
+      chapterReferenceState.value = position.reference;
+    }
+
+    final selectorController = useChapterReferenceSelectorController();
+    useOnFocusNodeFocused(selectorController.bookFocusNode, deselectChapter);
+    useOnFocusNodeFocused(selectorController.chapterFocusNode, deselectChapter);
+
+    return StyledSheet.builder(
+      title: 'Find in Bible'.toText(),
+      aboveDivider: ChapterReferenceSelectorHeading(
+        controller: selectorController,
+        onSelect: selectChapter,
+        showShadow: false,
+      ),
+      controller: selectorController.scrollController,
+      shrinkWrap: false,
+      childrenBuilder: (context, ref) {
+        final chapterReference = chapterReferenceState.value;
+        if (chapterReference == null) {
+          return [ChapterReferenceSelectorBody(controller: selectorController, onSelect: selectChapter)];
+        }
+
+        final chapter = ref.watch(chapterProvider(translation: .bsb, chapterReference: chapterReference)).value;
+        return [
+          StyledLoading(
+            child: chapter == null
+                ? null
+                : ChapterBuilder(
+                    chapterReference: chapterReference,
+                    translation: .bsb,
+                    chapter: chapter,
+                    shrinkWrap: true,
+                    selection: selection,
+                    onReferencePressed: (reference) =>
+                        referencesState.value = referencesState.value.withPressedReference(pressedReference: reference),
+                    padding: .all(16),
+                  ),
+          ),
+        ];
+      },
+      buttonsBuilder: chapterReferenceState.value == null
+          ? null
+          : (context) => [
+              StyledRectButton.primary(
+                label: (selection == null ? 'Select Verses' : 'Add ${selection.format()}').toText(),
+                onPressed: selection == null ? null : () => context.pop(selection),
+              ),
+            ],
+    );
+  });
+}

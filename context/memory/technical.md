@@ -6,7 +6,7 @@ An initial Flutter app shell exists. It uses the shared `lux` and `style` packag
 
 The current app bundle includes only the BSB translation. Translation loading uses the shared Bible asset path and fails at runtime when an undeclared translation is requested.
 
-Lux Memory owns a small read-only Bible renderer built on the shared models and providers. It intentionally does not include Lux Bible's annotations, text selection, user-controlled reading layout, study-translation selection, or testament fallback behavior.
+Lux Memory uses the shared interactive passage renderer, passage controller, verse-range selection logic, and chapter selector from `packages/lux`. It supplies a fixed BSB configuration and does not include Lux Bible's annotations, text selection, user-controlled reading layout, study-translation selection, or testament fallback behavior.
 
 ## Application Boundary
 

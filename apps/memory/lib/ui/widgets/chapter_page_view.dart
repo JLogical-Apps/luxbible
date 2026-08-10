@@ -7,9 +7,9 @@ class ChapterPageView extends HookWidget {
   final ChapterReference chapterReference;
   final BibleTranslation translation;
 
-  final Widget Function(BuildContext context, ChapterReference chapterReference, Chapter chapter) itemBuilder;
+  final Widget Function(BuildContext, ChapterReference, Chapter, PassageController) itemBuilder;
 
-  final void Function(ChapterReference chapterReference)? onPageChanged;
+  final void Function(ChapterReference)? onPageChanged;
 
   const ChapterPageView({
     super.key,
@@ -25,9 +25,10 @@ class ChapterPageView extends HookWidget {
       controller: usePageController(initialPage: chapterReference.bibleChapterIndex),
       pageCount: ChapterReference.values.length,
       onPageChanged: (pageIndex) => onPageChanged?.call(.fromBibleChapterIndex(pageIndex)),
-      itemBuilder: (context, pageIndex) => Consumer(
+      itemBuilder: (context, pageIndex) => HookConsumer(
         builder: (context, ref, child) {
           final chapterReference = ChapterReference.fromBibleChapterIndex(pageIndex);
+          final passageController = usePassageController(chapterReference);
           final chapter = ref
               .watch(chapterProvider(translation: translation, chapterReference: chapterReference))
               .value;
@@ -35,7 +36,7 @@ class ChapterPageView extends HookWidget {
             return SizedBox.shrink();
           }
 
-          return itemBuilder(context, chapterReference, chapter);
+          return itemBuilder(context, chapterReference, chapter, passageController);
         },
       ),
     );
