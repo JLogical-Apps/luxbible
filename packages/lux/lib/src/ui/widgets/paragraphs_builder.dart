@@ -163,9 +163,13 @@ class ParagraphsBuilder extends HookWidget {
       ],
     );
 
-    final paragraphHitTesters = <ParagraphHitTester>[];
-    BibleTextSelectionWordAnchor? getAnchorAtGlobalPosition(Offset globalPosition) =>
-        paragraphHitTesters.map((tester) => tester.getAnchorAt(globalPosition)).nonNulls.firstOrNull;
+    final paragraphLayoutsRegistry = useRegistry<GlobalKey, ParagraphTextLayout>(listen: false);
+    BibleTextSelectionWordAnchor? getAnchorAtGlobalPosition(Offset globalPosition) => paragraphLayoutsRegistry
+        .items
+        .values
+        .map((layout) => getAnchorAt(globalPosition: globalPosition, layout: layout))
+        .nonNulls
+        .firstOrNull;
 
     final content = MediaQuery.withNoTextScaling(
       child: GestureDetector(
@@ -227,12 +231,10 @@ class ParagraphsBuilder extends HookWidget {
                     originalSpans: originalSpans,
                     useParagraphLayout: useParagraphs,
                     textDirection: textDirection,
-                    overlayBuilder: (context, layout) => buildParagraphOverlays(
-                      context,
-                      layout: layout,
-                      chapter: chapter,
-                      paragraphHitTesters: paragraphHitTesters,
-                    ),
+                    overlayBuilder: (context, layout) {
+                      useRegistryItem(paragraphLayoutsRegistry, layout.textKey, layout);
+                      return buildParagraphOverlays(context, layout: layout, chapter: chapter);
+                    },
                   );
 
             if (index == 0 || index == paragraphSpansByParagraph.length - 1) {
@@ -266,25 +268,9 @@ class ParagraphsBuilder extends HookWidget {
     BuildContext context, {
     required ParagraphTextLayout layout,
     required Chapter chapter,
-    required List<ParagraphHitTester> paragraphHitTesters,
   }) {
     final paragraph = layout.paragraph.as<VersesParagraph>();
     if (paragraph == null) return [];
-
-    paragraphHitTesters.add(
-      ParagraphHitTester(
-        textKey: layout.textKey,
-        resolve: (localPosition) => getOffsetAnchor(
-          characterOffset: layout.renderSpans.getCharacterOffsetFromPosition(
-            width: layout.maxWidth,
-            localPosition: localPosition,
-            textAlign: paragraph.type.textAlign,
-            textDirection: textDirection,
-          ),
-          paragraph: paragraph,
-        ),
-      ),
-    );
 
     return [
       ...buildVerseAnchorOverlays(
@@ -691,17 +677,11 @@ class ParagraphsBuilder extends HookWidget {
     }
     return null;
   }
-}
 
-class ParagraphHitTester {
-  final GlobalKey textKey;
-  final BibleTextSelectionWordAnchor? Function(Offset localPosition) resolve;
-
-  const ParagraphHitTester({required this.textKey, required this.resolve});
-
-  BibleTextSelectionWordAnchor? getAnchorAt(Offset globalPosition) {
-    final box = textKey.currentContext?.findRenderObject() as RenderBox?;
-    if (box == null) return null;
+  BibleTextSelectionWordAnchor? getAnchorAt({required Offset globalPosition, required ParagraphTextLayout layout}) {
+    final paragraph = layout.paragraph.as<VersesParagraph>();
+    final box = layout.textKey.currentContext?.findRenderObject() as RenderBox?;
+    if (paragraph == null || box == null) return null;
 
     final localPosition = box.globalToLocal(globalPosition);
     if (localPosition.dx < 0 ||
@@ -711,7 +691,15 @@ class ParagraphHitTester {
       return null;
     }
 
-    return resolve(localPosition);
+    return getOffsetAnchor(
+      characterOffset: layout.renderSpans.getCharacterOffsetFromPosition(
+        width: layout.maxWidth,
+        localPosition: localPosition,
+        textAlign: paragraph.type.textAlign,
+        textDirection: textDirection,
+      ),
+      paragraph: paragraph,
+    );
   }
 }
 
