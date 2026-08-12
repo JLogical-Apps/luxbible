@@ -39,8 +39,9 @@ class PassageBuilder extends HookConsumerWidget {
     final translation =
         this.translation?.effectiveFor(chapterReference.book) ?? configuration.translationForChapter(chapterReference);
 
-    final paragraphsProvider = verseSelectionParagraphsProvider(selection: verseSelection, translation: translation);
-    final paragraphsValue = ref.watch(paragraphsProvider);
+    final paragraphsValue = ref.watch(
+      verseSelectionParagraphsProvider(selection: verseSelection, translation: translation),
+    );
 
     if (paragraphsValue.hasError) {
       return BibleLoadingError(
@@ -48,7 +49,10 @@ class PassageBuilder extends HookConsumerWidget {
         error: paragraphsValue.error,
         fallbackTranslation: configuration.fallbackTranslation,
         onSwitchToFallback: configuration.onSwitchToFallback,
-        onRetry: () => ref.invalidate(paragraphsProvider, asReload: true),
+        onRetry: () => ref.invalidate(
+          chapterProvider(translation: translation, chapterReference: chapterReference),
+          asReload: true,
+        ),
         padding: padding,
         shrinkWrap: shrinkWrap,
         suggestTranslationSwap: this.translation == null,
