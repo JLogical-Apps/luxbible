@@ -11,9 +11,11 @@ class BibleLoadingError extends StatelessWidget {
   final Object? error;
   final Function() onRetry;
 
+  final bool suggestTranslationSwap;
   final BibleTranslation? fallbackTranslation;
   final Function()? onSwitchToFallback;
 
+  final bool shrinkWrap;
   final EdgeInsets padding;
 
   const BibleLoadingError({
@@ -21,9 +23,11 @@ class BibleLoadingError extends StatelessWidget {
     required this.translation,
     required this.onRetry,
     this.error,
+    this.suggestTranslationSwap = true,
     this.fallbackTranslation,
     this.onSwitchToFallback,
-    this.padding = const .all(16),
+    this.shrinkWrap = false,
+    this.padding = .zero,
   });
 
   @override
@@ -40,11 +44,16 @@ class BibleLoadingError extends StatelessWidget {
 
     return StyledListView.child(
       padding: padding,
+      shrinkWrap: shrinkWrap,
+      physics: NeverScrollableScrollPhysics(),
       child: Column(
         spacing: 12,
         children: [
           StyledTile.message(leading: Symbols.error.toIcon(), title: title.toText(), subtitle: subtitle.toText()),
-          if (fallbackTranslation != null && fallbackTranslation != translation && onSwitchToFallback != null)
+          if (suggestTranslationSwap &&
+              fallbackTranslation != null &&
+              fallbackTranslation != translation &&
+              onSwitchToFallback != null)
             StyledRectButton.secondary(
               label: t.common.switchTo(translation: fallbackTranslation.title()).toText(),
               onPressed: onSwitchToFallback,

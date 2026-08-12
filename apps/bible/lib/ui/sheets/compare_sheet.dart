@@ -35,11 +35,7 @@ class CompareSheet {
 
   static Widget _bibleParagraphs({required BibleTranslation translation, required VerseSelection verseSelection}) =>
       verseSelection.isInTranslation(translation)
-      ? PassageBuilder(
-          verseSelection: verseSelection,
-          translation: translation,
-          contentBuilder: (context, passage) => Padding(padding: .only(bottom: 16), child: passage),
-        )
+      ? PassageBuilder(verseSelection: verseSelection, translation: translation, padding: .only(bottom: 16))
       : Padding(
           padding: .only(bottom: 16),
           child: StyledTile.message(

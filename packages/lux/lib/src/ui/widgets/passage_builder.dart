@@ -13,7 +13,7 @@ class PassageBuilder extends HookConsumerWidget {
   final Widget Function(BuildContext, Widget)? contentBuilder;
   final PassageController? controller;
 
-  final EdgeInsetsGeometry? padding;
+  final EdgeInsets padding;
   final bool shrinkWrap;
   final Function(List<Paragraph>)? onParagraphsLoaded;
 
@@ -25,7 +25,7 @@ class PassageBuilder extends HookConsumerWidget {
     this.onNavigateToVerseSelection,
     this.contentBuilder,
     this.controller,
-    this.padding,
+    this.padding = .zero,
     this.shrinkWrap = true,
     this.onParagraphsLoaded,
   });
@@ -49,6 +49,9 @@ class PassageBuilder extends HookConsumerWidget {
         fallbackTranslation: configuration.fallbackTranslation,
         onSwitchToFallback: configuration.onSwitchToFallback,
         onRetry: () => ref.invalidate(paragraphsProvider, asReload: true),
+        padding: padding,
+        shrinkWrap: shrinkWrap,
+        suggestTranslationSwap: this.translation == null,
       );
     }
 
