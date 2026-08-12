@@ -1,14 +1,20 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lux/src/models/reference/chapter_reference.dart';
+import 'package:lux/src/models/reference/reference.dart';
+import 'package:utils_core/utils_core.dart';
 
 part 'chapter_position.freezed.dart';
 part 'chapter_position.g.dart';
 
 @freezed
 sealed class ChapterPosition with _$ChapterPosition {
+  const ChapterPosition._();
+
   const factory ChapterPosition({required ChapterReference reference, int? verseNum}) = _ChapterPosition;
 
   factory ChapterPosition.fromJson(Map<String, dynamic> json) => _$ChapterPositionFromJson(json);
+
+  Reference? getReference() => verseNum?.mapIfNonNull((verseNum) => reference.getReference(verseNum));
 }
 
 class ChapterPositionFromReference extends JsonKey {

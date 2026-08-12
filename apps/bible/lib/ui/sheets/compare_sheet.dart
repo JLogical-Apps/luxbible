@@ -1,5 +1,4 @@
 import 'package:bible/models/user/user.dart';
-import 'package:bible/ui/widgets/passage_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';

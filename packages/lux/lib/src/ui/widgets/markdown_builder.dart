@@ -7,7 +7,7 @@ import 'package:style/style.dart';
 
 class MarkdownBuilder extends HookWidget {
   final Markdown markdown;
-  final void Function(String text, String link)? onLinkPressed;
+  final Function(String text, String link)? onLinkPressed;
 
   final TextStyle? style;
   final TextAlign? textAlign;

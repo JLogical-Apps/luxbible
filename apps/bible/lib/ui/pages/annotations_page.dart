@@ -2,7 +2,6 @@ import 'package:bible/models/annotation.dart';
 import 'package:bible/models/highlight_style.dart';
 import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/pages/notebook_icon.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/widgets/highlight_style_icon.dart';
@@ -345,7 +344,7 @@ class AnnotationsPage extends HookConsumerWidget {
                                   ),
                                 ),
                               ),
-                              onPressed: () => ChapterPreviewPage.show(
+                              onPressed: () => PassagePreviewPage.show(
                                 context,
                                 verseSelection: annotation.selection.toVerseSelection(),
                                 onNavigateToVerseSelection: (selection) {

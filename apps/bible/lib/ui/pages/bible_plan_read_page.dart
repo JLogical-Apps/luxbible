@@ -1,9 +1,6 @@
 import 'package:bible/models/bible_plan.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/ui/pages/chapter_preview_page.dart';
-import 'package:bible/ui/widgets/bible_selection.dart';
-import 'package:bible/ui/widgets/passage_builder.dart';
 import 'package:bible/ui/widgets/selection_toolbar.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +38,7 @@ class BiblePlanReadPage extends HookConsumerWidget {
     final progress = user.getHydratedPlanProgress(planType: planType, planByType: plans);
     final currentProgress = progress?.progress.days[dayIndex] ?? BiblePlanDayProgress.incomplete();
 
-    final selection = useBibleSelection();
+    final selection = usePassageSelection(ref.watch(luxReaderConfigurationProvider).selection);
     void navigateToVerseSelection(VerseSelection verseSelection) => context.pop(verseSelection);
 
     final tabController = useTabController(
@@ -117,7 +114,7 @@ class BiblePlanReadPage extends HookConsumerWidget {
                                                 ? t.biblePlans.readInContext
                                                 : t.biblePlans.readEntireChapter)
                                             .toText(),
-                                    onPressed: () => ChapterPreviewPage.show(
+                                    onPressed: () => PassagePreviewPage.show(
                                       context,
                                       verseSelection: passage,
                                       onNavigateToVerseSelection: (selection) => context.pop(selection),

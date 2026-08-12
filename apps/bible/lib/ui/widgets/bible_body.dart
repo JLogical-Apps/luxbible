@@ -6,13 +6,9 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/widgets/audio_bible_panel.dart';
-import 'package:bible/ui/widgets/bible_selection.dart';
-import 'package:bible/ui/widgets/chapter_builder.dart';
-import 'package:bible/ui/widgets/chapter_page_view.dart';
 import 'package:bible/ui/widgets/linked_study_panel.dart';
 import 'package:bible/ui/widgets/main_toolbar.dart';
 import 'package:bible/ui/widgets/onboarding_panel.dart';
-import 'package:bible/ui/widgets/passage_builder.dart';
 import 'package:bible/ui/widgets/selection_toolbar.dart';
 import 'package:bible/ui/widgets/visible_verse_utils.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -25,6 +21,7 @@ import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:style/style.dart';
+import 'package:utils_core/utils_core.dart';
 
 const topBarHeight = 30.0;
 
@@ -34,6 +31,7 @@ class BibleBody extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
+    final readerConfiguration = ref.watch(luxReaderConfigurationProvider);
 
     final initialPosition = user.lastPosition;
 
@@ -47,7 +45,7 @@ class BibleBody extends HookConsumerWidget {
     final currentPage = (pageController.pageOrNull ?? initialPosition.reference.bibleChapterIndex).round();
     final currentChapterReference = ChapterReference.fromBibleChapterIndex(currentPage);
 
-    final selection = useBibleSelection();
+    final selection = usePassageSelection(readerConfiguration.selection);
 
     final navigationHistoryState = useState(
       NavigationHistory(
@@ -349,7 +347,8 @@ class BibleBody extends HookConsumerWidget {
     Widget biblePages({Key? key}) => ChapterPageView(
       key: key,
       controller: pageController,
-      user: user,
+      passageControllerForChapter: (reference) =>
+          reference == currentChapterReference ? currentPassageController : null,
       onSwipe: (reference) {
         softNavigateTo(reference);
         ref.markOnboardingStep(.swipeChapter);
@@ -358,90 +357,67 @@ class BibleBody extends HookConsumerWidget {
         isScrollingDownState.value = true;
         selection.clear();
       },
-      itemBuilder: (context, chapterReference, chapter) => SafeArea(
+      itemBuilder: (context, chapterReference, chapter, passageController) => SafeArea(
         left: true,
         right: !isSideLayout || panelCount == 0,
         bottom: false,
         child: HookBuilder(
           builder: (context) {
             final scrollController = chapterReference == currentChapterReference ? currentScrollController : null;
-
-            final isLoaded = useOnContentLoaded(
-              controller: scrollController,
-              onContentLoaded: (maxScrollExtent) {
-                final target = positionByReferenceRef.value[chapterReference];
-                if (target?.verseNum case final verseNum?) {
-                  final hasSection = chapter.paragraphs.getSectionIndexForVerse(verseNum) != null;
-                  currentPassageController.jumpToReference(
-                    chapterReference.getReference(verseNum),
-                    paragraphs: chapter.paragraphs,
-                    alignment: ((hasSection ? 24 : 0) + topBarHeight) / (passageKey.renderBox?.size.height ?? 128),
-                  );
-                }
-              },
-            );
-
             final showTopBar = useListenableSelector(
               scrollController,
               () => scrollController != null && scrollController.hasClients && scrollController.position.pixels > 60,
             );
 
-            return AnimatedOpacity(
-              opacity: isLoaded ? 1 : 0,
-              duration: Duration(milliseconds: 300),
-              curve: Curves.easeOutCubic,
-              child: Stack(
-                fit: .expand,
-                children: [
-                  StyledScrollbar(
-                    controller: scrollController,
-                    removePadding: isSideLayout && panelCount > 0,
-                    child: ChapterBuilder(
-                      controller: chapterReference == currentChapterReference ? currentPassageController : null,
-                      padding: .only(
-                        left: 24,
-                        top: MediaQuery.paddingOf(context).top + 40,
-                        right: 24,
-                        bottom: MediaQuery.paddingOf(context).bottom + 96,
-                      ),
-                      chapterReference: chapterReference,
-                      user: user,
-                      chapter: chapter,
-                      selection: selection,
-                      onNavigateToVerseSelection: navigateToVerseSelection,
-                    ),
+            return Stack(
+              fit: .expand,
+              children: [
+                ChapterBuilder(
+                  controller: passageController,
+                  scrollToSelection: positionByReferenceRef.value[chapterReference]?.getReference()?.mapIfNonNull(
+                    (reference) => VerseSelection.reference(reference),
                   ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    left: 0,
-                    child: AnimatedOpacity(
-                      key: ValueKey(scrollController?.hasClients),
-                      opacity: showTopBar ? 1 : 0,
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeInOutCubic,
-                      child: GestureDetector(
-                        onTap: showTopBar ? () => isScrollingDownState.value = true : null,
-                        child: Builder(
-                          builder: (context) => Container(
-                            color: context.colors.backgroundPrimary,
-                            padding:
-                                EdgeInsets.only(top: MediaQuery.paddingOf(context).top) + .symmetric(horizontal: 16),
-                            alignment: .centerLeft,
-                            child: Column(
-                              crossAxisAlignment: .start,
-                              children: [
-                                Text(chapterReference.format(), style: context.textStyle.labelSm.subtle()),
-                                StyledDivider(),
-                              ],
-                            ),
+                  padding: .only(
+                    left: 24,
+                    top: MediaQuery.paddingOf(context).top + 40,
+                    right: 24,
+                    bottom: MediaQuery.paddingOf(context).bottom + 96,
+                  ),
+                  chapterReference: chapterReference,
+                  chapter: chapter,
+                  selection: selection,
+                  onNavigateToVerseSelection: navigateToVerseSelection,
+                  removeScrollbarPadding: isSideLayout && panelCount > 0,
+                ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  left: 0,
+                  child: AnimatedOpacity(
+                    key: ValueKey(scrollController?.hasClients),
+                    opacity: showTopBar ? 1 : 0,
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeInOutCubic,
+                    child: GestureDetector(
+                      onTap: showTopBar ? () => isScrollingDownState.value = true : null,
+                      child: Builder(
+                        builder: (context) => Container(
+                          color: context.colors.backgroundPrimary,
+                          padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top) + .symmetric(horizontal: 16),
+                          alignment: .centerLeft,
+                          child: Column(
+                            crossAxisAlignment: .start,
+                            children: [
+                              Text(chapterReference.format(), style: context.textStyle.labelSm.subtle()),
+                              StyledDivider(),
+                            ],
                           ),
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             );
           },
         ),

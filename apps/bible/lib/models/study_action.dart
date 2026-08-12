@@ -6,7 +6,6 @@ import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/dialogs/tutorial_dialog.dart';
-import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_sheet.dart';
@@ -142,7 +141,7 @@ enum StudyAction {
                             (verses) => VerseText(redLetters: user.themeLayout.redLetters, verses: verses),
                           ),
                         ),
-                        onPressed: () => ChapterPreviewPage.show(
+                        onPressed: () => PassagePreviewPage.show(
                           context,
                           verseSelection: verseSelection,
                           onNavigateToVerseSelection: (selection) {

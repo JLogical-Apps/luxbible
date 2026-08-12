@@ -25,6 +25,9 @@ Future<void> main() async {
 
       ref = ProviderContainer(
         overrides: [
+          luxReaderConfigurationProvider.overrideWithValue(
+            LuxReaderConfiguration(translationForChapter: (_) => .bsb, selectedTranslation: .bsb),
+          ),
           pathServiceProvider.overrideWithValue(paths),
           sharedPreferencesServiceProvider.overrideWithValue(sharedPreferences),
           packageInfoProvider.overrideWithValue(packageInfo),

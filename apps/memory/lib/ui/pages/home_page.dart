@@ -10,7 +10,6 @@ import 'package:memory/models/activity_plan.dart';
 import 'package:memory/providers/user_provider.dart';
 import 'package:memory/ui/pages/activity_page.dart';
 import 'package:memory/ui/pages/add_passages_page.dart';
-import 'package:memory/ui/pages/chapter_preview_page.dart';
 import 'package:memory/utils/extensions/ref_extensions.dart';
 import 'package:style/style.dart';
 
@@ -125,7 +124,7 @@ class HomePage extends ConsumerWidget {
                             leading: Symbols.book.toIcon(),
                             onPressed: () {
                               context.pop();
-                              context.push(PassagePreviewPage(translation: .bsb, passage: passage));
+                              PassagePreviewPage.show(context, verseSelection: passage);
                             },
                           ),
                           StyledListItem(

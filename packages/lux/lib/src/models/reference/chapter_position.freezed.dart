@@ -203,8 +203,8 @@ return $default(_that.reference,_that.verseNum);case _:
 /// @nodoc
 @JsonSerializable()
 
-class _ChapterPosition implements ChapterPosition {
-  const _ChapterPosition({required this.reference, this.verseNum});
+class _ChapterPosition extends ChapterPosition {
+  const _ChapterPosition({required this.reference, this.verseNum}): super._();
   factory _ChapterPosition.fromJson(Map<String, dynamic> json) => _$ChapterPositionFromJson(json);
 
 @override final  ChapterReference reference;

@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:memory/ui/pages/chapter_preview_page.dart';
 import 'package:memory/ui/sheets/find_in_bible_sheet.dart';
 import 'package:style/style.dart';
 
@@ -39,7 +38,7 @@ class AddPassagesPage extends HookConsumerWidget {
                           subtitle: StyledLoading(
                             child: VerseText(verses: bible?.getPassageVerses(passage) ?? [], maxLines: 2),
                           ),
-                          onPressed: () => context.push(PassagePreviewPage(passage: passage, translation: .bsb)),
+                          onPressed: () => PassagePreviewPage.show(context, verseSelection: passage),
                         ),
                       ),
                     )

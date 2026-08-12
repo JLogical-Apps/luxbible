@@ -4,7 +4,6 @@ import 'package:bible/providers/dictionary_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/dialogs/tutorial_dialog.dart';
-import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/sheets/dictionary_sheet.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
 import 'package:bible/ui/widgets/search_location_button.dart';
@@ -267,7 +266,7 @@ class SearchPage extends HookConsumerWidget {
                                 highlightTerm: searchState.value,
                                 style: context.textStyle.paragraphSm.subtle(),
                               ),
-                        onPressed: () => ChapterPreviewPage.show(
+                        onPressed: () => PassagePreviewPage.show(
                           context,
                           verseSelection: VerseSelection.reference(result),
                           onNavigateToVerseSelection: (selection) =>

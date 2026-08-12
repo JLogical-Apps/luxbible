@@ -78,7 +78,7 @@ class FixedNumExtentPrecalculationPolicy extends ExtentPrecalculationPolicy {
   bool shouldPrecalculateExtents(ExtentPrecalculationContext context) => context.numberOfItems < numItems;
 }
 
-class BibleParagraphsBuilder extends HookWidget {
+class ParagraphsBuilder extends HookWidget {
   final List<Paragraph> paragraphs;
   final ChapterReference chapterReference;
   final BibleTranslation translation;
@@ -96,16 +96,17 @@ class BibleParagraphsBuilder extends HookWidget {
   final PassageController? controller;
   final EdgeInsetsGeometry? padding;
   final bool shrinkWrap;
+  final bool removeScrollbarPadding;
 
   final Widget? header;
   final Widget? footer;
 
-  const BibleParagraphsBuilder({
+  const ParagraphsBuilder({
     super.key,
     required this.paragraphs,
     required this.chapterReference,
     required this.translation,
-    this.configuration = const BibleParagraphsConfiguration(),
+    required this.configuration,
     this.underlinedReferences = const [],
     this.textSelection,
     this.decorations = const [],
@@ -116,6 +117,7 @@ class BibleParagraphsBuilder extends HookWidget {
     this.controller,
     this.padding,
     this.shrinkWrap = false,
+    this.removeScrollbarPadding = false,
     this.header,
     this.footer,
   });
@@ -165,7 +167,7 @@ class BibleParagraphsBuilder extends HookWidget {
     BibleTextSelectionWordAnchor? getAnchorAtGlobalPosition(Offset globalPosition) =>
         paragraphHitTesters.map((tester) => tester.getAnchorAt(globalPosition)).nonNulls.firstOrNull;
 
-    return MediaQuery.withNoTextScaling(
+    final content = MediaQuery.withNoTextScaling(
       child: GestureDetector(
         onLongPressStart: (details) {
           if (onTextSelectionUpdated == null || onTextSelectionLongPressed == null) return;
@@ -250,6 +252,14 @@ class BibleParagraphsBuilder extends HookWidget {
         ),
       ),
     );
+
+    return shrinkWrap
+        ? content
+        : StyledScrollbar(
+            controller: controller?.scrollController,
+            removePadding: removeScrollbarPadding,
+            child: content,
+          );
   }
 
   Iterable<Widget> buildParagraphOverlays(

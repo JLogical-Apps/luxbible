@@ -3,7 +3,6 @@ import 'package:bible/models/verse_selection_action.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/pages/text_selection_settings_page.dart';
 import 'package:bible/ui/pages/verse_selection_settings_page.dart';
-import 'package:bible/ui/widgets/bible_selection.dart';
 import 'package:bible/ui/widgets/text_selection_bottom_bar.dart';
 import 'package:bible/ui/widgets/verse_selection_bottom_bar.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,7 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
 class SelectionToolbar extends ConsumerWidget {
-  final BibleSelection selection;
+  final PassageSelectionController selection;
   final Function(VerseSelection) onNavigateToVerseSelection;
 
   const SelectionToolbar({super.key, required this.selection, required this.onNavigateToVerseSelection});
