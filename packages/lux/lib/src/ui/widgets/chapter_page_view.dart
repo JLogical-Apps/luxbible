@@ -5,7 +5,6 @@ import 'package:lux/lux.dart';
 class ChapterPageView extends ConsumerWidget {
   final PageController controller;
   final Widget Function(BuildContext, ChapterReference, Chapter, PassageController) itemBuilder;
-  final PassageController? Function(ChapterReference)? passageControllerForChapter;
   final Function(ChapterReference)? onPageChanged;
   final Function(ChapterReference)? onSwipe;
 
@@ -13,7 +12,6 @@ class ChapterPageView extends ConsumerWidget {
     super.key,
     required this.controller,
     required this.itemBuilder,
-    this.passageControllerForChapter,
     this.onPageChanged,
     this.onSwipe,
   });
@@ -29,8 +27,7 @@ class ChapterPageView extends ConsumerWidget {
       itemBuilder: (context, pageIndex) => HookConsumer(
         builder: (context, pageRef, child) {
           final chapterReference = ChapterReference.fromBibleChapterIndex(pageIndex);
-          final defaultPassageController = usePassageController(chapterReference);
-          final passageController = passageControllerForChapter?.call(chapterReference) ?? defaultPassageController;
+          final passageController = usePassageController(chapterReference);
           final translation = configuration.translationForChapter(chapterReference);
           final chapterValue = pageRef.watch(
             chapterProvider(translation: translation, chapterReference: chapterReference),

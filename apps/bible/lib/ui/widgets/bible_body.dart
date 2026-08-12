@@ -42,8 +42,6 @@ class BibleBody extends HookConsumerWidget {
       keys: [isSideLayout],
     );
 
-    useListenableSelector(pageController, () => pageController.pageOrNull?.round());
-
     final currentPage = (pageController.pageOrNull ?? initialPosition.reference.bibleChapterIndex).round();
     final currentChapterReference = ChapterReference.fromBibleChapterIndex(currentPage);
 
@@ -56,12 +54,16 @@ class BibleBody extends HookConsumerWidget {
     );
 
     final passageKey = useMemoized(() => GlobalKey());
-    final currentPassageController = usePassageController(currentChapterReference);
-    final currentScrollController = currentPassageController.scrollController;
+
+    final passageControllerRegistry = useRegistry<ChapterReference, PassageController>();
+
+    final currentPassageController = passageControllerRegistry[currentChapterReference];
+    final currentScrollController = currentPassageController?.scrollController;
+
     final currentControllerPassthrough = usePassthrough(currentPassageController);
     final positionByReferenceRef = useRef({initialPosition.reference: initialPosition});
 
-    final keyByReference = currentPassageController.keyByReference;
+    final keyByReference = currentPassageController?.keyByReference ?? {};
 
     void saveScroll() {
       final topReference = getVisibleReferencesInViewport(
@@ -125,7 +127,7 @@ class BibleBody extends HookConsumerWidget {
       await Future.delayed(Duration(milliseconds: 200));
 
       final controller = currentControllerPassthrough.value;
-      controller.scrollToReference(
+      controller?.scrollToReference(
         verseSelection.references.first,
         paragraphs: chapter.paragraphs,
         alignment: 0.2,
@@ -148,7 +150,7 @@ class BibleBody extends HookConsumerWidget {
 
     final isScrollingDownState = useState(true);
     final isAtBottom = useListenableSelector(currentScrollController, () {
-      final scrollPosition = currentScrollController.positionOrNull;
+      final scrollPosition = currentScrollController?.positionOrNull;
       return scrollPosition == null || !scrollPosition.hasContentDimensions
           ? false
           : scrollPosition.pixels >= scrollPosition.maxScrollExtent;
@@ -349,8 +351,6 @@ class BibleBody extends HookConsumerWidget {
     Widget biblePages({Key? key}) => ChapterPageView(
       key: key,
       controller: pageController,
-      passageControllerForChapter: (reference) =>
-          reference == currentChapterReference ? currentPassageController : null,
       onSwipe: (reference) {
         softNavigateTo(reference);
         ref.markOnboardingStep(.swipeChapter);
@@ -365,6 +365,8 @@ class BibleBody extends HookConsumerWidget {
         bottom: false,
         child: HookBuilder(
           builder: (context) {
+            useRegistryItem(passageControllerRegistry, chapterReference, passageController);
+
             final showTopBar = useListenableSelector(
               passageController.scrollController,
               () => (passageController.scrollController.positionOrNull?.pixels ?? 0) > 60,
@@ -563,7 +565,7 @@ class BibleBody extends HookConsumerWidget {
                             onScrollMainToReference: (reference) {
                               final hasSection =
                                   chapter?.paragraphs.getSectionIndexForVerse(reference.verseNum) != null;
-                              currentPassageController.scrollToReference(
+                              currentPassageController?.scrollToReference(
                                 reference,
                                 paragraphs: chapter?.paragraphs ?? [],
                                 alignment:
