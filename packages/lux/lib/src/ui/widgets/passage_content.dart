@@ -117,11 +117,12 @@ class PassageContent extends StatelessWidget {
       context,
       translation,
       animate
-          ? AnimatedOpacity(
-              opacity: paragraphs.isEmpty ? 0 : 1,
+          ? TweenAnimationBuilder(
+              tween: Tween(begin: 0.0, end: paragraphs.isEmpty ? 0.0 : 1.0),
               duration: Duration(milliseconds: 300),
               curve: Curves.easeInOutCubic,
               child: content,
+              builder: (context, opacity, child) => Opacity(opacity: opacity, child: child),
             )
           : content,
     );

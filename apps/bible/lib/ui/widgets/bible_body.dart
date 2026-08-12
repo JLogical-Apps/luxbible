@@ -42,6 +42,8 @@ class BibleBody extends HookConsumerWidget {
       keys: [isSideLayout],
     );
 
+    useListenableSelector(pageController, () => pageController.pageOrNull?.round());
+
     final currentPage = (pageController.pageOrNull ?? initialPosition.reference.bibleChapterIndex).round();
     final currentChapterReference = ChapterReference.fromBibleChapterIndex(currentPage);
 
@@ -363,10 +365,9 @@ class BibleBody extends HookConsumerWidget {
         bottom: false,
         child: HookBuilder(
           builder: (context) {
-            final scrollController = chapterReference == currentChapterReference ? currentScrollController : null;
             final showTopBar = useListenableSelector(
-              scrollController,
-              () => scrollController != null && scrollController.hasClients && scrollController.position.pixels > 60,
+              passageController.scrollController,
+              () => (passageController.scrollController.positionOrNull?.pixels ?? 0) > 60,
             );
             final scrollPosition = positionByReferenceRef.value[chapterReference];
 
@@ -402,7 +403,6 @@ class BibleBody extends HookConsumerWidget {
                   right: 0,
                   left: 0,
                   child: AnimatedOpacity(
-                    key: ValueKey(scrollController?.hasClients),
                     opacity: showTopBar ? 1 : 0,
                     duration: Duration(milliseconds: 300),
                     curve: Curves.easeInOutCubic,

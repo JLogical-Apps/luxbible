@@ -80,6 +80,7 @@ class ChapterBuilder extends HookConsumerWidget {
       shrinkWrap: shrinkWrap,
       removeScrollbarPadding: removeScrollbarPadding,
       showChapterAccessories: true,
+      animate: true,
     );
   }
 }
