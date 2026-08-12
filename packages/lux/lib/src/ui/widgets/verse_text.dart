@@ -64,7 +64,7 @@ class VerseText extends StatelessWidget {
             .toList(),
       ),
       maxLines: maxLines,
-      overflow: .ellipsis,
+      overflow: maxLines == null ? null : .ellipsis,
     );
   }
 }
