@@ -368,15 +368,23 @@ class BibleBody extends HookConsumerWidget {
               scrollController,
               () => scrollController != null && scrollController.hasClients && scrollController.position.pixels > 60,
             );
+            final scrollPosition = positionByReferenceRef.value[chapterReference];
 
             return Stack(
               fit: .expand,
               children: [
                 ChapterBuilder(
                   controller: passageController,
-                  scrollToSelection: positionByReferenceRef.value[chapterReference]?.getReference()?.mapIfNonNull(
+                  scrollToSelection: scrollPosition?.getReference()?.mapIfNonNull(
                     (reference) => VerseSelection.reference(reference),
                   ),
+                  scrollToSelectionAlignment:
+                      (switch (scrollPosition?.verseNum) {
+                            final verseNum? when chapter.paragraphs.getSectionIndexForVerse(verseNum) != null => 24,
+                            _ => 0,
+                          } +
+                          topBarHeight) /
+                      (passageKey.renderBox?.size.height ?? 128),
                   padding: .only(
                     left: 24,
                     top: MediaQuery.paddingOf(context).top + 40,

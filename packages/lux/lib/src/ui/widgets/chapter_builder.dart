@@ -9,6 +9,7 @@ class ChapterBuilder extends HookConsumerWidget {
   final PassageController? controller;
 
   final VerseSelection? scrollToSelection;
+  final double scrollToSelectionAlignment;
   final PassageSelectionController? selection;
   final Function(VerseSelection)? onNavigateToVerseSelection;
 
@@ -22,6 +23,7 @@ class ChapterBuilder extends HookConsumerWidget {
     required this.chapter,
     this.controller,
     this.scrollToSelection,
+    this.scrollToSelectionAlignment = 0.25,
     this.selection,
     this.onNavigateToVerseSelection,
     this.padding,
@@ -57,7 +59,11 @@ class ChapterBuilder extends HookConsumerWidget {
 
     usePostFrameEffect(() {
       if (scrollToSelection case final scrollToSelection?) {
-        controller.jumpToReference(scrollToSelection.references.first, paragraphs: chapter.paragraphs, alignment: 0.25);
+        controller.jumpToReference(
+          scrollToSelection.references.first,
+          paragraphs: chapter.paragraphs,
+          alignment: scrollToSelectionAlignment,
+        );
       }
     });
 
