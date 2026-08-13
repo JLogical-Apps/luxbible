@@ -18,8 +18,9 @@ Reference? currentAudioBibleReference(Ref ref) {
   }
 
   final timings = ref.watch(audioBibleTimingsProvider)[target.translation];
-  return target.passage.references.firstWhereOrNull((reference) {
-    final timing = timings?[reference];
-    return timing != null && position >= timing.start && position < timing.end;
-  });
+  final timedReferences = target.passage.references.where((reference) => timings?[reference] != null).toList();
+  return timedReferences.lastWhereOrNull(
+        (reference) => position >= timings![reference]!.start - Duration(milliseconds: 300),
+      ) ??
+      timedReferences.firstOrNull;
 }

@@ -104,4 +104,4 @@ final class CurrentAudioBibleReferenceProvider
 }
 
 String _$currentAudioBibleReferenceHash() =>
-    r'84234282e512299d5e54fd080669b931ae91b80c';
+    r'6db3b0426eae818daae892a6dec37f51901f81dd';

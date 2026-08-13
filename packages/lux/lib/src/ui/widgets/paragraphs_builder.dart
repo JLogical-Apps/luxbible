@@ -85,6 +85,7 @@ class ParagraphsBuilder extends HookWidget {
   final BibleParagraphsConfiguration configuration;
 
   final List<Reference> underlinedReferences;
+  final Reference? emphasizedReference;
   final BibleTextSelection? textSelection;
   final List<BiblePassageDecoration> decorations;
   final List<BibleInlineMarker> Function(Reference, Verse, int verseParagraphOffset)? markersBuilder;
@@ -108,6 +109,7 @@ class ParagraphsBuilder extends HookWidget {
     required this.translation,
     required this.configuration,
     this.underlinedReferences = const [],
+    this.emphasizedReference,
     this.textSelection,
     this.decorations = const [],
     this.markersBuilder,
@@ -137,6 +139,17 @@ class ParagraphsBuilder extends HookWidget {
   Widget build(BuildContext context) {
     final chapter = Chapter(paragraphs: paragraphs);
 
+    final referenceOpacities = useAnimatedTweens(
+      paragraphs
+          .getReferences(chapterReference)
+          .mapToMap(
+            (reference) => MapEntry(
+              reference,
+              Tween<double>(begin: 1, end: emphasizedReference == reference || emphasizedReference == null ? 1 : 0.5),
+            ),
+          ),
+    );
+
     final textSelectionStartAnchorState = useState<BibleTextSelectionWordAnchor?>(null);
     final extentPrecalculationPolicy = useMemoized(() => FixedNumExtentPrecalculationPolicy(numItems: 100));
 
@@ -145,6 +158,7 @@ class ParagraphsBuilder extends HookWidget {
         context,
         chapter: chapter,
         keyBySectionReference: controller?.keyBySectionReference,
+        referenceOpacities: referenceOpacities,
       ),
       [
         paragraphs,
@@ -160,6 +174,7 @@ class ParagraphsBuilder extends HookWidget {
         markersBuilder,
         controller?.keyBySectionReference,
         context.brightness,
+        referenceOpacities,
       ],
     );
 
@@ -473,6 +488,7 @@ class ParagraphsBuilder extends HookWidget {
     BuildContext context, {
     required Chapter chapter,
     required Map<Reference, GlobalKey>? keyBySectionReference,
+    required Map<Reference, double> referenceOpacities,
   }) {
     final bibleTextStyle = getBibleTextStyle(context);
 
@@ -493,6 +509,13 @@ class ParagraphsBuilder extends HookWidget {
                     paragraphIndex: paragraphIndex,
                     previousParagraph: previousParagraph,
                     bibleTextStyle: bibleTextStyle,
+                    opacity:
+                        chapter.paragraphs
+                            .getVerseIntroducedBySectionAt(paragraphIndex)
+                            ?.mapIfNonNull(
+                              (verse) => referenceOpacities[chapterReference.getReference(verse.verseNum)],
+                            ) ??
+                        1,
                     leadingSpans: [
                       if (chapter.paragraphs.getVerseIntroducedBySectionAt(paragraphIndex) case final verse?
                           when chapter.paragraphs.getSectionIndexForVerse(verse.verseNum) == paragraphIndex)
@@ -524,6 +547,7 @@ class ParagraphsBuilder extends HookWidget {
                             bibleTextStyle: bibleTextStyle,
                             isUnderlined: underlinedReferences.contains(reference),
                             textDirection: textDirection,
+                            opacity: referenceOpacities[reference] ?? 1,
                           ),
                         if (verse.originalVerse case final originalVerse?)
                           AnnotatedSizedWidgetSpan<VerseElement>(
@@ -552,20 +576,26 @@ class ParagraphsBuilder extends HookWidget {
                                 left: isLtr ? 0 : 4,
                                 bottom: 2 * configuration.sizeMultiplier,
                               ),
-                              child: StyledTag.sm(
-                                child: t.verseNumbering
-                                    .referenceLabel(translation: translation.title(), reference: originalVerse.format())
-                                    .toText(),
-                                onPressed: () => context.showStyledDialog(
-                                  (context) => StyledDialog.confirm(
-                                    title: t.bibleDetails.verseNumbering.toText(),
-                                    body: t.verseNumbering
-                                        .explanation(
-                                          translation: translation.title(),
-                                          reference: reference.format(),
-                                          originalReference: originalVerse.format(),
-                                        )
-                                        .toText(),
+                              child: Opacity(
+                                opacity: referenceOpacities[reference] ?? 1,
+                                child: StyledTag.sm(
+                                  child: t.verseNumbering
+                                      .referenceLabel(
+                                        translation: translation.title(),
+                                        reference: originalVerse.format(),
+                                      )
+                                      .toText(),
+                                  onPressed: () => context.showStyledDialog(
+                                    (context) => StyledDialog.confirm(
+                                      title: t.bibleDetails.verseNumbering.toText(),
+                                      body: t.verseNumbering
+                                          .explanation(
+                                            translation: translation.title(),
+                                            reference: reference.format(),
+                                            originalReference: originalVerse.format(),
+                                          )
+                                          .toText(),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -573,7 +603,14 @@ class ParagraphsBuilder extends HookWidget {
                           ),
                         ...markers
                             .where((marker) => marker.isLeading)
-                            .map((marker) => buildMarkerSpan(context, reference: reference, marker: marker)),
+                            .map(
+                              (marker) => buildMarkerSpan(
+                                context,
+                                reference: reference,
+                                marker: marker,
+                                opacity: referenceOpacities[reference] ?? 1,
+                              ),
+                            ),
                       ].maybeReversed(!isLtr),
                     ...verse.words.expandIndexed((wordIndex, word) {
                       if (word.text == null) {
@@ -594,7 +631,11 @@ class ParagraphsBuilder extends HookWidget {
                         text: word.text,
                         style: bibleTextStyle.body.copyWith(
                           fontFamily: isLtr ? null : hebrewFontFamily,
-                          color: word.redLetters && configuration.showRedLetters ? context.colors.red.dark : null,
+                          color:
+                              (word.redLetters && configuration.showRedLetters
+                                      ? context.colors.red.dark
+                                      : bibleTextStyle.body.color)
+                                  ?.withValues(alpha: referenceOpacities[reference] ?? 1),
                           fontStyle: word.italic || type.isItalic ? .italic : null,
                           decoration: underlinedReferences.contains(reference) ? .underline : null,
                         ),
@@ -609,7 +650,12 @@ class ParagraphsBuilder extends HookWidget {
                             .map(
                               (marker) => (
                                 marker.offset - wordVerseOffset,
-                                buildMarkerSpan(context, reference: reference, marker: marker),
+                                buildMarkerSpan(
+                                  context,
+                                  reference: reference,
+                                  marker: marker,
+                                  opacity: referenceOpacities[reference] ?? 1,
+                                ),
                               ),
                             )
                             .toList(),
@@ -639,7 +685,12 @@ class ParagraphsBuilder extends HookWidget {
     }).toList();
   }
 
-  WidgetSpan buildMarkerSpan(BuildContext context, {required Reference reference, required BibleInlineMarker marker}) {
+  WidgetSpan buildMarkerSpan(
+    BuildContext context, {
+    required Reference reference,
+    required BibleInlineMarker marker,
+    required double opacity,
+  }) {
     final bibleTextStyle = getBibleTextStyle(context);
     return AnnotatedSizedWidgetSpan<VerseElement>(
       annotation: VerseElement(
@@ -652,10 +703,13 @@ class ParagraphsBuilder extends HookWidget {
       child: OverflowBox(
         maxHeight: bibleTextStyle.body.totalHeight + 4,
         maxWidth: 30,
-        child: Underline(
-          isUnderlined: underlinedReferences.contains(reference),
-          style: bibleTextStyle.body,
-          child: marker.builder(context),
+        child: Opacity(
+          opacity: opacity,
+          child: Underline(
+            isUnderlined: underlinedReferences.contains(reference),
+            style: bibleTextStyle.body,
+            child: marker.builder(context),
+          ),
         ),
       ),
     );

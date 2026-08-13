@@ -443,7 +443,7 @@ class BibleBody extends HookConsumerWidget {
                             } +
                             topBarHeight) /
                         (passageKey.renderBox?.size.height ?? 128),
-                    underlinedReferences: followedReferenceForChapter == null ? [] : [followedReferenceForChapter],
+                    emphasizedReference: followedReferenceForChapter,
                     padding: .only(
                       left: 24,
                       top: MediaQuery.paddingOf(context).top + 40,

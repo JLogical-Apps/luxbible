@@ -366,7 +366,9 @@ It supports:
 - Background playback
 - System and notification playback controls
 - Persisted playback preferences
-- Verse-by-verse follow along with automatic scrolling and underlining during playback
+- Verse-by-verse follow along with automatic scrolling and animated emphasis during playback
+
+Verse 1 is emphasized during chapter introductions, and each later verse receives emphasis 300 milliseconds before its recorded start.
 
 Manually scrolling the passage or selecting a verse or text pauses playback. Starting playback clears the current selection.
 

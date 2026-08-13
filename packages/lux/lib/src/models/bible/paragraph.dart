@@ -31,6 +31,12 @@ sealed class Paragraph with _$Paragraph {
 }
 
 extension ParagraphListExtensions on List<Paragraph> {
+  List<Reference> getReferences(ChapterReference chapterReference) => whereType<VersesParagraph>()
+      .expand((paragraph) => paragraph.verses)
+      .distinct
+      .map((verse) => chapterReference.getReference(verse.verseNum))
+      .toList();
+
   Verse? getVerseIntroducedBySectionAt(int index) {
     final versesParagraph = this[index] is SectionParagraph
         ? skip(index + 1).whereType<VersesParagraph>().firstOrNull

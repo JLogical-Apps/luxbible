@@ -8,6 +8,7 @@ List<InlineSpan> buildSectionParagraphSpans({
   required Paragraph? previousParagraph,
   required BibleTextStyle bibleTextStyle,
   Iterable<InlineSpan> leadingSpans = const [],
+  double opacity = 1,
 }) {
   final SectionParagraph(:text, :type) = paragraph;
   return [
@@ -20,16 +21,18 @@ List<InlineSpan> buildSectionParagraphSpans({
     ...leadingSpans,
     TextSpan(
       text: text,
-      style: type.isLarge
-          ? type == .ms
-                ? bibleTextStyle.majorSection
-                : bibleTextStyle.section
-          : switch (type) {
-              .d => bibleTextStyle.smallHeading,
-              .qa => bibleTextStyle.smallSection,
-              .sp => bibleTextStyle.speakerHeading,
-              _ => throw UnimplementedError(),
-            },
+      style:
+          (type.isLarge
+                  ? type == .ms
+                        ? bibleTextStyle.majorSection
+                        : bibleTextStyle.section
+                  : switch (type) {
+                      .d => bibleTextStyle.smallHeading,
+                      .qa => bibleTextStyle.smallSection,
+                      .sp => bibleTextStyle.speakerHeading,
+                      _ => throw UnimplementedError(),
+                    })
+              .copyWith(color: bibleTextStyle.base.color?.withValues(alpha: opacity)),
     ),
     if (type.isLarge)
       TextSpan(text: '\n ', style: bibleTextStyle.body.copyWith(height: 0.8))
@@ -44,6 +47,7 @@ AnnotatedSizedWidgetSpan<VerseElement> buildVerseNumberSpan({
   required BibleTextStyle bibleTextStyle,
   required bool isUnderlined,
   required TextDirection textDirection,
+  double opacity = 1,
 }) => AnnotatedSizedWidgetSpan<VerseElement>(
   annotation: VerseElement(
     anchor: BibleTextSelectionWordAnchor.fromReference(reference: reference, characterOffset: 0),
@@ -54,9 +58,12 @@ AnnotatedSizedWidgetSpan<VerseElement> buildVerseNumberSpan({
   alignment: .middle,
   child: Padding(
     padding: .only(right: textDirection == .ltr ? 4 : 0, left: textDirection == .ltr ? 0 : 4),
-    child: Text(
-      verseNumber.toString(),
-      style: bibleTextStyle.verseNumber.copyWith(decoration: isUnderlined ? .underline : null),
+    child: Opacity(
+      opacity: opacity,
+      child: Text(
+        verseNumber.toString(),
+        style: bibleTextStyle.verseNumber.copyWith(decoration: isUnderlined ? .underline : null),
+      ),
     ),
   ),
 );

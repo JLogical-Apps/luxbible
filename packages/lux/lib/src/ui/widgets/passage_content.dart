@@ -15,6 +15,7 @@ class PassageContent extends StatelessWidget {
 
   final PassageSelectionController? selection;
   final List<Reference> underlinedReferences;
+  final Reference? emphasizedReference;
   final Function(VerseSelection)? onNavigateToVerseSelection;
 
   final PassageController? controller;
@@ -37,6 +38,7 @@ class PassageContent extends StatelessWidget {
     required this.translation,
     this.selection,
     this.underlinedReferences = const [],
+    this.emphasizedReference,
     this.onNavigateToVerseSelection,
     this.controller,
     this.padding,
@@ -75,6 +77,7 @@ class PassageContent extends StatelessWidget {
       translation: translation,
       configuration: configuration.paragraphsConfiguration(context, translation),
       underlinedReferences: underlinedReferences.nullIfEmpty?.toList() ?? selection?.references ?? [],
+      emphasizedReference: emphasizedReference,
       textSelection: selection?.textSelection,
       decorations: configuration.decorationsBuilder(context, chapterReference, translation),
       markersBuilder: configuration.markersBuilder == null

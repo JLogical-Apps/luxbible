@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -176,4 +177,61 @@ class Registry<K, V> extends ChangeNotifier {
     _isDisposed = true;
     super.dispose();
   }
+}
+
+Map<K, T> useAnimatedTweens<K, T extends Object?>(Map<K, Tween<T>> tweens) {
+  final controller = useAnimationController(duration: Duration(milliseconds: 300));
+  final progress = useAnimation(controller);
+
+  final curve = Curves.easeInOutCubic;
+
+  final activeTweensRef = useRef(<K, Tween<T>>{});
+  final targetValuesRef = useRef<Map<K, T?>?>(null);
+  final restartVersionRef = useRef(0);
+
+  assert(
+    tweens.values.every((tween) => tween.end != null),
+    'Tweens provided to useAnimatedTweens must have non-null end values.',
+  );
+
+  final targetValues = tweens.map((key, tween) => MapEntry(key, tween.end));
+  final targetsChanged = !mapEquals(targetValuesRef.value, targetValues);
+  var shouldRestart = false;
+
+  if (targetsChanged) {
+    final activeTweens = activeTweensRef.value;
+    shouldRestart = tweens.entries.any((entry) {
+      final activeTween = activeTweens[entry.key];
+      return activeTween == null
+          ? (entry.value.begin ?? entry.value.end) != entry.value.end
+          : activeTween.end != entry.value.end;
+    });
+
+    final currentProgress = curve.transform(progress);
+    activeTweensRef.value = tweens.map((key, tween) {
+      final activeTween = activeTweens[key];
+      if (activeTween == null) {
+        tween.begin ??= tween.end;
+        return MapEntry(key, tween);
+      }
+
+      if (shouldRestart) {
+        activeTween.begin = activeTween.transform(currentProgress);
+        activeTween.end = tween.end;
+      }
+      return MapEntry(key, activeTween);
+    });
+
+    targetValuesRef.value = targetValues;
+    if (shouldRestart) restartVersionRef.value++;
+  }
+
+  useEffect(() {
+    if (restartVersionRef.value == 0) return null;
+    controller.forward(from: 0);
+    return null;
+  }, [controller, restartVersionRef.value]);
+
+  final curvedProgress = curve.transform(shouldRestart ? 0 : progress);
+  return activeTweensRef.value.map((key, tween) => MapEntry(key, tween.transform(curvedProgress)));
 }
