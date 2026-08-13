@@ -26,6 +26,7 @@ class PassageContent extends StatelessWidget {
   final bool animate;
 
   final Widget Function(BuildContext, Widget)? contentBuilder;
+  final Widget? footer;
 
   const PassageContent({
     super.key,
@@ -43,12 +44,30 @@ class PassageContent extends StatelessWidget {
     this.showChapterAccessories = false,
     this.animate = false,
     this.contentBuilder,
+    this.footer,
   });
 
   @override
   Widget build(BuildContext context) {
     final selection = this.selection;
     final onNavigateToVerseSelection = this.onNavigateToVerseSelection;
+
+    final footerChildren = [
+      if (showChapterAccessories &&
+          (translation.copyright != null || translation.source is ApiBibleTranslationSource)) ...[
+        if (translation.copyright case final copyright?)
+          Text(copyright, style: context.textStyle.paragraphXs.subtle(), textAlign: .center),
+        if (translation.source is ApiBibleTranslationSource)
+          MarkdownBuilder(
+            Markdown(t.selectionUi.sourceApiBible),
+            style: context.textStyle.paragraphXs.subtle(),
+            onLinkPressed: (_, _) => launchUrl(Uri.https('api.bible')),
+            textAlign: .center,
+          ),
+      ],
+      ?footer,
+    ];
+
     final passage = ParagraphsBuilder(
       paragraphs: paragraphs,
       chapterReference: chapterReference,
@@ -93,23 +112,7 @@ class PassageContent extends StatelessWidget {
                   .toText(),
             )
           : null,
-      footer:
-          showChapterAccessories && (translation.copyright != null || translation.source is ApiBibleTranslationSource)
-          ? Column(
-              spacing: 12,
-              children: [
-                if (translation.copyright case final copyright?)
-                  Text(copyright, style: context.textStyle.paragraphXs.subtle(), textAlign: .center),
-                if (translation.source is ApiBibleTranslationSource)
-                  MarkdownBuilder(
-                    Markdown(t.selectionUi.sourceApiBible),
-                    style: context.textStyle.paragraphXs.subtle(),
-                    onLinkPressed: (_, _) => launchUrl(Uri.https('api.bible')),
-                    textAlign: .center,
-                  ),
-              ],
-            )
-          : null,
+      footer: footerChildren.isEmpty ? null : Column(spacing: 12, children: footerChildren),
     );
 
     final content = contentBuilder?.call(context, passage) ?? passage;

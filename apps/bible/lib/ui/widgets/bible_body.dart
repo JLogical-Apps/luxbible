@@ -609,7 +609,6 @@ class BibleBody extends HookConsumerWidget {
                               translation: translation,
                               controller: controller,
                               padding: .all(16),
-                              shrinkWrap: false,
                               onParagraphsLoaded: (paragraphs) {
                                 paragraphsState.value = paragraphs;
                                 onContentLoaded();

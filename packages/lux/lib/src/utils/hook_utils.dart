@@ -148,8 +148,8 @@ Registry<K, V> useRegistry<K, V>({bool listen = true}) =>
 
 void useRegistryItem<K, V>(Registry<K, V> registry, K key, V item) => useEffect(() {
   WidgetsBinding.instance.addPostFrameCallback((_) => registry.register(key, item));
-  return () => WidgetsBinding.instance.addPostFrameCallback((_) => registry.disposeOf(key));
-}, []);
+  return () => WidgetsBinding.instance.addPostFrameCallback((_) => registry.disposeOf(key, item));
+}, [registry, key, item]);
 
 class Registry<K, V> extends ChangeNotifier {
   final Map<K, V> items;
@@ -163,7 +163,8 @@ class Registry<K, V> extends ChangeNotifier {
     if (!_isDisposed) notifyListeners();
   }
 
-  void disposeOf(K key) {
+  void disposeOf(K key, V item) {
+    if (!identical(items[key], item)) return;
     items.remove(key);
     if (!_isDisposed) notifyListeners();
   }

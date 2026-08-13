@@ -97,32 +97,16 @@ class BiblePlanReadPage extends HookConsumerWidget {
                         verseSelection: passage,
                         selection: selection,
                         onNavigateToVerseSelection: navigateToVerseSelection,
-                        contentBuilder: (context, passageContent) => KeyedScrollTransformer(
-                          scrollKey: 'passage',
-                          child: StyledScrollbar(
-                            child: SingleChildScrollView(
-                              physics: AlwaysScrollableScrollPhysics(),
-                              padding: .symmetric(horizontal: 24, vertical: 16),
-                              child: Column(
-                                crossAxisAlignment: .start,
-                                spacing: 16,
-                                children: [
-                                  passageContent,
-                                  StyledRectButton.secondary(
-                                    label:
-                                        (passage.isChapter
-                                                ? t.biblePlans.readInContext
-                                                : t.biblePlans.readEntireChapter)
-                                            .toText(),
-                                    onPressed: () => PassagePreviewPage.show(
-                                      context,
-                                      verseSelection: passage,
-                                      onNavigateToVerseSelection: (selection) => context.pop(selection),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                        padding: .symmetric(horizontal: 24, vertical: 16),
+                        contentBuilder: (context, passageContent) =>
+                            KeyedScrollTransformer(scrollKey: 'passage', child: passageContent),
+                        footer: StyledRectButton.secondary(
+                          label: (passage.isChapter ? t.biblePlans.readInContext : t.biblePlans.readEntireChapter)
+                              .toText(),
+                          onPressed: () => PassagePreviewPage.show(
+                            context,
+                            verseSelection: passage,
+                            onNavigateToVerseSelection: (selection) => context.pop(selection),
                           ),
                         ),
                       ),

@@ -19,6 +19,7 @@ class PreviewPassageSheet {
               padding: .all(16),
               child: PassageBuilder(
                 verseSelection: selection,
+                shrinkWrap: true,
                 onNavigateToVerseSelection: (selection) {
                   context.pop();
                   onNavigateToVerseSelection?.call(selection);

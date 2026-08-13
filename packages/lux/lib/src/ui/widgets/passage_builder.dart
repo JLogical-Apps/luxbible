@@ -11,6 +11,7 @@ class PassageBuilder extends HookConsumerWidget {
   final Function(VerseSelection)? onNavigateToVerseSelection;
 
   final Widget Function(BuildContext, Widget)? contentBuilder;
+  final Widget? footer;
   final PassageController? controller;
 
   final EdgeInsets padding;
@@ -24,9 +25,10 @@ class PassageBuilder extends HookConsumerWidget {
     this.selection,
     this.onNavigateToVerseSelection,
     this.contentBuilder,
+    this.footer,
     this.controller,
     this.padding = .zero,
-    this.shrinkWrap = true,
+    this.shrinkWrap = false,
     this.onParagraphsLoaded,
   });
 
@@ -78,6 +80,7 @@ class PassageBuilder extends HookConsumerWidget {
       shrinkWrap: shrinkWrap,
       animate: true,
       contentBuilder: contentBuilder,
+      footer: footer,
     );
   }
 }
