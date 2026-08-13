@@ -233,6 +233,7 @@ enum StudyAction {
             tabTitles: user.commentariesOrDefault.map((type) => type.title().toText()).toList(),
           ),
           showDivider: false,
+          childrenKey: ValueKey(selectedCommentary),
           childrenWrapper: (context, child) => SwipeGestureDetector(
             index: () => index,
             maxIndex: tabController.length,
