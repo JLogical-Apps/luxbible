@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'bible_plan.dart';
@@ -9,6 +9,7 @@ part of 'bible_plan.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -66,7 +67,7 @@ class _$BiblePlanCopyWithImpl<$Res>
 /// Create a copy of BiblePlan
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? days = null,}) {
-  return _then(_self.copyWith(
+  return _then(BiblePlan(
 name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,days: null == days ? _self.days : days // ignore: cast_nullable_to_non_nullable
 as List<BiblePlanDay>,
@@ -204,7 +205,7 @@ return $default(_that.name,_that.days);case _:
 @JsonSerializable()
 
 class _BiblePlan extends BiblePlan {
-  const _BiblePlan({required this.name, required final  List<BiblePlanDay> days}): _days = days,super._();
+  const _BiblePlan({required this.name, required  List<BiblePlanDay> days}): _days = days,super._();
   factory _BiblePlan.fromJson(Map<String, dynamic> json) => _$BiblePlanFromJson(json);
 
 @override final  String name;
@@ -332,7 +333,7 @@ class _$BiblePlanDayCopyWithImpl<$Res>
 /// Create a copy of BiblePlanDay
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? passages = null,}) {
-  return _then(_self.copyWith(
+  return _then(BiblePlanDay(
 passages: null == passages ? _self.passages : passages // ignore: cast_nullable_to_non_nullable
 as List<VerseSelection>,
   ));
@@ -469,7 +470,7 @@ return $default(_that.passages);case _:
 @JsonSerializable()
 
 class _BiblePlanDay extends BiblePlanDay {
-  const _BiblePlanDay({final  List<VerseSelection> passages = const []}): _passages = passages,super._();
+  const _BiblePlanDay({ List<VerseSelection> passages = const []}): _passages = passages,super._();
   factory _BiblePlanDay.fromJson(Map<String, dynamic> json) => _$BiblePlanDayFromJson(json);
 
  final  List<VerseSelection> _passages;
@@ -595,7 +596,7 @@ class _$BiblePlanProgressCopyWithImpl<$Res>
 /// Create a copy of BiblePlanProgress
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? days = null,}) {
-  return _then(_self.copyWith(
+  return _then(BiblePlanProgress(
 days: null == days ? _self.days : days // ignore: cast_nullable_to_non_nullable
 as List<BiblePlanDayProgress>,
   ));
@@ -732,7 +733,7 @@ return $default(_that.days);case _:
 @JsonSerializable()
 
 class _BiblePlanProgress extends BiblePlanProgress {
-  const _BiblePlanProgress({required final  List<BiblePlanDayProgress> days}): _days = days,super._();
+  const _BiblePlanProgress({required  List<BiblePlanDayProgress> days}): _days = days,super._();
   factory _BiblePlanProgress.fromJson(Map<String, dynamic> json) => _$BiblePlanProgressFromJson(json);
 
  final  List<BiblePlanDayProgress> _days;
@@ -993,7 +994,7 @@ return complete();case _:
 @JsonSerializable()
 
 class IncompleteBiblePlanDayProgress extends BiblePlanDayProgress {
-  const IncompleteBiblePlanDayProgress({final  Set<VerseSelection> completedPassages = const {}, final  String? $type}): _completedPassages = completedPassages,$type = $type ?? 'incomplete',super._();
+  const IncompleteBiblePlanDayProgress({ Set<VerseSelection> completedPassages = const {},  String? $type}): _completedPassages = completedPassages,$type = $type ?? 'incomplete',super._();
   factory IncompleteBiblePlanDayProgress.fromJson(Map<String, dynamic> json) => _$IncompleteBiblePlanDayProgressFromJson(json);
 
  final  Set<VerseSelection> _completedPassages;
@@ -1072,7 +1073,7 @@ as Set<VerseSelection>,
 @JsonSerializable()
 
 class CompleteBiblePlanDayProgress extends BiblePlanDayProgress {
-  const CompleteBiblePlanDayProgress({final  String? $type}): $type = $type ?? 'complete',super._();
+  const CompleteBiblePlanDayProgress({ String? $type}): $type = $type ?? 'complete',super._();
   factory CompleteBiblePlanDayProgress.fromJson(Map<String, dynamic> json) => _$CompleteBiblePlanDayProgressFromJson(json);
 
 

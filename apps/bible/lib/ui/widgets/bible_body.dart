@@ -2,6 +2,8 @@ import 'package:bible/models/main_action.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/providers/app_bible_provider.dart';
+import 'package:bible/providers/audio_bible_provider.dart';
+import 'package:bible/providers/audio_bible_timings_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
@@ -46,6 +48,25 @@ class BibleBody extends HookConsumerWidget {
     final currentChapterReference = ChapterReference.fromBibleChapterIndex(currentPage);
 
     final selection = usePassageSelection(readerConfiguration.selection);
+    final isAudioBiblePlaying = ref.watch(isAudioBiblePlayingProvider);
+    final audioBibleTarget = ref.watch(audioBibleTargetProvider);
+    final followedReference = user.audio.followAlong && audioBibleTarget?.context == .bible
+        ? ref.watch(currentAudioBibleReferenceProvider)
+        : null;
+
+    useEffect(() {
+      if (isAudioBiblePlaying && selection.hasSelection) {
+        selection.clear();
+      }
+      return null;
+    }, [isAudioBiblePlaying]);
+
+    useEffect(() {
+      if (selection.hasSelection && isAudioBiblePlaying) {
+        ref.read(audioBibleProvider.notifier).pause();
+      }
+      return null;
+    }, [selection.hasSelection]);
 
     final navigationHistoryState = useState(
       NavigationHistory(
@@ -383,33 +404,56 @@ class BibleBody extends HookConsumerWidget {
               () => (passageController.scrollController.positionOrNull?.pixels ?? 0) > 60,
             );
             final scrollPosition = positionByReferenceRef.value[chapterReference];
+            final followedChapterReference = followedReference?.toChapterReference();
+            final followedReferenceForChapter = followedChapterReference == chapterReference ? followedReference : null;
+
+            usePostFrameEffect(() {
+              if (followedReferenceForChapter != null) {
+                passageController.scrollToReference(
+                  followedReferenceForChapter,
+                  paragraphs: chapter.paragraphs,
+                  alignment: 0.2,
+                );
+              }
+            }, [followedReferenceForChapter]);
 
             return Stack(
               fit: .expand,
               children: [
-                ChapterBuilder(
-                  controller: passageController,
-                  scrollToSelection: scrollPosition?.getReference()?.mapIfNonNull(
-                    (reference) => VerseSelection.reference(reference),
+                NotificationListener<ScrollStartNotification>(
+                  onNotification: (notification) {
+                    if (notification.dragDetails != null && user.audio.followAlong) {
+                      ref.updateUser((user) => user.copyWith.audio(followAlong: false));
+                    }
+                    return false;
+                  },
+                  child: ChapterBuilder(
+                    controller: passageController,
+                    scrollToSelection: scrollPosition?.getReference()?.mapIfNonNull(
+                      (reference) => VerseSelection.reference(reference),
+                    ),
+                    scrollToSelectionAlignment:
+                        (switch (scrollPosition?.verseNum) {
+                              final verseNum? when chapter.paragraphs.verseHasSection(verseNum) => 24,
+                              _ => 0,
+                            } +
+                            topBarHeight) /
+                        (passageKey.renderBox?.size.height ?? 128),
+                    underlinedReferences: followedReferenceForChapter == null || !isAudioBiblePlaying
+                        ? []
+                        : [followedReferenceForChapter],
+                    padding: .only(
+                      left: 24,
+                      top: MediaQuery.paddingOf(context).top + 40,
+                      right: 24,
+                      bottom: MediaQuery.paddingOf(context).bottom + 96,
+                    ),
+                    chapterReference: chapterReference,
+                    chapter: chapter,
+                    selection: selection,
+                    onNavigateToVerseSelection: navigateToVerseSelection,
+                    removeScrollbarPadding: isSideLayout && panelCount > 0,
                   ),
-                  scrollToSelectionAlignment:
-                      (switch (scrollPosition?.verseNum) {
-                            final verseNum? when chapter.paragraphs.verseHasSection(verseNum) => 24,
-                            _ => 0,
-                          } +
-                          topBarHeight) /
-                      (passageKey.renderBox?.size.height ?? 128),
-                  padding: .only(
-                    left: 24,
-                    top: MediaQuery.paddingOf(context).top + 40,
-                    right: 24,
-                    bottom: MediaQuery.paddingOf(context).bottom + 96,
-                  ),
-                  chapterReference: chapterReference,
-                  chapter: chapter,
-                  selection: selection,
-                  onNavigateToVerseSelection: navigateToVerseSelection,
-                  removeScrollbarPadding: isSideLayout && panelCount > 0,
                 ),
                 Positioned(
                   top: 0,

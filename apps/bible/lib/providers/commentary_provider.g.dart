@@ -12,16 +12,24 @@ part of 'commentary_provider.dart';
 @ProviderFor(commentary)
 final commentaryProvider = CommentaryFamily._();
 
-final class CommentaryProvider extends $FunctionalProvider<AsyncValue<Commentary>, Commentary, FutureOr<Commentary>>
+final class CommentaryProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<Commentary>,
+          Commentary,
+          FutureOr<Commentary>
+        >
     with $FutureModifier<Commentary>, $FutureProvider<Commentary> {
-  CommentaryProvider._({required CommentaryFamily super.from, required CommentaryType super.argument})
-    : super(
-        retry: null,
-        name: r'commentaryProvider',
-        isAutoDispose: false,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
+  CommentaryProvider._({
+    required CommentaryFamily super.from,
+    required CommentaryType super.argument,
+  }) : super(
+         retry: null,
+         name: r'commentaryProvider',
+         isAutoDispose: false,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
   @override
   String debugGetCreateSourceHash() => _$commentaryHash();
@@ -35,7 +43,8 @@ final class CommentaryProvider extends $FunctionalProvider<AsyncValue<Commentary
 
   @$internal
   @override
-  $FutureProviderElement<Commentary> $createElement($ProviderPointer pointer) => $FutureProviderElement(pointer);
+  $FutureProviderElement<Commentary> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
 
   @override
   FutureOr<Commentary> create(Ref ref) {
@@ -56,7 +65,8 @@ final class CommentaryProvider extends $FunctionalProvider<AsyncValue<Commentary
 
 String _$commentaryHash() => r'684a8103311907d7562cd734cb1e6b8cc66c23e0';
 
-final class CommentaryFamily extends $Family with $FunctionalFamilyOverride<FutureOr<Commentary>, CommentaryType> {
+final class CommentaryFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<Commentary>, CommentaryType> {
   CommentaryFamily._()
     : super(
         retry: null,
@@ -66,7 +76,8 @@ final class CommentaryFamily extends $Family with $FunctionalFamilyOverride<Futu
         isAutoDispose: false,
       );
 
-  CommentaryProvider call({required CommentaryType type}) => CommentaryProvider._(argument: type, from: this);
+  CommentaryProvider call({required CommentaryType type}) =>
+      CommentaryProvider._(argument: type, from: this);
 
   @override
   String toString() => r'commentaryProvider';

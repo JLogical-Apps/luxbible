@@ -14,7 +14,11 @@ final biblePlansProvider = BiblePlansProvider._();
 
 final class BiblePlansProvider
     extends
-        $FunctionalProvider<Map<BiblePlanType, BiblePlan>, Map<BiblePlanType, BiblePlan>, Map<BiblePlanType, BiblePlan>>
+        $FunctionalProvider<
+          Map<BiblePlanType, BiblePlan>,
+          Map<BiblePlanType, BiblePlan>,
+          Map<BiblePlanType, BiblePlan>
+        >
     with $Provider<Map<BiblePlanType, BiblePlan>> {
   BiblePlansProvider._()
     : super(
@@ -32,7 +36,9 @@ final class BiblePlansProvider
 
   @$internal
   @override
-  $ProviderElement<Map<BiblePlanType, BiblePlan>> $createElement($ProviderPointer pointer) => $ProviderElement(pointer);
+  $ProviderElement<Map<BiblePlanType, BiblePlan>> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   Map<BiblePlanType, BiblePlan> create(Ref ref) {
@@ -41,7 +47,12 @@ final class BiblePlansProvider
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(Map<BiblePlanType, BiblePlan> value) {
-    return $ProviderOverride(origin: this, providerOverride: $SyncValueProvider<Map<BiblePlanType, BiblePlan>>(value));
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Map<BiblePlanType, BiblePlan>>(
+        value,
+      ),
+    );
   }
 }
 

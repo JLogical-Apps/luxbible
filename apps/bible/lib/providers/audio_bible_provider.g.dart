@@ -439,7 +439,7 @@ final class AudioBibleListenersProvider
 }
 
 String _$audioBibleListenersHash() =>
-    r'b1b6250cd1d348ca560ad7f2801a0f9eca1fd1ca';
+    r'ab95cb5f26a8b5ffcd601c7336d11af03255a7db';
 
 @ProviderFor(AudioBible)
 final audioBibleProvider = AudioBibleProvider._();
@@ -465,7 +465,7 @@ final class AudioBibleProvider
   AudioBible create() => AudioBible();
 }
 
-String _$audioBibleHash() => r'7c53d9767b16553ae78234ebdccd03209966b290';
+String _$audioBibleHash() => r'6444748751b7462f282dfb37da0d9cb00925d121';
 
 abstract class _$AudioBible extends $AsyncNotifier<AudioBibleState> {
   FutureOr<AudioBibleState> build();

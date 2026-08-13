@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'commentary.dart';
@@ -9,6 +9,7 @@ part of 'commentary.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -66,7 +67,7 @@ class _$CommentaryCopyWithImpl<$Res>
 /// Create a copy of Commentary
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? notes = null,}) {
-  return _then(_self.copyWith(
+  return _then(Commentary(
 notes: null == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
 as Map<VerseSelection, Markdown>,
   ));
@@ -203,7 +204,7 @@ return $default(_that.notes);case _:
 @JsonSerializable()
 
 class _Commentary extends Commentary {
-  const _Commentary({@JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson) required final  Map<VerseSelection, Markdown> notes}): _notes = notes,super._();
+  const _Commentary({@JsonKey(name: 'v', toJson: _notesToJson, fromJson: _notesFromJson) required  Map<VerseSelection, Markdown> notes}): _notes = notes,super._();
   factory _Commentary.fromJson(Map<String, dynamic> json) => _$CommentaryFromJson(json);
 
  final  Map<VerseSelection, Markdown> _notes;

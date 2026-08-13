@@ -12,7 +12,9 @@ part of 'cross_references_provider.dart';
 @ProviderFor(crossReferences)
 final crossReferencesProvider = CrossReferencesProvider._();
 
-final class CrossReferencesProvider extends $FunctionalProvider<CrossReferences, CrossReferences, CrossReferences>
+final class CrossReferencesProvider
+    extends
+        $FunctionalProvider<CrossReferences, CrossReferences, CrossReferences>
     with $Provider<CrossReferences> {
   CrossReferencesProvider._()
     : super(
@@ -30,7 +32,8 @@ final class CrossReferencesProvider extends $FunctionalProvider<CrossReferences,
 
   @$internal
   @override
-  $ProviderElement<CrossReferences> $createElement($ProviderPointer pointer) => $ProviderElement(pointer);
+  $ProviderElement<CrossReferences> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
 
   @override
   CrossReferences create(Ref ref) {
@@ -39,7 +42,10 @@ final class CrossReferencesProvider extends $FunctionalProvider<CrossReferences,
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(CrossReferences value) {
-    return $ProviderOverride(origin: this, providerOverride: $SyncValueProvider<CrossReferences>(value));
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<CrossReferences>(value),
+    );
   }
 }
 

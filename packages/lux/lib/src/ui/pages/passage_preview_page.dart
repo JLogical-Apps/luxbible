@@ -55,6 +55,7 @@ class PassagePreviewPage extends HookConsumerWidget {
             chapter: chapter,
             controller: passageController,
             scrollToSelection: chapterReference == initialChapterReference ? verseSelection : null,
+            underlinedReferences: [if (chapterReference == initialChapterReference) ...verseSelection.references],
             onNavigateToVerseSelection: onNavigateToVerseSelection == null
                 ? null
                 : (selection) {

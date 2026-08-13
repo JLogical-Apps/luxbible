@@ -9,7 +9,8 @@ part of 'notebook.dart';
 _Notebook _$NotebookFromJson(Map<String, dynamic> json) => _Notebook(
   id: json['id'] as String,
   name: json['name'] as String,
-  color: $enumDecodeNullable(_$ColorEnumEnumMap, json['color']) ?? ColorEnum.stone,
+  color:
+      $enumDecodeNullable(_$ColorEnumEnumMap, json['color']) ?? ColorEnum.stone,
   isVisible: json['isVisible'] as bool? ?? true,
 );
 

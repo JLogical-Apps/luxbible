@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'study_panel.dart';
@@ -9,6 +9,7 @@ part of 'study_panel.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 StudyPanel _$StudyPanelFromJson(
@@ -231,7 +232,7 @@ return notes();case _:
 @JsonSerializable()
 
 class CompareStudyPanel extends StudyPanel {
-  const CompareStudyPanel({required this.translation, final  String? $type}): $type = $type ?? 'compare',super._();
+  const CompareStudyPanel({required this.translation,  String? $type}): $type = $type ?? 'compare',super._();
   factory CompareStudyPanel.fromJson(Map<String, dynamic> json) => _$CompareStudyPanelFromJson(json);
 
  final  BibleTranslation translation;
@@ -304,7 +305,7 @@ as BibleTranslation,
 @JsonSerializable()
 
 class InterlinearStudyPanel extends StudyPanel {
-  const InterlinearStudyPanel({required this.direction, final  String? $type}): $type = $type ?? 'interlinear',super._();
+  const InterlinearStudyPanel({required this.direction,  String? $type}): $type = $type ?? 'interlinear',super._();
   factory InterlinearStudyPanel.fromJson(Map<String, dynamic> json) => _$InterlinearStudyPanelFromJson(json);
 
  final  InterlinearDirection direction;
@@ -377,7 +378,7 @@ as InterlinearDirection,
 @JsonSerializable()
 
 class CommentaryStudyPanel extends StudyPanel {
-  const CommentaryStudyPanel({required this.type, final  String? $type}): $type = $type ?? 'commentary',super._();
+  const CommentaryStudyPanel({required this.type,  String? $type}): $type = $type ?? 'commentary',super._();
   factory CommentaryStudyPanel.fromJson(Map<String, dynamic> json) => _$CommentaryStudyPanelFromJson(json);
 
  final  CommentaryType type;
@@ -450,7 +451,7 @@ as CommentaryType,
 @JsonSerializable()
 
 class CrossReferencesStudyPanel extends StudyPanel {
-  const CrossReferencesStudyPanel({final  String? $type}): $type = $type ?? 'crossReferences',super._();
+  const CrossReferencesStudyPanel({ String? $type}): $type = $type ?? 'crossReferences',super._();
   factory CrossReferencesStudyPanel.fromJson(Map<String, dynamic> json) => _$CrossReferencesStudyPanelFromJson(json);
 
 
@@ -489,7 +490,7 @@ String toString() {
 @JsonSerializable()
 
 class NotesStudyPanel extends StudyPanel {
-  const NotesStudyPanel({final  String? $type}): $type = $type ?? 'notes',super._();
+  const NotesStudyPanel({ String? $type}): $type = $type ?? 'notes',super._();
   factory NotesStudyPanel.fromJson(Map<String, dynamic> json) => _$NotesStudyPanelFromJson(json);
 
 

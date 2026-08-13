@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'theme_layout_configuration.dart';
@@ -9,6 +9,7 @@ part of 'theme_layout_configuration.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -66,7 +67,7 @@ class _$ThemeLayoutConfigurationCopyWithImpl<$Res>
 /// Create a copy of ThemeLayoutConfiguration
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? font = null,Object? fontSizeSpacing = freezed,Object? hebrewFontSizeSpacing = freezed,Object? greekFontSizeSpacing = freezed,Object? redLetters = null,Object? sections = null,Object? verseNumbers = null,Object? paragraphs = null,Object? footnotes = null,}) {
-  return _then(_self.copyWith(
+  return _then(ThemeLayoutConfiguration(
 font: null == font ? _self.font : font // ignore: cast_nullable_to_non_nullable
 as ThemeFont,fontSizeSpacing: freezed == fontSizeSpacing ? _self.fontSizeSpacing : fontSizeSpacing // ignore: cast_nullable_to_non_nullable
 as FontSizeSpacing?,hebrewFontSizeSpacing: freezed == hebrewFontSizeSpacing ? _self.hebrewFontSizeSpacing : hebrewFontSizeSpacing // ignore: cast_nullable_to_non_nullable

@@ -6,23 +6,36 @@ part of 'theme_layout_configuration.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_ThemeLayoutConfiguration _$ThemeLayoutConfigurationFromJson(Map<String, dynamic> json) => _ThemeLayoutConfiguration(
-  font: $enumDecodeNullable(_$ThemeFontEnumMap, json['font']) ?? ThemeFont.inter,
+_ThemeLayoutConfiguration _$ThemeLayoutConfigurationFromJson(
+  Map<String, dynamic> json,
+) => _ThemeLayoutConfiguration(
+  font:
+      $enumDecodeNullable(_$ThemeFontEnumMap, json['font']) ?? ThemeFont.inter,
   fontSizeSpacing: FontSizeSpacing.fromJsonNullable(json['fontSizeSpacing']),
-  hebrewFontSizeSpacing: FontSizeSpacing.fromJsonNullable(json['hebrewFontSizeSpacing']),
-  greekFontSizeSpacing: FontSizeSpacing.fromJsonNullable(json['greekFontSizeSpacing']),
+  hebrewFontSizeSpacing: FontSizeSpacing.fromJsonNullable(
+    json['hebrewFontSizeSpacing'],
+  ),
+  greekFontSizeSpacing: FontSizeSpacing.fromJsonNullable(
+    json['greekFontSizeSpacing'],
+  ),
   redLetters: json['redLetters'] as bool? ?? true,
-  sections: json['sections'] == null ? SectionHeadings.all : _sectionHeadingsFromJson(json['sections']),
+  sections: json['sections'] == null
+      ? SectionHeadings.all
+      : _sectionHeadingsFromJson(json['sections']),
   verseNumbers: json['verseNumbers'] as bool? ?? true,
   paragraphs: json['paragraphs'] as bool? ?? true,
   footnotes: json['footnotes'] as bool? ?? true,
 );
 
-Map<String, dynamic> _$ThemeLayoutConfigurationToJson(_ThemeLayoutConfiguration instance) => <String, dynamic>{
+Map<String, dynamic> _$ThemeLayoutConfigurationToJson(
+  _ThemeLayoutConfiguration instance,
+) => <String, dynamic>{
   'font': _$ThemeFontEnumMap[instance.font]!,
   'fontSizeSpacing': _$FontSizeSpacingEnumMap[instance.fontSizeSpacing],
-  'hebrewFontSizeSpacing': _$FontSizeSpacingEnumMap[instance.hebrewFontSizeSpacing],
-  'greekFontSizeSpacing': _$FontSizeSpacingEnumMap[instance.greekFontSizeSpacing],
+  'hebrewFontSizeSpacing':
+      _$FontSizeSpacingEnumMap[instance.hebrewFontSizeSpacing],
+  'greekFontSizeSpacing':
+      _$FontSizeSpacingEnumMap[instance.greekFontSizeSpacing],
   'redLetters': instance.redLetters,
   'sections': _$SectionHeadingsEnumMap[instance.sections]!,
   'verseNumbers': instance.verseNumbers,

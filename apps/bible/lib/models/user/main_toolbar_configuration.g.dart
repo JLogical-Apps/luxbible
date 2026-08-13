@@ -6,20 +6,37 @@ part of 'main_toolbar_configuration.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_MainToolbarConfiguration _$MainToolbarConfigurationFromJson(Map<String, dynamic> json) => _MainToolbarConfiguration(
+_MainToolbarConfiguration _$MainToolbarConfigurationFromJson(
+  Map<String, dynamic> json,
+) => _MainToolbarConfiguration(
   pinnedShortcut1:
-      $enumDecodeNullable(_$MainToolbarShortcutEnumMap, json['pinnedShortcut1']) ?? MainToolbarShortcut.bookmark,
+      $enumDecodeNullable(
+        _$MainToolbarShortcutEnumMap,
+        json['pinnedShortcut1'],
+      ) ??
+      MainToolbarShortcut.bookmark,
   pinnedShortcut2:
-      $enumDecodeNullable(_$MainToolbarShortcutEnumMap, json['pinnedShortcut2']) ?? MainToolbarShortcut.search,
+      $enumDecodeNullable(
+        _$MainToolbarShortcutEnumMap,
+        json['pinnedShortcut2'],
+      ) ??
+      MainToolbarShortcut.search,
   longPressShortcut:
-      $enumDecodeNullable(_$MainToolbarShortcutEnumMap, json['longPressShortcut']) ?? MainToolbarShortcut.plans,
+      $enumDecodeNullable(
+        _$MainToolbarShortcutEnumMap,
+        json['longPressShortcut'],
+      ) ??
+      MainToolbarShortcut.plans,
   pinToBottom: json['pinToBottom'] as bool? ?? false,
 );
 
-Map<String, dynamic> _$MainToolbarConfigurationToJson(_MainToolbarConfiguration instance) => <String, dynamic>{
+Map<String, dynamic> _$MainToolbarConfigurationToJson(
+  _MainToolbarConfiguration instance,
+) => <String, dynamic>{
   'pinnedShortcut1': _$MainToolbarShortcutEnumMap[instance.pinnedShortcut1]!,
   'pinnedShortcut2': _$MainToolbarShortcutEnumMap[instance.pinnedShortcut2]!,
-  'longPressShortcut': _$MainToolbarShortcutEnumMap[instance.longPressShortcut]!,
+  'longPressShortcut':
+      _$MainToolbarShortcutEnumMap[instance.longPressShortcut]!,
   'pinToBottom': instance.pinToBottom,
 };
 

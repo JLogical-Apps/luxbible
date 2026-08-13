@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'strong.dart';
@@ -9,6 +9,7 @@ part of 'strong.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -66,7 +67,7 @@ class _$StrongCopyWithImpl<$Res>
 /// Create a copy of Strong
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? languageText = null,Object? pronunciation = null,Object? transliteration = null,Object? usage = null,Object? definition = null,Object? derivation = freezed,Object? partOfSpeech = freezed,Object? relatedStrongIds = null,}) {
-  return _then(_self.copyWith(
+  return _then(Strong(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,languageText: null == languageText ? _self.languageText : languageText // ignore: cast_nullable_to_non_nullable
 as String,pronunciation: null == pronunciation ? _self.pronunciation : pronunciation // ignore: cast_nullable_to_non_nullable
@@ -211,7 +212,7 @@ return $default(_that.id,_that.languageText,_that.pronunciation,_that.transliter
 @JsonSerializable()
 
 class _Strong extends Strong {
-  const _Strong({@JsonKey(name: 'i') required this.id, @JsonKey(name: 'l') required this.languageText, @JsonKey(name: 'p') required this.pronunciation, @JsonKey(name: 'x') required this.transliteration, @JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson) required this.usage, @JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson) required this.definition, @JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable) this.derivation, @JsonKey(name: 't', includeIfNull: false) this.partOfSpeech, @JsonKey(name: 'g') required final  List<String> relatedStrongIds}): _relatedStrongIds = relatedStrongIds,super._();
+  const _Strong({@JsonKey(name: 'i') required this.id, @JsonKey(name: 'l') required this.languageText, @JsonKey(name: 'p') required this.pronunciation, @JsonKey(name: 'x') required this.transliteration, @JsonKey(name: 'd', toJson: Markdown.toJson, fromJson: Markdown.fromJson) required this.usage, @JsonKey(name: 's', toJson: Markdown.toJson, fromJson: Markdown.fromJson) required this.definition, @JsonKey(name: 'o', includeIfNull: false, toJson: Markdown.toJsonNullable, fromJson: Markdown.fromJsonNullable) this.derivation, @JsonKey(name: 't', includeIfNull: false) this.partOfSpeech, @JsonKey(name: 'g') required  List<String> relatedStrongIds}): _relatedStrongIds = relatedStrongIds,super._();
   factory _Strong.fromJson(Map<String, dynamic> json) => _$StrongFromJson(json);
 
 @override@JsonKey(name: 'i') final  String id;

@@ -10,6 +10,7 @@ class ChapterBuilder extends HookConsumerWidget {
 
   final VerseSelection? scrollToSelection;
   final double scrollToSelectionAlignment;
+  final List<Reference> underlinedReferences;
   final PassageSelectionController? selection;
   final Function(VerseSelection)? onNavigateToVerseSelection;
 
@@ -24,6 +25,7 @@ class ChapterBuilder extends HookConsumerWidget {
     this.controller,
     this.scrollToSelection,
     this.scrollToSelectionAlignment = 0.25,
+    this.underlinedReferences = const [],
     this.selection,
     this.onNavigateToVerseSelection,
     this.padding,
@@ -73,7 +75,7 @@ class ChapterBuilder extends HookConsumerWidget {
       chapterReference: chapterReference,
       translation: translation,
       selection: selection,
-      underlinedReferences: scrollToSelection?.references ?? [],
+      underlinedReferences: underlinedReferences,
       onNavigateToVerseSelection: onNavigateToVerseSelection,
       controller: controller,
       padding: padding,

@@ -62,3 +62,46 @@ final class AudioBibleTimingsProvider
 }
 
 String _$audioBibleTimingsHash() => r'087d2706a4650c13dc17929408d902ca6414d032';
+
+@ProviderFor(currentAudioBibleReference)
+final currentAudioBibleReferenceProvider =
+    CurrentAudioBibleReferenceProvider._();
+
+final class CurrentAudioBibleReferenceProvider
+    extends $FunctionalProvider<Reference?, Reference?, Reference?>
+    with $Provider<Reference?> {
+  CurrentAudioBibleReferenceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'currentAudioBibleReferenceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$currentAudioBibleReferenceHash();
+
+  @$internal
+  @override
+  $ProviderElement<Reference?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  Reference? create(Ref ref) {
+    return currentAudioBibleReference(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Reference? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Reference?>(value),
+    );
+  }
+}
+
+String _$currentAudioBibleReferenceHash() =>
+    r'84234282e512299d5e54fd080669b931ae91b80c';

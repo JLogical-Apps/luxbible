@@ -14,7 +14,11 @@ final dictionaryProvider = DictionaryProvider._();
 
 final class DictionaryProvider
     extends
-        $FunctionalProvider<Map<String, DictionaryEntry>, Map<String, DictionaryEntry>, Map<String, DictionaryEntry>>
+        $FunctionalProvider<
+          Map<String, DictionaryEntry>,
+          Map<String, DictionaryEntry>,
+          Map<String, DictionaryEntry>
+        >
     with $Provider<Map<String, DictionaryEntry>> {
   DictionaryProvider._()
     : super(
@@ -32,7 +36,9 @@ final class DictionaryProvider
 
   @$internal
   @override
-  $ProviderElement<Map<String, DictionaryEntry>> $createElement($ProviderPointer pointer) => $ProviderElement(pointer);
+  $ProviderElement<Map<String, DictionaryEntry>> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
   Map<String, DictionaryEntry> create(Ref ref) {
@@ -41,7 +47,10 @@ final class DictionaryProvider
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(Map<String, DictionaryEntry> value) {
-    return $ProviderOverride(origin: this, providerOverride: $SyncValueProvider<Map<String, DictionaryEntry>>(value));
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Map<String, DictionaryEntry>>(value),
+    );
   }
 }
 

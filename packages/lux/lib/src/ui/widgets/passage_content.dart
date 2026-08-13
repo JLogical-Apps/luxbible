@@ -4,6 +4,7 @@ import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:utils_core/utils_core.dart';
 
 class PassageContent extends StatelessWidget {
   final LuxReaderConfiguration configuration;
@@ -73,7 +74,7 @@ class PassageContent extends StatelessWidget {
       chapterReference: chapterReference,
       translation: translation,
       configuration: configuration.paragraphsConfiguration(context, translation),
-      underlinedReferences: selection?.references ?? underlinedReferences,
+      underlinedReferences: underlinedReferences.nullIfEmpty?.toList() ?? selection?.references ?? [],
       textSelection: selection?.textSelection,
       decorations: configuration.decorationsBuilder(context, chapterReference, translation),
       markersBuilder: configuration.markersBuilder == null

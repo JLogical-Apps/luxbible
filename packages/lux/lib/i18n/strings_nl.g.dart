@@ -788,6 +788,8 @@ class _Translations$audio$nl extends Translations$audio$en {
 	@override String get connectionError => 'Controleer je internetverbinding of probeer het later opnieuw.';
 	@override String get unavailable => 'Audio is niet beschikbaar voor deze Bijbel';
 	@override String get chooseBible => 'Kies een Bijbel met audio om naar dit hoofdstuk te luisteren.';
+	@override String get followAlong => 'Meelezen met audio';
+	@override String get stopFollowing => 'Stoppen met meelezen';
 	@override String get notificationChannelName => 'Bijbelaudio afspelen';
 	@override String get notificationChannelDescription => 'Bediening voor het afspelen van bijbelaudio';
 }
@@ -3070,6 +3072,8 @@ extension on TranslationsNl {
 			'audio.connectionError' => 'Controleer je internetverbinding of probeer het later opnieuw.',
 			'audio.unavailable' => 'Audio is niet beschikbaar voor deze Bijbel',
 			'audio.chooseBible' => 'Kies een Bijbel met audio om naar dit hoofdstuk te luisteren.',
+			'audio.followAlong' => 'Meelezen met audio',
+			'audio.stopFollowing' => 'Stoppen met meelezen',
 			'audio.notificationChannelName' => 'Bijbelaudio afspelen',
 			'audio.notificationChannelDescription' => 'Bediening voor het afspelen van bijbelaudio',
 			'interlinearUi.interlinearBible' => 'Interlineaire Bijbel',
@@ -3144,10 +3148,10 @@ extension on TranslationsNl {
 			'planTypes.psalmsAndWisdomDescription' => 'Breng een jaar door in de Psalmen en wijsheidsboeken zoals Spreuken, Job en Prediker.',
 			'planTypes.oldAndNewTestamentDescription' => 'Lees het Oude en Nieuwe Testament naast elkaar, elke dag een passage uit beide.',
 			'planTypes.differentTopicsDescription' => 'Lees elke dag een ander gedeelte van de Bijbel en verken in één jaar elk Bijbelboek.',
-			'planTypes.newTestamentPsalmsProverbsDescription' => 'Lees in één jaar het Nieuwe Testament naast Psalmen en Spreuken.',
-			'planTypes.fiveByFiveByFiveDescription' => 'Lees vijf dagen per week één hoofdstuk uit het Nieuwe Testament, gevolgd door twee dagen om terug te kijken en te overdenken.',
 			_ => null,
 		} ?? switch (path) {
+			'planTypes.newTestamentPsalmsProverbsDescription' => 'Lees in één jaar het Nieuwe Testament naast Psalmen en Spreuken.',
+			'planTypes.fiveByFiveByFiveDescription' => 'Lees vijf dagen per week één hoofdstuk uit het Nieuwe Testament, gevolgd door twee dagen om terug te kijken en te overdenken.',
 			'planTypes.oldScopeDescription' => 'Leest uit boeken van het Oude Testament.',
 			'planTypes.newScopeDescription' => 'Leest uit boeken van het Nieuwe Testament.',
 			'planTypes.wholeScopeDescription' => 'Leest uit het Oude en Nieuwe Testament.',

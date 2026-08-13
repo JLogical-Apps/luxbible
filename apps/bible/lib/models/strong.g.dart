@@ -15,7 +15,9 @@ _Strong _$StrongFromJson(Map<String, dynamic> json) => _Strong(
   definition: Markdown.fromJson(json['s'] as String),
   derivation: Markdown.fromJsonNullable(json['o'] as String?),
   partOfSpeech: json['t'] as String?,
-  relatedStrongIds: (json['g'] as List<dynamic>).map((e) => e as String).toList(),
+  relatedStrongIds: (json['g'] as List<dynamic>)
+      .map((e) => e as String)
+      .toList(),
 );
 
 Map<String, dynamic> _$StrongToJson(_Strong instance) => <String, dynamic>{

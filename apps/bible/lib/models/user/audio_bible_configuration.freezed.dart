@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'audio_bible_configuration.dart';
@@ -9,13 +9,14 @@ part of 'audio_bible_configuration.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
 /// @nodoc
 mixin _$AudioBibleConfiguration {
 
- bool get isOpen; double get speed; DateTime? get endTime;
+ bool get isOpen; double get speed; bool get followAlong; DateTime? get endTime;
 /// Create a copy of AudioBibleConfiguration
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +29,16 @@ $AudioBibleConfigurationCopyWith<AudioBibleConfiguration> get copyWith => _$Audi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AudioBibleConfiguration&&(identical(other.isOpen, isOpen) || other.isOpen == isOpen)&&(identical(other.speed, speed) || other.speed == speed)&&(identical(other.endTime, endTime) || other.endTime == endTime));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AudioBibleConfiguration&&(identical(other.isOpen, isOpen) || other.isOpen == isOpen)&&(identical(other.speed, speed) || other.speed == speed)&&(identical(other.followAlong, followAlong) || other.followAlong == followAlong)&&(identical(other.endTime, endTime) || other.endTime == endTime));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,isOpen,speed,endTime);
+int get hashCode => Object.hash(runtimeType,isOpen,speed,followAlong,endTime);
 
 @override
 String toString() {
-  return 'AudioBibleConfiguration(isOpen: $isOpen, speed: $speed, endTime: $endTime)';
+  return 'AudioBibleConfiguration(isOpen: $isOpen, speed: $speed, followAlong: $followAlong, endTime: $endTime)';
 }
 
 
@@ -48,7 +49,7 @@ abstract mixin class $AudioBibleConfigurationCopyWith<$Res>  {
   factory $AudioBibleConfigurationCopyWith(AudioBibleConfiguration value, $Res Function(AudioBibleConfiguration) _then) = _$AudioBibleConfigurationCopyWithImpl;
 @useResult
 $Res call({
- bool isOpen, double speed, DateTime? endTime
+ bool isOpen, double speed, bool followAlong, DateTime? endTime
 });
 
 
@@ -65,11 +66,12 @@ class _$AudioBibleConfigurationCopyWithImpl<$Res>
 
 /// Create a copy of AudioBibleConfiguration
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? isOpen = null,Object? speed = null,Object? endTime = freezed,}) {
-  return _then(_self.copyWith(
+@pragma('vm:prefer-inline') @override $Res call({Object? isOpen = null,Object? speed = null,Object? followAlong = null,Object? endTime = freezed,}) {
+  return _then(AudioBibleConfiguration(
 isOpen: null == isOpen ? _self.isOpen : isOpen // ignore: cast_nullable_to_non_nullable
 as bool,speed: null == speed ? _self.speed : speed // ignore: cast_nullable_to_non_nullable
-as double,endTime: freezed == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
+as double,followAlong: null == followAlong ? _self.followAlong : followAlong // ignore: cast_nullable_to_non_nullable
+as bool,endTime: freezed == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
 }
@@ -152,10 +154,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isOpen,  double speed,  DateTime? endTime)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool isOpen,  double speed,  bool followAlong,  DateTime? endTime)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AudioBibleConfiguration() when $default != null:
-return $default(_that.isOpen,_that.speed,_that.endTime);case _:
+return $default(_that.isOpen,_that.speed,_that.followAlong,_that.endTime);case _:
   return orElse();
 
 }
@@ -173,10 +175,10 @@ return $default(_that.isOpen,_that.speed,_that.endTime);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isOpen,  double speed,  DateTime? endTime)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool isOpen,  double speed,  bool followAlong,  DateTime? endTime)  $default,) {final _that = this;
 switch (_that) {
 case _AudioBibleConfiguration():
-return $default(_that.isOpen,_that.speed,_that.endTime);}
+return $default(_that.isOpen,_that.speed,_that.followAlong,_that.endTime);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -190,10 +192,10 @@ return $default(_that.isOpen,_that.speed,_that.endTime);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isOpen,  double speed,  DateTime? endTime)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool isOpen,  double speed,  bool followAlong,  DateTime? endTime)?  $default,) {final _that = this;
 switch (_that) {
 case _AudioBibleConfiguration() when $default != null:
-return $default(_that.isOpen,_that.speed,_that.endTime);case _:
+return $default(_that.isOpen,_that.speed,_that.followAlong,_that.endTime);case _:
   return null;
 
 }
@@ -205,11 +207,12 @@ return $default(_that.isOpen,_that.speed,_that.endTime);case _:
 @JsonSerializable()
 
 class _AudioBibleConfiguration extends AudioBibleConfiguration {
-  const _AudioBibleConfiguration({this.isOpen = false, this.speed = 1, this.endTime}): super._();
+  const _AudioBibleConfiguration({this.isOpen = false, this.speed = 1, this.followAlong = true, this.endTime}): super._();
   factory _AudioBibleConfiguration.fromJson(Map<String, dynamic> json) => _$AudioBibleConfigurationFromJson(json);
 
 @override@JsonKey() final  bool isOpen;
 @override@JsonKey() final  double speed;
+@override@JsonKey() final  bool followAlong;
 @override final  DateTime? endTime;
 
 /// Create a copy of AudioBibleConfiguration
@@ -225,16 +228,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AudioBibleConfiguration&&(identical(other.isOpen, isOpen) || other.isOpen == isOpen)&&(identical(other.speed, speed) || other.speed == speed)&&(identical(other.endTime, endTime) || other.endTime == endTime));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AudioBibleConfiguration&&(identical(other.isOpen, isOpen) || other.isOpen == isOpen)&&(identical(other.speed, speed) || other.speed == speed)&&(identical(other.followAlong, followAlong) || other.followAlong == followAlong)&&(identical(other.endTime, endTime) || other.endTime == endTime));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,isOpen,speed,endTime);
+int get hashCode => Object.hash(runtimeType,isOpen,speed,followAlong,endTime);
 
 @override
 String toString() {
-  return 'AudioBibleConfiguration(isOpen: $isOpen, speed: $speed, endTime: $endTime)';
+  return 'AudioBibleConfiguration(isOpen: $isOpen, speed: $speed, followAlong: $followAlong, endTime: $endTime)';
 }
 
 
@@ -245,7 +248,7 @@ abstract mixin class _$AudioBibleConfigurationCopyWith<$Res> implements $AudioBi
   factory _$AudioBibleConfigurationCopyWith(_AudioBibleConfiguration value, $Res Function(_AudioBibleConfiguration) _then) = __$AudioBibleConfigurationCopyWithImpl;
 @override @useResult
 $Res call({
- bool isOpen, double speed, DateTime? endTime
+ bool isOpen, double speed, bool followAlong, DateTime? endTime
 });
 
 
@@ -262,11 +265,12 @@ class __$AudioBibleConfigurationCopyWithImpl<$Res>
 
 /// Create a copy of AudioBibleConfiguration
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? isOpen = null,Object? speed = null,Object? endTime = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? isOpen = null,Object? speed = null,Object? followAlong = null,Object? endTime = freezed,}) {
   return _then(_AudioBibleConfiguration(
 isOpen: null == isOpen ? _self.isOpen : isOpen // ignore: cast_nullable_to_non_nullable
 as bool,speed: null == speed ? _self.speed : speed // ignore: cast_nullable_to_non_nullable
-as double,endTime: freezed == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
+as double,followAlong: null == followAlong ? _self.followAlong : followAlong // ignore: cast_nullable_to_non_nullable
+as bool,endTime: freezed == endTime ? _self.endTime : endTime // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
 }

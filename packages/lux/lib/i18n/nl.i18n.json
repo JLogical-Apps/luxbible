@@ -498,6 +498,8 @@
     "connectionError": "Controleer je internetverbinding of probeer het later opnieuw.",
     "unavailable": "Audio is niet beschikbaar voor deze Bijbel",
     "chooseBible": "Kies een Bijbel met audio om naar dit hoofdstuk te luisteren.",
+    "followAlong": "Meelezen met audio",
+    "stopFollowing": "Stoppen met meelezen",
     "notificationChannelName": "Bijbelaudio afspelen",
     "notificationChannelDescription": "Bediening voor het afspelen van bijbelaudio"
   },

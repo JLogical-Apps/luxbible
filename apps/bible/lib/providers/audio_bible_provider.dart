@@ -23,7 +23,14 @@ AudioBibleHandler audioBibleHandler(Ref ref) =>
     throw UnimplementedError('AudioBibleHandler must be initialized in main');
 
 @riverpod
-Stream<Duration> audioBiblePosition(Ref ref) => ref.watch(audioBibleHandlerProvider).player.positionStream;
+Stream<Duration> audioBiblePosition(Ref ref) => ref
+    .watch(audioBibleHandlerProvider)
+    .player
+    .createPositionStream(
+      steps: 1,
+      minPeriod: const Duration(milliseconds: 16),
+      maxPeriod: const Duration(milliseconds: 16),
+    );
 
 @riverpod
 Stream<Duration?> audioBibleDuration(Ref ref) => ref.watch(audioBibleHandlerProvider).player.durationStream;

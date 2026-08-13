@@ -33,11 +33,14 @@ final class UserNotifierProvider extends $NotifierProvider<UserNotifier, User> {
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(User value) {
-    return $ProviderOverride(origin: this, providerOverride: $SyncValueProvider<User>(value));
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<User>(value),
+    );
   }
 }
 
-String _$userNotifierHash() => r'237d61302ca454d8f8061c0e0d304399b4e7b51a';
+String _$userNotifierHash() => r'f4a126a09e90e9d8cbc38d8a7dc4f1b1f363bb6c';
 
 abstract class _$UserNotifier extends $Notifier<User> {
   User build();
@@ -45,7 +48,14 @@ abstract class _$UserNotifier extends $Notifier<User> {
   @override
   WhenComplete runBuild() {
     final ref = this.ref as $Ref<User, User>;
-    final element = ref.element as $ClassProviderElement<AnyNotifier<User, User>, User, Object?, Object?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<User, User>,
+              User,
+              Object?,
+              Object?
+            >;
     return element.handleCreate(ref, build);
   }
 }

@@ -47,6 +47,13 @@ class AudioBiblePanel extends HookConsumerWidget {
           ref.read(audioBibleProvider.notifier).close();
         },
       ),
+      trailing: Tooltip(
+        message: user.audio.followAlong ? t.audio.stopFollowing : t.audio.followAlong,
+        child: StyledCircleButton.md(
+          child: Icon(Symbols.my_location, fill: user.audio.followAlong ? 1 : 0),
+          onPressed: () => ref.updateUser((user) => user.copyWith.audio(followAlong: !user.audio.followAlong)),
+        ),
+      ),
       children: [
         translation.hasAudioBible
             ? AnimatedSizeAndFade(

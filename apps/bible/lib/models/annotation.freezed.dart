@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'annotation.dart';
@@ -9,6 +9,7 @@ part of 'annotation.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -66,7 +67,7 @@ class _$AnnotationCopyWithImpl<$Res>
 /// Create a copy of Annotation
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? selection = null,Object? style = null,Object? note = null,Object? notebookId = freezed,Object? createdAt = null,}) {
-  return _then(_self.copyWith(
+  return _then(Annotation(
 selection: null == selection ? _self.selection : selection // ignore: cast_nullable_to_non_nullable
 as AnnotationSelection,style: null == style ? _self.style : style // ignore: cast_nullable_to_non_nullable
 as HighlightStyle,note: null == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
@@ -506,7 +507,7 @@ return text(_that.textSelection);case _:
 @JsonSerializable()
 
 class VersesAnnotationSelection extends AnnotationSelection {
-  const VersesAnnotationSelection({required this.verseSelection, final  String? $type}): $type = $type ?? 'verses',super._();
+  const VersesAnnotationSelection({required this.verseSelection,  String? $type}): $type = $type ?? 'verses',super._();
   factory VersesAnnotationSelection.fromJson(Map<String, dynamic> json) => _$VersesAnnotationSelectionFromJson(json);
 
  final  VerseSelection verseSelection;
@@ -579,7 +580,7 @@ as VerseSelection,
 @JsonSerializable()
 
 class TextAnnotationSelection extends AnnotationSelection {
-  const TextAnnotationSelection({required this.textSelection, final  String? $type}): $type = $type ?? 'text',super._();
+  const TextAnnotationSelection({required this.textSelection,  String? $type}): $type = $type ?? 'text',super._();
   factory TextAnnotationSelection.fromJson(Map<String, dynamic> json) => _$TextAnnotationSelectionFromJson(json);
 
  final  BibleTextSelection textSelection;
