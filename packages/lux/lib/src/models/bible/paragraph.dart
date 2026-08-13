@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lux/lux_core.dart';
+import 'package:utils_core/utils_core.dart';
 
 part 'paragraph.freezed.dart';
 part 'paragraph.g.dart';
@@ -41,6 +42,11 @@ extension ParagraphListExtensions on List<Paragraph> {
       .where((entry) => entry.$2 is SectionParagraph)
       .firstWhereOrNull((entry) => getVerseIntroducedBySectionAt(entry.$1)?.verseNum == verseNum)
       ?.$1;
+
+  SectionType? getSectionTypeForVerse(int verseNum) =>
+      getSectionIndexForVerse(verseNum)?.mapIfNonNull((index) => this[index] as SectionParagraph)?.type;
+
+  bool verseHasSection(int verseNum) => getSectionIndexForVerse(verseNum) != null;
 
   int? getIndexForVerse(int verseNum) => indexWhereOrNull(
     (paragraph) => paragraph is VersesParagraph && paragraph.verses.any((verse) => verse.verseNum == verseNum),

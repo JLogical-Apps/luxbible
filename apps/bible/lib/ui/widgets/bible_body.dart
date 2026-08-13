@@ -383,7 +383,7 @@ class BibleBody extends HookConsumerWidget {
                   ),
                   scrollToSelectionAlignment:
                       (switch (scrollPosition?.verseNum) {
-                            final verseNum? when chapter.paragraphs.getSectionIndexForVerse(verseNum) != null => 24,
+                            final verseNum? when chapter.paragraphs.verseHasSection(verseNum) => 24,
                             _ => 0,
                           } +
                           topBarHeight) /
@@ -483,11 +483,9 @@ class BibleBody extends HookConsumerWidget {
             final visibleVerseSelectionState = useState(VerseSelection.empty());
             final visibleVerseSelection = selection.verseSelection ?? visibleVerseSelectionState.value;
 
+            final mainTranslation = user.getTranslationFor(currentChapterReference.book);
             final chapterValue = ref.watch(
-              chapterProvider(
-                chapterReference: currentChapterReference,
-                translation: user.getTranslationFor(currentChapterReference.book),
-              ),
+              chapterProvider(chapterReference: currentChapterReference, translation: mainTranslation),
             );
             final chapter = chapterValue.value;
 
@@ -563,22 +561,34 @@ class BibleBody extends HookConsumerWidget {
                             chapterReference: currentChapterReference,
                             passageTopReference: visibleVerseSelection.references.firstOrNull,
                             onScrollMainToReference: (reference) {
-                              final hasSection =
-                                  chapter?.paragraphs.getSectionIndexForVerse(reference.verseNum) != null;
+                              final sizeMultiplier = readerConfiguration
+                                  .paragraphsConfiguration(context, mainTranslation)
+                                  .sizeMultiplier;
+                              final sectionHeight =
+                                  chapter?.paragraphs
+                                      .getSectionTypeForVerse(reference.verseNum)
+                                      ?.getHeight(sizeMultiplier) ??
+                                  0;
                               currentPassageController?.scrollToReference(
                                 reference,
                                 paragraphs: chapter?.paragraphs ?? [],
                                 alignment:
-                                    ((hasSection ? 24 : 0) + topBarHeight) / (passageKey.renderBox?.size.height ?? 128),
+                                    (sectionHeight + topBarHeight - 6) / (passageKey.renderBox?.size.height ?? 128),
                               );
                             },
                             onScrollPanelToReference: (reference, panelHeight, controller) {
-                              final hasSection =
-                                  paragraphsState.value?.getSectionIndexForVerse(reference.verseNum) != null;
+                              final sizeMultiplier = readerConfiguration
+                                  .paragraphsConfiguration(context, translation)
+                                  .sizeMultiplier;
+                              final sectionHeight =
+                                  paragraphsState.value
+                                      ?.getSectionTypeForVerse(reference.verseNum)
+                                      ?.getHeight(sizeMultiplier) ??
+                                  0;
                               controller.scrollToReference(
                                 reference,
                                 paragraphs: paragraphsState.value ?? [],
-                                alignment: hasSection ? (32 / panelHeight) : 0,
+                                alignment: sectionHeight / panelHeight,
                               );
                             },
                             isActive: currentCarouselPage == i + onboardingOffset,
