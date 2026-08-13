@@ -334,23 +334,26 @@ class BibleBody extends HookConsumerWidget {
           bottom: 0,
           right: 0,
           left: 0,
-          child: AnimatedGrow(
-            child: selection.hasSelection
-                ? Builder(
-                    builder: (context) => Container(
-                      decoration: BoxDecoration(
-                        boxShadow: [StyledShadow.up(context)],
-                        color: context.colors.surfacePrimary,
+          child: ColoredBox(
+            color: context.colors.surfacePrimary,
+            child: AnimatedGrow(
+              child: selection.hasSelection
+                  ? Builder(
+                      builder: (context) => Container(
+                        decoration: BoxDecoration(
+                          boxShadow: [StyledShadow.up(context)],
+                          color: context.colors.surfacePrimary,
+                        ),
+                        padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
+                        child: SelectionToolbar(
+                          selection: selection,
+                          onNavigateToVerseSelection: navigateToVerseSelection,
+                          onAddStudyPanel: addStudyPanel,
+                        ),
                       ),
-                      padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
-                      child: SelectionToolbar(
-                        selection: selection,
-                        onNavigateToVerseSelection: navigateToVerseSelection,
-                        onAddStudyPanel: addStudyPanel,
-                      ),
-                    ),
-                  )
-                : SizedBox.shrink(key: ValueKey('empty')),
+                    )
+                  : SizedBox.shrink(key: ValueKey('empty')),
+            ),
           ),
         ),
       ],
