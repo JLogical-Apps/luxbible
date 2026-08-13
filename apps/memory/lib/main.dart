@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/lux.dart';
+import 'package:memory/licenses.dart';
 import 'package:memory/providers/root_ref.dart';
 import 'package:memory/providers/user_provider.dart';
 import 'package:memory/ui/pages/home_page.dart';
@@ -16,12 +17,17 @@ Future<void> main() async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
+      await registerLicenses();
+
       final paths = await getPaths();
       final sharedPreferences = await SharedPreferences.getInstance();
       final packageInfo = await PackageInfo.fromPlatform();
 
       ref = ProviderContainer(
         overrides: [
+          luxReaderConfigurationProvider.overrideWithValue(
+            LuxReaderConfiguration(translationForChapter: (_) => .bsb, selectedTranslation: .bsb),
+          ),
           pathServiceProvider.overrideWithValue(paths),
           sharedPreferencesServiceProvider.overrideWithValue(sharedPreferences),
           packageInfoProvider.overrideWithValue(packageInfo),

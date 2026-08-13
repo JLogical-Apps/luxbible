@@ -137,3 +137,42 @@ bool useOnContentLoaded({ScrollController? controller, Function(double maxScroll
 
 ListController useListController([List<Object> keys = const []]) =>
     useDisposable(useMemoized(() => ListController(), keys), (controller) => controller.dispose());
+
+T useChangeNotifier<T extends ChangeNotifier>(T Function() notifierBuilder, {bool listen = true}) {
+  final changeNotifier = useDisposable<T>(useMemoized(notifierBuilder), (notifier) => notifier.dispose());
+  return listen ? useListenable(changeNotifier) : changeNotifier;
+}
+
+Registry<K, V> useRegistry<K, V>({bool listen = true}) =>
+    useChangeNotifier(() => Registry<K, V>(items: {}), listen: listen);
+
+void useRegistryItem<K, V>(Registry<K, V> registry, K key, V item) => useEffect(() {
+  WidgetsBinding.instance.addPostFrameCallback((_) => registry.register(key, item));
+  return () => WidgetsBinding.instance.addPostFrameCallback((_) => registry.disposeOf(key));
+}, []);
+
+class Registry<K, V> extends ChangeNotifier {
+  final Map<K, V> items;
+
+  bool _isDisposed = false;
+
+  Registry({required this.items});
+
+  void register(K key, V item) {
+    items[key] = item;
+    if (!_isDisposed) notifyListeners();
+  }
+
+  void disposeOf(K key) {
+    items.remove(key);
+    if (!_isDisposed) notifyListeners();
+  }
+
+  V? operator [](K key) => items[key];
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
+  }
+}

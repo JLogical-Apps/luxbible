@@ -1,27 +1,42 @@
-import 'package:bible/providers/user_provider.dart';
-import 'package:bible/ui/widgets/word_substring_text.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lux/lux.dart';
+import 'package:lux/lux_core.dart';
+import 'package:lux/src/ui/widgets/word_substring_text.dart';
 import 'package:style/style.dart';
 import 'package:utils_core/utils_core.dart';
 
-class VerseText extends ConsumerWidget {
+class VerseText extends StatelessWidget {
   final List<Verse> verses;
 
   final String? highlightStrongId;
   final String? highlightTerm;
 
+  final bool redLetters;
+  final int? maxLines;
   final TextStyle? style;
 
-  const VerseText({super.key, required this.verses, this.highlightStrongId, this.highlightTerm, this.style});
-  VerseText.verse({super.key, required Verse verse, this.highlightStrongId, this.highlightTerm, this.style})
-    : verses = [verse];
+  const VerseText({
+    super.key,
+    required this.verses,
+    this.highlightStrongId,
+    this.highlightTerm,
+    this.redLetters = true,
+    this.maxLines,
+    this.style,
+  });
+
+  VerseText.verse({
+    super.key,
+    required Verse verse,
+    this.highlightStrongId,
+    this.highlightTerm,
+    this.redLetters = true,
+    this.maxLines,
+    this.style,
+  }) : verses = [verse];
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider);
+  Widget build(BuildContext context) {
     final searchTerms = highlightTerm?.onlyLetters.toLowerCase().split(' ').where((term) => term.isNotBlank).toSet();
 
     return Text.rich(
@@ -36,9 +51,7 @@ class VerseText extends ConsumerWidget {
                     .expand(
                       (word) => WordSubstringText(
                         word.text!,
-                        style: TextStyle(
-                          color: word.redLetters && user.themeLayout.redLetters ? context.colors.red.dark : null,
-                        ),
+                        style: TextStyle(color: word.redLetters && redLetters ? context.colors.red.dark : null),
                         wordStyleMapper: (textWord) =>
                             (highlightStrongId != null && word.data?.strongId == highlightStrongId) ||
                                 (searchTerms != null && searchTerms.contains(textWord.onlyLetters.toLowerCase()))
@@ -50,6 +63,8 @@ class VerseText extends ConsumerWidget {
             )
             .toList(),
       ),
+      maxLines: maxLines,
+      overflow: maxLines == null ? null : .ellipsis,
     );
   }
 }

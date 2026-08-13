@@ -9,7 +9,7 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:memory/models/activity_plan.dart';
 import 'package:memory/providers/user_provider.dart';
 import 'package:memory/ui/pages/activity_page.dart';
-import 'package:memory/ui/pages/chapter_preview_page.dart';
+import 'package:memory/ui/pages/add_passages_page.dart';
 import 'package:memory/utils/extensions/ref_extensions.dart';
 import 'package:style/style.dart';
 
@@ -59,10 +59,14 @@ class HomePage extends ConsumerWidget {
             trailing: StyledCircleButton.md(
               child: Symbols.add.toIcon(),
               colorBuilder: .surfaceSecondary,
-              onPressed: () => ref.updateUser(
-                (user) =>
-                    user.copyWith(passages: [...user.passages, VerseSelection.reference(Reference.values.random)]),
-              ),
+              onPressed: () async {
+                final newPassages = await context.pushDialog<List<VerseSelection>>(AddPassagesPage());
+                if (newPassages != null) {
+                  ref.updateUser(
+                    (user) => user.copyWith(passages: [...user.passages, ...newPassages].distinct.toList()),
+                  );
+                }
+              },
             ),
             children: [
               if (user.passages.isEmpty)
@@ -120,34 +124,7 @@ class HomePage extends ConsumerWidget {
                             leading: Symbols.book.toIcon(),
                             onPressed: () {
                               context.pop();
-                              context.push(
-                                ChapterPreviewPage(
-                                  chapterReference: passage.references.first.toChapterReference(),
-                                  translation: .bsb,
-                                  selection: passage,
-                                ),
-                              );
-                            },
-                          ),
-                          StyledListItem.externalNavigation(
-                            title: 'Study'.toText(),
-                            subtitle: 'Study this passage with Lux.'.toText(),
-                            leading: ClipRRect(
-                              borderRadius: .circular(8),
-                              child: ColorFiltered(
-                                colorFilter: .saturation(0),
-                                child: Image.asset('assets/images/lux-logo-full.png', width: 32, height: 32),
-                              ),
-                            ),
-                            onPressed: () {
-                              context.pop();
-                              context.push(
-                                ChapterPreviewPage(
-                                  chapterReference: ChapterReference(book: .genesis, chapterNum: 1),
-                                  translation: .bsb,
-                                  selection: passage,
-                                ),
-                              );
+                              PassagePreviewPage.show(context, verseSelection: passage);
                             },
                           ),
                           StyledListItem(

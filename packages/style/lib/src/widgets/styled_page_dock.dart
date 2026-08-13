@@ -39,7 +39,7 @@ class StyledPageDock extends HookWidget {
                             scrollKey: i,
                             child: Padding(
                               padding: page.padding,
-                              child: SingleChildScrollView(
+                              child: StyledListView.child(
                                 child: SizedBox(
                                   height: page.forceFillHeight ? constraints.maxHeight : null,
                                   child: Column(crossAxisAlignment: .start, children: page.children),

@@ -1,5 +1,3 @@
-import 'package:bible/ui/pages/chapter_preview_page.dart';
-import 'package:bible/ui/widgets/passage_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:intersperse/intersperse.dart';
 import 'package:lux/i18n.dart';
@@ -35,7 +33,7 @@ class PreviewPassageSheet {
           label: t.biblePlans.readEntireChapter.toText(),
           onPressed: () {
             context.pop();
-            ChapterPreviewPage.show(
+            PassagePreviewPage.show(
               context,
               verseSelection: verseSelection,
               onNavigateToVerseSelection: (selection) => onNavigateToVerseSelection?.call(selection),

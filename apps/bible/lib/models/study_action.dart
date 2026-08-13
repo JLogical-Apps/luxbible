@@ -6,12 +6,10 @@ import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/dialogs/tutorial_dialog.dart';
-import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
-import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -138,8 +136,12 @@ enum StudyAction {
                               StyledTag.sm(child: translation.title().toText()),
                           ],
                         ),
-                        subtitle: StyledLoading(child: verses?.mapIfNonNull((verses) => VerseText(verses: verses))),
-                        onPressed: () => ChapterPreviewPage.show(
+                        subtitle: StyledLoading(
+                          child: verses?.mapIfNonNull(
+                            (verses) => VerseText(redLetters: user.themeLayout.redLetters, verses: verses),
+                          ),
+                        ),
+                        onPressed: () => PassagePreviewPage.show(
                           context,
                           verseSelection: verseSelection,
                           onNavigateToVerseSelection: (selection) {
@@ -231,6 +233,7 @@ enum StudyAction {
             tabTitles: user.commentariesOrDefault.map((type) => type.title().toText()).toList(),
           ),
           showDivider: false,
+          childrenKey: ValueKey(selectedCommentary),
           childrenWrapper: (context, child) => SwipeGestureDetector(
             index: () => index,
             maxIndex: tabController.length,

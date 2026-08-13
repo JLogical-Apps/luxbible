@@ -27,9 +27,7 @@ class PassageController {
     double alignment = 0,
     Duration duration = const Duration(milliseconds: 200),
   }) async {
-    final sectionKey = paragraphs.getSectionIndexForVerse(reference.verseNum) == null
-        ? null
-        : keyBySectionReference[reference];
+    final sectionKey = paragraphs.verseHasSection(reference.verseNum) ? keyBySectionReference[reference] : null;
     final key = sectionKey?.currentContext == null ? keyByReference[reference] : sectionKey;
     if (key?.currentContext?.mounted == true) {
       await key?.scrollIntoView(axis: .vertical, duration: duration, alignment: alignment);

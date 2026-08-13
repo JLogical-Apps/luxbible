@@ -1,4 +1,3 @@
-import 'package:bible/ui/widgets/passage_controller.dart';
 import 'package:bible/ui/widgets/visible_verse_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';

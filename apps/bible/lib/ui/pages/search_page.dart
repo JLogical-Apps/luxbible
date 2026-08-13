@@ -4,11 +4,9 @@ import 'package:bible/providers/dictionary_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/dialogs/tutorial_dialog.dart';
-import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/sheets/dictionary_sheet.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
 import 'package:bible/ui/widgets/search_location_button.dart';
-import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -257,13 +255,18 @@ class SearchPage extends HookConsumerWidget {
                       return StyledListItem.navigation(
                         title: result.format().toText(),
                         subtitle: searchState.value.trim().isStrongId
-                            ? VerseText.verse(verse: verse, highlightStrongId: searchState.value.trim())
+                            ? VerseText.verse(
+                                redLetters: user.themeLayout.redLetters,
+                                verse: verse,
+                                highlightStrongId: searchState.value.trim(),
+                              )
                             : VerseText.verse(
+                                redLetters: user.themeLayout.redLetters,
                                 verse: verse,
                                 highlightTerm: searchState.value,
                                 style: context.textStyle.paragraphSm.subtle(),
                               ),
-                        onPressed: () => ChapterPreviewPage.show(
+                        onPressed: () => PassagePreviewPage.show(
                           context,
                           verseSelection: VerseSelection.reference(result),
                           onNavigateToVerseSelection: (selection) =>

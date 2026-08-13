@@ -18,6 +18,7 @@ import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/audio_bible_handler.dart';
+import 'package:bible/ui/bible_reader_configuration.dart';
 import 'package:bible/ui/pages/bible_page.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -81,6 +82,7 @@ Future<void> main() async {
 
       ref = ProviderContainer(
         overrides: [
+          luxReaderConfigurationProvider.overrideWith((ref) => BibleReaderConfiguration.build(ref.watch(userProvider))),
           audioBibleHandlerProvider.overrideWithValue(audioBibleHandler),
           strongsProvider.overrideWithValue(strongs),
           dictionaryProvider.overrideWithValue(dictionary),

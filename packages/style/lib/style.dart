@@ -27,6 +27,7 @@ export 'src/widgets/styled_circle_button.dart';
 export 'src/widgets/styled_divider.dart';
 export 'src/widgets/styled_dock.dart';
 export 'src/widgets/styled_edit_badge.dart';
+export 'src/widgets/styled_fog.dart';
 export 'src/widgets/styled_form_input.dart';
 export 'src/widgets/styled_link.dart';
 export 'src/widgets/styled_list.dart';

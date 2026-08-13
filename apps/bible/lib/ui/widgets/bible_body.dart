@@ -6,14 +6,9 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/widgets/audio_bible_panel.dart';
-import 'package:bible/ui/widgets/bible_selection.dart';
-import 'package:bible/ui/widgets/chapter_builder.dart';
-import 'package:bible/ui/widgets/chapter_page_view.dart';
 import 'package:bible/ui/widgets/linked_study_panel.dart';
 import 'package:bible/ui/widgets/main_toolbar.dart';
 import 'package:bible/ui/widgets/onboarding_panel.dart';
-import 'package:bible/ui/widgets/passage_builder.dart';
-import 'package:bible/ui/widgets/passage_controller.dart';
 import 'package:bible/ui/widgets/selection_toolbar.dart';
 import 'package:bible/ui/widgets/visible_verse_utils.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -26,6 +21,7 @@ import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:style/style.dart';
+import 'package:utils_core/utils_core.dart';
 
 const topBarHeight = 30.0;
 
@@ -35,6 +31,7 @@ class BibleBody extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
+    final readerConfiguration = ref.watch(luxReaderConfigurationProvider);
 
     final initialPosition = user.lastPosition;
 
@@ -48,7 +45,7 @@ class BibleBody extends HookConsumerWidget {
     final currentPage = (pageController.pageOrNull ?? initialPosition.reference.bibleChapterIndex).round();
     final currentChapterReference = ChapterReference.fromBibleChapterIndex(currentPage);
 
-    final selection = useBibleSelection();
+    final selection = usePassageSelection(readerConfiguration.selection);
 
     final navigationHistoryState = useState(
       NavigationHistory(
@@ -57,12 +54,16 @@ class BibleBody extends HookConsumerWidget {
     );
 
     final passageKey = useMemoized(() => GlobalKey());
-    final currentPassageController = usePassageController(currentChapterReference);
-    final currentScrollController = currentPassageController.scrollController;
+
+    final passageControllerRegistry = useRegistry<ChapterReference, PassageController>();
+
+    final currentPassageController = passageControllerRegistry[currentChapterReference];
+    final currentScrollController = currentPassageController?.scrollController;
+
     final currentControllerPassthrough = usePassthrough(currentPassageController);
     final positionByReferenceRef = useRef({initialPosition.reference: initialPosition});
 
-    final keyByReference = currentPassageController.keyByReference;
+    final keyByReference = currentPassageController?.keyByReference ?? {};
 
     void saveScroll() {
       final topReference = getVisibleReferencesInViewport(
@@ -126,7 +127,7 @@ class BibleBody extends HookConsumerWidget {
       await Future.delayed(Duration(milliseconds: 200));
 
       final controller = currentControllerPassthrough.value;
-      controller.scrollToReference(
+      controller?.scrollToReference(
         verseSelection.references.first,
         paragraphs: chapter.paragraphs,
         alignment: 0.2,
@@ -149,7 +150,7 @@ class BibleBody extends HookConsumerWidget {
 
     final isScrollingDownState = useState(true);
     final isAtBottom = useListenableSelector(currentScrollController, () {
-      final scrollPosition = currentScrollController.positionOrNull;
+      final scrollPosition = currentScrollController?.positionOrNull;
       return scrollPosition == null || !scrollPosition.hasContentDimensions
           ? false
           : scrollPosition.pixels >= scrollPosition.maxScrollExtent;
@@ -350,7 +351,6 @@ class BibleBody extends HookConsumerWidget {
     Widget biblePages({Key? key}) => ChapterPageView(
       key: key,
       controller: pageController,
-      user: user,
       onSwipe: (reference) {
         softNavigateTo(reference);
         ref.markOnboardingStep(.swipeChapter);
@@ -359,90 +359,75 @@ class BibleBody extends HookConsumerWidget {
         isScrollingDownState.value = true;
         selection.clear();
       },
-      itemBuilder: (context, chapterReference, chapter) => SafeArea(
+      itemBuilder: (context, chapterReference, chapter, passageController) => SafeArea(
         left: true,
         right: !isSideLayout || panelCount == 0,
         bottom: false,
         child: HookBuilder(
           builder: (context) {
-            final scrollController = chapterReference == currentChapterReference ? currentScrollController : null;
-
-            final isLoaded = useOnContentLoaded(
-              controller: scrollController,
-              onContentLoaded: (maxScrollExtent) {
-                final target = positionByReferenceRef.value[chapterReference];
-                if (target?.verseNum case final verseNum?) {
-                  final hasSection = chapter.paragraphs.getSectionIndexForVerse(verseNum) != null;
-                  currentPassageController.jumpToReference(
-                    chapterReference.getReference(verseNum),
-                    paragraphs: chapter.paragraphs,
-                    alignment: ((hasSection ? 24 : 0) + topBarHeight) / (passageKey.renderBox?.size.height ?? 128),
-                  );
-                }
-              },
-            );
+            useRegistryItem(passageControllerRegistry, chapterReference, passageController);
 
             final showTopBar = useListenableSelector(
-              scrollController,
-              () => scrollController != null && scrollController.hasClients && scrollController.position.pixels > 60,
+              passageController.scrollController,
+              () => (passageController.scrollController.positionOrNull?.pixels ?? 0) > 60,
             );
+            final scrollPosition = positionByReferenceRef.value[chapterReference];
 
-            return AnimatedOpacity(
-              opacity: isLoaded ? 1 : 0,
-              duration: Duration(milliseconds: 300),
-              curve: Curves.easeOutCubic,
-              child: Stack(
-                fit: .expand,
-                children: [
-                  StyledScrollbar(
-                    controller: scrollController,
-                    removePadding: isSideLayout && panelCount > 0,
-                    child: ChapterBuilder(
-                      controller: chapterReference == currentChapterReference ? currentPassageController : null,
-                      padding: .only(
-                        left: 24,
-                        top: MediaQuery.paddingOf(context).top + 40,
-                        right: 24,
-                        bottom: MediaQuery.paddingOf(context).bottom + 96,
-                      ),
-                      chapterReference: chapterReference,
-                      user: user,
-                      chapter: chapter,
-                      selection: selection,
-                      onNavigateToVerseSelection: navigateToVerseSelection,
-                    ),
+            return Stack(
+              fit: .expand,
+              children: [
+                ChapterBuilder(
+                  controller: passageController,
+                  scrollToSelection: scrollPosition?.getReference()?.mapIfNonNull(
+                    (reference) => VerseSelection.reference(reference),
                   ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    left: 0,
-                    child: AnimatedOpacity(
-                      key: ValueKey(scrollController?.hasClients),
-                      opacity: showTopBar ? 1 : 0,
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeInOutCubic,
-                      child: GestureDetector(
-                        onTap: showTopBar ? () => isScrollingDownState.value = true : null,
-                        child: Builder(
-                          builder: (context) => Container(
-                            color: context.colors.backgroundPrimary,
-                            padding:
-                                EdgeInsets.only(top: MediaQuery.paddingOf(context).top) + .symmetric(horizontal: 16),
-                            alignment: .centerLeft,
-                            child: Column(
-                              crossAxisAlignment: .start,
-                              children: [
-                                Text(chapterReference.format(), style: context.textStyle.labelSm.subtle()),
-                                StyledDivider(),
-                              ],
-                            ),
+                  scrollToSelectionAlignment:
+                      (switch (scrollPosition?.verseNum) {
+                            final verseNum? when chapter.paragraphs.verseHasSection(verseNum) => 24,
+                            _ => 0,
+                          } +
+                          topBarHeight) /
+                      (passageKey.renderBox?.size.height ?? 128),
+                  padding: .only(
+                    left: 24,
+                    top: MediaQuery.paddingOf(context).top + 40,
+                    right: 24,
+                    bottom: MediaQuery.paddingOf(context).bottom + 96,
+                  ),
+                  chapterReference: chapterReference,
+                  chapter: chapter,
+                  selection: selection,
+                  onNavigateToVerseSelection: navigateToVerseSelection,
+                  removeScrollbarPadding: isSideLayout && panelCount > 0,
+                ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  left: 0,
+                  child: AnimatedOpacity(
+                    opacity: showTopBar ? 1 : 0,
+                    duration: Duration(milliseconds: 300),
+                    curve: Curves.easeInOutCubic,
+                    child: GestureDetector(
+                      onTap: showTopBar ? () => isScrollingDownState.value = true : null,
+                      child: Builder(
+                        builder: (context) => Container(
+                          color: context.colors.backgroundPrimary,
+                          padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top) + .symmetric(horizontal: 16),
+                          alignment: .centerLeft,
+                          child: Column(
+                            crossAxisAlignment: .start,
+                            children: [
+                              Text(chapterReference.format(), style: context.textStyle.labelSm.subtle()),
+                              StyledDivider(),
+                            ],
                           ),
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             );
           },
         ),
@@ -498,11 +483,9 @@ class BibleBody extends HookConsumerWidget {
             final visibleVerseSelectionState = useState(VerseSelection.empty());
             final visibleVerseSelection = selection.verseSelection ?? visibleVerseSelectionState.value;
 
+            final mainTranslation = user.getTranslationFor(currentChapterReference.book);
             final chapterValue = ref.watch(
-              chapterProvider(
-                chapterReference: currentChapterReference,
-                translation: user.getTranslationFor(currentChapterReference.book),
-              ),
+              chapterProvider(chapterReference: currentChapterReference, translation: mainTranslation),
             );
             final chapter = chapterValue.value;
 
@@ -578,22 +561,34 @@ class BibleBody extends HookConsumerWidget {
                             chapterReference: currentChapterReference,
                             passageTopReference: visibleVerseSelection.references.firstOrNull,
                             onScrollMainToReference: (reference) {
-                              final hasSection =
-                                  chapter?.paragraphs.getSectionIndexForVerse(reference.verseNum) != null;
-                              currentPassageController.scrollToReference(
+                              final sizeMultiplier = readerConfiguration
+                                  .paragraphsConfiguration(context, mainTranslation)
+                                  .sizeMultiplier;
+                              final sectionHeight =
+                                  chapter?.paragraphs
+                                      .getSectionTypeForVerse(reference.verseNum)
+                                      ?.getHeight(sizeMultiplier) ??
+                                  0;
+                              currentPassageController?.scrollToReference(
                                 reference,
                                 paragraphs: chapter?.paragraphs ?? [],
                                 alignment:
-                                    ((hasSection ? 24 : 0) + topBarHeight) / (passageKey.renderBox?.size.height ?? 128),
+                                    (sectionHeight + topBarHeight - 6) / (passageKey.renderBox?.size.height ?? 128),
                               );
                             },
                             onScrollPanelToReference: (reference, panelHeight, controller) {
-                              final hasSection =
-                                  paragraphsState.value?.getSectionIndexForVerse(reference.verseNum) != null;
+                              final sizeMultiplier = readerConfiguration
+                                  .paragraphsConfiguration(context, translation)
+                                  .sizeMultiplier;
+                              final sectionHeight =
+                                  paragraphsState.value
+                                      ?.getSectionTypeForVerse(reference.verseNum)
+                                      ?.getHeight(sizeMultiplier) ??
+                                  0;
                               controller.scrollToReference(
                                 reference,
                                 paragraphs: paragraphsState.value ?? [],
-                                alignment: hasSection ? (32 / panelHeight) : 0,
+                                alignment: sectionHeight / panelHeight,
                               );
                             },
                             isActive: currentCarouselPage == i + onboardingOffset,

@@ -4,9 +4,7 @@ import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/ui/pages/chapter_preview_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
-import 'package:bible/ui/widgets/verse_text.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -313,10 +311,15 @@ class StrongSheet {
             if (verse == null) {
               return null;
             }
+
             return StyledListItem.navigation(
               title: reference.format().toText(),
-              subtitle: VerseText.verse(verse: verse, highlightStrongId: strongId),
-              onPressed: () => ChapterPreviewPage.show(
+              subtitle: VerseText.verse(
+                redLetters: user.themeLayout.redLetters,
+                verse: verse,
+                highlightStrongId: strongId,
+              ),
+              onPressed: () => PassagePreviewPage.show(
                 context,
                 verseSelection: VerseSelection.reference(reference),
                 onNavigateToVerseSelection: (selection) {

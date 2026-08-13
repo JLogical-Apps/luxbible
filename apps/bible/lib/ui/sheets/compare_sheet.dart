@@ -1,5 +1,4 @@
 import 'package:bible/models/user/user.dart';
-import 'package:bible/ui/widgets/passage_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
@@ -36,11 +35,7 @@ class CompareSheet {
 
   static Widget _bibleParagraphs({required BibleTranslation translation, required VerseSelection verseSelection}) =>
       verseSelection.isInTranslation(translation)
-      ? PassageBuilder(
-          verseSelection: verseSelection,
-          translation: translation,
-          contentBuilder: (context, passage) => Padding(padding: .only(bottom: 16), child: passage),
-        )
+      ? PassageBuilder(verseSelection: verseSelection, translation: translation, padding: .only(bottom: 16))
       : Padding(
           padding: .only(bottom: 16),
           child: StyledTile.message(
