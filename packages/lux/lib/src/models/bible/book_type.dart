@@ -75,7 +75,9 @@ enum BookType {
   static Map<String, BookType> _bookTypeByOsisId = values.mapToMap((bookType) => MapEntry(bookType.osisId(), bookType));
 
   static BookType fromOsisId(String id) =>
-      _bookTypeByOsisId[id] ?? (throw Exception('Could not find book with ID: $id'));
+      _bookTypeByOsisId[id] ??
+      _bookTypeByOsisId.where((osisId, _) => osisId.toUpperCase() == id.toUpperCase()).values.firstOrNull ??
+      (throw Exception('Could not find book with ID: $id'));
 
   static BookType fromJsonKey(String key) => values.firstWhere((book) => book.jsonKey() == key);
 

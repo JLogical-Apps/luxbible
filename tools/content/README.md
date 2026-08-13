@@ -16,7 +16,10 @@ dart run bin/generate_bible_plans_json.dart
 dart run bin/generate_commentary_json.dart
 dart run bin/generate_easton_json.dart
 dart run bin/generate_strongs_json.dart
+dart run bin/generate_audio_bible_timings_json.dart
 ```
+
+`generate_audio_bible_timings_json.dart` validates their canonical chapter and verse coverage, removes the verse text and source metadata, and writes one minified runtime asset per Audio Bible.
 
 `generate_navigators_5x5x5_source.dart` writes its normalized input file into `content/sources/reading_plans/` before `generate_bible_plans_json.dart` reads it.
 

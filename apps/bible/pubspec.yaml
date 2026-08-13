@@ -89,6 +89,7 @@ flutter:
     - assets/commentary/
     - assets/cross_references/
     - assets/bible_plans/
+    - assets/audio_bible_timings/
     - assets/images/
     - fonts/
   fonts:

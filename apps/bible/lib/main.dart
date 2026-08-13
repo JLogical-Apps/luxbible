@@ -4,6 +4,7 @@ import 'dart:developer' as developer;
 import 'package:audio_service/audio_service.dart';
 import 'package:bible/firebase_options.dart';
 import 'package:bible/functions/bible_plan_importer.dart';
+import 'package:bible/functions/audio_bible_timings_importer.dart';
 import 'package:bible/functions/cross_references_importer.dart';
 import 'package:bible/functions/dictionary_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
@@ -11,6 +12,7 @@ import 'package:bible/licenses.dart';
 import 'package:bible/models/user/language.dart';
 import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
+import 'package:bible/providers/audio_bible_timings_provider.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/dictionary_provider.dart';
@@ -75,6 +77,7 @@ Future<void> main() async {
       final dictionary = await DictionaryImporter().import();
       final crossReferences = await CrossReferencesImporter().import();
       final biblePlans = await BiblePlanImporter().import();
+      final audioBibleTimings = await AudioBibleTimingsImporter().import();
 
       final paths = await getPaths();
       final sharedPreferences = await SharedPreferences.getInstance();
@@ -84,6 +87,7 @@ Future<void> main() async {
         overrides: [
           luxReaderConfigurationProvider.overrideWith((ref) => BibleReaderConfiguration.build(ref.watch(userProvider))),
           audioBibleHandlerProvider.overrideWithValue(audioBibleHandler),
+          audioBibleTimingsProvider.overrideWithValue(audioBibleTimings),
           strongsProvider.overrideWithValue(strongs),
           dictionaryProvider.overrideWithValue(dictionary),
           crossReferencesProvider.overrideWithValue(crossReferences),

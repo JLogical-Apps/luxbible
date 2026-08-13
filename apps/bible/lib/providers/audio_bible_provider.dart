@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:bible/models/audio_bible_playback_target.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/audio_bible_handler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -29,6 +30,16 @@ Stream<Duration?> audioBibleDuration(Ref ref) => ref.watch(audioBibleHandlerProv
 
 @riverpod
 Stream<PlayerState> audioBiblePlayerState(Ref ref) => ref.watch(audioBibleHandlerProvider).player.playerStateStream;
+
+@Riverpod(keepAlive: true)
+class AudioBibleTarget extends _$AudioBibleTarget {
+  @override
+  AudioBiblePlaybackTarget? build() => null;
+
+  void update(AudioBiblePlaybackTarget target) => state = target;
+
+  void clear() => state = null;
+}
 
 @riverpod
 class AudioBiblePlaybackError extends _$AudioBiblePlaybackError {
@@ -77,26 +88,17 @@ class AudioBibleTimer extends _$AudioBibleTimer {
 
 @riverpod
 Future<void> loadedAudioBible(Ref ref) async {
-  final source = ref.watch(
-    userProvider.select((user) {
-      final reference = user.lastReference;
-      return (
-        uri: user.audioUri,
-        id: reference.osisId(),
-        album: user.getTranslationFor(reference.book).fullName(),
-        title: reference.format(),
-      );
-    }),
-  );
+  final target = ref.watch(audioBibleTargetProvider);
   final handler = ref.read(audioBibleHandlerProvider);
 
-  if (source.uri case final uri?) {
+  if (target?.uri case final uri?) {
+    final reference = target!.chapterReference;
     await handler.loadUrl(
       uri.toString(),
       MediaItem(
-        id: source.id,
-        album: source.album,
-        title: source.title,
+        id: reference.osisId(),
+        album: target.translation.fullName(),
+        title: reference.format(),
         artUri: (await ref.read(pathServiceProvider)?.getAssetAsFile('assets/images/lux-logo-full.png'))?.uri,
       ),
     );
@@ -108,8 +110,17 @@ Future<void> loadedAudioBible(Ref ref) async {
 @riverpod
 void audioBibleListeners(Ref ref) {
   ref.listen(
-    userProvider.select((user) => user.audioUri),
-    (_, _) => ref.read(audioBiblePlaybackErrorProvider.notifier).clear(),
+    userProvider.select(
+      (user) => (reference: user.lastReference, translation: user.getTranslationFor(user.lastReference.book)),
+    ),
+    (_, source) {
+      ref.read(audioBiblePlaybackErrorProvider.notifier).clear();
+      if (ref.read(audioBibleTargetProvider)?.context == .bible) {
+        ref
+            .read(audioBibleTargetProvider.notifier)
+            .update(.chapter(translation: source.translation, chapterReference: source.reference));
+      }
+    },
   );
 
   ref.listen(
@@ -122,13 +133,18 @@ void audioBibleListeners(Ref ref) {
     final player = ref.read(audioBibleHandlerProvider).player;
     final playerState = next.value;
     if (playerState != null && playerState.processingState == .completed && playerState.playing) {
-      final nextReference = ref.read(userProvider).lastReference.next;
-      if (nextReference != null) {
-        await ref
-            .read(userProvider.notifier)
-            .update((user) => user.withSoftNavigation(ChapterPosition(reference: nextReference)));
-      } else {
-        await player.pause();
+      switch (ref.read(audioBibleTargetProvider)?.context) {
+        case .bible:
+          final nextReference = ref.read(audioBibleTargetProvider)?.chapterReference.next;
+          if (nextReference != null) {
+            await ref
+                .read(userProvider.notifier)
+                .update((user) => user.withSoftNavigation(ChapterPosition(reference: nextReference)));
+          } else {
+            await player.pause();
+          }
+        case .readingPlan || null:
+          await player.pause();
       }
     }
   });
@@ -144,11 +160,6 @@ class AudioBible extends _$AudioBible {
     ref.watch(audioBibleListenersProvider);
     ref.watch(loadedAudioBibleProvider).requireValue;
 
-    final user = ref.watch(userProvider);
-    if (user.audioUri == null) {
-      throw UnsupportedError('Unsupported translation');
-    }
-
     final playbackError = ref.watch(audioBiblePlaybackErrorProvider);
     if (playbackError != null) {
       throw playbackError;
@@ -162,20 +173,35 @@ class AudioBible extends _$AudioBible {
 
   Future<void> toggle() async {
     final user = ref.read(userProvider);
-    if (user.audioUri == null) {
+    final reference = user.lastReference;
+    final target = AudioBiblePlaybackTarget.chapter(
+      translation: user.getTranslationFor(reference.book),
+      chapterReference: reference,
+    );
+    if (target.uri == null) return;
+
+    if (ref.read(audioBibleTargetProvider) == target && player.playing) {
+      await handler.pause();
       return;
+    }
+
+    await playTarget(target);
+  }
+
+  Future<void> playTarget(AudioBiblePlaybackTarget target) async {
+    if (target.uri == null) return;
+
+    if (ref.read(audioBibleTargetProvider) != target) {
+      ref.read(audioBibleTargetProvider.notifier).update(target);
     }
 
     if (state.hasError) {
       await handler.pause();
       ref.read(audioBiblePlaybackErrorProvider.notifier).clear();
       ref.invalidate(loadedAudioBibleProvider);
-    } else if (player.playing) {
-      await handler.pause();
-      return;
     }
     try {
-      await future;
+      await ref.read(loadedAudioBibleProvider.future);
     } catch (_) {
       return;
     }
@@ -186,9 +212,14 @@ class AudioBible extends _$AudioBible {
     await handler.play();
   }
 
+  Future<void> pause() => handler.pause();
+
   Future<void> seek(Duration position) => handler.seek(position.clamp(.zero, player.duration ?? .zero));
 
   Future<void> seekBy(Duration offset) => seek(player.position + offset);
 
-  Future<void> close() => handler.stop();
+  Future<void> close() async {
+    await handler.stop();
+    ref.read(audioBibleTargetProvider.notifier).clear();
+  }
 }
