@@ -171,6 +171,7 @@ enum MainAction {
           regionFormat: reference.format(),
           regionType: RegionType.chapter,
           onNavigateToVerseSelection: onNavigateToVerseSelection,
+          onAddStudyPanel: onAddStudyPanel,
         );
       case studyPanel:
         final studyPanelType = await context.showStyledSheet<StudyPanelType>(

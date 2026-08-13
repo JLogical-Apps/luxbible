@@ -206,6 +206,7 @@
   },
   "studyPanels": {
     "title": "Studiepaneel",
+    "pinAsStudyPanel": "Vastzetten als studiepaneel",
     "compareWith": "Vergelijken met {translation}",
     "directionInterlinear": "{direction} interlineair",
     "commentaryName": "Commentaar van {commentary}",

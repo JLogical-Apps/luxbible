@@ -370,6 +370,7 @@ class _Translations$studyPanels$ru extends Translations$studyPanels$en {
 
 	// Translations
 	@override String get title => 'Панель изучения';
+	@override String get pinAsStudyPanel => 'Закрепить как панель изучения';
 	@override String compareWith({required Object translation}) => 'Сравнение с ${translation}';
 	@override String directionInterlinear({required Object direction}) => '${direction} подстрочник';
 	@override String commentaryName({required Object commentary}) => 'Комментарий ${commentary}';
@@ -2823,6 +2824,7 @@ extension on TranslationsRu {
 			'selectionActions.noInterlinearWords' => 'В этой выборке не найдено подстрочных слов.',
 			'selectionActions.textInReference' => ({required Object reference}) => 'Текст в ${reference}',
 			'studyPanels.title' => 'Панель изучения',
+			'studyPanels.pinAsStudyPanel' => 'Закрепить как панель изучения',
 			'studyPanels.compareWith' => ({required Object translation}) => 'Сравнение с ${translation}',
 			'studyPanels.directionInterlinear' => ({required Object direction}) => '${direction} подстрочник',
 			'studyPanels.commentaryName' => ({required Object commentary}) => 'Комментарий ${commentary}',
@@ -3148,9 +3150,9 @@ extension on TranslationsRu {
 			'planTypes.differentTopicsDescription' => 'Каждый день просматривайте разные разделы Священного Писания, исследуя каждую книгу Библии в течение года.',
 			'planTypes.newTestamentPsalmsProverbsDescription' => 'Читайте Новый Завет вместе с Псалмами и Притчами в течение года.',
 			'planTypes.fiveByFiveByFiveDescription' => 'Читайте по одной главе Нового Завета в день, пять дней в неделю, а затем два дня для повторения и размышления.',
-			'planTypes.oldScopeDescription' => 'Читает книги Ветхого Завета.',
 			_ => null,
 		} ?? switch (path) {
+			'planTypes.oldScopeDescription' => 'Читает книги Ветхого Завета.',
 			'planTypes.newScopeDescription' => 'Читает книги Нового Завета.',
 			'planTypes.wholeScopeDescription' => 'Читает как Ветхий, так и Новый Завет.',
 			'planTypes.focused' => 'Сосредоточенный',

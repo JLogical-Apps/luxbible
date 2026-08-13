@@ -1,5 +1,6 @@
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/reference/region_type.dart';
+import 'package:bible/models/study_panel.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
@@ -42,6 +43,7 @@ enum VerseSelectionAction {
     required VerseSelection selectedVerseSelection,
     required Function() onDeselect,
     required Function(VerseSelection) onNavigateToVerseSelection,
+    Function(StudyPanel)? onAddStudyPanel,
   }) async {
     switch (this) {
       case annotate:
@@ -76,6 +78,7 @@ enum VerseSelectionAction {
           verseSelection: selectedVerseSelection,
           regionType: RegionType.verses,
           onNavigateToVerseSelection: onNavigateToVerseSelection,
+          onAddStudyPanel: onAddStudyPanel,
         );
     }
   }

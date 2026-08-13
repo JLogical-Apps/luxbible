@@ -206,6 +206,7 @@
   },
   "studyPanels": {
     "title": "Панель изучения",
+    "pinAsStudyPanel": "Закрепить как панель изучения",
     "compareWith": "Сравнение с {translation}",
     "directionInterlinear": "{direction} подстрочник",
     "commentaryName": "Комментарий {commentary}",

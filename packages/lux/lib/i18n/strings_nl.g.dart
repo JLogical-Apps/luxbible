@@ -370,6 +370,7 @@ class _Translations$studyPanels$nl extends Translations$studyPanels$en {
 
 	// Translations
 	@override String get title => 'Studiepaneel';
+	@override String get pinAsStudyPanel => 'Vastzetten als studiepaneel';
 	@override String compareWith({required Object translation}) => 'Vergelijken met ${translation}';
 	@override String directionInterlinear({required Object direction}) => '${direction} interlineair';
 	@override String commentaryName({required Object commentary}) => 'Commentaar van ${commentary}';
@@ -2819,6 +2820,7 @@ extension on TranslationsNl {
 			'selectionActions.noInterlinearWords' => 'Geen interlineaire woorden gevonden in deze selectie.',
 			'selectionActions.textInReference' => ({required Object reference}) => 'Tekst in ${reference}',
 			'studyPanels.title' => 'Studiepaneel',
+			'studyPanels.pinAsStudyPanel' => 'Vastzetten als studiepaneel',
 			'studyPanels.compareWith' => ({required Object translation}) => 'Vergelijken met ${translation}',
 			'studyPanels.directionInterlinear' => ({required Object direction}) => '${direction} interlineair',
 			'studyPanels.commentaryName' => ({required Object commentary}) => 'Commentaar van ${commentary}',
@@ -3144,9 +3146,9 @@ extension on TranslationsNl {
 			'planTypes.differentTopicsDescription' => 'Lees elke dag een ander gedeelte van de Bijbel en verken in één jaar elk Bijbelboek.',
 			'planTypes.newTestamentPsalmsProverbsDescription' => 'Lees in één jaar het Nieuwe Testament naast Psalmen en Spreuken.',
 			'planTypes.fiveByFiveByFiveDescription' => 'Lees vijf dagen per week één hoofdstuk uit het Nieuwe Testament, gevolgd door twee dagen om terug te kijken en te overdenken.',
-			'planTypes.oldScopeDescription' => 'Leest uit boeken van het Oude Testament.',
 			_ => null,
 		} ?? switch (path) {
+			'planTypes.oldScopeDescription' => 'Leest uit boeken van het Oude Testament.',
 			'planTypes.newScopeDescription' => 'Leest uit boeken van het Nieuwe Testament.',
 			'planTypes.wholeScopeDescription' => 'Leest uit het Oude en Nieuwe Testament.',
 			'planTypes.focused' => 'Gericht',

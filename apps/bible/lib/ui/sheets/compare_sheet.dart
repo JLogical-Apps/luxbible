@@ -1,4 +1,6 @@
+import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
+import 'package:bible/ui/widgets/pin_study_panel_button.dart';
 import 'package:flutter/material.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
@@ -11,6 +13,7 @@ class CompareSheet {
     required VerseSelection verseSelection,
     BibleTranslation? translation,
     required User user,
+    Function(StudyPanel)? onAddStudyPanel,
   }) {
     if (translation != null) {
       return [
@@ -26,6 +29,12 @@ class CompareSheet {
           .map<Widget>(
             (translation) => StyledStickyHeader.child(
               title: translation.title().toText(),
+              trailing: onAddStudyPanel == null
+                  ? null
+                  : PinStudyPanelButton(
+                      studyPanel: .compare(translation: translation),
+                      onAddStudyPanel: onAddStudyPanel,
+                    ),
               child: _bibleParagraphs(translation: translation, verseSelection: verseSelection),
             ),
           )

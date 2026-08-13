@@ -1,6 +1,7 @@
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/study_action.dart';
+import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/models/verse_selection_action.dart';
 import 'package:bible/providers/root_ref.dart';
@@ -65,12 +66,14 @@ enum VerseSelectionShortcut {
     required VerseSelection verseSelection,
     required Function() onDeselect,
     required Function(VerseSelection) onNavigateToVerseSelection,
+    Function(StudyPanel)? onAddStudyPanel,
   }) =>
       toStudyAction()?.onPressed(
         context,
         regionFormat: verseSelection.format(),
         verseSelection: verseSelection,
         onNavigateToVerseSelection: onNavigateToVerseSelection,
+        onAddStudyPanel: onAddStudyPanel,
         user: ref.read(userProvider),
       ) ??
       toVerseSelectionAction()?.onPressed(
@@ -78,6 +81,7 @@ enum VerseSelectionShortcut {
         selectedVerseSelection: verseSelection,
         onDeselect: onDeselect,
         onNavigateToVerseSelection: onNavigateToVerseSelection,
+        onAddStudyPanel: onAddStudyPanel,
       ) ??
       switch (this) {
         highlight => () async {

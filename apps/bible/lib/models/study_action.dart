@@ -1,4 +1,5 @@
 import 'package:bible/models/reference/region_type.dart';
+import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/app_bible_provider.dart';
@@ -10,6 +11,7 @@ import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
+import 'package:bible/ui/widgets/pin_study_panel_button.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -61,11 +63,17 @@ enum StudyAction {
     required VerseSelection verseSelection,
     required Function(VerseSelection) onNavigateToVerseSelection,
     required User user,
+    Function(StudyPanel)? onAddStudyPanel,
     bool popOnAction = true,
   }) {
     switch (this) {
       case compare:
-        return CompareSheet.buildSheetChildren(context, verseSelection: verseSelection, user: user);
+        return CompareSheet.buildSheetChildren(
+          context,
+          verseSelection: verseSelection,
+          user: user,
+          onAddStudyPanel: onAddStudyPanel,
+        );
       case interlinear:
         throw UnimplementedError();
       case commentary:
@@ -162,6 +170,7 @@ enum StudyAction {
     required VerseSelection verseSelection,
     required String regionFormat,
     required Function(VerseSelection) onNavigateToVerseSelection,
+    Function(StudyPanel)? onAddStudyPanel,
     required User user,
   }) async {
     if (this == crossReferences) ref.markOnboardingStep(.crossReferences);
@@ -197,6 +206,12 @@ enum StudyAction {
                 StyledTag.sm(child: user.studyTranslation.title().toText()),
             ],
           ),
+          trailing: onAddStudyPanel == null
+              ? null
+              : PinStudyPanelButton(
+                  studyPanel: .interlinear(direction: interlinearDirection),
+                  onAddStudyPanel: onAddStudyPanel,
+                ),
           aboveDivider: StyledTabBar.fill(
             tabController: tabController,
             tabTitles: InterlinearDirection.values.map((direction) => direction.title().toText()).toList(),
@@ -227,6 +242,12 @@ enum StudyAction {
         return StyledSheet.builder(
           title: title().toText(),
           subtitle: regionFormat.toText(),
+          trailing: onAddStudyPanel == null
+              ? null
+              : PinStudyPanelButton(
+                  studyPanel: .commentary(type: selectedCommentary),
+                  onAddStudyPanel: onAddStudyPanel,
+                ),
           shrinkWrap: false,
           aboveDivider: StyledTabBar.scrollable(
             tabController: tabController,
@@ -274,7 +295,11 @@ enum StudyAction {
             verseSelection: verseSelection,
             onNavigateToVerseSelection: onNavigateToVerseSelection,
             user: user,
+            onAddStudyPanel: onAddStudyPanel,
           ),
+          trailing: this == .crossReferences && onAddStudyPanel != null
+              ? PinStudyPanelButton(studyPanel: .crossReferences(), onAddStudyPanel: onAddStudyPanel)
+              : null,
         ),
       );
     }

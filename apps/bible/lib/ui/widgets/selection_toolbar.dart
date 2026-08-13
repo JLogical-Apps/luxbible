@@ -1,3 +1,4 @@
+import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/text_selection_action.dart';
 import 'package:bible/models/verse_selection_action.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -15,8 +16,14 @@ import 'package:style/style.dart';
 class SelectionToolbar extends ConsumerWidget {
   final PassageSelectionController selection;
   final Function(VerseSelection) onNavigateToVerseSelection;
+  final Function(StudyPanel)? onAddStudyPanel;
 
-  const SelectionToolbar({super.key, required this.selection, required this.onNavigateToVerseSelection});
+  const SelectionToolbar({
+    super.key,
+    required this.selection,
+    required this.onNavigateToVerseSelection,
+    this.onAddStudyPanel,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,6 +40,7 @@ class SelectionToolbar extends ConsumerWidget {
           verseSelection: verseSelection,
           onDeselect: selection.clearVerses,
           onNavigateToVerseSelection: onNavigateToVerseSelection,
+          onAddStudyPanel: onAddStudyPanel,
         ),
         onMorePressed: () => context.showStyledSheet(
           (context) => StyledSheet(
@@ -59,6 +67,7 @@ class SelectionToolbar extends ConsumerWidget {
                         selectedVerseSelection: verseSelection,
                         onDeselect: selection.clearVerses,
                         onNavigateToVerseSelection: onNavigateToVerseSelection,
+                        onAddStudyPanel: onAddStudyPanel,
                       );
                     },
                   ),

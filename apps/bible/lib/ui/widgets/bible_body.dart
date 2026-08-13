@@ -113,11 +113,8 @@ class BibleBody extends HookConsumerWidget {
       }
     }
 
-    void navigateToVerseSelection(VerseSelection verseSelection) async {
+    Future<void> scrollVerseSelectionIntoView(VerseSelection verseSelection) async {
       final chapterReference = verseSelection.references.first.toChapterReference();
-      hardNavigateTo(ChapterPosition(reference: chapterReference));
-      selection.selectReferences(verseSelection.references);
-
       final chapter = await ref.read(
         chapterProvider(
           translation: user.getTranslationFor(chapterReference.book),
@@ -133,6 +130,13 @@ class BibleBody extends HookConsumerWidget {
         alignment: 0.2,
         duration: Duration(milliseconds: 500),
       );
+    }
+
+    void navigateToVerseSelection(VerseSelection verseSelection) async {
+      final chapterReference = verseSelection.references.first.toChapterReference();
+      hardNavigateTo(ChapterPosition(reference: chapterReference));
+      selection.selectReferences(verseSelection.references);
+      await scrollVerseSelectionIntoView(verseSelection);
     }
 
     usePostFrameEffect(() {
@@ -190,6 +194,9 @@ class BibleBody extends HookConsumerWidget {
         );
       } else {
         ref.updateUser((user) => user.withStudyPanel(studyPanel));
+      }
+      if (selection.verseSelection case final verseSelection?) {
+        scrollVerseSelectionIntoView(verseSelection);
       }
     }
 
@@ -339,6 +346,7 @@ class BibleBody extends HookConsumerWidget {
                       child: SelectionToolbar(
                         selection: selection,
                         onNavigateToVerseSelection: navigateToVerseSelection,
+                        onAddStudyPanel: addStudyPanel,
                       ),
                     ),
                   )

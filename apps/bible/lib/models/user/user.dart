@@ -312,8 +312,12 @@ sealed class User with _$User {
   User withSearchHistory(String search) =>
       copyWith(searchHistory: [search, ...searchHistory].distinct.take(5).toList());
 
-  User withStudyPanel(StudyPanel studyPanel) =>
-      copyWith(studyPanels: [...studyPanels, studyPanel], studyPanelIndex: studyPanels.length);
+  User withStudyPanel(StudyPanel studyPanel) {
+    final existingIndex = studyPanels.indexOf(studyPanel);
+    return existingIndex == -1
+        ? copyWith(studyPanels: [...studyPanels, studyPanel], studyPanelIndex: studyPanels.length)
+        : copyWith(studyPanelIndex: existingIndex);
+  }
 
   User withTutorial(Tutorial tutorial) => copyWith(tutorials: {...tutorials, tutorial});
 

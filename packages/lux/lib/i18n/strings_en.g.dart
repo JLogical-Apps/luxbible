@@ -739,6 +739,9 @@ class Translations$studyPanels$en {
 	/// en: 'Study Panel'
 	String get title => 'Study Panel';
 
+	/// en: 'Pin as Study Panel'
+	String get pinAsStudyPanel => 'Pin as Study Panel';
+
 	/// en: 'Compare with {translation}'
 	String compareWith({required Object translation}) => 'Compare with ${translation}';
 
@@ -4613,6 +4616,7 @@ extension on Translations {
 			'selectionActions.noInterlinearWords' => 'No interlinear words found in this selection.',
 			'selectionActions.textInReference' => ({required Object reference}) => 'Text in ${reference}',
 			'studyPanels.title' => 'Study Panel',
+			'studyPanels.pinAsStudyPanel' => 'Pin as Study Panel',
 			'studyPanels.compareWith' => ({required Object translation}) => 'Compare with ${translation}',
 			'studyPanels.directionInterlinear' => ({required Object direction}) => '${direction} Interlinear',
 			'studyPanels.commentaryName' => ({required Object commentary}) => '${commentary} Commentary',
@@ -4938,9 +4942,9 @@ extension on Translations {
 			'planTypes.differentTopicsDescription' => 'Rotate through a different section of Scripture each day, exploring every book of the Bible over a year.',
 			'planTypes.newTestamentPsalmsProverbsDescription' => 'Read the New Testament alongside Psalms and Proverbs over the course of a year.',
 			'planTypes.fiveByFiveByFiveDescription' => 'Read one New Testament chapter a day, five days a week, followed by two days to review and reflect.',
-			'planTypes.oldScopeDescription' => 'Reads from books in the Old Testament.',
 			_ => null,
 		} ?? switch (path) {
+			'planTypes.oldScopeDescription' => 'Reads from books in the Old Testament.',
 			'planTypes.newScopeDescription' => 'Reads from books in the New Testament.',
 			'planTypes.wholeScopeDescription' => 'Reads from both the Old and New Testaments.',
 			'planTypes.focused' => 'Focused',

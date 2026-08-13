@@ -1,5 +1,6 @@
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/study_action.dart';
+import 'package:bible/models/study_panel.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class StudySheet {
     required VerseSelection verseSelection,
     required RegionType regionType,
     required Function(VerseSelection) onNavigateToVerseSelection,
+    Function(StudyPanel)? onAddStudyPanel,
   }) => context.showStyledSheet(
     (context) => StyledSheet(
       title: t.labels.study.toText(),
@@ -31,6 +33,7 @@ class StudySheet {
                   regionFormat: regionFormat,
                   verseSelection: verseSelection,
                   onNavigateToVerseSelection: onNavigateToVerseSelection,
+                  onAddStudyPanel: onAddStudyPanel,
                   user: ref.read(userProvider),
                 );
               },

@@ -206,6 +206,7 @@
   },
   "studyPanels": {
     "title": "Study Panel",
+    "pinAsStudyPanel": "Pin as Study Panel",
     "compareWith": "Compare with {translation}",
     "directionInterlinear": "{direction} Interlinear",
     "commentaryName": "{commentary} Commentary",

@@ -40,6 +40,10 @@ class BibleReaderConfiguration {
                 verseSelection: verseSelection,
                 onDeselect: clearVerses,
                 onNavigateToVerseSelection: onNavigateToVerseSelection,
+                onAddStudyPanel: (studyPanel) {
+                  ref.updateUser((user) => user.withStudyPanel(studyPanel));
+                  onNavigateToVerseSelection(verseSelection);
+                },
               );
               return false;
             }

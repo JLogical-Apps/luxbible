@@ -205,6 +205,11 @@ The Study action groups:
 - Cross References
 
 These tools can be opened as temporary bottom sheets. Supported tools can also be pinned into a persistent study panel.
+Temporary study sheets opened from the main Bible reader provide a pin action that closes the sheet and opens the
+corresponding persistent panel. Compare offers the action for each translation, while Interlinear and Commentary
+preserve the direction or resource currently selected in the sheet. When a panel is pinned from a verse selection, Lux
+scrolls that selection into view after the panel changes the reading area. Study sheets opened while reading a Bible
+plan do not offer pin actions.
 
 ## Compare
 

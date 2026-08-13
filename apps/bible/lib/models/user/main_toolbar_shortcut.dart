@@ -74,6 +74,7 @@ enum MainToolbarShortcut {
         verseSelection: reference.toVerseSelection(),
         regionFormat: reference.format(),
         onNavigateToVerseSelection: onNavigateToVerseSelection,
+        onAddStudyPanel: onAddStudyPanel,
         user: ref.read(userProvider),
       ) ??
       toMainAction()?.onPressed(
