@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'activity_plan.dart';
@@ -9,6 +9,7 @@ part of 'activity_plan.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 ActivityPlan _$ActivityPlanFromJson(
@@ -282,7 +283,7 @@ return referenceType(_that.passage);case _:
 @JsonSerializable()
 
 class PhraseReadActivityPlan extends ActivityPlan {
-  const PhraseReadActivityPlan({required this.passage, final  String? $type}): $type = $type ?? 'phraseRead',super._();
+  const PhraseReadActivityPlan({required this.passage,  String? $type}): $type = $type ?? 'phraseRead',super._();
   factory PhraseReadActivityPlan.fromJson(Map<String, dynamic> json) => _$PhraseReadActivityPlanFromJson(json);
 
 @override final  VerseSelection passage;
@@ -355,7 +356,7 @@ as VerseSelection,
 @JsonSerializable()
 
 class ReadContextActivityPlan extends ActivityPlan {
-  const ReadContextActivityPlan({required this.passage, final  String? $type}): $type = $type ?? 'readContext',super._();
+  const ReadContextActivityPlan({required this.passage,  String? $type}): $type = $type ?? 'readContext',super._();
   factory ReadContextActivityPlan.fromJson(Map<String, dynamic> json) => _$ReadContextActivityPlanFromJson(json);
 
 @override final  VerseSelection passage;
@@ -428,7 +429,7 @@ as VerseSelection,
 @JsonSerializable()
 
 class PhraseSelectionActivityPlan extends ActivityPlan {
-  const PhraseSelectionActivityPlan({required this.passage, final  String? $type}): $type = $type ?? 'phraseSelection',super._();
+  const PhraseSelectionActivityPlan({required this.passage,  String? $type}): $type = $type ?? 'phraseSelection',super._();
   factory PhraseSelectionActivityPlan.fromJson(Map<String, dynamic> json) => _$PhraseSelectionActivityPlanFromJson(json);
 
 @override final  VerseSelection passage;
@@ -501,7 +502,7 @@ as VerseSelection,
 @JsonSerializable()
 
 class WordSelectionActivityPlan extends ActivityPlan {
-  const WordSelectionActivityPlan({required this.passage, final  String? $type}): $type = $type ?? 'wordSelection',super._();
+  const WordSelectionActivityPlan({required this.passage,  String? $type}): $type = $type ?? 'wordSelection',super._();
   factory WordSelectionActivityPlan.fromJson(Map<String, dynamic> json) => _$WordSelectionActivityPlanFromJson(json);
 
 @override final  VerseSelection passage;
@@ -574,7 +575,7 @@ as VerseSelection,
 @JsonSerializable()
 
 class WordTypeActivityPlan extends ActivityPlan {
-  const WordTypeActivityPlan({required this.passage, final  String? $type}): $type = $type ?? 'wordType',super._();
+  const WordTypeActivityPlan({required this.passage,  String? $type}): $type = $type ?? 'wordType',super._();
   factory WordTypeActivityPlan.fromJson(Map<String, dynamic> json) => _$WordTypeActivityPlanFromJson(json);
 
 @override final  VerseSelection passage;
@@ -647,7 +648,7 @@ as VerseSelection,
 @JsonSerializable()
 
 class ReferenceSelectionActivityPlan extends ActivityPlan {
-  const ReferenceSelectionActivityPlan({required this.passage, final  String? $type}): $type = $type ?? 'referenceSelection',super._();
+  const ReferenceSelectionActivityPlan({required this.passage,  String? $type}): $type = $type ?? 'referenceSelection',super._();
   factory ReferenceSelectionActivityPlan.fromJson(Map<String, dynamic> json) => _$ReferenceSelectionActivityPlanFromJson(json);
 
 @override final  VerseSelection passage;
@@ -720,7 +721,7 @@ as VerseSelection,
 @JsonSerializable()
 
 class ReferenceTypeActivityPlan extends ActivityPlan {
-  const ReferenceTypeActivityPlan({required this.passage, final  String? $type}): $type = $type ?? 'referenceType',super._();
+  const ReferenceTypeActivityPlan({required this.passage,  String? $type}): $type = $type ?? 'referenceType',super._();
   factory ReferenceTypeActivityPlan.fromJson(Map<String, dynamic> json) => _$ReferenceTypeActivityPlanFromJson(json);
 
 @override final  VerseSelection passage;

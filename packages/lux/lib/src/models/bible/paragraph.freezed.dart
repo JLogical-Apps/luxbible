@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'paragraph.dart';
@@ -9,6 +9,7 @@ part of 'paragraph.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 Paragraph _$ParagraphFromJson(
@@ -211,7 +212,7 @@ return lineBreak();case _:
 @JsonSerializable()
 
 class VersesParagraph extends Paragraph {
-  const VersesParagraph({@JsonKey(name: 'v') required final  List<Verse> verses, @JsonKey(name: 'o', toJson: _firstVerseOffsetToJson, includeIfNull: false) this.firstVerseOffset = 0, @JsonKey(name: 't') required this.type, @jsonIgnore this.preventIndent = false, final  String? $type}): _verses = verses,$type = $type ?? 'v',super._();
+  const VersesParagraph({@JsonKey(name: 'v') required  List<Verse> verses, @JsonKey(name: 'o', toJson: _firstVerseOffsetToJson, includeIfNull: false) this.firstVerseOffset = 0, @JsonKey(name: 't') required this.type, @jsonIgnore this.preventIndent = false,  String? $type}): _verses = verses,$type = $type ?? 'v',super._();
   factory VersesParagraph.fromJson(Map<String, dynamic> json) => _$VersesParagraphFromJson(json);
 
  final  List<Verse> _verses;
@@ -296,7 +297,7 @@ as bool,
 @JsonSerializable()
 
 class SectionParagraph extends Paragraph {
-  const SectionParagraph({@JsonKey(name: 'x') required this.text, @JsonKey(name: 't') required this.type, final  String? $type}): $type = $type ?? 's',super._();
+  const SectionParagraph({@JsonKey(name: 'x') required this.text, @JsonKey(name: 't') required this.type,  String? $type}): $type = $type ?? 's',super._();
   factory SectionParagraph.fromJson(Map<String, dynamic> json) => _$SectionParagraphFromJson(json);
 
 @JsonKey(name: 'x') final  String text;
@@ -371,7 +372,7 @@ as SectionType,
 @JsonSerializable()
 
 class BreakParagraph extends Paragraph {
-  const BreakParagraph({final  String? $type}): $type = $type ?? 'b',super._();
+  const BreakParagraph({ String? $type}): $type = $type ?? 'b',super._();
   factory BreakParagraph.fromJson(Map<String, dynamic> json) => _$BreakParagraphFromJson(json);
 
 

@@ -89,7 +89,7 @@ final class AudioBiblePositionProvider
 }
 
 String _$audioBiblePositionHash() =>
-    r'e8eebed54303b9662f31c7a517bf254e3ab2f540';
+    r'833e1caca730631b2b156344668e3c61856c4434';
 
 @ProviderFor(audioBibleDuration)
 final audioBibleDurationProvider = AudioBibleDurationProvider._();
