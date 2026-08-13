@@ -11,7 +11,6 @@ _AudioBibleConfiguration _$AudioBibleConfigurationFromJson(
 ) => _AudioBibleConfiguration(
   isOpen: json['isOpen'] as bool? ?? false,
   speed: (json['speed'] as num?)?.toDouble() ?? 1,
-  followAlong: json['followAlong'] as bool? ?? true,
   endTime: json['endTime'] == null
       ? null
       : DateTime.parse(json['endTime'] as String),
@@ -22,6 +21,5 @@ Map<String, dynamic> _$AudioBibleConfigurationToJson(
 ) => <String, dynamic>{
   'isOpen': instance.isOpen,
   'speed': instance.speed,
-  'followAlong': instance.followAlong,
   'endTime': instance.endTime?.toIso8601String(),
 };

@@ -1657,12 +1657,6 @@ class Translations$audio$en {
 	/// en: 'Choose an audio-enabled Bible to listen to this chapter.'
 	String get chooseBible => 'Choose an audio-enabled Bible to listen to this chapter.';
 
-	/// en: 'Follow along with audio'
-	String get followAlong => 'Follow along with audio';
-
-	/// en: 'Stop following audio'
-	String get stopFollowing => 'Stop following audio';
-
 	/// en: 'Audio Bible playback'
 	String get notificationChannelName => 'Audio Bible playback';
 
@@ -4872,8 +4866,6 @@ extension on Translations {
 			'audio.connectionError' => 'Check your internet connection or try again later.',
 			'audio.unavailable' => 'Audio is unavailable for this Bible',
 			'audio.chooseBible' => 'Choose an audio-enabled Bible to listen to this chapter.',
-			'audio.followAlong' => 'Follow along with audio',
-			'audio.stopFollowing' => 'Stop following audio',
 			'audio.notificationChannelName' => 'Audio Bible playback',
 			'audio.notificationChannelDescription' => 'Audio Bible playback controls',
 			'interlinearUi.interlinearBible' => 'Interlinear Bible',
@@ -4948,10 +4940,10 @@ extension on Translations {
 			'planTypes.psalmsAndWisdomDescription' => 'Spend the year in the Psalms and wisdom books like Proverbs, Job, and Ecclesiastes.',
 			'planTypes.oldAndNewTestamentDescription' => 'Read through both the Old and New Testaments together, with a passage from each every day.',
 			'planTypes.differentTopicsDescription' => 'Rotate through a different section of Scripture each day, exploring every book of the Bible over a year.',
-			_ => null,
-		} ?? switch (path) {
 			'planTypes.newTestamentPsalmsProverbsDescription' => 'Read the New Testament alongside Psalms and Proverbs over the course of a year.',
 			'planTypes.fiveByFiveByFiveDescription' => 'Read one New Testament chapter a day, five days a week, followed by two days to review and reflect.',
+			_ => null,
+		} ?? switch (path) {
 			'planTypes.oldScopeDescription' => 'Reads from books in the Old Testament.',
 			'planTypes.newScopeDescription' => 'Reads from books in the New Testament.',
 			'planTypes.wholeScopeDescription' => 'Reads from both the Old and New Testaments.',

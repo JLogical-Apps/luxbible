@@ -366,9 +366,9 @@ It supports:
 - Background playback
 - System and notification playback controls
 - Persisted playback preferences
-- Optional verse-by-verse follow along with automatic scrolling and underlining
+- Verse-by-verse follow along with automatic scrolling and underlining during playback
 
-Manually scrolling the passage turns follow along off. Selecting a verse or text pauses playback, and starting playback clears the current selection.
+Manually scrolling the passage or selecting a verse or text pauses playback. Starting playback clears the current selection.
 
 When the current Bible has no audio, Lux offers to switch to the user's most recently selected audio-enabled Bible.
 

@@ -48,9 +48,10 @@ class BibleBody extends HookConsumerWidget {
     final currentChapterReference = ChapterReference.fromBibleChapterIndex(currentPage);
 
     final selection = usePassageSelection(readerConfiguration.selection);
+
     final isAudioBiblePlaying = ref.watch(isAudioBiblePlayingProvider);
     final audioBibleTarget = ref.watch(audioBibleTargetProvider);
-    final followedReference = user.audio.followAlong && audioBibleTarget?.context == .bible
+    final followedReference = isAudioBiblePlaying && audioBibleTarget?.context == .bible
         ? ref.watch(currentAudioBibleReferenceProvider)
         : null;
 
@@ -380,54 +381,57 @@ class BibleBody extends HookConsumerWidget {
       ],
     );
 
-    Widget biblePages({Key? key}) => ChapterPageView(
-      key: key,
-      controller: pageController,
-      onSwipe: (reference) {
-        softNavigateTo(reference);
-        ref.markOnboardingStep(.swipeChapter);
+    Widget biblePages({Key? key}) => NotificationListener<ScrollStartNotification>(
+      onNotification: (notification) {
+        if (notification.dragDetails != null && isAudioBiblePlaying) {
+          ref.read(audioBibleProvider.notifier).pause();
+        }
+        return false;
       },
-      onPageChanged: (reference) {
-        isScrollingDownState.value = true;
-        selection.clear();
-      },
-      itemBuilder: (context, chapterReference, chapter, passageController) => SafeArea(
-        left: true,
-        right: !isSideLayout || panelCount == 0,
-        bottom: false,
-        child: HookBuilder(
-          builder: (context) {
-            useRegistryItem(passageControllerRegistry, chapterReference, passageController);
+      child: ChapterPageView(
+        key: key,
+        controller: pageController,
+        onSwipe: (reference) {
+          softNavigateTo(reference);
+          ref.markOnboardingStep(.swipeChapter);
+        },
+        onPageChanged: (reference) {
+          isScrollingDownState.value = true;
+          selection.clear();
+        },
+        itemBuilder: (context, chapterReference, chapter, passageController) => SafeArea(
+          left: true,
+          right: !isSideLayout || panelCount == 0,
+          bottom: false,
+          child: HookBuilder(
+            builder: (context) {
+              useRegistryItem(passageControllerRegistry, chapterReference, passageController);
 
-            final showTopBar = useListenableSelector(
-              passageController.scrollController,
-              () => (passageController.scrollController.positionOrNull?.pixels ?? 0) > 60,
-            );
-            final scrollPosition = positionByReferenceRef.value[chapterReference];
-            final followedChapterReference = followedReference?.toChapterReference();
-            final followedReferenceForChapter = followedChapterReference == chapterReference ? followedReference : null;
+              final showTopBar = useListenableSelector(
+                passageController.scrollController,
+                () => (passageController.scrollController.positionOrNull?.pixels ?? 0) > 60,
+              );
+              final scrollPosition = positionByReferenceRef.value[chapterReference];
 
-            usePostFrameEffect(() {
-              if (followedReferenceForChapter != null) {
-                passageController.scrollToReference(
-                  followedReferenceForChapter,
-                  paragraphs: chapter.paragraphs,
-                  alignment: 0.2,
-                );
-              }
-            }, [followedReferenceForChapter]);
+              final followedChapterReference = followedReference?.toChapterReference();
+              final followedReferenceForChapter = followedChapterReference == chapterReference
+                  ? followedReference
+                  : null;
 
-            return Stack(
-              fit: .expand,
-              children: [
-                NotificationListener<ScrollStartNotification>(
-                  onNotification: (notification) {
-                    if (notification.dragDetails != null && user.audio.followAlong) {
-                      ref.updateUser((user) => user.copyWith.audio(followAlong: false));
-                    }
-                    return false;
-                  },
-                  child: ChapterBuilder(
+              usePostFrameEffect(() {
+                if (followedReferenceForChapter != null) {
+                  passageController.scrollToReference(
+                    followedReferenceForChapter,
+                    paragraphs: chapter.paragraphs,
+                    alignment: 0.2,
+                  );
+                }
+              }, [followedReferenceForChapter]);
+
+              return Stack(
+                fit: .expand,
+                children: [
+                  ChapterBuilder(
                     controller: passageController,
                     scrollToSelection: scrollPosition?.getReference()?.mapIfNonNull(
                       (reference) => VerseSelection.reference(reference),
@@ -439,9 +443,7 @@ class BibleBody extends HookConsumerWidget {
                             } +
                             topBarHeight) /
                         (passageKey.renderBox?.size.height ?? 128),
-                    underlinedReferences: followedReferenceForChapter == null || !isAudioBiblePlaying
-                        ? []
-                        : [followedReferenceForChapter],
+                    underlinedReferences: followedReferenceForChapter == null ? [] : [followedReferenceForChapter],
                     padding: .only(
                       left: 24,
                       top: MediaQuery.paddingOf(context).top + 40,
@@ -454,37 +456,38 @@ class BibleBody extends HookConsumerWidget {
                     onNavigateToVerseSelection: navigateToVerseSelection,
                     removeScrollbarPadding: isSideLayout && panelCount > 0,
                   ),
-                ),
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  left: 0,
-                  child: AnimatedOpacity(
-                    opacity: showTopBar ? 1 : 0,
-                    duration: Duration(milliseconds: 300),
-                    curve: Curves.easeInOutCubic,
-                    child: GestureDetector(
-                      onTap: showTopBar ? () => isScrollingDownState.value = true : null,
-                      child: Builder(
-                        builder: (context) => Container(
-                          color: context.colors.backgroundPrimary,
-                          padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top) + .symmetric(horizontal: 16),
-                          alignment: .centerLeft,
-                          child: Column(
-                            crossAxisAlignment: .start,
-                            children: [
-                              Text(chapterReference.format(), style: context.textStyle.labelSm.subtle()),
-                              StyledDivider(),
-                            ],
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    left: 0,
+                    child: AnimatedOpacity(
+                      opacity: showTopBar ? 1 : 0,
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeInOutCubic,
+                      child: GestureDetector(
+                        onTap: showTopBar ? () => isScrollingDownState.value = true : null,
+                        child: Builder(
+                          builder: (context) => Container(
+                            color: context.colors.backgroundPrimary,
+                            padding:
+                                EdgeInsets.only(top: MediaQuery.paddingOf(context).top) + .symmetric(horizontal: 16),
+                            alignment: .centerLeft,
+                            child: Column(
+                              crossAxisAlignment: .start,
+                              children: [
+                                Text(chapterReference.format(), style: context.textStyle.labelSm.subtle()),
+                                StyledDivider(),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
