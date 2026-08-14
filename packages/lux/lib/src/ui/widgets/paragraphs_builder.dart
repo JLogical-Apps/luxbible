@@ -139,15 +139,14 @@ class ParagraphsBuilder extends HookWidget {
   Widget build(BuildContext context) {
     final chapter = Chapter(paragraphs: paragraphs);
 
-    final referenceOpacities = useAnimatedTweens(
+    final referenceOpacities = useAnimatedValues(
       paragraphs
           .getReferences(chapterReference)
           .mapToMap(
-            (reference) => MapEntry(
-              reference,
-              Tween<double>(begin: 1, end: emphasizedReference == reference || emphasizedReference == null ? 1 : 0.5),
-            ),
+            (reference) =>
+                MapEntry(reference, emphasizedReference == reference || emphasizedReference == null ? 1.0 : 0.5),
           ),
+      initialValue: 1.0,
     );
 
     final textSelectionStartAnchorState = useState<BibleTextSelectionWordAnchor?>(null);

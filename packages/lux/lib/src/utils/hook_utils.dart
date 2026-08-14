@@ -6,6 +6,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lux/src/utils/extensions/controller_extensions.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
+import 'package:utils_core/utils_core.dart';
 
 void useOnFocusNodeFocused(FocusNode focusNode, Function() onFocused) {
   useOnListenableChange(focusNode, () {
@@ -116,10 +117,11 @@ void usePeriodic(Duration duration, Function() callback) {
   }, []);
 }
 
-ValueNotifier<T> usePassthrough<T>(T value) {
-  final state = useMemoized(() => ValueNotifier(value));
-  usePostFrameEffect(() => state.value = value, [value]);
-  return state;
+ObjectRef<T> usePassthrough<T>(T value) => useRef(value)..value = value;
+
+StreamSubscription<T>? useOnStreamData<T>(Stream<T>? stream, Function(T) onData) {
+  final onDataRef = usePassthrough(onData);
+  return useOnStreamChange(stream, onData: (data) => onDataRef.value(data));
 }
 
 void useOneTimeEffect(Function() effect) => useEffect(() => effect(), []);
@@ -179,59 +181,51 @@ class Registry<K, V> extends ChangeNotifier {
   }
 }
 
-Map<K, T> useAnimatedTweens<K, T extends Object?>(Map<K, Tween<T>> tweens) {
+class MapTween<K, T extends Object> extends Tween<Map<K, T>> {
+  final T initialValue;
+
+  MapTween({required Map<K, T> begin, required Map<K, T> end, required T initialValue})
+    : initialValue = initialValue,
+      super(begin: end.mapValues((key, value) => begin[key] ?? initialValue), end: Map.of(end));
+
+  @override
+  Map<K, T> lerp(double t) =>
+      end!.mapValues((key, endValue) => Tween(begin: begin![key] ?? initialValue, end: endValue).transform(t));
+}
+
+Map<K, T> useAnimatedValues<K, T extends Object>(Map<K, T> targetValues, {required T initialValue}) {
   final controller = useAnimationController(duration: Duration(milliseconds: 300));
   final progress = useAnimation(controller);
 
   final curve = Curves.easeInOutCubic;
 
-  final activeTweensRef = useRef(<K, Tween<T>>{});
-  final targetValuesRef = useRef<Map<K, T?>?>(null);
-  final restartVersionRef = useRef(0);
+  final activeTweenRef = useRef<MapTween<K, T>?>(null);
+  final previousTargetValues = usePrevious(targetValues);
 
-  assert(
-    tweens.values.every((tween) => tween.end != null),
-    'Tweens provided to useAnimatedTweens must have non-null end values.',
-  );
-
-  final targetValues = tweens.map((key, tween) => MapEntry(key, tween.end));
-  final targetsChanged = !mapEquals(targetValuesRef.value, targetValues);
   var shouldRestart = false;
 
-  if (targetsChanged) {
-    final activeTweens = activeTweensRef.value;
-    shouldRestart = tweens.entries.any((entry) {
-      final activeTween = activeTweens[entry.key];
-      return activeTween == null
-          ? (entry.value.begin ?? entry.value.end) != entry.value.end
-          : activeTween.end != entry.value.end;
+  final hasTargetsChanged = !mapEquals(previousTargetValues, targetValues);
+  if (hasTargetsChanged) {
+    final activeTween = activeTweenRef.value;
+    shouldRestart = targetValues.entries.any((entry) {
+      final previousTarget = activeTween?.end?[entry.key];
+      return previousTarget == null ? initialValue != entry.value : previousTarget != entry.value;
     });
 
-    final currentProgress = curve.transform(progress);
-    activeTweensRef.value = tweens.map((key, tween) {
-      final activeTween = activeTweens[key];
-      if (activeTween == null) {
-        tween.begin ??= tween.end;
-        return MapEntry(key, tween);
-      }
-
-      if (shouldRestart) {
-        activeTween.begin = activeTween.transform(currentProgress);
-        activeTween.end = tween.end;
-      }
-      return MapEntry(key, activeTween);
-    });
-
-    targetValuesRef.value = targetValues;
-    if (shouldRestart) restartVersionRef.value++;
+    final beginValues = switch ((activeTween, shouldRestart)) {
+      (final activeTween?, true) => activeTween.transform(curve.transform(progress)),
+      (final activeTween?, false) => activeTween.begin!,
+      _ => <K, T>{},
+    };
+    activeTweenRef.value = MapTween(begin: beginValues, end: targetValues, initialValue: initialValue);
   }
 
+  final activeTween = activeTweenRef.value;
   useEffect(() {
-    if (restartVersionRef.value == 0) return null;
-    controller.forward(from: 0);
+    if (shouldRestart) controller.forward(from: 0);
     return null;
-  }, [controller, restartVersionRef.value]);
+  }, [controller, activeTween]);
 
   final curvedProgress = curve.transform(shouldRestart ? 0 : progress);
-  return activeTweensRef.value.map((key, tween) => MapEntry(key, tween.transform(curvedProgress)));
+  return activeTween?.transform(curvedProgress) ?? {};
 }

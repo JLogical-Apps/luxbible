@@ -60,6 +60,7 @@ dependencies:
   modal_bottom_sheet: ^3.0.0
   audio_service: ^0.18.19
   just_audio: ^0.10.6
+  rxdart: ^0.28.0
   in_app_review: ^2.0.10
   firebase_core: ^4.12.1
   firebase_app_check: ^0.4.5+2

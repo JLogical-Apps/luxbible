@@ -498,6 +498,7 @@
     "connectionError": "Check your internet connection or try again later.",
     "unavailable": "Audio is unavailable for this Bible",
     "chooseBible": "Choose an audio-enabled Bible to listen to this chapter.",
+    "switchRequired": "Switch to an audio-enabled Bible to listen to this passage.",
     "notificationChannelName": "Audio Bible playback",
     "notificationChannelDescription": "Audio Bible playback controls"
   },

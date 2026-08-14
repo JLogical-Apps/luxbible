@@ -3,8 +3,9 @@ import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
-import 'package:bible/providers/audio_bible_timings_provider.dart';
+import 'package:bible/providers/audio_bible_player_provider.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/ui/hooks/audio_bible_passage_sync.dart';
 import 'package:bible/ui/pages/chapter_reference_search_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/widgets/audio_bible_panel.dart';
@@ -49,25 +50,10 @@ class BibleBody extends HookConsumerWidget {
 
     final selection = usePassageSelection(readerConfiguration.selection);
 
-    final isAudioBiblePlaying = ref.watch(isAudioBiblePlayingProvider);
-    final audioBibleTarget = ref.watch(audioBibleTargetProvider);
-    final followedReference = isAudioBiblePlaying && audioBibleTarget?.context == .bible
-        ? ref.watch(currentAudioBibleReferenceProvider)
-        : null;
-
-    useEffect(() {
-      if (isAudioBiblePlaying && selection.hasSelection) {
-        selection.clear();
-      }
-      return null;
-    }, [isAudioBiblePlaying]);
-
-    useEffect(() {
-      if (selection.hasSelection && isAudioBiblePlaying) {
-        ref.read(audioBibleProvider.notifier).pause();
-      }
-      return null;
-    }, [selection.hasSelection]);
+    final audioBible = ref.watch(audioBibleProvider(context: .bible));
+    final audioBiblePlayer = ref.watch(audioBiblePlayerProvider(context: .bible));
+    final audioBibleController = ref.read(audioBibleControllerProvider.notifier);
+    final isAudioBiblePlaying = audioBiblePlayer.isPlaying;
 
     final navigationHistoryState = useState(
       NavigationHistory(
@@ -76,14 +62,48 @@ class BibleBody extends HookConsumerWidget {
     );
 
     final passageKey = useMemoized(() => GlobalKey());
+    final positionByReferenceRef = useRef({initialPosition.reference: initialPosition});
 
     final passageControllerRegistry = useRegistry<ChapterReference, PassageController>();
+
+    final audioBibleSync = useAudioBiblePassageSync(
+      ref: ref,
+      context: .bible,
+      audioBible: audioBible,
+      selection: selection,
+      passageControllers: passageControllerRegistry,
+      getPassageControllerKey: (passage) => passage.references.first.toChapterReference(),
+      onPassageChanged: (passage) {
+        final chapterReference = passage.references.first.toChapterReference();
+        if (chapterReference != user.lastReference) {
+          final position =
+              positionByReferenceRef.value[chapterReference] ??
+              ChapterPosition(reference: chapterReference, verseNum: 1);
+          ref.updateUser((user) => user.withSoftNavigation(position));
+        }
+      },
+      onCompleteAndNext: (passage) {
+        final nextChapter = passage.references.first.toChapterReference().next;
+        if (nextChapter != null) {
+          positionByReferenceRef.value[nextChapter] = ChapterPosition(reference: nextChapter, verseNum: 1);
+        }
+        return nextChapter?.toVerseSelection();
+      },
+    );
+
+    final currentAudioTranslation = user.getTranslationFor(user.lastReference.book);
+    usePostFrameEffect(() {
+      final session = ref.read(audioBibleProvider(context: .bible));
+      final passage = user.lastReference.toVerseSelection();
+      if (session != null && (session.translation != currentAudioTranslation || session.passage != passage)) {
+        audioBibleController.replacePassage(context: .bible, passage: passage);
+      }
+    }, [user.lastReference, currentAudioTranslation]);
 
     final currentPassageController = passageControllerRegistry[currentChapterReference];
     final currentScrollController = currentPassageController?.scrollController;
 
     final currentControllerPassthrough = usePassthrough(currentPassageController);
-    final positionByReferenceRef = useRef({initialPosition.reference: initialPosition});
 
     final keyByReference = currentPassageController?.keyByReference ?? {};
 
@@ -384,7 +404,7 @@ class BibleBody extends HookConsumerWidget {
     Widget biblePages({Key? key}) => NotificationListener<ScrollStartNotification>(
       onNotification: (notification) {
         if (notification.dragDetails != null && isAudioBiblePlaying) {
-          ref.read(audioBibleProvider.notifier).pause();
+          audioBibleController.pause(context: .bible);
         }
         return false;
       },
@@ -413,21 +433,6 @@ class BibleBody extends HookConsumerWidget {
               );
               final scrollPosition = positionByReferenceRef.value[chapterReference];
 
-              final followedChapterReference = followedReference?.toChapterReference();
-              final followedReferenceForChapter = followedChapterReference == chapterReference
-                  ? followedReference
-                  : null;
-
-              usePostFrameEffect(() {
-                if (followedReferenceForChapter != null) {
-                  passageController.scrollToReference(
-                    followedReferenceForChapter,
-                    paragraphs: chapter.paragraphs,
-                    alignment: 0.2,
-                  );
-                }
-              }, [followedReferenceForChapter]);
-
               return Stack(
                 fit: .expand,
                 children: [
@@ -443,7 +448,7 @@ class BibleBody extends HookConsumerWidget {
                             } +
                             topBarHeight) /
                         (passageKey.renderBox?.size.height ?? 128),
-                    emphasizedReference: followedReferenceForChapter,
+                    emphasizedReference: audioBibleSync.getEmphasizedReferenceForChapter(chapterReference),
                     padding: .only(
                       left: 24,
                       top: MediaQuery.paddingOf(context).top + 40,
@@ -454,6 +459,7 @@ class BibleBody extends HookConsumerWidget {
                     chapter: chapter,
                     selection: selection,
                     onNavigateToVerseSelection: navigateToVerseSelection,
+                    onReferencePressed: audioBibleSync.onReferencePressed,
                     removeScrollbarPadding: isSideLayout && panelCount > 0,
                   ),
                   Positioned(

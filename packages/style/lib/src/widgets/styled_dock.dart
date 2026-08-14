@@ -41,7 +41,7 @@ class StyledDock extends HookWidget {
     final bottomChildren = buttons.isEmpty && aboveButtons == null
         ? <Widget>[]
         : [
-            AnimatedGrow(child: aboveButtons ?? gapH16),
+            AnimatedGrow(child: aboveButtons ?? gapH16, alignment: .bottomCenter,),
             if (buttons.isNotEmpty)
               Padding(
                 padding: .symmetric(horizontal: 16),

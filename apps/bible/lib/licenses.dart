@@ -35,9 +35,9 @@ Source: https://www.crosswire.org''',
     yield const LicenseEntryWithLineBreaks(
       ['King James Version (KJV) Audio Bible'],
       '''
-Audio Bible files retrieved from MP3Bible.ca.
+Narration by David, retrieved from OpenBible.com.
 
-Source: https://www.mp3bible.ca/''',
+Source: https://openbible.com/audio/kjv/''',
     );
 
     yield const LicenseEntryWithLineBreaks(

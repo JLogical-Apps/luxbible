@@ -361,6 +361,9 @@ It supports:
 - Play and pause
 - Ten-second rewind and fast-forward
 - Scrubbing within the chapter
+- Verse previews while scrubbing
+- Passage scrolling to the selected verse after scrubbing
+- Seeking to a verse by tapping it while the audio panel is active
 - Playback speeds of 0.7x, 1x, 1.2x, 1.5x, 1.7x, and 2x
 - Sleep timers
 - Background playback
@@ -454,12 +457,16 @@ Users can:
 - Reorder active plans
 - Open any previous or current day
 - Mark individual passages or review days complete
+- Listen through a day's passages with automatic verse following and progress completion
+- Adjust reading-plan audio speed or skip backward and forward by ten seconds
 - Track progress for each plan
 - Stop a plan and remove its progress
 - Finish a completed plan
 
 Daily passages open in a focused reading flow that retains access to normal Bible selection and study behavior.
 The chapter-preview action reads "Read In Context" when the assigned passage already covers the full chapter and "Read Entire Chapter" otherwise.
+Reading-plan audio starts at the first assigned verse, stops at the final assigned verse, marks the passage complete, and continues to the next incomplete tab. It stops after every passage for the day is complete. Manual scrolling or selecting text pauses playback. A passage whose active Bible does not support audio prompts the user to switch Bibles.
+While a reading-plan audio session is active, its full playback controls replace the Next button. The page's top-right stop button closes that session and restores the Next button. Its scrubber is limited to the assigned passage rather than the whole chapter.
 
 ## Settings
 

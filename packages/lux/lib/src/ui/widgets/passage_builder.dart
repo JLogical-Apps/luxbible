@@ -8,7 +8,9 @@ class PassageBuilder extends HookConsumerWidget {
   final BibleTranslation? translation;
 
   final PassageSelectionController? selection;
+  final Reference? emphasizedReference;
   final Function(VerseSelection)? onNavigateToVerseSelection;
+  final Function(Reference)? onReferencePressed;
 
   final Widget Function(BuildContext, Widget)? contentBuilder;
   final Widget? footer;
@@ -23,7 +25,9 @@ class PassageBuilder extends HookConsumerWidget {
     required this.verseSelection,
     this.translation,
     this.selection,
+    this.emphasizedReference,
     this.onNavigateToVerseSelection,
+    this.onReferencePressed,
     this.contentBuilder,
     this.footer,
     this.controller,
@@ -74,7 +78,9 @@ class PassageBuilder extends HookConsumerWidget {
       chapterReference: chapterReference,
       translation: translation,
       selection: selection,
+      emphasizedReference: emphasizedReference,
       onNavigateToVerseSelection: onNavigateToVerseSelection,
+      onReferencePressed: onReferencePressed,
       controller: controller,
       padding: padding,
       shrinkWrap: shrinkWrap,

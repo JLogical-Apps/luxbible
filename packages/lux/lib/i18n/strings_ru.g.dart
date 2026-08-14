@@ -792,6 +792,7 @@ class _Translations$audio$ru extends Translations$audio$en {
 	@override String get connectionError => 'Проверьте подключение к Интернету или повторите попытку позже.';
 	@override String get unavailable => 'Звук для этой Библии недоступен.';
 	@override String get chooseBible => 'Чтобы прослушать эту главу, выберите Библию с аудиозаписью.';
+	@override String get switchRequired => 'Чтобы прослушать этот отрывок, переключитесь на Библию с аудиозаписью.';
 	@override String get notificationChannelName => 'Аудио воспроизведение Библии';
 	@override String get notificationChannelDescription => 'Элементы управления воспроизведением аудио Библии';
 }
@@ -3074,6 +3075,7 @@ extension on TranslationsRu {
 			'audio.connectionError' => 'Проверьте подключение к Интернету или повторите попытку позже.',
 			'audio.unavailable' => 'Звук для этой Библии недоступен.',
 			'audio.chooseBible' => 'Чтобы прослушать эту главу, выберите Библию с аудиозаписью.',
+			'audio.switchRequired' => 'Чтобы прослушать этот отрывок, переключитесь на Библию с аудиозаписью.',
 			'audio.notificationChannelName' => 'Аудио воспроизведение Библии',
 			'audio.notificationChannelDescription' => 'Элементы управления воспроизведением аудио Библии',
 			'interlinearUi.interlinearBible' => 'Подстрочная Библия',
@@ -3149,9 +3151,9 @@ extension on TranslationsRu {
 			'planTypes.oldAndNewTestamentDescription' => 'Читайте вместе Ветхий и Новый Заветы, каждый день по отрывку из каждого.',
 			'planTypes.differentTopicsDescription' => 'Каждый день просматривайте разные разделы Священного Писания, исследуя каждую книгу Библии в течение года.',
 			'planTypes.newTestamentPsalmsProverbsDescription' => 'Читайте Новый Завет вместе с Псалмами и Притчами в течение года.',
-			'planTypes.fiveByFiveByFiveDescription' => 'Читайте по одной главе Нового Завета в день, пять дней в неделю, а затем два дня для повторения и размышления.',
 			_ => null,
 		} ?? switch (path) {
+			'planTypes.fiveByFiveByFiveDescription' => 'Читайте по одной главе Нового Завета в день, пять дней в неделю, а затем два дня для повторения и размышления.',
 			'planTypes.oldScopeDescription' => 'Читает книги Ветхого Завета.',
 			'planTypes.newScopeDescription' => 'Читает книги Нового Завета.',
 			'planTypes.wholeScopeDescription' => 'Читает как Ветхий, так и Новый Завет.',

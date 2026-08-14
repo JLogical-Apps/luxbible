@@ -3,6 +3,7 @@ import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
+import 'package:bible/providers/audio_bible_player_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
@@ -33,7 +34,10 @@ enum MainAction {
   settings;
 
   String title() => switch (this) {
-    audio => ref.read(isAudioBiblePlayingProvider) ? t.mainActions.pauseAudio : t.mainActions.playAudio,
+    audio =>
+      ref.read(audioBiblePlayerProvider(context: .bible)).isPlaying
+          ? t.mainActions.pauseAudio
+          : t.mainActions.playAudio,
     bookmark => t.mainActions.bookmark,
     study => t.mainActions.study,
     studyPanel => t.mainActions.addStudyPanel,
@@ -58,20 +62,21 @@ enum MainAction {
   Widget buildIcon(BuildContext context, {User? user}) => switch (this) {
     audio => Consumer(
       builder: (context, ref, child) {
-        final audioBible = ref.watch(audioBibleProvider).value;
+        final audioBiblePlayer = ref.watch(audioBiblePlayerProvider(context: .bible));
+        final position = ref.watch(audioBiblePositionProvider).value;
         return Stack(
           clipBehavior: .none,
           children: [
-            Icon(ref.watch(isAudioBiblePlayingProvider) ? Symbols.pause : Symbols.play_arrow),
-            if (audioBible != null && user?.audio.isOpen == true)
-              if (audioBible.duration case final duration? when duration != .zero)
+            Icon(audioBiblePlayer.isPlaying ? Symbols.pause : Symbols.play_arrow),
+            if (audioBiblePlayer.isActive && position != null && user?.audio.isOpen == true)
+              if (audioBiblePlayer.duration case final duration? when duration != .zero)
                 Positioned(
                   left: -4,
                   right: -4,
                   top: -4,
                   bottom: -4,
                   child: CircularProgressIndicator(
-                    value: audioBible.position.inMilliseconds / duration.inMilliseconds,
+                    value: position.inMilliseconds / duration.inMilliseconds,
                     strokeWidth: 2,
                   ),
                 ),
@@ -105,7 +110,9 @@ enum MainAction {
     switch (this) {
       case audio:
         ref.updateUser((user) => user.copyWith.audio(isOpen: true));
-        await ref.read(audioBibleProvider.notifier).toggle();
+        await ref
+            .read(audioBibleControllerProvider.notifier)
+            .toggle(context: .bible, passage: reference.toVerseSelection());
       case bookmark:
         final bookmarkId = user.currentBookmarkId;
         final bookmark = user.currentBookmark;

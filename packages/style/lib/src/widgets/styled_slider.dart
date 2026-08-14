@@ -7,6 +7,8 @@ class StyledSlider extends StatelessWidget {
   final Function(double)? onChangeStart;
   final Function(double)? onChangeEnd;
 
+  final String? label;
+
   const StyledSlider({
     super.key,
     required this.value,
@@ -14,6 +16,7 @@ class StyledSlider extends StatelessWidget {
     required this.onChanged,
     this.onChangeStart,
     this.onChangeEnd,
+    this.label,
   });
 
   @override
@@ -27,7 +30,9 @@ class StyledSlider extends StatelessWidget {
         onChangeEnd: onChangeEnd,
         min: bounds.$1,
         max: bounds.$2,
+        label: label,
         padding: .symmetric(horizontal: 8),
+        showValueIndicator: .onDrag,
       ),
     );
   }

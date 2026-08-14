@@ -42,10 +42,11 @@ class AudioBibleHandler extends BaseAudioHandler with SeekHandler {
     );
   }
 
-  Future<void> loadUrl(String url, MediaItem item) async {
+  Future<void> loadUrl(String url, MediaItem item, {Duration? clipEnd}) async {
     mediaItem.add(item);
     final duration = await player.setUrl(url);
-    mediaItem.add(item.copyWith(duration: duration));
+    final clippedDuration = clipEnd == null ? duration : await player.setClip(end: clipEnd);
+    mediaItem.add(item.copyWith(duration: clippedDuration));
   }
 
   @override
