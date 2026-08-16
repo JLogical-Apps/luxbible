@@ -309,13 +309,12 @@ class AudioBibleController extends _$AudioBibleController {
     state = state.copyWith(sessions: {...state.sessions, context: session}, activeContext: context);
 
     try {
-      final chapterReference = session.passage.references.first.toChapterReference();
       await handler.loadUrl(
         session.uri.toString(),
         MediaItem(
-          id: chapterReference.osisId(),
+          id: session.passage.format(),
           album: session.translation.fullName(),
-          title: chapterReference.format(),
+          title: session.passage.format(),
           artUri: (await ref.read(pathServiceProvider)?.getAssetAsFile('assets/images/lux-logo-full.png'))?.uri,
         ),
         clipEnd: session.passage.isChapter ? null : session.passage.getLastAudioTiming(session.timings)?.end,
