@@ -41,12 +41,20 @@ class StyledDock extends HookWidget {
     final bottomChildren = buttons.isEmpty && aboveButtons == null
         ? <Widget>[]
         : [
-            AnimatedGrow(child: aboveButtons ?? gapH16, alignment: .bottomCenter,),
-            if (buttons.isNotEmpty)
-              Padding(
-                padding: .symmetric(horizontal: 16),
-                child: Column(spacing: 8, mainAxisSize: .min, children: buttons),
-              ),
+            AnimatedGrow(
+              clip: .hardEdge,
+              child: aboveButtons ?? SizedBox(width: double.infinity, height: 16),
+              alignment: .bottomCenter,
+            ),
+            AnimatedGrow(
+              clip: .hardEdge,
+              child: buttons.isEmpty
+                  ? SizedBox(width: double.infinity)
+                  : Padding(
+                      padding: .symmetric(horizontal: 16),
+                      child: Column(spacing: 8, mainAxisSize: .min, children: buttons),
+                    ),
+            ),
             if (kIsWeb || !Platform.isIOS || MediaQuery.paddingOf(context).bottom <= 28)
               buttons.isNotEmpty ? gapH16 : gapH8,
           ];
