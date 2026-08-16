@@ -376,6 +376,14 @@ sealed class User with _$User {
     required Map<BiblePlanType, BiblePlan> planByType,
   }) => getHydratedPlanProgresses(planByType).firstWhereOrNull((progress) => progress.type == planType);
 
+  int? getNextIncompletePlanPassageIndex({
+    required BiblePlanType planType,
+    required int dayIndex,
+    required BiblePlanDay day,
+    required int currentIndex,
+  }) => (planProgressByType[planType]?.days.elementAtOrNull(dayIndex) ?? BiblePlanDayProgress.incomplete())
+      .getNextIncompletePassageIndex(passages: day.passages, currentIndex: currentIndex);
+
   bool hasStartedPlan(BiblePlanType planType) => planProgressByType.containsKey(planType);
 
   bool hasCompletedPassage({required BiblePlanType planType, required int dayIndex, required VerseSelection passage}) =>

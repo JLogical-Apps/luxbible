@@ -41,9 +41,10 @@ class UserNotifier extends _$UserNotifier {
   User get userOrDefault =>
       userOrNull ?? User(translation: defaultBibleTranslations(Language.device).first, completedOnboardingSteps: []);
 
-  Future<void> update(User Function(User) updater) async {
+  User update(User Function(User) updater) {
     state = updater(state);
     userFile.writeAsStringSync(jsonEncode(state.toJson()));
+    return state;
   }
 
   File get userFile => ref.read(pathServiceProvider)!.applicationSupport - 'user.json';

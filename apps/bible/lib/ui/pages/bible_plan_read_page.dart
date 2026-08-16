@@ -55,10 +55,13 @@ class BiblePlanReadPage extends HookConsumerWidget {
       initialIndex: initialPassageIndex.clamp(0, passages.isEmpty ? 0 : passages.length - 1),
     );
     final currentIndex = useListenableSelector(tabController, () => tabController.index);
-    final nextIncompletePassageIndex = currentProgress.getNextIncompletePassageIndex(
-      passages: passages,
+    final nextIncompletePassageIndex = user.getNextIncompletePlanPassageIndex(
+      planType: planType,
+      dayIndex: dayIndex,
+      day: day,
       currentIndex: currentIndex,
     );
+
     final passageControllerRegistry = useRegistry<VerseSelection, PassageController>();
 
     void playPassage(int passageIndex) {
@@ -68,7 +71,23 @@ class BiblePlanReadPage extends HookConsumerWidget {
         audioBibleController.remove(context: .plan);
 
         context.showStyledDialog(
-          (context) => StyledDialog.confirm(title: t.audio.unavailable.toText(), body: t.audio.switchRequired.toText()),
+          (_) => StyledDialog(
+            title: t.audio.unavailable.toText(),
+            body: t.audio.switchRequired.toText(),
+            buttonsBuilder: (buttonContext) => [
+              StyledRectButton.primary(
+                label: Text(MaterialLocalizations.of(buttonContext).okButtonLabel),
+                onPressed: () => buttonContext.pop(),
+              ),
+              StyledRectButton.secondary(
+                label: t.common.ok.toText(),
+                onPressed: () {
+                  buttonContext.pop();
+                  ref.updateUser((user) => user.withTranslation(user.audioTranslation));
+                },
+              ),
+            ],
+          ),
         );
       } else {
         selection.clear();
@@ -90,11 +109,22 @@ class BiblePlanReadPage extends HookConsumerWidget {
         }
       },
       onCompleteAndNext: (completedPassage) {
-        ref.updateUser(
+        final newUser = ref.updateUser(
           (user) =>
               user.withPassageCompleted(planType: planType, dayIndex: dayIndex, day: day, passage: completedPassage),
         );
-        return nextIncompletePassageIndex == null ? null : passages[nextIncompletePassageIndex];
+
+        final completedPassageIndex = passages.indexOfOrNull(completedPassage);
+        final nextIndex = completedPassageIndex == null
+            ? null
+            : newUser.getNextIncompletePlanPassageIndex(
+                planType: planType,
+                dayIndex: dayIndex,
+                day: day,
+                currentIndex: completedPassageIndex,
+              );
+
+        return nextIndex == null ? null : passages[nextIndex];
       },
       removeOnDispose: true,
     );
@@ -202,7 +232,8 @@ class BiblePlanReadPage extends HookConsumerWidget {
                 children: [
                   if (selection.hasSelection)
                     SelectionToolbar(selection: selection, onNavigateToVerseSelection: navigateToVerseSelection),
-                  if (planAudio != null) AudioBiblePanelBody(context: .plan, padding: .symmetric(horizontal: 16)),
+                  if (planAudio != null)
+                    AudioBiblePanelBody(context: .plan, padding: EdgeInsets.symmetric(horizontal: 16) + .only(top: 16)),
                 ],
               )
             : null,

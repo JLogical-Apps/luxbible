@@ -175,11 +175,15 @@ class AudioBibleController extends _$AudioBibleController {
 
   Future<void> replacePassage({required AudioBibleContext context, required VerseSelection passage}) async {
     final session = state.getSessionFor(context);
-    if (session == null || session.passage == passage) {
+    if (session == null) {
       return;
     }
 
     final translation = ref.read(userProvider).getTranslationFor(passage.references.first.book);
+    if (session.translation == translation && session.passage == passage) {
+      return;
+    }
+
     final timings = getTimingsFor(translation, passage);
     final startPosition = passage.getAudioStartPosition(timings);
     final replacement = session.copyWith(translation: translation, passage: passage, timings: timings);
@@ -304,7 +308,6 @@ class AudioBibleController extends _$AudioBibleController {
       await handler.pause();
     }
 
-    errorSubject.add(null);
     spokenReferenceSubjects[context]!.add(null);
     state = state.copyWith(sessions: {...state.sessions, context: session}, activeContext: context);
 
@@ -321,6 +324,7 @@ class AudioBibleController extends _$AudioBibleController {
       );
       await handler.seek(initialPosition.clamp(.zero, player.duration ?? .zero));
       positions[context] = initialPosition;
+      errorSubject.add(null);
 
       if (session.getReferenceAtPosition(initialPosition) case final reference?) {
         emitSpokenReference(context: context, reference: reference, force: true);
@@ -369,7 +373,7 @@ class AudioBibleController extends _$AudioBibleController {
       return;
     }
 
-    handler.pause();
+    await handler.pause();
     final isStillCurrent = state.activeContext == context && state.getSessionFor(context)?.passage == session.passage;
     if (isStillCurrent) {
       completionSubjects[context]!.add(session.passage);

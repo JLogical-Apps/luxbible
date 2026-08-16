@@ -1,6 +1,6 @@
 import 'package:animated_size_and_fade/animated_size_and_fade.dart';
-import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/audio_bible_player_provider.dart';
+import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';

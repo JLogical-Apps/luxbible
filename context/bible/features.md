@@ -370,6 +370,7 @@ It supports:
 - System and notification playback controls
 - Persisted playback preferences
 - Verse-by-verse follow along with automatic scrolling and animated emphasis during playback
+- Restarting the current passage when switching between audio-enabled Bibles
 
 Verse 1 is emphasized during chapter introductions, and each later verse receives emphasis 300 milliseconds before its recorded start.
 
