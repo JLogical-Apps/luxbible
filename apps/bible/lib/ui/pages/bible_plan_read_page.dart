@@ -64,35 +64,36 @@ class BiblePlanReadPage extends HookConsumerWidget {
 
     final passageControllerRegistry = useRegistry<VerseSelection, PassageController>();
 
-    void playPassage(int passageIndex) {
+    void playPassage(int passageIndex) async {
       final passage = passages[passageIndex];
       final translation = user.getTranslationFor(passage.references.first.book);
       if (!translation.hasAudioBible) {
         audioBibleController.remove(context: .plan);
 
-        context.showStyledDialog(
+        final shouldContinue = await context.showStyledDialog(
           (_) => StyledDialog(
             title: t.audio.unavailable.toText(),
             body: t.audio.switchRequired.toText(),
             buttonsBuilder: (buttonContext) => [
-              StyledRectButton.primary(
-                label: Text(MaterialLocalizations.of(buttonContext).okButtonLabel),
-                onPressed: () => buttonContext.pop(),
-              ),
               StyledRectButton.secondary(
-                label: t.common.ok.toText(),
+                label: t.common.switchTo(translation: user.audioTranslation.title()).toText(),
                 onPressed: () {
-                  buttonContext.pop();
+                  buttonContext.pop(true);
                   ref.updateUser((user) => user.withTranslation(user.audioTranslation));
                 },
               ),
+              StyledRectButton.primary(label: t.common.ok.toText(), onPressed: () => buttonContext.pop(false)),
             ],
           ),
         );
-      } else {
-        selection.clear();
-        audioBibleController.play(context: .plan, passage: passage);
+
+        if (shouldContinue != true) {
+          return;
+        }
       }
+
+      selection.clear();
+      audioBibleController.play(context: .plan, passage: passage);
     }
 
     final audioBibleSync = useAudioBiblePassageSync(
