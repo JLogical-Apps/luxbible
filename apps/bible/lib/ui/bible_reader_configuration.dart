@@ -43,6 +43,7 @@ class BibleReaderConfiguration {
                 onAddStudyPanel: (studyPanel) {
                   ref.updateUser((user) => user.withStudyPanel(studyPanel));
                   onNavigateToVerseSelection(verseSelection);
+                  clearVerses();
                 },
               );
               return false;

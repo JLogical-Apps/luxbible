@@ -228,6 +228,7 @@ class BibleBody extends HookConsumerWidget {
     );
 
     void addStudyPanel(StudyPanel studyPanel) {
+      final verseSelection = selection.verseSelection;
       if (user.studyPanels.contains(studyPanel)) {
         studyPanelsPageController.animateToPage(
           user.studyPanels.indexOf(studyPanel) + onboardingOffset,
@@ -237,7 +238,8 @@ class BibleBody extends HookConsumerWidget {
       } else {
         ref.updateUser((user) => user.withStudyPanel(studyPanel));
       }
-      if (selection.verseSelection case final verseSelection?) {
+      selection.clear();
+      if (verseSelection != null) {
         scrollVerseSelectionIntoView(verseSelection);
       }
     }
