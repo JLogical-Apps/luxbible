@@ -430,6 +430,9 @@ class Translations$common$en {
 	/// en: 'Add New'
 	String get addNew => 'Add New';
 
+	/// en: 'AM'
+	String get am => 'AM';
+
 	/// en: 'Cancel'
 	String get cancel => 'Cancel';
 
@@ -438,6 +441,9 @@ class Translations$common$en {
 
 	/// en: 'Copy'
 	String get copy => 'Copy';
+
+	/// en: 'Continue'
+	String get continueLabel => 'Continue';
 
 	/// en: 'Create'
 	String get create => 'Create';
@@ -501,6 +507,9 @@ class Translations$common$en {
 
 	/// en: 'Hide'
 	String get hide => 'Hide';
+
+	/// en: 'PM'
+	String get pm => 'PM';
 
 	/// en: 'Sort'
 	String get sort => 'Sort';
@@ -1513,6 +1522,63 @@ class Translations$biblePlans$en {
 	/// en: 'Start Plan'
 	String get startPlan => 'Start Plan';
 
+	/// en: 'Daily Reminders'
+	String get dailyReminders => 'Daily Reminders';
+
+	/// en: 'Set or edit when this plan reminds you to read each day.'
+	String get dailyRemindersDescription => 'Set or edit when this plan reminds you to read each day.';
+
+	/// en: 'Daily at {time}'
+	String dailyAt({required Object time}) => 'Daily at ${time}';
+
+	/// en: 'Add A Daily Reminder?'
+	String get reminderDiscoveryTitle => 'Add A Daily Reminder?';
+
+	/// en: 'Would you like Lux to remind you to continue "{name}" each day?'
+	String reminderDiscoveryBody({required Object name}) => 'Would you like Lux to remind you to continue "${name}" each day?';
+
+	/// en: 'Add Reminder'
+	String get addReminder => 'Add Reminder';
+
+	/// en: 'No'
+	String get noReminder => 'No';
+
+	/// en: 'Delete Reminder?'
+	String get deleteReminder => 'Delete Reminder?';
+
+	/// en: 'Are you sure you want to delete the daily reminder for "{name}"?'
+	String deleteReminderConfirmation({required Object name}) => 'Are you sure you want to delete the daily reminder for "${name}"?';
+
+	/// en: 'Bible Plan Reminders'
+	String get reminderNotificationChannelName => 'Bible Plan Reminders';
+
+	/// en: 'Daily reminders for your Bible plans'
+	String get reminderNotificationChannelDescription => 'Daily reminders for your Bible plans';
+
+	/// en: 'Read "{name}"'
+	String reminderNotificationTitle({required Object name}) => 'Read "${name}"';
+
+	/// en: 'Today's reading is {reading}'
+	String reminderNotificationBody({required Object reading}) => 'Today\'s reading is ${reading}';
+
+	/// en: 'Notifications Are Off'
+	String get reminderPermissionDeniedTitle => 'Notifications Are Off';
+
+	/// en: 'To save this reminder, allow Lux to send notifications in Settings.'
+	String get reminderPermissionDeniedBody => 'To save this reminder, allow Lux to send notifications in Settings.';
+
+	/// en: 'Open Settings'
+	String get openNotificationSettings => 'Open Settings';
+
+	/// en: 'Couldn't Schedule Reminder'
+	String get reminderSchedulingFailedTitle => 'Couldn\'t Schedule Reminder';
+
+	/// en: 'Lux couldn't schedule this reminder. Please try again.'
+	String get reminderSchedulingFailedBody => 'Lux couldn\'t schedule this reminder. Please try again.';
+
+	/// en: 'Reminder saved for "{name}" daily at {time}.'
+	String reminderSaved({required Object name, required Object time}) => 'Reminder saved for "${name}" daily at ${time}.';
+
 	/// en: 'Stop Plan'
 	String get stopPlan => 'Stop Plan';
 
@@ -2223,6 +2289,24 @@ class Translations$settings$en {
 
 	/// en: 'Customize'
 	String get customize => 'Customize';
+
+	/// en: 'Push Notifications'
+	String get pushNotifications => 'Push Notifications';
+
+	/// en: 'Bible Plan Reminders'
+	String get biblePlanReminders => 'Bible Plan Reminders';
+
+	/// en: 'No Bible plan reminders are enabled.'
+	String get noBiblePlanReminders => 'No Bible plan reminders are enabled.';
+
+	/// en: 'Notifications are disabled.'
+	String get notificationsDisabled => 'Notifications are disabled.';
+
+	/// en: 'Bible Plan Reminders are turned off.'
+	String get biblePlanRemindersDisabled => 'Bible Plan Reminders are turned off.';
+
+	/// en: 'Enable them in your device settings to manage your reminders.'
+	String get notificationsDisabledDescription => 'Enable them in your device settings to manage your reminders.';
 
 	/// en: 'Language'
 	String get language => 'Language';
@@ -4534,9 +4618,11 @@ extension on Translations {
 			'books.jude' => 'Jude',
 			'books.revelation' => 'Revelation',
 			'common.addNew' => 'Add New',
+			'common.am' => 'AM',
 			'common.cancel' => 'Cancel',
 			'common.close' => 'Close',
 			'common.copy' => 'Copy',
+			'common.continueLabel' => 'Continue',
 			'common.create' => 'Create',
 			'common.custom' => 'Custom',
 			'common.defaultLabel' => 'Default',
@@ -4558,6 +4644,7 @@ extension on Translations {
 			'common.select' => 'Select',
 			'common.show' => 'Show',
 			'common.hide' => 'Hide',
+			'common.pm' => 'PM',
 			'common.sort' => 'Sort',
 			'common.stop' => 'Stop',
 			'common.tryAgain' => 'Try Again',
@@ -4837,6 +4924,25 @@ extension on Translations {
 			'biblePlans.startPlanQuestion' => 'Start Plan?',
 			'biblePlans.reviewAndReflect' => 'Review & Reflect',
 			'biblePlans.startPlan' => 'Start Plan',
+			'biblePlans.dailyReminders' => 'Daily Reminders',
+			'biblePlans.dailyRemindersDescription' => 'Set or edit when this plan reminds you to read each day.',
+			'biblePlans.dailyAt' => ({required Object time}) => 'Daily at ${time}',
+			'biblePlans.reminderDiscoveryTitle' => 'Add A Daily Reminder?',
+			'biblePlans.reminderDiscoveryBody' => ({required Object name}) => 'Would you like Lux to remind you to continue "${name}" each day?',
+			'biblePlans.addReminder' => 'Add Reminder',
+			'biblePlans.noReminder' => 'No',
+			'biblePlans.deleteReminder' => 'Delete Reminder?',
+			'biblePlans.deleteReminderConfirmation' => ({required Object name}) => 'Are you sure you want to delete the daily reminder for "${name}"?',
+			'biblePlans.reminderNotificationChannelName' => 'Bible Plan Reminders',
+			'biblePlans.reminderNotificationChannelDescription' => 'Daily reminders for your Bible plans',
+			'biblePlans.reminderNotificationTitle' => ({required Object name}) => 'Read "${name}"',
+			'biblePlans.reminderNotificationBody' => ({required Object reading}) => 'Today\'s reading is ${reading}',
+			'biblePlans.reminderPermissionDeniedTitle' => 'Notifications Are Off',
+			'biblePlans.reminderPermissionDeniedBody' => 'To save this reminder, allow Lux to send notifications in Settings.',
+			'biblePlans.openNotificationSettings' => 'Open Settings',
+			'biblePlans.reminderSchedulingFailedTitle' => 'Couldn\'t Schedule Reminder',
+			'biblePlans.reminderSchedulingFailedBody' => 'Lux couldn\'t schedule this reminder. Please try again.',
+			'biblePlans.reminderSaved' => ({required Object name, required Object time}) => 'Reminder saved for "${name}" daily at ${time}.',
 			'biblePlans.stopPlan' => 'Stop Plan',
 			'biblePlans.stopPlanDescription' => 'Remove this plan and its progress.',
 			'biblePlans.readEntireChapter' => 'Read Entire Chapter',
@@ -4926,6 +5032,8 @@ extension on Translations {
 			'planTypes.throughTheBible' => 'Through The Bible',
 			'planTypes.chronological' => 'One Year Chronological',
 			'planTypes.oldAndNewTestament' => 'Old and New Testament',
+			_ => null,
+		} ?? switch (path) {
 			'planTypes.everyDayInTheWord' => 'Every Day In the Word',
 			'planTypes.mcheyne' => 'M\'Cheyne',
 			'planTypes.literaryStudy' => 'Literary Study',
@@ -4948,8 +5056,6 @@ extension on Translations {
 			'planTypes.oldAndNewTestamentDescription' => 'Read through both the Old and New Testaments together, with a passage from each every day.',
 			'planTypes.differentTopicsDescription' => 'Rotate through a different section of Scripture each day, exploring every book of the Bible over a year.',
 			'planTypes.newTestamentPsalmsProverbsDescription' => 'Read the New Testament alongside Psalms and Proverbs over the course of a year.',
-			_ => null,
-		} ?? switch (path) {
 			'planTypes.fiveByFiveByFiveDescription' => 'Read one New Testament chapter a day, five days a week, followed by two days to review and reflect.',
 			'planTypes.oldScopeDescription' => 'Reads from books in the Old Testament.',
 			'planTypes.newScopeDescription' => 'Reads from books in the New Testament.',
@@ -5320,6 +5426,12 @@ extension on Translations {
 			'morphology.literals.memExamples' => 'from Egypt|out of the land',
 			'settings.title' => 'Settings',
 			'settings.customize' => 'Customize',
+			'settings.pushNotifications' => 'Push Notifications',
+			'settings.biblePlanReminders' => 'Bible Plan Reminders',
+			'settings.noBiblePlanReminders' => 'No Bible plan reminders are enabled.',
+			'settings.notificationsDisabled' => 'Notifications are disabled.',
+			'settings.biblePlanRemindersDisabled' => 'Bible Plan Reminders are turned off.',
+			'settings.notificationsDisabledDescription' => 'Enable them in your device settings to manage your reminders.',
 			'settings.language' => 'Language',
 			'settings.system' => 'System',
 			'settings.systemLanguageDescription' => 'Match your system\'s locale.',

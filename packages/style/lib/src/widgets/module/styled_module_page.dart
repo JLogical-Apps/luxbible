@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:style/style.dart';
 
@@ -187,7 +188,7 @@ class _NextStyledModuleButtons implements StyledModuleButtons {
   @override
   List<Widget> buildButtons(BuildContext context, Function() goNext) => [
     StyledRectButton.primary(
-      label: label ?? Text(MaterialLocalizations.of(context).continueButtonLabel),
+      label: label ?? t.common.continueLabel.toText(),
       onPressed: canGoNext
           ? () async {
               await onGoNext?.call();

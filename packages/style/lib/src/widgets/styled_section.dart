@@ -9,6 +9,8 @@ class StyledSection extends StatelessWidget {
 
   final List<Widget> children;
 
+  final bool isEnabled;
+
   final EdgeInsets padding;
   final EdgeInsets childPadding;
 
@@ -18,6 +20,7 @@ class StyledSection extends StatelessWidget {
     this.subtitle,
     this.trailing,
     required this.children,
+    this.isEnabled = true,
     this.padding = const .only(top: 36),
     this.childPadding = .zero,
   });
@@ -28,6 +31,7 @@ class StyledSection extends StatelessWidget {
     this.subtitle,
     this.trailing,
     required Widget child,
+    this.isEnabled = true,
     this.padding = const .only(top: 36),
     this.childPadding = const .symmetric(horizontal: 16),
   }) : children = [child];
@@ -46,9 +50,15 @@ class StyledSection extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: .start,
                 children: [
-                  DefaultTextStyle(style: context.textStyle.headingXs, child: title),
+                  DefaultTextStyle(
+                    style: context.textStyle.headingXs.disabled(isDisabled: !isEnabled),
+                    child: title,
+                  ),
                   if (subtitle case final subtitle?)
-                    DefaultTextStyle(style: context.textStyle.paragraphSm.subtle(), child: subtitle),
+                    DefaultTextStyle(
+                      style: context.textStyle.paragraphSm.subtle().disabled(isDisabled: !isEnabled),
+                      child: subtitle,
+                    ),
                 ],
               ),
             ),

@@ -50,6 +50,8 @@ Lux does not include:
 
 Firebase Core and Firebase App Check are present to attest requests to the API.Bible proxy. Their presence does not represent Firebase Analytics, Crashlytics, or cloud storage of user content.
 
+Bible plan reminders use scheduled local notifications. They do not use Firebase Messaging or a remote push service. Each reminder-enabled plan has its own stable notification identifier and daily inexact Android alarm. Bible plan state is projected into app-level local notification schedule models, while the generic notification service declaratively reconciles those schedules without depending on Bible plan types. The notification service exposes reactive authorization availability, including the dedicated Bible Plan Reminders channel on Android. The app restores Android schedules after reboot or app replacement and reconciles persisted reminders at startup and after returning from system settings when notification permission is available. Disabling notifications at the system level does not remove persisted reminder configuration.
+
 ## Offline and Online Boundaries
 
 ### Fully Bundled

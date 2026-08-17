@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
@@ -29,16 +30,14 @@ class StyledDialog<T> extends HookWidget {
     body: body,
     bodyPadding: bodyPadding,
     buttonsBuilder: ((context) => [
-      StyledRectButton.primary(
-        label: Text(MaterialLocalizations.of(context).okButtonLabel),
-        onPressed: () => context.pop(),
-      ),
+      StyledRectButton.primary(label: t.common.ok.toText(), onPressed: () => context.pop()),
     ]),
   );
 
   static StyledDialog<bool> confirmOrCancel({
     required Widget title,
     required Widget body,
+    Widget? confirmLabel,
     Widget? cancelLabel,
     EdgeInsets bodyPadding = const .symmetric(horizontal: 16),
   }) => StyledDialog(
@@ -46,14 +45,8 @@ class StyledDialog<T> extends HookWidget {
     body: body,
     bodyPadding: bodyPadding,
     buttonsBuilder: ((context) => [
-      StyledRectButton.primary(
-        label: Text(MaterialLocalizations.of(context).okButtonLabel),
-        onPressed: () => context.pop(true),
-      ),
-      StyledRectButton.transparent(
-        label: cancelLabel ?? Text(MaterialLocalizations.of(context).cancelButtonLabel),
-        onPressed: () => context.pop(false),
-      ),
+      StyledRectButton.primary(label: confirmLabel ?? t.common.ok.toText(), onPressed: () => context.pop(true)),
+      StyledRectButton.transparent(label: cancelLabel ?? t.common.cancel.toText(), onPressed: () => context.pop(false)),
     ]),
   );
 
@@ -68,19 +61,14 @@ class StyledDialog<T> extends HookWidget {
     body: body,
     bodyPadding: bodyPadding,
     buttonsBuilder: ((context) => [
-      StyledRectButton.critical(
-        label: deleteLabel ?? Text(MaterialLocalizations.of(context).deleteButtonTooltip),
-        onPressed: () => context.pop(true),
-      ),
-      StyledRectButton.transparent(
-        label: cancelLabel ?? Text(MaterialLocalizations.of(context).cancelButtonLabel),
-        onPressed: () => context.pop(false),
-      ),
+      StyledRectButton.critical(label: deleteLabel ?? t.common.delete.toText(), onPressed: () => context.pop(true)),
+      StyledRectButton.transparent(label: cancelLabel ?? t.common.cancel.toText(), onPressed: () => context.pop(false)),
     ]),
   );
 
   @override
   Widget build(BuildContext context) {
+    final isDismissible = ModalRoute.of(context)?.barrierDismissible ?? true;
     return Padding(
       padding: .only(
         bottom: MediaQuery.paddingOf(context.rootContext).bottom + MediaQuery.viewInsetsOf(context).bottom + 16,
@@ -101,7 +89,11 @@ class StyledDialog<T> extends HookWidget {
                     Expanded(
                       child: DefaultTextStyle(style: context.textStyle.headingSm, child: title),
                     ),
-                    StyledCircleButton.md(child: Symbols.close.toIcon(), onPressed: () => Navigator.of(context).pop()),
+                    if (isDismissible)
+                      StyledCircleButton.md(
+                        child: Symbols.close.toIcon(),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
                   ],
                 ),
               ),

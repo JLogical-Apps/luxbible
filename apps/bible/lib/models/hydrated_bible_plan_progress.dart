@@ -17,6 +17,8 @@ class HydratedBiblePlanProgress {
   int get currentDayIndex =>
       plan.dayIndexes.firstWhereOrNull((index) => !isDayComplete(dayIndex: index)) ?? (plan.days.length - 1);
 
+  BiblePlanDay get currentDay => plan.days[currentDayIndex];
+
   int get numCompletedDays => plan.dayIndexes.where((index) => isDayComplete(dayIndex: index)).length;
 
   bool get isCompleted => numCompletedDays == plan.dayCount;

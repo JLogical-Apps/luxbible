@@ -13,13 +13,18 @@ import 'package:bible/models/user/language.dart';
 import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/audio_bible_timings_provider.dart';
+import 'package:bible/providers/bible_plan_local_notification_schedules_provider.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/dictionary_provider.dart';
+import 'package:bible/providers/local_notification_scheduler_provider.dart';
+import 'package:bible/providers/local_notification_schedules_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/audio_bible_handler.dart';
+import 'package:bible/services/local_notification_service.dart';
+import 'package:bible/services/timezone_service.dart';
 import 'package:bible/ui/bible_reader_configuration.dart';
 import 'package:bible/ui/pages/bible_page.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
@@ -83,6 +88,12 @@ Future<void> main() async {
       final sharedPreferences = await SharedPreferences.getInstance();
       final packageInfo = await PackageInfo.fromPlatform();
 
+      final timezoneService = TimezoneService();
+      await timezoneService.initialize();
+
+      final localNotificationService = LocalNotificationService();
+      await localNotificationService.initialize();
+
       ref = ProviderContainer(
         overrides: [
           luxReaderConfigurationProvider.overrideWith((ref) => BibleReaderConfiguration.build(ref.watch(userProvider))),
@@ -95,6 +106,11 @@ Future<void> main() async {
           pathServiceProvider.overrideWithValue(paths),
           sharedPreferencesServiceProvider.overrideWithValue(sharedPreferences),
           packageInfoProvider.overrideWithValue(packageInfo),
+          timezoneServiceProvider.overrideWithValue(timezoneService),
+          localNotificationServiceProvider.overrideWithValue(localNotificationService),
+          localNotificationSchedulesProvider.overrideWith(
+            (ref) => ref.watch(biblePlanLocalNotificationSchedulesProvider),
+          ),
         ],
         observers: [ProviderErrorObserver()],
       );
@@ -116,6 +132,7 @@ Future<void> main() async {
 
 void eagerlyLoad() {
   ref.read(studyBibleProvider);
+  ref.listen(localNotificationSchedulerProvider, (_, _) {});
 }
 
 class BibleApp extends HookConsumerWidget {
@@ -125,10 +142,17 @@ class BibleApp extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final deviceLanguageState = useState(Language.device);
     useOnLocalesChanged((locales) {
-      if (ref.read(userProvider).languageOverride == null) {
-        final language = Language.fromLocale(locales?.firstOrNull ?? .new('en'));
-        LocaleSettings.setLocaleSync(language.appLocale);
-        deviceLanguageState.value = language;
+      final language = Language.fromLocale(locales?.firstOrNull ?? .new('en'));
+      LocaleSettings.setLocaleSync(language.appLocale);
+      deviceLanguageState.value = language;
+      ref.read(localNotificationServiceProvider).synchronize(ref.read(localNotificationSchedulesProvider));
+    });
+
+    useOnAppLifecycleStateChange((_, current) async {
+      if (current == .resumed) {
+        await ref.read(timezoneServiceProvider).updateLocalTimezone();
+        ref.invalidate(localNotificationAvailabilityProvider(androidChannelId: biblePlanReminderNotificationChannelId));
+        await ref.read(localNotificationServiceProvider).synchronize(ref.read(localNotificationSchedulesProvider));
       }
     });
 

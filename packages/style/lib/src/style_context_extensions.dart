@@ -21,10 +21,13 @@ extension StyleContextExtensions on BuildContext {
 
   TextStyleLibrary get textStyle => TextStyleLibrary(colorLibrary: colors);
 
-  Future<T?> showStyledDialog<T>(StyledDialog<T> Function(BuildContext context) dialogBuilder) => showModalBottomSheet(
+  Future<T?> showStyledDialog<T>(
+    StyledDialog<T> Function(BuildContext context) dialogBuilder, {
+    bool isDismissible = true,
+  }) => showModalBottomSheet(
     context: this,
     isScrollControlled: true,
-    isDismissible: true,
+    isDismissible: isDismissible,
     shape: RoundedRectangleBorder(borderRadius: .circular(16)),
     enableDrag: false,
     backgroundColor: Colors.transparent,
@@ -33,7 +36,10 @@ extension StyleContextExtensions on BuildContext {
       maxWidth: MediaQuery.sizeOf(rootContext).width - 32,
       maxHeight: MediaQuery.sizeOf(rootContext).height - MediaQuery.viewPaddingOf(rootContext).top - 16,
     ),
-    builder: (context) => SafeArea(top: false, bottom: false, child: dialogBuilder(context)),
+    builder: (context) => PopScope(
+      canPop: isDismissible,
+      child: SafeArea(top: false, bottom: false, child: dialogBuilder(context)),
+    ),
   );
 
   Future<T?> showStyledSheet<T>(

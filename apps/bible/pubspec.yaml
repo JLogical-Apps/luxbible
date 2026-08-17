@@ -40,6 +40,7 @@ dependencies:
   package_info_plus: ^10.1.0
   timeago: ^3.7.1
   shimmer: ^3.0.0
+  synchronized: ^3.4.1+2
   animated_size_and_fade: ^5.1.1
   dio: ^5.11.0
   smooth_page_indicator: ^2.0.1
@@ -64,9 +65,12 @@ dependencies:
   in_app_review: ^2.0.10
   firebase_core: ^4.12.1
   firebase_app_check: ^0.4.5+2
+  flutter_local_notifications: ^22.3.0
+  flutter_timezone: ^5.1.0
   flutter_localizations:
     sdk: flutter
   super_sliver_list: ^0.4.1
+  timezone: ^0.11.1
 
 dev_dependencies:
   flutter_test:

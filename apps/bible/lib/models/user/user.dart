@@ -410,6 +410,9 @@ sealed class User with _$User {
     completedPlans: {...completedPlans, planType},
   );
 
+  User withPlanReminder(BiblePlanType planType, BiblePlanReminder reminder) =>
+      withUpdatePlanProgress(planType, (progress) => progress.copyWith(reminder: reminder));
+
   User withPassageToggled({
     required BiblePlanType planType,
     required int dayIndex,
@@ -429,10 +432,7 @@ sealed class User with _$User {
     required BiblePlanType planType,
     required int dayIndex,
     required BiblePlanDayProgress Function(BiblePlanDayProgress) updater,
-  }) => withUpdatePlanProgress(
-    planType,
-    (progress) => progress.copyWith(days: progress.days.withUpdateAt(dayIndex, updater)),
-  );
+  }) => withUpdatePlanProgress(planType, (progress) => progress.withDayUpdated(dayIndex: dayIndex, updater: updater));
 
   User withPassageCompleted({
     required BiblePlanType planType,

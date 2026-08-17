@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:lux/src/models/time.dart';
 import 'package:utils_core/utils_core.dart';
 
 extension BuildContextExtensions on BuildContext {
   BuildContext get rootContext => Navigator.of(this, rootNavigator: true).context;
   double get textScaling => MediaQuery.textScalerOf(this).scale(20) / 20;
+  TimeFormat get timeFormat => MediaQuery.alwaysUse24HourFormatOf(this) ? .twentyFourHour : .amPm;
 
   Future<void> go(Widget page) =>
       Navigator.of(this).pushAndRemoveUntil(MaterialPageRoute(builder: (_) => page), (_) => false);

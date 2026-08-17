@@ -16,6 +16,10 @@ Lux supports English, Dutch, and Russian. By default, it follows the device lang
 
 The selected language controls Lux's interface, Bible book names, reference formatting, reading-plan metadata, study terminology, and other app-authored text. It does not translate Bible text, translation names, user-created content, imported study-resource bodies, or legal copy.
 
+## Notifications
+
+Settings > Customize > Push Notifications lists every enabled daily Bible plan reminder. Users can review each plan's localized reminder time and delete reminders after confirmation. When app notifications or the Android Bible Plan Reminders channel are disabled at the system level, Lux preserves reminder settings but disables reminder management until notifications are restored.
+
 ## Bible Library
 
 ### Offline Bibles
@@ -469,6 +473,7 @@ Users can:
 - Listen through a day's passages with automatic verse following and progress completion
 - Adjust reading-plan audio speed or skip backward and forward by ten seconds
 - Track progress for each plan
+- Set, edit, or delete a daily local notification reminder for each active plan
 - Stop a plan and remove its progress
 - Finish a completed plan
 
@@ -476,6 +481,10 @@ Daily passages open in a focused reading flow that retains access to normal Bibl
 The chapter-preview action reads "Read In Context" when the assigned passage already covers the full chapter and "Read Entire Chapter" otherwise.
 Reading-plan audio starts at the first assigned verse, stops at the final assigned verse, marks the passage complete, and continues to the next incomplete tab. It stops after every passage for the day is complete. Manual scrolling or selecting text pauses playback. A passage whose active Bible does not support audio prompts the user to switch Bibles.
 While a reading-plan audio session is active, its full playback controls replace the Next button. The page's top-right stop button closes that session and restores the Next button. Its scrubber is limited to the assigned passage rather than the whole chapter.
+
+Daily plan reminders follow the device's local time and include the plan name plus every passage from the earliest incomplete day. Review days use the localized Review & Reflect label. Completing any plan day suppresses that plan's remaining reminder for the current local calendar day, including when a later day is completed out of order. If no day has been completed today, the reminder uses today's occurrence when its time is still ahead and tomorrow's occurrence after that time has passed. Lux asks for notification permission only when a reminder is saved. If permission is disabled, Lux can open the system settings and completes the attempted save when permission is enabled before returning. A confirmation appears after every successful save. Reminders can appear while Lux is open. Tapping a reminder opens Lux without navigating to the plan.
+
+After a user completes a plan day for the first time, Lux asks whether they want a daily reminder if they have not already answered or configured one for that plan. The prompt appears when the Bible Plans page is visible again, including after reading or listening on the focused reading page. Declining or canceling reminder setup resolves the prompt for that plan. Stopping and restarting a plan resets this eligibility with its fresh progress.
 
 ## Settings
 

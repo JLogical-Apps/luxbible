@@ -237,9 +237,11 @@ class _Translations$common$nl extends Translations$common$en {
 
 	// Translations
 	@override String get addNew => 'Nieuwe toevoegen';
+	@override String get am => 'a.m.';
 	@override String get cancel => 'Annuleren';
 	@override String get close => 'Sluiten';
 	@override String get copy => 'Kopiëren';
+	@override String get continueLabel => 'Doorgaan';
 	@override String get create => 'Maken';
 	@override String get custom => 'Aangepast';
 	@override String get defaultLabel => 'Standaard';
@@ -261,6 +263,7 @@ class _Translations$common$nl extends Translations$common$en {
 	@override String get select => 'Selecteren';
 	@override String get show => 'Tonen';
 	@override String get hide => 'Verbergen';
+	@override String get pm => 'p.m.';
 	@override String get sort => 'Sorteren';
 	@override String get stop => 'Stoppen';
 	@override String get tryAgain => 'Opnieuw proberen';
@@ -714,6 +717,25 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	@override String get startPlanQuestion => 'Leesplan starten?';
 	@override String get reviewAndReflect => 'Terugkijken en overdenken';
 	@override String get startPlan => 'Leesplan starten';
+	@override String get dailyReminders => 'Dagelijkse herinneringen';
+	@override String get dailyRemindersDescription => 'Stel in of wijzig hoe laat dit leesplan je dagelijks aan het lezen herinnert.';
+	@override String dailyAt({required Object time}) => 'Dagelijks om ${time}';
+	@override String get reminderDiscoveryTitle => 'Dagelijkse herinnering toevoegen?';
+	@override String reminderDiscoveryBody({required Object name}) => 'Wil je dat Lux je er elke dag aan herinnert om verder te gaan met "${name}"?';
+	@override String get addReminder => 'Herinnering toevoegen';
+	@override String get noReminder => 'Nee';
+	@override String get deleteReminder => 'Herinnering verwijderen?';
+	@override String deleteReminderConfirmation({required Object name}) => 'Weet je zeker dat je de dagelijkse herinnering voor "${name}" wilt verwijderen?';
+	@override String get reminderNotificationChannelName => 'Herinneringen voor Bijbelleesplannen';
+	@override String get reminderNotificationChannelDescription => 'Dagelijkse herinneringen voor je Bijbelleesplannen';
+	@override String reminderNotificationTitle({required Object name}) => 'Lees "${name}"';
+	@override String reminderNotificationBody({required Object reading}) => 'De lezing van vandaag is ${reading}';
+	@override String get reminderPermissionDeniedTitle => 'Meldingen zijn uitgeschakeld';
+	@override String get reminderPermissionDeniedBody => 'Sta Lux toe om meldingen te sturen in Instellingen om deze herinnering op te slaan.';
+	@override String get openNotificationSettings => 'Instellingen openen';
+	@override String get reminderSchedulingFailedTitle => 'Herinnering kon niet worden ingesteld';
+	@override String get reminderSchedulingFailedBody => 'Lux kon deze herinnering niet instellen. Probeer het opnieuw.';
+	@override String reminderSaved({required Object name, required Object time}) => 'Herinnering voor "${name}" opgeslagen voor dagelijks om ${time}.';
 	@override String get stopPlan => 'Leesplan stoppen';
 	@override String get stopPlanDescription => 'Verwijder dit leesplan en de voortgang.';
 	@override String get readEntireChapter => 'Hele hoofdstuk lezen';
@@ -1095,6 +1117,12 @@ class _Translations$settings$nl extends Translations$settings$en {
 	// Translations
 	@override String get title => 'Instellingen';
 	@override String get customize => 'Aanpassen';
+	@override String get pushNotifications => 'Pushmeldingen';
+	@override String get biblePlanReminders => 'Herinneringen voor Bijbelleesplannen';
+	@override String get noBiblePlanReminders => 'Er zijn geen herinneringen voor Bijbelleesplannen ingeschakeld.';
+	@override String get notificationsDisabled => 'Meldingen voor Lux zijn uitgeschakeld.';
+	@override String get biblePlanRemindersDisabled => 'Herinneringen voor Bijbelleesplannen zijn uitgeschakeld.';
+	@override String get notificationsDisabledDescription => 'Schakel ze in via de instellingen van je apparaat om je herinneringen te beheren.';
 	@override String get language => 'Taal';
 	@override String get system => 'Systeem';
 	@override String get systemLanguageDescription => 'Komt overeen met de taalinstelling van je systeem.';
@@ -2734,9 +2762,11 @@ extension on TranslationsNl {
 			'books.jude' => 'Judas',
 			'books.revelation' => 'Openbaring',
 			'common.addNew' => 'Nieuwe toevoegen',
+			'common.am' => 'a.m.',
 			'common.cancel' => 'Annuleren',
 			'common.close' => 'Sluiten',
 			'common.copy' => 'Kopiëren',
+			'common.continueLabel' => 'Doorgaan',
 			'common.create' => 'Maken',
 			'common.custom' => 'Aangepast',
 			'common.defaultLabel' => 'Standaard',
@@ -2758,6 +2788,7 @@ extension on TranslationsNl {
 			'common.select' => 'Selecteren',
 			'common.show' => 'Tonen',
 			'common.hide' => 'Verbergen',
+			'common.pm' => 'p.m.',
 			'common.sort' => 'Sorteren',
 			'common.stop' => 'Stoppen',
 			'common.tryAgain' => 'Opnieuw proberen',
@@ -3037,6 +3068,25 @@ extension on TranslationsNl {
 			'biblePlans.startPlanQuestion' => 'Leesplan starten?',
 			'biblePlans.reviewAndReflect' => 'Terugkijken en overdenken',
 			'biblePlans.startPlan' => 'Leesplan starten',
+			'biblePlans.dailyReminders' => 'Dagelijkse herinneringen',
+			'biblePlans.dailyRemindersDescription' => 'Stel in of wijzig hoe laat dit leesplan je dagelijks aan het lezen herinnert.',
+			'biblePlans.dailyAt' => ({required Object time}) => 'Dagelijks om ${time}',
+			'biblePlans.reminderDiscoveryTitle' => 'Dagelijkse herinnering toevoegen?',
+			'biblePlans.reminderDiscoveryBody' => ({required Object name}) => 'Wil je dat Lux je er elke dag aan herinnert om verder te gaan met "${name}"?',
+			'biblePlans.addReminder' => 'Herinnering toevoegen',
+			'biblePlans.noReminder' => 'Nee',
+			'biblePlans.deleteReminder' => 'Herinnering verwijderen?',
+			'biblePlans.deleteReminderConfirmation' => ({required Object name}) => 'Weet je zeker dat je de dagelijkse herinnering voor "${name}" wilt verwijderen?',
+			'biblePlans.reminderNotificationChannelName' => 'Herinneringen voor Bijbelleesplannen',
+			'biblePlans.reminderNotificationChannelDescription' => 'Dagelijkse herinneringen voor je Bijbelleesplannen',
+			'biblePlans.reminderNotificationTitle' => ({required Object name}) => 'Lees "${name}"',
+			'biblePlans.reminderNotificationBody' => ({required Object reading}) => 'De lezing van vandaag is ${reading}',
+			'biblePlans.reminderPermissionDeniedTitle' => 'Meldingen zijn uitgeschakeld',
+			'biblePlans.reminderPermissionDeniedBody' => 'Sta Lux toe om meldingen te sturen in Instellingen om deze herinnering op te slaan.',
+			'biblePlans.openNotificationSettings' => 'Instellingen openen',
+			'biblePlans.reminderSchedulingFailedTitle' => 'Herinnering kon niet worden ingesteld',
+			'biblePlans.reminderSchedulingFailedBody' => 'Lux kon deze herinnering niet instellen. Probeer het opnieuw.',
+			'biblePlans.reminderSaved' => ({required Object name, required Object time}) => 'Herinnering voor "${name}" opgeslagen voor dagelijks om ${time}.',
 			'biblePlans.stopPlan' => 'Leesplan stoppen',
 			'biblePlans.stopPlanDescription' => 'Verwijder dit leesplan en de voortgang.',
 			'biblePlans.readEntireChapter' => 'Hele hoofdstuk lezen',
@@ -3126,6 +3176,8 @@ extension on TranslationsNl {
 			'planTypes.throughTheBible' => 'De Bijbel door',
 			'planTypes.chronological' => 'Chronologisch in één jaar',
 			'planTypes.oldAndNewTestament' => 'Oude en Nieuwe Testament',
+			_ => null,
+		} ?? switch (path) {
 			'planTypes.everyDayInTheWord' => 'Elke dag in het Woord',
 			'planTypes.mcheyne' => 'M\'Cheyne',
 			'planTypes.literaryStudy' => 'Literaire studie',
@@ -3148,8 +3200,6 @@ extension on TranslationsNl {
 			'planTypes.oldAndNewTestamentDescription' => 'Lees het Oude en Nieuwe Testament naast elkaar, elke dag een passage uit beide.',
 			'planTypes.differentTopicsDescription' => 'Lees elke dag een ander gedeelte van de Bijbel en verken in één jaar elk Bijbelboek.',
 			'planTypes.newTestamentPsalmsProverbsDescription' => 'Lees in één jaar het Nieuwe Testament naast Psalmen en Spreuken.',
-			_ => null,
-		} ?? switch (path) {
 			'planTypes.fiveByFiveByFiveDescription' => 'Lees vijf dagen per week één hoofdstuk uit het Nieuwe Testament, gevolgd door twee dagen om terug te kijken en te overdenken.',
 			'planTypes.oldScopeDescription' => 'Leest uit boeken van het Oude Testament.',
 			'planTypes.newScopeDescription' => 'Leest uit boeken van het Nieuwe Testament.',
@@ -3520,6 +3570,12 @@ extension on TranslationsNl {
 			'morphology.literals.memExamples' => 'uit Egypte|uit het land',
 			'settings.title' => 'Instellingen',
 			'settings.customize' => 'Aanpassen',
+			'settings.pushNotifications' => 'Pushmeldingen',
+			'settings.biblePlanReminders' => 'Herinneringen voor Bijbelleesplannen',
+			'settings.noBiblePlanReminders' => 'Er zijn geen herinneringen voor Bijbelleesplannen ingeschakeld.',
+			'settings.notificationsDisabled' => 'Meldingen voor Lux zijn uitgeschakeld.',
+			'settings.biblePlanRemindersDisabled' => 'Herinneringen voor Bijbelleesplannen zijn uitgeschakeld.',
+			'settings.notificationsDisabledDescription' => 'Schakel ze in via de instellingen van je apparaat om je herinneringen te beheren.',
 			'settings.language' => 'Taal',
 			'settings.system' => 'Systeem',
 			'settings.systemLanguageDescription' => 'Komt overeen met de taalinstelling van je systeem.',

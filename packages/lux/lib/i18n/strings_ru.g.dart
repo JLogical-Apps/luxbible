@@ -237,9 +237,11 @@ class _Translations$common$ru extends Translations$common$en {
 
 	// Translations
 	@override String get addNew => 'Добавить';
+	@override String get am => 'ДП';
 	@override String get cancel => 'Отмена';
 	@override String get close => 'Закрыть';
 	@override String get copy => 'Копировать';
+	@override String get continueLabel => 'Продолжить';
 	@override String get create => 'Создать';
 	@override String get custom => 'Пользовательский';
 	@override String get defaultLabel => 'По умолчанию';
@@ -261,6 +263,7 @@ class _Translations$common$ru extends Translations$common$en {
 	@override String get select => 'Выбрать';
 	@override String get show => 'Показать';
 	@override String get hide => 'Скрыть';
+	@override String get pm => 'ПП';
 	@override String get sort => 'Сортировать';
 	@override String get stop => 'Остановить';
 	@override String get tryAgain => 'Попробуйте еще раз';
@@ -716,6 +719,25 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	@override String get startPlanQuestion => 'Начать план?';
 	@override String get reviewAndReflect => 'Обзор и размышление';
 	@override String get startPlan => 'Начать план';
+	@override String get dailyReminders => 'Ежедневные напоминания';
+	@override String get dailyRemindersDescription => 'Установите или измените время ежедневного напоминания об этом плане.';
+	@override String dailyAt({required Object time}) => 'Ежедневно в ${time}';
+	@override String get reminderDiscoveryTitle => 'Добавить ежедневное напоминание?';
+	@override String reminderDiscoveryBody({required Object name}) => 'Хотите, чтобы Lux ежедневно напоминал вам продолжить план «${name}»?';
+	@override String get addReminder => 'Добавить напоминание';
+	@override String get noReminder => 'Нет';
+	@override String get deleteReminder => 'Удалить напоминание?';
+	@override String deleteReminderConfirmation({required Object name}) => 'Вы уверены, что хотите удалить ежедневное напоминание для плана «${name}»?';
+	@override String get reminderNotificationChannelName => 'Напоминания о библейских планах';
+	@override String get reminderNotificationChannelDescription => 'Ежедневные напоминания о ваших библейских планах';
+	@override String reminderNotificationTitle({required Object name}) => 'Прочитайте «${name}»';
+	@override String reminderNotificationBody({required Object reading}) => 'Сегодняшнее чтение: ${reading}';
+	@override String get reminderPermissionDeniedTitle => 'Уведомления отключены';
+	@override String get reminderPermissionDeniedBody => 'Чтобы сохранить это напоминание, разрешите Lux отправлять уведомления в настройках.';
+	@override String get openNotificationSettings => 'Открыть настройки';
+	@override String get reminderSchedulingFailedTitle => 'Не удалось установить напоминание';
+	@override String get reminderSchedulingFailedBody => 'Lux не удалось установить это напоминание. Повторите попытку.';
+	@override String reminderSaved({required Object name, required Object time}) => 'Напоминание для плана «${name}» сохранено на ${time} каждый день.';
 	@override String get stopPlan => 'Остановить план';
 	@override String get stopPlanDescription => 'Удалите этот план и его ход.';
 	@override String get readEntireChapter => 'Читать всю главу';
@@ -1099,6 +1121,12 @@ class _Translations$settings$ru extends Translations$settings$en {
 	// Translations
 	@override String get title => 'Настройки';
 	@override String get customize => 'Настроить';
+	@override String get pushNotifications => 'Push-уведомления';
+	@override String get biblePlanReminders => 'Напоминания о библейских планах';
+	@override String get noBiblePlanReminders => 'Напоминания о библейских планах не включены.';
+	@override String get notificationsDisabled => 'Уведомления для Lux отключены.';
+	@override String get biblePlanRemindersDisabled => 'Напоминания о библейских планах отключены.';
+	@override String get notificationsDisabledDescription => 'Включите их в настройках устройства, чтобы управлять напоминаниями.';
 	@override String get language => 'Язык';
 	@override String get system => 'Система';
 	@override String get systemLanguageDescription => 'Использовать язык системы.';
@@ -2738,9 +2766,11 @@ extension on TranslationsRu {
 			'books.jude' => 'Иуда',
 			'books.revelation' => 'Откровение',
 			'common.addNew' => 'Добавить',
+			'common.am' => 'ДП',
 			'common.cancel' => 'Отмена',
 			'common.close' => 'Закрыть',
 			'common.copy' => 'Копировать',
+			'common.continueLabel' => 'Продолжить',
 			'common.create' => 'Создать',
 			'common.custom' => 'Пользовательский',
 			'common.defaultLabel' => 'По умолчанию',
@@ -2762,6 +2792,7 @@ extension on TranslationsRu {
 			'common.select' => 'Выбрать',
 			'common.show' => 'Показать',
 			'common.hide' => 'Скрыть',
+			'common.pm' => 'ПП',
 			'common.sort' => 'Сортировать',
 			'common.stop' => 'Остановить',
 			'common.tryAgain' => 'Попробуйте еще раз',
@@ -3041,6 +3072,25 @@ extension on TranslationsRu {
 			'biblePlans.startPlanQuestion' => 'Начать план?',
 			'biblePlans.reviewAndReflect' => 'Обзор и размышление',
 			'biblePlans.startPlan' => 'Начать план',
+			'biblePlans.dailyReminders' => 'Ежедневные напоминания',
+			'biblePlans.dailyRemindersDescription' => 'Установите или измените время ежедневного напоминания об этом плане.',
+			'biblePlans.dailyAt' => ({required Object time}) => 'Ежедневно в ${time}',
+			'biblePlans.reminderDiscoveryTitle' => 'Добавить ежедневное напоминание?',
+			'biblePlans.reminderDiscoveryBody' => ({required Object name}) => 'Хотите, чтобы Lux ежедневно напоминал вам продолжить план «${name}»?',
+			'biblePlans.addReminder' => 'Добавить напоминание',
+			'biblePlans.noReminder' => 'Нет',
+			'biblePlans.deleteReminder' => 'Удалить напоминание?',
+			'biblePlans.deleteReminderConfirmation' => ({required Object name}) => 'Вы уверены, что хотите удалить ежедневное напоминание для плана «${name}»?',
+			'biblePlans.reminderNotificationChannelName' => 'Напоминания о библейских планах',
+			'biblePlans.reminderNotificationChannelDescription' => 'Ежедневные напоминания о ваших библейских планах',
+			'biblePlans.reminderNotificationTitle' => ({required Object name}) => 'Прочитайте «${name}»',
+			'biblePlans.reminderNotificationBody' => ({required Object reading}) => 'Сегодняшнее чтение: ${reading}',
+			'biblePlans.reminderPermissionDeniedTitle' => 'Уведомления отключены',
+			'biblePlans.reminderPermissionDeniedBody' => 'Чтобы сохранить это напоминание, разрешите Lux отправлять уведомления в настройках.',
+			'biblePlans.openNotificationSettings' => 'Открыть настройки',
+			'biblePlans.reminderSchedulingFailedTitle' => 'Не удалось установить напоминание',
+			'biblePlans.reminderSchedulingFailedBody' => 'Lux не удалось установить это напоминание. Повторите попытку.',
+			'biblePlans.reminderSaved' => ({required Object name, required Object time}) => 'Напоминание для плана «${name}» сохранено на ${time} каждый день.',
 			'biblePlans.stopPlan' => 'Остановить план',
 			'biblePlans.stopPlanDescription' => 'Удалите этот план и его ход.',
 			'biblePlans.readEntireChapter' => 'Читать всю главу',
@@ -3130,6 +3180,8 @@ extension on TranslationsRu {
 			'planTypes.throughTheBible' => 'Через Библию',
 			'planTypes.chronological' => 'Один год в хронологическом порядке',
 			'planTypes.oldAndNewTestament' => 'Ветхий и Новый Завет',
+			_ => null,
+		} ?? switch (path) {
 			'planTypes.everyDayInTheWord' => 'Каждый день в слове',
 			'planTypes.mcheyne' => 'М\'Чейн',
 			'planTypes.literaryStudy' => 'Литературное исследование',
@@ -3152,8 +3204,6 @@ extension on TranslationsRu {
 			'planTypes.oldAndNewTestamentDescription' => 'Читайте вместе Ветхий и Новый Заветы, каждый день по отрывку из каждого.',
 			'planTypes.differentTopicsDescription' => 'Каждый день просматривайте разные разделы Священного Писания, исследуя каждую книгу Библии в течение года.',
 			'planTypes.newTestamentPsalmsProverbsDescription' => 'Читайте Новый Завет вместе с Псалмами и Притчами в течение года.',
-			_ => null,
-		} ?? switch (path) {
 			'planTypes.fiveByFiveByFiveDescription' => 'Читайте по одной главе Нового Завета в день, пять дней в неделю, а затем два дня для повторения и размышления.',
 			'planTypes.oldScopeDescription' => 'Читает книги Ветхого Завета.',
 			'planTypes.newScopeDescription' => 'Читает книги Нового Завета.',
@@ -3524,6 +3574,12 @@ extension on TranslationsRu {
 			'morphology.literals.memExamples' => 'из Египта|из земли',
 			'settings.title' => 'Настройки',
 			'settings.customize' => 'Настроить',
+			'settings.pushNotifications' => 'Push-уведомления',
+			'settings.biblePlanReminders' => 'Напоминания о библейских планах',
+			'settings.noBiblePlanReminders' => 'Напоминания о библейских планах не включены.',
+			'settings.notificationsDisabled' => 'Уведомления для Lux отключены.',
+			'settings.biblePlanRemindersDisabled' => 'Напоминания о библейских планах отключены.',
+			'settings.notificationsDisabledDescription' => 'Включите их в настройках устройства, чтобы управлять напоминаниями.',
 			'settings.language' => 'Язык',
 			'settings.system' => 'Система',
 			'settings.systemLanguageDescription' => 'Использовать язык системы.',

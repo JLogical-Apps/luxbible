@@ -18,6 +18,7 @@ export 'src/models/reference/reference.dart';
 export 'src/models/reference/verse_selection.dart';
 export 'src/models/reference/verse_span_reference.dart';
 export 'src/models/testament.dart';
+export 'src/models/time.dart';
 export 'src/services/bible_asset_paths.dart';
 export 'src/utils/bible_string_extensions.dart';
 export 'src/utils/comparable_operators.dart';

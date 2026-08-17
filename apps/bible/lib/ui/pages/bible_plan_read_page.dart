@@ -130,7 +130,7 @@ class BiblePlanReadPage extends HookConsumerWidget {
       removeOnDispose: true,
     );
 
-    useValueChanged<int, void>(currentIndex, (oldIndex, _) {
+    useWhenValueChanged(currentIndex, (oldIndex, currentIndex) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         selection.clear();
         final session = ref.read(audioBibleProvider(context: .plan));

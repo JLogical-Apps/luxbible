@@ -1,5 +1,6 @@
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/ui/flows/bible_plan_reminder_flow.dart';
 import 'package:bible/ui/pages/bible_plan_read_page.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
 import 'package:bible/ui/widgets/bible_plan_thumbnail.dart';
@@ -12,14 +13,49 @@ import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
+import 'package:utils_core/utils_core.dart';
 
-class BiblePlansPage extends ConsumerWidget {
+class BiblePlansPage extends HookConsumerWidget {
   const BiblePlansPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
     final plans = ref.watch(biblePlansProvider);
+
+    final visibleUser = useWhenVisible(user);
+    final isProcessingRef = useRef(false);
+    useWhenValueChanged(visibleUser, (prevUser, currUser) {
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!context.mounted || isProcessingRef.value) return;
+
+        final discoveredPlanTypes = currUser.planProgressByType
+            .where((planType, progress) {
+              final previousProgress = prevUser.planProgressByType[planType];
+              return progress.reminder == null &&
+                  previousProgress != null &&
+                  progress.days.anyIndexed(
+                    (dayIndex, day) => switch (previousProgress.days.elementAtOrNull(dayIndex)) {
+                      final previousDay? => !previousDay.isComplete && day.isComplete,
+                      null => false,
+                    },
+                  );
+            })
+            .keys
+            .toList();
+        if (discoveredPlanTypes.isEmpty) return;
+
+        isProcessingRef.value = true;
+        try {
+          for (final planType in discoveredPlanTypes) {
+            if (!context.mounted) break;
+            await BiblePlanReminderFlow.showDiscoveryPrompt(context: context, planType: planType);
+          }
+        } finally {
+          isProcessingRef.value = false;
+        }
+      });
+    });
 
     return StyledPage(
       title: t.labels.biblePlans.toText(),
@@ -52,6 +88,7 @@ class BiblePlansPage extends ConsumerWidget {
                     builder: (_) {
                       final plan = progress.plan;
                       final planType = progress.type;
+                      final dailyReminderTime = progress.progress.reminder?.dailyTime;
 
                       final tabController = useTabController(
                         initialLength: plan.dayCount,
@@ -83,6 +120,59 @@ class BiblePlansPage extends ConsumerWidget {
                                     (_) => StyledSheet(
                                       title: planType.title().toText(),
                                       children: [
+                                        StyledListItem(
+                                          leading: Icon(
+                                            dailyReminderTime == null
+                                                ? Symbols.notifications_off
+                                                : Symbols.notifications_active,
+                                          ),
+                                          title: t.biblePlans.dailyReminders.toText(),
+                                          subtitle: dailyReminderTime == null
+                                              ? t.biblePlans.dailyRemindersDescription.toText()
+                                              : t.biblePlans
+                                                    .dailyAt(time: dailyReminderTime.format(format: context.timeFormat))
+                                                    .toText(),
+                                          onPressed: () async {
+                                            context.pop();
+                                            final newTime = await context.showStyledSheet(
+                                              (context) => StyledTimeDialSheet(
+                                                title: t.biblePlans.dailyReminders.toText(),
+                                                initialTime: dailyReminderTime,
+                                                trailing: dailyReminderTime == null
+                                                    ? null
+                                                    : StyledCircleButton.md(
+                                                        child: Symbols.delete.toIcon(),
+                                                        onPressed: () async {
+                                                          context.pop();
+
+                                                          final shouldDelete = await context.showStyledDialog(
+                                                            (dialogContext) => StyledDialog.confirmDelete(
+                                                              cancelLabel: t.common.nevermind.toText(),
+                                                              title: t.biblePlans.deleteReminder.toText(),
+                                                              body: t.biblePlans
+                                                                  .deleteReminderConfirmation(name: planType.title())
+                                                                  .toText(),
+                                                            ),
+                                                          );
+                                                          if (shouldDelete == true) {
+                                                            ref.updateUser(
+                                                              (user) => user.withPlanReminder(planType, .none()),
+                                                            );
+                                                          }
+                                                        },
+                                                      ),
+                                              ),
+                                            );
+
+                                            if (newTime != null && context.mounted) {
+                                              await BiblePlanReminderFlow.save(
+                                                context: context,
+                                                planType: planType,
+                                                time: newTime,
+                                              );
+                                            }
+                                          },
+                                        ),
                                         StyledListItem(
                                           leading: Icon(Symbols.stop_circle, color: context.colors.contentCritical),
                                           title: t.biblePlans.stopPlan.toText(),

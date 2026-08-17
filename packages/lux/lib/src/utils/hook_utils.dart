@@ -229,3 +229,22 @@ Map<K, T> useAnimatedValues<K, T extends Object>(Map<K, T> targetValues, {requir
   final curvedProgress = curve.transform(shouldRestart ? 0 : progress);
   return activeTween?.transform(curvedProgress) ?? {};
 }
+
+T useIf<T>(T value, bool Function(T) predicate, [List<Object?> keys = const []]) {
+  final ref = useRef(value);
+  useEffect(() {
+    if (predicate(value)) ref.value = value;
+    return null;
+  }, [value, ...keys]);
+
+  return ref.value;
+}
+
+T useWhenVisible<T>(T value) {
+  final context = useContext();
+  final isVisible = ModalRoute.of(context)?.isCurrent ?? true;
+  return useIf(value, (_) => isVisible, [isVisible]);
+}
+
+void useWhenValueChanged<T>(T value, Function(T prev, T curr) callback) =>
+    useValueChanged<T, void>(value, (old, _) => callback(old, value));

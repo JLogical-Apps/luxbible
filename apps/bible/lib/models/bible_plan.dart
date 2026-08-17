@@ -1,3 +1,4 @@
+import 'package:bible/models/calendar_date_time.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lux/i18n.dart';
@@ -35,9 +36,30 @@ sealed class BiblePlanDay with _$BiblePlanDay {
 sealed class BiblePlanProgress with _$BiblePlanProgress {
   const BiblePlanProgress._();
 
-  const factory BiblePlanProgress({required List<BiblePlanDayProgress> days}) = _BiblePlanProgress;
+  const factory BiblePlanProgress({
+    required List<BiblePlanDayProgress> days,
+    BiblePlanReminder? reminder,
+    CalendarDateTime? lastCompletedAt,
+  }) = _BiblePlanProgress;
 
   factory BiblePlanProgress.fromJson(Map<String, dynamic> json) => _$BiblePlanProgressFromJson(json);
+
+  bool get hasDailyReminder => reminder is DailyBiblePlanReminder;
+
+  bool wasCompletedOnLocalDate(DateTime date) => lastCompletedAt?.isOnSameLocalDateAs(date) ?? false;
+  bool wasCompletedToday() => wasCompletedOnLocalDate(.now());
+
+  BiblePlanProgress withDayUpdated({
+    required int dayIndex,
+    required BiblePlanDayProgress Function(BiblePlanDayProgress) updater,
+  }) {
+    final previousDay = days[dayIndex];
+    final updatedDay = updater(previousDay);
+    return copyWith(
+      days: days.withUpdateAt(dayIndex, (_) => updatedDay),
+      lastCompletedAt: !previousDay.isComplete && updatedDay.isComplete ? .now() : lastCompletedAt,
+    );
+  }
 }
 
 @freezed
@@ -87,6 +109,18 @@ sealed class BiblePlanDayProgress with _$BiblePlanDayProgress {
           },
         }..remove(passage),
       );
+}
+
+@freezed
+sealed class BiblePlanReminder with _$BiblePlanReminder {
+  const BiblePlanReminder._();
+
+  const factory BiblePlanReminder.none() = NoneBiblePlanReminder;
+  const factory BiblePlanReminder.daily({required Time time}) = DailyBiblePlanReminder;
+
+  factory BiblePlanReminder.fromJson(Map<String, dynamic> json) => _$BiblePlanReminderFromJson(json);
+
+  Time? get dailyTime => as<DailyBiblePlanReminder>()?.time;
 }
 
 // ignore_for_file: constant_identifier_names

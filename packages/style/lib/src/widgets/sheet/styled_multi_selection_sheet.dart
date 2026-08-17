@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
@@ -51,7 +52,7 @@ class StyledMultiSelectionSheet<T> extends StyledSheet<List<T>> {
               child: StyledTextField(
                 text: searchState.value,
                 onChanged: (text) => searchState.value = text,
-                hintText: MaterialLocalizations.of(context).searchFieldLabel,
+                hintText: t.common.search,
               ),
             ),
         ],
@@ -59,7 +60,7 @@ class StyledMultiSelectionSheet<T> extends StyledSheet<List<T>> {
       buttonsBuilder: (context) => [
         StyledRectButton.primary(
           onPressed: () => context.pop(selectedOptionsState.value),
-          label: Text(MaterialLocalizations.of(context).saveButtonLabel),
+          label: t.common.save.toText(),
         ),
       ],
       children:

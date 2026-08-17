@@ -7,34 +7,50 @@ class StyledTile extends StatelessWidget {
   final Function()? onPressed;
 
   final bool isSelected;
+  final bool isEnabled;
+
   final EdgeInsets padding;
 
-  const StyledTile({super.key, required this.child, this.onPressed, this.isSelected = false, this.padding = .zero});
+  const StyledTile({
+    super.key,
+    required this.child,
+    this.onPressed,
+    this.isSelected = false,
+    this.isEnabled = true,
+    this.padding = .zero,
+  });
 
   StyledTile.message({
     super.key,
     required Widget leading,
     required Widget title,
     Widget? subtitle,
+    Widget? trailing,
+    StyledTextAction? action,
+    this.isEnabled = true,
     this.onPressed,
     this.padding = .zero,
   }) : isSelected = false,
        child = Builder(
          builder: (context) => StyledListItem(
            leading: IconTheme.merge(
-             data: IconThemeData(color: context.colors.contentTertiary),
+             data: IconThemeData(color: isEnabled ? context.colors.contentTertiary : context.colors.contentDisabled),
              child: leading,
            ),
            title: DefaultTextStyle.merge(
-             style: TextStyle(color: context.colors.contentTertiary),
+             style: TextStyle(color: isEnabled ? context.colors.contentTertiary : context.colors.contentDisabled),
              child: title,
            ),
            subtitle: subtitle?.mapIfNonNull(
              (subtitle) => DefaultTextStyle.merge(
                child: subtitle,
-               style: TextStyle(color: context.colors.contentTertiary),
+               style: TextStyle(color: isEnabled ? context.colors.contentTertiary : context.colors.contentDisabled),
              ),
            ),
+           trailing:
+               trailing ??
+               (action == null ? null : StyledPillButton.sm(label: action.label, onPressed: action.onPressed)),
+           isEnabled: isEnabled,
          ),
        );
 
@@ -54,7 +70,7 @@ class StyledTile extends StatelessWidget {
           children: [
             Padding(
               padding: padding,
-              child: DefaultTextStyle(style: context.textStyle.paragraphMd, textAlign: TextAlign.start, child: child),
+              child: DefaultTextStyle(style: context.textStyle.paragraphMd, textAlign: .start, child: child),
             ),
             Positioned.fill(
               child: IgnorePointer(
