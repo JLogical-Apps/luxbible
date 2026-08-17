@@ -650,7 +650,8 @@
     "recents": "Недавние",
     "navigate": "Навигация",
     "book": "Книга",
-    "chapter": "Глава"
+    "chapter": "Глава",
+    "verse": "Стих"
   },
   "selectionUi": {
     "selected": "Выбрано:",

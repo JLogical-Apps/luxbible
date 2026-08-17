@@ -646,7 +646,8 @@
     "recents": "Recent",
     "navigate": "Navigeren",
     "book": "Boek",
-    "chapter": "Hoofdstuk"
+    "chapter": "Hoofdstuk",
+    "verse": "Vers"
   },
   "selectionUi": {
     "selected": "Geselecteerd: ",

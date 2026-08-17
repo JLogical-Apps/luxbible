@@ -2145,6 +2145,9 @@ class Translations$navigation$en {
 
 	/// en: 'Chapter'
 	String get chapter => 'Chapter';
+
+	/// en: 'Verse'
+	String get verse => 'Verse';
 }
 
 // Path: selectionUi
@@ -4992,6 +4995,7 @@ extension on Translations {
 			'navigation.navigate' => 'Navigate',
 			'navigation.book' => 'Book',
 			'navigation.chapter' => 'Chapter',
+			'navigation.verse' => 'Verse',
 			'selectionUi.selected' => 'Selected: ',
 			'selectionUi.sourceApiBible' => 'Sourced from [https://api.bible](https://api.bible)',
 			'errors.deviceVerificationFailed' => 'Device verification failed',

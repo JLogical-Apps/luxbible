@@ -28,6 +28,8 @@ class StyledTextField extends HookWidget {
   final TextCapitalization textCapitalization;
   final TextInputAction? action;
   final List<String>? autofillHints;
+
+  final bool Function(String oldText, String newText)? onRawTextChanged;
   final List<TextInputFormatter> inputFormatters;
 
   final FocusNode? focusNode;
@@ -51,6 +53,7 @@ class StyledTextField extends HookWidget {
     this.textCapitalization = .sentences,
     this.action,
     this.autofillHints,
+    this.onRawTextChanged,
     this.inputFormatters = const [],
     this.focusNode,
     this.textStyle,
@@ -73,6 +76,7 @@ class StyledTextField extends HookWidget {
     this.textCapitalization = .sentences,
     this.action,
     this.autofillHints,
+    this.onRawTextChanged,
     this.inputFormatters = const [],
     this.focusNode,
     this.textStyle,
@@ -138,7 +142,13 @@ class StyledTextField extends HookWidget {
             keyboardType: textInputType,
             textInputAction: action,
             textCapitalization: textCapitalization,
-            inputFormatters: inputFormatters,
+            inputFormatters: [
+              if (onRawTextChanged case final onRawTextChanged?)
+                TextInputFormatter.withFunction(
+                  (oldValue, newValue) => onRawTextChanged(oldValue.text, newValue.text) ? newValue : oldValue,
+                ),
+              ...inputFormatters,
+            ],
             onSubmitted: (_) => onSubmit?.call(text),
             decoration: InputDecoration(
               contentPadding: .all(12),

@@ -12,7 +12,7 @@ import 'package:utils_core/utils_core.dart';
 class ChapterReferenceSelector extends HookWidget {
   final ChapterReference? initialReference;
   final ChapterReferenceSelectorController? controller;
-  final Function(ChapterPosition) onSelect;
+  final Function(ChapterPosition, bool shouldSelectVerse) onSelect;
 
   final Widget? trailing;
   final List<Widget> Function(BuildContext, Function(ChapterPosition) onSelect)? aboveBooksBuilder;
@@ -52,7 +52,7 @@ class ChapterReferenceSelector extends HookWidget {
 
 class ChapterReferenceSelectorHeading extends HookWidget {
   final ChapterReferenceSelectorController controller;
-  final Function(ChapterPosition) onSelect;
+  final Function(ChapterPosition, bool shouldSelectVerse) onSelect;
 
   final Widget? trailing;
   final bool showShadow;
@@ -69,6 +69,8 @@ class ChapterReferenceSelectorHeading extends HookWidget {
   Widget build(BuildContext context) {
     useListenable(controller.bookTextState);
     useListenable(controller.chapterNumState);
+    useListenable(controller.verseNumState);
+    useListenable(controller.isShowingVersesState);
     useListenable(controller.isScrollingDownState);
     useOnListenableChange(controller.bookFocusNode, () {
       final book = controller.book;
@@ -79,6 +81,8 @@ class ChapterReferenceSelectorHeading extends HookWidget {
       }
     });
     useOnFocusNodeFocused(controller.chapterFocusNode, controller.showChapters);
+    useOnFocusNodeFocused(controller.bookFocusNode, controller.hideVerses);
+    useOnFocusNodeFocused(controller.chapterFocusNode, controller.hideVerses);
 
     final book = controller.book;
 
@@ -98,14 +102,14 @@ class ChapterReferenceSelectorHeading extends HookWidget {
                   StyledTextField(
                     text: controller.bookText,
                     readOnly: !controller.isScrollingDown,
-                    onChanged: (text) {
-                      if (text.endsWith(' ') && controller.getBook(text: text.trim()) != null) {
-                        controller.setBookText(text.trim());
+                    onChanged: controller.setBookText,
+                    onRawTextChanged: (oldText, newText) {
+                      if (newText == '$oldText ' && controller.getBook(text: oldText) != null) {
                         controller.showChapters();
                         controller.chapterFocusNode.requestFocus();
-                      } else {
-                        controller.setBookText(text);
+                        return false;
                       }
+                      return true;
                     },
                     onTextEditValueChanged: (value) => controller.setBookTextSelection(value.selection),
                     autofocus: true,
@@ -132,6 +136,14 @@ class ChapterReferenceSelectorHeading extends HookWidget {
               child: StyledTextField(
                 text: controller.chapterNum?.toString() ?? '',
                 onChanged: book == null ? null : (text) => controller.setChapterNum(int.tryParse(text)),
+                onRawTextChanged: (oldText, newText) {
+                  if (newText == '$oldText ' && controller.chapterNum != null) {
+                    controller.showVerses();
+                    controller.verseFocusNode.requestFocus();
+                    return false;
+                  }
+                  return true;
+                },
                 hintText: t.navigation.chapter,
                 textStyle: context.textStyle.paragraphLg,
                 textInputType: .numberWithOptions(signed: true),
@@ -143,6 +155,7 @@ class ChapterReferenceSelectorHeading extends HookWidget {
                       ChapterPosition(
                         reference: ChapterReference(book: book, chapterNum: chapterNum),
                       ),
+                      false,
                     );
                   }
                 },
@@ -152,7 +165,36 @@ class ChapterReferenceSelectorHeading extends HookWidget {
                 ],
               ),
             ),
-            ?trailing,
+            if ((book, controller.chapterNum) case (final book?, final chapterNum?) when controller.isShowingVerses)
+              SizedBox(
+                width: 112,
+                child: StyledTextField(
+                  text: controller.verseNum?.toString() ?? '',
+                  onChanged: (text) => controller.setVerseNum(int.tryParse(text)),
+                  hintText: t.navigation.verse,
+                  textStyle: context.textStyle.paragraphLg,
+                  textInputType: .numberWithOptions(signed: true),
+                  focusNode: controller.verseFocusNode,
+                  onSubmit: (text) {
+                    final verseNum = int.tryParse(text);
+                    if (verseNum != null) {
+                      onSelect(
+                        ChapterPosition(
+                          reference: ChapterReference(book: book, chapterNum: chapterNum),
+                          verseNum: verseNum,
+                        ),
+                        true,
+                      );
+                    }
+                  },
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    RangeTextInputFormatter(min: 1, max: book.bookInfo.getNumVerses(chapterNum)),
+                  ],
+                ),
+              )
+            else
+              ?trailing,
           ],
         ),
       ),
@@ -162,7 +204,7 @@ class ChapterReferenceSelectorHeading extends HookWidget {
 
 class ChapterReferenceSelectorBody extends HookWidget {
   final ChapterReferenceSelectorController controller;
-  final Function(ChapterPosition) onSelect;
+  final Function(ChapterPosition, bool shouldSelectVerse) onSelect;
   final List<Widget> Function(BuildContext, Function(ChapterPosition) onSelect)? aboveBooksBuilder;
 
   const ChapterReferenceSelectorBody({
@@ -174,7 +216,7 @@ class ChapterReferenceSelectorBody extends HookWidget {
 
   void select(ChapterPosition position) {
     controller.chapterNumState.value = position.reference.chapterNum;
-    onSelect(position);
+    onSelect(position, false);
   }
 
   @override
@@ -182,7 +224,9 @@ class ChapterReferenceSelectorBody extends HookWidget {
     useListenable(controller.bookTextState);
     useListenable(controller.bookTextSelectionState);
     useListenable(controller.chapterNumState);
+    useListenable(controller.verseNumState);
     useListenable(controller.isShowingChaptersState);
+    useListenable(controller.isShowingVersesState);
     useOnStickyScrollDirectionChanged(
       controller.scrollController,
       (direction) => controller.setIsScrollingDown(direction == ScrollDirection.forward),
@@ -190,6 +234,28 @@ class ChapterReferenceSelectorBody extends HookWidget {
 
     final book = controller.book;
     final matchingBooks = controller.matchingBooks();
+
+    if ((book, controller.chapterNum) case (final book?, final chapterNum?) when controller.isShowingVerses) {
+      final chapterReference = ChapterReference(book: book, chapterNum: chapterNum);
+      return StyledList(
+        key: ValueKey(Reference),
+        children: chapterReference.references
+            .where(
+              (reference) =>
+                  controller.verseNum == null ||
+                  reference.verseNum.toString().startsWith(controller.verseNum.toString()),
+            )
+            .map(
+              (reference) => StyledListItem(
+                title: reference.format().toText(),
+                trailing: Symbols.expand_circle_right.toIcon(),
+                onPressed: () =>
+                    onSelect(ChapterPosition(reference: chapterReference, verseNum: reference.verseNum), true),
+              ),
+            )
+            .toList(),
+      );
+    }
 
     if (controller.isShowingChapters && book != null) {
       return StyledList(
@@ -252,21 +318,27 @@ class ChapterReferenceSelectorController {
   final ValueNotifier<String> bookTextState;
   final ValueNotifier<TextSelection> bookTextSelectionState;
   final ValueNotifier<int?> chapterNumState;
+  final ValueNotifier<int?> verseNumState;
   final ValueNotifier<bool> isShowingChaptersState;
+  final ValueNotifier<bool> isShowingVersesState;
   final ValueNotifier<bool> isScrollingDownState;
 
   final FocusNode bookFocusNode;
   final FocusNode chapterFocusNode;
+  final FocusNode verseFocusNode;
   final ScrollController scrollController;
 
   ChapterReferenceSelectorController({
     required this.bookTextState,
     required this.bookTextSelectionState,
     required this.chapterNumState,
+    required this.verseNumState,
     required this.isShowingChaptersState,
+    required this.isShowingVersesState,
     required this.isScrollingDownState,
     required this.bookFocusNode,
     required this.chapterFocusNode,
+    required this.verseFocusNode,
     required this.scrollController,
   });
 
@@ -275,6 +347,8 @@ class ChapterReferenceSelectorController {
   TextSelection get bookTextSelection => bookTextSelectionState.value;
 
   int? get chapterNum => chapterNumState.value;
+
+  int? get verseNum => verseNumState.value;
 
   bool get isScrollingDown => isScrollingDownState.value;
 
@@ -296,6 +370,8 @@ class ChapterReferenceSelectorController {
 
   bool get isShowingChapters => isShowingChaptersState.value;
 
+  bool get isShowingVerses => isShowingVersesState.value;
+
   void setBookText(String text) {
     final previousBook = book;
     bookTextState.value = text;
@@ -308,9 +384,20 @@ class ChapterReferenceSelectorController {
 
   void setChapterNum(int? value) => chapterNumState.value = value;
 
+  void setVerseNum(int? value) => verseNumState.value = value;
+
   void showBooks() => isShowingChaptersState.value = false;
 
   void showChapters() => isShowingChaptersState.value = true;
+
+  void showVerses() {
+    if (book != null && chapterNum != null) {
+      isShowingVersesState.value = true;
+      verseNumState.value = null;
+    }
+  }
+
+  void hideVerses() => isShowingVersesState.value = false;
 
   void setIsScrollingDown(bool value) => isScrollingDownState.value = value;
 }
@@ -321,10 +408,13 @@ ChapterReferenceSelectorController useChapterReferenceSelectorController({Chapte
     bookTextState: useState(bookText),
     bookTextSelectionState: useState(TextSelection(baseOffset: 0, extentOffset: bookText.length)),
     chapterNumState: useState(initialReference?.chapterNum),
+    verseNumState: useState(null),
     isShowingChaptersState: useState(false),
+    isShowingVersesState: useState(false),
     isScrollingDownState: useState(true),
     bookFocusNode: useFocusNode(),
     chapterFocusNode: useFocusNode(),
+    verseFocusNode: useFocusNode(),
     scrollController: useScrollController(),
   );
 }

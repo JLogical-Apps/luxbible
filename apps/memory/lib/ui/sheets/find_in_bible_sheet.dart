@@ -14,7 +14,7 @@ class FindInBibleSheet {
       chapterReferenceState.value = null;
     }
 
-    void selectChapter(ChapterPosition position) {
+    void selectChapter(ChapterPosition position, bool shouldSelectVerse) {
       FocusManager.instance.primaryFocus?.unfocus();
       selection.clear();
       chapterReferenceState.value = position.reference;

@@ -9,17 +9,18 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 import 'package:utils_core/utils_core.dart';
 
-class ChapterReferenceSearchPageResult {
+class ReferenceSearchPageResult {
   final ChapterPosition position;
   final String? bookmarkId;
+  final bool shouldSelectVerse;
 
-  const ChapterReferenceSearchPageResult({required this.position, this.bookmarkId});
+  const ReferenceSearchPageResult({required this.position, this.bookmarkId, this.shouldSelectVerse = false});
 }
 
-class ChapterReferenceSearchPage extends ConsumerWidget {
+class ReferenceSearchPage extends ConsumerWidget {
   final ChapterReference initialReference;
 
-  const ChapterReferenceSearchPage({super.key, required this.initialReference});
+  const ReferenceSearchPage({super.key, required this.initialReference});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -58,7 +59,8 @@ class ChapterReferenceSearchPage extends ConsumerWidget {
             ),
           ),
         ),
-        onSelect: (position) => context.pop(ChapterReferenceSearchPageResult(position: position)),
+        onSelect: (position, shouldSelectVerse) =>
+            context.pop(ReferenceSearchPageResult(position: position, shouldSelectVerse: shouldSelectVerse)),
         aboveBooksBuilder: (context, onSelect) => [
           if (user.bookmarkById.isNotEmpty)
             StyledSection(
@@ -74,7 +76,7 @@ class ChapterReferenceSearchPage extends ConsumerWidget {
                         .mapToIterable(
                           (bookmarkId, bookmark) => StyledTile(
                             onPressed: () => context.pop(
-                              ChapterReferenceSearchPageResult(position: bookmark.position, bookmarkId: bookmarkId),
+                              ReferenceSearchPageResult(position: bookmark.position, bookmarkId: bookmarkId),
                             ),
                             padding: .all(16),
                             child: Row(

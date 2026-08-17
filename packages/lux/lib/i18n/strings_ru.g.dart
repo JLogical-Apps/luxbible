@@ -1039,6 +1039,7 @@ class _Translations$navigation$ru extends Translations$navigation$en {
 	@override String get navigate => 'Навигация';
 	@override String get book => 'Книга';
 	@override String get chapter => 'Глава';
+	@override String get verse => 'Стих';
 }
 
 // Path: selectionUi
@@ -3198,6 +3199,7 @@ extension on TranslationsRu {
 			'navigation.navigate' => 'Навигация',
 			'navigation.book' => 'Книга',
 			'navigation.chapter' => 'Глава',
+			'navigation.verse' => 'Стих',
 			'selectionUi.selected' => 'Выбрано:',
 			'selectionUi.sourceApiBible' => 'Источник: [https://api.bible](https://api.bible).',
 			'errors.deviceVerificationFailed' => 'Проверка устройства не удалась',

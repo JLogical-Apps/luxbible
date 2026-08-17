@@ -1035,6 +1035,7 @@ class _Translations$navigation$nl extends Translations$navigation$en {
 	@override String get navigate => 'Navigeren';
 	@override String get book => 'Boek';
 	@override String get chapter => 'Hoofdstuk';
+	@override String get verse => 'Vers';
 }
 
 // Path: selectionUi
@@ -3194,6 +3195,7 @@ extension on TranslationsNl {
 			'navigation.navigate' => 'Navigeren',
 			'navigation.book' => 'Boek',
 			'navigation.chapter' => 'Hoofdstuk',
+			'navigation.verse' => 'Vers',
 			'selectionUi.selected' => 'Geselecteerd: ',
 			'selectionUi.sourceApiBible' => 'Bron: [https://api.bible](https://api.bible)',
 			'errors.deviceVerificationFailed' => 'Apparaatverificatie mislukt',

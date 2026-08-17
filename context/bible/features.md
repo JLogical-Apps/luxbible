@@ -97,7 +97,7 @@ Users can:
 
 ## Navigation
 
-Tapping the main toolbar opens the chapter navigation page.
+Tapping the main toolbar opens the reference navigation page.
 
 ### Book
 
@@ -110,6 +110,14 @@ Tapping the main toolbar opens the chapter navigation page.
 - Lists the chapters available for the selected book
 - Accepts numeric filtering
 - Opens the selected chapter by tap or keyboard submission
+- Advances to Verse when a valid typed chapter is followed by a space
+
+### Verse
+
+- Lists the verses available for the selected chapter
+- Accepts numeric filtering
+- Opens and selects the chosen verse by tap or keyboard submission
+- Returns to chapter or book navigation when either earlier field is selected
 
 ### Translation
 

@@ -646,7 +646,8 @@
     "recents": "Recents",
     "navigate": "Navigate",
     "book": "Book",
-    "chapter": "Chapter"
+    "chapter": "Chapter",
+    "verse": "Verse"
   },
   "selectionUi": {
     "selected": "Selected: ",
