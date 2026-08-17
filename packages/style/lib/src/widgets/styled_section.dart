@@ -62,15 +62,17 @@ class StyledSection extends StatelessWidget {
     ...StyledList.dividedItems(
       children: children
           .map(
-            (child) => MediaQuery.removeViewPadding(
-              context: context,
-              removeLeft: useSafeChildren,
-              removeRight: useSafeChildren,
-              child: Padding(
-                padding:
-                    childPadding.copyWith(top: 0, bottom: 0) +
-                    (useSafeChildren ? MediaQuery.viewPaddingOf(context).onlyHorizontal : .zero),
-                child: child,
+            (child) => Builder(
+              builder: (context) => MediaQuery.removeViewPadding(
+                context: context,
+                removeLeft: useSafeChildren,
+                removeRight: useSafeChildren,
+                child: Padding(
+                  padding:
+                      childPadding.copyWith(top: 0, bottom: 0) +
+                      (useSafeChildren ? MediaQuery.viewPaddingOf(context).onlyHorizontal : .zero),
+                  child: child,
+                ),
               ),
             ),
           )

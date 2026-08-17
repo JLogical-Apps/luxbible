@@ -35,13 +35,13 @@ class ChapterReferenceSelector extends HookWidget {
         Expanded(
           child: ListView(
             controller: controller.scrollController,
-            padding: .only(bottom: MediaQuery.viewInsetsOf(context).bottom),
             children: [
               ChapterReferenceSelectorBody(
                 controller: controller,
                 onSelect: onSelect,
                 aboveBooksBuilder: aboveBooksBuilder,
               ),
+              Builder(builder: (context) => SizedBox(height: MediaQuery.viewInsetsOf(context).bottom)),
             ],
           ),
         ),
