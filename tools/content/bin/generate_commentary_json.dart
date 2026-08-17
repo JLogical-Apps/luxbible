@@ -53,7 +53,7 @@ Map<String, String> _extractNotes(XmlDocument doc, CommentaryType type) {
         pendingRef = element.getAttribute('osisRef')?.split(':').last;
       case 'div' when element.getAttribute('class') == 'Commentary':
         if (pendingRef case final ref?) {
-          final markdown = _commentaryMarkdown(element.findAllElements('p'));
+          final markdown = _commentaryMarkdown(_commentaryElements(element.childElements));
           if (markdown.isNotEmpty) {
             notes.update(ref, (existing) => '$existing\n\n$markdown', ifAbsent: () => markdown);
           }
@@ -75,35 +75,57 @@ String? _referenceOf(XmlNode? container) => container
     .first
     .mapIfNonNull((book) => Reference(book: BookType.fromOsisId(book), chapterNum: 1, verseNum: 0).osisId());
 
-String _introMarkdown(Iterable<XmlElement> elements) => _commentaryMarkdown(
-  elements.expand((element) => element.name.local == 'p' ? [element] : element.findAllElements('p')),
-  skipIntroduction: true,
+String _introMarkdown(Iterable<XmlElement> elements) =>
+    _commentaryMarkdown(_commentaryElements(elements), skipIntroduction: true, skipCenteredParagraphs: true);
+
+Iterable<XmlElement> _commentaryElements(Iterable<XmlElement> elements) => elements.expand(
+  (element) => switch (element.name.local) {
+    'p' || 'verse' => [element],
+    _ => element.descendants.whereType<XmlElement>().where(
+      (descendant) => descendant.name.local == 'p' || descendant.name.local == 'verse',
+    ),
+  },
 );
 
-String _commentaryMarkdown(Iterable<XmlElement> paragraphs, {bool skipIntroduction = false}) =>
-    Markdown.fromXmlNodes(paragraphs, (element, children) {
-      if (element.name.local == 'p') {
-        if (_isSkippedParagraph(element.getAttribute('class') ?? '') ||
-            (skipIntroduction && children.plainText.trim().toUpperCase() == 'INTRODUCTION')) {
-          return [];
-        }
-        return [.paragraph(children)];
-      }
-      if (element.name.local == 'scripRef') {
-        if (_getSupportedOsisId(element) case final osisId?) {
-          return [.link(osisId, children)];
-        }
-        return children;
-      }
-      return switch (element.name.local) {
-        'b' || 'strong' => [.bold(children)],
-        'i' || 'em' => [.italic(children)],
-        _ => children,
-      };
-    }).text.trim();
+String _commentaryMarkdown(
+  Iterable<XmlElement> blocks, {
+  bool skipIntroduction = false,
+  bool skipCenteredParagraphs = false,
+}) => Markdown.fromXmlNodes(blocks, (element, children) {
+  if (element.name.local == 'p') {
+    if (_isSkippedParagraph(element.getAttribute('class') ?? '', skipCenteredParagraphs: skipCenteredParagraphs) ||
+        (skipIntroduction && children.plainText.trim().toUpperCase() == 'INTRODUCTION')) {
+      return [];
+    }
+    return [.paragraph(children)];
+  }
+  if (element.name.local == 'scripRef') {
+    if (_getSupportedOsisId(element) case final osisId?) {
+      return [.link(osisId, children)];
+    }
+    return children;
+  }
+  return switch (element.name.local) {
+    'b' || 'strong' => [.bold(children)],
+    'i' || 'em' => [.italic(children)],
+    'l' => [...children, .lineBreak()],
+    'verse' => [
+      ...children.where(
+        (child) => switch (child) {
+          MarkdownText(:final text) => text.trim().isNotEmpty,
+          _ => true,
+        },
+      ),
+      .lineBreak(),
+    ],
+    _ => children,
+  };
+}).text.trim();
 
-bool _isSkippedParagraph(String className) =>
-    className == 'Footnote' || className == 'Center' || className.startsWith('TableCaption');
+bool _isSkippedParagraph(String className, {required bool skipCenteredParagraphs}) =>
+    className == 'Footnote' ||
+    (skipCenteredParagraphs && className == 'Center') ||
+    className.startsWith('TableCaption');
 
 String? _getSupportedOsisId(XmlElement element) {
   final osisRef = element.getAttribute('osisRef');

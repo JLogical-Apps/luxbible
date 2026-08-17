@@ -35,7 +35,9 @@ class CommentarySheet {
                   (verseSelection, note) => StyledStickyHeader.child(
                     title:
                         (verseSelection.isIntro
-                                ? t.commentaryUi.introTo(book: verseSelection.references.first.book.title())
+                                ? t.commentaryUi.introTo(
+                                    book: verseSelection.references.first.book.title(isPlural: true),
+                                  )
                                 : verseSelection.format())
                             .toText(),
                     child: Padding(
