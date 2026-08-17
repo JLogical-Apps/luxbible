@@ -9,6 +9,7 @@ import 'package:bible/ui/pages/dictionary_page.dart';
 import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/theme_settings_page.dart';
 import 'package:bible/ui/sheets/bible_sheet.dart';
+import 'package:bible/ui/sheets/study_sheet.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:lux/i18n.dart';
@@ -37,6 +38,7 @@ enum MainToolbarShortcut {
       toStudyAction()?.title() ??
       toMainAction()?.title() ??
       switch (this) {
+        study => t.mainActions.study,
         switchBible => t.toolbarShortcuts.switchBible,
         dictionary => t.toolbarShortcuts.dictionary,
         lexicon => t.toolbarShortcuts.lexicon,
@@ -47,6 +49,7 @@ enum MainToolbarShortcut {
       toStudyAction()?.description(regionFormat: null, regionType: RegionType.chapter) ??
       toMainAction()?.description(user: user) ??
       switch (this) {
+        study => t.mainActions.studyPanelDescription,
         switchBible => t.toolbarShortcuts.switchBibleDescription,
         dictionary => t.toolbarShortcuts.dictionaryDescription,
         lexicon => t.toolbarShortcuts.lexiconDescription,
@@ -57,6 +60,7 @@ enum MainToolbarShortcut {
       toStudyAction()?.icon.mapIfNonNull(Icon.new) ??
       toMainAction()?.buildIcon(context, user: user) ??
       switch (this) {
+        study => Icon(Symbols.school),
         switchBible => Symbols.book.toIcon(),
         dictionary => Symbols.menu_book.toIcon(),
         lexicon => Symbols.translate.toIcon(),
@@ -84,6 +88,14 @@ enum MainToolbarShortcut {
         onAddStudyPanel: onAddStudyPanel,
       ) ??
       switch (this) {
+        study => StudySheet.show(
+          context,
+          verseSelection: reference.toVerseSelection(),
+          regionFormat: reference.format(),
+          regionType: RegionType.chapter,
+          onNavigateToVerseSelection: onNavigateToVerseSelection,
+          onAddStudyPanel: onAddStudyPanel,
+        ),
         switchBible => () async {
           final newTranslation = await BibleSheet.show(context);
           if (newTranslation != null) {
@@ -109,7 +121,6 @@ enum MainToolbarShortcut {
   MainAction? toMainAction() => switch (this) {
     audio => .audio,
     bookmark => .bookmark,
-    study => .study,
     search => .search,
     studyPanel => .studyPanel,
     resources => .resources,
