@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:lux/lux.dart';
 import 'package:style/src/widgets/sheet/styled_sheet.dart';
 import 'package:style/src/widgets/styled_list_item.dart';
 import 'package:style/src/widgets/styled_select.dart';
-import 'package:lux/lux.dart';
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class StyledSelectionSheet<T> extends StyledSheet<T> {
   final List<T> options;

@@ -3,8 +3,8 @@ import 'dart:developer' as developer;
 
 import 'package:audio_service/audio_service.dart';
 import 'package:bible/firebase_options.dart';
-import 'package:bible/functions/bible_plan_importer.dart';
 import 'package:bible/functions/audio_bible_timings_importer.dart';
+import 'package:bible/functions/bible_plan_importer.dart';
 import 'package:bible/functions/cross_references_importer.dart';
 import 'package:bible/functions/dictionary_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
