@@ -77,8 +77,8 @@ extension StyleContextExtensions on BuildContext {
         child: SafeArea(
           top: false,
           bottom: false,
-          child: Provider.value(
-            value: sheetContext.withBreadcrumb(
+          child: Provider(
+            create: (_) => sheetContext.withBreadcrumb(
               SheetNavigationBreadcrumb(text: breadcrumbText, sheetBuilder: sheetBuilder),
             ),
             child: HookBuilder(builder: sheetBuilder),
