@@ -31,7 +31,7 @@ extension StyleContextExtensions on BuildContext {
     useRootNavigator: true,
     constraints: BoxConstraints(
       maxWidth: MediaQuery.sizeOf(rootContext).width - 32,
-      maxHeight: MediaQuery.sizeOf(rootContext).height - MediaQuery.paddingOf(rootContext).top - 16,
+      maxHeight: MediaQuery.sizeOf(rootContext).height - MediaQuery.viewPaddingOf(rootContext).top - 16,
     ),
     builder: (context) => SafeArea(top: false, bottom: false, child: dialogBuilder(context)),
   );
@@ -48,7 +48,9 @@ extension StyleContextExtensions on BuildContext {
     backgroundColor: Colors.transparent,
     useRootNavigator: true,
     builder: (context) => ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).top - 8),
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.sizeOf(context).height - MediaQuery.viewPaddingOf(context).top - 8,
+      ),
       child: SafeArea(
         top: false,
         bottom: false,
@@ -72,7 +74,7 @@ extension StyleContextExtensions on BuildContext {
       useRootNavigator: true,
       builder: (context) => ConstrainedBox(
         constraints: BoxConstraints(
-          maxHeight: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).top - 8,
+          maxHeight: MediaQuery.sizeOf(context).height - MediaQuery.viewPaddingOf(context).top - 8,
         ),
         child: SafeArea(
           top: false,
