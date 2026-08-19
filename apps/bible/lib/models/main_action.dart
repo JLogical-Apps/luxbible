@@ -9,8 +9,8 @@ import 'package:bible/ui/pages/bible_plan_search_page.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:bible/ui/pages/dictionary_page.dart';
 import 'package:bible/ui/pages/lexicon_page.dart';
+import 'package:bible/ui/pages/more_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
-import 'package:bible/ui/pages/settings_page.dart';
 import 'package:bible/ui/sheets/bookmark_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -28,7 +28,7 @@ enum MainAction {
   search,
   resources,
   plans,
-  settings;
+  more;
 
   String title() => switch (this) {
     audio =>
@@ -40,7 +40,7 @@ enum MainAction {
     search => t.mainActions.search,
     resources => t.mainActions.resources,
     plans => t.mainActions.plans,
-    settings => t.mainActions.settings,
+    more => 'More',
   };
 
   String description({User? user}) => switch (this) {
@@ -51,7 +51,7 @@ enum MainAction {
     search => t.mainActions.searchDescription,
     resources => t.mainActions.resourcesDescription,
     plans => t.mainActions.plansDescription,
-    settings => t.mainActions.settingsDescription,
+    more => 'View settings, your content, and community links.',
   };
 
   Widget buildIcon(BuildContext context, {User? user}) => switch (this) {
@@ -89,10 +89,10 @@ enum MainAction {
     search => Icon(Symbols.search),
     resources => Icon(Symbols.local_library),
     plans => Icon(Symbols.calendar_month),
-    settings => Icon(Symbols.settings),
+    more => Icon(Symbols.other_admission),
   };
 
-  bool get isNavigation => [search, resources, plans, settings].contains(this);
+  bool get isNavigation => [search, resources, plans, more].contains(this);
 
   Future<void> onPressed(
     BuildContext context, {
@@ -276,8 +276,8 @@ enum MainAction {
         if (result != null) {
           onNavigateToVerseSelection(result);
         }
-      case settings:
-        final result = await context.push<VerseSelection>(SettingsPage());
+      case more:
+        final result = await context.push<VerseSelection>(MorePage());
         if (result != null) {
           onNavigateToVerseSelection(result);
         }

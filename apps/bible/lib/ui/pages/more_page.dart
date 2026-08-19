@@ -25,8 +25,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 final discordUri = Uri.parse('https://discord.gg/C4zfZDpZMB');
 
-class SettingsPage extends HookConsumerWidget {
-  const SettingsPage({super.key});
+class MorePage extends HookConsumerWidget {
+  const MorePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,7 +35,7 @@ class SettingsPage extends HookConsumerWidget {
 
     return StyledPage(
       backgroundColor: .backgroundPrimary,
-      title: t.settings.title.toText(),
+      title: 'More'.toText(),
       body: ListView(
         children: [
           StyledSection.child(
@@ -56,16 +56,6 @@ class SettingsPage extends HookConsumerWidget {
                   title: t.labels.commentaries.toText(),
                   leading: Symbols.tooltip_2.toIcon(),
                   onPressed: () => context.push(CommentariesPage()),
-                ),
-                StyledListItem.navigation(
-                  title: t.settings.pushNotifications.toText(),
-                  leading: Symbols.notifications.toIcon(),
-                  onPressed: () => context.push(PushNotificationsPage()),
-                ),
-                StyledListItem.navigation(
-                  title: t.settings.language.toText(),
-                  leading: Symbols.language.toIcon(),
-                  onPressed: () => context.push(LanguagePage()),
                 ),
               ],
             ),
@@ -178,6 +168,23 @@ class SettingsPage extends HookConsumerWidget {
                   title: t.labels.bookmarks.toText(),
                   leading: Symbols.bookmark.toIcon(),
                   onPressed: () => context.push(BookmarksPage()),
+                ),
+              ],
+            ),
+          ),
+          StyledSection.child(
+            title: 'Settings'.toText(),
+            child: StyledCard(
+              children: [
+                StyledListItem.navigation(
+                  title: t.settings.pushNotifications.toText(),
+                  leading: Symbols.notifications.toIcon(),
+                  onPressed: () => context.push(PushNotificationsPage()),
+                ),
+                StyledListItem.externalNavigation(
+                  title: t.settings.language.toText(),
+                  leading: Symbols.language.toIcon(),
+                  onPressed: () => context.push(LanguagePage()),
                 ),
               ],
             ),

@@ -857,9 +857,9 @@
     "leaveRating": "Leave a Rating",
     "joinDiscord": "Join Discord",
     "restartGetStarted": "Restart Get Started",
-    "restartGetStartedDescription": "Show the Get Started checklist again",
+    "restartGetStartedDescription": "Show the Get Started checklist again.",
     "resetTutorials": "Reset Tutorials",
-    "resetTutorialsDescription": "Show helpful hints throughout the app again",
+    "resetTutorialsDescription": "Show helpful hints throughout the app again.",
     "tutorialsReset": "Tutorials have been reset."
   }
 }

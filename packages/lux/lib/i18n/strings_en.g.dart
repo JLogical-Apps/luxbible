@@ -2356,14 +2356,14 @@ class Translations$settings$en {
 	/// en: 'Restart Get Started'
 	String get restartGetStarted => 'Restart Get Started';
 
-	/// en: 'Show the Get Started checklist again'
-	String get restartGetStartedDescription => 'Show the Get Started checklist again';
+	/// en: 'Show the Get Started checklist again.'
+	String get restartGetStartedDescription => 'Show the Get Started checklist again.';
 
 	/// en: 'Reset Tutorials'
 	String get resetTutorials => 'Reset Tutorials';
 
-	/// en: 'Show helpful hints throughout the app again'
-	String get resetTutorialsDescription => 'Show helpful hints throughout the app again';
+	/// en: 'Show helpful hints throughout the app again.'
+	String get resetTutorialsDescription => 'Show helpful hints throughout the app again.';
 
 	/// en: 'Tutorials have been reset.'
 	String get tutorialsReset => 'Tutorials have been reset.';
@@ -5448,9 +5448,9 @@ extension on Translations {
 			'settings.leaveRating' => 'Leave a Rating',
 			'settings.joinDiscord' => 'Join Discord',
 			'settings.restartGetStarted' => 'Restart Get Started',
-			'settings.restartGetStartedDescription' => 'Show the Get Started checklist again',
+			'settings.restartGetStartedDescription' => 'Show the Get Started checklist again.',
 			'settings.resetTutorials' => 'Reset Tutorials',
-			'settings.resetTutorialsDescription' => 'Show helpful hints throughout the app again',
+			'settings.resetTutorialsDescription' => 'Show helpful hints throughout the app again.',
 			'settings.tutorialsReset' => 'Tutorials have been reset.',
 			_ => null,
 		};
