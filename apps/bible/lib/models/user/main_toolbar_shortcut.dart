@@ -72,6 +72,7 @@ enum MainToolbarShortcut {
     required ChapterReference reference,
     required Function(VerseSelection) onNavigateToVerseSelection,
     required Function(StudyPanel) onAddStudyPanel,
+    required Function(String bookmarkId) onBookmarkAdded,
   }) =>
       toStudyAction()?.onPressed(
         context,
@@ -86,6 +87,7 @@ enum MainToolbarShortcut {
         reference: reference,
         onNavigateToVerseSelection: onNavigateToVerseSelection,
         onAddStudyPanel: onAddStudyPanel,
+        onBookmarkAdded: onBookmarkAdded,
       ) ??
       switch (this) {
         study => StudySheet.show(

@@ -22,7 +22,6 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lux/lux.dart';
 import 'package:utils_core/utils_core.dart';
-import 'package:uuid/uuid.dart';
 
 part 'user.freezed.dart';
 part 'user.g.dart';
@@ -165,10 +164,8 @@ sealed class User with _$User {
   OnboardingStep? get currentOnboardingStep =>
       currentOnboardingStepIndex?.mapIfNonNull((stepIndex) => OnboardingStep.values[stepIndex]);
 
-  User withNewBookmark(Bookmark bookmark) {
-    final newId = Uuid().v4();
-    return copyWith(bookmarkById: {...bookmarkById, newId: bookmark}, currentBookmarkId: newId);
-  }
+  User withNewBookmark(String bookmarkId, Bookmark bookmark) =>
+      copyWith(bookmarkById: {...bookmarkById, bookmarkId: bookmark}, currentBookmarkId: bookmarkId);
 
   User withEditedBookmark({required String bookmarkId, required Bookmark bookmark}) =>
       copyWith(bookmarkById: {...bookmarkById}..[bookmarkId] = bookmark);

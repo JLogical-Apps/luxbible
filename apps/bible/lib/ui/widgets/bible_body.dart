@@ -6,8 +6,8 @@ import 'package:bible/providers/audio_bible_player_provider.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/hooks/audio_bible_passage_sync.dart';
-import 'package:bible/ui/pages/reference_search_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
+import 'package:bible/ui/pages/reference_search_page.dart';
 import 'package:bible/ui/widgets/audio_bible_panel.dart';
 import 'package:bible/ui/widgets/linked_study_panel.dart';
 import 'package:bible/ui/widgets/main_toolbar.dart';
@@ -244,6 +244,9 @@ class BibleBody extends HookConsumerWidget {
       }
     }
 
+    void onBookmarkAdded(String bookmarkId) =>
+        navigationHistoryState.value = navigationHistoryState.value.withBookmark(bookmarkId);
+
     Widget studyPanelIndicator() => Center(
       child: Container(
         padding: .all(4),
@@ -337,12 +340,14 @@ class BibleBody extends HookConsumerWidget {
                   reference: currentChapterReference,
                   onNavigateToVerseSelection: navigateToVerseSelection,
                   onAddStudyPanel: addStudyPanel,
+                  onBookmarkAdded: onBookmarkAdded,
                 ),
                 onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
                   context,
                   reference: currentChapterReference,
                   onNavigateToVerseSelection: navigateToVerseSelection,
                   onAddStudyPanel: addStudyPanel,
+                  onBookmarkAdded: onBookmarkAdded,
                 ),
                 onMorePressed: () => context.showStyledSheet(
                   (_) => StyledSheet(
@@ -367,6 +372,7 @@ class BibleBody extends HookConsumerWidget {
                                 reference: currentChapterReference,
                                 onNavigateToVerseSelection: navigateToVerseSelection,
                                 onAddStudyPanel: addStudyPanel,
+                                onBookmarkAdded: onBookmarkAdded,
                               );
                             },
                           ),
@@ -803,6 +809,7 @@ class NavigationHistory {
   NavigationHistory withUndo() => copyWith(undo: [...undo]..removeLast(), current: undo.last, redo: [current, ...redo]);
   NavigationHistory withRedo() => copyWith(undo: [...undo, current], current: redo.first, redo: [...redo]..removeAt(0));
   NavigationHistory withScrollPosition(ChapterPosition position) => withCurrent(current.copyWith(position: position));
+  NavigationHistory withBookmark(String bookmarkId) => withCurrent(current.copyWith(bookmarkId: bookmarkId));
 
   NavigationHistory copyWith({NavigationState? current, List<NavigationState>? undo, List<NavigationState>? redo}) =>
       NavigationHistory(current: current ?? this.current, undo: undo ?? this.undo, redo: redo ?? this.redo);

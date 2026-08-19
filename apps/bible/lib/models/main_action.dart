@@ -20,6 +20,7 @@ import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
+import 'package:uuid/uuid.dart';
 
 enum MainAction {
   audio,
@@ -99,6 +100,7 @@ enum MainAction {
     required ChapterReference reference,
     required Function(VerseSelection) onNavigateToVerseSelection,
     required Function(StudyPanel) onAddStudyPanel,
+    required Function(String bookmarkId) onBookmarkAdded,
   }) async {
     final user = ref.read(userProvider);
     switch (this) {
@@ -113,7 +115,9 @@ enum MainAction {
         if (bookmarkId == null || bookmark == null) {
           final newBookmark = await BookmarkSheet.show(context, reference: reference);
           if (newBookmark != null) {
-            ref.updateUser((user) => user.withNewBookmark(newBookmark));
+            final bookmarkId = Uuid().v4();
+            ref.updateUser((user) => user.withNewBookmark(bookmarkId, newBookmark));
+            onBookmarkAdded(bookmarkId);
           }
         } else {
           await context.showStyledSheet(
