@@ -19,6 +19,7 @@ class StyledDock extends HookWidget {
   final bool forceHeight;
 
   final Object? activeScrollKey;
+  final bool? forceBottomShadow;
 
   final ScrollController? controller;
 
@@ -30,6 +31,7 @@ class StyledDock extends HookWidget {
     this.shrinkWrap = true,
     this.forceHeight = false,
     this.activeScrollKey,
+    this.forceBottomShadow,
     this.controller,
   });
 
@@ -70,8 +72,9 @@ class StyledDock extends HookWidget {
     final metrics = activeScrollKey == null ? metricsState.value : metricsByKeyState.value[activeScrollKey];
 
     final showBottomShadow =
-        aboveButtons != null ||
-        (bottomChildren.isNotEmpty && (metrics == null ? false : metrics.pixels + 10 < metrics.maxScrollExtent));
+        forceBottomShadow ??
+        (aboveButtons != null ||
+            (bottomChildren.isNotEmpty && (metrics == null ? false : metrics.pixels + 10 < metrics.maxScrollExtent)));
 
     return LayoutBuilder(
       builder: (context, constraints) => NotificationListener<KeyedScrollNotification>(

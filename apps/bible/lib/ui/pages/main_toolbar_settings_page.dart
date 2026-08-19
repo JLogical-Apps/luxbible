@@ -31,7 +31,7 @@ class MainToolbarSettingsPage extends ConsumerWidget {
               padding: .symmetric(vertical: 16),
               child: MainToolbar(
                 mainToolbar: mainToolbar,
-                chapterReference: ChapterReference(book: BookType.genesis, chapterNum: 1),
+                chapterReference: .values.first,
                 translation: user.translation,
                 user: user,
                 onPressed: () {},

@@ -37,6 +37,9 @@ class StyledSheet<T> extends HookConsumerWidget {
   final bool forceHeight;
   final ScrollController? controller;
 
+  final bool? forceBottomShadow;
+  final Object? activeScrollKey;
+
   StyledSheet({
     super.key,
     this.title,
@@ -54,6 +57,8 @@ class StyledSheet<T> extends HookConsumerWidget {
     this.shrinkWrap = true,
     this.forceHeight = false,
     this.controller,
+    this.forceBottomShadow,
+    this.activeScrollKey,
   }) : childrenBuilder = ((context, ref) => children),
        childrenWrapper = childrenWrapper ?? ((context, child) => child);
 
@@ -74,6 +79,8 @@ class StyledSheet<T> extends HookConsumerWidget {
     this.shrinkWrap = true,
     this.forceHeight = false,
     this.controller,
+    this.forceBottomShadow,
+    this.activeScrollKey,
   }) : childrenBuilder = ((context, ref) => [child]),
        childrenWrapper = childrenWrapper ?? ((context, child) => child);
 
@@ -94,6 +101,8 @@ class StyledSheet<T> extends HookConsumerWidget {
     this.shrinkWrap = true,
     this.forceHeight = false,
     this.controller,
+    this.forceBottomShadow,
+    this.activeScrollKey,
   }) : childrenWrapper = childrenWrapper ?? ((context, child) => child);
 
   @override
@@ -208,6 +217,8 @@ class StyledSheet<T> extends HookConsumerWidget {
                   children: children,
                   shrinkWrap: shrinkWrap,
                   forceHeight: forceHeight,
+                  activeScrollKey: activeScrollKey,
+                  forceBottomShadow: forceBottomShadow,
                 ),
               ),
             ),

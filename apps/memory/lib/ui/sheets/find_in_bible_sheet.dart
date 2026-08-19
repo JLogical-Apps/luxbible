@@ -3,58 +3,80 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lux/lux.dart';
 import 'package:memory/providers/root_ref.dart';
 import 'package:style/style.dart';
+import 'package:utils_core/utils_core.dart';
 
 class FindInBibleSheet {
   static Future<VerseSelection?> show(BuildContext context) => context.showStyledSheet<VerseSelection>((context) {
-    final chapterReferenceState = useState<ChapterReference?>(null);
+    final chapterPositionState = useState<ChapterPosition?>(null);
     final selection = usePassageSelection(ref.read(luxReaderConfigurationProvider).selection);
 
     void deselectChapter() {
       selection.clear();
-      chapterReferenceState.value = null;
+      chapterPositionState.value = null;
     }
 
-    void selectChapter(ChapterPosition position, bool shouldSelectVerse) {
+    void selectReference(ChapterPosition position, bool shouldSelectVerse) {
       FocusManager.instance.primaryFocus?.unfocus();
       selection.clear();
-      chapterReferenceState.value = position.reference;
+      if (position.getReference() case final reference?) selection.selectReferences([reference]);
+      chapterPositionState.value = position;
     }
 
     final selectorController = useChapterReferenceSelectorController();
     useOnFocusNodeFocused(selectorController.bookFocusNode, deselectChapter);
     useOnFocusNodeFocused(selectorController.chapterFocusNode, deselectChapter);
+    useOnFocusNodeFocused(selectorController.verseFocusNode, deselectChapter);
 
     return StyledSheet.builder(
       title: 'Find in Bible'.toText(),
       aboveDivider: ChapterReferenceSelectorHeading(
         controller: selectorController,
-        onSelect: selectChapter,
+        onSelect: selectReference,
         showShadow: false,
+        forceVerseNum: true,
       ),
-      controller: selectorController.scrollController,
-      shrinkWrap: false,
+      forceHeight: true,
       childrenBuilder: (context, ref) {
-        final chapterReference = chapterReferenceState.value;
-        if (chapterReference == null) {
-          return [ChapterReferenceSelectorBody(controller: selectorController, onSelect: selectChapter)];
+        final chapterPosition = chapterPositionState.value;
+        if (chapterPosition == null) {
+          return [
+            Expanded(
+              child: SingleChildScrollView(
+                child: ChapterReferenceSelectorBody(
+                  controller: selectorController,
+                  onSelect: selectReference,
+                  forceVerseNum: true,
+                ),
+              ),
+            ),
+          ];
         }
 
+        final chapterReference = chapterPosition.reference;
         final chapter = ref.watch(chapterProvider(translation: .bsb, chapterReference: chapterReference)).value;
+
         return [
-          StyledLoading(
-            child: chapter == null
-                ? null
-                : ChapterBuilder(
-                    chapterReference: chapterReference,
-                    chapter: chapter,
-                    shrinkWrap: true,
-                    selection: selection,
-                    padding: .all(16),
-                  ),
+          Expanded(
+            child: StyledLoading(
+              child: chapter == null
+                  ? null
+                  : ChapterBuilder(
+                      key: ValueKey(chapterPosition),
+                      chapterReference: chapterReference,
+                      chapter: chapter,
+                      shrinkWrap: false,
+                      selection: selection,
+                      padding: .all(16),
+                      scrollToSelection: chapterPosition.getReference()?.mapIfNonNull(
+                        (reference) => .reference(reference),
+                      ),
+                    ),
+            ),
           ),
         ];
       },
-      buttonsBuilder: chapterReferenceState.value == null
+      forceBottomShadow: true,
+      buttonsBuilder: chapterPositionState.value == null
           ? null
           : (context) => [
               StyledRectButton.primary(
