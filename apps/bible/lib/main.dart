@@ -17,6 +17,7 @@ import 'package:bible/providers/bible_plan_local_notification_schedules_provider
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/dictionary_provider.dart';
+import 'package:bible/providers/language_provider.dart';
 import 'package:bible/providers/local_notification_scheduler_provider.dart';
 import 'package:bible/providers/local_notification_schedules_provider.dart';
 import 'package:bible/providers/root_ref.dart';
@@ -115,8 +116,6 @@ Future<void> main() async {
         observers: [ProviderErrorObserver()],
       );
 
-      LocaleSettings.setLocaleSync(ref.read(userProvider).language.appLocale);
-
       eagerlyLoad();
 
       runApp(UncontrolledProviderScope(container: ref, child: BibleApp()));
@@ -140,12 +139,10 @@ class BibleApp extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final deviceLanguageState = useState(Language.device);
     useOnLocalesChanged((locales) {
       final language = Language.fromLocale(locales?.firstOrNull ?? .new('en'));
       LocaleSettings.setLocaleSync(language.appLocale);
-      deviceLanguageState.value = language;
-      ref.read(localNotificationServiceProvider).synchronize(ref.read(localNotificationSchedulesProvider));
+      ref.invalidate(languageProvider);
     });
 
     useOnAppLifecycleStateChange((_, current) async {
@@ -157,7 +154,6 @@ class BibleApp extends HookConsumerWidget {
     });
 
     final user = ref.watch(userProvider);
-    final language = user.languageOverride ?? deviceLanguageState.value;
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: MediaQuery.withClampedTextScaling(
@@ -165,7 +161,7 @@ class BibleApp extends HookConsumerWidget {
         maxScaleFactor: 1.8,
         child: MaterialApp(
           title: 'Lux Bible',
-          locale: language.appLocale.flutterLocale,
+          locale: Language.device.appLocale.flutterLocale,
           supportedLocales: AppLocaleUtils.instance.supportedLocales,
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
           themeMode: user.theme,

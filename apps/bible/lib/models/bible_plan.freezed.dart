@@ -1150,7 +1150,7 @@ BiblePlanReminder _$BiblePlanReminderFromJson(
           return DailyBiblePlanReminder.fromJson(
             json
           );
-
+        
           default:
             throw CheckedFromJsonException(
   json,
@@ -1159,7 +1159,7 @@ BiblePlanReminder _$BiblePlanReminderFromJson(
   'Invalid union type "${json['runtimeType']}"!'
 );
         }
-
+      
 }
 
 /// @nodoc

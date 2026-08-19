@@ -12,8 +12,8 @@ part 'highlight_style.g.dart';
 
 @freezed
 sealed class HighlightStyle with _$HighlightStyle {
-  static List<(HighlightStyle, String label)> defaultsFor(Language language) {
-    final translations = language.appLocale.translations.highlightStyles;
+  static List<(HighlightStyle, String label)> get defaults {
+    final translations = Language.device.appLocale.translations.highlightStyles;
     return [
       (HighlightStyle(color: .red, type: .highlight), translations.red),
       (HighlightStyle(color: .orange, type: .highlight), translations.orange),

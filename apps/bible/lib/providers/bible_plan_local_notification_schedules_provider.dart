@@ -1,6 +1,7 @@
 import 'package:bible/models/bible_plan.dart';
 import 'package:bible/models/hydrated_bible_plan_progress.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
+import 'package:bible/providers/language_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/local_notification_service.dart';
 import 'package:bible/utils/extensions/date_time_extensions.dart';
@@ -17,7 +18,8 @@ const biblePlanReminderNotificationChannelId = 'app.luxbible.app.channel.bible_p
 List<LocalNotificationSchedule> biblePlanLocalNotificationSchedules(Ref ref) {
   final plans = ref.watch(biblePlansProvider);
   final progressByType = ref.watch(userProvider.select((user) => user.planProgressByType));
-  ref.watch(userProvider.select((user) => user.languageOverride));
+  ref.watch(languageProvider);
+
   return progressByType
       .mapToIterable((type, progress) => HydratedBiblePlanProgress(type: type, plan: plans[type]!, progress: progress))
       .map(

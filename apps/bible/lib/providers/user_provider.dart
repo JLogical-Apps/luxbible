@@ -39,7 +39,7 @@ class UserNotifier extends _$UserNotifier {
   }
 
   User get userOrDefault =>
-      userOrNull ?? User(translation: defaultBibleTranslations(Language.device).first, completedOnboardingSteps: []);
+      userOrNull ?? User(translation: getDefaultBibleTranslations(Language.device).first, completedOnboardingSteps: []);
 
   User update(User Function(User) updater) {
     state = updater(state);

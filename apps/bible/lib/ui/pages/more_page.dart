@@ -5,7 +5,6 @@ import 'package:bible/ui/pages/bibles_page.dart';
 import 'package:bible/ui/pages/bookmarks_page.dart';
 import 'package:bible/ui/pages/commentaries_page.dart';
 import 'package:bible/ui/pages/highlight_styles_page.dart';
-import 'package:bible/ui/pages/language_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/pages/notebooks_page.dart';
 import 'package:bible/ui/pages/push_notifications_page.dart';
@@ -184,7 +183,7 @@ class MorePage extends HookConsumerWidget {
                 StyledListItem.externalNavigation(
                   title: t.settings.language.toText(),
                   leading: Symbols.language.toIcon(),
-                  onPressed: () => context.push(LanguagePage()),
+                  onPressed: () {},
                 ),
               ],
             ),
@@ -193,19 +192,17 @@ class MorePage extends HookConsumerWidget {
             title: t.labels.community.toText(),
             child: StyledCard(
               children: [
-                StyledListItem(
+                StyledListItem.externalNavigation(
                   title: t.labels.discord.toText(),
                   subtitle: t.settings.discussionAndAnnouncements.toText(),
                   leading: FaIcon(FontAwesomeIcons.discord),
                   onPressed: () => launchUrl(discordUri),
-                  trailing: Symbols.arrow_outward.toIcon(),
                 ),
-                StyledListItem(
+                StyledListItem.externalNavigation(
                   title: t.labels.instagram.toText(),
                   subtitle: t.settings.tipsAndUpdates.toText(),
                   leading: FaIcon(FontAwesomeIcons.instagram),
                   onPressed: () => launchUrl(Uri.parse('https://www.instagram.com/luxbible.app/')),
-                  trailing: Symbols.arrow_outward.toIcon(),
                 ),
               ],
             ),

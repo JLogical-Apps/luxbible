@@ -59,7 +59,7 @@ class BiblesPage extends HookConsumerWidget {
                 title: t.bibleDetails.addRemoveBibles.toText(),
                 children: BibleTranslation.values
                     .groupListsBy((translation) => translation.bibleLanguage)
-                    .sortedBy((language, _) => language.appLanguage == user.language ? 0 : 1)
+                    .sortedBy((language, _) => language.appLanguage == Language.device ? 0 : 1)
                     .mapToIterable(
                       (language, translations) => StyledStickyHeader(
                         title: language.title().toText(),

@@ -50,4 +50,4 @@ final class LocalNotificationSchedulerProvider
 }
 
 String _$localNotificationSchedulerHash() =>
-    r'0615ce46dc39866d5fe7ae7b88c040b54250a97c';
+    r'5a7e2c36675df164501f151d20b2b41e729e7275';

@@ -64,16 +64,12 @@ sealed class User with _$User {
     @Default({}) Map<BiblePlanType, BiblePlanProgress> planProgressByType,
     @Default({}) Set<BiblePlanType> completedPlans,
     @Default(AudioBibleConfiguration()) AudioBibleConfiguration audio,
-    Language? languageOverride,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  Language get language => languageOverride ?? Language.device;
-
-  List<BibleTranslation> get biblesOrDefault => bibles ?? defaultBibleTranslations(language);
-  List<(HighlightStyle, String label)> get highlightStyles =>
-      highlightStyleOverrides ?? HighlightStyle.defaultsFor(language);
+  List<BibleTranslation> get biblesOrDefault => bibles ?? getDefaultBibleTranslations(.device);
+  List<(HighlightStyle, String label)> get highlightStyles => highlightStyleOverrides ?? HighlightStyle.defaults;
 
   BibleTranslation getTranslationFor(BookType book) => translation.effectiveFor(
     book,
@@ -358,8 +354,6 @@ sealed class User with _$User {
     oldTestamentTranslation: translation.testament == .oldTestament ? translation : oldTestamentTranslation,
     newTestamentTranslation: translation.testament == .newTestament ? translation : newTestamentTranslation,
   );
-
-  User withLanguage(Language? language) => copyWith(languageOverride: language);
 
   List<HydratedBiblePlanProgress> getHydratedPlanProgresses(Map<BiblePlanType, BiblePlan> planByType) =>
       planProgressByType

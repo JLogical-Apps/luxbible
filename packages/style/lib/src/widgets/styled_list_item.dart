@@ -50,7 +50,7 @@ class StyledListItem extends StatelessWidget {
     this.size = ComponentSize.md,
     this.isEnabled = true,
     this.showDividerOverride,
-  }) : trailing = Icon(Symbols.exit_to_app);
+  }) : trailing = Icon(Symbols.arrow_outward);
 
   StyledListItem.radio({
     super.key,

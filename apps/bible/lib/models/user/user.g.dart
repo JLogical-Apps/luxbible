@@ -158,10 +158,6 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   audio: json['audio'] == null
       ? const AudioBibleConfiguration()
       : AudioBibleConfiguration.fromJson(json['audio'] as Map<String, dynamic>),
-  languageOverride: $enumDecodeNullable(
-    _$LanguageEnumMap,
-    json['languageOverride'],
-  ),
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -209,7 +205,6 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
       .map((e) => _$BiblePlanTypeEnumMap[e]!)
       .toList(),
   'audio': instance.audio.toJson(),
-  'languageOverride': _$LanguageEnumMap[instance.languageOverride],
 };
 
 const _$BibleTranslationEnumMap = {
@@ -285,10 +280,4 @@ const _$BiblePlanTypeEnumMap = {
   BiblePlanType.esv_chronicles_and_prophets: 'esv_chronicles_and_prophets',
   BiblePlanType.esv_psalms_and_wisdom_literature:
       'esv_psalms_and_wisdom_literature',
-};
-
-const _$LanguageEnumMap = {
-  Language.english: 'english',
-  Language.dutch: 'dutch',
-  Language.russian: 'russian',
 };

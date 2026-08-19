@@ -37,7 +37,7 @@ enum Language {
   };
 }
 
-List<BibleTranslation> defaultBibleTranslations(Language language) => switch (language) {
+List<BibleTranslation> getDefaultBibleTranslations(Language language) => switch (language) {
   .english => [
     .bsb,
     ...BibleTranslation.values.where(

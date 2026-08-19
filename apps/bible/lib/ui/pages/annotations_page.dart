@@ -6,6 +6,7 @@ import 'package:bible/ui/pages/notebook_icon.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/widgets/highlight_style_icon.dart';
 import 'package:bible/ui/widgets/search_location_button.dart';
+import 'package:bible/utils/extensions/date_time_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,6 @@ import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class AnnotationsPage extends HookConsumerWidget {
   final (String?,)? initialNotebookId;
@@ -297,9 +297,7 @@ class AnnotationsPage extends HookConsumerWidget {
                                     ),
                                 ],
                               ),
-                              thirdLine: t.annotationUi
-                                  .annotatedTime(time: timeago.format(annotation.createdAt, locale: user.language.code))
-                                  .toText(),
+                              thirdLine: t.annotationUi.annotatedTime(time: annotation.createdAt.formatAgo()).toText(),
                               trailing: StyledCircleButton.md(
                                 child: Symbols.more_vert.toIcon(),
                                 onPressed: () => context.showStyledSheet(

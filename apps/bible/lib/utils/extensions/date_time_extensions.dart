@@ -1,4 +1,6 @@
+import 'package:bible/models/user/language.dart';
 import 'package:lux/lux.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:timezone/timezone.dart' as timezone;
 
 extension DateTimeExtensions on DateTime {
@@ -11,6 +13,8 @@ extension DateTimeExtensions on DateTime {
   }
 
   timezone.TZDateTime inLocation(timezone.Location location) => timezone.TZDateTime.from(this, location);
+
+  String formatAgo() => timeago.format(this, locale: Language.device.code);
 }
 
 extension TZDateTimeExtensions on timezone.TZDateTime {
