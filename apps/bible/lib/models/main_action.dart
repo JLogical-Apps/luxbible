@@ -1,4 +1,5 @@
 import 'package:bible/models/bible_plan.dart';
+import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/audio_bible_player_provider.dart';
@@ -12,6 +13,7 @@ import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/more_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/sheets/bookmark_sheet.dart';
+import 'package:bible/ui/sheets/study_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +27,7 @@ import 'package:uuid/uuid.dart';
 enum MainAction {
   audio,
   bookmark,
+  study,
   studyPanel,
   search,
   resources,
@@ -37,6 +40,7 @@ enum MainAction {
           ? t.mainActions.pauseAudio
           : t.mainActions.playAudio,
     bookmark => t.mainActions.bookmark,
+    study => t.mainActions.study,
     studyPanel => t.mainActions.addStudyPanel,
     search => t.mainActions.search,
     resources => t.mainActions.resources,
@@ -48,6 +52,7 @@ enum MainAction {
     audio => t.mainActions.audioDescription,
     bookmark =>
       user?.currentBookmark == null ? t.mainActions.bookmarkDescription : t.mainActions.manageBookmarkDescription,
+    study => t.mainActions.studyDescription,
     studyPanel => t.mainActions.studyPanelDescription,
     search => t.mainActions.searchDescription,
     resources => t.mainActions.resourcesDescription,
@@ -86,6 +91,7 @@ enum MainAction {
           ? Icon(Symbols.bookmark, fill: 0)
           : Icon(Symbols.bookmark, color: bookmark.color.toHue(context.colors).medium);
     }(),
+    study => Icon(Symbols.school),
     studyPanel => Icon(Symbols.add_notes),
     search => Icon(Symbols.search),
     resources => Icon(Symbols.local_library),
@@ -93,7 +99,7 @@ enum MainAction {
     more => Icon(Symbols.other_admission),
   };
 
-  bool get isNavigation => [search, resources, plans, more].contains(this);
+  bool get isNavigation => [study, search, resources, plans, more].contains(this);
 
   Future<void> onPressed(
     BuildContext context, {
@@ -169,6 +175,15 @@ enum MainAction {
             ),
           );
         }
+      case study:
+        StudySheet.show(
+          context,
+          verseSelection: reference.toVerseSelection(),
+          regionFormat: reference.format(),
+          regionType: RegionType.chapter,
+          onNavigateToVerseSelection: onNavigateToVerseSelection,
+          onAddStudyPanel: onAddStudyPanel,
+        );
       case studyPanel:
         final studyPanelType = await context.showStyledSheet<StudyPanelType>(
           (context) => StyledSheet(
