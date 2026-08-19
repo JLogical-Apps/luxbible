@@ -358,7 +358,7 @@ class BibleBody extends HookConsumerWidget {
                         context.push(MainToolbarSettingsPage());
                       },
                     ),
-                    children: MainAction.values
+                    children: MainAction.topLevelActions
                         .map(
                           (action) => StyledListItem(
                             title: action.title().toText(),

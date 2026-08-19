@@ -1,5 +1,5 @@
 import 'package:bible/models/bible_plan.dart';
-import 'package:bible/models/reference/region_type.dart';
+import 'package:bible/models/study_action.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/audio_bible_player_provider.dart';
@@ -13,7 +13,6 @@ import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/more_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/sheets/bookmark_sheet.dart';
-import 'package:bible/ui/sheets/study_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
@@ -25,14 +24,20 @@ import 'package:style/style.dart';
 import 'package:uuid/uuid.dart';
 
 enum MainAction {
-  audio,
-  bookmark,
-  study,
-  studyPanel,
-  search,
-  resources,
-  plans,
-  more;
+  audio(true),
+  bookmark(true),
+  study(true),
+  studyPanel(false),
+  search(false),
+  resources(false),
+  plans(true),
+  more(true);
+
+  final bool isTopLevel;
+
+  const MainAction(this.isTopLevel);
+
+  static List<MainAction> get topLevelActions => MainAction.values.where((action) => action.isTopLevel).toList();
 
   String title() => switch (this) {
     audio =>
@@ -176,13 +181,58 @@ enum MainAction {
           );
         }
       case study:
-        StudySheet.show(
-          context,
-          verseSelection: reference.toVerseSelection(),
-          regionFormat: reference.format(),
-          regionType: RegionType.chapter,
-          onNavigateToVerseSelection: onNavigateToVerseSelection,
-          onAddStudyPanel: onAddStudyPanel,
+        context.showStyledSheet(
+          (_) => StyledSheet(
+            title: t.labels.study.toText(),
+            subtitle: reference.format().toText(),
+            children: [
+              StyledList(
+                children: [studyPanel, search, resources]
+                    .map(
+                      (action) => StyledListItem.navigation(
+                        title: action.title().toText(),
+                        subtitle: action.description().toText(),
+                        leading: action.buildIcon(context),
+                        onPressed: () async {
+                          context.pop();
+                          await action.onPressed(
+                            context,
+                            reference: reference,
+                            onNavigateToVerseSelection: onNavigateToVerseSelection,
+                            onAddStudyPanel: onAddStudyPanel,
+                            onBookmarkAdded: onBookmarkAdded,
+                          );
+                        },
+                      ),
+                    )
+                    .toList(),
+              ),
+              StyledSection(
+                title: 'Quick Study'.toText(),
+                padding: .only(top: 24),
+                children: StudyAction.values
+                    .map(
+                      (action) => StyledListItem.navigation(
+                        title: action.title().toText(),
+                        subtitle: action.description(regionFormat: reference.format(), regionType: .chapter).toText(),
+                        leading: action.icon.toIcon(),
+                        onPressed: () {
+                          context.pop();
+                          action.onPressed(
+                            context,
+                            regionFormat: reference.format(),
+                            verseSelection: reference.toVerseSelection(),
+                            onNavigateToVerseSelection: onNavigateToVerseSelection,
+                            onAddStudyPanel: onAddStudyPanel,
+                            user: ref.read(userProvider),
+                          );
+                        },
+                      ),
+                    )
+                    .toList(),
+              ),
+            ],
+          ),
         );
       case studyPanel:
         final studyPanelType = await context.showStyledSheet<StudyPanelType>(
