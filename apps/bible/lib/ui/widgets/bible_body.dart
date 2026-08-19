@@ -48,7 +48,7 @@ class BibleBody extends HookConsumerWidget {
     final currentPage = (pageController.pageOrNull ?? initialPosition.reference.bibleChapterIndex).round();
     final currentChapterReference = ChapterReference.fromBibleChapterIndex(currentPage);
 
-    final selection = usePassageSelection(readerConfiguration.selection);
+    final selectionController = usePassageSelectionController(readerConfiguration.selection);
 
     final audioBible = ref.watch(audioBibleProvider(context: .bible));
     final audioBiblePlayer = ref.watch(audioBiblePlayerProvider(context: .bible));
@@ -70,7 +70,7 @@ class BibleBody extends HookConsumerWidget {
       ref: ref,
       context: .bible,
       audioBible: audioBible,
-      selection: selection,
+      selection: selectionController,
       passageControllers: passageControllerRegistry,
       getPassageControllerKey: (passage) => passage.references.first.toChapterReference(),
       onPassageChanged: (passage) {
@@ -177,7 +177,7 @@ class BibleBody extends HookConsumerWidget {
     void navigateToVerseSelection(VerseSelection verseSelection) async {
       final chapterReference = verseSelection.references.first.toChapterReference();
       hardNavigateTo(ChapterPosition(reference: chapterReference));
-      selection.selectReferences(verseSelection.references);
+      selectionController.selectReferences(verseSelection.references);
       await scrollVerseSelectionIntoView(verseSelection);
     }
 
@@ -203,7 +203,7 @@ class BibleBody extends HookConsumerWidget {
     });
 
     final showBottomBar =
-        (isScrollingDownState.value || user.mainToolbar.pinToBottom || isAtBottom) && !selection.hasSelection;
+        (isScrollingDownState.value || user.mainToolbar.pinToBottom || isAtBottom) && !selectionController.hasSelection;
 
     useOnStickyScrollDirectionChanged(
       currentScrollController,
@@ -228,7 +228,7 @@ class BibleBody extends HookConsumerWidget {
     );
 
     void addStudyPanel(StudyPanel studyPanel) {
-      final verseSelection = selection.verseSelection;
+      final verseSelection = selectionController.verseSelection;
       if (user.studyPanels.contains(studyPanel)) {
         studyPanelsPageController.animateToPage(
           user.studyPanels.indexOf(studyPanel) + onboardingOffset,
@@ -238,7 +238,7 @@ class BibleBody extends HookConsumerWidget {
       } else {
         ref.updateUser((user) => user.withStudyPanel(studyPanel));
       }
-      selection.clear();
+      selectionController.clear();
       if (verseSelection != null) {
         scrollVerseSelectionIntoView(verseSelection);
       }
@@ -391,7 +391,7 @@ class BibleBody extends HookConsumerWidget {
           child: ColoredBox(
             color: context.colors.surfacePrimary,
             child: AnimatedGrow(
-              child: selection.hasSelection
+              child: selectionController.hasSelection
                   ? Builder(
                       builder: (context) => Container(
                         decoration: BoxDecoration(
@@ -400,7 +400,7 @@ class BibleBody extends HookConsumerWidget {
                         ),
                         padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
                         child: SelectionToolbar(
-                          selection: selection,
+                          selectionController: selectionController,
                           onNavigateToVerseSelection: navigateToVerseSelection,
                           onAddStudyPanel: addStudyPanel,
                         ),
@@ -429,7 +429,7 @@ class BibleBody extends HookConsumerWidget {
         },
         onPageChanged: (reference) {
           isScrollingDownState.value = true;
-          selection.clear();
+          selectionController.clear();
         },
         itemBuilder: (context, chapterReference, chapter, passageController) => SafeArea(
           left: true,
@@ -469,7 +469,7 @@ class BibleBody extends HookConsumerWidget {
                     ),
                     chapterReference: chapterReference,
                     chapter: chapter,
-                    selection: selection,
+                    selection: selectionController,
                     onNavigateToVerseSelection: navigateToVerseSelection,
                     onReferencePressed: audioBibleSync.onReferencePressed,
                     removeScrollbarPadding: isSideLayout && panelCount > 0,
@@ -557,7 +557,7 @@ class BibleBody extends HookConsumerWidget {
             final isResizingState = useState(false);
 
             final visibleVerseSelectionState = useState(VerseSelection.empty());
-            final visibleVerseSelection = selection.verseSelection ?? visibleVerseSelectionState.value;
+            final visibleVerseSelection = selectionController.verseSelection ?? visibleVerseSelectionState.value;
 
             final mainTranslation = user.getTranslationFor(currentChapterReference.book);
             final chapterValue = ref.watch(
@@ -595,8 +595,8 @@ class BibleBody extends HookConsumerWidget {
               () => studyPanelsPageController.pageOrNull?.round() ?? studyPanelsPageController.initialPage,
             );
             final onboardingState = OnboardingState(
-              isVerseSelected: selection.verseSelection != null,
-              isWordSelected: selection.textSelection != null,
+              isVerseSelected: selectionController.verseSelection != null,
+              isWordSelected: selectionController.textSelection != null,
               isMainToolbarVisible: showBottomBar,
               hasStudyPanel: studyPanels.isNotEmpty,
               hasHistory: navigationHistoryState.value.canUndo,

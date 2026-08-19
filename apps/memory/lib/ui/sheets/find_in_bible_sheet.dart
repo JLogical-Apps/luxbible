@@ -8,17 +8,17 @@ import 'package:utils_core/utils_core.dart';
 class FindInBibleSheet {
   static Future<VerseSelection?> show(BuildContext context) => context.showStyledSheet<VerseSelection>((context) {
     final chapterPositionState = useState<ChapterPosition?>(null);
-    final selection = usePassageSelection(ref.read(luxReaderConfigurationProvider).selection);
+    final selectionController = usePassageSelectionController(ref.read(luxReaderConfigurationProvider).selection);
 
     void deselectChapter() {
-      selection.clear();
+      selectionController.clear();
       chapterPositionState.value = null;
     }
 
     void selectReference(ChapterPosition position, bool shouldSelectVerse) {
       FocusManager.instance.primaryFocus?.unfocus();
-      selection.clear();
-      if (position.getReference() case final reference?) selection.selectReferences([reference]);
+      selectionController.clear();
+      if (position.getReference() case final reference?) selectionController.selectReferences([reference]);
       chapterPositionState.value = position;
     }
 
@@ -65,7 +65,7 @@ class FindInBibleSheet {
                       chapterReference: chapterReference,
                       chapter: chapter,
                       shrinkWrap: false,
-                      selection: selection,
+                      selection: selectionController,
                       padding: .all(16),
                       scrollToSelection: chapterPosition.getReference()?.mapIfNonNull(
                         (reference) => .reference(reference),
@@ -81,9 +81,13 @@ class FindInBibleSheet {
           : (context) => [
               StyledRectButton.primary(
                 label:
-                    (selection.verseSelection == null ? 'Select Verses' : 'Add ${selection.verseSelection!.format()}')
+                    (selectionController.verseSelection == null
+                            ? 'Select Verses'
+                            : 'Add ${selectionController.verseSelection!.format()}')
                         .toText(),
-                onPressed: selection.verseSelection == null ? null : () => context.pop(selection.verseSelection),
+                onPressed: selectionController.verseSelection == null
+                    ? null
+                    : () => context.pop(selectionController.verseSelection),
               ),
             ],
     );

@@ -18,6 +18,16 @@ sealed class ActivityPlan with _$ActivityPlan {
   const factory ActivityPlan.referenceSelection({required VerseSelection passage}) = ReferenceSelectionActivityPlan;
   const factory ActivityPlan.referenceType({required VerseSelection passage}) = ReferenceTypeActivityPlan;
 
+  factory ActivityPlan.fromType(ActivityPlanType type, {required VerseSelection passage}) => switch (type) {
+    .phraseRead => .phraseRead(passage: passage),
+    .readContext => .readContext(passage: passage),
+    .phraseSelection => .phraseSelection(passage: passage),
+    .wordSelection => .wordSelection(passage: passage),
+    .wordType => .wordType(passage: passage),
+    .referenceSelection => .referenceSelection(passage: passage),
+    .referenceType => .referenceType(passage: passage),
+  };
+
   factory ActivityPlan.fromJson(Map<String, dynamic> json) => _$ActivityPlanFromJson(json);
 }
 

@@ -42,7 +42,7 @@ class BiblePlanReadPage extends HookConsumerWidget {
     final progress = user.getHydratedPlanProgress(planType: planType, planByType: plans);
     final currentProgress = progress?.progress.days[dayIndex] ?? BiblePlanDayProgress.incomplete();
 
-    final selection = usePassageSelection(ref.watch(luxReaderConfigurationProvider).selection);
+    final selectionController = usePassageSelectionController(ref.watch(luxReaderConfigurationProvider).selection);
 
     final planAudio = ref.watch(audioBibleProvider(context: .plan));
     final planAudioPlayer = ref.watch(audioBiblePlayerProvider(context: .plan));
@@ -92,7 +92,7 @@ class BiblePlanReadPage extends HookConsumerWidget {
         }
       }
 
-      selection.clear();
+      selectionController.clear();
       audioBibleController.play(context: .plan, passage: passage);
     }
 
@@ -100,7 +100,7 @@ class BiblePlanReadPage extends HookConsumerWidget {
       ref: ref,
       context: .plan,
       audioBible: planAudio,
-      selection: selection,
+      selection: selectionController,
       passageControllers: passageControllerRegistry,
       getPassageControllerKey: (passage) => passage,
       onPassageChanged: (passage) {
@@ -132,7 +132,7 @@ class BiblePlanReadPage extends HookConsumerWidget {
 
     useWhenValueChanged(currentIndex, (oldIndex, currentIndex) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        selection.clear();
+        selectionController.clear();
         final session = ref.read(audioBibleProvider(context: .plan));
         if (session != null && session.passage != passages[currentIndex]) {
           await audioBibleController.pause(context: .plan);
@@ -191,7 +191,7 @@ class BiblePlanReadPage extends HookConsumerWidget {
                           bottom: false,
                           child: PassageBuilder(
                             verseSelection: passage,
-                            selection: selection,
+                            selection: selectionController,
                             emphasizedReference: audioBibleSync.getEmphasizedReferenceForPassage(passage),
                             controller: passageController,
                             onNavigateToVerseSelection: navigateToVerseSelection,
@@ -227,12 +227,15 @@ class BiblePlanReadPage extends HookConsumerWidget {
             ),
           ),
         ],
-        aboveButtons: selection.hasSelection || planAudio != null
+        aboveButtons: selectionController.hasSelection || planAudio != null
             ? Column(
                 mainAxisAlignment: .end,
                 children: [
-                  if (selection.hasSelection)
-                    SelectionToolbar(selection: selection, onNavigateToVerseSelection: navigateToVerseSelection),
+                  if (selectionController.hasSelection)
+                    SelectionToolbar(
+                      selectionController: selectionController,
+                      onNavigateToVerseSelection: navigateToVerseSelection,
+                    ),
                   if (planAudio != null)
                     AudioBiblePanelBody(context: .plan, padding: EdgeInsets.symmetric(horizontal: 16) + .only(top: 16)),
                 ],

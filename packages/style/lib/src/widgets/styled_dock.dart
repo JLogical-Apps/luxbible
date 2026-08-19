@@ -8,9 +8,11 @@ import 'package:style/src/gap.dart';
 import 'package:style/src/style_context_extensions.dart';
 import 'package:style/src/styled_shadow.dart';
 import 'package:style/src/widgets/styled_list_view.dart';
+import 'package:style/src/widgets/styled_size_and_fade.dart';
 
 class StyledDock extends HookWidget {
   final List<Widget> children;
+  final EdgeInsets childrenPadding;
 
   final Widget? aboveButtons;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
@@ -26,6 +28,7 @@ class StyledDock extends HookWidget {
   const StyledDock({
     super.key,
     required this.children,
+    this.childrenPadding = .zero,
     this.aboveButtons,
     this.buttonsBuilder,
     this.shrinkWrap = true,
@@ -43,20 +46,12 @@ class StyledDock extends HookWidget {
     final bottomChildren = buttons.isEmpty && aboveButtons == null
         ? <Widget>[]
         : [
-            AnimatedGrow(
-              clip: .hardEdge,
-              child: aboveButtons ?? SizedBox(width: double.infinity, height: 16),
-              alignment: .bottomCenter,
-            ),
-            AnimatedGrow(
-              clip: .hardEdge,
-              child: buttons.isEmpty
-                  ? SizedBox(width: double.infinity)
-                  : Padding(
-                      padding: .symmetric(horizontal: 16),
-                      child: Column(spacing: 8, mainAxisSize: .min, children: buttons),
-                    ),
-            ),
+            aboveButtons ?? SizedBox(width: double.infinity, height: 16),
+            if (buttons.isNotEmpty)
+              Padding(
+                padding: .symmetric(horizontal: 16),
+                child: Column(spacing: 8, mainAxisSize: .min, children: buttons),
+              ),
             Builder(
               builder: (context) => kIsWeb || !Platform.isIOS || MediaQuery.paddingOf(context).bottom <= 28
                   ? buttons.isNotEmpty
@@ -116,6 +111,7 @@ class StyledDock extends HookWidget {
                                     builder: (context, constraints) => SingleChildScrollView(
                                       physics: BouncingScrollPhysics(),
                                       controller: controller,
+                                      padding: childrenPadding,
                                       child: ClipRect(
                                         child: ConstrainedBox(
                                           constraints: BoxConstraints(maxHeight: constraints.maxHeight),
@@ -132,9 +128,11 @@ class StyledDock extends HookWidget {
                                     shrinkWrap: shrinkWrap,
                                     controller: controller,
                                     physics: shrinkWrap ? ClampingScrollPhysics() : null,
-                                    padding: .only(
-                                      bottom: bottomChildren.isEmpty ? MediaQuery.paddingOf(context).bottom : 0,
-                                    ),
+                                    padding:
+                                        childrenPadding +
+                                        .only(
+                                          bottom: bottomChildren.isEmpty ? MediaQuery.paddingOf(context).bottom : 0,
+                                        ),
                                     children: children,
                                   ),
                             Positioned(
@@ -154,8 +152,9 @@ class StyledDock extends HookWidget {
                       ),
                     ),
                   ),
-                  if (bottomChildren.isNotEmpty)
-                    ColoredBox(
+                  StyledSizeAndFade.showHide(
+                    show: bottomChildren.isNotEmpty,
+                    child: ColoredBox(
                       color: context.colors.surfacePrimary,
                       child: ClipRect(
                         child: ConstrainedBox(
@@ -169,6 +168,7 @@ class StyledDock extends HookWidget {
                         ),
                       ),
                     ),
+                  ),
                   Builder(builder: (context) => SizedBox(height: MediaQuery.viewInsetsOf(context).bottom)),
                 ],
               ),

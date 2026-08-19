@@ -14,13 +14,13 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
 class SelectionToolbar extends ConsumerWidget {
-  final PassageSelectionController selection;
+  final PassageSelectionController selectionController;
   final Function(VerseSelection) onNavigateToVerseSelection;
   final Function(StudyPanel)? onAddStudyPanel;
 
   const SelectionToolbar({
     super.key,
-    required this.selection,
+    required this.selectionController,
     required this.onNavigateToVerseSelection,
     this.onAddStudyPanel,
   });
@@ -28,17 +28,18 @@ class SelectionToolbar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
+    final selection = selectionController.selection;
 
     if (selection.verseSelection case final verseSelection?) {
       return VerseSelectionBottomBar(
         verseSelection: verseSelection,
         configuration: user.verseSelection,
         user: user,
-        onClosePressed: selection.clear,
+        onClosePressed: selectionController.clear,
         onShorcutPressed: (_, shortcut) => shortcut.onPressed(
           context,
           verseSelection: verseSelection,
-          onDeselect: selection.clearVerses,
+          onDeselect: selectionController.clearVerses,
           onNavigateToVerseSelection: onNavigateToVerseSelection,
           onAddStudyPanel: onAddStudyPanel,
         ),
@@ -65,7 +66,7 @@ class SelectionToolbar extends ConsumerWidget {
                       action.onPressed(
                         context,
                         selectedVerseSelection: verseSelection,
-                        onDeselect: selection.clearVerses,
+                        onDeselect: selectionController.clearVerses,
                         onNavigateToVerseSelection: onNavigateToVerseSelection,
                         onAddStudyPanel: onAddStudyPanel,
                       );
@@ -83,11 +84,11 @@ class SelectionToolbar extends ConsumerWidget {
         textSelection: textSelection,
         configuration: user.textSelection,
         user: user,
-        onClosePressed: selection.clear,
+        onClosePressed: selectionController.clear,
         onShorcutPressed: (_, shortcut) => shortcut.onPressed(
           context,
           textSelection: textSelection,
-          onDeselect: selection.clearText,
+          onDeselect: selectionController.clearText,
           onNavigateToVerseSelection: onNavigateToVerseSelection,
         ),
         onMorePressed: () async {
@@ -117,7 +118,7 @@ class SelectionToolbar extends ConsumerWidget {
                         action.onPressed(
                           context,
                           textSelection: textSelection,
-                          onDeselect: selection.clearText,
+                          onDeselect: selectionController.clearText,
                           onNavigateToVerseSelection: onNavigateToVerseSelection,
                         );
                       },

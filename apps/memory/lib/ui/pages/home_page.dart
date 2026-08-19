@@ -114,7 +114,7 @@ class HomePage extends ConsumerWidget {
                                 ),
                               );
                               if (type != null && context.mounted) {
-                                context.push(ActivityPage(plan: ActivityPlan.phraseRead(passage: passage)));
+                                context.push(ActivityPage(plan: .fromType(type, passage: passage)));
                               }
                             },
                           ),

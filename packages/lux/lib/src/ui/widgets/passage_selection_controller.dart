@@ -18,6 +18,8 @@ class PassageSelectionController {
   BibleTextSelection? get textSelection => textSelectionState.value;
   bool get hasSelection => references.isNotEmpty || textSelection != null;
 
+  PassageSelection get selection => PassageSelection(references: references, textSelection: textSelection);
+
   void selectReferences(List<Reference> references) {
     referencesState.value = references;
     textSelectionState.value = null;
@@ -61,7 +63,16 @@ class PassageSelectionController {
   }
 }
 
-PassageSelectionController usePassageSelection(PassageSelectionConfiguration configuration) =>
+class PassageSelection {
+  final List<Reference> references;
+  final BibleTextSelection? textSelection;
+
+  const PassageSelection({required this.references, required this.textSelection});
+
+  VerseSelection? get verseSelection => references.isEmpty ? null : VerseSelection.fromReferences(references);
+}
+
+PassageSelectionController usePassageSelectionController(PassageSelectionConfiguration configuration) =>
     PassageSelectionController(
       referencesState: useState([]),
       textSelectionState: useState(null),

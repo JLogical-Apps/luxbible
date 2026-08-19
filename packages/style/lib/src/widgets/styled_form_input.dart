@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/src/style_context_extensions.dart';
 import 'package:style/src/text_style_extensions.dart';
+import 'package:style/src/widgets/styled_size_and_fade.dart';
 
 class StyledFormInput extends StatelessWidget {
   final Widget? label;
@@ -27,9 +27,7 @@ class StyledFormInput extends StatelessWidget {
             child: DefaultTextStyle(child: label, style: context.textStyle.labelMd),
           ),
         child,
-        AnimatedGrow(
-          alignment: .bottomLeft,
-          clip: .hardEdge,
+        StyledSizeAndFade(
           child: error == null
               ? SizedBox(key: ValueKey('empty'), width: double.infinity)
               : Padding(
