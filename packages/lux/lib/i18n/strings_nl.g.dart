@@ -1120,6 +1120,9 @@ class _Translations$settings$nl extends Translations$settings$en {
 	@override String get pushNotifications => 'Pushmeldingen';
 	@override String get biblePlanReminders => 'Herinneringen voor Bijbelleesplannen';
 	@override String get noBiblePlanReminders => 'Er zijn geen herinneringen voor Bijbelleesplannen ingeschakeld.';
+	@override String get noBiblePlanRemindersDescription => 'Je kunt een herinnering aan een Bijbelleesplan toevoegen via de pagina Bijbelleesplannen.';
+	@override String get notificationsNotRequested => 'Schakel meldingen in.';
+	@override String get notificationsNotRequestedDescription => 'Sta Lux toe meldingen te sturen om je herinneringen te beheren.';
 	@override String get notificationsDisabled => 'Meldingen voor Lux zijn uitgeschakeld.';
 	@override String get biblePlanRemindersDisabled => 'Herinneringen voor Bijbelleesplannen zijn uitgeschakeld.';
 	@override String get notificationsDisabledDescription => 'Schakel ze in via de instellingen van je apparaat om je herinneringen te beheren.';
@@ -3573,6 +3576,9 @@ extension on TranslationsNl {
 			'settings.pushNotifications' => 'Pushmeldingen',
 			'settings.biblePlanReminders' => 'Herinneringen voor Bijbelleesplannen',
 			'settings.noBiblePlanReminders' => 'Er zijn geen herinneringen voor Bijbelleesplannen ingeschakeld.',
+			'settings.noBiblePlanRemindersDescription' => 'Je kunt een herinnering aan een Bijbelleesplan toevoegen via de pagina Bijbelleesplannen.',
+			'settings.notificationsNotRequested' => 'Schakel meldingen in.',
+			'settings.notificationsNotRequestedDescription' => 'Sta Lux toe meldingen te sturen om je herinneringen te beheren.',
 			'settings.notificationsDisabled' => 'Meldingen voor Lux zijn uitgeschakeld.',
 			'settings.biblePlanRemindersDisabled' => 'Herinneringen voor Bijbelleesplannen zijn uitgeschakeld.',
 			'settings.notificationsDisabledDescription' => 'Schakel ze in via de instellingen van je apparaat om je herinneringen te beheren.',

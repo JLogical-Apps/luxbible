@@ -2296,11 +2296,20 @@ class Translations$settings$en {
 	/// en: 'Bible Plan Reminders'
 	String get biblePlanReminders => 'Bible Plan Reminders';
 
-	/// en: 'No Bible plan reminders are enabled.'
-	String get noBiblePlanReminders => 'No Bible plan reminders are enabled.';
+	/// en: 'No Bible plan reminders'
+	String get noBiblePlanReminders => 'No Bible plan reminders';
 
-	/// en: 'Notifications are disabled.'
-	String get notificationsDisabled => 'Notifications are disabled.';
+	/// en: 'You can add a reminder to a Bible plan from the Bible Plans page.'
+	String get noBiblePlanRemindersDescription => 'You can add a reminder to a Bible plan from the Bible Plans page.';
+
+	/// en: 'Turn on notifications.'
+	String get notificationsNotRequested => 'Turn on notifications.';
+
+	/// en: 'Allow Lux to send notifications to manage your reminders.'
+	String get notificationsNotRequestedDescription => 'Allow Lux to send notifications to manage your reminders.';
+
+	/// en: 'Notifications are disabled'
+	String get notificationsDisabled => 'Notifications are disabled';
 
 	/// en: 'Bible Plan Reminders are turned off.'
 	String get biblePlanRemindersDisabled => 'Bible Plan Reminders are turned off.';
@@ -5428,8 +5437,11 @@ extension on Translations {
 			'settings.customize' => 'Customize',
 			'settings.pushNotifications' => 'Push Notifications',
 			'settings.biblePlanReminders' => 'Bible Plan Reminders',
-			'settings.noBiblePlanReminders' => 'No Bible plan reminders are enabled.',
-			'settings.notificationsDisabled' => 'Notifications are disabled.',
+			'settings.noBiblePlanReminders' => 'No Bible plan reminders',
+			'settings.noBiblePlanRemindersDescription' => 'You can add a reminder to a Bible plan from the Bible Plans page.',
+			'settings.notificationsNotRequested' => 'Turn on notifications.',
+			'settings.notificationsNotRequestedDescription' => 'Allow Lux to send notifications to manage your reminders.',
+			'settings.notificationsDisabled' => 'Notifications are disabled',
 			'settings.biblePlanRemindersDisabled' => 'Bible Plan Reminders are turned off.',
 			'settings.notificationsDisabledDescription' => 'Enable them in your device settings to manage your reminders.',
 			'settings.language' => 'Language',

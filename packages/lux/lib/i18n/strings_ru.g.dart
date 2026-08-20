@@ -1124,6 +1124,9 @@ class _Translations$settings$ru extends Translations$settings$en {
 	@override String get pushNotifications => 'Push-уведомления';
 	@override String get biblePlanReminders => 'Напоминания о библейских планах';
 	@override String get noBiblePlanReminders => 'Напоминания о библейских планах не включены.';
+	@override String get noBiblePlanRemindersDescription => 'Напоминание можно добавить к библейскому плану на странице «Библейские планы».';
+	@override String get notificationsNotRequested => 'Включите уведомления.';
+	@override String get notificationsNotRequestedDescription => 'Разрешите Lux отправлять уведомления, чтобы управлять напоминаниями.';
 	@override String get notificationsDisabled => 'Уведомления для Lux отключены.';
 	@override String get biblePlanRemindersDisabled => 'Напоминания о библейских планах отключены.';
 	@override String get notificationsDisabledDescription => 'Включите их в настройках устройства, чтобы управлять напоминаниями.';
@@ -3577,6 +3580,9 @@ extension on TranslationsRu {
 			'settings.pushNotifications' => 'Push-уведомления',
 			'settings.biblePlanReminders' => 'Напоминания о библейских планах',
 			'settings.noBiblePlanReminders' => 'Напоминания о библейских планах не включены.',
+			'settings.noBiblePlanRemindersDescription' => 'Напоминание можно добавить к библейскому плану на странице «Библейские планы».',
+			'settings.notificationsNotRequested' => 'Включите уведомления.',
+			'settings.notificationsNotRequestedDescription' => 'Разрешите Lux отправлять уведомления, чтобы управлять напоминаниями.',
 			'settings.notificationsDisabled' => 'Уведомления для Lux отключены.',
 			'settings.biblePlanRemindersDisabled' => 'Напоминания о библейских планах отключены.',
 			'settings.notificationsDisabledDescription' => 'Включите их в настройках устройства, чтобы управлять напоминаниями.',

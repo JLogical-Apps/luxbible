@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:lux/lux.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:synchronized/synchronized.dart';
 import 'package:timezone/timezone.dart' as timezone;
@@ -46,7 +47,7 @@ class LocalNotificationSchedule extends Equatable {
   List<Object?> get props => [id, channel, title, body, time, startDate, payload];
 }
 
-enum LocalNotificationAvailability { enabled, appDisabled, channelDisabled }
+enum LocalNotificationAvailability { enabled, notRequested, appDisabled, channelDisabled }
 
 class LocalNotificationService {
   static const payloadPrefix = 'lux-local-notification:';
@@ -72,17 +73,16 @@ class LocalNotificationService {
 
   Future<bool> get hasPermission async => await getAvailability() == .enabled;
 
-  Future<LocalNotificationAvailability> getAvailability({String? androidChannelId}) async =>
-      switch (defaultTargetPlatform) {
-        .android => getAndroidAvailability(androidChannelId: androidChannelId),
-        .iOS => switch (await plugin
-            .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
-            ?.checkPermissions()) {
-          final permissions? when permissions.isEnabled => .enabled,
-          _ => .appDisabled,
-        },
-        _ => .appDisabled,
-      };
+  Future<LocalNotificationAvailability> getAvailability({String? androidChannelId}) async {
+    final permissionAvailability = switch (await Permission.notification.status) {
+      .granted || .provisional || .limited => LocalNotificationAvailability.enabled,
+      .denied => LocalNotificationAvailability.notRequested,
+      _ => LocalNotificationAvailability.appDisabled,
+    };
+    if (permissionAvailability != .enabled) return permissionAvailability;
+
+    return defaultTargetPlatform == .android ? getAndroidAvailability(androidChannelId: androidChannelId) : .enabled;
+  }
 
   Future<LocalNotificationAvailability> getAndroidAvailability({String? androidChannelId}) async {
     final android = plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();

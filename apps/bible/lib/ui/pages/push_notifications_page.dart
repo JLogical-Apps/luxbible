@@ -1,5 +1,6 @@
 import 'package:bible/models/bible_plan.dart';
 import 'package:bible/providers/bible_plan_local_notification_schedules_provider.dart';
+import 'package:bible/providers/local_notification_schedules_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/local_notification_service.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -33,23 +34,38 @@ class PushNotificationsPage extends ConsumerWidget {
       backgroundColor: .backgroundPrimary,
       body: ListView(
         children: [
-          if (!isEnabled)
+          if (availability case final availability? when availability != .enabled)
             Padding(
               padding: .only(left: 16, top: 16, right: 16),
-              child: StyledTile.message(
-                leading: Symbols.notifications_off.toIcon(),
-                title: switch (availability) {
-                  .channelDisabled => t.settings.biblePlanRemindersDisabled.toText(),
-                  _ => t.settings.notificationsDisabled.toText(),
-                },
-                subtitle: t.settings.notificationsDisabledDescription.toText(),
-                trailing: Symbols.arrow_outward.toIcon(),
-                onPressed: () async {
-                  await ref.read(localNotificationServiceProvider).openSettingsAndCheckPermission();
-                  ref.invalidate(
-                    localNotificationAvailabilityProvider(androidChannelId: biblePlanReminderNotificationChannelId),
-                  );
-                },
+              child: StyledCard.child(
+                child: StyledListItem(
+                  leading: Symbols.notifications_off.toIcon(),
+                  title: switch (availability) {
+                    .notRequested => t.settings.notificationsNotRequested.toText(),
+                    .channelDisabled => t.settings.biblePlanRemindersDisabled.toText(),
+                    _ => t.settings.notificationsDisabled.toText(),
+                  },
+                  subtitle: switch (availability) {
+                    .notRequested => t.settings.notificationsNotRequestedDescription.toText(),
+                    _ => t.settings.notificationsDisabledDescription.toText(),
+                  },
+                  trailing: switch (availability) {
+                    .notRequested => Symbols.notifications.toIcon(),
+                    _ => Symbols.arrow_outward.toIcon(),
+                  },
+                  onPressed: () async {
+                    final notifications = ref.read(localNotificationServiceProvider);
+                    final hasPermission = availability == .notRequested
+                        ? await notifications.requestPermission()
+                        : await notifications.openSettingsAndCheckPermission();
+                    if (hasPermission) {
+                      await notifications.synchronize(ref.read(localNotificationSchedulesProvider));
+                    }
+                    ref.invalidate(
+                      localNotificationAvailabilityProvider(androidChannelId: biblePlanReminderNotificationChannelId),
+                    );
+                  },
+                ),
               ),
             ),
           StyledSection.child(
@@ -59,6 +75,7 @@ class PushNotificationsPage extends ConsumerWidget {
                 ? StyledTile.message(
                     leading: Symbols.notifications_none.toIcon(),
                     title: t.settings.noBiblePlanReminders.toText(),
+                    subtitle: t.settings.noBiblePlanRemindersDescription.toText(),
                     isEnabled: isEnabled,
                   )
                 : StyledCard(

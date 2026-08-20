@@ -18,7 +18,7 @@ The selected language controls Lux's interface, Bible book names, reference form
 
 ## Notifications
 
-Settings > Customize > Push Notifications lists every enabled daily Bible plan reminder. Users can review each plan's localized reminder time and delete reminders after confirmation. When app notifications or the Android Bible Plan Reminders channel are disabled at the system level, Lux preserves reminder settings but disables reminder management until notifications are restored.
+Settings > Customize > Push Notifications lists every enabled daily Bible plan reminder. Users can review each plan's localized reminder time and delete reminders after confirmation. When notification permission has not been requested, the page can request it directly. When app notifications or the Android Bible Plan Reminders channel are disabled at the system level, Lux preserves reminder settings but disables reminder management until notifications are restored.
 
 ## Bible Library
 

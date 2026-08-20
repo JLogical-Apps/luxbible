@@ -71,6 +71,7 @@ dependencies:
     sdk: flutter
   super_sliver_list: ^0.4.1
   timezone: ^0.11.1
+  permission_handler: ^13.0.1
 
 dev_dependencies:
   flutter_test:
