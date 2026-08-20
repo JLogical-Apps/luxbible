@@ -66,7 +66,7 @@ class CommentariesPage extends HookConsumerWidget {
         buttonsBuilder: (context) => [
           StyledRectButton.secondary(
             label: t.commentaries.addRemove.toText(),
-            onPressed: () => context.showStyledSheet((context, ref) {
+            onPressed: () => context.showStyledSheet((context, _) {
               final selectedCommentariesState = useState(user.commentariesOrDefault);
               return StyledSheet(
                 title: t.commentaries.addRemove.toText(),

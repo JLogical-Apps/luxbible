@@ -68,7 +68,7 @@ class AnnotationsPage extends HookConsumerWidget {
                   trailing: Symbols.keyboard_arrow_down.toIcon(),
                   onPressed: () async {
                     final newSort = await context.showStyledSheet(
-                      (context, ref) => StyledSelectionSheet(
+                      (context, _) => StyledSelectionSheet(
                         title: t.common.sort.toText(),
                         options: AnnotationSort.values,
                         optionMapper: (sort) => StyledSelectOption(title: sort.title().toText()),
@@ -90,7 +90,7 @@ class AnnotationsPage extends HookConsumerWidget {
                     trailing: Symbols.keyboard_arrow_down.toIcon(),
                     onPressed: () async {
                       final result = await context.showStyledSheet(
-                        (context, ref) => StyledSelectionSheet<(String?,)>(
+                        (context, _) => StyledSelectionSheet<(String?,)>(
                           title: t.labels.notebook.toText(),
                           trailing: notebookId == null
                               ? null
@@ -127,7 +127,7 @@ class AnnotationsPage extends HookConsumerWidget {
                   trailing: Symbols.keyboard_arrow_down.toIcon(),
                   onPressed: () async {
                     final newStyle = await context.showStyledSheet(
-                      (context, ref) => StyledSelectionSheet<HighlightStyle>(
+                      (context, _) => StyledSelectionSheet<HighlightStyle>(
                         title: t.labels.style.toText(),
                         options: user.highlightStyles.map((entry) => entry.$1).toList(),
                         optionMapper: (option) => StyledSelectOption(
@@ -162,7 +162,7 @@ class AnnotationsPage extends HookConsumerWidget {
                   trailing: Symbols.keyboard_arrow_down.toIcon(),
                   onPressed: () async {
                     final newHasNotes = await context.showStyledSheet(
-                      (context, ref) => StyledSelectionSheet(
+                      (context, _) => StyledSelectionSheet(
                         title: t.labels.notes.toText(),
                         trailing: hasNoteState.value == null
                             ? null
@@ -301,7 +301,7 @@ class AnnotationsPage extends HookConsumerWidget {
                               trailing: StyledCircleButton.md(
                                 child: Symbols.more_vert.toIcon(),
                                 onPressed: () => context.showStyledSheet(
-                                  (context, ref) => StyledSheet(
+                                  (context, _) => StyledSheet(
                                     title: t.labels.annotation.toText(),
                                     children: [
                                       StyledListItem(

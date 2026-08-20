@@ -177,7 +177,7 @@ enum StudyAction {
     if (this == crossReferences) ref.markOnboardingStep(.crossReferences);
 
     if (this == .interlinear) {
-      context.showStyledSheetWithBreadcrumbs(breadcrumbText: regionFormat, (context, ref) {
+      context.showStyledSheetWithBreadcrumbs(breadcrumbText: regionFormat, (context, _) {
         final user = ref.read(userProvider);
 
         final tabController = useTabController(
@@ -252,7 +252,7 @@ enum StudyAction {
               : StyledCircleButton.md(
                   child: Symbols.more_vert.toIcon(),
                   onPressed: () => context.showStyledSheet(
-                    (context, ref) => StyledSheet(
+                    (context, _) => StyledSheet(
                       children: [
                         StyledListItem(
                           title: 'Edit Commentaries'.toText(),
@@ -300,7 +300,7 @@ enum StudyAction {
       });
     } else {
       context.showStyledSheet(
-        (context, ref) => StyledSheet(
+        (context, _) => StyledSheet(
           title: title().toText(),
           subtitle: SingleChildScrollView(
             scrollDirection: .horizontal,

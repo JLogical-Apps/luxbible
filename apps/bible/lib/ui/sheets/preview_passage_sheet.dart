@@ -10,7 +10,7 @@ class PreviewPassageSheet {
     required VerseSelection verseSelection,
     Function(VerseSelection)? onNavigateToVerseSelection,
   }) => context.showStyledSheet(
-    (context, ref) => StyledSheet(
+    (context, _) => StyledSheet(
       title: verseSelection.format().toText(),
       children: verseSelection
           .splitByChapter()

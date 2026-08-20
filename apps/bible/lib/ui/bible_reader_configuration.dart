@@ -177,7 +177,7 @@ class BibleReaderConfiguration {
     padding: .only(bottom: 4),
     child: StyledCircleButton.sm(
       onPressed: () => context.showStyledSheet(
-        (context, ref) => StyledSheet(
+        (context, _) => StyledSheet(
           title: t.labels.notes.toText(),
           children: annotations
               .map(
@@ -215,7 +215,7 @@ class BibleReaderConfiguration {
                         trailing: StyledCircleButton.md(
                           child: Symbols.more_vert.toIcon(),
                           onPressed: () => context.showStyledSheet(
-                            (context, ref) => StyledSheet(
+                            (context, _) => StyledSheet(
                               title: t.labels.annotation.toText(),
                               children: [
                                 StyledListItem(
@@ -276,7 +276,7 @@ class BibleReaderConfiguration {
     padding: .only(bottom: 4),
     child: StyledCircleButton.sm(
       onPressed: () => context.showStyledSheet(
-        (context, ref) => StyledSheet(
+        (context, _) => StyledSheet(
           title: t.labels.footnotes.toText(),
           children: footnotes
               .map(

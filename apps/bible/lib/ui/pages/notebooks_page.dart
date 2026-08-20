@@ -62,7 +62,7 @@ class NotebooksPage extends HookConsumerWidget {
                               trailing: StyledCircleButton.md(
                                 child: Symbols.more_vert.toIcon(),
                                 onPressed: () => context.showStyledSheet(
-                                  (context, ref) => StyledSheet(
+                                  (context, _) => StyledSheet(
                                     title: notebook.name.toText(),
                                     children: [
                                       if (notebook.isVisible)

@@ -14,7 +14,7 @@ class BookmarkSheet {
     required ChapterReference reference,
   }) async {
     return await context.showStyledSheet(
-      (context, ref) => StyledPortSheet(
+      (context, _) => StyledPortSheet(
         title: Text(initialBookmark == null ? t.bookmarks.create : t.bookmarks.edit),
         port:
             Port.of({

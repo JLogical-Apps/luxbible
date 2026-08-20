@@ -190,7 +190,7 @@ class AudioBiblePanelBody extends HookConsumerWidget {
                         child: Icon(Symbols.timer, fill: timerEndTime == null ? 0 : 1),
                         onPressed: () async {
                           final option = await context.showStyledSheet<AudioBibleTimerOption>(
-                            (context, ref) => StyledSelectionSheet<AudioBibleTimerOption>(
+                            (context, _) => StyledSelectionSheet<AudioBibleTimerOption>(
                               title: t.audio.timer.toText(),
                               options: AudioBibleTimerOption.values,
                               initialOption: timerEndTime == null ? .off : null,

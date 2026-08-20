@@ -72,7 +72,7 @@ class MorePage extends HookConsumerWidget {
                     onPressed: () async {
                       ref.markOnboardingStep(.customizeToolbar);
                       final preset = await context.showStyledSheet(
-                        (context, ref) => StyledSelectionSheet(
+                        (context, _) => StyledSelectionSheet(
                           title: t.settings.toolbarPreset.toText(),
                           aboveOptions: Padding(
                             padding: .all(16),

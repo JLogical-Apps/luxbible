@@ -88,7 +88,7 @@ class HomePage extends ConsumerWidget {
                   trailing: StyledCircleButton.md(
                     child: Symbols.more_vert.toIcon(),
                     onPressed: () => context.showStyledSheet(
-                      (sheetContext, ref) => StyledSheet(
+                      (sheetContext, _) => StyledSheet(
                         title: passage.format().toText(),
                         children: [
                           StyledListItem.navigation(
@@ -98,7 +98,7 @@ class HomePage extends ConsumerWidget {
                             onPressed: () async {
                               sheetContext.pop();
                               final type = await context.showStyledSheet<ActivityPlanType>(
-                                (context, ref) => StyledSheet(
+                                (context, _) => StyledSheet(
                                   title: 'Practice Activity'.toText(),
                                   children: ActivityPlanType.values
                                       .where((type) => type.isPracticeActivity)

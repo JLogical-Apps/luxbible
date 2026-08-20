@@ -350,7 +350,7 @@ class BibleBody extends HookConsumerWidget {
                   onBookmarkAdded: onBookmarkAdded,
                 ),
                 onMorePressed: () => context.showStyledSheet(
-                  (_, ref) => StyledSheet(
+                  (_, _) => StyledSheet(
                     trailing: StyledCircleButton.md(
                       child: Symbols.tune.toIcon(),
                       onPressed: () {

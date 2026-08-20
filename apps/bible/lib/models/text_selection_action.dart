@@ -80,7 +80,7 @@ enum TextSelectionAction {
         } else {
           await context.showStyledSheetWithBreadcrumbs(
             breadcrumbText: (await ref.read(textSelectionTextProvider(textSelection).future)).withLength(24),
-            (context, ref) => StyledSheet(
+            (context, _) => StyledSheet(
               title: t.selectionActions.interlinear.toText(),
               subtitle: t.selectionActions
                   .textInReference(reference: textSelection.toVerseSelection().format())

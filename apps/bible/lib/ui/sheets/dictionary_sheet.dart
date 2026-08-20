@@ -1,5 +1,6 @@
 import 'package:bible/models/dictionary_entry.dart';
 import 'package:bible/providers/dictionary_provider.dart';
+import 'package:bible/providers/root_ref.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:intersperse/intersperse.dart';
@@ -16,7 +17,7 @@ class DictionarySheet {
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) => context.showStyledSheetWithBreadcrumbs(
     breadcrumbText: entry.title,
-    (context, ref) => StyledSheet(
+    (context, _) => StyledSheet(
       title: entry.title.toText(),
       subtitle: t.dictionary.eastons.toText(),
       children: entry.definitions

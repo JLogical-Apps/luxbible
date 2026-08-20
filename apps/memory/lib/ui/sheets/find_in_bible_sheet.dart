@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lux/lux.dart';
+import 'package:memory/providers/root_ref.dart';
 import 'package:style/style.dart';
 import 'package:utils_core/utils_core.dart';
 
 class FindInBibleSheet {
-  static Future<VerseSelection?> show(BuildContext context) => context.showStyledSheet<VerseSelection>((context, ref) {
+  static Future<VerseSelection?> show(BuildContext context) => context.showStyledSheet<VerseSelection>((context, _) {
     final chapterPositionState = useState<ChapterPosition?>(null);
     final selectionController = usePassageSelectionController(ref.read(luxReaderConfigurationProvider).selection);
 

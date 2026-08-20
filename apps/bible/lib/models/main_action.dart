@@ -132,7 +132,7 @@ enum MainAction {
           }
         } else {
           await context.showStyledSheet(
-            (context, ref) => StyledSheet(
+            (context, _) => StyledSheet(
               title: t.bookmarks.manage.toText(),
               children: [
                 StyledListItem(
@@ -236,7 +236,7 @@ enum MainAction {
         );
       case studyPanel:
         final studyPanelType = await context.showStyledSheet<StudyPanelType>(
-          (context, ref) => StyledSheet(
+          (context, _) => StyledSheet(
             title: t.studyPanels.title.toText(),
             children: StudyPanelType.values
                 .map(
@@ -254,7 +254,7 @@ enum MainAction {
           switch (studyPanelType) {
             case .compare:
               final translation = await context.showStyledSheet(
-                (context, ref) => StyledSelectionSheet(
+                (context, _) => StyledSelectionSheet(
                   title: t.studyActions.compare.toText(),
                   options: user.biblesOrDefault,
                   optionMapper: (option) =>
@@ -266,7 +266,7 @@ enum MainAction {
               }
             case .interlinear:
               final direction = await context.showStyledSheet(
-                (context, ref) => StyledSelectionSheet(
+                (context, _) => StyledSelectionSheet(
                   title: t.interlinearUi.direction.toText(),
                   options: InterlinearDirection.values,
                   optionMapper: (option) => StyledSelectOption(
@@ -281,7 +281,7 @@ enum MainAction {
               }
             case .commentary:
               final commentaryType = await context.showStyledSheet(
-                (context, ref) => StyledSelectionSheet(
+                (context, _) => StyledSelectionSheet(
                   title: t.labels.commentary.toText(),
                   options: user.commentariesOrDefault,
                   optionMapper: (option) =>
@@ -304,7 +304,7 @@ enum MainAction {
         }
       case resources:
         final resource = await context.showStyledSheet<_Resource>(
-          (context, ref) => StyledSheet(
+          (context, _) => StyledSheet(
             title: t.labels.resources.toText(),
             children: [
               StyledListItem.navigation(

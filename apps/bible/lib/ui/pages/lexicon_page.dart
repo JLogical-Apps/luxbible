@@ -75,7 +75,7 @@ class LexiconPage extends HookConsumerWidget {
                   trailing: Symbols.keyboard_arrow_down.toIcon(),
                   onPressed: () async {
                     final newLanguage = await context.showStyledSheet(
-                      (context, ref) => StyledSelectionSheet(
+                      (context, _) => StyledSelectionSheet(
                         title: t.labels.language.toText(),
                         trailing: language == null
                             ? null

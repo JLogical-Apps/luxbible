@@ -110,7 +110,7 @@ class TextSelectionSettingsPage extends ConsumerWidget {
     BuildContext context, {
     required TextSelectionShortcut initialShortcut,
   }) => context.showStyledSheet(
-    (context, ref) => StyledSelectionSheet(
+    (context, _) => StyledSelectionSheet(
       title: t.toolbarSettings.textShortcut.toText(),
       options: TextSelectionShortcut.values,
       initialOption: initialShortcut,

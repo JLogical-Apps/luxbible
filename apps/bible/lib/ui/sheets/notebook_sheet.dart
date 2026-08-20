@@ -10,7 +10,7 @@ import 'package:uuid/uuid.dart';
 
 class NotebookSheet {
   static Future<Notebook?> show(BuildContext context, {Notebook? initialNotebook}) => context.showStyledSheet(
-    (context, ref) => StyledPortSheet(
+    (context, _) => StyledPortSheet(
       title: (initialNotebook == null ? t.notebookUi.create : t.notebookUi.edit).toText(),
       port:
           Port.of({

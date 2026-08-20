@@ -117,7 +117,7 @@ class VerseSelectionSettingsPage extends ConsumerWidget {
     BuildContext context, {
     required VerseSelectionShortcut initialShortcut,
   }) => context.showStyledSheet(
-    (context, ref) => StyledSelectionSheet(
+    (context, _) => StyledSelectionSheet(
       title: t.toolbarSettings.verseShortcut.toText(),
       options: VerseSelectionShortcut.values,
       initialOption: initialShortcut,
