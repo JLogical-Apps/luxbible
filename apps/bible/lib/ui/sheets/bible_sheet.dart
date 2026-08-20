@@ -14,7 +14,7 @@ class BibleSheet {
     final user = ref.read(userProvider);
     ref.markOnboardingStep(.changeBible);
     return context.showStyledSheet<BibleTranslation>(
-      (context) => StyledSheet(
+      (context, ref) => StyledSheet(
         title: t.labels.bible.toText(),
         trailing: StyledCircleButton.md(
           child: Symbols.tune.toIcon(),

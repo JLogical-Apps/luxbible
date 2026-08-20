@@ -44,7 +44,7 @@ class SelectionToolbar extends ConsumerWidget {
           onAddStudyPanel: onAddStudyPanel,
         ),
         onMorePressed: () => context.showStyledSheet(
-          (context) => StyledSheet(
+          (context, ref) => StyledSheet(
             title: t.toolbarSettings.verseSelection.toText(),
             subtitle: verseSelection.format().toText(),
             trailing: StyledCircleButton.md(
@@ -96,7 +96,7 @@ class SelectionToolbar extends ConsumerWidget {
           if (!context.mounted) return;
 
           await context.showStyledSheet(
-            (context) => StyledSheet(
+            (context, ref) => StyledSheet(
               title: t.toolbarSettings.textSelection.toText(),
               subtitle: '"$selectionText"'.toText(),
               trailing: StyledCircleButton.md(

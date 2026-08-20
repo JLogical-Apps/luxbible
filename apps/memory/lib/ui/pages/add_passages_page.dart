@@ -55,7 +55,7 @@ class AddPassagesPage extends HookConsumerWidget {
                   leading: Symbols.deployed_code.toIcon(),
                   onPressed: () async {
                     final pack = await context.showStyledSheet<Pack>(
-                      (context) => StyledSheet(
+                      (context, ref) => StyledSheet(
                         title: 'Add Pack'.toText(),
                         children: Pack.values.map((pack) {
                           final isAlreadySelected = passagesState.value.containsAll(pack.passages);

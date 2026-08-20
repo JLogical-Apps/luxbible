@@ -47,7 +47,7 @@ class HighlightStylesPage extends HookConsumerWidget {
                       trailing: StyledCircleButton.md(
                         child: Symbols.more_vert.toIcon(),
                         onPressed: () => context.showStyledSheet(
-                          (sheetContext) => StyledSheet(
+                          (sheetContext, ref) => StyledSheet(
                             title: entry.$2.toText(),
                             children: [
                               StyledListItem(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:style/src/widgets/sheet/styled_sheet.dart';
 
 class SheetNavigationBreadcrumbContext {
@@ -17,7 +18,7 @@ class SheetNavigationBreadcrumbContext {
 
 class SheetNavigationBreadcrumb {
   final String text;
-  final StyledSheet Function(BuildContext) sheetBuilder;
+  final StyledSheet Function(BuildContext, WidgetRef) sheetBuilder;
 
   const SheetNavigationBreadcrumb({required this.text, required this.sheetBuilder});
 }

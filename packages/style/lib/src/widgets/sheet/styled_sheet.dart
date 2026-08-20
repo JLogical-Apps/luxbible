@@ -140,13 +140,13 @@ class StyledSheet<T> extends HookConsumerWidget {
       final breadcrumb = sheetNavigationContext.breadcrumbs[breadcrumbIndex];
       context.pop();
       context.showStyledSheet(
-        (context) => breadcrumb.sheetBuilder(context),
+        (context, ref) => breadcrumb.sheetBuilder(context, ref),
         wrapper: (sheetBuilder) => provider.Provider.value(
           value: SheetNavigationBreadcrumbContext(
             breadcrumbs: sheetNavigationContext.breadcrumbs.take(breadcrumbIndex + 1).toList(),
             scrollOffsetByDepth: sheetNavigationContext.scrollOffsetByDepth.withRemoved(depth),
           ),
-          child: HookBuilder(builder: sheetBuilder),
+          child: HookConsumerBuilder(builder: sheetBuilder),
         ),
       );
     }

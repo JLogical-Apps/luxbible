@@ -132,7 +132,7 @@ enum MainAction {
           }
         } else {
           await context.showStyledSheet(
-            (context) => StyledSheet(
+            (context, ref) => StyledSheet(
               title: t.bookmarks.manage.toText(),
               children: [
                 StyledListItem(
@@ -182,7 +182,7 @@ enum MainAction {
         }
       case study:
         context.showStyledSheet(
-          (_) => StyledSheet(
+          (_, _) => StyledSheet(
             title: t.labels.study.toText(),
             subtitle: reference.format().toText(),
             children: [
@@ -236,7 +236,7 @@ enum MainAction {
         );
       case studyPanel:
         final studyPanelType = await context.showStyledSheet<StudyPanelType>(
-          (context) => StyledSheet(
+          (context, ref) => StyledSheet(
             title: t.studyPanels.title.toText(),
             children: StudyPanelType.values
                 .map(
@@ -254,7 +254,7 @@ enum MainAction {
           switch (studyPanelType) {
             case .compare:
               final translation = await context.showStyledSheet(
-                (context) => StyledSelectionSheet(
+                (context, ref) => StyledSelectionSheet(
                   title: t.studyActions.compare.toText(),
                   options: user.biblesOrDefault,
                   optionMapper: (option) =>
@@ -266,7 +266,7 @@ enum MainAction {
               }
             case .interlinear:
               final direction = await context.showStyledSheet(
-                (context) => StyledSelectionSheet(
+                (context, ref) => StyledSelectionSheet(
                   title: t.interlinearUi.direction.toText(),
                   options: InterlinearDirection.values,
                   optionMapper: (option) => StyledSelectOption(
@@ -281,7 +281,7 @@ enum MainAction {
               }
             case .commentary:
               final commentaryType = await context.showStyledSheet(
-                (context) => StyledSelectionSheet(
+                (context, ref) => StyledSelectionSheet(
                   title: t.labels.commentary.toText(),
                   options: user.commentariesOrDefault,
                   optionMapper: (option) =>
@@ -304,7 +304,7 @@ enum MainAction {
         }
       case resources:
         final resource = await context.showStyledSheet<_Resource>(
-          (context) => StyledSheet(
+          (context, ref) => StyledSheet(
             title: t.labels.resources.toText(),
             children: [
               StyledListItem.navigation(

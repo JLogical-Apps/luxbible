@@ -29,7 +29,7 @@ class BiblePlanReminderFlow {
     if (shouldAdd != true) return;
 
     final time = await context.showStyledSheet(
-      (context) => StyledTimeDialSheet(title: t.biblePlans.dailyReminders.toText(), initialTime: Time.now()),
+      (context, ref) => StyledTimeDialSheet(title: t.biblePlans.dailyReminders.toText(), initialTime: Time.now()),
     );
     if (time != null && context.mounted) {
       await save(context: context, planType: planType, time: time);

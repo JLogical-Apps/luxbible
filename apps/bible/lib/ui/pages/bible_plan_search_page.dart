@@ -48,7 +48,7 @@ class BiblePlanSearchPage extends HookConsumerWidget {
                   trailing: Symbols.keyboard_arrow_down.toIcon(),
                   onPressed: () async {
                     final newScope = await context.showStyledSheet(
-                      (context) => StyledSelectionSheet<BiblePlanScope>(
+                      (context, ref) => StyledSelectionSheet<BiblePlanScope>(
                         title: t.labels.scope.toText(),
                         options: BiblePlanScope.values,
                         optionMapper: (scope) =>
@@ -77,7 +77,7 @@ class BiblePlanSearchPage extends HookConsumerWidget {
                   trailing: Symbols.keyboard_arrow_down.toIcon(),
                   onPressed: () async {
                     final newType = await context.showStyledSheet(
-                      (context) => StyledSelectionSheet<BiblePlanSearchType>(
+                      (context, ref) => StyledSelectionSheet<BiblePlanSearchType>(
                         title: t.labels.type.toText(),
                         options: BiblePlanSearchType.values,
                         optionMapper: (type) =>
@@ -122,7 +122,7 @@ class BiblePlanSearchPage extends HookConsumerWidget {
                     trailing: Icon(Symbols.chevron_right),
                     onPressed: () async {
                       final shouldStartPlan = await context.showStyledSheet(
-                        (context) => StyledSheet(
+                        (context, ref) => StyledSheet(
                           title: t.biblePlans.startPlanQuestion.toText(),
                           children: [
                             BiblePlanTile(planType: type, plan: plan, showTags: false),

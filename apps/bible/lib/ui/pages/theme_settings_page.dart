@@ -46,7 +46,7 @@ class ThemeSettingsPage extends ConsumerWidget {
                     label: t.common.edit.toText(),
                     onPressed: () async {
                       final newFont = await context.showStyledSheet(
-                        (context) => StyledSelectionSheet(
+                        (context, ref) => StyledSelectionSheet(
                           title: t.themeSettings.font.toText(),
                           options: ThemeFont.values,
                           optionMapper: (option) => StyledSelectOption(
@@ -108,7 +108,7 @@ class ThemeSettingsPage extends ConsumerWidget {
                     label: t.common.edit.toText(),
                     onPressed: () async {
                       final newSectionHeadings = await context.showStyledSheet(
-                        (context) => StyledSelectionSheet(
+                        (context, ref) => StyledSelectionSheet(
                           title: t.themeSettings.sectionHeadings.toText(),
                           options: SectionHeadings.values,
                           optionMapper: (option) => StyledSelectOption(
@@ -162,7 +162,7 @@ class ThemeSettingsPage extends ConsumerWidget {
     trailing: StyledPillButton.md(
       label: t.common.edit.toText(),
       onPressed: () => context.showStyledSheet(
-        (context) => StyledSheet(
+        (context, ref) => StyledSheet(
           title: title.toText(),
           children: [
             ...FontSizeSpacing.values.map(

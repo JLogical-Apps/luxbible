@@ -117,7 +117,7 @@ class BiblePlansPage extends HookConsumerWidget {
                                 trailing: StyledCircleButton.md(
                                   child: Symbols.more_vert.toIcon(),
                                   onPressed: () => context.showStyledSheet(
-                                    (_) => StyledSheet(
+                                    (_, ref) => StyledSheet(
                                       title: planType.title().toText(),
                                       children: [
                                         StyledListItem(
@@ -135,7 +135,7 @@ class BiblePlansPage extends HookConsumerWidget {
                                           onPressed: () async {
                                             context.pop();
                                             final newTime = await context.showStyledSheet(
-                                              (context) => StyledTimeDialSheet(
+                                              (context, ref) => StyledTimeDialSheet(
                                                 title: t.biblePlans.dailyReminders.toText(),
                                                 initialTime: dailyReminderTime,
                                                 trailing: dailyReminderTime == null

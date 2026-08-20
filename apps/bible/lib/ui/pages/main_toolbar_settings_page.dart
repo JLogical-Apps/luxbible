@@ -119,7 +119,7 @@ class MainToolbarSettingsPage extends ConsumerWidget {
   }) {
     final user = ref.read(userProvider);
     return context.showStyledSheet(
-      (context) => StyledSelectionSheet(
+      (context, ref) => StyledSelectionSheet(
         title: t.toolbarSettings.mainShortcut.toText(),
         options: MainToolbarShortcut.values,
         initialOption: initialShortcut,

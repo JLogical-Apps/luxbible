@@ -53,7 +53,7 @@ class BiblesPage extends HookConsumerWidget {
         buttonsBuilder: (context) => [
           StyledRectButton.secondary(
             label: t.bibleDetails.addRemoveBibles.toText(),
-            onPressed: () => context.showStyledSheet((context) {
+            onPressed: () => context.showStyledSheet((context, ref) {
               final selectedBiblesState = useState(user.biblesOrDefault);
               return StyledSheet(
                 title: t.bibleDetails.addRemoveBibles.toText(),

@@ -1,6 +1,6 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart' hide Provider;
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -43,8 +43,8 @@ extension StyleContextExtensions on BuildContext {
   );
 
   Future<T?> showStyledSheet<T>(
-    StyledSheet<T> Function(BuildContext context) sheetBuilder, {
-    Widget Function(StyledSheet Function(BuildContext) sheetBuilder)? wrapper,
+    StyledSheet<T> Function(BuildContext, WidgetRef) sheetBuilder, {
+    Widget Function(StyledSheet Function(BuildContext, WidgetRef) sheetBuilder)? wrapper,
   }) => showMaterialModalBottomSheet(
     context: this,
     expand: false,
@@ -60,13 +60,13 @@ extension StyleContextExtensions on BuildContext {
       child: SafeArea(
         top: false,
         bottom: false,
-        child: wrapper == null ? HookBuilder(builder: sheetBuilder) : wrapper(sheetBuilder),
+        child: wrapper == null ? HookConsumerBuilder(builder: sheetBuilder) : wrapper(sheetBuilder),
       ),
     ),
   );
 
   Future<T?> showStyledSheetWithBreadcrumbs<T>(
-    StyledSheet<T> Function(BuildContext) sheetBuilder, {
+    StyledSheet<T> Function(BuildContext, WidgetRef) sheetBuilder, {
     required String breadcrumbText,
   }) async {
     final sheetContext = read<SheetNavigationBreadcrumbContext?>() ?? SheetNavigationBreadcrumbContext(breadcrumbs: []);
@@ -89,7 +89,7 @@ extension StyleContextExtensions on BuildContext {
             create: (_) => sheetContext.withBreadcrumb(
               SheetNavigationBreadcrumb(text: breadcrumbText, sheetBuilder: sheetBuilder),
             ),
-            child: HookBuilder(builder: sheetBuilder),
+            child: HookConsumerBuilder(builder: sheetBuilder),
           ),
         ),
       ),

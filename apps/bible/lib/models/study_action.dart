@@ -176,7 +176,7 @@ enum StudyAction {
     if (this == crossReferences) ref.markOnboardingStep(.crossReferences);
 
     if (this == .interlinear) {
-      context.showStyledSheetWithBreadcrumbs(breadcrumbText: regionFormat, (context) {
+      context.showStyledSheetWithBreadcrumbs(breadcrumbText: regionFormat, (context, ref) {
         final user = ref.read(userProvider);
 
         final tabController = useTabController(
@@ -234,7 +234,7 @@ enum StudyAction {
         );
       });
     } else if (this == .commentary) {
-      context.showStyledSheet((context) {
+      context.showStyledSheet((context, ref) {
         final tabController = useTabController(initialLength: user.commentariesOrDefault.length);
         final index = useListenableSelector(tabController, () => tabController.index);
         final selectedCommentary = user.commentariesOrDefault[index];
@@ -276,7 +276,7 @@ enum StudyAction {
       });
     } else {
       context.showStyledSheet(
-        (context) => StyledSheet(
+        (context, ref) => StyledSheet(
           title: title().toText(),
           subtitle: SingleChildScrollView(
             scrollDirection: .horizontal,

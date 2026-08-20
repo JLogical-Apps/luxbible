@@ -13,7 +13,7 @@ class HighlightStyleSheet {
     (HighlightStyle, String label)? initialStyle,
     required List<(HighlightStyle, String label)> otherStyles,
   }) => context.showStyledSheet(
-    (context) => StyledPortSheet(
+    (context, ref) => StyledPortSheet(
       title: (initialStyle == null ? t.highlightStyleUi.create : t.highlightStyleUi.edit).toText(),
       port: Port.of({
         'label': PortField.string(initialValue: initialStyle?.$2).isNotBlank(),

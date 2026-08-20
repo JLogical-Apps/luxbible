@@ -30,7 +30,7 @@ class SearchLocationButton extends StatelessWidget {
       onPressed: () async {
         FocusManager.instance.primaryFocus?.unfocus();
         final newLocations = await context.showStyledSheet(
-          (context) => StyledMultiSelectionSheet<SearchLocationFilter>(
+          (context, ref) => StyledMultiSelectionSheet<SearchLocationFilter>(
             title: t.labels.locations.toText(),
             trailing: locations.isEmpty
                 ? null
