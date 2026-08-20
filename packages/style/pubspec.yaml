@@ -10,7 +10,6 @@ environment:
 dependencies:
   lux:
     path: ../lux
-  another_flushbar: ^2.2.4
   animated_size_and_fade: ^5.1.1
   collection: ^1.19.1
   flutter:
@@ -36,6 +35,7 @@ dependencies:
       url: https://github.com/JLogical-Apps/flood.git
       ref: 89a170167523e52354afe3646841e28216b9210a
       path: packages/utils/utils_core
+  toastification: ^3.2.0
 
 dev_dependencies:
   flutter_lints: ^6.0.0

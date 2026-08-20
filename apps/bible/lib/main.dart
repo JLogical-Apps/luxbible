@@ -41,6 +41,7 @@ import 'package:lux/lux.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:toastification/toastification.dart';
 import 'package:utils_core/utils_core.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -172,23 +173,25 @@ class BibleApp extends HookConsumerWidget {
     });
 
     final user = ref.watch(userProvider);
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: MediaQuery.withClampedTextScaling(
-        minScaleFactor: 1,
-        maxScaleFactor: 1.8,
-        child: MaterialApp(
-          navigatorKey: navigatorKey,
-          title: 'Lux Bible',
-          locale: Language.device.appLocale.flutterLocale,
-          supportedLocales: AppLocaleUtils.instance.supportedLocales,
-          localizationsDelegates: GlobalMaterialLocalizations.delegates,
-          themeMode: user.theme,
-          theme: theme,
-          darkTheme: darkTheme,
-          scrollBehavior: BouncingScrollBehavior(),
-          debugShowCheckedModeBanner: false,
-          home: BiblePage(),
+    return ToastificationWrapper(
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: MediaQuery.withClampedTextScaling(
+          minScaleFactor: 1,
+          maxScaleFactor: 1.8,
+          child: MaterialApp(
+            navigatorKey: navigatorKey,
+            title: 'Lux Bible',
+            locale: Language.device.appLocale.flutterLocale,
+            supportedLocales: AppLocaleUtils.instance.supportedLocales,
+            localizationsDelegates: GlobalMaterialLocalizations.delegates,
+            themeMode: user.theme,
+            theme: theme,
+            darkTheme: darkTheme,
+            scrollBehavior: BouncingScrollBehavior(),
+            debugShowCheckedModeBanner: false,
+            home: BiblePage(),
+          ),
         ),
       ),
     );

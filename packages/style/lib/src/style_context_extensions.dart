@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' hide Provider;
 import 'package:lux/lux.dart';
@@ -13,6 +12,7 @@ import 'package:style/src/widgets/sheet/styled_sheet.dart';
 import 'package:style/src/widgets/sheet/styled_sheet_navigation_context.dart';
 import 'package:style/src/widgets/styled_list_item.dart';
 import 'package:style/src/widgets/styled_pill_button.dart';
+import 'package:toastification/toastification.dart';
 
 extension StyleContextExtensions on BuildContext {
   Brightness get brightness => Theme.of(this).brightness;
@@ -100,42 +100,48 @@ extension StyleContextExtensions on BuildContext {
     required Widget message,
     StyledTextAction? action,
     Duration duration = const Duration(seconds: 3),
-  }) async {
-    late final Flushbar flushbar;
-    flushbar = Flushbar(
-      messageText: StyledListItem(
-        size: .sm,
-        title: DefaultTextStyle(
-          child: message,
-          style: textStyle.paragraphMd.copyWith(color: colors.contentPrimaryInverse),
-        ),
-        leading: SizedBox.square(
-          dimension: 64,
-          child: Center(child: Icon(Symbols.check_circle, size: 24, color: colors.contentPrimaryInverse)),
-        ),
-        trailing: action == null
-            ? null
-            : StyledPillButton.md(
-                label: action.label,
-                colorBuilder: .surfacePrimaryInverted,
-                onPressed: () {
-                  flushbar.dismiss();
-                  action.onPressed();
-                },
-              ),
-      ),
-      duration: duration,
-      dismissDirection: .VERTICAL,
-      margin: .all(16),
-      padding: .zero,
-      backgroundColor: colors.inverted.surfacePrimary,
-      borderRadius: .circular(12),
-      shouldIconPulse: false,
-      forwardAnimationCurve: Curves.easeOutCubic,
-      reverseAnimationCurve: Curves.easeInCubic,
+  }) {
+    toastification.showCustom(
+      context: rootContext,
+      alignment: .topCenter,
+      autoCloseDuration: duration,
       animationDuration: Duration(milliseconds: 300),
-      flushbarPosition: .TOP,
+      animationBuilder: (context, animation, alignment, child) => SlideTransition(
+        position: Tween(
+          begin: Offset(0, -1),
+          end: Offset.zero,
+        ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOutCubic, reverseCurve: Curves.easeInCubic)),
+        child: child,
+      ),
+      builder: (context, toast) => Dismissible(
+        key: ValueKey(toast.id),
+        direction: .up,
+        onDismissed: (_) => toastification.dismiss(toast, showRemoveAnimation: false),
+        child: DecoratedBox(
+          decoration: BoxDecoration(borderRadius: .circular(12), color: context.colors.inverted.surfacePrimary),
+          child: StyledListItem(
+            size: .sm,
+            title: DefaultTextStyle(
+              style: context.textStyle.paragraphMd.copyWith(color: context.colors.contentPrimaryInverse),
+              child: message,
+            ),
+            leading: SizedBox.square(
+              dimension: 64,
+              child: Center(child: Icon(Symbols.check_circle, size: 24, color: context.colors.contentPrimaryInverse)),
+            ),
+            trailing: action == null
+                ? null
+                : StyledPillButton.md(
+                    label: action.label,
+                    colorBuilder: .surfacePrimaryInverted,
+                    onPressed: () {
+                      toastification.dismiss(toast);
+                      action.onPressed();
+                    },
+                  ),
+          ),
+        ),
+      ),
     );
-    flushbar.show(rootContext);
   }
 }
