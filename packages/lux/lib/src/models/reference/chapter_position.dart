@@ -15,6 +15,7 @@ sealed class ChapterPosition with _$ChapterPosition {
   factory ChapterPosition.fromJson(Map<String, dynamic> json) => _$ChapterPositionFromJson(json);
 
   Reference? getReference() => verseNum?.mapIfNonNull((verseNum) => reference.getReference(verseNum));
+  Reference getReferenceOrFirst() => getReference() ?? reference.getReference(1);
 }
 
 class ChapterPositionFromReference extends JsonKey {

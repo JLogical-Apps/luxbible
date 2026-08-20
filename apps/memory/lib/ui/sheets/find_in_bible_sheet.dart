@@ -10,11 +10,6 @@ class FindInBibleSheet {
     final chapterPositionState = useState<ChapterPosition?>(null);
     final selectionController = usePassageSelectionController(ref.read(luxReaderConfigurationProvider).selection);
 
-    void deselectChapter() {
-      selectionController.clear();
-      chapterPositionState.value = null;
-    }
-
     void selectReference(ChapterPosition position, bool shouldSelectVerse) {
       FocusManager.instance.primaryFocus?.unfocus();
       selectionController.clear();
@@ -22,18 +17,30 @@ class FindInBibleSheet {
       chapterPositionState.value = position;
     }
 
-    final selectorController = useChapterReferenceSelectorController();
-    useOnFocusNodeFocused(selectorController.bookFocusNode, deselectChapter);
-    useOnFocusNodeFocused(selectorController.chapterFocusNode, deselectChapter);
-    useOnFocusNodeFocused(selectorController.verseFocusNode, deselectChapter);
+    final selectorState = useState(SelectorState(focus: .book));
+
+    final scrollController = useScrollController();
+    final isScrollingDownState = useState(true);
+    useOnStickyScrollDirectionChanged(
+      scrollController,
+      (direction) => isScrollingDownState.value = direction == .forward,
+    );
 
     return StyledSheet.builder(
       title: 'Find in Bible'.toText(),
-      aboveDivider: ChapterReferenceSelectorHeading(
-        controller: selectorController,
-        onSelect: selectReference,
-        showShadow: false,
-        forceVerseNum: true,
+      aboveDivider: Listener(
+        behavior: .translucent,
+        onPointerDown: (_) {
+          selectionController.clear();
+          chapterPositionState.value = null;
+        },
+        child: ChapterPositionSelectorHeading(
+          selectorState: selectorState,
+          readOnly: !isScrollingDownState.value,
+          onSelect: selectReference,
+          showShadow: false,
+          forceVerseNum: true,
+        ),
       ),
       forceHeight: true,
       childrenBuilder: (context, ref) {
@@ -42,8 +49,9 @@ class FindInBibleSheet {
           return [
             Expanded(
               child: SingleChildScrollView(
-                child: ChapterReferenceSelectorBody(
-                  controller: selectorController,
+                controller: scrollController,
+                child: ChapterPositionSelectorBody(
+                  selectorState: selectorState,
                   onSelect: selectReference,
                   forceVerseNum: true,
                 ),
@@ -75,7 +83,7 @@ class FindInBibleSheet {
           ),
         ];
       },
-      forceBottomShadow: true,
+      forceBottomShadow: chapterPositionState.value != null,
       buttonsBuilder: chapterPositionState.value == null
           ? null
           : (context) => [
