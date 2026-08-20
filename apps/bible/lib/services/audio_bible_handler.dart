@@ -2,17 +2,18 @@ import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:lux/i18n.dart';
 
 class AudioBibleHandler extends BaseAudioHandler with SeekHandler {
-  static const seekBackwardControl = MediaControl(
+  final seekBackwardControl = MediaControl(
     androidIcon: 'drawable/replay_10_24px',
-    label: 'Back 10 seconds',
+    label: t.audio.rewindTenSeconds,
     action: .rewind,
   );
 
-  static const seekForwardControl = MediaControl(
+  final seekForwardControl = MediaControl(
     androidIcon: 'drawable/forward_10_24px',
-    label: 'Forward 10 seconds',
+    label: t.audio.fastForwardTenSeconds,
     action: .fastForward,
   );
 

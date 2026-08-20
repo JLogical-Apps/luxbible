@@ -300,6 +300,7 @@ class _Translations$mainActions$ru extends Translations$mainActions$en {
 	@override String get resources => 'Ресурсы';
 	@override String get plans => 'Библейские планы';
 	@override String get settings => 'Настройки';
+	@override String get more => 'Ещё';
 	@override String get audioDescription => 'Слушайте текущую главу с помощью Библии с поддержкой аудио.';
 	@override String get bookmarkDescription => 'Добавьте эту главу в закладки, чтобы легко получить к ней доступ со страницы поиска.';
 	@override String get manageBookmarkDescription => 'Управляйте этой закладкой.';
@@ -309,6 +310,7 @@ class _Translations$mainActions$ru extends Translations$mainActions$en {
 	@override String get resourcesDescription => 'Найдите слова в словаре и лексиконе.';
 	@override String get plansDescription => 'Читайте Библию с помощью управляемых планов чтения.';
 	@override String get settingsDescription => 'Откройте настройки Lux.';
+	@override String get moreDescription => 'Просматривайте настройки, ваш контент и ссылки на сообщество.';
 }
 
 // Path: studyActions
@@ -318,6 +320,7 @@ class _Translations$studyActions$ru extends Translations$studyActions$en {
 	final TranslationsRu _root; // ignore: unused_field
 
 	// Translations
+	@override String get quickStudy => 'Быстрое изучение';
 	@override String get compare => 'Сравнивать';
 	@override String get interlinear => 'Подстрочный';
 	@override String get commentary => 'Комментарий';
@@ -815,6 +818,8 @@ class _Translations$audio$ru extends Translations$audio$en {
 	@override String get unavailable => 'Звук для этой Библии недоступен.';
 	@override String get chooseBible => 'Чтобы прослушать эту главу, выберите Библию с аудиозаписью.';
 	@override String get switchRequired => 'Чтобы прослушать этот отрывок, переключитесь на Библию с аудиозаписью.';
+	@override String get rewindTenSeconds => 'На 10 секунд назад';
+	@override String get fastForwardTenSeconds => 'На 10 секунд вперед';
 	@override String get notificationChannelName => 'Аудио воспроизведение Библии';
 	@override String get notificationChannelDescription => 'Элементы управления воспроизведением аудио Библии';
 }
@@ -1022,7 +1027,7 @@ class _Translations$onboardingSteps$ru extends Translations$onboardingSteps$en {
 	@override String get deselectSuffix => 'рядом с вашим выбором, чтобы отменить выбор';
 	@override String get revealToolbar => 'Прокрутите вверх, чтобы открыть главную панель инструментов.';
 	@override String get addPanelPrefix => 'Нажмите';
-	@override String get addPanelSuffix => '→ Добавить исследовательскую панель и добавить любую исследовательскую панель.';
+	@override String get addPanelSuffix => ' → Исследование → Добавить панель исследований и добавьте любую панель исследований.';
 	@override String get goToChapter => 'Перейти в другую главу';
 	@override String get openPrefix => 'Открыть';
 	@override String get crossReferencesSuffix => '→ Исследование → Перекрестные ссылки';
@@ -1035,8 +1040,8 @@ class _Translations$onboardingSteps$ru extends Translations$onboardingSteps$en {
 	@override String get goBackDescription => 'Проведите пальцем вправо по панели инструментов, чтобы вернуться назад.';
 	@override String get swipeChapterDescription => 'Проведите по Библии влево или вправо, чтобы изменить главу.';
 	@override String get viewPanelDescription => 'Проведите пальцем по этой панели вправо, чтобы просмотреть панель исследования.';
-	@override String get settingsSeparator => '→';
-	@override String get customizeToolbarSuffix => '> Панели инструментов и выберите предустановку панели инструментов или измените любые ярлыки панели инструментов.';
+	@override String get moreSeparator => ' → Ещё → ';
+	@override String get customizeToolbarSuffix => 'Панели инструментов: выберите предустановку или измените ярлыки панели инструментов.';
 	@override String get startPlanSuffix => '→ Библейские планы и начните любой библейский план';
 }
 
@@ -2814,6 +2819,7 @@ extension on TranslationsRu {
 			'mainActions.resources' => 'Ресурсы',
 			'mainActions.plans' => 'Библейские планы',
 			'mainActions.settings' => 'Настройки',
+			'mainActions.more' => 'Ещё',
 			'mainActions.audioDescription' => 'Слушайте текущую главу с помощью Библии с поддержкой аудио.',
 			'mainActions.bookmarkDescription' => 'Добавьте эту главу в закладки, чтобы легко получить к ней доступ со страницы поиска.',
 			'mainActions.manageBookmarkDescription' => 'Управляйте этой закладкой.',
@@ -2823,6 +2829,8 @@ extension on TranslationsRu {
 			'mainActions.resourcesDescription' => 'Найдите слова в словаре и лексиконе.',
 			'mainActions.plansDescription' => 'Читайте Библию с помощью управляемых планов чтения.',
 			'mainActions.settingsDescription' => 'Откройте настройки Lux.',
+			'mainActions.moreDescription' => 'Просматривайте настройки, ваш контент и ссылки на сообщество.',
+			'studyActions.quickStudy' => 'Быстрое изучение',
 			'studyActions.compare' => 'Сравнивать',
 			'studyActions.interlinear' => 'Подстрочный',
 			'studyActions.commentary' => 'Комментарий',
@@ -3130,6 +3138,8 @@ extension on TranslationsRu {
 			'audio.unavailable' => 'Звук для этой Библии недоступен.',
 			'audio.chooseBible' => 'Чтобы прослушать эту главу, выберите Библию с аудиозаписью.',
 			'audio.switchRequired' => 'Чтобы прослушать этот отрывок, переключитесь на Библию с аудиозаписью.',
+			'audio.rewindTenSeconds' => 'На 10 секунд назад',
+			'audio.fastForwardTenSeconds' => 'На 10 секунд вперед',
 			'audio.notificationChannelName' => 'Аудио воспроизведение Библии',
 			'audio.notificationChannelDescription' => 'Элементы управления воспроизведением аудио Библии',
 			'interlinearUi.interlinearBible' => 'Подстрочная Библия',
@@ -3178,13 +3188,13 @@ extension on TranslationsRu {
 			'strongDefinition.idiomLabel' => 'идиома:',
 			'strongDefinition.addedWord' => 'Добавлено слово',
 			'strongDefinition.idiomaticRendering' => 'Идиоматический рендеринг',
+			_ => null,
+		} ?? switch (path) {
 			'strongDefinition.addedWordDescription' => 'Отмечает слово, указанное рядом с определяемым еврейским или греческим словом.',
 			'strongDefinition.idiomaticRenderingDescription' => 'Отмечает перевод, который отражает выражение, характерное для иврита или греческого языка.',
 			'planTypes.throughTheBible' => 'Через Библию',
 			'planTypes.chronological' => 'Один год в хронологическом порядке',
 			'planTypes.oldAndNewTestament' => 'Ветхий и Новый Завет',
-			_ => null,
-		} ?? switch (path) {
 			'planTypes.everyDayInTheWord' => 'Каждый день в слове',
 			'planTypes.mcheyne' => 'М\'Чейн',
 			'planTypes.literaryStudy' => 'Литературное исследование',
@@ -3231,7 +3241,7 @@ extension on TranslationsRu {
 			'onboardingSteps.deselectSuffix' => 'рядом с вашим выбором, чтобы отменить выбор',
 			'onboardingSteps.revealToolbar' => 'Прокрутите вверх, чтобы открыть главную панель инструментов.',
 			'onboardingSteps.addPanelPrefix' => 'Нажмите',
-			'onboardingSteps.addPanelSuffix' => '→ Добавить исследовательскую панель и добавить любую исследовательскую панель.',
+			'onboardingSteps.addPanelSuffix' => ' → Исследование → Добавить панель исследований и добавьте любую панель исследований.',
 			'onboardingSteps.goToChapter' => 'Перейти в другую главу',
 			'onboardingSteps.openPrefix' => 'Открыть',
 			'onboardingSteps.crossReferencesSuffix' => '→ Исследование → Перекрестные ссылки',
@@ -3244,8 +3254,8 @@ extension on TranslationsRu {
 			'onboardingSteps.goBackDescription' => 'Проведите пальцем вправо по панели инструментов, чтобы вернуться назад.',
 			'onboardingSteps.swipeChapterDescription' => 'Проведите по Библии влево или вправо, чтобы изменить главу.',
 			'onboardingSteps.viewPanelDescription' => 'Проведите пальцем по этой панели вправо, чтобы просмотреть панель исследования.',
-			'onboardingSteps.settingsSeparator' => '→',
-			'onboardingSteps.customizeToolbarSuffix' => '> Панели инструментов и выберите предустановку панели инструментов или измените любые ярлыки панели инструментов.',
+			'onboardingSteps.moreSeparator' => ' → Ещё → ',
+			'onboardingSteps.customizeToolbarSuffix' => 'Панели инструментов: выберите предустановку или измените ярлыки панели инструментов.',
 			'onboardingSteps.startPlanSuffix' => '→ Библейские планы и начните любой библейский план',
 			'dictionary.eastons' => 'Библейский словарь Истона',
 			'navigation.recents' => 'Недавние',

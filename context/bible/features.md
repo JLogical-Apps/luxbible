@@ -12,13 +12,13 @@ Lux uses a single reading area with optional study panels. Panels appear below t
 
 ## Languages
 
-Lux supports English, Dutch, and Russian. By default, it follows the device language when that language is supported and otherwise uses English. Users can select System, English, Dutch, or Russian from Settings > Customize > Language. System follows the device locale; the other choices override it.
+Lux supports English, Dutch, and Russian. By default, it follows the device language when that language is supported and otherwise uses English. More > Settings > Language opens the device's native app-language setting, where available. Android 13 and later opens Lux's Language screen directly; iOS opens Lux's app settings, which include its Language control.
 
 The selected language controls Lux's interface, Bible book names, reference formatting, reading-plan metadata, study terminology, and other app-authored text. It does not translate Bible text, translation names, user-created content, imported study-resource bodies, or legal copy.
 
 ## Notifications
 
-Settings > Customize > Push Notifications lists every enabled daily Bible plan reminder. Users can review each plan's localized reminder time and delete reminders after confirmation. When notification permission has not been requested, the page can request it directly. When app notifications or the Android Bible Plan Reminders channel are disabled at the system level, Lux preserves reminder settings but disables reminder management until notifications are restored.
+More > Settings > Push Notifications lists every enabled daily Bible plan reminder. Users can review each plan's localized reminder time and delete reminders after confirmation. When notification permission has not been requested, the page can request it directly. When app notifications or the Android Bible Plan Reminders channel are disabled at the system level, Lux preserves reminder settings but disables reminder management until notifications are restored.
 
 ## Bible Library
 
@@ -176,7 +176,7 @@ The main toolbar appears when no Bible selection is active. Available shortcuts 
 - Bible Plans
 - Theme & Layout
 
-The main overflow menu also provides Settings.
+The main overflow menu provides Audio, Bookmark, Study, Bible Plans, and More. More opens app customization, content, settings, and community links.
 
 ### Verse Selection Toolbar
 
@@ -486,9 +486,9 @@ Daily plan reminders follow the device's local time and include the plan name pl
 
 After a user completes a plan day for the first time, Lux asks whether they want a daily reminder if they have not already answered or configured one for that plan. The prompt appears when the Bible Plans page is visible again, including after reading or listening on the focused reading page. Declining or canceling reminder setup resolves the prompt for that plan. Stopping and restarting a plan resets this eligibility with its fresh progress.
 
-## Settings
+## More
 
-Settings is organized around:
+More is organized around:
 
 ### Customize
 
@@ -509,6 +509,11 @@ Settings is organized around:
 - Notebooks
 - Highlight Styles
 - Bookmarks
+
+### Settings
+
+- Push Notifications
+- Language
 
 ### Community
 
@@ -545,7 +550,7 @@ New users see a Get Started checklist that teaches:
 - Toolbar customization
 - Bible reading plans
 
-The checklist can be skipped and restarted from Settings. Separate contextual tutorial banners can also be reset.
+The checklist can be skipped and restarted from More > Help. Separate contextual tutorial banners can also be reset.
 
 ## Current Product Limitations
 

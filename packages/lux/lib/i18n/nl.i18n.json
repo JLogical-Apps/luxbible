@@ -157,6 +157,7 @@
     "resources": "Bronnen",
     "plans": "Bijbelleesplannen",
     "settings": "Instellingen",
+    "more": "Meer",
     "audioDescription": "Luister naar het huidige hoofdstuk met een Bijbel met audio.",
     "bookmarkDescription": "Voeg een bladwijzer aan dit hoofdstuk toe om het makkelijk terug te vinden via de zoekpagina.",
     "manageBookmarkDescription": "Beheer deze bladwijzer.",
@@ -165,9 +166,11 @@
     "searchDescription": "Zoek naar woorden in de Bijbel.",
     "resourcesDescription": "Zoek woorden op in het woordenboek en lexicon.",
     "plansDescription": "Lees de Bijbel met begeleide leesplannen.",
-    "settingsDescription": "Bekijk de instellingen van Lux."
+    "settingsDescription": "Bekijk de instellingen van Lux.",
+    "moreDescription": "Bekijk instellingen, je inhoud en links naar de community."
   },
   "studyActions": {
+    "quickStudy": "Snelle studie",
     "compare": "Vergelijken",
     "interlinear": "Interlineair",
     "commentary": "Commentaar",
@@ -521,6 +524,8 @@
     "unavailable": "Audio is niet beschikbaar voor deze Bijbel",
     "chooseBible": "Kies een Bijbel met audio om naar dit hoofdstuk te luisteren.",
     "switchRequired": "Schakel over naar een Bijbel met audio om naar dit gedeelte te luisteren.",
+    "rewindTenSeconds": "10 seconden terug",
+    "fastForwardTenSeconds": "10 seconden vooruit",
     "notificationChannelName": "Bijbelaudio afspelen",
     "notificationChannelDescription": "Bediening voor het afspelen van bijbelaudio"
   },
@@ -644,7 +649,7 @@
     "deselectSuffix": " naast je selectie om de selectie op te heffen",
     "revealToolbar": "Scroll omhoog om de hoofdwerkbalk te tonen",
     "addPanelPrefix": "Tik op ",
-    "addPanelSuffix": " → Studiepaneel toevoegen en voeg een studiepaneel toe",
+    "addPanelSuffix": " → Studie → Studiepaneel toevoegen en voeg een studiepaneel toe",
     "goToChapter": "Ga naar een ander hoofdstuk",
     "openPrefix": "Open ",
     "crossReferencesSuffix": " → Studie → Kruisverwijzingen",
@@ -657,8 +662,8 @@
     "goBackDescription": "Veeg op de werkbalk naar rechts om terug te gaan",
     "swipeChapterDescription": "Veeg de Bijbel naar links of rechts om van hoofdstuk te wisselen",
     "viewPanelDescription": "Veeg dit paneel naar rechts om je studiepaneel te bekijken",
-    "settingsSeparator": " → ",
-    "customizeToolbarSuffix": " > Werkbalken en kies een werkbalkpreset of wijzig een snelkoppeling",
+    "moreSeparator": " → Meer → ",
+    "customizeToolbarSuffix": "Werkbalken en kies een werkbalkpreset of wijzig een snelkoppeling",
     "startPlanSuffix": " → Bijbelleesplannen en start een leesplan"
   },
   "dictionary": {

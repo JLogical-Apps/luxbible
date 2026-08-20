@@ -583,6 +583,9 @@ class Translations$mainActions$en {
 	/// en: 'Settings'
 	String get settings => 'Settings';
 
+	/// en: 'More'
+	String get more => 'More';
+
 	/// en: 'Listen to the current chapter with an audio-enabled Bible.'
 	String get audioDescription => 'Listen to the current chapter with an audio-enabled Bible.';
 
@@ -609,6 +612,9 @@ class Translations$mainActions$en {
 
 	/// en: 'View the settings for Lux.'
 	String get settingsDescription => 'View the settings for Lux.';
+
+	/// en: 'View settings, your content, and community links.'
+	String get moreDescription => 'View settings, your content, and community links.';
 }
 
 // Path: studyActions
@@ -618,6 +624,9 @@ class Translations$studyActions$en {
 	final Translations _root; // ignore: unused_field
 
 	// Translations
+
+	/// en: 'Quick Study'
+	String get quickStudy => 'Quick Study';
 
 	/// en: 'Compare'
 	String get compare => 'Compare';
@@ -1726,6 +1735,12 @@ class Translations$audio$en {
 	/// en: 'Switch to an audio-enabled Bible to listen to this passage.'
 	String get switchRequired => 'Switch to an audio-enabled Bible to listen to this passage.';
 
+	/// en: 'Back 10 seconds'
+	String get rewindTenSeconds => 'Back 10 seconds';
+
+	/// en: 'Forward 10 seconds'
+	String get fastForwardTenSeconds => 'Forward 10 seconds';
+
 	/// en: 'Audio Bible playback'
 	String get notificationChannelName => 'Audio Bible playback';
 
@@ -2131,8 +2146,8 @@ class Translations$onboardingSteps$en {
 	/// en: 'Tap '
 	String get addPanelPrefix => 'Tap ';
 
-	/// en: ' → Add Study Panel and add any Study Panel'
-	String get addPanelSuffix => ' → Add Study Panel and add any Study Panel';
+	/// en: ' → Study → Add Study Panel and add any study panel'
+	String get addPanelSuffix => ' → Study → Add Study Panel and add any study panel';
 
 	/// en: 'Go to another chapter'
 	String get goToChapter => 'Go to another chapter';
@@ -2170,11 +2185,11 @@ class Translations$onboardingSteps$en {
 	/// en: 'Swipe this panel right to view your study panel'
 	String get viewPanelDescription => 'Swipe this panel right to view your study panel';
 
-	/// en: ' → '
-	String get settingsSeparator => ' → ';
+	/// en: ' → More → '
+	String get moreSeparator => ' → More → ';
 
-	/// en: ' > Toolbars and pick a toolbar preset or change any of your toolbar shortcuts'
-	String get customizeToolbarSuffix => ' > Toolbars and pick a toolbar preset or change any of your toolbar shortcuts';
+	/// en: 'Toolbars and pick a toolbar preset or change any of your toolbar shortcuts'
+	String get customizeToolbarSuffix => 'Toolbars and pick a toolbar preset or change any of your toolbar shortcuts';
 
 	/// en: ' → Bible Plans and start any Bible plan'
 	String get startPlanSuffix => ' → Bible Plans and start any Bible plan';
@@ -2302,8 +2317,8 @@ class Translations$settings$en {
 	/// en: 'You can add a reminder to a Bible plan from the Bible Plans page.'
 	String get noBiblePlanRemindersDescription => 'You can add a reminder to a Bible plan from the Bible Plans page.';
 
-	/// en: 'Turn on notifications.'
-	String get notificationsNotRequested => 'Turn on notifications.';
+	/// en: 'Turn on notifications'
+	String get notificationsNotRequested => 'Turn on notifications';
 
 	/// en: 'Allow Lux to send notifications to manage your reminders.'
 	String get notificationsNotRequestedDescription => 'Allow Lux to send notifications to manage your reminders.';
@@ -4672,6 +4687,7 @@ extension on Translations {
 			'mainActions.resources' => 'Resources',
 			'mainActions.plans' => 'Bible Plans',
 			'mainActions.settings' => 'Settings',
+			'mainActions.more' => 'More',
 			'mainActions.audioDescription' => 'Listen to the current chapter with an audio-enabled Bible.',
 			'mainActions.bookmarkDescription' => 'Bookmark this chapter to easily access it from the search page.',
 			'mainActions.manageBookmarkDescription' => 'Manage this bookmark.',
@@ -4681,6 +4697,8 @@ extension on Translations {
 			'mainActions.resourcesDescription' => 'Look up words in the dictionary and lexicon.',
 			'mainActions.plansDescription' => 'Read through the Bible with guided reading plans.',
 			'mainActions.settingsDescription' => 'View the settings for Lux.',
+			'mainActions.moreDescription' => 'View settings, your content, and community links.',
+			'studyActions.quickStudy' => 'Quick Study',
 			'studyActions.compare' => 'Compare',
 			'studyActions.interlinear' => 'Interlinear',
 			'studyActions.commentary' => 'Commentary',
@@ -4988,6 +5006,8 @@ extension on Translations {
 			'audio.unavailable' => 'Audio is unavailable for this Bible',
 			'audio.chooseBible' => 'Choose an audio-enabled Bible to listen to this chapter.',
 			'audio.switchRequired' => 'Switch to an audio-enabled Bible to listen to this passage.',
+			'audio.rewindTenSeconds' => 'Back 10 seconds',
+			'audio.fastForwardTenSeconds' => 'Forward 10 seconds',
 			'audio.notificationChannelName' => 'Audio Bible playback',
 			'audio.notificationChannelDescription' => 'Audio Bible playback controls',
 			'interlinearUi.interlinearBible' => 'Interlinear Bible',
@@ -5036,13 +5056,13 @@ extension on Translations {
 			'strongDefinition.idiomLabel' => 'idiom:',
 			'strongDefinition.addedWord' => 'Added word',
 			'strongDefinition.idiomaticRendering' => 'Idiomatic rendering',
+			_ => null,
+		} ?? switch (path) {
 			'strongDefinition.addedWordDescription' => 'Marks a word supplied alongside the Hebrew or Greek word being defined.',
 			'strongDefinition.idiomaticRenderingDescription' => 'Marks a rendering that reflects an expression particular to Hebrew or Greek.',
 			'planTypes.throughTheBible' => 'Through The Bible',
 			'planTypes.chronological' => 'One Year Chronological',
 			'planTypes.oldAndNewTestament' => 'Old and New Testament',
-			_ => null,
-		} ?? switch (path) {
 			'planTypes.everyDayInTheWord' => 'Every Day In the Word',
 			'planTypes.mcheyne' => 'M\'Cheyne',
 			'planTypes.literaryStudy' => 'Literary Study',
@@ -5089,7 +5109,7 @@ extension on Translations {
 			'onboardingSteps.deselectSuffix' => ' next to your selection to deselect',
 			'onboardingSteps.revealToolbar' => 'Scroll up to reveal the main toolbar',
 			'onboardingSteps.addPanelPrefix' => 'Tap ',
-			'onboardingSteps.addPanelSuffix' => ' → Add Study Panel and add any Study Panel',
+			'onboardingSteps.addPanelSuffix' => ' → Study → Add Study Panel and add any study panel',
 			'onboardingSteps.goToChapter' => 'Go to another chapter',
 			'onboardingSteps.openPrefix' => 'Open ',
 			'onboardingSteps.crossReferencesSuffix' => ' → Study → Cross References',
@@ -5102,8 +5122,8 @@ extension on Translations {
 			'onboardingSteps.goBackDescription' => 'Swipe right on the toolbar to go back',
 			'onboardingSteps.swipeChapterDescription' => 'Swipe the Bible left or right to change chapter',
 			'onboardingSteps.viewPanelDescription' => 'Swipe this panel right to view your study panel',
-			'onboardingSteps.settingsSeparator' => ' → ',
-			'onboardingSteps.customizeToolbarSuffix' => ' > Toolbars and pick a toolbar preset or change any of your toolbar shortcuts',
+			'onboardingSteps.moreSeparator' => ' → More → ',
+			'onboardingSteps.customizeToolbarSuffix' => 'Toolbars and pick a toolbar preset or change any of your toolbar shortcuts',
 			'onboardingSteps.startPlanSuffix' => ' → Bible Plans and start any Bible plan',
 			'dictionary.eastons' => 'Easton\'s Bible Dictionary',
 			'navigation.recents' => 'Recents',
@@ -5439,7 +5459,7 @@ extension on Translations {
 			'settings.biblePlanReminders' => 'Bible Plan Reminders',
 			'settings.noBiblePlanReminders' => 'No Bible plan reminders',
 			'settings.noBiblePlanRemindersDescription' => 'You can add a reminder to a Bible plan from the Bible Plans page.',
-			'settings.notificationsNotRequested' => 'Turn on notifications.',
+			'settings.notificationsNotRequested' => 'Turn on notifications',
 			'settings.notificationsNotRequestedDescription' => 'Allow Lux to send notifications to manage your reminders.',
 			'settings.notificationsDisabled' => 'Notifications are disabled',
 			'settings.biblePlanRemindersDisabled' => 'Bible Plan Reminders are turned off.',

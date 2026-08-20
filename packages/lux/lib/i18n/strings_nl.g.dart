@@ -300,6 +300,7 @@ class _Translations$mainActions$nl extends Translations$mainActions$en {
 	@override String get resources => 'Bronnen';
 	@override String get plans => 'Bijbelleesplannen';
 	@override String get settings => 'Instellingen';
+	@override String get more => 'Meer';
 	@override String get audioDescription => 'Luister naar het huidige hoofdstuk met een Bijbel met audio.';
 	@override String get bookmarkDescription => 'Voeg een bladwijzer aan dit hoofdstuk toe om het makkelijk terug te vinden via de zoekpagina.';
 	@override String get manageBookmarkDescription => 'Beheer deze bladwijzer.';
@@ -309,6 +310,7 @@ class _Translations$mainActions$nl extends Translations$mainActions$en {
 	@override String get resourcesDescription => 'Zoek woorden op in het woordenboek en lexicon.';
 	@override String get plansDescription => 'Lees de Bijbel met begeleide leesplannen.';
 	@override String get settingsDescription => 'Bekijk de instellingen van Lux.';
+	@override String get moreDescription => 'Bekijk instellingen, je inhoud en links naar de community.';
 }
 
 // Path: studyActions
@@ -318,6 +320,7 @@ class _Translations$studyActions$nl extends Translations$studyActions$en {
 	final TranslationsNl _root; // ignore: unused_field
 
 	// Translations
+	@override String get quickStudy => 'Snelle studie';
 	@override String get compare => 'Vergelijken';
 	@override String get interlinear => 'Interlineair';
 	@override String get commentary => 'Commentaar';
@@ -811,6 +814,8 @@ class _Translations$audio$nl extends Translations$audio$en {
 	@override String get unavailable => 'Audio is niet beschikbaar voor deze Bijbel';
 	@override String get chooseBible => 'Kies een Bijbel met audio om naar dit hoofdstuk te luisteren.';
 	@override String get switchRequired => 'Schakel over naar een Bijbel met audio om naar dit gedeelte te luisteren.';
+	@override String get rewindTenSeconds => '10 seconden terug';
+	@override String get fastForwardTenSeconds => '10 seconden vooruit';
 	@override String get notificationChannelName => 'Bijbelaudio afspelen';
 	@override String get notificationChannelDescription => 'Bediening voor het afspelen van bijbelaudio';
 }
@@ -1018,7 +1023,7 @@ class _Translations$onboardingSteps$nl extends Translations$onboardingSteps$en {
 	@override String get deselectSuffix => ' naast je selectie om de selectie op te heffen';
 	@override String get revealToolbar => 'Scroll omhoog om de hoofdwerkbalk te tonen';
 	@override String get addPanelPrefix => 'Tik op ';
-	@override String get addPanelSuffix => ' → Studiepaneel toevoegen en voeg een studiepaneel toe';
+	@override String get addPanelSuffix => ' → Studie → Studiepaneel toevoegen en voeg een studiepaneel toe';
 	@override String get goToChapter => 'Ga naar een ander hoofdstuk';
 	@override String get openPrefix => 'Open ';
 	@override String get crossReferencesSuffix => ' → Studie → Kruisverwijzingen';
@@ -1031,8 +1036,8 @@ class _Translations$onboardingSteps$nl extends Translations$onboardingSteps$en {
 	@override String get goBackDescription => 'Veeg op de werkbalk naar rechts om terug te gaan';
 	@override String get swipeChapterDescription => 'Veeg de Bijbel naar links of rechts om van hoofdstuk te wisselen';
 	@override String get viewPanelDescription => 'Veeg dit paneel naar rechts om je studiepaneel te bekijken';
-	@override String get settingsSeparator => ' → ';
-	@override String get customizeToolbarSuffix => ' > Werkbalken en kies een werkbalkpreset of wijzig een snelkoppeling';
+	@override String get moreSeparator => ' → Meer → ';
+	@override String get customizeToolbarSuffix => 'Werkbalken en kies een werkbalkpreset of wijzig een snelkoppeling';
 	@override String get startPlanSuffix => ' → Bijbelleesplannen en start een leesplan';
 }
 
@@ -2810,6 +2815,7 @@ extension on TranslationsNl {
 			'mainActions.resources' => 'Bronnen',
 			'mainActions.plans' => 'Bijbelleesplannen',
 			'mainActions.settings' => 'Instellingen',
+			'mainActions.more' => 'Meer',
 			'mainActions.audioDescription' => 'Luister naar het huidige hoofdstuk met een Bijbel met audio.',
 			'mainActions.bookmarkDescription' => 'Voeg een bladwijzer aan dit hoofdstuk toe om het makkelijk terug te vinden via de zoekpagina.',
 			'mainActions.manageBookmarkDescription' => 'Beheer deze bladwijzer.',
@@ -2819,6 +2825,8 @@ extension on TranslationsNl {
 			'mainActions.resourcesDescription' => 'Zoek woorden op in het woordenboek en lexicon.',
 			'mainActions.plansDescription' => 'Lees de Bijbel met begeleide leesplannen.',
 			'mainActions.settingsDescription' => 'Bekijk de instellingen van Lux.',
+			'mainActions.moreDescription' => 'Bekijk instellingen, je inhoud en links naar de community.',
+			'studyActions.quickStudy' => 'Snelle studie',
 			'studyActions.compare' => 'Vergelijken',
 			'studyActions.interlinear' => 'Interlineair',
 			'studyActions.commentary' => 'Commentaar',
@@ -3126,6 +3134,8 @@ extension on TranslationsNl {
 			'audio.unavailable' => 'Audio is niet beschikbaar voor deze Bijbel',
 			'audio.chooseBible' => 'Kies een Bijbel met audio om naar dit hoofdstuk te luisteren.',
 			'audio.switchRequired' => 'Schakel over naar een Bijbel met audio om naar dit gedeelte te luisteren.',
+			'audio.rewindTenSeconds' => '10 seconden terug',
+			'audio.fastForwardTenSeconds' => '10 seconden vooruit',
 			'audio.notificationChannelName' => 'Bijbelaudio afspelen',
 			'audio.notificationChannelDescription' => 'Bediening voor het afspelen van bijbelaudio',
 			'interlinearUi.interlinearBible' => 'Interlineaire Bijbel',
@@ -3174,13 +3184,13 @@ extension on TranslationsNl {
 			'strongDefinition.idiomLabel' => 'idioom:',
 			'strongDefinition.addedWord' => 'Toegevoegd woord',
 			'strongDefinition.idiomaticRendering' => 'Idiomatische weergave',
+			_ => null,
+		} ?? switch (path) {
 			'strongDefinition.addedWordDescription' => 'Geeft een woord aan dat naast het gedefinieerde Hebreeuwse of Griekse woord is aangevuld.',
 			'strongDefinition.idiomaticRenderingDescription' => 'Geeft een vertaling aan die een Hebreeuwse of Griekse uitdrukking weergeeft.',
 			'planTypes.throughTheBible' => 'De Bijbel door',
 			'planTypes.chronological' => 'Chronologisch in één jaar',
 			'planTypes.oldAndNewTestament' => 'Oude en Nieuwe Testament',
-			_ => null,
-		} ?? switch (path) {
 			'planTypes.everyDayInTheWord' => 'Elke dag in het Woord',
 			'planTypes.mcheyne' => 'M\'Cheyne',
 			'planTypes.literaryStudy' => 'Literaire studie',
@@ -3227,7 +3237,7 @@ extension on TranslationsNl {
 			'onboardingSteps.deselectSuffix' => ' naast je selectie om de selectie op te heffen',
 			'onboardingSteps.revealToolbar' => 'Scroll omhoog om de hoofdwerkbalk te tonen',
 			'onboardingSteps.addPanelPrefix' => 'Tik op ',
-			'onboardingSteps.addPanelSuffix' => ' → Studiepaneel toevoegen en voeg een studiepaneel toe',
+			'onboardingSteps.addPanelSuffix' => ' → Studie → Studiepaneel toevoegen en voeg een studiepaneel toe',
 			'onboardingSteps.goToChapter' => 'Ga naar een ander hoofdstuk',
 			'onboardingSteps.openPrefix' => 'Open ',
 			'onboardingSteps.crossReferencesSuffix' => ' → Studie → Kruisverwijzingen',
@@ -3240,8 +3250,8 @@ extension on TranslationsNl {
 			'onboardingSteps.goBackDescription' => 'Veeg op de werkbalk naar rechts om terug te gaan',
 			'onboardingSteps.swipeChapterDescription' => 'Veeg de Bijbel naar links of rechts om van hoofdstuk te wisselen',
 			'onboardingSteps.viewPanelDescription' => 'Veeg dit paneel naar rechts om je studiepaneel te bekijken',
-			'onboardingSteps.settingsSeparator' => ' → ',
-			'onboardingSteps.customizeToolbarSuffix' => ' > Werkbalken en kies een werkbalkpreset of wijzig een snelkoppeling',
+			'onboardingSteps.moreSeparator' => ' → Meer → ',
+			'onboardingSteps.customizeToolbarSuffix' => 'Werkbalken en kies een werkbalkpreset of wijzig een snelkoppeling',
 			'onboardingSteps.startPlanSuffix' => ' → Bijbelleesplannen en start een leesplan',
 			'dictionary.eastons' => 'Easton\'s Bible Dictionary',
 			'navigation.recents' => 'Recent',

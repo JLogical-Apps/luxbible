@@ -50,7 +50,7 @@ class PushNotificationsPage extends ConsumerWidget {
                     _ => t.settings.notificationsDisabledDescription.toText(),
                   },
                   trailing: switch (availability) {
-                    .notRequested => Symbols.notifications.toIcon(),
+                    .notRequested => null,
                     _ => Symbols.arrow_outward.toIcon(),
                   },
                   onPressed: () async {

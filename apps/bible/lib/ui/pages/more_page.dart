@@ -11,6 +11,7 @@ import 'package:bible/ui/pages/push_notifications_page.dart';
 import 'package:bible/ui/pages/text_selection_settings_page.dart';
 import 'package:bible/ui/pages/theme_settings_page.dart';
 import 'package:bible/ui/pages/verse_selection_settings_page.dart';
+import 'package:app_settings/app_settings.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -34,7 +35,7 @@ class MorePage extends HookConsumerWidget {
 
     return StyledPage(
       backgroundColor: .backgroundPrimary,
-      title: 'More'.toText(),
+      title: t.mainActions.more.toText(),
       body: ListView(
         children: [
           StyledSection.child(
@@ -172,7 +173,7 @@ class MorePage extends HookConsumerWidget {
             ),
           ),
           StyledSection.child(
-            title: 'Settings'.toText(),
+            title: t.settings.title.toText(),
             child: StyledCard(
               children: [
                 StyledListItem.navigation(
@@ -183,7 +184,7 @@ class MorePage extends HookConsumerWidget {
                 StyledListItem.externalNavigation(
                   title: t.settings.language.toText(),
                   leading: Symbols.language.toIcon(),
-                  onPressed: () {},
+                  onPressed: () => AppSettings.openAppSettings(type: .appLocale),
                 ),
               ],
             ),

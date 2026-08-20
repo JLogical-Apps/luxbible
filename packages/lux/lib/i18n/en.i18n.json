@@ -157,6 +157,7 @@
     "resources": "Resources",
     "plans": "Bible Plans",
     "settings": "Settings",
+    "more": "More",
     "audioDescription": "Listen to the current chapter with an audio-enabled Bible.",
     "bookmarkDescription": "Bookmark this chapter to easily access it from the search page.",
     "manageBookmarkDescription": "Manage this bookmark.",
@@ -165,9 +166,11 @@
     "searchDescription": "Search for words across the Bible.",
     "resourcesDescription": "Look up words in the dictionary and lexicon.",
     "plansDescription": "Read through the Bible with guided reading plans.",
-    "settingsDescription": "View the settings for Lux."
+    "settingsDescription": "View the settings for Lux.",
+    "moreDescription": "View settings, your content, and community links."
   },
   "studyActions": {
+    "quickStudy": "Quick Study",
     "compare": "Compare",
     "interlinear": "Interlinear",
     "commentary": "Commentary",
@@ -521,6 +524,8 @@
     "unavailable": "Audio is unavailable for this Bible",
     "chooseBible": "Choose an audio-enabled Bible to listen to this chapter.",
     "switchRequired": "Switch to an audio-enabled Bible to listen to this passage.",
+    "rewindTenSeconds": "Back 10 seconds",
+    "fastForwardTenSeconds": "Forward 10 seconds",
     "notificationChannelName": "Audio Bible playback",
     "notificationChannelDescription": "Audio Bible playback controls"
   },
@@ -644,7 +649,7 @@
     "deselectSuffix": " next to your selection to deselect",
     "revealToolbar": "Scroll up to reveal the main toolbar",
     "addPanelPrefix": "Tap ",
-    "addPanelSuffix": " → Add Study Panel and add any Study Panel",
+    "addPanelSuffix": " → Study → Add Study Panel and add any study panel",
     "goToChapter": "Go to another chapter",
     "openPrefix": "Open ",
     "crossReferencesSuffix": " → Study → Cross References",
@@ -657,8 +662,8 @@
     "goBackDescription": "Swipe right on the toolbar to go back",
     "swipeChapterDescription": "Swipe the Bible left or right to change chapter",
     "viewPanelDescription": "Swipe this panel right to view your study panel",
-    "settingsSeparator": " → ",
-    "customizeToolbarSuffix": " > Toolbars and pick a toolbar preset or change any of your toolbar shortcuts",
+    "moreSeparator": " → More → ",
+    "customizeToolbarSuffix": "Toolbars and pick a toolbar preset or change any of your toolbar shortcuts",
     "startPlanSuffix": " → Bible Plans and start any Bible plan"
   },
   "dictionary": {
@@ -839,7 +844,7 @@
     "biblePlanReminders": "Bible Plan Reminders",
     "noBiblePlanReminders": "No Bible plan reminders",
     "noBiblePlanRemindersDescription": "You can add a reminder to a Bible plan from the Bible Plans page.",
-    "notificationsNotRequested": "Turn on notifications.",
+    "notificationsNotRequested": "Turn on notifications",
     "notificationsNotRequestedDescription": "Allow Lux to send notifications to manage your reminders.",
     "notificationsDisabled": "Notifications are disabled",
     "biblePlanRemindersDisabled": "Bible Plan Reminders are turned off.",

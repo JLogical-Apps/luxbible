@@ -80,8 +80,7 @@ enum OnboardingMicroStep {
       customizeToolbar => [
         TextSpan(text: t.onboardingSteps.openPrefix),
         icon(Symbols.more_vert),
-        TextSpan(text: t.onboardingSteps.settingsSeparator),
-        icon(Symbols.settings),
+        TextSpan(text: t.onboardingSteps.moreSeparator),
         TextSpan(text: t.onboardingSteps.customizeToolbarSuffix),
       ],
       startBiblePlan => [

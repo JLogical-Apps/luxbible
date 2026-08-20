@@ -50,7 +50,7 @@ enum MainAction {
     search => t.mainActions.search,
     resources => t.mainActions.resources,
     plans => t.mainActions.plans,
-    more => 'More',
+    more => t.mainActions.more,
   };
 
   String description({User? user}) => switch (this) {
@@ -62,7 +62,7 @@ enum MainAction {
     search => t.mainActions.searchDescription,
     resources => t.mainActions.resourcesDescription,
     plans => t.mainActions.plansDescription,
-    more => 'View settings, your content, and community links.',
+    more => t.mainActions.moreDescription,
   };
 
   Widget buildIcon(BuildContext context, {User? user}) => switch (this) {
@@ -208,7 +208,7 @@ enum MainAction {
                     .toList(),
               ),
               StyledSection(
-                title: 'Quick Study'.toText(),
+                title: t.studyActions.quickStudy.toText(),
                 padding: .only(top: 24),
                 children: StudyAction.values
                     .map(
@@ -309,13 +309,13 @@ enum MainAction {
             children: [
               StyledListItem.navigation(
                 title: t.labels.dictionary.toText(),
-                subtitle: "Look up people, places, and topics in Easton's Bible Dictionary.".toText(),
+                subtitle: t.toolbarShortcuts.dictionaryDescription.toText(),
                 leading: Symbols.menu_book.toIcon(),
                 onPressed: () => context.pop(_Resource.dictionary),
               ),
               StyledListItem.navigation(
                 title: t.labels.lexicon.toText(),
-                subtitle: "Study the original Hebrew and Greek words with Strong's Lexicon.".toText(),
+                subtitle: t.toolbarShortcuts.lexiconDescription.toText(),
                 leading: Symbols.translate.toIcon(),
                 onPressed: () => context.pop(_Resource.lexicon),
               ),
