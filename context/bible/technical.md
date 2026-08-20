@@ -72,6 +72,7 @@ The following are bundled with the app and work offline:
 - Jamieson-Fausset-Brown commentary
 - OpenBible cross-reference data
 - Reading-plan schedules
+- Verse of the Day schedule
 - Search of local Bible text
 - Annotations, notebooks, bookmarks, and settings
 
@@ -145,6 +146,7 @@ Capabilities vary by translation:
 - Lexicon: Strong's Greek and Hebrew dictionaries
 - Commentaries: Matthew Henry, John Calvin, and Jamieson-Fausset-Brown
 - Reading plans: schedules from public-domain and licensed sources recorded in the in-app licenses
+- Verse of the Day: the first morning passage for each calendar date from Jonathan Bagster's public-domain *Daily Light on the Daily Path*, distributed as CrossWire's Daily SWORD module
 
 The app's license registry is authoritative for detailed attribution and redistribution terms.
 

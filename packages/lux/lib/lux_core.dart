@@ -26,7 +26,6 @@ export 'src/utils/extensions/bible_translation_extensions.dart';
 export 'src/utils/extensions/collection_extensions.dart';
 export 'src/utils/extensions/duration_extensions.dart';
 export 'src/utils/extensions/num_extensions.dart';
-export 'src/utils/extensions/render_box_extensions.dart';
 export 'src/utils/extensions/string_extensions.dart';
 export 'src/utils/markdown.dart';
 export 'src/utils/range.dart';

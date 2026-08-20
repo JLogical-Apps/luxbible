@@ -568,6 +568,9 @@ class Translations$mainActions$en {
 	/// en: 'Study'
 	String get study => 'Study';
 
+	/// en: 'Verse of the Day'
+	String get verseOfTheDay => 'Verse of the Day';
+
 	/// en: 'Add Study Panel'
 	String get addStudyPanel => 'Add Study Panel';
 
@@ -597,6 +600,9 @@ class Translations$mainActions$en {
 
 	/// en: 'View study tools for this chapter.'
 	String get studyDescription => 'View study tools for this chapter.';
+
+	/// en: 'View the verse of the day.'
+	String get verseOfTheDayDescription => 'View the verse of the day.';
 
 	/// en: 'Pin a panel beside the text that follows along and shows study tools for whatever you're reading.'
 	String get studyPanelDescription => 'Pin a panel beside the text that follows along and shows study tools for whatever you\'re reading.';
@@ -4682,6 +4688,7 @@ extension on Translations {
 			'mainActions.playAudio' => 'Play Audio Bible',
 			'mainActions.bookmark' => 'Bookmark',
 			'mainActions.study' => 'Study',
+			'mainActions.verseOfTheDay' => 'Verse of the Day',
 			'mainActions.addStudyPanel' => 'Add Study Panel',
 			'mainActions.search' => 'Search',
 			'mainActions.resources' => 'Resources',
@@ -4692,6 +4699,7 @@ extension on Translations {
 			'mainActions.bookmarkDescription' => 'Bookmark this chapter to easily access it from the search page.',
 			'mainActions.manageBookmarkDescription' => 'Manage this bookmark.',
 			'mainActions.studyDescription' => 'View study tools for this chapter.',
+			'mainActions.verseOfTheDayDescription' => 'View the verse of the day.',
 			'mainActions.studyPanelDescription' => 'Pin a panel beside the text that follows along and shows study tools for whatever you\'re reading.',
 			'mainActions.searchDescription' => 'Search for words across the Bible.',
 			'mainActions.resourcesDescription' => 'Look up words in the dictionary and lexicon.',
@@ -5054,10 +5062,10 @@ extension on Translations {
 			'commentaryTypes.calvinDescription' => 'The Reformer\'s classic exposition. Deep and doctrinal.',
 			'strongDefinition.addedLabel' => 'added:',
 			'strongDefinition.idiomLabel' => 'idiom:',
-			'strongDefinition.addedWord' => 'Added word',
-			'strongDefinition.idiomaticRendering' => 'Idiomatic rendering',
 			_ => null,
 		} ?? switch (path) {
+			'strongDefinition.addedWord' => 'Added word',
+			'strongDefinition.idiomaticRendering' => 'Idiomatic rendering',
 			'strongDefinition.addedWordDescription' => 'Marks a word supplied alongside the Hebrew or Greek word being defined.',
 			'strongDefinition.idiomaticRenderingDescription' => 'Marks a rendering that reflects an expression particular to Hebrew or Greek.',
 			'planTypes.throughTheBible' => 'Through The Bible',

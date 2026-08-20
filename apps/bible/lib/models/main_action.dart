@@ -6,6 +6,7 @@ import 'package:bible/providers/audio_bible_player_provider.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/providers/verse_of_the_day_provider.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:bible/ui/pages/dictionary_page.dart';
@@ -13,6 +14,7 @@ import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/more_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/sheets/bookmark_sheet.dart';
+import 'package:bible/ui/sheets/preview_passage_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +29,7 @@ enum MainAction {
   audio(true),
   bookmark(true),
   study(true),
+  verseOfTheDay(true),
   studyPanel(false),
   search(false),
   resources(false),
@@ -46,6 +49,7 @@ enum MainAction {
           : t.mainActions.playAudio,
     bookmark => t.mainActions.bookmark,
     study => t.mainActions.study,
+    verseOfTheDay => t.mainActions.verseOfTheDay,
     studyPanel => t.mainActions.addStudyPanel,
     search => t.mainActions.search,
     resources => t.mainActions.resources,
@@ -53,11 +57,12 @@ enum MainAction {
     more => t.mainActions.more,
   };
 
-  String description({User? user}) => switch (this) {
+  String description({User? user, VerseOfTheDay? verseOfTheDay}) => switch (this) {
     audio => t.mainActions.audioDescription,
     bookmark =>
       user?.currentBookmark == null ? t.mainActions.bookmarkDescription : t.mainActions.manageBookmarkDescription,
     study => t.mainActions.studyDescription,
+    .verseOfTheDay => verseOfTheDay?.format() ?? t.mainActions.verseOfTheDayDescription,
     studyPanel => t.mainActions.studyPanelDescription,
     search => t.mainActions.searchDescription,
     resources => t.mainActions.resourcesDescription,
@@ -97,6 +102,7 @@ enum MainAction {
           : Icon(Symbols.bookmark, color: bookmark.color.toHue(context.colors).medium);
     }(),
     study => Icon(Symbols.school),
+    verseOfTheDay => Icon(Symbols.light_mode),
     studyPanel => Icon(Symbols.add_notes),
     search => Icon(Symbols.search),
     resources => Icon(Symbols.local_library),
@@ -233,6 +239,13 @@ enum MainAction {
               ),
             ],
           ),
+        );
+      case verseOfTheDay:
+        final verseOfTheDaySelection = ref.read(todayVerseOfTheDaySelectionProvider);
+        await PreviewPassageSheet.show(
+          context,
+          verseSelection: verseOfTheDaySelection,
+          onNavigateToVerseSelection: onNavigateToVerseSelection,
         );
       case studyPanel:
         final studyPanelType = await context.showStyledSheet<StudyPanelType>(

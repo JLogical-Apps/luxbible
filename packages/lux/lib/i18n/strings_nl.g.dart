@@ -295,6 +295,7 @@ class _Translations$mainActions$nl extends Translations$mainActions$en {
 	@override String get playAudio => 'Bijbelaudio afspelen';
 	@override String get bookmark => 'Bladwijzer';
 	@override String get study => 'Studie';
+	@override String get verseOfTheDay => 'Vers van de dag';
 	@override String get addStudyPanel => 'Studiepaneel toevoegen';
 	@override String get search => 'Zoeken';
 	@override String get resources => 'Bronnen';
@@ -305,6 +306,9 @@ class _Translations$mainActions$nl extends Translations$mainActions$en {
 	@override String get bookmarkDescription => 'Voeg een bladwijzer aan dit hoofdstuk toe om het makkelijk terug te vinden via de zoekpagina.';
 	@override String get manageBookmarkDescription => 'Beheer deze bladwijzer.';
 	@override String get studyDescription => 'Bekijk studiehulpmiddelen voor dit hoofdstuk.';
+	@override String get verseOfTheDayDescription => 'Bekijk het vers van vandaag.';
+	@override String get verseOfTheDayLoading => 'Het vers van vandaag wordt geladen…';
+	@override String get verseOfTheDayUnavailable => 'Het vers van vandaag kan niet worden geladen.';
 	@override String get studyPanelDescription => 'Zet een paneel naast de tekst vast dat meeloopt en studiehulpmiddelen toont voor wat je leest.';
 	@override String get searchDescription => 'Zoek naar woorden in de Bijbel.';
 	@override String get resourcesDescription => 'Zoek woorden op in het woordenboek en lexicon.';
@@ -2810,6 +2814,7 @@ extension on TranslationsNl {
 			'mainActions.playAudio' => 'Bijbelaudio afspelen',
 			'mainActions.bookmark' => 'Bladwijzer',
 			'mainActions.study' => 'Studie',
+			'mainActions.verseOfTheDay' => 'Vers van de dag',
 			'mainActions.addStudyPanel' => 'Studiepaneel toevoegen',
 			'mainActions.search' => 'Zoeken',
 			'mainActions.resources' => 'Bronnen',
@@ -2820,6 +2825,9 @@ extension on TranslationsNl {
 			'mainActions.bookmarkDescription' => 'Voeg een bladwijzer aan dit hoofdstuk toe om het makkelijk terug te vinden via de zoekpagina.',
 			'mainActions.manageBookmarkDescription' => 'Beheer deze bladwijzer.',
 			'mainActions.studyDescription' => 'Bekijk studiehulpmiddelen voor dit hoofdstuk.',
+			'mainActions.verseOfTheDayDescription' => 'Bekijk het vers van vandaag.',
+			'mainActions.verseOfTheDayLoading' => 'Het vers van vandaag wordt geladen…',
+			'mainActions.verseOfTheDayUnavailable' => 'Het vers van vandaag kan niet worden geladen.',
 			'mainActions.studyPanelDescription' => 'Zet een paneel naast de tekst vast dat meeloopt en studiehulpmiddelen toont voor wat je leest.',
 			'mainActions.searchDescription' => 'Zoek naar woorden in de Bijbel.',
 			'mainActions.resourcesDescription' => 'Zoek woorden op in het woordenboek en lexicon.',
@@ -3180,12 +3188,12 @@ extension on TranslationsNl {
 			'commentaryTypes.matthewHenryDescription' => 'Een beknopt, devoot commentaar op de hele Bijbel vanuit de puriteinse traditie. Warm, praktisch en toegankelijk.',
 			'commentaryTypes.jamiesonFaussetBrownDescription' => 'Een compact vers-voor-verscommentaar op de hele Bijbel. Evenwichtig en toegankelijk.',
 			'commentaryTypes.calvinDescription' => 'De klassieke uiteenzetting van de reformator. Diepgaand en leerstellig.',
+			_ => null,
+		} ?? switch (path) {
 			'strongDefinition.addedLabel' => 'toegevoegd:',
 			'strongDefinition.idiomLabel' => 'idioom:',
 			'strongDefinition.addedWord' => 'Toegevoegd woord',
 			'strongDefinition.idiomaticRendering' => 'Idiomatische weergave',
-			_ => null,
-		} ?? switch (path) {
 			'strongDefinition.addedWordDescription' => 'Geeft een woord aan dat naast het gedefinieerde Hebreeuwse of Griekse woord is aangevuld.',
 			'strongDefinition.idiomaticRenderingDescription' => 'Geeft een vertaling aan die een Hebreeuwse of Griekse uitdrukking weergeeft.',
 			'planTypes.throughTheBible' => 'De Bijbel door',

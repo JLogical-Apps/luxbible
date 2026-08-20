@@ -5,6 +5,7 @@ import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/audio_bible_player_provider.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/providers/verse_of_the_day_provider.dart';
 import 'package:bible/ui/hooks/audio_bible_passage_sync.dart';
 import 'package:bible/ui/pages/chapter_position_search_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
@@ -34,6 +35,7 @@ class BibleBody extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
+    final verseOfTheDay = ref.watch(verseOfTheDayProvider).value;
     final readerConfiguration = ref.watch(luxReaderConfigurationProvider);
 
     final initialPosition = user.lastPosition;
@@ -362,7 +364,11 @@ class BibleBody extends HookConsumerWidget {
                         .map(
                           (action) => StyledListItem(
                             title: action.title().toText(),
-                            subtitle: action.description(user: user).toText(),
+                            subtitle: Text(
+                              action.description(user: user, verseOfTheDay: verseOfTheDay),
+                              maxLines: 3,
+                              overflow: .ellipsis,
+                            ),
                             leading: action.buildIcon(context, user: user),
                             trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
                             onPressed: () {

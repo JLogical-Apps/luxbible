@@ -17,10 +17,13 @@ dart run bin/generate_commentary_json.dart
 dart run bin/generate_easton_json.dart
 dart run bin/generate_strongs_json.dart
 dart run bin/generate_audio_bible_timings_json.dart
+dart run bin/generate_verse_of_the_day.dart
 ```
 
 `generate_audio_bible_timings_json.dart` validates their canonical chapter and verse coverage, removes the verse text and source metadata, and writes one minified runtime asset per Audio Bible.
 
 `generate_navigators_5x5x5_source.dart` writes its normalized input file into `content/sources/reading_plans/` before `generate_bible_plans_json.dart` reads it.
 
-The Python SWORD pipeline lives in [`python/sword/`](python/sword/). It reads and writes under `content/sources/`; see each script’s usage text before running it. Downloaded SWORD modules and source downloads remain ignored.
+Raw SWORD modules and downloaded archives belong under `content/sources/sword/` and remain ignored. Generators read committed, extracted inputs elsewhere in `content/sources/` so runtime assets do not depend on local SWORD downloads.
+
+`generate_verse_of_the_day.dart` reads the committed Daily Light extraction at `content/sources/verse_of_the_day/daily_light.json`, validates all morning and evening OSIS selections and complete leap-year calendar coverage, then writes the first morning passage for each date to `apps/bible/assets/verse_of_the_day.json`. The source extraction records the official CrossWire Daily module download and extraction steps.

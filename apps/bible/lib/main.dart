@@ -8,6 +8,7 @@ import 'package:bible/functions/bible_plan_importer.dart';
 import 'package:bible/functions/cross_references_importer.dart';
 import 'package:bible/functions/dictionary_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
+import 'package:bible/functions/verse_of_the_day_importer.dart';
 import 'package:bible/licenses.dart';
 import 'package:bible/models/user/language.dart';
 import 'package:bible/providers/app_bible_provider.dart';
@@ -23,6 +24,7 @@ import 'package:bible/providers/local_notification_schedules_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/providers/verse_of_the_day_provider.dart';
 import 'package:bible/services/audio_bible_handler.dart';
 import 'package:bible/services/local_notification_service.dart';
 import 'package:bible/services/timezone_service.dart';
@@ -88,6 +90,7 @@ Future<void> main() async {
       final crossReferences = await CrossReferencesImporter().import();
       final biblePlans = await BiblePlanImporter().import();
       final audioBibleTimings = await AudioBibleTimingsImporter().import();
+      final verseOfTheDaySelections = await VerseOfTheDayImporter().import();
 
       final paths = await getPaths();
       final sharedPreferences = await SharedPreferences.getInstance();
@@ -111,6 +114,7 @@ Future<void> main() async {
           dictionaryProvider.overrideWithValue(dictionary),
           crossReferencesProvider.overrideWithValue(crossReferences),
           biblePlansProvider.overrideWithValue(biblePlans),
+          verseOfTheDaySelectionsProvider.overrideWithValue(verseOfTheDaySelections),
           pathServiceProvider.overrideWithValue(paths),
           sharedPreferencesServiceProvider.overrideWithValue(sharedPreferences),
           packageInfoProvider.overrideWithValue(packageInfo),
@@ -143,6 +147,7 @@ Future<void> main() async {
 
 void eagerlyLoad() {
   ref.read(studyBibleProvider);
+  ref.listen(verseOfTheDayProvider, (_, _) {});
   ref.listen(localNotificationSchedulerProvider, (_, _) {});
 }
 

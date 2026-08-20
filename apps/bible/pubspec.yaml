@@ -91,6 +91,7 @@ flutter:
   config:
     enable-lldb-debugging: false
   assets:
+    - assets/
     - assets/translations/
     - assets/strongs/
     - assets/dictionary/

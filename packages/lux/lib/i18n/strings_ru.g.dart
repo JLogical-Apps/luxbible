@@ -295,6 +295,7 @@ class _Translations$mainActions$ru extends Translations$mainActions$en {
 	@override String get playAudio => 'Воспроизвести аудио Библию';
 	@override String get bookmark => 'Закладка';
 	@override String get study => 'Изучение';
+	@override String get verseOfTheDay => 'Стих дня';
 	@override String get addStudyPanel => 'Добавить панель исследования';
 	@override String get search => 'Поиск';
 	@override String get resources => 'Ресурсы';
@@ -305,6 +306,9 @@ class _Translations$mainActions$ru extends Translations$mainActions$en {
 	@override String get bookmarkDescription => 'Добавьте эту главу в закладки, чтобы легко получить к ней доступ со страницы поиска.';
 	@override String get manageBookmarkDescription => 'Управляйте этой закладкой.';
 	@override String get studyDescription => 'Просмотрите инструменты обучения для этой главы.';
+	@override String get verseOfTheDayDescription => 'Посмотрите сегодняшний стих.';
+	@override String get verseOfTheDayLoading => 'Загрузка сегодняшнего стиха…';
+	@override String get verseOfTheDayUnavailable => 'Не удалось загрузить сегодняшний стих.';
 	@override String get studyPanelDescription => 'Прикрепите панель рядом с текстом, который следует по тексту и на котором показаны инструменты изучения того, что вы читаете.';
 	@override String get searchDescription => 'Ищите слова в Библии.';
 	@override String get resourcesDescription => 'Найдите слова в словаре и лексиконе.';
@@ -2814,6 +2818,7 @@ extension on TranslationsRu {
 			'mainActions.playAudio' => 'Воспроизвести аудио Библию',
 			'mainActions.bookmark' => 'Закладка',
 			'mainActions.study' => 'Изучение',
+			'mainActions.verseOfTheDay' => 'Стих дня',
 			'mainActions.addStudyPanel' => 'Добавить панель исследования',
 			'mainActions.search' => 'Поиск',
 			'mainActions.resources' => 'Ресурсы',
@@ -2824,6 +2829,9 @@ extension on TranslationsRu {
 			'mainActions.bookmarkDescription' => 'Добавьте эту главу в закладки, чтобы легко получить к ней доступ со страницы поиска.',
 			'mainActions.manageBookmarkDescription' => 'Управляйте этой закладкой.',
 			'mainActions.studyDescription' => 'Просмотрите инструменты обучения для этой главы.',
+			'mainActions.verseOfTheDayDescription' => 'Посмотрите сегодняшний стих.',
+			'mainActions.verseOfTheDayLoading' => 'Загрузка сегодняшнего стиха…',
+			'mainActions.verseOfTheDayUnavailable' => 'Не удалось загрузить сегодняшний стих.',
 			'mainActions.studyPanelDescription' => 'Прикрепите панель рядом с текстом, который следует по тексту и на котором показаны инструменты изучения того, что вы читаете.',
 			'mainActions.searchDescription' => 'Ищите слова в Библии.',
 			'mainActions.resourcesDescription' => 'Найдите слова в словаре и лексиконе.',
@@ -3184,12 +3192,12 @@ extension on TranslationsRu {
 			'commentaryTypes.matthewHenryDescription' => 'Краткий, религиозный комментарий ко всей Библии пуританской традиции. Теплый, практичный и легко читаемый.',
 			'commentaryTypes.jamiesonFaussetBrownDescription' => 'Компактный, поэтапный комментарий ко всей Библии. Сбалансированный и доступный.',
 			'commentaryTypes.calvinDescription' => 'Классическое изложение реформатора. Глубокий и доктринальный.',
+			_ => null,
+		} ?? switch (path) {
 			'strongDefinition.addedLabel' => 'добавлен:',
 			'strongDefinition.idiomLabel' => 'идиома:',
 			'strongDefinition.addedWord' => 'Добавлено слово',
 			'strongDefinition.idiomaticRendering' => 'Идиоматический рендеринг',
-			_ => null,
-		} ?? switch (path) {
 			'strongDefinition.addedWordDescription' => 'Отмечает слово, указанное рядом с определяемым еврейским или греческим словом.',
 			'strongDefinition.idiomaticRenderingDescription' => 'Отмечает перевод, который отражает выражение, характерное для иврита или греческого языка.',
 			'planTypes.throughTheBible' => 'Через Библию',

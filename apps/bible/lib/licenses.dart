@@ -237,5 +237,17 @@ Old and New Testament; Different Topics; New Testament, Psalms & Proverbs: Heart
 
 Only the daily passage references are used; the Scripture text is provided under the Bible translation licenses.''',
     );
+
+    yield const LicenseEntryWithLineBreaks(
+      ['Verse of the Day', "Jonathan Bagster's Daily Light on the Daily Path"],
+      '''
+The Verse of the Day passage schedule is derived from Jonathan Bagster's Daily Light on the Daily Path: A Devotional Textbook for Every Day of the Year, in the Very Words of Scripture.
+
+Prepared by Jonathan Bagster (1813-1872) and other members of his family. Distributed by the CrossWire Bible Society as the Daily SWORD module, version 1.0. Public domain. Copy freely.
+
+Only the calendar schedule and Scripture references are included. Scripture text is provided under the selected Bible translation's license.
+
+Source: https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=Daily''',
+    );
   });
 }

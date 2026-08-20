@@ -52,6 +52,7 @@ export 'src/utils/extensions/key_extensions.dart';
 export 'src/utils/extensions/paragraph_style_extensions.dart';
 export 'src/utils/extensions/port_extensions.dart';
 export 'src/utils/extensions/rect_extensions.dart';
+export 'src/utils/extensions/render_box_extensions.dart';
 export 'src/utils/extensions/span_extensions.dart';
 export 'src/utils/hook_utils.dart';
 export 'src/utils/input_formatters.dart';

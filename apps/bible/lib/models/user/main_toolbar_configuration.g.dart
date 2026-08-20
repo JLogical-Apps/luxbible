@@ -44,6 +44,7 @@ const _$MainToolbarShortcutEnumMap = {
   MainToolbarShortcut.audio: 'audio',
   MainToolbarShortcut.bookmark: 'bookmark',
   MainToolbarShortcut.study: 'study',
+  MainToolbarShortcut.verseOfTheDay: 'verseOfTheDay',
   MainToolbarShortcut.compare: 'compare',
   MainToolbarShortcut.interlinear: 'interlinear',
   MainToolbarShortcut.commentary: 'commentary',

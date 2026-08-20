@@ -163,6 +163,7 @@ The main toolbar appears when no Bible selection is active. Available shortcuts 
 - Audio
 - Bookmark
 - Study
+- Verse of the Day
 - Compare
 - Interlinear
 - Commentary
@@ -176,7 +177,7 @@ The main toolbar appears when no Bible selection is active. Available shortcuts 
 - Bible Plans
 - Theme & Layout
 
-The main overflow menu provides Audio, Bookmark, Study, Bible Plans, and More. More opens app customization, content, settings, and community links.
+The main overflow menu provides Audio, Bookmark, Study, Verse of the Day, Bible Plans, and More. More opens app customization, content, settings, and community links. Verse of the Day previews the bundled passage for the current date using the selected translation, falling back to the selected Study Bible if its text cannot be loaded. The preview can be moved into the main Bible.
 
 ### Verse Selection Toolbar
 
