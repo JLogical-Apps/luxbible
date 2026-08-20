@@ -7,6 +7,7 @@ import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/dialogs/tutorial_dialog.dart';
+import 'package:bible/ui/pages/commentaries_page.dart';
 import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_sheet.dart';
@@ -235,7 +236,11 @@ enum StudyAction {
       });
     } else if (this == .commentary) {
       context.showStyledSheet((context, ref) {
-        final tabController = useTabController(initialLength: user.commentariesOrDefault.length);
+        final user = ref.watch(userProvider);
+        final tabController = useTabController(
+          initialLength: user.commentariesOrDefault.length,
+          keys: [user.commentariesOrDefault.length],
+        );
         final index = useListenableSelector(tabController, () => tabController.index);
         final selectedCommentary = user.commentariesOrDefault[index];
 
@@ -244,9 +249,28 @@ enum StudyAction {
           subtitle: regionFormat.toText(),
           trailing: onAddStudyPanel == null
               ? null
-              : PinStudyPanelButton(
-                  studyPanel: .commentary(type: selectedCommentary),
-                  onAddStudyPanel: onAddStudyPanel,
+              : StyledCircleButton.md(
+                  child: Symbols.more_vert.toIcon(),
+                  onPressed: () => context.showStyledSheet(
+                    (context, ref) => StyledSheet(
+                      children: [
+                        StyledListItem(
+                          title: 'Edit Commentaries'.toText(),
+                          leading: Symbols.tune.toIcon(),
+                          onPressed: () => context.pushReplacement(CommentariesPage()),
+                        ),
+                        StyledListItem(
+                          title: 'Pin ${selectedCommentary.title()} Commentary as a Study Panel'.toText(),
+                          leading: Symbols.push_pin.toIcon(),
+                          onPressed: () {
+                            context.pop();
+                            context.pop();
+                            onAddStudyPanel(.commentary(type: selectedCommentary));
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
           shrinkWrap: false,
           aboveDivider: StyledTabBar.scrollable(
