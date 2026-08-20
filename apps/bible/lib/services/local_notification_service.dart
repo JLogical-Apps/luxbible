@@ -57,19 +57,27 @@ class LocalNotificationService {
   LocalNotificationService({FlutterLocalNotificationsPlugin? plugin})
     : plugin = plugin ?? FlutterLocalNotificationsPlugin();
 
-  Future<void> initialize() => plugin.initialize(
-    settings: InitializationSettings(
-      android: AndroidInitializationSettings('ic_notification'),
-      iOS: DarwinInitializationSettings(
-        requestAlertPermission: false,
-        requestBadgePermission: false,
-        requestSoundPermission: false,
-        defaultPresentAlert: true,
-        defaultPresentBadge: false,
-        defaultPresentSound: true,
+  Future<void> initialize({Function(String?)? onNotificationTap}) async {
+    await plugin.initialize(
+      settings: InitializationSettings(
+        android: AndroidInitializationSettings('ic_notification'),
+        iOS: DarwinInitializationSettings(
+          requestAlertPermission: false,
+          requestBadgePermission: false,
+          requestSoundPermission: false,
+          defaultPresentAlert: true,
+          defaultPresentBadge: false,
+          defaultPresentSound: true,
+        ),
       ),
-    ),
-  );
+      onDidReceiveNotificationResponse: (response) => onNotificationTap?.call(response.payload),
+    );
+  }
+
+  Future<String?> getLaunchPayload() async {
+    final details = await plugin.getNotificationAppLaunchDetails();
+    return details?.didNotificationLaunchApp == true ? details?.notificationResponse?.payload : null;
+  }
 
   Future<bool> get hasPermission async => await getAvailability() == .enabled;
 

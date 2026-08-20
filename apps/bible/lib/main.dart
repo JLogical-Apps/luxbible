@@ -27,6 +27,7 @@ import 'package:bible/services/audio_bible_handler.dart';
 import 'package:bible/services/local_notification_service.dart';
 import 'package:bible/services/timezone_service.dart';
 import 'package:bible/ui/bible_reader_configuration.dart';
+import 'package:bible/ui/flows/bible_plan_reminder_navigation.dart';
 import 'package:bible/ui/pages/bible_page.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -41,6 +42,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:utils_core/utils_core.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   runZonedGuarded(
@@ -93,7 +96,10 @@ Future<void> main() async {
       await timezoneService.initialize();
 
       final localNotificationService = LocalNotificationService();
-      await localNotificationService.initialize();
+      final biblePlanReminderNavigation = BiblePlanReminderNavigation();
+      await localNotificationService.initialize(
+        onNotificationTap: (payload) => biblePlanReminderNavigation.handlePayload(payload),
+      );
 
       ref = ProviderContainer(
         overrides: [
@@ -118,7 +124,12 @@ Future<void> main() async {
 
       eagerlyLoad();
 
-      runApp(UncontrolledProviderScope(container: ref, child: BibleApp()));
+      runApp(
+        UncontrolledProviderScope(
+          container: ref,
+          child: BibleApp(biblePlanReminderNavigation: biblePlanReminderNavigation),
+        ),
+      );
     },
     (error, stack) {
       if (kDebugMode) {
@@ -135,10 +146,17 @@ void eagerlyLoad() {
 }
 
 class BibleApp extends HookConsumerWidget {
-  const BibleApp({super.key});
+  final BiblePlanReminderNavigation biblePlanReminderNavigation;
+
+  const BibleApp({super.key, required this.biblePlanReminderNavigation});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    usePostFrameEffect(() async {
+      final localNotificationService = ref.read(localNotificationServiceProvider);
+      biblePlanReminderNavigation.handlePayload(await localNotificationService.getLaunchPayload());
+    });
+
     useOnLocalesChanged((locales) {
       final language = Language.fromLocale(locales?.firstOrNull ?? .new('en'));
       LocaleSettings.setLocaleSync(language.appLocale);
@@ -160,6 +178,7 @@ class BibleApp extends HookConsumerWidget {
         minScaleFactor: 1,
         maxScaleFactor: 1.8,
         child: MaterialApp(
+          navigatorKey: navigatorKey,
           title: 'Lux Bible',
           locale: Language.device.appLocale.flutterLocale,
           supportedLocales: AppLocaleUtils.instance.supportedLocales,

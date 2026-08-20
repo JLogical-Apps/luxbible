@@ -4,6 +4,8 @@ import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/hooks/audio_bible_passage_sync.dart';
+import 'package:bible/ui/pages/bible_page.dart';
+import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:bible/ui/widgets/audio_bible_panel.dart';
 import 'package:bible/ui/widgets/selection_toolbar.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -26,6 +28,8 @@ class BiblePlanReadPage extends HookConsumerWidget {
     required this.dayIndex,
     required this.initialPassageIndex,
   });
+
+  List<Widget> get pageStack => [BiblePage(), BiblePlansPage(), this];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

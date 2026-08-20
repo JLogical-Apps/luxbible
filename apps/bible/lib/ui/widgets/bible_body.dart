@@ -459,7 +459,7 @@ class BibleBody extends HookConsumerWidget {
                               _ => 0,
                             } +
                             topBarHeight) /
-                        (passageKey.renderBox?.size.height ?? 128),
+                        (passageKey.renderBox?.sizeOrNull?.height ?? 128),
                     emphasizedReference: audioBibleSync.getEmphasizedReferenceForChapter(chapterReference),
                     padding: .only(
                       left: 24,
