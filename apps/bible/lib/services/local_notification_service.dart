@@ -24,30 +24,73 @@ class LocalNotificationChannel extends Equatable {
   List<Object> get props => [id, name, description];
 }
 
-class LocalNotificationSchedule extends Equatable {
+class LocalNotification extends Equatable {
   final int id;
   final LocalNotificationChannel channel;
   final String title;
   final String body;
-  final Time time;
-  final DateTime? startDate;
+  final LocalNotificationSchedule schedule;
   final String? payload;
 
-  const LocalNotificationSchedule({
+  const LocalNotification({
     required this.id,
     required this.channel,
     required this.title,
     required this.body,
-    required this.time,
-    this.startDate,
+    required this.schedule,
     this.payload,
   });
 
   @override
-  List<Object?> get props => [id, channel, title, body, time, startDate, payload];
+  List<Object?> get props => [id, channel, title, body, schedule, payload];
 }
 
-enum LocalNotificationAvailability { enabled, notRequested, appDisabled, channelDisabled }
+sealed class LocalNotificationSchedule extends Equatable {
+  const LocalNotificationSchedule();
+
+  DateTime get scheduledDate;
+  DateTimeComponents? get matchDateTimeComponents;
+}
+
+class RepeatingLocalNotificationSchedule extends LocalNotificationSchedule {
+  final Time time;
+  final DateTime? startDate;
+
+  const RepeatingLocalNotificationSchedule({required this.time, this.startDate});
+
+  @override
+  DateTime get scheduledDate => time.getNextNotificationDate(startDate: startDate);
+
+  @override
+  DateTimeComponents? get matchDateTimeComponents => .time;
+
+  @override
+  List<Object?> get props => [time, startDate];
+}
+
+class SingleLocalNotificationSchedule extends LocalNotificationSchedule {
+  final DateTime date;
+
+  const SingleLocalNotificationSchedule({required this.date});
+
+  @override
+  DateTime get scheduledDate => date;
+
+  @override
+  DateTimeComponents? get matchDateTimeComponents => null;
+
+  @override
+  List<Object> get props => [date];
+}
+
+enum LocalNotificationAvailability {
+  enabled,
+  notRequested,
+  appDisabled,
+  channelDisabled;
+
+  bool get isDisabled => this == appDisabled || this == channelDisabled;
+}
 
 class LocalNotificationService {
   static const payloadPrefix = 'lux-local-notification:';
@@ -57,7 +100,7 @@ class LocalNotificationService {
   LocalNotificationService({FlutterLocalNotificationsPlugin? plugin})
     : plugin = plugin ?? FlutterLocalNotificationsPlugin();
 
-  Future<void> initialize({Function(String?)? onNotificationTap}) async {
+  Future<void> initialize({Function(String)? onNotificationTap}) async {
     await plugin.initialize(
       settings: InitializationSettings(
         android: AndroidInitializationSettings('ic_notification'),
@@ -70,7 +113,10 @@ class LocalNotificationService {
           defaultPresentSound: true,
         ),
       ),
-      onDidReceiveNotificationResponse: (response) => onNotificationTap?.call(response.payload),
+      onDidReceiveNotificationResponse: (response) {
+        final payload = response.payload;
+        if (payload != null) onNotificationTap?.call(payload);
+      },
     );
   }
 
@@ -144,8 +190,8 @@ class LocalNotificationService {
   }
 
   final _synchronizationLock = Lock();
-  Future<void> synchronize(List<LocalNotificationSchedule> schedules) => _synchronizationLock.synchronized(() async {
-    final desiredIds = schedules.map((schedule) => schedule.id).toSet();
+  Future<void> synchronize(List<LocalNotification> notifications) => _synchronizationLock.synchronized(() async {
+    final desiredIds = notifications.map((notification) => notification.id).toSet();
     final pending = await plugin.pendingNotificationRequests();
     await pending
         .where((notification) => notification.payload?.startsWith(payloadPrefix) == true)
@@ -154,53 +200,48 @@ class LocalNotificationService {
         .wait;
 
     if (!await hasPermission) return;
-    await schedules.map(schedule).wait;
+    await notifications.map(schedule).wait;
   });
 
-  Future<void> schedule(LocalNotificationSchedule schedule) async {
+  Future<void> schedule(LocalNotification notification) async {
     await plugin
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(
           AndroidNotificationChannel(
-            schedule.channel.id,
-            schedule.channel.name,
-            description: schedule.channel.description,
+            notification.channel.id,
+            notification.channel.name,
+            description: notification.channel.description,
             importance: .defaultImportance,
             playSound: true,
             showBadge: false,
           ),
         );
 
+    final scheduledDate = timezone.TZDateTime.from(notification.schedule.scheduledDate, timezone.local);
+    if (!scheduledDate.isAfter(timezone.TZDateTime.now(timezone.local))) return;
+
     await plugin.zonedSchedule(
-      id: schedule.id,
-      title: schedule.title,
-      body: schedule.body,
-      scheduledDate: getNextDate(schedule.time, startDate: schedule.startDate),
+      id: notification.id,
+      title: notification.title,
+      body: notification.body,
+      scheduledDate: scheduledDate,
       notificationDetails: NotificationDetails(
         android: AndroidNotificationDetails(
-          schedule.channel.id,
-          schedule.channel.name,
-          channelDescription: schedule.channel.description,
+          notification.channel.id,
+          notification.channel.name,
+          channelDescription: notification.channel.description,
           importance: .defaultImportance,
           priority: .defaultPriority,
           playSound: true,
           channelShowBadge: false,
-          styleInformation: BigTextStyleInformation(schedule.body),
+          styleInformation: BigTextStyleInformation(notification.body),
         ),
         iOS: DarwinNotificationDetails(presentAlert: true, presentBadge: false, presentSound: true),
       ),
       androidScheduleMode: .inexactAllowWhileIdle,
-      matchDateTimeComponents: .time,
-      payload: '$payloadPrefix${schedule.payload ?? ''}',
+      matchDateTimeComponents: notification.schedule.matchDateTimeComponents,
+      payload: notification.payload,
     );
-  }
-
-  timezone.TZDateTime getNextDate(Time time, {DateTime? startDate}) {
-    final now = timezone.TZDateTime.now(timezone.local);
-    final today = now.withTime(time);
-    final firstAllowedDate = startDate?.inLocation(timezone.local).withTime(time) ?? today;
-    final nextDate = firstAllowedDate.isAfter(today) ? firstAllowedDate : today;
-    return nextDate.isAfter(now) ? nextDate : now.nextDate.withTime(time);
   }
 
   Future<void> cancel(int id) => plugin.cancel(id: id);

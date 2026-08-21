@@ -40,9 +40,7 @@ _BiblePlanProgress _$BiblePlanProgressFromJson(Map<String, dynamic> json) =>
           .toList(),
       reminder: json['reminder'] == null
           ? null
-          : BiblePlanReminder.fromJson(
-              json['reminder'] as Map<String, dynamic>,
-            ),
+          : Reminder.fromJson(json['reminder'] as Map<String, dynamic>),
       lastCompletedAt: json['lastCompletedAt'] == null
           ? null
           : CalendarDateTime.fromJson(json['lastCompletedAt'] as String),
@@ -82,25 +80,3 @@ CompleteBiblePlanDayProgress _$CompleteBiblePlanDayProgressFromJson(
 Map<String, dynamic> _$CompleteBiblePlanDayProgressToJson(
   CompleteBiblePlanDayProgress instance,
 ) => <String, dynamic>{'runtimeType': instance.$type};
-
-NoneBiblePlanReminder _$NoneBiblePlanReminderFromJson(
-  Map<String, dynamic> json,
-) => NoneBiblePlanReminder($type: json['runtimeType'] as String?);
-
-Map<String, dynamic> _$NoneBiblePlanReminderToJson(
-  NoneBiblePlanReminder instance,
-) => <String, dynamic>{'runtimeType': instance.$type};
-
-DailyBiblePlanReminder _$DailyBiblePlanReminderFromJson(
-  Map<String, dynamic> json,
-) => DailyBiblePlanReminder(
-  time: Time.fromJson(json['time'] as String),
-  $type: json['runtimeType'] as String?,
-);
-
-Map<String, dynamic> _$DailyBiblePlanReminderToJson(
-  DailyBiblePlanReminder instance,
-) => <String, dynamic>{
-  'time': instance.time.toJson(),
-  'runtimeType': instance.$type,
-};

@@ -10,11 +10,12 @@ import 'package:bible/functions/dictionary_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
 import 'package:bible/functions/verse_of_the_day_importer.dart';
 import 'package:bible/licenses.dart';
+import 'package:bible/models/bible_plan_notification.dart';
 import 'package:bible/models/user/language.dart';
+import 'package:bible/models/verse_of_the_day_notification.dart';
 import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/audio_bible_timings_provider.dart';
-import 'package:bible/providers/bible_plan_local_notification_schedules_provider.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/dictionary_provider.dart';
@@ -29,7 +30,6 @@ import 'package:bible/services/audio_bible_handler.dart';
 import 'package:bible/services/local_notification_service.dart';
 import 'package:bible/services/timezone_service.dart';
 import 'package:bible/ui/bible_reader_configuration.dart';
-import 'package:bible/ui/flows/bible_plan_reminder_navigation.dart';
 import 'package:bible/ui/pages/bible_page.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -100,9 +100,11 @@ Future<void> main() async {
       await timezoneService.initialize();
 
       final localNotificationService = LocalNotificationService();
-      final biblePlanReminderNavigation = BiblePlanReminderNavigation();
       await localNotificationService.initialize(
-        onNotificationTap: (payload) => biblePlanReminderNavigation.handlePayload(payload),
+        onNotificationTap: (payload) {
+          VerseOfTheDayNotification.handlePayload(payload);
+          BiblePlanNotification.handlePayload(payload);
+        },
       );
 
       ref = ProviderContainer(
@@ -120,21 +122,13 @@ Future<void> main() async {
           packageInfoProvider.overrideWithValue(packageInfo),
           timezoneServiceProvider.overrideWithValue(timezoneService),
           localNotificationServiceProvider.overrideWithValue(localNotificationService),
-          localNotificationSchedulesProvider.overrideWith(
-            (ref) => ref.watch(biblePlanLocalNotificationSchedulesProvider),
-          ),
         ],
         observers: [ProviderErrorObserver()],
       );
 
       eagerlyLoad();
 
-      runApp(
-        UncontrolledProviderScope(
-          container: ref,
-          child: BibleApp(biblePlanReminderNavigation: biblePlanReminderNavigation),
-        ),
-      );
+      runApp(UncontrolledProviderScope(container: ref, child: BibleApp()));
     },
     (error, stack) {
       if (kDebugMode) {
@@ -152,15 +146,17 @@ void eagerlyLoad() {
 }
 
 class BibleApp extends HookConsumerWidget {
-  final BiblePlanReminderNavigation biblePlanReminderNavigation;
-
-  const BibleApp({super.key, required this.biblePlanReminderNavigation});
+  const BibleApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     usePostFrameEffect(() async {
       final localNotificationService = ref.read(localNotificationServiceProvider);
-      biblePlanReminderNavigation.handlePayload(await localNotificationService.getLaunchPayload());
+      final payload = await localNotificationService.getLaunchPayload();
+      if (payload != null) {
+        VerseOfTheDayNotification.handlePayload(payload);
+        BiblePlanNotification.handlePayload(payload);
+      }
     });
 
     useOnLocalesChanged((locales) {
@@ -172,8 +168,9 @@ class BibleApp extends HookConsumerWidget {
     useOnAppLifecycleStateChange((_, current) async {
       if (current == .resumed) {
         await ref.read(timezoneServiceProvider).updateLocalTimezone();
-        ref.invalidate(localNotificationAvailabilityProvider(androidChannelId: biblePlanReminderNotificationChannelId));
-        await ref.read(localNotificationServiceProvider).synchronize(ref.read(localNotificationSchedulesProvider));
+        ref.invalidate(localNotificationAvailabilityProvider);
+        ref.invalidate(localNotificationsProvider);
+        await ref.read(localNotificationServiceProvider).synchronize(await ref.read(localNotificationsProvider.future));
       }
     });
 

@@ -11,6 +11,7 @@ class LocalNotificationPermissionFlow {
 
   static Future<bool> request({
     required BuildContext context,
+    String? androidChannelId,
     required String permissionDeniedTitle,
     required String permissionDeniedBody,
     required String openSettingsLabel,
@@ -21,7 +22,11 @@ class LocalNotificationPermissionFlow {
     final notifications = ref.read(localNotificationServiceProvider);
 
     try {
-      if (await notifications.requestPermission()) return true;
+      final availability = await notifications.getAvailability(androidChannelId: androidChannelId);
+      if (availability == .enabled) return true;
+      if (availability == .notRequested && await notifications.requestPermission()) {
+        if (await notifications.getAvailability(androidChannelId: androidChannelId) == .enabled) return true;
+      }
       if (!context.mounted) return false;
 
       final shouldOpenSettings = await context.showStyledDialog(
@@ -34,7 +39,8 @@ class LocalNotificationPermissionFlow {
       );
       if (shouldOpenSettings != true) return false;
 
-      return await notifications.openSettingsAndCheckPermission();
+      await notifications.openSettingsAndCheckPermission();
+      return await notifications.getAvailability(androidChannelId: androidChannelId) == .enabled;
     } catch (_) {
       if (context.mounted) {
         await context.showStyledDialog(

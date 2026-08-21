@@ -46,6 +46,7 @@ class TranslationsNl extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$common$nl common = _Translations$common$nl._(_root);
 	@override late final _Translations$regionTypes$nl regionTypes = _Translations$regionTypes$nl._(_root);
 	@override late final _Translations$mainActions$nl mainActions = _Translations$mainActions$nl._(_root);
+	@override late final _Translations$verseOfTheDay$nl verseOfTheDay = _Translations$verseOfTheDay$nl._(_root);
 	@override late final _Translations$studyActions$nl studyActions = _Translations$studyActions$nl._(_root);
 	@override late final _Translations$selectionActions$nl selectionActions = _Translations$selectionActions$nl._(_root);
 	@override late final _Translations$studyPanels$nl studyPanels = _Translations$studyPanels$nl._(_root);
@@ -236,6 +237,7 @@ class _Translations$common$nl extends Translations$common$en {
 	final TranslationsNl _root; // ignore: unused_field
 
 	// Translations
+	@override String get add => 'Toevoegen';
 	@override String get addNew => 'Nieuwe toevoegen';
 	@override String get am => 'a.m.';
 	@override String get cancel => 'Annuleren';
@@ -253,6 +255,7 @@ class _Translations$common$nl extends Translations$common$en {
 	@override String get nevermind => 'Laat maar';
 	@override String get next => 'Volgende';
 	@override String get noMatches => 'Geen overeenkomsten';
+	@override String get noNotification => 'Geen melding';
 	@override String get ok => 'Oké';
 	@override String get off => 'Uit';
 	@override String get none => 'Geen';
@@ -315,6 +318,31 @@ class _Translations$mainActions$nl extends Translations$mainActions$en {
 	@override String get plansDescription => 'Lees de Bijbel met begeleide leesplannen.';
 	@override String get settingsDescription => 'Bekijk de instellingen van Lux.';
 	@override String get moreDescription => 'Bekijk instellingen, je inhoud en links naar de community.';
+}
+
+// Path: verseOfTheDay
+class _Translations$verseOfTheDay$nl extends Translations$verseOfTheDay$en {
+	_Translations$verseOfTheDay$nl._(TranslationsNl root) : this._root = root, super.internal(root);
+
+	final TranslationsNl _root; // ignore: unused_field
+
+	// Translations
+	@override String get reminderDiscoveryTitle => 'Dagelijkse herinnering toevoegen?';
+	@override String get reminderDiscoveryBody => 'Wil je dat Lux je elke dag herinnert aan het vers van de dag?';
+	@override String get addReminder => 'Herinnering toevoegen';
+	@override String get noReminder => 'Nee';
+	@override String get dailyReminders => 'Dagelijkse herinnering';
+	@override String get deleteReminder => 'Herinnering verwijderen?';
+	@override String get deleteReminderConfirmation => 'Weet je zeker dat je je dagelijkse herinnering voor het vers van de dag wilt verwijderen?';
+	@override String get reminderNotificationChannelName => 'Herinneringen voor vers van de dag';
+	@override String get reminderNotificationChannelDescription => 'Dagelijkse herinneringen voor het vers van de dag';
+	@override String get reminderNotificationTitle => 'Vers van de dag';
+	@override String get reminderPermissionDeniedTitle => 'Meldingen zijn uitgeschakeld';
+	@override String get reminderPermissionDeniedBody => 'Sta Lux toe om meldingen te sturen in Instellingen om deze herinnering op te slaan.';
+	@override String get openNotificationSettings => 'Instellingen openen';
+	@override String get reminderSchedulingFailedTitle => 'Herinnering kon niet worden ingesteld';
+	@override String get reminderSchedulingFailedBody => 'Lux kon deze herinnering niet instellen. Probeer het opnieuw.';
+	@override String reminderSaved({required Object time}) => 'Herinnering voor het vers van de dag opgeslagen voor dagelijks om ${time}.';
 }
 
 // Path: studyActions
@@ -1128,12 +1156,11 @@ class _Translations$settings$nl extends Translations$settings$en {
 	@override String get customize => 'Aanpassen';
 	@override String get pushNotifications => 'Pushmeldingen';
 	@override String get biblePlanReminders => 'Herinneringen voor Bijbelleesplannen';
-	@override String get noBiblePlanReminders => 'Er zijn geen herinneringen voor Bijbelleesplannen ingeschakeld.';
-	@override String get noBiblePlanRemindersDescription => 'Je kunt een herinnering aan een Bijbelleesplan toevoegen via de pagina Bijbelleesplannen.';
 	@override String get notificationsNotRequested => 'Schakel meldingen in.';
 	@override String get notificationsNotRequestedDescription => 'Sta Lux toe meldingen te sturen om je herinneringen te beheren.';
 	@override String get notificationsDisabled => 'Meldingen voor Lux zijn uitgeschakeld.';
 	@override String get biblePlanRemindersDisabled => 'Herinneringen voor Bijbelleesplannen zijn uitgeschakeld.';
+	@override String get verseOfTheDayRemindersDisabled => 'Herinneringen voor het vers van de dag zijn uitgeschakeld.';
 	@override String get notificationsDisabledDescription => 'Schakel ze in via de instellingen van je apparaat om je herinneringen te beheren.';
 	@override String get language => 'Taal';
 	@override String get system => 'Systeem';
@@ -2773,6 +2800,7 @@ extension on TranslationsNl {
 			'books.john3' => '3 Johannes',
 			'books.jude' => 'Judas',
 			'books.revelation' => 'Openbaring',
+			'common.add' => 'Toevoegen',
 			'common.addNew' => 'Nieuwe toevoegen',
 			'common.am' => 'a.m.',
 			'common.cancel' => 'Annuleren',
@@ -2790,6 +2818,7 @@ extension on TranslationsNl {
 			'common.nevermind' => 'Laat maar',
 			'common.next' => 'Volgende',
 			'common.noMatches' => 'Geen overeenkomsten',
+			'common.noNotification' => 'Geen melding',
 			'common.ok' => 'Oké',
 			'common.off' => 'Uit',
 			'common.none' => 'Geen',
@@ -2834,6 +2863,22 @@ extension on TranslationsNl {
 			'mainActions.plansDescription' => 'Lees de Bijbel met begeleide leesplannen.',
 			'mainActions.settingsDescription' => 'Bekijk de instellingen van Lux.',
 			'mainActions.moreDescription' => 'Bekijk instellingen, je inhoud en links naar de community.',
+			'verseOfTheDay.reminderDiscoveryTitle' => 'Dagelijkse herinnering toevoegen?',
+			'verseOfTheDay.reminderDiscoveryBody' => 'Wil je dat Lux je elke dag herinnert aan het vers van de dag?',
+			'verseOfTheDay.addReminder' => 'Herinnering toevoegen',
+			'verseOfTheDay.noReminder' => 'Nee',
+			'verseOfTheDay.dailyReminders' => 'Dagelijkse herinnering',
+			'verseOfTheDay.deleteReminder' => 'Herinnering verwijderen?',
+			'verseOfTheDay.deleteReminderConfirmation' => 'Weet je zeker dat je je dagelijkse herinnering voor het vers van de dag wilt verwijderen?',
+			'verseOfTheDay.reminderNotificationChannelName' => 'Herinneringen voor vers van de dag',
+			'verseOfTheDay.reminderNotificationChannelDescription' => 'Dagelijkse herinneringen voor het vers van de dag',
+			'verseOfTheDay.reminderNotificationTitle' => 'Vers van de dag',
+			'verseOfTheDay.reminderPermissionDeniedTitle' => 'Meldingen zijn uitgeschakeld',
+			'verseOfTheDay.reminderPermissionDeniedBody' => 'Sta Lux toe om meldingen te sturen in Instellingen om deze herinnering op te slaan.',
+			'verseOfTheDay.openNotificationSettings' => 'Instellingen openen',
+			'verseOfTheDay.reminderSchedulingFailedTitle' => 'Herinnering kon niet worden ingesteld',
+			'verseOfTheDay.reminderSchedulingFailedBody' => 'Lux kon deze herinnering niet instellen. Probeer het opnieuw.',
+			'verseOfTheDay.reminderSaved' => ({required Object time}) => 'Herinnering voor het vers van de dag opgeslagen voor dagelijks om ${time}.',
 			'studyActions.quickStudy' => 'Snelle studie',
 			'studyActions.compare' => 'Vergelijken',
 			'studyActions.interlinear' => 'Interlineair',
@@ -3170,6 +3215,8 @@ extension on TranslationsNl {
 			'themeOptions.tiny' => 'Zeer klein',
 			'themeOptions.small' => 'Klein',
 			'themeOptions.standard' => 'Standaard',
+			_ => null,
+		} ?? switch (path) {
 			'themeOptions.large' => 'Groot',
 			'themeOptions.huge' => 'Zeer groot',
 			'themeOptions.extraHuge' => 'Extra groot',
@@ -3188,8 +3235,6 @@ extension on TranslationsNl {
 			'commentaryTypes.matthewHenryDescription' => 'Een beknopt, devoot commentaar op de hele Bijbel vanuit de puriteinse traditie. Warm, praktisch en toegankelijk.',
 			'commentaryTypes.jamiesonFaussetBrownDescription' => 'Een compact vers-voor-verscommentaar op de hele Bijbel. Evenwichtig en toegankelijk.',
 			'commentaryTypes.calvinDescription' => 'De klassieke uiteenzetting van de reformator. Diepgaand en leerstellig.',
-			_ => null,
-		} ?? switch (path) {
 			'strongDefinition.addedLabel' => 'toegevoegd:',
 			'strongDefinition.idiomLabel' => 'idioom:',
 			'strongDefinition.addedWord' => 'Toegevoegd woord',
@@ -3593,12 +3638,11 @@ extension on TranslationsNl {
 			'settings.customize' => 'Aanpassen',
 			'settings.pushNotifications' => 'Pushmeldingen',
 			'settings.biblePlanReminders' => 'Herinneringen voor Bijbelleesplannen',
-			'settings.noBiblePlanReminders' => 'Er zijn geen herinneringen voor Bijbelleesplannen ingeschakeld.',
-			'settings.noBiblePlanRemindersDescription' => 'Je kunt een herinnering aan een Bijbelleesplan toevoegen via de pagina Bijbelleesplannen.',
 			'settings.notificationsNotRequested' => 'Schakel meldingen in.',
 			'settings.notificationsNotRequestedDescription' => 'Sta Lux toe meldingen te sturen om je herinneringen te beheren.',
 			'settings.notificationsDisabled' => 'Meldingen voor Lux zijn uitgeschakeld.',
 			'settings.biblePlanRemindersDisabled' => 'Herinneringen voor Bijbelleesplannen zijn uitgeschakeld.',
+			'settings.verseOfTheDayRemindersDisabled' => 'Herinneringen voor het vers van de dag zijn uitgeschakeld.',
 			'settings.notificationsDisabledDescription' => 'Schakel ze in via de instellingen van je apparaat om je herinneringen te beheren.',
 			'settings.language' => 'Taal',
 			'settings.system' => 'Systeem',

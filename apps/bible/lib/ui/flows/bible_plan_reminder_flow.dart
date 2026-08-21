@@ -1,4 +1,5 @@
 import 'package:bible/models/bible_plan.dart';
+import 'package:bible/providers/bible_plan_local_notification_schedules_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/flows/local_notification_permission_flow.dart';
@@ -41,6 +42,7 @@ class BiblePlanReminderFlow {
 
     final hasPermission = await LocalNotificationPermissionFlow.request(
       context: context,
+      androidChannelId: biblePlanReminderNotificationChannelId,
       permissionDeniedTitle: t.biblePlans.reminderPermissionDeniedTitle,
       permissionDeniedBody: t.biblePlans.reminderPermissionDeniedBody,
       openSettingsLabel: t.biblePlans.openNotificationSettings,

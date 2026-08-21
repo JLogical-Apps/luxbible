@@ -155,6 +155,11 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
           ?.map((e) => $enumDecode(_$BiblePlanTypeEnumMap, e))
           .toSet() ??
       const {},
+  verseOfTheDayReminder: json['verseOfTheDayReminder'] == null
+      ? null
+      : Reminder.fromJson(
+          json['verseOfTheDayReminder'] as Map<String, dynamic>,
+        ),
   audio: json['audio'] == null
       ? const AudioBibleConfiguration()
       : AudioBibleConfiguration.fromJson(json['audio'] as Map<String, dynamic>),
@@ -204,6 +209,7 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'completedPlans': instance.completedPlans
       .map((e) => _$BiblePlanTypeEnumMap[e]!)
       .toList(),
+  'verseOfTheDayReminder': instance.verseOfTheDayReminder?.toJson(),
   'audio': instance.audio.toJson(),
 };
 

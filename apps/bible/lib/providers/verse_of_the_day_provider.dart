@@ -13,25 +13,29 @@ VerseSelection todayVerseOfTheDaySelection(Ref ref) =>
     ref.watch(verseOfTheDaySelectionsProvider)[getVerseOfTheDayIndex(.now())];
 
 @riverpod
-Future<VerseOfTheDay> verseOfTheDay(Ref ref) async {
-  final passage = ref.watch(todayVerseOfTheDaySelectionProvider);
+FutureOr<VerseOfTheDay> verseOfTheDayForDate(Ref ref, {required DateTime date}) {
+  final passage = ref.watch(verseOfTheDaySelectionsProvider)[getVerseOfTheDayIndex(date)];
   final user = ref.watch(userProvider);
   final selectedTranslation = user.getTranslationFor(passage.references.first.book);
 
   final (translation, text) =
-      await guardAsync(
-        () async => (
+      guard(
+        () => (
           selectedTranslation,
-          await ref.watch(verseSelectionTextProvider(selection: passage, translation: selectedTranslation).future),
+          ref.watch(verseSelectionTextProvider(selection: passage, translation: selectedTranslation)).requireValue,
         ),
       ) ??
       (
         user.studyTranslation,
-        await ref.watch(verseSelectionTextProvider(selection: passage, translation: user.studyTranslation).future),
+        ref.watch(verseSelectionTextProvider(selection: passage, translation: user.studyTranslation)).requireValue,
       );
 
   return VerseOfTheDay(selection: passage, translation: translation, text: text);
 }
+
+@riverpod
+Future<VerseOfTheDay> verseOfTheDay(Ref ref) =>
+    ref.watch(verseOfTheDayForDateProvider(date: .now().withoutTime()).future);
 
 class VerseOfTheDay {
   final VerseSelection selection;

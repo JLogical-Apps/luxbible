@@ -42,6 +42,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$common$en common = Translations$common$en.internal(_root);
 	late final Translations$regionTypes$en regionTypes = Translations$regionTypes$en.internal(_root);
 	late final Translations$mainActions$en mainActions = Translations$mainActions$en.internal(_root);
+	late final Translations$verseOfTheDay$en verseOfTheDay = Translations$verseOfTheDay$en.internal(_root);
 	late final Translations$studyActions$en studyActions = Translations$studyActions$en.internal(_root);
 	late final Translations$selectionActions$en selectionActions = Translations$selectionActions$en.internal(_root);
 	late final Translations$studyPanels$en studyPanels = Translations$studyPanels$en.internal(_root);
@@ -427,6 +428,9 @@ class Translations$common$en {
 
 	// Translations
 
+	/// en: 'Add'
+	String get add => 'Add';
+
 	/// en: 'Add New'
 	String get addNew => 'Add New';
 
@@ -477,6 +481,9 @@ class Translations$common$en {
 
 	/// en: 'No Matches'
 	String get noMatches => 'No Matches';
+
+	/// en: 'No notification'
+	String get noNotification => 'No notification';
 
 	/// en: 'Ok'
 	String get ok => 'Ok';
@@ -621,6 +628,63 @@ class Translations$mainActions$en {
 
 	/// en: 'View settings, your content, and community links.'
 	String get moreDescription => 'View settings, your content, and community links.';
+}
+
+// Path: verseOfTheDay
+class Translations$verseOfTheDay$en {
+	Translations$verseOfTheDay$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Add A Daily Reminder?'
+	String get reminderDiscoveryTitle => 'Add A Daily Reminder?';
+
+	/// en: 'Would you like Lux to notify you with the Verse of the Day each day?'
+	String get reminderDiscoveryBody => 'Would you like Lux to notify you with the Verse of the Day each day?';
+
+	/// en: 'Add Reminder'
+	String get addReminder => 'Add Reminder';
+
+	/// en: 'No'
+	String get noReminder => 'No';
+
+	/// en: 'Daily Reminder'
+	String get dailyReminders => 'Daily Reminder';
+
+	/// en: 'Delete Reminder?'
+	String get deleteReminder => 'Delete Reminder?';
+
+	/// en: 'Are you sure you want to delete your daily Verse of the Day reminder?'
+	String get deleteReminderConfirmation => 'Are you sure you want to delete your daily Verse of the Day reminder?';
+
+	/// en: 'Verse of the Day Reminders'
+	String get reminderNotificationChannelName => 'Verse of the Day Reminders';
+
+	/// en: 'Daily Verse of the Day reminders'
+	String get reminderNotificationChannelDescription => 'Daily Verse of the Day reminders';
+
+	/// en: 'Verse of the Day'
+	String get reminderNotificationTitle => 'Verse of the Day';
+
+	/// en: 'Notifications Are Off'
+	String get reminderPermissionDeniedTitle => 'Notifications Are Off';
+
+	/// en: 'To save this reminder, allow Lux to send notifications in Settings.'
+	String get reminderPermissionDeniedBody => 'To save this reminder, allow Lux to send notifications in Settings.';
+
+	/// en: 'Open Settings'
+	String get openNotificationSettings => 'Open Settings';
+
+	/// en: 'Couldn't Schedule Reminder'
+	String get reminderSchedulingFailedTitle => 'Couldn\'t Schedule Reminder';
+
+	/// en: 'Lux couldn't schedule this reminder. Please try again.'
+	String get reminderSchedulingFailedBody => 'Lux couldn\'t schedule this reminder. Please try again.';
+
+	/// en: 'Verse of the Day reminder saved for daily at {time}.'
+	String reminderSaved({required Object time}) => 'Verse of the Day reminder saved for daily at ${time}.';
 }
 
 // Path: studyActions
@@ -2317,12 +2381,6 @@ class Translations$settings$en {
 	/// en: 'Bible Plan Reminders'
 	String get biblePlanReminders => 'Bible Plan Reminders';
 
-	/// en: 'No Bible plan reminders'
-	String get noBiblePlanReminders => 'No Bible plan reminders';
-
-	/// en: 'You can add a reminder to a Bible plan from the Bible Plans page.'
-	String get noBiblePlanRemindersDescription => 'You can add a reminder to a Bible plan from the Bible Plans page.';
-
 	/// en: 'Turn on notifications'
 	String get notificationsNotRequested => 'Turn on notifications';
 
@@ -2334,6 +2392,9 @@ class Translations$settings$en {
 
 	/// en: 'Bible Plan Reminders are turned off.'
 	String get biblePlanRemindersDisabled => 'Bible Plan Reminders are turned off.';
+
+	/// en: 'Verse of the Day reminders are turned off.'
+	String get verseOfTheDayRemindersDisabled => 'Verse of the Day reminders are turned off.';
 
 	/// en: 'Enable them in your device settings to manage your reminders.'
 	String get notificationsDisabledDescription => 'Enable them in your device settings to manage your reminders.';
@@ -4647,6 +4708,7 @@ extension on Translations {
 			'books.john3' => '3 John',
 			'books.jude' => 'Jude',
 			'books.revelation' => 'Revelation',
+			'common.add' => 'Add',
 			'common.addNew' => 'Add New',
 			'common.am' => 'AM',
 			'common.cancel' => 'Cancel',
@@ -4664,6 +4726,7 @@ extension on Translations {
 			'common.nevermind' => 'Nevermind',
 			'common.next' => 'Next',
 			'common.noMatches' => 'No Matches',
+			'common.noNotification' => 'No notification',
 			'common.ok' => 'Ok',
 			'common.off' => 'Off',
 			'common.none' => 'None',
@@ -4706,6 +4769,22 @@ extension on Translations {
 			'mainActions.plansDescription' => 'Read through the Bible with guided reading plans.',
 			'mainActions.settingsDescription' => 'View the settings for Lux.',
 			'mainActions.moreDescription' => 'View settings, your content, and community links.',
+			'verseOfTheDay.reminderDiscoveryTitle' => 'Add A Daily Reminder?',
+			'verseOfTheDay.reminderDiscoveryBody' => 'Would you like Lux to notify you with the Verse of the Day each day?',
+			'verseOfTheDay.addReminder' => 'Add Reminder',
+			'verseOfTheDay.noReminder' => 'No',
+			'verseOfTheDay.dailyReminders' => 'Daily Reminder',
+			'verseOfTheDay.deleteReminder' => 'Delete Reminder?',
+			'verseOfTheDay.deleteReminderConfirmation' => 'Are you sure you want to delete your daily Verse of the Day reminder?',
+			'verseOfTheDay.reminderNotificationChannelName' => 'Verse of the Day Reminders',
+			'verseOfTheDay.reminderNotificationChannelDescription' => 'Daily Verse of the Day reminders',
+			'verseOfTheDay.reminderNotificationTitle' => 'Verse of the Day',
+			'verseOfTheDay.reminderPermissionDeniedTitle' => 'Notifications Are Off',
+			'verseOfTheDay.reminderPermissionDeniedBody' => 'To save this reminder, allow Lux to send notifications in Settings.',
+			'verseOfTheDay.openNotificationSettings' => 'Open Settings',
+			'verseOfTheDay.reminderSchedulingFailedTitle' => 'Couldn\'t Schedule Reminder',
+			'verseOfTheDay.reminderSchedulingFailedBody' => 'Lux couldn\'t schedule this reminder. Please try again.',
+			'verseOfTheDay.reminderSaved' => ({required Object time}) => 'Verse of the Day reminder saved for daily at ${time}.',
 			'studyActions.quickStudy' => 'Quick Study',
 			'studyActions.compare' => 'Compare',
 			'studyActions.interlinear' => 'Interlinear',
@@ -5044,6 +5123,8 @@ extension on Translations {
 			'themeOptions.standard' => 'Standard',
 			'themeOptions.large' => 'Large',
 			'themeOptions.huge' => 'Huge',
+			_ => null,
+		} ?? switch (path) {
 			'themeOptions.extraHuge' => 'Extra Huge',
 			'themeOptions.nativeAndSynthetic' => 'Native & Synthetic',
 			'themeOptions.native' => 'Native',
@@ -5062,8 +5143,6 @@ extension on Translations {
 			'commentaryTypes.calvinDescription' => 'The Reformer\'s classic exposition. Deep and doctrinal.',
 			'strongDefinition.addedLabel' => 'added:',
 			'strongDefinition.idiomLabel' => 'idiom:',
-			_ => null,
-		} ?? switch (path) {
 			'strongDefinition.addedWord' => 'Added word',
 			'strongDefinition.idiomaticRendering' => 'Idiomatic rendering',
 			'strongDefinition.addedWordDescription' => 'Marks a word supplied alongside the Hebrew or Greek word being defined.',
@@ -5465,12 +5544,11 @@ extension on Translations {
 			'settings.customize' => 'Customize',
 			'settings.pushNotifications' => 'Push Notifications',
 			'settings.biblePlanReminders' => 'Bible Plan Reminders',
-			'settings.noBiblePlanReminders' => 'No Bible plan reminders',
-			'settings.noBiblePlanRemindersDescription' => 'You can add a reminder to a Bible plan from the Bible Plans page.',
 			'settings.notificationsNotRequested' => 'Turn on notifications',
 			'settings.notificationsNotRequestedDescription' => 'Allow Lux to send notifications to manage your reminders.',
 			'settings.notificationsDisabled' => 'Notifications are disabled',
 			'settings.biblePlanRemindersDisabled' => 'Bible Plan Reminders are turned off.',
+			'settings.verseOfTheDayRemindersDisabled' => 'Verse of the Day reminders are turned off.',
 			'settings.notificationsDisabledDescription' => 'Enable them in your device settings to manage your reminders.',
 			'settings.language' => 'Language',
 			'settings.system' => 'System',

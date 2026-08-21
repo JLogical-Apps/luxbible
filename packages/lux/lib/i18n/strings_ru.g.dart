@@ -46,6 +46,7 @@ class TranslationsRu extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$common$ru common = _Translations$common$ru._(_root);
 	@override late final _Translations$regionTypes$ru regionTypes = _Translations$regionTypes$ru._(_root);
 	@override late final _Translations$mainActions$ru mainActions = _Translations$mainActions$ru._(_root);
+	@override late final _Translations$verseOfTheDay$ru verseOfTheDay = _Translations$verseOfTheDay$ru._(_root);
 	@override late final _Translations$studyActions$ru studyActions = _Translations$studyActions$ru._(_root);
 	@override late final _Translations$selectionActions$ru selectionActions = _Translations$selectionActions$ru._(_root);
 	@override late final _Translations$studyPanels$ru studyPanels = _Translations$studyPanels$ru._(_root);
@@ -236,6 +237,7 @@ class _Translations$common$ru extends Translations$common$en {
 	final TranslationsRu _root; // ignore: unused_field
 
 	// Translations
+	@override String get add => 'Добавить';
 	@override String get addNew => 'Добавить';
 	@override String get am => 'ДП';
 	@override String get cancel => 'Отмена';
@@ -253,6 +255,7 @@ class _Translations$common$ru extends Translations$common$en {
 	@override String get nevermind => 'Неважно';
 	@override String get next => 'Далее';
 	@override String get noMatches => 'Нет совпадений';
+	@override String get noNotification => 'Нет уведомления';
 	@override String get ok => 'Хорошо';
 	@override String get off => 'Выкл.';
 	@override String get none => 'Нет';
@@ -315,6 +318,31 @@ class _Translations$mainActions$ru extends Translations$mainActions$en {
 	@override String get plansDescription => 'Читайте Библию с помощью управляемых планов чтения.';
 	@override String get settingsDescription => 'Откройте настройки Lux.';
 	@override String get moreDescription => 'Просматривайте настройки, ваш контент и ссылки на сообщество.';
+}
+
+// Path: verseOfTheDay
+class _Translations$verseOfTheDay$ru extends Translations$verseOfTheDay$en {
+	_Translations$verseOfTheDay$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get reminderDiscoveryTitle => 'Добавить ежедневное напоминание?';
+	@override String get reminderDiscoveryBody => 'Хотите, чтобы Lux ежедневно напоминал вам о стихе дня?';
+	@override String get addReminder => 'Добавить напоминание';
+	@override String get noReminder => 'Нет';
+	@override String get dailyReminders => 'Ежедневное напоминание';
+	@override String get deleteReminder => 'Удалить напоминание?';
+	@override String get deleteReminderConfirmation => 'Удалить ежедневное напоминание о стихе дня?';
+	@override String get reminderNotificationChannelName => 'Напоминания о стихе дня';
+	@override String get reminderNotificationChannelDescription => 'Ежедневные напоминания о стихе дня';
+	@override String get reminderNotificationTitle => 'Стих дня';
+	@override String get reminderPermissionDeniedTitle => 'Уведомления отключены';
+	@override String get reminderPermissionDeniedBody => 'Чтобы сохранить это напоминание, разрешите Lux отправлять уведомления в настройках.';
+	@override String get openNotificationSettings => 'Открыть настройки';
+	@override String get reminderSchedulingFailedTitle => 'Не удалось установить напоминание';
+	@override String get reminderSchedulingFailedBody => 'Lux не удалось установить это напоминание. Повторите попытку.';
+	@override String reminderSaved({required Object time}) => 'Ежедневное напоминание о стихе дня сохранено на ${time}.';
 }
 
 // Path: studyActions
@@ -1132,12 +1160,11 @@ class _Translations$settings$ru extends Translations$settings$en {
 	@override String get customize => 'Настроить';
 	@override String get pushNotifications => 'Push-уведомления';
 	@override String get biblePlanReminders => 'Напоминания о библейских планах';
-	@override String get noBiblePlanReminders => 'Напоминания о библейских планах не включены.';
-	@override String get noBiblePlanRemindersDescription => 'Напоминание можно добавить к библейскому плану на странице «Библейские планы».';
 	@override String get notificationsNotRequested => 'Включите уведомления.';
 	@override String get notificationsNotRequestedDescription => 'Разрешите Lux отправлять уведомления, чтобы управлять напоминаниями.';
 	@override String get notificationsDisabled => 'Уведомления для Lux отключены.';
 	@override String get biblePlanRemindersDisabled => 'Напоминания о библейских планах отключены.';
+	@override String get verseOfTheDayRemindersDisabled => 'Напоминания о стихе дня отключены.';
 	@override String get notificationsDisabledDescription => 'Включите их в настройках устройства, чтобы управлять напоминаниями.';
 	@override String get language => 'Язык';
 	@override String get system => 'Система';
@@ -2777,6 +2804,7 @@ extension on TranslationsRu {
 			'books.john3' => '3 Иоанна',
 			'books.jude' => 'Иуда',
 			'books.revelation' => 'Откровение',
+			'common.add' => 'Добавить',
 			'common.addNew' => 'Добавить',
 			'common.am' => 'ДП',
 			'common.cancel' => 'Отмена',
@@ -2794,6 +2822,7 @@ extension on TranslationsRu {
 			'common.nevermind' => 'Неважно',
 			'common.next' => 'Далее',
 			'common.noMatches' => 'Нет совпадений',
+			'common.noNotification' => 'Нет уведомления',
 			'common.ok' => 'Хорошо',
 			'common.off' => 'Выкл.',
 			'common.none' => 'Нет',
@@ -2838,6 +2867,22 @@ extension on TranslationsRu {
 			'mainActions.plansDescription' => 'Читайте Библию с помощью управляемых планов чтения.',
 			'mainActions.settingsDescription' => 'Откройте настройки Lux.',
 			'mainActions.moreDescription' => 'Просматривайте настройки, ваш контент и ссылки на сообщество.',
+			'verseOfTheDay.reminderDiscoveryTitle' => 'Добавить ежедневное напоминание?',
+			'verseOfTheDay.reminderDiscoveryBody' => 'Хотите, чтобы Lux ежедневно напоминал вам о стихе дня?',
+			'verseOfTheDay.addReminder' => 'Добавить напоминание',
+			'verseOfTheDay.noReminder' => 'Нет',
+			'verseOfTheDay.dailyReminders' => 'Ежедневное напоминание',
+			'verseOfTheDay.deleteReminder' => 'Удалить напоминание?',
+			'verseOfTheDay.deleteReminderConfirmation' => 'Удалить ежедневное напоминание о стихе дня?',
+			'verseOfTheDay.reminderNotificationChannelName' => 'Напоминания о стихе дня',
+			'verseOfTheDay.reminderNotificationChannelDescription' => 'Ежедневные напоминания о стихе дня',
+			'verseOfTheDay.reminderNotificationTitle' => 'Стих дня',
+			'verseOfTheDay.reminderPermissionDeniedTitle' => 'Уведомления отключены',
+			'verseOfTheDay.reminderPermissionDeniedBody' => 'Чтобы сохранить это напоминание, разрешите Lux отправлять уведомления в настройках.',
+			'verseOfTheDay.openNotificationSettings' => 'Открыть настройки',
+			'verseOfTheDay.reminderSchedulingFailedTitle' => 'Не удалось установить напоминание',
+			'verseOfTheDay.reminderSchedulingFailedBody' => 'Lux не удалось установить это напоминание. Повторите попытку.',
+			'verseOfTheDay.reminderSaved' => ({required Object time}) => 'Ежедневное напоминание о стихе дня сохранено на ${time}.',
 			'studyActions.quickStudy' => 'Быстрое изучение',
 			'studyActions.compare' => 'Сравнивать',
 			'studyActions.interlinear' => 'Подстрочный',
@@ -3174,6 +3219,8 @@ extension on TranslationsRu {
 			'themeOptions.tiny' => 'Мелкий',
 			'themeOptions.small' => 'Маленький',
 			'themeOptions.standard' => 'Стандартный',
+			_ => null,
+		} ?? switch (path) {
 			'themeOptions.large' => 'Большой',
 			'themeOptions.huge' => 'Огромный',
 			'themeOptions.extraHuge' => 'Очень крупный',
@@ -3192,8 +3239,6 @@ extension on TranslationsRu {
 			'commentaryTypes.matthewHenryDescription' => 'Краткий, религиозный комментарий ко всей Библии пуританской традиции. Теплый, практичный и легко читаемый.',
 			'commentaryTypes.jamiesonFaussetBrownDescription' => 'Компактный, поэтапный комментарий ко всей Библии. Сбалансированный и доступный.',
 			'commentaryTypes.calvinDescription' => 'Классическое изложение реформатора. Глубокий и доктринальный.',
-			_ => null,
-		} ?? switch (path) {
 			'strongDefinition.addedLabel' => 'добавлен:',
 			'strongDefinition.idiomLabel' => 'идиома:',
 			'strongDefinition.addedWord' => 'Добавлено слово',
@@ -3597,12 +3642,11 @@ extension on TranslationsRu {
 			'settings.customize' => 'Настроить',
 			'settings.pushNotifications' => 'Push-уведомления',
 			'settings.biblePlanReminders' => 'Напоминания о библейских планах',
-			'settings.noBiblePlanReminders' => 'Напоминания о библейских планах не включены.',
-			'settings.noBiblePlanRemindersDescription' => 'Напоминание можно добавить к библейскому плану на странице «Библейские планы».',
 			'settings.notificationsNotRequested' => 'Включите уведомления.',
 			'settings.notificationsNotRequestedDescription' => 'Разрешите Lux отправлять уведомления, чтобы управлять напоминаниями.',
 			'settings.notificationsDisabled' => 'Уведомления для Lux отключены.',
 			'settings.biblePlanRemindersDisabled' => 'Напоминания о библейских планах отключены.',
+			'settings.verseOfTheDayRemindersDisabled' => 'Напоминания о стихе дня отключены.',
 			'settings.notificationsDisabledDescription' => 'Включите их в настройках устройства, чтобы управлять напоминаниями.',
 			'settings.language' => 'Язык',
 			'settings.system' => 'Система',

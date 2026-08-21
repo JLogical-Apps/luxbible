@@ -10,27 +10,25 @@ import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:collection/collection.dart';
 import 'package:lux/lux.dart';
 
-class BiblePlanReminderNavigation {
-  void handlePayload(String? payload) {
-    final planType = BiblePlanType.values.firstWhereOrNull(
-      (type) => payload == '${LocalNotificationService.payloadPrefix}${type.name}',
-    );
-    if (planType == null) return;
+class BiblePlanNotification {
+  static bool handlePayload(String payload) {
+    final planType = BiblePlanNotification.getPlanTypeForPayload(payload);
+    if (planType == null) return false;
 
     final context = navigatorKey.currentContext;
-    if (context == null) return;
+    if (context == null) return false;
 
     final user = ref.read(userProvider);
     final plans = ref.read(biblePlansProvider);
     final planProgress = user.getHydratedPlanProgress(planType: planType, planByType: plans);
     if (planProgress == null) {
       context.goToStack([BiblePage(), BiblePlansPage()]);
-      return;
+      return true;
     }
 
     if (planProgress.currentDay.isReviewAndReflect) {
       context.goToStack([BiblePage(), BiblePlansPage()]);
-      return;
+      return true;
     }
 
     final dayProgress = planProgress.progress.days[planProgress.currentDayIndex];
@@ -42,5 +40,12 @@ class BiblePlanReminderNavigation {
           planProgress.currentDay.passages.indexWhereOrNull((passage) => !dayProgress.isPassageComplete(passage)) ?? 0,
     );
     context.goToStack(page.pageStack);
+    return true;
   }
+
+  static String getNotificationPrefixFor(BiblePlanType planType) =>
+      '${LocalNotificationService.payloadPrefix}bible-plan:${planType.name}';
+
+  static BiblePlanType? getPlanTypeForPayload(String payload) =>
+      BiblePlanType.values.firstWhereOrNull((planType) => payload == getNotificationPrefixFor(planType));
 }

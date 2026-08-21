@@ -13,6 +13,7 @@ import 'package:bible/ui/pages/dictionary_page.dart';
 import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/more_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
+import 'package:bible/ui/flows/verse_of_the_day_reminder_flow.dart';
 import 'package:bible/ui/sheets/bookmark_sheet.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
@@ -247,6 +248,7 @@ enum MainAction {
           verseSelection: verseOfTheDaySelection,
           onNavigateToVerseSelection: onNavigateToVerseSelection,
         );
+        if (context.mounted) await VerseOfTheDayReminderFlow.showDiscoveryPrompt(context);
       case studyPanel:
         final studyPanelType = await context.showStyledSheet<StudyPanelType>(
           (context, _) => StyledSheet(

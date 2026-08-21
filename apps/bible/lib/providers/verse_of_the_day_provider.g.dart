@@ -98,7 +98,83 @@ final class TodayVerseOfTheDaySelectionProvider
 }
 
 String _$todayVerseOfTheDaySelectionHash() =>
-    r'96f3f5ff236973b1fb436747e9fbdb33fceaff3f';
+    r'0e78356c0aa0ff416b28b0163c6c36cee47786ad';
+
+@ProviderFor(verseOfTheDayForDate)
+final verseOfTheDayForDateProvider = VerseOfTheDayForDateFamily._();
+
+final class VerseOfTheDayForDateProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<VerseOfTheDay>,
+          VerseOfTheDay,
+          FutureOr<VerseOfTheDay>
+        >
+    with $FutureModifier<VerseOfTheDay>, $FutureProvider<VerseOfTheDay> {
+  VerseOfTheDayForDateProvider._({
+    required VerseOfTheDayForDateFamily super.from,
+    required DateTime super.argument,
+  }) : super(
+         retry: null,
+         name: r'verseOfTheDayForDateProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$verseOfTheDayForDateHash();
+
+  @override
+  String toString() {
+    return r'verseOfTheDayForDateProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<VerseOfTheDay> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<VerseOfTheDay> create(Ref ref) {
+    final argument = this.argument as DateTime;
+    return verseOfTheDayForDate(ref, date: argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is VerseOfTheDayForDateProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$verseOfTheDayForDateHash() =>
+    r'1f1a2984bad5653d43d8ab570153fa0bcc7a883b';
+
+final class VerseOfTheDayForDateFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<VerseOfTheDay>, DateTime> {
+  VerseOfTheDayForDateFamily._()
+    : super(
+        retry: null,
+        name: r'verseOfTheDayForDateProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  VerseOfTheDayForDateProvider call({required DateTime date}) =>
+      VerseOfTheDayForDateProvider._(argument: date, from: this);
+
+  @override
+  String toString() => r'verseOfTheDayForDateProvider';
+}
 
 @ProviderFor(verseOfTheDay)
 final verseOfTheDayProvider = VerseOfTheDayProvider._();
@@ -137,4 +213,4 @@ final class VerseOfTheDayProvider
   }
 }
 
-String _$verseOfTheDayHash() => r'ba96f3afceae1821b81d59f859e33630a3f357a8';
+String _$verseOfTheDayHash() => r'11e6795a3b690277abc2a8cd92c9e491756d875f';

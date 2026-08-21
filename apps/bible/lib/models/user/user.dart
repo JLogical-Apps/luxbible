@@ -6,6 +6,7 @@ import 'package:bible/models/commentary_type.dart';
 import 'package:bible/models/highlight_style.dart';
 import 'package:bible/models/hydrated_bible_plan_progress.dart';
 import 'package:bible/models/notebook.dart';
+import 'package:bible/models/reminder.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/audio_bible_configuration.dart';
 import 'package:bible/models/user/language.dart';
@@ -63,6 +64,7 @@ sealed class User with _$User {
     @JsonKey(name: 'highlightStyles') List<(HighlightStyle, String label)>? highlightStyleOverrides,
     @Default({}) Map<BiblePlanType, BiblePlanProgress> planProgressByType,
     @Default({}) Set<BiblePlanType> completedPlans,
+    Reminder? verseOfTheDayReminder,
     @Default(AudioBibleConfiguration()) AudioBibleConfiguration audio,
   }) = _User;
 
@@ -401,8 +403,10 @@ sealed class User with _$User {
     completedPlans: {...completedPlans, planType},
   );
 
-  User withPlanReminder(BiblePlanType planType, BiblePlanReminder reminder) =>
+  User withPlanReminder(BiblePlanType planType, Reminder reminder) =>
       withUpdatePlanProgress(planType, (progress) => progress.copyWith(reminder: reminder));
+
+  User withVerseOfTheDayNotificationReminder(Reminder reminder) => copyWith(verseOfTheDayReminder: reminder);
 
   User withPassageToggled({
     required BiblePlanType planType,

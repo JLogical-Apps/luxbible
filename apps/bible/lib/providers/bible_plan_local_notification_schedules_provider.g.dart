@@ -9,54 +9,51 @@ part of 'bible_plan_local_notification_schedules_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(biblePlanLocalNotificationSchedules)
-final biblePlanLocalNotificationSchedulesProvider =
-    BiblePlanLocalNotificationSchedulesProvider._();
+@ProviderFor(biblePlanLocalNotifications)
+final biblePlanLocalNotificationsProvider =
+    BiblePlanLocalNotificationsProvider._();
 
-final class BiblePlanLocalNotificationSchedulesProvider
+final class BiblePlanLocalNotificationsProvider
     extends
         $FunctionalProvider<
-          List<LocalNotificationSchedule>,
-          List<LocalNotificationSchedule>,
-          List<LocalNotificationSchedule>
+          List<LocalNotification>,
+          List<LocalNotification>,
+          List<LocalNotification>
         >
-    with $Provider<List<LocalNotificationSchedule>> {
-  BiblePlanLocalNotificationSchedulesProvider._()
+    with $Provider<List<LocalNotification>> {
+  BiblePlanLocalNotificationsProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'biblePlanLocalNotificationSchedulesProvider',
+        name: r'biblePlanLocalNotificationsProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() =>
-      _$biblePlanLocalNotificationSchedulesHash();
+  String debugGetCreateSourceHash() => _$biblePlanLocalNotificationsHash();
 
   @$internal
   @override
-  $ProviderElement<List<LocalNotificationSchedule>> $createElement(
+  $ProviderElement<List<LocalNotification>> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  List<LocalNotificationSchedule> create(Ref ref) {
-    return biblePlanLocalNotificationSchedules(ref);
+  List<LocalNotification> create(Ref ref) {
+    return biblePlanLocalNotifications(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(List<LocalNotificationSchedule> value) {
+  Override overrideWithValue(List<LocalNotification> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<List<LocalNotificationSchedule>>(
-        value,
-      ),
+      providerOverride: $SyncValueProvider<List<LocalNotification>>(value),
     );
   }
 }
 
-String _$biblePlanLocalNotificationSchedulesHash() =>
-    r'4e6463c6a85f07e7f72c6828925230e6f225e1f8';
+String _$biblePlanLocalNotificationsHash() =>
+    r'b0955c31ed0e1942a843be4d0fa2b38edc6638c9';

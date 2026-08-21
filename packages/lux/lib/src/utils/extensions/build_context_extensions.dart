@@ -10,12 +10,13 @@ extension BuildContextExtensions on BuildContext {
   Future<void> go(Widget page) =>
       Navigator.of(this).pushAndRemoveUntil(MaterialPageRoute(builder: (_) => page), (_) => false);
 
-  void goToStack(List<Widget> pages) {
+  void goToStack(List<Widget> pages, {Function(BuildContext)? onLoaded}) {
     if (pages.isEmpty) throw ArgumentError.value(pages, 'pages', 'must not be empty');
 
     final navigator = Navigator.of(this);
     navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (_) => pages.first), (_) => false);
     pages.skip(1).forEach((page) => navigator.push(MaterialPageRoute(builder: (_) => page)));
+    if (onLoaded != null) WidgetsBinding.instance.addPostFrameCallback((_) => onLoaded(navigator.context));
   }
 
   Future<T?> push<T>(Widget page) => Navigator.of(this).push(MaterialPageRoute(builder: (_) => page));

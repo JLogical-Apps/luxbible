@@ -7,8 +7,9 @@ part 'local_notification_scheduler_provider.g.dart';
 @Riverpod(keepAlive: true)
 void localNotificationScheduler(Ref ref) {
   ref.listen(
-    localNotificationSchedulesProvider,
-    (previous, next) => ref.read(localNotificationServiceProvider).synchronize(next),
+    localNotificationsProvider,
+    (previous, next) =>
+        next.whenData((notifications) => ref.read(localNotificationServiceProvider).synchronize(notifications)),
     fireImmediately: true,
   );
 }

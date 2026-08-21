@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'local_notification_schedules_provider.dart';
+part of 'verse_of_the_day_local_notification_schedules_provider.dart';
 
 // **************************************************************************
 // RiverpodGenerator
@@ -9,10 +9,11 @@ part of 'local_notification_schedules_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(localNotifications)
-final localNotificationsProvider = LocalNotificationsProvider._();
+@ProviderFor(verseOfTheDayLocalNotifications)
+final verseOfTheDayLocalNotificationsProvider =
+    VerseOfTheDayLocalNotificationsProvider._();
 
-final class LocalNotificationsProvider
+final class VerseOfTheDayLocalNotificationsProvider
     extends
         $FunctionalProvider<
           AsyncValue<List<LocalNotification>>,
@@ -22,19 +23,19 @@ final class LocalNotificationsProvider
     with
         $FutureModifier<List<LocalNotification>>,
         $FutureProvider<List<LocalNotification>> {
-  LocalNotificationsProvider._()
+  VerseOfTheDayLocalNotificationsProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'localNotificationsProvider',
+        name: r'verseOfTheDayLocalNotificationsProvider',
         isAutoDispose: false,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$localNotificationsHash();
+  String debugGetCreateSourceHash() => _$verseOfTheDayLocalNotificationsHash();
 
   @$internal
   @override
@@ -44,9 +45,9 @@ final class LocalNotificationsProvider
 
   @override
   FutureOr<List<LocalNotification>> create(Ref ref) {
-    return localNotifications(ref);
+    return verseOfTheDayLocalNotifications(ref);
   }
 }
 
-String _$localNotificationsHash() =>
-    r'4dc618edf721e542b5af7ffe873edcc1b437197a';
+String _$verseOfTheDayLocalNotificationsHash() =>
+    r'514d2aed592a94114f9b37c7ba5e66aa4a15dcf3';

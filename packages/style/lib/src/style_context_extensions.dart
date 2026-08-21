@@ -113,32 +113,35 @@ extension StyleContextExtensions on BuildContext {
         ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOutCubic, reverseCurve: Curves.easeInCubic)),
         child: child,
       ),
-      builder: (context, toast) => Dismissible(
-        key: ValueKey(toast.id),
-        direction: .up,
-        onDismissed: (_) => toastification.dismiss(toast, showRemoveAnimation: false),
-        child: DecoratedBox(
-          decoration: BoxDecoration(borderRadius: .circular(12), color: context.colors.inverted.surfacePrimary),
-          child: StyledListItem(
-            size: .sm,
-            title: DefaultTextStyle(
-              style: context.textStyle.paragraphMd.copyWith(color: context.colors.contentPrimaryInverse),
-              child: message,
+      builder: (context, toast) => Padding(
+        padding: .symmetric(horizontal: 12),
+        child: Dismissible(
+          key: ValueKey(toast.id),
+          direction: .up,
+          onDismissed: (_) => toastification.dismiss(toast, showRemoveAnimation: false),
+          child: DecoratedBox(
+            decoration: BoxDecoration(borderRadius: .circular(12), color: context.colors.inverted.surfacePrimary),
+            child: StyledListItem(
+              size: .sm,
+              title: DefaultTextStyle(
+                style: context.textStyle.paragraphMd.copyWith(color: context.colors.contentPrimaryInverse),
+                child: message,
+              ),
+              leading: SizedBox.square(
+                dimension: 64,
+                child: Center(child: Icon(Symbols.check_circle, size: 24, color: context.colors.contentPrimaryInverse)),
+              ),
+              trailing: action == null
+                  ? null
+                  : StyledPillButton.md(
+                      label: action.label,
+                      colorBuilder: .surfacePrimaryInverted,
+                      onPressed: () {
+                        toastification.dismiss(toast);
+                        action.onPressed();
+                      },
+                    ),
             ),
-            leading: SizedBox.square(
-              dimension: 64,
-              child: Center(child: Icon(Symbols.check_circle, size: 24, color: context.colors.contentPrimaryInverse)),
-            ),
-            trailing: action == null
-                ? null
-                : StyledPillButton.md(
-                    label: action.label,
-                    colorBuilder: .surfacePrimaryInverted,
-                    onPressed: () {
-                      toastification.dismiss(toast);
-                      action.onPressed();
-                    },
-                  ),
           ),
         ),
       ),

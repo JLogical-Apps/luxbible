@@ -1,4 +1,5 @@
 import 'package:bible/models/calendar_date_time.dart';
+import 'package:bible/models/reminder.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lux/i18n.dart';
@@ -38,13 +39,13 @@ sealed class BiblePlanProgress with _$BiblePlanProgress {
 
   const factory BiblePlanProgress({
     required List<BiblePlanDayProgress> days,
-    BiblePlanReminder? reminder,
+    Reminder? reminder,
     CalendarDateTime? lastCompletedAt,
   }) = _BiblePlanProgress;
 
   factory BiblePlanProgress.fromJson(Map<String, dynamic> json) => _$BiblePlanProgressFromJson(json);
 
-  bool get hasDailyReminder => reminder is DailyBiblePlanReminder;
+  bool get hasDailyReminder => reminder is DailyReminder;
 
   bool wasCompletedOnLocalDate(DateTime date) => lastCompletedAt?.isOnSameLocalDateAs(date) ?? false;
   bool wasCompletedToday() => wasCompletedOnLocalDate(.now());
@@ -109,18 +110,6 @@ sealed class BiblePlanDayProgress with _$BiblePlanDayProgress {
           },
         }..remove(passage),
       );
-}
-
-@freezed
-sealed class BiblePlanReminder with _$BiblePlanReminder {
-  const BiblePlanReminder._();
-
-  const factory BiblePlanReminder.none() = NoneBiblePlanReminder;
-  const factory BiblePlanReminder.daily({required Time time}) = DailyBiblePlanReminder;
-
-  factory BiblePlanReminder.fromJson(Map<String, dynamic> json) => _$BiblePlanReminderFromJson(json);
-
-  Time? get dailyTime => as<DailyBiblePlanReminder>()?.time;
 }
 
 // ignore_for_file: constant_identifier_names

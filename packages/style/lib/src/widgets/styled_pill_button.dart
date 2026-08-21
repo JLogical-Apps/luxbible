@@ -35,7 +35,9 @@ class StyledPillButton extends StatelessWidget {
         children: [
           if (leading case final leading?) IconTheme.merge(data: IconThemeData(size: 16), child: leading),
           DefaultTextStyle(
-            style: textStyleBuilder(context.textStyle).copyWith(height: 1).onColor(colorBuilder(context.colors)),
+            style: textStyleBuilder(
+              context.textStyle,
+            ).copyWith(height: 1).onColor(colorBuilder(context.colors)).disabled(isDisabled: onPressed == null),
             child: label,
           ),
           if (trailing case final trailing?) IconTheme.merge(data: IconThemeData(size: 16), child: trailing),

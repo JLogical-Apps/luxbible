@@ -48,7 +48,11 @@ Lux does not include:
 
 Firebase Core and Firebase App Check are present to attest requests to the API.Bible proxy. Their presence does not represent Firebase Analytics, Crashlytics, or cloud storage of user content.
 
-Bible plan reminders use scheduled local notifications. They do not use Firebase Messaging or a remote push service. Each reminder-enabled plan has its own stable notification identifier and daily inexact Android alarm. Bible plan state is projected into app-level local notification schedule models, while the generic notification service declaratively reconciles those schedules without depending on Bible plan types. The notification service exposes reactive authorization availability, including the dedicated Bible Plan Reminders channel on Android. The app restores Android schedules after reboot or app replacement and reconciles persisted reminders at startup and after returning from system settings when notification permission is available. Disabling notifications at the system level does not remove persisted reminder configuration.
+Bible plan reminders use scheduled local notifications. They do not use Firebase Messaging or a remote push service. Each reminder-enabled plan has its own stable notification identifier and daily inexact Android alarm. Bible plan state is projected into app-level local notification schedule models, while the generic notification service declaratively reconciles those schedules without depending on Bible plan types. Tapping a plan notification routes through the Bible Plans stack to the earliest incomplete passage, or safely back to Bible Plans when the plan is unavailable, complete, or at a review day.
+
+Verse of the Day uses the same local-notification service with its own Android channel. It creates dated one-shot notifications over a fourteen-day rolling horizon rather than a fixed recurring body, because the passage and effective translation can vary by date. A notification payload retains the scheduled date so its tap opens that date's preview. Fourteen Verse of the Day notifications plus the thirteen possible Bible-plan reminders remain well below iOS's 64 pending-notification limit.
+
+Authorization availability is tracked separately for the app, the Android Bible Plan Reminders channel, and the Android Verse of the Day channel. App-level disablement affects both reminder controls; a disabled channel affects only its matching reminder type. Persisted times and discovery answers are never cleared for an unavailable app or channel. The app restores Android schedules after reboot or app replacement and reconciles all persisted schedules at startup and after returning from system settings. Reconciliation replaces same-ID pending requests and removes stale IDs only when a reminder is disabled or its scheduling inputs change.
 
 ## Offline and Online Boundaries
 
@@ -73,6 +77,7 @@ The following are bundled with the app and work offline:
 - OpenBible cross-reference data
 - Reading-plan schedules
 - Verse of the Day schedule
+- Verse of the Day source passages from the bundled Daily Light data
 - Search of local Bible text
 - Annotations, notebooks, bookmarks, and settings
 
@@ -146,7 +151,7 @@ Capabilities vary by translation:
 - Lexicon: Strong's Greek and Hebrew dictionaries
 - Commentaries: Matthew Henry, John Calvin, and Jamieson-Fausset-Brown
 - Reading plans: schedules from public-domain and licensed sources recorded in the in-app licenses
-- Verse of the Day: the first morning passage for each calendar date from Jonathan Bagster's public-domain *Daily Light on the Daily Path*, distributed as CrossWire's Daily SWORD module
+- Verse of the Day: the first morning passage for each calendar date from Jonathan Bagster's public-domain *Daily Light on the Daily Path*, distributed as CrossWire's Daily SWORD module. The source schedule is offline; the displayed passage uses the selected translation when it can be loaded and otherwise falls back to the selected Study Bible for that passage.
 
 The app's license registry is authoritative for detailed attribution and redistribution terms.
 
