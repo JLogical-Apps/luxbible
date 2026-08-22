@@ -1,4 +1,5 @@
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:lux/lux.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:utils_core/utils_core.dart';
@@ -34,8 +35,10 @@ FutureOr<VerseOfTheDay> verseOfTheDayForDate(Ref ref, {required DateTime date}) 
 }
 
 @riverpod
-Future<VerseOfTheDay> verseOfTheDay(Ref ref) =>
-    ref.watch(verseOfTheDayForDateProvider(date: .now().withoutTime()).future);
+Future<VerseOfTheDay> verseOfTheDay(Ref ref) {
+  ref.invalidateDaily();
+  return ref.watch(verseOfTheDayForDateProvider(date: .now().withoutTime()).future);
+}
 
 class VerseOfTheDay {
   final VerseSelection selection;

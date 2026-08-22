@@ -213,4 +213,4 @@ final class VerseOfTheDayProvider
   }
 }
 
-String _$verseOfTheDayHash() => r'11e6795a3b690277abc2a8cd92c9e491756d875f';
+String _$verseOfTheDayHash() => r'cd7da7bbf4c2cee3d5a8178df985d3bfde0e7ff6';
