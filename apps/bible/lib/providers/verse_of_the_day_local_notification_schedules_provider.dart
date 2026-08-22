@@ -37,9 +37,7 @@ Future<List<LocalNotification>> verseOfTheDayLocalNotifications(Ref ref) async {
       ),
       title: t.verseOfTheDay.reminderNotificationTitle,
       body: verseOfTheDay.format(),
-      schedule: SingleLocalNotificationSchedule(
-        date: DateTime(date.year, date.month, date.day, time.hour, time.minute),
-      ),
+      time: DateTime(date.year, date.month, date.day, time.hour, time.minute),
       payload: VerseOfTheDayNotification.getNotificationPrefixFor(date),
     );
   }).wait).nonNulls.toList();

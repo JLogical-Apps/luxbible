@@ -46,6 +46,9 @@ class BiblePlanNotification {
   static String getNotificationPrefixFor(BiblePlanType planType) =>
       '${LocalNotificationService.payloadPrefix}bible-plan:${planType.name}';
 
+  static int getNotificationIdFor(BiblePlanType planType, DateTime date) =>
+      300000000 + planType.index * 100000000 + date.year * 10000 + date.month * 100 + date.day;
+
   static BiblePlanType? getPlanTypeForPayload(String payload) =>
       BiblePlanType.values.firstWhereOrNull((planType) => payload == getNotificationPrefixFor(planType));
 }

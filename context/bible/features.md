@@ -22,6 +22,8 @@ More > Settings > Push Notifications always includes a Verse of the Day card wit
 
 Verse of the Day is available from the main toolbar and its overflow menu. It previews the bundled passage for the current date with the selected translation, falling back to the selected Study Bible if that passage cannot be loaded. After that preview closes for the first time, Lux asks whether to add a daily reminder. It never asks again after a response or after a reminder is removed. Verse of the Day reminders use the current selected translation with that per-passage fallback. The schedule and bundled source passages work offline, while online translations still require a connection. Lux schedules a rolling fourteen-day set of dated local notifications so each notification contains that day's actual verse and opens that originally scheduled date when tapped.
 
+Bible plan reminders are also scheduled as dated local notifications. Completing a plan day cancels any remaining reminder for that local date and schedules the next reminder no earlier than the following day.
+
 Saving any reminder asks for notification permission only when needed. If app notifications are disabled, Lux directs the user to system settings and preserves all reminder settings. Android manages Verse of the Day and Bible Plan Reminders through separate channels: a disabled channel affects only its own controls and points to system notification settings, while the other reminder type remains available. Lux reconciles saved schedules after a setting change or restart without clearing saved reminder choices.
 
 ## Bible Library

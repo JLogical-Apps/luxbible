@@ -1,11 +1,9 @@
 import 'dart:async';
 
-import 'package:bible/utils/extensions/date_time_extensions.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:lux/lux.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:synchronized/synchronized.dart';
@@ -29,7 +27,7 @@ class LocalNotification extends Equatable {
   final LocalNotificationChannel channel;
   final String title;
   final String body;
-  final LocalNotificationSchedule schedule;
+  final DateTime time;
   final String? payload;
 
   const LocalNotification({
@@ -37,50 +35,12 @@ class LocalNotification extends Equatable {
     required this.channel,
     required this.title,
     required this.body,
-    required this.schedule,
+    required this.time,
     this.payload,
   });
 
   @override
-  List<Object?> get props => [id, channel, title, body, schedule, payload];
-}
-
-sealed class LocalNotificationSchedule extends Equatable {
-  const LocalNotificationSchedule();
-
-  DateTime get scheduledDate;
-  DateTimeComponents? get matchDateTimeComponents;
-}
-
-class RepeatingLocalNotificationSchedule extends LocalNotificationSchedule {
-  final Time time;
-  final DateTime? startDate;
-
-  const RepeatingLocalNotificationSchedule({required this.time, this.startDate});
-
-  @override
-  DateTime get scheduledDate => time.getNextNotificationDate(startDate: startDate);
-
-  @override
-  DateTimeComponents? get matchDateTimeComponents => .time;
-
-  @override
-  List<Object?> get props => [time, startDate];
-}
-
-class SingleLocalNotificationSchedule extends LocalNotificationSchedule {
-  final DateTime date;
-
-  const SingleLocalNotificationSchedule({required this.date});
-
-  @override
-  DateTime get scheduledDate => date;
-
-  @override
-  DateTimeComponents? get matchDateTimeComponents => null;
-
-  @override
-  List<Object> get props => [date];
+  List<Object?> get props => [id, channel, title, body, time, payload];
 }
 
 enum LocalNotificationAvailability {
@@ -217,7 +177,7 @@ class LocalNotificationService {
           ),
         );
 
-    final scheduledDate = timezone.TZDateTime.from(notification.schedule.scheduledDate, timezone.local);
+    final scheduledDate = timezone.TZDateTime.from(notification.time, timezone.local);
     if (!scheduledDate.isAfter(timezone.TZDateTime.now(timezone.local))) return;
 
     await plugin.zonedSchedule(
@@ -239,7 +199,6 @@ class LocalNotificationService {
         iOS: DarwinNotificationDetails(presentAlert: true, presentBadge: false, presentSound: true),
       ),
       androidScheduleMode: .inexactAllowWhileIdle,
-      matchDateTimeComponents: notification.schedule.matchDateTimeComponents,
       payload: notification.payload,
     );
   }
