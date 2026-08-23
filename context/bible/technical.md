@@ -83,7 +83,7 @@ The following are bundled with the app and work offline:
 
 ### Online Bible Text
 
-These translations require a connection:
+These translations are loaded online when they are not available from the device cache:
 
 - NASB95 through the YouVersion Platform
 - NIV through the YouVersion Platform
@@ -93,6 +93,11 @@ These translations require a connection:
 - NKJV through API.Bible
 
 API.Bible requests go through `scripture.luxbible.app` and use Firebase App Check. YouVersion passages are requested from the YouVersion Platform.
+
+Successfully loaded online chapters are stored as individual files in the operating system's application-cache
+directory. Cache entries are shared by all chapter consumers, scoped by translation and chapter, and remain valid for
+fourteen days. Expired or malformed entries are removed when accessed. Cache failures do not replace the original
+network result or error, and the operating system may reclaim cache files earlier when it needs storage.
 
 ### Audio
 

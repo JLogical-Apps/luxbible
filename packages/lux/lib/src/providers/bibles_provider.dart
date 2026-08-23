@@ -21,6 +21,20 @@ FutureOr<Chapter> chapter(
 
   return switch (translation.source) {
     LocalTranslationSource() => localBible!.getChapterByReference(chapterReference),
+    _ => getOnlineChapter(ref: ref, translation: translation, chapterReference: chapterReference),
+  };
+}
+
+Future<Chapter> getOnlineChapter({
+  required Ref ref,
+  required BibleTranslation translation,
+  required ChapterReference chapterReference,
+}) => Cache.fetch(
+  path: '${translation.name}/${chapterReference.osisId()}',
+  fromJson: Chapter.fromJson,
+  toJson: (chapter) => chapter.toJson(),
+  duration: Duration(days: 14),
+  source: () => switch (translation.source) {
     YouVersionTranslationSource(:final bibleId) => YouVersion.fetchChapter(
       bibleId: bibleId,
       chapterReference: chapterReference,
@@ -29,8 +43,10 @@ FutureOr<Chapter> chapter(
       translationSlug: translation.name,
       chapterReference: chapterReference,
     ),
-  };
-}
+    LocalTranslationSource() => throw StateError('$translation is not an online translation'),
+  },
+  paths: ref.watch(pathServiceProvider),
+);
 
 @Riverpod(keepAlive: true)
 FutureOr<Verse?> verse(Ref ref, {required Reference reference, required BibleTranslation translation}) {

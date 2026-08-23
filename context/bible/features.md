@@ -20,7 +20,7 @@ The selected language controls Lux's interface, Bible book names, reference form
 
 More > Settings > Push Notifications always includes a Verse of the Day card with the same sun icon used by the main action. Its subtitle is either No notification or the localized daily time, and its Add or Edit button opens the time picker. Editing an existing reminder includes a delete button that asks for confirmation before clearing it. The page also lists every active Bible plan in the user's plan order, including plans without reminders. Each plan retains its thumbnail and shows the same No notification or localized-time subtitle with the same Add or Edit behavior. Removing a reminder does not remove the Verse of the Day discovery answer or any Bible plan progress.
 
-Verse of the Day is available from the main toolbar and its overflow menu. It previews the bundled passage for the current date with the selected translation, falling back to the selected Study Bible if that passage cannot be loaded. After that preview closes for the first time, Lux asks whether to add a daily reminder. It never asks again after a response or after a reminder is removed. Verse of the Day reminders use the current selected translation with that per-passage fallback. The schedule and bundled source passages work offline, while online translations still require a connection. Lux schedules a rolling fourteen-day set of dated local notifications so each notification contains that day's actual verse and opens that originally scheduled date when tapped.
+Verse of the Day is available from the main toolbar and its overflow menu. It previews the bundled passage for the current date with the selected translation, falling back to the selected Study Bible if that passage cannot be loaded. After that preview closes for the first time, Lux asks whether to add a daily reminder. It never asks again after a response or after a reminder is removed. Verse of the Day reminders use the current selected translation with that per-passage fallback. The schedule and bundled source passages work offline, while online translations use cached text when available and otherwise require a connection. Lux schedules a rolling fourteen-day set of dated local notifications so each notification contains that day's actual verse and opens that originally scheduled date when tapped.
 
 Bible plan reminders are also scheduled as dated local notifications. Completing a plan day cancels any remaining reminder for that local date and schedules the next reminder no earlier than the following day.
 
@@ -48,6 +48,9 @@ Saving any reminder asks for notification permission only when needed. If app no
 - NLT
 - NKJV
 - NRT: New Russian Translation 2010 in Russian
+
+Online chapters are cached on the device after they are loaded. A cached chapter remains available without a
+connection for fourteen days, after which Lux requires a connection to load it again.
 
 ### Bible Management
 

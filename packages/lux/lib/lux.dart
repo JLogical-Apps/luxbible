@@ -40,6 +40,7 @@ export 'src/ui/widgets/swipe_tab_view.dart';
 export 'src/ui/widgets/underline.dart';
 export 'src/ui/widgets/verse_text.dart';
 export 'src/ui/widgets/word_substring_text.dart';
+export 'src/utils/cache.dart';
 export 'src/utils/debug_utils.dart';
 export 'src/utils/extensions/brightness_extensions.dart';
 export 'src/utils/extensions/build_context_extensions.dart';

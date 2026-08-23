@@ -13,8 +13,9 @@ Paths? pathService(Ref ref) => throw UnimplementedError();
 
 class Paths {
   final Directory applicationSupport;
+  final Directory applicationCache;
 
-  const Paths({required this.applicationSupport});
+  const Paths({required this.applicationSupport, required this.applicationCache});
 
   Future<File?> getAssetAsFile(String assetPath) async {
     final file = applicationSupport - assetPath;
@@ -29,5 +30,8 @@ class Paths {
 
 Future<Paths?> getPaths() async {
   if (kIsWeb) return null;
-  return Paths(applicationSupport: await getApplicationSupportDirectory());
+  return Paths(
+    applicationSupport: await getApplicationSupportDirectory(),
+    applicationCache: await getApplicationCacheDirectory(),
+  );
 }
