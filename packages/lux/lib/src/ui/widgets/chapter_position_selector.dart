@@ -99,7 +99,7 @@ class ChapterPositionSelectorHeading extends HookWidget {
     useOnListenableChange(
       bookFocusNode,
       () => selectorState.value = state.copyWith(
-        bookText: state.book?.title(),
+        bookText: state.book?.title(isPlural: true),
         chapterNum: state.chapterNum,
         verseNum: state.verseNum,
         focus: bookFocusNode.hasPrimaryFocus ? .book : null,
@@ -132,16 +132,15 @@ class ChapterPositionSelectorHeading extends HookWidget {
               child: StyledTextField(
                 text: state.bookText,
                 readOnly: readOnly,
-                onChanged: (_) {},
                 onRawTextChanged: (oldText, newText) {
-                  if (newText == '$oldText ' && state.getBook(text: oldText) != null) {
+                  if (newText.endsWith(' ') && state.getBook(text: oldText) != null) {
                     selectorState.value = state.withFocus(.chapter);
                     return false;
                   }
                   return true;
                 },
-                onTextEditValueChanged: (value) =>
-                    selectorState.value = state.withBookSelected(value.isFullySelected).withBookText(value.text),
+                onChanged: (value) => selectorState.value = state.withBookText(value),
+                onTextEditValueChanged: (value) => selectorState.value = state.withBookSelected(value.isFullySelected),
                 suggestedText: book?.title(isPlural: true),
                 hintText: t.navigation.book,
                 textStyle: context.textStyle.paragraphLg,
@@ -360,14 +359,18 @@ class SelectorState {
   });
 
   SelectorState.book(BookType book, {required ChapterPositionStateFocus focus})
-    : this(bookText: book.title(), focus: focus);
+    : this(bookText: book.title(isPlural: true), focus: focus);
 
   SelectorState.chapter(ChapterReference chapterReference, {required ChapterPositionStateFocus focus})
-    : this(bookText: chapterReference.book.title(), chapterNum: chapterReference.chapterNum, focus: focus);
+    : this(
+        bookText: chapterReference.book.title(isPlural: true),
+        chapterNum: chapterReference.chapterNum,
+        focus: focus,
+      );
 
   SelectorState.verse(Reference reference)
     : this(
-        bookText: reference.book.title(),
+        bookText: reference.book.title(isPlural: true),
         chapterNum: reference.chapterNum,
         verseNum: reference.verseNum,
         focus: .verse,
