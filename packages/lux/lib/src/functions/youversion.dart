@@ -26,6 +26,7 @@ class YouVersion {
       buildFootnote: (element) => element.classNames.contains('yv-n') ? UsxUtils.noteToMarkdown(element) : null,
       isRedLetters: (element) => element.classNames.contains('wj'),
       isItalic: (element) => element.classNames.contains('it'),
+      isUppercase: (element) => element.classNames.contains('sc'),
       getParagraphStyle: (element) => element.classNames.firstWhereOrNull((className) => !className.startsWith('yv-')),
       buildSectionText: (element) => element.children
           .where(

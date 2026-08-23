@@ -10,6 +10,7 @@ abstract final class XmlBibleParser {
     required Markdown? Function(XmlElement) buildFootnote,
     required bool Function(XmlElement) isRedLetters,
     required bool Function(XmlElement) isItalic,
+    required bool Function(XmlElement) isUppercase,
     InterlinearData? Function(XmlElement)? getInterlinearData,
     required String? Function(XmlElement) getParagraphStyle,
     required String Function(XmlElement) buildSectionText,
@@ -34,6 +35,7 @@ abstract final class XmlBibleParser {
       XmlNode node, {
       bool redLetters = false,
       bool italic = false,
+      bool uppercase = false,
       InterlinearData? interlinearData,
     }) => node.children.isEmpty && interlinearData != null && lastVerseNum != null
         ? [
@@ -49,7 +51,12 @@ abstract final class XmlBibleParser {
                     Verse(
                       verseNum: lastVerseNum!,
                       words: [
-                        Word(text: buildText(value), data: interlinearData, redLetters: redLetters, italic: italic),
+                        Word(
+                          text: buildText(uppercase ? value.toUpperCase() : value),
+                          data: interlinearData,
+                          redLetters: redLetters,
+                          italic: italic,
+                        ),
                       ],
                     ),
                   ],
@@ -72,6 +79,7 @@ abstract final class XmlBibleParser {
                       child,
                       redLetters: redLetters || isRedLetters(child),
                       italic: italic || isItalic(child),
+                      uppercase: uppercase || isUppercase(child),
                       interlinearData: getInterlinearData?.call(child) ?? interlinearData,
                     );
                   }(),

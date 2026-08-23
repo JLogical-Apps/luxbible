@@ -18,6 +18,7 @@ Book parseUsxBook(BookType type, String rawXml, {bool includeInterlinear = true}
             : null,
         isRedLetters: (element) => element.getAttribute('style') == 'wj',
         isItalic: (element) => UsxUtils.isItalicStyle(element.getAttribute('style')),
+        isUppercase: (_) => false,
         getInterlinearData: includeInterlinear
             ? ((element) => element.getAttribute('style') == 'w'
                   ? InterlinearData(

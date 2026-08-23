@@ -51,6 +51,7 @@ class ApiBible {
       buildFootnote: (element) => element.classNames.contains('f') ? UsxUtils.noteToMarkdown(element) : null,
       isRedLetters: (element) => element.classNames.contains('wj'),
       isItalic: (element) => element.classNames.any(UsxUtils.isItalicStyle),
+      isUppercase: (_) => false,
       getParagraphStyle: (element) => element.classNames.firstOrNull,
       buildSectionText: (element) => cleanText(element.innerText),
       buildText: cleanText,
