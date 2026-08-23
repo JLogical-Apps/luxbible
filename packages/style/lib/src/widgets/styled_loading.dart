@@ -5,8 +5,9 @@ import 'package:style/style.dart';
 
 class StyledLoading extends StatelessWidget {
   final Widget? child;
+  final EdgeInsets loadingPadding;
 
-  const StyledLoading({super.key, this.child});
+  const StyledLoading({super.key, this.child, this.loadingPadding = .zero});
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +26,14 @@ class StyledLoading extends StatelessWidget {
               baseColor: context.colors.contentDisabled.withValues(alpha: 0.5),
               highlightColor: context.colors.contentDisabled.withValues(alpha: 0.2),
               period: Duration(seconds: 2),
-              child: Container(
-                width: double.infinity,
-                height: textStyle.style.fontSize!,
-                decoration: BoxDecoration(color: Colors.black, borderRadius: .circular(4)),
-                margin: .only(bottom: (textStyle.style.totalHeight - textStyle.style.fontSize!)),
+              child: Padding(
+                padding: loadingPadding,
+                child: Container(
+                  width: double.infinity,
+                  height: textStyle.style.fontSize!,
+                  decoration: BoxDecoration(color: Colors.black, borderRadius: .circular(4)),
+                  margin: .only(bottom: (textStyle.style.totalHeight - textStyle.style.fontSize!)),
+                ),
               ),
             ),
       ),

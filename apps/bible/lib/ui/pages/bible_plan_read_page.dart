@@ -201,6 +201,7 @@ class BiblePlanReadPage extends HookConsumerWidget {
                             onNavigateToVerseSelection: navigateToVerseSelection,
                             onReferencePressed: audioBibleSync.onReferencePressed,
                             padding: .symmetric(horizontal: 24, vertical: 16),
+                            showLoading: false,
                             contentBuilder: (context, passageContent) => KeyedScrollTransformer(
                               scrollKey: 'passage',
                               child: NotificationListener<ScrollStartNotification>(

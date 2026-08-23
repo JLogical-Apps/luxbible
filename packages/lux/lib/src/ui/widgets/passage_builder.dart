@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/lux.dart';
 import 'package:lux/src/ui/widgets/passage_content.dart';
+import 'package:style/style.dart';
 
 class PassageBuilder extends HookConsumerWidget {
   final VerseSelection verseSelection;
@@ -19,6 +20,7 @@ class PassageBuilder extends HookConsumerWidget {
   final EdgeInsets padding;
   final bool shrinkWrap;
   final Function(List<Paragraph>)? onParagraphsLoaded;
+  final bool showLoading;
 
   const PassageBuilder({
     super.key,
@@ -34,6 +36,7 @@ class PassageBuilder extends HookConsumerWidget {
     this.padding = .zero,
     this.shrinkWrap = false,
     this.onParagraphsLoaded,
+    this.showLoading = true,
   });
 
   @override
@@ -72,21 +75,26 @@ class PassageBuilder extends HookConsumerWidget {
       }
     }, [paragraphs.isNotEmpty]);
 
-    return PassageContent(
-      configuration: configuration,
-      paragraphs: paragraphs,
-      chapterReference: chapterReference,
-      translation: translation,
-      selection: selection,
-      emphasizedReference: emphasizedReference,
-      onNavigateToVerseSelection: onNavigateToVerseSelection,
-      onReferencePressed: onReferencePressed,
-      controller: controller,
-      padding: padding,
-      shrinkWrap: shrinkWrap,
-      animate: true,
-      contentBuilder: contentBuilder,
-      footer: footer,
+    return StyledLoading(
+      loadingPadding: .all(16),
+      child: paragraphs.isEmpty && showLoading
+          ? null
+          : PassageContent(
+              configuration: configuration,
+              paragraphs: paragraphs,
+              chapterReference: chapterReference,
+              translation: translation,
+              selection: selection,
+              emphasizedReference: emphasizedReference,
+              onNavigateToVerseSelection: onNavigateToVerseSelection,
+              onReferencePressed: onReferencePressed,
+              controller: controller,
+              padding: padding,
+              shrinkWrap: shrinkWrap,
+              animate: true,
+              contentBuilder: contentBuilder,
+              footer: footer,
+            ),
     );
   }
 }
