@@ -64,6 +64,9 @@ The following are bundled with the app and work offline:
 - KJV
 - ASV
 - SV
+- FOB
+- Martin
+- RVG
 - LXX
 - TR
 - BYZ
@@ -80,6 +83,10 @@ The following are bundled with the app and work offline:
 - Verse of the Day source passages from the bundled Daily Light data
 - Search of local Bible text
 - Annotations, notebooks, bookmarks, and settings
+
+Bundled sources with alternate versification use Lux's KJV-compatible references in their OSIS `osisID` values and
+retain the source translation's reference in `origin`. When multiple source verses correspond to one Lux verse, they
+share the normalized reference and are combined when the chapter is read. This is used by LXX, FOB, and Martin.
 
 ### Online Bible Text
 
@@ -146,8 +153,8 @@ Capabilities vary by translation:
 - Synthetic BSB headings: KJV, ASV
 - Footnotes: BSB, KJV, ASV, NASB95, NIV, CSB, NLT, NKJV
 - Red letters: BSB, KJV, NASB95, NIV, CSB, NLT, NKJV
-- Native headings: BSB, NRT, NASB95, NIV, CSB, NLT, NKJV
-- Paragraph formatting: all except OSHB, SV, and NRT
+- Native headings: BSB, Martin, NRT, NASB95, NIV, CSB, NLT, NKJV
+- Paragraph formatting: all except OSHB, SV, Martin, and NRT
 
 ## Study Data Sources
 

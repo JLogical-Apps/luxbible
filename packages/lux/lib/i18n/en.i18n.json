@@ -4,7 +4,9 @@
     "dutch": "Dutch",
     "greek": "Greek",
     "hebrew": "Hebrew",
-    "russian": "Russian"
+    "russian": "Russian",
+    "french": "French",
+    "spanish": "Spanish"
   },
   "highlightStyles": {
     "red": "Red",

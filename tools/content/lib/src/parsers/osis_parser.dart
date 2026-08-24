@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:lux/lux.dart';
+import 'package:lux/lux_core.dart';
 import 'package:xml/xml.dart';
 
 Book parseOsisBook(String rawXml, {bool verseParagraphs = false}) {
@@ -44,7 +44,7 @@ Book parseOsisBook(String rawXml, {bool verseParagraphs = false}) {
 
               // A section heading or paragraph marker starts a new block.
               for (final title in verseElement.descendants.whereType<XmlElement>().where(
-                (e) => e.localName == 'title',
+                (e) => e.localName == 'title' && e.getAttribute('type') != null,
               )) {
                 flush();
                 paragraphs.add(SectionParagraph(type: .s1, text: title.innerText.trim()));

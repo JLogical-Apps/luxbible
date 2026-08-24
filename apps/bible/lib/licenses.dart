@@ -89,6 +89,46 @@ https://bijbel.coas.nl/''',
     );
 
     yield const LicenseEntryWithLineBreaks(
+      ['La Sainte Bible, Ostervald 1744 (FOB)'],
+      '''
+La Sainte Bible, Ostervald 1744.
+
+Public domain. This work may be copied and published freely.
+
+Text obtained from the fraFOB1744eb SWORD module distributed by eBible.org. Lux transforms the module into its bundled Bible data format.
+
+Source: https://eBible.org/Scriptures/''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
+      ['Bible David Martin 1744 (Martin)'],
+      '''
+La Sainte Bible, Version David Martin 1744.
+
+Public domain.
+
+Text obtained from the FreBDM1744 SWORD module distributed by the CrossWire Bible Society. Lux transforms the module into its bundled Bible data format.
+
+Sources:
+https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=FreBDM1744
+http://earnestlycontending.com/BibleMartin/index.html''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
+      ['Santa Biblia Reina Valera Gómez 2010 (RVG)'],
+      '''
+Santa Biblia Reina Valera Gómez.
+
+Copyright © 2004, 2010, 2023 Dr. Humberto Gómez Caballero. All rights reserved.
+
+Free non-commercial distribution is permitted when the text is not changed. Printing or reproduction for profit is prohibited.
+
+Text obtained from the sparvg2010eb SWORD module distributed by eBible.org. Lux transforms the module into its bundled Bible data format.
+
+Source: https://eBible.org/Scriptures/''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
       ['Septuagint, Rahlfs (LXX)'],
       '''
 Septuagint, Morphologically Tagged Rahlfs' text.

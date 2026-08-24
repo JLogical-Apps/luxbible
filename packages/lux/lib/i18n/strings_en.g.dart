@@ -106,6 +106,12 @@ class Translations$languages$en {
 
 	/// en: 'Russian'
 	String get russian => 'Russian';
+
+	/// en: 'French'
+	String get french => 'French';
+
+	/// en: 'Spanish'
+	String get spanish => 'Spanish';
 }
 
 // Path: highlightStyles
@@ -4616,6 +4622,8 @@ extension on Translations {
 			'languages.greek' => 'Greek',
 			'languages.hebrew' => 'Hebrew',
 			'languages.russian' => 'Russian',
+			'languages.french' => 'French',
+			'languages.spanish' => 'Spanish',
 			'highlightStyles.red' => 'Red',
 			'highlightStyles.orange' => 'Orange',
 			'highlightStyles.yellow' => 'Yellow',
@@ -5121,10 +5129,10 @@ extension on Translations {
 			'themeOptions.tiny' => 'Tiny',
 			'themeOptions.small' => 'Small',
 			'themeOptions.standard' => 'Standard',
-			'themeOptions.large' => 'Large',
-			'themeOptions.huge' => 'Huge',
 			_ => null,
 		} ?? switch (path) {
+			'themeOptions.large' => 'Large',
+			'themeOptions.huge' => 'Huge',
 			'themeOptions.extraHuge' => 'Extra Huge',
 			'themeOptions.nativeAndSynthetic' => 'Native & Synthetic',
 			'themeOptions.native' => 'Native',

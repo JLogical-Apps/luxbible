@@ -34,6 +34,9 @@ Saving any reminder asks for notification permission only when needed. If app no
 - KJV: King James Version
 - ASV: American Standard Version
 - SV: Statenvertaling in Dutch
+- FOB: Ostervald 1744 in French
+- Martin: Bible David Martin 1744 in French
+- RVG: Reina Valera Gómez 2010 in Spanish
 - LXX: Septuagint, Rahlfs
 - TR: Textus Receptus, Stephens 1550
 - BYZ: Robinson-Pierpont Byzantine Textform 2005

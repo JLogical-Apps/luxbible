@@ -18,7 +18,10 @@ enum BibleTranslation {
   statresgnt,
   oshb,
   sv,
-  nrt;
+  nrt,
+  fob,
+  martin1744,
+  rvg;
 
   String title() => switch (this) {
     bsb => 'BSB',
@@ -36,6 +39,9 @@ enum BibleTranslation {
     statresgnt => 'SR',
     sv => 'SV',
     nrt => 'NRT',
+    fob => 'FOB',
+    martin1744 => 'Martin',
+    rvg => 'RVG',
   };
 
   String fullName() => switch (this) {
@@ -54,10 +60,13 @@ enum BibleTranslation {
     statresgnt => 'Statistical Restoration Greek New Testament',
     sv => 'Statenvertaling',
     nrt => 'New Russian Translation 2010',
+    fob => 'La Sainte Bible (Ostervald 1744)',
+    martin1744 => 'Bible David Martin 1744',
+    rvg => 'Reina Valera Gómez 2010',
   };
 
   BibleTranslationSource get source => switch (this) {
-    bsb || asv || kjv || oshb || lxx || tr || byz || statresgnt || sv => .local,
+    bsb || asv || kjv || oshb || lxx || tr || byz || statresgnt || sv || fob || martin1744 || rvg => .local,
     nasb95 => .youVersion(100),
     niv11 => .youVersion(111),
     nrt => .youVersion(143),
@@ -69,6 +78,8 @@ enum BibleTranslation {
     oshb => .hebrew,
     sv => .dutch,
     nrt => .russian,
+    fob || martin1744 => .french,
+    rvg => .spanish,
     _ => .english,
   };
 
@@ -83,6 +94,7 @@ enum BibleTranslation {
     nkjv => 'New King James Version®, Copyright© 1982, Thomas Nelson. All rights reserved.',
     nrt =>
       'Святая Библия, Новый русский перевод™ НРП™\n© Biblica, Inc., 2006, 2010, 2012, 2014, 2023\nИспользуется с разрешения. Все права защищены по всему миру.\nThe Holy Bible, New Russian Translation™ NRT™\nCopyright © 2006, 2010, 2012, 2014, 2023 by Biblica, Inc.\nUsed with permission. All rights reserved worldwide.',
+    rvg => 'Copyright © 2004, 2010, 2023 Dr. Humberto Gómez Caballero',
     _ => null,
   };
 
@@ -121,7 +133,7 @@ enum BibleTranslation {
   };
 
   bool get hasNativeHeadings => switch (this) {
-    bsb || nasb95 || niv11 || csb || nlt || nkjv || nrt => true,
+    bsb || nasb95 || niv11 || csb || nlt || nkjv || nrt || martin1744 => true,
     _ => false,
   };
 
@@ -136,7 +148,7 @@ enum BibleTranslation {
   };
 
   bool get hasParagraphs => switch (this) {
-    oshb || sv || nrt => false,
+    oshb || sv || nrt || martin1744 => false,
     _ => true,
   };
 
@@ -176,7 +188,9 @@ enum BibleLanguage {
   greek,
   hebrew,
   dutch,
-  russian;
+  russian,
+  french,
+  spanish;
 
   String title() => switch (this) {
     english => t.languages.english,
@@ -184,5 +198,7 @@ enum BibleLanguage {
     hebrew => t.languages.hebrew,
     dutch => t.languages.dutch,
     russian => t.languages.russian,
+    french => t.languages.french,
+    spanish => t.languages.spanish,
   };
 }

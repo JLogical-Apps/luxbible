@@ -229,6 +229,9 @@ const _$BibleTranslationEnumMap = {
   BibleTranslation.oshb: 'oshb',
   BibleTranslation.sv: 'sv',
   BibleTranslation.nrt: 'nrt',
+  BibleTranslation.fob: 'fob',
+  BibleTranslation.martin1744: 'martin1744',
+  BibleTranslation.rvg: 'rvg',
 };
 
 const _$CommentaryTypeEnumMap = {

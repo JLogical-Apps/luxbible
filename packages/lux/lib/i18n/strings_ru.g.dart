@@ -100,6 +100,8 @@ class _Translations$languages$ru extends Translations$languages$en {
 	@override String get greek => 'Греческий';
 	@override String get hebrew => 'Иврит';
 	@override String get russian => 'Русский';
+	@override String get french => 'Французский';
+	@override String get spanish => 'Испанский';
 }
 
 // Path: highlightStyles
@@ -2712,6 +2714,8 @@ extension on TranslationsRu {
 			'languages.greek' => 'Греческий',
 			'languages.hebrew' => 'Иврит',
 			'languages.russian' => 'Русский',
+			'languages.french' => 'Французский',
+			'languages.spanish' => 'Испанский',
 			'highlightStyles.red' => 'Красный',
 			'highlightStyles.orange' => 'Оранжевый',
 			'highlightStyles.yellow' => 'Желтый',
@@ -3217,10 +3221,10 @@ extension on TranslationsRu {
 			'themeOptions.dark' => 'Тёмная',
 			'themeOptions.extraTiny' => 'Очень мелкий',
 			'themeOptions.tiny' => 'Мелкий',
-			'themeOptions.small' => 'Маленький',
-			'themeOptions.standard' => 'Стандартный',
 			_ => null,
 		} ?? switch (path) {
+			'themeOptions.small' => 'Маленький',
+			'themeOptions.standard' => 'Стандартный',
 			'themeOptions.large' => 'Большой',
 			'themeOptions.huge' => 'Огромный',
 			'themeOptions.extraHuge' => 'Очень крупный',

@@ -4,7 +4,9 @@
     "dutch": "Nederlands",
     "greek": "Grieks",
     "hebrew": "Hebreeuws",
-    "russian": "Russisch"
+    "russian": "Russisch",
+    "french": "Frans",
+    "spanish": "Spaans"
   },
   "highlightStyles": {
     "red": "Rood",
