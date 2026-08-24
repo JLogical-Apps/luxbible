@@ -21,7 +21,9 @@ enum BibleTranslation {
   nrt,
   fob,
   martin1744,
-  rvg;
+  rvg,
+  nld1939,
+  htb;
 
   String title() => switch (this) {
     bsb => 'BSB',
@@ -42,6 +44,8 @@ enum BibleTranslation {
     fob => 'FOB',
     martin1744 => 'Martin',
     rvg => 'RVG',
+    nld1939 => 'NLD1939',
+    htb => 'HTB',
   };
 
   String fullName() => switch (this) {
@@ -63,20 +67,23 @@ enum BibleTranslation {
     fob => 'La Sainte Bible (Ostervald 1744)',
     martin1744 => 'Bible David Martin 1744',
     rvg => 'Reina Valera Gómez 2010',
+    nld1939 => 'De Heilige Schrift, Petrus Canisiusvertaling, 1939',
+    htb => 'Het Boek 2007',
   };
 
   BibleTranslationSource get source => switch (this) {
-    bsb || asv || kjv || oshb || lxx || tr || byz || statresgnt || sv || fob || martin1744 || rvg => .local,
+    bsb || asv || kjv || oshb || lxx || tr || byz || statresgnt || sv || fob || martin1744 || rvg || nld1939 => .local,
     nasb95 => .youVersion(100),
     niv11 => .youVersion(111),
     nrt => .youVersion(143),
+    htb => .youVersion(75),
     csb || nlt || nkjv => .apiBible(),
   };
 
   BibleLanguage get bibleLanguage => switch (this) {
     lxx || tr || byz || statresgnt => .greek,
     oshb => .hebrew,
-    sv => .dutch,
+    sv || nld1939 || htb => .dutch,
     nrt => .russian,
     fob || martin1744 => .french,
     rvg => .spanish,
@@ -95,6 +102,8 @@ enum BibleTranslation {
     nrt =>
       'Святая Библия, Новый русский перевод™ НРП™\n© Biblica, Inc., 2006, 2010, 2012, 2014, 2023\nИспользуется с разрешения. Все права защищены по всему миру.\nThe Holy Bible, New Russian Translation™ NRT™\nCopyright © 2006, 2010, 2012, 2014, 2023 by Biblica, Inc.\nUsed with permission. All rights reserved worldwide.',
     rvg => 'Copyright © 2004, 2010, 2023 Dr. Humberto Gómez Caballero',
+    htb =>
+      'Het Boek™\nCopyright © 1979, 1988, 1998, 2007 by Biblica, Inc.\nUsed by permission. All rights reserved worldwide.',
     _ => null,
   };
 

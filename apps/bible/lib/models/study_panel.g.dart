@@ -37,6 +37,8 @@ const _$BibleTranslationEnumMap = {
   BibleTranslation.fob: 'fob',
   BibleTranslation.martin1744: 'martin1744',
   BibleTranslation.rvg: 'rvg',
+  BibleTranslation.nld1939: 'nld1939',
+  BibleTranslation.htb: 'htb',
 };
 
 InterlinearStudyPanel _$InterlinearStudyPanelFromJson(

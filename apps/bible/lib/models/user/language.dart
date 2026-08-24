@@ -40,11 +40,9 @@ enum Language {
 List<BibleTranslation> getDefaultBibleTranslations(Language language) => switch (language) {
   .english => [
     .bsb,
-    ...BibleTranslation.values.where(
-      (translation) => translation != .bsb && translation.bibleLanguage.appLanguage == language,
-    ),
+    ...BibleTranslation.values.where((translation) => translation != .bsb && translation.bibleLanguage == .english),
   ],
-  .dutch => [.sv, .bsb],
+  .dutch => [...BibleTranslation.values.where((translation) => translation.bibleLanguage == .dutch), .bsb],
   .russian => [.nrt, .bsb],
 };
 

@@ -89,6 +89,18 @@ https://bijbel.coas.nl/''',
     );
 
     yield const LicenseEntryWithLineBreaks(
+      ['Petrus Canisiusvertaling 1939 (NLD1939)'],
+      '''
+De Heilige Schrift, Petrus Canisiusvertaling, 1939.
+
+The Petrus Canisius translation is in the public domain.
+
+Text obtained from the nld1939eb SWORD module published by eBible.org. Lux transforms the module into its bundled Bible data format and uses eBible.org's verse-marked HTML for Daniel because the module stores Daniel under the combined Catholic DAG book.
+
+Source: https://ebible.org/bible/details.php?id=nld1939''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
       ['La Sainte Bible, Ostervald 1744 (FOB)'],
       '''
 La Sainte Bible, Ostervald 1744.

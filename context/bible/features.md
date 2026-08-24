@@ -34,6 +34,7 @@ Saving any reminder asks for notification permission only when needed. If app no
 - KJV: King James Version
 - ASV: American Standard Version
 - SV: Statenvertaling in Dutch
+- NLD1939: Petrus Canisiusvertaling 1939 in Dutch
 - FOB: Ostervald 1744 in French
 - Martin: Bible David Martin 1744 in French
 - RVG: Reina Valera Gómez 2010 in Spanish
@@ -51,6 +52,7 @@ Saving any reminder asks for notification permission only when needed. If app no
 - NLT
 - NKJV
 - NRT: New Russian Translation 2010 in Russian
+- HTB: Het Boek 2007 in Dutch
 
 Online chapters are cached on the device after they are loaded. A cached chapter remains available without a
 connection for fourteen days, after which Lux requires a connection to load it again.
@@ -70,7 +72,7 @@ The Bibles page lets users:
 
 At least one Bible must remain active. The order of active Bibles controls their order in translation selectors and Compare.
 
-For a new or uncustomized Bible list, English activates BSB followed by the other English Bibles, matching the existing default order. Dutch activates SV followed by BSB. Russian activates NRT followed by BSB. Changing the app language updates this language-based default list only while the user has not customized their active Bibles. It does not change the currently selected translation.
+For a new or uncustomized Bible list, English activates BSB followed by the other English Bibles, matching the existing default order. Dutch activates SV, the other Dutch Bibles, and then BSB. Russian activates NRT followed by BSB. Changing the app language updates this language-based default list only while the user has not customized their active Bibles. It does not change the currently selected translation.
 
 BSB and KJV are the two study Bibles. LXX and OSHB contain the Old Testament, while TR, BYZ, and SR contain the New Testament.
 

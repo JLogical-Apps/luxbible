@@ -20,7 +20,8 @@ class BibleImporter {
     .sv ||
     .fob ||
     .martin1744 ||
-    .rvg => await parseStructuredJsonBible(translation: translation),
+    .rvg ||
+    .nld1939 => await parseStructuredJsonBible(translation: translation),
     _ => throw UnimplementedError(),
   };
 

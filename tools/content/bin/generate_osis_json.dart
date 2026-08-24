@@ -16,6 +16,7 @@ void main() {
     'fob',
     'martin1744',
     'rvg',
+    'nld1939',
   ]) {
     appAssetFile('translations/$name.json', app: .bible).writeAsStringSync(
       jsonEncode(

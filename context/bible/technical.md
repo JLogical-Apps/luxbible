@@ -64,6 +64,7 @@ The following are bundled with the app and work offline:
 - KJV
 - ASV
 - SV
+- NLD1939
 - FOB
 - Martin
 - RVG
@@ -86,7 +87,8 @@ The following are bundled with the app and work offline:
 
 Bundled sources with alternate versification use Lux's KJV-compatible references in their OSIS `osisID` values and
 retain the source translation's reference in `origin`. When multiple source verses correspond to one Lux verse, they
-share the normalized reference and are combined when the chapter is read. This is used by LXX, FOB, and Martin.
+share the normalized reference and are combined when the chapter is read. This is used by LXX, FOB, Martin, and
+NLD1939.
 
 ### Online Bible Text
 
@@ -95,6 +97,7 @@ These translations are loaded online when they are not available from the device
 - NASB95 through the YouVersion Platform
 - NIV through the YouVersion Platform
 - NRT through the YouVersion Platform
+- HTB through the YouVersion Platform
 - CSB through API.Bible
 - NLT through API.Bible
 - NKJV through API.Bible
