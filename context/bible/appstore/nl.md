@@ -15,7 +15,7 @@ De volledige Statenvertaling (SV) is ingebouwd en offline beschikbaar. Ook de Be
 
 Lees de grondteksten offline met de Griekse Septuaginta, Textus Receptus, Byzantine Textform, Statistical Restoration Greek New Testament en Open Scriptures Hebrew Bible.
 
-Luister naar de BSB of KJV met instelbare afspeelsnelheid, een slaaptimer en afspelen op de achtergrond. Bouw een dagelijks ritme op met leesplannen voor de hele Bijbel of een specifiek onderwerp, volg meerdere plannen tegelijk en houd je voortgang bij.
+Luister naar de BSB of KJV met instelbare afspeelsnelheid, een slaaptimer en afspelen op de achtergrond. Begin elke dag met het Vers van de dag en stel dagelijkse herinneringen in voor dit vers of een actief leesplan. Kies uit leesplannen voor de hele Bijbel of een specifiek onderwerp, volg meerdere plannen tegelijk en houd je voortgang bij.
 
 NOTITIES
 Markeer verzen, woorden of zinnen met een kleur, onderstreping of golvende lijn. Voeg notities toe, maak je eigen markeerstijlen en orden alles in notitieboeken. Filter je annotaties of verberg een notitieboek voor een rustigere leesweergave.

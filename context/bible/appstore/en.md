@@ -15,7 +15,7 @@ Choose from the Berean Standard Bible (BSB) and King James Version (KJV), availa
 
 Read the original texts offline with the Greek Septuagint, Textus Receptus, Byzantine Textform, Statistical Restoration Greek New Testament, and Open Scriptures Hebrew Bible.
 
-Listen to the BSB or KJV with playback speed controls, a sleep timer, and background playback. Build a daily rhythm with whole-Bible and focused reading plans, follow more than one plan, and track your progress.
+Listen to the BSB or KJV with playback speed controls, a sleep timer, and background playback. Begin each day with Verse of the Day, and set daily reminders for it or any active reading plan. Choose from whole-Bible and focused plans, follow more than one plan, and track your progress.
 
 NOTE
 Highlight verses, words, or phrases by color, underline, or squiggly line. Add notes, create your own highlight styles, and organize everything into notebooks. Filter your annotations or hide a notebook when you want a cleaner reading view.
