@@ -46,7 +46,7 @@ class StyledDock extends HookWidget {
     final bottomChildren = buttons.isEmpty && aboveButtons == null
         ? <Widget>[]
         : [
-            aboveButtons ?? SizedBox(width: double.infinity, height: 16),
+            StyledSizeAndFade(child: aboveButtons ?? SizedBox(width: double.infinity, height: 16)),
             if (buttons.isNotEmpty)
               Padding(
                 padding: .symmetric(horizontal: 16),
