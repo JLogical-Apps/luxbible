@@ -34,44 +34,42 @@ class SearchPage extends HookConsumerWidget {
     final user = ref.watch(userProvider);
     usePostFrameEffect(() => ref.markOnboardingStep(.searchWord));
 
-    usePostFrameEffect(() {
-      if (initialSearch case final initialSearch?) {
-        ref.updateUser((user) => user.withSearchHistory(initialSearch));
-      }
-    });
-
     final studyBible = ref.watch(studyBibleProvider).value;
     final localBible = user.translation.isLocal
         ? ref.watch(localBibleProvider(translation: user.translation)).value
         : studyBible;
-
-    if (localBible == null || studyBible == null) {
-      return SizedBox.shrink();
-    }
 
     final strongs = ref.watch(strongsProvider);
     final dictionary = ref.watch(dictionaryProvider);
 
     final textState = useState(initialSearch ?? '');
     final searchState = useState(textState.value);
+    final search = searchState.value.trim();
+    final isSearchActive = search.isNotEmpty;
 
     final locationsState = useState(<SearchLocationFilter>[]);
     final locations = locationsState.value;
 
+    final searchResultsState = useState<List<Reference>?>(null);
+    final searchResults = searchResultsState.value ?? [];
+
+    final isStrongSearch = search.isStrongId;
+    final searchBible = isStrongSearch ? studyBible : localBible;
+    final isSearchLoading = isSearchActive && searchResultsState.value == null;
+
     List<Reference> getSearchedReferences() {
       final locations = locationsState.value;
-      final search = searchState.value.trim();
-      if (search.isEmpty) {
+      if (search.isEmpty || searchBible == null) {
         return [];
       }
 
-      final validReferences = localBible.references
+      final validReferences = searchBible.references
           .where((reference) => locations.isEmpty || locations.any((filter) => filter.passes(reference)))
           .toList();
 
-      if (search.isStrongId) {
+      if (isStrongSearch) {
         return validReferences
-            .where((reference) => studyBible.getVerseByReference(reference)?.strongIds.contains(search) ?? false)
+            .where((reference) => searchBible.getVerseByReference(reference)?.strongIds.contains(search) ?? false)
             .toList();
       }
 
@@ -81,20 +79,26 @@ class SearchPage extends HookConsumerWidget {
           : validReferences
                 .where(
                   (reference) =>
-                      localBible.getVerseByReference(reference)?.searchTerms.containsInOrder(searchTerms) ?? false,
+                      searchBible.getVerseByReference(reference)?.searchTerms.containsInOrder(searchTerms) ?? false,
                 )
                 .toList();
     }
 
-    final searchResultsState = useState(useMemoized(() => getSearchedReferences()));
-    final searchResults = searchResultsState.value;
+    usePostFrameEffect(() {
+      if (isSearchActive) {
+        if (searchBible == null) {
+          searchResultsState.value = null;
+          return;
+        }
 
-    void search() {
-      searchResultsState.value = getSearchedReferences();
-      if (searchState.value.isNotEmpty) {
-        ref.updateUser((user) => user.withSearchHistory(searchState.value));
+        searchResultsState.value = getSearchedReferences();
+        if (searchState.value.isNotEmpty) {
+          ref.updateUser((user) => user.withSearchHistory(searchState.value));
+        }
       }
-    }
+    }, [searchBible, search, locations]);
+
+    final isUsingStudyBible = user.translation.isOnline || (isStrongSearch && !user.translation.isStudy);
 
     return StyledPage(
       title: t.labels.search.toText(),
@@ -114,13 +118,13 @@ class SearchPage extends HookConsumerWidget {
                   onChanged: (text) {
                     textState.value = text;
                     searchState.value = '';
-                    searchResultsState.value = [];
+                    searchResultsState.value = null;
                   },
                   hintText: t.searchUi.wordOrPhraseHint,
                   onSubmit: (newText) {
                     textState.value = newText;
                     searchState.value = newText;
-                    search();
+                    searchResultsState.value = null;
                   },
                 ),
                 SearchLocationButton(
@@ -128,11 +132,11 @@ class SearchPage extends HookConsumerWidget {
                   onLocationsSelected: (locations) {
                     locationsState.value = locations;
                     searchState.value = textState.value;
-                    search();
+                    searchResultsState.value = null;
                   },
                   currentBook: currentChapterReference?.book,
                 ),
-                if (user.translation.isOnline && !user.tutorials.contains(Tutorial.searchStudy))
+                if (isUsingStudyBible && !user.tutorials.contains(Tutorial.searchStudy))
                   StyledBanner(
                     leading: Symbols.book.toIcon(),
                     message: t.searchUi.usingTranslation(translation: user.studyTranslation.title()).toText(),
@@ -141,7 +145,9 @@ class SearchPage extends HookConsumerWidget {
                       onPressed: () => context.showStyledDialog(
                         (context) => TutorialDialog(
                           title: t.searchUi.searchBible.toText(),
-                          body: t.searchUi.unsupportedTranslation(translation: user.translation.title()).toText(),
+                          body: isStrongSearch
+                              ? t.searchUi.strongSearchStudyBibleExplanation.toText()
+                              : t.searchUi.unsupportedTranslation(translation: user.translation.title()).toText(),
                           tutorial: .searchStudy,
                         ),
                       ),
@@ -151,134 +157,143 @@ class SearchPage extends HookConsumerWidget {
             ),
           ),
           Expanded(
-            child: StyledScrollbar(
-              child: StyledListView(
-                padding: .only(bottom: MediaQuery.paddingOf(context).bottom + MediaQuery.viewInsetsOf(context).bottom),
-                children: [
-                  if (searchState.value.isEmpty)
-                    Column(
-                      crossAxisAlignment: .start,
-                      children: [
-                        SafeArea(
-                          bottom: false,
-                          top: false,
-                          child: Padding(
-                            padding: .all(16),
-                            child: StyledTile.message(
-                              title: t.searchUi.startSearch.toText(),
-                              subtitle: t.searchUi.searchPrompt.toText(),
-                              leading: Symbols.search.toIcon(),
-                            ),
-                          ),
+            child: StyledLoading(
+              loadingPadding: .all(16),
+              child: isSearchLoading
+                  ? null
+                  : StyledScrollbar(
+                      child: StyledListView(
+                        padding: .only(
+                          bottom: MediaQuery.paddingOf(context).bottom + MediaQuery.viewInsetsOf(context).bottom,
                         ),
-                        if (user.searchHistory.isNotEmpty)
-                          StyledSection(
-                            title: Text(t.navigation.recents),
-                            children: user.searchHistory
-                                .mapIndexed(
-                                  (i, searchResult) => StyledSwipeable(
-                                    key: ValueKey(searchResult),
-                                    actions: [
-                                      StyledSwipeableAction.delete(
-                                        onPressed: () => ref.updateUser(
-                                          (user) => user.copyWith(searchHistory: user.searchHistory.withRemovedAt(i)),
-                                        ),
-                                      ),
-                                    ],
-                                    child: StyledListItem(
-                                      leading: Symbols.history.toIcon(),
-                                      title: Text(searchResult),
-                                      trailing: Symbols.search.toIcon(),
-                                      onPressed: () {
-                                        textState.value = searchResult;
-                                        searchState.value = searchResult;
-                                        search();
-                                      },
+                        children: [
+                          if (!isSearchActive)
+                            Column(
+                              crossAxisAlignment: .start,
+                              children: [
+                                SafeArea(
+                                  bottom: false,
+                                  top: false,
+                                  child: Padding(
+                                    padding: .all(16),
+                                    child: StyledTile.message(
+                                      title: t.searchUi.startSearch.toText(),
+                                      subtitle: t.searchUi.searchPrompt.toText(),
+                                      leading: Symbols.search.toIcon(),
                                     ),
                                   ),
-                                )
-                                .toList(),
-                          ),
-                      ],
-                    )
-                  else if (searchResults.isEmpty)
-                    Padding(
-                      padding: .all(16),
-                      child: StyledTile.message(
-                        title: t.emptyStates.noSearchResults.toText(),
-                        subtitle: t.emptyStates.tryAnotherSearch.toText(),
-                        leading: Symbols.search.toIcon(),
-                      ),
-                    )
-                  else ...[
-                    if (searchState.value.isStrongId) ...[
-                      if (strongs[searchState.value] case final strong?)
-                        Padding(
-                          padding: .all(16),
-                          child: StyledTile(
-                            child: StyledListItem.navigation(
-                              title: SingleChildScrollView(
-                                scrollDirection: .horizontal,
-                                child: Row(
-                                  spacing: 8,
-                                  children: [
-                                    StyledTag.sm(child: strong.id.toText()),
-                                    Text([strong.languageText, strong.transliteration].join('  ·  ')),
-                                  ],
+                                ),
+                                if (user.searchHistory.isNotEmpty)
+                                  StyledSection(
+                                    title: Text(t.navigation.recents),
+                                    children: user.searchHistory
+                                        .mapIndexed(
+                                          (i, searchResult) => StyledSwipeable(
+                                            key: ValueKey(searchResult),
+                                            actions: [
+                                              StyledSwipeableAction.delete(
+                                                onPressed: () => ref.updateUser(
+                                                  (user) =>
+                                                      user.copyWith(searchHistory: user.searchHistory.withRemovedAt(i)),
+                                                ),
+                                              ),
+                                            ],
+                                            child: StyledListItem(
+                                              leading: Symbols.history.toIcon(),
+                                              title: Text(searchResult),
+                                              trailing: Symbols.search.toIcon(),
+                                              onPressed: () {
+                                                textState.value = searchResult;
+                                                searchState.value = searchResult;
+                                                searchResultsState.value = null;
+                                              },
+                                            ),
+                                          ),
+                                        )
+                                        .toList(),
+                                  ),
+                              ],
+                            )
+                          else if (searchResults.isEmpty)
+                            Padding(
+                              padding: .all(16),
+                              child: StyledTile.message(
+                                title: t.emptyStates.noSearchResults.toText(),
+                                subtitle: t.emptyStates.tryAnotherSearch.toText(),
+                                leading: Symbols.search.toIcon(),
+                              ),
+                            )
+                          else ...[
+                            if (isStrongSearch) ...[
+                              if (strongs[searchState.value] case final strong?)
+                                Padding(
+                                  padding: .all(16),
+                                  child: StyledTile(
+                                    child: StyledListItem.navigation(
+                                      title: SingleChildScrollView(
+                                        scrollDirection: .horizontal,
+                                        child: Row(
+                                          spacing: 8,
+                                          children: [
+                                            StyledTag.sm(child: strong.id.toText()),
+                                            Text([strong.languageText, strong.transliteration].join('  ·  ')),
+                                          ],
+                                        ),
+                                      ),
+                                      subtitle: MarkdownBuilder(strong.definition, maxLines: 4),
+                                      onPressed: () => StrongSheet.showWithBreadcrumbs(context, strongId: strong.id),
+                                    ),
+                                  ),
+                                ),
+                            ] else if (dictionary[searchState.value.trim().toUpperCase()] case final entry?)
+                              Padding(
+                                padding: .all(16),
+                                child: StyledTile(
+                                  child: StyledListItem.navigation(
+                                    title: entry.title.toText(),
+                                    subtitle: MarkdownBuilder(
+                                      entry.definitions.first.withCollapsedWhitespace,
+                                      maxLines: 2,
+                                    ),
+                                    onPressed: () => DictionarySheet.show(
+                                      context,
+                                      entry: entry,
+                                      onNavigateToVerseSelection: (verseSelection) =>
+                                          context.pop(SearchPageResult(selection: verseSelection)),
+                                    ),
+                                  ),
                                 ),
                               ),
-                              subtitle: MarkdownBuilder(strong.definition, maxLines: 4),
-                              onPressed: () => StrongSheet.showWithBreadcrumbs(context, strongId: strong.id),
-                            ),
-                          ),
-                        ),
-                    ] else if (dictionary[searchState.value.trim().toUpperCase()] case final entry?)
-                      Padding(
-                        padding: .all(16),
-                        child: StyledTile(
-                          child: StyledListItem.navigation(
-                            title: entry.title.toText(),
-                            subtitle: MarkdownBuilder(entry.definitions.first.withCollapsedWhitespace, maxLines: 2),
-                            onPressed: () => DictionarySheet.show(
-                              context,
-                              entry: entry,
-                              onNavigateToVerseSelection: (verseSelection) =>
-                                  context.pop(SearchPageResult(selection: verseSelection)),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ...searchResults.map((result) {
-                      final verse = localBible.getVerseByReference(result);
-                      if (verse == null) {
-                        return null;
-                      }
+                            ...searchResults.map((result) {
+                              final verse = searchBible?.getVerseByReference(result);
+                              if (verse == null) return null;
 
-                      return StyledListItem.navigation(
-                        title: result.format().toText(),
-                        subtitle: searchState.value.trim().isStrongId
-                            ? VerseText.verse(
-                                redLetters: user.themeLayout.redLetters,
-                                verse: verse,
-                                highlightStrongId: searchState.value.trim(),
-                              )
-                            : VerseText.verse(
-                                redLetters: user.themeLayout.redLetters,
-                                verse: verse,
-                                highlightTerm: searchState.value,
-                                style: context.textStyle.paragraphSm.subtle(),
-                              ),
-                        onPressed: () => PassagePreviewPage.show(
-                          context,
-                          verseSelection: VerseSelection.reference(result),
-                          onNavigateToVerseSelection: (selection) =>
-                              context.pop(SearchPageResult(selection: selection)),
-                        ),
-                      );
-                    }).nonNulls,
-                  ],
-                ],
-              ),
+                              return StyledListItem.navigation(
+                                title: result.format().toText(),
+                                subtitle: searchState.value.trim().isStrongId
+                                    ? VerseText.verse(
+                                        redLetters: user.themeLayout.redLetters,
+                                        verse: verse,
+                                        highlightStrongId: searchState.value.trim(),
+                                      )
+                                    : VerseText.verse(
+                                        redLetters: user.themeLayout.redLetters,
+                                        verse: verse,
+                                        highlightTerm: searchState.value,
+                                        style: context.textStyle.paragraphSm.subtle(),
+                                      ),
+                                onPressed: () => PassagePreviewPage.show(
+                                  context,
+                                  verseSelection: VerseSelection.reference(result),
+                                  onNavigateToVerseSelection: (selection) =>
+                                      context.pop(SearchPageResult(selection: selection)),
+                                ),
+                              );
+                            }).nonNulls,
+                          ],
+                        ],
+                      ),
+                    ),
             ),
           ),
         ],

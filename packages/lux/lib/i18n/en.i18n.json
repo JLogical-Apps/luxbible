@@ -521,6 +521,7 @@
     "searchPrompt": "Enter a keyword like light, word, or wisdom, then hit enter on the keyboard.",
     "usingTranslation": "Using {translation} for search",
     "unsupportedTranslation": "{translation} does not currently support search. Using your most-recent Study Bible instead.",
+    "strongSearchStudyBibleExplanation": "Strong's number searches require the word-level Strong's tagging included in Study Bibles. Using your most-recent Study Bible instead.",
     "wordOrPhraseHint": "Search for a word or phrase",
     "wordHint": "Search for a word",
     "strongNumberHint": "Search for a Strong's number (e.g. H125)"

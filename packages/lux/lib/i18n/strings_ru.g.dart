@@ -804,6 +804,7 @@ class _Translations$searchUi$ru extends Translations$searchUi$en {
 	@override String get searchPrompt => 'Введите ключевое слово, например свет, слово или мудрость, затем нажмите Enter на клавиатуре.';
 	@override String usingTranslation({required Object translation}) => 'Использование ${translation} для поиска';
 	@override String unsupportedTranslation({required Object translation}) => '${translation} в настоящее время не поддерживает поиск. Вместо этого используйте самую последнюю Учебную Библию.';
+	@override String get strongSearchStudyBibleExplanation => 'Для поиска по номеру Стронга нужна пословная разметка Стронга, которая есть в Учебных Библиях. Вместо этого используется последняя выбранная Учебная Библия.';
 	@override String get wordOrPhraseHint => 'Поиск слова или фразы';
 	@override String get wordHint => 'Поиск слова';
 	@override String get strongNumberHint => 'Найдите номер Стронга (например, H125)';
@@ -3174,6 +3175,7 @@ extension on TranslationsRu {
 			'searchUi.searchPrompt' => 'Введите ключевое слово, например свет, слово или мудрость, затем нажмите Enter на клавиатуре.',
 			'searchUi.usingTranslation' => ({required Object translation}) => 'Использование ${translation} для поиска',
 			'searchUi.unsupportedTranslation' => ({required Object translation}) => '${translation} в настоящее время не поддерживает поиск. Вместо этого используйте самую последнюю Учебную Библию.',
+			'searchUi.strongSearchStudyBibleExplanation' => 'Для поиска по номеру Стронга нужна пословная разметка Стронга, которая есть в Учебных Библиях. Вместо этого используется последняя выбранная Учебная Библия.',
 			'searchUi.wordOrPhraseHint' => 'Поиск слова или фразы',
 			'searchUi.wordHint' => 'Поиск слова',
 			'searchUi.strongNumberHint' => 'Найдите номер Стронга (например, H125)',
@@ -3220,9 +3222,9 @@ extension on TranslationsRu {
 			'themeOptions.light' => 'Светлая',
 			'themeOptions.dark' => 'Тёмная',
 			'themeOptions.extraTiny' => 'Очень мелкий',
-			'themeOptions.tiny' => 'Мелкий',
 			_ => null,
 		} ?? switch (path) {
+			'themeOptions.tiny' => 'Мелкий',
 			'themeOptions.small' => 'Маленький',
 			'themeOptions.standard' => 'Стандартный',
 			'themeOptions.large' => 'Большой',

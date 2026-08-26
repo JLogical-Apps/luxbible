@@ -800,6 +800,7 @@ class _Translations$searchUi$nl extends Translations$searchUi$en {
 	@override String get searchPrompt => 'Voer een zoekwoord in, zoals licht, woord of wijsheid, en druk op Enter.';
 	@override String usingTranslation({required Object translation}) => '${translation} wordt gebruikt om te zoeken';
 	@override String unsupportedTranslation({required Object translation}) => '${translation} ondersteunt zoeken momenteel niet. In plaats daarvan wordt je meest recent gebruikte studiebijbel gebruikt.';
+	@override String get strongSearchStudyBibleExplanation => 'Voor zoekopdrachten op Strong-nummers zijn de woord-voor-woord Strong-coderingen uit studiebijbels nodig. In plaats daarvan wordt je meest recent gebruikte studiebijbel gebruikt.';
 	@override String get wordOrPhraseHint => 'Zoek naar een woord of zin';
 	@override String get wordHint => 'Zoek naar een woord';
 	@override String get strongNumberHint => 'Zoek naar een Strong-nummer (bijv. H125)';
@@ -3170,6 +3171,7 @@ extension on TranslationsNl {
 			'searchUi.searchPrompt' => 'Voer een zoekwoord in, zoals licht, woord of wijsheid, en druk op Enter.',
 			'searchUi.usingTranslation' => ({required Object translation}) => '${translation} wordt gebruikt om te zoeken',
 			'searchUi.unsupportedTranslation' => ({required Object translation}) => '${translation} ondersteunt zoeken momenteel niet. In plaats daarvan wordt je meest recent gebruikte studiebijbel gebruikt.',
+			'searchUi.strongSearchStudyBibleExplanation' => 'Voor zoekopdrachten op Strong-nummers zijn de woord-voor-woord Strong-coderingen uit studiebijbels nodig. In plaats daarvan wordt je meest recent gebruikte studiebijbel gebruikt.',
 			'searchUi.wordOrPhraseHint' => 'Zoek naar een woord of zin',
 			'searchUi.wordHint' => 'Zoek naar een woord',
 			'searchUi.strongNumberHint' => 'Zoek naar een Strong-nummer (bijv. H125)',
@@ -3216,9 +3218,9 @@ extension on TranslationsNl {
 			'themeOptions.light' => 'Licht',
 			'themeOptions.dark' => 'Donker',
 			'themeOptions.extraTiny' => 'Extra klein',
-			'themeOptions.tiny' => 'Zeer klein',
 			_ => null,
 		} ?? switch (path) {
+			'themeOptions.tiny' => 'Zeer klein',
 			'themeOptions.small' => 'Klein',
 			'themeOptions.standard' => 'Standaard',
 			'themeOptions.large' => 'Groot',

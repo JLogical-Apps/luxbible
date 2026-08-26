@@ -1721,6 +1721,9 @@ class Translations$searchUi$en {
 	/// en: '{translation} does not currently support search. Using your most-recent Study Bible instead.'
 	String unsupportedTranslation({required Object translation}) => '${translation} does not currently support search. Using your most-recent Study Bible instead.';
 
+	/// en: 'Strong's number searches require the word-level Strong's tagging included in Study Bibles. Using your most-recent Study Bible instead.'
+	String get strongSearchStudyBibleExplanation => 'Strong\'s number searches require the word-level Strong\'s tagging included in Study Bibles. Using your most-recent Study Bible instead.';
+
 	/// en: 'Search for a word or phrase'
 	String get wordOrPhraseHint => 'Search for a word or phrase';
 
@@ -5080,6 +5083,7 @@ extension on Translations {
 			'searchUi.searchPrompt' => 'Enter a keyword like light, word, or wisdom, then hit enter on the keyboard.',
 			'searchUi.usingTranslation' => ({required Object translation}) => 'Using ${translation} for search',
 			'searchUi.unsupportedTranslation' => ({required Object translation}) => '${translation} does not currently support search. Using your most-recent Study Bible instead.',
+			'searchUi.strongSearchStudyBibleExplanation' => 'Strong\'s number searches require the word-level Strong\'s tagging included in Study Bibles. Using your most-recent Study Bible instead.',
 			'searchUi.wordOrPhraseHint' => 'Search for a word or phrase',
 			'searchUi.wordHint' => 'Search for a word',
 			'searchUi.strongNumberHint' => 'Search for a Strong\'s number (e.g. H125)',
@@ -5128,9 +5132,9 @@ extension on Translations {
 			'themeOptions.extraTiny' => 'Extra Tiny',
 			'themeOptions.tiny' => 'Tiny',
 			'themeOptions.small' => 'Small',
-			'themeOptions.standard' => 'Standard',
 			_ => null,
 		} ?? switch (path) {
+			'themeOptions.standard' => 'Standard',
 			'themeOptions.large' => 'Large',
 			'themeOptions.huge' => 'Huge',
 			'themeOptions.extraHuge' => 'Extra Huge',

@@ -523,6 +523,7 @@
     "searchPrompt": "Voer een zoekwoord in, zoals licht, woord of wijsheid, en druk op Enter.",
     "usingTranslation": "{translation} wordt gebruikt om te zoeken",
     "unsupportedTranslation": "{translation} ondersteunt zoeken momenteel niet. In plaats daarvan wordt je meest recent gebruikte studiebijbel gebruikt.",
+    "strongSearchStudyBibleExplanation": "Voor zoekopdrachten op Strong-nummers zijn de woord-voor-woord Strong-coderingen uit studiebijbels nodig. In plaats daarvan wordt je meest recent gebruikte studiebijbel gebruikt.",
     "wordOrPhraseHint": "Zoek naar een woord of zin",
     "wordHint": "Zoek naar een woord",
     "strongNumberHint": "Zoek naar een Strong-nummer (bijv. H125)"
