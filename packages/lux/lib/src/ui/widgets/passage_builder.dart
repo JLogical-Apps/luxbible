@@ -77,7 +77,7 @@ class PassageBuilder extends HookConsumerWidget {
 
     return StyledLoading(
       loadingPadding: .all(16),
-      child: paragraphs.isEmpty && showLoading
+      child: !paragraphsValue.hasValue && showLoading
           ? null
           : PassageContent(
               configuration: configuration,
