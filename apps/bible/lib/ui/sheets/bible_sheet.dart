@@ -55,7 +55,7 @@ class BibleSheet {
                       child: StyledExpandableStickyHeader(
                         title: language.title().toText(),
                         subtitle: t.bibleSheet.availableCount(count: translations.length).toText(),
-                        initiallyShown: false,
+                        initiallyShown: language.appLanguage == Language.device,
                         children: translations
                             .map(
                               (translation) => BibleTile(
