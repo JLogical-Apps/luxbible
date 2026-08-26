@@ -39,16 +39,21 @@ class DictionaryPage extends HookConsumerWidget {
             ),
           ),
           Expanded(
-            child: Scrollbar(
+            child: StyledScrollbar(
               child: StyledListView(
+                padding: .only(bottom: MediaQuery.paddingOf(context).bottom + MediaQuery.viewInsetsOf(context).bottom),
                 children: [
                   if (matchingEntries.isEmpty)
-                    Padding(
-                      padding: .all(16),
-                      child: StyledTile.message(
-                        title: t.emptyStates.noMatchingWords.toText(),
-                        subtitle: t.emptyStates.tryAnotherSearch.toText(),
-                        leading: Symbols.search.toIcon(),
+                    SafeArea(
+                      top: false,
+                      bottom: false,
+                      child: Padding(
+                        padding: .all(16),
+                        child: StyledTile.message(
+                          title: t.emptyStates.noMatchingWords.toText(),
+                          subtitle: t.emptyStates.tryAnotherSearch.toText(),
+                          leading: Symbols.search.toIcon(),
+                        ),
                       ),
                     ),
                   ...matchingEntries.map(

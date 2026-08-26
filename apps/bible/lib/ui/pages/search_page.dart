@@ -151,15 +151,17 @@ class SearchPage extends HookConsumerWidget {
             ),
           ),
           Expanded(
-            child: Scrollbar(
+            child: StyledScrollbar(
               child: StyledListView(
-                padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
+                padding: .only(bottom: MediaQuery.paddingOf(context).bottom + MediaQuery.viewInsetsOf(context).bottom),
                 children: [
                   if (searchState.value.isEmpty)
                     Column(
                       crossAxisAlignment: .start,
                       children: [
                         SafeArea(
+                          bottom: false,
+                          top: false,
                           child: Padding(
                             padding: .all(16),
                             child: StyledTile.message(
