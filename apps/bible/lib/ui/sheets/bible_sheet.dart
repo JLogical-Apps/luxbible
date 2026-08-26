@@ -51,19 +51,21 @@ class BibleSheet {
                   .groupListsBy((translation) => translation.bibleLanguage)
                   .sortedBy((language, _) => language.appLanguage == Language.device ? 0 : 1)
                   .mapToIterable(
-                    (language, translations) => StyledExpandableStickyHeader(
-                      title: language.title().toText(),
-                      subtitle: t.bibleSheet.availableCount(count: translations.length).toText(),
-                      initiallyShown: false,
-                      children: translations
-                          .map(
-                            (translation) => BibleTile(
-                              translation: translation,
-                              trailing: StyledRadio(isSelected: translation == user.translation),
-                              onPressedOverride: () => context.pop(translation),
-                            ),
-                          )
-                          .toList(),
+                    (language, translations) => KeepAliveContainer(
+                      child: StyledExpandableStickyHeader(
+                        title: language.title().toText(),
+                        subtitle: t.bibleSheet.availableCount(count: translations.length).toText(),
+                        initiallyShown: false,
+                        children: translations
+                            .map(
+                              (translation) => BibleTile(
+                                translation: translation,
+                                trailing: StyledRadio(isSelected: translation == user.translation),
+                                onPressedOverride: () => context.pop(translation),
+                              ),
+                            )
+                            .toList(),
+                      ),
                     ),
                   )
                   .toList(),
