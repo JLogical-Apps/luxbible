@@ -15,7 +15,7 @@ Book parseOsisBook(String rawXml, {bool verseParagraphs = false}) {
       .map(
         (child) => switch (child) {
           XmlText(:final value) => value,
-          XmlElement(:final localName) when const {'note', 'title', 'milestone'}.contains(localName) => null,
+          XmlElement(:final localName) when const {'note', 'title', 'milestone'}.has(localName) => null,
           XmlElement() when child.getAttribute('type') == 'x-variant' && child.getAttribute('subType') == 'x-2' => null,
           _ => verseText(child),
         },

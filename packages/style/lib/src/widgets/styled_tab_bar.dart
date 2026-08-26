@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:lux/lux.dart';
 import 'package:style/src/style_context_extensions.dart';
 
 class StyledTabBar extends StatelessWidget {
@@ -24,7 +25,7 @@ class StyledTabBar extends StatelessWidget {
             controller: tabController,
             splashFactory: NoSplash.splashFactory,
             overlayColor: WidgetStateProperty.resolveWith<Color?>(
-              (Set<WidgetState> states) => states.contains(WidgetState.focused) ? null : Colors.transparent,
+              (Set<WidgetState> states) => states.has(.focused) ? null : Colors.transparent,
             ),
             dividerColor: context.colors.borderOpaque,
             dividerHeight: 4,

@@ -75,7 +75,7 @@ sealed class BiblePlanDayProgress with _$BiblePlanDayProgress {
   factory BiblePlanDayProgress.fromJson(Map<String, dynamic> json) => _$BiblePlanDayProgressFromJson(json);
 
   bool isPassageComplete(VerseSelection passage) => switch (this) {
-    IncompleteBiblePlanDayProgress(:final completedPassages) => completedPassages.contains(passage),
+    IncompleteBiblePlanDayProgress(:final completedPassages) => completedPassages.has(passage),
     CompleteBiblePlanDayProgress() => true,
   };
 
@@ -96,7 +96,7 @@ sealed class BiblePlanDayProgress with _$BiblePlanDayProgress {
       IncompleteBiblePlanDayProgress(:final completedPassages) => {...completedPassages, passage},
       CompleteBiblePlanDayProgress() => day.passages.toSet(),
     };
-    return day.passages.every((passage) => completedPassages.contains(passage))
+    return day.passages.every((passage) => completedPassages.has(passage))
         ? BiblePlanDayProgress.complete()
         : BiblePlanDayProgress.incomplete(completedPassages: completedPassages);
   }

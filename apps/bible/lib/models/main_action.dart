@@ -7,13 +7,13 @@ import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/verse_of_the_day_provider.dart';
+import 'package:bible/ui/flows/verse_of_the_day_reminder_flow.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:bible/ui/pages/dictionary_page.dart';
 import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/more_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
-import 'package:bible/ui/flows/verse_of_the_day_reminder_flow.dart';
 import 'package:bible/ui/sheets/bookmark_sheet.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
@@ -111,7 +111,7 @@ enum MainAction {
     more => Icon(Symbols.other_admission),
   };
 
-  bool get isNavigation => [study, search, resources, plans, more].contains(this);
+  bool get isNavigation => [study, search, resources, plans, more].has(this);
 
   Future<void> onPressed(
     BuildContext context, {

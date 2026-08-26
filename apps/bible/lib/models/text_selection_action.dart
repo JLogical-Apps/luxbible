@@ -39,7 +39,7 @@ enum TextSelectionAction {
     copy => Symbols.copy_all,
   };
 
-  bool get isNavigation => [annotate, interlinear, search].contains(this);
+  bool get isNavigation => [annotate, interlinear, search].has(this);
 
   Future<void> onPressed(
     BuildContext context, {

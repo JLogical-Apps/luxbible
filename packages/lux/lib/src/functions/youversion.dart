@@ -21,12 +21,12 @@ class YouVersion {
     final root = XmlDocument.parse(content).rootElement;
     return XmlBibleParser.parse(
       root.childElements,
-      getVerseNumber: (element) => element.classNames.contains('yv-v') ? int.parse(element.getAttribute('v')!) : null,
-      shouldIgnore: (element) => element.classNames.contains('yv-vlbl'),
-      buildFootnote: (element) => element.classNames.contains('yv-n') ? UsxUtils.noteToMarkdown(element) : null,
-      isRedLetters: (element) => element.classNames.contains('wj'),
-      isItalic: (element) => element.classNames.contains('it'),
-      isUppercase: (element) => element.classNames.contains('sc'),
+      getVerseNumber: (element) => element.classNames.has('yv-v') ? int.parse(element.getAttribute('v')!) : null,
+      shouldIgnore: (element) => element.classNames.has('yv-vlbl'),
+      buildFootnote: (element) => element.classNames.has('yv-n') ? UsxUtils.noteToMarkdown(element) : null,
+      isRedLetters: (element) => element.classNames.has('wj'),
+      isItalic: (element) => element.classNames.has('it'),
+      isUppercase: (element) => element.classNames.has('sc'),
       getParagraphStyle: (element) => element.classNames.firstWhereOrNull((className) => !className.startsWith('yv-')),
       buildSectionText: (element) => element.children
           .where(

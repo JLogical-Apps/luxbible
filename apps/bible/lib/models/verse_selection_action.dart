@@ -36,7 +36,7 @@ enum VerseSelectionAction {
     copy => Symbols.copy_all,
   };
 
-  bool get isNavigation => [annotate, study].contains(this);
+  bool get isNavigation => [annotate, study].has(this);
 
   Future<void> onPressed(
     BuildContext context, {

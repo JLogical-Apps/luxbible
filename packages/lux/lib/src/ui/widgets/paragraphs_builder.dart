@@ -544,7 +544,7 @@ class ParagraphsBuilder extends HookWidget {
                             reference: reference,
                             verseNumber: verse.verseNum,
                             bibleTextStyle: bibleTextStyle,
-                            isUnderlined: underlinedReferences.contains(reference),
+                            isUnderlined: underlinedReferences.has(reference),
                             textDirection: textDirection,
                             opacity: referenceOpacities[reference] ?? 1,
                           ),
@@ -636,7 +636,7 @@ class ParagraphsBuilder extends HookWidget {
                                       : bibleTextStyle.body.color)
                                   ?.withValues(alpha: referenceOpacities[reference] ?? 1),
                           fontStyle: word.italic || type.isItalic ? .italic : null,
-                          decoration: underlinedReferences.contains(reference) ? .underline : null,
+                          decoration: underlinedReferences.has(reference) ? .underline : null,
                         ),
                       ).withInjectedSpans(
                         markers
@@ -705,7 +705,7 @@ class ParagraphsBuilder extends HookWidget {
         child: Opacity(
           opacity: opacity,
           child: Underline(
-            isUnderlined: underlinedReferences.contains(reference),
+            isUnderlined: underlinedReferences.has(reference),
             style: bibleTextStyle.body,
             child: marker.builder(context),
           ),

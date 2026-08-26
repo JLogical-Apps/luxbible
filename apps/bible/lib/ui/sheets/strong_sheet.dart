@@ -41,7 +41,8 @@ class StrongSheet {
       );
     }
 
-    await context.showStyledSheetWithBreadcrumbs(breadcrumbText: word?.data?.inflection ?? strong?.id ?? '', (context, _) {
+    final breadcrumbText = word?.data?.inflection ?? strong?.id ?? '';
+    await context.showStyledSheetWithBreadcrumbs(breadcrumbText: breadcrumbText, (context, _) {
       final selectedMorphologyCodeState = useState(morphologyCodes?.firstOrNull);
       final selectedMorphologyCode = selectedMorphologyCodeState.value;
 
@@ -283,7 +284,7 @@ class StrongSheet {
     final otherReferences = strongId == null
         ? null
         : studyBible.references
-              .where((reference) => studyBible.getVerseByReference(reference)?.strongIds.contains(strongId) ?? false)
+              .where((reference) => studyBible.getVerseByReference(reference)?.strongIds.has(strongId) ?? false)
               .toList();
 
     if (otherReferences == null || otherReferences.isEmpty || onNavigateToVerseSelection == null) {

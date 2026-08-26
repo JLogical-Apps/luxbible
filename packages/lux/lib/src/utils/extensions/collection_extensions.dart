@@ -4,6 +4,8 @@ import 'package:collection/collection.dart';
 import 'package:utils_core/utils_core.dart';
 
 extension CoreListExtensions<T> on List<T> {
+  bool has(T item) => contains(item);
+
   List<T> withToggle(T item) => contains(item) ? ([...this]..remove(item)) : [...this, item];
 
   List<T> withInsert(int index, T item) => [...this]..insert(index, item);
@@ -152,4 +154,8 @@ extension CoreNullValueMapExtensions<K, V> on Map<K, V?> {
 
 extension CoreIterableMapExtensions<K, V> on Iterable<Map<K, V>> {
   Map<K, V> get flattened => {for (final map in this) ...map};
+}
+
+extension CoreSetExtensions<T> on Set<T> {
+  bool has(T item) => contains(item);
 }

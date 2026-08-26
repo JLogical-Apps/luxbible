@@ -17,8 +17,8 @@ Future<void> main(List<String> args) async {
     _fail('Unknown argument(s): ${unknown.join(', ')}. Use --ios and/or --android.');
   }
 
-  final deployIos = args.contains('--ios') || !args.contains('--android');
-  final deployAndroid = args.contains('--android') || !args.contains('--ios');
+  final deployIos = args.has('--ios') || !args.has('--android');
+  final deployAndroid = args.has('--android') || !args.has('--ios');
 
   final env = _loadEnv();
 

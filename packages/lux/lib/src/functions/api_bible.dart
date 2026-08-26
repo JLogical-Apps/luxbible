@@ -27,29 +27,26 @@ class ApiBible {
         XmlText(:final value) => !isInsideReference && value.trim().isNotEmpty,
         XmlElement child => hasHelpfulText(
           child,
-          isInsideReference: isInsideReference || child.classNames.contains('fr') || child.classNames.contains('xt'),
+          isInsideReference: isInsideReference || child.classNames.has('fr') || child.classNames.has('xt'),
         ),
         _ => false,
       },
     );
 
     bool isOnlyCrossReference(XmlElement element) {
-      if (element.classNames.contains('x')) return true;
-      if (!element.classNames.contains('f')) return false;
+      if (element.classNames.has('x')) return true;
+      if (!element.classNames.has('f')) return false;
 
-      final hasCrossReference = element.descendants.whereType<XmlElement>().any(
-        (child) => child.classNames.contains('xt'),
-      );
+      final hasCrossReference = element.descendants.whereType<XmlElement>().any((child) => child.classNames.has('xt'));
       return hasCrossReference && !hasHelpfulText(element);
     }
 
     return XmlBibleParser.parse(
       root.childElements,
-      getVerseNumber: (element) =>
-          element.classNames.contains('v') ? int.parse(element.getAttribute('data-number')!) : null,
+      getVerseNumber: (element) => element.classNames.has('v') ? int.parse(element.getAttribute('data-number')!) : null,
       shouldIgnore: isOnlyCrossReference,
-      buildFootnote: (element) => element.classNames.contains('f') ? UsxUtils.noteToMarkdown(element) : null,
-      isRedLetters: (element) => element.classNames.contains('wj'),
+      buildFootnote: (element) => element.classNames.has('f') ? UsxUtils.noteToMarkdown(element) : null,
+      isRedLetters: (element) => element.classNames.has('wj'),
       isItalic: (element) => element.classNames.any(UsxUtils.isItalicStyle),
       isUppercase: (_) => false,
       getParagraphStyle: (element) => element.classNames.firstOrNull,

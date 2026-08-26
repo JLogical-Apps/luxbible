@@ -19,8 +19,12 @@ class AudioBiblePassageSync {
   Reference? getEmphasizedReferenceForChapter(ChapterReference chapterReference) =>
       player.isPlaying && spokenReference?.toChapterReference() == chapterReference ? spokenReference : null;
 
-  Reference? getEmphasizedReferenceForPassage(VerseSelection passage) =>
-      player.isPlaying && passage.references.contains(spokenReference) ? spokenReference : null;
+  Reference? getEmphasizedReferenceForPassage(VerseSelection passage) {
+    final spokenReference = this.spokenReference;
+    return player.isPlaying && spokenReference != null && passage.references.has(spokenReference)
+        ? spokenReference
+        : null;
+  }
 
   Function(Reference)? get onReferencePressed => player.isActive
       ? (reference) => audioBibleController.seekToReference(context: context, reference: reference)

@@ -1,4 +1,3 @@
-import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/ui/dialogs/tutorial_dialog.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
@@ -22,7 +21,7 @@ class InterlinearSheet {
     bool showDirectionBanner = true,
     bool popOnAction = true,
   }) {
-    final showInterlinearStudyBanner = !user.translation.isStudy && !user.tutorials.contains(Tutorial.interlinearStudy);
+    final showInterlinearStudyBanner = !user.translation.isStudy && !user.tutorials.has(.interlinearStudy);
 
     return [
       if (showDirectionBanner || showInterlinearStudyBanner)

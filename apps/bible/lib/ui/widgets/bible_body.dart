@@ -230,7 +230,7 @@ class BibleBody extends HookConsumerWidget {
 
     void addStudyPanel(StudyPanel studyPanel) {
       final verseSelection = selectionController.verseSelection;
-      if (user.studyPanels.contains(studyPanel)) {
+      if (user.studyPanels.has(studyPanel)) {
         studyPanelsPageController.animateToPage(
           user.studyPanels.indexOf(studyPanel) + onboardingOffset,
           duration: Duration(milliseconds: 300),

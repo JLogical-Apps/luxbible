@@ -68,10 +68,10 @@ class BiblesPage extends HookConsumerWidget {
                               (translation) => BibleTile(
                                 translation: translation,
                                 trailing: StyledSwitch(
-                                  isSelected: selectedBiblesState.value.contains(translation),
+                                  isSelected: selectedBiblesState.value.has(translation),
                                   onSelected:
                                       selectedBiblesState.value.length <= 1 &&
-                                          selectedBiblesState.value.contains(translation)
+                                          selectedBiblesState.value.has(translation)
                                       ? null
                                       : (_) => selectedBiblesState.value = selectedBiblesState.value.withToggle(
                                           translation,

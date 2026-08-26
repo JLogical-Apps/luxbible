@@ -54,7 +54,7 @@ class VerseText extends StatelessWidget {
                         style: TextStyle(color: word.redLetters && redLetters ? context.colors.red.dark : null),
                         wordStyleMapper: (textWord) =>
                             (highlightStrongId != null && word.data?.strongId == highlightStrongId) ||
-                                (searchTerms != null && searchTerms.contains(textWord.onlyLetters.toLowerCase()))
+                                (searchTerms != null && searchTerms.has(textWord.onlyLetters.toLowerCase()))
                             ? TextStyle(fontWeight: .bold)
                             : null,
                       ).getSpans(),

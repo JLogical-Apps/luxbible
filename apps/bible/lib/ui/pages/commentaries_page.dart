@@ -75,10 +75,10 @@ class CommentariesPage extends HookConsumerWidget {
                       (commentary) => CommentaryTile(
                         commentary: commentary,
                         trailing: StyledSwitch(
-                          isSelected: selectedCommentariesState.value.contains(commentary),
+                          isSelected: selectedCommentariesState.value.has(commentary),
                           onSelected:
                               selectedCommentariesState.value.length <= 1 &&
-                                  selectedCommentariesState.value.contains(commentary)
+                                  selectedCommentariesState.value.has(commentary)
                               ? null
                               : (_) => selectedCommentariesState.value = selectedCommentariesState.value.withToggle(
                                   commentary,

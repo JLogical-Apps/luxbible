@@ -1,6 +1,5 @@
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/study_panel.dart';
-import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/root_ref.dart';
@@ -83,8 +82,7 @@ enum StudyAction {
         final crossReferences = ref.read(crossReferencesProvider);
 
         final crossReferenceTranslation = user.translation.isOnline ? user.studyTranslation : user.translation;
-        final showCrossReferencesStudyBanner =
-            user.translation.isOnline && !user.tutorials.contains(Tutorial.crossReferencesStudy);
+        final showCrossReferencesStudyBanner = user.translation.isOnline && !user.tutorials.has(.crossReferencesStudy);
 
         final crossReferenceSpans = verseSelection.references
             .map((reference) => crossReferences[reference])

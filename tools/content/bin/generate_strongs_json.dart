@@ -86,7 +86,7 @@ Map<String, dynamic> enrichStrong(
   final relatedStrongIds = {
     ...(strong['g'] as List<String>),
     if (lxxIndex != null) ...plusParagraphs.skip(lxxIndex + 1).expand((paragraph) => paragraph.text.strongIds),
-  }.where((strongId) => strongIds.contains(strongId) && strongId != strong['i']).toList();
+  }.where((strongId) => strongIds.has(strongId) && strongId != strong['i']).toList();
 
   return {...strong, 'd': definition, 's': description, 'o': ?derivation, 't': ?partOfSpeech, 'g': relatedStrongIds};
 }

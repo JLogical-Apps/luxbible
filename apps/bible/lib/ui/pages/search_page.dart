@@ -1,4 +1,3 @@
-import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/dictionary_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
@@ -69,7 +68,7 @@ class SearchPage extends HookConsumerWidget {
 
       if (isStrongSearch) {
         return validReferences
-            .where((reference) => searchBible.getVerseByReference(reference)?.strongIds.contains(search) ?? false)
+            .where((reference) => searchBible.getVerseByReference(reference)?.strongIds.has(search) ?? false)
             .toList();
       }
 
@@ -136,7 +135,7 @@ class SearchPage extends HookConsumerWidget {
                   },
                   currentBook: currentChapterReference?.book,
                 ),
-                if (isUsingStudyBible && !user.tutorials.contains(Tutorial.searchStudy))
+                if (isUsingStudyBible && !user.tutorials.has(.searchStudy))
                   StyledBanner(
                     leading: Symbols.book.toIcon(),
                     message: t.searchUi.usingTranslation(translation: user.studyTranslation.title()).toText(),

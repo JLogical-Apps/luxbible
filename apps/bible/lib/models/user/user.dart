@@ -151,12 +151,12 @@ sealed class User with _$User {
 
   bool get isOnboardingActive => completedOnboardingSteps != null;
 
-  bool isOnboardingStepCompleted(OnboardingStep step) => completedOnboardingSteps?.contains(step) ?? false;
+  bool isOnboardingStepCompleted(OnboardingStep step) => completedOnboardingSteps?.has(step) ?? false;
 
   int? get currentOnboardingStepIndex {
     final completedOnboardingSteps = this.completedOnboardingSteps;
     if (completedOnboardingSteps == null) return null;
-    return OnboardingStep.values.indexWhereOrNull((step) => !completedOnboardingSteps.contains(step));
+    return OnboardingStep.values.indexWhereOrNull((step) => !completedOnboardingSteps.has(step));
   }
 
   OnboardingStep? get currentOnboardingStep =>
@@ -320,9 +320,7 @@ sealed class User with _$User {
 
   User withOnboardingStepCompleted(OnboardingStep step) {
     final completed = completedOnboardingSteps;
-    return completed == null || completed.contains(step)
-        ? this
-        : copyWith(completedOnboardingSteps: [...completed, step]);
+    return completed == null || completed.has(step) ? this : copyWith(completedOnboardingSteps: [...completed, step]);
   }
 
   User withOnboardingReset() => copyWith(completedOnboardingSteps: []);

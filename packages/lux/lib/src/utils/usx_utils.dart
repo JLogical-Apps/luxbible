@@ -4,8 +4,8 @@ import 'package:xml/xml.dart';
 abstract final class UsxUtils {
   static Markdown noteToMarkdown(XmlElement note) => Markdown.fromXml(note, (element, children) {
     final styles = _stylesOf(element);
-    if (styles.contains('fr')) return [];
-    if (element.localName == 'ref' || styles.contains('ref')) {
+    if (styles.has('fr')) return [];
+    if (element.localName == 'ref' || styles.has('ref')) {
       if (VerseSelection.tryFromUsxId(element.getAttribute('loc') ?? element.getAttribute('usfm'))
           case final selection?) {
         return [.link(selection.osisId(), children)];

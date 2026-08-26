@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lux/lux_core.dart';
 import 'package:style/style.dart';
 
 class StyledCheckbox extends StatelessWidget {
@@ -25,14 +26,12 @@ class StyledCheckbox extends StatelessWidget {
         tristate: isPartial && !isSelected,
         onChanged: isEnabled ? (_) => onChanged?.call(!isSelected) : null,
         fillColor: .resolveWith(
-          (states) => !states.contains(WidgetState.selected)
-              ? Colors.transparent
-              : context.colors.content(isDisabled: states.contains(WidgetState.disabled)),
+          (states) =>
+              !states.has(.selected) ? Colors.transparent : context.colors.content(isDisabled: states.has(.disabled)),
         ),
         checkColor: context.colors.contentPrimaryInverse,
         side: WidgetStateBorderSide.resolveWith(
-          (states) =>
-              BorderSide(width: 2, color: context.colors.content(isDisabled: states.contains(WidgetState.disabled))),
+          (states) => BorderSide(width: 2, color: context.colors.content(isDisabled: states.has(.disabled))),
         ),
       ),
     );

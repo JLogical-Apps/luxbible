@@ -41,7 +41,7 @@ class BiblePlanTile extends ConsumerWidget {
             planType.title().toText(),
             if (hasStarted)
               StyledTag.sm(leading: Symbols.check.toIcon(), child: t.labels.following.toText(), isEnabled: false),
-            if (user.completedPlans.contains(planType))
+            if (user.completedPlans.has(planType))
               StyledTag.sm(
                 leading: Symbols.history.toIcon(),
                 child: t.labels.completed.toText(),

@@ -42,7 +42,7 @@ class StyledSegmentedControl<T> extends StatelessWidget {
             child: Stack(
               children: [
                 AnimatedPositioned(
-                  key: ValueKey(options.contains(selectedOption) ? 'has-selection' : 'no-selection'),
+                  key: ValueKey(options.has(selectedOption) ? 'has-selection' : 'no-selection'),
                   duration: Duration(milliseconds: 300),
                   curve: Curves.easeInOutCubic,
                   left: selectionIndex == null ? 0 : width * selectionIndex,

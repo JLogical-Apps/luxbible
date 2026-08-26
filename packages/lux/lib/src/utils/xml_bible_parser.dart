@@ -145,9 +145,9 @@ abstract final class XmlBibleParser {
         final previousLastVerseNum = lastVerseNum;
         final verses = element.descendants
             .whereType<XmlElement>()
-            .where((element) => {'tr', 'row'}.contains(element.localName))
+            .where((element) => {'tr', 'row'}.has(element.localName))
             .expandIndexed<Verse>((rowIndex, row) {
-              final cells = row.childElements.where((cell) => {'td', 'cell'}.contains(cell.localName)).toList();
+              final cells = row.childElements.where((cell) => {'td', 'cell'}.has(cell.localName)).toList();
               return [
                 if (rowIndex != 0)
                   Verse(

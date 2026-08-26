@@ -1,9 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
-import 'package:lux/src/models/bible/book_type.dart';
-import 'package:lux/src/models/reference/chapter_reference.dart';
-import 'package:lux/src/models/reference/reference.dart';
-import 'package:lux/src/models/reference/verse_selection.dart';
+import 'package:lux/lux_core.dart';
 
 class VerseSpanReference extends Equatable {
   final BiblePointer start;
@@ -86,7 +83,7 @@ class VerseSpanReference extends Equatable {
 
   String osisId() => [start, end].nonNulls.map((pointer) => pointer.osisId()).join('-');
 
-  bool containsReference(Reference reference) => references.contains(reference);
+  bool containsReference(Reference reference) => references.has(reference);
 }
 
 sealed class BiblePointer {
