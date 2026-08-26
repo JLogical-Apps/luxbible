@@ -10,7 +10,7 @@
 Достаточно возможностей для глубокого изучения и достаточно простоты для чтения каждый день.
 
 ЧИТАЙТЕ
-Berean Standard Bible (BSB), Christian Standard Bible (CSB), King James Version (KJV) и American Standard Version (ASV) работают офлайн. «Новый русский перевод 2010» (NRT), NIV, NASB95, NLT и NKJV доступны онлайн.
+Читайте «Новый русский перевод 2010» (NRT) онлайн. Английские Berean Standard Bible (BSB), Christian Standard Bible (CSB) и King James Version (KJV) работают офлайн; NIV доступен онлайн. Есть также переводы на нидерландском, французском и испанском языках.
 
 Читайте оригинальные тексты офлайн: греческую Септуагинту, Textus Receptus, Byzantine Textform, Statistical Restoration Greek New Testament и Open Scriptures Hebrew Bible.
 

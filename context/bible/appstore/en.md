@@ -11,7 +11,7 @@ Lux Bible brings serious Bible study into a calm, modern reading experience. Rea
 Powerful enough for serious study and clean enough for everyday reading.
 
 READ
-Choose from the Berean Standard Bible (BSB), Christian Standard Bible (CSB), and King James Version (KJV), available offline. NIV, NASB95, NLT, and NKJV are also available online.
+Choose from the Berean Standard Bible (BSB), Christian Standard Bible (CSB), King James Version (KJV), and American Standard Version (ASV), available offline. NIV, NASB95, NLT, and NKJV are also available online. Additional Dutch, French, Spanish, and Russian translations are available.
 
 Read the original texts offline with the Greek Septuagint, Textus Receptus, Byzantine Textform, Statistical Restoration Greek New Testament, and Open Scriptures Hebrew Bible.
 

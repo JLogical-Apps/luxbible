@@ -184,8 +184,9 @@ Word and phrase search operates on one Bible at a time:
 - If the active Bible is online, Lux searches the user's most recently selected BSB or KJV study Bible.
 - Strong's-number search uses the selected study Bible.
 
-Word and phrase searches preserve an adjacent ordered sequence. The persisted word-matching mode compares each search
-term as a whole word, the start of a word, or any part of a word. Strong's-number matching remains exact.
+Word and phrase searches preserve an adjacent ordered sequence. The word-matching mode is local Search page state and
+is not serialized with the user. It compares each search term as a whole word, the start of a word, or any part of a
+word. Strong's-number matching remains exact.
 
 Search does not download or index online translations and does not search all active translations simultaneously.
 
