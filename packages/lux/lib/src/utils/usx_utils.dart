@@ -16,7 +16,7 @@ abstract final class UsxUtils {
   }).text.withCollapsedWhitespace.asMarkdown();
 
   static bool isItalicStyle(String? style) => switch (style) {
-    'fqa' || 'fq' || 'fqb' || 'fk' || 'bk' || 'add' || 'tl' || 'qt' || 'it' || 'k' => true,
+    'fqa' || 'fq' || 'fqb' || 'fk' || 'bk' || 'add' || 'tl' || 'qt' || 'it' || 'em' || 'k' => true,
     _ => false,
   };
 

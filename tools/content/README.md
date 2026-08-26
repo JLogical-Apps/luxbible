@@ -9,6 +9,7 @@ cd ../..
 dart pub get
 cd tools/content
 dart run bin/generate_bsb_json.dart
+dart run bin/generate_csb_json.dart
 dart run bin/generate_kjv_json.dart
 dart run bin/generate_asv_json.dart
 dart run bin/generate_osis_json.dart
@@ -25,5 +26,7 @@ dart run bin/generate_verse_of_the_day.dart
 `generate_navigators_5x5x5_source.dart` writes its normalized input file into `content/sources/reading_plans/` before `generate_bible_plans_json.dart` reads it.
 
 Raw SWORD modules and downloaded archives belong under `content/sources/sword/` and remain ignored. Generators read committed, extracted inputs elsewhere in `content/sources/` so runtime assets do not depend on local SWORD downloads.
+
+The licensed CSB DBL bundle belongs under `content/sources/bibles/csb/`. Both that source directory and its generated `apps/bible/assets/translations/csb.json` runtime asset remain ignored so the licensed text is available to local release builds without being distributed through GitHub.
 
 `generate_verse_of_the_day.dart` reads the committed Daily Light extraction at `content/sources/verse_of_the_day/daily_light.json`, validates all morning and evening OSIS selections and complete leap-year calendar coverage, then writes the first morning passage for each date to `apps/bible/assets/verse_of_the_day.json`. The source extraction records the official CrossWire Daily module download and extraction steps.

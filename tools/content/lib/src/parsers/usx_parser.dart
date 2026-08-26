@@ -3,16 +3,27 @@ import 'package:lux/lux_core.dart';
 import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
 
-Book parseUsxBook(BookType type, String rawXml, {bool includeInterlinear = true}) {
+Book parseUsxBook(
+  BookType type,
+  String rawXml, {
+  bool includeInterlinear = true,
+  bool Function(XmlElement)? shouldIgnoreElement,
+  String Function(String) transformText = _defaultTransformText,
+}) {
   final document = XmlDocument.parse(rawXml);
   return Book(
     bookType: type,
-    chapters: document.findAllElements('chapter').map((chapter) {
+    chapters: document.findAllElements('chapter').where((chapter) => chapter.getAttribute('number') != null).map((
+      chapter,
+    ) {
       final elements = chapter.nextElementSiblings.takeWhile((element) => element.localName != 'chapter');
       return XmlBibleParser.parse(
         elements,
-        getVerseNumber: (element) => element.localName == 'verse' ? int.parse(element.getAttribute('number')!) : null,
-        shouldIgnore: (element) => false,
+        getVerseNumber: (element) => switch ((element.localName, element.getAttribute('number'))) {
+          ('verse', final number?) => int.parse(number),
+          _ => null,
+        },
+        shouldIgnore: shouldIgnoreElement ?? (_) => false,
         buildFootnote: (element) => element.localName == 'note' && element.getAttribute('style') == 'f'
             ? UsxUtils.noteToMarkdown(element)
             : null,
@@ -34,8 +45,8 @@ Book parseUsxBook(BookType type, String rawXml, {bool includeInterlinear = true}
                   : null)
             : null,
         getParagraphStyle: (element) => element.getAttribute('style') ?? element.classNames.firstOrNull,
-        buildSectionText: (element) => element.innerText.trim(),
-        buildText: (text) => text,
+        buildSectionText: (element) => transformText(element.innerText).trim(),
+        buildText: transformText,
       );
     }).toList(),
   );
@@ -50,3 +61,5 @@ extension on XmlElement {
     }
   }
 }
+
+String _defaultTransformText(String text) => text;

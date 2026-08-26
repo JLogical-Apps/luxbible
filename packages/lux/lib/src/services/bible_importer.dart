@@ -8,22 +8,26 @@ import 'package:lux/src/models/bible/book.dart';
 import 'package:lux/src/services/bible_asset_paths.dart';
 
 class BibleImporter {
-  Future<Bible> importBible({required BibleTranslation translation}) async => switch (translation) {
-    .asv ||
-    .bsb ||
-    .kjv ||
-    .oshb ||
-    .lxx ||
-    .tr ||
-    .byz ||
-    .statresgnt ||
-    .sv ||
-    .fob ||
-    .martin1744 ||
-    .rvg ||
-    .nld1939 => await parseStructuredJsonBible(translation: translation),
-    _ => throw UnimplementedError(),
-  };
+  Future<Bible> importBible({required BibleTranslation translation}) async {
+    translation.throwIfLicenseExpired();
+    return switch (translation) {
+      .asv ||
+      .bsb ||
+      .csb ||
+      .kjv ||
+      .oshb ||
+      .lxx ||
+      .tr ||
+      .byz ||
+      .statresgnt ||
+      .sv ||
+      .fob ||
+      .martin1744 ||
+      .rvg ||
+      .nld1939 => await parseStructuredJsonBible(translation: translation),
+      _ => throw UnimplementedError(),
+    };
+  }
 
   Future<Bible> parseStructuredJsonBible({required BibleTranslation translation}) async {
     final raw = await rootBundle.loadString(BibleAssetPaths.translation(translation));

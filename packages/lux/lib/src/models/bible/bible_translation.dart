@@ -72,12 +72,25 @@ enum BibleTranslation {
   };
 
   BibleTranslationSource get source => switch (this) {
-    bsb || asv || kjv || oshb || lxx || tr || byz || statresgnt || sv || fob || martin1744 || rvg || nld1939 => .local,
+    bsb ||
+    csb ||
+    asv ||
+    kjv ||
+    oshb ||
+    lxx ||
+    tr ||
+    byz ||
+    statresgnt ||
+    sv ||
+    fob ||
+    martin1744 ||
+    rvg ||
+    nld1939 => .local,
     nasb95 => .youVersion(100),
     niv11 => .youVersion(111),
     nrt => .youVersion(143),
     htb => .youVersion(75),
-    csb || nlt || nkjv => .apiBible(),
+    nlt || nkjv => .apiBible(),
   };
 
   BibleLanguage get bibleLanguage => switch (this) {
@@ -95,7 +108,8 @@ enum BibleTranslation {
       'NEW AMERICAN STANDARD BIBLE®\nCopyright © 1960, 1962, 1963, 1968, 1971, 1972, 1973, 1975, 1977, 1995 by THE LOCKMAN FOUNDATION\nA Corporation Not for Profit\nLA HABRA, CA\nAll Rights Reserved\nhttp://www.lockman.org',
     niv11 =>
       'The Holy Bible, New International Version® NIV®\nCopyright © 1973, 1978, 1984, 2011 by Biblica, Inc.®\nUsed by Permission of Biblica, Inc.® All rights reserved worldwide.',
-    csb => '© 2017 Holman Bible Publishers',
+    csb =>
+      'Scripture quotations marked CSB®, are taken from the Christian Standard Bible®,\nCopyright © 2017 by Holman Bible Publishers. Used by permission. Christian Standard\nBible®, and CSB® are federally registered trademarks of Holman Bible Publishers.',
     nlt =>
       'Holy Bible, New Living Translation, copyright © 1996, 2004, 2015 by Tyndale House Foundation. All rights reserved. Used by permission of Tyndale House Publishers, Carol Stream, Illinois 60188. All rights reserved.',
     nkjv => 'New King James Version®, Copyright© 1982, Thomas Nelson. All rights reserved.',
@@ -112,6 +126,21 @@ enum BibleTranslation {
     tr || byz || statresgnt => .newTestament,
     _ => null,
   };
+
+  DateTime? get expirationDate => switch (this) {
+    csb => DateTime(2028, 8, 24),
+    _ => null,
+  };
+
+  void throwIfLicenseExpired({DateTime? date}) {
+    if (expirationDate case final expirationDate?) {
+      final requestedAt = date ?? DateTime.now();
+      final requestedDate = DateTime(requestedAt.year, requestedAt.month, requestedAt.day);
+      if (requestedDate.isAfter(expirationDate)) {
+        throw StateError('${title()} license expired on ${expirationDate.toIso8601String().split('T').first}');
+      }
+    }
+  }
 
   bool get isRtl => this == oshb;
 

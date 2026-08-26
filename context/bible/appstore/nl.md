@@ -11,7 +11,7 @@ Lees de Statenvertaling volledig offline in een rustige, moderne Bijbelapp. Maak
 Krachtig genoeg voor diepgaande studie en overzichtelijk genoeg voor elke dag.
 
 LEZEN
-De volledige Statenvertaling (SV) is ingebouwd en offline beschikbaar. Ook de Berean Standard Bible (BSB), King James Version (KJV) en American Standard Version (ASV) werken offline. NIV, NASB95, CSB, NLT en NKJV zijn online beschikbaar.
+De volledige Statenvertaling (SV) is ingebouwd en offline beschikbaar. Ook de Berean Standard Bible (BSB), Christian Standard Bible (CSB), King James Version (KJV) en American Standard Version (ASV) werken offline. NIV, NASB95, NLT en NKJV zijn online beschikbaar.
 
 Lees de grondteksten offline met de Griekse Septuaginta, Textus Receptus, Byzantine Textform, Statistical Restoration Greek New Testament en Open Scriptures Hebrew Bible.
 

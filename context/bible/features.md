@@ -31,6 +31,7 @@ Saving any reminder asks for notification permission only when needed. If app no
 ### Offline Bibles
 
 - BSB: Berean Standard Bible and the default English Bible
+- CSB: Christian Standard Bible
 - KJV: King James Version
 - ASV: American Standard Version
 - SV: Statenvertaling in Dutch
@@ -48,7 +49,6 @@ Saving any reminder asks for notification permission only when needed. If app no
 
 - NASB95
 - NIV
-- CSB
 - NLT
 - NKJV
 - NRT: New Russian Translation 2010 in Russian

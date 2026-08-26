@@ -61,6 +61,7 @@ Authorization availability is tracked separately for the app, the Android Bible 
 The following are bundled with the app and work offline:
 
 - BSB
+- CSB
 - KJV
 - ASV
 - SV
@@ -98,7 +99,6 @@ These translations are loaded online when they are not available from the device
 - NIV through the YouVersion Platform
 - NRT through the YouVersion Platform
 - HTB through the YouVersion Platform
-- CSB through API.Bible
 - NLT through API.Bible
 - NKJV through API.Bible
 
@@ -108,6 +108,8 @@ Successfully loaded online chapters are stored as individual files in the operat
 directory. Cache entries are shared by all chapter consumers, scoped by translation and chapter, and remain valid for
 fourteen days. Expired or malformed entries are removed when accessed. Cache failures do not replace the original
 network result or error, and the operating system may reclaim cache files earlier when it needs storage.
+
+The bundled CSB license expires on August 24, 2028. Requests after that calendar date fail before the local asset is loaded. Its source DBL bundle and generated runtime asset remain local and gitignored so the licensed text is not distributed through GitHub.
 
 ### Audio
 
