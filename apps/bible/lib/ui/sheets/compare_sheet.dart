@@ -23,7 +23,7 @@ class CompareSheet {
         ),
       ];
     }
-    final bibles = user.biblesOrDefault;
+    final bibles = user.compareBiblesOrDefault;
     return StyledDivider(height: 2).wrapPositioned(
       bibles
           .map<Widget>(

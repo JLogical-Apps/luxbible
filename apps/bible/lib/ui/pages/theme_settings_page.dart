@@ -14,8 +14,6 @@ class ThemeSettingsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final hasGreekBible = user.biblesOrDefault.any((bible) => bible.bibleLanguage == .greek);
-    final hasHebrewBible = user.biblesOrDefault.any((bible) => bible.bibleLanguage == .hebrew);
 
     return StyledPage(
       title: t.themeSettings.title.toText(),
@@ -69,7 +67,8 @@ class ThemeSettingsPage extends ConsumerWidget {
                   fallbackDescription: t.themeSettings.systemTextSizeDescription,
                   onChanged: (value) => ref.updateUser((user) => user.copyWith.themeLayout(fontSizeSpacing: value)),
                 ),
-                if (hasGreekBible)
+                if (user.recentBibles.any((bible) => bible.bibleLanguage == .greek) ||
+                    user.themeLayout.greekFontSizeSpacing != null)
                   getFontSizeSpacingItem(
                     context,
                     title: t.themeSettings.greekFontSizeSpacing,
@@ -77,7 +76,8 @@ class ThemeSettingsPage extends ConsumerWidget {
                     onChanged: (value) =>
                         ref.updateUser((user) => user.copyWith.themeLayout(greekFontSizeSpacing: value)),
                   ),
-                if (hasHebrewBible)
+                if (user.recentBibles.any((bible) => bible.bibleLanguage == .hebrew) ||
+                    user.themeLayout.hebrewFontSizeSpacing != null)
                   getFontSizeSpacingItem(
                     context,
                     title: t.themeSettings.hebrewFontSizeSpacing,

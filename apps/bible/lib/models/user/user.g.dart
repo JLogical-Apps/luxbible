@@ -32,9 +32,14 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
         json['newTestamentTranslation'],
       ) ??
       BibleTranslation.statresgnt,
-  bibles: (json['bibles'] as List<dynamic>?)
+  compareBibles: (json['bibles'] as List<dynamic>?)
       ?.map((e) => $enumDecode(_$BibleTranslationEnumMap, e))
       .toList(),
+  recentBibles:
+      (json['recentBibles'] as List<dynamic>?)
+          ?.map((e) => $enumDecode(_$BibleTranslationEnumMap, e))
+          .toList() ??
+      const [],
   commentaries: (json['commentaries'] as List<dynamic>?)
       ?.map((e) => $enumDecode(_$CommentaryTypeEnumMap, e))
       .toList(),
@@ -173,7 +178,12 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
       _$BibleTranslationEnumMap[instance.oldTestamentTranslation]!,
   'newTestamentTranslation':
       _$BibleTranslationEnumMap[instance.newTestamentTranslation]!,
-  'bibles': instance.bibles?.map((e) => _$BibleTranslationEnumMap[e]!).toList(),
+  'bibles': instance.compareBibles
+      ?.map((e) => _$BibleTranslationEnumMap[e]!)
+      .toList(),
+  'recentBibles': instance.recentBibles
+      .map((e) => _$BibleTranslationEnumMap[e]!)
+      .toList(),
   'commentaries': instance.commentaries
       ?.map((e) => _$CommentaryTypeEnumMap[e]!)
       .toList(),
@@ -215,9 +225,9 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
 
 const _$BibleTranslationEnumMap = {
   BibleTranslation.bsb: 'bsb',
+  BibleTranslation.csb: 'csb',
   BibleTranslation.nasb95: 'nasb95',
   BibleTranslation.niv11: 'niv11',
-  BibleTranslation.csb: 'csb',
   BibleTranslation.nlt: 'nlt',
   BibleTranslation.nkjv: 'nkjv',
   BibleTranslation.kjv: 'kjv',

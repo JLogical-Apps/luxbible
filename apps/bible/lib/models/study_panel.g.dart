@@ -20,9 +20,9 @@ Map<String, dynamic> _$CompareStudyPanelToJson(CompareStudyPanel instance) =>
 
 const _$BibleTranslationEnumMap = {
   BibleTranslation.bsb: 'bsb',
+  BibleTranslation.csb: 'csb',
   BibleTranslation.nasb95: 'nasb95',
   BibleTranslation.niv11: 'niv11',
-  BibleTranslation.csb: 'csb',
   BibleTranslation.nlt: 'nlt',
   BibleTranslation.nkjv: 'nkjv',
   BibleTranslation.kjv: 'kjv',

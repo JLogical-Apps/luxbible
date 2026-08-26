@@ -37,7 +37,8 @@ sealed class User with _$User {
     @Default(BibleTranslation.bsb) BibleTranslation audioTranslation,
     @Default(BibleTranslation.oshb) BibleTranslation oldTestamentTranslation,
     @Default(BibleTranslation.statresgnt) BibleTranslation newTestamentTranslation,
-    List<BibleTranslation>? bibles,
+    @JsonKey(name: 'bibles') List<BibleTranslation>? compareBibles,
+    @Default([]) List<BibleTranslation> recentBibles,
     List<CommentaryType>? commentaries,
     @ChapterPositionFromReference('lastReference')
     @Default(ChapterPosition(reference: ChapterReference(chapterNum: 1, book: BookType.genesis)))
@@ -70,7 +71,7 @@ sealed class User with _$User {
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 
-  List<BibleTranslation> get biblesOrDefault => bibles ?? getDefaultBibleTranslations(.device);
+  List<BibleTranslation> get compareBiblesOrDefault => compareBibles ?? getDefaultBibleTranslations(.device);
   List<(HighlightStyle, String label)> get highlightStyles => highlightStyleOverrides ?? HighlightStyle.defaults;
 
   BibleTranslation getTranslationFor(BookType book) => translation.effectiveFor(
@@ -353,6 +354,7 @@ sealed class User with _$User {
     audioTranslation: translation.hasAudioBible ? translation : audioTranslation,
     oldTestamentTranslation: translation.testament == .oldTestament ? translation : oldTestamentTranslation,
     newTestamentTranslation: translation.testament == .newTestament ? translation : newTestamentTranslation,
+    recentBibles: [translation, ...recentBibles].distinct.toList(),
   );
 
   List<HydratedBiblePlanProgress> getHydratedPlanProgresses(Map<BiblePlanType, BiblePlan> planByType) =>

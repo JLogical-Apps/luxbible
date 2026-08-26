@@ -57,22 +57,28 @@ Saving any reminder asks for notification permission only when needed. If app no
 Online chapters are cached on the device after they are loaded. A cached chapter remains available without a
 connection for fourteen days, after which Lux requires a connection to load it again.
 
-### Bible Management
+### Bible Selection and Compare Management
 
-The Bibles page lets users:
+The Bible selector shows every available Bible grouped by language, with up to five recently used Bibles at the top.
+Recent Bibles can be removed from that list without removing the translation from Lux.
 
-- See every available Bible grouped by language
-- Add or remove Bibles from their active set
-- Reorder active Bibles
+The Compare settings page lets users:
+
+- Add or remove Bibles from Compare
+- Reorder Bibles in Compare
 - Open Bible details
 - See whether a Bible is online or offline
 - See whether a Bible covers the whole Bible or only one testament
 - See supported features such as study data, red letters, headings, paragraphs, and footnotes
 - Review copyright information where applicable
 
-At least one Bible must remain active. The order of active Bibles controls their order in translation selectors and Compare.
+At least one Bible must remain in Compare. Its order controls the temporary Compare sheet and the translation picker
+shown when adding a Compare study panel. Both of those sheets link to Compare settings and update after changes.
 
-For a new or uncustomized Bible list, English activates BSB followed by the other English Bibles, matching the existing default order. Dutch activates SV, the other Dutch Bibles, and then BSB. Russian activates NRT followed by BSB. Changing the app language updates this language-based default list only while the user has not customized their active Bibles. It does not change the currently selected translation.
+For a new or uncustomized Compare list, English includes BSB followed by the other English Bibles, matching the existing
+default order. Dutch includes SV, the other Dutch Bibles, and then BSB. Russian includes NRT followed by BSB. Changing
+the app language updates this language-based default list only while the user has not customized Compare. It does not
+change the currently selected translation.
 
 BSB and KJV are the two study Bibles. LXX and OSHB contain the Old Testament, while TR, BYZ, and SR contain the New Testament.
 
@@ -139,7 +145,7 @@ Tapping the main toolbar opens the reference navigation page.
 
 ### Translation
 
-- Opens a selector containing the user's active Bibles
+- Opens a selector containing every available Bible, grouped by language, with recent Bibles first
 - Changes the current Bible without leaving navigation
 
 ### Recents and Bookmarks
@@ -240,7 +246,8 @@ while reading a Bible plan do not offer pin actions.
 
 ## Compare
 
-Compare displays the selected chapter, verses, or passage in every active Bible, in the order configured on the Bibles page.
+Compare displays the selected chapter, verses, or passage in every configured Compare Bible, in the order configured
+on the Compare settings page.
 
 - Local and online Bibles are supported.
 - Testament-limited Bibles show an unavailable message for passages they do not contain.

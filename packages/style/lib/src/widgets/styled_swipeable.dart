@@ -48,4 +48,7 @@ class StyledSwipeableAction {
   const StyledSwipeableAction({required this.icon, required this.colorBuilder, required this.onPressed});
 
   StyledSwipeableAction.delete({required this.onPressed}) : colorBuilder = .backgroundCritical, icon = Symbols.delete;
+  StyledSwipeableAction.remove({required this.onPressed})
+    : colorBuilder = .backgroundCritical,
+      icon = Symbols.remove_circle;
 }

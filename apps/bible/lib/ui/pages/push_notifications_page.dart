@@ -98,7 +98,7 @@ class PushNotificationsPage extends ConsumerWidget {
               child: StyledSwipeable(
                 key: ValueKey(verseOfTheDayTime),
                 isEnabled: isVerseOfTheDayEnabled && verseOfTheDayTime != null,
-                actions: [.delete(onPressed: () => VerseOfTheDayReminderFlow.remove())],
+                actions: [.remove(onPressed: () => VerseOfTheDayReminderFlow.remove())],
                 child: StyledListItem(
                   leading: MainAction.verseOfTheDay.buildIcon(context),
                   title: t.mainActions.verseOfTheDay.toText(),
@@ -153,7 +153,7 @@ class PushNotificationsPage extends ConsumerWidget {
                     key: ValueKey((progress.type, time)),
                     isEnabled: isPlanEnabled && time != null,
                     actions: [
-                      .delete(onPressed: () => ref.updateUser((user) => user.withPlanReminder(progress.type, .none()))),
+                      .remove(onPressed: () => ref.updateUser((user) => user.withPlanReminder(progress.type, .none()))),
                     ],
                     child: StyledListItem(
                       leading: BiblePlanThumbnail(

@@ -29,7 +29,7 @@ class AddPassagesPage extends HookConsumerWidget {
                       (passage) => StyledSwipeable(
                         key: ValueKey(passage),
                         actions: [
-                          .delete(onPressed: () => passagesState.value = passagesState.value.withRemoved(passage)),
+                          .remove(onPressed: () => passagesState.value = passagesState.value.withRemoved(passage)),
                         ],
                         child: StyledListItem(
                           title: passage.format().toText(),

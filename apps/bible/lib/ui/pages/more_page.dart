@@ -1,9 +1,10 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:bible/models/user/toolbar_preset.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/pages/annotations_page.dart';
-import 'package:bible/ui/pages/bibles_page.dart';
 import 'package:bible/ui/pages/bookmarks_page.dart';
 import 'package:bible/ui/pages/commentaries_page.dart';
+import 'package:bible/ui/pages/compare_settings_page.dart';
 import 'package:bible/ui/pages/highlight_styles_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/pages/notebooks_page.dart';
@@ -11,7 +12,6 @@ import 'package:bible/ui/pages/push_notifications_page.dart';
 import 'package:bible/ui/pages/text_selection_settings_page.dart';
 import 'package:bible/ui/pages/theme_settings_page.dart';
 import 'package:bible/ui/pages/verse_selection_settings_page.dart';
-import 'package:app_settings/app_settings.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -48,9 +48,9 @@ class MorePage extends HookConsumerWidget {
                   onPressed: () => context.push(ThemeSettingsPage()),
                 ),
                 StyledListItem.navigation(
-                  title: t.labels.bibles.toText(),
-                  leading: Symbols.book.toIcon(),
-                  onPressed: () => context.push(BiblesPage()),
+                  title: t.studyActions.compare.toText(),
+                  leading: Symbols.text_compare.toIcon(),
+                  onPressed: () => context.push(CompareSettingsPage()),
                 ),
                 StyledListItem.navigation(
                   title: t.labels.commentaries.toText(),

@@ -109,7 +109,7 @@ class ChapterPositionSearchPage extends ConsumerWidget {
                     (position) => StyledSwipeable(
                       key: ValueKey(position.reference),
                       actions: [
-                        .delete(
+                        .remove(
                           onPressed: () => ref.updateUser(
                             (user) => user.copyWith(viewHistory: user.viewHistory.withRemoved(position)),
                           ),

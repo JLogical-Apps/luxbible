@@ -10,6 +10,7 @@ import 'package:bible/providers/verse_of_the_day_provider.dart';
 import 'package:bible/ui/flows/verse_of_the_day_reminder_flow.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
+import 'package:bible/ui/pages/compare_settings_page.dart';
 import 'package:bible/ui/pages/dictionary_page.dart';
 import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/more_page.dart';
@@ -268,14 +269,19 @@ enum MainAction {
         if (studyPanelType != null && context.mounted) {
           switch (studyPanelType) {
             case .compare:
-              final translation = await context.showStyledSheet(
-                (context, _) => StyledSelectionSheet(
+              final translation = await context.showStyledSheet((context, ref) {
+                final user = ref.watch(userProvider);
+                return StyledSelectionSheet(
                   title: t.studyActions.compare.toText(),
-                  options: user.biblesOrDefault,
+                  trailing: StyledCircleButton.md(
+                    child: Symbols.tune.toIcon(),
+                    onPressed: () => context.push(CompareSettingsPage()),
+                  ),
+                  options: user.compareBiblesOrDefault,
                   optionMapper: (option) =>
                       StyledSelectOption(title: option.title().toText(), subtitle: option.fullName().toText()),
-                ),
-              );
+                );
+              });
               if (translation != null) {
                 onAddStudyPanel(StudyPanel.compare(translation: translation));
               }

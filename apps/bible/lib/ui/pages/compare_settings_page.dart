@@ -12,16 +12,16 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 import 'package:utils_core/utils_core.dart';
 
-class BiblesPage extends HookConsumerWidget {
-  const BiblesPage({super.key});
+class CompareSettingsPage extends HookConsumerWidget {
+  const CompareSettingsPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final bibles = user.biblesOrDefault;
+    final bibles = user.compareBiblesOrDefault;
 
     return StyledPage(
-      title: t.labels.bibles.toText(),
+      title: t.studyActions.compare.toText(),
       body: StyledDock(
         shrinkWrap: false,
         children: [
@@ -31,11 +31,11 @@ class BiblesPage extends HookConsumerWidget {
                 .map(
                   (translation) => StyledSwipeable(
                     key: ValueKey(translation),
-                    isEnabled: user.biblesOrDefault.length > 1,
+                    isEnabled: user.compareBiblesOrDefault.length > 1,
                     actions: [
-                      .delete(
+                      .remove(
                         onPressed: () => ref.updateUser(
-                          (user) => user.copyWith(bibles: user.biblesOrDefault.withRemoved(translation)),
+                          (user) => user.copyWith(compareBibles: user.compareBiblesOrDefault.withRemoved(translation)),
                         ),
                       ),
                     ],
@@ -46,15 +46,16 @@ class BiblesPage extends HookConsumerWidget {
                   ),
                 )
                 .toList(),
-            onReorder: (oldIndex, newIndex) =>
-                ref.updateUser((user) => user.copyWith(bibles: user.biblesOrDefault.withReorder(oldIndex, newIndex))),
+            onReorder: (oldIndex, newIndex) => ref.updateUser(
+              (user) => user.copyWith(compareBibles: user.compareBiblesOrDefault.withReorder(oldIndex, newIndex)),
+            ),
           ),
         ],
         buttonsBuilder: (context) => [
           StyledRectButton.secondary(
             label: t.bibleDetails.addRemoveBibles.toText(),
             onPressed: () => context.showStyledSheet((context, _) {
-              final selectedBiblesState = useState(user.biblesOrDefault);
+              final selectedBiblesState = useState(user.compareBiblesOrDefault);
               return StyledSheet(
                 title: t.bibleDetails.addRemoveBibles.toText(),
                 children: BibleTranslation.values
@@ -87,7 +88,7 @@ class BiblesPage extends HookConsumerWidget {
                   StyledRectButton.primary(
                     label: t.common.save.toText(),
                     onPressed: () {
-                      ref.updateUser((user) => user.copyWith(bibles: selectedBiblesState.value));
+                      ref.updateUser((user) => user.copyWith(compareBibles: selectedBiblesState.value));
                       context.pop();
                     },
                   ),

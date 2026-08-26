@@ -1,25 +1,23 @@
 import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
-import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/ui/dialogs/tutorial_dialog.dart';
 import 'package:bible/ui/pages/commentaries_page.dart';
+import 'package:bible/ui/pages/compare_settings_page.dart';
 import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
+import 'package:bible/ui/sheets/cross_references_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/ui/widgets/pin_study_panel_button.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:style/style.dart';
-import 'package:utils_core/utils_core.dart';
 
 enum StudyAction {
   compare,
@@ -57,112 +55,6 @@ enum StudyAction {
     _ => null,
   };
 
-  List<Widget> buildSheetChildren(
-    BuildContext context, {
-    required VerseSelection verseSelection,
-    required Function(VerseSelection) onNavigateToVerseSelection,
-    required User user,
-    Function(StudyPanel)? onAddStudyPanel,
-    bool popOnAction = true,
-  }) {
-    switch (this) {
-      case compare:
-        return CompareSheet.buildSheetChildren(
-          context,
-          verseSelection: verseSelection,
-          user: user,
-          onAddStudyPanel: onAddStudyPanel,
-        );
-      case interlinear:
-        throw UnimplementedError();
-      case commentary:
-        throw UnimplementedError();
-      case crossReferences:
-        final user = ref.read(userProvider);
-        final crossReferences = ref.read(crossReferencesProvider);
-
-        final crossReferenceTranslation = user.translation.isOnline ? user.studyTranslation : user.translation;
-        final showCrossReferencesStudyBanner = user.translation.isOnline && !user.tutorials.has(.crossReferencesStudy);
-
-        final crossReferenceSpans = verseSelection.references
-            .map((reference) => crossReferences[reference])
-            .nonNulls
-            .fold(<VerseSpanReference, int>{}, (totalVoteBySpan, voteBySpan) {
-              voteBySpan.forEach((span, vote) => totalVoteBySpan.update(span, (v) => v + vote, ifAbsent: () => vote));
-              return totalVoteBySpan;
-            })
-            .sortedByDescending((span, votes) => votes)
-            .keys
-            .toList();
-        return crossReferenceSpans.isEmpty
-            ? [
-                Padding(
-                  padding: .all(16),
-                  child: StyledBanner(message: t.studyActions.noCrossReferences.toText()),
-                ),
-              ]
-            : [
-                if (showCrossReferencesStudyBanner)
-                  Padding(
-                    padding: .all(16),
-                    child: StyledBanner(
-                      colorBuilder: .surfaceTertiary,
-                      leading: Symbols.book.toIcon(),
-                      message: t.studyActions.crossReferencesUse(translation: user.studyTranslation.title()).toText(),
-                      action: StyledTextAction(
-                        label: t.common.learnMore.toText(),
-                        onPressed: () => context.showStyledDialog(
-                          (context) => TutorialDialog(
-                            title: t.studyActions.crossReferences.toText(),
-                            body: t.studyActions.onlineCrossReferencesExplanation.toText(),
-                            tutorial: .crossReferencesStudy,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ...crossReferenceSpans.map(
-                  (crossReference) => Consumer(
-                    key: ValueKey(crossReference),
-                    builder: (context, ref, child) {
-                      final verseSelection = crossReference.toVerseSelection();
-                      final book = crossReference.references.first.book;
-                      final translation = crossReferenceTranslation == user.translation
-                          ? user.getTranslationFor(book)
-                          : crossReferenceTranslation.effectiveFor(book);
-                      final verses = ref
-                          .watch(verseSelectionVersesProvider(translation: translation, selection: verseSelection))
-                          .value;
-                      return StyledListItem.navigation(
-                        title: Row(
-                          spacing: 4,
-                          children: [
-                            verseSelection.format().toText(),
-                            if (!crossReferenceTranslation.containsBook(book))
-                              StyledTag.sm(child: translation.title().toText()),
-                          ],
-                        ),
-                        subtitle: StyledLoading(
-                          child: verses?.mapIfNonNull(
-                            (verses) => VerseText(redLetters: user.themeLayout.redLetters, verses: verses),
-                          ),
-                        ),
-                        onPressed: () => PassagePreviewPage.show(
-                          context,
-                          verseSelection: verseSelection,
-                          onNavigateToVerseSelection: (selection) {
-                            if (popOnAction) context.pop();
-                            onNavigateToVerseSelection(selection);
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ];
-    }
-  }
-
   Future<void> onPressed(
     BuildContext context, {
     required VerseSelection verseSelection,
@@ -171,152 +63,172 @@ enum StudyAction {
     Function(StudyPanel)? onAddStudyPanel,
     required User user,
   }) async {
-    if (this == crossReferences) ref.markOnboardingStep(.crossReferences);
+    switch (this) {
+      case .interlinear:
+        context.showStyledSheetWithBreadcrumbs(breadcrumbText: regionFormat, (context, _) {
+          final user = ref.read(userProvider);
 
-    if (this == .interlinear) {
-      context.showStyledSheetWithBreadcrumbs(breadcrumbText: regionFormat, (context, _) {
-        final user = ref.read(userProvider);
+          final tabController = useTabController(
+            initialLength: InterlinearDirection.values.length,
+            initialIndex: user.interlinearDirection.index,
+          );
 
-        final tabController = useTabController(
-          initialLength: InterlinearDirection.values.length,
-          initialIndex: user.interlinearDirection.index,
-        );
+          useOnListenableChange(tabController, () {
+            final interlinearDirection = InterlinearDirection.values[tabController.index];
+            // Read fresh so the comparison reflects the latest saved preference.
+            if (interlinearDirection != ref.read(userProvider).interlinearDirection) {
+              ref.updateUser((user) => user.copyWith(interlinearDirection: interlinearDirection));
+            }
+          });
 
-        useOnListenableChange(tabController, () {
-          final interlinearDirection = InterlinearDirection.values[tabController.index];
-          // Read fresh so the comparison reflects the latest saved preference.
-          if (interlinearDirection != ref.read(userProvider).interlinearDirection) {
-            ref.updateUser((user) => user.copyWith(interlinearDirection: interlinearDirection));
-          }
-        });
+          final interlinearDirection =
+              InterlinearDirection.values[useListenableSelector(tabController, () => tabController.index)];
 
-        final interlinearDirection =
-            InterlinearDirection.values[useListenableSelector(tabController, () => tabController.index)];
-
-        return StyledSheet.builder(
-          title: t.labels.interlinear.toText(),
-          subtitle: Row(
-            mainAxisAlignment: .center,
-            spacing: 8,
-            children: [
-              regionFormat.toText(),
-              if (user.translation != user.studyTranslation)
-                StyledTag.sm(child: user.studyTranslation.title().toText()),
-            ],
-          ),
-          trailing: onAddStudyPanel == null
-              ? null
-              : PinStudyPanelButton(
-                  studyPanel: .interlinear(direction: interlinearDirection),
-                  onAddStudyPanel: onAddStudyPanel,
-                ),
-          aboveDivider: StyledTabBar.fill(
-            tabController: tabController,
-            tabTitles: InterlinearDirection.values.map((direction) => direction.title().toText()).toList(),
-          ),
-          showDivider: false,
-          childrenBuilder: (context, ref) => InterlinearSheet.buildSheetChildren(
-            context,
-            ref,
-            verseSelection: verseSelection,
-            onNavigateToVerseSelection: onNavigateToVerseSelection,
-            direction: interlinearDirection,
-            user: user,
-          ),
-        );
-      });
-    } else if (this == .commentary) {
-      context.showStyledSheet((context, ref) {
-        final user = ref.watch(userProvider);
-        final tabController = useTabController(
-          initialLength: user.commentariesOrDefault.length,
-          keys: [user.commentariesOrDefault.length],
-        );
-        final index = useListenableSelector(tabController, () => tabController.index);
-        final selectedCommentary = user.commentariesOrDefault[index];
-
-        return StyledSheet.builder(
-          title: title().toText(),
-          subtitle: regionFormat.toText(),
-          trailing: onAddStudyPanel == null
-              ? null
-              : StyledCircleButton.md(
-                  child: Symbols.more_vert.toIcon(),
-                  onPressed: () => context.showStyledSheet(
-                    (context, _) => StyledSheet(
-                      children: [
-                        StyledListItem(
-                          title: 'Edit Commentaries'.toText(),
-                          leading: Symbols.tune.toIcon(),
-                          onPressed: () => context.pushReplacement(CommentariesPage()),
-                        ),
-                        StyledListItem(
-                          title: 'Pin ${selectedCommentary.title()} Commentary as a Study Panel'.toText(),
-                          leading: Symbols.push_pin.toIcon(),
-                          onPressed: () {
-                            context.pop();
-                            context.pop();
-                            onAddStudyPanel(.commentary(type: selectedCommentary));
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-          shrinkWrap: false,
-          aboveDivider: StyledTabBar.scrollable(
-            tabController: tabController,
-            tabTitles: user.commentariesOrDefault.map((type) => type.title().toText()).toList(),
-          ),
-          showDivider: false,
-          childrenKey: ValueKey(selectedCommentary),
-          childrenWrapper: (context, child) => SwipeGestureDetector(
-            index: () => index,
-            maxIndex: tabController.length,
-            onSwipe: (newIndex) =>
-                tabController.animateTo(newIndex, duration: Duration(milliseconds: 300), curve: Curves.easeInOutCubic),
-            child: child,
-          ),
-          childrenBuilder: (context, ref) => CommentarySheet.buildSheetChildren(
-            context,
-            ref,
-            verseSelection: verseSelection,
-            commentaryType: selectedCommentary,
-            onNavigateToVerseSelection: (verseSelection) {
-              context.pop();
-              onNavigateToVerseSelection(verseSelection);
-            },
-          ),
-        );
-      });
-    } else {
-      context.showStyledSheet(
-        (context, _) => StyledSheet(
-          title: title().toText(),
-          subtitle: SingleChildScrollView(
-            scrollDirection: .horizontal,
-            child: Row(
+          return StyledSheet.builder(
+            title: t.labels.interlinear.toText(),
+            subtitle: Row(
               mainAxisAlignment: .center,
               spacing: 8,
               children: [
                 regionFormat.toText(),
-                if (getTranslationOverride(user: user) case final override?)
-                  StyledTag.sm(child: override.title().toText()),
+                if (user.translation != user.studyTranslation)
+                  StyledTag.sm(child: user.studyTranslation.title().toText()),
               ],
             ),
+            trailing: onAddStudyPanel == null
+                ? null
+                : PinStudyPanelButton(
+                    studyPanel: .interlinear(direction: interlinearDirection),
+                    onAddStudyPanel: onAddStudyPanel,
+                  ),
+            aboveDivider: StyledTabBar.fill(
+              tabController: tabController,
+              tabTitles: InterlinearDirection.values.map((direction) => direction.title().toText()).toList(),
+            ),
+            showDivider: false,
+            childrenBuilder: (context, ref) => InterlinearSheet.buildSheetChildren(
+              context,
+              ref,
+              verseSelection: verseSelection,
+              onNavigateToVerseSelection: onNavigateToVerseSelection,
+              direction: interlinearDirection,
+              user: user,
+            ),
+          );
+        });
+      case .commentary:
+        context.showStyledSheet((context, ref) {
+          final user = ref.watch(userProvider);
+          final tabController = useTabController(
+            initialLength: user.commentariesOrDefault.length,
+            keys: [user.commentariesOrDefault.length],
+          );
+          final index = useListenableSelector(tabController, () => tabController.index);
+          final selectedCommentary = user.commentariesOrDefault[index];
+
+          return StyledSheet.builder(
+            title: title().toText(),
+            subtitle: regionFormat.toText(),
+            trailing: onAddStudyPanel == null
+                ? null
+                : StyledCircleButton.md(
+                    child: Symbols.more_vert.toIcon(),
+                    onPressed: () => context.showStyledSheet(
+                      (context, _) => StyledSheet(
+                        children: [
+                          StyledListItem(
+                            title: 'Edit Commentaries'.toText(),
+                            leading: Symbols.tune.toIcon(),
+                            onPressed: () => context.pushReplacement(CommentariesPage()),
+                          ),
+                          StyledListItem(
+                            title: 'Pin ${selectedCommentary.title()} Commentary as a Study Panel'.toText(),
+                            leading: Symbols.push_pin.toIcon(),
+                            onPressed: () {
+                              context.pop();
+                              context.pop();
+                              onAddStudyPanel(.commentary(type: selectedCommentary));
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+            shrinkWrap: false,
+            aboveDivider: StyledTabBar.scrollable(
+              tabController: tabController,
+              tabTitles: user.commentariesOrDefault.map((type) => type.title().toText()).toList(),
+            ),
+            showDivider: false,
+            childrenKey: ValueKey(selectedCommentary),
+            childrenWrapper: (context, child) => SwipeGestureDetector(
+              index: () => index,
+              maxIndex: tabController.length,
+              onSwipe: (newIndex) => tabController.animateTo(
+                newIndex,
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeInOutCubic,
+              ),
+              child: child,
+            ),
+            childrenBuilder: (context, ref) => CommentarySheet.buildSheetChildren(
+              context,
+              ref,
+              verseSelection: verseSelection,
+              commentaryType: selectedCommentary,
+              onNavigateToVerseSelection: (verseSelection) {
+                context.pop();
+                onNavigateToVerseSelection(verseSelection);
+              },
+            ),
+          );
+        });
+      case .compare:
+        context.showStyledSheet((context, ref) {
+          final user = ref.watch(userProvider);
+          return StyledSheet(
+            title: title().toText(),
+            subtitle: regionFormat.toText(),
+            trailing: StyledCircleButton.md(
+              child: Symbols.tune.toIcon(),
+              onPressed: () => context.push(CompareSettingsPage()),
+            ),
+            children: CompareSheet.buildSheetChildren(
+              context,
+              verseSelection: verseSelection,
+              user: user,
+              onAddStudyPanel: onAddStudyPanel,
+            ),
+          );
+        });
+      case .crossReferences:
+        ref.markOnboardingStep(.crossReferences);
+        context.showStyledSheet(
+          (context, _) => StyledSheet(
+            title: title().toText(),
+            subtitle: SingleChildScrollView(
+              scrollDirection: .horizontal,
+              child: Row(
+                mainAxisAlignment: .center,
+                spacing: 8,
+                children: [
+                  regionFormat.toText(),
+                  if (getTranslationOverride(user: user) case final override?)
+                    StyledTag.sm(child: override.title().toText()),
+                ],
+              ),
+            ),
+            children: CrossReferencesSheet.buildSheetChildren(
+              context,
+              verseSelection: verseSelection,
+              onNavigateToVerseSelection: onNavigateToVerseSelection,
+              user: user,
+            ),
+            trailing: onAddStudyPanel != null
+                ? PinStudyPanelButton(studyPanel: .crossReferences(), onAddStudyPanel: onAddStudyPanel)
+                : null,
           ),
-          children: buildSheetChildren(
-            context,
-            verseSelection: verseSelection,
-            onNavigateToVerseSelection: onNavigateToVerseSelection,
-            user: user,
-            onAddStudyPanel: onAddStudyPanel,
-          ),
-          trailing: this == .crossReferences && onAddStudyPanel != null
-              ? PinStudyPanelButton(studyPanel: .crossReferences(), onAddStudyPanel: onAddStudyPanel)
-              : null,
-        ),
-      );
+        );
     }
   }
 }

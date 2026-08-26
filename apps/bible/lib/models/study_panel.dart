@@ -4,6 +4,7 @@ import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
+import 'package:bible/ui/sheets/cross_references_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:collection/collection.dart';
@@ -76,6 +77,13 @@ sealed class StudyPanel with _$StudyPanel {
       commentaryType: type,
       onNavigateToVerseSelection: onNavigateToVerseSelection,
     ),
+    CrossReferencesStudyPanel() => CrossReferencesSheet.buildSheetChildren(
+      context,
+      verseSelection: verseSelection,
+      onNavigateToVerseSelection: onNavigateToVerseSelection,
+      user: user,
+      popOnAction: false,
+    ),
     NotesStudyPanel() => () {
       final noteAnnotations = [
         ...user.getVerseSelectionAnnotations(verseSelection),
@@ -116,13 +124,6 @@ sealed class StudyPanel with _$StudyPanel {
                 )
                 .toList();
     }(),
-    _ => studyAction!.buildSheetChildren(
-      context,
-      verseSelection: verseSelection,
-      onNavigateToVerseSelection: onNavigateToVerseSelection,
-      user: user,
-      popOnAction: false,
-    ),
   };
 }
 

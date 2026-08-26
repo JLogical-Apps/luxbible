@@ -239,7 +239,7 @@ class SearchPage extends HookConsumerWidget {
                                           (i, searchResult) => StyledSwipeable(
                                             key: ValueKey(searchResult),
                                             actions: [
-                                              StyledSwipeableAction.delete(
+                                              StyledSwipeableAction.remove(
                                                 onPressed: () => ref.updateUser(
                                                   (user) =>
                                                       user.copyWith(searchHistory: user.searchHistory.withRemovedAt(i)),

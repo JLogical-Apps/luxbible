@@ -43,7 +43,7 @@ class CommentariesPage extends HookConsumerWidget {
                         key: ValueKey(commentary),
                         isEnabled: user.commentariesOrDefault.length > 1,
                         actions: [
-                          .delete(
+                          .remove(
                             onPressed: () => ref.updateUser(
                               (user) => user.copyWith(commentaries: user.commentariesOrDefault.withRemoved(commentary)),
                             ),
