@@ -101,7 +101,7 @@ class AnnotationSheet {
                 labelPadding: .symmetric(horizontal: 16),
                 error: errorText?.toText(),
                 child: SingleChildScrollView(
-                  key: ValueKey(user.highlightStyles),
+                  key: ValueKey(user.highlightStyles.join(',')),
                   padding: .symmetric(horizontal: 16),
                   scrollDirection: .horizontal,
                   child: Row(
