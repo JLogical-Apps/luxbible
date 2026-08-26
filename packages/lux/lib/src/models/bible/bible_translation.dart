@@ -5,9 +5,9 @@ import 'package:lux/src/models/testament.dart';
 
 enum BibleTranslation {
   bsb,
+  csb,
   nasb95,
   niv11,
-  csb,
   nlt,
   nkjv,
   kjv,
