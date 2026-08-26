@@ -45,9 +45,13 @@ class SearchPage extends HookConsumerWidget {
     final searchState = useState(textState.value);
     final search = searchState.value.trim();
     final isSearchActive = search.isNotEmpty;
+    final searchTerms = search.onlyLetters.toLowerCase().split(' ').where((term) => term.isNotEmpty).toList();
 
     final locationsState = useState(<SearchLocationFilter>[]);
     final locations = locationsState.value;
+
+    final searchWordMatchingState = useState(SearchWordMatching.wholeWord);
+    final searchWordMatching = searchWordMatchingState.value;
 
     final searchResultsState = useState<List<Reference>?>(null);
     final searchResults = searchResultsState.value ?? [];
@@ -72,13 +76,19 @@ class SearchPage extends HookConsumerWidget {
             .toList();
       }
 
-      final searchTerms = search.onlyLetters.toLowerCase().split(' ');
       return searchTerms.isEmpty
           ? <Reference>[]
           : validReferences
                 .where(
                   (reference) =>
-                      searchBible.getVerseByReference(reference)?.searchTerms.containsInOrder(searchTerms) ?? false,
+                      searchBible
+                          .getVerseByReference(reference)
+                          ?.searchTerms
+                          .containsInOrderWhere(
+                            searchTerms,
+                            (word, searchTerm) => searchWordMatching.matches(word, searchTerm),
+                          ) ??
+                      false,
                 )
                 .toList();
     }
@@ -95,7 +105,7 @@ class SearchPage extends HookConsumerWidget {
           ref.updateUser((user) => user.withSearchHistory(searchState.value));
         }
       }
-    }, [searchBible, search, locations]);
+    }, [searchBible, search, locations, searchWordMatching]);
 
     final isUsingStudyBible = user.translation.isOnline || (isStrongSearch && !user.translation.isStudy);
 
@@ -104,36 +114,72 @@ class SearchPage extends HookConsumerWidget {
       body: Column(
         children: [
           Container(
-            padding: MediaQuery.viewPaddingOf(context).onlyHorizontal + .all(16),
+            padding: MediaQuery.viewPaddingOf(context).onlyHorizontal + .symmetric(vertical: 16),
             decoration: BoxDecoration(color: context.colors.surfacePrimary, boxShadow: [StyledShadow.down(context)]),
             child: Column(
               spacing: 12,
               crossAxisAlignment: .start,
               children: [
-                StyledTextField(
-                  label: t.labels.search.toText(),
-                  text: textState.value,
-                  autofocus: initialSearch == null,
-                  onChanged: (text) {
-                    textState.value = text;
-                    searchState.value = '';
-                    searchResultsState.value = null;
-                  },
-                  hintText: t.searchUi.wordOrPhraseHint,
-                  onSubmit: (newText) {
-                    textState.value = newText;
-                    searchState.value = newText;
-                    searchResultsState.value = null;
-                  },
+                Padding(
+                  padding: .symmetric(horizontal: 16),
+                  child: StyledTextField(
+                    label: t.labels.search.toText(),
+                    text: textState.value,
+                    autofocus: initialSearch == null,
+                    onChanged: (text) {
+                      textState.value = text;
+                      searchState.value = '';
+                      searchResultsState.value = null;
+                    },
+                    hintText: t.searchUi.wordOrPhraseHint,
+                    onSubmit: (newText) {
+                      textState.value = newText;
+                      searchState.value = newText;
+                      searchResultsState.value = null;
+                    },
+                  ),
                 ),
-                SearchLocationButton(
-                  locations: locations,
-                  onLocationsSelected: (locations) {
-                    locationsState.value = locations;
-                    searchState.value = textState.value;
-                    searchResultsState.value = null;
-                  },
-                  currentBook: currentChapterReference?.book,
+                SingleChildScrollView(
+                  padding: .symmetric(horizontal: 16),
+                  scrollDirection: .horizontal,
+                  child: Row(
+                    spacing: 8,
+                    children: [
+                      SearchLocationButton(
+                        locations: locations,
+                        onLocationsSelected: (locations) {
+                          locationsState.value = locations;
+                          searchState.value = textState.value;
+                          searchResultsState.value = null;
+                        },
+                        currentBook: currentChapterReference?.book,
+                      ),
+                      StyledPillButton.md(
+                        leading: Symbols.match_word.toIcon(),
+                        trailing: Symbols.keyboard_arrow_down.toIcon(),
+                        label: searchWordMatching.title().toText(),
+                        colorBuilder: searchWordMatching == .wholeWord ? null : .primary,
+                        onPressed: () async {
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          final newWordMatching = await context.showStyledSheet(
+                            (context, _) => StyledSelectionSheet(
+                              title: t.searchUi.wordMatching.title.toText(),
+                              options: SearchWordMatching.values,
+                              initialOption: searchWordMatching,
+                              optionMapper: (option) => StyledSelectOption(
+                                title: option.title().toText(),
+                                subtitle: option.description().toText(),
+                                thirdLine: option.example().toText(),
+                              ),
+                            ),
+                          );
+                          if (newWordMatching != null) {
+                            searchWordMatchingState.value = newWordMatching;
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 ),
                 if (isUsingStudyBible && !user.tutorials.has(.searchStudy))
                   StyledBanner(
@@ -278,7 +324,12 @@ class SearchPage extends HookConsumerWidget {
                                     : VerseText.verse(
                                         redLetters: user.themeLayout.redLetters,
                                         verse: verse,
-                                        highlightTerm: searchState.value,
+                                        isWordHighlighted: (word) {
+                                          final normalizedWord = word.onlyLetters.toLowerCase();
+                                          return searchTerms.any(
+                                            (searchTerm) => searchWordMatching.matches(normalizedWord, searchTerm),
+                                          );
+                                        },
                                         style: context.textStyle.paragraphSm.subtle(),
                                       ),
                                 onPressed: () => PassagePreviewPage.show(
@@ -299,4 +350,34 @@ class SearchPage extends HookConsumerWidget {
       ),
     );
   }
+}
+
+enum SearchWordMatching {
+  wholeWord,
+  startOfWord,
+  partOfWord;
+
+  bool matches(String word, String searchTerm) => switch (this) {
+    wholeWord => word == searchTerm,
+    startOfWord => word.startsWith(searchTerm),
+    partOfWord => word.contains(searchTerm),
+  };
+
+  String title() => switch (this) {
+    wholeWord => t.searchUi.wordMatching.wholeWord.title,
+    startOfWord => t.searchUi.wordMatching.startOfWord.title,
+    partOfWord => t.searchUi.wordMatching.partOfWord.title,
+  };
+
+  String description() => switch (this) {
+    wholeWord => t.searchUi.wordMatching.wholeWord.description,
+    startOfWord => t.searchUi.wordMatching.startOfWord.description,
+    partOfWord => t.searchUi.wordMatching.partOfWord.description,
+  };
+
+  String example() => switch (this) {
+    wholeWord => t.searchUi.wordMatching.wholeWord.example,
+    startOfWord => t.searchUi.wordMatching.startOfWord.example,
+    partOfWord => t.searchUi.wordMatching.partOfWord.example,
+  };
 }

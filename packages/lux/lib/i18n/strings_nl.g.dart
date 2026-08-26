@@ -804,6 +804,7 @@ class _Translations$searchUi$nl extends Translations$searchUi$en {
 	@override String get wordOrPhraseHint => 'Zoek naar een woord of zin';
 	@override String get wordHint => 'Zoek naar een woord';
 	@override String get strongNumberHint => 'Zoek naar een Strong-nummer (bijv. H125)';
+	@override late final _Translations$searchUi$wordMatching$nl wordMatching = _Translations$searchUi$wordMatching$nl._(_root);
 }
 
 // Path: onboarding
@@ -1187,6 +1188,19 @@ class _Translations$settings$nl extends Translations$settings$en {
 	@override String get tutorialsReset => 'De uitleg is opnieuw ingesteld.';
 }
 
+// Path: searchUi.wordMatching
+class _Translations$searchUi$wordMatching$nl extends Translations$searchUi$wordMatching$en {
+	_Translations$searchUi$wordMatching$nl._(TranslationsNl root) : this._root = root, super.internal(root);
+
+	final TranslationsNl _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Woordovereenkomst';
+	@override late final _Translations$searchUi$wordMatching$wholeWord$nl wholeWord = _Translations$searchUi$wordMatching$wholeWord$nl._(_root);
+	@override late final _Translations$searchUi$wordMatching$startOfWord$nl startOfWord = _Translations$searchUi$wordMatching$startOfWord$nl._(_root);
+	@override late final _Translations$searchUi$wordMatching$partOfWord$nl partOfWord = _Translations$searchUi$wordMatching$partOfWord$nl._(_root);
+}
+
 // Path: morphology.attributes
 class _Translations$morphology$attributes$nl extends Translations$morphology$attributes$en {
 	_Translations$morphology$attributes$nl._(TranslationsNl root) : this._root = root, super.internal(root);
@@ -1439,6 +1453,42 @@ class _Translations$morphology$literals$nl extends Translations$morphology$liter
 	@override String get kafExamples => 'als een leeuw|zoals een herder';
 	@override String get lamedExamples => 'aan David|voor de koning';
 	@override String get memExamples => 'uit Egypte|uit het land';
+}
+
+// Path: searchUi.wordMatching.wholeWord
+class _Translations$searchUi$wordMatching$wholeWord$nl extends Translations$searchUi$wordMatching$wholeWord$en {
+	_Translations$searchUi$wordMatching$wholeWord$nl._(TranslationsNl root) : this._root = root, super.internal(root);
+
+	final TranslationsNl _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Volledig woord';
+	@override String get description => 'Zoek alleen volledige woorden die overeenkomen met je zoekopdracht.';
+	@override String get example => 'Voorbeeld: ‘licht’ vindt ‘licht’';
+}
+
+// Path: searchUi.wordMatching.startOfWord
+class _Translations$searchUi$wordMatching$startOfWord$nl extends Translations$searchUi$wordMatching$startOfWord$en {
+	_Translations$searchUi$wordMatching$startOfWord$nl._(TranslationsNl root) : this._root = root, super.internal(root);
+
+	final TranslationsNl _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Begin van woord';
+	@override String get description => 'Zoek woorden die beginnen met je zoekopdracht.';
+	@override String get example => 'Voorbeeld: ‘licht’ vindt ook ‘lichten’';
+}
+
+// Path: searchUi.wordMatching.partOfWord
+class _Translations$searchUi$wordMatching$partOfWord$nl extends Translations$searchUi$wordMatching$partOfWord$en {
+	_Translations$searchUi$wordMatching$partOfWord$nl._(TranslationsNl root) : this._root = root, super.internal(root);
+
+	final TranslationsNl _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Deel van woord';
+	@override String get description => 'Zoek woorden die je zoekopdracht ergens bevatten.';
+	@override String get example => 'Voorbeeld: ‘licht’ vindt ook ‘verlichting’';
 }
 
 // Path: morphology.attributes.type
@@ -3175,6 +3225,16 @@ extension on TranslationsNl {
 			'searchUi.wordOrPhraseHint' => 'Zoek naar een woord of zin',
 			'searchUi.wordHint' => 'Zoek naar een woord',
 			'searchUi.strongNumberHint' => 'Zoek naar een Strong-nummer (bijv. H125)',
+			'searchUi.wordMatching.title' => 'Woordovereenkomst',
+			'searchUi.wordMatching.wholeWord.title' => 'Volledig woord',
+			'searchUi.wordMatching.wholeWord.description' => 'Zoek alleen volledige woorden die overeenkomen met je zoekopdracht.',
+			'searchUi.wordMatching.wholeWord.example' => 'Voorbeeld: ‘licht’ vindt ‘licht’',
+			'searchUi.wordMatching.startOfWord.title' => 'Begin van woord',
+			'searchUi.wordMatching.startOfWord.description' => 'Zoek woorden die beginnen met je zoekopdracht.',
+			'searchUi.wordMatching.startOfWord.example' => 'Voorbeeld: ‘licht’ vindt ook ‘lichten’',
+			'searchUi.wordMatching.partOfWord.title' => 'Deel van woord',
+			'searchUi.wordMatching.partOfWord.description' => 'Zoek woorden die je zoekopdracht ergens bevatten.',
+			'searchUi.wordMatching.partOfWord.example' => 'Voorbeeld: ‘licht’ vindt ook ‘verlichting’',
 			'onboarding.skipQuestion' => 'Introductie overslaan?',
 			'onboarding.skipConfirmation' => 'Weet je zeker dat je de introductie wilt overslaan? Je kunt deze opnieuw starten via Instellingen > Help.',
 			'onboarding.getStarted' => 'Aan de slag',
@@ -3208,6 +3268,8 @@ extension on TranslationsNl {
 			'chapterUnavailable.title' => ({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} bevat het ${testament} niet.',
 			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Je meest recent gebruikte Bijbel voor het ${testament}, ${fallbackTranslation}, wordt getoond.',
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
+			_ => null,
+		} ?? switch (path) {
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => 'De hoofdstukken en verzen van de ${translation} zijn anders genummerd dan in de meeste Engelse vertalingen.\n\nDe tekst die hier bij ${reference} wordt getoond, komt uit ${originalReference} in de ${translation} en is opnieuw gekoppeld om met de andere vertalingen overeen te komen.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} bevat deze selectie niet.',
 			'commentaryUi.introTo' => ({required Object book}) => 'Inleiding tot ${book}',
@@ -3218,8 +3280,6 @@ extension on TranslationsNl {
 			'themeOptions.light' => 'Licht',
 			'themeOptions.dark' => 'Donker',
 			'themeOptions.extraTiny' => 'Extra klein',
-			_ => null,
-		} ?? switch (path) {
 			'themeOptions.tiny' => 'Zeer klein',
 			'themeOptions.small' => 'Klein',
 			'themeOptions.standard' => 'Standaard',

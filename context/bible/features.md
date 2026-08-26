@@ -320,6 +320,15 @@ Search can be limited to:
 - The current book
 - One or more selected books
 
+Word matching can use one of three persisted modes:
+
+- Whole Word finds only complete words and is the default.
+- Start of Word finds words that begin with each search term.
+- Part of Word finds words that contain each search term anywhere.
+
+For phrase searches, the selected mode applies to every term while the matching words remain adjacent and in order.
+Strong's-number searches remain exact and do not use word matching.
+
 ### Results
 
 - Matching text or Strong's occurrences are emphasized.

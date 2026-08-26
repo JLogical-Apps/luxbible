@@ -1732,6 +1732,8 @@ class Translations$searchUi$en {
 
 	/// en: 'Search for a Strong's number (e.g. H125)'
 	String get strongNumberHint => 'Search for a Strong\'s number (e.g. H125)';
+
+	late final Translations$searchUi$wordMatching$en wordMatching = Translations$searchUi$wordMatching$en.internal(_root);
 }
 
 // Path: onboarding
@@ -2469,6 +2471,22 @@ class Translations$settings$en {
 	String get tutorialsReset => 'Tutorials have been reset.';
 }
 
+// Path: searchUi.wordMatching
+class Translations$searchUi$wordMatching$en {
+	Translations$searchUi$wordMatching$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Word Matching'
+	String get title => 'Word Matching';
+
+	late final Translations$searchUi$wordMatching$wholeWord$en wholeWord = Translations$searchUi$wordMatching$wholeWord$en.internal(_root);
+	late final Translations$searchUi$wordMatching$startOfWord$en startOfWord = Translations$searchUi$wordMatching$startOfWord$en.internal(_root);
+	late final Translations$searchUi$wordMatching$partOfWord$en partOfWord = Translations$searchUi$wordMatching$partOfWord$en.internal(_root);
+}
+
 // Path: morphology.attributes
 class Translations$morphology$attributes$en {
 	Translations$morphology$attributes$en.internal(this._root);
@@ -2747,6 +2765,60 @@ class Translations$morphology$literals$en {
 
 	/// en: 'from Egypt|out of the land'
 	String get memExamples => 'from Egypt|out of the land';
+}
+
+// Path: searchUi.wordMatching.wholeWord
+class Translations$searchUi$wordMatching$wholeWord$en {
+	Translations$searchUi$wordMatching$wholeWord$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Whole Word'
+	String get title => 'Whole Word';
+
+	/// en: 'Find only complete words that match your search.'
+	String get description => 'Find only complete words that match your search.';
+
+	/// en: 'Example: “light” matches “light”'
+	String get example => 'Example: “light” matches “light”';
+}
+
+// Path: searchUi.wordMatching.startOfWord
+class Translations$searchUi$wordMatching$startOfWord$en {
+	Translations$searchUi$wordMatching$startOfWord$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Start of Word'
+	String get title => 'Start of Word';
+
+	/// en: 'Find words that begin with your search.'
+	String get description => 'Find words that begin with your search.';
+
+	/// en: 'Example: “light” also matches “lightning”'
+	String get example => 'Example: “light” also matches “lightning”';
+}
+
+// Path: searchUi.wordMatching.partOfWord
+class Translations$searchUi$wordMatching$partOfWord$en {
+	Translations$searchUi$wordMatching$partOfWord$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Part of Word'
+	String get title => 'Part of Word';
+
+	/// en: 'Find words containing your search anywhere.'
+	String get description => 'Find words containing your search anywhere.';
+
+	/// en: 'Example: “light” also matches “delight”'
+	String get example => 'Example: “light” also matches “delight”';
 }
 
 // Path: morphology.attributes.type
@@ -5087,6 +5159,16 @@ extension on Translations {
 			'searchUi.wordOrPhraseHint' => 'Search for a word or phrase',
 			'searchUi.wordHint' => 'Search for a word',
 			'searchUi.strongNumberHint' => 'Search for a Strong\'s number (e.g. H125)',
+			'searchUi.wordMatching.title' => 'Word Matching',
+			'searchUi.wordMatching.wholeWord.title' => 'Whole Word',
+			'searchUi.wordMatching.wholeWord.description' => 'Find only complete words that match your search.',
+			'searchUi.wordMatching.wholeWord.example' => 'Example: “light” matches “light”',
+			'searchUi.wordMatching.startOfWord.title' => 'Start of Word',
+			'searchUi.wordMatching.startOfWord.description' => 'Find words that begin with your search.',
+			'searchUi.wordMatching.startOfWord.example' => 'Example: “light” also matches “lightning”',
+			'searchUi.wordMatching.partOfWord.title' => 'Part of Word',
+			'searchUi.wordMatching.partOfWord.description' => 'Find words containing your search anywhere.',
+			'searchUi.wordMatching.partOfWord.example' => 'Example: “light” also matches “delight”',
 			'onboarding.skipQuestion' => 'Skip Onboarding?',
 			'onboarding.skipConfirmation' => 'Are you sure you want to skip the onboarding? You can restart it from Settings > Help.',
 			'onboarding.getStarted' => 'Get Started',
@@ -5122,6 +5204,8 @@ extension on Translations {
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => 'The ${translation} numbers its chapters and verses differently from most English translations.\n\nThe text shown here at ${reference} comes from ${originalReference} in the ${translation}, remapped so it lines up with the other translations.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} doesn\'t include this selection.',
+			_ => null,
+		} ?? switch (path) {
 			'commentaryUi.introTo' => ({required Object book}) => 'Intro to ${book}',
 			'searchLocations.currentBook' => 'Current Book',
 			'searchLocations.testaments' => 'Testaments',
@@ -5132,8 +5216,6 @@ extension on Translations {
 			'themeOptions.extraTiny' => 'Extra Tiny',
 			'themeOptions.tiny' => 'Tiny',
 			'themeOptions.small' => 'Small',
-			_ => null,
-		} ?? switch (path) {
 			'themeOptions.standard' => 'Standard',
 			'themeOptions.large' => 'Large',
 			'themeOptions.huge' => 'Huge',

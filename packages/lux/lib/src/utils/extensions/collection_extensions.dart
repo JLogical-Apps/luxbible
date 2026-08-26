@@ -50,10 +50,12 @@ extension CoreListExtensions<T> on List<T> {
 
   T loopedElementAt(int index) => this[index % length];
 
-  bool containsInOrder(List<T> list) => Iterable.generate(
+  bool containsInOrder(List<T> list) => containsInOrderWhere(list, (item, searchItem) => item == searchItem);
+
+  bool containsInOrderWhere(List<T> list, bool Function(T item, T searchItem) matches) => Iterable.generate(
     max(0, length - list.length + 1),
     (i) => i,
-  ).any((i0) => list.everyIndexed((i1, item) => this[i0 + i1] == item));
+  ).any((i0) => list.everyIndexed((i1, item) => matches(this[i0 + i1], item)));
 
   List<List<T>> batchBy(bool Function(T) predicate) {
     final output = <List<T>>[];

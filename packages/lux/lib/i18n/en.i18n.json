@@ -524,7 +524,25 @@
     "strongSearchStudyBibleExplanation": "Strong's number searches require the word-level Strong's tagging included in Study Bibles. Using your most-recent Study Bible instead.",
     "wordOrPhraseHint": "Search for a word or phrase",
     "wordHint": "Search for a word",
-    "strongNumberHint": "Search for a Strong's number (e.g. H125)"
+    "strongNumberHint": "Search for a Strong's number (e.g. H125)",
+    "wordMatching": {
+      "title": "Word Matching",
+      "wholeWord": {
+        "title": "Whole Word",
+        "description": "Find only complete words that match your search.",
+        "example": "Example: “light” matches “light”"
+      },
+      "startOfWord": {
+        "title": "Start of Word",
+        "description": "Find words that begin with your search.",
+        "example": "Example: “light” also matches “lightning”"
+      },
+      "partOfWord": {
+        "title": "Part of Word",
+        "description": "Find words containing your search anywhere.",
+        "example": "Example: “light” also matches “delight”"
+      }
+    }
   },
   "onboarding": {
     "skipQuestion": "Skip Onboarding?",

@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:lux/lux_core.dart';
 import 'package:lux/src/ui/widgets/word_substring_text.dart';
 import 'package:style/style.dart';
-import 'package:utils_core/utils_core.dart';
 
 class VerseText extends StatelessWidget {
   final List<Verse> verses;
 
   final String? highlightStrongId;
-  final String? highlightTerm;
+  final bool Function(String word)? isWordHighlighted;
 
   final bool redLetters;
   final int? maxLines;
@@ -19,7 +18,7 @@ class VerseText extends StatelessWidget {
     super.key,
     required this.verses,
     this.highlightStrongId,
-    this.highlightTerm,
+    this.isWordHighlighted,
     this.redLetters = true,
     this.maxLines,
     this.style,
@@ -29,7 +28,7 @@ class VerseText extends StatelessWidget {
     super.key,
     required Verse verse,
     this.highlightStrongId,
-    this.highlightTerm,
+    this.isWordHighlighted,
     this.redLetters = true,
     this.maxLines,
     this.style,
@@ -37,8 +36,6 @@ class VerseText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final searchTerms = highlightTerm?.onlyLetters.toLowerCase().split(' ').where((term) => term.isNotBlank).toSet();
-
     return Text.rich(
       TextSpan(
         style: style,
@@ -54,7 +51,7 @@ class VerseText extends StatelessWidget {
                         style: TextStyle(color: word.redLetters && redLetters ? context.colors.red.dark : null),
                         wordStyleMapper: (textWord) =>
                             (highlightStrongId != null && word.data?.strongId == highlightStrongId) ||
-                                (searchTerms != null && searchTerms.has(textWord.onlyLetters.toLowerCase()))
+                                (isWordHighlighted?.call(textWord) ?? false)
                             ? TextStyle(fontWeight: .bold)
                             : null,
                       ).getSpans(),

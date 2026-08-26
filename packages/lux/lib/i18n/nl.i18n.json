@@ -526,7 +526,25 @@
     "strongSearchStudyBibleExplanation": "Voor zoekopdrachten op Strong-nummers zijn de woord-voor-woord Strong-coderingen uit studiebijbels nodig. In plaats daarvan wordt je meest recent gebruikte studiebijbel gebruikt.",
     "wordOrPhraseHint": "Zoek naar een woord of zin",
     "wordHint": "Zoek naar een woord",
-    "strongNumberHint": "Zoek naar een Strong-nummer (bijv. H125)"
+    "strongNumberHint": "Zoek naar een Strong-nummer (bijv. H125)",
+    "wordMatching": {
+      "title": "Woordovereenkomst",
+      "wholeWord": {
+        "title": "Volledig woord",
+        "description": "Zoek alleen volledige woorden die overeenkomen met je zoekopdracht.",
+        "example": "Voorbeeld: ‘licht’ vindt ‘licht’"
+      },
+      "startOfWord": {
+        "title": "Begin van woord",
+        "description": "Zoek woorden die beginnen met je zoekopdracht.",
+        "example": "Voorbeeld: ‘licht’ vindt ook ‘lichten’"
+      },
+      "partOfWord": {
+        "title": "Deel van woord",
+        "description": "Zoek woorden die je zoekopdracht ergens bevatten.",
+        "example": "Voorbeeld: ‘licht’ vindt ook ‘verlichting’"
+      }
+    }
   },
   "onboarding": {
     "skipQuestion": "Introductie overslaan?",

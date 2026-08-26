@@ -808,6 +808,7 @@ class _Translations$searchUi$ru extends Translations$searchUi$en {
 	@override String get wordOrPhraseHint => 'Поиск слова или фразы';
 	@override String get wordHint => 'Поиск слова';
 	@override String get strongNumberHint => 'Найдите номер Стронга (например, H125)';
+	@override late final _Translations$searchUi$wordMatching$ru wordMatching = _Translations$searchUi$wordMatching$ru._(_root);
 }
 
 // Path: onboarding
@@ -1191,6 +1192,19 @@ class _Translations$settings$ru extends Translations$settings$en {
 	@override String get tutorialsReset => 'Подсказки сброшены.';
 }
 
+// Path: searchUi.wordMatching
+class _Translations$searchUi$wordMatching$ru extends Translations$searchUi$wordMatching$en {
+	_Translations$searchUi$wordMatching$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Совпадение слов';
+	@override late final _Translations$searchUi$wordMatching$wholeWord$ru wholeWord = _Translations$searchUi$wordMatching$wholeWord$ru._(_root);
+	@override late final _Translations$searchUi$wordMatching$startOfWord$ru startOfWord = _Translations$searchUi$wordMatching$startOfWord$ru._(_root);
+	@override late final _Translations$searchUi$wordMatching$partOfWord$ru partOfWord = _Translations$searchUi$wordMatching$partOfWord$ru._(_root);
+}
+
 // Path: morphology.attributes
 class _Translations$morphology$attributes$ru extends Translations$morphology$attributes$en {
 	_Translations$morphology$attributes$ru._(TranslationsRu root) : this._root = root, super.internal(root);
@@ -1443,6 +1457,42 @@ class _Translations$morphology$literals$ru extends Translations$morphology$liter
 	@override String get kafExamples => 'как лев|как пастух';
 	@override String get lamedExamples => 'Давиду|за царя';
 	@override String get memExamples => 'из Египта|из земли';
+}
+
+// Path: searchUi.wordMatching.wholeWord
+class _Translations$searchUi$wordMatching$wholeWord$ru extends Translations$searchUi$wordMatching$wholeWord$en {
+	_Translations$searchUi$wordMatching$wholeWord$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Целое слово';
+	@override String get description => 'Находить только целые слова, совпадающие с запросом.';
+	@override String get example => 'Пример: «свет» находит «свет»';
+}
+
+// Path: searchUi.wordMatching.startOfWord
+class _Translations$searchUi$wordMatching$startOfWord$ru extends Translations$searchUi$wordMatching$startOfWord$en {
+	_Translations$searchUi$wordMatching$startOfWord$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Начало слова';
+	@override String get description => 'Находить слова, которые начинаются с запроса.';
+	@override String get example => 'Пример: «свет» также находит «светильник»';
+}
+
+// Path: searchUi.wordMatching.partOfWord
+class _Translations$searchUi$wordMatching$partOfWord$ru extends Translations$searchUi$wordMatching$partOfWord$en {
+	_Translations$searchUi$wordMatching$partOfWord$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Часть слова';
+	@override String get description => 'Находить слова, которые содержат запрос в любой позиции.';
+	@override String get example => 'Пример: «свет» также находит «рассвет»';
 }
 
 // Path: morphology.attributes.type
@@ -3179,6 +3229,16 @@ extension on TranslationsRu {
 			'searchUi.wordOrPhraseHint' => 'Поиск слова или фразы',
 			'searchUi.wordHint' => 'Поиск слова',
 			'searchUi.strongNumberHint' => 'Найдите номер Стронга (например, H125)',
+			'searchUi.wordMatching.title' => 'Совпадение слов',
+			'searchUi.wordMatching.wholeWord.title' => 'Целое слово',
+			'searchUi.wordMatching.wholeWord.description' => 'Находить только целые слова, совпадающие с запросом.',
+			'searchUi.wordMatching.wholeWord.example' => 'Пример: «свет» находит «свет»',
+			'searchUi.wordMatching.startOfWord.title' => 'Начало слова',
+			'searchUi.wordMatching.startOfWord.description' => 'Находить слова, которые начинаются с запроса.',
+			'searchUi.wordMatching.startOfWord.example' => 'Пример: «свет» также находит «светильник»',
+			'searchUi.wordMatching.partOfWord.title' => 'Часть слова',
+			'searchUi.wordMatching.partOfWord.description' => 'Находить слова, которые содержат запрос в любой позиции.',
+			'searchUi.wordMatching.partOfWord.example' => 'Пример: «свет» также находит «рассвет»',
 			'onboarding.skipQuestion' => 'Пропустить адаптацию?',
 			'onboarding.skipConfirmation' => 'Вы уверены, что хотите пропустить знакомство с приложением? Его можно запустить снова в разделе «Настройки» > «Справка».',
 			'onboarding.getStarted' => 'Начать',
@@ -3212,6 +3272,8 @@ extension on TranslationsRu {
 			'chapterUnavailable.title' => ({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} не включает ${testament}.',
 			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Показываем вашу последнюю ${testament} Библию, ${fallbackTranslation}.',
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
+			_ => null,
+		} ?? switch (path) {
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => '${translation} нумерует главы и стихи иначе, чем в большинстве английских переводов.\n\nТекст, показанный здесь в ${reference}, взят из ${originalReference} в ${translation} и переназначен, чтобы соответствовать другим переводам.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} не включает этот выбор.',
 			'commentaryUi.introTo' => ({required Object book}) => 'Знакомство с ${book}',
@@ -3222,8 +3284,6 @@ extension on TranslationsRu {
 			'themeOptions.light' => 'Светлая',
 			'themeOptions.dark' => 'Тёмная',
 			'themeOptions.extraTiny' => 'Очень мелкий',
-			_ => null,
-		} ?? switch (path) {
 			'themeOptions.tiny' => 'Мелкий',
 			'themeOptions.small' => 'Маленький',
 			'themeOptions.standard' => 'Стандартный',

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:googleapis/androidpublisher/v3.dart';
 import 'package:googleapis_auth/auth_io.dart';
+import 'package:lux/lux_core.dart';
 
 /// Builds release artifacts and deploys them to the stores.
 ///
