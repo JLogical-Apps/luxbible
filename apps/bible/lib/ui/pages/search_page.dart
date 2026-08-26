@@ -182,18 +182,21 @@ class SearchPage extends HookConsumerWidget {
                   ),
                 ),
                 if (isUsingStudyBible && !user.tutorials.has(.searchStudy))
-                  StyledBanner(
-                    leading: Symbols.book.toIcon(),
-                    message: t.searchUi.usingTranslation(translation: user.studyTranslation.title()).toText(),
-                    action: StyledTextAction(
-                      label: t.common.learnMore.toText(),
-                      onPressed: () => context.showStyledDialog(
-                        (context) => TutorialDialog(
-                          title: t.searchUi.searchBible.toText(),
-                          body: isStrongSearch
-                              ? t.searchUi.strongSearchStudyBibleExplanation.toText()
-                              : t.searchUi.unsupportedTranslation(translation: user.translation.title()).toText(),
-                          tutorial: .searchStudy,
+                  Padding(
+                    padding: .symmetric(horizontal: 16),
+                    child: StyledBanner(
+                      leading: Symbols.book.toIcon(),
+                      message: t.searchUi.usingTranslation(translation: user.studyTranslation.title()).toText(),
+                      action: StyledTextAction(
+                        label: t.common.learnMore.toText(),
+                        onPressed: () => context.showStyledDialog(
+                          (context) => TutorialDialog(
+                            title: t.searchUi.searchBible.toText(),
+                            body: isStrongSearch
+                                ? t.searchUi.strongSearchStudyBibleExplanation.toText()
+                                : t.searchUi.unsupportedTranslation(translation: user.translation.title()).toText(),
+                            tutorial: .searchStudy,
+                          ),
                         ),
                       ),
                     ),
