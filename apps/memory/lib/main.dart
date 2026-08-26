@@ -35,8 +35,6 @@ Future<void> main() async {
         observers: [ProviderErrorObserver()],
       );
 
-      eagerlyLoad();
-
       runApp(UncontrolledProviderScope(container: ref, child: MemoryApp()));
     },
     (error, stack) {
@@ -46,10 +44,6 @@ Future<void> main() async {
       }
     },
   );
-}
-
-void eagerlyLoad() {
-  ref.read(localBibleProvider(translation: .bsb));
 }
 
 class MemoryApp extends HookConsumerWidget {

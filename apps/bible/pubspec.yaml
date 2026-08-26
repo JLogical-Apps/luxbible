@@ -92,7 +92,20 @@ flutter:
     enable-lldb-debugging: false
   assets:
     - assets/
-    - assets/translations/
+    - assets/translations/asv/
+    - assets/translations/bsb/
+    - assets/translations/byz/
+    - assets/translations/csb/
+    - assets/translations/fob/
+    - assets/translations/kjv/
+    - assets/translations/lxx/
+    - assets/translations/martin1744/
+    - assets/translations/nld1939/
+    - assets/translations/oshb/
+    - assets/translations/rvg/
+    - assets/translations/statresgnt/
+    - assets/translations/sv/
+    - assets/translations/tr/
     - assets/strongs/
     - assets/dictionary/
     - assets/commentary/

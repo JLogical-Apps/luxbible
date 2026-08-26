@@ -2,7 +2,6 @@ import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/models/user/user.dart';
-import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -218,20 +217,14 @@ enum StudyAction {
             tabTitles: InterlinearDirection.values.map((direction) => direction.title().toText()).toList(),
           ),
           showDivider: false,
-          childrenBuilder: (context, ref) {
-            final studyBible = ref.watch(studyBibleProvider).value;
-            if (studyBible == null) {
-              return [Padding(padding: .all(16), child: StyledLoading())];
-            }
-            return InterlinearSheet.buildSheetChildren(
-              context,
-              verseSelection: verseSelection,
-              onNavigateToVerseSelection: onNavigateToVerseSelection,
-              direction: interlinearDirection,
-              user: user,
-              studyBible: studyBible,
-            );
-          },
+          childrenBuilder: (context, ref) => InterlinearSheet.buildSheetChildren(
+            context,
+            ref,
+            verseSelection: verseSelection,
+            onNavigateToVerseSelection: onNavigateToVerseSelection,
+            direction: interlinearDirection,
+            user: user,
+          ),
         );
       });
     } else if (this == .commentary) {

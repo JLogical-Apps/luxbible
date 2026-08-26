@@ -35,55 +35,11 @@ class Bible {
       .withoutNullValues;
   Book getBookByType(BookType bookType) => _bookByType[bookType]!;
 
-  String getTextSelectionText(BibleTextSelection selection) {
-    final verseTexts = Reference.getReferencesBetween(
-      selection.start.toReference(),
-      selection.end.toReference(),
-    ).map((reference) => getVerseByReference(reference)?.text).nonNulls.toList();
-    final lastVerse = verseTexts[verseTexts.length - 1];
-    verseTexts[verseTexts.length - 1] = lastVerse.substring(
-      0,
-      (selection.end.characterOffset + 1).clamp(0, lastVerse.length),
-    );
-    verseTexts[0] = verseTexts[0].substring(selection.start.characterOffset);
+  String getTextSelectionText(BibleTextSelection selection) =>
+      getPassageVerses(selection.toVerseSelection()).getTextSelectionText(selection);
 
-    return verseTexts.join(' ');
-  }
-
-  List<Word> getTextSelectionWords(BibleTextSelection selection) {
-    final verses = Reference.getReferencesBetween(
-      selection.start.toReference(),
-      selection.end.toReference(),
-    ).map((reference) => getVerseByReference(reference)).nonNulls.toList();
-
-    return verses.expandIndexed((i, verse) {
-      var words = verse.words;
-      if (i + 1 == verses.length) {
-        words = words
-            .mapWithPrevious<(int, Word)>(
-              (previousOffsetAndWord, word) =>
-                  ((previousOffsetAndWord?.$1 ?? 0) + (previousOffsetAndWord?.$2.text?.length ?? 0), word),
-            )
-            .where((offsetAndWord) => offsetAndWord.$1 <= selection.end.characterOffset + 1)
-            .map((offsetAndWord) => offsetAndWord.$2)
-            .toList();
-      }
-      if (i == 0) {
-        words = words
-            .mapWithPrevious<(int, Word)>(
-              (previousOffsetAndWord, word) =>
-                  ((previousOffsetAndWord?.$1 ?? 0) + (previousOffsetAndWord?.$2.text?.length ?? 0), word),
-            )
-            .where(
-              (offsetAndWord) =>
-                  offsetAndWord.$1 + (offsetAndWord.$2.text?.length ?? 0) >= selection.start.characterOffset,
-            )
-            .map((offsetAndWord) => offsetAndWord.$2)
-            .toList();
-      }
-      return words;
-    }).toList();
-  }
+  List<Word> getTextSelectionWords(BibleTextSelection selection) =>
+      getPassageVerses(selection.toVerseSelection()).getTextSelectionWords(selection);
 
   List<Verse> getVersesBySpan(VerseSpanReference reference) =>
       reference.references.map((reference) => getVerseByReference(reference)).nonNulls.toList();

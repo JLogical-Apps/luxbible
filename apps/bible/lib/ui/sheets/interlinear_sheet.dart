@@ -1,11 +1,10 @@
-import 'dart:collection';
-
 import 'package:bible/models/user/tutorial.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/ui/dialogs/tutorial_dialog.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -14,12 +13,12 @@ import 'package:utils_core/utils_core.dart';
 
 class InterlinearSheet {
   static List<Widget> buildSheetChildren(
-    BuildContext context, {
+    BuildContext context,
+    WidgetRef ref, {
     required VerseSelection verseSelection,
     required Function(VerseSelection) onNavigateToVerseSelection,
     required InterlinearDirection direction,
     required User user,
-    required Bible studyBible,
     bool showDirectionBanner = true,
     bool popOnAction = true,
   }) {
@@ -54,33 +53,30 @@ class InterlinearSheet {
           ),
         ),
       ...StyledDivider(height: 2).wrapPositioned(
-        verseSelection.references
-            .mapIndexed((i, reference) {
-              final verse = studyBible.getVerseByReference(reference);
-              if (verse == null) {
-                return null;
-              }
+        verseSelection.references.mapIndexed((i, reference) {
+          final verse = ref.watch(verseProvider(reference: reference, translation: user.studyTranslation)).value;
+          if (verse == null) {
+            return Padding(padding: .all(16), child: StyledLoading());
+          }
 
-              return StyledStickyHeader(
-                title: reference.format().toText(),
-                children: verse.words
-                    .mapToMap((word) => MapEntry(word, word.data))
-                    .withoutNullValues
-                    .maybeSortedBy((word, data) => data.originalPosition, shouldSort: direction == .forward)
-                    .mapToIterable(
-                      (word, data) => InterlinearWordTile(
-                        word: word,
-                        data: data,
-                        direction: direction,
-                        onNavigateToVerseSelection: onNavigateToVerseSelection,
-                        popOnAction: popOnAction,
-                      ),
-                    )
-                    .toList(),
-              );
-            })
-            .nonNulls
-            .toList(),
+          return StyledStickyHeader(
+            title: reference.format().toText(),
+            children: verse.words
+                .mapToMap((word) => MapEntry(word, word.data))
+                .withoutNullValues
+                .maybeSortedBy((word, data) => data.originalPosition, shouldSort: direction == .forward)
+                .mapToIterable(
+                  (word, data) => InterlinearWordTile(
+                    word: word,
+                    data: data,
+                    direction: direction,
+                    onNavigateToVerseSelection: onNavigateToVerseSelection,
+                    popOnAction: popOnAction,
+                  ),
+                )
+                .toList(),
+          );
+        }).toList(),
       ),
     ];
   }

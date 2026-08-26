@@ -91,6 +91,10 @@ retain the source translation's reference in `origin`. When multiple source vers
 share the normalized reference and are combined when the chapter is read. This is used by LXX, FOB, Martin, and
 NLD1939.
 
+Bundled translations are stored as one JSON asset per book. Ordinary reading decodes a book on demand and reuses it
+for every chapter in that book. Full-text search and Strong's concordance assemble the complete local Bible only when
+those whole-corpus features are opened.
+
 ### Online Bible Text
 
 These translations are loaded online when they are not available from the device cache:

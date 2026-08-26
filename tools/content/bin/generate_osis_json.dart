@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:collection/collection.dart';
@@ -18,25 +17,23 @@ void main() {
     'rvg',
     'nld1939',
   ]) {
-    appAssetFile('translations/$name.json', app: .bible).writeAsStringSync(
-      jsonEncode(
-        sourceDirectory('bibles/$name')
-            .listSync()
-            .whereType<File>()
-            .where((file) => file.path.endsWith('.xml'))
-            .map(
-              (file) => parseOsisBook(
-                file.readAsStringSync(),
-                verseParagraphs: switch (name) {
-                  'oshb' || 'sv' || 'martin1744' => true,
-                  _ => false,
-                },
-              ),
-            )
-            .sortedBy((a) => a.bookType.index)
-            .map((book) => book.toJson())
-            .toList(),
-      ),
+    writeBibleBooks(
+      translation: name,
+      app: .bible,
+      books: sourceDirectory('bibles/$name')
+          .listSync()
+          .whereType<File>()
+          .where((file) => file.path.endsWith('.xml'))
+          .map(
+            (file) => parseOsisBook(
+              file.readAsStringSync(),
+              verseParagraphs: switch (name) {
+                'oshb' || 'sv' || 'martin1744' => true,
+                _ => false,
+              },
+            ),
+          )
+          .sortedBy((book) => book.bookType.index),
     );
   }
 }

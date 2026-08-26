@@ -1,7 +1,6 @@
 import 'package:bible/models/main_action.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/onboarding_step.dart';
-import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/audio_bible_player_provider.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -713,17 +712,12 @@ class BibleBody extends HookConsumerWidget {
                               ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
                         ),
                         childrenBuilder: (context, ref) {
-                          final studyBible = ref.watch(studyBibleProvider).value;
-                          if (studyBible == null) {
-                            return [Padding(padding: .all(16), child: StyledLoading())];
-                          }
                           return studyPanel.buildSheetChildren(
                             context,
                             ref,
                             verseSelection: visibleVerseSelection,
                             onNavigateToVerseSelection: navigateToVerseSelection,
                             user: user,
-                            studyBible: studyBible,
                           );
                         },
                       ),

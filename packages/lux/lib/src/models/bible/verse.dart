@@ -42,13 +42,45 @@ sealed class Verse with _$Verse {
 extension IterableVerseExtensions on Iterable<Verse> {
   String getTextSelectionText(BibleTextSelection selection) {
     final verseTexts = map((verse) => verse.text).toList();
-    verseTexts[verseTexts.length - 1] = verseTexts[verseTexts.length - 1].substring(
+    final lastVerse = verseTexts.last;
+    verseTexts[verseTexts.length - 1] = lastVerse.substring(
       0,
-      selection.end.characterOffset + 1,
+      (selection.end.characterOffset + 1).clamp(0, lastVerse.length),
     );
     verseTexts[0] = verseTexts[0].substring(selection.start.characterOffset);
 
     return verseTexts.join(' ');
+  }
+
+  List<Word> getTextSelectionWords(BibleTextSelection selection) {
+    final verses = toList();
+    return verses.expandIndexed((i, verse) {
+      var words = verse.words;
+      if (i + 1 == verses.length) {
+        words = words
+            .mapWithPrevious<(int, Word)>(
+              (previousOffsetAndWord, word) =>
+                  ((previousOffsetAndWord?.$1 ?? 0) + (previousOffsetAndWord?.$2.text?.length ?? 0), word),
+            )
+            .where((offsetAndWord) => offsetAndWord.$1 <= selection.end.characterOffset + 1)
+            .map((offsetAndWord) => offsetAndWord.$2)
+            .toList();
+      }
+      if (i == 0) {
+        words = words
+            .mapWithPrevious<(int, Word)>(
+              (previousOffsetAndWord, word) =>
+                  ((previousOffsetAndWord?.$1 ?? 0) + (previousOffsetAndWord?.$2.text?.length ?? 0), word),
+            )
+            .where(
+              (offsetAndWord) =>
+                  offsetAndWord.$1 + (offsetAndWord.$2.text?.length ?? 0) >= selection.start.characterOffset,
+            )
+            .map((offsetAndWord) => offsetAndWord.$2)
+            .toList();
+      }
+      return words;
+    }).toList();
   }
 
   List<Verse> trim() {

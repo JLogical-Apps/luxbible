@@ -14,12 +14,12 @@ class PhraseReadBuilder extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bible = ref.watch(localBibleProvider(translation: .bsb)).value;
-    if (bible == null) {
+    final verses = ref.watch(verseSelectionVersesProvider(translation: .bsb, selection: plan.passage)).value;
+    if (verses == null) {
       return SizedBox.shrink();
     }
 
-    final phrases = bible.getPassageVerses(plan.passage).expand((verse) => Phrase.fromVerse(verse)).toList();
+    final phrases = verses.expand((verse) => Phrase.fromVerse(verse)).toList();
 
     final visibleIndexState = useState(0);
 

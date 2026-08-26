@@ -52,7 +52,6 @@ sealed class StudyPanel with _$StudyPanel {
     required VerseSelection verseSelection,
     required Function(VerseSelection) onNavigateToVerseSelection,
     required User user,
-    required Bible studyBible,
   }) => switch (this) {
     CompareStudyPanel(:final translation) => CompareSheet.buildSheetChildren(
       context,
@@ -62,10 +61,10 @@ sealed class StudyPanel with _$StudyPanel {
     ),
     InterlinearStudyPanel(:final direction) => InterlinearSheet.buildSheetChildren(
       context,
+      ref,
       verseSelection: verseSelection,
       onNavigateToVerseSelection: onNavigateToVerseSelection,
       user: user,
-      studyBible: studyBible,
       direction: direction,
       showDirectionBanner: false,
       popOnAction: false,

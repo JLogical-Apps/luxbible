@@ -13,7 +13,6 @@ import 'package:bible/licenses.dart';
 import 'package:bible/models/bible_plan_notification.dart';
 import 'package:bible/models/user/language.dart';
 import 'package:bible/models/verse_of_the_day_notification.dart';
-import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/audio_bible_timings_provider.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
@@ -140,7 +139,6 @@ Future<void> main() async {
 }
 
 void eagerlyLoad() {
-  ref.read(studyBibleProvider);
   ref.listen(verseOfTheDayProvider, (_, _) {});
   ref.listen(localNotificationSchedulerProvider, (_, _) {});
 }

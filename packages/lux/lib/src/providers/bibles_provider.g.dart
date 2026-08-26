@@ -9,6 +9,89 @@ part of 'bibles_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
+@ProviderFor(localBook)
+final localBookProvider = LocalBookFamily._();
+
+final class LocalBookProvider
+    extends $FunctionalProvider<AsyncValue<Book>, Book, FutureOr<Book>>
+    with $FutureModifier<Book>, $FutureProvider<Book> {
+  LocalBookProvider._({
+    required LocalBookFamily super.from,
+    required ({BibleTranslation translation, BookType book}) super.argument,
+  }) : super(
+         retry: null,
+         name: r'localBookProvider',
+         isAutoDispose: false,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$localBookHash();
+
+  @override
+  String toString() {
+    return r'localBookProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<Book> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<Book> create(Ref ref) {
+    final argument =
+        this.argument as ({BibleTranslation translation, BookType book});
+    return localBook(
+      ref,
+      translation: argument.translation,
+      book: argument.book,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is LocalBookProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$localBookHash() => r'1d0087c39e4783be0c13e129dd938a9c222c7783';
+
+final class LocalBookFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<Book>,
+          ({BibleTranslation translation, BookType book})
+        > {
+  LocalBookFamily._()
+    : super(
+        retry: null,
+        name: r'localBookProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: false,
+      );
+
+  LocalBookProvider call({
+    required BibleTranslation translation,
+    required BookType book,
+  }) => LocalBookProvider._(
+    argument: (translation: translation, book: book),
+    from: this,
+  );
+
+  @override
+  String toString() => r'localBookProvider';
+}
+
 @ProviderFor(localBible)
 final localBibleProvider = LocalBibleFamily._();
 
@@ -58,7 +141,7 @@ final class LocalBibleProvider
   }
 }
 
-String _$localBibleHash() => r'f4ee81d6d88803abe9aa50e2ff78e9bab1ffc892';
+String _$localBibleHash() => r'42d25a56189ec4bb09700cb1cecd1c5c3af22dd8';
 
 final class LocalBibleFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<Bible>, BibleTranslation> {
@@ -137,7 +220,7 @@ final class ChapterProvider
   }
 }
 
-String _$chapterHash() => r'c15dae4d5c04dda2f6ab2fa153a963497c30868e';
+String _$chapterHash() => r'83bf46ca6137b07ec6b349af640221f0b91f6a4c';
 
 final class ChapterFamily extends $Family
     with
@@ -221,7 +304,7 @@ final class VerseProvider
   }
 }
 
-String _$verseHash() => r'62a672b86ae9979cf573111e53db36902f2ed22c';
+String _$verseHash() => r'acc581b196493f8bcd8cad8fbe0eed94dae48be5';
 
 final class VerseFamily extends $Family
     with
@@ -313,7 +396,7 @@ final class VerseSelectionVersesProvider
 }
 
 String _$verseSelectionVersesHash() =>
-    r'84a76410248b909a13c3acbb6bab1bbf4815478a';
+    r'6ad6f65319d809e4d348c52589669362f2e8921a';
 
 final class VerseSelectionVersesFamily extends $Family
     with
@@ -570,7 +653,7 @@ final class TextSelectionTextProvider
   }
 }
 
-String _$textSelectionTextHash() => r'b95ea48c83f761368d2ce08afa4f60a700304124';
+String _$textSelectionTextHash() => r'708fe3236b9e674ad4272b763f9db0f18df667ca';
 
 final class TextSelectionTextFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<String>, BibleTextSelection> {
@@ -588,4 +671,95 @@ final class TextSelectionTextFamily extends $Family
 
   @override
   String toString() => r'textSelectionTextProvider';
+}
+
+@ProviderFor(textSelectionWords)
+final textSelectionWordsProvider = TextSelectionWordsFamily._();
+
+final class TextSelectionWordsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<Word>>,
+          List<Word>,
+          FutureOr<List<Word>>
+        >
+    with $FutureModifier<List<Word>>, $FutureProvider<List<Word>> {
+  TextSelectionWordsProvider._({
+    required TextSelectionWordsFamily super.from,
+    required ({BibleTextSelection selection, BibleTranslation translation})
+    super.argument,
+  }) : super(
+         retry: null,
+         name: r'textSelectionWordsProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$textSelectionWordsHash();
+
+  @override
+  String toString() {
+    return r'textSelectionWordsProvider'
+        ''
+        '$argument';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<Word>> $createElement($ProviderPointer pointer) =>
+      $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<Word>> create(Ref ref) {
+    final argument =
+        this.argument
+            as ({BibleTextSelection selection, BibleTranslation translation});
+    return textSelectionWords(
+      ref,
+      selection: argument.selection,
+      translation: argument.translation,
+    );
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is TextSelectionWordsProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$textSelectionWordsHash() =>
+    r'7700ea67af2f807bdce1133cebec3a5af673cdf8';
+
+final class TextSelectionWordsFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<List<Word>>,
+          ({BibleTextSelection selection, BibleTranslation translation})
+        > {
+  TextSelectionWordsFamily._()
+    : super(
+        retry: null,
+        name: r'textSelectionWordsProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  TextSelectionWordsProvider call({
+    required BibleTextSelection selection,
+    required BibleTranslation translation,
+  }) => TextSelectionWordsProvider._(
+    argument: (selection: selection, translation: translation),
+    from: this,
+  );
+
+  @override
+  String toString() => r'textSelectionWordsProvider';
 }

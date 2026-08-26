@@ -8,22 +8,41 @@ import 'package:utils_core/utils_core.dart';
 part 'bibles_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-Future<Bible> localBible(Ref ref, {required BibleTranslation translation}) async =>
-    BibleImporter().importBible(translation: translation);
+FutureOr<Book> localBook(Ref ref, {required BibleTranslation translation, required BookType book}) =>
+    BibleImporter().importBook(translation: translation, book: book);
+
+@Riverpod(keepAlive: true)
+Future<Bible> localBible(Ref ref, {required BibleTranslation translation}) async => Bible(
+  translation: translation,
+  books: await BookType.values
+      .where(translation.containsBook)
+      .map(
+        (book) async => Book(
+          bookType: book,
+          chapters: await ChapterReference.values
+              .where((reference) => reference.book == book)
+              .map(
+                (reference) => ref.watch(chapterProvider(chapterReference: reference, translation: translation).future),
+              )
+              .wait,
+        ),
+      )
+      .wait,
+);
 
 @Riverpod(keepAlive: true, retry: RiverpodUtils.noRetry)
 FutureOr<Chapter> chapter(
   Ref ref, {
   required ChapterReference chapterReference,
   required BibleTranslation translation,
-}) {
-  final localBible = translation.isLocal ? ref.watch(localBibleProvider(translation: translation)).requireValue : null;
-
-  return switch (translation.source) {
-    LocalTranslationSource() => localBible!.getChapterByReference(chapterReference),
-    _ => getOnlineChapter(ref: ref, translation: translation, chapterReference: chapterReference),
-  };
-}
+}) => switch (translation.source) {
+  LocalTranslationSource() =>
+    ref
+        .watch(localBookProvider(translation: translation, book: chapterReference.book))
+        .requireValue
+        .chapters[chapterReference.chapterNum - 1],
+  _ => getOnlineChapter(ref: ref, translation: translation, chapterReference: chapterReference),
+};
 
 Future<Chapter> getOnlineChapter({
   required Ref ref,
@@ -49,34 +68,20 @@ Future<Chapter> getOnlineChapter({
 );
 
 @Riverpod(keepAlive: true)
-FutureOr<Verse?> verse(Ref ref, {required Reference reference, required BibleTranslation translation}) {
-  if (translation.isLocal) {
-    final bible = ref.watch(localBibleProvider(translation: translation)).requireValue;
-    return bible.getVerseByReference(reference);
-  } else {
-    final chapter = ref
-        .watch(chapterProvider(chapterReference: reference.toChapterReference(), translation: translation))
-        .requireValue;
-    return chapter.getVerseByReference(reference);
-  }
-}
+FutureOr<Verse?> verse(Ref ref, {required Reference reference, required BibleTranslation translation}) => ref
+    .watch(chapterProvider(chapterReference: reference.toChapterReference(), translation: translation))
+    .requireValue
+    .getVerseByReference(reference);
 
 @riverpod
 FutureOr<List<Verse>> verseSelectionVerses(
   Ref ref, {
   required VerseSelection selection,
   required BibleTranslation translation,
-}) {
-  if (translation.isLocal) {
-    final bible = ref.watch(localBibleProvider(translation: translation)).requireValue;
-    return selection.references.map((reference) => bible.getVerseByReference(reference)).nonNulls.toList();
-  } else {
-    return selection.references
-        .map((reference) => ref.watch(verseProvider(reference: reference, translation: translation)).requireValue)
-        .nonNulls
-        .toList();
-  }
-}
+}) => selection.references
+    .map((reference) => ref.watch(verseProvider(reference: reference, translation: translation)).requireValue)
+    .nonNulls
+    .toList();
 
 @riverpod
 FutureOr<String> verseSelectionText(
@@ -150,17 +155,17 @@ FutureOr<List<Paragraph>> verseSelectionParagraphs(
 }).flattenedToList;
 
 @riverpod
-FutureOr<String> textSelectionText(Ref ref, BibleTextSelection selection) {
-  final translation = selection.translation;
-  if (translation.isLocal) {
-    final bible = ref.watch(localBibleProvider(translation: translation)).requireValue;
-    return bible.getTextSelectionText(selection);
-  } else {
-    return selection
-        .toVerseSelection()
-        .references
-        .map((reference) => ref.watch(verseProvider(reference: reference, translation: translation)).requireValue)
-        .nonNulls
-        .getTextSelectionText(selection);
-  }
-}
+FutureOr<String> textSelectionText(Ref ref, BibleTextSelection selection) => ref
+    .watch(verseSelectionVersesProvider(selection: selection.toVerseSelection(), translation: selection.translation))
+    .requireValue
+    .getTextSelectionText(selection);
+
+@riverpod
+FutureOr<List<Word>> textSelectionWords(
+  Ref ref, {
+  required BibleTextSelection selection,
+  required BibleTranslation translation,
+}) => ref
+    .watch(verseSelectionVersesProvider(selection: selection.toVerseSelection(), translation: translation))
+    .requireValue
+    .getTextSelectionWords(selection);

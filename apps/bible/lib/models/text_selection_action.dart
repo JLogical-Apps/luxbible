@@ -1,5 +1,4 @@
 import 'package:bible/models/annotation.dart';
-import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
@@ -60,17 +59,19 @@ enum TextSelectionAction {
           return;
         }
 
-        final studyBible = await ref.read(studyBibleProvider.future);
+        final studyWords = await ref.read(
+          textSelectionWordsProvider(selection: textSelection, translation: textSelection.translation).future,
+        );
         if (!context.mounted) return;
 
-        final studyWords = studyBible.getTextSelectionWords(textSelection).where((word) => word.data != null).toList();
-        if (studyWords.isEmpty) {
+        final interlinearWords = studyWords.where((word) => word.data != null).toList();
+        if (interlinearWords.isEmpty) {
           context.showStyledSnackbar(message: t.selectionActions.noInterlinearWords.toText());
           return;
         }
 
-        if (studyWords.length == 1) {
-          final word = studyWords.first;
+        if (interlinearWords.length == 1) {
+          final word = interlinearWords.first;
           await StrongSheet.showWithBreadcrumbs(
             context,
             word: word,
@@ -85,7 +86,7 @@ enum TextSelectionAction {
               subtitle: t.selectionActions
                   .textInReference(reference: textSelection.toVerseSelection().format())
                   .toText(),
-              children: studyWords
+              children: interlinearWords
                   .map(
                     (word) => InterlinearWordTile(
                       word: word,

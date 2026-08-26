@@ -52,7 +52,7 @@ tools/content/python/sword/data/TVTMS.txt
 
 # Licensed CSB source and generated runtime asset
 content/sources/bibles/csb/
-apps/bible/assets/translations/csb.json
+apps/bible/assets/translations/csb/*.json
 
 .tmp/
 /.env

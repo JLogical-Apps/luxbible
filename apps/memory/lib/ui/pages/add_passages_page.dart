@@ -11,8 +11,6 @@ class AddPassagesPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final bible = ref.watch(localBibleProvider(translation: .bsb)).value;
-
     final passagesState = useState(<VerseSelection>[]);
 
     return StyledPage(
@@ -35,8 +33,15 @@ class AddPassagesPage extends HookConsumerWidget {
                         ],
                         child: StyledListItem(
                           title: passage.format().toText(),
-                          subtitle: StyledLoading(
-                            child: VerseText(verses: bible?.getPassageVerses(passage) ?? [], maxLines: 2),
+                          subtitle: Consumer(
+                            builder: (context, ref, child) {
+                              final verses = ref
+                                  .watch(verseSelectionVersesProvider(translation: .bsb, selection: passage))
+                                  .value;
+                              return StyledLoading(
+                                child: verses == null ? null : VerseText(verses: verses, maxLines: 2),
+                              );
+                            },
                           ),
                           onPressed: () => PassagePreviewPage.show(context, verseSelection: passage),
                         ),
