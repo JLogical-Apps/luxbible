@@ -356,7 +356,7 @@ class BibleBody extends HookConsumerWidget {
                       child: Symbols.tune.toIcon(),
                       onPressed: () {
                         context.pop();
-                        context.push(MainToolbarSettingsPage());
+                        context.push((context) => MainToolbarSettingsPage());
                       },
                     ),
                     children: MainAction.topLevelActions

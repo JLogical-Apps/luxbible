@@ -45,17 +45,17 @@ class MorePage extends HookConsumerWidget {
                 StyledListItem.navigation(
                   title: t.themeSettings.title.toText(),
                   leading: Symbols.custom_typography.toIcon(),
-                  onPressed: () => context.push(ThemeSettingsPage()),
+                  onPressed: () => context.push((context) => ThemeSettingsPage()),
                 ),
                 StyledListItem.navigation(
                   title: t.studyActions.compare.toText(),
                   leading: Symbols.text_compare.toIcon(),
-                  onPressed: () => context.push(CompareSettingsPage()),
+                  onPressed: () => context.push((context) => CompareSettingsPage()),
                 ),
                 StyledListItem.navigation(
                   title: t.labels.commentaries.toText(),
                   leading: Symbols.tooltip_2.toIcon(),
-                  onPressed: () => context.push(CommentariesPage()),
+                  onPressed: () => context.push((context) => CommentariesPage()),
                 ),
               ],
             ),
@@ -115,17 +115,17 @@ class MorePage extends HookConsumerWidget {
                 StyledListItem.navigation(
                   title: t.toolbarSettings.mainToolbar.toText(),
                   leading: RotatedBox(quarterTurns: 2, child: Symbols.toolbar.toIcon()),
-                  onPressed: () => context.push(MainToolbarSettingsPage()),
+                  onPressed: () => context.push((context) => MainToolbarSettingsPage()),
                 ),
                 StyledListItem.navigation(
                   title: t.toolbarSettings.verseSelection.toText(),
                   leading: Symbols.text_ad.toIcon(),
-                  onPressed: () => context.push(VerseSelectionSettingsPage()),
+                  onPressed: () => context.push((context) => VerseSelectionSettingsPage()),
                 ),
                 StyledListItem.navigation(
                   title: t.toolbarSettings.textSelection.toText(),
                   leading: Symbols.text_select_start.toIcon(),
-                  onPressed: () => context.push(TextSelectionSettingsPage()),
+                  onPressed: () => context.push((context) => TextSelectionSettingsPage()),
                 ),
               ],
             ),
@@ -138,7 +138,7 @@ class MorePage extends HookConsumerWidget {
                   title: t.labels.annotations.toText(),
                   leading: Symbols.note_stack.toIcon(),
                   onPressed: () async {
-                    final result = await context.push(AnnotationsPage());
+                    final result = await context.push((context) => AnnotationsPage());
                     if (result != null && context.mounted) {
                       context.pop(result);
                     }
@@ -148,7 +148,7 @@ class MorePage extends HookConsumerWidget {
                   title: t.labels.notebooks.toText(),
                   leading: Symbols.book_2.toIcon(),
                   onPressed: () async {
-                    final result = await context.push(NotebooksPage());
+                    final result = await context.push((context) => NotebooksPage());
                     if (result != null && context.mounted) {
                       context.pop(result);
                     }
@@ -158,7 +158,7 @@ class MorePage extends HookConsumerWidget {
                   title: t.labels.highlightStyles.toText(),
                   leading: Symbols.format_ink_highlighter.toIcon(),
                   onPressed: () async {
-                    final result = await context.push(HighlightStylesPage());
+                    final result = await context.push((context) => HighlightStylesPage());
                     if (result != null && context.mounted) {
                       context.pop(result);
                     }
@@ -167,7 +167,7 @@ class MorePage extends HookConsumerWidget {
                 StyledListItem.navigation(
                   title: t.labels.bookmarks.toText(),
                   leading: Symbols.bookmark.toIcon(),
-                  onPressed: () => context.push(BookmarksPage()),
+                  onPressed: () => context.push((context) => BookmarksPage()),
                 ),
               ],
             ),
@@ -179,7 +179,7 @@ class MorePage extends HookConsumerWidget {
                 StyledListItem.navigation(
                   title: t.settings.pushNotifications.toText(),
                   leading: Symbols.notifications.toIcon(),
-                  onPressed: () => context.push(PushNotificationsPage()),
+                  onPressed: () => context.push((context) => PushNotificationsPage()),
                 ),
                 StyledListItem.externalNavigation(
                   title: t.settings.language.toText(),

@@ -299,7 +299,7 @@ class StrongSheet {
         onPressed: () async {
           context.pop();
           final result = await context.push<SearchPageResult>(
-            SearchPage(initialSearch: strongId, currentChapterReference: user.lastReference),
+            (context) => SearchPage(initialSearch: strongId, currentChapterReference: user.lastReference),
           );
           if (result != null) {
             onNavigateToVerseSelection(result.selection);

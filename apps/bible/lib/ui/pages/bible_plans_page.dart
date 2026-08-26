@@ -62,7 +62,10 @@ class BiblePlansPage extends HookConsumerWidget {
       backgroundColor: .backgroundPrimary,
       trailing: Tooltip(
         message: t.biblePlans.addPlan,
-        child: StyledCircleButton.md(child: Symbols.add.toIcon(), onPressed: () => context.push(BiblePlanSearchPage())),
+        child: StyledCircleButton.md(
+          child: Symbols.add.toIcon(),
+          onPressed: () => context.push((context) => BiblePlanSearchPage()),
+        ),
       ),
       body: StyledListView(
         children: [
@@ -240,7 +243,7 @@ class BiblePlansPage extends HookConsumerWidget {
                                               title: passage.format().toText(),
                                               onPressed: () async {
                                                 final result = await context.push<VerseSelection>(
-                                                  BiblePlanReadPage(
+                                                  (context) => BiblePlanReadPage(
                                                     planType: planType,
                                                     dayIndex: dayIndex,
                                                     initialPassageIndex: passageIndex,
@@ -277,7 +280,7 @@ class BiblePlansPage extends HookConsumerWidget {
                                         message: t.biblePlans.completed(name: planType.title()).toText(),
                                         action: StyledTextAction(
                                           label: t.biblePlans.startNew.toText(),
-                                          onPressed: () => context.push(BiblePlanSearchPage()),
+                                          onPressed: () => context.push((context) => BiblePlanSearchPage()),
                                         ),
                                         duration: Duration(seconds: 10),
                                       );

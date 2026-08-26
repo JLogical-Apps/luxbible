@@ -94,18 +94,18 @@ enum MainToolbarShortcut {
           }
         }(),
         dictionary => () async {
-          final result = await context.push<VerseSelection>(DictionaryPage());
+          final result = await context.push<VerseSelection>((context) => DictionaryPage());
           if (result != null) {
             onNavigateToVerseSelection(result);
           }
         }(),
         lexicon => () async {
-          final result = await context.push<VerseSelection>(LexiconPage());
+          final result = await context.push<VerseSelection>((context) => LexiconPage());
           if (result != null) {
             onNavigateToVerseSelection(result);
           }
         }(),
-        themeAndLayout => context.push(ThemeSettingsPage()),
+        themeAndLayout => context.push((context) => ThemeSettingsPage()),
         _ => throw UnimplementedError(),
       };
 

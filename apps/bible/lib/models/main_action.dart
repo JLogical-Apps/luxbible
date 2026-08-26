@@ -275,7 +275,7 @@ enum MainAction {
                   title: t.studyActions.compare.toText(),
                   trailing: StyledCircleButton.md(
                     child: Symbols.tune.toIcon(),
-                    onPressed: () => context.push(CompareSettingsPage()),
+                    onPressed: () => context.push((context) => CompareSettingsPage()),
                   ),
                   options: user.compareBiblesOrDefault,
                   optionMapper: (option) =>
@@ -319,7 +319,9 @@ enum MainAction {
           }
         }
       case search:
-        final result = await context.push<SearchPageResult>(SearchPage(currentChapterReference: reference));
+        final result = await context.push<SearchPageResult>(
+          (context) => SearchPage(currentChapterReference: reference),
+        );
         if (result != null) {
           onNavigateToVerseSelection(result.selection);
         }
@@ -346,28 +348,27 @@ enum MainAction {
         if (resource == null || !context.mounted) {
           return;
         }
-        final page = switch (resource) {
-          _Resource.dictionary => DictionaryPage(),
-          _Resource.lexicon => LexiconPage(),
+        final result = await switch (resource) {
+          _Resource.dictionary => context.push<VerseSelection>((context) => DictionaryPage()),
+          _Resource.lexicon => context.push<VerseSelection>((context) => LexiconPage()),
         };
-        final result = await context.push<VerseSelection>(page);
         if (result != null) {
           onNavigateToVerseSelection(result);
         }
       case plans:
         if (user.planProgressByType.isEmpty) {
-          final newPlan = await context.push<BiblePlanType>(BiblePlanSearchPage());
+          final newPlan = await context.push<BiblePlanType>((context) => BiblePlanSearchPage());
           if (newPlan == null || !context.mounted) {
             return;
           }
         }
 
-        final result = await context.push<VerseSelection>(BiblePlansPage());
+        final result = await context.push<VerseSelection>((context) => BiblePlansPage());
         if (result != null) {
           onNavigateToVerseSelection(result);
         }
       case more:
-        final result = await context.push<VerseSelection>(MorePage());
+        final result = await context.push<VerseSelection>((context) => MorePage());
         if (result != null) {
           onNavigateToVerseSelection(result);
         }

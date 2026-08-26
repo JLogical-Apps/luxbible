@@ -172,6 +172,7 @@ class BibleApp extends HookConsumerWidget {
       }
     });
 
+    final language = ref.watch(languageProvider);
     final user = ref.watch(userProvider);
     return ToastificationWrapper(
       child: GestureDetector(
@@ -182,7 +183,7 @@ class BibleApp extends HookConsumerWidget {
           child: MaterialApp(
             navigatorKey: navigatorKey,
             title: 'Lux Bible',
-            locale: Language.device.appLocale.flutterLocale,
+            locale: language.appLocale.flutterLocale,
             supportedLocales: AppLocaleUtils.instance.supportedLocales,
             localizationsDelegates: GlobalMaterialLocalizations.delegates,
             themeMode: user.theme,

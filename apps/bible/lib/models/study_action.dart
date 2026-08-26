@@ -191,7 +191,7 @@ enum StudyAction {
             subtitle: regionFormat.toText(),
             trailing: StyledCircleButton.md(
               child: Symbols.tune.toIcon(),
-              onPressed: () => context.push(CompareSettingsPage()),
+              onPressed: () => context.push((context) => CompareSettingsPage()),
             ),
             children: CompareSheet.buildSheetChildren(
               context,

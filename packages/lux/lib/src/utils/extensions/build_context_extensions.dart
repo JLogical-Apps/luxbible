@@ -19,7 +19,8 @@ extension BuildContextExtensions on BuildContext {
     if (onLoaded != null) WidgetsBinding.instance.addPostFrameCallback((_) => onLoaded(navigator.context));
   }
 
-  Future<T?> push<T>(Widget page) => Navigator.of(this).push(MaterialPageRoute(builder: (_) => page));
+  Future<T?> push<T>(Widget Function(BuildContext) pageBuilder) =>
+      Navigator.of(this).push(MaterialPageRoute(builder: pageBuilder));
   Future<T?> pushReplacement<T>(Widget page) =>
       Navigator.of(this).pushReplacement(MaterialPageRoute(builder: (_) => page));
 
