@@ -719,6 +719,13 @@
     "chapter": "Chapter",
     "verse": "Verse"
   },
+  "bibleSheet": {
+    "allBibles": "All Bibles",
+    "availableCount(param=count)": {
+      "one": "{count} Bible Available",
+      "other": "{count} Bibles Available"
+    }
+  },
   "selectionUi": {
     "selected": "Selected: ",
     "sourceApiBible": "Sourced from [https://api.bible](https://api.bible)"

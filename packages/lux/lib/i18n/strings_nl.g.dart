@@ -82,6 +82,7 @@ class TranslationsNl extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$onboardingSteps$nl onboardingSteps = _Translations$onboardingSteps$nl._(_root);
 	@override late final _Translations$dictionary$nl dictionary = _Translations$dictionary$nl._(_root);
 	@override late final _Translations$navigation$nl navigation = _Translations$navigation$nl._(_root);
+	@override late final _Translations$bibleSheet$nl bibleSheet = _Translations$bibleSheet$nl._(_root);
 	@override late final _Translations$selectionUi$nl selectionUi = _Translations$selectionUi$nl._(_root);
 	@override late final _Translations$errors$nl errors = _Translations$errors$nl._(_root);
 	@override late final _Translations$morphology$nl morphology = _Translations$morphology$nl._(_root);
@@ -1099,6 +1100,20 @@ class _Translations$navigation$nl extends Translations$navigation$en {
 	@override String get book => 'Boek';
 	@override String get chapter => 'Hoofdstuk';
 	@override String get verse => 'Vers';
+}
+
+// Path: bibleSheet
+class _Translations$bibleSheet$nl extends Translations$bibleSheet$en {
+	_Translations$bibleSheet$nl._(TranslationsNl root) : this._root = root, super.internal(root);
+
+	final TranslationsNl _root; // ignore: unused_field
+
+	// Translations
+	@override String get allBibles => 'Alle Bijbels';
+	@override String availableCount({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count,
+		one: '${count} Bijbel beschikbaar',
+		other: '${count} Bijbels beschikbaar',
+	);
 }
 
 // Path: selectionUi
@@ -3378,6 +3393,8 @@ extension on TranslationsNl {
 			'navigation.book' => 'Boek',
 			'navigation.chapter' => 'Hoofdstuk',
 			'navigation.verse' => 'Vers',
+			'bibleSheet.allBibles' => 'Alle Bijbels',
+			'bibleSheet.availableCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: '${count} Bijbel beschikbaar', other: '${count} Bijbels beschikbaar', ), 
 			'selectionUi.selected' => 'Geselecteerd: ',
 			'selectionUi.sourceApiBible' => 'Bron: [https://api.bible](https://api.bible)',
 			'errors.deviceVerificationFailed' => 'Apparaatverificatie mislukt',

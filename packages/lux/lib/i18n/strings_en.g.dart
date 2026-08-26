@@ -78,6 +78,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$onboardingSteps$en onboardingSteps = Translations$onboardingSteps$en.internal(_root);
 	late final Translations$dictionary$en dictionary = Translations$dictionary$en.internal(_root);
 	late final Translations$navigation$en navigation = Translations$navigation$en.internal(_root);
+	late final Translations$bibleSheet$en bibleSheet = Translations$bibleSheet$en.internal(_root);
 	late final Translations$selectionUi$en selectionUi = Translations$selectionUi$en.internal(_root);
 	late final Translations$errors$en errors = Translations$errors$en.internal(_root);
 	late final Translations$morphology$en morphology = Translations$morphology$en.internal(_root);
@@ -2310,6 +2311,24 @@ class Translations$navigation$en {
 
 	/// en: 'Verse'
 	String get verse => 'Verse';
+}
+
+// Path: bibleSheet
+class Translations$bibleSheet$en {
+	Translations$bibleSheet$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'All Bibles'
+	String get allBibles => 'All Bibles';
+
+	/// en: '(one) {{count} Bible Available} (other) {{count} Bibles Available}'
+	String availableCount({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count,
+		one: '${count} Bible Available',
+		other: '${count} Bibles Available',
+	);
 }
 
 // Path: selectionUi
@@ -5312,6 +5331,8 @@ extension on Translations {
 			'navigation.book' => 'Book',
 			'navigation.chapter' => 'Chapter',
 			'navigation.verse' => 'Verse',
+			'bibleSheet.allBibles' => 'All Bibles',
+			'bibleSheet.availableCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} Bible Available', other: '${count} Bibles Available', ), 
 			'selectionUi.selected' => 'Selected: ',
 			'selectionUi.sourceApiBible' => 'Sourced from [https://api.bible](https://api.bible)',
 			'errors.deviceVerificationFailed' => 'Device verification failed',

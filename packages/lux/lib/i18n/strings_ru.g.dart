@@ -82,6 +82,7 @@ class TranslationsRu extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$onboardingSteps$ru onboardingSteps = _Translations$onboardingSteps$ru._(_root);
 	@override late final _Translations$dictionary$ru dictionary = _Translations$dictionary$ru._(_root);
 	@override late final _Translations$navigation$ru navigation = _Translations$navigation$ru._(_root);
+	@override late final _Translations$bibleSheet$ru bibleSheet = _Translations$bibleSheet$ru._(_root);
 	@override late final _Translations$selectionUi$ru selectionUi = _Translations$selectionUi$ru._(_root);
 	@override late final _Translations$errors$ru errors = _Translations$errors$ru._(_root);
 	@override late final _Translations$morphology$ru morphology = _Translations$morphology$ru._(_root);
@@ -1103,6 +1104,22 @@ class _Translations$navigation$ru extends Translations$navigation$en {
 	@override String get book => 'Книга';
 	@override String get chapter => 'Глава';
 	@override String get verse => 'Стих';
+}
+
+// Path: bibleSheet
+class _Translations$bibleSheet$ru extends Translations$bibleSheet$en {
+	_Translations$bibleSheet$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get allBibles => 'Все Библии';
+	@override String availableCount({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count,
+		one: '${count} Библия доступна',
+		few: '${count} Библии доступны',
+		many: '${count} Библий доступно',
+		other: '${count} Библии доступны',
+	);
 }
 
 // Path: selectionUi
@@ -3382,6 +3399,8 @@ extension on TranslationsRu {
 			'navigation.book' => 'Книга',
 			'navigation.chapter' => 'Глава',
 			'navigation.verse' => 'Стих',
+			'bibleSheet.allBibles' => 'Все Библии',
+			'bibleSheet.availableCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: '${count} Библия доступна', few: '${count} Библии доступны', many: '${count} Библий доступно', other: '${count} Библии доступны', ), 
 			'selectionUi.selected' => 'Выбрано:',
 			'selectionUi.sourceApiBible' => 'Источник: [https://api.bible](https://api.bible).',
 			'errors.deviceVerificationFailed' => 'Проверка устройства не удалась',

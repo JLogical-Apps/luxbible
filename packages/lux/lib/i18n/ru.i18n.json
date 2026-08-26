@@ -725,6 +725,15 @@
     "chapter": "Глава",
     "verse": "Стих"
   },
+  "bibleSheet": {
+    "allBibles": "Все Библии",
+    "availableCount(param=count)": {
+      "one": "{count} Библия доступна",
+      "few": "{count} Библии доступны",
+      "many": "{count} Библий доступно",
+      "other": "{count} Библии доступны"
+    }
+  },
   "selectionUi": {
     "selected": "Выбрано:",
     "sourceApiBible": "Источник: [https://api.bible](https://api.bible)."

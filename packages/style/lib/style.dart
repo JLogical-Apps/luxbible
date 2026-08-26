@@ -29,6 +29,7 @@ export 'src/widgets/styled_dial.dart';
 export 'src/widgets/styled_divider.dart';
 export 'src/widgets/styled_dock.dart';
 export 'src/widgets/styled_edit_badge.dart';
+export 'src/widgets/styled_expandable_sticky_header.dart';
 export 'src/widgets/styled_fog.dart';
 export 'src/widgets/styled_form_input.dart';
 export 'src/widgets/styled_link.dart';

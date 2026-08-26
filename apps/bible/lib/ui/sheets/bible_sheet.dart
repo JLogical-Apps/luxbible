@@ -19,8 +19,9 @@ class BibleSheet {
         title: t.labels.bible.toText(),
         children: [
           if (user.recentBibles.isNotEmpty)
-            StyledStickyHeader(
+            StyledSection(
               title: t.navigation.recents.toText(),
+              padding: .only(top: 24),
               children: user.recentBibles
                   .take(5)
                   .map(
@@ -42,23 +43,32 @@ class BibleSheet {
                   )
                   .toList(),
             ),
-          ...BibleTranslation.values
-              .groupListsBy((translation) => translation.bibleLanguage)
-              .sortedBy((language, _) => language.appLanguage == Language.device ? 0 : 1)
-              .mapToIterable(
-                (language, translations) => StyledStickyHeader(
-                  title: language.title().toText(),
-                  children: translations
-                      .map(
-                        (translation) => BibleTile(
-                          translation: translation,
-                          trailing: StyledRadio(isSelected: translation == user.translation),
-                          onPressedOverride: () => context.pop(translation),
-                        ),
-                      )
-                      .toList(),
-                ),
-              ),
+          ...StyledSection(
+            title: t.bibleSheet.allBibles.toText(),
+            padding: .only(top: 24),
+            children: StyledDivider(height: 2).wrapPositioned(
+              BibleTranslation.values
+                  .groupListsBy((translation) => translation.bibleLanguage)
+                  .sortedBy((language, _) => language.appLanguage == Language.device ? 0 : 1)
+                  .mapToIterable(
+                    (language, translations) => StyledExpandableStickyHeader(
+                      title: language.title().toText(),
+                      subtitle: t.bibleSheet.availableCount(count: translations.length).toText(),
+                      initiallyShown: false,
+                      children: translations
+                          .map(
+                            (translation) => BibleTile(
+                              translation: translation,
+                              trailing: StyledRadio(isSelected: translation == user.translation),
+                              onPressedOverride: () => context.pop(translation),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ).buildChildren(context),
         ],
       );
     });
