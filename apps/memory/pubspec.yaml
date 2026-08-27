@@ -49,7 +49,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
-    - assets/translations/bsb/
+    - assets/translations/
   fonts:
     - family: Inter
       fonts:

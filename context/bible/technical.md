@@ -7,7 +7,7 @@ This file records architectural constraints, data boundaries, and external servi
 ## Application
 
 - Flutter application
-- Shared Bible models, translation asset paths, and local providers live in `packages/lux` for reuse across Lux apps. Each app declares and bundles its own translation assets and owns the rendering behavior appropriate to that product.
+- Shared Bible models, translation asset paths, and Bible provider integration points live in `packages/lux` for reuse across Lux apps. Each app supplies its own Bible providers, declares and bundles its own translation assets, and owns the rendering behavior appropriate to that product.
 - The shared interactive passage renderer and loader, passage controller, verse-range selection logic, chapter paging, passage preview structure, loading-error presentation, and chapter selector live in `packages/lux`. Each app overrides `luxReaderConfigurationProvider`; Lux Bible uses its reactive configuration to map user settings, annotations, notes, footnotes, translation fallback, and study callbacks into the shared product-neutral widgets.
 - Supported targets: iPhone, iPad, and Android
 - Responsive study layout changes at 700 logical pixels of available width

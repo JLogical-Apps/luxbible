@@ -8,41 +8,15 @@ import 'package:utils_core/utils_core.dart';
 part 'bibles_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-FutureOr<Book> localBook(Ref ref, {required BibleTranslation translation, required BookType book}) =>
-    BibleImporter().importBook(translation: translation, book: book);
-
-@Riverpod(keepAlive: true)
-Future<Bible> localBible(Ref ref, {required BibleTranslation translation}) async => Bible(
-  translation: translation,
-  books: await BookType.values
-      .where(translation.containsBook)
-      .map(
-        (book) async => Book(
-          bookType: book,
-          chapters: await ChapterReference.values
-              .where((reference) => reference.book == book)
-              .map(
-                (reference) => ref.watch(chapterProvider(chapterReference: reference, translation: translation).future),
-              )
-              .wait,
-        ),
-      )
-      .wait,
-);
+FutureOr<Bible> localBible(Ref ref, {required BibleTranslation translation}) =>
+    throw UnimplementedError('localBibleProvider must be overridden by the host app');
 
 @Riverpod(keepAlive: true, retry: RiverpodUtils.noRetry)
 FutureOr<Chapter> chapter(
   Ref ref, {
   required ChapterReference chapterReference,
   required BibleTranslation translation,
-}) => switch (translation.source) {
-  LocalTranslationSource() =>
-    ref
-        .watch(localBookProvider(translation: translation, book: chapterReference.book))
-        .requireValue
-        .chapters[chapterReference.chapterNum - 1],
-  _ => getOnlineChapter(ref: ref, translation: translation, chapterReference: chapterReference),
-};
+}) => throw UnimplementedError('chapterProvider must be overridden by the host app');
 
 Future<Chapter> getOnlineChapter({
   required Ref ref,

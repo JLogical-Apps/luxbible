@@ -9,89 +9,6 @@ part of 'bibles_provider.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(localBook)
-final localBookProvider = LocalBookFamily._();
-
-final class LocalBookProvider
-    extends $FunctionalProvider<AsyncValue<Book>, Book, FutureOr<Book>>
-    with $FutureModifier<Book>, $FutureProvider<Book> {
-  LocalBookProvider._({
-    required LocalBookFamily super.from,
-    required ({BibleTranslation translation, BookType book}) super.argument,
-  }) : super(
-         retry: null,
-         name: r'localBookProvider',
-         isAutoDispose: false,
-         dependencies: null,
-         $allTransitiveDependencies: null,
-       );
-
-  @override
-  String debugGetCreateSourceHash() => _$localBookHash();
-
-  @override
-  String toString() {
-    return r'localBookProvider'
-        ''
-        '$argument';
-  }
-
-  @$internal
-  @override
-  $FutureProviderElement<Book> $createElement($ProviderPointer pointer) =>
-      $FutureProviderElement(pointer);
-
-  @override
-  FutureOr<Book> create(Ref ref) {
-    final argument =
-        this.argument as ({BibleTranslation translation, BookType book});
-    return localBook(
-      ref,
-      translation: argument.translation,
-      book: argument.book,
-    );
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is LocalBookProvider && other.argument == argument;
-  }
-
-  @override
-  int get hashCode {
-    return argument.hashCode;
-  }
-}
-
-String _$localBookHash() => r'1d0087c39e4783be0c13e129dd938a9c222c7783';
-
-final class LocalBookFamily extends $Family
-    with
-        $FunctionalFamilyOverride<
-          FutureOr<Book>,
-          ({BibleTranslation translation, BookType book})
-        > {
-  LocalBookFamily._()
-    : super(
-        retry: null,
-        name: r'localBookProvider',
-        dependencies: null,
-        $allTransitiveDependencies: null,
-        isAutoDispose: false,
-      );
-
-  LocalBookProvider call({
-    required BibleTranslation translation,
-    required BookType book,
-  }) => LocalBookProvider._(
-    argument: (translation: translation, book: book),
-    from: this,
-  );
-
-  @override
-  String toString() => r'localBookProvider';
-}
-
 @ProviderFor(localBible)
 final localBibleProvider = LocalBibleFamily._();
 
@@ -141,7 +58,7 @@ final class LocalBibleProvider
   }
 }
 
-String _$localBibleHash() => r'42d25a56189ec4bb09700cb1cecd1c5c3af22dd8';
+String _$localBibleHash() => r'50a9c10145466f998ab236558202019001405033';
 
 final class LocalBibleFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<Bible>, BibleTranslation> {
@@ -220,7 +137,7 @@ final class ChapterProvider
   }
 }
 
-String _$chapterHash() => r'83bf46ca6137b07ec6b349af640221f0b91f6a4c';
+String _$chapterHash() => r'9be687807c7df1f4bd34ca6b5b3832b9025e28ad';
 
 final class ChapterFamily extends $Family
     with

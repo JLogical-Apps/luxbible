@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/lux.dart';
 import 'package:memory/licenses.dart';
+import 'package:memory/providers/bible_data_providers.dart';
 import 'package:memory/providers/root_ref.dart';
 import 'package:memory/providers/user_provider.dart';
 import 'package:memory/ui/pages/home_page.dart';
@@ -25,6 +26,7 @@ Future<void> main() async {
 
       ref = ProviderContainer(
         overrides: [
+          ...bibleDataOverrides,
           luxReaderConfigurationProvider.overrideWithValue(
             LuxReaderConfiguration(translationForChapter: (_) => .bsb, selectedTranslation: .bsb),
           ),
