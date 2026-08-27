@@ -24,31 +24,43 @@ class PhraseSelectionBuilder extends HookConsumerWidget {
 
     final passage = plan.passage;
     final chapterReference = passage.references.first.toChapterReference();
-    final passagePhrases = passage.references.expand((reference) => phrasesByReference[reference]!).toList();
+    final passagePhrasesAndReferences = passage.references
+        .expand((reference) => phrasesByReference[reference]!.map((phrase) => (phrase, reference)))
+        .toList();
+    final passagePhrases = passagePhrasesAndReferences.map((phraseAndReference) => phraseAndReference.$1).toList();
     final phraseKeys = useMemoized(() => passagePhrases.map((_) => GlobalKey()).toList(), []);
 
     (int currentIndex, List<Choice>?) getStep(int index) {
       if (index == passagePhrases.length) return (index, null);
 
-      final correctPhrase = passagePhrases[index];
+      final (correctPhrase, correctPhraseReference) = passagePhrasesAndReferences[index];
+      final previousReferences = passage.references.takeWhile((reference) => reference != correctPhraseReference);
       final correctPhraseImportantWords = correctPhrase.keywords
           .where((word) => !commonEnglishFunctionWords.contains(word))
           .toSet();
       final incorrectPhrases = phrasesByReference.entries
-          .expand((referenceAndPhrases) => referenceAndPhrases.value.map((phrase) => (referenceAndPhrases.key, phrase)))
-          .where(
-            (referenceAndPhrase) =>
-                referenceAndPhrase.$2.textWords.first == correctPhrase.textWords.first &&
-                referenceAndPhrase.$2.words.first.redLetters == correctPhrase.words.first.redLetters &&
-                referenceAndPhrase.$2.text != correctPhrase.text,
+          .expand(
+            (referenceAndPhrases) => referenceAndPhrases.value.mapIndexed(
+              (phraseIndex, phrase) => (referenceAndPhrases.key, phraseIndex, phrase),
+            ),
           )
+          .where((referenceAndPhrase) {
+            final (reference, phraseIndex, phrase) = referenceAndPhrase;
+            return phrase.textWords.first == correctPhrase.textWords.first &&
+                phrase.words.first.redLetters == correctPhrase.words.first.redLetters &&
+                phrase.text != correctPhrase.text &&
+                !previousReferences.contains(reference) &&
+                (reference != correctPhraseReference || phraseIndex > index);
+          })
           .map((referenceAndPhrase) {
-            final (reference, phrase) = referenceAndPhrase;
+            final (reference, phraseIndex, phrase) = referenceAndPhrase;
             final phraseLengthDiff = (phrase.text.length - correctPhrase.text.length).abs();
             return (
               phrase,
               [
-                if (passage.references.contains(reference))
+                if (reference == correctPhraseReference)
+                  12
+                else if (passage.references.contains(reference))
                   8
                 else if (reference.toChapterReference() == chapterReference)
                   5
@@ -63,7 +75,7 @@ class PhraseSelectionBuilder extends HookConsumerWidget {
             );
           })
           .sortedByDescending((phraseAndRanking) => phraseAndRanking.$2)
-          .take(10)
+          .take(5)
           .map((phraseAndRanking) => phraseAndRanking.$1)
           .toList();
 

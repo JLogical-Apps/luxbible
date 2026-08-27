@@ -14,7 +14,7 @@ class Phrase {
       .split(RegExp(r'[\s-]+'))
       .where((string) => string.isNotBlank)
       .toList();
-  late final List<String> keywords = text.keywords;
+  late final List<String> keywords = text.onlyLetters.keywords;
 
   Phrase trim() {
     final start = _leadingWhitespacePattern.firstMatch(text)!.end;
