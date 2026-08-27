@@ -66,6 +66,7 @@ class FindInBibleSheet {
         return [
           Expanded(
             child: StyledLoading(
+              loadingPadding: .all(16),
               child: chapter == null
                   ? null
                   : ChapterBuilder(

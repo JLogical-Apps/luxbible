@@ -7,7 +7,7 @@ class PhraseText extends StatelessWidget {
   final List<Phrase> phrases;
 
   const PhraseText({super.key, required this.phrases});
-  PhraseText.phrase({super.key, required Phrase phrase}) : phrases = [phrase];
+  PhraseText.phrase(Phrase phrase, {super.key}) : phrases = [phrase];
 
   @override
   Widget build(BuildContext context) {

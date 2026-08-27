@@ -62,3 +62,4 @@ export 'src/widgets/styled_text_button.dart';
 export 'src/widgets/styled_text_field.dart';
 export 'src/widgets/styled_tile.dart';
 export 'src/widgets/styled_time_dials.dart';
+export 'src/widgets/styled_transition_builder.dart';

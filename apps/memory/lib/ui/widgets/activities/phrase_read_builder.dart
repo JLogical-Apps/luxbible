@@ -34,10 +34,7 @@ class PhraseReadBuilder extends HookConsumerWidget {
               show: visibleIndexState.value >= phraseIndex,
               child: Padding(
                 padding: .only(bottom: 16),
-                child: Align(
-                  alignment: .centerLeft,
-                  child: PhraseText.phrase(phrase: phrase),
-                ),
+                child: Align(alignment: .centerLeft, child: PhraseText.phrase(phrase)),
               ),
             ),
           ),

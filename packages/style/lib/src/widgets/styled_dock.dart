@@ -16,6 +16,7 @@ class StyledDock extends HookWidget {
 
   final Widget? aboveButtons;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
+  final Color? buttonsColor;
 
   final bool shrinkWrap;
   final bool forceHeight;
@@ -31,6 +32,7 @@ class StyledDock extends HookWidget {
     this.childrenPadding = .zero,
     this.aboveButtons,
     this.buttonsBuilder,
+    this.buttonsColor,
     this.shrinkWrap = true,
     this.forceHeight = false,
     this.activeScrollKey,
@@ -155,7 +157,7 @@ class StyledDock extends HookWidget {
                   StyledSizeAndFade.showHide(
                     show: bottomChildren.isNotEmpty,
                     child: ColoredBox(
-                      color: context.colors.surfacePrimary,
+                      color: buttonsColor ?? context.colors.surfacePrimary,
                       child: ClipRect(
                         child: ConstrainedBox(
                           constraints: BoxConstraints(maxHeight: constraints.maxHeight),
