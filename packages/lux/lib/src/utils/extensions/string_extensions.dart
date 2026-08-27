@@ -16,4 +16,8 @@ extension StringExtensions on String {
           keyword.startsWith(word) || (similarityLimit != null && ratio(word, keyword) / 100 > similarityLimit),
     ),
   );
+
+  bool get isUpperCase => this == toUpperCase();
+  bool get isLowerCase => this == toLowerCase();
+  bool get hasQuotationMark => contains(RegExp('["“”〝〞＂]'));
 }

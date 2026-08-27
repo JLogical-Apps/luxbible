@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:collection/collection.dart';
 import 'package:lux/lux.dart';
 import 'package:lux/src/functions/api_bible.dart';
@@ -143,3 +145,9 @@ FutureOr<List<Word>> textSelectionWords(
     .watch(verseSelectionVersesProvider(selection: selection.toVerseSelection(), translation: translation))
     .requireValue
     .getTextSelectionWords(selection);
+
+@Riverpod(keepAlive: true)
+Future<Map<Reference, List<Phrase>>> phrasesByReference(Ref ref, {required BibleTranslation translation}) async {
+  final bible = ref.watch(localBibleProvider(translation: translation)).requireValue;
+  return await Isolate.run(() => bible.verseByReference.mapValues((reference, verse) => Phrase.fromVerse(verse)));
+}

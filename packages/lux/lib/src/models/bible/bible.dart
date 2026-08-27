@@ -16,7 +16,7 @@ class Bible {
 
   late final List<Reference> references = chapterReferences.expand((chapter) => chapter.references).toList();
 
-  late final Map<Reference, Verse> _verseByReference = references
+  late final Map<Reference, Verse> verseByReference = references
       .mapToMap(
         (reference) => MapEntry(
           reference,
@@ -28,7 +28,7 @@ class Bible {
   Chapter getChapterByReference(ChapterReference reference) =>
       getBookByType(reference.book).chapters[reference.chapterNum - 1];
 
-  Verse? getVerseByReference(Reference reference) => _verseByReference[reference];
+  Verse? getVerseByReference(Reference reference) => verseByReference[reference];
 
   late final Map<BookType, Book> _bookByType = BookType.values
       .mapToMap((bookType) => MapEntry(bookType, books.firstWhereOrNull((book) => book.bookType == bookType)))

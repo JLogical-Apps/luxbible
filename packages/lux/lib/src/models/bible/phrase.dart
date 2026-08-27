@@ -1,12 +1,20 @@
 import 'package:collection/collection.dart';
 import 'package:lux/lux_core.dart';
+import 'package:utils_core/utils_core.dart';
 
 class Phrase {
   final List<Word> words;
 
-  const Phrase({required this.words});
+  Phrase({required this.words});
 
-  String get text => words.map((word) => word.text).nonNulls.join();
+  late final String text = words.map((word) => word.text).nonNulls.join();
+  late final List<String> textWords = text
+      .trim()
+      .onlyLetters
+      .split(RegExp(r'[\s-]+'))
+      .where((string) => string.isNotBlank)
+      .toList();
+  late final List<String> keywords = text.keywords;
 
   Phrase trim() {
     final start = _leadingWhitespacePattern.firstMatch(text)!.end;

@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/lux.dart';
 import 'package:memory/models/activity_plan.dart';
 import 'package:memory/ui/widgets/phrase_text.dart';
+import 'package:memory/utils/common_english_function_words.dart';
 import 'package:style/style.dart';
 
 class PhraseSelectionBuilder extends HookConsumerWidget {
@@ -16,36 +17,66 @@ class PhraseSelectionBuilder extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final verses = ref.watch(verseSelectionVersesProvider(translation: .bsb, selection: plan.passage)).value;
-    if (verses == null) {
-      return SizedBox.shrink();
+    final phrasesByReference = ref.watch(phrasesByReferenceProvider(translation: .bsb)).value;
+    if (phrasesByReference == null) {
+      return StyledLoading(loadingPadding: .all(16));
     }
 
-    final phrases = verses.expand((verse) => Phrase.fromVerse(verse)).toList();
-    final phraseKeys = useMemoized(() => phrases.map((_) => GlobalKey()).toList(), []);
+    final passage = plan.passage;
+    final chapterReference = passage.references.first.toChapterReference();
+    final passagePhrases = passage.references.expand((reference) => phrasesByReference[reference]!).toList();
+    final phraseKeys = useMemoized(() => passagePhrases.map((_) => GlobalKey()).toList(), []);
 
     (int currentIndex, List<Choice>?) getStep(int index) {
-      if (index == phrases.length) return (index, null);
+      if (index == passagePhrases.length) return (index, null);
 
-      final incorrectPhrases = phrases.skip(index + 1).toList();
-      final remainingIncorrectPhrases = 3 - incorrectPhrases.length;
-      if (remainingIncorrectPhrases > 0) {
-        incorrectPhrases.addAll(phrases.take((index - 1).clampZero).shuffled().take(remainingIncorrectPhrases));
-      }
-      incorrectPhrases.shuffle();
+      final correctPhrase = passagePhrases[index];
+      final correctPhraseImportantWords = correctPhrase.keywords
+          .where((word) => !commonEnglishFunctionWords.contains(word))
+          .toSet();
+      final incorrectPhrases = phrasesByReference.entries
+          .expand((referenceAndPhrases) => referenceAndPhrases.value.map((phrase) => (referenceAndPhrases.key, phrase)))
+          .where(
+            (referenceAndPhrase) =>
+                referenceAndPhrase.$2.textWords.first == correctPhrase.textWords.first &&
+                referenceAndPhrase.$2.words.first.redLetters == correctPhrase.words.first.redLetters &&
+                referenceAndPhrase.$2.text != correctPhrase.text,
+          )
+          .map((referenceAndPhrase) {
+            final (reference, phrase) = referenceAndPhrase;
+            final phraseLengthDiff = (phrase.text.length - correctPhrase.text.length).abs();
+            return (
+              phrase,
+              [
+                if (passage.references.contains(reference))
+                  8
+                else if (reference.toChapterReference() == chapterReference)
+                  5
+                else if (reference.book == chapterReference.book)
+                  4
+                else if (reference.book.testament == chapterReference.book.testament)
+                  2,
+                if (phraseLengthDiff < 8) 5 else if (phraseLengthDiff < 16) 3,
+                if (phrase.text.hasQuotationMark == correctPhrase.text.hasQuotationMark) 5,
+                8 * pow(phrase.keywords.toSet().intersection(correctPhraseImportantWords).length, 0.6),
+              ].sum,
+            );
+          })
+          .sortedByDescending((phraseAndRanking) => phraseAndRanking.$2)
+          .take(10)
+          .map((phraseAndRanking) => phraseAndRanking.$1)
+          .toList();
 
-      final correctAnswer = Random().nextInt(4);
       return (
         index,
-        List.generate(4, (i) {
-          if (i == correctAnswer) return Choice(phrase: phrases[index], isCorrect: true);
-          if (incorrectPhrases.elementAtOrNull(i) case final phrase?) return Choice(phrase: phrase, isCorrect: false);
-          return null;
-        }).nonNulls.toList(),
+        [
+          Choice(phrase: correctPhrase, isCorrect: true),
+          ...incorrectPhrases.shuffled().take(3).map((phrase) => Choice(phrase: phrase, isCorrect: false)),
+        ].shuffled(),
       );
     }
 
-    final stepState = useState(getStep(0));
+    final stepState = useState(useMemoized(() => getStep(0)));
     final (currentIndex, choices) = stepState.value;
 
     usePostFrameEffect(
@@ -61,7 +92,7 @@ class PhraseSelectionBuilder extends HookConsumerWidget {
         shrinkWrap: false,
         childrenPadding: .all(16),
         children: [
-          ...phrases.mapIndexed(
+          ...passagePhrases.mapIndexed(
             (phraseIndex, phrase) => SizedBox(
               width: double.infinity,
               key: phraseKeys[phraseIndex],
@@ -95,7 +126,7 @@ class PhraseSelectionBuilder extends HookConsumerWidget {
               )
             : null,
         buttonsBuilder: (context) => [
-          if (currentIndex + 1 > phrases.length)
+          if (currentIndex + 1 > passagePhrases.length)
             StyledRectButton.secondary(label: 'Reset'.toText(), onPressed: () => stepState.value = getStep(0)),
         ],
       ),

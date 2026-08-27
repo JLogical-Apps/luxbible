@@ -680,3 +680,85 @@ final class TextSelectionWordsFamily extends $Family
   @override
   String toString() => r'textSelectionWordsProvider';
 }
+
+@ProviderFor(phrasesByReference)
+final phrasesByReferenceProvider = PhrasesByReferenceFamily._();
+
+final class PhrasesByReferenceProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<Map<Reference, List<Phrase>>>,
+          Map<Reference, List<Phrase>>,
+          FutureOr<Map<Reference, List<Phrase>>>
+        >
+    with
+        $FutureModifier<Map<Reference, List<Phrase>>>,
+        $FutureProvider<Map<Reference, List<Phrase>>> {
+  PhrasesByReferenceProvider._({
+    required PhrasesByReferenceFamily super.from,
+    required BibleTranslation super.argument,
+  }) : super(
+         retry: null,
+         name: r'phrasesByReferenceProvider',
+         isAutoDispose: false,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$phrasesByReferenceHash();
+
+  @override
+  String toString() {
+    return r'phrasesByReferenceProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<Map<Reference, List<Phrase>>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<Map<Reference, List<Phrase>>> create(Ref ref) {
+    final argument = this.argument as BibleTranslation;
+    return phrasesByReference(ref, translation: argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is PhrasesByReferenceProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$phrasesByReferenceHash() =>
+    r'cb5cae5f98ebe05e45f5512a36ce5b8e44974b47';
+
+final class PhrasesByReferenceFamily extends $Family
+    with
+        $FunctionalFamilyOverride<
+          FutureOr<Map<Reference, List<Phrase>>>,
+          BibleTranslation
+        > {
+  PhrasesByReferenceFamily._()
+    : super(
+        retry: null,
+        name: r'phrasesByReferenceProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: false,
+      );
+
+  PhrasesByReferenceProvider call({required BibleTranslation translation}) =>
+      PhrasesByReferenceProvider._(argument: translation, from: this);
+
+  @override
+  String toString() => r'phrasesByReferenceProvider';
+}
