@@ -145,6 +145,7 @@ class ChapterPositionSelectorHeading extends HookWidget {
                 hintText: t.navigation.book,
                 textStyle: context.textStyle.paragraphLg,
                 textCapitalization: .words,
+                autocorrect: false,
                 action: .next,
                 textInputType: .text,
                 focusNode: bookFocusNode,
