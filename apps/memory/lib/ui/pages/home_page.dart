@@ -20,34 +20,38 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
     return StyledPage(
+      title: SizedBox.shrink(),
+      trailing: StyledCircleButton.md(child: Symbols.more_vert.toIcon(), onPressed: () {}),
       body: StyledListView(
-        padding: MediaQuery.paddingOf(context).onlyVertical,
+        padding: .only(bottom: MediaQuery.paddingOf(context).bottom),
         children: [
           Padding(
-            padding: .all(64),
+            padding: .symmetric(vertical: 32, horizontal: 64),
             child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: 256),
-              child: AspectRatio(
-                aspectRatio: 1,
-                child: AvatarGlow(
-                  glowColor: context.colors.contentPrimary,
-                  glowRadiusFactor: 0.1,
-                  child: StyledMaterial(
-                    borderRadius: .circular(999),
-                    colorBuilder: .primary,
-                    onPressed: () {},
-                    child: Column(
-                      mainAxisAlignment: .center,
-                      children: [
-                        Text(
-                          'Practice',
-                          style: context.textStyle.displaySm.copyWith(color: context.colors.contentPrimaryInverse),
-                        ),
-                        Text(
-                          '3-5 Minutes',
-                          style: context.textStyle.labelMd.copyWith(color: context.colors.inverted.contentSecondary),
-                        ),
-                      ],
+              constraints: BoxConstraints(maxWidth: 256, maxHeight: 256),
+              child: Center(
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: AvatarGlow(
+                    glowColor: context.colors.contentPrimary,
+                    glowRadiusFactor: 0.1,
+                    child: StyledMaterial(
+                      borderRadius: .circular(999),
+                      colorBuilder: .primary,
+                      onPressed: () {},
+                      child: Column(
+                        mainAxisAlignment: .center,
+                        children: [
+                          Text(
+                            'Practice',
+                            style: context.textStyle.displaySm.copyWith(color: context.colors.contentPrimaryInverse),
+                          ),
+                          Text(
+                            '3-5 Minutes',
+                            style: context.textStyle.labelMd.copyWith(color: context.colors.inverted.contentSecondary),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
