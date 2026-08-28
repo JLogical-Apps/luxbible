@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
+import 'package:lux/lux.dart';
 import 'package:utils_core/utils_core.dart';
 
 extension CoreListExtensions<T> on List<T> {
@@ -115,6 +116,8 @@ extension CoreIterableExtensions<T> on Iterable<T> {
   T minBy(num Function(T) numMapper) => reduce((a, b) => numMapper(a) < numMapper(b) ? a : b);
   T? maxByOrNull(num Function(T) numMapper) => isEmpty ? null : reduce((a, b) => numMapper(a) > numMapper(b) ? a : b);
   T? minByOrNull(num Function(T) numMapper) => isEmpty ? null : reduce((a, b) => numMapper(a) < numMapper(b) ? a : b);
+
+  Iterable<T> skipLast(int amount) => take((length - amount).clampZero);
 }
 
 extension CoreFutureMapEntryIterableExtensions<K, V> on Iterable<Future<MapEntry<K, V>>> {

@@ -25,6 +25,16 @@ class Bible {
       )
       .withoutNullValues;
 
+  late final List<String> words = books
+      .expand(
+        (book) => book.chapters.expand(
+          (chapter) => chapter.verses.values.expand<String>(
+            (verse) => verse.words.map((word) => word.text).nonNulls.expand((text) => text.words),
+          ),
+        ),
+      )
+      .toList();
+
   Chapter getChapterByReference(ChapterReference reference) =>
       getBookByType(reference.book).chapters[reference.chapterNum - 1];
 

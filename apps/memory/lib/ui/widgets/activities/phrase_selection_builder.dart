@@ -28,7 +28,7 @@ class PhraseSelectionBuilder extends HookConsumerWidget {
         .expand((reference) => phrasesByReference[reference]!.map((phrase) => (phrase, reference)))
         .toList();
     final passagePhrases = passagePhrasesAndReferences.map((phraseAndReference) => phraseAndReference.$1).toList();
-    final phraseKeys = useMemoized(() => passagePhrases.map((_) => GlobalKey()).toList(), []);
+    final phraseKeys = useMemoized(() => passagePhrases.map((_) => GlobalKey()).toList());
 
     (int currentIndex, List<Choice>?) getStep(int index) {
       if (index == passagePhrases.length) return (index, null);

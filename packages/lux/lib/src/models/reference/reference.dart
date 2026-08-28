@@ -52,6 +52,23 @@ class Reference extends Equatable with ComparableOperators<Reference> {
     return nextBook == null ? null : Reference(book: nextBook, chapterNum: 1, verseNum: 1);
   }
 
+  Reference? get previousOrNull {
+    final previousVerseNum = verseNum - 1;
+    if (previousVerseNum >= 1) {
+      return Reference(book: book, chapterNum: chapterNum, verseNum: previousVerseNum);
+    }
+
+    final previousChapterNum = chapterNum - 1;
+    if (previousChapterNum >= 1) {
+      return Reference.lastVerseFor(book: book, chapterNum: previousChapterNum);
+    }
+
+    final previousBook = book.index == 0 ? null : BookType.values[book.index - 1];
+    return previousBook == null
+        ? null
+        : Reference.lastVerseFor(book: previousBook, chapterNum: previousBook.bookInfo.numChapters);
+  }
+
   Reference get clamped {
     final clampedChapter = chapterNum.clamp(1, book.bookInfo.numChapters);
     final clampedVerse = verseNum.clamp(1, book.bookInfo.getNumVerses(clampedChapter));
