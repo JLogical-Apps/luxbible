@@ -10,4 +10,8 @@ The library lists added passages. Users can open a passage for reading, remove i
 
 Word Type opens the native keyboard and asks for the first letter of each word in sequence. Words are revealed after a correct letter, while punctuation before a word is visible without being typed. A neighboring QWERTY key is accepted with a brief close-enough message, and other mistakes flash the activity red.
 
+Reference Selection shows the full passage and asks the user to choose its reference from six canonically ordered options. The choices combine the correct book and two other books from the same testament with the correct range and two generated ranges of the same verse length. Each book and range appears twice.
+
+Reference Type shows the full passage with book, chapter, and verse fields. The passage's starting reference is checked only when the user submits the verse field from the keyboard.
+
 The ideas being considered are documented in [`roadmap.md`](roadmap.md). Move behavior into this file only after it exists in the working tree and is intended for an upcoming release.

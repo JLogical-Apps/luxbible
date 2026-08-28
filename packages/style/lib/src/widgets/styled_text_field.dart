@@ -134,7 +134,7 @@ class StyledTextField extends HookWidget {
             focusNode: focusNode,
             readOnly: readOnly,
             onChanged: (text) => onChanged?.call(text),
-            autocorrect: autocorrect,
+            autocorrect: autocorrect && textInputType == .text,
             enabled: onChanged != null,
             maxLines: maxLines,
             autofocus: autofocus,

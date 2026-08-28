@@ -4,6 +4,8 @@ import 'package:lux/lux.dart';
 import 'package:memory/models/activity_plan.dart';
 import 'package:memory/ui/widgets/activities/phrase_read_builder.dart';
 import 'package:memory/ui/widgets/activities/phrase_selection_builder.dart';
+import 'package:memory/ui/widgets/activities/reference_selection_builder.dart';
+import 'package:memory/ui/widgets/activities/reference_type_builder.dart';
 import 'package:memory/ui/widgets/activities/word_selection_builder.dart';
 import 'package:memory/ui/widgets/activities/word_type_builder.dart';
 import 'package:style/style.dart';
@@ -16,12 +18,18 @@ class ActivityPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return StyledPage(
-      title: plan.passage.format().toText(),
+      title: switch (plan) {
+        ReferenceSelectionActivityPlan() => ActivityPlanType.referenceSelection.title().toText(),
+        ReferenceTypeActivityPlan() => ActivityPlanType.referenceType.title().toText(),
+        _ => plan.passage.format().toText(),
+      },
       body: switch (plan) {
         PhraseReadActivityPlan plan => PhraseReadBuilder(plan: plan),
         PhraseSelectionActivityPlan plan => PhraseSelectionBuilder(plan: plan),
         WordSelectionActivityPlan plan => WordSelectionBuilder(plan: plan),
         WordTypeActivityPlan plan => WordTypeBuilder(plan: plan),
+        ReferenceSelectionActivityPlan plan => ReferenceSelectionBuilder(plan: plan),
+        ReferenceTypeActivityPlan plan => ReferenceTypeBuilder(plan: plan),
         _ => SizedBox.shrink(),
       },
     );

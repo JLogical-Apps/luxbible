@@ -71,10 +71,13 @@ class ChapterPositionSelectorHeading extends HookWidget {
 
   final Function(ChapterPosition, bool shouldSelectVerse) onSelect;
 
+  final bool forceVerseNum;
+
   final Widget? trailing;
   final bool readOnly;
+
+  final Color? color;
   final bool showShadow;
-  final bool forceVerseNum;
 
   SelectorState get state => selectorState.value;
 
@@ -83,9 +86,10 @@ class ChapterPositionSelectorHeading extends HookWidget {
     required this.selectorState,
     required this.onSelect,
     this.trailing,
-    this.readOnly = false,
-    this.showShadow = true,
     this.forceVerseNum = false,
+    this.readOnly = false,
+    this.color,
+    this.showShadow = true,
   });
 
   @override
@@ -121,7 +125,7 @@ class ChapterPositionSelectorHeading extends HookWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         boxShadow: [if (showShadow) StyledShadow.down(context)],
-        color: context.colors.surfacePrimary,
+        color: color ?? context.colors.surfacePrimary,
       ),
       child: Padding(
         padding: EdgeInsets.all(16).copyWith(top: 0),
