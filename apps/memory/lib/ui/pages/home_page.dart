@@ -92,6 +92,15 @@ class HomePage extends ConsumerWidget {
                         title: passage.format().toText(),
                         children: [
                           StyledListItem.navigation(
+                            title: 'Read'.toText(),
+                            subtitle: 'Read this passage.'.toText(),
+                            leading: Symbols.book.toIcon(),
+                            onPressed: () {
+                              context.pop();
+                              PassagePreviewPage.show(context, verseSelection: passage);
+                            },
+                          ),
+                          StyledListItem.navigation(
                             title: 'Practice'.toText(),
                             subtitle: 'Play an activity to practice this passage.'.toText(),
                             leading: Symbols.exercise.toIcon(),
@@ -116,15 +125,6 @@ class HomePage extends ConsumerWidget {
                               if (type != null && context.mounted) {
                                 context.push((context) => ActivityPage(plan: .fromType(type, passage: passage)));
                               }
-                            },
-                          ),
-                          StyledListItem.navigation(
-                            title: 'Read'.toText(),
-                            subtitle: 'Read this passage.'.toText(),
-                            leading: Symbols.book.toIcon(),
-                            onPressed: () {
-                              context.pop();
-                              PassagePreviewPage.show(context, verseSelection: passage);
                             },
                           ),
                           StyledListItem(
