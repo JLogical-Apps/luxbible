@@ -8,15 +8,15 @@ import 'package:lux/src/ui/widgets/text_edit_value_extensions.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
-class ChapterPositionSelector extends HookWidget {
+class PositionSelector extends HookWidget {
   final ChapterReference? initialReference;
-  final Function(ChapterPosition, bool shouldSelectVerse) onSelect;
+  final Function(PositionResult) onSelect;
   final bool forceVerseNum;
 
   final Widget? trailing;
   final List<Widget> Function(BuildContext, Function(ChapterPosition) onSelect)? aboveBooksBuilder;
 
-  const ChapterPositionSelector({
+  const PositionSelector({
     super.key,
     required this.onSelect,
     this.initialReference,
@@ -41,7 +41,7 @@ class ChapterPositionSelector extends HookWidget {
 
     return Column(
       children: [
-        ChapterPositionSelectorHeading(
+        PositionSelectorHeading(
           selectorState: selectorState,
           onSelect: onSelect,
           trailing: trailing,
@@ -52,7 +52,7 @@ class ChapterPositionSelector extends HookWidget {
           child: ListView(
             controller: scrollController,
             children: [
-              ChapterPositionSelectorBody(
+              PositionSelectorBody(
                 selectorState: selectorState,
                 onSelect: onSelect,
                 aboveBooksBuilder: aboveBooksBuilder,
@@ -66,10 +66,10 @@ class ChapterPositionSelector extends HookWidget {
   }
 }
 
-class ChapterPositionSelectorHeading extends HookWidget {
+class PositionSelectorHeading extends HookWidget {
   final ValueNotifier<SelectorState> selectorState;
 
-  final Function(ChapterPosition, bool shouldSelectVerse) onSelect;
+  final Function(PositionResult) onSelect;
 
   final bool forceVerseNum;
 
@@ -81,7 +81,7 @@ class ChapterPositionSelectorHeading extends HookWidget {
 
   SelectorState get state => selectorState.value;
 
-  const ChapterPositionSelectorHeading({
+  const PositionSelectorHeading({
     super.key,
     required this.selectorState,
     required this.onSelect,
@@ -98,14 +98,14 @@ class ChapterPositionSelectorHeading extends HookWidget {
     final chapterFocusNode = useFocusNode();
     final verseFocusNode = useFocusNode();
 
-    final SelectorState(:book, :chapterNum, :verseNum) = state;
+    final SelectorState(:book, :chapterNum, :verseText) = state;
 
     useOnListenableChange(
       bookFocusNode,
       () => selectorState.value = state.copyWith(
         bookText: state.book?.title(isPlural: true),
         chapterNum: state.chapterNum,
-        verseNum: state.verseNum,
+        verseText: state.verseText,
         focus: bookFocusNode.hasPrimaryFocus ? .book : null,
       ),
     );
@@ -181,10 +181,11 @@ class ChapterPositionSelectorHeading extends HookWidget {
                         final chapterNum = int.tryParse(text);
                         if (book != null && chapterNum != null) {
                           onSelect(
-                            ChapterPosition(
-                              reference: ChapterReference(book: book, chapterNum: chapterNum),
+                            ChapterPositionResult(
+                              position: ChapterPosition(
+                                reference: ChapterReference(book: book, chapterNum: chapterNum),
+                              ),
                             ),
-                            false,
                           );
                         }
                       },
@@ -198,32 +199,24 @@ class ChapterPositionSelectorHeading extends HookWidget {
               SizedBox(
                 width: 112,
                 child: StyledTextField(
-                  text: verseNum?.toString() ?? '',
+                  text: verseText,
                   readOnly: readOnly,
                   onChanged: book == null || chapterNum == null
                       ? null
-                      : (text) => selectorState.value = state.withVerseNum(int.tryParse(text)),
+                      : (text) => selectorState.value = state.withVerseText(text),
                   hintText: t.navigation.verse,
                   textStyle: context.textStyle.paragraphLg,
                   action: .done,
                   textInputType: .numberWithOptions(signed: true),
                   focusNode: verseFocusNode,
                   onSubmit: (text) {
-                    final verseNum = int.tryParse(text);
-                    if (verseNum != null && book != null && chapterNum != null) {
-                      onSelect(
-                        ChapterPosition(
-                          reference: ChapterReference(book: book, chapterNum: chapterNum),
-                          verseNum: verseNum,
-                        ),
-                        true,
-                      );
+                    if (state.verseSpan case final selection?) {
+                      onSelect(PassagePositionResult(selection: selection));
                     }
                   },
                   inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
                     if (book != null && chapterNum != null)
-                      RangeTextInputFormatter(min: 1, max: book.bookInfo.getNumVerses(chapterNum)),
+                      VerseRangeTextInputFormatter(max: book.bookInfo.getNumVerses(chapterNum)),
                   ],
                 ),
               )
@@ -236,14 +229,14 @@ class ChapterPositionSelectorHeading extends HookWidget {
   }
 }
 
-class ChapterPositionSelectorBody extends HookWidget {
+class PositionSelectorBody extends HookWidget {
   final ValueNotifier<SelectorState> selectorState;
 
-  final Function(ChapterPosition, bool shouldSelectVerse) onSelect;
+  final Function(PositionResult) onSelect;
   final List<Widget> Function(BuildContext, Function(ChapterPosition) onSelect)? aboveBooksBuilder;
   final bool forceVerseNum;
 
-  const ChapterPositionSelectorBody({
+  const PositionSelectorBody({
     super.key,
     required this.selectorState,
     required this.onSelect,
@@ -259,7 +252,7 @@ class ChapterPositionSelectorBody extends HookWidget {
 
     void select(ChapterPosition position) {
       selectorState.value = .chapter(position.reference, focus: .chapter);
-      onSelect(position, false);
+      onSelect(ChapterPositionResult(position: position));
     }
 
     return switch (state.focus) {
@@ -337,7 +330,11 @@ class ChapterPositionSelectorBody extends HookWidget {
                         trailing: Symbols.expand_circle_right.toIcon(),
                         onPressed: () {
                           selectorState.value = .verse(reference);
-                          onSelect(ChapterPosition(reference: chapterReference, verseNum: reference.verseNum), true);
+                          onSelect(
+                            PassagePositionResult(
+                              selection: VerseSpanReference(start: VerseBiblePointer(reference: reference)),
+                            ),
+                          );
                         },
                       ),
                     )
@@ -352,21 +349,21 @@ class SelectorState {
   final bool isBookFullySelected;
 
   final int? chapterNum;
-  final int? verseNum;
-  final ChapterPositionStateFocus focus;
+  final String verseText;
+  final PositionSelectorFocus focus;
 
   const SelectorState({
     this.bookText = '',
     this.isBookFullySelected = false,
     this.chapterNum,
-    this.verseNum,
+    this.verseText = '',
     required this.focus,
   });
 
-  SelectorState.book(BookType book, {required ChapterPositionStateFocus focus})
+  SelectorState.book(BookType book, {required PositionSelectorFocus focus})
     : this(bookText: book.title(isPlural: true), focus: focus);
 
-  SelectorState.chapter(ChapterReference chapterReference, {required ChapterPositionStateFocus focus})
+  SelectorState.chapter(ChapterReference chapterReference, {required PositionSelectorFocus focus})
     : this(
         bookText: chapterReference.book.title(isPlural: true),
         chapterNum: chapterReference.chapterNum,
@@ -377,7 +374,7 @@ class SelectorState {
     : this(
         bookText: reference.book.title(isPlural: true),
         chapterNum: reference.chapterNum,
-        verseNum: reference.verseNum,
+        verseText: reference.verseNum.toString(),
         focus: .verse,
       );
 
@@ -401,31 +398,67 @@ class SelectorState {
   }
 
   SelectorState withBookText(String bookText) =>
-      bookText == this.bookText ? this : copyWith(bookText: bookText, chapterNum: null, verseNum: null);
+      bookText == this.bookText ? this : copyWith(bookText: bookText, chapterNum: null, verseText: '');
 
   SelectorState withBookSelected(bool isFullySelected) =>
-      copyWith(isBookFullySelected: isFullySelected, chapterNum: chapterNum, verseNum: verseNum);
+      copyWith(isBookFullySelected: isFullySelected, chapterNum: chapterNum, verseText: verseText);
 
-  SelectorState withChapterNum(int? chapterNum) => copyWith(chapterNum: chapterNum, verseNum: null);
+  SelectorState withChapterNum(int? chapterNum) => copyWith(chapterNum: chapterNum, verseText: '');
 
-  SelectorState withVerseNum(int? verseNum) => copyWith(chapterNum: chapterNum, verseNum: verseNum);
+  SelectorState withVerseText(String verseText) => copyWith(chapterNum: chapterNum, verseText: verseText);
 
-  SelectorState withFocus(ChapterPositionStateFocus focus) =>
-      copyWith(chapterNum: chapterNum, verseNum: verseNum, focus: focus);
+  SelectorState withFocus(PositionSelectorFocus focus) =>
+      copyWith(chapterNum: chapterNum, verseText: verseText, focus: focus);
 
   SelectorState copyWith({
     String? bookText,
     bool? isBookFullySelected,
     required int? chapterNum,
-    required int? verseNum,
-    ChapterPositionStateFocus? focus,
+    required String verseText,
+    PositionSelectorFocus? focus,
   }) => SelectorState(
     bookText: bookText ?? this.bookText,
     isBookFullySelected: isBookFullySelected ?? this.isBookFullySelected,
     chapterNum: chapterNum,
-    verseNum: verseNum,
+    verseText: verseText,
     focus: focus ?? this.focus,
   );
+
+  int? get verseNum => int.tryParse(verseText.split('-').first);
+
+  VerseSpanReference? get verseSpan {
+    final chapterReference = this.chapterReference;
+    final parts = verseText.split('-').map(int.tryParse).toList();
+    if (chapterReference == null || ![1, 2].contains(parts.length) || parts.any((part) => part == null)) {
+      return null;
+    }
+
+    final startVerseNum = parts.first!;
+    final endVerseNum = parts.length == 1 ? startVerseNum : parts.last!;
+    if (startVerseNum < 1 || startVerseNum > endVerseNum || endVerseNum > chapterReference.numVerses) {
+      return null;
+    }
+
+    final start = VerseBiblePointer(reference: chapterReference.getReference(startVerseNum));
+    final end = VerseBiblePointer(reference: chapterReference.getReference(endVerseNum));
+    return VerseSpanReference(start: start, end: start == end ? null : end);
+  }
 }
 
-enum ChapterPositionStateFocus { book, chapter, verse }
+enum PositionSelectorFocus { book, chapter, verse }
+
+sealed class PositionResult {
+  const PositionResult();
+}
+
+class ChapterPositionResult extends PositionResult {
+  final ChapterPosition position;
+
+  const ChapterPositionResult({required this.position});
+}
+
+class PassagePositionResult extends PositionResult {
+  final VerseSpanReference selection;
+
+  const PassagePositionResult({required this.selection});
+}

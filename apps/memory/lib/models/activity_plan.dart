@@ -41,7 +41,7 @@ enum ActivityPlanType {
   referenceType;
 
   bool get isPracticeActivity => switch (this) {
-    readContext => false,
+    readContext || referenceSelection || referenceType => false,
     _ => true,
   };
 

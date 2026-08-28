@@ -10,11 +10,20 @@ class FindInBibleSheet {
     final chapterPositionState = useState<ChapterPosition?>(null);
     final selectionController = usePassageSelectionController(ref.read(luxReaderConfigurationProvider).selection);
 
-    void selectReference(ChapterPosition position, bool shouldSelectVerse) {
+    void selectReference(PositionResult result) {
       FocusManager.instance.primaryFocus?.unfocus();
       selectionController.clear();
-      if (position.getReference() case final reference?) selectionController.selectReferences([reference]);
-      chapterPositionState.value = position;
+      switch (result) {
+        case ChapterPositionResult(:final position):
+          chapterPositionState.value = position;
+        case PassagePositionResult(:final selection):
+          selectionController.selectReferences(selection.references);
+          final reference = selection.start.startReference;
+          chapterPositionState.value = ChapterPosition(
+            reference: reference.toChapterReference(),
+            verseNum: reference.verseNum,
+          );
+      }
     }
 
     final selectorState = useState(SelectorState(focus: .book));
@@ -34,7 +43,7 @@ class FindInBibleSheet {
           selectionController.clear();
           chapterPositionState.value = null;
         },
-        child: ChapterPositionSelectorHeading(
+        child: PositionSelectorHeading(
           selectorState: selectorState,
           readOnly: !isScrollingDownState.value,
           onSelect: selectReference,
@@ -50,7 +59,7 @@ class FindInBibleSheet {
             Expanded(
               child: SingleChildScrollView(
                 controller: scrollController,
-                child: ChapterPositionSelectorBody(
+                child: PositionSelectorBody(
                   selectorState: selectorState,
                   onSelect: selectReference,
                   forceVerseNum: true,

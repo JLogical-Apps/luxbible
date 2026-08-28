@@ -21,10 +21,10 @@ class ReferenceTypeBuilder extends HookConsumerWidget {
     final selectorState = useState(SelectorState(focus: .book));
     final errorCountState = useState(0);
 
-    void selectReference(ChapterPosition position, bool shouldSelectVerse) {
-      if (!shouldSelectVerse || isCompletedState.value) return;
+    void selectReference(PositionResult result) {
+      if (isCompletedState.value || result is! PassagePositionResult) return;
 
-      if (position.getReference() == plan.passage.references.first) {
+      if (result.selection.toVerseSelection() == plan.passage) {
         isCompletedState.value = true;
       } else {
         errorCountState.value++;
@@ -46,7 +46,7 @@ class ReferenceTypeBuilder extends HookConsumerWidget {
             ? null
             : Padding(
                 padding: .only(top: 16),
-                child: ChapterPositionSelectorHeading(
+                child: PositionSelectorHeading(
                   selectorState: selectorState,
                   onSelect: selectReference,
                   forceVerseNum: true,

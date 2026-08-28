@@ -6,7 +6,7 @@ import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/verse_of_the_day_provider.dart';
 import 'package:bible/ui/hooks/audio_bible_passage_sync.dart';
-import 'package:bible/ui/pages/chapter_position_search_page.dart';
+import 'package:bible/ui/pages/position_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/widgets/audio_bible_panel.dart';
 import 'package:bible/ui/widgets/linked_study_panel.dart';
@@ -321,16 +321,17 @@ class BibleBody extends HookConsumerWidget {
                   );
                 },
                 onPressed: () async {
-                  final result = await context.pushDialog<ChapterPositionPageResult>(
-                    ChapterPositionSearchPage(initialReference: currentChapterReference),
+                  final result = await context.pushDialog<PositionPageResult>(
+                    PositionPage(initialReference: currentChapterReference),
                   );
                   if (result != null) {
                     // addPostFrameCallback until https://github.com/rrousselGit/riverpod/issues/4812
                     WidgetsBinding.instance.addPostFrameCallback((_) {
-                      if (result.shouldSelectVerse) {
-                        navigateToVerseSelection(VerseSelection.reference(result.position.getReference()!));
-                      } else {
-                        hardNavigateTo(result.position, bookmarkId: result.bookmarkId);
+                      switch (result.result) {
+                        case ChapterPositionResult(:final position):
+                          hardNavigateTo(position, bookmarkId: result.bookmarkId);
+                        case PassagePositionResult(:final selection):
+                          navigateToVerseSelection(selection.toVerseSelection());
                       }
                       ref.markOnboardingStep(.navigateChapter);
                     });

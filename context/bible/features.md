@@ -139,8 +139,8 @@ Tapping the main toolbar opens the reference navigation page.
 ### Verse
 
 - Lists the verses available for the selected chapter
-- Accepts numeric filtering
-- Opens and selects the chosen verse by tap or keyboard submission
+- Accepts a verse number or verse range, such as 12-15
+- Opens and selects every chosen verse by tap or keyboard submission
 - Returns to chapter or book navigation when either earlier field is selected
 
 ### Translation

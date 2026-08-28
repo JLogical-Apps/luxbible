@@ -17,7 +17,7 @@ export 'src/ui/widgets/annotated_span.dart';
 export 'src/ui/widgets/bible_loading_error.dart';
 export 'src/ui/widgets/chapter_builder.dart';
 export 'src/ui/widgets/chapter_page_view.dart';
-export 'src/ui/widgets/chapter_position_selector.dart';
+export 'src/ui/widgets/position_selector.dart';
 export 'src/ui/widgets/colored_circle.dart';
 export 'src/ui/widgets/hook_consumer_builder.dart';
 export 'src/ui/widgets/keep_alive_container.dart';

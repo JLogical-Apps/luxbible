@@ -9,18 +9,17 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 import 'package:utils_core/utils_core.dart';
 
-class ChapterPositionPageResult {
-  final ChapterPosition position;
+class PositionPageResult {
+  final PositionResult result;
   final String? bookmarkId;
-  final bool shouldSelectVerse;
 
-  const ChapterPositionPageResult({required this.position, this.bookmarkId, this.shouldSelectVerse = false});
+  const PositionPageResult({required this.result, this.bookmarkId});
 }
 
-class ChapterPositionSearchPage extends ConsumerWidget {
+class PositionPage extends ConsumerWidget {
   final ChapterReference initialReference;
 
-  const ChapterPositionSearchPage({super.key, required this.initialReference});
+  const PositionPage({super.key, required this.initialReference});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,7 +28,7 @@ class ChapterPositionSearchPage extends ConsumerWidget {
 
     return StyledPage(
       leading: StyledCircleButton.md(child: Symbols.close.toIcon(), onPressed: () => context.pop()),
-      body: ChapterPositionSelector(
+      body: PositionSelector(
         initialReference: initialReference,
         trailing: SizedBox(
           width: 112,
@@ -59,8 +58,7 @@ class ChapterPositionSearchPage extends ConsumerWidget {
             ),
           ),
         ),
-        onSelect: (position, shouldSelectVerse) =>
-            context.pop(ChapterPositionPageResult(position: position, shouldSelectVerse: shouldSelectVerse)),
+        onSelect: (result) => context.pop(PositionPageResult(result: result)),
         aboveBooksBuilder: (context, onSelect) => [
           if (user.bookmarkById.isNotEmpty)
             StyledSection(
@@ -76,7 +74,10 @@ class ChapterPositionSearchPage extends ConsumerWidget {
                         .mapToIterable(
                           (bookmarkId, bookmark) => StyledTile(
                             onPressed: () => context.pop(
-                              ChapterPositionPageResult(position: bookmark.position, bookmarkId: bookmarkId),
+                              PositionPageResult(
+                                result: ChapterPositionResult(position: bookmark.position),
+                                bookmarkId: bookmarkId,
+                              ),
                             ),
                             padding: .all(16),
                             child: Row(
