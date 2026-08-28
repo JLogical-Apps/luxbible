@@ -60,7 +60,7 @@ enum ActivityPlanType {
     readContext => 'Read the passage in context',
     phraseSelection => 'Place the correct phrases in the blanks.',
     wordSelection => 'Place the correct words in the blanks.',
-    wordType => 'Type the words in the blanks.',
+    wordType => 'Type the first letter of each word.',
     referenceSelection => 'Select the correct reference.',
     referenceType => 'Type the correct reference.',
   };

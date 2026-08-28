@@ -8,4 +8,6 @@ Tapping a verse selects and underlines it. Additional taps use the same anchored
 
 The library lists added passages. Users can open a passage for reading, remove it, or begin one of the current prototype practice activities.
 
+Word Type opens the native keyboard and asks for the first letter of each word in sequence. Words are revealed after a correct letter, while punctuation before a word is visible without being typed. A neighboring QWERTY key is accepted with a brief close-enough message, and other mistakes flash the activity red.
+
 The ideas being considered are documented in [`roadmap.md`](roadmap.md). Move behavior into this file only after it exists in the working tree and is intended for an upcoming release.

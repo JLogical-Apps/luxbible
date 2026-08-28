@@ -171,7 +171,10 @@ class StyledDock extends HookWidget {
                       ),
                     ),
                   ),
-                  Builder(builder: (context) => SizedBox(height: MediaQuery.viewInsetsOf(context).bottom)),
+                  Builder(
+                    builder: (context) =>
+                        Container(color: buttonsColor, height: MediaQuery.viewInsetsOf(context).bottom),
+                  ),
                 ],
               ),
             ),

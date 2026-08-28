@@ -32,6 +32,7 @@ dependencies:
   material_symbols_icons: ^4.2960.0
   intersperse: ^2.0.0
   avatar_glow: ^3.0.1
+  toastification:
 
 dev_dependencies:
   flutter_test:

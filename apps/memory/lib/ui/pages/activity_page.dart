@@ -5,6 +5,7 @@ import 'package:memory/models/activity_plan.dart';
 import 'package:memory/ui/widgets/activities/phrase_read_builder.dart';
 import 'package:memory/ui/widgets/activities/phrase_selection_builder.dart';
 import 'package:memory/ui/widgets/activities/word_selection_builder.dart';
+import 'package:memory/ui/widgets/activities/word_type_builder.dart';
 import 'package:style/style.dart';
 
 class ActivityPage extends HookConsumerWidget {
@@ -20,6 +21,7 @@ class ActivityPage extends HookConsumerWidget {
         PhraseReadActivityPlan plan => PhraseReadBuilder(plan: plan),
         PhraseSelectionActivityPlan plan => PhraseSelectionBuilder(plan: plan),
         WordSelectionActivityPlan plan => WordSelectionBuilder(plan: plan),
+        WordTypeActivityPlan plan => WordTypeBuilder(plan: plan),
         _ => SizedBox.shrink(),
       },
     );

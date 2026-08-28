@@ -12,6 +12,7 @@ import 'package:memory/providers/user_provider.dart';
 import 'package:memory/ui/pages/home_page.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toastification/toastification.dart';
 
 Future<void> main() async {
   runZonedGuarded(
@@ -54,19 +55,21 @@ class MemoryApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: MediaQuery.withClampedTextScaling(
-        minScaleFactor: 1,
-        maxScaleFactor: 1.8,
-        child: MaterialApp(
-          title: 'Lux Memory',
-          themeMode: user.theme,
-          theme: theme,
-          darkTheme: darkTheme,
-          scrollBehavior: BouncingScrollBehavior(),
-          debugShowCheckedModeBanner: false,
-          home: HomePage(),
+    return ToastificationWrapper(
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: MediaQuery.withClampedTextScaling(
+          minScaleFactor: 1,
+          maxScaleFactor: 1.8,
+          child: MaterialApp(
+            title: 'Lux Memory',
+            themeMode: user.theme,
+            theme: theme,
+            darkTheme: darkTheme,
+            scrollBehavior: BouncingScrollBehavior(),
+            debugShowCheckedModeBanner: false,
+            home: HomePage(),
+          ),
         ),
       ),
     );
