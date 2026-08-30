@@ -90,7 +90,7 @@ export default function Section({
   );
 
   return (
-    <section id={id} style={paletteVars}>
+    <section id={id} style={paletteVars} className="scroll-mt-14">
       {background === 'dots' ? <DotsBackground>{inner}</DotsBackground> : inner}
     </section>
   );

@@ -70,15 +70,19 @@ export default function HomePage() {
         }
       >
         <div className="flex flex-center gap-4">
-          <CtaButton text="Learn More" href="#built-to-read" variant="ghost" />
+          <CtaButton
+            text="Learn More"
+            href="#built-for-readers"
+            variant="ghost"
+          />
           <CtaButton text="Download for Free" href="#download" />
         </div>
       </Section>
 
       <Section
-        id="built-to-read"
+        id="built-for-readers"
         align="start"
-        title="Built to Read"
+        title="Built for Readers"
         subtitle="A distraction-free Bible experience designed for clarity, speed, and focus."
       >
         <FeatureShowcase
@@ -112,8 +116,9 @@ export default function HomePage() {
       </Section>
 
       <Section
+        id="built-for-note-takers"
         align="start"
-        title="Built to Write"
+        title="Built for Note-takers"
         subtitle="Capture what stands out, shape it your way, and keep every insight close at hand."
       >
         <FeatureShowcase
@@ -147,8 +152,9 @@ export default function HomePage() {
       </Section>
 
       <Section
+        id="built-for-studiers"
         align="start"
-        title="Built to Study"
+        title="Built for Studiers"
         subtitle="Powerful tools. No learning curve."
       >
         <FeatureShowcase
@@ -182,10 +188,11 @@ export default function HomePage() {
       </Section>
 
       <Section
+        id="tips-and-updates"
         background="dots"
         align="responsive"
         paletteVars={instagramPaletteVars}
-        tagline="Learn More"
+        tagline="Tips and Updates"
         title={
           <>
             Follow along on <span className="gradient-heading">Instagram</span>
@@ -227,6 +234,7 @@ export default function HomePage() {
       </Section>
 
       <Section
+        id="community"
         background="dots"
         align="responsive"
         tagline="Join the Community"

@@ -3,74 +3,124 @@
 @tailwind utilities;
 
 @layer base {
-    :root {
-        /* Dark palette — the page default */
-        --background: 240 6% 4%;
-        --background-soft: 240 6% 10%;
-        --foreground: 0 0% 100%;
-        --foreground-soft: 240 5% 96%;
-        --emphasis: 48 96% 53%;
-        --emphasis-soft: 45 93% 47%;
-        --on-emphasis: 240 6% 4%;
-        --on-emphasis-soft: 240 6% 10%;
-        --radius: 0.5rem;
-    }
+  :root {
+    /* Dark palette — the page default */
+    --background: 240 6% 4%;
+    --background-soft: 240 6% 10%;
+    --foreground: 0 0% 100%;
+    --foreground-soft: 240 5% 96%;
+    --emphasis: 48 96% 53%;
+    --emphasis-soft: 45 93% 47%;
+    --on-emphasis: 240 6% 4%;
+    --on-emphasis-soft: 240 6% 10%;
+    --radius: 0.5rem;
+  }
 
-    /* Light palette — used for contained cards (e.g. the download card) */
-    .palette-light {
-        --background: 0 0% 100%;
-        --background-soft: 240 5% 96%;
-        --foreground: 240 6% 4%;
-        --foreground-soft: 240 6% 10%;
-        --emphasis: 48 96% 53%;
-        --emphasis-soft: 45 93% 47%;
-        --on-emphasis: 240 6% 4%;
-        --on-emphasis-soft: 240 6% 10%;
-    }
+  /* Light palette — used for contained cards (e.g. the download card) */
+  .palette-light {
+    --background: 0 0% 100%;
+    --background-soft: 240 5% 96%;
+    --foreground: 240 6% 4%;
+    --foreground-soft: 240 6% 10%;
+    --emphasis: 48 96% 53%;
+    --emphasis-soft: 45 93% 47%;
+    --on-emphasis: 240 6% 4%;
+    --on-emphasis-soft: 240 6% 10%;
+  }
 }
 
 @layer base {
-    * {
-        @apply border-border;
-    }
+  * {
+    @apply border-border;
+  }
 
-    body {
-        @apply bg-background text-foreground;
-    }
+  body {
+    @apply bg-background text-foreground;
+  }
 
-    html {
-        scroll-behavior: smooth;
-    }
+  html {
+    scroll-behavior: smooth;
+  }
 
-    a {
-        @apply hover:text-emphasis transition break-words;
-        word-break: break-word;
-    }
+  a {
+    @apply hover:text-emphasis transition break-words;
+    word-break: break-word;
+  }
 
-    a img {
-        @apply hover:brightness-95 active:brightness-90 transition;
-    }
+  a img {
+    @apply hover:brightness-95 active:brightness-90 transition;
+  }
 }
 
 @layer utilities {
-    .flex-center {
-        @apply justify-center items-center;
-    }
+  .flex-center {
+    @apply justify-center items-center;
+  }
+}
+
+.article-card-overlay {
+  opacity: 0;
+}
+
+.article-card-overlay,
+.article-card-thumbnail {
+  transition:
+    opacity 200ms ease,
+    transform 300ms ease;
+}
+
+.article-card-touch-focused .article-card-overlay,
+.article-card:focus-visible .article-card-overlay {
+  opacity: 1;
+}
+
+.article-card-touch-hint {
+  visibility: hidden;
+  transition: visibility 0s linear 200ms;
+}
+
+.article-card-touch-focused .article-card-touch-hint {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.article-card-touch-focused .article-card-thumbnail {
+  transform: scale(1.03);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .article-card:hover .article-card-overlay,
+  .article-card:focus-visible .article-card-overlay {
+    opacity: 1;
+  }
+
+  .article-card:hover .article-card-thumbnail,
+  .article-card:focus-visible .article-card-thumbnail {
+    transform: scale(1.03);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .article-card-overlay,
+  .article-card-thumbnail,
+  .article-card-touch-hint {
+    transition: none;
+  }
 }
 
 .title-lg {
-    @apply font-serif text-4xl font-bold text-foreground sm:text-6xl sm:leading-[1.05em];
+  @apply font-serif text-4xl font-bold text-foreground sm:text-6xl sm:leading-[1.05em];
 }
 
 .title {
-    @apply font-serif text-2xl font-bold text-foreground sm:text-4xl;
+  @apply font-serif text-2xl font-bold text-foreground sm:text-4xl;
 }
 
 .subtitle {
-    @apply text-lg leading-8 text-foreground-soft;
+  @apply text-lg leading-8 text-foreground-soft;
 }
 
 .gradient-heading {
-    @apply bg-clip-text text-transparent box-decoration-clone;
-    @apply bg-gradient-to-r from-emphasis to-emphasis-soft;
+  @apply bg-clip-text text-transparent box-decoration-clone;
+  @apply bg-gradient-to-r from-emphasis to-emphasis-soft;
 }

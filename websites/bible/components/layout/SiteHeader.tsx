@@ -5,7 +5,7 @@ import { site } from '@/lib/site';
 export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 max-w-screen-2xl items-center">
+      <div className="container flex h-14 max-w-screen-2xl items-center justify-between">
         <Link href="/" className="flex items-center no-underline">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -14,6 +14,11 @@ export default function SiteHeader() {
             style={{ width: 'auto', height: '40px' }}
           />
         </Link>
+        <nav aria-label="Main navigation">
+          <Link href="/articles" className="text-sm font-semibold">
+            Articles
+          </Link>
+        </nav>
       </div>
     </header>
   );
