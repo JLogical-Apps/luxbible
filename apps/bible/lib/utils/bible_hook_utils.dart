@@ -13,6 +13,7 @@ void useMessage(User user, Message message) {
       ref.updateUser((user) => user.withMessagePopped(message));
       context.showStyledDialog(
         (context) => StyledDialog.confirm(title: message.title().toText(), body: message.description().toText()),
+        isDismissible: false,
       );
     }
   }, [user, message]);
