@@ -26,7 +26,13 @@ class StyledSwitch extends StatelessWidget {
         inactiveTrackColor: isEnabled ? context.colors.borderOpaque : context.colors.borderDisabled,
         activeTrackColor: backgroundColor,
         trackColor: .all(backgroundColor),
-        trackOutlineColor: .all(backgroundColor),
+        trackOutlineColor: .all(
+          !isEnabled
+              ? context.colors.surfaceDisabled
+              : isSelected
+              ? context.colors.contentPrimary
+              : context.colors.contentTertiary,
+        ),
       ),
     );
   }
