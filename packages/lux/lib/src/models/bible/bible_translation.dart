@@ -7,6 +7,7 @@ enum BibleTranslation {
   bsb,
   csb,
   nasb95,
+  amp,
   niv11,
   nlt,
   nkjv,
@@ -28,6 +29,7 @@ enum BibleTranslation {
   String title() => switch (this) {
     bsb => 'BSB',
     nasb95 => 'NASB95',
+    amp => 'AMP',
     niv11 => 'NIV',
     csb => 'CSB',
     nlt => 'NLT',
@@ -51,6 +53,7 @@ enum BibleTranslation {
   String fullName() => switch (this) {
     bsb => 'Berean Standard Bible',
     nasb95 => 'New American Standard Bible 1995',
+    amp => 'Amplified Bible',
     niv11 => 'New International Version 2011',
     csb => 'Christian Standard Bible',
     nlt => 'New Living Translation',
@@ -87,6 +90,7 @@ enum BibleTranslation {
     rvg ||
     nld1939 => .local,
     nasb95 => .youVersion(100),
+    amp => .youVersion(1588),
     niv11 => .youVersion(111),
     nrt => .youVersion(143),
     htb => .youVersion(75),
@@ -106,6 +110,8 @@ enum BibleTranslation {
   String? get copyright => switch (this) {
     nasb95 =>
       'NEW AMERICAN STANDARD BIBLE®\nCopyright © 1960, 1962, 1963, 1968, 1971, 1972, 1973, 1975, 1977, 1995 by THE LOCKMAN FOUNDATION\nA Corporation Not for Profit\nLA HABRA, CA\nAll Rights Reserved\nhttp://www.lockman.org',
+    amp =>
+      'Amplified® Bible\nCopyright © 2015 by\nThe Lockman Foundation, La Habra, CA 90631\nAll rights reserved. http://www.lockman.org',
     niv11 =>
       'The Holy Bible, New International Version® NIV®\nCopyright © 1973, 1978, 1984, 2011 by Biblica, Inc.®\nUsed by Permission of Biblica, Inc.® All rights reserved worldwide.',
     csb =>
@@ -166,12 +172,12 @@ enum BibleTranslation {
       : null;
 
   bool get hasRedLetters => switch (this) {
-    bsb || kjv || nasb95 || niv11 || csb || nlt || nkjv => true,
+    bsb || kjv || nasb95 || amp || niv11 || csb || nlt || nkjv => true,
     _ => false,
   };
 
   bool get hasNativeHeadings => switch (this) {
-    bsb || nasb95 || niv11 || csb || nlt || nkjv || nrt || martin1744 => true,
+    bsb || nasb95 || amp || niv11 || csb || nlt || nkjv || nrt || martin1744 => true,
     _ => false,
   };
 
@@ -181,7 +187,7 @@ enum BibleTranslation {
   };
 
   bool get hasFootnotes => switch (this) {
-    bsb || kjv || nasb95 || niv11 || csb || nlt || nkjv || asv => true,
+    bsb || kjv || nasb95 || amp || niv11 || csb || nlt || nkjv || asv => true,
     _ => false,
   };
 

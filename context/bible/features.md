@@ -47,6 +47,7 @@ Saving any reminder asks for notification permission only when needed. If app no
 
 ### Online Bibles
 
+- AMP: Amplified Bible
 - NASB95
 - NIV
 - NLT

@@ -99,6 +99,7 @@ those whole-corpus features are opened.
 
 These translations are loaded online when they are not available from the device cache:
 
+- AMP through the YouVersion Platform
 - NASB95 through the YouVersion Platform
 - NIV through the YouVersion Platform
 - NRT through the YouVersion Platform
@@ -160,9 +161,9 @@ Capabilities vary by translation:
 - Study and interlinear: BSB, KJV
 - Audio: BSB, KJV
 - Synthetic BSB headings: KJV, ASV
-- Footnotes: BSB, KJV, ASV, NASB95, NIV, CSB, NLT, NKJV
-- Red letters: BSB, KJV, NASB95, NIV, CSB, NLT, NKJV
-- Native headings: BSB, Martin, NRT, NASB95, NIV, CSB, NLT, NKJV
+- Footnotes: BSB, KJV, ASV, AMP, NASB95, NIV, CSB, NLT, NKJV
+- Red letters: BSB, KJV, AMP, NASB95, NIV, CSB, NLT, NKJV
+- Native headings: BSB, Martin, NRT, AMP, NASB95, NIV, CSB, NLT, NKJV
 - Paragraph formatting: all except OSHB, SV, Martin, and NRT
 
 ## Study Data Sources
