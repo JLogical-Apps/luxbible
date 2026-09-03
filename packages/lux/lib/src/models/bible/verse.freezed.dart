@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Verse {
 
-@JsonKey(name: 'n') int get verseNum;@JsonKey(name: 'w') List<Word> get words;@JsonKey(name: 'o', includeIfNull: false) Reference? get originalVerse;@JsonKey(name: 'f', includeIfNull: false) List<Footnote>? get footnotes;
+ List<String> get searchTerms;@JsonKey(name: 'n') int get verseNum;@JsonKey(name: 'w') List<Word> get words;@JsonKey(name: 'o', includeIfNull: false) Reference? get originalVerse;@JsonKey(name: 'f', includeIfNull: false) List<Footnote>? get footnotes;
 /// Create a copy of Verse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $VerseCopyWith<Verse> get copyWith => _$VerseCopyWithImpl<Verse>(this as Verse, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Verse&&(identical(other.verseNum, verseNum) || other.verseNum == verseNum)&&const DeepCollectionEquality().equals(other.words, words)&&(identical(other.originalVerse, originalVerse) || other.originalVerse == originalVerse)&&const DeepCollectionEquality().equals(other.footnotes, footnotes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Verse&&const DeepCollectionEquality().equals(other.searchTerms, searchTerms)&&(identical(other.verseNum, verseNum) || other.verseNum == verseNum)&&const DeepCollectionEquality().equals(other.words, words)&&(identical(other.originalVerse, originalVerse) || other.originalVerse == originalVerse)&&const DeepCollectionEquality().equals(other.footnotes, footnotes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,verseNum,const DeepCollectionEquality().hash(words),originalVerse,const DeepCollectionEquality().hash(footnotes));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(searchTerms),verseNum,const DeepCollectionEquality().hash(words),originalVerse,const DeepCollectionEquality().hash(footnotes));
 
 @override
 String toString() {
-  return 'Verse(verseNum: $verseNum, words: $words, originalVerse: $originalVerse, footnotes: $footnotes)';
+  return 'Verse(searchTerms: $searchTerms, verseNum: $verseNum, words: $words, originalVerse: $originalVerse, footnotes: $footnotes)';
 }
 
 
@@ -207,7 +207,7 @@ return $default(_that.verseNum,_that.words,_that.originalVerse,_that.footnotes);
 @JsonSerializable()
 
 class _Verse extends Verse {
-  const _Verse({@JsonKey(name: 'n') required this.verseNum, @JsonKey(name: 'w') required  List<Word> words, @JsonKey(name: 'o', includeIfNull: false) this.originalVerse, @JsonKey(name: 'f', includeIfNull: false)  List<Footnote>? footnotes}): _words = words,_footnotes = footnotes,super._();
+   _Verse({@JsonKey(name: 'n') required this.verseNum, @JsonKey(name: 'w') required  List<Word> words, @JsonKey(name: 'o', includeIfNull: false) this.originalVerse, @JsonKey(name: 'f', includeIfNull: false)  List<Footnote>? footnotes}): _words = words,_footnotes = footnotes,super._();
   factory _Verse.fromJson(Map<String, dynamic> json) => _$VerseFromJson(json);
 
 @override@JsonKey(name: 'n') final  int verseNum;

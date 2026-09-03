@@ -8,9 +8,9 @@ part 'verse.g.dart';
 
 @freezed
 sealed class Verse with _$Verse {
-  const Verse._();
+  Verse._();
 
-  const factory Verse({
+  factory Verse({
     @JsonKey(name: 'n') required int verseNum,
     @JsonKey(name: 'w') required List<Word> words,
     @JsonKey(name: 'o', includeIfNull: false) Reference? originalVerse,
@@ -21,7 +21,9 @@ sealed class Verse with _$Verse {
 
   String get text => words.map((word) => word.text).nonNulls.join();
   List<String> get strongIds => words.map((word) => word.data?.strongId).nonNulls.toList();
-  List<String> get searchTerms => text.bibleSearchTerms;
+
+  @override
+  late final List<String> searchTerms = text.bibleSearchTerms;
 
   Verse trimStart() {
     final trimmedWords = words.skipWhile((word) => word.text?.isBlank == true && word.data == null).toList();
