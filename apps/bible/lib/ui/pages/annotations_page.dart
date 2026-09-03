@@ -17,11 +17,14 @@ import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
-class AnnotationsPage extends HookConsumerWidget {
+class AnnotationsPage extends HookConsumerWidget implements StyledRoute<VerseSelection> {
   final (String?,)? initialNotebookId;
   final HighlightStyle? initialStyle;
 
   const AnnotationsPage({super.key, this.initialNotebookId, this.initialStyle});
+
+  @override
+  String get path => '/annotations';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

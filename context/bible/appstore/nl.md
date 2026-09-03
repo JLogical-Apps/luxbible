@@ -34,4 +34,4 @@ MAAK HET EIGEN
 Begin met de instelling Lezer, Notitiemaker of Bijbelstudent en pas daarna je werkbalken en snelkoppelingen aan. Houd parallelle Bijbels, interlineaire studie, commentaren, kruisverwijzingen en notities geopend in studiepanelen waar je tijdens het lezen doorheen kunt vegen.
 
 GRATIS, PRIVÉ EN OFFLINE EERST
-Ingebouwde Bijbels, grondteksten, notities en studiebronnen werken zonder internetverbinding. Je content blijft op je apparaat. Lux heeft geen advertenties, abonnementen, in-appaankopen, accounts, analytics of tracking. De app is gratis en blijft dat ook.
+Ingebouwde Bijbels, grondteksten, notities en studiebronnen werken zonder internetverbinding. Je content blijft op je apparaat. Lux heeft geen advertenties, abonnementen, in-appaankopen of accounts. Privacyvriendelijke analytics en crashrapportage helpen het gebruik van functies en de betrouwbaarheid te verbeteren, nooit voor advertenties, personalisatie of tracking tussen apps. De app is gratis en blijft dat ook.

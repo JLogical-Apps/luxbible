@@ -13,8 +13,11 @@ import 'package:style/style.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:utils_core/utils_core.dart';
 
-class BiblePlanSearchPage extends HookConsumerWidget {
+class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<BiblePlanType> {
   const BiblePlanSearchPage({super.key});
+
+  @override
+  String get path => '/bible-plans/find';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

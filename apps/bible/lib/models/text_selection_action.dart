@@ -115,7 +115,7 @@ enum TextSelectionAction {
 
         if (!context.mounted) return;
 
-        final result = await context.push<SearchPageResult>(
+        final result = await context.push(
           (context) =>
               SearchPage(initialSearch: text, currentChapterReference: textSelection.start.toChapterReference()),
         );

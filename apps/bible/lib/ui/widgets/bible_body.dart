@@ -324,7 +324,7 @@ class BibleBody extends HookConsumerWidget {
                   );
                 },
                 onPressed: () async {
-                  final result = await context.pushDialog<PositionPageResult>(
+                  final result = await context.pushDialog(
                     (context) => PositionPage(initialReference: currentChapterReference),
                   );
                   if (result != null) {

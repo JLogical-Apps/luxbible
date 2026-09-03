@@ -12,7 +12,7 @@
         "default": {
           "projectId": "lux-bible",
           "appId": "1:365679413474:ios:241c176505a41fedd2b6bb",
-          "uploadDebugSymbols": false,
+          "uploadDebugSymbols": true,
           "fileOutput": "ios/Runner/GoogleService-Info.plist"
         }
       },

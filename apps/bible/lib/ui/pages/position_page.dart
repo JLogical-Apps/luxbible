@@ -16,10 +16,13 @@ class PositionPageResult {
   const PositionPageResult({required this.result, this.bookmarkId});
 }
 
-class PositionPage extends ConsumerWidget {
+class PositionPage extends ConsumerWidget implements StyledRoute<PositionPageResult> {
   final ChapterReference initialReference;
 
   const PositionPage({super.key, required this.initialReference});
+
+  @override
+  String get path => '/position';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

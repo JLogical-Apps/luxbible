@@ -554,6 +554,10 @@
     "checklistDescription": "Voltooi de onderstaande lijst om Lux te leren gebruiken.",
     "skipHint": "Weinig tijd? Tik op ✕ om over te slaan."
   },
+  "analyticsNotice": {
+    "title": "Een opmerking over anonieme statistieken",
+    "description": "Lux gebruikt nu anonieme gebruiksstatistieken en crashrapporten om te begrijpen welke functies worden gebruikt en de betrouwbaarheid te verbeteren. Deze rapporten bevatten nooit je notities, namen of leesdetails van Bijbelplannen, zoektermen of andere privé-inhoud en zijn niet gekoppeld aan een account. Door Lux te blijven gebruiken, ga je ermee akkoord dat deze informatie wordt verzonden."
+  },
   "tutorials": {
     "dontShowAgain": "Niet meer tonen"
   },

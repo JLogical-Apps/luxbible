@@ -16,8 +16,11 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 import 'package:utils_core/utils_core.dart';
 
-class BiblePlansPage extends HookConsumerWidget {
+class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSelection> {
   const BiblePlansPage({super.key});
+
+  @override
+  String get path => '/bible-plans';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -245,7 +248,7 @@ class BiblePlansPage extends HookConsumerWidget {
                                             (passageIndex, passage) => StyledListItem(
                                               title: passage.format().toText(),
                                               onPressed: () async {
-                                                final result = await context.push<VerseSelection>(
+                                                final result = await context.push(
                                                   (context) => BiblePlanReadPage(
                                                     planType: planType,
                                                     dayIndex: dayIndex,

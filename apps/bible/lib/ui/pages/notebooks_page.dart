@@ -13,8 +13,11 @@ import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
-class NotebooksPage extends HookConsumerWidget {
+class NotebooksPage extends HookConsumerWidget implements StyledRoute<VerseSelection> {
   const NotebooksPage({super.key});
+
+  @override
+  String get path => '/notebooks';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

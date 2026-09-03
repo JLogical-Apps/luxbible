@@ -66,6 +66,7 @@ class TranslationsNl extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$biblePlans$nl biblePlans = _Translations$biblePlans$nl._(_root);
 	@override late final _Translations$searchUi$nl searchUi = _Translations$searchUi$nl._(_root);
 	@override late final _Translations$onboarding$nl onboarding = _Translations$onboarding$nl._(_root);
+	@override late final _Translations$analyticsNotice$nl analyticsNotice = _Translations$analyticsNotice$nl._(_root);
 	@override late final _Translations$tutorials$nl tutorials = _Translations$tutorials$nl._(_root);
 	@override late final _Translations$audio$nl audio = _Translations$audio$nl._(_root);
 	@override late final _Translations$interlinearUi$nl interlinearUi = _Translations$interlinearUi$nl._(_root);
@@ -821,6 +822,17 @@ class _Translations$onboarding$nl extends Translations$onboarding$en {
 	@override String get learnLux => 'Leer Lux gebruiken';
 	@override String get checklistDescription => 'Voltooi de onderstaande lijst om Lux te leren gebruiken.';
 	@override String get skipHint => 'Weinig tijd? Tik op ✕ om over te slaan.';
+}
+
+// Path: analyticsNotice
+class _Translations$analyticsNotice$nl extends Translations$analyticsNotice$en {
+	_Translations$analyticsNotice$nl._(TranslationsNl root) : this._root = root, super.internal(root);
+
+	final TranslationsNl _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Een opmerking over anonieme statistieken';
+	@override String get description => 'Lux gebruikt nu anonieme gebruiksstatistieken en crashrapporten om te begrijpen welke functies worden gebruikt en de betrouwbaarheid te verbeteren. Deze rapporten bevatten nooit je notities, namen of leesdetails van Bijbelplannen, zoektermen of andere privé-inhoud en zijn niet gekoppeld aan een account. Door Lux te blijven gebruiken, ga je ermee akkoord dat deze informatie wordt verzonden.';
 }
 
 // Path: tutorials
@@ -3258,6 +3270,8 @@ extension on TranslationsNl {
 			'onboarding.learnLux' => 'Leer Lux gebruiken',
 			'onboarding.checklistDescription' => 'Voltooi de onderstaande lijst om Lux te leren gebruiken.',
 			'onboarding.skipHint' => 'Weinig tijd? Tik op ✕ om over te slaan.',
+			'analyticsNotice.title' => 'Een opmerking over anonieme statistieken',
+			'analyticsNotice.description' => 'Lux gebruikt nu anonieme gebruiksstatistieken en crashrapporten om te begrijpen welke functies worden gebruikt en de betrouwbaarheid te verbeteren. Deze rapporten bevatten nooit je notities, namen of leesdetails van Bijbelplannen, zoektermen of andere privé-inhoud en zijn niet gekoppeld aan een account. Door Lux te blijven gebruiken, ga je ermee akkoord dat deze informatie wordt verzonden.',
 			'tutorials.dontShowAgain' => 'Niet meer tonen',
 			'audio.timer' => 'Audiotimer',
 			'audio.fiveMinutes' => '5 minuten',
@@ -3283,10 +3297,10 @@ extension on TranslationsNl {
 			'interlinearUi.studyBibleExplanation' => 'Studiebijbels zijn woord voor woord voorzien van Strong-coderingen en morfologische informatie. Daardoor is de interlineaire lexicale analyse mogelijk. In plaats daarvan wordt je meest recent gebruikte studiebijbel gebruikt.',
 			'interlinearUi.usingTranslation' => ({required Object translation}) => '${translation} wordt gebruikt voor interlineair',
 			'chapterUnavailable.title' => ({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} bevat het ${testament} niet.',
-			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Je meest recent gebruikte Bijbel voor het ${testament}, ${fallbackTranslation}, wordt getoond.',
-			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			_ => null,
 		} ?? switch (path) {
+			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Je meest recent gebruikte Bijbel voor het ${testament}, ${fallbackTranslation}, wordt getoond.',
+			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => 'De hoofdstukken en verzen van de ${translation} zijn anders genummerd dan in de meeste Engelse vertalingen.\n\nDe tekst die hier bij ${reference} wordt getoond, komt uit ${originalReference} in de ${translation} en is opnieuw gekoppeld om met de andere vertalingen overeen te komen.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} bevat deze selectie niet.',
 			'commentaryUi.introTo' => ({required Object book}) => 'Inleiding tot ${book}',

@@ -4,6 +4,7 @@ import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/local_notification_service.dart';
+import 'package:bible/services/analytics_service.dart';
 import 'package:bible/ui/pages/bible_page.dart';
 import 'package:bible/ui/pages/bible_plan_read_page.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
@@ -18,16 +19,17 @@ class BiblePlanNotification {
     final context = navigatorKey.currentContext;
     if (context == null) return false;
 
+    AnalyticsEvent.notificationTapped.log();
     final user = ref.read(userProvider);
     final plans = ref.read(biblePlansProvider);
     final planProgress = user.getHydratedPlanProgress(planType: planType, planByType: plans);
     if (planProgress == null) {
-      context.goToStack([BiblePage(), BiblePlansPage()]);
+      context.goToStack([(context) => BiblePage(), (context) => BiblePlansPage()]);
       return true;
     }
 
     if (planProgress.currentDay.isReviewAndReflect) {
-      context.goToStack([BiblePage(), BiblePlansPage()]);
+      context.goToStack([(context) => BiblePage(), (context) => BiblePlansPage()]);
       return true;
     }
 

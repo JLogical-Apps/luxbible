@@ -1,6 +1,7 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:bible/models/user/toolbar_preset.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/services/analytics_service.dart';
 import 'package:bible/ui/pages/annotations_page.dart';
 import 'package:bible/ui/pages/bookmarks_page.dart';
 import 'package:bible/ui/pages/commentaries_page.dart';
@@ -25,8 +26,11 @@ import 'package:url_launcher/url_launcher.dart';
 
 final discordUri = Uri.parse('https://discord.gg/C4zfZDpZMB');
 
-class MorePage extends HookConsumerWidget {
+class MorePage extends HookConsumerWidget implements StyledRoute<VerseSelection> {
   const MorePage({super.key});
+
+  @override
+  String get path => '/more';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -197,13 +201,19 @@ class MorePage extends HookConsumerWidget {
                   title: t.labels.discord.toText(),
                   subtitle: t.settings.discussionAndAnnouncements.toText(),
                   leading: FaIcon(FontAwesomeIcons.discord),
-                  onPressed: () => launchUrl(discordUri),
+                  onPressed: () {
+                    AnalyticsEvent.communityLinkPressed.log();
+                    launchUrl(discordUri);
+                  },
                 ),
                 StyledListItem.externalNavigation(
                   title: t.labels.instagram.toText(),
                   subtitle: t.settings.tipsAndUpdates.toText(),
                   leading: FaIcon(FontAwesomeIcons.instagram),
-                  onPressed: () => launchUrl(Uri.parse('https://www.instagram.com/luxbible.app/')),
+                  onPressed: () {
+                    AnalyticsEvent.communityLinkPressed.log();
+                    launchUrl(Uri.parse('https://www.instagram.com/luxbible.app/'));
+                  },
                 ),
               ],
             ),
@@ -216,33 +226,37 @@ class MorePage extends HookConsumerWidget {
                   title: t.settings.rateLux.toText(),
                   subtitle: t.settings.leaveReview.toText(),
                   leading: Symbols.star.toIcon(),
-                  onPressed: () => context.showStyledDialog(
-                    (context) => StyledDialog(
-                      title: t.settings.supportLux.toText(),
-                      body: t.settings.supportMessage.toText(),
-                      buttonsBuilder: (context) => [
-                        StyledRectButton.primary(
-                          label: t.settings.leaveRating.toText(),
-                          onPressed: () async {
-                            context.pop();
-                            final appReview = InAppReview.instance;
-                            if (await appReview.isAvailable()) {
-                              await appReview.requestReview();
-                            } else {
-                              await appReview.openStoreListing(appStoreId: 'id6759510218');
-                            }
-                          },
-                        ),
-                        StyledRectButton.transparent(
-                          label: t.settings.joinDiscord.toText(),
-                          onPressed: () {
-                            context.pop();
-                            launchUrl(discordUri);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
+                  onPressed: () {
+                    AnalyticsEvent.rateLuxPressed.log();
+                    context.showStyledDialog(
+                      (context) => StyledDialog(
+                        title: t.settings.supportLux.toText(),
+                        body: t.settings.supportMessage.toText(),
+                        buttonsBuilder: (context) => [
+                          StyledRectButton.primary(
+                            label: t.settings.leaveRating.toText(),
+                            onPressed: () async {
+                              context.pop();
+                              final appReview = InAppReview.instance;
+                              if (await appReview.isAvailable()) {
+                                await appReview.requestReview();
+                              } else {
+                                await appReview.openStoreListing(appStoreId: 'id6759510218');
+                              }
+                            },
+                          ),
+                          StyledRectButton.transparent(
+                            label: t.settings.joinDiscord.toText(),
+                            onPressed: () {
+                              context.pop();
+                              AnalyticsEvent.communityLinkPressed.log();
+                              launchUrl(discordUri);
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                   trailing: Symbols.arrow_outward.toIcon(),
                 ),
               ],

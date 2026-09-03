@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lux/src/models/time.dart';
+import 'package:lux/src/ui/styled_route.dart';
 import 'package:utils_core/utils_core.dart';
 
 extension BuildContextExtensions on BuildContext {
@@ -7,25 +8,25 @@ extension BuildContextExtensions on BuildContext {
   double get textScaling => MediaQuery.textScalerOf(this).scale(20) / 20;
   TimeFormat get timeFormat => MediaQuery.alwaysUse24HourFormatOf(this) ? .twentyFourHour : .amPm;
 
-  Future<void> go(Widget page) =>
-      Navigator.of(this).pushAndRemoveUntil(MaterialPageRoute(builder: (_) => page), (_) => false);
+  Future<T?> go<T>(StyledRoute<T> Function(BuildContext) pageBuilder) =>
+      Navigator.of(this).pushAndRemoveUntil(getStyledRoute(pageBuilder), (_) => false);
 
-  void goToStack(List<Widget> pages, {Function(BuildContext)? onLoaded}) {
-    if (pages.isEmpty) throw ArgumentError.value(pages, 'pages', 'must not be empty');
+  void goToStack(List<StyledRoute<dynamic> Function(BuildContext)> pageBuilders, {Function(BuildContext)? onLoaded}) {
+    if (pageBuilders.isEmpty) throw ArgumentError.value(pageBuilders, 'pageBuilders', 'must not be empty');
 
     final navigator = Navigator.of(this);
-    navigator.pushAndRemoveUntil(MaterialPageRoute(builder: (_) => pages.first), (_) => false);
-    pages.skip(1).forEach((page) => navigator.push(MaterialPageRoute(builder: (_) => page)));
+    navigator.pushAndRemoveUntil(getStyledRoute(pageBuilders.first), (_) => false);
+    pageBuilders.skip(1).forEach((pageBuilder) => navigator.push(getStyledRoute(pageBuilder)));
     if (onLoaded != null) WidgetsBinding.instance.addPostFrameCallback((_) => onLoaded(navigator.context));
   }
 
-  Future<T?> push<T>(Widget Function(BuildContext) pageBuilder) =>
-      Navigator.of(this).push(MaterialPageRoute(builder: pageBuilder));
-  Future<T?> pushReplacement<T>(Widget Function(BuildContext) pageBuilder) =>
-      Navigator.of(this).pushReplacement(MaterialPageRoute(builder: pageBuilder));
+  Future<T?> push<T>(StyledRoute<T> Function(BuildContext) pageBuilder) =>
+      Navigator.of(this).push(getStyledRoute(pageBuilder));
+  Future<T?> pushReplacement<T>(StyledRoute<T> Function(BuildContext) pageBuilder) =>
+      Navigator.of(this).pushReplacement(getStyledRoute(pageBuilder));
 
-  Future<T?> pushDialog<T>(Widget Function(BuildContext) pageBuilder) =>
-      Navigator.of(this).push(MaterialPageRoute(builder: pageBuilder, fullscreenDialog: true));
+  Future<T?> pushDialog<T>(StyledRoute<T> Function(BuildContext) pageBuilder) =>
+      Navigator.of(this).push(getStyledRoute(pageBuilder, isFullscreenDialog: true));
 
   void maybePop<T>([T? result]) => Navigator.of(this).maybePop(result);
   void pop<T>([T? result]) => Navigator.of(this).pop(result);
@@ -35,4 +36,13 @@ extension BuildContextExtensions on BuildContext {
     null => null,
     _ => error.toString(),
   };
+
+  MaterialPageRoute<T> getStyledRoute<T>(
+    StyledRoute<T> Function(BuildContext) pageBuilder, {
+    bool isFullscreenDialog = false,
+  }) => MaterialPageRoute<T>(
+    settings: RouteSettings(name: pageBuilder(this).path),
+    builder: pageBuilder,
+    fullscreenDialog: isFullscreenDialog,
+  );
 }

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:bible/models/user/language.dart';
 import 'package:bible/models/user/migration.dart';
 import 'package:bible/models/user/user.dart';
+import 'package:bible/services/analytics_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:lux/lux.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -18,7 +19,18 @@ class UserNotifier extends _$UserNotifier {
   SharedPreferences get sharedPreferences => ref.watch(sharedPreferencesServiceProvider);
 
   @override
-  User build() => userOrDefault;
+  User build() {
+    final existingUser = userOrNull;
+    if (existingUser != null) return existingUser;
+
+    AnalyticsEvent.onboardingStarted.log();
+    return User(
+      translation: getDefaultBibleTranslations(Language.device).first,
+      completedOnboardingSteps: [],
+      recentBibles: [getDefaultBibleTranslations(Language.device).first],
+      latestMigration: Migration.values.last,
+    );
+  }
 
   @override
   bool updateShouldNotify(_, _) => true;
@@ -51,19 +63,41 @@ class UserNotifier extends _$UserNotifier {
     return null;
   }
 
-  User get userOrDefault =>
-      userOrNull ??
-      User(
-        translation: getDefaultBibleTranslations(Language.device).first,
-        completedOnboardingSteps: [],
-        recentBibles: [getDefaultBibleTranslations(Language.device).first],
-        latestMigration: Migration.values.last,
-      );
-
   User update(User Function(User) updater) {
-    state = updater(state);
+    final previousUser = state;
+    state = updater(previousUser);
+    logAnalytics(previousUser, state);
     userFile.writeAsStringSync(jsonEncode(state.toJson()));
     return state;
+  }
+
+  void logAnalytics(User previousUser, User user) {
+    if (user.planProgressByType.keys.any((planType) => !previousUser.planProgressByType.containsKey(planType))) {
+      AnalyticsEvent.planStarted.log();
+    }
+
+    final hasCompletedPlanDay = user.planProgressByType.entries.any((entry) {
+      final previousDays = previousUser.planProgressByType[entry.key]?.days ?? [];
+      return entry.value.days.asMap().entries.any(
+        (day) => day.value.isComplete && (day.key >= previousDays.length || !previousDays[day.key].isComplete),
+      );
+    });
+    if (hasCompletedPlanDay) AnalyticsEvent.planDayCompleted.log();
+
+    if (user.mainToolbar != previousUser.mainToolbar ||
+        user.verseSelection != previousUser.verseSelection ||
+        user.textSelection != previousUser.textSelection) {
+      AnalyticsEvent.toolbarCustomized.log();
+    }
+
+    if (!previousUser.isOnboardingActive && user.isOnboardingActive) {
+      AnalyticsEvent.onboardingStarted.log();
+    } else if (previousUser.isOnboardingActive && !user.isOnboardingActive) {
+      (previousUser.currentOnboardingStep == null
+              ? AnalyticsEvent.onboardingComplete
+              : AnalyticsEvent.onboardingSkipped)
+          .log();
+    }
   }
 
   File get userFile => ref.read(pathServiceProvider)!.applicationSupport - 'user.json';

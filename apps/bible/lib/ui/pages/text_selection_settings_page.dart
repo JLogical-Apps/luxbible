@@ -9,8 +9,11 @@ import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
-class TextSelectionSettingsPage extends ConsumerWidget {
+class TextSelectionSettingsPage extends ConsumerWidget implements StyledRoute<void> {
   const TextSelectionSettingsPage({super.key});
+
+  @override
+  String get path => '/settings/toolbars/text-selection';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

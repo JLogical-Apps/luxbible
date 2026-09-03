@@ -58,7 +58,7 @@ Core study datasets and bundled Bibles work without a connection. Features that 
 
 ### Private by Design
 
-Lux requires no account and stores user-created content locally. It has no analytics, behavioral tracking, or crash reporting.
+Lux requires no account and stores user-created content locally. It uses privacy-restricted, aggregate analytics and crash reporting to understand feature usage and app reliability. It does not use telemetry for advertising, personalization, or cross-app tracking.
 
 ### Free
 

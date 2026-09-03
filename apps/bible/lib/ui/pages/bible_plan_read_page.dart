@@ -3,6 +3,7 @@ import 'package:bible/providers/audio_bible_player_provider.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/services/analytics_service.dart';
 import 'package:bible/ui/hooks/audio_bible_passage_sync.dart';
 import 'package:bible/ui/pages/bible_page.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
@@ -17,7 +18,7 @@ import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
-class BiblePlanReadPage extends HookConsumerWidget {
+class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseSelection> {
   final BiblePlanType planType;
   final int dayIndex;
   final int initialPassageIndex;
@@ -29,7 +30,14 @@ class BiblePlanReadPage extends HookConsumerWidget {
     required this.initialPassageIndex,
   });
 
-  List<Widget> get pageStack => [BiblePage(), BiblePlansPage(), this];
+  @override
+  String get path => '/bible-plans/read';
+
+  List<StyledRoute<dynamic> Function(BuildContext)> get pageStack => [
+    (context) => BiblePage(),
+    (context) => BiblePlansPage(),
+    (context) => BiblePlanReadPage(planType: planType, dayIndex: dayIndex, initialPassageIndex: initialPassageIndex),
+  ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -97,7 +105,9 @@ class BiblePlanReadPage extends HookConsumerWidget {
       }
 
       selectionController.clear();
-      audioBibleController.play(context: .plan, passage: passage);
+      if (await audioBibleController.play(context: .plan, passage: passage)) {
+        AnalyticsEvent.audioPlayed.log();
+      }
     }
 
     final audioBibleSync = useAudioBiblePassageSync(

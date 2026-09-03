@@ -10,8 +10,11 @@ import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
-class CommentariesPage extends HookConsumerWidget {
+class CommentariesPage extends HookConsumerWidget implements StyledRoute<void> {
   const CommentariesPage({super.key});
+
+  @override
+  String get path => '/settings/commentaries';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

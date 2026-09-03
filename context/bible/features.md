@@ -26,6 +26,10 @@ Bible plan reminders are also scheduled as dated local notifications. Completing
 
 Saving any reminder asks for notification permission only when needed. If app notifications are disabled, Lux directs the user to system settings and preserves all reminder settings. Android manages Verse of the Day and Bible Plan Reminders through separate channels: a disabled channel affects only its own controls and points to system notification settings, while the other reminder type remains available. Lux reconciles saved schedules after a setting change or restart without clearing saved reminder choices.
 
+## Privacy and Analytics
+
+Lux measures visits to its main pages and a small set of prominent actions: starting audio playback, starting a plan, completing a plan day, searching, opening Verse of the Day, opening a local notification, changing toolbar configuration, opening a community link, pressing Rate Lux, and starting, completing, or skipping onboarding. These events contain no user-created content or dynamic identifiers from the app.
+
 ## Bible Library
 
 ### Offline Bibles

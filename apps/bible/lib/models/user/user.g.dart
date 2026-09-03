@@ -317,6 +317,12 @@ const _$BiblePlanTypeEnumMap = {
       'esv_psalms_and_wisdom_literature',
 };
 
-const _$MigrationEnumMap = {Migration.renamedBiblePlans: 'renamedBiblePlans'};
+const _$MigrationEnumMap = {
+  Migration.renamedBiblePlans: 'renamedBiblePlans',
+  Migration.anonymousAnalytics: 'anonymousAnalytics',
+};
 
-const _$MessageEnumMap = {Message.renamedBiblePlans: 'renamedBiblePlans'};
+const _$MessageEnumMap = {
+  Message.renamedBiblePlans: 'renamedBiblePlans',
+  Message.anonymousAnalytics: 'anonymousAnalytics',
+};

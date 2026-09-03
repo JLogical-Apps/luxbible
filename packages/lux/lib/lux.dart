@@ -7,6 +7,7 @@ export 'src/services/bible_importer.dart';
 export 'src/services/path_service.dart';
 export 'src/services/shared_preferences_service.dart';
 export 'src/ui/pages/passage_preview_page.dart';
+export 'src/ui/styled_route.dart';
 export 'src/ui/theme.dart';
 export 'src/ui/utils/bible_text_style.dart';
 export 'src/ui/utils/laid_out_inline_span.dart';

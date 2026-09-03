@@ -6,8 +6,11 @@ import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:memory/ui/sheets/find_in_bible_sheet.dart';
 import 'package:style/style.dart';
 
-class AddPassagesPage extends HookConsumerWidget {
+class AddPassagesPage extends HookConsumerWidget implements StyledRoute<List<VerseSelection>> {
   const AddPassagesPage({super.key});
+
+  @override
+  String get path => '/add-passages';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

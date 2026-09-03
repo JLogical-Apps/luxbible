@@ -298,7 +298,7 @@ class StrongSheet {
         t.strongSheet.openInSearch,
         onPressed: () async {
           context.pop();
-          final result = await context.push<SearchPageResult>(
+          final result = await context.push(
             (context) => SearchPage(initialSearch: strongId, currentChapterReference: user.lastReference),
           );
           if (result != null) {

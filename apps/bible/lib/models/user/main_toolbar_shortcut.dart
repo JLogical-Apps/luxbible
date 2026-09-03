@@ -94,13 +94,13 @@ enum MainToolbarShortcut {
           }
         }(),
         dictionary => () async {
-          final result = await context.push<VerseSelection>((context) => DictionaryPage());
+          final result = await context.push((context) => DictionaryPage());
           if (result != null) {
             onNavigateToVerseSelection(result);
           }
         }(),
         lexicon => () async {
-          final result = await context.push<VerseSelection>((context) => LexiconPage());
+          final result = await context.push((context) => LexiconPage());
           if (result != null) {
             onNavigateToVerseSelection(result);
           }

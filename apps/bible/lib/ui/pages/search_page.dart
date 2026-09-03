@@ -2,6 +2,7 @@ import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/dictionary_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/services/analytics_service.dart';
 import 'package:bible/ui/dialogs/tutorial_dialog.dart';
 import 'package:bible/ui/sheets/dictionary_sheet.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
@@ -22,16 +23,22 @@ class SearchPageResult {
   const SearchPageResult({required this.selection});
 }
 
-class SearchPage extends HookConsumerWidget {
+class SearchPage extends HookConsumerWidget implements StyledRoute<SearchPageResult> {
   final String? initialSearch;
   final ChapterReference? currentChapterReference;
 
   const SearchPage({super.key, this.initialSearch, this.currentChapterReference});
 
   @override
+  String get path => '/search';
+
+  @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    usePostFrameEffect(() => ref.markOnboardingStep(.searchWord));
+    usePostFrameEffect(() {
+      ref.markOnboardingStep(.searchWord);
+      if (initialSearch?.trim().isNotEmpty == true) AnalyticsEvent.search.log();
+    });
 
     final studyBible = ref.watch(studyBibleProvider).value;
     final localBible = user.translation.isLocal
@@ -136,6 +143,7 @@ class SearchPage extends HookConsumerWidget {
                       textState.value = newText;
                       searchState.value = newText;
                       searchResultsState.value = null;
+                      if (newText.trim().isNotEmpty) AnalyticsEvent.search.log();
                     },
                   ),
                 ),
@@ -254,6 +262,7 @@ class SearchPage extends HookConsumerWidget {
                                                 textState.value = searchResult;
                                                 searchState.value = searchResult;
                                                 searchResultsState.value = null;
+                                                AnalyticsEvent.search.log();
                                               },
                                             ),
                                           ),

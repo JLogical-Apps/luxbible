@@ -10,10 +10,13 @@ import 'package:memory/ui/widgets/activities/word_selection_builder.dart';
 import 'package:memory/ui/widgets/activities/word_type_builder.dart';
 import 'package:style/style.dart';
 
-class ActivityPage extends HookConsumerWidget {
+class ActivityPage extends HookConsumerWidget implements StyledRoute<void> {
   final ActivityPlan plan;
 
   const ActivityPage({super.key, required this.plan});
+
+  @override
+  String get path => '/activity';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

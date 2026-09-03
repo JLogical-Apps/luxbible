@@ -114,7 +114,11 @@ Future<void> _deployIos(Map<String, String> env) async {
   final destKey = File('${keyDir.path}/AuthKey_$keyId.p8');
   destKey.writeAsBytesSync(apiKey.readAsBytesSync());
 
-  _run('flutter', ['build', 'ipa', '--release', '--export-method', 'app-store']);
+  _run(
+    'flutter',
+    ['build', 'ipa', '--release', '--export-method', 'app-store'],
+    environment: {...Platform.environment, 'FIREBASE_ANALYTICS_WITHOUT_ADID': 'true'},
+  );
 
   final ipaDir = Directory('build/ios/ipa');
   final ipa = ipaDir.existsSync()
@@ -169,9 +173,9 @@ Map<String, String> _loadEnv() {
 /// Resolves a path from .env relative to the project root.
 File _resolve(String path) => File(path);
 
-void _run(String executable, List<String> args) {
+void _run(String executable, List<String> args, {Map<String, String>? environment}) {
   stdout.writeln('\$ $executable ${args.join(' ')}');
-  final result = Process.runSync(executable, args, runInShell: true);
+  final result = Process.runSync(executable, args, runInShell: true, environment: environment);
   stdout.write(result.stdout);
   stderr.write(result.stderr);
   if (result.exitCode != 0) {

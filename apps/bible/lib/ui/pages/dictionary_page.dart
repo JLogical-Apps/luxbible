@@ -9,8 +9,11 @@ import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
-class DictionaryPage extends HookConsumerWidget {
+class DictionaryPage extends HookConsumerWidget implements StyledRoute<VerseSelection> {
   const DictionaryPage({super.key});
+
+  @override
+  String get path => '/dictionary';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

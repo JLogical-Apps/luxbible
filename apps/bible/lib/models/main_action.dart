@@ -1,4 +1,3 @@
-import 'package:bible/models/bible_plan.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
@@ -7,6 +6,7 @@ import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/verse_of_the_day_provider.dart';
+import 'package:bible/services/analytics_service.dart';
 import 'package:bible/ui/flows/verse_of_the_day_reminder_flow.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
@@ -125,10 +125,12 @@ enum MainAction {
     final user = ref.read(userProvider);
     switch (this) {
       case audio:
+        final wasPlaying = ref.read(audioBiblePlayerProvider(context: .bible)).isPlaying;
         ref.updateUser((user) => user.copyWith.audio(isOpen: true));
-        await ref
+        final didToggle = await ref
             .read(audioBibleControllerProvider.notifier)
             .toggle(context: .bible, passage: reference.toVerseSelection());
+        if (!wasPlaying && didToggle) AnalyticsEvent.audioPlayed.log();
       case bookmark:
         final bookmarkId = user.currentBookmarkId;
         final bookmark = user.currentBookmark;
@@ -244,6 +246,7 @@ enum MainAction {
           ),
         );
       case verseOfTheDay:
+        AnalyticsEvent.verseOfTheDayTapped.log();
         final verseOfTheDaySelection = ref.read(todayVerseOfTheDaySelectionProvider);
         await PreviewPassageSheet.show(
           context,
@@ -291,9 +294,7 @@ enum MainAction {
           }
         }
       case search:
-        final result = await context.push<SearchPageResult>(
-          (context) => SearchPage(currentChapterReference: reference),
-        );
+        final result = await context.push((context) => SearchPage(currentChapterReference: reference));
         if (result != null) {
           onNavigateToVerseSelection(result.selection);
         }
@@ -321,26 +322,26 @@ enum MainAction {
           return;
         }
         final result = await switch (resource) {
-          _Resource.dictionary => context.push<VerseSelection>((context) => DictionaryPage()),
-          _Resource.lexicon => context.push<VerseSelection>((context) => LexiconPage()),
+          _Resource.dictionary => context.push((context) => DictionaryPage()),
+          _Resource.lexicon => context.push((context) => LexiconPage()),
         };
         if (result != null) {
           onNavigateToVerseSelection(result);
         }
       case plans:
         if (user.planProgressByType.isEmpty) {
-          final newPlan = await context.push<BiblePlanType>((context) => BiblePlanSearchPage());
+          final newPlan = await context.push((context) => BiblePlanSearchPage());
           if (newPlan == null || !context.mounted) {
             return;
           }
         }
 
-        final result = await context.push<VerseSelection>((context) => BiblePlansPage());
+        final result = await context.push((context) => BiblePlansPage());
         if (result != null) {
           onNavigateToVerseSelection(result);
         }
       case more:
-        final result = await context.push<VerseSelection>((context) => MorePage());
+        final result = await context.push((context) => MorePage());
         if (result != null) {
           onNavigateToVerseSelection(result);
         }

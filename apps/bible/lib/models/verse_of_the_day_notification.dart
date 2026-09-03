@@ -2,6 +2,7 @@ import 'package:bible/main.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/verse_of_the_day_provider.dart';
 import 'package:bible/services/local_notification_service.dart';
+import 'package:bible/services/analytics_service.dart';
 import 'package:bible/ui/pages/bible_page.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
 import 'package:lux/lux.dart';
@@ -14,9 +15,10 @@ class VerseOfTheDayNotification {
     final context = navigatorKey.currentContext;
     if (context == null) return false;
 
+    AnalyticsEvent.notificationTapped.log();
     final selection = ref.read(verseOfTheDaySelectionsProvider)[getVerseOfTheDayIndex(date)];
     context.goToStack([
-      BiblePage(),
+      (context) => BiblePage(),
     ], onLoaded: (context) => PreviewPassageSheet.show(context, verseSelection: selection));
     return true;
   }

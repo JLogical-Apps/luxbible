@@ -13,8 +13,11 @@ import 'package:memory/ui/pages/add_passages_page.dart';
 import 'package:memory/utils/extensions/ref_extensions.dart';
 import 'package:style/style.dart';
 
-class HomePage extends ConsumerWidget {
+class HomePage extends ConsumerWidget implements StyledRoute<void> {
   const HomePage({super.key});
+
+  @override
+  String get path => '/home';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

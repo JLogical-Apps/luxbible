@@ -12,8 +12,11 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 import 'package:utils_core/utils_core.dart';
 
-class CompareSettingsPage extends HookConsumerWidget {
+class CompareSettingsPage extends HookConsumerWidget implements StyledRoute<void> {
   const CompareSettingsPage({super.key});
+
+  @override
+  String get path => '/settings/compare';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

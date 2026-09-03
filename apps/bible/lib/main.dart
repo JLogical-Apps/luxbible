@@ -31,8 +31,10 @@ import 'package:bible/services/local_notification_service.dart';
 import 'package:bible/services/timezone_service.dart';
 import 'package:bible/ui/bible_reader_configuration.dart';
 import 'package:bible/ui/pages/bible_page.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -57,6 +59,18 @@ Future<void> main() async {
       timeago.setLocaleMessages('nl', timeago.NlMessages());
 
       await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+      await FirebaseAnalytics.instance.setConsent(
+        adStorageConsentGranted: false,
+        analyticsStorageConsentGranted: true,
+        adPersonalizationSignalsConsentGranted: false,
+        adUserDataConsentGranted: false,
+      );
+      await FirebaseAnalytics.instance.setAnalyticsCollectionEnabled(!kDebugMode);
+      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
+      FlutterError.onError = kDebugMode
+          ? FlutterError.dumpErrorToConsole
+          : FirebaseCrashlytics.instance.recordFlutterFatalError;
 
       const androidDebugToken = String.fromEnvironment('APP_CHECK_ANDROID_DEBUG_TOKEN');
       const appleDebugToken = String.fromEnvironment('APP_CHECK_APPLE_DEBUG_TOKEN');
@@ -137,6 +151,8 @@ Future<void> main() async {
       if (kDebugMode) {
         print(error);
         print(stack);
+      } else if (Firebase.apps.isNotEmpty) {
+        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
       }
     },
   );
@@ -195,6 +211,12 @@ class BibleApp extends HookConsumerWidget {
             darkTheme: darkTheme,
             scrollBehavior: BouncingScrollBehavior(),
             debugShowCheckedModeBanner: false,
+            navigatorObservers: [
+              FirebaseAnalyticsObserver(
+                analytics: FirebaseAnalytics.instance,
+                nameExtractor: (settings) => settings.name == '/' ? BiblePage().path : settings.name,
+              ),
+            ],
             home: BiblePage(),
           ),
         ),
@@ -208,5 +230,12 @@ final class ProviderErrorObserver extends ProviderObserver {
   void providerDidFail(ProviderObserverContext context, Object error, StackTrace stackTrace) {
     developer.log('Provider ${context.provider.name ?? context.provider.runtimeType} failed with: $error');
     developer.log('Stacktrace: $stackTrace');
+    if (!kDebugMode) {
+      FirebaseCrashlytics.instance.recordError(
+        error,
+        stackTrace,
+        reason: 'Provider ${context.provider.name ?? context.provider.runtimeType} failed',
+      );
+    }
   }
 }

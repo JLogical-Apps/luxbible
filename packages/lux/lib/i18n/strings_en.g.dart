@@ -62,6 +62,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$biblePlans$en biblePlans = Translations$biblePlans$en.internal(_root);
 	late final Translations$searchUi$en searchUi = Translations$searchUi$en.internal(_root);
 	late final Translations$onboarding$en onboarding = Translations$onboarding$en.internal(_root);
+	late final Translations$analyticsNotice$en analyticsNotice = Translations$analyticsNotice$en.internal(_root);
 	late final Translations$tutorials$en tutorials = Translations$tutorials$en.internal(_root);
 	late final Translations$audio$en audio = Translations$audio$en.internal(_root);
 	late final Translations$interlinearUi$en interlinearUi = Translations$interlinearUi$en.internal(_root);
@@ -1762,6 +1763,21 @@ class Translations$onboarding$en {
 
 	/// en: 'In a hurry? Tap ✕ to skip.'
 	String get skipHint => 'In a hurry? Tap ✕ to skip.';
+}
+
+// Path: analyticsNotice
+class Translations$analyticsNotice$en {
+	Translations$analyticsNotice$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'A Note About Anonymous Analytics'
+	String get title => 'A Note About Anonymous Analytics';
+
+	/// en: 'Lux now uses anonymous analytics and crash reports to understand which features are used and improve reliability. These reports never include your notes, Bible plan names or reading details, search terms, or other private content, and they are not linked to an account. By continuing to use Lux, you agree to this information being sent.'
+	String get description => 'Lux now uses anonymous analytics and crash reports to understand which features are used and improve reliability.\n\nThese reports never include your notes, Bible plan names or reading details, search terms, or other private content, and they are not linked to an account.\n\nBy continuing to use Lux, you agree to this information being sent.';
 }
 
 // Path: tutorials
@@ -5200,6 +5216,8 @@ extension on Translations {
 			'onboarding.learnLux' => 'Learn how to use Lux',
 			'onboarding.checklistDescription' => 'Complete the checklist below to learn how to use Lux.',
 			'onboarding.skipHint' => 'In a hurry? Tap ✕ to skip.',
+			'analyticsNotice.title' => 'A Note About Anonymous Analytics',
+			'analyticsNotice.description' => 'Lux now uses anonymous analytics and crash reports to understand which features are used and improve reliability.\n\nThese reports never include your notes, Bible plan names or reading details, search terms, or other private content, and they are not linked to an account.\n\nBy continuing to use Lux, you agree to this information being sent.',
 			'tutorials.dontShowAgain' => 'Don\'t Show Again',
 			'audio.timer' => 'Audio Timer',
 			'audio.fiveMinutes' => '5 minutes',
@@ -5227,10 +5245,10 @@ extension on Translations {
 			'chapterUnavailable.title' => ({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} doesn\'t include the ${testament}.',
 			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Showing your most-recent ${testament} Bible, ${fallbackTranslation}.',
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
-			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => 'The ${translation} numbers its chapters and verses differently from most English translations.\n\nThe text shown here at ${reference} comes from ${originalReference} in the ${translation}, remapped so it lines up with the other translations.',
-			'compare.unavailable' => ({required Object translation}) => '${translation} doesn\'t include this selection.',
 			_ => null,
 		} ?? switch (path) {
+			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => 'The ${translation} numbers its chapters and verses differently from most English translations.\n\nThe text shown here at ${reference} comes from ${originalReference} in the ${translation}, remapped so it lines up with the other translations.',
+			'compare.unavailable' => ({required Object translation}) => '${translation} doesn\'t include this selection.',
 			'commentaryUi.introTo' => ({required Object book}) => 'Intro to ${book}',
 			'searchLocations.currentBook' => 'Current Book',
 			'searchLocations.testaments' => 'Testaments',

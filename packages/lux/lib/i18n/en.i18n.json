@@ -552,6 +552,10 @@
     "checklistDescription": "Complete the checklist below to learn how to use Lux.",
     "skipHint": "In a hurry? Tap ✕ to skip."
   },
+  "analyticsNotice": {
+    "title": "A Note About Anonymous Analytics",
+    "description": "Lux now uses anonymous analytics and crash reports to understand which features are used and improve reliability.\n\nThese reports never include your notes, Bible plan names or reading details, search terms, or other private content, and they are not linked to an account.\n\nBy continuing to use Lux, you agree to this information being sent."
+  },
   "tutorials": {
     "dontShowAgain": "Don't Show Again"
   },

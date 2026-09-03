@@ -25,8 +25,11 @@ enum StrongLanguage {
   };
 }
 
-class LexiconPage extends HookConsumerWidget {
+class LexiconPage extends HookConsumerWidget implements StyledRoute<VerseSelection> {
   const LexiconPage({super.key});
+
+  @override
+  String get path => '/lexicon';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -34,4 +34,4 @@ MAKE IT YOURS
 Start with a Reader, Note-taker, or Studier setup, then customize your toolbars and shortcuts. Keep parallel Bibles, interlinear study, commentary, cross-references, and notes open in swipeable study panels while you read.
 
 FREE, PRIVATE, AND OFFLINE-FIRST
-Bundled Bibles, original-language texts, notes, and study resources work without a connection. Your content stays on your device. Lux has no ads, subscriptions, in-app purchases, accounts, analytics, or tracking. It is free and committed to staying that way.
+Bundled Bibles, original-language texts, notes, and study resources work without a connection. Your content stays on your device. Lux has no ads, subscriptions, in-app purchases, or accounts. Privacy-restricted analytics and crash reporting help improve feature usage and reliability, never advertising, personalization, or cross-app tracking. Lux is free and committed to staying that way.

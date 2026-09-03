@@ -14,8 +14,11 @@ import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
-class HighlightStylesPage extends HookConsumerWidget {
+class HighlightStylesPage extends HookConsumerWidget implements StyledRoute<VerseSelection> {
   const HighlightStylesPage({super.key});
+
+  @override
+  String get path => '/highlight-styles';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

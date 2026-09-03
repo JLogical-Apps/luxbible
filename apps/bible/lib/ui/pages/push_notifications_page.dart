@@ -16,8 +16,11 @@ import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
-class PushNotificationsPage extends ConsumerWidget {
+class PushNotificationsPage extends ConsumerWidget implements StyledRoute<void> {
   const PushNotificationsPage({super.key});
+
+  @override
+  String get path => '/settings/notifications';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

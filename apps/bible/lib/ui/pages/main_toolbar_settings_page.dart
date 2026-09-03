@@ -10,8 +10,11 @@ import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
-class MainToolbarSettingsPage extends ConsumerWidget {
+class MainToolbarSettingsPage extends ConsumerWidget implements StyledRoute<void> {
   const MainToolbarSettingsPage({super.key});
+
+  @override
+  String get path => '/settings/toolbars/main';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

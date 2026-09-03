@@ -38,15 +38,15 @@ The nullable highlight-style override is serialized under the existing `highligh
 
 ## Privacy and Telemetry
 
-Lux does not include:
+Lux uses Firebase Analytics for aggregate usage measurement and Firebase Crashlytics for crash and non-fatal error reporting. Collection is disabled in debug builds. Lux does not set Analytics or Crashlytics user IDs and does not send user-created Bible study content as telemetry.
 
-- Analytics
-- Behavioral tracking
-- Crash reporting
-- Advertising SDKs
-- Authentication
+Every navigable page implements a typed route contract with a stable, content-free path. The shared navigation helpers derive their nullable return type from the destination route builder and assign that path to `RouteSettings`; `FirebaseAnalyticsObserver` records it as the screen name. Navigation retains inline builders so destination widgets rebuild under localization changes. Paths never include Bible references, search terms, plan names, or local record IDs.
 
-Firebase Core and Firebase App Check are present to attest requests to the API.Bible proxy. Their presence does not represent Firebase Analytics, Crashlytics, or cloud storage of user content.
+Custom events cover audio playback starts, plan starts, plan-day completions, searches, Verse of the Day taps, notification taps, toolbar changes, community-link presses, Rate Lux presses, and onboarding lifecycle actions. The events have fixed names and no parameters. Plan and toolbar events are derived from successful persisted user-state transitions so canceled actions are not counted. Search events do not contain the query, and plan events do not identify the plan or its reading content.
+
+Advertising-related collection is disabled. Android removes the Advertising ID permission and disables Advertising ID collection. Apple builds use the Analytics dependency without IDFA support and disable IDFV collection. Both platforms deny ad storage, ad user data, and ad-personalization consent signals. Analytics and Crashlytics still generate random app-installation identifiers required for measurement and crash deduplication.
+
+Lux does not include advertising SDKs, authentication, or cloud storage of user content. Firebase Core and Firebase App Check also attest requests to the API.Bible proxy.
 
 Bible plan reminders use scheduled local notifications. They do not use Firebase Messaging or a remote push service. Lux allocates up to 14 dated one-shot notifications across reminder-enabled plans, giving each plan an equal rolling horizon while staying within native pending-notification limits alongside Verse of the Day. Completing a plan day removes that date from the desired schedule so the generic notification service cancels it and starts the next reading's reminders on the following local date. Bible plan state is projected into app-level local notification schedule models, while the generic notification service declaratively reconciles those schedules without depending on Bible plan types. Tapping a plan notification routes through the Bible Plans stack to the earliest incomplete passage, or safely back to Bible Plans when the plan is unavailable, complete, or at a review day.
 

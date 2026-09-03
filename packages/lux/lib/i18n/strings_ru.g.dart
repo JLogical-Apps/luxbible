@@ -66,6 +66,7 @@ class TranslationsRu extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$biblePlans$ru biblePlans = _Translations$biblePlans$ru._(_root);
 	@override late final _Translations$searchUi$ru searchUi = _Translations$searchUi$ru._(_root);
 	@override late final _Translations$onboarding$ru onboarding = _Translations$onboarding$ru._(_root);
+	@override late final _Translations$analyticsNotice$ru analyticsNotice = _Translations$analyticsNotice$ru._(_root);
 	@override late final _Translations$tutorials$ru tutorials = _Translations$tutorials$ru._(_root);
 	@override late final _Translations$audio$ru audio = _Translations$audio$ru._(_root);
 	@override late final _Translations$interlinearUi$ru interlinearUi = _Translations$interlinearUi$ru._(_root);
@@ -825,6 +826,17 @@ class _Translations$onboarding$ru extends Translations$onboarding$en {
 	@override String get learnLux => 'Узнайте, как использовать Lux';
 	@override String get checklistDescription => 'Заполните контрольный список ниже, чтобы узнать, как использовать Lux.';
 	@override String get skipHint => 'Торопитесь? Нажмите ✕, чтобы пропустить.';
+}
+
+// Path: analyticsNotice
+class _Translations$analyticsNotice$ru extends Translations$analyticsNotice$en {
+	_Translations$analyticsNotice$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Об анонимной аналитике';
+	@override String get description => 'Lux теперь использует анонимную аналитику и отчёты о сбоях, чтобы понимать, какие функции востребованы, и повышать надёжность. Эти отчёты никогда не содержат ваши заметки, названия планов чтения или сведения о ходе чтения, поисковые запросы либо другой личный контент и не связаны с учётной записью. Продолжая пользоваться Lux, вы соглашаетесь на отправку этой информации.';
 }
 
 // Path: tutorials
@@ -3264,6 +3276,8 @@ extension on TranslationsRu {
 			'onboarding.learnLux' => 'Узнайте, как использовать Lux',
 			'onboarding.checklistDescription' => 'Заполните контрольный список ниже, чтобы узнать, как использовать Lux.',
 			'onboarding.skipHint' => 'Торопитесь? Нажмите ✕, чтобы пропустить.',
+			'analyticsNotice.title' => 'Об анонимной аналитике',
+			'analyticsNotice.description' => 'Lux теперь использует анонимную аналитику и отчёты о сбоях, чтобы понимать, какие функции востребованы, и повышать надёжность. Эти отчёты никогда не содержат ваши заметки, названия планов чтения или сведения о ходе чтения, поисковые запросы либо другой личный контент и не связаны с учётной записью. Продолжая пользоваться Lux, вы соглашаетесь на отправку этой информации.',
 			'tutorials.dontShowAgain' => 'Больше не показывать',
 			'audio.timer' => 'Аудио Таймер',
 			'audio.fiveMinutes' => '5 минут',
@@ -3289,10 +3303,10 @@ extension on TranslationsRu {
 			'interlinearUi.studyBibleExplanation' => 'Учебные Библии составлены с использованием дословных тегов Стронга и морфологических тегов, что делает возможной подстрочную лексическую разбивку. Вместо этого используйте самую последнюю Учебную Библию.',
 			'interlinearUi.usingTranslation' => ({required Object translation}) => 'Использование ${translation} для подстрочного текста',
 			'chapterUnavailable.title' => ({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} не включает ${testament}.',
-			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Показываем вашу последнюю ${testament} Библию, ${fallbackTranslation}.',
-			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			_ => null,
 		} ?? switch (path) {
+			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Показываем вашу последнюю ${testament} Библию, ${fallbackTranslation}.',
+			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => '${translation} нумерует главы и стихи иначе, чем в большинстве английских переводов.\n\nТекст, показанный здесь в ${reference}, взят из ${originalReference} в ${translation} и переназначен, чтобы соответствовать другим переводам.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} не включает этот выбор.',
 			'commentaryUi.introTo' => ({required Object book}) => 'Знакомство с ${book}',

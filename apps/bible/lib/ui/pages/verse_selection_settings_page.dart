@@ -9,8 +9,11 @@ import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
-class VerseSelectionSettingsPage extends ConsumerWidget {
+class VerseSelectionSettingsPage extends ConsumerWidget implements StyledRoute<void> {
   const VerseSelectionSettingsPage({super.key});
+
+  @override
+  String get path => '/settings/toolbars/verse-selection';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

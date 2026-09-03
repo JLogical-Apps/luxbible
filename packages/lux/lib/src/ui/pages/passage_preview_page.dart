@@ -6,11 +6,14 @@ import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
-class PassagePreviewPage extends HookConsumerWidget {
+class PassagePreviewPage extends HookConsumerWidget implements StyledRoute<void> {
   final VerseSelection verseSelection;
   final Function(VerseSelection)? onNavigateToVerseSelection;
 
   const PassagePreviewPage({super.key, required this.verseSelection, this.onNavigateToVerseSelection});
+
+  @override
+  String get path => '/passage-preview';
 
   static Future<void> show(
     BuildContext context, {

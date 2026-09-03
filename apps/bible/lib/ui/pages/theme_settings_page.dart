@@ -8,8 +8,11 @@ import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:style/style.dart';
 
-class ThemeSettingsPage extends ConsumerWidget {
+class ThemeSettingsPage extends ConsumerWidget implements StyledRoute<void> {
   const ThemeSettingsPage({super.key});
+
+  @override
+  String get path => '/settings/theme';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
