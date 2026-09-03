@@ -11,16 +11,22 @@ class StyledSwitch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final backgroundColor = !isEnabled
+        ? context.colors.surfaceDisabled
+        : isSelected
+        ? context.colors.borderSelected
+        : context.colors.borderOpaque;
     return IgnorePointer(
       ignoring: onSelected == null,
       child: Switch.adaptive(
         value: isSelected,
         onChanged: onSelected ?? (_) {},
         activeThumbColor: context.colors.contentPrimaryInverse,
-        inactiveThumbColor: context.colors.contentTertiary,
-        inactiveTrackColor: context.colors.borderOpaque,
-        activeTrackColor: context.colors.borderSelected,
-        trackOutlineColor: .all(isSelected ? context.colors.borderSelected : context.colors.contentTertiary),
+        inactiveThumbColor: isEnabled ? context.colors.contentTertiary : context.colors.contentDisabled,
+        inactiveTrackColor: isEnabled ? context.colors.borderOpaque : context.colors.borderDisabled,
+        activeTrackColor: backgroundColor,
+        trackColor: .all(backgroundColor),
+        trackOutlineColor: .all(backgroundColor),
       ),
     );
   }

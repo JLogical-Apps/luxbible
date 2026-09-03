@@ -2,6 +2,7 @@ import 'package:bible/models/annotation.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
+import 'package:bible/ui/sheets/copy_sheet.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -122,11 +123,25 @@ enum TextSelectionAction {
           onNavigateToVerseSelection(result.selection);
         }
       case copy:
+        final rootContext = context.rootContext;
+
         final text = await ref.read(textSelectionTextProvider(textSelection).future);
         onDeselect();
 
         if (!context.mounted) return;
-        context.showStyledSnackbar(message: t.selectionActions.copiedText.toText());
+        context.showStyledSnackbar(
+          message: t.selectionActions.copiedText.toText(),
+          action: StyledTextAction(
+            label: 'Edit'.toText(),
+            onPressed: () => CopySheet.show(
+              rootContext,
+              text: text,
+              isTextSelection: true,
+              translation: textSelection.translation,
+              selection: textSelection.toVerseSelection(),
+            ),
+          ),
+        );
         await Clipboard.setData(ClipboardData(text: text));
     }
   }

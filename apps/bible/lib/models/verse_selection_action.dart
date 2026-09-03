@@ -4,6 +4,7 @@ import 'package:bible/models/study_panel.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
+import 'package:bible/ui/sheets/copy_sheet.dart';
 import 'package:bible/ui/sheets/study_sheet.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +59,8 @@ enum VerseSelectionAction {
           ref.markOnboardingStep(.annotateVerse);
         }
       case copy:
+        final rootContext = context.rootContext;
+
         final user = ref.read(userProvider);
         final text = await ref.read(
           verseSelectionTextProvider(selection: selectedVerseSelection, translation: user.translation).future,
@@ -68,6 +71,16 @@ enum VerseSelectionAction {
         onDeselect();
         context.showStyledSnackbar(
           message: t.selectionActions.copiedVerses(reference: selectedVerseSelection.format()).toText(),
+          action: StyledTextAction(
+            label: 'Edit'.toText(),
+            onPressed: () => CopySheet.show(
+              rootContext,
+              text: text,
+              isTextSelection: false,
+              translation: user.translation,
+              selection: selectedVerseSelection,
+            ),
+          ),
         );
         await Clipboard.setData(ClipboardData(text: text));
 

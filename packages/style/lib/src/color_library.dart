@@ -52,6 +52,7 @@ class ColorLibrary {
 
   Color get borderOpaque => brightness.when(light: zinc.shade200, dark: zinc.shade700);
   Color get borderSelected => brightness.when(light: Colors.black, dark: Colors.white);
+  Color get borderDisabled => brightness.when(light: zinc.shade100, dark: zinc.shade800);
   Color get borderError => red.shade600;
   Color border(bool isSelected) => isSelected ? borderSelected : borderOpaque;
 }
