@@ -21,11 +21,11 @@ extension BuildContextExtensions on BuildContext {
 
   Future<T?> push<T>(Widget Function(BuildContext) pageBuilder) =>
       Navigator.of(this).push(MaterialPageRoute(builder: pageBuilder));
-  Future<T?> pushReplacement<T>(Widget page) =>
-      Navigator.of(this).pushReplacement(MaterialPageRoute(builder: (_) => page));
+  Future<T?> pushReplacement<T>(Widget Function(BuildContext) pageBuilder) =>
+      Navigator.of(this).pushReplacement(MaterialPageRoute(builder: pageBuilder));
 
-  Future<T?> pushDialog<T>(Widget page) =>
-      Navigator.of(this).push(MaterialPageRoute(builder: (_) => page, fullscreenDialog: true));
+  Future<T?> pushDialog<T>(Widget Function(BuildContext) pageBuilder) =>
+      Navigator.of(this).push(MaterialPageRoute(builder: pageBuilder, fullscreenDialog: true));
 
   void maybePop<T>([T? result]) => Navigator.of(this).maybePop(result);
   void pop<T>([T? result]) => Navigator.of(this).pop(result);

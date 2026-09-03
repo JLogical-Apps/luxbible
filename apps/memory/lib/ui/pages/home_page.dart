@@ -64,7 +64,7 @@ class HomePage extends ConsumerWidget {
               child: Symbols.add.toIcon(),
               colorBuilder: .surfaceSecondary,
               onPressed: () async {
-                final newPassages = await context.pushDialog<List<VerseSelection>>(AddPassagesPage());
+                final newPassages = await context.pushDialog<List<VerseSelection>>((context) => AddPassagesPage());
                 if (newPassages != null) {
                   ref.updateUser(
                     (user) => user.copyWith(passages: [...user.passages, ...newPassages].distinct.toList()),

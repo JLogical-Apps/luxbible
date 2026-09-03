@@ -325,7 +325,7 @@ class BibleBody extends HookConsumerWidget {
                 },
                 onPressed: () async {
                   final result = await context.pushDialog<PositionPageResult>(
-                    PositionPage(initialReference: currentChapterReference),
+                    (context) => PositionPage(initialReference: currentChapterReference),
                   );
                   if (result != null) {
                     // addPostFrameCallback until https://github.com/rrousselGit/riverpod/issues/4812

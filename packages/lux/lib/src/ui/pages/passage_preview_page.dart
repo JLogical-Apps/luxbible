@@ -17,7 +17,8 @@ class PassagePreviewPage extends HookConsumerWidget {
     required VerseSelection verseSelection,
     Function(VerseSelection)? onNavigateToVerseSelection,
   }) => context.pushDialog(
-    PassagePreviewPage(verseSelection: verseSelection, onNavigateToVerseSelection: onNavigateToVerseSelection),
+    (context) =>
+        PassagePreviewPage(verseSelection: verseSelection, onNavigateToVerseSelection: onNavigateToVerseSelection),
   );
 
   @override

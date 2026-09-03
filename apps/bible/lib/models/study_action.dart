@@ -139,7 +139,7 @@ enum StudyAction {
                           StyledListItem(
                             title: 'Edit Commentaries'.toText(),
                             leading: Symbols.tune.toIcon(),
-                            onPressed: () => context.pushReplacement(CommentariesPage()),
+                            onPressed: () => context.pushReplacement((context) => CommentariesPage()),
                           ),
                           StyledListItem(
                             title: 'Pin ${selectedCommentary.title()} Commentary as a Study Panel'.toText(),
