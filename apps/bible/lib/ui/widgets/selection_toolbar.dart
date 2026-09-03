@@ -36,46 +36,52 @@ class SelectionToolbar extends ConsumerWidget {
         configuration: user.verseSelection,
         user: user,
         onClosePressed: selectionController.clear,
-        onShorcutPressed: (_, shortcut) => shortcut.onPressed(
-          context,
-          verseSelection: verseSelection,
-          onDeselect: selectionController.clearVerses,
-          onNavigateToVerseSelection: onNavigateToVerseSelection,
-          onAddStudyPanel: onAddStudyPanel,
-        ),
-        onMorePressed: () => context.showStyledSheet(
-          (context, _) => StyledSheet(
-            title: t.toolbarSettings.verseSelection.toText(),
-            subtitle: verseSelection.format().toText(),
-            trailing: StyledCircleButton.md(
-              child: Symbols.tune.toIcon(),
-              onPressed: () {
-                context.pop();
-                context.push((context) => VerseSelectionSettingsPage());
-              },
+        onShorcutPressed: (_, shortcut) {
+          selectionController.markReferencesAction();
+          shortcut.onPressed(
+            context,
+            verseSelection: verseSelection,
+            onDeselect: selectionController.clearVerses,
+            onNavigateToVerseSelection: onNavigateToVerseSelection,
+            onAddStudyPanel: onAddStudyPanel,
+          );
+        },
+        onMorePressed: () {
+          selectionController.markReferencesAction();
+          context.showStyledSheet(
+            (context, _) => StyledSheet(
+              title: t.toolbarSettings.verseSelection.toText(),
+              subtitle: verseSelection.format().toText(),
+              trailing: StyledCircleButton.md(
+                child: Symbols.tune.toIcon(),
+                onPressed: () {
+                  context.pop();
+                  context.push((context) => VerseSelectionSettingsPage());
+                },
+              ),
+              children: VerseSelectionAction.values
+                  .map(
+                    (action) => StyledListItem(
+                      title: action.title().toText(),
+                      subtitle: action.description().toText(),
+                      leading: action.icon.toIcon(),
+                      trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        action.onPressed(
+                          context,
+                          selectedVerseSelection: verseSelection,
+                          onDeselect: selectionController.clearVerses,
+                          onNavigateToVerseSelection: onNavigateToVerseSelection,
+                          onAddStudyPanel: onAddStudyPanel,
+                        );
+                      },
+                    ),
+                  )
+                  .toList(),
             ),
-            children: VerseSelectionAction.values
-                .map(
-                  (action) => StyledListItem(
-                    title: action.title().toText(),
-                    subtitle: action.description().toText(),
-                    leading: action.icon.toIcon(),
-                    trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      action.onPressed(
-                        context,
-                        selectedVerseSelection: verseSelection,
-                        onDeselect: selectionController.clearVerses,
-                        onNavigateToVerseSelection: onNavigateToVerseSelection,
-                        onAddStudyPanel: onAddStudyPanel,
-                      );
-                    },
-                  ),
-                )
-                .toList(),
-          ),
-        ),
+          );
+        },
       );
     }
 

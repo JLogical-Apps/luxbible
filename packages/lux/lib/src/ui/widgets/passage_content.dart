@@ -80,6 +80,7 @@ class PassageContent extends StatelessWidget {
       configuration: configuration.paragraphsConfiguration(context, translation),
       underlinedReferences: underlinedReferences.nullIfEmpty?.toList() ?? selection?.references ?? [],
       emphasizedReference: emphasizedReference,
+      deemphasizedReferences: selection != null && selection.hasActionBeenPerformed ? selection.references : [],
       textSelection: selection?.textSelection,
       decorations: configuration.decorationsBuilder(context, chapterReference, translation),
       markersBuilder: configuration.markersBuilder == null

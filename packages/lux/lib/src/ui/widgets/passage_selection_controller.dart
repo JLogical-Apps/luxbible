@@ -5,11 +5,13 @@ import 'package:lux/lux.dart';
 class PassageSelectionController {
   final ValueNotifier<List<Reference>> referencesState;
   final ValueNotifier<BibleTextSelection?> textSelectionState;
+  final ValueNotifier<bool> hasActionBeenPerformedState;
   final PassageSelectionConfiguration configuration;
 
   PassageSelectionController({
     required this.referencesState,
     required this.textSelectionState,
+    required this.hasActionBeenPerformedState,
     required this.configuration,
   });
 
@@ -17,15 +19,21 @@ class PassageSelectionController {
   VerseSelection? get verseSelection => references.isEmpty ? null : VerseSelection.fromReferences(references);
   BibleTextSelection? get textSelection => textSelectionState.value;
   bool get hasSelection => references.isNotEmpty || textSelection != null;
+  bool get hasActionBeenPerformed => hasActionBeenPerformedState.value;
 
   PassageSelection get selection => PassageSelection(references: references, textSelection: textSelection);
 
   void selectReferences(List<Reference> references) {
     referencesState.value = references;
+    hasActionBeenPerformedState.value = false;
     textSelectionState.value = null;
   }
 
-  void clearVerses() => referencesState.value = [];
+  void clearVerses() {
+    referencesState.value = [];
+    hasActionBeenPerformedState.value = false;
+  }
+
   void clearText() => textSelectionState.value = null;
 
   void clear() {
@@ -34,11 +42,15 @@ class PassageSelectionController {
   }
 
   void onReferencePressed(Reference reference) {
-    if (textSelection != null) {
-      clearText();
+    if (textSelection != null || hasActionBeenPerformedState.value) {
+      clear();
     } else {
       referencesState.value = configuration.referencesAfterPress(references, reference);
     }
+  }
+
+  void markReferencesAction() {
+    if (references.isNotEmpty) hasActionBeenPerformedState.value = true;
   }
 
   bool onTextSelectionLongPressed(
@@ -54,6 +66,7 @@ class PassageSelectionController {
         onNavigateToVerseSelection,
         clearVerses,
         clearText,
+        markReferencesAction,
       ) ??
       true;
 
@@ -76,5 +89,6 @@ PassageSelectionController usePassageSelectionController(PassageSelectionConfigu
     PassageSelectionController(
       referencesState: useState([]),
       textSelectionState: useState(null),
+      hasActionBeenPerformedState: useState(false),
       configuration: configuration,
     );

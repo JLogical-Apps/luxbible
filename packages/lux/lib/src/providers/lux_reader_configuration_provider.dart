@@ -17,6 +17,7 @@ class PassageSelectionConfiguration {
     Function(VerseSelection) onNavigateToVerseSelection,
     Function() clearVerseSelection,
     Function() clearTextSelection,
+    Function() markReferencesAction,
   )?
   onLongPress;
 

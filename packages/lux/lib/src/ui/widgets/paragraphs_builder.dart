@@ -86,6 +86,7 @@ class ParagraphsBuilder extends HookWidget {
 
   final List<Reference> underlinedReferences;
   final Reference? emphasizedReference;
+  final List<Reference> deemphasizedReferences;
   final BibleTextSelection? textSelection;
   final List<BiblePassageDecoration> decorations;
   final List<BibleInlineMarker> Function(Reference, Verse, int verseParagraphOffset)? markersBuilder;
@@ -110,6 +111,7 @@ class ParagraphsBuilder extends HookWidget {
     required this.configuration,
     this.underlinedReferences = const [],
     this.emphasizedReference,
+    this.deemphasizedReferences = const [],
     this.textSelection,
     this.decorations = const [],
     this.markersBuilder,
@@ -143,8 +145,14 @@ class ParagraphsBuilder extends HookWidget {
       paragraphs
           .getReferences(chapterReference)
           .mapToMap(
-            (reference) =>
-                MapEntry(reference, emphasizedReference == reference || emphasizedReference == null ? 1.0 : 0.5),
+            (reference) => MapEntry(
+              reference,
+              emphasizedReference != null && emphasizedReference != reference
+                  ? 0.5
+                  : deemphasizedReferences.has(reference)
+                  ? 0.8
+                  : 1.0,
+            ),
           ),
       initialValue: 1.0,
     );

@@ -34,8 +34,18 @@ class BibleReaderConfiguration {
           ? user.getExpandedTextSelection(selection)
           : selection,
       onLongPress:
-          (context, verseSelection, textSelection, selection, onNavigateToVerseSelection, clearVerses, clearText) {
+          (
+            context,
+            verseSelection,
+            textSelection,
+            selection,
+            onNavigateToVerseSelection,
+            clearVerses,
+            clearText,
+            markReferencesAction,
+          ) {
             if (verseSelection != null && selection.isInVerseSelection(verseSelection)) {
+              markReferencesAction();
               user.verseSelection.longPressShortcut.onPressed(
                 context,
                 verseSelection: verseSelection,
