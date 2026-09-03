@@ -62,14 +62,19 @@ class AudioBibleState {
 }
 
 @Riverpod(keepAlive: true)
-AudioBibleHandler audioBibleHandler(Ref ref) =>
-    throw UnimplementedError('AudioBibleHandler must be initialized in main');
+AudioBibleHandler? audioBibleHandler(Ref ref) => null;
 
 @riverpod
-Stream<Duration> audioBiblePosition(Ref ref) => ref
-    .watch(audioBibleHandlerProvider)
-    .player
-    .createPositionStream(steps: 1, minPeriod: Duration(milliseconds: 16), maxPeriod: Duration(milliseconds: 16));
+Stream<Duration> audioBiblePosition(Ref ref) {
+  final handler = ref.watch(audioBibleHandlerProvider);
+  return handler == null
+      ? .empty()
+      : handler.player.createPositionStream(
+          steps: 1,
+          minPeriod: Duration(milliseconds: 16),
+          maxPeriod: Duration(milliseconds: 16),
+        );
+}
 
 @riverpod
 AudioBibleContextState? audioBible(Ref ref, {required AudioBibleContext context}) =>
@@ -93,18 +98,18 @@ class AudioBibleController extends _$AudioBibleController {
 
   Timer? timer;
 
-  AudioBibleHandler get handler => ref.read(audioBibleHandlerProvider);
-  AudioPlayer get player => handler.player;
+  AudioBibleHandler? get handler => ref.read(audioBibleHandlerProvider);
+  AudioPlayer? get player => handler?.player;
 
   @override
   AudioBibleState build() {
-    playerStateSubscription = player.playerStateStream.listen(handlePlayerState);
-    errorSubscription = player.errorStream.listen(handleError);
-    positionSubscription = player.positionStream.listen(handlePosition);
+    playerStateSubscription = player?.playerStateStream.listen(handlePlayerState);
+    errorSubscription = player?.errorStream.listen(handleError);
+    positionSubscription = player?.positionStream.listen(handlePosition);
 
     ref.listen(
       userProvider.select((user) => user.audio.speed),
-      (_, speed) => handler.setSpeed(speed),
+      (_, speed) => handler?.setSpeed(speed),
       fireImmediately: true,
     );
 
@@ -142,10 +147,11 @@ class AudioBibleController extends _$AudioBibleController {
     }
 
     if (state.activeContext == context && isSamePassage && session != null && error == null) {
-      if (player.processingState == .completed || session.passage.hasReachedAudioEnd(player.position, timings)) {
+      if (player?.processingState == .completed ||
+          session.passage.hasReachedAudioEnd(player?.position ?? .zero, timings)) {
         await seekTo(context: context, position: passage.getAudioStartPosition(timings));
       }
-      await handler.play();
+      await handler?.play();
       return true;
     }
 
@@ -165,7 +171,7 @@ class AudioBibleController extends _$AudioBibleController {
 
   Future<bool> toggle({required AudioBibleContext context, required VerseSelection passage}) async {
     final session = state.getSessionFor(context);
-    if (state.activeContext == context && session?.passage == passage && player.playing) {
+    if (state.activeContext == context && session?.passage == passage && player?.playing == true) {
       await pause(context: context);
       return true;
     }
@@ -192,7 +198,7 @@ class AudioBibleController extends _$AudioBibleController {
 
     if (replacement.uri == null) {
       if (state.activeContext == context) {
-        await handler.pause();
+        await handler?.pause();
       }
       updateSession(context, (_) => replacement);
       return;
@@ -203,7 +209,7 @@ class AudioBibleController extends _$AudioBibleController {
         context: context,
         session: replacement,
         initialPosition: startPosition,
-        shouldPlay: player.playing,
+        shouldPlay: player?.playing == true,
       );
     } else {
       updateSession(context, (_) => replacement);
@@ -212,7 +218,7 @@ class AudioBibleController extends _$AudioBibleController {
 
   Future<void> pause({required AudioBibleContext context}) async {
     if (state.activeContext == context && state.getSessionFor(context) != null) {
-      await handler.pause();
+      await handler?.pause();
     }
   }
 
@@ -222,9 +228,9 @@ class AudioBibleController extends _$AudioBibleController {
       return;
     }
 
-    final clampedPosition = position.clamp(.zero, player.duration ?? .zero);
+    final clampedPosition = position.clamp(.zero, player?.duration ?? .zero);
     final reference = session.getReferenceAtPosition(clampedPosition);
-    await handler.seek(clampedPosition);
+    await handler?.seek(clampedPosition);
     if (reference != null) {
       emitSpokenReference(context: context, reference: reference, force: true);
     }
@@ -239,7 +245,7 @@ class AudioBibleController extends _$AudioBibleController {
   }
 
   Future<void> seekBy({required AudioBibleContext context, required Duration offset}) =>
-      seekTo(context: context, position: player.position + offset);
+      seekTo(context: context, position: (player?.position ?? .zero) + offset);
 
   Future<void> remove({required AudioBibleContext context}) async {
     final removedSession = state.getSessionFor(context);
@@ -249,7 +255,7 @@ class AudioBibleController extends _$AudioBibleController {
 
     final wasActive = state.activeContext == context;
     if (wasActive) {
-      await handler.stop();
+      await handler?.stop();
     }
 
     positions.remove(context);
@@ -291,7 +297,7 @@ class AudioBibleController extends _$AudioBibleController {
     state = state.copyWith(timerEndTime: endTime);
     timer = Timer(duration, () async {
       state = state.copyWith(clearTimerEndTime: true);
-      await handler.stop();
+      await handler?.stop();
     });
   }
 
@@ -302,17 +308,17 @@ class AudioBibleController extends _$AudioBibleController {
     required bool shouldPlay,
   }) async {
     if (state.activeContext case final activeContext? when activeContext != context) {
-      positions[activeContext] = player.position;
-      await handler.pause();
+      positions[activeContext] = player?.position ?? .zero;
+      await handler?.pause();
     } else if (state.activeContext == context) {
-      await handler.pause();
+      await handler?.pause();
     }
 
     spokenReferenceSubjects[context]!.add(null);
     state = state.copyWith(sessions: {...state.sessions, context: session}, activeContext: context);
 
     try {
-      await handler.loadUrl(
+      await handler?.loadUrl(
         session.uri.toString(),
         MediaItem(
           id: session.passage.format(),
@@ -322,7 +328,7 @@ class AudioBibleController extends _$AudioBibleController {
         ),
         clipEnd: session.passage.isChapter ? null : session.passage.getLastAudioTiming(session.timings)?.end,
       );
-      await handler.seek(initialPosition.clamp(.zero, player.duration ?? .zero));
+      await handler?.seek(initialPosition.clamp(.zero, player?.duration ?? .zero));
       positions[context] = initialPosition;
       errorSubject.add(null);
 
@@ -331,7 +337,7 @@ class AudioBibleController extends _$AudioBibleController {
       }
 
       if (shouldPlay) {
-        await handler.play();
+        await handler?.play();
       }
     } on PlayerException catch (error) {
       handleError(error);
@@ -349,7 +355,7 @@ class AudioBibleController extends _$AudioBibleController {
     if (context == null) {
       return;
     }
-    handler.pause();
+    handler?.pause();
     errorSubject.add(error);
   }
 
@@ -357,11 +363,11 @@ class AudioBibleController extends _$AudioBibleController {
     final context = state.activeContext;
     final session = context == null ? null : state.getSessionFor(context);
     final reference = session?.getReferenceAtPosition(position);
-    final canFollow = player.processingState != .loading && player.processingState != .buffering;
+    final canFollow = player?.processingState != .loading && player?.processingState != .buffering;
     if (context != null && session != null && canFollow && reference != null) {
       emitSpokenReference(context: context, reference: reference);
     }
-    if (session != null && player.playing && session.passage.hasReachedAudioEnd(position, session.timings)) {
+    if (session != null && player?.playing == true && session.passage.hasReachedAudioEnd(position, session.timings)) {
       completeActivePassage();
     }
   }
@@ -373,7 +379,7 @@ class AudioBibleController extends _$AudioBibleController {
       return;
     }
 
-    await handler.pause();
+    await handler?.pause();
     final isStillCurrent = state.activeContext == context && state.getSessionFor(context)?.passage == session.passage;
     if (isStillCurrent) {
       completionSubjects[context]!.add(session.passage);

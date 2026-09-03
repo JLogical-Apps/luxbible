@@ -77,6 +77,8 @@ class AudioBiblePanelBody extends HookConsumerWidget {
     final timerEndTime = ref.watch(audioBibleControllerProvider.select((state) => state.timerEndTime));
     final audioBibleController = ref.read(audioBibleControllerProvider.notifier);
 
+    final isInitialized = ref.watch(audioBibleHandlerProvider) != null;
+
     final positionOverrideState = useState<double?>(null);
     usePostFrameEffect(() => positionOverrideState.value = null, [session?.passage]);
 
@@ -104,8 +106,32 @@ class AudioBiblePanelBody extends HookConsumerWidget {
     return AnimatedSizeAndFade(
       child: Padding(
         padding: padding,
-        child: player.error == null
+        child: !isInitialized
+            ? StyledTile.message(
+                leading: Symbols.error.toIcon(),
+                title: 'An error occurred'.toText(),
+                subtitle:
+                    'An error occurred setting up the audio for this device. Try force-closing and reopening the app.'
+                        .toText(),
+              )
+            : player.error != null
             ? Column(
+                spacing: 12,
+                children: [
+                  StyledTile.message(
+                    leading: Symbols.error.toIcon(),
+                    title: t.audio.loadError.toText(),
+                    subtitle: t.audio.connectionError.toText(),
+                  ),
+                  StyledRectButton.secondary(
+                    label: t.common.tryAgain.toText(),
+                    onPressed: session == null
+                        ? null
+                        : () => audioBibleController.play(context: this.context, passage: session.passage),
+                  ),
+                ],
+              )
+            : Column(
                 children: [
                   gapH12,
                   StyledSlider(
@@ -203,22 +229,6 @@ class AudioBiblePanelBody extends HookConsumerWidget {
                         },
                       ),
                     ],
-                  ),
-                ],
-              )
-            : Column(
-                spacing: 12,
-                children: [
-                  StyledTile.message(
-                    leading: Symbols.error.toIcon(),
-                    title: t.audio.loadError.toText(),
-                    subtitle: t.audio.connectionError.toText(),
-                  ),
-                  StyledRectButton.secondary(
-                    label: t.common.tryAgain.toText(),
-                    onPressed: session == null
-                        ? null
-                        : () => audioBibleController.play(context: this.context, passage: session.passage),
                   ),
                 ],
               ),

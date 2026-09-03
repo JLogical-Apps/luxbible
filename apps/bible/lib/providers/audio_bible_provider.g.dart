@@ -15,11 +15,11 @@ final audioBibleHandlerProvider = AudioBibleHandlerProvider._();
 final class AudioBibleHandlerProvider
     extends
         $FunctionalProvider<
-          AudioBibleHandler,
-          AudioBibleHandler,
-          AudioBibleHandler
+          AudioBibleHandler?,
+          AudioBibleHandler?,
+          AudioBibleHandler?
         >
-    with $Provider<AudioBibleHandler> {
+    with $Provider<AudioBibleHandler?> {
   AudioBibleHandlerProvider._()
     : super(
         from: null,
@@ -36,25 +36,25 @@ final class AudioBibleHandlerProvider
 
   @$internal
   @override
-  $ProviderElement<AudioBibleHandler> $createElement(
+  $ProviderElement<AudioBibleHandler?> $createElement(
     $ProviderPointer pointer,
   ) => $ProviderElement(pointer);
 
   @override
-  AudioBibleHandler create(Ref ref) {
+  AudioBibleHandler? create(Ref ref) {
     return audioBibleHandler(ref);
   }
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AudioBibleHandler value) {
+  Override overrideWithValue(AudioBibleHandler? value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<AudioBibleHandler>(value),
+      providerOverride: $SyncValueProvider<AudioBibleHandler?>(value),
     );
   }
 }
 
-String _$audioBibleHandlerHash() => r'31afdaaf95e858333197535c5fd93a5e647b85ba';
+String _$audioBibleHandlerHash() => r'31c5a8d7cc7ea290e97098816d10739add4108bd';
 
 @ProviderFor(audioBiblePosition)
 final audioBiblePositionProvider = AudioBiblePositionProvider._();

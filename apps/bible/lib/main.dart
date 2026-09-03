@@ -70,17 +70,19 @@ Future<void> main() async {
             : AppleAppAttestWithDeviceCheckFallbackProvider(),
       );
 
-      final audioBibleHandler = await AudioService.init(
-        builder: () => AudioBibleHandler(),
-        config: AudioServiceConfig(
-          androidNotificationChannelId: 'app.luxbible.app.channel.audio',
-          androidNotificationChannelName: t.audio.notificationChannelName,
-          androidNotificationChannelDescription: t.audio.notificationChannelDescription,
-          androidNotificationIcon: 'drawable/ic_notification',
-          androidStopForegroundOnPause: true,
-          fastForwardInterval: Duration(seconds: 10),
-          rewindInterval: Duration(seconds: 10),
-        ),
+      final audioBibleHandler = await guardAsync(
+        () => AudioService.init(
+          builder: () => AudioBibleHandler(),
+          config: AudioServiceConfig(
+            androidNotificationChannelId: 'app.luxbible.app.channel.audio',
+            androidNotificationChannelName: t.audio.notificationChannelName,
+            androidNotificationChannelDescription: t.audio.notificationChannelDescription,
+            androidNotificationIcon: 'drawable/ic_notification',
+            androidStopForegroundOnPause: true,
+            fastForwardInterval: Duration(seconds: 10),
+            rewindInterval: Duration(seconds: 10),
+          ),
+        ).timeout(Duration(seconds: 3)),
       );
 
       await registerLicenses();

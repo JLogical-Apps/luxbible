@@ -7,7 +7,7 @@ import 'package:rxdart/rxdart.dart';
 
 part 'audio_bible_player_provider.g.dart';
 
-typedef AudioBibleNativePlayerState = ({PlayerState playerState, Duration? duration, PlayerException? error});
+typedef AudioBibleNativePlayerState = ({PlayerState? playerState, Duration? duration, PlayerException? error});
 typedef AudioBiblePlayerState = ({
   bool isActive,
   Duration? duration,
@@ -18,11 +18,11 @@ typedef AudioBiblePlayerState = ({
 
 @riverpod
 Stream<AudioBibleNativePlayerState> audioBibleNativePlayer(Ref ref) {
-  final player = ref.watch(audioBibleHandlerProvider).player;
+  final player = ref.watch(audioBibleHandlerProvider)?.player;
   final audioBibleController = ref.watch(audioBibleControllerProvider.notifier);
   return Rx.combineLatest3(
-    player.playerStateStream.startWith(player.playerState),
-    player.durationStream.startWith(player.duration),
+    player == null ? .empty() : player.playerStateStream.startWith(player.playerState),
+    player == null ? .empty() : player.durationStream.startWith(player.duration),
     audioBibleController.errors,
     (playerState, duration, error) => (playerState: playerState, duration: duration, error: error),
   );
@@ -35,16 +35,16 @@ AudioBiblePlayerState audioBiblePlayer(Ref ref, {required AudioBibleContext cont
   final audioBibleController = ref.watch(audioBibleControllerProvider.notifier);
   final nativePlayer =
       ref.watch(audioBibleNativePlayerProvider).value ??
-      (playerState: handler.player.playerState, duration: handler.player.duration, error: audioBibleController.error);
+      (playerState: handler?.player.playerState, duration: handler?.player.duration, error: audioBibleController.error);
 
   return (
     isActive: isActive,
     duration: isActive ? nativePlayer.duration : null,
-    isPlaying: isActive && nativePlayer.playerState.playing,
+    isPlaying: isActive && nativePlayer.playerState?.playing == true,
     isLoading:
         isActive &&
-        (nativePlayer.playerState.processingState == .loading ||
-            nativePlayer.playerState.processingState == .buffering),
+        (nativePlayer.playerState?.processingState == .loading ||
+            nativePlayer.playerState?.processingState == .buffering),
     error: isActive ? nativePlayer.error : null,
   );
 }
