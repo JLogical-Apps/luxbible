@@ -116,7 +116,7 @@ Users can:
 - Swipe the Bible left or right to change chapters
 - Tap a verse to select it
 - Tap additional verses to extend a verse selection
-- Long-press a word to select it
+- Long-press a word or number to select it
 - Continue dragging after a long-press to select a phrase
 - Copy verses or selected text
 
@@ -310,7 +310,8 @@ When an online Bible is active, cross-reference previews use the user's study Bi
 
 ## Search
 
-Search supports words, ordered phrases, and Strong's numbers such as `H2452`.
+Search supports words, ordered phrases, displayed numbers such as `5,233`, and Strong's numbers such as `H2452`.
+Numeric formatting is matched exactly, so `5,233` and `5233` are different search terms.
 
 ### Scope
 

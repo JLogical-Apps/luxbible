@@ -44,20 +44,12 @@ sealed class Chapter with _$Chapter {
       start: BibleTextSelectionWordAnchor.fromReference(
         reference: selection.start.toReference(),
         characterOffset:
-            List.generate(
-              selection.start.characterOffset,
-              (i) => i,
-            ).where((offset) => startVerseText[offset] == ' ').lastOrNull?.mapIfNonNull((offset) => offset + 1) ??
-            0,
+            startVerseText.getWordRangeAt(selection.start.characterOffset)?.$1 ?? selection.start.characterOffset,
       ),
       end: BibleTextSelectionWordAnchor.fromReference(
         reference: selection.end.toReference(),
         characterOffset:
-            Range.generate(
-              selection.end.characterOffset,
-              endVerseText.length - 1,
-            ).where((offset) => endVerseText[offset].isLetterOnly).firstOrNull?.mapIfNonNull((offset) => offset - 1) ??
-            endVerseText.length - 1,
+            endVerseText.getWordRangeAt(selection.end.characterOffset)?.$2 ?? selection.end.characterOffset,
       ),
     );
   }

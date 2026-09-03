@@ -45,7 +45,7 @@ class SearchPage extends HookConsumerWidget {
     final searchState = useState(textState.value);
     final search = searchState.value.trim();
     final isSearchActive = search.isNotEmpty;
-    final searchTerms = search.onlyLetters.toLowerCase().split(' ').where((term) => term.isNotEmpty).toList();
+    final searchTerms = search.bibleSearchTerms;
 
     final locationsState = useState(<SearchLocationFilter>[]);
     final locations = locationsState.value;
@@ -328,9 +328,11 @@ class SearchPage extends HookConsumerWidget {
                                         redLetters: user.themeLayout.redLetters,
                                         verse: verse,
                                         isWordHighlighted: (word) {
-                                          final normalizedWord = word.onlyLetters.toLowerCase();
-                                          return searchTerms.any(
-                                            (searchTerm) => searchWordMatching.matches(normalizedWord, searchTerm),
+                                          final wordTerms = word.bibleSearchTerms;
+                                          return wordTerms.any(
+                                            (wordTerm) => searchTerms.any(
+                                              (searchTerm) => searchWordMatching.matches(wordTerm, searchTerm),
+                                            ),
                                           );
                                         },
                                         style: context.textStyle.paragraphSm.subtle(),

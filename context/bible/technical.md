@@ -189,6 +189,9 @@ Word and phrase searches preserve an adjacent ordered sequence. The word-matchin
 is not serialized with the user. It compares each search term as a whole word, the start of a word, or any part of a
 word. Strong's-number matching remains exact.
 
+Displayed numbers participate in word and phrase search with their grouping commas preserved. Formatted and
+unformatted forms, such as `5,233` and `5233`, are not normalized to one another.
+
 Search does not download or index online translations and does not search all active translations simultaneously.
 
 ## Responsive Layout

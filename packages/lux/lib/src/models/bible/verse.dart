@@ -21,8 +21,7 @@ sealed class Verse with _$Verse {
 
   String get text => words.map((word) => word.text).nonNulls.join();
   List<String> get strongIds => words.map((word) => word.data?.strongId).nonNulls.toList();
-  List<String> get searchTerms =>
-      text.onlyLetters.toLowerCase().split(' ').where((string) => string.isNotBlank).toList();
+  List<String> get searchTerms => text.bibleSearchTerms;
 
   Verse trimStart() {
     final trimmedWords = words.skipWhile((word) => word.text?.isBlank == true && word.data == null).toList();
