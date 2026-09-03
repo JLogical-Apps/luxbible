@@ -4,6 +4,7 @@ import 'package:bible/ui/flows/bible_plan_reminder_flow.dart';
 import 'package:bible/ui/pages/bible_plan_read_page.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
 import 'package:bible/ui/widgets/bible_plan_thumbnail.dart';
+import 'package:bible/utils/bible_hook_utils.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,8 @@ class BiblePlansPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
     final plans = ref.watch(biblePlansProvider);
+
+    useMessage(user, .renamedBiblePlans);
 
     final visibleUser = useWhenVisible(user);
     final isProcessingRef = useRef(false);

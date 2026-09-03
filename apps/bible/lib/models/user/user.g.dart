@@ -168,6 +168,15 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   audio: json['audio'] == null
       ? const AudioBibleConfiguration()
       : AudioBibleConfiguration.fromJson(json['audio'] as Map<String, dynamic>),
+  latestMigration: $enumDecodeNullable(
+    _$MigrationEnumMap,
+    json['latestMigration'],
+  ),
+  messages:
+      (json['messages'] as List<dynamic>?)
+          ?.map((e) => $enumDecode(_$MessageEnumMap, e))
+          .toSet() ??
+      const {},
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -221,6 +230,8 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
       .toList(),
   'verseOfTheDayReminder': instance.verseOfTheDayReminder?.toJson(),
   'audio': instance.audio.toJson(),
+  'latestMigration': _$MigrationEnumMap[instance.latestMigration],
+  'messages': instance.messages.map((e) => _$MessageEnumMap[e]!).toList(),
 };
 
 const _$BibleTranslationEnumMap = {
@@ -305,3 +316,7 @@ const _$BiblePlanTypeEnumMap = {
   BiblePlanType.esv_psalms_and_wisdom_literature:
       'esv_psalms_and_wisdom_literature',
 };
+
+const _$MigrationEnumMap = {Migration.renamedBiblePlans: 'renamedBiblePlans'};
+
+const _$MessageEnumMap = {Message.renamedBiblePlans: 'renamedBiblePlans'};

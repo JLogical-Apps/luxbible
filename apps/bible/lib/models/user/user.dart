@@ -11,6 +11,8 @@ import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/audio_bible_configuration.dart';
 import 'package:bible/models/user/language.dart';
 import 'package:bible/models/user/main_toolbar_configuration.dart';
+import 'package:bible/models/user/message.dart';
+import 'package:bible/models/user/migration.dart';
 import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/models/user/text_selection_configuration.dart';
 import 'package:bible/models/user/theme_layout_configuration.dart';
@@ -67,6 +69,8 @@ sealed class User with _$User {
     @Default({}) Set<BiblePlanType> completedPlans,
     Reminder? verseOfTheDayReminder,
     @Default(AudioBibleConfiguration()) AudioBibleConfiguration audio,
+    Migration? latestMigration,
+    @Default({}) Set<Message> messages,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -453,6 +457,9 @@ sealed class User with _$User {
 
   User withUpdatePlanProgress(BiblePlanType planType, BiblePlanProgress Function(BiblePlanProgress) update) =>
       copyWith(planProgressByType: planProgressByType.withUpdate(planType, update));
+
+  User withMessage(Message message) => copyWith(messages: {...messages, message});
+  User withMessagePopped(Message message) => copyWith(messages: messages.withRemoved(message));
 }
 
 Object? _readLastHighlightStyle(Map data, String key) {

@@ -163,4 +163,6 @@ extension CoreIterableMapExtensions<K, V> on Iterable<Map<K, V>> {
 
 extension CoreSetExtensions<T> on Set<T> {
   bool has(T item) => contains(item);
+
+  Set<T> withRemoved(T item) => {...this}..remove(item);
 }
