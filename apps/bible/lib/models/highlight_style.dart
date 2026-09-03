@@ -53,8 +53,16 @@ enum HighlightStyleType {
   };
 
   Widget buildPreview(BuildContext context, {required ColorEnum color, ComponentSize size = .md}) => SizedBox(
-    width: size == .md ? 18 : 12,
-    height: size == .md ? 24 : 16,
+    width: switch (size) {
+      .lg => 24,
+      .md => 18,
+      .sm => 12,
+    },
+    height: switch (size) {
+      .lg => 30,
+      .md => 24,
+      .sm => 16,
+    },
     child: Stack(
       alignment: .center,
       children: [
@@ -72,7 +80,16 @@ enum HighlightStyleType {
           child: Text(
             'A',
             textAlign: .center,
-            style: TextStyle(fontSize: size == .md ? 18 : 12, fontWeight: .w600, height: 1),
+            style: TextStyle(
+              fontSize: switch (size) {
+                .lg => 24,
+                .md => 18,
+                .sm => 12,
+              },
+              fontWeight: .w600,
+              height: 1,
+              color: context.colors.contentPrimary,
+            ),
           ),
         ),
         if (this != highlight)

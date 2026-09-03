@@ -5,6 +5,7 @@ import 'package:bible/providers/root_ref.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
 import 'package:bible/ui/widgets/font_size_spacing_zoom_gesture.dart';
+import 'package:bible/ui/widgets/highlight_style_icon.dart';
 import 'package:bible/ui/widgets/highlight_underline.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
@@ -212,6 +213,7 @@ class BibleReaderConfiguration {
                         subtitle: StyledLoading(
                           child: annotationText == null ? null : Text(annotationText, maxLines: 1, overflow: .ellipsis),
                         ),
+                        leading: HighlightStyleIcon(style: annotation.style, size: .lg),
                         trailing: StyledCircleButton.md(
                           child: Symbols.more_vert.toIcon(),
                           onPressed: () => context.showStyledSheet(
