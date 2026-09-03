@@ -6,8 +6,9 @@ import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/verse_of_the_day_provider.dart';
 import 'package:bible/ui/hooks/audio_bible_passage_sync.dart';
-import 'package:bible/ui/pages/position_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
+import 'package:bible/ui/pages/position_page.dart';
+import 'package:bible/ui/sheets/compare_bible_sheet.dart';
 import 'package:bible/ui/widgets/audio_bible_panel.dart';
 import 'package:bible/ui/widgets/linked_study_panel.dart';
 import 'package:bible/ui/widgets/main_toolbar.dart';
@@ -639,9 +640,36 @@ class BibleBody extends HookConsumerWidget {
                           final paragraphsState = useState<List<Paragraph>?>(null);
 
                           return LinkedStudyPanel(
-                            key: ValueKey((i, currentChapterReference)),
+                            key: ValueKey((i, currentChapterReference, translation)),
                             chapterReference: currentChapterReference,
                             passageTopReference: visibleVerseSelection.references.firstOrNull,
+                            showDragHandle: !isSideLayout,
+                            subtitle: t.studyPanels.compareWith(translation: translation.title()).toText(),
+                            trailing: Tooltip(
+                              message: 'Swap Bible',
+                              child: StyledCircleButton.md(
+                                child: Symbols.book.toIcon(),
+                                onPressed: () async {
+                                  final newBible = await CompareBibleSheet.show(context, initialBible: translation);
+                                  if (newBible != null) {
+                                    final newStudyPanel = studyPanel.copyWith(translation: newBible);
+                                    if (user.studyPanels.has(newStudyPanel)) {
+                                      studyPanelsPageController.animateToPage(
+                                        user.studyPanels.indexOf(newStudyPanel) + onboardingOffset,
+                                        duration: Duration(milliseconds: 300),
+                                        curve: Curves.easeInOutCubic,
+                                      );
+                                    } else {
+                                      ref.updateUser(
+                                        (user) => user.withStudyPanelAt(studyPanel.copyWith(translation: newBible), i),
+                                      );
+                                    }
+                                  }
+                                },
+                              ),
+                            ),
+                            onClose: () =>
+                                ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
                             onScrollMainToReference: (reference) {
                               final sizeMultiplier = readerConfiguration
                                   .paragraphsConfiguration(context, mainTranslation)
@@ -674,10 +702,6 @@ class BibleBody extends HookConsumerWidget {
                               );
                             },
                             isActive: currentCarouselPage == i + onboardingOffset,
-                            showDragHandle: !isSideLayout,
-                            subtitle: t.studyPanels.compareWith(translation: translation.title()).toText(),
-                            onClose: () =>
-                                ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
                             builder: (context, controller, onContentLoaded) => PassageBuilder(
                               verseSelection: currentChapterReference.toVerseSelection(),
                               translation: translation,

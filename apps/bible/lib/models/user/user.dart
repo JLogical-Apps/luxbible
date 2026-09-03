@@ -313,9 +313,16 @@ sealed class User with _$User {
       copyWith(searchHistory: [search, ...searchHistory].distinct.take(5).toList());
 
   User withStudyPanel(StudyPanel studyPanel) {
-    final existingIndex = studyPanels.indexOf(studyPanel);
-    return existingIndex == -1
+    final existingIndex = studyPanels.indexOfOrNull(studyPanel);
+    return existingIndex == null
         ? copyWith(studyPanels: [...studyPanels, studyPanel], studyPanelIndex: studyPanels.length)
+        : copyWith(studyPanelIndex: existingIndex);
+  }
+
+  User withStudyPanelAt(StudyPanel studyPanel, int index) {
+    final existingIndex = studyPanels.indexOfOrNull(studyPanel);
+    return existingIndex == null
+        ? copyWith(studyPanels: studyPanels.withSetAt(index, studyPanel))
         : copyWith(studyPanelIndex: existingIndex);
   }
 

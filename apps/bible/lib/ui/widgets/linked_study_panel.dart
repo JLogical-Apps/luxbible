@@ -7,6 +7,7 @@ import 'package:style/style.dart';
 
 class LinkedStudyPanel extends HookWidget {
   final Widget? subtitle;
+  final Widget? trailing;
   final Function() onClose;
 
   final ChapterReference chapterReference;
@@ -23,6 +24,7 @@ class LinkedStudyPanel extends HookWidget {
   const LinkedStudyPanel({
     super.key,
     this.subtitle,
+    this.trailing,
     required this.onClose,
     required this.chapterReference,
     required this.passageTopReference,
@@ -95,6 +97,7 @@ class LinkedStudyPanel extends HookWidget {
               title: chapterReference.format().toText(),
               subtitle: subtitle,
               leading: StyledCircleButton.md(child: Symbols.close.toIcon(), onPressed: onClose),
+              trailing: trailing,
             ),
             StyledDivider(height: 2),
             Expanded(

@@ -10,12 +10,12 @@ import 'package:bible/providers/verse_of_the_day_provider.dart';
 import 'package:bible/ui/flows/verse_of_the_day_reminder_flow.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
-import 'package:bible/ui/pages/compare_settings_page.dart';
 import 'package:bible/ui/pages/dictionary_page.dart';
 import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/more_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/sheets/bookmark_sheet.dart';
+import 'package:bible/ui/sheets/compare_bible_sheet.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -269,19 +269,7 @@ enum MainAction {
         if (studyPanelType != null && context.mounted) {
           switch (studyPanelType) {
             case .compare:
-              final translation = await context.showStyledSheet((context, ref) {
-                final user = ref.watch(userProvider);
-                return StyledSelectionSheet(
-                  title: t.studyActions.compare.toText(),
-                  trailing: StyledCircleButton.md(
-                    child: Symbols.tune.toIcon(),
-                    onPressed: () => context.push((context) => CompareSettingsPage()),
-                  ),
-                  options: user.compareBiblesOrDefault,
-                  optionMapper: (option) =>
-                      StyledSelectOption(title: option.title().toText(), subtitle: option.fullName().toText()),
-                );
-              });
+              final translation = await CompareBibleSheet.show(context);
               if (translation != null) {
                 onAddStudyPanel(StudyPanel.compare(translation: translation));
               }

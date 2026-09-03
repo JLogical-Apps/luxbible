@@ -11,8 +11,8 @@ import 'package:style/style.dart';
 import 'package:utils_core/utils_core.dart';
 
 class BibleSheet {
-  static Future<BibleTranslation?> show(BuildContext context) {
-    ref.markOnboardingStep(.changeBible);
+  static Future<BibleTranslation?> show(BuildContext context, {BibleTranslation? initialBible}) {
+    if (initialBible == null) ref.markOnboardingStep(.changeBible);
     return context.showStyledSheet<BibleTranslation>((context, ref) {
       final user = ref.watch(userProvider);
       return StyledSheet(
@@ -36,7 +36,7 @@ class BibleSheet {
                       ],
                       child: BibleTile(
                         translation: translation,
-                        trailing: StyledRadio(isSelected: translation == user.translation),
+                        trailing: StyledRadio(isSelected: translation == (initialBible ?? user.translation)),
                         onPressedOverride: () => context.pop(translation),
                       ),
                     ),

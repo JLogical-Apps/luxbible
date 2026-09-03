@@ -18,42 +18,45 @@ class BibleTile extends StatelessWidget {
   Widget build(BuildContext context) => StyledListItem(
     title: translation.title().toText(),
     subtitle: translation.fullName().toText(),
-    thirdLine: translation.isOnline || translation.isStudy || translation.hasAudioBible || translation.testament != null
-        ? Padding(
-            padding: .only(top: 4),
-            child: Row(
-              spacing: 4,
-              children: [
-                if (translation.isOnline)
-                  StyledTag.sm(
-                    child: t.bibleDetails.onlineOnly.toText(),
-                    leading: Symbols.cloud.toIcon(),
-                    colorBuilder: ColorBuilder((colors) => colors.blue.tertiary),
-                  ),
-                if (translation.isStudy)
-                  StyledTag.sm(
-                    child: t.bibleDetails.studyBible.toText(),
-                    leading: Symbols.school.toIcon(),
-                    colorBuilder: ColorBuilder((colors) => colors.green.tertiary),
-                  ),
-                if (translation.hasAudioBible)
-                  StyledTag.sm(
-                    child: t.labels.audioBible.toText(),
-                    leading: Symbols.headphones.toIcon(),
-                    colorBuilder: ColorBuilder((colors) => colors.violet.tertiary),
-                  ),
-                if (translation.testament case final testament?)
-                  StyledTag.sm(
-                    child: translation.getTestamentTitle().toText(),
-                    leading: TestamentIcon(testament: testament),
-                  ),
-              ],
-            ),
-          )
-        : null,
+    thirdLine: buildBibleChips(translation),
     trailing: trailing,
     onPressed: isEnabled ? onPressedOverride ?? () => showInfo(context) : null,
   );
+
+  static Widget? buildBibleChips(BibleTranslation translation) =>
+      translation.isOnline || translation.isStudy || translation.hasAudioBible || translation.testament != null
+      ? Padding(
+          padding: .only(top: 4),
+          child: Row(
+            spacing: 4,
+            children: [
+              if (translation.isOnline)
+                StyledTag.sm(
+                  child: t.bibleDetails.onlineOnly.toText(),
+                  leading: Symbols.cloud.toIcon(),
+                  colorBuilder: ColorBuilder((colors) => colors.blue.tertiary),
+                ),
+              if (translation.isStudy)
+                StyledTag.sm(
+                  child: t.bibleDetails.studyBible.toText(),
+                  leading: Symbols.school.toIcon(),
+                  colorBuilder: ColorBuilder((colors) => colors.green.tertiary),
+                ),
+              if (translation.hasAudioBible)
+                StyledTag.sm(
+                  child: t.labels.audioBible.toText(),
+                  leading: Symbols.headphones.toIcon(),
+                  colorBuilder: ColorBuilder((colors) => colors.violet.tertiary),
+                ),
+              if (translation.testament case final testament?)
+                StyledTag.sm(
+                  child: translation.getTestamentTitle().toText(),
+                  leading: TestamentIcon(testament: testament),
+                ),
+            ],
+          ),
+        )
+      : null;
 
   Future<void> showInfo(BuildContext context) => context.showStyledDialog(
     (context) => StyledDialog.confirm(
