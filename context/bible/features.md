@@ -392,6 +392,7 @@ Users can:
 
 - Open multiple panels
 - Swipe between panels
+- Swap an Interlinear panel's direction or a Commentary panel's resource
 - Close panels individually
 - Resize bottom panels
 - Keep panels open across navigation and app sessions

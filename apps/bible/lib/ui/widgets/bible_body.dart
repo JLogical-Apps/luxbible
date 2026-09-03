@@ -8,7 +8,9 @@ import 'package:bible/providers/verse_of_the_day_provider.dart';
 import 'package:bible/ui/hooks/audio_bible_passage_sync.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/pages/position_page.dart';
+import 'package:bible/ui/sheets/commentary_selection_sheet.dart';
 import 'package:bible/ui/sheets/compare_bible_sheet.dart';
+import 'package:bible/ui/sheets/interlinear_direction_sheet.dart';
 import 'package:bible/ui/widgets/audio_bible_panel.dart';
 import 'package:bible/ui/widgets/linked_study_panel.dart';
 import 'package:bible/ui/widgets/main_toolbar.dart';
@@ -609,6 +611,18 @@ class BibleBody extends HookConsumerWidget {
               hasHistory: navigationHistoryState.value.canUndo,
             );
 
+            void swapStudyPanel(StudyPanel newStudyPanel, int index) {
+              if (user.studyPanels.has(newStudyPanel)) {
+                studyPanelsPageController.animateToPage(
+                  user.studyPanels.indexOf(newStudyPanel) + onboardingOffset,
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.easeInOutCubic,
+                );
+              } else {
+                ref.updateUser((user) => user.withStudyPanelAt(newStudyPanel, index));
+              }
+            }
+
             Widget carousel() => SwipePageView(
               controller: studyPanelsPageController,
               pageCount: panelCount,
@@ -652,18 +666,7 @@ class BibleBody extends HookConsumerWidget {
                                 onPressed: () async {
                                   final newBible = await CompareBibleSheet.show(context, initialBible: translation);
                                   if (newBible != null) {
-                                    final newStudyPanel = studyPanel.copyWith(translation: newBible);
-                                    if (user.studyPanels.has(newStudyPanel)) {
-                                      studyPanelsPageController.animateToPage(
-                                        user.studyPanels.indexOf(newStudyPanel) + onboardingOffset,
-                                        duration: Duration(milliseconds: 300),
-                                        curve: Curves.easeInOutCubic,
-                                      );
-                                    } else {
-                                      ref.updateUser(
-                                        (user) => user.withStudyPanelAt(studyPanel.copyWith(translation: newBible), i),
-                                      );
-                                    }
+                                    swapStudyPanel(studyPanel.copyWith(translation: newBible), i);
                                   }
                                 },
                               ),
@@ -736,6 +739,39 @@ class BibleBody extends HookConsumerWidget {
                           onPressed: () =>
                               ref.updateUser((user) => user.copyWith(studyPanels: user.studyPanels.withRemovedAt(i))),
                         ),
+                        trailing: switch (studyPanel) {
+                          InterlinearStudyPanel(:final direction) => Tooltip(
+                            message: 'Swap direction',
+                            child: StyledCircleButton.md(
+                              child: Symbols.swap_horiz.toIcon(),
+                              onPressed: () async {
+                                final newDirection = await InterlinearDirectionSheet.show(
+                                  context,
+                                  initialDirection: direction,
+                                );
+                                if (newDirection != null) {
+                                  swapStudyPanel(studyPanel.copyWith(direction: newDirection), i);
+                                }
+                              },
+                            ),
+                          ),
+                          CommentaryStudyPanel(:final type) => Tooltip(
+                            message: 'Swap commentary',
+                            child: StyledCircleButton.md(
+                              child: Symbols.tooltip_2.toIcon(),
+                              onPressed: () async {
+                                final newCommentary = await CommentarySelectionSheet.show(
+                                  context,
+                                  initialCommentary: type,
+                                );
+                                if (newCommentary != null) {
+                                  swapStudyPanel(studyPanel.copyWith(type: newCommentary), i);
+                                }
+                              },
+                            ),
+                          ),
+                          _ => null,
+                        },
                         childrenBuilder: (context, ref) {
                           return studyPanel.buildSheetChildren(
                             context,

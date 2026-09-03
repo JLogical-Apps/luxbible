@@ -15,9 +15,10 @@ import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/more_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/sheets/bookmark_sheet.dart';
+import 'package:bible/ui/sheets/commentary_selection_sheet.dart';
 import 'package:bible/ui/sheets/compare_bible_sheet.dart';
+import 'package:bible/ui/sheets/interlinear_direction_sheet.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
-import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -274,29 +275,12 @@ enum MainAction {
                 onAddStudyPanel(StudyPanel.compare(translation: translation));
               }
             case .interlinear:
-              final direction = await context.showStyledSheet(
-                (context, _) => StyledSelectionSheet(
-                  title: t.interlinearUi.direction.toText(),
-                  options: InterlinearDirection.values,
-                  optionMapper: (option) => StyledSelectOption(
-                    title: option.title().toText(),
-                    subtitle: option.description().toText(),
-                    leading: option.icon.toIcon(),
-                  ),
-                ),
-              );
+              final direction = await InterlinearDirectionSheet.show(context);
               if (direction != null) {
                 onAddStudyPanel(StudyPanel.interlinear(direction: direction));
               }
             case .commentary:
-              final commentaryType = await context.showStyledSheet(
-                (context, _) => StyledSelectionSheet(
-                  title: t.labels.commentary.toText(),
-                  options: user.commentariesOrDefault,
-                  optionMapper: (option) =>
-                      StyledSelectOption(title: option.title().toText(), subtitle: option.description().toText()),
-                ),
-              );
+              final commentaryType = await CommentarySelectionSheet.show(context);
               if (commentaryType != null) {
                 onAddStudyPanel(StudyPanel.commentary(type: commentaryType));
               }
