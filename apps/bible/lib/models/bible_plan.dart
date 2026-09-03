@@ -114,6 +114,7 @@ sealed class BiblePlanDayProgress with _$BiblePlanDayProgress {
 
 // ignore_for_file: constant_identifier_names
 enum BiblePlanType {
+  equipping_godly_women_through_the_bible,
   esv_through_the_bible,
   one_year_chronological,
   heartlight_ot_and_nt,
@@ -131,9 +132,10 @@ enum BiblePlanType {
   String get assetPath => 'assets/bible_plans/$name.json';
 
   String title() => switch (this) {
-    esv_through_the_bible => t.planTypes.throughTheBible,
+    equipping_godly_women_through_the_bible => t.planTypes.throughTheBible,
+    esv_through_the_bible => t.planTypes.oldAndNewTestament,
     one_year_chronological => t.planTypes.chronological,
-    heartlight_ot_and_nt => t.planTypes.oldAndNewTestament,
+    heartlight_ot_and_nt => t.planTypes.historicallyBlended,
     esv_every_day_in_word => t.planTypes.everyDayInTheWord,
     mcheyne => t.planTypes.mcheyne,
     esv_literary_study_bible => t.planTypes.literaryStudy,
@@ -147,6 +149,7 @@ enum BiblePlanType {
   };
 
   BiblePlanScope get scope => switch (this) {
+    equipping_godly_women_through_the_bible ||
     mcheyne ||
     one_year_chronological ||
     esv_through_the_bible ||
@@ -165,6 +168,7 @@ enum BiblePlanType {
     esv_pentateuch_and_history_of_israel ||
     esv_psalms_and_wisdom_literature ||
     heartlight_nt_psalms_proverbs => .focused,
+    equipping_godly_women_through_the_bible ||
     mcheyne ||
     one_year_chronological ||
     esv_through_the_bible ||
@@ -177,22 +181,27 @@ enum BiblePlanType {
   };
 
   String description() => switch (this) {
+    equipping_godly_women_through_the_bible => t.planTypes.throughTheBibleDescription,
     mcheyne => t.planTypes.mcheyneDescription,
     one_year_chronological => t.planTypes.chronologicalDescription,
-    esv_through_the_bible => t.planTypes.throughTheBibleDescription,
+    esv_through_the_bible => t.planTypes.oldAndNewTestamentDescription,
     esv_gospels_and_epistles => t.planTypes.gospelsAndEpistlesDescription,
     esv_every_day_in_word => t.planTypes.everyDayInTheWordDescription,
     esv_literary_study_bible => t.planTypes.literaryStudyDescription,
     esv_chronicles_and_prophets => t.planTypes.chroniclesAndProphetsDescription,
     esv_pentateuch_and_history_of_israel => t.planTypes.pentateuchAndHistoryDescription,
     esv_psalms_and_wisdom_literature => t.planTypes.psalmsAndWisdomDescription,
-    heartlight_ot_and_nt => t.planTypes.oldAndNewTestamentDescription,
+    heartlight_ot_and_nt => t.planTypes.historicallyBlendedDescription,
     heartlight_different_topics => t.planTypes.differentTopicsDescription,
     heartlight_nt_psalms_proverbs => t.planTypes.newTestamentPsalmsProverbsDescription,
     navigators_5x5x5_nt => t.planTypes.fiveByFiveByFiveDescription,
   };
 
   BiblePlanSource? get source => switch (this) {
+    equipping_godly_women_through_the_bible => BiblePlanSource(
+      name: 'Equipping Godly Women',
+      link: 'https://equippinggodlywomen.com/faith/read-the-bible-in-a-year/',
+    ),
     mcheyne => null,
     one_year_chronological => BiblePlanSource(name: 'Tyndale', link: 'https://www.oneyearbibleonline.com'),
     esv_through_the_bible ||

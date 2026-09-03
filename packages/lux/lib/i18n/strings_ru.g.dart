@@ -1009,6 +1009,7 @@ class _Translations$planTypes$ru extends Translations$planTypes$en {
 	@override String get throughTheBible => 'Через Библию';
 	@override String get chronological => 'Один год в хронологическом порядке';
 	@override String get oldAndNewTestament => 'Ветхий и Новый Завет';
+	@override String get historicallyBlended => 'Историческое переплетение';
 	@override String get everyDayInTheWord => 'Каждый день в слове';
 	@override String get mcheyne => 'М\'Чейн';
 	@override String get literaryStudy => 'Литературное исследование';
@@ -1028,7 +1029,8 @@ class _Translations$planTypes$ru extends Translations$planTypes$en {
 	@override String get chroniclesAndProphetsDescription => 'Год, в котором история Хроник сочетается с посланиями Пророков.';
 	@override String get pentateuchAndHistoryDescription => 'Путешествие по пяти книгам Моисея и истории Израиля за год.';
 	@override String get psalmsAndWisdomDescription => 'Проведите год за чтением псалмов и книг мудрости, таких как Притчи, Иов и Экклезиаст.';
-	@override String get oldAndNewTestamentDescription => 'Читайте вместе Ветхий и Новый Заветы, каждый день по отрывку из каждого.';
+	@override String get oldAndNewTestamentDescription => 'Прочитайте всю Библию за год, читая Ветхий и Новый Заветы параллельно в каноническом порядке.';
+	@override String get historicallyBlendedDescription => 'Прочитайте всю Библию за год: книги и отрывки расположены вокруг связанных событий и исторических периодов.';
 	@override String get differentTopicsDescription => 'Каждый день просматривайте разные разделы Священного Писания, исследуя каждую книгу Библии в течение года.';
 	@override String get newTestamentPsalmsProverbsDescription => 'Читайте Новый Завет вместе с Псалмами и Притчами в течение года.';
 	@override String get fiveByFiveByFiveDescription => 'Читайте по одной главе Нового Завета в день, пять дней в неделю, а затем два дня для повторения и размышления.';
@@ -3331,6 +3333,7 @@ extension on TranslationsRu {
 			'planTypes.throughTheBible' => 'Через Библию',
 			'planTypes.chronological' => 'Один год в хронологическом порядке',
 			'planTypes.oldAndNewTestament' => 'Ветхий и Новый Завет',
+			'planTypes.historicallyBlended' => 'Историческое переплетение',
 			'planTypes.everyDayInTheWord' => 'Каждый день в слове',
 			'planTypes.mcheyne' => 'М\'Чейн',
 			'planTypes.literaryStudy' => 'Литературное исследование',
@@ -3350,7 +3353,8 @@ extension on TranslationsRu {
 			'planTypes.chroniclesAndProphetsDescription' => 'Год, в котором история Хроник сочетается с посланиями Пророков.',
 			'planTypes.pentateuchAndHistoryDescription' => 'Путешествие по пяти книгам Моисея и истории Израиля за год.',
 			'planTypes.psalmsAndWisdomDescription' => 'Проведите год за чтением псалмов и книг мудрости, таких как Притчи, Иов и Экклезиаст.',
-			'planTypes.oldAndNewTestamentDescription' => 'Читайте вместе Ветхий и Новый Заветы, каждый день по отрывку из каждого.',
+			'planTypes.oldAndNewTestamentDescription' => 'Прочитайте всю Библию за год, читая Ветхий и Новый Заветы параллельно в каноническом порядке.',
+			'planTypes.historicallyBlendedDescription' => 'Прочитайте всю Библию за год: книги и отрывки расположены вокруг связанных событий и исторических периодов.',
 			'planTypes.differentTopicsDescription' => 'Каждый день просматривайте разные разделы Священного Писания, исследуя каждую книгу Библии в течение года.',
 			'planTypes.newTestamentPsalmsProverbsDescription' => 'Читайте Новый Завет вместе с Псалмами и Притчами в течение года.',
 			'planTypes.fiveByFiveByFiveDescription' => 'Читайте по одной главе Нового Завета в день, пять дней в неделю, а затем два дня для повторения и размышления.',

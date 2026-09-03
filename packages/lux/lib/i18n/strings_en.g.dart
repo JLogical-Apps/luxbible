@@ -2072,14 +2072,17 @@ class Translations$planTypes$en {
 
 	// Translations
 
-	/// en: 'Through The Bible'
-	String get throughTheBible => 'Through The Bible';
+	/// en: 'Through the Bible'
+	String get throughTheBible => 'Through the Bible';
 
 	/// en: 'One Year Chronological'
 	String get chronological => 'One Year Chronological';
 
 	/// en: 'Old and New Testament'
 	String get oldAndNewTestament => 'Old and New Testament';
+
+	/// en: 'Historically Blended'
+	String get historicallyBlended => 'Historically Blended';
 
 	/// en: 'Every Day In the Word'
 	String get everyDayInTheWord => 'Every Day In the Word';
@@ -2138,8 +2141,11 @@ class Translations$planTypes$en {
 	/// en: 'Spend the year in the Psalms and wisdom books like Proverbs, Job, and Ecclesiastes.'
 	String get psalmsAndWisdomDescription => 'Spend the year in the Psalms and wisdom books like Proverbs, Job, and Ecclesiastes.';
 
-	/// en: 'Read through both the Old and New Testaments together, with a passage from each every day.'
-	String get oldAndNewTestamentDescription => 'Read through both the Old and New Testaments together, with a passage from each every day.';
+	/// en: 'Read the whole Bible in one year, following the Old and New Testaments together in canonical order.'
+	String get oldAndNewTestamentDescription => 'Read the whole Bible in one year, following the Old and New Testaments together in canonical order.';
+
+	/// en: 'Read the whole Bible in one year, with books and passages arranged around related events and historical periods.'
+	String get historicallyBlendedDescription => 'Read the whole Bible in one year, with books and passages arranged around related events and historical periods.';
 
 	/// en: 'Rotate through a different section of Scripture each day, exploring every book of the Bible over a year.'
 	String get differentTopicsDescription => 'Rotate through a different section of Scripture each day, exploring every book of the Bible over a year.';
@@ -5260,9 +5266,10 @@ extension on Translations {
 			'strongDefinition.idiomaticRendering' => 'Idiomatic rendering',
 			'strongDefinition.addedWordDescription' => 'Marks a word supplied alongside the Hebrew or Greek word being defined.',
 			'strongDefinition.idiomaticRenderingDescription' => 'Marks a rendering that reflects an expression particular to Hebrew or Greek.',
-			'planTypes.throughTheBible' => 'Through The Bible',
+			'planTypes.throughTheBible' => 'Through the Bible',
 			'planTypes.chronological' => 'One Year Chronological',
 			'planTypes.oldAndNewTestament' => 'Old and New Testament',
+			'planTypes.historicallyBlended' => 'Historically Blended',
 			'planTypes.everyDayInTheWord' => 'Every Day In the Word',
 			'planTypes.mcheyne' => 'M\'Cheyne',
 			'planTypes.literaryStudy' => 'Literary Study',
@@ -5282,7 +5289,8 @@ extension on Translations {
 			'planTypes.chroniclesAndProphetsDescription' => 'A year that pairs the history in Chronicles with the messages of the Prophets.',
 			'planTypes.pentateuchAndHistoryDescription' => 'Journey through the five books of Moses and the history of Israel over a year.',
 			'planTypes.psalmsAndWisdomDescription' => 'Spend the year in the Psalms and wisdom books like Proverbs, Job, and Ecclesiastes.',
-			'planTypes.oldAndNewTestamentDescription' => 'Read through both the Old and New Testaments together, with a passage from each every day.',
+			'planTypes.oldAndNewTestamentDescription' => 'Read the whole Bible in one year, following the Old and New Testaments together in canonical order.',
+			'planTypes.historicallyBlendedDescription' => 'Read the whole Bible in one year, with books and passages arranged around related events and historical periods.',
 			'planTypes.differentTopicsDescription' => 'Rotate through a different section of Scripture each day, exploring every book of the Bible over a year.',
 			'planTypes.newTestamentPsalmsProverbsDescription' => 'Read the New Testament alongside Psalms and Proverbs over the course of a year.',
 			'planTypes.fiveByFiveByFiveDescription' => 'Read one New Testament chapter a day, five days a week, followed by two days to review and reflect.',

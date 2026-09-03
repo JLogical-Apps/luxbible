@@ -287,6 +287,8 @@ $Rec _$recordConvert<$Rec>(Object? value, $Rec Function(Map) convert) =>
     convert(value as Map<String, dynamic>);
 
 const _$BiblePlanTypeEnumMap = {
+  BiblePlanType.equipping_godly_women_through_the_bible:
+      'equipping_godly_women_through_the_bible',
   BiblePlanType.esv_through_the_bible: 'esv_through_the_bible',
   BiblePlanType.one_year_chronological: 'one_year_chronological',
   BiblePlanType.heartlight_ot_and_nt: 'heartlight_ot_and_nt',

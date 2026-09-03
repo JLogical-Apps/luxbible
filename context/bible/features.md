@@ -495,6 +495,7 @@ A bookmark can follow the user's reading position as they move between adjacent 
 ## Bible Reading Plans
 
 Lux includes multiple whole-Bible and focused reading plans from several sources.
+The Through the Bible plan reads from Genesis to Revelation in canonical order. The Old and New Testament plan follows both testaments together in canonical order, while Historically Blended places related books and passages near their historical settings.
 
 Users can:
 

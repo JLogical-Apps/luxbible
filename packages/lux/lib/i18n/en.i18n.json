@@ -641,9 +641,10 @@
     "idiomaticRenderingDescription": "Marks a rendering that reflects an expression particular to Hebrew or Greek."
   },
   "planTypes": {
-    "throughTheBible": "Through The Bible",
+    "throughTheBible": "Through the Bible",
     "chronological": "One Year Chronological",
     "oldAndNewTestament": "Old and New Testament",
+    "historicallyBlended": "Historically Blended",
     "everyDayInTheWord": "Every Day In the Word",
     "mcheyne": "M'Cheyne",
     "literaryStudy": "Literary Study",
@@ -663,7 +664,8 @@
     "chroniclesAndProphetsDescription": "A year that pairs the history in Chronicles with the messages of the Prophets.",
     "pentateuchAndHistoryDescription": "Journey through the five books of Moses and the history of Israel over a year.",
     "psalmsAndWisdomDescription": "Spend the year in the Psalms and wisdom books like Proverbs, Job, and Ecclesiastes.",
-    "oldAndNewTestamentDescription": "Read through both the Old and New Testaments together, with a passage from each every day.",
+    "oldAndNewTestamentDescription": "Read the whole Bible in one year, following the Old and New Testaments together in canonical order.",
+    "historicallyBlendedDescription": "Read the whole Bible in one year, with books and passages arranged around related events and historical periods.",
     "differentTopicsDescription": "Rotate through a different section of Scripture each day, exploring every book of the Bible over a year.",
     "newTestamentPsalmsProverbsDescription": "Read the New Testament alongside Psalms and Proverbs over the course of a year.",
     "fiveByFiveByFiveDescription": "Read one New Testament chapter a day, five days a week, followed by two days to review and reflect.",

@@ -172,7 +172,7 @@ Capabilities vary by translation:
 - Dictionary: Easton's Bible Dictionary
 - Lexicon: Strong's Greek and Hebrew dictionaries
 - Commentaries: Matthew Henry, John Calvin, and Jamieson-Fausset-Brown
-- Reading plans: schedules from public-domain and licensed sources recorded in the in-app licenses
+- Reading plans: schedules from public-domain and licensed sources recorded in the in-app licenses, with source-level corrections documented alongside imported data
 - Verse of the Day: the first morning passage for each calendar date from Jonathan Bagster's public-domain *Daily Light on the Daily Path*, distributed as CrossWire's Daily SWORD module. The source schedule is offline; the displayed passage uses the selected translation when it can be loaded and otherwise falls back to the selected Study Bible for that passage.
 
 The app's license registry is authoritative for detailed attribution and redistribution terms.

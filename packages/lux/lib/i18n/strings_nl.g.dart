@@ -1005,6 +1005,7 @@ class _Translations$planTypes$nl extends Translations$planTypes$en {
 	@override String get throughTheBible => 'De Bijbel door';
 	@override String get chronological => 'Chronologisch in één jaar';
 	@override String get oldAndNewTestament => 'Oude en Nieuwe Testament';
+	@override String get historicallyBlended => 'Historisch verweven';
 	@override String get everyDayInTheWord => 'Elke dag in het Woord';
 	@override String get mcheyne => 'M\'Cheyne';
 	@override String get literaryStudy => 'Literaire studie';
@@ -1024,7 +1025,8 @@ class _Translations$planTypes$nl extends Translations$planTypes$en {
 	@override String get chroniclesAndProphetsDescription => 'Een jaar waarin de geschiedenis uit Kronieken wordt gekoppeld aan de boodschappen van de profeten.';
 	@override String get pentateuchAndHistoryDescription => 'Reis in één jaar door de vijf boeken van Mozes en de geschiedenis van Israël.';
 	@override String get psalmsAndWisdomDescription => 'Breng een jaar door in de Psalmen en wijsheidsboeken zoals Spreuken, Job en Prediker.';
-	@override String get oldAndNewTestamentDescription => 'Lees het Oude en Nieuwe Testament naast elkaar, elke dag een passage uit beide.';
+	@override String get oldAndNewTestamentDescription => 'Lees de hele Bijbel in één jaar en volg het Oude en Nieuwe Testament samen in de gebruikelijke Bijbelvolgorde.';
+	@override String get historicallyBlendedDescription => 'Lees de hele Bijbel in één jaar, met boeken en passages gerangschikt rond verwante gebeurtenissen en historische perioden.';
 	@override String get differentTopicsDescription => 'Lees elke dag een ander gedeelte van de Bijbel en verken in één jaar elk Bijbelboek.';
 	@override String get newTestamentPsalmsProverbsDescription => 'Lees in één jaar het Nieuwe Testament naast Psalmen en Spreuken.';
 	@override String get fiveByFiveByFiveDescription => 'Lees vijf dagen per week één hoofdstuk uit het Nieuwe Testament, gevolgd door twee dagen om terug te kijken en te overdenken.';
@@ -3325,6 +3327,7 @@ extension on TranslationsNl {
 			'planTypes.throughTheBible' => 'De Bijbel door',
 			'planTypes.chronological' => 'Chronologisch in één jaar',
 			'planTypes.oldAndNewTestament' => 'Oude en Nieuwe Testament',
+			'planTypes.historicallyBlended' => 'Historisch verweven',
 			'planTypes.everyDayInTheWord' => 'Elke dag in het Woord',
 			'planTypes.mcheyne' => 'M\'Cheyne',
 			'planTypes.literaryStudy' => 'Literaire studie',
@@ -3344,7 +3347,8 @@ extension on TranslationsNl {
 			'planTypes.chroniclesAndProphetsDescription' => 'Een jaar waarin de geschiedenis uit Kronieken wordt gekoppeld aan de boodschappen van de profeten.',
 			'planTypes.pentateuchAndHistoryDescription' => 'Reis in één jaar door de vijf boeken van Mozes en de geschiedenis van Israël.',
 			'planTypes.psalmsAndWisdomDescription' => 'Breng een jaar door in de Psalmen en wijsheidsboeken zoals Spreuken, Job en Prediker.',
-			'planTypes.oldAndNewTestamentDescription' => 'Lees het Oude en Nieuwe Testament naast elkaar, elke dag een passage uit beide.',
+			'planTypes.oldAndNewTestamentDescription' => 'Lees de hele Bijbel in één jaar en volg het Oude en Nieuwe Testament samen in de gebruikelijke Bijbelvolgorde.',
+			'planTypes.historicallyBlendedDescription' => 'Lees de hele Bijbel in één jaar, met boeken en passages gerangschikt rond verwante gebeurtenissen en historische perioden.',
 			'planTypes.differentTopicsDescription' => 'Lees elke dag een ander gedeelte van de Bijbel en verken in één jaar elk Bijbelboek.',
 			'planTypes.newTestamentPsalmsProverbsDescription' => 'Lees in één jaar het Nieuwe Testament naast Psalmen en Spreuken.',
 			'planTypes.fiveByFiveByFiveDescription' => 'Lees vijf dagen per week één hoofdstuk uit het Nieuwe Testament, gevolgd door twee dagen om terug te kijken en te overdenken.',
