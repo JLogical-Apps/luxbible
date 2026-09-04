@@ -17,13 +17,7 @@ import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
-class SearchPageResult {
-  final VerseSelection selection;
-
-  const SearchPageResult({required this.selection});
-}
-
-class SearchPage extends HookConsumerWidget implements StyledRoute<SearchPageResult> {
+class SearchPage extends HookConsumerWidget implements StyledRoute<VerseSelection> {
   final String? initialSearch;
   final ChapterReference? currentChapterReference;
 
@@ -315,8 +309,7 @@ class SearchPage extends HookConsumerWidget implements StyledRoute<SearchPageRes
                                     onPressed: () => DictionarySheet.show(
                                       context,
                                       entry: entry,
-                                      onNavigateToVerseSelection: (verseSelection) =>
-                                          context.pop(SearchPageResult(selection: verseSelection)),
+                                      onNavigateToVerseSelection: (verseSelection) => context.pop(verseSelection),
                                     ),
                                   ),
                                 ),
@@ -349,8 +342,7 @@ class SearchPage extends HookConsumerWidget implements StyledRoute<SearchPageRes
                                 onPressed: () => PassagePreviewPage.show(
                                   context,
                                   verseSelection: VerseSelection.reference(result),
-                                  onNavigateToVerseSelection: (selection) =>
-                                      context.pop(SearchPageResult(selection: selection)),
+                                  onNavigateToVerseSelection: (selection) => context.pop(selection),
                                 ),
                               );
                             }).nonNulls,
