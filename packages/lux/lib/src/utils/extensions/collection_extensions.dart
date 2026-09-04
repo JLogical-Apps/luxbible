@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:collection/collection.dart';
-import 'package:lux/lux.dart';
+import 'package:lux/src/utils/extensions/num_extensions.dart';
 import 'package:utils_core/utils_core.dart';
 
 extension CoreListExtensions<T> on List<T> {

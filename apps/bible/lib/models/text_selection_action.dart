@@ -125,6 +125,14 @@ enum TextSelectionAction {
         final rootContext = context.rootContext;
 
         final text = await ref.read(textSelectionTextProvider(textSelection).future);
+        final copy = CopySheet.getCopyText(
+          text: text,
+          isTextSelection: true,
+          translation: textSelection.translation,
+          selection: textSelection.toVerseSelection(),
+          useReference: textSelection.translation.isOnline,
+          useTranslation: textSelection.translation.isOnline,
+        );
         onDeselect();
 
         if (!context.mounted) return;
@@ -141,7 +149,7 @@ enum TextSelectionAction {
             ),
           ),
         );
-        await Clipboard.setData(ClipboardData(text: text));
+        await Clipboard.setData(ClipboardData(text: copy));
     }
   }
 }

@@ -65,6 +65,14 @@ enum VerseSelectionAction {
         final text = await ref.read(
           verseSelectionTextProvider(selection: selectedVerseSelection, translation: user.translation).future,
         );
+        final copy = CopySheet.getCopyText(
+          text: text,
+          isTextSelection: false,
+          translation: user.translation,
+          selection: selectedVerseSelection,
+          useReference: user.translation.isOnline,
+          useTranslation: user.translation.isOnline,
+        );
 
         if (!context.mounted) return;
 
@@ -82,7 +90,7 @@ enum VerseSelectionAction {
             ),
           ),
         );
-        await Clipboard.setData(ClipboardData(text: text));
+        await Clipboard.setData(ClipboardData(text: copy));
 
       case study:
         StudySheet.show(

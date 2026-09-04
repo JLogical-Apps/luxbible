@@ -6,6 +6,23 @@ import 'package:lux/lux.dart';
 import 'package:style/style.dart';
 
 class CopySheet {
+  static String getCopyText({
+    required String text,
+    required bool isTextSelection,
+    required BibleTranslation translation,
+    required VerseSelection selection,
+    required bool useReference,
+    required bool useTranslation,
+  }) => useReference || useTranslation
+      ? [
+          '"$text"',
+          '(${[
+            if (isTextSelection) t.copySheet.textIn,
+            [if (useReference) selection.format(), if (useTranslation) translation.title()].join(', '),
+          ].join(' ')})',
+        ].join('\n')
+      : text;
+
   static Future<void> show(
     BuildContext context, {
     required String text,
@@ -19,15 +36,14 @@ class CopySheet {
     final useTranslationState = useState(true);
     final useTranslation = useReference ? useTranslationState.value : false;
 
-    final copy = useReference || useTranslation
-        ? [
-            '"$text"',
-            '(${[
-              if (isTextSelection) t.copySheet.textIn,
-              [if (useReference) selection.format(), if (useTranslation) translation.title()].join(', '),
-            ].join(' ')})',
-          ].join('\n')
-        : text;
+    final copy = getCopyText(
+      text: text,
+      isTextSelection: isTextSelection,
+      translation: translation,
+      selection: selection,
+      useReference: useReference,
+      useTranslation: useTranslation,
+    );
 
     return StyledSheet(
       title: t.common.copy.toText(),

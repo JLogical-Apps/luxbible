@@ -137,6 +137,8 @@ class AudioBibleController extends _$AudioBibleController {
   PlayerException? get error => errorSubject.value;
 
   Future<bool> play({required AudioBibleContext context, required VerseSelection passage}) async {
+    if (handler == null) return false;
+
     final translation = ref.read(userProvider).getTranslationFor(passage.references.first.book);
     final timings = getTimingsFor(translation, passage);
     final session = state.getSessionFor(context);
