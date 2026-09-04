@@ -1,6 +1,6 @@
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:timezone/data/latest.dart' as timezone_data;
+import 'package:timezone/data/latest_all.dart' as timezone_data;
 import 'package:timezone/timezone.dart' as timezone;
 
 part 'timezone_service.g.dart';
