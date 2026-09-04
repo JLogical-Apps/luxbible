@@ -2,7 +2,7 @@
 
 **Name**: Lux Bible: Read, Note, & Study
 **Subtitle**: Greek & Hebrew interlinear
-**Keywords**: concordance,lexicon,offline,KJV,NASB,NIV,commentary,audio,dictionary,search,Greek,Hebrew,strongs
+**Keywords**: concordance,lexicon,offline,KJV,NASB,NIV,AMP,commentary,audio,dictionary,search,Greek,Hebrew,strongs
 
 # Description
 
@@ -11,7 +11,7 @@ Lux Bible brings serious Bible study into a calm, modern reading experience. Rea
 Powerful enough for serious study and clean enough for everyday reading.
 
 READ
-Choose from the Berean Standard Bible (BSB), Christian Standard Bible (CSB), King James Version (KJV), and American Standard Version (ASV), available offline. NIV, NASB95, NLT, and NKJV are also available online. Additional Dutch, French, Spanish, and Russian translations are available.
+Choose from the Berean Standard Bible (BSB), Christian Standard Bible (CSB), King James Version (KJV), and American Standard Version (ASV), available offline. AMP, NIV, NASB95, NLT, and NKJV are also available online. Additional Dutch, French, Spanish, and Russian translations are available.
 
 Read the original texts offline with the Greek Septuagint, Textus Receptus, Byzantine Textform, Statistical Restoration Greek New Testament, and Open Scriptures Hebrew Bible.
 
@@ -34,4 +34,4 @@ MAKE IT YOURS
 Start with a Reader, Note-taker, or Studier setup, then customize your toolbars and shortcuts. Keep parallel Bibles, interlinear study, commentary, cross-references, and notes open in swipeable study panels while you read.
 
 FREE, PRIVATE, AND OFFLINE-FIRST
-Bundled Bibles, original-language texts, notes, and study resources work without a connection. Your content stays on your device. Lux has no ads, subscriptions, in-app purchases, or accounts. Privacy-restricted analytics and crash reporting help improve feature usage and reliability, never advertising, personalization, or cross-app tracking. Lux is free and committed to staying that way.
+Bundled Bibles, original-language texts, notes, and study resources work without a connection. Your content stays on your device. Lux has no ads, subscriptions, in-app purchases, or accounts. Lux is free and committed to staying that way.

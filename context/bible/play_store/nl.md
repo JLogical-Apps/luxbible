@@ -10,7 +10,7 @@ Lees de Statenvertaling volledig offline in een rustige, moderne Bijbelapp. Maak
 Krachtig genoeg voor diepgaande studie en overzichtelijk genoeg voor elke dag.
 
 LEZEN
-Lees de Statenvertaling (SV) en Petrus Canisiusvertaling 1939 volledig offline. Het Boek is online beschikbaar. De Engelse Berean Standard Bible (BSB), Christian Standard Bible (CSB) en King James Version (KJV) werken offline; NIV is online beschikbaar. Er zijn ook vertalingen in het Frans, Spaans en Russisch.
+Lees de Statenvertaling (SV) en Petrus Canisiusvertaling 1939 volledig offline. Het Boek is online beschikbaar. De Engelse Berean Standard Bible (BSB), Christian Standard Bible (CSB) en King James Version (KJV) werken offline; AMP en NIV zijn online beschikbaar. Er zijn ook vertalingen in het Frans, Spaans en Russisch.
 
 Lees de grondteksten offline met de Griekse Septuaginta, Textus Receptus, Byzantine Textform, Statistical Restoration Greek New Testament en Open Scriptures Hebrew Bible.
 
