@@ -24,12 +24,12 @@ class BiblePlanNotification {
     final plans = ref.read(biblePlansProvider);
     final planProgress = user.getHydratedPlanProgress(planType: planType, planByType: plans);
     if (planProgress == null) {
-      context.goToStack([(context) => BiblePage(), (context) => BiblePlansPage()]);
+      context.goToStack([BiblePage(), BiblePlansPage()]);
       return true;
     }
 
     if (planProgress.currentDay.isReviewAndReflect) {
-      context.goToStack([(context) => BiblePage(), (context) => BiblePlansPage()]);
+      context.goToStack([BiblePage(), BiblePlansPage()]);
       return true;
     }
 

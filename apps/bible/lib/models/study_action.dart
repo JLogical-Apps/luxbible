@@ -139,7 +139,7 @@ enum StudyAction {
                           StyledListItem(
                             title: 'Edit Commentaries'.toText(),
                             leading: Symbols.tune.toIcon(),
-                            onPressed: () => context.pushReplacement((context) => CommentariesPage()),
+                            onPressed: () => context.pushReplacement(CommentariesPage()),
                           ),
                           StyledListItem(
                             title: 'Pin ${selectedCommentary.title()} Commentary as a Study Panel'.toText(),
@@ -191,7 +191,7 @@ enum StudyAction {
             subtitle: regionFormat.toText(),
             trailing: StyledCircleButton.md(
               child: Symbols.tune.toIcon(),
-              onPressed: () => context.push((context) => CompareSettingsPage()),
+              onPressed: () => context.push(CompareSettingsPage()),
             ),
             children: CompareSheet.buildSheetChildren(
               context,

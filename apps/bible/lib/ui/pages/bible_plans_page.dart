@@ -68,10 +68,7 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
       backgroundColor: .backgroundPrimary,
       trailing: Tooltip(
         message: t.biblePlans.addPlan,
-        child: StyledCircleButton.md(
-          child: Symbols.add.toIcon(),
-          onPressed: () => context.push((context) => BiblePlanSearchPage()),
-        ),
+        child: StyledCircleButton.md(child: Symbols.add.toIcon(), onPressed: () => context.push(BiblePlanSearchPage())),
       ),
       body: StyledListView(
         children: [
@@ -249,7 +246,7 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                                               title: passage.format().toText(),
                                               onPressed: () async {
                                                 final result = await context.push(
-                                                  (context) => BiblePlanReadPage(
+                                                  BiblePlanReadPage(
                                                     planType: planType,
                                                     dayIndex: dayIndex,
                                                     initialPassageIndex: passageIndex,
@@ -286,7 +283,7 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                                         message: t.biblePlans.completed(name: planType.title()).toText(),
                                         action: StyledTextAction(
                                           label: t.biblePlans.startNew.toText(),
-                                          onPressed: () => context.push((context) => BiblePlanSearchPage()),
+                                          onPressed: () => context.push(BiblePlanSearchPage()),
                                         ),
                                         duration: Duration(seconds: 10),
                                       );

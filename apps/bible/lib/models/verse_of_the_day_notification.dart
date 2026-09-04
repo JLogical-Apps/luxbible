@@ -18,7 +18,7 @@ class VerseOfTheDayNotification {
     AnalyticsEvent.notificationTapped.log();
     final selection = ref.read(verseOfTheDaySelectionsProvider)[getVerseOfTheDayIndex(date)];
     context.goToStack([
-      (context) => BiblePage(),
+      BiblePage(),
     ], onLoaded: (context) => PreviewPassageSheet.show(context, verseSelection: selection));
     return true;
   }

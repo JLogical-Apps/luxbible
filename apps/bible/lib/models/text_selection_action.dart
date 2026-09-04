@@ -116,8 +116,7 @@ enum TextSelectionAction {
         if (!context.mounted) return;
 
         final result = await context.push(
-          (context) =>
-              SearchPage(initialSearch: text, currentChapterReference: textSelection.start.toChapterReference()),
+          SearchPage(initialSearch: text, currentChapterReference: textSelection.start.toChapterReference()),
         );
         if (result != null) {
           onNavigateToVerseSelection(result);

@@ -294,7 +294,7 @@ enum MainAction {
           }
         }
       case search:
-        final result = await context.push((context) => SearchPage(currentChapterReference: reference));
+        final result = await context.push(SearchPage(currentChapterReference: reference));
         if (result != null) {
           onNavigateToVerseSelection(result);
         }
@@ -322,26 +322,26 @@ enum MainAction {
           return;
         }
         final result = await switch (resource) {
-          _Resource.dictionary => context.push((context) => DictionaryPage()),
-          _Resource.lexicon => context.push((context) => LexiconPage()),
+          _Resource.dictionary => context.push(DictionaryPage()),
+          _Resource.lexicon => context.push(LexiconPage()),
         };
         if (result != null) {
           onNavigateToVerseSelection(result);
         }
       case plans:
         if (user.planProgressByType.isEmpty) {
-          final newPlan = await context.push((context) => BiblePlanSearchPage());
+          final newPlan = await context.push(BiblePlanSearchPage());
           if (newPlan == null || !context.mounted) {
             return;
           }
         }
 
-        final result = await context.push((context) => BiblePlansPage());
+        final result = await context.push(BiblePlansPage());
         if (result != null) {
           onNavigateToVerseSelection(result);
         }
       case more:
-        final result = await context.push((context) => MorePage());
+        final result = await context.push(MorePage());
         if (result != null) {
           onNavigateToVerseSelection(result);
         }

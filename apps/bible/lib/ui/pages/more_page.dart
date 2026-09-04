@@ -49,17 +49,17 @@ class MorePage extends HookConsumerWidget implements StyledRoute<VerseSelection>
                 StyledListItem.navigation(
                   title: t.themeSettings.title.toText(),
                   leading: Symbols.custom_typography.toIcon(),
-                  onPressed: () => context.push((context) => ThemeSettingsPage()),
+                  onPressed: () => context.push(ThemeSettingsPage()),
                 ),
                 StyledListItem.navigation(
                   title: t.studyActions.compare.toText(),
                   leading: Symbols.text_compare.toIcon(),
-                  onPressed: () => context.push((context) => CompareSettingsPage()),
+                  onPressed: () => context.push(CompareSettingsPage()),
                 ),
                 StyledListItem.navigation(
                   title: t.labels.commentaries.toText(),
                   leading: Symbols.tooltip_2.toIcon(),
-                  onPressed: () => context.push((context) => CommentariesPage()),
+                  onPressed: () => context.push(CommentariesPage()),
                 ),
               ],
             ),
@@ -119,17 +119,17 @@ class MorePage extends HookConsumerWidget implements StyledRoute<VerseSelection>
                 StyledListItem.navigation(
                   title: t.toolbarSettings.mainToolbar.toText(),
                   leading: RotatedBox(quarterTurns: 2, child: Symbols.toolbar.toIcon()),
-                  onPressed: () => context.push((context) => MainToolbarSettingsPage()),
+                  onPressed: () => context.push(MainToolbarSettingsPage()),
                 ),
                 StyledListItem.navigation(
                   title: t.toolbarSettings.verseSelection.toText(),
                   leading: Symbols.text_ad.toIcon(),
-                  onPressed: () => context.push((context) => VerseSelectionSettingsPage()),
+                  onPressed: () => context.push(VerseSelectionSettingsPage()),
                 ),
                 StyledListItem.navigation(
                   title: t.toolbarSettings.textSelection.toText(),
                   leading: Symbols.text_select_start.toIcon(),
-                  onPressed: () => context.push((context) => TextSelectionSettingsPage()),
+                  onPressed: () => context.push(TextSelectionSettingsPage()),
                 ),
               ],
             ),
@@ -142,7 +142,7 @@ class MorePage extends HookConsumerWidget implements StyledRoute<VerseSelection>
                   title: t.labels.annotations.toText(),
                   leading: Symbols.note_stack.toIcon(),
                   onPressed: () async {
-                    final result = await context.push((context) => AnnotationsPage());
+                    final result = await context.push(AnnotationsPage());
                     if (result != null && context.mounted) {
                       context.pop(result);
                     }
@@ -152,7 +152,7 @@ class MorePage extends HookConsumerWidget implements StyledRoute<VerseSelection>
                   title: t.labels.notebooks.toText(),
                   leading: Symbols.book_2.toIcon(),
                   onPressed: () async {
-                    final result = await context.push((context) => NotebooksPage());
+                    final result = await context.push(NotebooksPage());
                     if (result != null && context.mounted) {
                       context.pop(result);
                     }
@@ -162,7 +162,7 @@ class MorePage extends HookConsumerWidget implements StyledRoute<VerseSelection>
                   title: t.labels.highlightStyles.toText(),
                   leading: Symbols.format_ink_highlighter.toIcon(),
                   onPressed: () async {
-                    final result = await context.push((context) => HighlightStylesPage());
+                    final result = await context.push(HighlightStylesPage());
                     if (result != null && context.mounted) {
                       context.pop(result);
                     }
@@ -171,7 +171,7 @@ class MorePage extends HookConsumerWidget implements StyledRoute<VerseSelection>
                 StyledListItem.navigation(
                   title: t.labels.bookmarks.toText(),
                   leading: Symbols.bookmark.toIcon(),
-                  onPressed: () => context.push((context) => BookmarksPage()),
+                  onPressed: () => context.push(BookmarksPage()),
                 ),
               ],
             ),
@@ -183,7 +183,7 @@ class MorePage extends HookConsumerWidget implements StyledRoute<VerseSelection>
                 StyledListItem.navigation(
                   title: t.settings.pushNotifications.toText(),
                   leading: Symbols.notifications.toIcon(),
-                  onPressed: () => context.push((context) => PushNotificationsPage()),
+                  onPressed: () => context.push(PushNotificationsPage()),
                 ),
                 StyledListItem.externalNavigation(
                   title: t.settings.language.toText(),

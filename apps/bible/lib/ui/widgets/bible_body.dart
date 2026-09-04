@@ -324,9 +324,7 @@ class BibleBody extends HookConsumerWidget {
                   );
                 },
                 onPressed: () async {
-                  final result = await context.pushDialog(
-                    (context) => PositionPage(initialReference: currentChapterReference),
-                  );
+                  final result = await context.pushDialog(PositionPage(initialReference: currentChapterReference));
                   if (result != null) {
                     // addPostFrameCallback until https://github.com/rrousselGit/riverpod/issues/4812
                     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -360,7 +358,7 @@ class BibleBody extends HookConsumerWidget {
                       child: Symbols.tune.toIcon(),
                       onPressed: () {
                         context.pop();
-                        context.push((context) => MainToolbarSettingsPage());
+                        context.push(MainToolbarSettingsPage());
                       },
                     ),
                     children: MainAction.topLevelActions

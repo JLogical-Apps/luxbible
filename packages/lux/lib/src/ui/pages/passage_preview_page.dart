@@ -20,8 +20,7 @@ class PassagePreviewPage extends HookConsumerWidget implements StyledRoute<void>
     required VerseSelection verseSelection,
     Function(VerseSelection)? onNavigateToVerseSelection,
   }) => context.pushDialog(
-    (context) =>
-        PassagePreviewPage(verseSelection: verseSelection, onNavigateToVerseSelection: onNavigateToVerseSelection),
+    PassagePreviewPage(verseSelection: verseSelection, onNavigateToVerseSelection: onNavigateToVerseSelection),
   );
 
   @override

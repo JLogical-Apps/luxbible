@@ -67,7 +67,7 @@ class HomePage extends ConsumerWidget implements StyledRoute<void> {
               child: Symbols.add.toIcon(),
               colorBuilder: .surfaceSecondary,
               onPressed: () async {
-                final newPassages = await context.pushDialog<List<VerseSelection>>((context) => AddPassagesPage());
+                final newPassages = await context.pushDialog<List<VerseSelection>>(AddPassagesPage());
                 if (newPassages != null) {
                   ref.updateUser(
                     (user) => user.copyWith(passages: [...user.passages, ...newPassages].distinct.toList()),
@@ -130,7 +130,7 @@ class HomePage extends ConsumerWidget implements StyledRoute<void> {
                                 ),
                               );
                               if (type != null && context.mounted) {
-                                context.push((context) => ActivityPage(plan: .fromType(type, passage: passage)));
+                                context.push(ActivityPage(plan: .fromType(type, passage: passage)));
                               }
                             },
                           ),

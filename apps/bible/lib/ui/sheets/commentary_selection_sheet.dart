@@ -15,7 +15,7 @@ class CommentarySelectionSheet {
           title: t.labels.commentary.toText(),
           trailing: StyledCircleButton.md(
             child: Symbols.tune.toIcon(),
-            onPressed: () => context.push((context) => CommentariesPage()),
+            onPressed: () => context.push(CommentariesPage()),
           ),
           initialOption: initialCommentary,
           options: user.commentariesOrDefault,

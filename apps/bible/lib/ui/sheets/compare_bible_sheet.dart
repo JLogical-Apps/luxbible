@@ -15,7 +15,7 @@ class CompareBibleSheet {
           title: t.studyActions.compare.toText(),
           trailing: StyledCircleButton.md(
             child: Symbols.tune.toIcon(),
-            onPressed: () => context.push((context) => CompareSettingsPage()),
+            onPressed: () => context.push(CompareSettingsPage()),
           ),
           initialOption: initialBible,
           options: user.compareBiblesOrDefault,

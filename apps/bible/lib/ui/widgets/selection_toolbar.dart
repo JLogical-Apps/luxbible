@@ -56,7 +56,7 @@ class SelectionToolbar extends ConsumerWidget {
                 child: Symbols.tune.toIcon(),
                 onPressed: () {
                   context.pop();
-                  context.push((context) => VerseSelectionSettingsPage());
+                  context.push(VerseSelectionSettingsPage());
                 },
               ),
               children: VerseSelectionAction.values
@@ -109,7 +109,7 @@ class SelectionToolbar extends ConsumerWidget {
                 child: Symbols.tune.toIcon(),
                 onPressed: () {
                   context.pop();
-                  context.push((context) => TextSelectionSettingsPage());
+                  context.push(TextSelectionSettingsPage());
                 },
               ),
               children: TextSelectionAction.values

@@ -24,45 +24,50 @@ extension StyleContextExtensions on BuildContext {
   Future<T?> showStyledDialog<T>(
     StyledDialog<T> Function(BuildContext context) dialogBuilder, {
     bool isDismissible = true,
-  }) => showModalBottomSheet(
-    context: this,
-    isScrollControlled: true,
-    isDismissible: isDismissible,
-    shape: RoundedRectangleBorder(borderRadius: .circular(16)),
-    enableDrag: false,
-    backgroundColor: Colors.transparent,
-    useRootNavigator: true,
-    constraints: BoxConstraints(
-      maxWidth: MediaQuery.sizeOf(rootContext).width - 32,
-      maxHeight: MediaQuery.sizeOf(rootContext).height - MediaQuery.viewPaddingOf(rootContext).top - 16,
-    ),
-    builder: (context) => PopScope(
-      canPop: isDismissible,
-      child: SafeArea(top: false, bottom: false, child: dialogBuilder(context)),
+  }) => Navigator.of(this, rootNavigator: true).push(
+    ModalBottomSheetRoute<T>(
+      builder: (context) {
+        Localizations.localeOf(context);
+        return PopScope(
+          canPop: isDismissible,
+          child: SafeArea(top: false, bottom: false, child: dialogBuilder(context)),
+        );
+      },
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(borderRadius: .circular(16)),
+      backgroundColor: Colors.transparent,
+      constraints: BoxConstraints(
+        maxWidth: MediaQuery.sizeOf(rootContext).width - 32,
+        maxHeight: MediaQuery.sizeOf(rootContext).height - MediaQuery.viewPaddingOf(rootContext).top - 16,
+      ),
+      isDismissible: isDismissible,
+      enableDrag: false,
     ),
   );
 
   Future<T?> showStyledSheet<T>(
     StyledSheet<T> Function(BuildContext, WidgetRef) sheetBuilder, {
     Widget Function(StyledSheet Function(BuildContext, WidgetRef) sheetBuilder)? wrapper,
-  }) => showMaterialModalBottomSheet(
+  }) => showCustomModalBottomSheet(
     context: this,
     expand: false,
     isDismissible: true,
-    shape: RoundedRectangleBorder(borderRadius: .circular(16)),
     enableDrag: true,
-    backgroundColor: Colors.transparent,
     useRootNavigator: true,
-    builder: (context) => ConstrainedBox(
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.sizeOf(context).height - MediaQuery.viewPaddingOf(context).top - 8,
-      ),
-      child: SafeArea(
-        top: false,
-        bottom: false,
-        child: wrapper == null ? HookConsumerBuilder(builder: sheetBuilder) : wrapper(sheetBuilder),
-      ),
-    ),
+    containerWidget: _getModalContainer,
+    builder: (context) {
+      Localizations.localeOf(context);
+      return ConstrainedBox(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.sizeOf(context).height - MediaQuery.viewPaddingOf(context).top - 8,
+        ),
+        child: SafeArea(
+          top: false,
+          bottom: false,
+          child: wrapper == null ? HookConsumerBuilder(builder: sheetBuilder) : wrapper(sheetBuilder),
+        ),
+      );
+    },
   );
 
   Future<T?> showStyledSheetWithBreadcrumbs<T>(
@@ -70,29 +75,31 @@ extension StyleContextExtensions on BuildContext {
     required String breadcrumbText,
   }) async {
     final sheetContext = read<SheetNavigationBreadcrumbContext?>() ?? SheetNavigationBreadcrumbContext(breadcrumbs: []);
-    return await showMaterialModalBottomSheet(
+    return await showCustomModalBottomSheet(
       context: this,
       expand: false,
       isDismissible: true,
-      shape: RoundedRectangleBorder(borderRadius: .circular(16)),
       enableDrag: true,
-      backgroundColor: Colors.transparent,
       useRootNavigator: true,
-      builder: (context) => ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.sizeOf(context).height - MediaQuery.viewPaddingOf(context).top - 8,
-        ),
-        child: SafeArea(
-          top: false,
-          bottom: false,
-          child: Provider(
-            create: (_) => sheetContext.withBreadcrumb(
-              SheetNavigationBreadcrumb(text: breadcrumbText, sheetBuilder: sheetBuilder),
-            ),
-            child: HookConsumerBuilder(builder: sheetBuilder),
+      containerWidget: _getModalContainer,
+      builder: (context) {
+        Localizations.localeOf(context);
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.sizeOf(context).height - MediaQuery.viewPaddingOf(context).top - 8,
           ),
-        ),
-      ),
+          child: SafeArea(
+            top: false,
+            bottom: false,
+            child: Provider(
+              create: (_) => sheetContext.withBreadcrumb(
+                SheetNavigationBreadcrumb(text: breadcrumbText, sheetBuilder: sheetBuilder),
+              ),
+              child: HookConsumerBuilder(builder: sheetBuilder),
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -147,4 +154,7 @@ extension StyleContextExtensions on BuildContext {
       ),
     );
   }
+
+  static Widget _getModalContainer(BuildContext context, Animation<double> animation, Widget child) =>
+      Material(color: Colors.transparent, child: child);
 }

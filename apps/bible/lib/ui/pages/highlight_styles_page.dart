@@ -98,7 +98,7 @@ class HighlightStylesPage extends HookConsumerWidget implements StyledRoute<Vers
                         ),
                       ),
                       onPressed: () async {
-                        final result = await context.push((context) => AnnotationsPage(initialStyle: entry.$1));
+                        final result = await context.push(AnnotationsPage(initialStyle: entry.$1));
                         if (result != null && context.mounted) {
                           context.pop(result);
                         }

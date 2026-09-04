@@ -33,10 +33,10 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
   @override
   String get path => '/bible-plans/read';
 
-  List<StyledRoute<dynamic> Function(BuildContext)> get pageStack => [
-    (context) => BiblePage(),
-    (context) => BiblePlansPage(),
-    (context) => BiblePlanReadPage(planType: planType, dayIndex: dayIndex, initialPassageIndex: initialPassageIndex),
+  List<StyledRoute<dynamic>> get pageStack => [
+    BiblePage(),
+    BiblePlansPage(),
+    BiblePlanReadPage(planType: planType, dayIndex: dayIndex, initialPassageIndex: initialPassageIndex),
   ];
 
   @override

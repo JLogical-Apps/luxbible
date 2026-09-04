@@ -116,9 +116,7 @@ class NotebooksPage extends HookConsumerWidget implements StyledRoute<VerseSelec
                                 ),
                               ),
                               onPressed: () async {
-                                final result = await context.push(
-                                  (context) => AnnotationsPage(initialNotebookId: (notebook.id,)),
-                                );
+                                final result = await context.push(AnnotationsPage(initialNotebookId: (notebook.id,)));
                                 if (result != null && context.mounted) {
                                   context.pop(result);
                                 }
@@ -138,7 +136,7 @@ class NotebooksPage extends HookConsumerWidget implements StyledRoute<VerseSelec
                     thirdLine: t.notebookUi.defaultDescription.toText(),
                     trailing: Symbols.lock.toIcon(),
                     onPressed: () async {
-                      final result = await context.push((context) => AnnotationsPage(initialNotebookId: (null,)));
+                      final result = await context.push(AnnotationsPage(initialNotebookId: (null,)));
                       if (result != null && context.mounted) {
                         context.pop(result);
                       }
