@@ -23,36 +23,36 @@ class CopySheet {
         ? [
             '"$text"',
             '(${[
-              if (isTextSelection) 'Text in',
+              if (isTextSelection) t.copySheet.textIn,
               [if (useReference) selection.format(), if (useTranslation) translation.title()].join(', '),
             ].join(' ')})',
           ].join('\n')
         : text;
 
     return StyledSheet(
-      title: 'Copy'.toText(),
+      title: t.common.copy.toText(),
       children: [
         StyledSection.child(
-          title: 'Preview'.toText(),
+          title: t.copySheet.preview.toText(),
           padding: .only(top: 24),
           child: Text(copy, style: context.textStyle.paragraphMd),
         ),
         StyledSection(
-          title: 'Citation'.toText(),
+          title: t.copySheet.citation.toText(),
           children: [
             if (!translation.isLocal)
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16) + .only(bottom: 8),
-                child: StyledBanner(message: 'The citation is required for online translations.'.toText()),
+                child: StyledBanner(message: t.copySheet.citationRequired.toText()),
               ),
             StyledListItem.switchControl(
-              title: 'Include Reference?'.toText(),
+              title: t.copySheet.includeReference.toText(),
               isEnabled: translation.isLocal,
               isSelected: useReference,
               onSelected: translation.isLocal ? (newValue) => useReferenceState.value = newValue : null,
             ),
             StyledListItem.switchControl(
-              title: 'Include Translation?'.toText(),
+              title: t.copySheet.includeTranslation.toText(),
               isEnabled: translation.isLocal && useReference,
               isSelected: useTranslation,
               onSelected: translation.isLocal && useReference
@@ -64,7 +64,7 @@ class CopySheet {
       ],
       buttonsBuilder: (context) => [
         StyledRectButton.primary(
-          label: 'Copy'.toText(),
+          label: t.common.copy.toText(),
           onPressed: () {
             context.showStyledSnackbar(
               message: t.selectionActions.copiedVerses(reference: selection.format()).toText(),

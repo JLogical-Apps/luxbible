@@ -145,6 +145,14 @@
     "switchTo": "Switch to {translation}",
     "notAvailableIn": "This is not available in {translation}."
   },
+  "copySheet": {
+    "preview": "Preview",
+    "citation": "Citation",
+    "citationRequired": "The citation is required for online translations.",
+    "textIn": "Text in",
+    "includeReference": "Include Reference?",
+    "includeTranslation": "Include Translation?"
+  },
   "regionTypes": {
     "chapter": "this chapter",
     "verses": "these verses",
@@ -242,7 +250,10 @@
     "commentaryName": "{commentary} Commentary",
     "notes": "Notes",
     "noNotes": "No Notes Found",
-    "notesDescription": "View your notes in visible verses."
+    "notesDescription": "View your notes in visible verses.",
+    "swapBible": "Swap Bible",
+    "swapDirection": "Swap direction",
+    "swapCommentary": "Swap commentary"
   },
   "bookmarks": {
     "create": "Create Bookmark",
@@ -556,6 +567,10 @@
     "title": "A Note About Anonymous Analytics",
     "description": "Lux now uses anonymous analytics and crash reports to understand which features are used and improve reliability.\n\nThese reports never include your notes, Bible plan names or reading details, search terms, or other private content, and they are not linked to an account.\n\nBy continuing to use Lux, you agree to this information being sent."
   },
+  "renamedBiblePlansNotice": {
+    "title": "Bible Plans Have Updated",
+    "description": "To improve the accuracy and naming of Bible plans, some of your Bible plans have been renamed."
+  },
   "tutorials": {
     "dontShowAgain": "Don't Show Again"
   },
@@ -568,6 +583,8 @@
     "oneHour": "1 hour",
     "loadError": "The audio could not be loaded",
     "connectionError": "Check your internet connection or try again later.",
+    "initializationError": "An error occurred",
+    "initializationErrorDescription": "An error occurred setting up the audio for this device. Try force-closing and reopening the app.",
     "unavailable": "Audio is unavailable for this Bible",
     "chooseBible": "Choose an audio-enabled Bible to listen to this chapter.",
     "switchRequired": "Switch to an audio-enabled Bible to listen to this passage.",

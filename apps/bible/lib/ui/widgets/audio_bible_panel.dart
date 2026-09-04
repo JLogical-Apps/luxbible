@@ -109,10 +109,8 @@ class AudioBiblePanelBody extends HookConsumerWidget {
         child: !isInitialized
             ? StyledTile.message(
                 leading: Symbols.error.toIcon(),
-                title: 'An error occurred'.toText(),
-                subtitle:
-                    'An error occurred setting up the audio for this device. Try force-closing and reopening the app.'
-                        .toText(),
+                title: t.audio.initializationError.toText(),
+                subtitle: t.audio.initializationErrorDescription.toText(),
               )
             : player.error != null
             ? Column(

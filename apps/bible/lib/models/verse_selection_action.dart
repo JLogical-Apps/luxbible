@@ -72,7 +72,7 @@ enum VerseSelectionAction {
         context.showStyledSnackbar(
           message: t.selectionActions.copiedVerses(reference: selectedVerseSelection.format()).toText(),
           action: StyledTextAction(
-            label: 'Edit'.toText(),
+            label: t.common.edit.toText(),
             onPressed: () => CopySheet.show(
               rootContext,
               text: text,

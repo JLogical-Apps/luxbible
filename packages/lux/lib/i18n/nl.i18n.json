@@ -145,6 +145,14 @@
     "switchTo": "Overschakelen naar {translation}",
     "notAvailableIn": "Dit is niet beschikbaar in {translation}."
   },
+  "copySheet": {
+    "preview": "Voorbeeld",
+    "citation": "Bronvermelding",
+    "citationRequired": "De bronvermelding is vereist voor online vertalingen.",
+    "textIn": "Tekst in",
+    "includeReference": "Bijbelverwijzing opnemen?",
+    "includeTranslation": "Vertaling opnemen?"
+  },
   "regionTypes": {
     "chapter": "dit hoofdstuk",
     "verses": "deze verzen",
@@ -244,7 +252,10 @@
     "commentaryName": "Commentaar van {commentary}",
     "notes": "Notities",
     "noNotes": "Geen notities gevonden",
-    "notesDescription": "Bekijk je notities bij de zichtbare verzen."
+    "notesDescription": "Bekijk je notities bij de zichtbare verzen.",
+    "swapBible": "Bijbel wisselen",
+    "swapDirection": "Richting wisselen",
+    "swapCommentary": "Commentaar wisselen"
   },
   "bookmarks": {
     "create": "Bladwijzer maken",
@@ -558,6 +569,10 @@
     "title": "Een opmerking over anonieme statistieken",
     "description": "Lux gebruikt nu anonieme gebruiksstatistieken en crashrapporten om te begrijpen welke functies worden gebruikt en de betrouwbaarheid te verbeteren. Deze rapporten bevatten nooit je notities, namen of leesdetails van Bijbelplannen, zoektermen of andere privé-inhoud en zijn niet gekoppeld aan een account. Door Lux te blijven gebruiken, ga je ermee akkoord dat deze informatie wordt verzonden."
   },
+  "renamedBiblePlansNotice": {
+    "title": "Bijbelplannen zijn bijgewerkt",
+    "description": "Om de nauwkeurigheid en naamgeving van Bijbelplannen te verbeteren, zijn enkele van je Bijbelplannen hernoemd."
+  },
   "tutorials": {
     "dontShowAgain": "Niet meer tonen"
   },
@@ -570,6 +585,8 @@
     "oneHour": "1 uur",
     "loadError": "De audio kon niet worden geladen",
     "connectionError": "Controleer je internetverbinding of probeer het later opnieuw.",
+    "initializationError": "Er is een fout opgetreden",
+    "initializationErrorDescription": "Er is een fout opgetreden bij het instellen van audio voor dit apparaat. Sluit de app geforceerd af en open hem opnieuw.",
     "unavailable": "Audio is niet beschikbaar voor deze Bijbel",
     "chooseBible": "Kies een Bijbel met audio om naar dit hoofdstuk te luisteren.",
     "switchRequired": "Schakel over naar een Bijbel met audio om naar dit gedeelte te luisteren.",

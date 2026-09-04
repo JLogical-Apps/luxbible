@@ -131,7 +131,7 @@ enum TextSelectionAction {
         context.showStyledSnackbar(
           message: t.selectionActions.copiedText.toText(),
           action: StyledTextAction(
-            label: 'Edit'.toText(),
+            label: t.common.edit.toText(),
             onPressed: () => CopySheet.show(
               rootContext,
               text: text,

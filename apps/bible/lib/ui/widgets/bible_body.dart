@@ -658,7 +658,7 @@ class BibleBody extends HookConsumerWidget {
                             showDragHandle: !isSideLayout,
                             subtitle: t.studyPanels.compareWith(translation: translation.title()).toText(),
                             trailing: Tooltip(
-                              message: 'Swap Bible',
+                              message: t.studyPanels.swapBible,
                               child: StyledCircleButton.md(
                                 child: Symbols.book.toIcon(),
                                 onPressed: () async {
@@ -739,7 +739,7 @@ class BibleBody extends HookConsumerWidget {
                         ),
                         trailing: switch (studyPanel) {
                           InterlinearStudyPanel(:final direction) => Tooltip(
-                            message: 'Swap direction',
+                            message: t.studyPanels.swapDirection,
                             child: StyledCircleButton.md(
                               child: Symbols.swap_horiz.toIcon(),
                               onPressed: () async {
@@ -754,7 +754,7 @@ class BibleBody extends HookConsumerWidget {
                             ),
                           ),
                           CommentaryStudyPanel(:final type) => Tooltip(
-                            message: 'Swap commentary',
+                            message: t.studyPanels.swapCommentary,
                             child: StyledCircleButton.md(
                               child: Symbols.tooltip_2.toIcon(),
                               onPressed: () async {

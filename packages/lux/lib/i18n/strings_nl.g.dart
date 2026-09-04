@@ -44,6 +44,7 @@ class TranslationsNl extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$testaments$nl testaments = _Translations$testaments$nl._(_root);
 	@override late final _Translations$books$nl books = _Translations$books$nl._(_root);
 	@override late final _Translations$common$nl common = _Translations$common$nl._(_root);
+	@override late final _Translations$copySheet$nl copySheet = _Translations$copySheet$nl._(_root);
 	@override late final _Translations$regionTypes$nl regionTypes = _Translations$regionTypes$nl._(_root);
 	@override late final _Translations$mainActions$nl mainActions = _Translations$mainActions$nl._(_root);
 	@override late final _Translations$verseOfTheDay$nl verseOfTheDay = _Translations$verseOfTheDay$nl._(_root);
@@ -67,6 +68,7 @@ class TranslationsNl extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$searchUi$nl searchUi = _Translations$searchUi$nl._(_root);
 	@override late final _Translations$onboarding$nl onboarding = _Translations$onboarding$nl._(_root);
 	@override late final _Translations$analyticsNotice$nl analyticsNotice = _Translations$analyticsNotice$nl._(_root);
+	@override late final _Translations$renamedBiblePlansNotice$nl renamedBiblePlansNotice = _Translations$renamedBiblePlansNotice$nl._(_root);
 	@override late final _Translations$tutorials$nl tutorials = _Translations$tutorials$nl._(_root);
 	@override late final _Translations$audio$nl audio = _Translations$audio$nl._(_root);
 	@override late final _Translations$interlinearUi$nl interlinearUi = _Translations$interlinearUi$nl._(_root);
@@ -278,6 +280,21 @@ class _Translations$common$nl extends Translations$common$en {
 	@override String notAvailableIn({required Object translation}) => 'Dit is niet beschikbaar in ${translation}.';
 }
 
+// Path: copySheet
+class _Translations$copySheet$nl extends Translations$copySheet$en {
+	_Translations$copySheet$nl._(TranslationsNl root) : this._root = root, super.internal(root);
+
+	final TranslationsNl _root; // ignore: unused_field
+
+	// Translations
+	@override String get preview => 'Voorbeeld';
+	@override String get citation => 'Bronvermelding';
+	@override String get citationRequired => 'De bronvermelding is vereist voor online vertalingen.';
+	@override String get textIn => 'Tekst in';
+	@override String get includeReference => 'Bijbelverwijzing opnemen?';
+	@override String get includeTranslation => 'Vertaling opnemen?';
+}
+
 // Path: regionTypes
 class _Translations$regionTypes$nl extends Translations$regionTypes$en {
 	_Translations$regionTypes$nl._(TranslationsNl root) : this._root = root, super.internal(root);
@@ -419,6 +436,9 @@ class _Translations$studyPanels$nl extends Translations$studyPanels$en {
 	@override String get notes => 'Notities';
 	@override String get noNotes => 'Geen notities gevonden';
 	@override String get notesDescription => 'Bekijk je notities bij de zichtbare verzen.';
+	@override String get swapBible => 'Bijbel wisselen';
+	@override String get swapDirection => 'Richting wisselen';
+	@override String get swapCommentary => 'Commentaar wisselen';
 }
 
 // Path: bookmarks
@@ -835,6 +855,17 @@ class _Translations$analyticsNotice$nl extends Translations$analyticsNotice$en {
 	@override String get description => 'Lux gebruikt nu anonieme gebruiksstatistieken en crashrapporten om te begrijpen welke functies worden gebruikt en de betrouwbaarheid te verbeteren. Deze rapporten bevatten nooit je notities, namen of leesdetails van Bijbelplannen, zoektermen of andere privé-inhoud en zijn niet gekoppeld aan een account. Door Lux te blijven gebruiken, ga je ermee akkoord dat deze informatie wordt verzonden.';
 }
 
+// Path: renamedBiblePlansNotice
+class _Translations$renamedBiblePlansNotice$nl extends Translations$renamedBiblePlansNotice$en {
+	_Translations$renamedBiblePlansNotice$nl._(TranslationsNl root) : this._root = root, super.internal(root);
+
+	final TranslationsNl _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Bijbelplannen zijn bijgewerkt';
+	@override String get description => 'Om de nauwkeurigheid en naamgeving van Bijbelplannen te verbeteren, zijn enkele van je Bijbelplannen hernoemd.';
+}
+
 // Path: tutorials
 class _Translations$tutorials$nl extends Translations$tutorials$en {
 	_Translations$tutorials$nl._(TranslationsNl root) : this._root = root, super.internal(root);
@@ -860,6 +891,8 @@ class _Translations$audio$nl extends Translations$audio$en {
 	@override String get oneHour => '1 uur';
 	@override String get loadError => 'De audio kon niet worden geladen';
 	@override String get connectionError => 'Controleer je internetverbinding of probeer het later opnieuw.';
+	@override String get initializationError => 'Er is een fout opgetreden';
+	@override String get initializationErrorDescription => 'Er is een fout opgetreden bij het instellen van audio voor dit apparaat. Sluit de app geforceerd af en open hem opnieuw.';
 	@override String get unavailable => 'Audio is niet beschikbaar voor deze Bijbel';
 	@override String get chooseBible => 'Kies een Bijbel met audio om naar dit hoofdstuk te luisteren.';
 	@override String get switchRequired => 'Schakel over naar een Bijbel met audio om naar dit gedeelte te luisteren.';
@@ -2919,6 +2952,12 @@ extension on TranslationsNl {
 			'common.tryAgain' => 'Opnieuw proberen',
 			'common.switchTo' => ({required Object translation}) => 'Overschakelen naar ${translation}',
 			'common.notAvailableIn' => ({required Object translation}) => 'Dit is niet beschikbaar in ${translation}.',
+			'copySheet.preview' => 'Voorbeeld',
+			'copySheet.citation' => 'Bronvermelding',
+			'copySheet.citationRequired' => 'De bronvermelding is vereist voor online vertalingen.',
+			'copySheet.textIn' => 'Tekst in',
+			'copySheet.includeReference' => 'Bijbelverwijzing opnemen?',
+			'copySheet.includeTranslation' => 'Vertaling opnemen?',
 			'regionTypes.chapter' => 'dit hoofdstuk',
 			'regionTypes.verses' => 'deze verzen',
 			'regionTypes.visibleVerses' => 'de zichtbare verzen',
@@ -3008,6 +3047,9 @@ extension on TranslationsNl {
 			'studyPanels.notes' => 'Notities',
 			'studyPanels.noNotes' => 'Geen notities gevonden',
 			'studyPanels.notesDescription' => 'Bekijk je notities bij de zichtbare verzen.',
+			'studyPanels.swapBible' => 'Bijbel wisselen',
+			'studyPanels.swapDirection' => 'Richting wisselen',
+			'studyPanels.swapCommentary' => 'Commentaar wisselen',
 			'bookmarks.create' => 'Bladwijzer maken',
 			'bookmarks.manage' => 'Bladwijzer beheren',
 			'bookmarks.stopFollowing' => 'Niet meer volgen',
@@ -3272,6 +3314,8 @@ extension on TranslationsNl {
 			'onboarding.skipHint' => 'Weinig tijd? Tik op ✕ om over te slaan.',
 			'analyticsNotice.title' => 'Een opmerking over anonieme statistieken',
 			'analyticsNotice.description' => 'Lux gebruikt nu anonieme gebruiksstatistieken en crashrapporten om te begrijpen welke functies worden gebruikt en de betrouwbaarheid te verbeteren. Deze rapporten bevatten nooit je notities, namen of leesdetails van Bijbelplannen, zoektermen of andere privé-inhoud en zijn niet gekoppeld aan een account. Door Lux te blijven gebruiken, ga je ermee akkoord dat deze informatie wordt verzonden.',
+			'renamedBiblePlansNotice.title' => 'Bijbelplannen zijn bijgewerkt',
+			'renamedBiblePlansNotice.description' => 'Om de nauwkeurigheid en naamgeving van Bijbelplannen te verbeteren, zijn enkele van je Bijbelplannen hernoemd.',
 			'tutorials.dontShowAgain' => 'Niet meer tonen',
 			'audio.timer' => 'Audiotimer',
 			'audio.fiveMinutes' => '5 minuten',
@@ -3281,9 +3325,13 @@ extension on TranslationsNl {
 			'audio.oneHour' => '1 uur',
 			'audio.loadError' => 'De audio kon niet worden geladen',
 			'audio.connectionError' => 'Controleer je internetverbinding of probeer het later opnieuw.',
+			'audio.initializationError' => 'Er is een fout opgetreden',
+			'audio.initializationErrorDescription' => 'Er is een fout opgetreden bij het instellen van audio voor dit apparaat. Sluit de app geforceerd af en open hem opnieuw.',
 			'audio.unavailable' => 'Audio is niet beschikbaar voor deze Bijbel',
 			'audio.chooseBible' => 'Kies een Bijbel met audio om naar dit hoofdstuk te luisteren.',
 			'audio.switchRequired' => 'Schakel over naar een Bijbel met audio om naar dit gedeelte te luisteren.',
+			_ => null,
+		} ?? switch (path) {
 			'audio.rewindTenSeconds' => '10 seconden terug',
 			'audio.fastForwardTenSeconds' => '10 seconden vooruit',
 			'audio.notificationChannelName' => 'Bijbelaudio afspelen',
@@ -3297,8 +3345,6 @@ extension on TranslationsNl {
 			'interlinearUi.studyBibleExplanation' => 'Studiebijbels zijn woord voor woord voorzien van Strong-coderingen en morfologische informatie. Daardoor is de interlineaire lexicale analyse mogelijk. In plaats daarvan wordt je meest recent gebruikte studiebijbel gebruikt.',
 			'interlinearUi.usingTranslation' => ({required Object translation}) => '${translation} wordt gebruikt voor interlineair',
 			'chapterUnavailable.title' => ({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} bevat het ${testament} niet.',
-			_ => null,
-		} ?? switch (path) {
 			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Je meest recent gebruikte Bijbel voor het ${testament}, ${fallbackTranslation}, wordt getoond.',
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => 'De hoofdstukken en verzen van de ${translation} zijn anders genummerd dan in de meeste Engelse vertalingen.\n\nDe tekst die hier bij ${reference} wordt getoond, komt uit ${originalReference} in de ${translation} en is opnieuw gekoppeld om met de andere vertalingen overeen te komen.',

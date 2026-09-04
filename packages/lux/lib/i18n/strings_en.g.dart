@@ -40,6 +40,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$testaments$en testaments = Translations$testaments$en.internal(_root);
 	late final Translations$books$en books = Translations$books$en.internal(_root);
 	late final Translations$common$en common = Translations$common$en.internal(_root);
+	late final Translations$copySheet$en copySheet = Translations$copySheet$en.internal(_root);
 	late final Translations$regionTypes$en regionTypes = Translations$regionTypes$en.internal(_root);
 	late final Translations$mainActions$en mainActions = Translations$mainActions$en.internal(_root);
 	late final Translations$verseOfTheDay$en verseOfTheDay = Translations$verseOfTheDay$en.internal(_root);
@@ -63,6 +64,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$searchUi$en searchUi = Translations$searchUi$en.internal(_root);
 	late final Translations$onboarding$en onboarding = Translations$onboarding$en.internal(_root);
 	late final Translations$analyticsNotice$en analyticsNotice = Translations$analyticsNotice$en.internal(_root);
+	late final Translations$renamedBiblePlansNotice$en renamedBiblePlansNotice = Translations$renamedBiblePlansNotice$en.internal(_root);
 	late final Translations$tutorials$en tutorials = Translations$tutorials$en.internal(_root);
 	late final Translations$audio$en audio = Translations$audio$en.internal(_root);
 	late final Translations$interlinearUi$en interlinearUi = Translations$interlinearUi$en.internal(_root);
@@ -542,6 +544,33 @@ class Translations$common$en {
 	String notAvailableIn({required Object translation}) => 'This is not available in ${translation}.';
 }
 
+// Path: copySheet
+class Translations$copySheet$en {
+	Translations$copySheet$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Preview'
+	String get preview => 'Preview';
+
+	/// en: 'Citation'
+	String get citation => 'Citation';
+
+	/// en: 'The citation is required for online translations.'
+	String get citationRequired => 'The citation is required for online translations.';
+
+	/// en: 'Text in'
+	String get textIn => 'Text in';
+
+	/// en: 'Include Reference?'
+	String get includeReference => 'Include Reference?';
+
+	/// en: 'Include Translation?'
+	String get includeTranslation => 'Include Translation?';
+}
+
 // Path: regionTypes
 class Translations$regionTypes$en {
 	Translations$regionTypes$en.internal(this._root);
@@ -855,6 +884,15 @@ class Translations$studyPanels$en {
 
 	/// en: 'View your notes in visible verses.'
 	String get notesDescription => 'View your notes in visible verses.';
+
+	/// en: 'Swap Bible'
+	String get swapBible => 'Swap Bible';
+
+	/// en: 'Swap direction'
+	String get swapDirection => 'Swap direction';
+
+	/// en: 'Swap commentary'
+	String get swapCommentary => 'Swap commentary';
 }
 
 // Path: bookmarks
@@ -1780,6 +1818,21 @@ class Translations$analyticsNotice$en {
 	String get description => 'Lux now uses anonymous analytics and crash reports to understand which features are used and improve reliability.\n\nThese reports never include your notes, Bible plan names or reading details, search terms, or other private content, and they are not linked to an account.\n\nBy continuing to use Lux, you agree to this information being sent.';
 }
 
+// Path: renamedBiblePlansNotice
+class Translations$renamedBiblePlansNotice$en {
+	Translations$renamedBiblePlansNotice$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Bible Plans Have Updated'
+	String get title => 'Bible Plans Have Updated';
+
+	/// en: 'To improve the accuracy and naming of Bible plans, some of your Bible plans have been renamed.'
+	String get description => 'To improve the accuracy and naming of Bible plans, some of your Bible plans have been renamed.';
+}
+
 // Path: tutorials
 class Translations$tutorials$en {
 	Translations$tutorials$en.internal(this._root);
@@ -1823,6 +1876,12 @@ class Translations$audio$en {
 
 	/// en: 'Check your internet connection or try again later.'
 	String get connectionError => 'Check your internet connection or try again later.';
+
+	/// en: 'An error occurred'
+	String get initializationError => 'An error occurred';
+
+	/// en: 'An error occurred setting up the audio for this device. Try force-closing and reopening the app.'
+	String get initializationErrorDescription => 'An error occurred setting up the audio for this device. Try force-closing and reopening the app.';
 
 	/// en: 'Audio is unavailable for this Bible'
 	String get unavailable => 'Audio is unavailable for this Bible';
@@ -4867,6 +4926,12 @@ extension on Translations {
 			'common.tryAgain' => 'Try Again',
 			'common.switchTo' => ({required Object translation}) => 'Switch to ${translation}',
 			'common.notAvailableIn' => ({required Object translation}) => 'This is not available in ${translation}.',
+			'copySheet.preview' => 'Preview',
+			'copySheet.citation' => 'Citation',
+			'copySheet.citationRequired' => 'The citation is required for online translations.',
+			'copySheet.textIn' => 'Text in',
+			'copySheet.includeReference' => 'Include Reference?',
+			'copySheet.includeTranslation' => 'Include Translation?',
 			'regionTypes.chapter' => 'this chapter',
 			'regionTypes.verses' => 'these verses',
 			'regionTypes.visibleVerses' => 'visible verses',
@@ -4954,6 +5019,9 @@ extension on Translations {
 			'studyPanels.notes' => 'Notes',
 			'studyPanels.noNotes' => 'No Notes Found',
 			'studyPanels.notesDescription' => 'View your notes in visible verses.',
+			'studyPanels.swapBible' => 'Swap Bible',
+			'studyPanels.swapDirection' => 'Swap direction',
+			'studyPanels.swapCommentary' => 'Swap commentary',
 			'bookmarks.create' => 'Create Bookmark',
 			'bookmarks.manage' => 'Manage Bookmark',
 			'bookmarks.stopFollowing' => 'Stop Following',
@@ -5218,6 +5286,8 @@ extension on Translations {
 			'onboarding.skipHint' => 'In a hurry? Tap ✕ to skip.',
 			'analyticsNotice.title' => 'A Note About Anonymous Analytics',
 			'analyticsNotice.description' => 'Lux now uses anonymous analytics and crash reports to understand which features are used and improve reliability.\n\nThese reports never include your notes, Bible plan names or reading details, search terms, or other private content, and they are not linked to an account.\n\nBy continuing to use Lux, you agree to this information being sent.',
+			'renamedBiblePlansNotice.title' => 'Bible Plans Have Updated',
+			'renamedBiblePlansNotice.description' => 'To improve the accuracy and naming of Bible plans, some of your Bible plans have been renamed.',
 			'tutorials.dontShowAgain' => 'Don\'t Show Again',
 			'audio.timer' => 'Audio Timer',
 			'audio.fiveMinutes' => '5 minutes',
@@ -5227,11 +5297,15 @@ extension on Translations {
 			'audio.oneHour' => '1 hour',
 			'audio.loadError' => 'The audio could not be loaded',
 			'audio.connectionError' => 'Check your internet connection or try again later.',
+			'audio.initializationError' => 'An error occurred',
+			'audio.initializationErrorDescription' => 'An error occurred setting up the audio for this device. Try force-closing and reopening the app.',
 			'audio.unavailable' => 'Audio is unavailable for this Bible',
 			'audio.chooseBible' => 'Choose an audio-enabled Bible to listen to this chapter.',
 			'audio.switchRequired' => 'Switch to an audio-enabled Bible to listen to this passage.',
 			'audio.rewindTenSeconds' => 'Back 10 seconds',
 			'audio.fastForwardTenSeconds' => 'Forward 10 seconds',
+			_ => null,
+		} ?? switch (path) {
 			'audio.notificationChannelName' => 'Audio Bible playback',
 			'audio.notificationChannelDescription' => 'Audio Bible playback controls',
 			'interlinearUi.interlinearBible' => 'Interlinear Bible',
@@ -5245,8 +5319,6 @@ extension on Translations {
 			'chapterUnavailable.title' => ({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} doesn\'t include the ${testament}.',
 			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Showing your most-recent ${testament} Bible, ${fallbackTranslation}.',
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
-			_ => null,
-		} ?? switch (path) {
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => 'The ${translation} numbers its chapters and verses differently from most English translations.\n\nThe text shown here at ${reference} comes from ${originalReference} in the ${translation}, remapped so it lines up with the other translations.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} doesn\'t include this selection.',
 			'commentaryUi.introTo' => ({required Object book}) => 'Intro to ${book}',

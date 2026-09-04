@@ -44,6 +44,7 @@ class TranslationsRu extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$testaments$ru testaments = _Translations$testaments$ru._(_root);
 	@override late final _Translations$books$ru books = _Translations$books$ru._(_root);
 	@override late final _Translations$common$ru common = _Translations$common$ru._(_root);
+	@override late final _Translations$copySheet$ru copySheet = _Translations$copySheet$ru._(_root);
 	@override late final _Translations$regionTypes$ru regionTypes = _Translations$regionTypes$ru._(_root);
 	@override late final _Translations$mainActions$ru mainActions = _Translations$mainActions$ru._(_root);
 	@override late final _Translations$verseOfTheDay$ru verseOfTheDay = _Translations$verseOfTheDay$ru._(_root);
@@ -67,6 +68,7 @@ class TranslationsRu extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$searchUi$ru searchUi = _Translations$searchUi$ru._(_root);
 	@override late final _Translations$onboarding$ru onboarding = _Translations$onboarding$ru._(_root);
 	@override late final _Translations$analyticsNotice$ru analyticsNotice = _Translations$analyticsNotice$ru._(_root);
+	@override late final _Translations$renamedBiblePlansNotice$ru renamedBiblePlansNotice = _Translations$renamedBiblePlansNotice$ru._(_root);
 	@override late final _Translations$tutorials$ru tutorials = _Translations$tutorials$ru._(_root);
 	@override late final _Translations$audio$ru audio = _Translations$audio$ru._(_root);
 	@override late final _Translations$interlinearUi$ru interlinearUi = _Translations$interlinearUi$ru._(_root);
@@ -278,6 +280,21 @@ class _Translations$common$ru extends Translations$common$en {
 	@override String notAvailableIn({required Object translation}) => 'Это недоступно в ${translation}.';
 }
 
+// Path: copySheet
+class _Translations$copySheet$ru extends Translations$copySheet$en {
+	_Translations$copySheet$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get preview => 'Предпросмотр';
+	@override String get citation => 'Ссылка на источник';
+	@override String get citationRequired => 'Для онлайн-переводов необходимо указывать источник.';
+	@override String get textIn => 'Текст в';
+	@override String get includeReference => 'Указать ссылку на отрывок?';
+	@override String get includeTranslation => 'Указать перевод?';
+}
+
 // Path: regionTypes
 class _Translations$regionTypes$ru extends Translations$regionTypes$en {
 	_Translations$regionTypes$ru._(TranslationsRu root) : this._root = root, super.internal(root);
@@ -419,6 +436,9 @@ class _Translations$studyPanels$ru extends Translations$studyPanels$en {
 	@override String get notes => 'Примечания';
 	@override String get noNotes => 'Заметки не найдены';
 	@override String get notesDescription => 'Просматривайте свои заметки в видимых стихах.';
+	@override String get swapBible => 'Сменить Библию';
+	@override String get swapDirection => 'Сменить направление';
+	@override String get swapCommentary => 'Сменить комментарий';
 }
 
 // Path: bookmarks
@@ -839,6 +859,17 @@ class _Translations$analyticsNotice$ru extends Translations$analyticsNotice$en {
 	@override String get description => 'Lux теперь использует анонимную аналитику и отчёты о сбоях, чтобы понимать, какие функции востребованы, и повышать надёжность. Эти отчёты никогда не содержат ваши заметки, названия планов чтения или сведения о ходе чтения, поисковые запросы либо другой личный контент и не связаны с учётной записью. Продолжая пользоваться Lux, вы соглашаетесь на отправку этой информации.';
 }
 
+// Path: renamedBiblePlansNotice
+class _Translations$renamedBiblePlansNotice$ru extends Translations$renamedBiblePlansNotice$en {
+	_Translations$renamedBiblePlansNotice$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Планы чтения Библии обновлены';
+	@override String get description => 'Чтобы повысить точность и улучшить названия планов чтения Библии, мы переименовали некоторые из них.';
+}
+
 // Path: tutorials
 class _Translations$tutorials$ru extends Translations$tutorials$en {
 	_Translations$tutorials$ru._(TranslationsRu root) : this._root = root, super.internal(root);
@@ -864,6 +895,8 @@ class _Translations$audio$ru extends Translations$audio$en {
 	@override String get oneHour => '1 час';
 	@override String get loadError => 'Не удалось загрузить аудио';
 	@override String get connectionError => 'Проверьте подключение к Интернету или повторите попытку позже.';
+	@override String get initializationError => 'Произошла ошибка';
+	@override String get initializationErrorDescription => 'При настройке аудио на этом устройстве произошла ошибка. Принудительно закройте приложение и откройте его снова.';
 	@override String get unavailable => 'Звук для этой Библии недоступен.';
 	@override String get chooseBible => 'Чтобы прослушать эту главу, выберите Библию с аудиозаписью.';
 	@override String get switchRequired => 'Чтобы прослушать этот отрывок, переключитесь на Библию с аудиозаписью.';
@@ -2925,6 +2958,12 @@ extension on TranslationsRu {
 			'common.tryAgain' => 'Попробуйте еще раз',
 			'common.switchTo' => ({required Object translation}) => 'Переключиться на ${translation}',
 			'common.notAvailableIn' => ({required Object translation}) => 'Это недоступно в ${translation}.',
+			'copySheet.preview' => 'Предпросмотр',
+			'copySheet.citation' => 'Ссылка на источник',
+			'copySheet.citationRequired' => 'Для онлайн-переводов необходимо указывать источник.',
+			'copySheet.textIn' => 'Текст в',
+			'copySheet.includeReference' => 'Указать ссылку на отрывок?',
+			'copySheet.includeTranslation' => 'Указать перевод?',
 			'regionTypes.chapter' => 'эта глава',
 			'regionTypes.verses' => 'эти стихи',
 			'regionTypes.visibleVerses' => 'видимые стихи',
@@ -3014,6 +3053,9 @@ extension on TranslationsRu {
 			'studyPanels.notes' => 'Примечания',
 			'studyPanels.noNotes' => 'Заметки не найдены',
 			'studyPanels.notesDescription' => 'Просматривайте свои заметки в видимых стихах.',
+			'studyPanels.swapBible' => 'Сменить Библию',
+			'studyPanels.swapDirection' => 'Сменить направление',
+			'studyPanels.swapCommentary' => 'Сменить комментарий',
 			'bookmarks.create' => 'Создать закладку',
 			'bookmarks.manage' => 'Управление закладками',
 			'bookmarks.stopFollowing' => 'Открепить',
@@ -3278,6 +3320,8 @@ extension on TranslationsRu {
 			'onboarding.skipHint' => 'Торопитесь? Нажмите ✕, чтобы пропустить.',
 			'analyticsNotice.title' => 'Об анонимной аналитике',
 			'analyticsNotice.description' => 'Lux теперь использует анонимную аналитику и отчёты о сбоях, чтобы понимать, какие функции востребованы, и повышать надёжность. Эти отчёты никогда не содержат ваши заметки, названия планов чтения или сведения о ходе чтения, поисковые запросы либо другой личный контент и не связаны с учётной записью. Продолжая пользоваться Lux, вы соглашаетесь на отправку этой информации.',
+			'renamedBiblePlansNotice.title' => 'Планы чтения Библии обновлены',
+			'renamedBiblePlansNotice.description' => 'Чтобы повысить точность и улучшить названия планов чтения Библии, мы переименовали некоторые из них.',
 			'tutorials.dontShowAgain' => 'Больше не показывать',
 			'audio.timer' => 'Аудио Таймер',
 			'audio.fiveMinutes' => '5 минут',
@@ -3287,9 +3331,13 @@ extension on TranslationsRu {
 			'audio.oneHour' => '1 час',
 			'audio.loadError' => 'Не удалось загрузить аудио',
 			'audio.connectionError' => 'Проверьте подключение к Интернету или повторите попытку позже.',
+			'audio.initializationError' => 'Произошла ошибка',
+			'audio.initializationErrorDescription' => 'При настройке аудио на этом устройстве произошла ошибка. Принудительно закройте приложение и откройте его снова.',
 			'audio.unavailable' => 'Звук для этой Библии недоступен.',
 			'audio.chooseBible' => 'Чтобы прослушать эту главу, выберите Библию с аудиозаписью.',
 			'audio.switchRequired' => 'Чтобы прослушать этот отрывок, переключитесь на Библию с аудиозаписью.',
+			_ => null,
+		} ?? switch (path) {
 			'audio.rewindTenSeconds' => 'На 10 секунд назад',
 			'audio.fastForwardTenSeconds' => 'На 10 секунд вперед',
 			'audio.notificationChannelName' => 'Аудио воспроизведение Библии',
@@ -3303,8 +3351,6 @@ extension on TranslationsRu {
 			'interlinearUi.studyBibleExplanation' => 'Учебные Библии составлены с использованием дословных тегов Стронга и морфологических тегов, что делает возможной подстрочную лексическую разбивку. Вместо этого используйте самую последнюю Учебную Библию.',
 			'interlinearUi.usingTranslation' => ({required Object translation}) => 'Использование ${translation} для подстрочного текста',
 			'chapterUnavailable.title' => ({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} не включает ${testament}.',
-			_ => null,
-		} ?? switch (path) {
 			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Показываем вашу последнюю ${testament} Библию, ${fallbackTranslation}.',
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => '${translation} нумерует главы и стихи иначе, чем в большинстве английских переводов.\n\nТекст, показанный здесь в ${reference}, взят из ${originalReference} в ${translation} и переназначен, чтобы соответствовать другим переводам.',

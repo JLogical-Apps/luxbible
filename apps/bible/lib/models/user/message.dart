@@ -5,13 +5,12 @@ enum Message {
   anonymousAnalytics;
 
   String title() => switch (this) {
-    renamedBiblePlans => 'Bible Plans Have Updated',
+    renamedBiblePlans => t.renamedBiblePlansNotice.title,
     anonymousAnalytics => t.analyticsNotice.title,
   };
 
   String description() => switch (this) {
-    renamedBiblePlans =>
-      'To improve the accuracy and naming of Bible plans, some of your Bible plans have been renamed.',
+    renamedBiblePlans => t.renamedBiblePlansNotice.description,
     anonymousAnalytics => t.analyticsNotice.description,
   };
 }
