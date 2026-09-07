@@ -35,7 +35,7 @@ class WordSelectionBuilder extends HookConsumerWidget {
           .skipLast(1)
           .mapIndexed((index, previousWord) => (previousWord, bible.words[index + 1]))
           .groupListsBy((words) => words.$2.toLowerCase().withoutPunctuation)
-          .mapValues((word, previousWords) => previousWords.map((word) => word.$1).toList()),
+          .mapValues((word, previousWords) => previousWords.map((word) => word.$1).distinct.toList()),
     );
 
     (int currentIndex, List<WordChoice>?) getStep(int index) {
@@ -63,9 +63,10 @@ class WordSelectionBuilder extends HookConsumerWidget {
               [
                 if (previousCorrectWord != null && previousCorrectWordWithoutPunctuation != null)
                   ...previousWords.map(
-                    (word) => word.toLowerCase() == previousCorrectWord.toLowerCase()
+                    (previousWord) => previousWord.toLowerCase() == previousCorrectWord.toLowerCase()
                         ? 3
-                        : wordWithoutPunctuation.toLowerCase() == previousCorrectWordWithoutPunctuation.toLowerCase()
+                        : previousWord.withoutPunctuation.toLowerCase() ==
+                              previousCorrectWordWithoutPunctuation.toLowerCase()
                         ? 1
                         : 0,
                   ),

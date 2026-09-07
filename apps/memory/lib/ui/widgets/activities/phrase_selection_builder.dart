@@ -75,8 +75,9 @@ class PhraseSelectionBuilder extends HookConsumerWidget {
             );
           })
           .sortedByDescending((phraseAndRanking) => phraseAndRanking.$2)
-          .take(5)
+          .take(8)
           .map((phraseAndRanking) => phraseAndRanking.$1)
+          .distinctBy((phrase) => phrase.text)
           .toList();
 
       return (
