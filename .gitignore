@@ -66,3 +66,7 @@ apps/bible/assets/translations/csb/*.json
 # Generated store release notes
 context/bible/appstore/changelog/
 context/bible/play_store/changelog.xml
+
+# Local Remotion projects and rendered media
+/videos/src/videos/
+/videos/public/videos/
