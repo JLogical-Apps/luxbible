@@ -1,7 +1,11 @@
 import { useVideoConfig } from "remotion";
 import { getSequenceClips } from "../../core/media/getSequenceClips";
 import { SequencedVideo } from "../../core/media/SequencedVideo";
-import type { MediaAsset, MediaDurations } from "../../core/media/types";
+import type {
+  MediaAsset,
+  MediaDurations,
+  TimedMediaClip,
+} from "../../core/media/types";
 import { Rise } from "../../core/motion/Rise";
 
 export const PhoneDemo = <Id extends string>({
@@ -25,13 +29,38 @@ export const PhoneDemo = <Id extends string>({
   const clips = getSequenceClips(media, durations, fps, delay, fadeFrames);
 
   return (
-    <Rise
+    <TimedPhoneDemo
+      clips={clips}
       name={name}
+      style={style}
+      imageScale={imageScale}
+      fadeFrames={fadeFrames}
       delay={delay}
-      distance={1200}
-      style={{ ...style, position: "absolute", scale: imageScale }}
-    >
-      <SequencedVideo clips={clips} fadeFrames={fadeFrames} />
-    </Rise>
+    />
   );
 };
+
+export const TimedPhoneDemo = <Id extends string>({
+  clips,
+  name,
+  style,
+  imageScale,
+  fadeFrames = 0,
+  delay,
+}: {
+  clips: readonly TimedMediaClip<Id>[];
+  name: string;
+  style: React.CSSProperties;
+  imageScale: number;
+  fadeFrames?: number;
+  delay: number;
+}) => (
+  <Rise
+    name={name}
+    delay={delay}
+    distance={1200}
+    style={{ ...style, position: "absolute", scale: imageScale }}
+  >
+    <SequencedVideo clips={clips} fadeFrames={fadeFrames} />
+  </Rise>
+);

@@ -14,6 +14,26 @@ Generic composition, timing, motion, media, and text components live in `src/cor
 
 Recording sources are declared in `src/videos/soap/media.ts`. Mediabunny measures their durations automatically in `calculateMetadata`, so replacing a recording updates its scene and composition duration without a corresponding code change.
 
+## Question Showcase
+
+`QuestionShowcase` creates compact guided 9:16 videos from a question and one phone screenshot. The question begins centered, docks above the phone, and the screenshot pauses first on the verse before moving into frame and highlighting the requested study text. A custom background image is optional. Without one, the composition uses the dark animated shader palette exposed in its props.
+
+Create a reusable job and copy its assets into the project with:
+
+```console
+node scripts/create-question-showcase.mjs \
+  --question "What does it mean to cast your burden on God?" \
+  --media /absolute/path/to/screenshot.png \
+  --verse-highlight "Cast your burden upon the LORD" \
+  --study-highlight "To cast our burden upon God, is to rest upon his providence and promise."
+```
+
+The command uses OCR to compute one highlight rectangle per matching line. It stops if either exact phrase cannot be located, then prints the generated props file and the exact Remotion render command. Job props live in `src/videos/question-showcase/jobs/`; assets live in `public/videos/question-showcase/`.
+
+Question videos include background music from `music/beats` for shader or still-image backgrounds, or `music/chill` for background videos. The generator chooses the track with the oldest modification time, breaking ties randomly, and keeps the choice on revisions. It copies the source and prepares a normalized, faded WAV covering the full timeline, with crossfades if the track needs to repeat. Music is prepared near -17 LUFS without narration, or at a lower starting level when foreground audio is enabled; listen and adjust `musicVolume` when mixing speech. The job records the original repository-relative `musicSource` alongside the playable public `musicSrc`.
+
+After a final MP4 passes visual and audio checks, run `touch -m` on its original `musicSource` file to record usage. Previews and failed renders do not update usage timestamps.
+
 <p align="center">
   <a href="https://github.com/remotion-dev/logo">
     <picture>

@@ -1,7 +1,21 @@
 import type { VideoBackgroundProps } from "../../core/composition/types";
 import { ShaderMeshGradient } from "../../core/remocn/shader-mesh-gradient";
-import { AbsoluteFill, useCurrentFrame, useVideoConfig } from "remotion";
+import {
+  AbsoluteFill,
+  Easing,
+  interpolate,
+  useCurrentFrame,
+  useVideoConfig,
+} from "remotion";
 import type { LuxVideoProps } from "./schema";
+
+const getTransitionRange = ({
+  peakFrame,
+  durationInFrames,
+}: {
+  peakFrame: number;
+  durationInFrames: number;
+}) => [peakFrame - durationInFrames / 2, peakFrame + durationInFrames / 2];
 
 export const LuxBackground: React.FC<VideoBackgroundProps<LuxVideoProps>> = ({
   timeline,
@@ -65,6 +79,28 @@ export const LuxBackground: React.FC<VideoBackgroundProps<LuxVideoProps>> = ({
       sum + getTransitionArea(peakFrame, durationInFrames),
     0,
   );
+  const firstTransition = timeline.transitions[0];
+  const lastTransition = timeline.transitions[timeline.transitions.length - 1];
+  const bookendDarkness =
+    firstTransition && lastTransition
+      ? Math.max(
+          interpolate(
+            frame,
+            getTransitionRange(firstTransition),
+            [0.5, 0],
+            {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+              easing: Easing.inOut(Easing.cubic),
+            },
+          ),
+          interpolate(frame, getTransitionRange(lastTransition), [0, 0.5], {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+            easing: Easing.inOut(Easing.cubic),
+          }),
+        )
+      : 0.5;
 
   return (
     <AbsoluteFill>
@@ -82,6 +118,9 @@ export const LuxBackground: React.FC<VideoBackgroundProps<LuxVideoProps>> = ({
         style={{
           background: `linear-gradient(180deg, rgba(7, 8, 8, ${shaderDarkness}), rgba(7, 8, 8, ${Math.min(shaderDarkness + 0.12, 0.96)}))`,
         }}
+      />
+      <AbsoluteFill
+        style={{ backgroundColor: "black", opacity: bookendDarkness }}
       />
     </AbsoluteFill>
   );

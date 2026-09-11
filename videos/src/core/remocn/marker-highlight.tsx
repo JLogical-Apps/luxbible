@@ -19,6 +19,7 @@ export interface MarkerHighlightProps {
   fontWeight?: number;
   speed?: number;
   delayFrames?: number;
+  anticipationFrames?: number;
   className?: string;
 }
 
@@ -29,6 +30,7 @@ export interface MarkerHighlightSpanProps {
   highlightedTextColor?: string;
   speed?: number;
   delayFrames?: number;
+  anticipationFrames?: number;
 }
 
 export function MarkerHighlightSpan({
@@ -38,11 +40,12 @@ export function MarkerHighlightSpan({
   highlightedTextColor = "#171717",
   speed = 1,
   delayFrames = 15,
+  anticipationFrames = 0,
 }: MarkerHighlightSpanProps) {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const markerScale = spring({
-    frame: (frame - delayFrames) * speed,
+    frame: (frame - delayFrames + anticipationFrames) * speed,
     fps,
     config: { damping: 14 },
   });
@@ -86,6 +89,7 @@ export function MarkerHighlight({
   fontWeight = 600,
   speed = 1,
   delayFrames = 15,
+  anticipationFrames = 0,
   className,
 }: MarkerHighlightProps) {
   return (
@@ -117,6 +121,7 @@ export function MarkerHighlight({
           highlightedTextColor={highlightedTextColor}
           speed={speed}
           delayFrames={delayFrames}
+          anticipationFrames={anticipationFrames}
         />
         {after}
       </span>

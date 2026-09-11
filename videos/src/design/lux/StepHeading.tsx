@@ -1,3 +1,4 @@
+import { Interactive } from "remotion";
 import { Rise } from "../../core/motion/Rise";
 import { Accent } from "../../core/text/Accent";
 import type { LuxVideoProps } from "./schema";
@@ -8,21 +9,39 @@ export const StepHeading: React.FC<
   Pick<LuxVideoProps, "accentColor" | "textColor" | "fontScale"> & {
     letter: string;
     title: string;
+    isAnimated?: boolean;
   }
-> = ({ letter, title, accentColor, textColor, fontScale }) => (
-  <Rise
-    name="Step heading"
-    style={{
-      position: "absolute",
-      top: 250,
-      left: SAFE_X,
-      right: SAFE_X,
-      color: textColor,
-      fontSize: 88 * fontScale,
-      fontWeight: 900,
-      lineHeight: 1.02,
-    }}
-  >
-    <Accent color={accentColor}>{letter}:</Accent> {title}
-  </Rise>
-);
+> = ({
+  letter,
+  title,
+  accentColor,
+  textColor,
+  fontScale,
+  isAnimated = true,
+}) => {
+  const style = {
+    position: "absolute" as const,
+    top: 250,
+    left: SAFE_X,
+    right: SAFE_X,
+    color: textColor,
+    fontSize: 88 * fontScale,
+    fontWeight: 900,
+    lineHeight: 1.02,
+  };
+  const content = (
+    <>
+      <Accent color={accentColor}>{letter}:</Accent> {title}
+    </>
+  );
+
+  return isAnimated ? (
+    <Rise name="Step heading" style={style}>
+      {content}
+    </Rise>
+  ) : (
+    <Interactive.Div name="Step heading" style={style}>
+      {content}
+    </Interactive.Div>
+  );
+};

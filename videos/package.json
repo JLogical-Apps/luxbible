@@ -9,6 +9,7 @@
     "@paper-design/shaders-react": "^0.0.80",
     "@remotion/cli": "4.0.522",
     "@remotion/google-fonts": "^4.0.522",
+    "@remotion/install-whisper-cpp": "4.0.522",
     "@remotion/media": "4.0.522",
     "@remotion/studio": "^4.0.522",
     "@remotion/tailwind-v4": "4.0.522",
