@@ -70,3 +70,6 @@ context/bible/play_store/changelog.xml
 # Local Remotion projects and rendered media
 /videos/src/videos/
 /videos/public/videos/
+
+# Local prepared social posts and source media
+/socials/

@@ -12,9 +12,10 @@ Lux is a product family for focused Bible reading and study. This repository con
 - [`services/scripture/`](services/scripture/) contains the Cloudflare Worker used for licensed Bible-text requests.
 - [`content/sources/`](content/sources/) contains authoritative Bible, commentary, dictionary, and reading-plan source files.
 - [`tools/content/`](tools/content/) contains generators that turn source content into app runtime assets.
+- [`tools/socials/`](tools/socials/) contains local review and publishing tools for prepared Lux social posts.
 - [`context/`](context/) contains product context, organized by product.
 
-The repository root is a Dart pub workspace for the Flutter apps, shared packages, and content tools. Run dependency resolution at the root and component commands from the relevant component directory.
+The repository root is a Dart pub workspace for the Flutter apps, shared packages, and content tools. Run workspace dependency resolution at the root and component commands from the relevant component directory. `tools/socials` is an independent Dart package; resolve its dependencies from its own directory.
 
 ## Common commands
 

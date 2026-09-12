@@ -14,3 +14,5 @@ Treat the current source code as authoritative for implementation details. The c
 When a change makes the context inaccurate, update the relevant context file in the same change. Link to another context file instead of duplicating its content.
 
 Run component commands from their own directories. The root is not a Flutter or Node project.
+
+When preparing local Lux social posts, read [`tools/socials/PREPARING_POSTS.md`](tools/socials/PREPARING_POSTS.md).

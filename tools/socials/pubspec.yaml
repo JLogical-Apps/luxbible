@@ -1,0 +1,13 @@
+name: lux_social_tools
+description: Local publishing for prepared Lux social posts.
+publish_to: none
+
+environment:
+  sdk: ^3.10.0
+dependencies:
+  args: ^2.7.0
+  dotenv: ^4.2.0
+  http: ^1.6.0
+  path: ^1.9.1
+  uuid: ^4.6.0
+  yaml: ^3.1.4
