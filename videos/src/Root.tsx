@@ -1,4 +1,7 @@
 import "./index.css";
+import { NotesVideo } from "./videos/notes/NotesVideo";
+import { calculateNotesMetadata } from "./videos/notes/metadata";
+import notesProps from "./videos/notes/props.json";
 import { Composition } from "remotion";
 import { SoapVideo } from "./videos/soap/SoapVideo";
 import { soapVideoSchema } from "./videos/soap/schema";
@@ -12,6 +15,16 @@ import { facecamSchema } from "./templates/facecam/schema";
 
 export const RemotionRoot: React.FC = () => (
   <>
+    <Composition
+      id="BibleNotes"
+      component={NotesVideo}
+      fps={30}
+      width={1080}
+      height={1920}
+      durationInFrames={2570}
+      calculateMetadata={calculateNotesMetadata}
+      defaultProps={notesProps}
+    />
     <Composition
       id="Facecam"
       component={FacecamVideo}

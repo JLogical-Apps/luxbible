@@ -4,6 +4,7 @@ import { access, copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { getOcrData, getHighlightRects } from "./image-highlights.mjs";
+import { prepareQuestionMedia } from "./question-media.mjs";
 import { prepareQuestionMusic } from "./question-music.mjs";
 
 const imageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp"]);
@@ -39,20 +40,14 @@ if (
   typeof question !== "string" ||
   typeof media !== "string" ||
   typeof verseHighlight !== "string" ||
-  typeof studyHighlight !== "string"
+  (studyHighlight !== undefined && typeof studyHighlight !== "string")
 ) {
   throw new Error(
-    'Usage: node scripts/create-question-showcase.mjs --question "..." --media /path/to/screenshot.png --verse-highlight "..." --study-highlight "..." [--background /path/to/background] [--slug name]',
+    'Usage: node scripts/create-question-showcase.mjs --question "..." --media /path/to/image-or-recording --verse-highlight "..." [--study-highlight "..."] [--media-plan /path/to/plan.json] [--background /path/to/background] [--slug name]',
   );
 }
 
-if (!imageExtensions.has(getExtension(media))) {
-  throw new Error(
-    "Guided question showcases require a PNG, JPG, JPEG, or WebP screenshot.",
-  );
-}
-
-const durationInSeconds = getNumber(options.duration, 16.5);
+let durationInSeconds = getNumber(options.duration, 18.3);
 const mediaScale = getNumber(options["media-scale"], 1);
 const mediaVolume = getNumber(options["media-volume"], 0);
 const backgroundDarkness = getNumber(options["background-darkness"], 0.48);
@@ -82,10 +77,6 @@ if (colors.length !== 4) {
 
 await access(media);
 if (typeof options.background === "string") await access(options.background);
-const ocrData = await getOcrData(media);
-const verseHighlightRects = getHighlightRects(ocrData, verseHighlight);
-const studyHighlightRects = getHighlightRects(ocrData, studyHighlight);
-
 const videosDirectory = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "..",
@@ -127,6 +118,52 @@ if (options.force !== "true") {
 
 await mkdir(assetDirectory, { recursive: true });
 await mkdir(jobsDirectory, { recursive: true });
+const plan = options["media-plan"]
+  ? JSON.parse(await readFile(options["media-plan"], "utf8"))
+  : undefined;
+const recording = await prepareQuestionMedia({ media, assetDirectory, plan });
+if (!recording && !imageExtensions.has(getExtension(media)))
+  throw new Error("Unsupported media type");
+const verseHighlightRects = getHighlightRects(
+  await getOcrData(recording?.first ?? media, {
+    psm: getNumber(options["verse-ocr-psm"], 6),
+  }),
+  verseHighlight,
+);
+const studyHighlightRects = studyHighlight
+  ? getHighlightRects(
+      await getOcrData(recording?.last ?? media, {
+        psm: getNumber(options["study-ocr-psm"], 6),
+      }),
+      studyHighlight,
+    )
+  : [];
+if (recording)
+  durationInSeconds = getNumber(
+    options.duration,
+    Math.ceil(
+      (240 +
+        recording.frames +
+        (studyHighlightRects.length
+          ? 30 + 24 + (studyHighlightRects.length - 1) * 10
+          : 0) +
+        120) /
+        15,
+    ) /
+      2 +
+      0.8,
+  );
+if (
+  recording &&
+  durationInSeconds * 30 <
+    240 +
+      recording.frames +
+      (studyHighlightRects.length
+        ? 30 + 24 + (studyHighlightRects.length - 1) * 10
+        : 0) +
+      90
+)
+  throw new Error("Duration cuts off the recording or CTA");
 await copyFile(media, path.join(assetDirectory, mediaFileName));
 if (typeof options.background === "string") {
   await copyFile(
@@ -147,9 +184,20 @@ const existingProps =
     : {};
 const props = {
   question,
+  coverTimestampMs: 6300,
   callToAction:
     typeof options.cta === "string" ? options.cta : "See More Below ↓",
-  mediaSrc: `${publicAssetRoot}/${mediaFileName}`,
+  mediaSrc: recording
+    ? `${publicAssetRoot}/first-frame.png`
+    : `${publicAssetRoot}/${mediaFileName}`,
+  ...(recording
+    ? {
+        recordingSrc: `${publicAssetRoot}/recording.mp4`,
+        recordingEndSrc: `${publicAssetRoot}/last-frame.png`,
+        recordingDurationInFrames: recording.frames,
+        mediaPlan: plan ?? [{ file: media }],
+      }
+    : {}),
   backgroundSrc: backgroundFileName
     ? `${publicAssetRoot}/${backgroundFileName}`
     : "",

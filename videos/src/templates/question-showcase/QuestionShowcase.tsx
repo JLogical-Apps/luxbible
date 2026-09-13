@@ -2,6 +2,7 @@ import { Audio, Video } from "@remotion/media";
 import {
   AbsoluteFill,
   Easing,
+  Freeze,
   Img,
   interpolate,
   Sequence,
@@ -12,7 +13,10 @@ import {
 import { PerCharacterRise } from "../../core/remocn/per-character-rise";
 import { ShaderMeshGradient } from "../../core/remocn/shader-mesh-gradient";
 import { fontFamily } from "../../design/lux/fonts";
-import { ImageMarkerHighlights } from "./ImageMarkerHighlights";
+import {
+  ImageMarkerHighlights,
+  getHighlightEndFrame,
+} from "./ImageMarkerHighlights";
 import type { QuestionShowcaseProps } from "./schema";
 
 const videoExtensions = new Set(["mp4", "mov", "m4v", "webm"]);
@@ -20,7 +24,6 @@ const verseHighlightStartFrame = 108;
 const finalStageStartFrame = 190;
 const finalStageEndFrame = 240;
 const studyHighlightStartFrame = 257;
-const callToActionBackgroundStartFrame = 395;
 const callToActionTextStartFrame = 407;
 
 const getExtension = (src: string) =>
@@ -71,7 +74,12 @@ const VisualMedia: React.FC<{
 const QuestionContent: React.FC<{
   question: string;
   callToAction: string;
-}> = ({ question, callToAction }) => {
+  ctaTextFrame?: number;
+}> = ({
+  question,
+  callToAction,
+  ctaTextFrame = callToActionTextStartFrame,
+}) => {
   const frame = useCurrentFrame();
   const lines = getQuestionLines(question);
   const longestLine = Math.max(...lines.map((line) => line.length));
@@ -140,7 +148,7 @@ const QuestionContent: React.FC<{
           whiteSpace: "nowrap",
           opacity: interpolate(
             frame,
-            [callToActionBackgroundStartFrame, callToActionTextStartFrame],
+            [ctaTextFrame - 12, ctaTextFrame],
             [0, 1],
             {
               extrapolateLeft: "clamp",
@@ -150,7 +158,7 @@ const QuestionContent: React.FC<{
           ),
           translate: interpolate(
             frame,
-            [callToActionBackgroundStartFrame, callToActionTextStartFrame + 8],
+            [ctaTextFrame - 12, ctaTextFrame + 8],
             ["0px 18px", "0px 0px"],
             {
               extrapolateLeft: "clamp",
@@ -164,7 +172,7 @@ const QuestionContent: React.FC<{
         <span style={{ visibility: "hidden", letterSpacing: "-0.05em" }}>
           {callToAction}
         </span>
-        <Sequence from={callToActionTextStartFrame} layout="none">
+        <Sequence from={ctaTextFrame} layout="none">
           <PerCharacterRise
             text={callToAction}
             distance={18}
@@ -242,6 +250,10 @@ export const QuestionShowcase: React.FC<QuestionShowcaseProps> = ({
   question,
   callToAction,
   mediaSrc,
+  mediaClipPath,
+  mediaMaskSrc,
+  recordingSrc = "",
+  recordingDurationInFrames = 0,
   backgroundSrc,
   mediaScale,
   mediaVolume,
@@ -256,8 +268,22 @@ export const QuestionShowcase: React.FC<QuestionShowcaseProps> = ({
   shaderColor4,
   verseHighlightRects = [],
   studyHighlightRects = [],
+  highlightCues = [],
 }) => {
   const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const recordingEndFrame = finalStageEndFrame + recordingDurationInFrames;
+  const finalStudyStartFrame =
+    (recordingSrc ? recordingEndFrame : studyHighlightStartFrame) + fps;
+  const finalHighlightEndFrame = Math.max(
+    getHighlightEndFrame(
+      studyHighlightRects.length ? finalStudyStartFrame : recordingEndFrame,
+      studyHighlightRects.length,
+    ),
+    ...highlightCues.map((cue) =>
+      getHighlightEndFrame(cue.startFrame, cue.rects.length),
+    ),
+  );
   const verseBottom =
     verseHighlightRects.length === 0
       ? 0.24
@@ -317,20 +343,46 @@ export const QuestionShowcase: React.FC<QuestionShowcaseProps> = ({
           transformOrigin: "top center",
           filter: "drop-shadow(0 28px 55px rgba(0, 0, 0, 0.52))",
           borderRadius: 72,
+          clipPath: mediaClipPath,
+          maskImage: mediaMaskSrc
+            ? `url(${getAssetSrc(mediaMaskSrc)})`
+            : undefined,
+          maskSize: "100% 100%",
+          maskMode: "luminance",
           overflow: "hidden",
         }}
       >
-        <VisualMedia
-          src={mediaSrc}
-          volume={mediaVolume}
-          from={58}
-          objectFit="fill"
-          style={{
-            width: "100%",
-            height: "100%",
-            borderRadius: 72,
-          }}
-        />
+        {recordingSrc ? (
+          <Freeze
+            frame={Math.max(
+              0,
+              Math.min(
+                frame - finalStageEndFrame,
+                recordingDurationInFrames - 1,
+              ),
+            )}
+          >
+            <Video
+              src={getAssetSrc(recordingSrc)}
+              muted
+              style={{
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+              }}
+              objectFit="fill"
+            />
+          </Freeze>
+        ) : (
+          <VisualMedia
+            src={mediaSrc}
+            volume={mediaVolume}
+            from={58}
+            objectFit="fill"
+            style={{ width: "100%", height: "100%", borderRadius: 72 }}
+          />
+        )}
         <div
           style={{
             position: "absolute",
@@ -355,14 +407,34 @@ export const QuestionShowcase: React.FC<QuestionShowcaseProps> = ({
         <ImageMarkerHighlights
           rects={verseHighlightRects}
           startFrame={verseHighlightStartFrame}
-          dimFrame={finalStageStartFrame}
+          dimFrame={recordingSrc ? finalStageEndFrame : finalStageStartFrame}
+          dimOpacity={recordingSrc ? 0 : 0.34}
+          dimDurationInFrames={recordingSrc ? 10 : 50}
         />
         <ImageMarkerHighlights
           rects={studyHighlightRects}
-          startFrame={studyHighlightStartFrame}
+          startFrame={finalStudyStartFrame}
         />
+        {highlightCues.map((cue, index) => (
+          <ImageMarkerHighlights
+            key={index}
+            rects={cue.rects}
+            startFrame={cue.startFrame}
+            dimFrame={cue.endFrame}
+            dimOpacity={0}
+            dimDurationInFrames={10}
+          />
+        ))}
       </div>
-      <QuestionContent question={question} callToAction={callToAction} />
+      <QuestionContent
+        question={question}
+        callToAction={callToAction}
+        ctaTextFrame={
+          recordingSrc
+            ? finalHighlightEndFrame + fps
+            : callToActionTextStartFrame + fps
+        }
+      />
     </AbsoluteFill>
   );
 };

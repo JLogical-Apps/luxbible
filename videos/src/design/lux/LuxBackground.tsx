@@ -17,7 +17,7 @@ const getTransitionRange = ({
   durationInFrames: number;
 }) => [peakFrame - durationInFrames / 2, peakFrame + durationInFrames / 2];
 
-export const LuxBackground: React.FC<VideoBackgroundProps<LuxVideoProps>> = ({
+export const LuxBackground = <Props extends LuxVideoProps>({
   timeline,
   videoProps: {
     shaderColor1,
@@ -33,7 +33,7 @@ export const LuxBackground: React.FC<VideoBackgroundProps<LuxVideoProps>> = ({
     shaderSwirl,
     shaderDarkness,
   },
-}) => {
+}: VideoBackgroundProps<Props>) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const getCubicEaseIntegral = (progress: number) =>
@@ -84,16 +84,11 @@ export const LuxBackground: React.FC<VideoBackgroundProps<LuxVideoProps>> = ({
   const bookendDarkness =
     firstTransition && lastTransition
       ? Math.max(
-          interpolate(
-            frame,
-            getTransitionRange(firstTransition),
-            [0.5, 0],
-            {
-              extrapolateLeft: "clamp",
-              extrapolateRight: "clamp",
-              easing: Easing.inOut(Easing.cubic),
-            },
-          ),
+          interpolate(frame, getTransitionRange(firstTransition), [0.5, 0], {
+            extrapolateLeft: "clamp",
+            extrapolateRight: "clamp",
+            easing: Easing.inOut(Easing.cubic),
+          }),
           interpolate(frame, getTransitionRange(lastTransition), [0, 0.5], {
             extrapolateLeft: "clamp",
             extrapolateRight: "clamp",

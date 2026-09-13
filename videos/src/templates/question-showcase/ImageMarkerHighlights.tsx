@@ -7,14 +7,23 @@ type HighlightRect = {
   height: number;
 };
 
+const highlightDurationInFrames = 24;
+const highlightLineDelayInFrames = 10;
+
+export const getHighlightEndFrame = (startFrame: number, lineCount: number) =>
+  startFrame +
+  (lineCount === 0
+    ? 0
+    : highlightDurationInFrames + (lineCount - 1) * highlightLineDelayInFrames);
+
 export const ImageMarkerHighlights = ({
   rects,
   color = "rgba(255, 206, 45, 0.42)",
   startFrame,
   dimFrame,
   dimOpacity = 0.34,
-  durationInFrames = 24,
-  lineDelayInFrames = 10,
+  durationInFrames = highlightDurationInFrames,
+  lineDelayInFrames = highlightLineDelayInFrames,
   dimDurationInFrames = 50,
 }: {
   rects: HighlightRect[];
