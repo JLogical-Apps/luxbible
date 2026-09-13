@@ -2,6 +2,32 @@
 
 Root-level Remotion project for Lux video work.
 
+## Facecam videos
+
+`Facecam` is a reusable 1080 × 1920, 30 fps composition with a three-second white Bitter title card, short Bitter caption pages with configurable 7 px outlines at 75% of the canvas height, and muted simulator overlays between 2% and 50% from the top. Each spoken word switches to dark text with a white outline. Isolated overlays fade upward into place and downward away; adjoining overlays crossfade without motion.
+
+Copy `scripts/facecam.example.json` to `src/videos/facecam/jobs/<slug>.manifest.json`, fill in the sources and timing, then run from `videos/`:
+
+```console
+node scripts/create-facecam.mjs src/videos/facecam/jobs/<slug>.manifest.json
+npx remotion studio --props=src/videos/facecam/jobs/<slug>.json
+npx remotion render Facecam out/<slug>.mp4 --props=src/videos/facecam/jobs/<slug>.json
+```
+
+Preparation requires FFmpeg, FFprobe, Tesseract, `whisper-cli`, and a local Whisper model. It defaults to `~/.cache/whisper/ggml-base.en.bin`; set `whisperModel` to use another model. Speech stays in place while a 30 fps SDR copy is prepared, including HDR tone mapping. A separate 48 kHz mono 24-bit narration master receives a 75 Hz high-pass filter, gentle 2.2:1 compression, and measured two-pass normalization to -16 LUFS, -1.5 dBTP, and 7 LU loudness range. The composition mutes source audio and plays that master with mono-to-stereo loudness compensation; validate the rendered audio and adjust `narrationVolume` if needed. Captions use Whisper DTW word timing with the same 130 ms lead as the reels project. Review the generated job captions, particularly names and verse references. `transcriptPath` reuses an existing Whisper full JSON transcript; `captionReplacements` corrects exact word spellings before grouping.
+
+All overlay times are seconds in the facecam timeline. A segment's `at` is the playback cue, `sourceTime` is its recording cursor, and optional `playUntil` is the source cursor to stop at, or `"end"`. A segment without `playUntil` holds its source frame. Playback and holds use one continuous frame cursor through the same video renderer, avoiding brightness changes between video and PNG decoders. Prepared stills remain available for OCR. Optional `playbackRate` lets short UI actions fit between spoken cues. PNG, JPEG, and WebP sources are supported; use one hold segment with `sourceTime: 0` for screenshots.
+
+Each highlight supplies exact visible `text`, a `sourceTime` identifying the frame to OCR, and a facecam `start`. Optional `end` removes a marker, `fadeAt` and `fadeSeconds` fade it away before playback resumes, `duration` controls drawing time, `lineDelay` spaces multiline drawing, and `color` sets its color. The shared OCR matcher requires a contiguous phrase and creates one rectangle per text line; it fails rather than guessing coordinates. For repeated text, `region: { "top": 0.5, "bottom": 0.6 }` restricts matching to that normalized vertical range. For dotted underlines, `ocr: { "psm": 11, "minConfidence": 60 }` can exclude false OCR detections while locating the exact text. Markers draw from left to right and persist. Set `focus: { "bottom": 0.61, "fadeAt": 15.5, "fadeSeconds": 0.65 }` on an overlay to darken only the phone above the focus boundary, then ease that gradient away at a spoken cue.
+
+If a stitched HEVC source jitters at take boundaries, set `facecamTakes` to the ordered absolute paths of its original takes. Preparation decodes and normalizes each independently, fits each to the cumulative 30 fps timeline, joins the resulting H.264 video, and preserves the stitched source audio. This avoids reference-frame collisions between independently encoded HEVC takes.
+
+Simulator overlays default to 2% through 50% of the frame height for all facecam videos. Set `style: { "facecamZoom": 1.2 }` to enlarge the facecam by 20%, anchored at the center top; the default is `1`, and the source media stays unchanged. Zoom and crop shifts follow the simulator fades and return to the original full frame when it is hidden. Set `facecamZoomOnlyWithSimulator: false` to keep the crop throughout. Optional `facecamFraming` cues in `style` contain `at`, `zoom`, and normalized source `centerX` to change the crop at camera cuts; optional `offsetY` shifts the crop vertically as a fraction of frame height.
+
+Optional manifest `style` overrides caption size, outline width, character budget, placement, overlay bounds, title duration, and fade duration. For intentional revisions, add `--force`; add `--reuse-media` to reuse prepared sources while refreshing timing, OCR, captions, and props. Reuse media only when sources have not changed.
+
+Components, scripts, and the manifest example are tracked. Per-video manifests and jobs under `src/videos/`, media and freeze frames under `public/videos/`, and renders under `out/` follow existing Git ignore rules. Keep these local files for revisions. Set manifest `music: true` to add a chill track about 20 dB below narration, with smooth loop joins and opening/closing fades. The selected `musicSource` is retained for revisions. Background music remains optional for the facecam format.
+
 ## SOAP Bible Study
 
 `SoapBibleStudy` is a 9:16 animated adaptation of the ten-card SOAP Bible Study carousel.

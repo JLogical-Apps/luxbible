@@ -9,6 +9,7 @@ type HighlightRect = {
 
 export const ImageMarkerHighlights = ({
   rects,
+  color = "rgba(255, 206, 45, 0.42)",
   startFrame,
   dimFrame,
   dimOpacity = 0.34,
@@ -17,6 +18,7 @@ export const ImageMarkerHighlights = ({
   dimDurationInFrames = 50,
 }: {
   rects: HighlightRect[];
+  color?: string;
   startFrame: number;
   dimFrame?: number;
   dimOpacity?: number;
@@ -34,17 +36,18 @@ export const ImageMarkerHighlights = ({
       durationInFrames,
       config: { damping: 18, mass: 0.6, stiffness: 120 },
     });
-    const opacity = dimFrame === undefined
-      ? 1
-      : interpolate(
-          frame,
-          [dimFrame, dimFrame + dimDurationInFrames],
-          [1, dimOpacity],
-          {
-          extrapolateLeft: "clamp",
-          extrapolateRight: "clamp",
-          },
-        );
+    const opacity =
+      dimFrame === undefined
+        ? 1
+        : interpolate(
+            frame,
+            [dimFrame, dimFrame + dimDurationInFrames],
+            [1, dimOpacity],
+            {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+            },
+          );
 
     return (
       <div
@@ -56,7 +59,7 @@ export const ImageMarkerHighlights = ({
           width: `${rect.width * 100}%`,
           height: `${rect.height * 100}%`,
           borderRadius: 10,
-          backgroundColor: "rgba(255, 206, 45, 0.42)",
+          backgroundColor: color,
           boxShadow: "0 0 14px rgba(255, 206, 45, 0.14)",
           opacity,
           scale: `${progress} 1`,

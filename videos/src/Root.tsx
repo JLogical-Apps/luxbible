@@ -7,8 +7,50 @@ import { QuestionShowcase } from "./templates/question-showcase/QuestionShowcase
 import { calculateQuestionShowcaseMetadata } from "./templates/question-showcase/metadata";
 import { questionShowcaseSchema } from "./templates/question-showcase/schema";
 
+import { FacecamVideo } from "./templates/facecam/FacecamVideo";
+import { facecamSchema } from "./templates/facecam/schema";
+
 export const RemotionRoot: React.FC = () => (
   <>
+    <Composition
+      id="Facecam"
+      component={FacecamVideo}
+      fps={30}
+      width={1080}
+      height={1920}
+      durationInFrames={90}
+      schema={facecamSchema}
+      calculateMetadata={({ props }) => {
+        const parsed = facecamSchema.parse(props);
+        return {
+          durationInFrames: Math.ceil(parsed.durationInSeconds * 30),
+          props: parsed,
+        };
+      }}
+      defaultProps={{
+        title: "How to understand difficult Bible passages",
+        titleSeconds: 3,
+        facecamSrc: "",
+        facecamZoom: 1,
+        facecamZoomOnlyWithSimulator: true,
+        facecamFraming: [],
+        narrationSrc: "",
+        narrationVolume: Math.SQRT1_2,
+        musicSrc: "",
+        musicSource: "",
+        musicVolume: 1,
+        durationInSeconds: 3,
+        captions: [],
+        overlays: [],
+        captionFontSize: 72,
+        captionStrokeWidth: 7,
+        captionMaxCharacters: 22,
+        captionTop: 0.75,
+        overlayTop: 0.02,
+        overlayBottom: 0.5,
+        fadeSeconds: 0.4,
+      }}
+    />
     <Composition
       id="Slideshow"
       component={SoapVideo}

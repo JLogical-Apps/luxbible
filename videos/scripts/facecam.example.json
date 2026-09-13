@@ -1,0 +1,40 @@
+{
+  "slug": "my-facecam-video",
+  "title": "How to understand difficult Bible passages",
+  "facecam": "/absolute/path/to/facecam.MOV",
+  "overlays": [
+    {
+      "id": "study-tool",
+      "source": "/absolute/path/to/simulator.mp4",
+      "start": 4,
+      "end": 20,
+      "segments": [
+        {
+          "at": 4,
+          "sourceTime": 0
+        },
+        {
+          "at": 8,
+          "sourceTime": 0,
+          "playUntil": 2
+        },
+        {
+          "at": 12,
+          "sourceTime": 2,
+          "playUntil": "end"
+        }
+      ],
+      "highlights": [
+        {
+          "text": "exact visible text",
+          "sourceTime": "end",
+          "start": 17
+        }
+      ]
+    }
+  ],
+  "style": {
+    "facecamZoom": 1.2
+  },
+  "music": true
+}

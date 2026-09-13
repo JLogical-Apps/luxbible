@@ -16,5 +16,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "exclude": ["remotion.config.ts"]
+  "exclude": ["remotion.config.ts"],
+  "include": ["src"]
 }

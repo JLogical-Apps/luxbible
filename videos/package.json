@@ -7,6 +7,7 @@
   "private": true,
   "dependencies": {
     "@paper-design/shaders-react": "^0.0.80",
+    "@remotion/captions": "4.0.522",
     "@remotion/cli": "4.0.522",
     "@remotion/google-fonts": "^4.0.522",
     "@remotion/install-whisper-cpp": "4.0.522",
