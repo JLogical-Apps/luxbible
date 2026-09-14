@@ -250,7 +250,7 @@ class CommentaryHeaderNavigation extends StatelessWidget {
         child: Tooltip(
           message: t.commentaryUi.previousSection,
           child: StyledCircleButton.md(
-            child: Symbols.keyboard_arrow_up.toIcon(),
+            child: Symbols.arrow_upward.toIcon(),
             onPressed: () => onNavigateToIndex(index - 1),
           ),
         ),
@@ -263,7 +263,7 @@ class CommentaryHeaderNavigation extends StatelessWidget {
         child: Tooltip(
           message: t.commentaryUi.nextSection,
           child: StyledCircleButton.md(
-            child: Symbols.keyboard_arrow_down.toIcon(),
+            child: Symbols.arrow_downward.toIcon(),
             onPressed: () => onNavigateToIndex(index + 1),
           ),
         ),
