@@ -286,105 +286,111 @@ class BibleBody extends HookConsumerWidget {
                 ? panelCount == 0
                       ? 0
                       : 4
-                : -72 - MediaQuery.paddingOf(context).bottom,
+                : -24,
             right: 0,
             left: 0,
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(boxShadow: [StyledShadow.down(context)]),
-              padding: EdgeInsets.symmetric(horizontal: 16) + .only(bottom: MediaQuery.paddingOf(context).bottom + 16),
-              child: MainToolbar(
-                chapterReference: currentChapterReference,
-                mainToolbar: user.mainToolbar,
-                translation: user.translation,
-                user: user,
-                onSwipeLeft: () {
-                  var history = navigationHistoryState.value;
-                  if (!history.canUndo) {
-                    return;
-                  }
-
-                  navigationHistoryState.value = navigationHistoryState.value.withUndo();
-                  final currentState = navigationHistoryState.value.current;
-                  hardNavigateTo(
-                    currentState.position,
-                    bookmarkId: currentState.bookmarkId,
-                    updateNavigationState: false,
-                  );
-                  ref.markOnboardingStep(.goBack);
-                },
-                onSwipeRight: () {
-                  if (!navigationHistoryState.value.canRedo) {
-                    return;
-                  }
-
-                  navigationHistoryState.value = navigationHistoryState.value.withRedo();
-                  final currentState = navigationHistoryState.value.current;
-                  hardNavigateTo(
-                    currentState.position,
-                    bookmarkId: currentState.bookmarkId,
-                    updateNavigationState: false,
-                  );
-                },
-                onPressed: () async {
-                  final result = await context.pushDialog(PositionPage(initialReference: currentChapterReference));
-                  if (result != null) {
-                    switch (result.result) {
-                      case ChapterPositionResult(:final position):
-                        hardNavigateTo(position, bookmarkId: result.bookmarkId);
-                      case PassagePositionResult(:final selection):
-                        navigateToVerseSelection(selection.toVerseSelection());
+            child: AnimatedSlide(
+              duration: Duration(milliseconds: 300),
+              curve: Curves.easeInOutCubic,
+              offset: showBottomBar ? Offset.zero : Offset(0, 1.2),
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(boxShadow: [StyledShadow.down(context)]),
+                padding:
+                    EdgeInsets.symmetric(horizontal: 16) + .only(bottom: MediaQuery.paddingOf(context).bottom + 16),
+                child: MainToolbar(
+                  chapterReference: currentChapterReference,
+                  mainToolbar: user.mainToolbar,
+                  translation: user.translation,
+                  user: user,
+                  onSwipeLeft: () {
+                    var history = navigationHistoryState.value;
+                    if (!history.canUndo) {
+                      return;
                     }
-                    ref.markOnboardingStep(.navigateChapter);
-                  }
-                },
-                onLongPressed: () => user.mainToolbar.longPressShortcut.onPressed(
-                  context,
-                  reference: currentChapterReference,
-                  onNavigateToVerseSelection: navigateToVerseSelection,
-                  onAddStudyPanel: addStudyPanel,
-                  onBookmarkAdded: onBookmarkAdded,
-                ),
-                onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
-                  context,
-                  reference: currentChapterReference,
-                  onNavigateToVerseSelection: navigateToVerseSelection,
-                  onAddStudyPanel: addStudyPanel,
-                  onBookmarkAdded: onBookmarkAdded,
-                ),
-                onMorePressed: () => context.showStyledSheet(
-                  (_, _) => StyledSheet(
-                    trailing: StyledCircleButton.md(
-                      child: Symbols.tune.toIcon(),
-                      onPressed: () {
-                        context.pop();
-                        context.push(MainToolbarSettingsPage());
-                      },
-                    ),
-                    children: MainAction.topLevelActions
-                        .map(
-                          (action) => StyledListItem(
-                            title: action.title().toText(),
-                            subtitle: Text(
-                              action.description(user: user, verseOfTheDay: verseOfTheDay),
-                              maxLines: 3,
-                              overflow: .ellipsis,
+
+                    navigationHistoryState.value = navigationHistoryState.value.withUndo();
+                    final currentState = navigationHistoryState.value.current;
+                    hardNavigateTo(
+                      currentState.position,
+                      bookmarkId: currentState.bookmarkId,
+                      updateNavigationState: false,
+                    );
+                    ref.markOnboardingStep(.goBack);
+                  },
+                  onSwipeRight: () {
+                    if (!navigationHistoryState.value.canRedo) {
+                      return;
+                    }
+
+                    navigationHistoryState.value = navigationHistoryState.value.withRedo();
+                    final currentState = navigationHistoryState.value.current;
+                    hardNavigateTo(
+                      currentState.position,
+                      bookmarkId: currentState.bookmarkId,
+                      updateNavigationState: false,
+                    );
+                  },
+                  onPressed: () async {
+                    final result = await context.pushDialog(PositionPage(initialReference: currentChapterReference));
+                    if (result != null) {
+                      switch (result.result) {
+                        case ChapterPositionResult(:final position):
+                          hardNavigateTo(position, bookmarkId: result.bookmarkId);
+                        case PassagePositionResult(:final selection):
+                          navigateToVerseSelection(selection.toVerseSelection());
+                      }
+                      ref.markOnboardingStep(.navigateChapter);
+                    }
+                  },
+                  onLongPressed: () => user.mainToolbar.longPressShortcut.onPressed(
+                    context,
+                    reference: currentChapterReference,
+                    onNavigateToVerseSelection: navigateToVerseSelection,
+                    onAddStudyPanel: addStudyPanel,
+                    onBookmarkAdded: onBookmarkAdded,
+                  ),
+                  onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
+                    context,
+                    reference: currentChapterReference,
+                    onNavigateToVerseSelection: navigateToVerseSelection,
+                    onAddStudyPanel: addStudyPanel,
+                    onBookmarkAdded: onBookmarkAdded,
+                  ),
+                  onMorePressed: () => context.showStyledSheet(
+                    (_, _) => StyledSheet(
+                      trailing: StyledCircleButton.md(
+                        child: Symbols.tune.toIcon(),
+                        onPressed: () {
+                          context.pop();
+                          context.push(MainToolbarSettingsPage());
+                        },
+                      ),
+                      children: MainAction.topLevelActions
+                          .map(
+                            (action) => StyledListItem(
+                              title: action.title().toText(),
+                              subtitle: Text(
+                                action.description(user: user, verseOfTheDay: verseOfTheDay),
+                                maxLines: 3,
+                                overflow: .ellipsis,
+                              ),
+                              leading: action.buildIcon(context, user: user),
+                              trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
+                              onPressed: () {
+                                context.pop();
+                                action.onPressed(
+                                  context,
+                                  reference: currentChapterReference,
+                                  onNavigateToVerseSelection: navigateToVerseSelection,
+                                  onAddStudyPanel: addStudyPanel,
+                                  onBookmarkAdded: onBookmarkAdded,
+                                );
+                              },
                             ),
-                            leading: action.buildIcon(context, user: user),
-                            trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
-                            onPressed: () {
-                              context.pop();
-                              action.onPressed(
-                                context,
-                                reference: currentChapterReference,
-                                onNavigateToVerseSelection: navigateToVerseSelection,
-                                onAddStudyPanel: addStudyPanel,
-                                onBookmarkAdded: onBookmarkAdded,
-                              );
-                            },
-                          ),
-                        )
-                        .toList(),
+                          )
+                          .toList(),
+                    ),
                   ),
                 ),
               ),
