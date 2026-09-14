@@ -49,6 +49,7 @@ class BibleBody extends HookConsumerWidget {
       initialPage: initialPosition.reference.bibleChapterIndex,
       keys: [isSideLayout],
     );
+    final pageControllerPassthrough = usePassthrough(pageController);
 
     final currentPage = (pageController.pageOrNull ?? initialPosition.reference.bibleChapterIndex).round();
     final currentChapterReference = ChapterReference.fromBibleChapterIndex(currentPage);
@@ -151,7 +152,8 @@ class BibleBody extends HookConsumerWidget {
     void hardNavigateTo(ChapterPosition position, {String? bookmarkId, bool updateNavigationState = true}) {
       saveScroll();
       positionByReferenceRef.value[position.reference] = position;
-      pageController.jumpToPage(position.reference.bibleChapterIndex);
+      final pageController = pageControllerPassthrough.value;
+      if (pageController.hasClients) pageController.jumpToPage(position.reference.bibleChapterIndex);
       ref.updateUser((user) => user.withHardNavigation(position, bookmarkId: bookmarkId));
       if (updateNavigationState) {
         navigationHistoryState.value = navigationHistoryState.value.withPush(
@@ -327,16 +329,13 @@ class BibleBody extends HookConsumerWidget {
                 onPressed: () async {
                   final result = await context.pushDialog(PositionPage(initialReference: currentChapterReference));
                   if (result != null) {
-                    // addPostFrameCallback until https://github.com/rrousselGit/riverpod/issues/4812
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      switch (result.result) {
-                        case ChapterPositionResult(:final position):
-                          hardNavigateTo(position, bookmarkId: result.bookmarkId);
-                        case PassagePositionResult(:final selection):
-                          navigateToVerseSelection(selection.toVerseSelection());
-                      }
-                      ref.markOnboardingStep(.navigateChapter);
-                    });
+                    switch (result.result) {
+                      case ChapterPositionResult(:final position):
+                        hardNavigateTo(position, bookmarkId: result.bookmarkId);
+                      case PassagePositionResult(:final selection):
+                        navigateToVerseSelection(selection.toVerseSelection());
+                    }
+                    ref.markOnboardingStep(.navigateChapter);
                   }
                 },
                 onLongPressed: () => user.mainToolbar.longPressShortcut.onPressed(
