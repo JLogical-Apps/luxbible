@@ -150,7 +150,7 @@ class ParagraphsBuilder extends HookWidget {
               emphasizedReference != null && emphasizedReference != reference
                   ? 0.5
                   : deemphasizedReferences.has(reference)
-                  ? 0.8
+                  ? 0.7
                   : 1.0,
             ),
           ),
