@@ -11,13 +11,24 @@ _BiblePlan _$BiblePlanFromJson(Map<String, dynamic> json) => _BiblePlan(
   days: (json['days'] as List<dynamic>)
       .map((e) => BiblePlanDay.fromJson(e as Map<String, dynamic>))
       .toList(),
+  colorOverride: $enumDecodeNullable(_$BiblePlanColorEnumMap, json['color']),
 );
 
 Map<String, dynamic> _$BiblePlanToJson(_BiblePlan instance) =>
     <String, dynamic>{
       'name': instance.name,
       'days': instance.days.map((e) => e.toJson()).toList(),
+      'color': ?_$BiblePlanColorEnumMap[instance.colorOverride],
     };
+
+const _$BiblePlanColorEnumMap = {
+  BiblePlanColor.red: 'red',
+  BiblePlanColor.orange: 'orange',
+  BiblePlanColor.yellow: 'yellow',
+  BiblePlanColor.green: 'green',
+  BiblePlanColor.blue: 'blue',
+  BiblePlanColor.violet: 'violet',
+};
 
 _BiblePlanDay _$BiblePlanDayFromJson(Map<String, dynamic> json) =>
     _BiblePlanDay(

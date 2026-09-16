@@ -249,8 +249,8 @@ T useWhenVisible<T>(T value) {
 void useWhenValueChanged<T>(T value, Function(T prev, T curr) callback) =>
     useValueChanged<T, void>(value, (old, _) => callback(old, value));
 
-T useDependentState<T>(T Function() stateBuilder, List<Object?> keys) {
+ValueNotifier<T> useDependentState<T>(T Function() stateBuilder, List<Object?> keys) {
   final state = useState(stateBuilder());
   usePostFrameEffect(() => state.value = stateBuilder(), keys);
-  return state.value;
+  return state;
 }

@@ -106,7 +106,7 @@ extension CoreIterableExtensions<T> on Iterable<T> {
     return true;
   }
 
-  List<T> get distinct => toSet().toList();
+  Set<T> get distinct => toSet();
   Iterable<T> distinctBy<R>(R Function(T) mapper) {
     final seen = <R>{};
     return toList()..retainWhere((e) => seen.add(mapper(e)));
@@ -155,6 +155,19 @@ extension CoreNullKeyMapExtensions<K, V> on Map<K?, V> {
 extension CoreNullValueMapExtensions<K, V> on Map<K, V?> {
   Map<K, V> get withoutNullValues =>
       entries.map((entry) => entry.value?.mapIfNonNull((value) => MapEntry(entry.key, value))).nonNulls.toMap();
+}
+
+extension CoreNullKeysValueMapExtensions<K, V> on Map<K?, V?> {
+  Map<K, V> get withoutNulls => entries
+      .map((entry) {
+        if (entry.key case final key?) {
+          if (entry.value case final value?) return MapEntry(key, value);
+        }
+
+        return null;
+      })
+      .nonNulls
+      .toMap();
 }
 
 extension CoreIterableMapExtensions<K, V> on Iterable<Map<K, V>> {

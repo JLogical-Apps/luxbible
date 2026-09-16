@@ -59,3 +59,5 @@ export 'src/utils/extensions/span_extensions.dart';
 export 'src/utils/hook_utils.dart';
 export 'src/utils/input_formatters.dart';
 export 'src/utils/scroll_behavior.dart';
+export 'src/ui/sheets/find_in_bible_sheet.dart';
+export 'src/ui/widgets/book_selection.dart';

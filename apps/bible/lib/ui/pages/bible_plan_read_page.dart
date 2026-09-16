@@ -10,6 +10,7 @@ import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:bible/ui/widgets/audio_bible_panel.dart';
 import 'package:bible/ui/widgets/selection_toolbar.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,16 +20,11 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
 class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseSelection> {
-  final BiblePlanType planType;
+  final String planId;
   final int dayIndex;
   final int initialPassageIndex;
 
-  const BiblePlanReadPage({
-    super.key,
-    required this.planType,
-    required this.dayIndex,
-    required this.initialPassageIndex,
-  });
+  const BiblePlanReadPage({super.key, required this.planId, required this.dayIndex, required this.initialPassageIndex});
 
   @override
   String get path => '/bible-plans/read';
@@ -36,14 +32,14 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
   List<StyledRoute<dynamic>> get pageStack => [
     BiblePage(),
     BiblePlansPage(),
-    BiblePlanReadPage(planType: planType, dayIndex: dayIndex, initialPassageIndex: initialPassageIndex),
+    BiblePlanReadPage(planId: planId, dayIndex: dayIndex, initialPassageIndex: initialPassageIndex),
   ];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final plans = ref.watch(biblePlansProvider);
-    final plan = plans[planType];
-    if (plan == null) {
+    final plan = plans[planId];
+    if (plan == null || dayIndex < 0 || dayIndex >= plan.days.length) {
       return SizedBox.shrink();
     }
 
@@ -51,8 +47,8 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
     final passages = day.passages;
 
     final user = ref.watch(userProvider);
-    final progress = user.getHydratedPlanProgress(planType: planType, planByType: plans);
-    final currentProgress = progress?.progress.days[dayIndex] ?? BiblePlanDayProgress.incomplete();
+    final progress = user.getHydratedPlanProgress(planId: planId, planById: plans);
+    final currentProgress = progress?.progress.days.elementAtOrNull(dayIndex) ?? BiblePlanDayProgress.incomplete();
 
     final selectionController = usePassageSelectionController(ref.watch(luxReaderConfigurationProvider).selection);
 
@@ -68,7 +64,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
     );
     final currentIndex = useListenableSelector(tabController, () => tabController.index);
     final nextIncompletePassageIndex = user.getNextIncompletePlanPassageIndex(
-      planType: planType,
+      planId: planId,
       dayIndex: dayIndex,
       day: day,
       currentIndex: currentIndex,
@@ -125,15 +121,14 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
       },
       onCompleteAndNext: (completedPassage) {
         final newUser = ref.updateUser(
-          (user) =>
-              user.withPassageCompleted(planType: planType, dayIndex: dayIndex, day: day, passage: completedPassage),
+          (user) => user.withPassageCompleted(planId: planId, dayIndex: dayIndex, day: day, passage: completedPassage),
         );
 
         final completedPassageIndex = passages.indexOfOrNull(completedPassage);
         final nextIndex = completedPassageIndex == null
             ? null
             : newUser.getNextIncompletePlanPassageIndex(
-                planType: planType,
+                planId: planId,
                 dayIndex: dayIndex,
                 day: day,
                 currentIndex: completedPassageIndex,
@@ -154,7 +149,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
         }
         ref.updateUser(
           (user) =>
-              user.withPassageCompleted(planType: planType, dayIndex: dayIndex, day: day, passage: passages[oldIndex]),
+              user.withPassageCompleted(planId: planId, dayIndex: dayIndex, day: day, passage: passages[oldIndex]),
         );
       });
     });
@@ -263,7 +258,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
               onPressed: () {
                 ref.updateUser(
                   (user) => user.withPassageCompleted(
-                    planType: planType,
+                    planId: planId,
                     dayIndex: dayIndex,
                     day: day,
                     passage: passages[currentIndex],

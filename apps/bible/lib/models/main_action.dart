@@ -329,7 +329,7 @@ enum MainAction {
           onNavigateToVerseSelection(result);
         }
       case plans:
-        if (user.planProgressByType.isEmpty) {
+        if (user.planProgressById.isEmpty) {
           final newPlan = await context.push(BiblePlanSearchPage());
           if (newPlan == null || !context.mounted) {
             return;

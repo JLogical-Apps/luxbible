@@ -296,7 +296,7 @@ CommentaryBlock _$CommentaryBlockFromJson(
           return CommentarySection.fromJson(
             json
           );
-
+        
           default:
             throw CheckedFromJsonException(
   json,
@@ -305,7 +305,7 @@ CommentaryBlock _$CommentaryBlockFromJson(
   'Invalid union type "${json['r']}"!'
 );
         }
-
+      
 }
 
 /// @nodoc
@@ -642,7 +642,7 @@ CommentaryContent _$CommentaryContentFromJson(
           return CommentaryTable.fromJson(
             json
           );
-
+        
           default:
             throw CheckedFromJsonException(
   json,
@@ -651,7 +651,7 @@ CommentaryContent _$CommentaryContentFromJson(
   'Invalid union type "${json['r']}"!'
 );
         }
-
+      
 }
 
 /// @nodoc

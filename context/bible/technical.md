@@ -34,6 +34,14 @@ Native platforms persist this state in a local `user.json` file in application s
 
 Lux resolves Dutch and Russian device locales to their matching language and every other device locale to English. Localized defaults such as the active Bible list and highlight-style labels are derived from that resolved language until the user customizes them. The selected translation is persisted independently so changing the app language does not change it.
 
+Reading-plan progress is keyed by string IDs and completed plan IDs are strings. Included IDs remain the existing `BiblePlanType.name` values; `user.json` retains the `planProgressByType` and `completedPlans` keys without a migration. The user notifier ignores progress and completed IDs whose definitions are unavailable when loading saved state. The filtered state is persisted on the next user update.
+
+Custom definitions use separate `bible_plans/<uuid>.json` files in application support. `customBiblePlansProvider` loads each file independently, preserves malformed files, and exposes synchronous `create(plan)` returning a UUID and `delete(id)` persistence operations. Definition deletion is separate from user progress and completed status. `includedBiblePlansProvider` and the combined `biblePlansProvider` are keyed by string IDs. Included metadata derives from `BiblePlanType.getById(id)`; display names use `plan.getDisplayName(id)` and custom origin derives from custom-provider membership.
+
+`BiblePlan.tryFromJson` guards decoding and model validation. Plans require a non-whitespace name, 1 through 365 days, at least one reading, valid OSIS passages, and no exact duplicate selections within a day. Empty days are reflection days. Optional `BiblePlanColor` has six hues; `colorOverride` serializes under `color`, and the resolved `color` getter retains the name-based fallback for unchanged included assets. Thumbnails accept a display name and effective color independently of identity.
+
+Manual creation keeps its draft in page-local hook state and uses the shared `FindInBibleSheet` with the host passage-selection configuration. Exact `VerseSelection` values identify duplicate, reorder, move, and removal operations. Creation persists through `customBiblePlansProvider`, then starts the UUID-keyed plan through the existing user state. Discovery derives every plan's scope from its passage books, independently of Search location filters. File sharing and the other creation methods remain planned in [Custom Bible Plans](custom-plans/README.md).
+
 The nullable highlight-style override is serialized under the existing `highlightStyles` key. This preserves previously customized or migrated labels while allowing a missing value to resolve to localized defaults.
 
 ## Privacy and Telemetry
@@ -219,3 +227,9 @@ Search does not download or index online translations and does not search all ac
 - No web target configuration
 - No offline audio downloads
 - No full-text annotation-note search
+
+## Shared selection components
+
+Lux provides `FindInBibleSheet` for passage selection with an explicit selection configuration and the shared reader configuration for preview rendering. Memory uses it for verse and range selection, including whole-chapter selection from navigation and preview. `PassageSelectionPreview` handles chapter loading and rendering separately. Ordinary reader navigation retains its existing behavior; whole-chapter actions require `PositionSelectorBody.onSelectEntireChapter`.
+
+`BookSelectionSections` and `BookSelectionSummary` accept selected books and a change callback for controlled module steps. `BookSelectionSheet` adds sheet state, search, configurable Clear, and optional required selection. Testament and optional Whole Bible checkboxes derive from complete book coverage. Search and Annotations keep selected books directly and use this sheet without the separate Whole Bible row; empty selection remains unrestricted. Book-based custom-plan creation remains planned in [Custom Bible Plans](custom-plans/README.md).

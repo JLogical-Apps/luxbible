@@ -82,6 +82,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$dictionary$en dictionary = Translations$dictionary$en.internal(_root);
 	late final Translations$navigation$en navigation = Translations$navigation$en.internal(_root);
 	late final Translations$bibleSheet$en bibleSheet = Translations$bibleSheet$en.internal(_root);
+	late final Translations$passageSelection$en passageSelection = Translations$passageSelection$en.internal(_root);
 	late final Translations$selectionUi$en selectionUi = Translations$selectionUi$en.internal(_root);
 	late final Translations$errors$en errors = Translations$errors$en.internal(_root);
 	late final Translations$morphology$en morphology = Translations$morphology$en.internal(_root);
@@ -1647,6 +1648,87 @@ class Translations$biblePlans$en {
 	/// en: 'Find A Bible Plan'
 	String get find => 'Find A Bible Plan';
 
+	/// en: 'Included Plans'
+	String get includedPlans => 'Included Plans';
+
+	/// en: 'Plans included with Lux.'
+	String get includedPlansDescription => 'Plans included with Lux.';
+
+	/// en: 'Plans you've created.'
+	String get customPlansDescription => 'Plans you\'ve created.';
+
+	/// en: 'Create Custom Plan'
+	String get createCustomPlan => 'Create Custom Plan';
+
+	/// en: 'How would you like to create your plan?'
+	String get creationMethodQuestion => 'How would you like to create your plan?';
+
+	/// en: 'Manual'
+	String get manual => 'Manual';
+
+	/// en: 'Add each passage and reflection day yourself.'
+	String get manualDescription => 'Add each passage and reflection day yourself.';
+
+	/// en: 'Name & Color'
+	String get nameAndColor => 'Name & Color';
+
+	/// en: 'Review Plan'
+	String get review => 'Review Plan';
+
+	/// en: 'Create & Start'
+	String get createAndStart => 'Create & Start';
+
+	/// en: 'My Bible Plan'
+	String get myBiblePlan => 'My Bible Plan';
+
+	/// en: 'Enter a name for your plan.'
+	String get nameRequired => 'Enter a name for your plan.';
+
+	/// en: 'A Bible plan already uses this name.'
+	String get nameAlreadyExists => 'A Bible plan already uses this name.';
+
+	/// en: 'Discard This Plan?'
+	String get discardPlanQuestion => 'Discard This Plan?';
+
+	/// en: 'Your changes will be lost.'
+	String get discardPlanConfirmation => 'Your changes will be lost.';
+
+	/// en: 'Discard'
+	String get discard => 'Discard';
+
+	/// en: 'Add Day'
+	String get addDay => 'Add Day';
+
+	/// en: 'Add Passage'
+	String get addPassage => 'Add Passage';
+
+	/// en: 'Remove Day'
+	String get removeDay => 'Remove Day';
+
+	/// en: 'Remove This Day?'
+	String get removeDayQuestion => 'Remove This Day?';
+
+	/// en: 'Day {day} and its passages will be removed.'
+	String removeDayConfirmation({required Object day}) => 'Day ${day} and its passages will be removed.';
+
+	/// en: 'Move to Another Day'
+	String get moveToAnotherDay => 'Move to Another Day';
+
+	/// en: 'Delete Plan'
+	String get deletePlan => 'Delete Plan';
+
+	/// en: 'Delete This Plan?'
+	String get deletePlanQuestion => 'Delete This Plan?';
+
+	/// en: 'Are you sure you want to delete "{name}"?'
+	String deletePlanConfirmation({required Object name}) => 'Are you sure you want to delete "${name}"?';
+
+	/// en: 'Mixed'
+	String get mixed => 'Mixed';
+
+	/// en: 'Reads from selected books in both Testaments.'
+	String get mixedScopeDescription => 'Reads from selected books in both Testaments.';
+
 	/// en: 'Start Plan?'
 	String get startPlanQuestion => 'Start Plan?';
 
@@ -2255,8 +2337,8 @@ class Translations$planTypes$en {
 	/// en: 'Reads from books in the New Testament.'
 	String get newScopeDescription => 'Reads from books in the New Testament.';
 
-	/// en: 'Reads from both the Old and New Testaments.'
-	String get wholeScopeDescription => 'Reads from both the Old and New Testaments.';
+	/// en: 'Reads every book in the Old and New Testaments.'
+	String get wholeScopeDescription => 'Reads every book in the Old and New Testaments.';
 
 	/// en: 'Focused'
 	String get focused => 'Focused';
@@ -2428,6 +2510,27 @@ class Translations$bibleSheet$en {
 		one: '${count} Bible Available',
 		other: '${count} Bibles Available',
 	);
+}
+
+// Path: passageSelection
+class Translations$passageSelection$en {
+	Translations$passageSelection$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Find in Bible'
+	String get findInBible => 'Find in Bible';
+
+	/// en: 'Select Entire Chapter'
+	String get selectEntireChapter => 'Select Entire Chapter';
+
+	/// en: 'Select Verses'
+	String get selectVerses => 'Select Verses';
+
+	/// en: 'Add {reference}'
+	String addPassage({required Object reference}) => 'Add ${reference}';
 }
 
 // Path: selectionUi
@@ -5260,6 +5363,33 @@ extension on Translations {
 			'themeSettings.paragraphsDescription' => 'Format verses into paragraphs.',
 			'themeSettings.footnotesDescription' => 'Show footnote markers within the text.',
 			'biblePlans.find' => 'Find A Bible Plan',
+			'biblePlans.includedPlans' => 'Included Plans',
+			'biblePlans.includedPlansDescription' => 'Plans included with Lux.',
+			'biblePlans.customPlansDescription' => 'Plans you\'ve created.',
+			'biblePlans.createCustomPlan' => 'Create Custom Plan',
+			'biblePlans.creationMethodQuestion' => 'How would you like to create your plan?',
+			'biblePlans.manual' => 'Manual',
+			'biblePlans.manualDescription' => 'Add each passage and reflection day yourself.',
+			'biblePlans.nameAndColor' => 'Name & Color',
+			'biblePlans.review' => 'Review Plan',
+			'biblePlans.createAndStart' => 'Create & Start',
+			'biblePlans.myBiblePlan' => 'My Bible Plan',
+			'biblePlans.nameRequired' => 'Enter a name for your plan.',
+			'biblePlans.nameAlreadyExists' => 'A Bible plan already uses this name.',
+			'biblePlans.discardPlanQuestion' => 'Discard This Plan?',
+			'biblePlans.discardPlanConfirmation' => 'Your changes will be lost.',
+			'biblePlans.discard' => 'Discard',
+			'biblePlans.addDay' => 'Add Day',
+			'biblePlans.addPassage' => 'Add Passage',
+			'biblePlans.removeDay' => 'Remove Day',
+			'biblePlans.removeDayQuestion' => 'Remove This Day?',
+			'biblePlans.removeDayConfirmation' => ({required Object day}) => 'Day ${day} and its passages will be removed.',
+			'biblePlans.moveToAnotherDay' => 'Move to Another Day',
+			'biblePlans.deletePlan' => 'Delete Plan',
+			'biblePlans.deletePlanQuestion' => 'Delete This Plan?',
+			'biblePlans.deletePlanConfirmation' => ({required Object name}) => 'Are you sure you want to delete "${name}"?',
+			'biblePlans.mixed' => 'Mixed',
+			'biblePlans.mixedScopeDescription' => 'Reads from selected books in both Testaments.',
 			'biblePlans.startPlanQuestion' => 'Start Plan?',
 			'biblePlans.reviewAndReflect' => 'Review & Reflect',
 			'biblePlans.startPlan' => 'Start Plan',
@@ -5307,6 +5437,8 @@ extension on Translations {
 			'searchUi.wordMatching.wholeWord.example' => 'Example: “light” matches “light”',
 			'searchUi.wordMatching.startOfWord.title' => 'Start of Word',
 			'searchUi.wordMatching.startOfWord.description' => 'Find words that begin with your search.',
+			_ => null,
+		} ?? switch (path) {
 			'searchUi.wordMatching.startOfWord.example' => 'Example: “light” also matches “lightning”',
 			'searchUi.wordMatching.partOfWord.title' => 'Part of Word',
 			'searchUi.wordMatching.partOfWord.description' => 'Find words containing your search anywhere.',
@@ -5334,8 +5466,6 @@ extension on Translations {
 			'audio.initializationErrorDescription' => 'An error occurred setting up the audio for this device. Try force-closing and reopening the app.',
 			'audio.unavailable' => 'Audio is unavailable for this Bible',
 			'audio.chooseBible' => 'Choose an audio-enabled Bible to listen to this chapter.',
-			_ => null,
-		} ?? switch (path) {
 			'audio.switchRequired' => 'Switch to an audio-enabled Bible to listen to this passage.',
 			'audio.rewindTenSeconds' => 'Back 10 seconds',
 			'audio.fastForwardTenSeconds' => 'Forward 10 seconds',
@@ -5422,7 +5552,7 @@ extension on Translations {
 			'planTypes.fiveByFiveByFiveDescription' => 'Read one New Testament chapter a day, five days a week, followed by two days to review and reflect.',
 			'planTypes.oldScopeDescription' => 'Reads from books in the Old Testament.',
 			'planTypes.newScopeDescription' => 'Reads from books in the New Testament.',
-			'planTypes.wholeScopeDescription' => 'Reads from both the Old and New Testaments.',
+			'planTypes.wholeScopeDescription' => 'Reads every book in the Old and New Testaments.',
 			'planTypes.focused' => 'Focused',
 			'planTypes.comprehensive' => 'Comprehensive',
 			'planTypes.focusedDescription' => 'Covers a specific section or collection within its scope.',
@@ -5467,6 +5597,10 @@ extension on Translations {
 			'navigation.verse' => 'Verse',
 			'bibleSheet.allBibles' => 'All Bibles',
 			'bibleSheet.availableCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} Bible Available', other: '${count} Bibles Available', ), 
+			'passageSelection.findInBible' => 'Find in Bible',
+			'passageSelection.selectEntireChapter' => 'Select Entire Chapter',
+			'passageSelection.selectVerses' => 'Select Verses',
+			'passageSelection.addPassage' => ({required Object reference}) => 'Add ${reference}',
 			'selectionUi.selected' => 'Selected: ',
 			'selectionUi.sourceApiBible' => 'Sourced from [https://api.bible](https://api.bible)',
 			'errors.deviceVerificationFailed' => 'Device verification failed',
@@ -5817,6 +5951,8 @@ extension on Translations {
 			'settings.reportProblem' => 'Report a Problem',
 			'settings.reportProblemDescription' => 'Get help with bugs and other issues.',
 			'settings.recommended' => 'Recommended',
+			_ => null,
+		} ?? switch (path) {
 			'settings.emailSupport' => 'Email Support',
 			'settings.restartGetStarted' => 'Restart Get Started',
 			'settings.restartGetStartedDescription' => 'Show the Get Started checklist again.',

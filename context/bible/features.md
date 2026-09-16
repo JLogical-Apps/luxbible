@@ -343,6 +343,8 @@ Search can be limited to:
 - The current book
 - One or more selected books
 
+Testament checkboxes reflect full coverage of their books. Toggling a testament adds or removes its books; partial coverage leaves it unchecked. Clearing all locations searches the entire Bible.
+
 Word matching can use one of three modes:
 
 - Whole Word finds only complete words and is the default.
@@ -510,14 +512,17 @@ A bookmark can follow the user's reading position as they move between adjacent 
 
 ## Bible Reading Plans
 
-Lux includes multiple whole-Bible and focused reading plans from several sources.
+Lux includes multiple reading plans from several sources and supports locally stored custom plans.
 The Through the Bible plan reads from Genesis to Revelation in canonical order. The Old and New Testament plan follows both testaments together in canonical order, while Historically Blended places related books and passages near their historical settings.
 
 Users can:
 
-- Filter available plans by Old Testament, New Testament, or whole-Bible scope
-- Filter plans by focused or comprehensive type
+- Filter available plans by Included or Custom source
+- Filter plans by Old Testament, New Testament, whole-Bible, or mixed scope
 - Review a plan's description, source, duration, and daily readings
+- Manually create a named custom plan with one of six colors
+- Add, reorder, move, or remove exact passages across as many as 365 reading and reflection days
+- Delete inactive custom plans after confirmation
 - Follow more than one plan at a time
 - Reorder active plans
 - Open any previous or current day
@@ -528,6 +533,10 @@ Users can:
 - Set, edit, or delete a daily local notification reminder for each active plan
 - Stop a plan and remove its progress
 - Finish a completed plan
+
+Custom-plan names must contain non-whitespace text and be exactly unique, including case and surrounding whitespace, among included and custom plan names when leaving the naming step. New manual plans start with a unique numbered My Bible Plan suggestion and a randomly selected color. Creating a plan saves and starts it immediately without prompting for a reminder. Reminder discovery becomes eligible only after a plan day is completed.
+
+When loading saved state, Lux ignores progress and completed status for unavailable plan definitions. A reading page with an unavailable definition retains a safe back action.
 
 Daily passages open in a focused reading flow that retains access to normal Bible selection and study behavior.
 The chapter-preview action reads "Read In Context" when the assigned passage already covers the full chapter and "Read Entire Chapter" otherwise.

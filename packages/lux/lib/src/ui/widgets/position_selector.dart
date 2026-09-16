@@ -235,6 +235,7 @@ class PositionSelectorBody extends HookWidget {
   final Function(PositionResult) onSelect;
   final List<Widget> Function(BuildContext, Function(ChapterPosition) onSelect)? aboveBooksBuilder;
   final bool forceVerseNum;
+  final Function(ChapterReference)? onSelectEntireChapter;
 
   const PositionSelectorBody({
     super.key,
@@ -242,6 +243,7 @@ class PositionSelectorBody extends HookWidget {
     required this.onSelect,
     this.aboveBooksBuilder,
     this.forceVerseNum = false,
+    this.onSelectEntireChapter,
   });
 
   @override
@@ -320,25 +322,35 @@ class PositionSelectorBody extends HookWidget {
             ? SizedBox.shrink()
             : StyledList(
                 key: ValueKey(Reference),
-                children: chapterReference.references
-                    .where(
-                      (reference) => verseNum == null || reference.verseNum.toString().startsWith(verseNum.toString()),
-                    )
-                    .map(
-                      (reference) => StyledListItem(
-                        title: reference.format().toText(),
-                        trailing: Symbols.expand_circle_right.toIcon(),
-                        onPressed: () {
-                          selectorState.value = .verse(reference);
-                          onSelect(
-                            PassagePositionResult(
-                              selection: VerseSpanReference(start: VerseBiblePointer(reference: reference)),
-                            ),
-                          );
-                        },
+                children: [
+                  if (onSelectEntireChapter case final onSelectEntireChapter?)
+                    Padding(
+                      padding: .all(16),
+                      child: StyledRectButton.secondary(
+                        label: t.passageSelection.selectEntireChapter.toText(),
+                        onPressed: () => onSelectEntireChapter(chapterReference),
                       ),
-                    )
-                    .toList(),
+                    ),
+                  ...chapterReference.references
+                      .where(
+                        (reference) =>
+                            verseNum == null || reference.verseNum.toString().startsWith(verseNum.toString()),
+                      )
+                      .map(
+                        (reference) => StyledListItem(
+                          title: reference.format().toText(),
+                          trailing: Symbols.expand_circle_right.toIcon(),
+                          onPressed: () {
+                            selectorState.value = .verse(reference);
+                            onSelect(
+                              PassagePositionResult(
+                                selection: VerseSpanReference(start: VerseBiblePointer(reference: reference)),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                ],
               ),
     };
   }

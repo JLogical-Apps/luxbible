@@ -66,8 +66,8 @@ sealed class User with _$User {
     @Default({}) @nullUnknownEnum Set<Tutorial?> tutorials,
     List<OnboardingStep>? completedOnboardingSteps,
     @JsonKey(name: 'highlightStyles') List<(HighlightStyle, String label)>? highlightStyleOverrides,
-    @Default({}) Map<BiblePlanType, BiblePlanProgress> planProgressByType,
-    @Default({}) Set<BiblePlanType> completedPlans,
+    @JsonKey(name: 'planProgressByType') @Default({}) Map<String, BiblePlanProgress> planProgressById,
+    @Default({}) Set<String> completedPlans,
     Reminder? verseOfTheDayReminder,
     @Default(AudioBibleConfiguration()) AudioBibleConfiguration audio,
     Migration? latestMigration,
@@ -377,102 +377,100 @@ sealed class User with _$User {
     recentBibles: [translation, ...recentBibles].distinct.toList(),
   );
 
-  List<HydratedBiblePlanProgress> getHydratedPlanProgresses(Map<BiblePlanType, BiblePlan> planByType) =>
-      planProgressByType
-          .mapToIterable(
-            (type, progress) => HydratedBiblePlanProgress(type: type, plan: planByType[type]!, progress: progress),
-          )
-          .toList();
+  List<HydratedBiblePlanProgress> getHydratedPlanProgresses(Map<String, BiblePlan> planById) => planProgressById
+      .where((id, _) => planById.containsKey(id))
+      .mapToIterable((id, progress) => HydratedBiblePlanProgress(id: id, plan: planById[id]!, progress: progress))
+      .toList();
 
   HydratedBiblePlanProgress? getHydratedPlanProgress({
-    required BiblePlanType planType,
-    required Map<BiblePlanType, BiblePlan> planByType,
-  }) => getHydratedPlanProgresses(planByType).firstWhereOrNull((progress) => progress.type == planType);
+    required String planId,
+    required Map<String, BiblePlan> planById,
+  }) => getHydratedPlanProgresses(planById).firstWhereOrNull((progress) => progress.id == planId);
 
   int? getNextIncompletePlanPassageIndex({
-    required BiblePlanType planType,
+    required String planId,
     required int dayIndex,
     required BiblePlanDay day,
     required int currentIndex,
-  }) => (planProgressByType[planType]?.days.elementAtOrNull(dayIndex) ?? BiblePlanDayProgress.incomplete())
+  }) => (planProgressById[planId]?.days.elementAtOrNull(dayIndex) ?? BiblePlanDayProgress.incomplete())
       .getNextIncompletePassageIndex(passages: day.passages, currentIndex: currentIndex);
 
-  bool hasStartedPlan(BiblePlanType planType) => planProgressByType.containsKey(planType);
+  bool hasStartedPlan(String planId) => planProgressById.containsKey(planId);
 
-  bool hasCompletedPassage({required BiblePlanType planType, required int dayIndex, required VerseSelection passage}) =>
-      planProgressByType[planType]?.days[dayIndex].isPassageComplete(passage) ?? false;
+  bool hasCompletedPassage({required String planId, required int dayIndex, required VerseSelection passage}) =>
+      planProgressById[planId]?.days.elementAtOrNull(dayIndex)?.isPassageComplete(passage) ?? false;
 
-  bool hasCompletedPlanDay({required BiblePlanType planType, required int dayIndex}) =>
-      planProgressByType[planType]?.days[dayIndex].isComplete ?? false;
+  bool hasCompletedPlanDay({required String planId, required int dayIndex}) =>
+      planProgressById[planId]?.days.elementAtOrNull(dayIndex)?.isComplete ?? false;
 
-  User withStartedPlan({required BiblePlanType planType, required BiblePlan plan}) =>
-      planProgressByType.containsKey(planType)
+  User withStartedPlan({required String planId, required BiblePlan plan}) => planProgressById.containsKey(planId)
       ? this
       : copyWith(
-          planProgressByType: {
-            ...planProgressByType,
-            planType: BiblePlanProgress(days: plan.days.map((day) => BiblePlanDayProgress.incomplete()).toList()),
+          planProgressById: {
+            ...planProgressById,
+            planId: BiblePlanProgress(days: plan.days.map((day) => BiblePlanDayProgress.incomplete()).toList()),
           },
         );
 
-  User withStoppedPlan(BiblePlanType planType) =>
-      copyWith(planProgressByType: {...planProgressByType}..remove(planType));
+  User withStoppedPlan(String planId) => copyWith(planProgressById: {...planProgressById}..remove(planId));
 
-  User withCompletedPlan(BiblePlanType planType) => copyWith(
-    planProgressByType: {...planProgressByType}..remove(planType),
-    completedPlans: {...completedPlans, planType},
-  );
+  User withRemovedCompletedPlan(String planId) => copyWith(completedPlans: {...completedPlans}..remove(planId));
 
-  User withPlanReminder(BiblePlanType planType, Reminder reminder) =>
-      withUpdatePlanProgress(planType, (progress) => progress.copyWith(reminder: reminder));
+  User withReorderedPlans(int from, int to) => copyWith(planProgressById: planProgressById.withReorder(from, to));
+
+  User withCompletedPlan(String planId) =>
+      copyWith(planProgressById: {...planProgressById}..remove(planId), completedPlans: {...completedPlans, planId});
+
+  User withPlanReminder(String planId, Reminder reminder) =>
+      withUpdatePlanProgress(planId, (progress) => progress.copyWith(reminder: reminder));
 
   User withVerseOfTheDayNotificationReminder(Reminder reminder) => copyWith(verseOfTheDayReminder: reminder);
 
   User withPassageToggled({
-    required BiblePlanType planType,
+    required String planId,
     required int dayIndex,
     required BiblePlanDay day,
     required VerseSelection passage,
-  }) => hasCompletedPassage(planType: planType, dayIndex: dayIndex, passage: passage)
-      ? withPassageUncompleted(planType: planType, dayIndex: dayIndex, day: day, passage: passage)
-      : withPassageCompleted(planType: planType, dayIndex: dayIndex, day: day, passage: passage);
+  }) => hasCompletedPassage(planId: planId, dayIndex: dayIndex, passage: passage)
+      ? withPassageUncompleted(planId: planId, dayIndex: dayIndex, day: day, passage: passage)
+      : withPassageCompleted(planId: planId, dayIndex: dayIndex, day: day, passage: passage);
 
-  User withPlanDayToggled({required BiblePlanType planType, required int dayIndex}) => withProgressDayUpdated(
-    planType: planType,
+  User withPlanDayToggled({required String planId, required int dayIndex}) => withProgressDayUpdated(
+    planId: planId,
     dayIndex: dayIndex,
     updater: (dayProgress) => dayProgress.withCompletionToggled(),
   );
 
   User withProgressDayUpdated({
-    required BiblePlanType planType,
+    required String planId,
     required int dayIndex,
     required BiblePlanDayProgress Function(BiblePlanDayProgress) updater,
-  }) => withUpdatePlanProgress(planType, (progress) => progress.withDayUpdated(dayIndex: dayIndex, updater: updater));
+  }) => withUpdatePlanProgress(planId, (progress) => progress.withDayUpdated(dayIndex: dayIndex, updater: updater));
 
   User withPassageCompleted({
-    required BiblePlanType planType,
+    required String planId,
     required int dayIndex,
     required BiblePlanDay day,
     required VerseSelection passage,
   }) => withProgressDayUpdated(
-    planType: planType,
+    planId: planId,
     dayIndex: dayIndex,
     updater: (dayProgress) => dayProgress.withPassageCompleted(day: day, passage: passage),
   );
 
   User withPassageUncompleted({
-    required BiblePlanType planType,
+    required String planId,
     required int dayIndex,
     required BiblePlanDay day,
     required VerseSelection passage,
   }) => withProgressDayUpdated(
-    planType: planType,
+    planId: planId,
     dayIndex: dayIndex,
     updater: (dayProgress) => dayProgress.withPassageUncompleted(day: day, passage: passage),
   );
 
-  User withUpdatePlanProgress(BiblePlanType planType, BiblePlanProgress Function(BiblePlanProgress) update) =>
-      copyWith(planProgressByType: planProgressByType.withUpdate(planType, update));
+  User withUpdatePlanProgress(String planId, BiblePlanProgress Function(BiblePlanProgress) update) =>
+      copyWith(planProgressById: planProgressById.withUpdate(planId, update));
 
   User withMessage(Message message) => copyWith(messages: {...messages, message});
   User withMessagePopped(Message message) => copyWith(messages: messages.withRemoved(message));

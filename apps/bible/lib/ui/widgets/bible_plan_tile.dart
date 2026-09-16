@@ -1,4 +1,5 @@
 import 'package:bible/models/bible_plan.dart';
+import 'package:bible/providers/custom_bible_plans_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/widgets/bible_plan_thumbnail.dart';
 import 'package:flutter/material.dart';
@@ -9,16 +10,17 @@ import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
 class BiblePlanTile extends ConsumerWidget {
-  final BiblePlanType planType;
+  final String planId;
   final BiblePlan plan;
 
   final Widget? trailing;
   final Function()? onPressed;
+
   final bool showTags;
 
   const BiblePlanTile({
     super.key,
-    required this.planType,
+    required this.planId,
     required this.plan,
     this.trailing,
     this.onPressed,
@@ -28,20 +30,21 @@ class BiblePlanTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
+    final isCustom = ref.watch(customBiblePlansProvider).containsKey(planId);
 
-    final hasStarted = user.hasStartedPlan(planType);
+    final hasStarted = user.hasStartedPlan(planId);
 
     return StyledListItem(
-      leading: BiblePlanThumbnail(plan: plan, planType: planType, isEnabled: !hasStarted),
+      leading: BiblePlanThumbnail.fromPlan(plan: plan, id: planId, isEnabled: !hasStarted),
       title: SingleChildScrollView(
         scrollDirection: .horizontal,
         child: Row(
           spacing: 8,
           children: [
-            planType.title().toText(),
+            plan.getDisplayName(planId).toText(),
             if (hasStarted)
               StyledTag.sm(leading: Symbols.check.toIcon(), child: t.labels.following.toText(), isEnabled: false),
-            if (user.completedPlans.has(planType))
+            if (user.completedPlans.has(planId))
               StyledTag.sm(
                 leading: Symbols.history.toIcon(),
                 child: t.labels.completed.toText(),
@@ -50,20 +53,14 @@ class BiblePlanTile extends ConsumerWidget {
           ],
         ),
       ),
-      subtitle: planType.description().toText(),
-      trailing: trailing,
-      thirdLine: showTags
+      subtitle: BiblePlanType.getById(planId)?.description().toText(),
+      thirdLine: isCustom && showTags
           ? Padding(
               padding: .only(top: 4),
-              child: Row(
-                spacing: 4,
-                children: [
-                  StyledTag.sm(isEnabled: !hasStarted, child: planType.scope.title().toText()),
-                  StyledTag.sm(isEnabled: !hasStarted, child: planType.searchType.title().toText()),
-                ],
-              ),
+              child: StyledTag.sm(child: t.common.custom.toText(), isEnabled: !hasStarted),
             )
           : null,
+      trailing: trailing,
       isEnabled: !hasStarted,
       onPressed: hasStarted ? null : onPressed,
     );

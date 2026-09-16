@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:memory/ui/sheets/find_in_bible_sheet.dart';
 import 'package:style/style.dart';
 
 class AddPassagesPage extends HookConsumerWidget implements StyledRoute<List<VerseSelection>> {
@@ -104,7 +103,10 @@ class AddPassagesPage extends HookConsumerWidget implements StyledRoute<List<Ver
                   subtitle: 'Select a specific passage from the Bible.'.toText(),
                   leading: Symbols.book.toIcon(),
                   onPressed: () async {
-                    final passage = await FindInBibleSheet.show(context);
+                    final passage = await FindInBibleSheet.show(
+                      context,
+                      selectionConfiguration: ref.watch(luxReaderConfigurationProvider).selection,
+                    );
                     if (passage != null) {
                       passagesState.value = [...passagesState.value, passage].distinct.toList();
                     }

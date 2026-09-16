@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
-import 'package:memory/providers/root_ref.dart';
+import 'package:lux/src/ui/widgets/passage_selection_preview.dart';
 import 'package:style/style.dart';
-import 'package:utils_core/utils_core.dart';
 
 class FindInBibleSheet {
-  static Future<VerseSelection?> show(BuildContext context) => context.showStyledSheet<VerseSelection>((context, _) {
+  static Future<VerseSelection?> show(
+    BuildContext context, {
+    required PassageSelectionConfiguration selectionConfiguration,
+    Widget? title,
+  }) => context.showStyledSheet<VerseSelection>((context, _) {
     final chapterPositionState = useState<ChapterPosition?>(null);
-    final selectionController = usePassageSelectionController(ref.read(luxReaderConfigurationProvider).selection);
+    final selectionController = usePassageSelectionController(selectionConfiguration);
 
     void selectReference(PositionResult result) {
       FocusManager.instance.primaryFocus?.unfocus();
@@ -36,7 +40,7 @@ class FindInBibleSheet {
     );
 
     return StyledSheet.builder(
-      title: 'Find in Bible'.toText(),
+      title: title ?? t.passageSelection.findInBible.toText(),
       aboveDivider: Listener(
         behavior: .translucent,
         onPointerDown: (_) {
@@ -63,33 +67,16 @@ class FindInBibleSheet {
                   selectorState: selectorState,
                   onSelect: selectReference,
                   forceVerseNum: true,
+                  onSelectEntireChapter: (reference) => context.pop(VerseSelection.fromOsisId(reference.osisId())),
                 ),
               ),
             ),
           ];
         }
 
-        final chapterReference = chapterPosition.reference;
-        final chapter = ref.watch(chapterProvider(translation: .bsb, chapterReference: chapterReference)).value;
-
         return [
           Expanded(
-            child: StyledLoading(
-              loadingPadding: .all(16),
-              child: chapter == null
-                  ? null
-                  : ChapterBuilder(
-                      key: ValueKey(chapterPosition),
-                      chapterReference: chapterReference,
-                      chapter: chapter,
-                      shrinkWrap: false,
-                      selection: selectionController,
-                      padding: .all(16),
-                      scrollToSelection: chapterPosition.getReference()?.mapIfNonNull(
-                        (reference) => .reference(reference),
-                      ),
-                    ),
-            ),
+            child: PassageSelectionPreview(position: chapterPosition, selectionController: selectionController),
           ),
         ];
       },
@@ -100,8 +87,8 @@ class FindInBibleSheet {
               StyledRectButton.primary(
                 label:
                     (selectionController.verseSelection == null
-                            ? 'Select Verses'
-                            : 'Add ${selectionController.verseSelection!.format()}')
+                            ? t.passageSelection.selectVerses
+                            : t.passageSelection.addPassage(reference: selectionController.verseSelection!.format()))
                         .toText(),
                 onPressed: selectionController.verseSelection == null
                     ? null

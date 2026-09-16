@@ -86,6 +86,7 @@ class TranslationsRu extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$dictionary$ru dictionary = _Translations$dictionary$ru._(_root);
 	@override late final _Translations$navigation$ru navigation = _Translations$navigation$ru._(_root);
 	@override late final _Translations$bibleSheet$ru bibleSheet = _Translations$bibleSheet$ru._(_root);
+	@override late final _Translations$passageSelection$ru passageSelection = _Translations$passageSelection$ru._(_root);
 	@override late final _Translations$selectionUi$ru selectionUi = _Translations$selectionUi$ru._(_root);
 	@override late final _Translations$errors$ru errors = _Translations$errors$ru._(_root);
 	@override late final _Translations$morphology$ru morphology = _Translations$morphology$ru._(_root);
@@ -778,6 +779,33 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 
 	// Translations
 	@override String get find => 'Найдите библейский план';
+	@override String get includedPlans => 'Включённые планы';
+	@override String get includedPlansDescription => 'Планы, включённые в Lux.';
+	@override String get customPlansDescription => 'Планы, созданные вами.';
+	@override String get createCustomPlan => 'Создать свой план';
+	@override String get creationMethodQuestion => 'Как вы хотите создать свой план?';
+	@override String get manual => 'Вручную';
+	@override String get manualDescription => 'Добавьте каждый отрывок и день размышлений самостоятельно.';
+	@override String get nameAndColor => 'Название и цвет';
+	@override String get review => 'Проверка плана';
+	@override String get createAndStart => 'Создать и начать';
+	@override String get myBiblePlan => 'Мой библейский план';
+	@override String get nameRequired => 'Введите название плана.';
+	@override String get nameAlreadyExists => 'Библейский план с таким названием уже существует.';
+	@override String get discardPlanQuestion => 'Отменить создание плана?';
+	@override String get discardPlanConfirmation => 'Ваши изменения будут потеряны.';
+	@override String get discard => 'Отменить';
+	@override String get addDay => 'Добавить день';
+	@override String get addPassage => 'Добавить отрывок';
+	@override String get removeDay => 'Удалить день';
+	@override String get removeDayQuestion => 'Удалить этот день?';
+	@override String removeDayConfirmation({required Object day}) => 'День ${day} и его отрывки будут удалены.';
+	@override String get moveToAnotherDay => 'Перенести на другой день';
+	@override String get deletePlan => 'Удалить план';
+	@override String get deletePlanQuestion => 'Удалить этот план?';
+	@override String deletePlanConfirmation({required Object name}) => 'Вы уверены, что хотите удалить «${name}»?';
+	@override String get mixed => 'Смешанный';
+	@override String get mixedScopeDescription => 'Чтение выбранных книг из обоих Заветов.';
 	@override String get startPlanQuestion => 'Начать план?';
 	@override String get reviewAndReflect => 'Обзор и размышление';
 	@override String get startPlan => 'Начать план';
@@ -1087,7 +1115,7 @@ class _Translations$planTypes$ru extends Translations$planTypes$en {
 	@override String get fiveByFiveByFiveDescription => 'Читайте по одной главе Нового Завета в день, пять дней в неделю, а затем два дня для повторения и размышления.';
 	@override String get oldScopeDescription => 'Читает книги Ветхого Завета.';
 	@override String get newScopeDescription => 'Читает книги Нового Завета.';
-	@override String get wholeScopeDescription => 'Читает как Ветхий, так и Новый Завет.';
+	@override String get wholeScopeDescription => 'Читает все книги Ветхого и Нового Заветов.';
 	@override String get focused => 'Сосредоточенный';
 	@override String get comprehensive => 'Всесторонний';
 	@override String get focusedDescription => 'Охватывает определенный раздел или коллекцию в пределах своей области действия.';
@@ -1173,6 +1201,19 @@ class _Translations$bibleSheet$ru extends Translations$bibleSheet$en {
 		many: '${count} Библий доступно',
 		other: '${count} Библии доступны',
 	);
+}
+
+// Path: passageSelection
+class _Translations$passageSelection$ru extends Translations$passageSelection$en {
+	_Translations$passageSelection$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get findInBible => 'Найти в Библии';
+	@override String get selectEntireChapter => 'Выбрать всю главу';
+	@override String get selectVerses => 'Выбрать стихи';
+	@override String addPassage({required Object reference}) => 'Добавить ${reference}';
 }
 
 // Path: selectionUi
@@ -3274,6 +3315,33 @@ extension on TranslationsRu {
 			'themeSettings.paragraphsDescription' => 'Разбейте стихи на абзацы.',
 			'themeSettings.footnotesDescription' => 'Показывать маркеры сносок внутри текста.',
 			'biblePlans.find' => 'Найдите библейский план',
+			'biblePlans.includedPlans' => 'Включённые планы',
+			'biblePlans.includedPlansDescription' => 'Планы, включённые в Lux.',
+			'biblePlans.customPlansDescription' => 'Планы, созданные вами.',
+			'biblePlans.createCustomPlan' => 'Создать свой план',
+			'biblePlans.creationMethodQuestion' => 'Как вы хотите создать свой план?',
+			'biblePlans.manual' => 'Вручную',
+			'biblePlans.manualDescription' => 'Добавьте каждый отрывок и день размышлений самостоятельно.',
+			'biblePlans.nameAndColor' => 'Название и цвет',
+			'biblePlans.review' => 'Проверка плана',
+			'biblePlans.createAndStart' => 'Создать и начать',
+			'biblePlans.myBiblePlan' => 'Мой библейский план',
+			'biblePlans.nameRequired' => 'Введите название плана.',
+			'biblePlans.nameAlreadyExists' => 'Библейский план с таким названием уже существует.',
+			'biblePlans.discardPlanQuestion' => 'Отменить создание плана?',
+			'biblePlans.discardPlanConfirmation' => 'Ваши изменения будут потеряны.',
+			'biblePlans.discard' => 'Отменить',
+			'biblePlans.addDay' => 'Добавить день',
+			'biblePlans.addPassage' => 'Добавить отрывок',
+			'biblePlans.removeDay' => 'Удалить день',
+			'biblePlans.removeDayQuestion' => 'Удалить этот день?',
+			'biblePlans.removeDayConfirmation' => ({required Object day}) => 'День ${day} и его отрывки будут удалены.',
+			'biblePlans.moveToAnotherDay' => 'Перенести на другой день',
+			'biblePlans.deletePlan' => 'Удалить план',
+			'biblePlans.deletePlanQuestion' => 'Удалить этот план?',
+			'biblePlans.deletePlanConfirmation' => ({required Object name}) => 'Вы уверены, что хотите удалить «${name}»?',
+			'biblePlans.mixed' => 'Смешанный',
+			'biblePlans.mixedScopeDescription' => 'Чтение выбранных книг из обоих Заветов.',
 			'biblePlans.startPlanQuestion' => 'Начать план?',
 			'biblePlans.reviewAndReflect' => 'Обзор и размышление',
 			'biblePlans.startPlan' => 'Начать план',
@@ -3319,6 +3387,8 @@ extension on TranslationsRu {
 			'searchUi.wordMatching.wholeWord.title' => 'Целое слово',
 			'searchUi.wordMatching.wholeWord.description' => 'Находить только целые слова, совпадающие с запросом.',
 			'searchUi.wordMatching.wholeWord.example' => 'Пример: «свет» находит «свет»',
+			_ => null,
+		} ?? switch (path) {
 			'searchUi.wordMatching.startOfWord.title' => 'Начало слова',
 			'searchUi.wordMatching.startOfWord.description' => 'Находить слова, которые начинаются с запроса.',
 			'searchUi.wordMatching.startOfWord.example' => 'Пример: «свет» также находит «светильник»',
@@ -3346,8 +3416,6 @@ extension on TranslationsRu {
 			'audio.connectionError' => 'Проверьте подключение к Интернету или повторите попытку позже.',
 			'audio.initializationError' => 'Произошла ошибка',
 			'audio.initializationErrorDescription' => 'При настройке аудио на этом устройстве произошла ошибка. Принудительно закройте приложение и откройте его снова.',
-			_ => null,
-		} ?? switch (path) {
 			'audio.unavailable' => 'Звук для этой Библии недоступен.',
 			'audio.chooseBible' => 'Чтобы прослушать эту главу, выберите Библию с аудиозаписью.',
 			'audio.switchRequired' => 'Чтобы прослушать этот отрывок, переключитесь на Библию с аудиозаписью.',
@@ -3436,7 +3504,7 @@ extension on TranslationsRu {
 			'planTypes.fiveByFiveByFiveDescription' => 'Читайте по одной главе Нового Завета в день, пять дней в неделю, а затем два дня для повторения и размышления.',
 			'planTypes.oldScopeDescription' => 'Читает книги Ветхого Завета.',
 			'planTypes.newScopeDescription' => 'Читает книги Нового Завета.',
-			'planTypes.wholeScopeDescription' => 'Читает как Ветхий, так и Новый Завет.',
+			'planTypes.wholeScopeDescription' => 'Читает все книги Ветхого и Нового Заветов.',
 			'planTypes.focused' => 'Сосредоточенный',
 			'planTypes.comprehensive' => 'Всесторонний',
 			'planTypes.focusedDescription' => 'Охватывает определенный раздел или коллекцию в пределах своей области действия.',
@@ -3481,6 +3549,10 @@ extension on TranslationsRu {
 			'navigation.verse' => 'Стих',
 			'bibleSheet.allBibles' => 'Все Библии',
 			'bibleSheet.availableCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: '${count} Библия доступна', few: '${count} Библии доступны', many: '${count} Библий доступно', other: '${count} Библии доступны', ), 
+			'passageSelection.findInBible' => 'Найти в Библии',
+			'passageSelection.selectEntireChapter' => 'Выбрать всю главу',
+			'passageSelection.selectVerses' => 'Выбрать стихи',
+			'passageSelection.addPassage' => ({required Object reference}) => 'Добавить ${reference}',
 			'selectionUi.selected' => 'Выбрано:',
 			'selectionUi.sourceApiBible' => 'Источник: [https://api.bible](https://api.bible).',
 			'errors.deviceVerificationFailed' => 'Проверка устройства не удалась',
@@ -3829,6 +3901,8 @@ extension on TranslationsRu {
 			'settings.shareLux' => 'Поделиться Lux',
 			'settings.shareLuxDescription' => 'Поделитесь Lux с другими.',
 			'settings.reportProblem' => 'Сообщить о проблеме',
+			_ => null,
+		} ?? switch (path) {
 			'settings.reportProblemDescription' => 'Получите помощь с ошибками и другими проблемами.',
 			'settings.recommended' => 'Рекомендуется',
 			'settings.emailSupport' => 'Написать в поддержку',

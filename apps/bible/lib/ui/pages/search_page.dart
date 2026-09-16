@@ -48,8 +48,8 @@ class SearchPage extends HookConsumerWidget implements StyledRoute<VerseSelectio
     final isSearchActive = search.isNotEmpty;
     final searchTerms = search.bibleSearchTerms;
 
-    final locationsState = useState(<SearchLocationFilter>[]);
-    final locations = locationsState.value;
+    final selectedBooksState = useState(<BookType>{});
+    final selectedBooks = selectedBooksState.value;
 
     final searchWordMatchingState = useState(SearchWordMatching.wholeWord);
     final searchWordMatching = searchWordMatchingState.value;
@@ -62,13 +62,13 @@ class SearchPage extends HookConsumerWidget implements StyledRoute<VerseSelectio
     final isSearchLoading = isSearchActive && searchResultsState.value == null;
 
     List<Reference> getSearchedReferences() {
-      final locations = locationsState.value;
+      final selectedBooks = selectedBooksState.value;
       if (search.isEmpty || searchBible == null) {
         return [];
       }
 
       final validReferences = searchBible.references
-          .where((reference) => locations.isEmpty || locations.any((filter) => filter.passes(reference)))
+          .where((reference) => selectedBooks.isEmpty || selectedBooks.contains(reference.book))
           .toList();
 
       if (isStrongSearch) {
@@ -106,7 +106,7 @@ class SearchPage extends HookConsumerWidget implements StyledRoute<VerseSelectio
           ref.updateUser((user) => user.withSearchHistory(searchState.value));
         }
       }
-    }, [searchBible, search, locations, searchWordMatching]);
+    }, [searchBible, search, selectedBooks, searchWordMatching]);
 
     final isUsingStudyBible = user.translation.isOnline || (isStrongSearch && !user.translation.isStudy);
 
@@ -148,9 +148,9 @@ class SearchPage extends HookConsumerWidget implements StyledRoute<VerseSelectio
                     spacing: 8,
                     children: [
                       SearchLocationButton(
-                        locations: locations,
-                        onLocationsSelected: (locations) {
-                          locationsState.value = locations;
+                        selectedBooks: selectedBooks,
+                        onBooksSelected: (books) {
+                          selectedBooksState.value = books;
                           searchState.value = textState.value;
                           searchResultsState.value = null;
                         },

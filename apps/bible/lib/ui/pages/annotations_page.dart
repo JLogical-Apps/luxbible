@@ -37,7 +37,7 @@ class AnnotationsPage extends HookConsumerWidget implements StyledRoute<VerseSel
 
     final hasNoteState = useState<bool?>(null);
 
-    final locationsState = useState(<SearchLocationFilter>[]);
+    final selectedBooksState = useState(<BookType>{});
 
     final notebookIdState = useState(initialNotebookId);
     final notebookId = notebookIdState.value;
@@ -46,8 +46,8 @@ class AnnotationsPage extends HookConsumerWidget implements StyledRoute<VerseSel
     final matchingAnnotations = user.annotations
         .where(
           (annotation) =>
-              locationsState.value.isEmpty ||
-              locationsState.value.any((location) => location.passes(annotation.selection.startingReference)),
+              selectedBooksState.value.isEmpty ||
+              selectedBooksState.value.contains(annotation.selection.startingReference.book),
         )
         .where((annotation) => hasNoteState.value == null || (annotation.note.isNotEmpty == hasNoteState.value))
         .where((annotation) => style == null || annotation.style == style)
@@ -192,8 +192,8 @@ class AnnotationsPage extends HookConsumerWidget implements StyledRoute<VerseSel
                   },
                 ),
                 SearchLocationButton(
-                  locations: locationsState.value,
-                  onLocationsSelected: (locations) => locationsState.value = locations,
+                  selectedBooks: selectedBooksState.value,
+                  onBooksSelected: (books) => selectedBooksState.value = books,
                 ),
               ],
             ),

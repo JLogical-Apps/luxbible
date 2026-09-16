@@ -41,6 +41,7 @@ class StyledTag extends StatelessWidget {
         isEnabled: true,
         borderRadius: .circular(999),
         child: Row(
+          mainAxisSize: .min,
           spacing: 4,
           children: [
             if (leading case final leading?)

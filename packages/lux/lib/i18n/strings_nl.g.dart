@@ -86,6 +86,7 @@ class TranslationsNl extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$dictionary$nl dictionary = _Translations$dictionary$nl._(_root);
 	@override late final _Translations$navigation$nl navigation = _Translations$navigation$nl._(_root);
 	@override late final _Translations$bibleSheet$nl bibleSheet = _Translations$bibleSheet$nl._(_root);
+	@override late final _Translations$passageSelection$nl passageSelection = _Translations$passageSelection$nl._(_root);
 	@override late final _Translations$selectionUi$nl selectionUi = _Translations$selectionUi$nl._(_root);
 	@override late final _Translations$errors$nl errors = _Translations$errors$nl._(_root);
 	@override late final _Translations$morphology$nl morphology = _Translations$morphology$nl._(_root);
@@ -776,6 +777,33 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 
 	// Translations
 	@override String get find => 'Een Bijbelleesplan zoeken';
+	@override String get includedPlans => 'Inbegrepen leesplannen';
+	@override String get includedPlansDescription => 'Leesplannen die met Lux worden meegeleverd.';
+	@override String get customPlansDescription => 'Leesplannen die je zelf hebt gemaakt.';
+	@override String get createCustomPlan => 'Aangepast leesplan maken';
+	@override String get creationMethodQuestion => 'Hoe wil je je leesplan maken?';
+	@override String get manual => 'Handmatig';
+	@override String get manualDescription => 'Voeg zelf elke passage en overdenkingsdag toe.';
+	@override String get nameAndColor => 'Naam en kleur';
+	@override String get review => 'Leesplan controleren';
+	@override String get createAndStart => 'Maken en starten';
+	@override String get myBiblePlan => 'Mijn Bijbelleesplan';
+	@override String get nameRequired => 'Voer een naam voor je leesplan in.';
+	@override String get nameAlreadyExists => 'Een Bijbelleesplan gebruikt deze naam al.';
+	@override String get discardPlanQuestion => 'Dit leesplan weggooien?';
+	@override String get discardPlanConfirmation => 'Je wijzigingen gaan verloren.';
+	@override String get discard => 'Weggooien';
+	@override String get addDay => 'Dag toevoegen';
+	@override String get addPassage => 'Passage toevoegen';
+	@override String get removeDay => 'Dag verwijderen';
+	@override String get removeDayQuestion => 'Deze dag verwijderen?';
+	@override String removeDayConfirmation({required Object day}) => 'Dag ${day} en de passages worden verwijderd.';
+	@override String get moveToAnotherDay => 'Naar een andere dag verplaatsen';
+	@override String get deletePlan => 'Leesplan verwijderen';
+	@override String get deletePlanQuestion => 'Dit leesplan verwijderen?';
+	@override String deletePlanConfirmation({required Object name}) => 'Weet je zeker dat je "${name}" wilt verwijderen?';
+	@override String get mixed => 'Gemengd';
+	@override String get mixedScopeDescription => 'Leest uit geselecteerde boeken in beide Testamenten.';
 	@override String get startPlanQuestion => 'Leesplan starten?';
 	@override String get reviewAndReflect => 'Terugkijken en overdenken';
 	@override String get startPlan => 'Leesplan starten';
@@ -1083,7 +1111,7 @@ class _Translations$planTypes$nl extends Translations$planTypes$en {
 	@override String get fiveByFiveByFiveDescription => 'Lees vijf dagen per week één hoofdstuk uit het Nieuwe Testament, gevolgd door twee dagen om terug te kijken en te overdenken.';
 	@override String get oldScopeDescription => 'Leest uit boeken van het Oude Testament.';
 	@override String get newScopeDescription => 'Leest uit boeken van het Nieuwe Testament.';
-	@override String get wholeScopeDescription => 'Leest uit het Oude en Nieuwe Testament.';
+	@override String get wholeScopeDescription => 'Leest elk boek in het Oude en Nieuwe Testament.';
 	@override String get focused => 'Gericht';
 	@override String get comprehensive => 'Volledig';
 	@override String get focusedDescription => 'Behandelt een specifiek gedeelte of een specifieke verzameling binnen het bereik.';
@@ -1167,6 +1195,19 @@ class _Translations$bibleSheet$nl extends Translations$bibleSheet$en {
 		one: '${count} Bijbel beschikbaar',
 		other: '${count} Bijbels beschikbaar',
 	);
+}
+
+// Path: passageSelection
+class _Translations$passageSelection$nl extends Translations$passageSelection$en {
+	_Translations$passageSelection$nl._(TranslationsNl root) : this._root = root, super.internal(root);
+
+	final TranslationsNl _root; // ignore: unused_field
+
+	// Translations
+	@override String get findInBible => 'Zoeken in de Bijbel';
+	@override String get selectEntireChapter => 'Heel hoofdstuk selecteren';
+	@override String get selectVerses => 'Verzen selecteren';
+	@override String addPassage({required Object reference}) => '${reference} toevoegen';
 }
 
 // Path: selectionUi
@@ -3268,6 +3309,33 @@ extension on TranslationsNl {
 			'themeSettings.paragraphsDescription' => 'Geef verzen als alinea\'s weer.',
 			'themeSettings.footnotesDescription' => 'Toon voetnootmarkeringen in de tekst.',
 			'biblePlans.find' => 'Een Bijbelleesplan zoeken',
+			'biblePlans.includedPlans' => 'Inbegrepen leesplannen',
+			'biblePlans.includedPlansDescription' => 'Leesplannen die met Lux worden meegeleverd.',
+			'biblePlans.customPlansDescription' => 'Leesplannen die je zelf hebt gemaakt.',
+			'biblePlans.createCustomPlan' => 'Aangepast leesplan maken',
+			'biblePlans.creationMethodQuestion' => 'Hoe wil je je leesplan maken?',
+			'biblePlans.manual' => 'Handmatig',
+			'biblePlans.manualDescription' => 'Voeg zelf elke passage en overdenkingsdag toe.',
+			'biblePlans.nameAndColor' => 'Naam en kleur',
+			'biblePlans.review' => 'Leesplan controleren',
+			'biblePlans.createAndStart' => 'Maken en starten',
+			'biblePlans.myBiblePlan' => 'Mijn Bijbelleesplan',
+			'biblePlans.nameRequired' => 'Voer een naam voor je leesplan in.',
+			'biblePlans.nameAlreadyExists' => 'Een Bijbelleesplan gebruikt deze naam al.',
+			'biblePlans.discardPlanQuestion' => 'Dit leesplan weggooien?',
+			'biblePlans.discardPlanConfirmation' => 'Je wijzigingen gaan verloren.',
+			'biblePlans.discard' => 'Weggooien',
+			'biblePlans.addDay' => 'Dag toevoegen',
+			'biblePlans.addPassage' => 'Passage toevoegen',
+			'biblePlans.removeDay' => 'Dag verwijderen',
+			'biblePlans.removeDayQuestion' => 'Deze dag verwijderen?',
+			'biblePlans.removeDayConfirmation' => ({required Object day}) => 'Dag ${day} en de passages worden verwijderd.',
+			'biblePlans.moveToAnotherDay' => 'Naar een andere dag verplaatsen',
+			'biblePlans.deletePlan' => 'Leesplan verwijderen',
+			'biblePlans.deletePlanQuestion' => 'Dit leesplan verwijderen?',
+			'biblePlans.deletePlanConfirmation' => ({required Object name}) => 'Weet je zeker dat je "${name}" wilt verwijderen?',
+			'biblePlans.mixed' => 'Gemengd',
+			'biblePlans.mixedScopeDescription' => 'Leest uit geselecteerde boeken in beide Testamenten.',
 			'biblePlans.startPlanQuestion' => 'Leesplan starten?',
 			'biblePlans.reviewAndReflect' => 'Terugkijken en overdenken',
 			'biblePlans.startPlan' => 'Leesplan starten',
@@ -3313,6 +3381,8 @@ extension on TranslationsNl {
 			'searchUi.wordMatching.wholeWord.title' => 'Volledig woord',
 			'searchUi.wordMatching.wholeWord.description' => 'Zoek alleen volledige woorden die overeenkomen met je zoekopdracht.',
 			'searchUi.wordMatching.wholeWord.example' => 'Voorbeeld: ‘licht’ vindt ‘licht’',
+			_ => null,
+		} ?? switch (path) {
 			'searchUi.wordMatching.startOfWord.title' => 'Begin van woord',
 			'searchUi.wordMatching.startOfWord.description' => 'Zoek woorden die beginnen met je zoekopdracht.',
 			'searchUi.wordMatching.startOfWord.example' => 'Voorbeeld: ‘licht’ vindt ook ‘lichten’',
@@ -3340,8 +3410,6 @@ extension on TranslationsNl {
 			'audio.connectionError' => 'Controleer je internetverbinding of probeer het later opnieuw.',
 			'audio.initializationError' => 'Er is een fout opgetreden',
 			'audio.initializationErrorDescription' => 'Er is een fout opgetreden bij het instellen van audio voor dit apparaat. Sluit de app geforceerd af en open hem opnieuw.',
-			_ => null,
-		} ?? switch (path) {
 			'audio.unavailable' => 'Audio is niet beschikbaar voor deze Bijbel',
 			'audio.chooseBible' => 'Kies een Bijbel met audio om naar dit hoofdstuk te luisteren.',
 			'audio.switchRequired' => 'Schakel over naar een Bijbel met audio om naar dit gedeelte te luisteren.',
@@ -3430,7 +3498,7 @@ extension on TranslationsNl {
 			'planTypes.fiveByFiveByFiveDescription' => 'Lees vijf dagen per week één hoofdstuk uit het Nieuwe Testament, gevolgd door twee dagen om terug te kijken en te overdenken.',
 			'planTypes.oldScopeDescription' => 'Leest uit boeken van het Oude Testament.',
 			'planTypes.newScopeDescription' => 'Leest uit boeken van het Nieuwe Testament.',
-			'planTypes.wholeScopeDescription' => 'Leest uit het Oude en Nieuwe Testament.',
+			'planTypes.wholeScopeDescription' => 'Leest elk boek in het Oude en Nieuwe Testament.',
 			'planTypes.focused' => 'Gericht',
 			'planTypes.comprehensive' => 'Volledig',
 			'planTypes.focusedDescription' => 'Behandelt een specifiek gedeelte of een specifieke verzameling binnen het bereik.',
@@ -3475,6 +3543,10 @@ extension on TranslationsNl {
 			'navigation.verse' => 'Vers',
 			'bibleSheet.allBibles' => 'Alle Bijbels',
 			'bibleSheet.availableCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: '${count} Bijbel beschikbaar', other: '${count} Bijbels beschikbaar', ), 
+			'passageSelection.findInBible' => 'Zoeken in de Bijbel',
+			'passageSelection.selectEntireChapter' => 'Heel hoofdstuk selecteren',
+			'passageSelection.selectVerses' => 'Verzen selecteren',
+			'passageSelection.addPassage' => ({required Object reference}) => '${reference} toevoegen',
 			'selectionUi.selected' => 'Geselecteerd: ',
 			'selectionUi.sourceApiBible' => 'Bron: [https://api.bible](https://api.bible)',
 			'errors.deviceVerificationFailed' => 'Apparaatverificatie mislukt',
@@ -3823,6 +3895,8 @@ extension on TranslationsNl {
 			'settings.shareLux' => 'Deel Lux',
 			'settings.shareLuxDescription' => 'Deel Lux met iemand.',
 			'settings.reportProblem' => 'Een probleem melden',
+			_ => null,
+		} ?? switch (path) {
 			'settings.reportProblemDescription' => 'Krijg hulp bij bugs en andere problemen.',
 			'settings.recommended' => 'Aanbevolen',
 			'settings.emailSupport' => 'Ondersteuning via e-mail',

@@ -153,18 +153,18 @@ class PushNotificationsPage extends ConsumerWidget implements StyledRoute<void> 
                   final time = progress.progress.reminder?.dailyTime;
 
                   return StyledSwipeable(
-                    key: ValueKey((progress.type, time)),
+                    key: ValueKey((progress.id, time)),
                     isEnabled: isPlanEnabled && time != null,
                     actions: [
-                      .remove(onPressed: () => ref.updateUser((user) => user.withPlanReminder(progress.type, .none()))),
+                      .remove(onPressed: () => ref.updateUser((user) => user.withPlanReminder(progress.id, .none()))),
                     ],
                     child: StyledListItem(
-                      leading: BiblePlanThumbnail(
+                      leading: BiblePlanThumbnail.fromPlan(
                         plan: progress.plan,
-                        planType: progress.type,
+                        id: progress.id,
                         isEnabled: isPlanEnabled,
                       ),
-                      title: progress.type.title().toText(),
+                      title: progress.plan.getDisplayName(progress.id).toText(),
                       subtitle: (time?.format(format: context.timeFormat) ?? t.common.noNotification).toText(),
                       isEnabled: isPlanEnabled,
                       trailing: StyledPillButton.sm(
@@ -186,13 +186,15 @@ class PushNotificationsPage extends ConsumerWidget implements StyledRoute<void> 
                                                 (dialogContext) => StyledDialog.confirmDelete(
                                                   title: t.biblePlans.deleteReminder.toText(),
                                                   body: t.biblePlans
-                                                      .deleteReminderConfirmation(name: progress.type.title())
+                                                      .deleteReminderConfirmation(
+                                                        name: progress.plan.getDisplayName(progress.id),
+                                                      )
                                                       .toText(),
                                                   cancelLabel: t.common.nevermind.toText(),
                                                 ),
                                               );
                                               if (shouldRemove == true) {
-                                                ref.updateUser((user) => user.withPlanReminder(progress.type, .none()));
+                                                ref.updateUser((user) => user.withPlanReminder(progress.id, .none()));
                                               }
                                             },
                                           ),
@@ -201,7 +203,7 @@ class PushNotificationsPage extends ConsumerWidget implements StyledRoute<void> 
                                 if (newTime != null && context.mounted) {
                                   await BiblePlanReminderFlow.save(
                                     context: context,
-                                    planType: progress.type,
+                                    planId: progress.id,
                                     time: newTime,
                                   );
                                 }

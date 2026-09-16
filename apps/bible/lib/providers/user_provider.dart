@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/models/user/language.dart';
 import 'package:bible/models/user/migration.dart';
 import 'package:bible/models/user/user.dart';
@@ -39,7 +40,17 @@ class UserNotifier extends _$UserNotifier {
   User? get userOrNull {
     if (userFile.existsSync()) {
       final user = guard(
-        () => User.fromJson(jsonDecode(userFile.readAsStringSync())),
+        () {
+          final plans = ref.read(biblePlansProvider);
+          final json = jsonDecode(userFile.readAsStringSync()) as Map<String, dynamic>;
+          return User.fromJson({
+            ...json,
+            'planProgressByType': (json['planProgressByType'] as Map<String, dynamic>? ?? {}).where(
+              (id, _) => plans.containsKey(id),
+            ),
+            'completedPlans': (json['completedPlans'] as List? ?? []).where(plans.containsKey).toList(),
+          });
+        },
         onException: (error, stackTrace) {
           debugPrint(error.toString());
           debugPrintStack(stackTrace: stackTrace);
@@ -86,12 +97,12 @@ class UserNotifier extends _$UserNotifier {
   }
 
   void logAnalytics(User previousUser, User user) {
-    if (user.planProgressByType.keys.any((planType) => !previousUser.planProgressByType.containsKey(planType))) {
+    if (user.planProgressById.keys.any((planId) => !previousUser.planProgressById.containsKey(planId))) {
       AnalyticsEvent.planStarted.log();
     }
 
-    final hasCompletedPlanDay = user.planProgressByType.entries.any((entry) {
-      final previousDays = previousUser.planProgressByType[entry.key]?.days ?? [];
+    final hasCompletedPlanDay = user.planProgressById.entries.any((entry) {
+      final previousDays = previousUser.planProgressById[entry.key]?.days ?? [];
       return entry.value.days.asMap().entries.any(
         (day) => day.value.isComplete && (day.key >= previousDays.length || !previousDays[day.key].isComplete),
       );

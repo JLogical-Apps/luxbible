@@ -13,9 +13,37 @@ part 'bible_plan.g.dart';
 sealed class BiblePlan with _$BiblePlan {
   const BiblePlan._();
 
-  const factory BiblePlan({required String name, required List<BiblePlanDay> days}) = _BiblePlan;
+  const factory BiblePlan({
+    required String name,
+    required List<BiblePlanDay> days,
+    @JsonKey(name: 'color', includeIfNull: false) BiblePlanColor? colorOverride,
+  }) = _BiblePlan;
 
   factory BiblePlan.fromJson(Map<String, dynamic> json) => _$BiblePlanFromJson(json);
+
+  static BiblePlan? tryFromJson(Object? json) {
+    try {
+      final plan = BiblePlan.fromJson(json as Map<String, dynamic>);
+      return plan.isValid ? plan : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  bool get isValid =>
+      name.trim().isNotEmpty &&
+      days.isNotEmpty &&
+      days.length <= 365 &&
+      days.any((day) => day.passages.isNotEmpty) &&
+      days.every(
+        (day) =>
+            day.passages.toSet().length == day.passages.length &&
+            day.passages.every((passage) => passage.isNotEmpty && VerseSelection.isOsisId(passage.osisId())),
+      );
+
+  BiblePlanColor get color => colorOverride ?? BiblePlanColor.values[name.codeUnits.sum % BiblePlanColor.values.length];
+
+  String getDisplayName(String id) => BiblePlanType.getById(id)?.title() ?? name;
 
   int get dayCount => days.length;
 
@@ -54,6 +82,7 @@ sealed class BiblePlanProgress with _$BiblePlanProgress {
     required int dayIndex,
     required BiblePlanDayProgress Function(BiblePlanDayProgress) updater,
   }) {
+    if (dayIndex < 0 || dayIndex >= days.length) return this;
     final previousDay = days[dayIndex];
     final updatedDay = updater(previousDay);
     return copyWith(
@@ -129,6 +158,8 @@ enum BiblePlanType {
   esv_chronicles_and_prophets,
   esv_psalms_and_wisdom_literature;
 
+  static BiblePlanType? getById(String id) => values.firstWhereOrNull((type) => type.name == id);
+
   String get assetPath => 'assets/bible_plans/$name.json';
 
   String title() => switch (this) {
@@ -146,38 +177,6 @@ enum BiblePlanType {
     esv_pentateuch_and_history_of_israel => t.planTypes.pentateuchAndHistory,
     esv_chronicles_and_prophets => t.planTypes.chroniclesAndProphets,
     esv_psalms_and_wisdom_literature => t.planTypes.psalmsAndWisdom,
-  };
-
-  BiblePlanScope get scope => switch (this) {
-    equipping_godly_women_through_the_bible ||
-    mcheyne ||
-    one_year_chronological ||
-    esv_through_the_bible ||
-    esv_every_day_in_word ||
-    esv_literary_study_bible ||
-    heartlight_ot_and_nt => .wholeBible,
-    heartlight_different_topics || heartlight_nt_psalms_proverbs => .wholeBible,
-    esv_gospels_and_epistles || navigators_5x5x5_nt => .newTestament,
-    esv_chronicles_and_prophets ||
-    esv_pentateuch_and_history_of_israel ||
-    esv_psalms_and_wisdom_literature => .oldTestament,
-  };
-
-  BiblePlanSearchType get searchType => switch (this) {
-    esv_chronicles_and_prophets ||
-    esv_pentateuch_and_history_of_israel ||
-    esv_psalms_and_wisdom_literature ||
-    heartlight_nt_psalms_proverbs => .focused,
-    equipping_godly_women_through_the_bible ||
-    mcheyne ||
-    one_year_chronological ||
-    esv_through_the_bible ||
-    esv_gospels_and_epistles ||
-    esv_every_day_in_word ||
-    esv_literary_study_bible ||
-    heartlight_ot_and_nt ||
-    heartlight_different_topics ||
-    navigators_5x5x5_nt => .comprehensive,
   };
 
   String description() => switch (this) {
@@ -236,34 +235,36 @@ enum BiblePlanType {
 enum BiblePlanScope {
   oldTestament,
   newTestament,
-  wholeBible;
+  wholeBible,
+  mixed;
 
   String title() => switch (this) {
     oldTestament => t.testaments.old,
     newTestament => t.testaments.newTestament,
     wholeBible => t.testaments.wholeBible,
+    mixed => t.biblePlans.mixed,
   };
 
   String description() => switch (this) {
     oldTestament => t.planTypes.oldScopeDescription,
     newTestament => t.planTypes.newScopeDescription,
     wholeBible => t.planTypes.wholeScopeDescription,
+    mixed => t.biblePlans.mixedScopeDescription,
   };
 }
 
-enum BiblePlanSearchType {
-  focused,
-  comprehensive;
-
-  String title() => switch (this) {
-    focused => t.planTypes.focused,
-    comprehensive => t.planTypes.comprehensive,
-  };
-
-  String description() => switch (this) {
-    focused => t.planTypes.focusedDescription,
-    comprehensive => t.planTypes.comprehensiveDescription,
-  };
+extension BiblePlanScopeExtension on BiblePlan {
+  BiblePlanScope get scope {
+    final books = days
+        .expand((day) => day.passages)
+        .expand((passage) => passage.spans)
+        .map((span) => span.start.startReference.book)
+        .distinct;
+    if (books.containsAll(BookType.values)) return .wholeBible;
+    if (books.every((book) => book.testament == .oldTestament)) return .oldTestament;
+    if (books.every((book) => book.testament == .newTestament)) return .newTestament;
+    return .mixed;
+  }
 }
 
 class BiblePlanSource {
@@ -271,4 +272,31 @@ class BiblePlanSource {
   final String link;
 
   const BiblePlanSource({required this.name, required this.link});
+}
+
+enum BiblePlanColor { red, orange, yellow, green, blue, violet }
+
+extension BiblePlanDraftDaysExtension on List<BiblePlanDay> {
+  List<BiblePlanDay> withPassageAdded(int dayIndex, VerseSelection passage) {
+    final day = this[dayIndex];
+    return day.passages.contains(passage)
+        ? this
+        : withUpdateAt(dayIndex, (day) => day.copyWith(passages: [...day.passages, passage]));
+  }
+
+  List<BiblePlanDay> withPassageRemoved(int dayIndex, VerseSelection passage) =>
+      withUpdateAt(dayIndex, (day) => day.copyWith(passages: day.passages.withRemoved(passage)));
+
+  List<BiblePlanDay> withPassageReordered(int dayIndex, int oldIndex, int newIndex) =>
+      withUpdateAt(dayIndex, (day) => day.copyWith(passages: day.passages.withReorder(oldIndex, newIndex)));
+
+  List<BiblePlanDay> withPassageMoved({
+    required int sourceDayIndex,
+    required int destinationDayIndex,
+    required VerseSelection passage,
+  }) => withPassageRemoved(sourceDayIndex, passage).withUpdateAt(
+    destinationDayIndex,
+    (day) =>
+        this[destinationDayIndex].passages.contains(passage) ? day : day.copyWith(passages: [...day.passages, passage]),
+  );
 }

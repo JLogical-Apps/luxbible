@@ -132,7 +132,7 @@ Future<void> main() async {
           strongsProvider.overrideWithValue(strongs),
           dictionaryProvider.overrideWithValue(dictionary),
           crossReferencesProvider.overrideWithValue(crossReferences),
-          biblePlansProvider.overrideWithValue(biblePlans),
+          includedBiblePlansProvider.overrideWithValue(biblePlans),
           verseOfTheDaySelectionsProvider.overrideWithValue(verseOfTheDaySelections),
           pathServiceProvider.overrideWithValue(paths),
           sharedPreferencesServiceProvider.overrideWithValue(sharedPreferences),

@@ -147,17 +147,15 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
         ),
       )
       .toList(),
-  planProgressByType:
+  planProgressById:
       (json['planProgressByType'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(
-          $enumDecode(_$BiblePlanTypeEnumMap, k),
-          BiblePlanProgress.fromJson(e as Map<String, dynamic>),
-        ),
+        (k, e) =>
+            MapEntry(k, BiblePlanProgress.fromJson(e as Map<String, dynamic>)),
       ) ??
       const {},
   completedPlans:
       (json['completedPlans'] as List<dynamic>?)
-          ?.map((e) => $enumDecode(_$BiblePlanTypeEnumMap, e))
+          ?.map((e) => e as String)
           .toSet() ??
       const {},
   verseOfTheDayReminder: json['verseOfTheDayReminder'] == null
@@ -227,12 +225,10 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'highlightStyles': instance.highlightStyleOverrides
       ?.map((e) => <String, dynamic>{r'$1': e.$1.toJson(), r'$2': e.$2})
       .toList(),
-  'planProgressByType': instance.planProgressByType.map(
-    (k, e) => MapEntry(_$BiblePlanTypeEnumMap[k]!, e.toJson()),
+  'planProgressByType': instance.planProgressById.map(
+    (k, e) => MapEntry(k, e.toJson()),
   ),
-  'completedPlans': instance.completedPlans
-      .map((e) => _$BiblePlanTypeEnumMap[e]!)
-      .toList(),
+  'completedPlans': instance.completedPlans.toList(),
   'verseOfTheDayReminder': instance.verseOfTheDayReminder?.toJson(),
   'audio': instance.audio.toJson(),
   'latestMigration': _$MigrationEnumMap[instance.latestMigration],
@@ -304,26 +300,6 @@ const _$OnboardingStepEnumMap = {
 
 $Rec _$recordConvert<$Rec>(Object? value, $Rec Function(Map) convert) =>
     convert(value as Map<String, dynamic>);
-
-const _$BiblePlanTypeEnumMap = {
-  BiblePlanType.equipping_godly_women_through_the_bible:
-      'equipping_godly_women_through_the_bible',
-  BiblePlanType.esv_through_the_bible: 'esv_through_the_bible',
-  BiblePlanType.one_year_chronological: 'one_year_chronological',
-  BiblePlanType.heartlight_ot_and_nt: 'heartlight_ot_and_nt',
-  BiblePlanType.esv_every_day_in_word: 'esv_every_day_in_word',
-  BiblePlanType.mcheyne: 'mcheyne',
-  BiblePlanType.esv_literary_study_bible: 'esv_literary_study_bible',
-  BiblePlanType.heartlight_different_topics: 'heartlight_different_topics',
-  BiblePlanType.heartlight_nt_psalms_proverbs: 'heartlight_nt_psalms_proverbs',
-  BiblePlanType.navigators_5x5x5_nt: 'navigators_5x5x5_nt',
-  BiblePlanType.esv_gospels_and_epistles: 'esv_gospels_and_epistles',
-  BiblePlanType.esv_pentateuch_and_history_of_israel:
-      'esv_pentateuch_and_history_of_israel',
-  BiblePlanType.esv_chronicles_and_prophets: 'esv_chronicles_and_prophets',
-  BiblePlanType.esv_psalms_and_wisdom_literature:
-      'esv_psalms_and_wisdom_literature',
-};
 
 const _$MigrationEnumMap = {
   Migration.renamedBiblePlans: 'renamedBiblePlans',

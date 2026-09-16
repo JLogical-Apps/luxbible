@@ -3,16 +3,17 @@ import 'package:collection/collection.dart';
 import 'package:lux/lux.dart';
 
 class HydratedBiblePlanProgress {
-  final BiblePlanType type;
+  final String id;
   final BiblePlan plan;
   final BiblePlanProgress progress;
 
-  const HydratedBiblePlanProgress({required this.type, required this.plan, required this.progress});
+  const HydratedBiblePlanProgress({required this.id, required this.plan, required this.progress});
 
   bool isPassageComplete({required int dayIndex, required VerseSelection passage}) =>
-      progress.days[dayIndex].isPassageComplete(passage);
+      (progress.days.elementAtOrNull(dayIndex) ?? BiblePlanDayProgress.incomplete()).isPassageComplete(passage);
 
-  bool isDayComplete({required int dayIndex}) => progress.days[dayIndex].isComplete;
+  bool isDayComplete({required int dayIndex}) =>
+      (progress.days.elementAtOrNull(dayIndex) ?? BiblePlanDayProgress.incomplete()).isComplete;
 
   int get currentDayIndex =>
       plan.dayIndexes.firstWhereOrNull((index) => !isDayComplete(dayIndex: index)) ?? (plan.days.length - 1);

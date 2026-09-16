@@ -8,7 +8,6 @@ import 'package:bible/services/local_notification_service.dart';
 import 'package:bible/utils/extensions/date_time_extensions.dart';
 import 'package:lux/i18n.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:utils_core/utils_core.dart';
 
 part 'bible_plan_local_notification_schedules_provider.g.dart';
 
@@ -18,11 +17,11 @@ const biblePlanNotificationCapacity = 14;
 @Riverpod(keepAlive: true)
 List<LocalNotification> biblePlanLocalNotifications(Ref ref) {
   final plans = ref.watch(biblePlansProvider);
-  final progressByType = ref.watch(userProvider).planProgressByType;
+  final user = ref.watch(userProvider);
   ref.watch(languageProvider);
 
-  final reminderProgresses = progressByType
-      .mapToIterable((type, progress) => HydratedBiblePlanProgress(type: type, plan: plans[type]!, progress: progress))
+  final reminderProgresses = user
+      .getHydratedPlanProgresses(plans)
       .where((progress) => progress.progress.reminder is DailyReminder && !progress.isCompleted)
       .toList();
 
@@ -31,7 +30,7 @@ List<LocalNotification> biblePlanLocalNotifications(Ref ref) {
   final horizonDays = biblePlanNotificationCapacity ~/ reminderProgresses.length;
 
   return reminderProgresses.expand((progress) {
-    final HydratedBiblePlanProgress(type: planType, :currentDay) = progress;
+    final HydratedBiblePlanProgress(id: planId, :currentDay) = progress;
     final DailyReminder(:time) = progress.progress.reminder as DailyReminder;
 
     return time
@@ -39,20 +38,20 @@ List<LocalNotification> biblePlanLocalNotifications(Ref ref) {
         .getFollowingDates(count: horizonDays)
         .map(
           (date) => LocalNotification(
-            id: BiblePlanNotification.getNotificationIdFor(planType, date),
+            id: BiblePlanNotification.getNotificationIdFor(planId, date),
             channel: LocalNotificationChannel(
               id: biblePlanReminderNotificationChannelId,
               name: t.biblePlans.reminderNotificationChannelName,
               description: t.biblePlans.reminderNotificationChannelDescription,
             ),
-            title: t.biblePlans.reminderNotificationTitle(name: planType.title()),
+            title: t.biblePlans.reminderNotificationTitle(name: progress.plan.getDisplayName(planId)),
             body: t.biblePlans.reminderNotificationBody(
               reading: currentDay.isReviewAndReflect
                   ? t.biblePlans.reviewAndReflect
                   : currentDay.passages.map((passage) => passage.format()).join(', '),
             ),
             time: DateTime(date.year, date.month, date.day, time.hour, time.minute),
-            payload: BiblePlanNotification.getNotificationPrefixFor(planType),
+            payload: BiblePlanNotification.getNotificationPrefixFor(planId),
           ),
         );
   }).toList();

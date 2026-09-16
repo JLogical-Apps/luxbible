@@ -10,8 +10,9 @@ import 'package:style/style.dart';
 class StyledModulePage extends HookWidget {
   final Widget title;
   final List<StyledModuleStep> steps;
+  final Function(int)? onStepChanged;
 
-  const StyledModulePage({super.key, required this.title, required this.steps});
+  const StyledModulePage({super.key, required this.title, required this.steps, this.onStepChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +37,11 @@ class StyledModulePage extends HookWidget {
     }
 
     Future<void> handlePopAttempt() async {
+      if (currentStep.onBackPressed case final onBackPressed?) {
+        await onBackPressed(goBack);
+        return;
+      }
+
       if (stepIndexState.value > 0) {
         goBack();
         return;
@@ -67,26 +73,32 @@ class StyledModulePage extends HookWidget {
             Expanded(
               child: StyledPageDock(
                 controller: pageController,
-                onPageChanged: (page) => stepIndexState.value = page,
+                onPageChanged: (page) {
+                  stepIndexState.value = page;
+                  onStepChanged?.call(page);
+                },
                 pages: steps
                     .mapIndexed(
                       (pageIndex, page) => StyledPageDockPage(
                         padding: .zero,
                         forceFillHeight: page.forceFillHeight,
                         children: [
-                          gapH24,
-                          Padding(
-                            padding: .symmetric(horizontal: 16),
-                            child: Column(
-                              crossAxisAlignment: .start,
-                              spacing: 4,
-                              children: [
-                                DefaultTextStyle(child: page.title, style: context.textStyle.headingSm),
-                                if (page.subtitle case final subtitle?)
-                                  DefaultTextStyle(child: subtitle, style: context.textStyle.paragraphMd),
-                              ],
+                          if (page.title != null || page.subtitle != null) ...[
+                            gapH24,
+                            Padding(
+                              padding: .symmetric(horizontal: 16),
+                              child: Column(
+                                crossAxisAlignment: .start,
+                                spacing: 4,
+                                children: [
+                                  if (page.title case final title?)
+                                    DefaultTextStyle(child: title, style: context.textStyle.headingSm),
+                                  if (page.subtitle case final subtitle?)
+                                    DefaultTextStyle(child: subtitle, style: context.textStyle.paragraphMd),
+                                ],
+                              ),
                             ),
-                          ),
+                          ],
                           gapH24,
                           page.forceFillHeight
                               ? Expanded(
@@ -114,7 +126,7 @@ class StyledModulePage extends HookWidget {
 }
 
 class StyledModuleStep {
-  final Widget title;
+  final Widget? title;
   final Widget? subtitle;
 
   final List<Widget> Function(BuildContext) childrenBuilder;
@@ -123,14 +135,16 @@ class StyledModuleStep {
   final StyledModuleButtons buttons;
 
   final bool forceFillHeight;
+  final FutureOr Function(Function() goBack)? onBackPressed;
 
   const StyledModuleStep({
-    required this.title,
+    this.title,
     this.subtitle,
     required this.childrenBuilder,
     this.bodyPadding = const .symmetric(horizontal: 16),
     this.buttons = const _NextStyledModuleButtons(),
     this.forceFillHeight = false,
+    this.onBackPressed,
   });
 
   static StyledModuleStep selection<T>({

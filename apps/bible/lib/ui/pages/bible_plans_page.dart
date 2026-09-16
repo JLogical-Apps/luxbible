@@ -35,9 +35,9 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         if (!context.mounted || isProcessingRef.value) return;
 
-        final completedPlanTypes = currUser.planProgressByType
-            .where((planType, progress) {
-              final previousProgress = prevUser.planProgressByType[planType];
+        final completedPlanTypes = currUser.planProgressById
+            .where((planId, progress) {
+              final previousProgress = prevUser.planProgressById[planId];
               return previousProgress != null &&
                   progress.days.anyIndexed(
                     (dayIndex, day) => switch (previousProgress.days.elementAtOrNull(dayIndex)) {
@@ -52,11 +52,11 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
 
         isProcessingRef.value = true;
         try {
-          for (final planType in completedPlanTypes.where(
-            (planType) => currUser.planProgressByType[planType]?.reminder == null,
+          for (final planId in completedPlanTypes.where(
+            (planId) => currUser.planProgressById[planId]?.reminder == null,
           )) {
             if (!context.mounted) break;
-            await BiblePlanReminderFlow.showDiscoveryPrompt(context: context, planType: planType);
+            await BiblePlanReminderFlow.showDiscoveryPrompt(context: context, planId: planId);
           }
           await ref.read(userProvider.notifier).requestReviewIfEligible();
         } finally {
@@ -75,7 +75,7 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
       body: StyledListView(
         children: [
           gapH16,
-          if (user.planProgressByType.isEmpty)
+          if (user.getHydratedPlanProgresses(plans).isEmpty)
             Padding(
               padding: .symmetric(horizontal: 16),
               child: StyledTile.message(
@@ -86,16 +86,15 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
           StyledReorderableList(
             shrinkWrap: true,
             showProxyBackground: false,
-            onReorder: (a, b) =>
-                ref.updateUser((user) => user.copyWith(planProgressByType: user.planProgressByType.withReorder(a, b))),
+            onReorder: (a, b) => ref.updateUser((user) => user.withReorderedPlans(a, b)),
             children: user
                 .getHydratedPlanProgresses(plans)
                 .map(
                   (progress) => HookBuilder(
-                    key: ValueKey(progress.type),
+                    key: ValueKey(progress.id),
                     builder: (_) {
                       final plan = progress.plan;
-                      final planType = progress.type;
+                      final planId = progress.id;
                       final dailyReminderTime = progress.progress.reminder?.dailyTime;
 
                       final tabController = useTabController(
@@ -112,8 +111,8 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                           child: StyledCard(
                             children: [
                               StyledListItem(
-                                leading: BiblePlanThumbnail(plan: plan, planType: planType),
-                                title: planType.title().toText(),
+                                leading: BiblePlanThumbnail.fromPlan(plan: plan, id: planId),
+                                title: plan.getDisplayName(planId).toText(),
                                 subtitle: Padding(
                                   padding: .symmetric(vertical: 4),
                                   child: StyledProgressBar(
@@ -126,7 +125,7 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                                   child: Symbols.more_vert.toIcon(),
                                   onPressed: () => context.showStyledSheet(
                                     (_, _) => StyledSheet(
-                                      title: planType.title().toText(),
+                                      title: plan.getDisplayName(planId).toText(),
                                       children: [
                                         StyledListItem(
                                           leading: Icon(
@@ -158,13 +157,15 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                                                               cancelLabel: t.common.nevermind.toText(),
                                                               title: t.biblePlans.deleteReminder.toText(),
                                                               body: t.biblePlans
-                                                                  .deleteReminderConfirmation(name: planType.title())
+                                                                  .deleteReminderConfirmation(
+                                                                    name: plan.getDisplayName(planId),
+                                                                  )
                                                                   .toText(),
                                                             ),
                                                           );
                                                           if (shouldDelete == true) {
                                                             ref.updateUser(
-                                                              (user) => user.withPlanReminder(planType, .none()),
+                                                              (user) => user.withPlanReminder(planId, .none()),
                                                             );
                                                           }
                                                         },
@@ -175,7 +176,7 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                                             if (newTime != null && context.mounted) {
                                               await BiblePlanReminderFlow.save(
                                                 context: context,
-                                                planType: planType,
+                                                planId: planId,
                                                 time: newTime,
                                               );
                                             }
@@ -191,12 +192,14 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                                               (context) => StyledDialog.confirmDelete(
                                                 cancelLabel: t.common.nevermind.toText(),
                                                 title: t.biblePlans.stopPlan.toText(),
-                                                body: t.biblePlans.stopConfirmation(name: planType.title()).toText(),
+                                                body: t.biblePlans
+                                                    .stopConfirmation(name: plan.getDisplayName(planId))
+                                                    .toText(),
                                                 deleteLabel: t.common.stop.toText(),
                                               ),
                                             );
                                             if (confirmed == true) {
-                                              ref.updateUser((user) => user.withStoppedPlan(planType));
+                                              ref.updateUser((user) => user.withStoppedPlan(planId));
                                             }
                                           },
                                         ),
@@ -238,7 +241,7 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                                           title: t.biblePlans.reviewAndReflect.toText(),
                                           isSelected: progress.isDayComplete(dayIndex: dayIndex),
                                           onSelected: (_) => ref.updateUser(
-                                            (user) => user.withPlanDayToggled(planType: planType, dayIndex: dayIndex),
+                                            (user) => user.withPlanDayToggled(planId: planId, dayIndex: dayIndex),
                                           ),
                                         ),
                                       ]
@@ -249,7 +252,7 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                                               onPressed: () async {
                                                 final result = await context.push(
                                                   BiblePlanReadPage(
-                                                    planType: planType,
+                                                    planId: planId,
                                                     dayIndex: dayIndex,
                                                     initialPassageIndex: passageIndex,
                                                   ),
@@ -263,7 +266,7 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                                                 ),
                                                 onChanged: (_) => ref.updateUser(
                                                   (user) => user.withPassageToggled(
-                                                    planType: planType,
+                                                    planId: planId,
                                                     dayIndex: dayIndex,
                                                     day: day,
                                                     passage: passage,
@@ -280,9 +283,9 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                                   child: StyledRectButton.primary(
                                     label: t.common.finish.toText(),
                                     onPressed: () {
-                                      ref.updateUser((user) => user.withCompletedPlan(planType));
+                                      ref.updateUser((user) => user.withCompletedPlan(planId));
                                       context.showStyledSnackbar(
-                                        message: t.biblePlans.completed(name: planType.title()).toText(),
+                                        message: t.biblePlans.completed(name: plan.getDisplayName(planId)).toText(),
                                         action: StyledTextAction(
                                           label: t.biblePlans.startNew.toText(),
                                           onPressed: () => context.push(BiblePlanSearchPage()),
