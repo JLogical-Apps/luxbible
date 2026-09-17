@@ -29,6 +29,7 @@ class StyledPageDock extends HookWidget {
 
     return StyledDock(
       forceHeight: true,
+      shrinkWrap: false,
       activeScrollKey: pageState.value,
       children: [
         Expanded(
@@ -50,11 +51,18 @@ class StyledPageDock extends HookWidget {
                             child: Padding(
                               padding: page.padding,
                               child: page.forceFillHeight
-                                  ? SizedBox(
-                                      height: constraints.maxHeight,
-                                      child: Column(crossAxisAlignment: .start, children: page.children),
+                                  ? SingleChildScrollView(
+                                      physics: AlwaysScrollableScrollPhysics(),
+                                      child: SizedBox(
+                                        height: constraints.maxHeight,
+                                        child: Column(crossAxisAlignment: .start, children: page.children),
+                                      ),
                                     )
-                                  : StyledListView(controller: scrollController, children: page.children),
+                                  : StyledListView(
+                                      controller: scrollController,
+                                      children: page.children,
+                                      physics: AlwaysScrollableScrollPhysics(),
+                                    ),
                             ),
                           ),
                         ),
