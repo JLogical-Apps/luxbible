@@ -11,8 +11,9 @@ class StyledModulePage extends HookWidget {
   final Widget title;
   final List<StyledModuleStep> steps;
   final Function(int)? onStepChanged;
+  final ScrollController? controller;
 
-  const StyledModulePage({super.key, required this.title, required this.steps, this.onStepChanged});
+  const StyledModulePage({super.key, required this.title, required this.steps, this.onStepChanged, this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +73,7 @@ class StyledModulePage extends HookWidget {
             ),
             Expanded(
               child: StyledPageDock(
+                scrollController: controller,
                 controller: pageController,
                 onPageChanged: (page) {
                   stepIndexState.value = page;

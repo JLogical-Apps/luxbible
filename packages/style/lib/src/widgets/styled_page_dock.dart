@@ -8,6 +8,7 @@ class StyledPageDock extends HookWidget {
   final List<StyledPageDockPage> pages;
   final Function(int)? onPageChanged;
   final PageController? controller;
+  final ScrollController? scrollController;
 
   final Widget? aboveButtons;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
@@ -17,6 +18,7 @@ class StyledPageDock extends HookWidget {
     required this.pages,
     this.onPageChanged,
     this.controller,
+    this.scrollController,
     this.aboveButtons,
     this.buttonsBuilder,
   });
@@ -52,7 +54,7 @@ class StyledPageDock extends HookWidget {
                                       height: constraints.maxHeight,
                                       child: Column(crossAxisAlignment: .start, children: page.children),
                                     )
-                                  : StyledListView(children: page.children),
+                                  : StyledListView(controller: scrollController, children: page.children),
                             ),
                           ),
                         ),

@@ -49,6 +49,7 @@ class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<Stri
     final duration = durationState.value;
 
     final booksFilterState = useDependentState(() => '', [method]);
+    final scrollController = useUnfocusOnScrollDown(useScrollController());
 
     final generatedDaysState = useState<List<BiblePlanDay>?>(null);
 
@@ -136,6 +137,7 @@ class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<Stri
     return StyledModulePage(
       title: (stepIndexState.value == reviewStepIndex ? t.biblePlans.review : t.biblePlans.createCustomPlan).toText(),
       onStepChanged: (stepIndex) => stepIndexState.value = stepIndex,
+      controller: scrollController,
       steps: [
         StyledModuleStep.selection(
           title: t.biblePlans.creationMethodQuestion.toText(),
