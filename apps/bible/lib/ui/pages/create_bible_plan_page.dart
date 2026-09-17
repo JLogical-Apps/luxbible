@@ -373,6 +373,7 @@ class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<Stri
                                   child: StyledListItem(
                                     size: .sm,
                                     title: passage.format().toText(),
+                                    onPressed: () => PassagePreviewPage.show(context, verseSelection: passage),
                                     trailing: StyledCircleButton.md(
                                       child: Symbols.more_vert.toIcon(),
                                       onPressed: () => context.showStyledSheet(

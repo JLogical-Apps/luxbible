@@ -527,6 +527,7 @@ Users can:
 - Describe a plan, copy a compatible prompt into their own AI, and import the file or file contents it creates
 - Import a portable `.lxbp` plan from a file or pasted file contents, then edit its name and selected color before reviewing it
 - Add, reorder, move, or remove exact passages across as many as 365 reading and reflection days
+- Open a passage preview by tapping a passage in the review step before creating a plan
 - Share or download included and custom plan definitions as portable `.lxbp` files
 - Delete inactive custom plans after confirmation
 - Follow more than one plan at a time
