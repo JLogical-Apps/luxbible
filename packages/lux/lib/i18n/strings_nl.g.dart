@@ -828,6 +828,7 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	@override String get chooseBooksAndDuration => 'Boeken en duur kiezen';
 	@override String get chooseBooksAndDurationDescription => 'Kies boeken en laat Lux ze evenwichtig over je leesplan verdelen.';
 	@override String get chooseBooks => 'Boeken kiezen';
+	@override String get filterBooks => 'Boeken filteren';
 	@override String get chooseDuration => 'Duur kiezen';
 	@override String get durationInstructions => 'Hoeveel dagen moet je leesplan duren?';
 	@override String durationDayCount({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count,
@@ -3448,6 +3449,7 @@ extension on TranslationsNl {
 			'biblePlans.chooseBooksAndDuration' => 'Boeken en duur kiezen',
 			'biblePlans.chooseBooksAndDurationDescription' => 'Kies boeken en laat Lux ze evenwichtig over je leesplan verdelen.',
 			'biblePlans.chooseBooks' => 'Boeken kiezen',
+			'biblePlans.filterBooks' => 'Boeken filteren',
 			'biblePlans.chooseDuration' => 'Duur kiezen',
 			'biblePlans.durationInstructions' => 'Hoeveel dagen moet je leesplan duren?',
 			'biblePlans.durationDayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: '${count} dag', other: '${count} dagen', ), 
@@ -3463,9 +3465,9 @@ extension on TranslationsNl {
 			'biblePlans.myBiblePlan' => 'Mijn Bijbelleesplan',
 			'biblePlans.nameRequired' => 'Voer een naam voor je leesplan in.',
 			'biblePlans.nameAlreadyExists' => 'Een Bijbelleesplan gebruikt deze naam al.',
-			'biblePlans.discardPlanQuestion' => 'Dit leesplan weggooien?',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.discardPlanQuestion' => 'Dit leesplan weggooien?',
 			'biblePlans.discardPlanConfirmation' => 'Je wijzigingen gaan verloren.',
 			'biblePlans.discard' => 'Weggooien',
 			'biblePlans.addDay' => 'Dag toevoegen',
@@ -3977,9 +3979,9 @@ extension on TranslationsNl {
 			'morphology.mood.participle.description' => 'Een verbaal bijvoeglijk naamwoord, zoals "doende" of "gedaan hebbend".',
 			'morphology.mood.participle.examples' => 'degene die schrijft|gesproken hebbend',
 			'morphology.voice.active.name' => 'Actief',
-			'morphology.voice.active.description' => 'Het onderwerp voert de handeling uit.',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.voice.active.description' => 'Het onderwerp voert de handeling uit.',
 			'morphology.voice.active.examples' => 'hij schrijft|zij onderwijzen',
 			'morphology.voice.middle.name' => 'Medium',
 			'morphology.voice.middle.description' => 'Het onderwerp handelt op of voor zichzelf.',

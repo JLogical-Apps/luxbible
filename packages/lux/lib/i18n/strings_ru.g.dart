@@ -830,6 +830,7 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	@override String get chooseBooksAndDuration => 'Выбрать книги и продолжительность';
 	@override String get chooseBooksAndDurationDescription => 'Выберите книги, и Lux равномерно распределит их по вашему плану.';
 	@override String get chooseBooks => 'Выбрать книги';
+	@override String get filterBooks => 'Фильтровать книги';
 	@override String get chooseDuration => 'Выбрать продолжительность';
 	@override String get durationInstructions => 'Сколько дней должен длиться ваш план?';
 	@override String durationDayCount({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count,
@@ -3456,6 +3457,7 @@ extension on TranslationsRu {
 			'biblePlans.chooseBooksAndDuration' => 'Выбрать книги и продолжительность',
 			'biblePlans.chooseBooksAndDurationDescription' => 'Выберите книги, и Lux равномерно распределит их по вашему плану.',
 			'biblePlans.chooseBooks' => 'Выбрать книги',
+			'biblePlans.filterBooks' => 'Фильтровать книги',
 			'biblePlans.chooseDuration' => 'Выбрать продолжительность',
 			'biblePlans.durationInstructions' => 'Сколько дней должен длиться ваш план?',
 			'biblePlans.durationDayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: '${count} день', few: '${count} дня', many: '${count} дней', other: '${count} дня', ), 
@@ -3471,9 +3473,9 @@ extension on TranslationsRu {
 			'biblePlans.myBiblePlan' => 'Мой библейский план',
 			'biblePlans.nameRequired' => 'Введите название плана.',
 			'biblePlans.nameAlreadyExists' => 'Библейский план с таким названием уже существует.',
-			'biblePlans.discardPlanQuestion' => 'Отменить создание плана?',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.discardPlanQuestion' => 'Отменить создание плана?',
 			'biblePlans.discardPlanConfirmation' => 'Ваши изменения будут потеряны.',
 			'biblePlans.discard' => 'Отменить',
 			'biblePlans.addDay' => 'Добавить день',
@@ -3985,9 +3987,9 @@ extension on TranslationsRu {
 			'morphology.mood.participle.description' => 'Отглагольное прилагательное, например «делать» или «сделать».',
 			'morphology.mood.participle.examples' => 'тот, кто пишет|говорит',
 			'morphology.voice.active.name' => 'Активный',
-			'morphology.voice.active.description' => 'Субъект выполняет действие.',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.voice.active.description' => 'Субъект выполняет действие.',
 			'morphology.voice.active.examples' => 'он пишет|они учат',
 			'morphology.voice.middle.name' => 'Средний',
 			'morphology.voice.middle.description' => 'Субъект действует сам по себе или для себя.',

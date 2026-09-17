@@ -555,6 +555,7 @@
     "chooseBooksAndDuration": "Boeken en duur kiezen",
     "chooseBooksAndDurationDescription": "Kies boeken en laat Lux ze evenwichtig over je leesplan verdelen.",
     "chooseBooks": "Boeken kiezen",
+    "filterBooks": "Boeken filteren",
     "chooseDuration": "Duur kiezen",
     "durationInstructions": "Hoeveel dagen moet je leesplan duren?",
     "durationDayCount(param=count)": {

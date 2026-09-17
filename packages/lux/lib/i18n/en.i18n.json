@@ -553,6 +553,7 @@
     "chooseBooksAndDuration": "Choose Books & Duration",
     "chooseBooksAndDurationDescription": "Choose books and let Lux balance them across your plan.",
     "chooseBooks": "Choose Books",
+    "filterBooks": "Filter books",
     "chooseDuration": "Choose Duration",
     "durationInstructions": "How many days should your plan last?",
     "durationDayCount(param=count)": {

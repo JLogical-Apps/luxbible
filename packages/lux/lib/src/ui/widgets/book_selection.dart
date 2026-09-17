@@ -78,9 +78,9 @@ class BookSelectionSections extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Column(
     children: [
-      if (!includeWholeBible &&
-          !Testament.values.any((testament) => isMatching(testament.title())) &&
-          !BookType.values.any((book) => isMatching(book.title(isPlural: true))))
+      if (!Testament.values.any((testament) => isMatching(testament.title())) &&
+          !BookType.values.any((book) => isMatching(book.title(isPlural: true))) &&
+          !(includeWholeBible && isMatching(t.testaments.wholeBible)))
         Padding(
           padding: .all(16),
           child: StyledTile.message(
@@ -89,7 +89,7 @@ class BookSelectionSections extends StatelessWidget {
             subtitle: t.emptyStates.tryAnotherSearch.toText(),
           ),
         ),
-      if (includeWholeBible)
+      if (includeWholeBible && isMatching(t.testaments.wholeBible))
         StyledSection(
           title: t.testaments.wholeBible.toText(),
           padding: .only(top: 24),

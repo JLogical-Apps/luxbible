@@ -1787,6 +1787,9 @@ class Translations$biblePlans$en {
 	/// en: 'Choose Books'
 	String get chooseBooks => 'Choose Books';
 
+	/// en: 'Filter books'
+	String get filterBooks => 'Filter books';
+
 	/// en: 'Choose Duration'
 	String get chooseDuration => 'Choose Duration';
 
@@ -5611,6 +5614,7 @@ extension on Translations {
 			'biblePlans.chooseBooksAndDuration' => 'Choose Books & Duration',
 			'biblePlans.chooseBooksAndDurationDescription' => 'Choose books and let Lux balance them across your plan.',
 			'biblePlans.chooseBooks' => 'Choose Books',
+			'biblePlans.filterBooks' => 'Filter books',
 			'biblePlans.chooseDuration' => 'Choose Duration',
 			'biblePlans.durationInstructions' => 'How many days should your plan last?',
 			'biblePlans.durationDayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} Day', other: '${count} Days', ), 
@@ -5628,9 +5632,9 @@ extension on Translations {
 			'biblePlans.nameAlreadyExists' => 'A Bible plan already uses this name.',
 			'biblePlans.discardPlanQuestion' => 'Discard This Plan?',
 			'biblePlans.discardPlanConfirmation' => 'Your changes will be lost.',
-			'biblePlans.discard' => 'Discard',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.discard' => 'Discard',
 			'biblePlans.addDay' => 'Add Day',
 			'biblePlans.addPassage' => 'Add Passage',
 			'biblePlans.removeDay' => 'Remove Day',
@@ -6142,9 +6146,9 @@ extension on Translations {
 			'morphology.voice.active.name' => 'Active',
 			'morphology.voice.active.description' => 'The subject performs the action.',
 			'morphology.voice.active.examples' => 'he writes|they teach',
-			'morphology.voice.middle.name' => 'Middle',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.voice.middle.name' => 'Middle',
 			'morphology.voice.middle.description' => 'The subject acts on or for itself.',
 			'morphology.voice.middle.examples' => 'he washes himself|they obtained for themselves',
 			'morphology.voice.passive.name' => 'Passive',

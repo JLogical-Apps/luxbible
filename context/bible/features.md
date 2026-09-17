@@ -524,6 +524,7 @@ Users can:
 - Review a plan's description, source, duration, and daily readings
 - Manually create a named custom plan with one of six colors
 - Choose one or more Bible books and a duration from 1 through 365 days to generate a balanced plan
+- Narrow the book list by typing a book, testament, or whole-Bible name above the current selection summary
 - Describe a plan, copy a compatible prompt into their own AI, and import the file or file contents it creates
 - Import a portable `.lxbp` plan from a file or pasted file contents, then edit its name and selected color before reviewing it
 - Add, reorder, move, or remove exact passages across as many as 365 reading and reflection days

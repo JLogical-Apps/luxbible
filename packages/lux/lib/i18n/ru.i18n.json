@@ -557,6 +557,7 @@
     "chooseBooksAndDuration": "Выбрать книги и продолжительность",
     "chooseBooksAndDurationDescription": "Выберите книги, и Lux равномерно распределит их по вашему плану.",
     "chooseBooks": "Выбрать книги",
+    "filterBooks": "Фильтровать книги",
     "chooseDuration": "Выбрать продолжительность",
     "durationInstructions": "Сколько дней должен длиться ваш план?",
     "durationDayCount(param=count)": {

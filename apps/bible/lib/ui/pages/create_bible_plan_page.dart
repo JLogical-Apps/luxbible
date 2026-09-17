@@ -48,6 +48,8 @@ class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<Stri
     ]);
     final duration = durationState.value;
 
+    final booksFilterState = useDependentState(() => '', [method]);
+
     final generatedDaysState = useState<List<BiblePlanDay>?>(null);
 
     // Shared
@@ -229,11 +231,25 @@ class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<Stri
                 selectedBooks: selectedBooks,
                 onChanged: (books) => selectedBooksState.value = books,
                 includeWholeBible: true,
+                search: booksFilterState.value,
               ),
             ],
-            aboveButtons: BookSelectionSummary(
-              selectedBooks: selectedBooks,
-              onChanged: (books) => selectedBooksState.value = books,
+            aboveButtons: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(16).copyWith(bottom: 0),
+                  child: StyledTextField(
+                    text: booksFilterState.value,
+                    hintText: t.biblePlans.filterBooks,
+                    autocorrect: false,
+                    onChanged: (filter) => booksFilterState.value = filter,
+                  ),
+                ),
+                BookSelectionSummary(
+                  selectedBooks: selectedBooks,
+                  onChanged: (books) => selectedBooksState.value = books,
+                ),
+              ],
             ),
             buttons: .next(canGoNext: selectedBooks.isNotEmpty),
           ),
