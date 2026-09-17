@@ -576,7 +576,7 @@
     "myBiblePlan": "Mijn Bijbelleesplan",
     "nameRequired": "Voer een naam voor je leesplan in.",
     "nameAlreadyExists": "Een Bijbelleesplan gebruikt deze naam al.",
-    "discardPlanQuestion": "Dit leesplan weggooien?",
+    "discardPlanQuestion": "Je wijzigingen weggooien?",
     "discardPlanConfirmation": "Je wijzigingen gaan verloren.",
     "discard": "Weggooien",
     "addDay": "Dag toevoegen",

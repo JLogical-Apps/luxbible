@@ -574,7 +574,7 @@
     "myBiblePlan": "My Bible Plan",
     "nameRequired": "Enter a name for your plan.",
     "nameAlreadyExists": "A Bible plan already uses this name.",
-    "discardPlanQuestion": "Discard This Plan?",
+    "discardPlanQuestion": "Discard Your Changes?",
     "discardPlanConfirmation": "Your changes will be lost.",
     "discard": "Discard",
     "addDay": "Add Day",

@@ -846,7 +846,7 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	@override String get myBiblePlan => 'Мой библейский план';
 	@override String get nameRequired => 'Введите название плана.';
 	@override String get nameAlreadyExists => 'Библейский план с таким названием уже существует.';
-	@override String get discardPlanQuestion => 'Отменить создание плана?';
+	@override String get discardPlanQuestion => 'Отменить ваши изменения?';
 	@override String get discardPlanConfirmation => 'Ваши изменения будут потеряны.';
 	@override String get discard => 'Отменить';
 	@override String get addDay => 'Добавить день';
@@ -3475,7 +3475,7 @@ extension on TranslationsRu {
 			'biblePlans.nameAlreadyExists' => 'Библейский план с таким названием уже существует.',
 			_ => null,
 		} ?? switch (path) {
-			'biblePlans.discardPlanQuestion' => 'Отменить создание плана?',
+			'biblePlans.discardPlanQuestion' => 'Отменить ваши изменения?',
 			'biblePlans.discardPlanConfirmation' => 'Ваши изменения будут потеряны.',
 			'biblePlans.discard' => 'Отменить',
 			'biblePlans.addDay' => 'Добавить день',

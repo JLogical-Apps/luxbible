@@ -580,7 +580,7 @@
     "myBiblePlan": "Мой библейский план",
     "nameRequired": "Введите название плана.",
     "nameAlreadyExists": "Библейский план с таким названием уже существует.",
-    "discardPlanQuestion": "Отменить создание плана?",
+    "discardPlanQuestion": "Отменить ваши изменения?",
     "discardPlanConfirmation": "Ваши изменения будут потеряны.",
     "discard": "Отменить",
     "addDay": "Добавить день",

@@ -1822,8 +1822,8 @@ class Translations$biblePlans$en {
 	/// en: 'A Bible plan already uses this name.'
 	String get nameAlreadyExists => 'A Bible plan already uses this name.';
 
-	/// en: 'Discard This Plan?'
-	String get discardPlanQuestion => 'Discard This Plan?';
+	/// en: 'Discard Your Changes?'
+	String get discardPlanQuestion => 'Discard Your Changes?';
 
 	/// en: 'Your changes will be lost.'
 	String get discardPlanConfirmation => 'Your changes will be lost.';
@@ -5630,7 +5630,7 @@ extension on Translations {
 			'biblePlans.myBiblePlan' => 'My Bible Plan',
 			'biblePlans.nameRequired' => 'Enter a name for your plan.',
 			'biblePlans.nameAlreadyExists' => 'A Bible plan already uses this name.',
-			'biblePlans.discardPlanQuestion' => 'Discard This Plan?',
+			'biblePlans.discardPlanQuestion' => 'Discard Your Changes?',
 			'biblePlans.discardPlanConfirmation' => 'Your changes will be lost.',
 			_ => null,
 		} ?? switch (path) {

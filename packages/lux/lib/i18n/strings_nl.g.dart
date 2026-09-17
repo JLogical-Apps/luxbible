@@ -842,7 +842,7 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	@override String get myBiblePlan => 'Mijn Bijbelleesplan';
 	@override String get nameRequired => 'Voer een naam voor je leesplan in.';
 	@override String get nameAlreadyExists => 'Een Bijbelleesplan gebruikt deze naam al.';
-	@override String get discardPlanQuestion => 'Dit leesplan weggooien?';
+	@override String get discardPlanQuestion => 'Je wijzigingen weggooien?';
 	@override String get discardPlanConfirmation => 'Je wijzigingen gaan verloren.';
 	@override String get discard => 'Weggooien';
 	@override String get addDay => 'Dag toevoegen';
@@ -3467,7 +3467,7 @@ extension on TranslationsNl {
 			'biblePlans.nameAlreadyExists' => 'Een Bijbelleesplan gebruikt deze naam al.',
 			_ => null,
 		} ?? switch (path) {
-			'biblePlans.discardPlanQuestion' => 'Dit leesplan weggooien?',
+			'biblePlans.discardPlanQuestion' => 'Je wijzigingen weggooien?',
 			'biblePlans.discardPlanConfirmation' => 'Je wijzigingen gaan verloren.',
 			'biblePlans.discard' => 'Weggooien',
 			'biblePlans.addDay' => 'Dag toevoegen',
