@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
+import 'package:style/src/gap.dart';
 import 'package:style/src/style_context_extensions.dart';
 import 'package:style/src/text_style_extensions.dart';
 import 'package:style/src/widgets/styled_size_and_fade.dart';
 
 class StyledFormInput extends StatelessWidget {
   final Widget? label;
+  final Widget? description;
   final Widget? error;
 
   final EdgeInsets labelPadding;
 
   final Widget child;
 
-  const StyledFormInput({super.key, this.label, this.error, this.labelPadding = .zero, required this.child});
+  const StyledFormInput({
+    super.key,
+    this.label,
+    this.description,
+    this.error,
+    this.labelPadding = .zero,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +32,15 @@ class StyledFormInput extends StatelessWidget {
       children: [
         if (label case final label?)
           Padding(
-            padding: labelPadding + .only(bottom: 8),
+            padding: labelPadding,
             child: DefaultTextStyle(child: label, style: context.textStyle.labelMd),
           ),
+        if (description case final description?)
+          Padding(
+            padding: labelPadding,
+            child: DefaultTextStyle(child: description, style: context.textStyle.paragraphSm.subtle()),
+          ),
+        if (label != null || description != null) gapH8,
         child,
         StyledSizeAndFade(
           child: error == null

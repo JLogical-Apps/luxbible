@@ -30,16 +30,20 @@ sealed class BiblePlan with _$BiblePlan {
     }
   }
 
-  bool get isValid =>
-      name.trim().isNotEmpty &&
-      days.isNotEmpty &&
-      days.length <= 365 &&
-      days.any((day) => day.passages.isNotEmpty) &&
-      days.every(
-        (day) =>
-            day.passages.toSet().length == day.passages.length &&
-            day.passages.every((passage) => passage.isNotEmpty && VerseSelection.isOsisId(passage.osisId())),
-      );
+  BiblePlanValidationError? get validationError {
+    if (name.trim().isEmpty) return .nameRequired;
+    if (days.isEmpty || days.length > 365) return .invalidDayCount;
+    if (!days.any((day) => day.passages.isNotEmpty)) return .readingRequired;
+    if (days.any((day) => day.passages.toSet().length != day.passages.length)) return .duplicatePassage;
+    if (days.any(
+      (day) => day.passages.any((passage) => passage.isEmpty || !VerseSelection.isOsisId(passage.osisId())),
+    )) {
+      return .invalidPassage;
+    }
+    return null;
+  }
+
+  bool get isValid => validationError == null;
 
   BiblePlanColor get color => colorOverride ?? BiblePlanColor.values[name.codeUnits.sum % BiblePlanColor.values.length];
 
@@ -275,6 +279,8 @@ class BiblePlanSource {
 }
 
 enum BiblePlanColor { red, orange, yellow, green, blue, violet }
+
+enum BiblePlanValidationError { nameRequired, invalidDayCount, readingRequired, invalidPassage, duplicatePassage }
 
 extension BiblePlanDraftDaysExtension on List<BiblePlanDay> {
   List<BiblePlanDay> withPassageAdded(int dayIndex, VerseSelection passage) {

@@ -23,7 +23,6 @@ class StyledDial<T> extends HookWidget {
     final controller = useFixedExtentScrollController(initialItem: options.indexOf(initiallySelected));
 
     return SizedBox(
-      width: 88,
       height: 192,
       child: Stack(
         alignment: .center,

@@ -2,6 +2,7 @@ import 'package:bible/models/bible_plan.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/custom_bible_plans_provider.dart';
 import 'package:bible/ui/pages/create_bible_plan_page.dart';
+import 'package:bible/ui/widgets/bible_plan_file_list_items.dart';
 import 'package:bible/ui/widgets/bible_plan_tile.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
@@ -129,36 +130,37 @@ class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<Stri
                 final shouldStartPlan = await context.showStyledSheet(
                   (sheetContext, _) => StyledSheet(
                     title: t.biblePlans.startPlanQuestion.toText(),
-                    trailing: isCustom
-                        ? StyledCircleButton.md(
-                            child: Symbols.more_vert.toIcon(),
-                            onPressed: () => context.showStyledSheet(
-                              (menuContext, _) => StyledSheet(
-                                title: plan.name.toText(),
-                                children: [
-                                  StyledListItem(
-                                    leading: Icon(Symbols.delete, color: menuContext.colors.contentCritical),
-                                    title: t.biblePlans.deletePlan.toText(),
-                                    onPressed: () async {
-                                      menuContext.pop();
-                                      final shouldDelete = await context.showStyledDialog(
-                                        (context) => StyledDialog.confirmDelete(
-                                          title: t.biblePlans.deletePlanQuestion.toText(),
-                                          body: t.biblePlans.deletePlanConfirmation(name: plan.name).toText(),
-                                          cancelLabel: t.common.nevermind.toText(),
-                                        ),
-                                      );
-                                      if (shouldDelete != true) return;
-                                      ref.read(customBiblePlansProvider.notifier).delete(planId);
-                                      ref.updateUser((user) => user.withRemovedCompletedPlan(planId));
-                                      if (context.mounted) context.pop();
-                                    },
-                                  ),
-                                ],
+                    trailing: StyledCircleButton.md(
+                      child: Symbols.more_vert.toIcon(),
+                      onPressed: () => context.showStyledSheet(
+                        (menuContext, _) => StyledSheet(
+                          title: plan.getDisplayName(planId).toText(),
+                          children: [
+                            BiblePlanShareListItem(plan: plan, displayName: plan.getDisplayName(planId)),
+                            BiblePlanDownloadListItem(plan: plan, displayName: plan.getDisplayName(planId)),
+                            if (isCustom)
+                              StyledListItem(
+                                leading: Icon(Symbols.delete, color: menuContext.colors.contentCritical),
+                                title: t.biblePlans.deletePlan.toText(),
+                                onPressed: () async {
+                                  menuContext.pop();
+                                  final shouldDelete = await context.showStyledDialog(
+                                    (context) => StyledDialog.confirmDelete(
+                                      title: t.biblePlans.deletePlanQuestion.toText(),
+                                      body: t.biblePlans.deletePlanConfirmation(name: plan.name).toText(),
+                                      cancelLabel: t.common.nevermind.toText(),
+                                    ),
+                                  );
+                                  if (shouldDelete != true) return;
+                                  ref.read(customBiblePlansProvider.notifier).delete(planId);
+                                  ref.updateUser((user) => user.withRemovedCompletedPlan(planId));
+                                  if (context.mounted) context.pop();
+                                },
                               ),
-                            ),
-                          )
-                        : null,
+                          ],
+                        ),
+                      ),
+                    ),
                     children: [
                       BiblePlanTile(planId: planId, plan: plan, showTags: false),
                       StyledListItem(

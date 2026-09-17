@@ -3,6 +3,7 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/flows/bible_plan_reminder_flow.dart';
 import 'package:bible/ui/pages/bible_plan_read_page.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
+import 'package:bible/ui/widgets/bible_plan_file_list_items.dart';
 import 'package:bible/ui/widgets/bible_plan_thumbnail.dart';
 import 'package:bible/utils/bible_hook_utils.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -182,6 +183,8 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                                             }
                                           },
                                         ),
+                                        BiblePlanShareListItem(plan: plan, displayName: plan.getDisplayName(planId)),
+                                        BiblePlanDownloadListItem(plan: plan, displayName: plan.getDisplayName(planId)),
                                         StyledListItem(
                                           leading: Icon(Symbols.stop_circle, color: context.colors.contentCritical),
                                           title: t.biblePlans.stopPlan.toText(),

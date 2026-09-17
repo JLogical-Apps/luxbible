@@ -523,7 +523,11 @@ Users can:
 - Filter plans by Old Testament, New Testament, whole-Bible, or mixed scope
 - Review a plan's description, source, duration, and daily readings
 - Manually create a named custom plan with one of six colors
+- Choose one or more Bible books and a duration from 1 through 365 days to generate a balanced plan
+- Describe a plan, copy a compatible prompt into their own AI, and import the file or file contents it creates
+- Import a portable `.lxbp` plan from a file or pasted file contents, then edit its name and selected color before reviewing it
 - Add, reorder, move, or remove exact passages across as many as 365 reading and reflection days
+- Share or download included and custom plan definitions as portable `.lxbp` files
 - Delete inactive custom plans after confirmation
 - Follow more than one plan at a time
 - Reorder active plans
@@ -536,7 +540,15 @@ Users can:
 - Stop a plan and remove its progress
 - Finish a completed plan
 
-Custom-plan names must contain non-whitespace text and be exactly unique, including case and surrounding whitespace, among included and custom plan names when leaving the naming step. New manual plans start with a unique numbered My Bible Plan suggestion and a randomly selected color. Creating a plan saves and starts it immediately without prompting for a reminder. Reminder discovery becomes eligible only after a plan day is completed.
+Book-and-duration plans preserve canonical order and include every canonical verse reference for the selected books exactly once. Workload balancing and natural boundaries come from the BSB data. When its numbering omits a verse that another translation can contain, the missing reference stays with the preceding available verse in that chapter. The initial duration scales with the selected books' chapter count, from at least one day through 365 days for the whole Bible. Daily workloads are balanced by verse count, preferring chapter, section, and meaningful paragraph boundaries within the balance window. Each generated passage stays within one chapter, nonadjacent selected books remain separate, and durations longer than the selected verse count end with Review & Reflect days.
+
+Custom-plan names must contain non-whitespace text and be exactly unique, including case and surrounding whitespace, among included and custom plan names when leaving the naming step. New manual plans start with a unique numbered My Bible Plan suggestion. Generated plans suggest localized names based on one, two, many, or all selected books and use special year wording for 365 days. Manual and generated drafts receive a randomly selected color. Imported names use the same `(2)`, `(3)` fallback when needed and remain editable. Imported colors remain editable, imported files without a color receive the existing name-based fallback as their selected color, and every imported plan receives a new local ID when it is created. Canceling the native picker preserves the current import, while a later failed import disables Continue until a valid file is chosen. Creating a plan saves and starts it immediately without prompting for a reminder. Reminder discovery becomes eligible only after a plan day is completed.
+
+The `.lxbp` format is the plan's direct portable definition with its name, optional color, and ordered passage lists for each day. Reflection days are retained as empty passage lists. Exports contain no local ID, progress, reminders, or Bible text. Included plans export with their localized display name.
+
+Create with AI does not send content to an AI service. Lux copies a prompt containing the user's description, the portable file schema, supported OSIS book identifiers, valid reference examples, colors, and plan validation rules. The prompt explains that a reading day can contain multiple passages, asks for every requested day to be filled, and permits splitting chapters into smaller ranges for manageable, balanced readings. The user runs the prompt in their own AI, then imports a resulting `.lxbp` file or pastes its contents through the same validated import flow. Import remains unavailable until the current prompt has been copied. AI scheduling uses numbered days rather than calendar dates. For weekday requests, Day 1 represents Monday and every seventh day represents Sunday regardless of the plan's eventual start date.
+
+Creation drafts exist only while the creation flow remains open. Persistent drafts and editing saved custom plans are future work.
 
 When loading saved state, Lux ignores progress and completed status for unavailable plan definitions. A reading page with an unavailable definition retains a safe back action.
 

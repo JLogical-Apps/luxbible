@@ -782,8 +782,59 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	@override String get customPlansDescription => 'Leesplannen die je zelf hebt gemaakt.';
 	@override String get createCustomPlan => 'Aangepast leesplan maken';
 	@override String get creationMethodQuestion => 'Hoe wil je je leesplan maken?';
+	@override String get createWithAi => 'Maken met AI';
+	@override String get createWithAiDescription => 'Ontvang een prompt voor je eigen AI en importeer daarna het leesplanbestand dat deze maakt.';
+	@override String get describeYourPlan => 'Beschrijf je leesplan';
+	@override String get planDescription => 'Beschrijving van leesplan';
+	@override String get describeYourPlanHint => 'Beschrijf je leesplan';
+	@override String get descriptionRequired => 'Beschrijf het leesplan dat je wilt maken.';
+	@override String get examples => 'Voorbeelden';
+	@override String get aiExamples => 'Voorbeelden van leesplannen';
+	@override List<String> get aiExampleList => [
+		'Lees Romeinen in 30 dagen.',
+		'Lees het Nieuwe Testament in een maand.',
+		'Lees Psalmen en Spreuken in 90 dagen, met elke week een overdenkingsdag.',
+		'Lees de vier evangeliën in 60 dagen en wissel ze elke dag af.',
+		'Wissel elke dag af tussen lezingen uit het Oude en Nieuwe Testament. Maak elke zondag een overdenkingsdag. Voltooi de Bijbel in een jaar.',
+	];
+	@override String get aiImportTitle => 'Maken en importeren met AI';
+	@override String get aiImportInstructions => 'Kopieer de prompt naar de AI die je gebruikt en importeer daarna het leesplan dat deze maakt.';
+	@override String get copyPrompt => 'Prompt kopiëren';
+	@override String get promptCopied => 'Prompt naar het klembord gekopieerd.';
+	@override String get importAction => 'Importeren';
+	@override String get importDescription => 'Importeer een .lxbp-bestand of plak compatibele leesplaninhoud.';
+	@override String get importPlan => 'Een Bijbelleesplan importeren';
+	@override String get importPlanTitle => 'Leesplan importeren';
+	@override String get importInstructions => 'Importeer een door Lux geëxporteerd Bijbelleesplanbestand of plak compatibele leesplaninhoud.';
+	@override String get importOptionsHint => 'Importeer een .lxbp-bestand of plak de inhoud ervan.';
+	@override String get aiImportOptionsHint => 'Lux kan een .lxbp-bestand of geplakte bestandsinhoud importeren, afhankelijk van wat je AI geeft.';
+	@override String get importSource => 'Hoe wil je het leesplan importeren?';
+	@override String get importFromFile => 'Importeren uit bestand';
+	@override String get importFromFileDescription => 'Kies een gedownload .lxbp-bestand.';
+	@override String get pasteToImport => 'Plakken om te importeren';
+	@override String get pasteToImportDescription => 'Plak de inhoud van een .lxbp-bestand of een ander compatibel leesplan.';
+	@override String get pastePlan => 'Bijbelleesplan plakken';
+	@override String get fileContents => 'Bestandsinhoud';
+	@override String get fileContentsHint => 'Plak de bestandsinhoud hier';
+	@override String get biblePlanFile => 'Lux-Bijbelleesplan';
+	@override String importSucceeded({required Object name}) => '"${name}" kan worden geïmporteerd.';
+	@override String get share => 'Delen';
+	@override String get shareDescription => 'Deel dit Bijbelleesplanbestand met een andere app of persoon.';
+	@override String get download => 'Downloaden';
+	@override String get downloadDescription => 'Sla dit Bijbelleesplanbestand op je apparaat op.';
+	@override late final _Translations$biblePlans$importErrors$nl importErrors = _Translations$biblePlans$importErrors$nl._(_root);
 	@override String get manual => 'Handmatig';
 	@override String get manualDescription => 'Voeg zelf elke passage en overdenkingsdag toe.';
+	@override String get chooseBooksAndDuration => 'Boeken en duur kiezen';
+	@override String get chooseBooksAndDurationDescription => 'Kies boeken en laat Lux ze evenwichtig over je leesplan verdelen.';
+	@override String get chooseBooks => 'Boeken kiezen';
+	@override String get chooseDuration => 'Duur kiezen';
+	@override String get durationInstructions => 'Hoeveel dagen moet je leesplan duren?';
+	@override String durationDayCount({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count,
+		one: '${count} dag',
+		other: '${count} dagen',
+	);
+	@override late final _Translations$biblePlans$generatedNames$nl generatedNames = _Translations$biblePlans$generatedNames$nl._(_root);
 	@override String get nameAndColor => 'Naam en kleur';
 	@override String get review => 'Leesplan controleren';
 	@override String get createAndStart => 'Maken en starten';
@@ -1299,6 +1350,38 @@ class _Translations$settings$nl extends Translations$settings$en {
 	@override String get resetTutorials => 'Uitleg opnieuw instellen';
 	@override String get resetTutorialsDescription => 'Toon de handige tips in de app opnieuw';
 	@override String get tutorialsReset => 'De uitleg is opnieuw ingesteld.';
+}
+
+// Path: biblePlans.importErrors
+class _Translations$biblePlans$importErrors$nl extends Translations$biblePlans$importErrors$en {
+	_Translations$biblePlans$importErrors$nl._(TranslationsNl root) : this._root = root, super.internal(root);
+
+	final TranslationsNl _root; // ignore: unused_field
+
+	// Translations
+	@override String get readFailed => 'Lux kon dit bestand niet lezen. Probeer het opnieuw te kiezen.';
+	@override String get malformedJson => 'Dit bestand heeft niet de juiste indeling.';
+	@override String get invalidStructure => 'Dit bestand is geen geldig Bijbelleesplan.';
+	@override String get nameRequired => 'Het geïmporteerde leesplan moet een naam hebben.';
+	@override String get invalidDayCount => 'Het geïmporteerde leesplan moet 1 tot 365 dagen bevatten.';
+	@override String get readingRequired => 'Het geïmporteerde leesplan moet ten minste één leesdag hebben.';
+	@override String get invalidPassage => 'Het geïmporteerde leesplan bevat een ongeldige Bijbelverwijzing.';
+	@override String get duplicatePassage => 'Een dag in het geïmporteerde leesplan bevat dezelfde passage meer dan één keer.';
+}
+
+// Path: biblePlans.generatedNames
+class _Translations$biblePlans$generatedNames$nl extends Translations$biblePlans$generatedNames$en {
+	_Translations$biblePlans$generatedNames$nl._(TranslationsNl root) : this._root = root, super.internal(root);
+
+	final TranslationsNl _root; // ignore: unused_field
+
+	// Translations
+	@override String twoBooks({required Object first, required Object second}) => '${first} en ${second}';
+	@override String bookCount({required Object count}) => '${count} boeken';
+	@override String get bible => 'Bijbel';
+	@override String inOneDay({required Object books}) => '${books} in 1 dag';
+	@override String inDays({required Object books, required Object count}) => '${books} in ${count} dagen';
+	@override String inAYear({required Object books}) => '${books} in een jaar';
 }
 
 // Path: searchUi.wordMatching
@@ -3314,8 +3397,66 @@ extension on TranslationsNl {
 			'biblePlans.customPlansDescription' => 'Leesplannen die je zelf hebt gemaakt.',
 			'biblePlans.createCustomPlan' => 'Aangepast leesplan maken',
 			'biblePlans.creationMethodQuestion' => 'Hoe wil je je leesplan maken?',
+			'biblePlans.createWithAi' => 'Maken met AI',
+			'biblePlans.createWithAiDescription' => 'Ontvang een prompt voor je eigen AI en importeer daarna het leesplanbestand dat deze maakt.',
+			'biblePlans.describeYourPlan' => 'Beschrijf je leesplan',
+			'biblePlans.planDescription' => 'Beschrijving van leesplan',
+			'biblePlans.describeYourPlanHint' => 'Beschrijf je leesplan',
+			'biblePlans.descriptionRequired' => 'Beschrijf het leesplan dat je wilt maken.',
+			'biblePlans.examples' => 'Voorbeelden',
+			'biblePlans.aiExamples' => 'Voorbeelden van leesplannen',
+			'biblePlans.aiExampleList.0' => 'Lees Romeinen in 30 dagen.',
+			'biblePlans.aiExampleList.1' => 'Lees het Nieuwe Testament in een maand.',
+			'biblePlans.aiExampleList.2' => 'Lees Psalmen en Spreuken in 90 dagen, met elke week een overdenkingsdag.',
+			'biblePlans.aiExampleList.3' => 'Lees de vier evangeliën in 60 dagen en wissel ze elke dag af.',
+			'biblePlans.aiExampleList.4' => 'Wissel elke dag af tussen lezingen uit het Oude en Nieuwe Testament. Maak elke zondag een overdenkingsdag. Voltooi de Bijbel in een jaar.',
+			'biblePlans.aiImportTitle' => 'Maken en importeren met AI',
+			'biblePlans.aiImportInstructions' => 'Kopieer de prompt naar de AI die je gebruikt en importeer daarna het leesplan dat deze maakt.',
+			'biblePlans.copyPrompt' => 'Prompt kopiëren',
+			'biblePlans.promptCopied' => 'Prompt naar het klembord gekopieerd.',
+			'biblePlans.importAction' => 'Importeren',
+			'biblePlans.importDescription' => 'Importeer een .lxbp-bestand of plak compatibele leesplaninhoud.',
+			'biblePlans.importPlan' => 'Een Bijbelleesplan importeren',
+			'biblePlans.importPlanTitle' => 'Leesplan importeren',
+			'biblePlans.importInstructions' => 'Importeer een door Lux geëxporteerd Bijbelleesplanbestand of plak compatibele leesplaninhoud.',
+			'biblePlans.importOptionsHint' => 'Importeer een .lxbp-bestand of plak de inhoud ervan.',
+			'biblePlans.aiImportOptionsHint' => 'Lux kan een .lxbp-bestand of geplakte bestandsinhoud importeren, afhankelijk van wat je AI geeft.',
+			'biblePlans.importSource' => 'Hoe wil je het leesplan importeren?',
+			'biblePlans.importFromFile' => 'Importeren uit bestand',
+			'biblePlans.importFromFileDescription' => 'Kies een gedownload .lxbp-bestand.',
+			'biblePlans.pasteToImport' => 'Plakken om te importeren',
+			'biblePlans.pasteToImportDescription' => 'Plak de inhoud van een .lxbp-bestand of een ander compatibel leesplan.',
+			'biblePlans.pastePlan' => 'Bijbelleesplan plakken',
+			'biblePlans.fileContents' => 'Bestandsinhoud',
+			'biblePlans.fileContentsHint' => 'Plak de bestandsinhoud hier',
+			'biblePlans.biblePlanFile' => 'Lux-Bijbelleesplan',
+			'biblePlans.importSucceeded' => ({required Object name}) => '"${name}" kan worden geïmporteerd.',
+			'biblePlans.share' => 'Delen',
+			'biblePlans.shareDescription' => 'Deel dit Bijbelleesplanbestand met een andere app of persoon.',
+			'biblePlans.download' => 'Downloaden',
+			'biblePlans.downloadDescription' => 'Sla dit Bijbelleesplanbestand op je apparaat op.',
+			'biblePlans.importErrors.readFailed' => 'Lux kon dit bestand niet lezen. Probeer het opnieuw te kiezen.',
+			'biblePlans.importErrors.malformedJson' => 'Dit bestand heeft niet de juiste indeling.',
+			'biblePlans.importErrors.invalidStructure' => 'Dit bestand is geen geldig Bijbelleesplan.',
+			'biblePlans.importErrors.nameRequired' => 'Het geïmporteerde leesplan moet een naam hebben.',
+			'biblePlans.importErrors.invalidDayCount' => 'Het geïmporteerde leesplan moet 1 tot 365 dagen bevatten.',
+			'biblePlans.importErrors.readingRequired' => 'Het geïmporteerde leesplan moet ten minste één leesdag hebben.',
+			'biblePlans.importErrors.invalidPassage' => 'Het geïmporteerde leesplan bevat een ongeldige Bijbelverwijzing.',
+			'biblePlans.importErrors.duplicatePassage' => 'Een dag in het geïmporteerde leesplan bevat dezelfde passage meer dan één keer.',
 			'biblePlans.manual' => 'Handmatig',
 			'biblePlans.manualDescription' => 'Voeg zelf elke passage en overdenkingsdag toe.',
+			'biblePlans.chooseBooksAndDuration' => 'Boeken en duur kiezen',
+			'biblePlans.chooseBooksAndDurationDescription' => 'Kies boeken en laat Lux ze evenwichtig over je leesplan verdelen.',
+			'biblePlans.chooseBooks' => 'Boeken kiezen',
+			'biblePlans.chooseDuration' => 'Duur kiezen',
+			'biblePlans.durationInstructions' => 'Hoeveel dagen moet je leesplan duren?',
+			'biblePlans.durationDayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: '${count} dag', other: '${count} dagen', ), 
+			'biblePlans.generatedNames.twoBooks' => ({required Object first, required Object second}) => '${first} en ${second}',
+			'biblePlans.generatedNames.bookCount' => ({required Object count}) => '${count} boeken',
+			'biblePlans.generatedNames.bible' => 'Bijbel',
+			'biblePlans.generatedNames.inOneDay' => ({required Object books}) => '${books} in 1 dag',
+			'biblePlans.generatedNames.inDays' => ({required Object books, required Object count}) => '${books} in ${count} dagen',
+			'biblePlans.generatedNames.inAYear' => ({required Object books}) => '${books} in een jaar',
 			'biblePlans.nameAndColor' => 'Naam en kleur',
 			'biblePlans.review' => 'Leesplan controleren',
 			'biblePlans.createAndStart' => 'Maken en starten',
@@ -3323,6 +3464,8 @@ extension on TranslationsNl {
 			'biblePlans.nameRequired' => 'Voer een naam voor je leesplan in.',
 			'biblePlans.nameAlreadyExists' => 'Een Bijbelleesplan gebruikt deze naam al.',
 			'biblePlans.discardPlanQuestion' => 'Dit leesplan weggooien?',
+			_ => null,
+		} ?? switch (path) {
 			'biblePlans.discardPlanConfirmation' => 'Je wijzigingen gaan verloren.',
 			'biblePlans.discard' => 'Weggooien',
 			'biblePlans.addDay' => 'Dag toevoegen',
@@ -3381,8 +3524,6 @@ extension on TranslationsNl {
 			'searchUi.wordMatching.wholeWord.title' => 'Volledig woord',
 			'searchUi.wordMatching.wholeWord.description' => 'Zoek alleen volledige woorden die overeenkomen met je zoekopdracht.',
 			'searchUi.wordMatching.wholeWord.example' => 'Voorbeeld: ‘licht’ vindt ‘licht’',
-			_ => null,
-		} ?? switch (path) {
 			'searchUi.wordMatching.startOfWord.title' => 'Begin van woord',
 			'searchUi.wordMatching.startOfWord.description' => 'Zoek woorden die beginnen met je zoekopdracht.',
 			'searchUi.wordMatching.startOfWord.example' => 'Voorbeeld: ‘licht’ vindt ook ‘lichten’',
@@ -3837,6 +3978,8 @@ extension on TranslationsNl {
 			'morphology.mood.participle.examples' => 'degene die schrijft|gesproken hebbend',
 			'morphology.voice.active.name' => 'Actief',
 			'morphology.voice.active.description' => 'Het onderwerp voert de handeling uit.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.voice.active.examples' => 'hij schrijft|zij onderwijzen',
 			'morphology.voice.middle.name' => 'Medium',
 			'morphology.voice.middle.description' => 'Het onderwerp handelt op of voor zichzelf.',
@@ -3895,8 +4038,6 @@ extension on TranslationsNl {
 			'settings.shareLux' => 'Deel Lux',
 			'settings.shareLuxDescription' => 'Deel Lux met iemand.',
 			'settings.reportProblem' => 'Een probleem melden',
-			_ => null,
-		} ?? switch (path) {
 			'settings.reportProblemDescription' => 'Krijg hulp bij bugs en andere problemen.',
 			'settings.recommended' => 'Aanbevolen',
 			'settings.emailSupport' => 'Ondersteuning via e-mail',

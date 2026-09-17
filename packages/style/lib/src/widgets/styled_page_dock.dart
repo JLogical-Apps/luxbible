@@ -9,9 +9,17 @@ class StyledPageDock extends HookWidget {
   final Function(int)? onPageChanged;
   final PageController? controller;
 
+  final Widget? aboveButtons;
   final List<Widget> Function(BuildContext)? buttonsBuilder;
 
-  const StyledPageDock({super.key, required this.pages, this.onPageChanged, this.controller, this.buttonsBuilder});
+  const StyledPageDock({
+    super.key,
+    required this.pages,
+    this.onPageChanged,
+    this.controller,
+    this.aboveButtons,
+    this.buttonsBuilder,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +47,12 @@ class StyledPageDock extends HookWidget {
                             scrollKey: i,
                             child: Padding(
                               padding: page.padding,
-                              child: StyledListView.child(
-                                child: SizedBox(
-                                  height: page.forceFillHeight ? constraints.maxHeight : null,
-                                  child: Column(crossAxisAlignment: .start, children: page.children),
-                                ),
-                              ),
+                              child: page.forceFillHeight
+                                  ? SizedBox(
+                                      height: constraints.maxHeight,
+                                      child: Column(crossAxisAlignment: .start, children: page.children),
+                                    )
+                                  : StyledListView(children: page.children),
                             ),
                           ),
                         ),
@@ -56,6 +64,7 @@ class StyledPageDock extends HookWidget {
           ),
         ),
       ],
+      aboveButtons: aboveButtons,
       buttonsBuilder: buttonsBuilder,
     );
   }

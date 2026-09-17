@@ -784,8 +784,61 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	@override String get customPlansDescription => 'Планы, созданные вами.';
 	@override String get createCustomPlan => 'Создать свой план';
 	@override String get creationMethodQuestion => 'Как вы хотите создать свой план?';
+	@override String get createWithAi => 'Создать с помощью ИИ';
+	@override String get createWithAiDescription => 'Получите запрос для своего ИИ, а затем импортируйте созданный им файл плана.';
+	@override String get describeYourPlan => 'Опишите свой план';
+	@override String get planDescription => 'Описание плана';
+	@override String get describeYourPlanHint => 'Опишите свой план';
+	@override String get descriptionRequired => 'Опишите план, который вы хотите создать.';
+	@override String get examples => 'Примеры';
+	@override String get aiExamples => 'Примеры планов';
+	@override List<String> get aiExampleList => [
+		'Прочитать Послание к Римлянам за 30 дней.',
+		'Прочитать Новый Завет за месяц.',
+		'Прочитать Псалтирь и Притчи за 90 дней, оставляя один день в неделю для размышлений.',
+		'Прочитать четыре Евангелия за 60 дней, чередуя их каждый день.',
+		'Каждый день чередовать чтения из Ветхого и Нового Заветов. Каждое воскресенье отводить для размышлений. Прочитать Библию за год.',
+	];
+	@override String get aiImportTitle => 'Создание и импорт с помощью ИИ';
+	@override String get aiImportInstructions => 'Скопируйте запрос в используемый вами ИИ, затем импортируйте созданный им план.';
+	@override String get copyPrompt => 'Скопировать запрос';
+	@override String get promptCopied => 'Запрос скопирован в буфер обмена.';
+	@override String get importAction => 'Импортировать';
+	@override String get importDescription => 'Импортируйте файл .lxbp или вставьте содержимое совместимого плана.';
+	@override String get importPlan => 'Импорт библейского плана';
+	@override String get importPlanTitle => 'Импортировать план';
+	@override String get importInstructions => 'Импортируйте файл библейского плана из Lux или вставьте содержимое совместимого плана.';
+	@override String get importOptionsHint => 'Импортируйте файл .lxbp или вставьте его содержимое.';
+	@override String get aiImportOptionsHint => 'Lux может импортировать файл .lxbp или вставленное содержимое файла, в зависимости от ответа ИИ.';
+	@override String get importSource => 'Как вы хотите импортировать план?';
+	@override String get importFromFile => 'Импортировать из файла';
+	@override String get importFromFileDescription => 'Выберите скачанный файл .lxbp.';
+	@override String get pasteToImport => 'Вставить и импортировать';
+	@override String get pasteToImportDescription => 'Вставьте содержимое файла .lxbp или другого совместимого плана.';
+	@override String get pastePlan => 'Вставить библейский план';
+	@override String get fileContents => 'Содержимое файла';
+	@override String get fileContentsHint => 'Вставьте сюда содержимое файла';
+	@override String get biblePlanFile => 'Библейский план Lux';
+	@override String importSucceeded({required Object name}) => 'План «${name}» готов к импорту.';
+	@override String get share => 'Поделиться';
+	@override String get shareDescription => 'Поделитесь этим файлом библейского плана с другим приложением или человеком.';
+	@override String get download => 'Скачать';
+	@override String get downloadDescription => 'Сохраните этот файл библейского плана на устройстве.';
+	@override late final _Translations$biblePlans$importErrors$ru importErrors = _Translations$biblePlans$importErrors$ru._(_root);
 	@override String get manual => 'Вручную';
 	@override String get manualDescription => 'Добавьте каждый отрывок и день размышлений самостоятельно.';
+	@override String get chooseBooksAndDuration => 'Выбрать книги и продолжительность';
+	@override String get chooseBooksAndDurationDescription => 'Выберите книги, и Lux равномерно распределит их по вашему плану.';
+	@override String get chooseBooks => 'Выбрать книги';
+	@override String get chooseDuration => 'Выбрать продолжительность';
+	@override String get durationInstructions => 'Сколько дней должен длиться ваш план?';
+	@override String durationDayCount({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count,
+		one: '${count} день',
+		few: '${count} дня',
+		many: '${count} дней',
+		other: '${count} дня',
+	);
+	@override late final _Translations$biblePlans$generatedNames$ru generatedNames = _Translations$biblePlans$generatedNames$ru._(_root);
 	@override String get nameAndColor => 'Название и цвет';
 	@override String get review => 'Проверка плана';
 	@override String get createAndStart => 'Создать и начать';
@@ -1305,6 +1358,38 @@ class _Translations$settings$ru extends Translations$settings$en {
 	@override String get resetTutorials => 'Сбросить подсказки';
 	@override String get resetTutorialsDescription => 'Снова показывать полезные подсказки в приложении.';
 	@override String get tutorialsReset => 'Подсказки сброшены.';
+}
+
+// Path: biblePlans.importErrors
+class _Translations$biblePlans$importErrors$ru extends Translations$biblePlans$importErrors$en {
+	_Translations$biblePlans$importErrors$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get readFailed => 'Lux не удалось прочитать этот файл. Попробуйте выбрать его ещё раз.';
+	@override String get malformedJson => 'Этот файл имеет неверный формат.';
+	@override String get invalidStructure => 'Этот файл не является допустимым библейским планом.';
+	@override String get nameRequired => 'Импортируемому плану необходимо название.';
+	@override String get invalidDayCount => 'Импортируемый план должен содержать от 1 до 365 дней.';
+	@override String get readingRequired => 'Импортируемому плану необходим хотя бы один день чтения.';
+	@override String get invalidPassage => 'Импортируемый план содержит недопустимую библейскую ссылку.';
+	@override String get duplicatePassage => 'Один из дней импортируемого плана содержит один и тот же отрывок несколько раз.';
+}
+
+// Path: biblePlans.generatedNames
+class _Translations$biblePlans$generatedNames$ru extends Translations$biblePlans$generatedNames$en {
+	_Translations$biblePlans$generatedNames$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String twoBooks({required Object first, required Object second}) => '${first} и ${second}';
+	@override String bookCount({required Object count}) => '${count} книг';
+	@override String get bible => 'Библия';
+	@override String inOneDay({required Object books}) => '${books} за 1 день';
+	@override String inDays({required Object books, required Object count}) => '${books} за ${count} дней';
+	@override String inAYear({required Object books}) => '${books} за год';
 }
 
 // Path: searchUi.wordMatching
@@ -3320,8 +3405,66 @@ extension on TranslationsRu {
 			'biblePlans.customPlansDescription' => 'Планы, созданные вами.',
 			'biblePlans.createCustomPlan' => 'Создать свой план',
 			'biblePlans.creationMethodQuestion' => 'Как вы хотите создать свой план?',
+			'biblePlans.createWithAi' => 'Создать с помощью ИИ',
+			'biblePlans.createWithAiDescription' => 'Получите запрос для своего ИИ, а затем импортируйте созданный им файл плана.',
+			'biblePlans.describeYourPlan' => 'Опишите свой план',
+			'biblePlans.planDescription' => 'Описание плана',
+			'biblePlans.describeYourPlanHint' => 'Опишите свой план',
+			'biblePlans.descriptionRequired' => 'Опишите план, который вы хотите создать.',
+			'biblePlans.examples' => 'Примеры',
+			'biblePlans.aiExamples' => 'Примеры планов',
+			'biblePlans.aiExampleList.0' => 'Прочитать Послание к Римлянам за 30 дней.',
+			'biblePlans.aiExampleList.1' => 'Прочитать Новый Завет за месяц.',
+			'biblePlans.aiExampleList.2' => 'Прочитать Псалтирь и Притчи за 90 дней, оставляя один день в неделю для размышлений.',
+			'biblePlans.aiExampleList.3' => 'Прочитать четыре Евангелия за 60 дней, чередуя их каждый день.',
+			'biblePlans.aiExampleList.4' => 'Каждый день чередовать чтения из Ветхого и Нового Заветов. Каждое воскресенье отводить для размышлений. Прочитать Библию за год.',
+			'biblePlans.aiImportTitle' => 'Создание и импорт с помощью ИИ',
+			'biblePlans.aiImportInstructions' => 'Скопируйте запрос в используемый вами ИИ, затем импортируйте созданный им план.',
+			'biblePlans.copyPrompt' => 'Скопировать запрос',
+			'biblePlans.promptCopied' => 'Запрос скопирован в буфер обмена.',
+			'biblePlans.importAction' => 'Импортировать',
+			'biblePlans.importDescription' => 'Импортируйте файл .lxbp или вставьте содержимое совместимого плана.',
+			'biblePlans.importPlan' => 'Импорт библейского плана',
+			'biblePlans.importPlanTitle' => 'Импортировать план',
+			'biblePlans.importInstructions' => 'Импортируйте файл библейского плана из Lux или вставьте содержимое совместимого плана.',
+			'biblePlans.importOptionsHint' => 'Импортируйте файл .lxbp или вставьте его содержимое.',
+			'biblePlans.aiImportOptionsHint' => 'Lux может импортировать файл .lxbp или вставленное содержимое файла, в зависимости от ответа ИИ.',
+			'biblePlans.importSource' => 'Как вы хотите импортировать план?',
+			'biblePlans.importFromFile' => 'Импортировать из файла',
+			'biblePlans.importFromFileDescription' => 'Выберите скачанный файл .lxbp.',
+			'biblePlans.pasteToImport' => 'Вставить и импортировать',
+			'biblePlans.pasteToImportDescription' => 'Вставьте содержимое файла .lxbp или другого совместимого плана.',
+			'biblePlans.pastePlan' => 'Вставить библейский план',
+			'biblePlans.fileContents' => 'Содержимое файла',
+			'biblePlans.fileContentsHint' => 'Вставьте сюда содержимое файла',
+			'biblePlans.biblePlanFile' => 'Библейский план Lux',
+			'biblePlans.importSucceeded' => ({required Object name}) => 'План «${name}» готов к импорту.',
+			'biblePlans.share' => 'Поделиться',
+			'biblePlans.shareDescription' => 'Поделитесь этим файлом библейского плана с другим приложением или человеком.',
+			'biblePlans.download' => 'Скачать',
+			'biblePlans.downloadDescription' => 'Сохраните этот файл библейского плана на устройстве.',
+			'biblePlans.importErrors.readFailed' => 'Lux не удалось прочитать этот файл. Попробуйте выбрать его ещё раз.',
+			'biblePlans.importErrors.malformedJson' => 'Этот файл имеет неверный формат.',
+			'biblePlans.importErrors.invalidStructure' => 'Этот файл не является допустимым библейским планом.',
+			'biblePlans.importErrors.nameRequired' => 'Импортируемому плану необходимо название.',
+			'biblePlans.importErrors.invalidDayCount' => 'Импортируемый план должен содержать от 1 до 365 дней.',
+			'biblePlans.importErrors.readingRequired' => 'Импортируемому плану необходим хотя бы один день чтения.',
+			'biblePlans.importErrors.invalidPassage' => 'Импортируемый план содержит недопустимую библейскую ссылку.',
+			'biblePlans.importErrors.duplicatePassage' => 'Один из дней импортируемого плана содержит один и тот же отрывок несколько раз.',
 			'biblePlans.manual' => 'Вручную',
 			'biblePlans.manualDescription' => 'Добавьте каждый отрывок и день размышлений самостоятельно.',
+			'biblePlans.chooseBooksAndDuration' => 'Выбрать книги и продолжительность',
+			'biblePlans.chooseBooksAndDurationDescription' => 'Выберите книги, и Lux равномерно распределит их по вашему плану.',
+			'biblePlans.chooseBooks' => 'Выбрать книги',
+			'biblePlans.chooseDuration' => 'Выбрать продолжительность',
+			'biblePlans.durationInstructions' => 'Сколько дней должен длиться ваш план?',
+			'biblePlans.durationDayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: '${count} день', few: '${count} дня', many: '${count} дней', other: '${count} дня', ), 
+			'biblePlans.generatedNames.twoBooks' => ({required Object first, required Object second}) => '${first} и ${second}',
+			'biblePlans.generatedNames.bookCount' => ({required Object count}) => '${count} книг',
+			'biblePlans.generatedNames.bible' => 'Библия',
+			'biblePlans.generatedNames.inOneDay' => ({required Object books}) => '${books} за 1 день',
+			'biblePlans.generatedNames.inDays' => ({required Object books, required Object count}) => '${books} за ${count} дней',
+			'biblePlans.generatedNames.inAYear' => ({required Object books}) => '${books} за год',
 			'biblePlans.nameAndColor' => 'Название и цвет',
 			'biblePlans.review' => 'Проверка плана',
 			'biblePlans.createAndStart' => 'Создать и начать',
@@ -3329,6 +3472,8 @@ extension on TranslationsRu {
 			'biblePlans.nameRequired' => 'Введите название плана.',
 			'biblePlans.nameAlreadyExists' => 'Библейский план с таким названием уже существует.',
 			'biblePlans.discardPlanQuestion' => 'Отменить создание плана?',
+			_ => null,
+		} ?? switch (path) {
 			'biblePlans.discardPlanConfirmation' => 'Ваши изменения будут потеряны.',
 			'biblePlans.discard' => 'Отменить',
 			'biblePlans.addDay' => 'Добавить день',
@@ -3387,8 +3532,6 @@ extension on TranslationsRu {
 			'searchUi.wordMatching.wholeWord.title' => 'Целое слово',
 			'searchUi.wordMatching.wholeWord.description' => 'Находить только целые слова, совпадающие с запросом.',
 			'searchUi.wordMatching.wholeWord.example' => 'Пример: «свет» находит «свет»',
-			_ => null,
-		} ?? switch (path) {
 			'searchUi.wordMatching.startOfWord.title' => 'Начало слова',
 			'searchUi.wordMatching.startOfWord.description' => 'Находить слова, которые начинаются с запроса.',
 			'searchUi.wordMatching.startOfWord.example' => 'Пример: «свет» также находит «светильник»',
@@ -3843,6 +3986,8 @@ extension on TranslationsRu {
 			'morphology.mood.participle.examples' => 'тот, кто пишет|говорит',
 			'morphology.voice.active.name' => 'Активный',
 			'morphology.voice.active.description' => 'Субъект выполняет действие.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.voice.active.examples' => 'он пишет|они учат',
 			'morphology.voice.middle.name' => 'Средний',
 			'morphology.voice.middle.description' => 'Субъект действует сам по себе или для себя.',
@@ -3901,8 +4046,6 @@ extension on TranslationsRu {
 			'settings.shareLux' => 'Поделиться Lux',
 			'settings.shareLuxDescription' => 'Поделитесь Lux с другими.',
 			'settings.reportProblem' => 'Сообщить о проблеме',
-			_ => null,
-		} ?? switch (path) {
 			'settings.reportProblemDescription' => 'Получите помощь с ошибками и другими проблемами.',
 			'settings.recommended' => 'Рекомендуется',
 			'settings.emailSupport' => 'Написать в поддержку',

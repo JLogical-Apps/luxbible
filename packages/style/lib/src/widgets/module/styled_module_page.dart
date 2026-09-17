@@ -100,21 +100,25 @@ class StyledModulePage extends HookWidget {
                             ),
                           ],
                           gapH24,
-                          page.forceFillHeight
-                              ? Expanded(
-                                  child: Padding(
-                                    padding: page.bodyPadding,
-                                    child: Column(children: page.childrenBuilder(context)),
-                                  ),
-                                )
-                              : Padding(
-                                  padding: page.bodyPadding,
-                                  child: Column(children: page.childrenBuilder(context)),
-                                ),
+                          if (page.forceFillHeight)
+                            Expanded(
+                              child: Padding(
+                                padding: page.bodyPadding,
+                                child: Column(children: page.childrenBuilder(context)),
+                              ),
+                            )
+                          else ...[
+                            SizedBox(height: page.bodyPadding.top),
+                            ...page
+                                .childrenBuilder(context)
+                                .map((child) => Padding(padding: page.bodyPadding.onlyHorizontal, child: child)),
+                            SizedBox(height: page.bodyPadding.bottom),
+                          ],
                         ],
                       ),
                     )
                     .toList(),
+                aboveButtons: currentStep.aboveButtons,
                 buttonsBuilder: (context) => currentStep.buttons.buildButtons(context, goNext),
               ),
             ),
@@ -132,6 +136,7 @@ class StyledModuleStep {
   final List<Widget> Function(BuildContext) childrenBuilder;
   final EdgeInsets bodyPadding;
 
+  final Widget? aboveButtons;
   final StyledModuleButtons buttons;
 
   final bool forceFillHeight;
@@ -142,6 +147,7 @@ class StyledModuleStep {
     this.subtitle,
     required this.childrenBuilder,
     this.bodyPadding = const .symmetric(horizontal: 16),
+    this.aboveButtons,
     this.buttons = const _NextStyledModuleButtons(),
     this.forceFillHeight = false,
     this.onBackPressed,
