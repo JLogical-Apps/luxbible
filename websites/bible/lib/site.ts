@@ -6,6 +6,7 @@ export const site = {
     'A modern Bible app built for real study. Interlinear, cross-references, commentary, and global search, all fully offline. Free forever, no ads, no account required.',
 
   appStoreUrl: 'https://apps.apple.com/us/app/lux-bible/id6759510218',
+  appStoreProviderToken: '119076898',
   googlePlayUrl:
     'https://play.google.com/store/apps/details?id=app.luxbible.app',
   discordUrl: 'https://discord.gg/C4zfZDpZMB',

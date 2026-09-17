@@ -1,7 +1,4 @@
-import {
-  IconBrandDiscordFilled,
-  IconBrandInstagram,
-} from '@tabler/icons-react';
+import { IconBrandDiscordFilled } from '@tabler/icons-react';
 import Image from 'next/image';
 import { CSSProperties } from 'react';
 
@@ -10,7 +7,6 @@ import AppStoreScreenshots from '@/components/blocks/AppStoreScreenshots';
 import CtaButton from '@/components/blocks/CtaButton';
 import DownloadCtaButton from '@/components/blocks/DownloadCtaButton';
 import FeatureShowcase from '@/components/blocks/FeatureShowcase';
-import InstagramFeed from '@/components/blocks/InstagramFeed';
 import Page from '@/components/layout/Page';
 import Section from '@/components/layout/Section';
 import { site } from '@/lib/site';
@@ -20,13 +16,6 @@ const lightButtonVars = {
   '--emphasis-soft': '240 5% 96%',
   '--on-emphasis': '240 10% 4%',
   '--on-emphasis-soft': '240 6% 10%',
-} as CSSProperties;
-
-const instagramPaletteVars = {
-  '--emphasis': '336 73% 54%',
-  '--emphasis-soft': '323 59% 48%',
-  '--on-emphasis': '0 0% 100%',
-  '--on-emphasis-soft': '0 0% 100%',
 } as CSSProperties;
 
 export default function HomePage() {
@@ -78,6 +67,7 @@ export default function HomePage() {
           />
           <DownloadCtaButton
             appStoreUrl={site.appStoreUrl}
+            appStoreProviderToken={site.appStoreProviderToken}
             googlePlayUrl={site.googlePlayUrl}
           />
         </div>
@@ -192,32 +182,6 @@ export default function HomePage() {
       </Section>
 
       <Section
-        id="tips-and-updates"
-        background="dots"
-        align="responsive"
-        paletteVars={instagramPaletteVars}
-        tagline="Tips and Updates"
-        title={
-          <>
-            Follow along on <span className="gradient-heading">Instagram</span>
-          </>
-        }
-        subtitle="See the latest Lux updates, discover tips and tricks, and get more from your time in Scripture."
-      >
-        <div className="flex flex-col items-center gap-8">
-          <CtaButton
-            text="Follow @luxbible.app"
-            href={site.social.instagram}
-            external
-            icon={
-              <IconBrandInstagram style={{ width: '1.5em', height: '1em' }} />
-            }
-          />
-          <InstagramFeed />
-        </div>
-      </Section>
-
-      <Section
         id="download"
         contained
         align="responsive"
@@ -231,6 +195,7 @@ export default function HomePage() {
         <div className="flex flex-col gap-12">
           <AppStoreButtons
             appStoreUrl={site.appStoreUrl}
+            appStoreProviderToken={site.appStoreProviderToken}
             googlePlayUrl={site.googlePlayUrl}
           />
           <AppStoreScreenshots />

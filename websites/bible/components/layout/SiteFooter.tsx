@@ -18,7 +18,6 @@ const footerColumns = [
       { name: 'Built for Readers', href: '/#built-for-readers' },
       { name: 'Built for Note-takers', href: '/#built-for-note-takers' },
       { name: 'Built for Studiers', href: '/#built-for-studiers' },
-      { name: 'Tips and Updates', href: '/#tips-and-updates' },
       { name: 'Download', href: '/#download' },
       { name: 'Community', href: '/#community' },
     ],

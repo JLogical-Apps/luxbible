@@ -5,6 +5,7 @@ import { Bitter, Inter } from 'next/font/google';
 import Script from 'next/script';
 import React from 'react';
 
+import { campaignsBySourceCode } from '@/lib/campaign';
 import { site } from '@/lib/site';
 
 const serif = Bitter({
@@ -59,7 +60,15 @@ export default function RootLayout({
               {`window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-                gtag('config', '${gaId}');`}
+                const sourceCode = new URLSearchParams(window.location.search).get('s');
+                const campaign = ${JSON.stringify(
+                  campaignsBySourceCode,
+                )}[sourceCode];
+                gtag('config', '${gaId}', campaign ? {
+                  campaign_source: campaign.source,
+                  campaign_medium: campaign.medium,
+                  campaign_name: campaign.name
+                } : {});`}
             </Script>
           </>
         )}

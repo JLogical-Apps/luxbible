@@ -13,12 +13,13 @@ export default function PrivacyPolicyPage() {
         <article className="prose prose-invert mx-auto max-w-3xl prose-a:text-emphasis prose-headings:font-serif">
           <h1>Privacy Policy for Lux Bible</h1>
           <p>
-            <strong>Effective Date:</strong> September 3, 2026
+            <strong>Effective Date:</strong> September 17, 2026
           </p>
           <p>
-            Lux Bible (the “App”) is operated by <strong>JLogical LLC</strong>{' '}
-            (“Company,” “we,” “our,” or “us”). This Privacy Policy explains how
-            information is handled when you use the App.
+            Lux Bible (the “App”) and the Lux Bible website are operated by{' '}
+            <strong>JLogical LLC</strong> (“Company,” “we,” “our,” or “us”).
+            This Privacy Policy explains how information is handled when you use
+            the App or website.
           </p>
 
           <h2>1. A Privacy-Focused App</h2>
@@ -50,10 +51,10 @@ export default function PrivacyPolicyPage() {
               to pages identified by fixed, content-free names
             </li>
             <li>
-              Whether certain actions occurred, such as starting audio,
-              starting or completing a Bible plan day, using search, opening
-              Verse of the Day or a local notification, customizing a toolbar,
-              opening a community link, and starting, completing, or skipping onboarding
+              Whether certain actions occurred, such as starting audio, starting
+              or completing a Bible plan day, using search, opening Verse of the
+              Day or a local notification, customizing a toolbar, opening a
+              community link, and starting, completing, or skipping onboarding
             </li>
             <li>
               Basic app and device information, such as app version, device
@@ -64,20 +65,32 @@ export default function PrivacyPolicyPage() {
               A randomly generated app-instance identifier used to distinguish
               installations and calculate aggregate usage metrics
             </li>
+            <li>
+              General acquisition information, such as the website or social
+              platform that led to an App installation, along with associated
+              click and installation timing
+            </li>
           </ul>
           <p>
-            Lux sends its custom analytics events without parameters. Page
-            names and events do not include Bible references, search terms,
-            plan names, note content, or local record identifiers.
+            Lux sends its custom App usage events without parameters. Page names
+            and events do not include Bible references, search terms, plan
+            names, note content, or local record identifiers.
+          </p>
+          <p>
+            The Lux Bible website uses Google Analytics to measure page visits,
+            general campaign sources, and navigation to the App Store or Google
+            Play. Short source codes in Lux website links are translated into
+            general source, medium, and campaign values. They do not identify a
+            social-media account or contain user-provided content.
           </p>
           <p>Crash reports may include:</p>
           <ul>
             <li>Crash details, stack traces, and error messages</li>
             <li>The time and state of the App when an error occurred</li>
             <li>
-              App version and technical device information such as device
-              model, operating system, processor architecture, memory, and
-              storage information
+              App version and technical device information such as device model,
+              operating system, processor architecture, memory, and storage
+              information
             </li>
             <li>
               Random installation and session identifiers used to group and
@@ -94,8 +107,8 @@ export default function PrivacyPolicyPage() {
 
           <h2>3. Advertising and Cross-App Tracking</h2>
           <p>
-            Lux does not show ads and does not use analytics for advertising,
-            ad personalization, profiling, or tracking you across other
+            Lux does not show ads and does not use analytics for advertising, ad
+            personalization, profiling, or tracking you across other
             companies&apos; apps and websites.
           </p>
           <ul>
@@ -139,11 +152,11 @@ export default function PrivacyPolicyPage() {
           </p>
           <p>
             Lux also uses Firebase App Check to protect our online services from
-            abuse and unauthorized access. Depending on your platform, App
-            Check and its attestation provider may process app and device
-            information, integrity or attestation material, and short-lived
-            security tokens. We use this information to provide and secure App
-            functionality, not for advertising or cross-app tracking.
+            abuse and unauthorized access. Depending on your platform, App Check
+            and its attestation provider may process app and device information,
+            integrity or attestation material, and short-lived security tokens.
+            We use this information to provide and secure App functionality, not
+            for advertising or cross-app tracking.
           </p>
           <p>
             Bible plan and Verse of the Day reminders are scheduled locally on
@@ -155,8 +168,8 @@ export default function PrivacyPolicyPage() {
           <p>
             Google processes Analytics, Crashlytics, and App Check information
             on our behalf. Firebase services may process information on global
-            infrastructure. Google states that Firebase encrypts data in
-            transit and that Crashlytics data is also encrypted at rest.
+            infrastructure. Google states that Firebase encrypts data in transit
+            and that Crashlytics data is also encrypted at rest.
           </p>
           <p>
             Firebase states that Crashlytics retains crash stack traces and
@@ -182,8 +195,8 @@ export default function PrivacyPolicyPage() {
           <h2>7. Children&apos;s Privacy</h2>
           <p>
             The App does not knowingly collect names, contact information, or
-            other information that directly identifies children under the age
-            of 13, or the applicable age in their jurisdiction. The limited
+            other information that directly identifies children under the age of
+            13, or the applicable age in their jurisdiction. The limited
             technical, usage, reliability, and security information described
             above may still be processed when a child uses the App.
           </p>

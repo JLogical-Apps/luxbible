@@ -13,6 +13,7 @@ export default function CtaButton({
   external = false,
   icon,
   paletteVars,
+  onClick,
 }: {
   text: string;
   href: string;
@@ -20,10 +21,15 @@ export default function CtaButton({
   external?: boolean;
   icon?: ReactNode;
   paletteVars?: CSSProperties;
+  onClick?: () => void;
 }) {
   const button = (
     <Button variant={variant === 'filled' ? 'default' : 'ghost'} asChild>
-      <Link href={href} target={external ? '_blank' : undefined}>
+      <Link
+        href={href}
+        target={external ? '_blank' : undefined}
+        onClick={onClick}
+      >
         {icon ? (
           <span className="mr-2 h-4 w-4">{icon}</span>
         ) : (

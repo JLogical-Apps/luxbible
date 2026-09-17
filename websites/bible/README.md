@@ -17,6 +17,16 @@ npm run dev
 npm run build   # outputs a static site to ./out
 ```
 
+## Campaign attribution
+
+Compact social-profile links are mapped to Google Analytics campaign fields and
+store attribution:
+
+- `?s=fp`: Facebook profile
+- `?s=ip`: Instagram profile
+- `?s=tp`: TikTok profile
+- `?s=yp`: YouTube profile
+
 ## Structure
 
 - `app/` — routes (`page.tsx` = home, `privacy-policy/`). Pages are composed by
