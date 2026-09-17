@@ -216,49 +216,37 @@ class MorePage extends HookConsumerWidget implements StyledRoute<VerseSelection>
                     launchUrl(discordUri);
                   },
                 ),
-                StyledListItem.navigation(
-                  title: t.settings.followLux.toText(),
-                  subtitle: t.settings.socialMediaAndVideo.toText(),
-                  leading: Symbols.add_circle.toIcon(),
-                  onPressed: () => context.showStyledSheet(
-                    (context, _) => StyledSheet(
-                      title: t.settings.followLux.toText(),
-                      children: [
-                        StyledListItem.externalNavigation(
-                          title: t.labels.instagram.toText(),
-                          leading: FaIcon(FontAwesomeIcons.instagram),
-                          onPressed: () {
-                            AnalyticsEvent.communityLinkPressed.log();
-                            launchUrl(instagramUri);
-                          },
-                        ),
-                        StyledListItem.externalNavigation(
-                          title: t.labels.tiktok.toText(),
-                          leading: FaIcon(FontAwesomeIcons.tiktok),
-                          onPressed: () {
-                            AnalyticsEvent.communityLinkPressed.log();
-                            launchUrl(tiktokUri);
-                          },
-                        ),
-                        StyledListItem.externalNavigation(
-                          title: t.labels.facebook.toText(),
-                          leading: FaIcon(FontAwesomeIcons.facebook),
-                          onPressed: () {
-                            AnalyticsEvent.communityLinkPressed.log();
-                            launchUrl(facebookUri);
-                          },
-                        ),
-                        StyledListItem.externalNavigation(
-                          title: t.labels.youtube.toText(),
-                          leading: FaIcon(FontAwesomeIcons.youtube),
-                          onPressed: () {
-                            AnalyticsEvent.communityLinkPressed.log();
-                            launchUrl(youtubeUri);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
+                StyledListItem.externalNavigation(
+                  title: t.labels.instagram.toText(),
+                  leading: FaIcon(FontAwesomeIcons.instagram),
+                  onPressed: () {
+                    AnalyticsEvent.communityLinkPressed.log();
+                    launchUrl(instagramUri);
+                  },
+                ),
+                StyledListItem.externalNavigation(
+                  title: t.labels.tiktok.toText(),
+                  leading: FaIcon(FontAwesomeIcons.tiktok),
+                  onPressed: () {
+                    AnalyticsEvent.communityLinkPressed.log();
+                    launchUrl(tiktokUri);
+                  },
+                ),
+                StyledListItem.externalNavigation(
+                  title: t.labels.facebook.toText(),
+                  leading: FaIcon(FontAwesomeIcons.facebook),
+                  onPressed: () {
+                    AnalyticsEvent.communityLinkPressed.log();
+                    launchUrl(facebookUri);
+                  },
+                ),
+                StyledListItem.externalNavigation(
+                  title: t.labels.youtube.toText(),
+                  leading: FaIcon(FontAwesomeIcons.youtube),
+                  onPressed: () {
+                    AnalyticsEvent.communityLinkPressed.log();
+                    launchUrl(youtubeUri);
+                  },
                 ),
               ],
             ),
