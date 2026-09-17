@@ -1666,8 +1666,8 @@ class Translations$biblePlans$en {
 	/// en: 'Create with AI'
 	String get createWithAi => 'Create with AI';
 
-	/// en: 'Get a prompt to run in your own AI, then import the plan file it creates.'
-	String get createWithAiDescription => 'Get a prompt to run in your own AI, then import the plan file it creates.';
+	/// en: 'Get a prompt to run in your own AI, then import the plan it creates.'
+	String get createWithAiDescription => 'Get a prompt to run in your own AI, then import the plan it creates.';
 
 	/// en: 'Describe Your Plan'
 	String get describeYourPlan => 'Describe Your Plan';
@@ -1710,8 +1710,8 @@ class Translations$biblePlans$en {
 	/// en: 'Import'
 	String get importAction => 'Import';
 
-	/// en: 'Import a .lxbp file or paste compatible plan contents.'
-	String get importDescription => 'Import a .lxbp file or paste compatible plan contents.';
+	/// en: 'Import a Bible Plan.'
+	String get importDescription => 'Import a Bible Plan.';
 
 	/// en: 'Import A Bible Plan'
 	String get importPlan => 'Import A Bible Plan';
@@ -1722,11 +1722,17 @@ class Translations$biblePlans$en {
 	/// en: 'Import a Bible Plan file exported by Lux or paste compatible plan contents.'
 	String get importInstructions => 'Import a Bible Plan file exported by Lux or paste compatible plan contents.';
 
-	/// en: 'Import a .lxbp file or paste its contents.'
-	String get importOptionsHint => 'Import a .lxbp file or paste its contents.';
+	/// en: 'Import a '
+	String get importOptionsHintPrefix => 'Import a ';
 
-	/// en: 'Lux can import a .lxbp file or pasted file contents, whichever your AI provides.'
-	String get aiImportOptionsHint => 'Lux can import a .lxbp file or pasted file contents, whichever your AI provides.';
+	/// en: ' file or paste its contents.'
+	String get importOptionsHintSuffix => ' file or paste its contents.';
+
+	/// en: 'Lux can import a '
+	String get aiImportOptionsHintPrefix => 'Lux can import a ';
+
+	/// en: ' file or pasted file contents, whichever your AI provides.'
+	String get aiImportOptionsHintSuffix => ' file or pasted file contents, whichever your AI provides.';
 
 	/// en: 'How would you like to import the plan?'
 	String get importSource => 'How would you like to import the plan?';
@@ -1775,14 +1781,14 @@ class Translations$biblePlans$en {
 	/// en: 'Manual'
 	String get manual => 'Manual';
 
-	/// en: 'Add each passage and reflection day yourself.'
-	String get manualDescription => 'Add each passage and reflection day yourself.';
+	/// en: 'Add each passage yourself.'
+	String get manualDescription => 'Add each passage yourself.';
 
 	/// en: 'Choose Books & Duration'
 	String get chooseBooksAndDuration => 'Choose Books & Duration';
 
-	/// en: 'Choose books and let Lux balance them across your plan.'
-	String get chooseBooksAndDurationDescription => 'Choose books and let Lux balance them across your plan.';
+	/// en: 'Read books over a set duration.'
+	String get chooseBooksAndDurationDescription => 'Read books over a set duration.';
 
 	/// en: 'Choose Books'
 	String get chooseBooks => 'Choose Books';
@@ -5564,7 +5570,7 @@ extension on Translations {
 			'biblePlans.createCustomPlan' => 'Create Custom Plan',
 			'biblePlans.creationMethodQuestion' => 'How would you like to create your plan?',
 			'biblePlans.createWithAi' => 'Create with AI',
-			'biblePlans.createWithAiDescription' => 'Get a prompt to run in your own AI, then import the plan file it creates.',
+			'biblePlans.createWithAiDescription' => 'Get a prompt to run in your own AI, then import the plan it creates.',
 			'biblePlans.describeYourPlan' => 'Describe Your Plan',
 			'biblePlans.planDescription' => 'Plan Description',
 			'biblePlans.describeYourPlanHint' => 'Describe your plan',
@@ -5581,12 +5587,14 @@ extension on Translations {
 			'biblePlans.copyPrompt' => 'Copy Prompt',
 			'biblePlans.promptCopied' => 'Prompt copied to clipboard.',
 			'biblePlans.importAction' => 'Import',
-			'biblePlans.importDescription' => 'Import a .lxbp file or paste compatible plan contents.',
+			'biblePlans.importDescription' => 'Import a Bible Plan.',
 			'biblePlans.importPlan' => 'Import A Bible Plan',
 			'biblePlans.importPlanTitle' => 'Import Plan',
 			'biblePlans.importInstructions' => 'Import a Bible Plan file exported by Lux or paste compatible plan contents.',
-			'biblePlans.importOptionsHint' => 'Import a .lxbp file or paste its contents.',
-			'biblePlans.aiImportOptionsHint' => 'Lux can import a .lxbp file or pasted file contents, whichever your AI provides.',
+			'biblePlans.importOptionsHintPrefix' => 'Import a ',
+			'biblePlans.importOptionsHintSuffix' => ' file or paste its contents.',
+			'biblePlans.aiImportOptionsHintPrefix' => 'Lux can import a ',
+			'biblePlans.aiImportOptionsHintSuffix' => ' file or pasted file contents, whichever your AI provides.',
 			'biblePlans.importSource' => 'How would you like to import the plan?',
 			'biblePlans.importFromFile' => 'Import from File',
 			'biblePlans.importFromFileDescription' => 'Choose a downloaded .lxbp file.',
@@ -5610,9 +5618,9 @@ extension on Translations {
 			'biblePlans.importErrors.invalidPassage' => 'The imported plan contains an invalid Bible reference.',
 			'biblePlans.importErrors.duplicatePassage' => 'A day in the imported plan contains the same passage more than once.',
 			'biblePlans.manual' => 'Manual',
-			'biblePlans.manualDescription' => 'Add each passage and reflection day yourself.',
+			'biblePlans.manualDescription' => 'Add each passage yourself.',
 			'biblePlans.chooseBooksAndDuration' => 'Choose Books & Duration',
-			'biblePlans.chooseBooksAndDurationDescription' => 'Choose books and let Lux balance them across your plan.',
+			'biblePlans.chooseBooksAndDurationDescription' => 'Read books over a set duration.',
 			'biblePlans.chooseBooks' => 'Choose Books',
 			'biblePlans.filterBooks' => 'Filter books',
 			'biblePlans.chooseDuration' => 'Choose Duration',
@@ -5630,10 +5638,10 @@ extension on Translations {
 			'biblePlans.myBiblePlan' => 'My Bible Plan',
 			'biblePlans.nameRequired' => 'Enter a name for your plan.',
 			'biblePlans.nameAlreadyExists' => 'A Bible plan already uses this name.',
-			'biblePlans.discardPlanQuestion' => 'Discard Your Changes?',
-			'biblePlans.discardPlanConfirmation' => 'Your changes will be lost.',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.discardPlanQuestion' => 'Discard Your Changes?',
+			'biblePlans.discardPlanConfirmation' => 'Your changes will be lost.',
 			'biblePlans.discard' => 'Discard',
 			'biblePlans.addDay' => 'Add Day',
 			'biblePlans.addPassage' => 'Add Passage',
@@ -6144,10 +6152,10 @@ extension on Translations {
 			'morphology.mood.participle.description' => 'A verbal adjective, such as "doing" or "having done".',
 			'morphology.mood.participle.examples' => 'the one writing|having spoken',
 			'morphology.voice.active.name' => 'Active',
-			'morphology.voice.active.description' => 'The subject performs the action.',
-			'morphology.voice.active.examples' => 'he writes|they teach',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.voice.active.description' => 'The subject performs the action.',
+			'morphology.voice.active.examples' => 'he writes|they teach',
 			'morphology.voice.middle.name' => 'Middle',
 			'morphology.voice.middle.description' => 'The subject acts on or for itself.',
 			'morphology.voice.middle.examples' => 'he washes himself|they obtained for themselves',

@@ -44,6 +44,8 @@ Manual creation keeps its draft in page-local hook state and uses the shared `Fi
 
 Portable `.lxbp` files use `BiblePlan` JSON directly and retain the existing OSIS `VerseSelection` serialization. There is no wrapper or format version. Sharing uses the native share surface with an in-memory file, while downloading uses the platform save dialog. Both use a sanitized `.lxbp` filename and substitute an included plan's localized display name in the exported definition without changing the stored asset. Optional null colors remain omitted, and IDs, progress, reminders, and Bible text are outside the serialized definition. iOS declares the custom filename extension and uniform type so the native picker can filter it. Android document providers can expose an unrecognized custom MIME type through a `.bin` cache copy, so import validates the selected file's contents rather than its temporary filename.
 
+The published format reference lives at `https://www.luxbible.app/resources/lxbp` in the `websites/bible` Next.js site. The creation flow renders `.lxbp` mentions in the import hints as links through `url_launcher`, and the copied AI prompt cites the same URL.
+
 The nullable highlight-style override is serialized under the existing `highlightStyles` key. This preserves previously customized or migrated labels while allowing a missing value to resolve to localized defaults.
 
 ## Privacy and Telemetry

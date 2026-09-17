@@ -29,8 +29,8 @@ store attribution:
 
 ## Structure
 
-- `app/` — routes (`page.tsx` = home, `privacy-policy/`). Pages are composed by
-  assembling blocks.
+- `app/` — routes (`page.tsx` = home, `privacy-policy/`, `resources/lxbp/`).
+  Pages are composed by assembling blocks.
 - `components/blocks/` — content blocks (Hero pieces, FeatureShowcase, CtaButton,
   AppStoreButtons).
 - `components/layout/` — `Page`, `Section`, `SiteHeader`, `SiteFooter`.

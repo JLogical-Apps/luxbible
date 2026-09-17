@@ -785,7 +785,7 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	@override String get createCustomPlan => 'Создать свой план';
 	@override String get creationMethodQuestion => 'Как вы хотите создать свой план?';
 	@override String get createWithAi => 'Создать с помощью ИИ';
-	@override String get createWithAiDescription => 'Получите запрос для своего ИИ, а затем импортируйте созданный им файл плана.';
+	@override String get createWithAiDescription => 'Получите запрос для своего ИИ, а затем импортируйте созданный им план.';
 	@override String get describeYourPlan => 'Опишите свой план';
 	@override String get planDescription => 'Описание плана';
 	@override String get describeYourPlanHint => 'Опишите свой план';
@@ -804,12 +804,14 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	@override String get copyPrompt => 'Скопировать запрос';
 	@override String get promptCopied => 'Запрос скопирован в буфер обмена.';
 	@override String get importAction => 'Импортировать';
-	@override String get importDescription => 'Импортируйте файл .lxbp или вставьте содержимое совместимого плана.';
+	@override String get importDescription => 'Импортируйте библейский план.';
 	@override String get importPlan => 'Импорт библейского плана';
 	@override String get importPlanTitle => 'Импортировать план';
 	@override String get importInstructions => 'Импортируйте файл библейского плана из Lux или вставьте содержимое совместимого плана.';
-	@override String get importOptionsHint => 'Импортируйте файл .lxbp или вставьте его содержимое.';
-	@override String get aiImportOptionsHint => 'Lux может импортировать файл .lxbp или вставленное содержимое файла, в зависимости от ответа ИИ.';
+	@override String get importOptionsHintPrefix => 'Импортируйте файл ';
+	@override String get importOptionsHintSuffix => ' или вставьте его содержимое.';
+	@override String get aiImportOptionsHintPrefix => 'Lux может импортировать файл ';
+	@override String get aiImportOptionsHintSuffix => ' или вставленное содержимое файла, в зависимости от ответа ИИ.';
 	@override String get importSource => 'Как вы хотите импортировать план?';
 	@override String get importFromFile => 'Импортировать из файла';
 	@override String get importFromFileDescription => 'Выберите скачанный файл .lxbp.';
@@ -826,9 +828,9 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	@override String get downloadDescription => 'Сохраните этот файл библейского плана на устройстве.';
 	@override late final _Translations$biblePlans$importErrors$ru importErrors = _Translations$biblePlans$importErrors$ru._(_root);
 	@override String get manual => 'Вручную';
-	@override String get manualDescription => 'Добавьте каждый отрывок и день размышлений самостоятельно.';
+	@override String get manualDescription => 'Добавьте каждый отрывок самостоятельно.';
 	@override String get chooseBooksAndDuration => 'Выбрать книги и продолжительность';
-	@override String get chooseBooksAndDurationDescription => 'Выберите книги, и Lux равномерно распределит их по вашему плану.';
+	@override String get chooseBooksAndDurationDescription => 'Читайте книги в течение заданного срока.';
 	@override String get chooseBooks => 'Выбрать книги';
 	@override String get filterBooks => 'Фильтровать книги';
 	@override String get chooseDuration => 'Выбрать продолжительность';
@@ -3407,7 +3409,7 @@ extension on TranslationsRu {
 			'biblePlans.createCustomPlan' => 'Создать свой план',
 			'biblePlans.creationMethodQuestion' => 'Как вы хотите создать свой план?',
 			'biblePlans.createWithAi' => 'Создать с помощью ИИ',
-			'biblePlans.createWithAiDescription' => 'Получите запрос для своего ИИ, а затем импортируйте созданный им файл плана.',
+			'biblePlans.createWithAiDescription' => 'Получите запрос для своего ИИ, а затем импортируйте созданный им план.',
 			'biblePlans.describeYourPlan' => 'Опишите свой план',
 			'biblePlans.planDescription' => 'Описание плана',
 			'biblePlans.describeYourPlanHint' => 'Опишите свой план',
@@ -3424,12 +3426,14 @@ extension on TranslationsRu {
 			'biblePlans.copyPrompt' => 'Скопировать запрос',
 			'biblePlans.promptCopied' => 'Запрос скопирован в буфер обмена.',
 			'biblePlans.importAction' => 'Импортировать',
-			'biblePlans.importDescription' => 'Импортируйте файл .lxbp или вставьте содержимое совместимого плана.',
+			'biblePlans.importDescription' => 'Импортируйте библейский план.',
 			'biblePlans.importPlan' => 'Импорт библейского плана',
 			'biblePlans.importPlanTitle' => 'Импортировать план',
 			'biblePlans.importInstructions' => 'Импортируйте файл библейского плана из Lux или вставьте содержимое совместимого плана.',
-			'biblePlans.importOptionsHint' => 'Импортируйте файл .lxbp или вставьте его содержимое.',
-			'biblePlans.aiImportOptionsHint' => 'Lux может импортировать файл .lxbp или вставленное содержимое файла, в зависимости от ответа ИИ.',
+			'biblePlans.importOptionsHintPrefix' => 'Импортируйте файл ',
+			'biblePlans.importOptionsHintSuffix' => ' или вставьте его содержимое.',
+			'biblePlans.aiImportOptionsHintPrefix' => 'Lux может импортировать файл ',
+			'biblePlans.aiImportOptionsHintSuffix' => ' или вставленное содержимое файла, в зависимости от ответа ИИ.',
 			'biblePlans.importSource' => 'Как вы хотите импортировать план?',
 			'biblePlans.importFromFile' => 'Импортировать из файла',
 			'biblePlans.importFromFileDescription' => 'Выберите скачанный файл .lxbp.',
@@ -3453,9 +3457,9 @@ extension on TranslationsRu {
 			'biblePlans.importErrors.invalidPassage' => 'Импортируемый план содержит недопустимую библейскую ссылку.',
 			'biblePlans.importErrors.duplicatePassage' => 'Один из дней импортируемого плана содержит один и тот же отрывок несколько раз.',
 			'biblePlans.manual' => 'Вручную',
-			'biblePlans.manualDescription' => 'Добавьте каждый отрывок и день размышлений самостоятельно.',
+			'biblePlans.manualDescription' => 'Добавьте каждый отрывок самостоятельно.',
 			'biblePlans.chooseBooksAndDuration' => 'Выбрать книги и продолжительность',
-			'biblePlans.chooseBooksAndDurationDescription' => 'Выберите книги, и Lux равномерно распределит их по вашему плану.',
+			'biblePlans.chooseBooksAndDurationDescription' => 'Читайте книги в течение заданного срока.',
 			'biblePlans.chooseBooks' => 'Выбрать книги',
 			'biblePlans.filterBooks' => 'Фильтровать книги',
 			'biblePlans.chooseDuration' => 'Выбрать продолжительность',
@@ -3471,10 +3475,10 @@ extension on TranslationsRu {
 			'biblePlans.review' => 'Проверка плана',
 			'biblePlans.createAndStart' => 'Создать и начать',
 			'biblePlans.myBiblePlan' => 'Мой библейский план',
-			'biblePlans.nameRequired' => 'Введите название плана.',
-			'biblePlans.nameAlreadyExists' => 'Библейский план с таким названием уже существует.',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.nameRequired' => 'Введите название плана.',
+			'biblePlans.nameAlreadyExists' => 'Библейский план с таким названием уже существует.',
 			'biblePlans.discardPlanQuestion' => 'Отменить ваши изменения?',
 			'biblePlans.discardPlanConfirmation' => 'Ваши изменения будут потеряны.',
 			'biblePlans.discard' => 'Отменить',
@@ -3985,10 +3989,10 @@ extension on TranslationsRu {
 			'morphology.mood.infinitive.examples' => 'писать|верить',
 			'morphology.mood.participle.name' => 'Причастие',
 			'morphology.mood.participle.description' => 'Отглагольное прилагательное, например «делать» или «сделать».',
-			'morphology.mood.participle.examples' => 'тот, кто пишет|говорит',
-			'morphology.voice.active.name' => 'Активный',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.mood.participle.examples' => 'тот, кто пишет|говорит',
+			'morphology.voice.active.name' => 'Активный',
 			'morphology.voice.active.description' => 'Субъект выполняет действие.',
 			'morphology.voice.active.examples' => 'он пишет|они учат',
 			'morphology.voice.middle.name' => 'Средний',

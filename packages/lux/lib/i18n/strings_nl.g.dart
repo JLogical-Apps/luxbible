@@ -783,7 +783,7 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	@override String get createCustomPlan => 'Aangepast leesplan maken';
 	@override String get creationMethodQuestion => 'Hoe wil je je leesplan maken?';
 	@override String get createWithAi => 'Maken met AI';
-	@override String get createWithAiDescription => 'Ontvang een prompt voor je eigen AI en importeer daarna het leesplanbestand dat deze maakt.';
+	@override String get createWithAiDescription => 'Ontvang een prompt voor je eigen AI en importeer daarna het leesplan dat deze maakt.';
 	@override String get describeYourPlan => 'Beschrijf je leesplan';
 	@override String get planDescription => 'Beschrijving van leesplan';
 	@override String get describeYourPlanHint => 'Beschrijf je leesplan';
@@ -802,12 +802,14 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	@override String get copyPrompt => 'Prompt kopiëren';
 	@override String get promptCopied => 'Prompt naar het klembord gekopieerd.';
 	@override String get importAction => 'Importeren';
-	@override String get importDescription => 'Importeer een .lxbp-bestand of plak compatibele leesplaninhoud.';
+	@override String get importDescription => 'Importeer een Bijbelleesplan.';
 	@override String get importPlan => 'Een Bijbelleesplan importeren';
 	@override String get importPlanTitle => 'Leesplan importeren';
 	@override String get importInstructions => 'Importeer een door Lux geëxporteerd Bijbelleesplanbestand of plak compatibele leesplaninhoud.';
-	@override String get importOptionsHint => 'Importeer een .lxbp-bestand of plak de inhoud ervan.';
-	@override String get aiImportOptionsHint => 'Lux kan een .lxbp-bestand of geplakte bestandsinhoud importeren, afhankelijk van wat je AI geeft.';
+	@override String get importOptionsHintPrefix => 'Importeer een ';
+	@override String get importOptionsHintSuffix => '-bestand of plak de inhoud ervan.';
+	@override String get aiImportOptionsHintPrefix => 'Lux kan een ';
+	@override String get aiImportOptionsHintSuffix => '-bestand of geplakte bestandsinhoud importeren, afhankelijk van wat je AI geeft.';
 	@override String get importSource => 'Hoe wil je het leesplan importeren?';
 	@override String get importFromFile => 'Importeren uit bestand';
 	@override String get importFromFileDescription => 'Kies een gedownload .lxbp-bestand.';
@@ -824,9 +826,9 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	@override String get downloadDescription => 'Sla dit Bijbelleesplanbestand op je apparaat op.';
 	@override late final _Translations$biblePlans$importErrors$nl importErrors = _Translations$biblePlans$importErrors$nl._(_root);
 	@override String get manual => 'Handmatig';
-	@override String get manualDescription => 'Voeg zelf elke passage en overdenkingsdag toe.';
+	@override String get manualDescription => 'Voeg zelf elke passage toe.';
 	@override String get chooseBooksAndDuration => 'Boeken en duur kiezen';
-	@override String get chooseBooksAndDurationDescription => 'Kies boeken en laat Lux ze evenwichtig over je leesplan verdelen.';
+	@override String get chooseBooksAndDurationDescription => 'Lees boeken gedurende een zelfgekozen periode.';
 	@override String get chooseBooks => 'Boeken kiezen';
 	@override String get filterBooks => 'Boeken filteren';
 	@override String get chooseDuration => 'Duur kiezen';
@@ -3399,7 +3401,7 @@ extension on TranslationsNl {
 			'biblePlans.createCustomPlan' => 'Aangepast leesplan maken',
 			'biblePlans.creationMethodQuestion' => 'Hoe wil je je leesplan maken?',
 			'biblePlans.createWithAi' => 'Maken met AI',
-			'biblePlans.createWithAiDescription' => 'Ontvang een prompt voor je eigen AI en importeer daarna het leesplanbestand dat deze maakt.',
+			'biblePlans.createWithAiDescription' => 'Ontvang een prompt voor je eigen AI en importeer daarna het leesplan dat deze maakt.',
 			'biblePlans.describeYourPlan' => 'Beschrijf je leesplan',
 			'biblePlans.planDescription' => 'Beschrijving van leesplan',
 			'biblePlans.describeYourPlanHint' => 'Beschrijf je leesplan',
@@ -3416,12 +3418,14 @@ extension on TranslationsNl {
 			'biblePlans.copyPrompt' => 'Prompt kopiëren',
 			'biblePlans.promptCopied' => 'Prompt naar het klembord gekopieerd.',
 			'biblePlans.importAction' => 'Importeren',
-			'biblePlans.importDescription' => 'Importeer een .lxbp-bestand of plak compatibele leesplaninhoud.',
+			'biblePlans.importDescription' => 'Importeer een Bijbelleesplan.',
 			'biblePlans.importPlan' => 'Een Bijbelleesplan importeren',
 			'biblePlans.importPlanTitle' => 'Leesplan importeren',
 			'biblePlans.importInstructions' => 'Importeer een door Lux geëxporteerd Bijbelleesplanbestand of plak compatibele leesplaninhoud.',
-			'biblePlans.importOptionsHint' => 'Importeer een .lxbp-bestand of plak de inhoud ervan.',
-			'biblePlans.aiImportOptionsHint' => 'Lux kan een .lxbp-bestand of geplakte bestandsinhoud importeren, afhankelijk van wat je AI geeft.',
+			'biblePlans.importOptionsHintPrefix' => 'Importeer een ',
+			'biblePlans.importOptionsHintSuffix' => '-bestand of plak de inhoud ervan.',
+			'biblePlans.aiImportOptionsHintPrefix' => 'Lux kan een ',
+			'biblePlans.aiImportOptionsHintSuffix' => '-bestand of geplakte bestandsinhoud importeren, afhankelijk van wat je AI geeft.',
 			'biblePlans.importSource' => 'Hoe wil je het leesplan importeren?',
 			'biblePlans.importFromFile' => 'Importeren uit bestand',
 			'biblePlans.importFromFileDescription' => 'Kies een gedownload .lxbp-bestand.',
@@ -3445,9 +3449,9 @@ extension on TranslationsNl {
 			'biblePlans.importErrors.invalidPassage' => 'Het geïmporteerde leesplan bevat een ongeldige Bijbelverwijzing.',
 			'biblePlans.importErrors.duplicatePassage' => 'Een dag in het geïmporteerde leesplan bevat dezelfde passage meer dan één keer.',
 			'biblePlans.manual' => 'Handmatig',
-			'biblePlans.manualDescription' => 'Voeg zelf elke passage en overdenkingsdag toe.',
+			'biblePlans.manualDescription' => 'Voeg zelf elke passage toe.',
 			'biblePlans.chooseBooksAndDuration' => 'Boeken en duur kiezen',
-			'biblePlans.chooseBooksAndDurationDescription' => 'Kies boeken en laat Lux ze evenwichtig over je leesplan verdelen.',
+			'biblePlans.chooseBooksAndDurationDescription' => 'Lees boeken gedurende een zelfgekozen periode.',
 			'biblePlans.chooseBooks' => 'Boeken kiezen',
 			'biblePlans.filterBooks' => 'Boeken filteren',
 			'biblePlans.chooseDuration' => 'Duur kiezen',
@@ -3463,10 +3467,10 @@ extension on TranslationsNl {
 			'biblePlans.review' => 'Leesplan controleren',
 			'biblePlans.createAndStart' => 'Maken en starten',
 			'biblePlans.myBiblePlan' => 'Mijn Bijbelleesplan',
-			'biblePlans.nameRequired' => 'Voer een naam voor je leesplan in.',
-			'biblePlans.nameAlreadyExists' => 'Een Bijbelleesplan gebruikt deze naam al.',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.nameRequired' => 'Voer een naam voor je leesplan in.',
+			'biblePlans.nameAlreadyExists' => 'Een Bijbelleesplan gebruikt deze naam al.',
 			'biblePlans.discardPlanQuestion' => 'Je wijzigingen weggooien?',
 			'biblePlans.discardPlanConfirmation' => 'Je wijzigingen gaan verloren.',
 			'biblePlans.discard' => 'Weggooien',
@@ -3977,10 +3981,10 @@ extension on TranslationsNl {
 			'morphology.mood.infinitive.examples' => 'schrijven|geloven',
 			'morphology.mood.participle.name' => 'Participium',
 			'morphology.mood.participle.description' => 'Een verbaal bijvoeglijk naamwoord, zoals "doende" of "gedaan hebbend".',
-			'morphology.mood.participle.examples' => 'degene die schrijft|gesproken hebbend',
-			'morphology.voice.active.name' => 'Actief',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.mood.participle.examples' => 'degene die schrijft|gesproken hebbend',
+			'morphology.voice.active.name' => 'Actief',
 			'morphology.voice.active.description' => 'Het onderwerp voert de handeling uit.',
 			'morphology.voice.active.examples' => 'hij schrijft|zij onderwijzen',
 			'morphology.voice.middle.name' => 'Medium',

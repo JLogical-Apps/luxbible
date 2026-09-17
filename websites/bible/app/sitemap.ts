@@ -24,6 +24,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     })),
     {
+      url: `${site.domain}/resources/lxbp`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
       url: `${site.domain}/privacy-policy`,
       lastModified: new Date(),
       changeFrequency: 'yearly',

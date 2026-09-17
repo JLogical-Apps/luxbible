@@ -47,6 +47,8 @@ export 'src/widgets/styled_progress_bar.dart';
 export 'src/widgets/styled_radio.dart';
 export 'src/widgets/styled_rect_button.dart';
 export 'src/widgets/styled_reorderable_list.dart';
+export 'src/widgets/styled_rich_text.dart';
+export 'src/widgets/styled_rich_text_plan.dart';
 export 'src/widgets/styled_scrollbar.dart';
 export 'src/widgets/styled_section.dart';
 export 'src/widgets/styled_segmented_control.dart';

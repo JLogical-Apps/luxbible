@@ -15,7 +15,11 @@ import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:utils_core/utils_core.dart';
+
+const biblePlanFileExtension = '.lxbp';
+final biblePlanFormatUri = Uri.parse('https://www.luxbible.app/resources/lxbp');
 
 class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<String> {
   const CreateBiblePlanPage({super.key});
@@ -159,7 +163,13 @@ class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<Stri
               BiblePlanImportContent(
                 plan: importedPlan,
                 error: importErrorState.value,
-                message: t.biblePlans.importOptionsHint,
+                description: StyledRichText(
+                  parts: [
+                    StyledRichTextPart.text(t.biblePlans.importOptionsHintPrefix),
+                    StyledRichTextPart.link(biblePlanFileExtension, onTap: () => launchUrl(biblePlanFormatUri)),
+                    StyledRichTextPart.text(t.biblePlans.importOptionsHintSuffix),
+                  ],
+                ),
                 onImport: () => showBiblePlanImportOptions(
                   context,
                   onImportFile: importPlanFile,
@@ -212,7 +222,13 @@ class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<Stri
               BiblePlanImportContent(
                 plan: importedPlan,
                 error: importErrorState.value,
-                message: t.biblePlans.aiImportOptionsHint,
+                description: StyledRichText(
+                  parts: [
+                    StyledRichTextPart.text(t.biblePlans.aiImportOptionsHintPrefix),
+                    StyledRichTextPart.link(biblePlanFileExtension, onTap: () => launchUrl(biblePlanFormatUri)),
+                    StyledRichTextPart.text(t.biblePlans.aiImportOptionsHintSuffix),
+                  ],
+                ),
                 onImport: hasCopiedPromptState.value
                     ? () => showBiblePlanImportOptions(
                         context,
@@ -511,7 +527,7 @@ enum BiblePlanCreationMethod {
   IconData get icon => switch (this) {
     ai => Symbols.auto_awesome,
     booksAndDuration => Symbols.menu_book,
-    importFile => Symbols.file_open,
+    importFile => Symbols.download,
     manual => Symbols.edit_note,
   };
 }
@@ -519,21 +535,21 @@ enum BiblePlanCreationMethod {
 class BiblePlanImportContent extends StatelessWidget {
   final BiblePlan? plan;
   final String? error;
-  final String message;
+  final Widget description;
   final Function()? onImport;
 
   const BiblePlanImportContent({
     super.key,
     required this.plan,
     required this.error,
-    required this.message,
+    required this.description,
     required this.onImport,
   });
 
   @override
   Widget build(BuildContext context) => StyledFormInput(
     label: t.biblePlans.importAction.toText(),
-    description: message.toText(),
+    description: description,
     child: Column(
       spacing: 16,
       children: [
@@ -652,7 +668,10 @@ String getBiblePlanAiPrompt(String description) {
 
 $description
 
-Create a downloadable file named with the .lxbp extension. The file contents must use exactly this Lux BiblePlan structure:
+Create a downloadable file named with the .lxbp extension. The .lxbp format is documented at:
+$biblePlanFormatUri
+
+The file contents must use exactly this Lux BiblePlan structure:
 
 {
   "name": "Romans in 30 Days",
