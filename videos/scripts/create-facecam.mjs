@@ -13,7 +13,10 @@ import { fileURLToPath } from "node:url";
 import { promisify } from "node:util";
 import { getOcrData, getHighlightRects } from "./image-highlights.mjs";
 import { getVideoMetadata, getVideoFilters } from "./video-preparation.mjs";
-import { prepareFacecamTakes } from "./facecam-takes.mjs";
+import {
+  prepareFacecamNarrationSource,
+  prepareFacecamTakes,
+} from "./facecam-takes.mjs";
 import { prepareQuestionMusic } from "./question-music.mjs";
 import { prepareNarration } from "./narration-audio.mjs";
 import { transcribeFacecam } from "./facecam-captions.mjs";
@@ -176,19 +179,55 @@ for (const item of manifest.overlays) {
     segments,
     highlights,
     ...(item.focus ? { focus: item.focus } : {}),
+    ...(item.layout ? { layout: item.layout } : {}),
+    ...(item.pixelate ? { pixelate: item.pixelate } : {}),
+    circles: item.circles ?? [],
+    callouts: item.callouts ?? [],
+    sourceScaleX: item.sourceScaleX ?? 1,
+    sourceScaleY: item.sourceScaleY ?? 1,
+    fadeEdges: item.fadeEdges ?? manifest.defaultFadeEdges ?? true,
+    seamlessEdges: item.seamlessEdges ?? false,
   });
 }
 const facecam = path.join(assets, "facecam.mp4");
+let facecamClips = [];
 if (manifest.facecamTakes?.length && !reuseMedia)
-  await prepareFacecamTakes({
+  facecamClips = await prepareFacecamTakes({
     takes: manifest.facecamTakes,
     destination: facecam,
   });
 else await prepareVideo(manifest.facecam, facecam, true);
+if (manifest.facecamTakes?.length && reuseMedia) {
+  let start = 0;
+  for (const [index] of manifest.facecamTakes.entries()) {
+    const id = String(index + 1).padStart(3, "0");
+    const prepared = path.join(assets, "takes", `${id}.mp4`);
+    const clipMetadata = await getVideoMetadata(prepared);
+    facecamClips.push({
+      id,
+      path: prepared,
+      start,
+      duration: clipMetadata.duration,
+    });
+    start += clipMetadata.duration;
+  }
+}
 const metadata = await getVideoMetadata(facecam);
 const narration = path.join(assets, "narration.wav");
-if (!reuseMedia || !(await access(narration).then(() => true).catch(() => false)))
-  await prepareNarration({ source: manifest.facecam, destination: narration });
+if (
+  !reuseMedia ||
+  !(await access(narration)
+    .then(() => true)
+    .catch(() => false))
+) {
+  const narrationSource = manifest.facecamTakes?.length
+    ? await prepareFacecamNarrationSource({
+        takes: manifest.facecamTakes,
+        destination: path.join(assets, "narration-source.wav"),
+      })
+    : manifest.facecam;
+  await prepareNarration({ source: narrationSource, destination: narration });
+}
 const captions = await transcribeFacecam({
   source: narration,
   directory: assets,
@@ -200,17 +239,25 @@ const captions = await transcribeFacecam({
     Luxe: "Lux",
     "4031,": "40:31,",
   },
+  phraseReplacements: manifest.captionPhraseReplacements ?? {},
 });
 const props = {
   title: manifest.title,
   titleSeconds: 3,
   facecamSrc: `${publicRoot}/facecam.mp4`,
+  facecamClips: facecamClips.map((clip) => ({
+    id: clip.id,
+    src: `${publicRoot}/takes/${path.basename(clip.path)}`,
+    start: clip.start,
+    duration: clip.duration,
+  })),
   durationInSeconds: metadata.duration,
   captions,
   overlays,
   facecamZoom: 1,
   facecamZoomOnlyWithSimulator: true,
   facecamFraming: [],
+  titleCues: [],
   narrationSrc: `${publicRoot}/narration.wav`,
   narrationVolume: Math.SQRT1_2,
   musicSrc: "",
@@ -226,12 +273,21 @@ const props = {
   ...manifest.style,
 };
 if (manifest.music) {
-  const existing = await readFile(propsFile, "utf8").then(JSON.parse).catch(() => ({}));
-  Object.assign(props, await prepareQuestionMusic({
-    videosDirectory: root,
-    assetDirectory: assets,
-    props: { ...props, mediaVolume: 1, musicSource: manifest.musicSource ?? existing.musicSource },
-  }));
+  const existing = await readFile(propsFile, "utf8")
+    .then(JSON.parse)
+    .catch(() => ({}));
+  Object.assign(
+    props,
+    await prepareQuestionMusic({
+      videosDirectory: root,
+      assetDirectory: assets,
+      props: {
+        ...props,
+        mediaVolume: props.narrationVolume,
+        musicSource: manifest.musicSource ?? existing.musicSource,
+      },
+    }),
+  );
 }
 await writeFile(propsFile, JSON.stringify(props, null, 2) + "\n");
 console.log(

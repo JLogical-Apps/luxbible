@@ -69,11 +69,20 @@ export const prepareQuestionMusic = async ({
     throw new Error(`Not a playable music track: ${source}`);
   }
   const duration = props.durationInSeconds;
+  const sourceOffset = props.musicSourceOffsetSeconds ?? 0;
+  if (
+    !Number.isFinite(sourceOffset) ||
+    sourceOffset < 0 ||
+    sourceOffset >= trackDuration
+  )
+    throw new Error(`Invalid music source offset: ${sourceOffset}`);
   const overlap = Math.min(0.25, trackDuration / 4);
-  const repetitions = Math.max(
-    1,
-    Math.ceil((duration - overlap) / (trackDuration - overlap)),
-  );
+  const firstDuration = trackDuration - sourceOffset;
+  const repetitions =
+    duration <= firstDuration
+      ? 1
+      : 1 +
+        Math.ceil((duration - firstDuration) / (trackDuration - overlap));
   const inputArgs = Array.from({ length: repetitions }, () => [
     "-i",
     source,
@@ -85,7 +94,8 @@ export const prepareQuestionMusic = async ({
   );
   const resampling = Array.from(
     { length: repetitions },
-    (_, index) => `[${index}:a]aresample=48000[audio${index}]`,
+    (_, index) =>
+      `[${index}:a]${index === 0 && sourceOffset > 0 ? `atrim=start=${sourceOffset},asetpts=PTS-STARTPTS,` : ""}aresample=48000[audio${index}]`,
   );
   const input = repetitions === 1 ? "[audio0]" : `[join${repetitions - 1}]`;
   const fade = Math.min(0.6, duration / 4);

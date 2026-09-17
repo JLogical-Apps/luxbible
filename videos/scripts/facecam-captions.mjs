@@ -3,7 +3,11 @@ import { readFile, writeFile } from "node:fs/promises";
 import { promisify } from "node:util";
 
 const runFile = promisify(execFile);
-export const getCaptions = (transcript, replacements = {}) => {
+export const getCaptions = (
+  transcript,
+  replacements = {},
+  phraseReplacements = {},
+) => {
   const tokens = transcript.transcription
     .flatMap((segment) => segment.tokens)
     .filter((token) => !token.text.startsWith("[_"));
@@ -19,7 +23,44 @@ export const getCaptions = (transcript, replacements = {}) => {
           ];
     }, [])
     .filter((word) => /[a-z0-9]/i.test(word.text));
-  return words.map((word, index) => {
+  const phrases = Object.entries(phraseReplacements)
+    .map(([phrase, replacement]) => ({
+      words: phrase.toLowerCase().match(/[a-z0-9]+/g) ?? [],
+      replacement,
+    }))
+    .sort((a, b) => b.words.length - a.words.length);
+  const replacedWords = words.reduce((result, word, index) => {
+    if (result.consumed > index) return result;
+    const phrase = phrases.find(({ words: phraseWords }) =>
+      phraseWords.every(
+        (phraseWord, offset) =>
+          words[index + offset]?.text.toLowerCase().match(/[a-z0-9]+/g)?.join("") ===
+          phraseWord,
+      ),
+    );
+    const punctuation = phrase
+      ? (words[index + phrase.words.length - 1]?.text.match(/[^a-z0-9]+$/i)?.[0] ??
+        "")
+      : "";
+    return phrase
+      ? {
+          consumed: index + phrase.words.length,
+          words: [
+            ...result.words,
+            {
+              text: /[^a-z0-9]$/i.test(phrase.replacement)
+                ? phrase.replacement
+                : phrase.replacement + punctuation,
+              timestamp: word.timestamp,
+            },
+          ],
+        }
+      : {
+          consumed: index + 1,
+          words: [...result.words, word],
+        };
+  }, { consumed: 0, words: [] }).words;
+  return replacedWords.map((word, index) => {
     const startMs = Math.max(0, word.timestamp - 130);
     return {
       text: " " + (replacements[word.text] ?? word.text),
@@ -27,7 +68,7 @@ export const getCaptions = (transcript, replacements = {}) => {
       endMs: Math.max(
         startMs + 100,
         Math.min(
-          (words[index + 1]?.timestamp ?? word.timestamp + 600) - 130,
+          (replacedWords[index + 1]?.timestamp ?? word.timestamp + 600) - 130,
           startMs + 1000,
         ),
       ),
@@ -43,6 +84,7 @@ export const transcribeFacecam = async ({
   model,
   transcriptPath,
   replacements,
+  phraseReplacements,
 }) => {
   if (!transcriptPath) {
     const audio = `${directory}/transcribe.wav`;
@@ -86,7 +128,11 @@ export const transcribeFacecam = async ({
   }
   const transcript = await readFile(transcriptPath, "utf8");
   await writeFile(`${directory}/transcript.json`, transcript);
-  const captions = getCaptions(JSON.parse(transcript), replacements);
+  const captions = getCaptions(
+    JSON.parse(transcript),
+    replacements,
+    phraseReplacements,
+  );
   await writeFile(
     `${directory}/captions.json`,
     JSON.stringify(captions, null, 2) + "\n",

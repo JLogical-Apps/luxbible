@@ -7,10 +7,7 @@ import { getVideoMetadata, getVideoFilters } from "./video-preparation.mjs";
 
 const runFile = promisify(execFile);
 
-export const prepareFacecamTakes = async ({
-  takes,
-  destination,
-}) => {
+export const prepareFacecamTakes = async ({ takes, destination }) => {
   const directory = path.join(path.dirname(destination), "takes");
   await mkdir(directory, { recursive: true });
   let cursor = 0;
@@ -23,6 +20,7 @@ export const prepareFacecamTakes = async ({
     clips.push({
       source,
       metadata,
+      start: firstFrame / 30,
       frames: Math.round(cursor * 30) - firstFrame,
     });
   }
@@ -86,8 +84,7 @@ export const prepareFacecamTakes = async ({
       "0",
       "-i",
       list,
-      "-i",
-          "-map",
+      "-map",
       "0:v:0",
       "-an",
       "-c:v",
@@ -101,4 +98,46 @@ export const prepareFacecamTakes = async ({
     { maxBuffer: 10 * 1024 * 1024 },
   );
   await rename(temporary, destination);
+  return clips.map((clip, index) => ({
+    id: String(index + 1).padStart(3, "0"),
+    path: parts[index],
+    start: clip.start,
+    duration: clip.frames / 30,
+  }));
+};
+
+export const prepareFacecamNarrationSource = async ({ takes, destination }) => {
+  const list = destination.replace(/\.wav$/, "-concat.txt");
+  await writeFile(
+    list,
+    takes
+      .map((take) => `file '${take.replaceAll("'", "'\\''")}'`)
+      .join("\n") + "\n",
+  );
+  await runFile(
+    "ffmpeg",
+    [
+      "-v",
+      "error",
+      "-y",
+      "-f",
+      "concat",
+      "-safe",
+      "0",
+      "-i",
+      list,
+      "-map",
+      "0:a:0",
+      "-vn",
+      "-ar",
+      "48000",
+      "-ac",
+      "1",
+      "-c:a",
+      "pcm_s24le",
+      destination,
+    ],
+    { maxBuffer: 10 * 1024 * 1024 },
+  );
+  return destination;
 };
