@@ -28,6 +28,8 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
     final user = ref.watch(userProvider);
     final plans = ref.watch(biblePlansProvider);
 
+    final progresses = user.getHydratedPlanProgresses(plans);
+
     useMessage(user, .renamedBiblePlans);
 
     final visibleUser = useWhenVisible(user);
@@ -76,7 +78,7 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
       body: StyledListView(
         children: [
           gapH16,
-          if (user.getHydratedPlanProgresses(plans).isEmpty)
+          if (progresses.isEmpty)
             Padding(
               padding: .symmetric(horizontal: 16),
               child: StyledTile.message(
@@ -87,9 +89,10 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
           StyledReorderableList(
             shrinkWrap: true,
             showProxyBackground: false,
-            onReorder: (a, b) => ref.updateUser((user) => user.withReorderedPlans(a, b)),
-            children: user
-                .getHydratedPlanProgresses(plans)
+            onReorder: (a, b) => ref.updateUser(
+              (user) => user.withReorderedPlans(progresses.map((progress) => progress.id).toList().withReorder(a, b)),
+            ),
+            children: progresses
                 .map(
                   (progress) => HookBuilder(
                     key: ValueKey(progress.id),

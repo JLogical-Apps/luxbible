@@ -3,6 +3,7 @@ import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/audio_bible_player_provider.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
+import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/verse_of_the_day_provider.dart';
@@ -329,7 +330,7 @@ enum MainAction {
           onNavigateToVerseSelection(result);
         }
       case plans:
-        if (user.planProgressById.isEmpty) {
+        if (user.getHydratedPlanProgresses(ref.read(biblePlansProvider)).isEmpty) {
           final newPlan = await context.push(BiblePlanSearchPage());
           if (newPlan == null || !context.mounted) {
             return;

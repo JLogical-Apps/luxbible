@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/models/user/language.dart';
 import 'package:bible/models/user/migration.dart';
 import 'package:bible/models/user/user.dart';
@@ -40,17 +39,7 @@ class UserNotifier extends _$UserNotifier {
   User? get userOrNull {
     if (userFile.existsSync()) {
       final user = guard(
-        () {
-          final plans = ref.read(biblePlansProvider);
-          final json = jsonDecode(userFile.readAsStringSync()) as Map<String, dynamic>;
-          return User.fromJson({
-            ...json,
-            'planProgressByType': (json['planProgressByType'] as Map<String, dynamic>? ?? {}).where(
-              (id, _) => plans.containsKey(id),
-            ),
-            'completedPlans': (json['completedPlans'] as List? ?? []).where(plans.containsKey).toList(),
-          });
-        },
+        () => User.fromJson(jsonDecode(userFile.readAsStringSync())),
         onException: (error, stackTrace) {
           debugPrint(error.toString());
           debugPrintStack(stackTrace: stackTrace);

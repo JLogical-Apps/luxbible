@@ -416,7 +416,9 @@ sealed class User with _$User {
 
   User withRemovedCompletedPlan(String planId) => copyWith(completedPlans: {...completedPlans}..remove(planId));
 
-  User withReorderedPlans(int from, int to) => copyWith(planProgressById: planProgressById.withReorder(from, to));
+  User withReorderedPlans(List<String> orderedPlanIds) => copyWith(
+    planProgressById: orderedPlanIds.mapToMap((planId) => MapEntry(planId, planProgressById[planId])).withoutNullValues,
+  );
 
   User withCompletedPlan(String planId) =>
       copyWith(planProgressById: {...planProgressById}..remove(planId), completedPlans: {...completedPlans, planId});

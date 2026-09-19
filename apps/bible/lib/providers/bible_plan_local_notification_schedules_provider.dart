@@ -23,6 +23,7 @@ List<LocalNotification> biblePlanLocalNotifications(Ref ref) {
   final reminderProgresses = user
       .getHydratedPlanProgresses(plans)
       .where((progress) => progress.progress.reminder is DailyReminder && !progress.isCompleted)
+      .take(biblePlanNotificationCapacity)
       .toList();
 
   if (reminderProgresses.isEmpty) return [];
