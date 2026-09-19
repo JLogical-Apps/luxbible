@@ -258,6 +258,7 @@ class _Translations$common$ru extends Translations$common$en {
 	@override String get done => 'Готово';
 	@override String get edit => 'Редактировать';
 	@override String get finish => 'Завершить';
+	@override String get join => 'Присоединиться';
 	@override String get learnMore => 'Узнать больше';
 	@override String get nevermind => 'Неважно';
 	@override String get next => 'Далее';
@@ -1257,6 +1258,8 @@ class _Translations$bibleSheet$ru extends Translations$bibleSheet$en {
 		many: '${count} Библий доступно',
 		other: '${count} Библии доступны',
 	);
+	@override String get wantAnotherTranslation => 'Хотите другой перевод?';
+	@override String get proposeOnDiscord => 'Присоединяйтесь к нашему Discord, чтобы предложить новый';
 }
 
 // Path: passageSelection
@@ -3076,6 +3079,7 @@ extension on TranslationsRu {
 			'common.done' => 'Готово',
 			'common.edit' => 'Редактировать',
 			'common.finish' => 'Завершить',
+			'common.join' => 'Присоединиться',
 			'common.learnMore' => 'Узнать больше',
 			'common.nevermind' => 'Неважно',
 			'common.next' => 'Далее',
@@ -3474,9 +3478,9 @@ extension on TranslationsRu {
 			'biblePlans.nameAndColor' => 'Название и цвет',
 			'biblePlans.review' => 'Проверка плана',
 			'biblePlans.createAndStart' => 'Создать и начать',
-			'biblePlans.myBiblePlan' => 'Мой библейский план',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.myBiblePlan' => 'Мой библейский план',
 			'biblePlans.nameRequired' => 'Введите название плана.',
 			'biblePlans.nameAlreadyExists' => 'Библейский план с таким названием уже существует.',
 			'biblePlans.discardPlanQuestion' => 'Отменить ваши изменения?',
@@ -3698,6 +3702,8 @@ extension on TranslationsRu {
 			'navigation.verse' => 'Стих',
 			'bibleSheet.allBibles' => 'Все Библии',
 			'bibleSheet.availableCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: '${count} Библия доступна', few: '${count} Библии доступны', many: '${count} Библий доступно', other: '${count} Библии доступны', ), 
+			'bibleSheet.wantAnotherTranslation' => 'Хотите другой перевод?',
+			'bibleSheet.proposeOnDiscord' => 'Присоединяйтесь к нашему Discord, чтобы предложить новый',
 			'passageSelection.findInBible' => 'Найти в Библии',
 			'passageSelection.selectEntireChapter' => 'Выбрать всю главу',
 			'passageSelection.selectVerses' => 'Выбрать стихи',
@@ -3986,11 +3992,11 @@ extension on TranslationsRu {
 			'morphology.mood.optative.examples' => 'да будет так | да будет тебе милость',
 			'morphology.mood.infinitive.name' => 'инфинитив',
 			'morphology.mood.infinitive.description' => 'Отглагольное существительное, например «делать».',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.mood.infinitive.examples' => 'писать|верить',
 			'morphology.mood.participle.name' => 'Причастие',
 			'morphology.mood.participle.description' => 'Отглагольное прилагательное, например «делать» или «сделать».',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.mood.participle.examples' => 'тот, кто пишет|говорит',
 			'morphology.voice.active.name' => 'Активный',
 			'morphology.voice.active.description' => 'Субъект выполняет действие.',

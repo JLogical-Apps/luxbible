@@ -123,6 +123,7 @@
     "done": "Done",
     "edit": "Edit",
     "finish": "Finish",
+    "join": "Join",
     "learnMore": "Learn More",
     "nevermind": "Nevermind",
     "next": "Next",
@@ -850,7 +851,9 @@
     "availableCount(param=count)": {
       "one": "{count} Bible Available",
       "other": "{count} Bibles Available"
-    }
+    },
+    "wantAnotherTranslation": "Want another translation?",
+    "proposeOnDiscord": "Join our Discord to propose a new one"
   },
   "passageSelection": {
     "findInBible": "Find in Bible",

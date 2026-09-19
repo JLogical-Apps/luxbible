@@ -258,6 +258,7 @@ class _Translations$common$nl extends Translations$common$en {
 	@override String get done => 'Gereed';
 	@override String get edit => 'Bewerken';
 	@override String get finish => 'Voltooien';
+	@override String get join => 'Deelnemen';
 	@override String get learnMore => 'Meer informatie';
 	@override String get nevermind => 'Laat maar';
 	@override String get next => 'Volgende';
@@ -1249,6 +1250,8 @@ class _Translations$bibleSheet$nl extends Translations$bibleSheet$en {
 		one: '${count} Bijbel beschikbaar',
 		other: '${count} Bijbels beschikbaar',
 	);
+	@override String get wantAnotherTranslation => 'Wil je een andere vertaling?';
+	@override String get proposeOnDiscord => 'Word lid van onze Discord om een nieuwe voor te stellen';
 }
 
 // Path: passageSelection
@@ -3068,6 +3071,7 @@ extension on TranslationsNl {
 			'common.done' => 'Gereed',
 			'common.edit' => 'Bewerken',
 			'common.finish' => 'Voltooien',
+			'common.join' => 'Deelnemen',
 			'common.learnMore' => 'Meer informatie',
 			'common.nevermind' => 'Laat maar',
 			'common.next' => 'Volgende',
@@ -3466,9 +3470,9 @@ extension on TranslationsNl {
 			'biblePlans.nameAndColor' => 'Naam en kleur',
 			'biblePlans.review' => 'Leesplan controleren',
 			'biblePlans.createAndStart' => 'Maken en starten',
-			'biblePlans.myBiblePlan' => 'Mijn Bijbelleesplan',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.myBiblePlan' => 'Mijn Bijbelleesplan',
 			'biblePlans.nameRequired' => 'Voer een naam voor je leesplan in.',
 			'biblePlans.nameAlreadyExists' => 'Een Bijbelleesplan gebruikt deze naam al.',
 			'biblePlans.discardPlanQuestion' => 'Je wijzigingen weggooien?',
@@ -3690,6 +3694,8 @@ extension on TranslationsNl {
 			'navigation.verse' => 'Vers',
 			'bibleSheet.allBibles' => 'Alle Bijbels',
 			'bibleSheet.availableCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: '${count} Bijbel beschikbaar', other: '${count} Bijbels beschikbaar', ), 
+			'bibleSheet.wantAnotherTranslation' => 'Wil je een andere vertaling?',
+			'bibleSheet.proposeOnDiscord' => 'Word lid van onze Discord om een nieuwe voor te stellen',
 			'passageSelection.findInBible' => 'Zoeken in de Bijbel',
 			'passageSelection.selectEntireChapter' => 'Heel hoofdstuk selecteren',
 			'passageSelection.selectVerses' => 'Verzen selecteren',
@@ -3978,11 +3984,11 @@ extension on TranslationsNl {
 			'morphology.mood.optative.examples' => 'moge het zo zijn|moge u genade ontvangen',
 			'morphology.mood.infinitive.name' => 'Infinitief',
 			'morphology.mood.infinitive.description' => 'Een verbaal zelfstandig naamwoord, zoals "doen".',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.mood.infinitive.examples' => 'schrijven|geloven',
 			'morphology.mood.participle.name' => 'Participium',
 			'morphology.mood.participle.description' => 'Een verbaal bijvoeglijk naamwoord, zoals "doende" of "gedaan hebbend".',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.mood.participle.examples' => 'degene die schrijft|gesproken hebbend',
 			'morphology.voice.active.name' => 'Actief',
 			'morphology.voice.active.description' => 'Het onderwerp voert de handeling uit.',

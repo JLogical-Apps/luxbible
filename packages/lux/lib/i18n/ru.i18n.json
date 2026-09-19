@@ -123,6 +123,7 @@
     "done": "Готово",
     "edit": "Редактировать",
     "finish": "Завершить",
+    "join": "Присоединиться",
     "learnMore": "Узнать больше",
     "nevermind": "Неважно",
     "next": "Далее",
@@ -860,7 +861,9 @@
       "few": "{count} Библии доступны",
       "many": "{count} Библий доступно",
       "other": "{count} Библии доступны"
-    }
+    },
+    "wantAnotherTranslation": "Хотите другой перевод?",
+    "proposeOnDiscord": "Присоединяйтесь к нашему Discord, чтобы предложить новый"
   },
   "passageSelection": {
     "findInBible": "Найти в Библии",

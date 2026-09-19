@@ -1,13 +1,17 @@
 import 'package:bible/models/user/language.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/services/analytics_service.dart';
+import 'package:bible/ui/pages/more_page.dart';
 import 'package:bible/ui/widgets/bible_tile.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:style/style.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:utils_core/utils_core.dart';
 
 class BibleSheet {
@@ -71,6 +75,21 @@ class BibleSheet {
                   .toList(),
             ),
           ).buildChildren(context),
+          Padding(
+            padding: .only(top: 24, left: 16, right: 16, bottom: 16),
+            child: StyledTile.message(
+              leading: FaIcon(FontAwesomeIcons.discord),
+              title: t.bibleSheet.wantAnotherTranslation.toText(),
+              subtitle: t.bibleSheet.proposeOnDiscord.toText(),
+              action: StyledTextAction(
+                label: t.common.join.toText(),
+                onPressed: () {
+                  AnalyticsEvent.communityLinkPressed.log();
+                  launchUrl(discordUri);
+                },
+              ),
+            ),
+          ),
         ],
       );
     });

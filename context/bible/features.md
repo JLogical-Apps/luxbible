@@ -69,7 +69,8 @@ connection for fourteen days, after which Lux requires a connection to load it a
 ### Bible Selection and Compare Management
 
 The Bible selector shows every available Bible grouped by language, with up to five recently used Bibles at the top.
-Recent Bibles can be removed from that list without removing the translation from Lux.
+Recent Bibles can be removed from that list without removing the translation from Lux. Below the full list, a tile
+invites users to join Lux's Discord to propose a translation that isn't yet available.
 
 The Compare settings page lets users:
 

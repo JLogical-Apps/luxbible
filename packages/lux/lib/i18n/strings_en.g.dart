@@ -481,6 +481,9 @@ class Translations$common$en {
 	/// en: 'Finish'
 	String get finish => 'Finish';
 
+	/// en: 'Join'
+	String get join => 'Join';
+
 	/// en: 'Learn More'
 	String get learnMore => 'Learn More';
 
@@ -2651,6 +2654,12 @@ class Translations$bibleSheet$en {
 		one: '${count} Bible Available',
 		other: '${count} Bibles Available',
 	);
+
+	/// en: 'Want another translation?'
+	String get wantAnotherTranslation => 'Want another translation?';
+
+	/// en: 'Join our Discord to propose a new one'
+	String get proposeOnDiscord => 'Join our Discord to propose a new one';
 }
 
 // Path: passageSelection
@@ -5239,6 +5248,7 @@ extension on Translations {
 			'common.done' => 'Done',
 			'common.edit' => 'Edit',
 			'common.finish' => 'Finish',
+			'common.join' => 'Join',
 			'common.learnMore' => 'Learn More',
 			'common.nevermind' => 'Nevermind',
 			'common.next' => 'Next',
@@ -5637,9 +5647,9 @@ extension on Translations {
 			'biblePlans.createAndStart' => 'Create & Start',
 			'biblePlans.myBiblePlan' => 'My Bible Plan',
 			'biblePlans.nameRequired' => 'Enter a name for your plan.',
-			'biblePlans.nameAlreadyExists' => 'A Bible plan already uses this name.',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.nameAlreadyExists' => 'A Bible plan already uses this name.',
 			'biblePlans.discardPlanQuestion' => 'Discard Your Changes?',
 			'biblePlans.discardPlanConfirmation' => 'Your changes will be lost.',
 			'biblePlans.discard' => 'Discard',
@@ -5859,6 +5869,8 @@ extension on Translations {
 			'navigation.verse' => 'Verse',
 			'bibleSheet.allBibles' => 'All Bibles',
 			'bibleSheet.availableCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} Bible Available', other: '${count} Bibles Available', ), 
+			'bibleSheet.wantAnotherTranslation' => 'Want another translation?',
+			'bibleSheet.proposeOnDiscord' => 'Join our Discord to propose a new one',
 			'passageSelection.findInBible' => 'Find in Bible',
 			'passageSelection.selectEntireChapter' => 'Select Entire Chapter',
 			'passageSelection.selectVerses' => 'Select Verses',
@@ -6149,11 +6161,11 @@ extension on Translations {
 			'morphology.mood.infinitive.description' => 'A verbal noun, such as "to do".',
 			'morphology.mood.infinitive.examples' => 'to write|to believe',
 			'morphology.mood.participle.name' => 'Participle',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.mood.participle.description' => 'A verbal adjective, such as "doing" or "having done".',
 			'morphology.mood.participle.examples' => 'the one writing|having spoken',
 			'morphology.voice.active.name' => 'Active',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.voice.active.description' => 'The subject performs the action.',
 			'morphology.voice.active.examples' => 'he writes|they teach',
 			'morphology.voice.middle.name' => 'Middle',

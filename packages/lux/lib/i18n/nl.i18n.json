@@ -123,6 +123,7 @@
     "done": "Gereed",
     "edit": "Bewerken",
     "finish": "Voltooien",
+    "join": "Deelnemen",
     "learnMore": "Meer informatie",
     "nevermind": "Laat maar",
     "next": "Volgende",
@@ -852,7 +853,9 @@
     "availableCount(param=count)": {
       "one": "{count} Bijbel beschikbaar",
       "other": "{count} Bijbels beschikbaar"
-    }
+    },
+    "wantAnotherTranslation": "Wil je een andere vertaling?",
+    "proposeOnDiscord": "Word lid van onze Discord om een nieuwe voor te stellen"
   },
   "passageSelection": {
     "findInBible": "Zoeken in de Bijbel",
