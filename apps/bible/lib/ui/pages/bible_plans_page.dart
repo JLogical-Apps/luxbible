@@ -310,7 +310,7 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                 )
                 .toList(),
           ),
-          SizedBox(height: MediaQuery.paddingOf(context).bottom),
+          Builder(builder: (context) => SizedBox(height: MediaQuery.paddingOf(context).bottom)),
         ],
       ),
     );
