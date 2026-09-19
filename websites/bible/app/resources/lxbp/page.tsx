@@ -4,34 +4,37 @@ import Page from '@/components/layout/Page';
 import Prose from '@/components/layout/Prose';
 import { site } from '@/lib/site';
 
+const description =
+  'How to read and write .lxbp files: the plain-JSON Bible reading plan format used by Lux Bible.';
+
 export const metadata: Metadata = {
   title: 'The .lxbp Bible Plan Format',
-  description:
-    'A short reference for the .lxbp Bible plan file format used by Lux Bible, with the file structure and examples.',
+  description,
   openGraph: {
     title: 'The .lxbp Bible Plan Format',
-    description:
-      'A short reference for the .lxbp Bible plan file format used by Lux Bible, with the file structure and examples.',
+    description,
     url: `${site.domain}/resources/lxbp`,
     type: 'article',
   },
 };
 
 const basicExample = `{
-  "name": "Romans in 30 Days",
+  "name": "The Beatitudes",
   "days": [
-    { "passages": ["Rom.1"] },
-    { "passages": ["Rom.2"] },
+    { "passages": ["Matt.5.1-Matt.5.12"] },
+    { "passages": ["Matt.5.13-Matt.5.16"] },
     { "passages": [] }
   ]
 }`;
 
 const fullExample = `{
-  "name": "Psalms and Proverbs in 90 Days",
-  "color": "violet",
+  "name": "Ruth & Psalm 119",
+  "color": "green",
   "days": [
-    { "passages": ["Ps.1", "Prov.1.1-Prov.1.7"] },
-    { "passages": ["Ps.2-Ps.3"] },
+    { "passages": ["Ruth.1", "Ps.119.1-Ps.119.88"] },
+    { "passages": ["Ruth.2", "Ps.119.89-Ps.119.176"] },
+    { "passages": ["Ruth.3"] },
+    { "passages": ["Ruth.4"] },
     { "passages": [] }
   ]
 }`;
@@ -44,13 +47,22 @@ export default function LxbpFormatPage() {
           <p className="font-semibold text-foreground-soft">Resources</p>
           <h1 className="title-lg mt-3">The .lxbp Bible Plan Format</h1>
           <p className="subtitle mt-6">
-            A <code>.lxbp</code> file is a Bible reading plan saved as plain
-            JSON. Lux can import one, and any plan can be exported to share.
+            <code>.lxbp</code> is a Bible reading plan written as plain JSON:
+            a name, a color, and a list of days, each holding the passages to
+            read. Export any plan from Lux to a <code>.lxbp</code> file to
+            share it, or write one by hand, no app required.
           </p>
         </header>
 
         <div className="mx-auto mt-12 max-w-3xl">
           <Prose>
+            <p>
+              This page is the full spec. It&apos;s short enough to read in a
+              couple of minutes, and precise enough that an AI assistant can
+              read it too, so you can point ChatGPT, Claude, or another
+              assistant at this URL and ask it to write a plan for you.
+            </p>
+
             <h2>File structure</h2>
 
             <p>A file has three top-level fields:</p>
@@ -60,57 +72,86 @@ export default function LxbpFormatPage() {
                 <code>name</code> (required): the plan&apos;s display name.
               </li>
               <li>
-                <code>days</code> (required): 1 to 365 day objects in reading
+                <code>days</code> (required): 1 to 365 day objects, in reading
                 order.
               </li>
               <li>
                 <code>color</code> (optional): <code>red</code>,{' '}
                 <code>orange</code>, <code>yellow</code>, <code>green</code>,{' '}
-                <code>blue</code>, or <code>violet</code>.
+                <code>blue</code>, or <code>violet</code>. Lux picks a color
+                automatically when this is left out.
               </li>
             </ul>
 
             <p>
-              Each day holds a <code>passages</code> array. An empty array is a
-              Review &amp; Reflect day.
+              Each day is an object with a <code>passages</code> array. An
+              empty array marks a Review &amp; Reflect day, a built-in pause
+              with no new reading.
             </p>
 
             <pre>
               <code>{basicExample}</code>
             </pre>
 
-            <h2>Passages</h2>
+            <h2>Writing passages</h2>
 
             <p>
-              Passages use OSIS references: <code>Rom.1</code> for a chapter,{' '}
-              <code>Rom.1.16</code> for a verse, or{' '}
-              <code>Rom.1.16-Rom.1.17</code> for a range. Ranges repeat the book
-              identifier on both sides.
+              Passages use OSIS references: <code>Matt.5</code> for a whole
+              chapter, <code>Matt.5.3</code> for a single verse, or{' '}
+              <code>Matt.5.3-Matt.5.10</code> for a range. A range repeats the
+              full reference on both ends, even within the same chapter.
             </p>
 
             <p>
-              Book identifiers are the usual OSIS abbreviations, such as{' '}
-              <code>Gen</code>, <code>Ps</code>, <code>Matt</code>,{' '}
-              <code>Rom</code>, and <code>Rev</code>. A day can list several
-              passages, and a plan needs at least one reading. References must
-              exist, and a day cannot repeat the same passage.
+              Book identifiers follow the standard OSIS abbreviations, such
+              as <code>Gen</code>, <code>Ruth</code>, <code>Ps</code>,{' '}
+              <code>Matt</code>, and <code>Rev</code>. Every reference has to
+              point at real Scripture, and a day can&apos;t list the same
+              passage twice, though the same passage can reappear on a later
+              day.
             </p>
 
-            <h2>Example</h2>
+            <h2>A complete example</h2>
+
+            <p>
+              A five-day plan pairing the book of Ruth with Psalm 119, split
+              in half across two days. It demonstrates a day with more than one passage, a
+              verse range, and a closing Review &amp; Reflect day:
+            </p>
 
             <pre>
               <code>{fullExample}</code>
             </pre>
 
-            <p>
-              This plan sets a color, pairs two passages on day 1, uses a
-              chapter range on day 2, and makes day 3 a reflection day.
-            </p>
+            <h2>Rules at a glance</h2>
+
+            <ul>
+              <li>
+                <code>name</code> can&apos;t be empty or only whitespace.
+              </li>
+              <li>
+                <code>days</code> needs between 1 and 365 entries.
+              </li>
+              <li>At least one day in the plan needs a passage.</li>
+              <li>
+                A day&apos;s <code>passages</code> array can&apos;t repeat the
+                same reference.
+              </li>
+              <li>Every reference must resolve to real, existing Scripture.</li>
+              <li>
+                Nothing outside <code>name</code>, <code>days</code>,{' '}
+                <code>color</code>, and <code>passages</code> is recognized;
+                extra fields are ignored rather than rejected.
+              </li>
+            </ul>
+
+            <h2>Using a plan in Lux</h2>
 
             <p>
-              In Lux, open Bible Plans and choose Create Custom Plan to import a{' '}
-              <code>.lxbp</code> file, paste its contents, or have your own AI
-              generate one.
+              In Lux, open Bible Plans and choose Create Custom Plan. From
+              there you can import a <code>.lxbp</code> file, paste its
+              contents directly, or hand the plan&apos;s description to an AI
+              assistant and let it write the file for you.
             </p>
           </Prose>
         </div>
