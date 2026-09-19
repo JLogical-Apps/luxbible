@@ -117,6 +117,9 @@ class Translations$languages$en {
 
 	/// en: 'Spanish'
 	String get spanish => 'Spanish';
+
+	/// en: 'German'
+	String get german => 'German';
 }
 
 // Path: highlightStyles
@@ -5142,6 +5145,7 @@ extension on Translations {
 			'languages.russian' => 'Russian',
 			'languages.french' => 'French',
 			'languages.spanish' => 'Spanish',
+			'languages.german' => 'German',
 			'highlightStyles.red' => 'Red',
 			'highlightStyles.orange' => 'Orange',
 			'highlightStyles.yellow' => 'Yellow',
@@ -5646,9 +5650,9 @@ extension on Translations {
 			'biblePlans.review' => 'Review Plan',
 			'biblePlans.createAndStart' => 'Create & Start',
 			'biblePlans.myBiblePlan' => 'My Bible Plan',
-			'biblePlans.nameRequired' => 'Enter a name for your plan.',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.nameRequired' => 'Enter a name for your plan.',
 			'biblePlans.nameAlreadyExists' => 'A Bible plan already uses this name.',
 			'biblePlans.discardPlanQuestion' => 'Discard Your Changes?',
 			'biblePlans.discardPlanConfirmation' => 'Your changes will be lost.',
@@ -6160,9 +6164,9 @@ extension on Translations {
 			'morphology.mood.infinitive.name' => 'Infinitive',
 			'morphology.mood.infinitive.description' => 'A verbal noun, such as "to do".',
 			'morphology.mood.infinitive.examples' => 'to write|to believe',
-			'morphology.mood.participle.name' => 'Participle',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.mood.participle.name' => 'Participle',
 			'morphology.mood.participle.description' => 'A verbal adjective, such as "doing" or "having done".',
 			'morphology.mood.participle.examples' => 'the one writing|having spoken',
 			'morphology.voice.active.name' => 'Active',

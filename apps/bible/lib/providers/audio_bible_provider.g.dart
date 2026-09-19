@@ -89,7 +89,7 @@ final class AudioBiblePositionProvider
 }
 
 String _$audioBiblePositionHash() =>
-    r'3827e2f6b54f0543cc775a3c1fa5869957853b07';
+    r'030fc59f97487b8a005b0dc880341f00cc6eb8b4';
 
 @ProviderFor(audioBible)
 final audioBibleProvider = AudioBibleFamily._();
@@ -207,7 +207,7 @@ final class AudioBibleControllerProvider
 }
 
 String _$audioBibleControllerHash() =>
-    r'cb395a26ffd5ac9183fae358957ca1ebf549fa3b';
+    r'9d551e0b035b2a6622139e2b853929944b6a88df';
 
 abstract class _$AudioBibleController extends $Notifier<AudioBibleState> {
   AudioBibleState build();

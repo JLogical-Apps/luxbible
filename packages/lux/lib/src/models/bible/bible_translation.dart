@@ -24,7 +24,9 @@ enum BibleTranslation {
   martin1744,
   rvg,
   nld1939,
-  htb;
+  htb,
+  elb1905,
+  lut1912;
 
   String title() => switch (this) {
     bsb => 'BSB',
@@ -48,6 +50,8 @@ enum BibleTranslation {
     rvg => 'RVG',
     nld1939 => 'NLD1939',
     htb => 'HTB',
+    elb1905 => 'ELB1905',
+    lut1912 => 'LUT1912',
   };
 
   String fullName() => switch (this) {
@@ -72,6 +76,8 @@ enum BibleTranslation {
     rvg => 'Reina Valera Gómez 2010',
     nld1939 => 'De Heilige Schrift, Petrus Canisiusvertaling, 1939',
     htb => 'Het Boek 2007',
+    elb1905 => 'Unrevidierte Elberfelder 1905',
+    lut1912 => 'Lutherbibel 1912',
   };
 
   BibleTranslationSource get source => switch (this) {
@@ -88,7 +94,9 @@ enum BibleTranslation {
     fob ||
     martin1744 ||
     rvg ||
-    nld1939 => .local,
+    nld1939 ||
+    elb1905 ||
+    lut1912 => .local,
     nasb95 => .youVersion(100),
     amp => .youVersion(1588),
     niv11 => .youVersion(111),
@@ -103,6 +111,7 @@ enum BibleTranslation {
     sv || nld1939 || htb => .dutch,
     nrt => .russian,
     fob || martin1744 => .french,
+    elb1905 || lut1912 => .german,
     rvg => .spanish,
     _ => .english,
   };
@@ -192,7 +201,7 @@ enum BibleTranslation {
   };
 
   bool get hasParagraphs => switch (this) {
-    oshb || sv || nrt || martin1744 => false,
+    oshb || sv || nrt || martin1744 || elb1905 || lut1912 => false,
     _ => true,
   };
 
@@ -231,6 +240,7 @@ enum BibleLanguage {
   english,
   greek,
   hebrew,
+  german,
   dutch,
   russian,
   french,
@@ -244,5 +254,6 @@ enum BibleLanguage {
     russian => t.languages.russian,
     french => t.languages.french,
     spanish => t.languages.spanish,
+    german => t.languages.german,
   };
 }

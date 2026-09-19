@@ -16,6 +16,8 @@ void main() {
     'martin1744',
     'rvg',
     'nld1939',
+    'elb1905',
+    'lut1912',
   ]) {
     writeBibleBooks(
       translation: name,
@@ -28,7 +30,11 @@ void main() {
             (file) => parseOsisBook(
               file.readAsStringSync(),
               verseParagraphs: switch (name) {
-                'oshb' || 'sv' || 'martin1744' => true,
+                'oshb' ||
+                'sv' ||
+                'martin1744' ||
+                'elb1905' ||
+                'lut1912' => true,
                 _ => false,
               },
             ),

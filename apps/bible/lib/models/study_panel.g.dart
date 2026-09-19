@@ -40,6 +40,8 @@ const _$BibleTranslationEnumMap = {
   BibleTranslation.rvg: 'rvg',
   BibleTranslation.nld1939: 'nld1939',
   BibleTranslation.htb: 'htb',
+  BibleTranslation.elb1905: 'elb1905',
+  BibleTranslation.lut1912: 'lut1912',
 };
 
 InterlinearStudyPanel _$InterlinearStudyPanelFromJson(

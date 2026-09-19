@@ -101,9 +101,11 @@ flutter:
     - assets/translations/bsb/
     - assets/translations/byz/
     - assets/translations/csb/
+    - assets/translations/elb1905/
     - assets/translations/fob/
     - assets/translations/kjv/
     - assets/translations/lxx/
+    - assets/translations/lut1912/
     - assets/translations/martin1744/
     - assets/translations/nld1939/
     - assets/translations/oshb/

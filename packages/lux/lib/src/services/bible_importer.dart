@@ -25,7 +25,9 @@ class BibleImporter {
       .fob ||
       .martin1744 ||
       .rvg ||
-      .nld1939 => await parseStructuredJsonBible(translation: translation),
+      .nld1939 ||
+      .elb1905 ||
+      .lut1912 => await parseStructuredJsonBible(translation: translation),
       _ => throw UnimplementedError(),
     };
   }
@@ -46,7 +48,9 @@ class BibleImporter {
       .fob ||
       .martin1744 ||
       .rvg ||
-      .nld1939 => await parseStructuredJsonBook(translation: translation, book: book),
+      .nld1939 ||
+      .elb1905 ||
+      .lut1912 => await parseStructuredJsonBook(translation: translation, book: book),
       _ => throw UnimplementedError(),
     };
   }

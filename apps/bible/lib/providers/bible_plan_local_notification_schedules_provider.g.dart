@@ -56,4 +56,4 @@ final class BiblePlanLocalNotificationsProvider
 }
 
 String _$biblePlanLocalNotificationsHash() =>
-    r'2e0541dc65d6244c7cf34495b94b5f0a88a68250';
+    r'142b9c83bdf3e27d3363143f159c2986cb66a145';

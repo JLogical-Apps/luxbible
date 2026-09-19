@@ -49,7 +49,7 @@ final class AudioBibleNativePlayerProvider
 }
 
 String _$audioBibleNativePlayerHash() =>
-    r'81255575d1318a397044ef1a007d808294e1d85e';
+    r'20fd42abc133ce093dd62c743f9046ee8054bae6';
 
 @ProviderFor(audioBiblePlayer)
 final audioBiblePlayerProvider = AudioBiblePlayerFamily._();
@@ -114,7 +114,7 @@ final class AudioBiblePlayerProvider
   }
 }
 
-String _$audioBiblePlayerHash() => r'8c78f673ef35a4f76965d35b72c2b91c06adb868';
+String _$audioBiblePlayerHash() => r'b5f818cc53256f24eea434ae48183ee48faf5cd2';
 
 final class AudioBiblePlayerFamily extends $Family
     with $FunctionalFamilyOverride<AudioBiblePlayerState, AudioBibleContext> {

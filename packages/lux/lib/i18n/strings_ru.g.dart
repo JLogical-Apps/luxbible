@@ -107,6 +107,7 @@ class _Translations$languages$ru extends Translations$languages$en {
 	@override String get russian => 'Русский';
 	@override String get french => 'Французский';
 	@override String get spanish => 'Испанский';
+	@override String get german => 'Немецкий';
 }
 
 // Path: highlightStyles
@@ -2973,6 +2974,7 @@ extension on TranslationsRu {
 			'languages.russian' => 'Русский',
 			'languages.french' => 'Французский',
 			'languages.spanish' => 'Испанский',
+			'languages.german' => 'Немецкий',
 			'highlightStyles.red' => 'Красный',
 			'highlightStyles.orange' => 'Оранжевый',
 			'highlightStyles.yellow' => 'Желтый',
@@ -3477,9 +3479,9 @@ extension on TranslationsRu {
 			'biblePlans.generatedNames.inAYear' => ({required Object books}) => '${books} за год',
 			'biblePlans.nameAndColor' => 'Название и цвет',
 			'biblePlans.review' => 'Проверка плана',
-			'biblePlans.createAndStart' => 'Создать и начать',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.createAndStart' => 'Создать и начать',
 			'biblePlans.myBiblePlan' => 'Мой библейский план',
 			'biblePlans.nameRequired' => 'Введите название плана.',
 			'biblePlans.nameAlreadyExists' => 'Библейский план с таким названием уже существует.',
@@ -3991,9 +3993,9 @@ extension on TranslationsRu {
 			'morphology.mood.optative.description' => 'Выражает желание или отдаленную возможность.',
 			'morphology.mood.optative.examples' => 'да будет так | да будет тебе милость',
 			'morphology.mood.infinitive.name' => 'инфинитив',
-			'morphology.mood.infinitive.description' => 'Отглагольное существительное, например «делать».',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.mood.infinitive.description' => 'Отглагольное существительное, например «делать».',
 			'morphology.mood.infinitive.examples' => 'писать|верить',
 			'morphology.mood.participle.name' => 'Причастие',
 			'morphology.mood.participle.description' => 'Отглагольное прилагательное, например «делать» или «сделать».',

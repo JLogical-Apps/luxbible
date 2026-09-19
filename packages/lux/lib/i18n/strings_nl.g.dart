@@ -107,6 +107,7 @@ class _Translations$languages$nl extends Translations$languages$en {
 	@override String get russian => 'Russisch';
 	@override String get french => 'Frans';
 	@override String get spanish => 'Spaans';
+	@override String get german => 'Duits';
 }
 
 // Path: highlightStyles
@@ -2965,6 +2966,7 @@ extension on TranslationsNl {
 			'languages.russian' => 'Russisch',
 			'languages.french' => 'Frans',
 			'languages.spanish' => 'Spaans',
+			'languages.german' => 'Duits',
 			'highlightStyles.red' => 'Rood',
 			'highlightStyles.orange' => 'Oranje',
 			'highlightStyles.yellow' => 'Geel',
@@ -3469,9 +3471,9 @@ extension on TranslationsNl {
 			'biblePlans.generatedNames.inAYear' => ({required Object books}) => '${books} in een jaar',
 			'biblePlans.nameAndColor' => 'Naam en kleur',
 			'biblePlans.review' => 'Leesplan controleren',
-			'biblePlans.createAndStart' => 'Maken en starten',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.createAndStart' => 'Maken en starten',
 			'biblePlans.myBiblePlan' => 'Mijn Bijbelleesplan',
 			'biblePlans.nameRequired' => 'Voer een naam voor je leesplan in.',
 			'biblePlans.nameAlreadyExists' => 'Een Bijbelleesplan gebruikt deze naam al.',
@@ -3983,9 +3985,9 @@ extension on TranslationsNl {
 			'morphology.mood.optative.description' => 'Drukt een wens of onwaarschijnlijke mogelijkheid uit.',
 			'morphology.mood.optative.examples' => 'moge het zo zijn|moge u genade ontvangen',
 			'morphology.mood.infinitive.name' => 'Infinitief',
-			'morphology.mood.infinitive.description' => 'Een verbaal zelfstandig naamwoord, zoals "doen".',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.mood.infinitive.description' => 'Een verbaal zelfstandig naamwoord, zoals "doen".',
 			'morphology.mood.infinitive.examples' => 'schrijven|geloven',
 			'morphology.mood.participle.name' => 'Participium',
 			'morphology.mood.participle.description' => 'Een verbaal bijvoeglijk naamwoord, zoals "doende" of "gedaan hebbend".',

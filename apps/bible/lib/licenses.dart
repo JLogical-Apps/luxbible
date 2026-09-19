@@ -101,6 +101,30 @@ Source: https://ebible.org/bible/details.php?id=nld1939''',
     );
 
     yield const LicenseEntryWithLineBreaks(
+      ['Unrevidierte Elberfelder 1905 (ELB1905)'],
+      '''
+Die Heilige Schrift, Unrevidierte Elberfelder Uebersetzung, 1905.
+
+Public domain. Originally copyrighted by R. Brockhaus Verlag, Germany; the text has since passed into the public domain.
+
+Text obtained from the GerElb1905 SWORD module distributed by the CrossWire Bible Society, whose text comes from the Unbound Bible. Lux transforms the module into its bundled Bible data format.
+
+Source: https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=GerElb1905''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
+      ['Lutherbibel 1912 (LUT1912)'],
+      '''
+Die Bibel, Lutherbibel 1912, uebersetzt von Martin Luther.
+
+Public domain. This work is not copyrighted and may be copied and published freely.
+
+Text obtained from the deu1912eb SWORD module published by eBible.org. Lux transforms the module into its bundled Bible data format and keeps the module's German verse references in `origin` where Luther's versification differs from Lux's.
+
+Source: https://ebible.org/find/details.php?id=deu1912''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
       ['La Sainte Bible, Ostervald 1744 (FOB)'],
       '''
 La Sainte Bible, Ostervald 1744.

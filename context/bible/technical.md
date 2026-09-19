@@ -80,6 +80,8 @@ The following are bundled with the app and work offline:
 - ASV
 - SV
 - NLD1939
+- ELB1905
+- LUT1912
 - FOB
 - Martin
 - RVG
@@ -102,8 +104,8 @@ The following are bundled with the app and work offline:
 
 Bundled sources with alternate versification use Lux's KJV-compatible references in their OSIS `osisID` values and
 retain the source translation's reference in `origin`. When multiple source verses correspond to one Lux verse, they
-share the normalized reference and are combined when the chapter is read. This is used by LXX, FOB, Martin, and
-NLD1939.
+share the normalized reference and are combined when the chapter is read. This is used by LXX, FOB, Martin, NLD1939,
+and LUT1912.
 
 Bundled translations are stored as one JSON asset per book. Ordinary reading decodes a book on demand and reuses it
 for every chapter in that book. Full-text search and Strong's concordance assemble the complete local Bible only when
@@ -188,7 +190,7 @@ Capabilities vary by translation:
 - Footnotes: BSB, KJV, ASV, AMP, NASB95, NIV, CSB, NLT, NKJV
 - Red letters: BSB, KJV, AMP, NASB95, NIV, CSB, NLT, NKJV
 - Native headings: BSB, Martin, NRT, AMP, NASB95, NIV, CSB, NLT, NKJV
-- Paragraph formatting: all except OSHB, SV, Martin, and NRT
+- Paragraph formatting: all except OSHB, SV, Martin, NRT, ELB1905, and LUT1912
 
 ## Study Data Sources
 
