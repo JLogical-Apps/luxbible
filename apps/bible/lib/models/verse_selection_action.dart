@@ -66,7 +66,7 @@ enum VerseSelectionAction {
           verseSelectionTextProvider(selection: selectedVerseSelection, translation: user.translation).future,
         );
         final copy = CopySheet.getCopyText(
-          text: text,
+          text: text.trim(),
           isTextSelection: false,
           translation: user.translation,
           selection: selectedVerseSelection,
@@ -83,7 +83,7 @@ enum VerseSelectionAction {
             label: t.common.edit.toText(),
             onPressed: () => CopySheet.show(
               rootContext,
-              text: text,
+              text: text.trim(),
               isTextSelection: false,
               translation: user.translation,
               selection: selectedVerseSelection,
