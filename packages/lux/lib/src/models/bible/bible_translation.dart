@@ -201,7 +201,7 @@ enum BibleTranslation {
   };
 
   bool get hasParagraphs => switch (this) {
-    oshb || sv || nrt || martin1744 || elb1905 || lut1912 => false,
+    oshb || sv || nrt || martin1744 || elb1905 || lut1912 || nld1939 || fob => false,
     _ => true,
   };
 

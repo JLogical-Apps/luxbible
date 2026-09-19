@@ -190,7 +190,7 @@ Capabilities vary by translation:
 - Footnotes: BSB, KJV, ASV, AMP, NASB95, NIV, CSB, NLT, NKJV
 - Red letters: BSB, KJV, AMP, NASB95, NIV, CSB, NLT, NKJV
 - Native headings: BSB, Martin, NRT, AMP, NASB95, NIV, CSB, NLT, NKJV
-- Paragraph formatting: all except OSHB, SV, Martin, NRT, ELB1905, and LUT1912
+- Paragraph formatting: all except OSHB, SV, Martin, NRT, ELB1905, LUT1912, NLD1939, and FOB
 
 ## Study Data Sources
 

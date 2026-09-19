@@ -34,7 +34,9 @@ void main() {
                 'sv' ||
                 'martin1744' ||
                 'elb1905' ||
-                'lut1912' => true,
+                'lut1912' ||
+                'nld1939' ||
+                'fob' => true,
                 _ => false,
               },
             ),
