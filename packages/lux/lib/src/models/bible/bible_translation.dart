@@ -18,15 +18,15 @@ enum BibleTranslation {
   byz,
   statresgnt,
   oshb,
+  elb1905,
+  lut1912,
   sv,
   nrt,
   fob,
   martin1744,
   rvg,
   nld1939,
-  htb,
-  elb1905,
-  lut1912;
+  htb;
 
   String title() => switch (this) {
     bsb => 'BSB',
