@@ -32,25 +32,28 @@ class StyledTile extends StatelessWidget {
     this.padding = .zero,
   }) : isSelected = false,
        child = Builder(
-         builder: (context) => StyledListItem(
-           leading: IconTheme.merge(
-             data: IconThemeData(color: isEnabled ? context.colors.contentTertiary : context.colors.contentDisabled),
-             child: leading,
-           ),
-           title: DefaultTextStyle.merge(
-             style: TextStyle(color: isEnabled ? context.colors.contentTertiary : context.colors.contentDisabled),
-             child: title,
-           ),
-           subtitle: subtitle?.mapIfNonNull(
-             (subtitle) => DefaultTextStyle.merge(
-               child: subtitle,
-               style: TextStyle(color: isEnabled ? context.colors.contentTertiary : context.colors.contentDisabled),
+         builder: (context) => Padding(
+           padding: .only(right: 4),
+           child: StyledListItem(
+             leading: IconTheme.merge(
+               data: IconThemeData(color: isEnabled ? context.colors.contentTertiary : context.colors.contentDisabled),
+               child: leading,
              ),
+             title: DefaultTextStyle.merge(
+               style: TextStyle(color: isEnabled ? context.colors.contentTertiary : context.colors.contentDisabled),
+               child: title,
+             ),
+             subtitle: subtitle?.mapIfNonNull(
+               (subtitle) => DefaultTextStyle.merge(
+                 child: subtitle,
+                 style: TextStyle(color: isEnabled ? context.colors.contentTertiary : context.colors.contentDisabled),
+               ),
+             ),
+             trailing:
+                 trailing ??
+                 (action == null ? null : StyledPillButton.sm(label: action.label, onPressed: action.onPressed)),
+             isEnabled: isEnabled,
            ),
-           trailing:
-               trailing ??
-               (action == null ? null : StyledPillButton.sm(label: action.label, onPressed: action.onPressed)),
-           isEnabled: isEnabled,
          ),
        );
 
