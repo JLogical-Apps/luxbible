@@ -253,6 +253,7 @@ const _$BibleTranslationEnumMap = {
   BibleTranslation.byz: 'byz',
   BibleTranslation.statresgnt: 'statresgnt',
   BibleTranslation.oshb: 'oshb',
+  BibleTranslation.hfa: 'hfa',
   BibleTranslation.elb1905: 'elb1905',
   BibleTranslation.lut1912: 'lut1912',
   BibleTranslation.sv: 'sv',
@@ -262,6 +263,7 @@ const _$BibleTranslationEnumMap = {
   BibleTranslation.rvg: 'rvg',
   BibleTranslation.nld1939: 'nld1939',
   BibleTranslation.htb: 'htb',
+  BibleTranslation.ntr: 'ntr',
 };
 
 const _$CommentaryTypeEnumMap = {

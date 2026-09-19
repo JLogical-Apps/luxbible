@@ -130,6 +130,8 @@ These translations are loaded online when they are not available from the device
 - NIV through the YouVersion Platform
 - NRT through the YouVersion Platform
 - HTB through the YouVersion Platform
+- HFA through the YouVersion Platform
+- NTR through the YouVersion Platform
 - NLT through API.Bible
 - NKJV through API.Bible
 
@@ -187,9 +189,9 @@ Capabilities vary by translation:
 - Study and interlinear: BSB, KJV
 - Audio: BSB, KJV
 - Synthetic BSB headings: KJV, ASV
-- Footnotes: BSB, KJV, ASV, AMP, NASB95, NIV, CSB, NLT, NKJV
+- Footnotes: BSB, KJV, ASV, AMP, NASB95, NIV, CSB, NLT, NKJV, HFA, NTR
 - Red letters: BSB, KJV, AMP, NASB95, NIV, CSB, NLT, NKJV
-- Native headings: BSB, Martin, NRT, AMP, NASB95, NIV, CSB, NLT, NKJV
+- Native headings: BSB, Martin, NRT, AMP, NASB95, NIV, CSB, NLT, NKJV, HFA, NTR
 - Paragraph formatting: all except OSHB, SV, Martin, NRT, ELB1905, LUT1912, NLD1939, and FOB
 
 ## Study Data Sources

@@ -18,6 +18,7 @@ enum BibleTranslation {
   byz,
   statresgnt,
   oshb,
+  hfa,
   elb1905,
   lut1912,
   sv,
@@ -26,7 +27,8 @@ enum BibleTranslation {
   martin1744,
   rvg,
   nld1939,
-  htb;
+  htb,
+  ntr;
 
   String title() => switch (this) {
     bsb => 'BSB',
@@ -50,8 +52,10 @@ enum BibleTranslation {
     rvg => 'RVG',
     nld1939 => 'NLD1939',
     htb => 'HTB',
+    hfa => 'HFA',
     elb1905 => 'ELB1905',
     lut1912 => 'LUT1912',
+    ntr => 'NTR',
   };
 
   String fullName() => switch (this) {
@@ -76,8 +80,10 @@ enum BibleTranslation {
     rvg => 'Reina Valera Gómez 2010',
     nld1939 => 'De Heilige Schrift, Petrus Canisiusvertaling, 1939',
     htb => 'Het Boek 2007',
+    hfa => 'Hoffnung für alle',
     elb1905 => 'Unrevidierte Elberfelder 1905',
     lut1912 => 'Lutherbibel 1912',
+    ntr => 'New Romanian Translation 2021',
   };
 
   BibleTranslationSource get source => switch (this) {
@@ -102,6 +108,8 @@ enum BibleTranslation {
     niv11 => .youVersion(111),
     nrt => .youVersion(143),
     htb => .youVersion(75),
+    hfa => .youVersion(73),
+    ntr => .youVersion(126),
     nlt || nkjv => .apiBible(),
   };
 
@@ -111,7 +119,8 @@ enum BibleTranslation {
     sv || nld1939 || htb => .dutch,
     nrt => .russian,
     fob || martin1744 => .french,
-    elb1905 || lut1912 => .german,
+    elb1905 || lut1912 || hfa => .german,
+    ntr => .romanian,
     rvg => .spanish,
     _ => .english,
   };
@@ -133,6 +142,10 @@ enum BibleTranslation {
     rvg => 'Copyright © 2004, 2010, 2023 Dr. Humberto Gómez Caballero',
     htb =>
       'Het Boek™\nCopyright © 1979, 1988, 1998, 2007 by Biblica, Inc.\nUsed by permission. All rights reserved worldwide.',
+    hfa =>
+      'Hoffnung für alle® (Hope for all)\nCopyright © 1983, 1996, 2002, 2015 by Biblica, Inc.®\nUsed by Permission of Biblica, Inc.® All rights reserved worldwide.',
+    ntr =>
+      'Biblia, Noua Traducere Românească™ NTR™\nCopyright © 2007, 2010, 2016, 2021 Biblica, Inc.\nFolosit cu permisiune. Toate drepturile sunt rezervate.\nThe Bible, New Romanian Translation™\nCopyright © 2007, 2010, 2016, 2021 by Biblica, Inc.\nUsed with permission. All rights reserved worldwide.',
     _ => null,
   };
 
@@ -186,7 +199,7 @@ enum BibleTranslation {
   };
 
   bool get hasNativeHeadings => switch (this) {
-    bsb || nasb95 || amp || niv11 || csb || nlt || nkjv || nrt || martin1744 => true,
+    bsb || nasb95 || amp || niv11 || csb || nlt || nkjv || nrt || martin1744 || hfa || ntr => true,
     _ => false,
   };
 
@@ -196,7 +209,7 @@ enum BibleTranslation {
   };
 
   bool get hasFootnotes => switch (this) {
-    bsb || kjv || nasb95 || amp || niv11 || csb || nlt || nkjv || asv => true,
+    bsb || kjv || nasb95 || amp || niv11 || csb || nlt || nkjv || asv || hfa || ntr => true,
     _ => false,
   };
 
@@ -244,7 +257,8 @@ enum BibleLanguage {
   dutch,
   russian,
   french,
-  spanish;
+  spanish,
+  romanian;
 
   String title() => switch (this) {
     english => t.languages.english,
@@ -254,6 +268,7 @@ enum BibleLanguage {
     russian => t.languages.russian,
     french => t.languages.french,
     spanish => t.languages.spanish,
+    romanian => t.languages.romanian,
     german => t.languages.german,
   };
 }

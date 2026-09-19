@@ -64,6 +64,8 @@ Lux counts distinct active days locally. After seven active days, it makes one n
 - NKJV
 - NRT: New Russian Translation 2010 in Russian
 - HTB: Het Boek 2007 in Dutch
+- HFA: Hoffnung für alle in German
+- NTR: New Romanian Translation 2021 in Romanian
 
 Online chapters are cached on the device after they are loaded. A cached chapter remains available without a
 connection for fourteen days, after which Lux requires a connection to load it again.
