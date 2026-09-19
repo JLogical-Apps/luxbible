@@ -11,7 +11,7 @@
 Достаточно возможностей для глубокого изучения и достаточно простоты для чтения каждый день.
 
 ЧИТАЙТЕ
-Читайте «Новый русский перевод 2010» (NRT) онлайн. Английские Berean Standard Bible (BSB), Christian Standard Bible (CSB) и King James Version (KJV) работают офлайн; AMP и NIV доступны онлайн. Есть также переводы на нидерландском, французском, испанском, немецком и румынском языках. Elberfelder 1905 и Lutherbibel 1912 работают офлайн; Hoffnung für alle и New Romanian Translation требуют подключения к интернету.
+Читайте «Новый русский перевод 2010» (NRT) онлайн. Английские Berean Standard Bible (BSB), Christian Standard Bible (CSB) и King James Version (KJV) работают офлайн; AMP и NIV доступны онлайн. Есть также переводы на нидерландском, французском, испанском, немецком и румынском языках.
 
 Читайте оригинальные тексты офлайн: греческую Септуагинту, Textus Receptus, Byzantine Textform, Statistical Restoration Greek New Testament и Open Scriptures Hebrew Bible.
 
