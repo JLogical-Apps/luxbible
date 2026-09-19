@@ -11,11 +11,11 @@ Lux Bible brings serious Bible study into a calm, modern reading experience. Rea
 Powerful enough for serious study and clean enough for everyday reading.
 
 READ
-Choose from the Berean Standard Bible (BSB), Christian Standard Bible (CSB), King James Version (KJV), and American Standard Version (ASV), available offline. AMP, NIV, NASB95, NLT, and NKJV are also available online. Additional Dutch, French, Spanish, and Russian translations are available.
+Choose from the Berean Standard Bible (BSB), Christian Standard Bible (CSB), King James Version (KJV), and American Standard Version (ASV), available offline. AMP, NIV, NASB95, NLT, and NKJV are also available online. Additional Dutch, French, Spanish, German, Romanian, and Russian translations are available. The Elberfelder 1905 and Lutherbibel 1912 work offline; Hoffnung für alle and the New Romanian Translation require a connection.
 
 Read the original texts offline with the Greek Septuagint, Textus Receptus, Byzantine Textform, Statistical Restoration Greek New Testament, and Open Scriptures Hebrew Bible.
 
-Listen to the BSB or KJV with playback speed controls, a sleep timer, and background playback. Begin each day with Verse of the Day, and set daily reminders for it or any active reading plan. Choose from whole-Bible and focused plans, follow more than one plan, and track your progress.
+Listen to the BSB or KJV with playback speed controls, a sleep timer, and background playback. Begin each day with Verse of the Day, and set daily reminders for it or any active reading plan. Choose an included plan or create your own from passages or selected books and a duration. Import and share plans as files, follow more than one plan, and track your progress.
 
 NOTE
 Highlight verses, words, or phrases by color, underline, or squiggly line. Add notes, create your own highlight styles, and organize everything into notebooks. Filter your annotations or hide a notebook when you want a cleaner reading view.
