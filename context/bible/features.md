@@ -30,7 +30,7 @@ Saving any reminder asks for notification permission only when needed. If app no
 
 Lux measures visits to its main pages and a small set of prominent actions: starting audio playback, starting a plan, completing a plan day, searching, opening Verse of the Day, opening a local notification, changing toolbar configuration, opening a community link, pressing Rate Lux, requesting the native review prompt, and starting, completing, or skipping onboarding. These events contain no user-created content or dynamic identifiers from the app.
 
-On Android, Lux measures the general campaign source that led to installation through Google Play Install Referrer. The website maps compact, fixed social-profile source codes to aggregate campaign values, reports website traffic and store navigation through Google Analytics, and passes the same values to Google Play. These values identify a marketing source such as Facebook or TikTok, not a person or social-media account.
+On Android, Lux measures the general campaign source that led to installation through Google Play Install Referrer. The website maps compact, fixed social-profile and boosted-post source codes to aggregate campaign values, reports website traffic and store navigation through Google Analytics, and passes the same values to Google Play. These values identify a marketing source such as Facebook or TikTok, not a person or social-media account.
 
 Lux counts distinct active days locally. After seven active days, it makes one native app-review request after the user finishes viewing a study action, completes a Bible plan day, or creates an annotation. The platform decides whether to display the native prompt.
 
@@ -532,6 +532,7 @@ Users can:
 - Narrow the book list by typing a book, testament, or whole-Bible name above the current selection summary
 - Describe a plan, copy a compatible prompt into their own AI, and import the file or file contents it creates
 - Import a portable `.lxbp` plan from a file or pasted file contents, then edit its name and selected color before reviewing it
+- Open or share a `.lxbp` file from another app into Lux to begin importing it at the name and color step, followed by review
 - Add, reorder, move, or remove exact passages across as many as 365 reading and reflection days
 - Open a passage preview by tapping a passage in the review step before creating a plan
 - Share or download included and custom plan definitions as portable `.lxbp` files
@@ -550,6 +551,8 @@ Users can:
 Book-and-duration plans preserve canonical order and include every canonical verse reference for the selected books exactly once. Workload balancing and natural boundaries come from the BSB data. When its numbering omits a verse that another translation can contain, the missing reference stays with the preceding available verse in that chapter. The initial duration scales with the selected books' chapter count, from at least one day through 365 days for the whole Bible. Daily workloads are balanced by verse count, preferring chapter, section, and meaningful paragraph boundaries within the balance window. Each generated passage stays within one chapter, nonadjacent selected books remain separate, and durations longer than the selected verse count end with Review & Reflect days.
 
 Custom-plan names must contain non-whitespace text and be exactly unique, including case and surrounding whitespace, among included and custom plan names when leaving the naming step. New manual plans start with a unique numbered My Bible Plan suggestion. Generated plans suggest localized names based on one, two, many, or all selected books and use special year wording for 365 days. Manual and generated drafts receive a randomly selected color. Imported names use the same `(2)`, `(3)` fallback when needed and remain editable. Imported colors remain editable, imported files without a color receive the existing name-based fallback as their selected color, and every imported plan receives a new local ID when it is created. Canceling the native picker preserves the current import, while a later failed import disables Continue until a valid file is chosen. Creating a plan saves and starts it immediately without prompting for a reminder. Reminder discovery becomes eligible only after a plan day is completed.
+
+When a file opened from another app is invalid or cannot be read, Lux shows the import step with an error so the user can choose another file or paste contents. The operating system controls whether Lux is offered as the default app for downloaded `.lxbp` files.
 
 The `.lxbp` format is the plan's direct portable definition with its name, optional color, and ordered passage lists for each day. Reflection days are retained as empty passage lists. Exports contain no local ID, progress, reminders, or Bible text. Included plans export with their localized display name. The creation flow's `.lxbp` mentions and the copied AI prompt both reference the published format page at `https://www.luxbible.app/resources/lxbp`.
 

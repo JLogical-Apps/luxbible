@@ -18,11 +18,23 @@ export const campaignsBySourceCode = {
     name: 'social_profile',
     appleToken: 'instagram-profile',
   },
+  ia: {
+    source: 'instagram',
+    medium: 'paid_social',
+    name: 'boosted_post',
+    appleToken: 'instagram-boosted-post',
+  },
   tp: {
     source: 'tiktok',
     medium: 'organic_social',
     name: 'social_profile',
     appleToken: 'tiktok-profile',
+  },
+  ta: {
+    source: 'tiktok',
+    medium: 'paid_social',
+    name: 'boosted_post',
+    appleToken: 'tiktok-boosted-post',
   },
   yp: {
     source: 'youtube',

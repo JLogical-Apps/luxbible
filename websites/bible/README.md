@@ -19,13 +19,17 @@ npm run build   # outputs a static site to ./out
 
 ## Campaign attribution
 
-Compact social-profile links are mapped to Google Analytics campaign fields and
+Compact social links are mapped to Google Analytics campaign fields and
 store attribution:
 
 - `?s=fp`: Facebook profile
 - `?s=ip`: Instagram profile
+- `?s=ia`: Instagram boosted post
 - `?s=tp`: TikTok profile
+- `?s=ta`: TikTok boosted post
 - `?s=yp`: YouTube profile
+
+Boosted posts use `paid_social` as the medium and `boosted_post` as the campaign.
 
 ## Structure
 
