@@ -33,11 +33,6 @@ class FindInBibleSheet {
     final selectorState = useState(SelectorState(focus: .book));
 
     final scrollController = useScrollController();
-    final isScrollingDownState = useState(true);
-    useOnStickyScrollDirectionChanged(
-      scrollController,
-      (direction) => isScrollingDownState.value = direction == .forward,
-    );
 
     return StyledSheet.builder(
       title: title ?? t.passageSelection.findInBible.toText(),
@@ -49,7 +44,7 @@ class FindInBibleSheet {
         },
         child: PositionSelectorHeading(
           selectorState: selectorState,
-          readOnly: !isScrollingDownState.value,
+          scrollController: scrollController,
           onSelect: selectReference,
           showShadow: false,
           forceVerseNum: true,

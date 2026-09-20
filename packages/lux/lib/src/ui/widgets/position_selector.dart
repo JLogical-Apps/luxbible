@@ -33,11 +33,6 @@ class PositionSelector extends HookWidget {
     );
 
     final scrollController = useScrollController();
-    final isScrollingDownState = useState(true);
-    useOnStickyScrollDirectionChanged(
-      scrollController,
-      (direction) => isScrollingDownState.value = direction == .forward,
-    );
 
     return Column(
       children: [
@@ -45,7 +40,7 @@ class PositionSelector extends HookWidget {
           selectorState: selectorState,
           onSelect: onSelect,
           trailing: trailing,
-          readOnly: !isScrollingDownState.value,
+          scrollController: scrollController,
           forceVerseNum: forceVerseNum,
         ),
         Expanded(
@@ -74,7 +69,7 @@ class PositionSelectorHeading extends HookWidget {
   final bool forceVerseNum;
 
   final Widget? trailing;
-  final bool readOnly;
+  final ScrollController? scrollController;
 
   final Color? color;
   final bool showShadow;
@@ -87,7 +82,7 @@ class PositionSelectorHeading extends HookWidget {
     required this.onSelect,
     this.trailing,
     this.forceVerseNum = false,
-    this.readOnly = false,
+    this.scrollController,
     this.color,
     this.showShadow = true,
   });
@@ -97,6 +92,12 @@ class PositionSelectorHeading extends HookWidget {
     final bookFocusNode = useFocusNode();
     final chapterFocusNode = useFocusNode();
     final verseFocusNode = useFocusNode();
+
+    final isScrollingDown = useDismissAndRestoreFocusOnScroll(scrollController, [
+      bookFocusNode,
+      chapterFocusNode,
+      verseFocusNode,
+    ]);
 
     final SelectorState(:book, :chapterNum, :verseText) = state;
 
@@ -114,6 +115,7 @@ class PositionSelectorHeading extends HookWidget {
     useOnFocusNodeFocused(verseFocusNode, () => selectorState.value = state.withFocus(.verse));
 
     usePostFrameEffect(() {
+      if (isScrollingDown) return;
       final focusNode = (switch (state.focus) {
         .book => bookFocusNode,
         .chapter => chapterFocusNode,
@@ -135,7 +137,6 @@ class PositionSelectorHeading extends HookWidget {
             Expanded(
               child: StyledTextField(
                 text: state.bookText,
-                readOnly: readOnly,
                 onRawTextChanged: (oldText, newText) {
                   if (newText.endsWith(' ') && state.getBook(text: oldText) != null) {
                     selectorState.value = state.withFocus(.chapter);
@@ -159,7 +160,6 @@ class PositionSelectorHeading extends HookWidget {
               width: 60,
               child: StyledTextField(
                 text: chapterNum?.toString() ?? '',
-                readOnly: readOnly,
                 onChanged: state.book == null
                     ? null
                     : (text) => selectorState.value = state.withChapterNum(int.tryParse(text)),
@@ -200,7 +200,6 @@ class PositionSelectorHeading extends HookWidget {
                 width: 112,
                 child: StyledTextField(
                   text: verseText,
-                  readOnly: readOnly,
                   onChanged: book == null || chapterNum == null
                       ? null
                       : (text) => selectorState.value = state.withVerseText(text),

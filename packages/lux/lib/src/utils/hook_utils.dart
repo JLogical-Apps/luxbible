@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -38,6 +39,43 @@ ScrollController useUnfocusOnScrollDown(ScrollController scrollController) {
     }
   });
   return scrollController;
+}
+
+bool useDismissAndRestoreFocusOnScroll(ScrollController? scrollController, List<FocusNode> focusNodes) {
+  final isScrollingDownState = useState(false);
+  final lastFocusedNode = useRef<FocusNode?>(null);
+  final isScrollingDown = isScrollingDownState.value;
+
+  useEffect(() {
+    void rememberFocus() {
+      final focusedNode = focusNodes.firstWhereOrNull((node) => node.hasPrimaryFocus);
+      if (focusedNode != null) lastFocusedNode.value = focusedNode;
+    }
+
+    for (final node in focusNodes) {
+      node.addListener(rememberFocus);
+    }
+    rememberFocus();
+
+    return () {
+      for (final node in focusNodes) {
+        node.removeListener(rememberFocus);
+      }
+    };
+  }, focusNodes);
+
+  useOnStickyScrollDirectionChanged(scrollController, (direction) {
+    isScrollingDownState.value = direction == ScrollDirection.reverse;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (direction == ScrollDirection.reverse) {
+        focusNodes.firstWhereOrNull((node) => node.hasPrimaryFocus)?.unfocus();
+      } else if (lastFocusedNode.value case final focusNode?) {
+        if (!focusNode.hasPrimaryFocus) focusNode.requestFocus();
+      }
+    });
+  });
+
+  return isScrollingDown;
 }
 
 void useOnStickyScrollDirectionChanged(
