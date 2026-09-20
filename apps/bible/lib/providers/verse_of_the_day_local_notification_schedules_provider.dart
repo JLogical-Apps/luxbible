@@ -1,4 +1,4 @@
-import 'package:bible/models/verse_of_the_day_notification.dart';
+import 'package:bible/functions/verse_of_the_day_notification.dart';
 import 'package:bible/providers/language_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/verse_of_the_day_provider.dart';

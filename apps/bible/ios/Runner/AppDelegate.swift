@@ -13,6 +13,62 @@ import UserNotifications
   }
 
   func didInitializeImplicitFlutterEngine(_ engineBridge: FlutterImplicitEngineBridge) {
+    BiblePlanOpenBridge.shared.register(with: engineBridge)
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
+  }
+}
+
+final class BiblePlanOpenBridge: NSObject, FlutterSceneLifeCycleDelegate {
+  static let shared = BiblePlanOpenBridge()
+
+  private var channel: FlutterMethodChannel?
+  private var pendingPlan: String?
+  private var isDartReady = false
+
+  func register(with engineBridge: FlutterImplicitEngineBridge) {
+    let channel = FlutterMethodChannel(
+      name: "app.luxbible.app/bible-plan-open",
+      binaryMessenger: engineBridge.applicationRegistrar.messenger()
+    )
+    channel.setMethodCallHandler { [weak self] call, result in
+      guard let self else { return }
+      if call.method == "getLaunchPlan" {
+        self.isDartReady = true
+        result(self.pendingPlan)
+        self.pendingPlan = nil
+      } else {
+        result(FlutterMethodNotImplemented)
+      }
+    }
+    self.channel = channel
+    engineBridge.pluginRegistry.registrar(forPlugin: "BiblePlanOpenBridge")?.addSceneDelegate(self)
+  }
+
+  private func open(_ url: URL) -> Bool {
+    guard url.isFileURL, url.pathExtension.lowercased() == "lxbp" else { return false }
+    let hasAccess = url.startAccessingSecurityScopedResource()
+    defer { if hasAccess { url.stopAccessingSecurityScopedResource() } }
+    let contents = (try? String(contentsOf: url, encoding: .utf8)) ?? ""
+    if isDartReady {
+      channel?.invokeMethod("openPlan", arguments: contents)
+    } else {
+      pendingPlan = contents
+    }
+    return true
+  }
+
+  @objc(scene:willConnectToSession:options:)
+  func scene(
+    _ scene: UIScene,
+    willConnectTo session: UISceneSession,
+    options connectionOptions: UIScene.ConnectionOptions?
+  ) -> Bool {
+    connectionOptions?.urlContexts.forEach { open($0.url) }
+    return false
+  }
+
+  @objc(scene:openURLContexts:)
+  func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) -> Bool {
+    URLContexts.reduce(false) { handled, context in open(context.url) || handled }
   }
 }

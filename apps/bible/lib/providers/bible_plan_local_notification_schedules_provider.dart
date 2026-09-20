@@ -1,4 +1,4 @@
-import 'package:bible/models/bible_plan_notification.dart';
+import 'package:bible/functions/bible_plan_notification.dart';
 import 'package:bible/models/hydrated_bible_plan_progress.dart';
 import 'package:bible/models/reminder.dart';
 import 'package:bible/providers/bible_plans_provider.dart';

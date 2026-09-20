@@ -22,19 +22,23 @@ const biblePlanFileExtension = '.lxbp';
 final biblePlanFormatUri = Uri.parse('https://www.luxbible.app/resources/lxbp');
 
 class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<String> {
-  const CreateBiblePlanPage({super.key});
+  final BiblePlan? initialPlan;
+  final String? initialImportError;
+
+  const CreateBiblePlanPage({super.key, this.initialPlan, this.initialImportError});
 
   @override
   String get path => '/bible-plans/create';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final methodState = useState<BiblePlanCreationMethod?>(null);
+    final isExternalImport = initialPlan != null || initialImportError != null;
+    final methodState = useState<BiblePlanCreationMethod?>(isExternalImport ? .importFile : null);
     final method = methodState.value;
 
-    final importedPlanState = useState<BiblePlan?>(null);
+    final importedPlanState = useState<BiblePlan?>(initialPlan);
     final importedPlan = importedPlanState.value;
-    final importErrorState = useState<String?>(null);
+    final importErrorState = useState<String?>(initialImportError);
 
     // AI
     final descriptionState = useDependentState(() => '', [method]);
@@ -100,7 +104,7 @@ class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<Stri
 
     final reviewStepIndex = switch (method) {
       .ai || .booksAndDuration => 4,
-      .importFile => 3,
+      .importFile => isExternalImport ? (importedPlan == null ? 2 : 1) : 3,
       _ => 2,
     };
 
@@ -143,19 +147,20 @@ class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<Stri
       onStepChanged: (stepIndex) => stepIndexState.value = stepIndex,
       scrollController: scrollController,
       steps: [
-        StyledModuleStep.selection(
-          title: t.biblePlans.creationMethodQuestion.toText(),
-          options: BiblePlanCreationMethod.values,
-          selectedOption: method,
-          optionMapper: (method) => StyledSelectOption(
-            title: method.title().toText(),
-            subtitle: method.description().toText(),
-            leading: method.icon.toIcon(),
+        if (!isExternalImport)
+          StyledModuleStep.selection(
+            title: t.biblePlans.creationMethodQuestion.toText(),
+            options: BiblePlanCreationMethod.values,
+            selectedOption: method,
+            optionMapper: (method) => StyledSelectOption(
+              title: method.title().toText(),
+              subtitle: method.description().toText(),
+              leading: method.icon.toIcon(),
+            ),
+            onSelectOption: (method) => methodState.value = method,
+            canGoNext: method != null,
           ),
-          onSelectOption: (method) => methodState.value = method,
-          canGoNext: method != null,
-        ),
-        if (method == .importFile)
+        if (method == .importFile && (!isExternalImport || importedPlan == null))
           StyledModuleStep(
             title: t.biblePlans.importPlan.toText(),
             subtitle: t.biblePlans.importInstructions.toText(),

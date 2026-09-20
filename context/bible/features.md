@@ -28,7 +28,7 @@ Saving any reminder asks for notification permission only when needed. If app no
 
 ## Privacy and Analytics
 
-Lux measures visits to its main pages and a small set of prominent actions: starting audio playback, starting a plan, completing a plan day, searching, opening Verse of the Day, opening a local notification, changing toolbar configuration, opening a community link, pressing Rate Lux, requesting the native review prompt, and starting, completing, or skipping onboarding. These events contain no user-created content or dynamic identifiers from the app.
+Lux measures visits to its main pages and a small set of prominent actions: starting audio playback, starting a plan, completing a plan day, opening an externally supplied plan file, searching, opening Verse of the Day, opening a local notification, changing toolbar configuration, opening a community link, pressing Rate Lux, requesting the native review prompt, and starting, completing, or skipping onboarding. These events contain no user-created content or dynamic identifiers from the app.
 
 On Android, Lux measures the general campaign source that led to installation through Google Play Install Referrer. The website maps compact, fixed social-profile and boosted-post source codes to aggregate campaign values, reports website traffic and store navigation through Google Analytics, and passes the same values to Google Play. These values identify a marketing source such as Facebook or TikTok, not a person or social-media account.
 

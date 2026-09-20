@@ -4,6 +4,7 @@ enum AnalyticsEvent {
   audioPlayed('audio_played'),
   planDayCompleted('plan_day_completed'),
   planStarted('plan_started'),
+  biblePlanFileOpened('bible_plan_file_opened'),
   search('search'),
   verseOfTheDayTapped('verse_of_the_day_tapped'),
   notificationTapped('notification_tapped'),

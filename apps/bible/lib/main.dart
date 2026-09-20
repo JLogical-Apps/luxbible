@@ -5,14 +5,14 @@ import 'package:audio_service/audio_service.dart';
 import 'package:bible/firebase_options.dart';
 import 'package:bible/functions/audio_bible_timings_importer.dart';
 import 'package:bible/functions/bible_plan_importer.dart';
+import 'package:bible/functions/bible_plan_notification.dart';
 import 'package:bible/functions/cross_references_importer.dart';
 import 'package:bible/functions/dictionary_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
 import 'package:bible/functions/verse_of_the_day_importer.dart';
+import 'package:bible/functions/verse_of_the_day_notification.dart';
 import 'package:bible/licenses.dart';
-import 'package:bible/models/bible_plan_notification.dart';
 import 'package:bible/models/user/language.dart';
-import 'package:bible/models/verse_of_the_day_notification.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/audio_bible_timings_provider.dart';
 import 'package:bible/providers/bible_data_providers.dart';
@@ -27,6 +27,7 @@ import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/verse_of_the_day_provider.dart';
 import 'package:bible/services/audio_bible_handler.dart';
+import 'package:bible/services/bible_plan_open_service.dart';
 import 'package:bible/services/local_notification_service.dart';
 import 'package:bible/services/timezone_service.dart';
 import 'package:bible/ui/bible_reader_configuration.dart';
@@ -143,6 +144,7 @@ Future<void> main() async {
         observers: [ProviderErrorObserver()],
       );
 
+      ref.read(biblePlanOpenServiceProvider).initialize();
       ref.read(userProvider.notifier).refreshActiveDay();
       eagerlyLoad();
 
@@ -170,6 +172,7 @@ class BibleApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     usePostFrameEffect(() async {
+      await ref.read(biblePlanOpenServiceProvider).openLaunchPlan();
       final localNotificationService = ref.read(localNotificationServiceProvider);
       final payload = await localNotificationService.getLaunchPayload();
       if (payload != null) {

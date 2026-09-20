@@ -30,6 +30,8 @@ Never hand-edit generated `*.g.dart` or `*.freezed.dart` files.
 
 There is no CI, and `apps/bible/test` is empty. Static analysis and formatting are the current gate.
 
+Never interact with an Android emulator or iOS simulator yourself. Do not launch apps, install builds, send intents, tap or inspect screens, collect logs, or use `adb`, `xcrun simctl`, or UI automation against an emulator or simulator. When device verification is needed, ask me to test it and provide exact steps and the expected result.
+
 The Flutter SDK is outside this workspace, so `flutter` and the `dart` wrapper cannot write its cache and fail under the default sandbox. Use the SDK's direct binary with a workspace-local `HOME` instead:
 
 ```sh
