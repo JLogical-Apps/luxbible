@@ -49,6 +49,7 @@ Lux counts distinct active days locally. After seven active days, it makes one n
 - RVG: Reina Valera Gómez 2010 in Spanish
 - ELB1905: Unrevidierte Elberfelder 1905 in German
 - LUT1912: Lutherbibel 1912 in German
+- SYNO: Russian Synodal Bible 1876
 - LXX: Septuagint, Rahlfs
 - TR: Textus Receptus, Stephens 1550
 - BYZ: Robinson-Pierpont Byzantine Textform 2005

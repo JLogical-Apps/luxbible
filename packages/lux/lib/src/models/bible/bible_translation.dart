@@ -27,6 +27,7 @@ enum BibleTranslation {
   martin1744,
   rvg,
   nld1939,
+  synodal,
   htb,
   ntr;
 
@@ -55,6 +56,7 @@ enum BibleTranslation {
     hfa => 'HFA',
     elb1905 => 'ELB1905',
     lut1912 => 'LUT1912',
+    synodal => 'SYNO',
     ntr => 'NTR',
   };
 
@@ -83,6 +85,7 @@ enum BibleTranslation {
     hfa => 'Hoffnung für alle',
     elb1905 => 'Unrevidierte Elberfelder 1905',
     lut1912 => 'Lutherbibel 1912',
+    synodal => 'Синодальный перевод 1876',
     ntr => 'New Romanian Translation 2021',
   };
 
@@ -102,7 +105,8 @@ enum BibleTranslation {
     rvg ||
     nld1939 ||
     elb1905 ||
-    lut1912 => .local,
+    lut1912 ||
+    synodal => .local,
     nasb95 => .youVersion(100),
     amp => .youVersion(1588),
     niv11 => .youVersion(111),
@@ -117,7 +121,7 @@ enum BibleTranslation {
     lxx || tr || byz || statresgnt => .greek,
     oshb => .hebrew,
     sv || nld1939 || htb => .dutch,
-    nrt => .russian,
+    nrt || synodal => .russian,
     fob || martin1744 => .french,
     elb1905 || lut1912 || hfa => .german,
     ntr => .romanian,
@@ -214,7 +218,7 @@ enum BibleTranslation {
   };
 
   bool get hasParagraphs => switch (this) {
-    oshb || sv || nrt || martin1744 || elb1905 || lut1912 || nld1939 || fob => false,
+    oshb || sv || nrt || martin1744 || elb1905 || lut1912 || nld1939 || fob || synodal => false,
     _ => true,
   };
 

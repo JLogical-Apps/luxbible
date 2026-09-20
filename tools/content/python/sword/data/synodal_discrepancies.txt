@@ -1,0 +1,19 @@
+Synodal -> KJV mapping discrepancy report
+============================================================
+
+Built from: the Greek/Synodal Psalm regrouping + the explicit chapter
+boundary segments in SEGMENTS + identity. The items below are where
+the Synodal versification has no clean KJV home.
+SUMMARY: 187 dropped (no KJV home), 0 residual cross-chapter merges.
+
+## Josh  (total 661: 631 identity, 27 segment-shift, 0 psalm)
+  DROPPED, no KJV verse exists [3]: 24:34, 24:35, 24:36
+
+## Ps  (total 2532: 0 identity, 0 segment-shift, 2525 psalm)
+  DROPPED, no KJV verse exists [7]: 151:1, 151:2, 151:3, 151:4, 151:5, 151:6, 151:7
+
+## Prov  (total 919: 915 identity, 0 segment-shift, 0 psalm)
+  DROPPED, no KJV verse exists [4]: 4:28, 4:29, 13:26, 18:25
+
+## Dan  (total 530: 313 identity, 44 segment-shift, 0 psalm)
+  DROPPED, no KJV verse exists [173]: 3:24, 3:25, 3:26, 3:27, 3:28, 3:29, 3:30, 3:31, 3:32, 3:33, 3:34, 3:35, 3:36, 3:37, 3:38, 3:39, 3:40, 3:41, 3:42, 3:43, 3:44, 3:45, 3:46, 3:47, 3:48, 3:49, 3:50, 3:51, 3:52, 3:53, 3:54, 3:55, 3:56, 3:57, 3:58, 3:59, 3:60, 3:61, 3:62, 3:63 ...

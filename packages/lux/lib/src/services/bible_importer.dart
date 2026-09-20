@@ -11,48 +11,14 @@ import 'package:lux/src/services/bible_asset_paths.dart';
 class BibleImporter {
   Future<Bible> importBible({required BibleTranslation translation}) async {
     translation.throwIfLicenseExpired();
-    return switch (translation) {
-      .asv ||
-      .bsb ||
-      .csb ||
-      .kjv ||
-      .oshb ||
-      .lxx ||
-      .tr ||
-      .byz ||
-      .statresgnt ||
-      .sv ||
-      .fob ||
-      .martin1744 ||
-      .rvg ||
-      .nld1939 ||
-      .elb1905 ||
-      .lut1912 => await parseStructuredJsonBible(translation: translation),
-      _ => throw UnimplementedError(),
-    };
+    return translation.isLocal ? await parseStructuredJsonBible(translation: translation) : throw UnimplementedError();
   }
 
   Future<Book> importBook({required BibleTranslation translation, required BookType book}) async {
     translation.throwIfLicenseExpired();
-    return switch (translation) {
-      .asv ||
-      .bsb ||
-      .csb ||
-      .kjv ||
-      .oshb ||
-      .lxx ||
-      .tr ||
-      .byz ||
-      .statresgnt ||
-      .sv ||
-      .fob ||
-      .martin1744 ||
-      .rvg ||
-      .nld1939 ||
-      .elb1905 ||
-      .lut1912 => await parseStructuredJsonBook(translation: translation, book: book),
-      _ => throw UnimplementedError(),
-    };
+    return translation.isLocal
+        ? await parseStructuredJsonBook(translation: translation, book: book)
+        : throw UnimplementedError();
   }
 
   Future<Bible> parseStructuredJsonBible({required BibleTranslation translation}) async {

@@ -165,6 +165,18 @@ Source: https://eBible.org/Scriptures/''',
     );
 
     yield const LicenseEntryWithLineBreaks(
+      ['Russian Synodal Bible 1876 (SYNO)'],
+      '''
+Библия. Синодальный перевод, 1876.
+
+Public domain. Translated by the Orthodox theological academies of Moscow, Saint Petersburg, Kazan, and Kiev.
+
+Text obtained from the RusSynodal SWORD module distributed by the CrossWire Bible Society. Lux transforms the module into its bundled Bible data format and keeps the module's Synodal verse references in `origin` where the Synodal versification differs from Lux's. The Synodal psalter follows the Greek numbering, so its psalms are regrouped onto their Hebrew numbers. The deuterocanonical books and passages the Synodal carries (Ps 151, the additions to Daniel, and the Septuagint pluses in Joshua, Proverbs, and Numbers) are not included.
+
+Source: https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=RusSynodal''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
       ['Septuagint, Rahlfs (LXX)'],
       '''
 Septuagint, Morphologically Tagged Rahlfs' text.
