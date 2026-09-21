@@ -666,7 +666,9 @@
     "getStarted": "Get Started",
     "learnLux": "Learn how to use Lux",
     "checklistDescription": "Complete the checklist below to learn how to use Lux.",
-    "skipHint": "In a hurry? Tap ✕ to skip."
+    "skipHint": "In a hurry? Tap ✕ to skip.",
+    "joinDiscord": "Join our Discord community",
+    "discordInvitation": "Ask questions, share feedback, and connect with others using Lux."
   },
   "analyticsNotice": {
     "title": "A Note About Anonymous Analytics",

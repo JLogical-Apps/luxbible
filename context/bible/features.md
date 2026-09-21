@@ -428,6 +428,8 @@ Users can:
 
 On narrow layouts, panels dock below the Bible. On wide layouts, they appear to its right. The onboarding checklist and Audio Bible use the same swipeable panel area.
 
+The onboarding checklist ends with an invitation to join the Lux Discord community, where users can ask questions, share feedback, and meet other users. Completing the last checklist step scrolls the panel to the bottom.
+
 ## Audio Bible
 
 Audio is available for BSB and KJV and requires an internet connection.

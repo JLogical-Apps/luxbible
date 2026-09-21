@@ -932,6 +932,8 @@ class _Translations$onboarding$nl extends Translations$onboarding$en {
 	@override String get learnLux => 'Leer Lux gebruiken';
 	@override String get checklistDescription => 'Voltooi de onderstaande lijst om Lux te leren gebruiken.';
 	@override String get skipHint => 'Weinig tijd? Tik op ✕ om over te slaan.';
+	@override String get joinDiscord => 'Word lid van onze Discord-community';
+	@override String get discordInvitation => 'Stel vragen, deel je feedback en ontmoet anderen die Lux gebruiken.';
 }
 
 // Path: analyticsNotice
@@ -3554,6 +3556,8 @@ extension on TranslationsNl {
 			'onboarding.learnLux' => 'Leer Lux gebruiken',
 			'onboarding.checklistDescription' => 'Voltooi de onderstaande lijst om Lux te leren gebruiken.',
 			'onboarding.skipHint' => 'Weinig tijd? Tik op ✕ om over te slaan.',
+			'onboarding.joinDiscord' => 'Word lid van onze Discord-community',
+			'onboarding.discordInvitation' => 'Stel vragen, deel je feedback en ontmoet anderen die Lux gebruiken.',
 			'analyticsNotice.title' => 'Een opmerking over anonieme statistieken',
 			'analyticsNotice.description' => 'Lux gebruikt nu anonieme gebruiksstatistieken en crashrapporten om te begrijpen welke functies worden gebruikt en de betrouwbaarheid te verbeteren. Deze rapporten bevatten nooit je notities, namen of leesdetails van Bijbelplannen, zoektermen of andere privé-inhoud en zijn niet gekoppeld aan een account. Door Lux te blijven gebruiken, ga je ermee akkoord dat deze informatie wordt verzonden.',
 			'renamedBiblePlansNotice.title' => 'Bijbelplannen zijn bijgewerkt',
@@ -3986,10 +3990,10 @@ extension on TranslationsNl {
 			'morphology.mood.imperative.examples' => 'Ga!|Geloof!|Vrees niet!',
 			'morphology.mood.subjunctive.name' => 'Conjunctief',
 			'morphology.mood.subjunctive.description' => 'Drukt mogelijkheid, doel of voorwaardelijkheid uit.',
-			'morphology.mood.subjunctive.examples' => 'opdat hij zou schrijven|als hij gaat',
-			'morphology.mood.optative.name' => 'Optatief',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.mood.subjunctive.examples' => 'opdat hij zou schrijven|als hij gaat',
+			'morphology.mood.optative.name' => 'Optatief',
 			'morphology.mood.optative.description' => 'Drukt een wens of onwaarschijnlijke mogelijkheid uit.',
 			'morphology.mood.optative.examples' => 'moge het zo zijn|moge u genade ontvangen',
 			'morphology.mood.infinitive.name' => 'Infinitief',

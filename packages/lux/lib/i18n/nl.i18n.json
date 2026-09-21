@@ -668,7 +668,9 @@
     "getStarted": "Aan de slag",
     "learnLux": "Leer Lux gebruiken",
     "checklistDescription": "Voltooi de onderstaande lijst om Lux te leren gebruiken.",
-    "skipHint": "Weinig tijd? Tik op ✕ om over te slaan."
+    "skipHint": "Weinig tijd? Tik op ✕ om over te slaan.",
+    "joinDiscord": "Word lid van onze Discord-community",
+    "discordInvitation": "Stel vragen, deel je feedback en ontmoet anderen die Lux gebruiken."
   },
   "analyticsNotice": {
     "title": "Een opmerking over anonieme statistieken",

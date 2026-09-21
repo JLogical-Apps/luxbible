@@ -938,6 +938,8 @@ class _Translations$onboarding$ru extends Translations$onboarding$en {
 	@override String get learnLux => 'Узнайте, как использовать Lux';
 	@override String get checklistDescription => 'Заполните контрольный список ниже, чтобы узнать, как использовать Lux.';
 	@override String get skipHint => 'Торопитесь? Нажмите ✕, чтобы пропустить.';
+	@override String get joinDiscord => 'Присоединяйтесь к нашему сообществу в Discord';
+	@override String get discordInvitation => 'Задавайте вопросы, делитесь отзывами и общайтесь с другими пользователями Lux.';
 }
 
 // Path: analyticsNotice
@@ -3562,6 +3564,8 @@ extension on TranslationsRu {
 			'onboarding.learnLux' => 'Узнайте, как использовать Lux',
 			'onboarding.checklistDescription' => 'Заполните контрольный список ниже, чтобы узнать, как использовать Lux.',
 			'onboarding.skipHint' => 'Торопитесь? Нажмите ✕, чтобы пропустить.',
+			'onboarding.joinDiscord' => 'Присоединяйтесь к нашему сообществу в Discord',
+			'onboarding.discordInvitation' => 'Задавайте вопросы, делитесь отзывами и общайтесь с другими пользователями Lux.',
 			'analyticsNotice.title' => 'Об анонимной аналитике',
 			'analyticsNotice.description' => 'Lux теперь использует анонимную аналитику и отчёты о сбоях, чтобы понимать, какие функции востребованы, и повышать надёжность. Эти отчёты никогда не содержат ваши заметки, названия планов чтения или сведения о ходе чтения, поисковые запросы либо другой личный контент и не связаны с учётной записью. Продолжая пользоваться Lux, вы соглашаетесь на отправку этой информации.',
 			'renamedBiblePlansNotice.title' => 'Планы чтения Библии обновлены',
@@ -3994,10 +3998,10 @@ extension on TranslationsRu {
 			'morphology.mood.imperative.examples' => 'Идите!|Верьте!|Не бойтесь!',
 			'morphology.mood.subjunctive.name' => 'Сослагательное наклонение',
 			'morphology.mood.subjunctive.description' => 'Выражает возможность, цель или непредвиденное обстоятельство.',
-			'morphology.mood.subjunctive.examples' => 'что он мог бы написать|если пойдёт',
-			'morphology.mood.optative.name' => 'Оптатив',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.mood.subjunctive.examples' => 'что он мог бы написать|если пойдёт',
+			'morphology.mood.optative.name' => 'Оптатив',
 			'morphology.mood.optative.description' => 'Выражает желание или отдаленную возможность.',
 			'morphology.mood.optative.examples' => 'да будет так | да будет тебе милость',
 			'morphology.mood.infinitive.name' => 'инфинитив',

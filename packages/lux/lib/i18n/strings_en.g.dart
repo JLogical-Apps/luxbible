@@ -2048,6 +2048,12 @@ class Translations$onboarding$en {
 
 	/// en: 'In a hurry? Tap ✕ to skip.'
 	String get skipHint => 'In a hurry? Tap ✕ to skip.';
+
+	/// en: 'Join our Discord community'
+	String get joinDiscord => 'Join our Discord community';
+
+	/// en: 'Ask questions, share feedback, and connect with others using Lux.'
+	String get discordInvitation => 'Ask questions, share feedback, and connect with others using Lux.';
 }
 
 // Path: analyticsNotice
@@ -5737,6 +5743,8 @@ extension on Translations {
 			'onboarding.learnLux' => 'Learn how to use Lux',
 			'onboarding.checklistDescription' => 'Complete the checklist below to learn how to use Lux.',
 			'onboarding.skipHint' => 'In a hurry? Tap ✕ to skip.',
+			'onboarding.joinDiscord' => 'Join our Discord community',
+			'onboarding.discordInvitation' => 'Ask questions, share feedback, and connect with others using Lux.',
 			'analyticsNotice.title' => 'A Note About Anonymous Analytics',
 			'analyticsNotice.description' => 'Lux now uses anonymous analytics and crash reports to understand which features are used and improve reliability.\n\nThese reports never include your notes, Bible plan names or reading details, search terms, or other private content, and they are not linked to an account.\n\nBy continuing to use Lux, you agree to this information being sent.',
 			'renamedBiblePlansNotice.title' => 'Bible Plans Have Updated',
@@ -6171,10 +6179,10 @@ extension on Translations {
 			'morphology.mood.subjunctive.description' => 'Expresses possibility, purpose, or contingency.',
 			'morphology.mood.subjunctive.examples' => 'that he might write|if he goes',
 			'morphology.mood.optative.name' => 'Optative',
-			'morphology.mood.optative.description' => 'Expresses a wish or remote possibility.',
-			'morphology.mood.optative.examples' => 'may it be so|may you have grace',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.mood.optative.description' => 'Expresses a wish or remote possibility.',
+			'morphology.mood.optative.examples' => 'may it be so|may you have grace',
 			'morphology.mood.infinitive.name' => 'Infinitive',
 			'morphology.mood.infinitive.description' => 'A verbal noun, such as "to do".',
 			'morphology.mood.infinitive.examples' => 'to write|to believe',

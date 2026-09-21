@@ -1,15 +1,19 @@
 import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/services/analytics_service.dart';
+import 'package:bible/ui/pages/more_page.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 import 'package:utils_core/utils_core.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class OnboardingPanel extends HookConsumerWidget {
   final bool showDragHandle;
@@ -26,14 +30,26 @@ class OnboardingPanel extends HookConsumerWidget {
     final isComplete = currentStep == null;
 
     final keyByStep = useMemoized(() => OnboardingStep.values.mapToMap((step) => MapEntry(step, GlobalKey())));
+    final scrollController = useScrollController();
 
     usePostFrameEffect(() async {
-      if (currentStep == null || currentStep == OnboardingStep.values.first || !isVisible) return;
+      if (currentStep == OnboardingStep.values.first || !isVisible) return;
       await Future.delayed(Duration(milliseconds: 200));
-      keyByStep[currentStep]?.scrollIntoView(alignment: 0.5, duration: Duration(milliseconds: 300));
+      if (currentStep == null) {
+        if (scrollController.hasClients) {
+          await scrollController.animateTo(
+            scrollController.position.maxScrollExtent,
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeInOutCubic,
+          );
+        }
+      } else {
+        keyByStep[currentStep]?.scrollIntoView(alignment: 0.5, duration: Duration(milliseconds: 300));
+      }
     }, [currentStep]);
 
     return StyledSheet(
+      controller: scrollController,
       showDragHandle: showDragHandle,
       leading: StyledCircleButton.md(
         child: Symbols.close.toIcon(),
@@ -95,6 +111,21 @@ class OnboardingPanel extends HookConsumerWidget {
             isEnabled: isActiveStep,
           );
         }),
+        Padding(
+          padding: .all(16),
+          child: StyledTile.message(
+            leading: FaIcon(FontAwesomeIcons.discord),
+            title: t.onboarding.joinDiscord.toText(),
+            subtitle: t.onboarding.discordInvitation.toText(),
+            action: StyledTextAction(
+              label: t.common.join.toText(),
+              onPressed: () {
+                AnalyticsEvent.communityLinkPressed.log();
+                launchUrl(discordUri);
+              },
+            ),
+          ),
+        ),
       ],
       buttonsBuilder: (context) => [
         if (isComplete)
