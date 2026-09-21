@@ -793,6 +793,9 @@ class Translations$selectionActions$en {
 	/// en: 'Study'
 	String get study => 'Study';
 
+	/// en: 'Share'
+	String get share => 'Share';
+
 	/// en: 'Copy'
 	String get copy => 'Copy';
 
@@ -813,6 +816,9 @@ class Translations$selectionActions$en {
 
 	/// en: 'Study these verses.'
 	String get studyVersesDescription => 'Study these verses.';
+
+	/// en: 'Share a link to these verses.'
+	String get shareVersesDescription => 'Share a link to these verses.';
 
 	/// en: 'Copy these verses to your clipboard.'
 	String get copyVersesDescription => 'Copy these verses to your clipboard.';
@@ -5340,6 +5346,7 @@ extension on Translations {
 			'studyActions.onlineCrossReferencesExplanation' => 'Because your selected translation is only available online, cross references are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app.',
 			'selectionActions.annotate' => 'Annotate',
 			'selectionActions.study' => 'Study',
+			'selectionActions.share' => 'Share',
 			'selectionActions.copy' => 'Copy',
 			'selectionActions.highlight' => 'Highlight',
 			'selectionActions.removeAnnotations' => 'Remove Annotations',
@@ -5347,6 +5354,7 @@ extension on Translations {
 			'selectionActions.search' => 'Search',
 			'selectionActions.annotateVersesDescription' => 'Annotate these verses.',
 			'selectionActions.studyVersesDescription' => 'Study these verses.',
+			'selectionActions.shareVersesDescription' => 'Share a link to these verses.',
 			'selectionActions.copyVersesDescription' => 'Copy these verses to your clipboard.',
 			'selectionActions.annotateTextDescription' => 'Annotate this text.',
 			'selectionActions.interlinearTextDescription' => 'View a lexical breakdown of this text.',
@@ -5651,10 +5659,10 @@ extension on Translations {
 			'biblePlans.generatedNames.inDays' => ({required Object books, required Object count}) => '${books} in ${count} Days',
 			'biblePlans.generatedNames.inAYear' => ({required Object books}) => '${books} in a Year',
 			'biblePlans.nameAndColor' => 'Name & Color',
-			'biblePlans.review' => 'Review Plan',
-			'biblePlans.createAndStart' => 'Create & Start',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.review' => 'Review Plan',
+			'biblePlans.createAndStart' => 'Create & Start',
 			'biblePlans.myBiblePlan' => 'My Bible Plan',
 			'biblePlans.nameRequired' => 'Enter a name for your plan.',
 			'biblePlans.nameAlreadyExists' => 'A Bible plan already uses this name.',
@@ -6165,10 +6173,10 @@ extension on Translations {
 			'morphology.mood.optative.name' => 'Optative',
 			'morphology.mood.optative.description' => 'Expresses a wish or remote possibility.',
 			'morphology.mood.optative.examples' => 'may it be so|may you have grace',
-			'morphology.mood.infinitive.name' => 'Infinitive',
-			'morphology.mood.infinitive.description' => 'A verbal noun, such as "to do".',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.mood.infinitive.name' => 'Infinitive',
+			'morphology.mood.infinitive.description' => 'A verbal noun, such as "to do".',
 			'morphology.mood.infinitive.examples' => 'to write|to believe',
 			'morphology.mood.participle.name' => 'Participle',
 			'morphology.mood.participle.description' => 'A verbal adjective, such as "doing" or "having done".',

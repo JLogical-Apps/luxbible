@@ -400,6 +400,7 @@ class _Translations$selectionActions$nl extends Translations$selectionActions$en
 	// Translations
 	@override String get annotate => 'Annoteren';
 	@override String get study => 'Studie';
+	@override String get share => 'Delen';
 	@override String get copy => 'Kopiëren';
 	@override String get highlight => 'Markeren';
 	@override String get removeAnnotations => 'Annotaties verwijderen';
@@ -407,6 +408,7 @@ class _Translations$selectionActions$nl extends Translations$selectionActions$en
 	@override String get search => 'Zoeken';
 	@override String get annotateVersesDescription => 'Annoteer deze verzen.';
 	@override String get studyVersesDescription => 'Bestudeer deze verzen.';
+	@override String get shareVersesDescription => 'Deel een link naar deze verzen.';
 	@override String get copyVersesDescription => 'Kopieer deze verzen naar het klembord.';
 	@override String get annotateTextDescription => 'Annoteer deze tekst.';
 	@override String get interlinearTextDescription => 'Bekijk een lexicale analyse van deze tekst.';
@@ -3161,6 +3163,7 @@ extension on TranslationsNl {
 			'studyActions.onlineCrossReferencesExplanation' => 'Omdat de geselecteerde vertaling alleen online beschikbaar is, worden kruisverwijzingen getoond met de meest recent gebruikte studiebijbel om prestaties en kosten te besparen. Overal elders in de app wordt de geselecteerde vertaling gebruikt.',
 			'selectionActions.annotate' => 'Annoteren',
 			'selectionActions.study' => 'Studie',
+			'selectionActions.share' => 'Delen',
 			'selectionActions.copy' => 'Kopiëren',
 			'selectionActions.highlight' => 'Markeren',
 			'selectionActions.removeAnnotations' => 'Annotaties verwijderen',
@@ -3168,6 +3171,7 @@ extension on TranslationsNl {
 			'selectionActions.search' => 'Zoeken',
 			'selectionActions.annotateVersesDescription' => 'Annoteer deze verzen.',
 			'selectionActions.studyVersesDescription' => 'Bestudeer deze verzen.',
+			'selectionActions.shareVersesDescription' => 'Deel een link naar deze verzen.',
 			'selectionActions.copyVersesDescription' => 'Kopieer deze verzen naar het klembord.',
 			'selectionActions.annotateTextDescription' => 'Annoteer deze tekst.',
 			'selectionActions.interlinearTextDescription' => 'Bekijk een lexicale analyse van deze tekst.',
@@ -3470,10 +3474,10 @@ extension on TranslationsNl {
 			'biblePlans.generatedNames.bible' => 'Bijbel',
 			'biblePlans.generatedNames.inOneDay' => ({required Object books}) => '${books} in 1 dag',
 			'biblePlans.generatedNames.inDays' => ({required Object books, required Object count}) => '${books} in ${count} dagen',
-			'biblePlans.generatedNames.inAYear' => ({required Object books}) => '${books} in een jaar',
-			'biblePlans.nameAndColor' => 'Naam en kleur',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.generatedNames.inAYear' => ({required Object books}) => '${books} in een jaar',
+			'biblePlans.nameAndColor' => 'Naam en kleur',
 			'biblePlans.review' => 'Leesplan controleren',
 			'biblePlans.createAndStart' => 'Maken en starten',
 			'biblePlans.myBiblePlan' => 'Mijn Bijbelleesplan',
@@ -3984,10 +3988,10 @@ extension on TranslationsNl {
 			'morphology.mood.subjunctive.description' => 'Drukt mogelijkheid, doel of voorwaardelijkheid uit.',
 			'morphology.mood.subjunctive.examples' => 'opdat hij zou schrijven|als hij gaat',
 			'morphology.mood.optative.name' => 'Optatief',
-			'morphology.mood.optative.description' => 'Drukt een wens of onwaarschijnlijke mogelijkheid uit.',
-			'morphology.mood.optative.examples' => 'moge het zo zijn|moge u genade ontvangen',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.mood.optative.description' => 'Drukt een wens of onwaarschijnlijke mogelijkheid uit.',
+			'morphology.mood.optative.examples' => 'moge het zo zijn|moge u genade ontvangen',
 			'morphology.mood.infinitive.name' => 'Infinitief',
 			'morphology.mood.infinitive.description' => 'Een verbaal zelfstandig naamwoord, zoals "doen".',
 			'morphology.mood.infinitive.examples' => 'schrijven|geloven',

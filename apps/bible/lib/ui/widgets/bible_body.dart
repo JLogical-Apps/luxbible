@@ -5,6 +5,7 @@ import 'package:bible/providers/audio_bible_player_provider.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/verse_of_the_day_provider.dart';
+import 'package:bible/services/passage_link_service.dart';
 import 'package:bible/ui/hooks/audio_bible_passage_sync.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/pages/position_page.dart';
@@ -38,6 +39,7 @@ class BibleBody extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
+    final passageLinkService = ref.watch(passageLinkServiceProvider);
     final verseOfTheDay = ref.watch(verseOfTheDayProvider).value;
     final readerConfiguration = ref.watch(luxReaderConfigurationProvider);
 
@@ -187,6 +189,14 @@ class BibleBody extends HookConsumerWidget {
       selectionController.selectReferences(verseSelection.references);
       await scrollVerseSelectionIntoView(verseSelection);
     }
+
+    useOnListenableChange(passageLinkService, () {
+      if (passageLinkService.selection case final selection?) {
+        passageLinkService.clearSelection();
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        navigateToVerseSelection(selection);
+      }
+    });
 
     usePostFrameEffect(() {
       final currentPage = pageController.pageOrNull?.round();

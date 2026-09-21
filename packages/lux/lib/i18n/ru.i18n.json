@@ -223,6 +223,7 @@
   "selectionActions": {
     "annotate": "Аннотировать",
     "study": "Изучать",
+    "share": "Поделиться",
     "copy": "Копировать",
     "highlight": "Выделить",
     "removeAnnotations": "Удалить аннотации",
@@ -230,6 +231,7 @@
     "search": "Поиск",
     "annotateVersesDescription": "Прокомментируйте эти стихи.",
     "studyVersesDescription": "Изучите эти стихи.",
+    "shareVersesDescription": "Поделиться ссылкой на эти стихи.",
     "copyVersesDescription": "Скопируйте эти стихи в буфер обмена.",
     "annotateTextDescription": "Прокомментируйте этот текст.",
     "interlinearTextDescription": "Посмотрите лексическую разбивку этого текста.",

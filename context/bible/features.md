@@ -133,6 +133,9 @@ Users can:
 - Long-press a word or number to select it
 - Continue dragging after a long-press to select a phrase
 - Copy verses or selected text
+- Share a link to selected verses from the verse toolbar
+
+Opening a shared passage link returns to the Bible page, closing any pages above it, then selects and scrolls to the linked verses.
 
 ## Navigation
 
@@ -227,6 +230,7 @@ The verse toolbar appears after one or more verses are selected. Available short
 - Cross References
 - Annotate
 - Highlight
+- Share
 - Copy
 
 Long-pressing an existing verse selection invokes the configured verse-selection long-press action.

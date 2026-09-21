@@ -1,8 +1,8 @@
 # Lux Bible — luxbible.app
 
-Marketing site for the Lux Bible app. Built with **Next.js (static export)**,
+Marketing site for the Lux Bible app. Built with **Next.js**,
 **TypeScript**, and **Tailwind CSS**. No CMS — every page is composed from typed
-block components in code and deployed as static files.
+block components in code and deployed on Vercel.
 
 ## Develop
 
@@ -11,10 +11,10 @@ npm install
 npm run dev
 ```
 
-## Build (static export)
+## Build
 
 ```bash
-npm run build   # outputs a static site to ./out
+npm run build
 ```
 
 ## Campaign attribution
@@ -45,5 +45,9 @@ Boosted posts use `paid_social` as the medium and `boosted_post` as the campaign
 
 ## Deploy
 
-Deployed on Vercel as a static Next.js site. The `npm run build` command exports
-the site to the `out/` directory.
+Deployed on Vercel as a Next.js site.
+
+The `app.luxbible.app` domain serves `/passage/<OSIS selection>` from this project as a
+browser fallback for shared verse links. Assign the subdomain to this Vercel project
+and serve the association files in `public/.well-known/` from it. Verify both
+files are reachable over HTTPS without redirects before treating app links as live.

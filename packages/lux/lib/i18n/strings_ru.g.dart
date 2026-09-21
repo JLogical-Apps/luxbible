@@ -400,6 +400,7 @@ class _Translations$selectionActions$ru extends Translations$selectionActions$en
 	// Translations
 	@override String get annotate => 'Аннотировать';
 	@override String get study => 'Изучать';
+	@override String get share => 'Поделиться';
 	@override String get copy => 'Копировать';
 	@override String get highlight => 'Выделить';
 	@override String get removeAnnotations => 'Удалить аннотации';
@@ -407,6 +408,7 @@ class _Translations$selectionActions$ru extends Translations$selectionActions$en
 	@override String get search => 'Поиск';
 	@override String get annotateVersesDescription => 'Прокомментируйте эти стихи.';
 	@override String get studyVersesDescription => 'Изучите эти стихи.';
+	@override String get shareVersesDescription => 'Поделиться ссылкой на эти стихи.';
 	@override String get copyVersesDescription => 'Скопируйте эти стихи в буфер обмена.';
 	@override String get annotateTextDescription => 'Прокомментируйте этот текст.';
 	@override String get interlinearTextDescription => 'Посмотрите лексическую разбивку этого текста.';
@@ -3169,6 +3171,7 @@ extension on TranslationsRu {
 			'studyActions.onlineCrossReferencesExplanation' => 'Поскольку выбранный вами перевод доступен только в Интернете, перекрестные ссылки показаны с использованием последней версии Учебной Библии, которую вы использовали, чтобы сэкономить на производительности и затратах. Выбранный вами перевод используется повсюду в приложении.',
 			'selectionActions.annotate' => 'Аннотировать',
 			'selectionActions.study' => 'Изучать',
+			'selectionActions.share' => 'Поделиться',
 			'selectionActions.copy' => 'Копировать',
 			'selectionActions.highlight' => 'Выделить',
 			'selectionActions.removeAnnotations' => 'Удалить аннотации',
@@ -3176,6 +3179,7 @@ extension on TranslationsRu {
 			'selectionActions.search' => 'Поиск',
 			'selectionActions.annotateVersesDescription' => 'Прокомментируйте эти стихи.',
 			'selectionActions.studyVersesDescription' => 'Изучите эти стихи.',
+			'selectionActions.shareVersesDescription' => 'Поделиться ссылкой на эти стихи.',
 			'selectionActions.copyVersesDescription' => 'Скопируйте эти стихи в буфер обмена.',
 			'selectionActions.annotateTextDescription' => 'Прокомментируйте этот текст.',
 			'selectionActions.interlinearTextDescription' => 'Посмотрите лексическую разбивку этого текста.',
@@ -3478,10 +3482,10 @@ extension on TranslationsRu {
 			'biblePlans.generatedNames.bible' => 'Библия',
 			'biblePlans.generatedNames.inOneDay' => ({required Object books}) => '${books} за 1 день',
 			'biblePlans.generatedNames.inDays' => ({required Object books, required Object count}) => '${books} за ${count} дней',
-			'biblePlans.generatedNames.inAYear' => ({required Object books}) => '${books} за год',
-			'biblePlans.nameAndColor' => 'Название и цвет',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.generatedNames.inAYear' => ({required Object books}) => '${books} за год',
+			'biblePlans.nameAndColor' => 'Название и цвет',
 			'biblePlans.review' => 'Проверка плана',
 			'biblePlans.createAndStart' => 'Создать и начать',
 			'biblePlans.myBiblePlan' => 'Мой библейский план',
@@ -3992,10 +3996,10 @@ extension on TranslationsRu {
 			'morphology.mood.subjunctive.description' => 'Выражает возможность, цель или непредвиденное обстоятельство.',
 			'morphology.mood.subjunctive.examples' => 'что он мог бы написать|если пойдёт',
 			'morphology.mood.optative.name' => 'Оптатив',
-			'morphology.mood.optative.description' => 'Выражает желание или отдаленную возможность.',
-			'morphology.mood.optative.examples' => 'да будет так | да будет тебе милость',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.mood.optative.description' => 'Выражает желание или отдаленную возможность.',
+			'morphology.mood.optative.examples' => 'да будет так | да будет тебе милость',
 			'morphology.mood.infinitive.name' => 'инфинитив',
 			'morphology.mood.infinitive.description' => 'Отглагольное существительное, например «делать».',
 			'morphology.mood.infinitive.examples' => 'писать|верить',

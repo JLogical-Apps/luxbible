@@ -223,6 +223,7 @@
   "selectionActions": {
     "annotate": "Annoteren",
     "study": "Studie",
+    "share": "Delen",
     "copy": "Kopiëren",
     "highlight": "Markeren",
     "removeAnnotations": "Annotaties verwijderen",
@@ -230,6 +231,7 @@
     "search": "Zoeken",
     "annotateVersesDescription": "Annoteer deze verzen.",
     "studyVersesDescription": "Bestudeer deze verzen.",
+    "shareVersesDescription": "Deel een link naar deze verzen.",
     "copyVersesDescription": "Kopieer deze verzen naar het klembord.",
     "annotateTextDescription": "Annoteer deze tekst.",
     "interlinearTextDescription": "Bekijk een lexicale analyse van deze tekst.",

@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.luxbible.app",
+      "sha256_cert_fingerprints": [
+        "D6:E7:44:E6:F2:D9:A4:AA:36:65:29:03:12:7E:76:33:AF:16:3A:44:0F:95:8B:C3:24:3B:50:22:F9:CD:70:E9"
+      ]
+    }
+  }
+]

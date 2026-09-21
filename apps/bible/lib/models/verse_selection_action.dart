@@ -12,28 +12,33 @@ import 'package:flutter/services.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:style/style.dart';
 
 enum VerseSelectionAction {
   annotate,
   study,
+  share,
   copy;
 
   String title() => switch (this) {
     annotate => t.selectionActions.annotate,
     study => t.selectionActions.study,
+    share => t.selectionActions.share,
     copy => t.selectionActions.copy,
   };
 
   String description() => switch (this) {
     annotate => t.selectionActions.annotateVersesDescription,
     study => t.selectionActions.studyVersesDescription,
+    share => t.selectionActions.shareVersesDescription,
     copy => t.selectionActions.copyVersesDescription,
   };
 
   IconData get icon => switch (this) {
     annotate => Symbols.note_stack,
     study => Symbols.school,
+    share => Symbols.ios_share,
     copy => Symbols.copy_all,
   };
 
@@ -91,6 +96,16 @@ enum VerseSelectionAction {
           ),
         );
         await Clipboard.setData(ClipboardData(text: copy));
+
+      case share:
+        final renderObject = context.findRenderObject();
+        final origin = renderObject is RenderBox ? renderObject.localToGlobal(.zero) & renderObject.size : null;
+        await SharePlus.instance.share(
+          ShareParams(
+            uri: Uri.https('app.luxbible.app', '/passage/${selectedVerseSelection.osisId()}'),
+            sharePositionOrigin: origin,
+          ),
+        );
 
       case study:
         StudySheet.show(

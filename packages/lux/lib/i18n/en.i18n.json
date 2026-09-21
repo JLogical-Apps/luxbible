@@ -221,6 +221,7 @@
   "selectionActions": {
     "annotate": "Annotate",
     "study": "Study",
+    "share": "Share",
     "copy": "Copy",
     "highlight": "Highlight",
     "removeAnnotations": "Remove Annotations",
@@ -228,6 +229,7 @@
     "search": "Search",
     "annotateVersesDescription": "Annotate these verses.",
     "studyVersesDescription": "Study these verses.",
+    "shareVersesDescription": "Share a link to these verses.",
     "copyVersesDescription": "Copy these verses to your clipboard.",
     "annotateTextDescription": "Annotate this text.",
     "interlinearTextDescription": "View a lexical breakdown of this text.",

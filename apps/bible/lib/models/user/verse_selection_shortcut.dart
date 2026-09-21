@@ -24,6 +24,7 @@ enum VerseSelectionShortcut {
   crossReferences,
   annotate,
   highlight,
+  share,
   copy;
 
   String title({User? user, VerseSelection? verseSelection}) =>
@@ -118,6 +119,7 @@ enum VerseSelectionShortcut {
   VerseSelectionAction? toVerseSelectionAction() => switch (this) {
     study => .study,
     annotate => .annotate,
+    share => .share,
     copy => .copy,
     _ => null,
   };

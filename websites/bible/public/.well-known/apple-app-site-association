@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "9D79HMA943.app.luxbible.app",
+        "paths": ["/passage/*"]
+      }
+    ]
+  }
+}
