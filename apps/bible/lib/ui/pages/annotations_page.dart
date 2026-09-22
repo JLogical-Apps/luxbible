@@ -6,7 +6,6 @@ import 'package:bible/ui/pages/notebook_icon.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/widgets/highlight_style_icon.dart';
 import 'package:bible/ui/widgets/search_location_button.dart';
-import 'package:bible/utils/extensions/date_time_extensions.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:lux/lux.dart';
+import 'package:lux/src/models/time.dart';
 
-extension TimeExtensions on Time {
+extension FlutterTimeExtensions on Time {
   TimeOfDay get timeOfDay => TimeOfDay(hour: hour, minute: minute);
 }
 

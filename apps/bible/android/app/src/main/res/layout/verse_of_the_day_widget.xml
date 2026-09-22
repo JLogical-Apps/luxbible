@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The default text is what the launcher's widget gallery previews, before any verse is stored. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/verse_of_the_day_widget_background">
+
+    <TextView
+        android:id="@+id/widget_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/verse_of_the_day_widget_title"
+        android:textAllCaps="true"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/verse_of_the_day_widget_content_tertiary"/>
+
+    <!-- The passage has to fit every size this widget can be resized to, so it scales down before
+         it truncates, the way the iOS widget does. -->
+    <TextView
+        android:id="@+id/widget_text"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
+        android:text="@string/verse_of_the_day_widget_empty"
+        android:textSize="15sp"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMaxTextSize="15sp"
+        android:maxLines="12"
+        android:ellipsize="end"
+        android:textColor="@color/verse_of_the_day_widget_content_primary"/>
+
+    <TextView
+        android:id="@+id/widget_attribution"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/verse_of_the_day_widget_content_secondary"/>
+</LinearLayout>

@@ -1,5 +1,6 @@
-import 'package:bible/models/user/language.dart';
-import 'package:lux/lux.dart';
+import 'package:lux/i18n.dart';
+import 'package:lux/src/models/time.dart';
+import 'package:lux/src/utils/range.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 extension DateTimeExtensions on DateTime {
@@ -16,7 +17,11 @@ extension DateTimeExtensions on DateTime {
   List<DateTime> getFollowingDates({required int count}) =>
       Range.generate(0, count - 1).map((offset) => DateTime(year, month, day + offset)).toList();
 
-  String formatAgo() => timeago.format(this, locale: Language.device.code);
+  String formatAgo() => timeago.format(this, locale: LocaleSettings.currentLocale.languageCode);
+
+  /// The calendar date alone, as `yyyy-MM-dd`.
+  String get isoDate =>
+      '${year.toString().padLeft(4, '0')}-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')}';
 }
 
 extension TimeNotificationExtensions on Time {

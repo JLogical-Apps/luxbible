@@ -97,6 +97,21 @@
             </intent-filter>
         </receiver>
         <receiver
+            android:name="app.luxbible.app.VerseOfTheDayWidget"
+            android:label="@string/verse_of_the_day_widget_title"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="app.luxbible.app.VERSE_OF_THE_DAY_DAY_CHANGED"/>
+                <action android:name="android.intent.action.TIME_SET"/>
+                <action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+                <action android:name="android.intent.action.LOCALE_CHANGED"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/verse_of_the_day_widget"/>
+        </receiver>
+        <receiver
             android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver"
             android:exported="false"/>
         <receiver

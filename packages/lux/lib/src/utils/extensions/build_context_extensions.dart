@@ -8,14 +8,11 @@ extension BuildContextExtensions on BuildContext {
   double get textScaling => MediaQuery.textScalerOf(this).scale(20) / 20;
   TimeFormat get timeFormat => MediaQuery.alwaysUse24HourFormatOf(this) ? .twentyFourHour : .amPm;
 
-  Future<T?> go<T>(StyledRoute<T> page) => Navigator.of(this).pushAndRemoveUntil(getStyledRoute(page), (_) => false);
-
-  void goToStack(List<StyledRoute<dynamic>> pages, {Function(BuildContext)? onLoaded}) {
-    if (pages.isEmpty) throw ArgumentError.value(pages, 'pages', 'must not be empty');
-
+  // Pops back to the root instead of replacing it so its reading position and scroll survive.
+  void goToRoot({List<StyledRoute<dynamic>> pages = const [], Function(BuildContext)? onLoaded}) {
     final navigator = Navigator.of(this);
-    navigator.pushAndRemoveUntil(getStyledRoute(pages.first), (_) => false);
-    pages.skip(1).forEach((page) => navigator.push(getStyledRoute(page)));
+    navigator.popUntil((route) => route.isFirst);
+    pages.map(getStyledRoute).forEach(navigator.push);
     if (onLoaded != null) WidgetsBinding.instance.addPostFrameCallback((_) => onLoaded(navigator.context));
   }
 

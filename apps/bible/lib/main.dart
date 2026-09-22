@@ -26,11 +26,13 @@ import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/verse_of_the_day_provider.dart';
+import 'package:bible/providers/verse_of_the_day_widget_provider.dart';
 import 'package:bible/services/audio_bible_handler.dart';
 import 'package:bible/services/bible_plan_open_service.dart';
 import 'package:bible/services/local_notification_service.dart';
 import 'package:bible/services/passage_link_service.dart';
 import 'package:bible/services/timezone_service.dart';
+import 'package:bible/services/verse_of_the_day_widget_service.dart';
 import 'package:bible/ui/bible_reader_configuration.dart';
 import 'package:bible/ui/pages/bible_page.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -147,6 +149,7 @@ Future<void> main() async {
 
       ref.read(biblePlanOpenServiceProvider).initialize();
       ref.read(passageLinkServiceProvider).initialize();
+      ref.read(verseOfTheDayWidgetServiceProvider).initialize();
       ref.read(userProvider.notifier).refreshActiveDay();
       eagerlyLoad();
 
@@ -166,6 +169,7 @@ Future<void> main() async {
 void eagerlyLoad() {
   ref.listen(verseOfTheDayProvider, (_, _) {});
   ref.listen(localNotificationSchedulerProvider, (_, _) {});
+  ref.listen(verseOfTheDayWidgetSynchronizerProvider, (_, _) {});
 }
 
 class BibleApp extends HookConsumerWidget {
@@ -182,6 +186,8 @@ class BibleApp extends HookConsumerWidget {
         VerseOfTheDayNotification.handlePayload(payload);
         BiblePlanNotification.handlePayload(payload);
       }
+
+      await ref.read(verseOfTheDayWidgetServiceProvider).openLaunchLink();
     });
 
     useOnLocalesChanged((locales) {
@@ -195,6 +201,7 @@ class BibleApp extends HookConsumerWidget {
         await ref.read(timezoneServiceProvider).updateLocalTimezone();
         ref.invalidate(localNotificationAvailabilityProvider);
         ref.invalidate(localNotificationsProvider);
+        ref.invalidate(verseOfTheDayWidgetPayloadProvider);
         await ref.read(localNotificationServiceProvider).synchronize(await ref.read(localNotificationsProvider.future));
       }
     });
@@ -218,13 +225,8 @@ class BibleApp extends HookConsumerWidget {
             darkTheme: darkTheme,
             scrollBehavior: BouncingScrollBehavior(),
             debugShowCheckedModeBanner: false,
-            navigatorObservers: [
-              FirebaseAnalyticsObserver(
-                analytics: FirebaseAnalytics.instance,
-                nameExtractor: (settings) => settings.name == '/' ? BiblePage().path : settings.name,
-              ),
-            ],
-            home: BiblePage(),
+            navigatorObservers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
+            onGenerateRoute: (settings) => context.getStyledRoute(BiblePage()),
           ),
         ),
       ),

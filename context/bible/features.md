@@ -26,9 +26,17 @@ Bible plan reminders are also scheduled as dated local notifications. Completing
 
 Saving any reminder asks for notification permission only when needed. If app notifications are disabled, Lux directs the user to system settings and preserves all reminder settings. Android manages Verse of the Day and Bible Plan Reminders through separate channels: a disabled channel affects only its own controls and points to system notification settings, while the other reminder type remains available. Lux reconciles saved schedules after a setting change or restart without clearing saved reminder choices.
 
+## Widgets
+
+Lux offers a Verse of the Day home screen widget on iOS and Android. It shows the passage for the current date with the same translation and Study Bible fallback the preview and the reminders use. Tapping it opens Lux and previews that date's passage, the same destination a Verse of the Day notification opens. That preview can send the user into the reader at the passage, so a widget or notification tap is a way into the text rather than a dead end.
+
+On iOS the widget comes in the small, medium, and large Home Screen sizes, which are also the sizes StandBy displays; the larger sizes show more of the passage and label it as the Verse of the Day. On Android it is one resizable widget, four cells by two by default, whose passage grows into whatever space it is given. There is no Lock Screen widget on either platform.
+
+Lux precomputes a rolling fourteen days of verses whenever it is opened or resumed, so the widget changes on its own each day and keeps working offline. If Lux is not opened for longer than that, the widget asks to be opened rather than showing a stale verse. Adding, removing, and arranging the widget is handled by the system, not by a setting inside Lux.
+
 ## Privacy and Analytics
 
-Lux measures visits to its main pages and a small set of prominent actions: starting audio playback, starting a plan, completing a plan day, opening an externally supplied plan file, searching, opening Verse of the Day, opening a local notification, changing toolbar configuration, opening a community link, pressing Rate Lux, requesting the native review prompt, and starting, completing, or skipping onboarding. These events contain no user-created content or dynamic identifiers from the app.
+Lux measures visits to its main pages and a small set of prominent actions: starting audio playback, starting a plan, completing a plan day, opening an externally supplied plan file, searching, opening Verse of the Day, opening the Verse of the Day widget, opening a local notification, changing toolbar configuration, opening a community link, pressing Rate Lux, requesting the native review prompt, and starting, completing, or skipping onboarding. These events contain no user-created content or dynamic identifiers from the app.
 
 On Android, Lux measures the general campaign source that led to installation through Google Play Install Referrer. The website maps compact, fixed social-profile and boosted-post source codes to aggregate campaign values, reports website traffic and store navigation through Google Analytics, and passes the same values to Google Play. These values identify a marketing source such as Facebook or TikTok, not a person or social-media account.
 

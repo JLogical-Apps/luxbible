@@ -49,6 +49,7 @@ export 'src/utils/extensions/color_extensions.dart';
 export 'src/utils/extensions/controller_extensions.dart';
 export 'src/utils/extensions/edge_insets_extensions.dart';
 export 'src/utils/extensions/flutter_string_extensions.dart';
+export 'src/utils/extensions/flutter_time_extensions.dart';
 export 'src/utils/extensions/icon_data_extensions.dart';
 export 'src/utils/extensions/key_extensions.dart';
 export 'src/utils/extensions/paragraph_style_extensions.dart';

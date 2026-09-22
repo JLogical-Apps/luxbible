@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="verse_of_the_day_widget_title">Vers van de dag</string>
+    <string name="verse_of_the_day_widget_description">Het vers van vandaag op je beginscherm.</string>
+    <string name="verse_of_the_day_widget_empty">Open Lux om het vers van de dag te laden.</string>
+</resources>

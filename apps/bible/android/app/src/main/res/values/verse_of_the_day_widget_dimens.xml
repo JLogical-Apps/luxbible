@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="verse_of_the_day_widget_radius">20dp</dimen>
+</resources>

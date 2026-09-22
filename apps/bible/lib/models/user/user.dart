@@ -88,6 +88,9 @@ sealed class User with _$User {
     newTestamentTranslation: newTestamentTranslation,
   );
 
+  (BibleTranslation, BibleTranslation, BibleTranslation, BibleTranslation) get translationsSelection =>
+      (translation, oldTestamentTranslation, newTestamentTranslation, studyTranslation);
+
   bool get isReviewRequestEligible => activeDayCount >= 7 && !hasRequestedReview;
 
   bool shouldRequestReviewAfterUpdate(User previousUser) =>

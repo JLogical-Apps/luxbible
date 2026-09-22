@@ -1,5 +1,5 @@
-import 'package:bible/utils/extensions/date_time_extensions.dart';
 import 'package:equatable/equatable.dart';
+import 'package:lux/lux_core.dart';
 
 class CalendarDateTime extends Equatable {
   final DateTime value;

@@ -1,10 +1,9 @@
 import 'package:bible/main.dart';
 import 'package:bible/services/analytics_service.dart';
 import 'package:bible/services/bible_plan_file_service.dart';
-import 'package:bible/ui/pages/bible_page.dart';
+import 'package:bible/services/launch_link_channel.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:bible/ui/pages/create_bible_plan_page.dart';
-import 'package:flutter/services.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -12,17 +11,16 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'bible_plan_open_service.g.dart';
 
 class BiblePlanOpenService {
-  static const channel = MethodChannel('app.luxbible.app/bible-plan-open');
+  static final channel = LaunchLinkChannel(
+    'app.luxbible.app/bible-plan-open',
+    launchMethod: 'getLaunchPlan',
+    openMethod: 'openPlan',
+  );
 
-  void initialize() {
-    channel.setMethodCallHandler((call) async {
-      if ((call.method, call.arguments) case ('openPlan', final String contents)) openContents(contents);
-    });
-  }
+  void initialize() => channel.listen(openContents);
 
   Future<void> openLaunchPlan() async {
-    final contents = await channel.invokeMethod<String>('getLaunchPlan');
-    if (contents != null) openContents(contents, isLaunch: true);
+    if (await channel.getLaunchValue() case final contents?) openContents(contents, isLaunch: true);
   }
 
   void openContents(String contents, {bool isLaunch = false}) {
@@ -41,7 +39,7 @@ class BiblePlanOpenService {
       page = CreateBiblePlanPage(initialImportError: t.biblePlans.importErrors.readFailed);
     }
     if (isLaunch) {
-      context.goToStack([BiblePage(), BiblePlansPage(), page]);
+      context.goToRoot(pages: [BiblePlansPage(), page]);
     } else {
       context.push(page);
     }

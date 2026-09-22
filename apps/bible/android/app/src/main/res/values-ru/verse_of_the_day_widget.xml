@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="verse_of_the_day_widget_title">Стих дня</string>
+    <string name="verse_of_the_day_widget_description">Сегодняшний стих на главном экране.</string>
+    <string name="verse_of_the_day_widget_empty">Откройте Lux, чтобы загрузить стих дня.</string>
+</resources>

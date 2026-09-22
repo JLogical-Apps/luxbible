@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="verse_of_the_day_widget_surface">#27272A</color>
+    <color name="verse_of_the_day_widget_content_primary">#FFFFFF</color>
+    <color name="verse_of_the_day_widget_content_secondary">#D4D4D8</color>
+    <color name="verse_of_the_day_widget_content_tertiary">#A1A1AA</color>
+</resources>

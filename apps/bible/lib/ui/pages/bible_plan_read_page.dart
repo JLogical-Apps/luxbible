@@ -5,7 +5,6 @@ import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/analytics_service.dart';
 import 'package:bible/ui/hooks/audio_bible_passage_sync.dart';
-import 'package:bible/ui/pages/bible_page.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:bible/ui/widgets/audio_bible_panel.dart';
 import 'package:bible/ui/widgets/selection_toolbar.dart';
@@ -30,7 +29,6 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
   String get path => '/bible-plans/read';
 
   List<StyledRoute<dynamic>> get pageStack => [
-    BiblePage(),
     BiblePlansPage(),
     BiblePlanReadPage(planId: planId, dayIndex: dayIndex, initialPassageIndex: initialPassageIndex),
   ];

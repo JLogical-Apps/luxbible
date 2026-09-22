@@ -5,8 +5,8 @@ import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/language_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/local_notification_service.dart';
-import 'package:bible/utils/extensions/date_time_extensions.dart';
 import 'package:lux/i18n.dart';
+import 'package:lux/lux_core.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'bible_plan_local_notification_schedules_provider.g.dart';

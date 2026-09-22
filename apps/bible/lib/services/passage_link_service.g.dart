@@ -55,4 +55,4 @@ final class PassageLinkServiceProvider
 }
 
 String _$passageLinkServiceHash() =>
-    r'01a2cf9aa1831402a59f596ef601515b4f6a2549';
+    r'76114277ac3d604ff9251fd3c8244e5a32244a58';

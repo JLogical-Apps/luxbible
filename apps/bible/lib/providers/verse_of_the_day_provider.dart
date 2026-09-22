@@ -40,6 +40,18 @@ Future<VerseOfTheDay> verseOfTheDay(Ref ref) {
   return ref.watch(verseOfTheDayForDateProvider(date: .now().withoutTime()).future);
 }
 
+Future<Map<DateTime, VerseOfTheDay>> resolveVerseOfTheDayHorizon(
+  Ref ref, {
+  required DateTime start,
+  required int count,
+}) => start
+    .getFollowingDates(count: count)
+    .map(
+      (date) async => MapEntry(date, await guardAsync(() => ref.read(verseOfTheDayForDateProvider(date: date).future))),
+    )
+    .waitToMap
+    .then((horizon) => horizon.withoutNullValues);
+
 class VerseOfTheDay {
   final VerseSelection selection;
   final BibleTranslation translation;

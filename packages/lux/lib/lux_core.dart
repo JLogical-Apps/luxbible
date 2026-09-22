@@ -23,6 +23,7 @@ export 'src/services/bible_asset_paths.dart';
 export 'src/utils/comparable_operators.dart';
 export 'src/utils/extensions/bible_translation_extensions.dart';
 export 'src/utils/extensions/collection_extensions.dart';
+export 'src/utils/extensions/date_time_extensions.dart';
 export 'src/utils/extensions/duration_extensions.dart';
 export 'src/utils/extensions/num_extensions.dart';
 export 'src/utils/extensions/string_extensions.dart';

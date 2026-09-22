@@ -7,6 +7,7 @@ enum AnalyticsEvent {
   biblePlanFileOpened('bible_plan_file_opened'),
   search('search'),
   verseOfTheDayTapped('verse_of_the_day_tapped'),
+  verseOfTheDayWidgetTapped('verse_of_the_day_widget_tapped'),
   notificationTapped('notification_tapped'),
   toolbarCustomized('toolbar_customized'),
   communityLinkPressed('community_link_pressed'),

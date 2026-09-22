@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Lux's zinc-based palette, mirrored from ColorLibrary in packages/style. -->
+<resources>
+    <color name="verse_of_the_day_widget_surface">#FFFFFF</color>
+    <color name="verse_of_the_day_widget_content_primary">#000000</color>
+    <color name="verse_of_the_day_widget_content_secondary">#3F3F46</color>
+    <color name="verse_of_the_day_widget_content_tertiary">#52525B</color>
+</resources>

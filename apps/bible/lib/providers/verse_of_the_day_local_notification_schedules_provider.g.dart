@@ -50,4 +50,4 @@ final class VerseOfTheDayLocalNotificationsProvider
 }
 
 String _$verseOfTheDayLocalNotificationsHash() =>
-    r'f95799cf3cc418f6c7132f902d96a4ea756f22b7';
+    r'3a10155eb7652fd7f3496d5ba01e14c615d9ab7c';

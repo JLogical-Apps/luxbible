@@ -57,5 +57,6 @@ const _$VerseSelectionShortcutEnumMap = {
   VerseSelectionShortcut.crossReferences: 'crossReferences',
   VerseSelectionShortcut.annotate: 'annotate',
   VerseSelectionShortcut.highlight: 'highlight',
+  VerseSelectionShortcut.share: 'share',
   VerseSelectionShortcut.copy: 'copy',
 };

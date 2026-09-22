@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="verse_of_the_day_widget_title">Verse of the Day</string>
+    <string name="verse_of_the_day_widget_description">Today\'s verse on your home screen.</string>
+    <string name="verse_of_the_day_widget_empty">Open Lux to load the Verse of the Day.</string>
+</resources>
