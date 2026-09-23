@@ -1,0 +1,12 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude: ["build/**", macos/**, android/**, ios/**, web/**, windows/**, linux/**]
+
+linter:
+  rules:
+    always_use_package_imports: true
+    sort_child_properties_last: false
+
+formatter:
+  page_width: 120

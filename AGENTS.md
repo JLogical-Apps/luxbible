@@ -43,3 +43,7 @@ HOME="$PWD/.tmp/dart-home" "$FLUTTER_ROOT/bin/cache/dart-sdk/bin/dart" format <p
 `flutter analyze`, `flutter test`, and `flutter run` additionally write the SDK lockfile and require escalated full access.
 
 When preparing local Lux social posts, read [`tools/socials/PREPARING_POSTS.md`](tools/socials/PREPARING_POSTS.md).
+
+When working on short-form reels, read [`tools/reels/CONTEXT.md`](tools/reels/CONTEXT.md) for the
+vision and current state, and [`tools/reels/README.md`](tools/reels/README.md) for usage. Videos are
+defined as Dart files there; rendering is pure Dart and the Flutter app is only a preview wrapper.
