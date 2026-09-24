@@ -1,4 +1,5 @@
 import { IconBrandDiscordFilled } from '@tabler/icons-react';
+import { Metadata } from 'next';
 import Image from 'next/image';
 import { CSSProperties } from 'react';
 
@@ -17,6 +18,10 @@ const lightButtonVars = {
   '--on-emphasis': '240 10% 4%',
   '--on-emphasis-soft': '240 6% 10%',
 } as CSSProperties;
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+};
 
 export default function HomePage() {
   return (
