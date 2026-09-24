@@ -123,7 +123,7 @@ class AnnotationsPage extends HookConsumerWidget implements StyledRoute<VerseSel
                   colorBuilder: style == null ? null : .primary,
                   leading: style == null
                       ? Icon(Symbols.format_ink_highlighter)
-                      : HighlightStyleIcon(style: style, size: .sm),
+                      : HighlightStyleIcon(style: style, size: .sm, invertContent: true),
                   label: (style == null ? t.labels.style : user.labelForHighlightStyle(style) ?? t.labels.style)
                       .toText(),
                   trailing: Symbols.keyboard_arrow_down.toIcon(),

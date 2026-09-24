@@ -52,7 +52,12 @@ enum HighlightStyleType {
     wavyUnderline => t.highlightStyles.squiggle,
   };
 
-  Widget buildPreview(BuildContext context, {required ColorEnum color, ComponentSize size = .md}) => SizedBox(
+  Widget buildPreview(
+    BuildContext context, {
+    required ColorEnum color,
+    ComponentSize size = .md,
+    bool invertContent = false,
+  }) => SizedBox(
     width: switch (size) {
       .lg => 24,
       .md => 18,
@@ -88,7 +93,7 @@ enum HighlightStyleType {
               },
               fontWeight: .w600,
               height: 1,
-              color: context.colors.contentPrimary,
+              color: invertContent ? context.colors.contentPrimaryInverse : context.colors.contentPrimary,
             ),
           ),
         ),
