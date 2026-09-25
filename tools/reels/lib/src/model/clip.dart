@@ -13,10 +13,15 @@ class Clip {
   final String name;
   final List<Modifier> modifiers;
 
-  // An override until media exists to derive `.media` from.
   final Framing? declaredFraming;
 
-  Framing get framing => declaredFraming ?? (modifiers.any((m) => m is Title) ? .title : .none);
+  Framing get framing =>
+      declaredFraming ??
+      (modifiers.any((m) => m is Media)
+          ? .media
+          : modifiers.any((m) => m is Title)
+          ? .title
+          : .none);
 
   String toDart() => switch (declaredFraming) {
     null => "Clip('$name')",
@@ -40,4 +45,6 @@ class ResolvedClip {
   final List<Modifier> modifiers;
 
   Iterable<Title> get titles => modifiers.whereType<Title>();
+
+  Iterable<Media> get media => modifiers.whereType<Media>();
 }

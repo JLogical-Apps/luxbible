@@ -8,15 +8,19 @@ import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart' as mkv;
 import 'package:reels/src/app/caption_field.dart';
 import 'package:reels/src/app/clips_list.dart';
+import 'package:reels/src/app/media_list.dart';
+import 'package:reels/src/app/media_panel.dart';
 import 'package:reels/src/app/trim_controls.dart';
 import 'package:reels/src/ffmpeg/ingest.dart';
+import 'package:reels/src/ffmpeg/media.dart';
 import 'package:reels/src/launch/video_builder.dart';
 import 'package:reels/src/model/clip.dart';
 import 'package:reels/src/model/clips.dart';
 import 'package:reels/src/model/clips_list_order.dart';
+import 'package:reels/src/model/media.dart';
 import 'package:reels/src/render/render.dart';
 
-enum EditorMode { clips, preview }
+enum EditorMode { clips, media, preview }
 
 class EditorPage extends HookWidget {
   const EditorPage({required this.builder, super.key});
@@ -37,6 +41,8 @@ class EditorPage extends HookWidget {
     final error = useState<Object?>(null);
     final mode = useState(EditorMode.clips);
     final focused = useState<String?>(null);
+    final library = useState<MediaLibrary?>(null);
+    final focusedMedia = useState<String?>(null);
     final fileClips = video.clips.map((c) => c.name).toList();
     // Keyed by the file's list so a hot reload after pasting resets the ticks to match it.
     final selected = useValueNotifier(fileClips.toSet(), fileClips);
@@ -120,6 +126,38 @@ class EditorPage extends HookWidget {
       }
     }
 
+    Future<void> showMedia(MediaFile file) async {
+      focusedMedia.value = file.name;
+      if (loaded.value != file.preview.path) await openMedia(file.preview.path);
+      await player.seek(
+        Duration(microseconds: (library.value!.getFrame(file.name, 'start') + 0.25) * 1000000 ~/ outputFps),
+      );
+    }
+
+    // Reloaded on every visit, so newly recorded files show up. Normalizing is cached per version of each file.
+    Future<void> loadMedia() async {
+      if (busy.value) return;
+      busy.value = true;
+      try {
+        final loadedLibrary = await ingestMedia(video, onProgress: (step, f) => progress.value = (step, f));
+        library.value = loadedLibrary;
+        final files = loadedLibrary.files;
+        if (files.firstWhereOrNull((f) => f.name == focusedMedia.value) ?? files.firstOrNull case final file?) {
+          await showMedia(file);
+        }
+      } on Object catch (e) {
+        error.value = e;
+      } finally {
+        busy.value = false;
+        progress.value = null;
+      }
+    }
+
+    void editTags(MediaFile file, Map<String, int> tags) {
+      library.value = library.value!.withTags(file.name, tags);
+      saveMediaTags(video, library.value!);
+    }
+
     Future<void> renderVideo() async {
       if (busy.value) return;
       busy.value = true;
@@ -167,7 +205,13 @@ class EditorPage extends HookWidget {
     }
 
     useEffect(() {
-      if (mode.value == EditorMode.preview) showPreview();
+      switch (mode.value) {
+        case EditorMode.preview:
+          showPreview();
+        case EditorMode.media:
+          loadMedia();
+        case EditorMode.clips:
+      }
       return null;
     }, [mode.value, fileClips.join(',')]);
 
@@ -183,6 +227,7 @@ class EditorPage extends HookWidget {
             SegmentedButton<EditorMode>(
               segments: const [
                 ButtonSegment(value: EditorMode.clips, label: Text('Clips')),
+                ButtonSegment(value: EditorMode.media, label: Text('Media')),
                 ButtonSegment(value: EditorMode.preview, label: Text('Preview')),
               ],
               selected: {mode.value},
@@ -202,28 +247,36 @@ class EditorPage extends HookWidget {
           children: [
             SizedBox(
               width: 340,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ClipsList(
-                      source: loadedSource,
-                      focused: focused.value,
-                      selected: selected.value,
-                      onFocus: playClip,
-                      onToggle: (clip) => selected.value = selected.value.contains(clip.name)
-                          ? ({...selected.value}..remove(clip.name))
-                          : {...selected.value, clip.name},
-                      onRename: rename,
+              child: mode.value == EditorMode.media
+                  ? MediaList(
+                      library: library.value,
+                      fps: loadedSource.fps,
+                      focused: focusedMedia.value,
+                      hasFolder: video.media != null,
+                      onFocus: showMedia,
+                    )
+                  : Column(
+                      children: [
+                        Expanded(
+                          child: ClipsList(
+                            source: loadedSource,
+                            focused: focused.value,
+                            selected: selected.value,
+                            onFocus: playClip,
+                            onToggle: (clip) => selected.value = selected.value.contains(clip.name)
+                                ? ({...selected.value}..remove(clip.name))
+                                : {...selected.value, clip.name},
+                            onRename: rename,
+                          ),
+                        ),
+                        SelectionSyncBar(
+                          fileName: '${video.name}.dart',
+                          added: selected.value.difference(fileClips.toSet()).length,
+                          removed: fileClips.toSet().difference(selected.value).length,
+                          onCopy: copyClips,
+                        ),
+                      ],
                     ),
-                  ),
-                  SelectionSyncBar(
-                    fileName: '${video.name}.dart',
-                    added: selected.value.difference(fileClips.toSet()).length,
-                    removed: fileClips.toSet().difference(selected.value).length,
-                    onCopy: copyClips,
-                  ),
-                ],
-              ),
             ),
             const VerticalDivider(width: 1),
             Expanded(
@@ -250,6 +303,17 @@ class EditorPage extends HookWidget {
                       TrimControls(clip: clip, fps: loadedSource.fps, onTrim: trim, onReplay: () => playClip(clip)),
                       CaptionField(clip: clip, onChanged: (text) => editCaption(clip, text)),
                     ],
+                  if (mode.value == EditorMode.media)
+                    if (library.value case final ready?)
+                      if (ready.files.firstWhereOrNull((f) => f.name == focusedMedia.value) case final file?
+                          when loaded.value == file.preview.path)
+                        MediaPanel(
+                          player: player,
+                          file: file,
+                          library: ready,
+                          fps: loadedSource.fps,
+                          onChanged: (tags) => editTags(file, tags),
+                        ),
                 ],
               ),
             ),

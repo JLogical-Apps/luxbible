@@ -59,7 +59,7 @@ class Transcript {
       words: words.mapIndexed((index, word) {
         final expected = word.start - frames(dtwLagMs);
         final candidates = onsets.where(
-          (onset) => onset > previous && onset <= word.start + frames(60) && onset >= word.start - frames(200),
+          (onset) => onset > previous && onset <= word.start + frames(60) && onset >= word.start - frames(300),
         );
         final onset = index == 0
             ? onsets.firstWhereOrNull((onset) => onset <= word.start + frames(60))
@@ -101,17 +101,29 @@ class Transcript {
 
 Future<Transcript> getCaptions(File audio, {required Take take, required int fps, required Directory cache}) async {
   final heard = await transcribeTake(audio, take: take, fps: fps, cache: cache);
-  final onsets = await detectOnsets(audio, start: take.start / fps, duration: take.frameCount / fps);
-  return heard
-      .snapped(onsets.map((seconds) => (seconds * fps).round()).toList(), fps: fps)
-      .corrected(take.text ?? heard.text, frameCount: take.frameCount);
+  final onsets = await getOnsets(audio, take: take, fps: fps, cache: cache);
+  return heard.snapped(onsets, fps: fps).corrected(take.text ?? heard.text, frameCount: take.frameCount);
+}
+
+Directory getTranscriptsDir(Directory cache) =>
+    Directory(p.join(cache.path, 'transcripts'))..createSync(recursive: true);
+
+// Keyed by the detection settings as well as the take, so tuning them re-detects.
+Future<List<int>> getOnsets(File audio, {required Take take, required int fps, required Directory cache}) async {
+  final settings = '$noiseFloorDb/$minPauseSeconds/$minSoundSeconds'.hashCode.toUnsigned(32);
+  final file = File(p.join(getTranscriptsDir(cache).path, '${take.start}-${take.end}.onsets_$settings.json'));
+  final result = await cached(file, (partial) async {
+    final onsets = await detectOnsets(audio, start: take.start / fps, duration: take.frameCount / fps);
+    partial.writeAsStringSync(jsonEncode(onsets.map((seconds) => (seconds * fps).round()).toList()));
+  });
+  return (jsonDecode(result.readAsStringSync()) as List).cast<int>();
 }
 
 /// Transcribes one take. Whisper is run on the take's own audio rather than the
 /// whole recording: across long pauses it smears word timings badly, and a take
 /// has no long pauses inside it by construction.
 Future<Transcript> transcribeTake(File audio, {required Take take, required int fps, required Directory cache}) async {
-  final transcripts = Directory(p.join(cache.path, 'transcripts'))..createSync(recursive: true);
+  final transcripts = getTranscriptsDir(cache);
   final result = await cached(File(p.join(transcripts.path, '${take.start}-${take.end}.dtw.json')), (partial) async {
     if (!File(whisperModelPath).existsSync()) throw MissingWhisperException(whisperModelPath);
 

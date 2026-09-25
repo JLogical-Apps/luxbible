@@ -5,6 +5,7 @@ import 'package:reels/src/ffmpeg/ingest.dart';
 import 'package:reels/src/ffmpeg/transcribe.dart';
 import 'package:reels/src/launch/video_builder.dart';
 import 'package:reels/src/paths.dart';
+import 'package:reels/src/render/ass.dart';
 import 'package:reels/src/render/render.dart';
 
 const usage = '''
@@ -13,6 +14,7 @@ Usage: dart run <video.dart> <command>
   ingest    Normalize the source and detect clips
   clips     List detected clips and their takes
   captions  List each clip's caption words and when they start
+  media     List the media folder's files and tags, and how the video plays them
   render    Render the final video
 
 Run this file with `flutter run -d macos -t <video.dart>` for the preview UI.''';
@@ -48,6 +50,23 @@ Future<void> runVideo(List<String> args, VideoBuilder builder) async {
         );
         final words = captions.words.map((w) => '${w.text}@${(w.start / source.fps).toStringAsFixed(2)}');
         stdout.writeln('${clip.name}: ${words.join(' ')}');
+      }
+    case 'media':
+      final plan = await getStitchPlan(video, onProgress: report);
+      stdout.writeln();
+      for (final file in plan.library.files) {
+        final tags = plan.library.getSortedTags(file.name).map((tag) => '${tag.key}@${tag.value}');
+        stdout.writeln('${file.name} ${file.frameCount} frames: ${tags.join(' ')}');
+      }
+      final starts = getClipStarts(plan.clips);
+      for (final segment in plan.media) {
+        final clip = plan.clips[starts.lastIndexWhere((start) => start <= segment.outputStart)].name;
+        final action = segment.from == segment.to
+            ? 'hold ${segment.from}'
+            : 'play ${segment.from}→${segment.to} at ${segment.speed.toStringAsFixed(2)}x';
+        stdout.writeln(
+          '${clip.padRight(24)} ${segment.outputStart}-${segment.outputEnd} ${segment.media.name}: $action',
+        );
       }
     case 'render':
       final output = await render(video, onProgress: report);

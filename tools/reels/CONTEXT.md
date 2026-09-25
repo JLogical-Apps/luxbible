@@ -71,9 +71,11 @@ Working and verified end to end on real footage:
 - Framing: a static, slightly random zoom per clip that places the head for a title, media or nothing
 - Titles: a card of text over a clip, growing a line at a time as titles sharing it appear, timed to the clip or its
   caption words, cut in and out with no animation
-- CLI: `ingest`, `clips`, `captions`, `render`
+- Media: screen recordings from a linked folder, tagged in the Media tab, played over clips at a speed fit to the words
+  they're timed to, cut in and out with no animation
+- CLI: `ingest`, `clips`, `captions`, `media`, `render`
 
-Not built yet: take grouping, and every other modifier (media, music, animated zoom).
+Not built yet: take grouping, screenshots as media, and every other modifier (music, animated zoom).
 
 ### Transcription
 
@@ -131,10 +133,11 @@ deliberately no customization API yet; the constants live at the top of `caption
 - Word onsets start as whisper DTW timestamps (`--dtw`). Plain token offsets were off by up to ~180 ms per word. But
   with `base.en`, DTW itself runs 50-300 ms late and unevenly. It is worst on a take's first word, often landing on its
   second syllable ("Taking" at the "-king"), so a fixed lead can't fix it. `Transcript.snapped` corrects onsets
-  against the waveform: a word that follows a pause takes the nearest unclaimed sound onset (`silencedetect` at
-  −40 dB with 40 ms pauses, ignoring sounds under 60 ms as clicks), and the rest keep DTW minus its usual 50 ms lag.
+  against the waveform: a word that follows a pause takes the nearest unclaimed sound onset from up to 300 ms before it
+  (`silencedetect` at −40 dB with 40 ms pauses, ignoring sounds under 60 ms as clicks), and the rest keep DTW minus its usual 50 ms lag.
   On `bible_notes` that snapped about a third of the words, including every take's first. Each word then lights up
-  `captionLeadMs` before its onset. Word ends come from the next word's onset, since whisper's own end times drift
+  `captionLeadMs` before its onset. A 200 ms window missed "transformed" in `hook`, which started 270 ms before its DTW time.
+  Onsets are cached beside the transcript as `<start>-<end>.onsets_<settings>.json`, keyed by the detection settings. Word ends come from the next word's onset, since whisper's own end times drift
   late.
 - The canvas is assumed to be 1080×1920, matching a 9:16 source.
 
@@ -163,6 +166,43 @@ constants live at the top of `src/render/titles.dart`.
   tables and wraps greedily; `\n` in the text forces a break. Kerning is ignored, which only errs towards wrapping
   early. Each line is its own event, since libass spaces lines by ascent + descent (1.63 em), far looser than 1.1.
 - The editor's copied clip list writes each clip's name and explicit framing only, so pasting it drops modifiers.
+
+## Media
+
+`Video(media: ...)` links a folder, and `Media('file.mp4')` shows one of its recordings over a clip. README.md covers
+the `Media`/`Play` API; this is how it works.
+
+**Media timing follows the clips' timing split.** The Media tab owns `lib/videos/<name>.media.json`, a map from filename
+to named tags. Tags are frame numbers in the normalized file, and only the JSON holds them. The Dart file names tags and
+times each `Play` with a `ClipTime`, so re-tagging never touches code, and retrimming a clip keeps a `Play` on its word.
+`start` and `end` are implicit, 10 frames in from each edge, since RocketSim recordings open and close on a few janky
+frames. They are stored only once moved.
+
+**Resolution is pure** (`getMediaSegments`, `src/render/media.dart`). Each file's appearances are grouped into runs of
+consecutive clips, each `Play` gets a window up to the next one, its `by:`, or the end of the run, and the result is a
+list of `MediaSegment`s on the output timeline: play `from`→`to` at a speed, or hold one frame. The speed is
+`max(1, frames ÷ window)`, so the recording is always shown in full. The playhead position carries across runs, but a
+window never stretches across a gap. `dart run <video> media` prints every segment.
+
+- **RocketSim records HEVC with alpha, and ffmpeg 7 drops the alpha layer**, which leaves the area around the device
+  black. Media ingest (`src/ffmpeg/media.dart`) has AVFoundation's `avconvert` convert each file to ProRes 4444, which
+  keeps the alpha. ffmpeg then fixes it to 30fps, since simulator recordings are variable frame rate and tags need
+  stable frame numbers, and scales it to 1280px tall. The intermediate is large (~170 MB per 5 s) and is deleted
+  straight away.
+- **Normalized files are keyed by the source's size and modification date**, not its name, so re-recording a file
+  rebuilds it on the next visit to the Media tab or the next render. Its tags stay, since they're keyed by name, so they
+  may need nudging. Its frame count is cached beside it, since probing 13 files took a second on every visit.
+- **Each segment is its own ffmpeg input**, seeked half a frame early like the clips, then
+  `trim → setpts=/speed → fps → tpad=clone → trim` to get exactly its frame count. It's overlaid on the scaled concat at
+  its output time, before the `ass` filter, so captions draw over it. `overlay` drops a stream's last frame at its EOF,
+  which flickered the media off for a frame at every segment boundary, so each segment runs one frame long and
+  `enable='between(n,...)'` cuts it to its stretch. concat stamps the main stream in microseconds, which can land a
+  frame a microsecond before a segment's exact start, so overlay found no media frame yet and blanked it; `setpts=N`
+  after concat makes both sides exact frame counts. It's centered from 1% to 56% of the height, larger than the
+  Remotion `SimulatorOverlay`. The recordings bring their own rounded device frame, so there's no mask.
+- **The tab plays an H.264 copy of the normalized file.** The bundled libmpv can't decode ProRes (see Voice), and would
+  spin forever on it. The copy has the same frames and timestamps, so its frame numbers are the ones render uses. Seeks
+  aim a quarter frame in, and the position is read back by flooring, so the frame shown and the frame reported agree.
 
 ## Voice
 
@@ -208,16 +248,19 @@ Each clip is cropped to one fixed window (`src/model/framing.dart`), chosen by i
   rename. A clip within 4% of the previous clip's zoom, when both put the head in the same place, is pushed just far
   enough away, since near-identical zooms on either side of a cut read as a glitch. `title` and `none` count as the
   same place.
-- **Framing derives from modifiers.** A `Title` gives `.title`. Media doesn't exist yet, so `framing: .media` is set by
-  hand, and an explicit `framing:` always wins.
+- **Framing derives from modifiers.** `Media` gives `.media`, over a `Title`'s `.title`, and an explicit `framing:`
+  always wins.
 - **It is a plain ffmpeg `crop` per clip**, scaled to the output size before the concat, since every concat input must
   match. The crop is in fractions, so the proxy preview and the master render frame identically; the preview is a
-  little soft from upscaling the proxy. Captions don't move with the framing yet, so `media` puts them over the chin.
+  little soft from upscaling the proxy.
+- **Captions follow the framing.** They sit at 75% of the height, or 82% on `media` clips, whose head at 70% would put
+  them over the chin. The height is chosen per caption event, by the clip it starts in, so a page spanning a cut moves
+  with the framing.
 
 ## The constraint that governs what comes next
 
-Animated zoom, media overlays with masks, and moving titles are where ffmpeg filters get awkward. Either
-they are expressed as ffmpeg filter graphs too, or frames move to Flutter: decoding via ffmpeg into
+Animated zoom, masked or moving media, and moving titles are where ffmpeg filters get awkward. (Static media overlays
+work fine as a filter graph.) Either they are expressed as ffmpeg filter graphs too, or frames move to Flutter: decoding via ffmpeg into
 `ui.Image`, compositing offscreen, reading back with `toImage()`/`toByteData()`, and piping raw frames
 to an encoder. That readback path is unproven and historically the rough edge for offscreen rendering
 on Impeller/macOS, and it would take render out of `dart run`. **Spike it before designing those

@@ -15,6 +15,8 @@ String expandHome(String path) =>
 
 File clipsFileFor(Video video) => File(p.join(projectRoot.path, 'lib', 'videos', '${video.name}.clips.json'));
 
+File mediaTagsFileFor(Video video) => File(p.join(projectRoot.path, 'lib', 'videos', '${video.name}.media.json'));
+
 Directory cacheDirFor(Video video) => Directory(p.join(projectRoot.path, '.cache', video.name));
 
 // Existence is the only freshness check, so an interrupted job must never leave a file at the target path. The pid

@@ -4,6 +4,7 @@ import 'package:collection/collection.dart';
 import 'package:reels/src/ffmpeg/ingest.dart';
 import 'package:reels/src/ffmpeg/transcribe.dart';
 import 'package:reels/src/model/clip.dart';
+import 'package:reels/src/model/framing.dart';
 import 'package:reels/src/model/video.dart';
 import 'package:reels/src/paths.dart';
 import 'package:reels/src/render/ass.dart';
@@ -13,10 +14,15 @@ import 'package:reels/src/render/ass.dart';
 const captionFont = 'Bitter Black';
 const captionFontSize = 117;
 const captionOutline = 3.5;
-const captionCenterY = 0.75;
+const captionLeadMs = 60;
+
+// Media framing puts the head at 70%, so captions drop below the chin.
+double getCaptionCenterY(Framing framing) => switch (framing) {
+  .media => 0.82,
+  .title || .none => 0.75,
+};
 const captionMaxWords = 4;
 const captionMaxCharacters = 22;
-const captionLeadMs = 60;
 
 Future<List<Transcript>> getTranscripts(
   Video video,
@@ -37,8 +43,8 @@ List<String> getCaptionEvents(List<ResolvedClip> clips, List<Transcript> transcr
   final words = getTimelineWords(clips.mapIndexed((index, clip) => (clip, transcripts[index])).toList(), fps: fps);
   return buildCaptionEvents(
     getCaptionPages(words, fps: fps),
+    clips: clips,
     fps: fps,
-    totalFrames: clips.map((c) => c.take.frameCount).sum,
   ).toList();
 }
 
@@ -84,31 +90,38 @@ List<List<Word>> getCaptionPages(List<Word> words, {required int fps}) => words.
 });
 
 // A page is one line of words; it is split into an event per stretch of time with a different spoken word, so the
-// highlight moves while the line stays put.
-Iterable<String> buildCaptionEvents(List<List<Word>> pages, {required int fps, required int totalFrames}) =>
-    pages.expandIndexed((index, page) {
-      final pageEnd = [
-        pages.elementAtOrNull(index + 1)?.first.start ?? totalFrames,
-        page.last.end + msToFrames(400, fps),
-        totalFrames,
-      ].min;
-      int getActiveEnd(int j) => j + 1 < page.length ? page[j + 1].start : page[j].end;
+// highlight moves while the line stays put. Each event sits at the height its clip's framing wants, so a page spanning
+// a cut moves with the framing.
+Iterable<String> buildCaptionEvents(List<List<Word>> pages, {required List<ResolvedClip> clips, required int fps}) {
+  final starts = getClipStarts(clips);
+  final totalFrames = starts.last;
+  double getCenterY(int frame) =>
+      getCaptionCenterY(clips[starts.lastIndexWhere((start) => start <= frame).clamp(0, clips.length - 1)].framing);
 
-      final cuts = {
-        page.first.start,
-        pageEnd,
-        ...page.map((w) => w.start),
-        ...page.indexed.map((entry) => getActiveEnd(entry.$1)),
-      }.where((frame) => frame >= page.first.start && frame <= pageEnd).sorted((a, b) => a - b);
+  return pages.expandIndexed((index, page) {
+    final pageEnd = [
+      pages.elementAtOrNull(index + 1)?.first.start ?? totalFrames,
+      page.last.end + msToFrames(400, fps),
+      totalFrames,
+    ].min;
+    int getActiveEnd(int j) => j + 1 < page.length ? page[j + 1].start : page[j].end;
 
-      return IterableZip([cuts, cuts.skip(1)]).map((span) {
-        final active = page.indexed
-            .firstWhereOrNull((entry) => entry.$2.start <= span[0] && span[0] < getActiveEnd(entry.$1))
-            ?.$1;
-        return 'Dialogue: 0,${getAssTime(span[0], fps)},${getAssTime(span[1], fps)},Caption,,0,0,0,,'
-            '{\\pos(${canvasWidth ~/ 2},${(canvasHeight * captionCenterY).round()})}${getPageText(page, active)}';
-      });
+    final cuts = {
+      page.first.start,
+      pageEnd,
+      ...page.map((w) => w.start),
+      ...page.indexed.map((entry) => getActiveEnd(entry.$1)),
+    }.where((frame) => frame >= page.first.start && frame <= pageEnd).sorted((a, b) => a - b);
+
+    return IterableZip([cuts, cuts.skip(1)]).map((span) {
+      final active = page.indexed
+          .firstWhereOrNull((entry) => entry.$2.start <= span[0] && span[0] < getActiveEnd(entry.$1))
+          ?.$1;
+      return 'Dialogue: 0,${getAssTime(span[0], fps)},${getAssTime(span[1], fps)},Caption,,0,0,0,,'
+          '{\\pos(${canvasWidth ~/ 2},${(canvasHeight * getCenterY(span[0])).round()})}${getPageText(page, active)}';
     });
+  });
+}
 
 String getPageText(List<Word> page, int? active) => page
     .mapIndexed((j, word) {

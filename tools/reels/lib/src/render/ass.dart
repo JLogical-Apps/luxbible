@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:path/path.dart' as p;
-import 'package:reels/src/ffmpeg/ingest.dart';
+import 'package:reels/src/ffmpeg/transcribe.dart';
 import 'package:reels/src/model/clip.dart';
 import 'package:reels/src/model/video.dart';
 import 'package:reels/src/paths.dart';
@@ -36,11 +36,9 @@ Directory get fontsDir => Directory(p.join(projectRoot.path, 'fonts'));
 Future<File> writeSubtitles(
   Video video,
   List<ResolvedClip> clips, {
-  required Ingest artifacts,
+  required List<Transcript> transcripts,
   required int fps,
-  IngestProgress? onProgress,
 }) async {
-  final transcripts = await getTranscripts(video, clips, artifacts: artifacts, fps: fps, onProgress: onProgress);
   final events = [...getCaptionEvents(clips, transcripts, fps: fps), ...getTitleEvents(clips, transcripts, fps: fps)];
   final ass = '$assHeader${events.join('\n')}\n';
 

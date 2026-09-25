@@ -5,9 +5,12 @@ import 'package:reels/src/model/clips.dart';
 import 'package:reels/src/model/framing.dart';
 
 class Video {
-  const Video({required this.src, String? name, this.clips = const []}) : declaredName = name;
+  const Video({required this.src, String? name, this.media, this.clips = const []}) : declaredName = name;
 
   final String src;
+
+  /// A folder of screen recordings for `Media` modifiers to show.
+  final String? media;
   final String? declaredName;
 
   final List<Clip> clips;

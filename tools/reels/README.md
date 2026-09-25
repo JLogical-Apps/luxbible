@@ -31,14 +31,14 @@ your code; reordering clips never touches a frame number.
 ## Framing
 
 Each clip gets a `framing` that decides its zoom and where the head lands, plus a small random zoom seeded by its name.
-The head is assumed to be centered in the recording. A clip with a title is framed for it automatically:
+The head is assumed to be centered in the recording. A clip with a title or media is framed for it automatically:
 
 ```dart
 Video(
   src: '~/Downloads/my_video.MOV',
   clips: [
     Clip('hook', modifiers: [Title('How I take Bible notes')]), // .title: slight zoom, head centered
-    Clip('demo', framing: .media), // more zoom, head below center
+    Clip('demo', modifiers: [Media('demo.mp4')]), // .media: more zoom, head below center
     Clip('outro'), // .none: medium zoom, head centered
   ],
 )
@@ -71,12 +71,58 @@ lists each clip's words.
 
 The editor's copied clip list doesn't include modifiers, so re-add titles after pasting it.
 
+## Media
+
+`Video(media: '~/Downloads/my_video')` links a folder of screen recordings. A `Media` modifier shows one of them above
+the head, centered from 1% to 56% of the height, and cuts in and out like a title. Captions drop to 82% of the
+height on those clips, below the chin. On its own, it plays the file once
+over its clips, from its `start` tag to its `end` tag:
+
+```dart
+Clip('compare_translations', modifiers: [Media('compare_translations.mp4')]),
+Clip('summary_style', modifiers: [Media('write_summary.mp4')]),
+Clip('summary_own_words', modifiers: [Media('write_summary.mp4')]), // continues the same playback
+```
+
+The Media tab lists the folder's files. Scrub one and tag frames on its timeline, like `study_start` or `study_end`.
+Tags save to `lib/videos/<name>.media.json`, the way clips save to `clips.json`, so the Dart file only ever names them.
+Every file has two implicit tags: `start`, 10 frames in, and `end`, 10 frames before the last, which skips the janky
+frames RocketSim records at each edge. Both can be moved in the tab.
+
+`Play` takes the playhead to a tag, starting at a moment in its clip:
+
+```dart
+const sim = 'simulator.mp4';
+
+Clip('lux_study', modifiers: [
+  Media(sim, play: [Play('study_start', at: .word('in'))]), // holds on `start` until "in"
+]),
+Clip('compare_translations', modifiers: [
+  Media(sim, play: [Play('study_end', at: .word('study'))]),
+]),
+Clip('tap_annotate', modifiers: [
+  Media(sim, play: [Play('annotate_end', from: 'annotate_start', at: .word('annotate'))]), // jumps first
+]),
+```
+
+- **The recording sets the pace, never slower than 1x.** A `Play` gets until the next `Play` of that file or the end of
+  its run, even across a cut. If the footage fits, it plays at 1x and holds on its tag. If not, it speeds up just
+  enough to reach the tag at the end of that stretch. `by:` ends the stretch sooner, and `speed:` fixes the speed.
+- **Consecutive clips showing the same file are one run.** Its playhead carries across their cuts. A run with no `Play`
+  plays from wherever the playhead is to `end`, fit to the run.
+- **Before its first `Play`, the media holds on that play's `from`**, or wherever the playhead is.
+- **The playhead also carries across clips that hide the file**, so showing it again later continues where it stopped.
+- **Mistakes are loud.** An unknown file or tag, or a `Play` that would run backwards, throws and lists what exists.
+
+`dart run lib/videos/<name>.dart media` lists each file's tags and how the video plays them, including every speed.
+
 ## Commands
 
 ```sh
 dart run lib/videos/<name>.dart ingest   # normalize + detect clips
 dart run lib/videos/<name>.dart clips    # list detected clips
 dart run lib/videos/<name>.dart captions # list caption words and their start times
+dart run lib/videos/<name>.dart media    # list media tags and how the video plays them
 dart run lib/videos/<name>.dart render   # render to out/<name>.mp4
 ```
 
@@ -100,8 +146,11 @@ file and renamed when finished, so an interrupted ingest resumes instead of reus
 | `proxy.mp4` | 960px preview copy |
 | `audio.wav` | mono 16k, used for silence detection |
 | `voice_*.wav` | processed 48k mono voice, the audio every view plays; keyed by the processing chain |
+| `media/<file>_*.mov` | each media file as ProRes 4444 with alpha, at 30fps and 1280px tall; keyed by its size and date |
+| `media/<file>_*.mp4` | the same frames as H.264, 960px tall, for the Media tab's player |
+| `media/<file>_*.frames` | the media file's frame count |
 | `subtitles_*.ass` | burned-in captions and titles, keyed by their content |
-| `preview_*.mp4` | stitched previews, keyed by clip list, framing, subtitles and voice |
+| `preview_*.mp4` | stitched previews, keyed by clip list, framing, media, subtitles and voice |
 
 Clips are detected with `silencedetect` at −40 dB over 1.0 s, padded by 0.1 s for breathing room.
 Each detected span becomes its own clip with a single take; grouping repeated attempts into one clip
@@ -109,7 +158,7 @@ is still to come.
 
 Each take is then transcribed with `whisper-cli` (with DTW word timestamps), one invocation per take, and the sentence is
 written into `clips.json`. Requires `brew install whisper-cpp` and a model at
-`~/.cache/whisper/ggml-base.en.bin`. Raw word-level output is cached under
+`~/.cache/whisper/ggml-base.en.bin`. Raw word-level output and each take's sound onsets are cached under
 `.cache/<name>/transcripts/`.
 
 Once ingested, the source recording can be deleted: render and preview only read the cache. If the
@@ -122,7 +171,8 @@ renumbers auto-generated names — harmless once clips are named meaningfully, a
 
 ## Scope
 
-Minimal on purpose: clips, trimming, captions, titles, voice processing, framing, preview, render. Captions are always
-on, in one fixed style, and come from each clip's `text` in `clips.json`. Titles are the only modifier so far, in one
-fixed style. The voice gets one fixed processing chain. No overlays, keyframes or music yet; those attach to `Clip` as
-modifiers. See [`CONTEXT.md`](CONTEXT.md) for how captions and titles are drawn and what that means for the rest.
+Minimal on purpose: clips, trimming, captions, titles, media, voice processing, framing, preview, render. Captions are
+always on, in one fixed style, and come from each clip's `text` in `clips.json`. Titles and media are the only modifiers
+so far, each in one fixed style, and media is videos only, not screenshots. The voice gets one fixed processing chain.
+No keyframes or music yet; those attach to `Clip` as modifiers. See [`CONTEXT.md`](CONTEXT.md) for how captions,
+titles and media are drawn and what that means for the rest.

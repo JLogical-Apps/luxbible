@@ -21,5 +21,14 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^6.0.0
 
+# 1.2.6 crashes on hot restart: its cleanup quits the old mpv player, which calls back into the dead isolate. Fixed
+# upstream in this commit; drop the override once a release includes it.
+dependency_overrides:
+  media_kit:
+    git:
+      url: https://github.com/media-kit/media-kit
+      path: media_kit
+      ref: c35be8bd3073772e578d20fa7bfa044eac2958a1
+
 flutter:
   uses-material-design: true
