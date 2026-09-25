@@ -66,7 +66,7 @@ The command checks connected accounts before uploading and reports selected iden
 Create `socials/pending/<post-id>/post.yaml` and place its source media beside it. `socials/` is gitignored. IDs may contain letters, digits, hyphens and underscores, beginning with a letter or digit. Copy [post.example.yaml](post.example.yaml) as a starting point. Metadata contains shared content only; optional fields can be omitted or cleared with `null` for cover/comment.
 
 - Required: `title`, `description`, and `media`.
-- `hashtags`: optional array of words, with or without a leading `#`. Added to the description after a blank line; limits include hashtags.
+- `hashtags`: optional array of at most 2 words, with or without a leading `#`. Added to the description after a blank line; limits include hashtags.
 - `media`: either `video: video.mp4` or `images: [01.jpg, 02.jpg, 03.jpg]`. Images remain ordered. Local tool formats: MP4/MOV/WebM video and JPEG/PNG/WebP image; platform restrictions still apply. No mixed media or automatic image-to-video conversion.
 - `cover`: optional relative image path.
 - `coverTimestampMs`: optional nonnegative integer video position in milliseconds, strictly before the end. Use either this or `cover`. TikTok uses its native timestamp field; Instagram Reels get a temporary JPEG extracted with FFmpeg. YouTube Shorts and Facebook ignore it and report the limitation.

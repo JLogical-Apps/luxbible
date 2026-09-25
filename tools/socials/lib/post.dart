@@ -54,6 +54,8 @@ class Post {
         'hashtags must contain hashtag words without spaces',
       );
     }
+    if (hashtags.length > 2)
+      throw FormatException('hashtags allows at most 2 words');
     final media = getObject(data['media'], 'media');
     checkKeys(media, {'video', 'images'}, 'media');
     if (media.containsKey('video') == media.containsKey('images')) {

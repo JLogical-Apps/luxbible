@@ -32,7 +32,7 @@ Use the intended first image as the cover. TikTok and Instagram support photo po
 
 ## Write the effective copy and disclosures
 
-Supply `title`, `description`, optional `hashtags`, and `pinnedComment` for every post. Write a specific, open-ended question tied to the post that invites readers to share their experience or perspective. Keep it natural and avoid generic engagement bait. The command appends hashtags to the description, so avoid putting the same hashtags in both fields. All destinations share this copy and media. Do not add `platforms` or settings to YAML. Omit or use `null` for an unused cover/comment.
+Supply `title`, `description`, optional `hashtags`, and `pinnedComment` for every post. Write a specific, open-ended question tied to the post that invites readers to share their experience or perspective. Keep it natural and avoid generic engagement bait. Use at most 2 hashtags, chosen from topics people actually search for, such as `BibleStudy` or `BibleJournaling`. Skip branded tags like `LuxBible`, which nobody searches. The command appends hashtags to the description, so avoid putting the same hashtags in both fields. All destinations share this copy and media. Do not add `platforms` or settings to YAML. Omit or use `null` for an unused cover/comment.
 
 A title is published separately on YouTube and TikTok photo posts. On TikTok videos and Instagram/Facebook requests it is a local label; the caption is the published copy. Do not rely on the title to convey essential information on those destinations.
 
