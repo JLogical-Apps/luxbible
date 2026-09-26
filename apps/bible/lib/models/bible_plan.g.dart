@@ -66,6 +66,24 @@ Map<String, dynamic> _$BiblePlanProgressToJson(_BiblePlanProgress instance) =>
       'lastCompletedAt': instance.lastCompletedAt?.toJson(),
     };
 
+_BiblePlanHistoryEntry _$BiblePlanHistoryEntryFromJson(
+  Map<String, dynamic> json,
+) => _BiblePlanHistoryEntry(
+  planId: json['planId'] as String,
+  progress: BiblePlanProgress.fromJson(
+    json['progress'] as Map<String, dynamic>,
+  ),
+  endedAt: CalendarDateTime.fromJson(json['endedAt'] as String),
+);
+
+Map<String, dynamic> _$BiblePlanHistoryEntryToJson(
+  _BiblePlanHistoryEntry instance,
+) => <String, dynamic>{
+  'planId': instance.planId,
+  'progress': instance.progress.toJson(),
+  'endedAt': instance.endedAt.toJson(),
+};
+
 _BiblePlanDayId _$BiblePlanDayIdFromJson(Map<String, dynamic> json) =>
     _BiblePlanDayId(
       instanceId: json['instanceId'] as String,

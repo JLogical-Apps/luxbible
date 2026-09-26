@@ -1,4 +1,5 @@
 import 'package:bible/models/bible_plan.dart';
+import 'package:bible/providers/bible_plan_history_provider.dart';
 import 'package:bible/providers/custom_bible_plans_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/widgets/bible_plan_thumbnail.dart';
@@ -44,7 +45,7 @@ class BiblePlanTile extends ConsumerWidget {
             plan.getDisplayName(planId).toText(),
             if (hasStarted)
               StyledTag.sm(leading: Symbols.check.toIcon(), child: t.labels.following.toText(), isEnabled: false),
-            if (user.completedPlans.has(planId))
+            if (ref.watch(biblePlanHistoryProvider).hasCompletedPlan(planId, plan))
               StyledTag.sm(
                 leading: Symbols.history.toIcon(),
                 child: t.labels.completed.toText(),

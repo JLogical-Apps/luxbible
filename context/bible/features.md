@@ -561,13 +561,15 @@ Users can:
 - Reorder active plans
 - Open any previous or current day
 - Review the annotations made while reading a day from a Review Day Annotations button below its passages, which opens them in a sheet
+- Review every annotation from a plan run, grouped by day, from View All Plan Annotations in the plan's menu when the run has any
 - Mark individual passages or review days complete
 - Listen through a day's passages with automatic verse following and progress completion
 - Adjust reading-plan audio speed or skip backward and forward by ten seconds
 - Track progress for each plan
 - Set, edit, or delete a daily local notification reminder for each active plan
-- Stop a plan and remove its progress
-- Finish a completed plan
+- Stop a plan, which moves its progress to the plan's history
+- Finish a completed plan, which also moves it to the plan's history
+- Review, resume, or delete past runs of a plan from its History
 
 Book-and-duration plans preserve canonical order and include every canonical verse reference for the selected books exactly once. Workload balancing and natural boundaries come from the BSB data. When its numbering omits a verse that another translation can contain, the missing reference stays with the preceding available verse in that chapter. The initial duration scales with the selected books' chapter count, from at least one day through 365 days for the whole Bible. Daily workloads are balanced by verse count, preferring chapter, section, and meaningful paragraph boundaries within the balance window. Each generated passage stays within one chapter, nonadjacent selected books remain separate, and durations longer than the selected verse count end with Review & Reflect days.
 
@@ -581,7 +583,7 @@ Create with AI does not send content to an AI service. Lux copies a prompt conta
 
 Creation drafts exist only while the creation flow remains open. Persistent drafts and editing saved custom plans are future work.
 
-When loading saved state, Lux ignores progress and completed status for unavailable plan definitions. A reading page with an unavailable definition retains a safe back action.
+When loading saved state, Lux ignores progress for unavailable plan definitions. A reading page with an unavailable definition retains a safe back action.
 
 Daily passages open in a focused reading flow that retains access to normal Bible selection and study behavior.
 The chapter-preview action reads "Read In Context" when the assigned passage already covers the full chapter and "Read Entire Chapter" otherwise.
@@ -593,6 +595,8 @@ Daily plan reminders follow the device's local time and include the plan name pl
 After a user completes a plan day for the first time, Lux asks whether they want a daily reminder if they have not already answered or configured one for that plan. The prompt appears when the Bible Plans page is visible again, including after reading or listening on the focused reading page. Declining or canceling reminder setup resolves the prompt for that plan. Stopping and restarting a plan resets this eligibility with its fresh progress.
 
 Each start of a plan is a separate run. Annotations stay linked to the run in which they were made, so restarting a stopped or finished plan begins with no linked annotations, while earlier annotations remain on the Annotations page.
+
+Stopping or finishing a plan moves its run into that plan's history. Stopping asks for a neutral confirmation that explains the plan can be resumed later from its history in Find A Bible Plan. When a plan has history, History appears in its menu in Find A Bible Plan and, while the plan is active, in its menu on Bible Plans. The History page shows every past run of the plan as a card, newest first, with the date it was stopped or finished. Each card opens on its last completed day, or Day 1 when none were completed, and still offers Review Day Annotations, but its passages do not open and its checkboxes cannot be changed. Opening an annotation from history previews it, and navigating from the preview goes to the main Bible. A card's menu offers Resume for stopped runs, View All Plan Annotations when the run has annotations, and Delete. Resuming restores the run's progress, reminder, and linked annotations to Bible Plans. A plan can only have one active run, so resuming while another run of the plan is active asks whether to replace it, and the replaced run moves to history. Deleting a run from history asks for confirmation and keeps its annotations on the Annotations page. Find A Bible Plan marks a plan Completed while its history contains a run with every day complete, so deleting that run removes the tag. Deleting a custom plan also deletes its history. Runs that were stopped or finished before plan history existed are not in history.
 
 ## More
 

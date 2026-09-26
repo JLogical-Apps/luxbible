@@ -153,11 +153,6 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
             MapEntry(k, BiblePlanProgress.fromJson(e as Map<String, dynamic>)),
       ) ??
       const {},
-  completedPlans:
-      (json['completedPlans'] as List<dynamic>?)
-          ?.map((e) => e as String)
-          .toSet() ??
-      const {},
   verseOfTheDayReminder: json['verseOfTheDayReminder'] == null
       ? null
       : Reminder.fromJson(
@@ -228,7 +223,6 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'planProgressByType': instance.planProgressById.map(
     (k, e) => MapEntry(k, e.toJson()),
   ),
-  'completedPlans': instance.completedPlans.toList(),
   'verseOfTheDayReminder': instance.verseOfTheDayReminder?.toJson(),
   'audio': instance.audio.toJson(),
   'latestMigration': _$MigrationEnumMap[instance.latestMigration],

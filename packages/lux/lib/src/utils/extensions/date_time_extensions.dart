@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/src/models/time.dart';
 import 'package:lux/src/utils/range.dart';
@@ -18,6 +19,8 @@ extension DateTimeExtensions on DateTime {
       Range.generate(0, count - 1).map((offset) => DateTime(year, month, day + offset)).toList();
 
   String formatAgo() => timeago.format(this, locale: LocaleSettings.currentLocale.languageCode);
+
+  String formatDate() => DateFormat.yMMMd(LocaleSettings.currentLocale.languageCode).format(this);
 
   /// The calendar date alone, as `yyyy-MM-dd`.
   String get isoDate =>

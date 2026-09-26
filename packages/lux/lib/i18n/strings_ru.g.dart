@@ -890,9 +890,24 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	@override String get reminderSchedulingFailedBody => 'Lux не удалось установить это напоминание. Повторите попытку.';
 	@override String reminderSaved({required Object name, required Object time}) => 'Напоминание для плана «${name}» сохранено на ${time} каждый день.';
 	@override String get stopPlan => 'Остановить план';
-	@override String get stopPlanDescription => 'Удалите этот план и его ход.';
+	@override String get stopPlanDescription => 'Переместите этот план и его прогресс в историю.';
 	@override String get readEntireChapter => 'Читать всю главу';
 	@override String get reviewDayAnnotations => 'Просмотреть аннотации дня';
+	@override String get history => 'История';
+	@override String get historyDescription => 'Просмотрите прошлый прогресс или возобновите остановленный план.';
+	@override String get resume => 'Возобновить';
+	@override String get resumeDescription => 'Продолжите план с того места, где остановились.';
+	@override String get replace => 'Заменить';
+	@override String get replacePlanQuestion => 'Заменить текущий план?';
+	@override String replacePlanConfirmation({required Object name}) => 'Вы уже следуете плану «${name}». Если возобновить этот, ваш текущий прогресс будет перемещён в историю этого плана.';
+	@override String get viewAllAnnotations => 'Просмотреть все аннотации плана';
+	@override String get viewAllAnnotationsDescription => 'Просмотрите все аннотации, сделанные во время чтения этого плана.';
+	@override String stoppedOn({required Object date}) => 'Остановлен ${date}';
+	@override String finishedOn({required Object date}) => 'Завершён ${date}';
+	@override String get deleteFromHistoryDescription => 'Удалите этот прогресс из истории.';
+	@override String get deleteFromHistoryQuestion => 'Удалить из истории?';
+	@override String deleteFromHistoryConfirmation({required Object name}) => 'Этот прогресс по плану «${name}» будет удалён. Его аннотации останутся в разделе «Аннотации».';
+	@override String deletePlanWithHistoryConfirmation({required Object name}) => 'Вы уверены, что хотите удалить «${name}»? Его история тоже будет удалена.';
 	@override String get readInContext => 'Читать в контексте';
 	@override String get startNew => 'Начать заново';
 	@override String day({required Object day}) => 'День ${day}';
@@ -902,7 +917,7 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 		many: '${count} дней',
 		other: '${count} дня',
 	);
-	@override String stopConfirmation({required Object name}) => 'Вы уверены, что хотите остановить "${name}"? Ваш прогресс будет потерян.';
+	@override String stopConfirmation({required Object name}) => 'Остановить «${name}»? Вы сможете возобновить его позже из истории этого плана в разделе «Найдите библейский план».';
 	@override String completed({required Object name}) => '«${name}» завершено.';
 	@override String get addPlan => 'Добавить библейский план';
 }
@@ -3531,14 +3546,29 @@ extension on TranslationsRu {
 			'biblePlans.reminderSchedulingFailedBody' => 'Lux не удалось установить это напоминание. Повторите попытку.',
 			'biblePlans.reminderSaved' => ({required Object name, required Object time}) => 'Напоминание для плана «${name}» сохранено на ${time} каждый день.',
 			'biblePlans.stopPlan' => 'Остановить план',
-			'biblePlans.stopPlanDescription' => 'Удалите этот план и его ход.',
+			'biblePlans.stopPlanDescription' => 'Переместите этот план и его прогресс в историю.',
 			'biblePlans.readEntireChapter' => 'Читать всю главу',
 			'biblePlans.reviewDayAnnotations' => 'Просмотреть аннотации дня',
+			'biblePlans.history' => 'История',
+			'biblePlans.historyDescription' => 'Просмотрите прошлый прогресс или возобновите остановленный план.',
+			'biblePlans.resume' => 'Возобновить',
+			'biblePlans.resumeDescription' => 'Продолжите план с того места, где остановились.',
+			'biblePlans.replace' => 'Заменить',
+			'biblePlans.replacePlanQuestion' => 'Заменить текущий план?',
+			'biblePlans.replacePlanConfirmation' => ({required Object name}) => 'Вы уже следуете плану «${name}». Если возобновить этот, ваш текущий прогресс будет перемещён в историю этого плана.',
+			'biblePlans.viewAllAnnotations' => 'Просмотреть все аннотации плана',
+			'biblePlans.viewAllAnnotationsDescription' => 'Просмотрите все аннотации, сделанные во время чтения этого плана.',
+			'biblePlans.stoppedOn' => ({required Object date}) => 'Остановлен ${date}',
+			'biblePlans.finishedOn' => ({required Object date}) => 'Завершён ${date}',
+			'biblePlans.deleteFromHistoryDescription' => 'Удалите этот прогресс из истории.',
+			'biblePlans.deleteFromHistoryQuestion' => 'Удалить из истории?',
+			'biblePlans.deleteFromHistoryConfirmation' => ({required Object name}) => 'Этот прогресс по плану «${name}» будет удалён. Его аннотации останутся в разделе «Аннотации».',
+			'biblePlans.deletePlanWithHistoryConfirmation' => ({required Object name}) => 'Вы уверены, что хотите удалить «${name}»? Его история тоже будет удалена.',
 			'biblePlans.readInContext' => 'Читать в контексте',
 			'biblePlans.startNew' => 'Начать заново',
 			'biblePlans.day' => ({required Object day}) => 'День ${day}',
 			'biblePlans.dayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: '${count} день', few: '${count} дня', many: '${count} дней', other: '${count} дня', ), 
-			'biblePlans.stopConfirmation' => ({required Object name}) => 'Вы уверены, что хотите остановить "${name}"? Ваш прогресс будет потерян.',
+			'biblePlans.stopConfirmation' => ({required Object name}) => 'Остановить «${name}»? Вы сможете возобновить его позже из истории этого плана в разделе «Найдите библейский план».',
 			'biblePlans.completed' => ({required Object name}) => '«${name}» завершено.',
 			'biblePlans.addPlan' => 'Добавить библейский план',
 			'searchUi.searchBible' => 'Поиск в Библии',
@@ -3984,6 +4014,8 @@ extension on TranslationsRu {
 			'morphology.tense.future.description' => 'Действие, которое произойдет.',
 			'morphology.tense.future.examples' => 'он придет|они увидят',
 			'morphology.tense.aorist.name' => 'Аорист',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.tense.aorist.description' => 'Простое прошедшее действие, рассматриваемое в целом.',
 			'morphology.tense.aorist.examples' => 'он сказал|они пошли',
 			'morphology.tense.perfect.name' => 'Перфект',
@@ -3999,8 +4031,6 @@ extension on TranslationsRu {
 			'morphology.mood.imperative.description' => 'Выдает команду.',
 			'morphology.mood.imperative.examples' => 'Идите!|Верьте!|Не бойтесь!',
 			'morphology.mood.subjunctive.name' => 'Сослагательное наклонение',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.mood.subjunctive.description' => 'Выражает возможность, цель или непредвиденное обстоятельство.',
 			'morphology.mood.subjunctive.examples' => 'что он мог бы написать|если пойдёт',
 			'morphology.mood.optative.name' => 'Оптатив',

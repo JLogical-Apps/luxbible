@@ -1,8 +1,11 @@
 import 'package:bible/models/bible_plan.dart';
+import 'package:bible/providers/bible_plan_history_provider.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/custom_bible_plans_provider.dart';
+import 'package:bible/ui/pages/bible_plan_history_page.dart';
 import 'package:bible/ui/pages/create_bible_plan_page.dart';
 import 'package:bible/ui/widgets/bible_plan_file_list_items.dart';
+import 'package:bible/ui/widgets/bible_plan_history_list_items.dart';
 import 'package:bible/ui/widgets/bible_plan_tile.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
@@ -127,6 +130,7 @@ class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<Stri
               trailing: Icon(Symbols.chevron_right),
               onPressed: () async {
                 final isCustom = ref.read(customBiblePlansProvider).containsKey(planId);
+                final hasHistory = ref.read(biblePlanHistoryProvider).hasEntriesForPlan(planId);
                 final shouldStartPlan = await context.showStyledSheet(
                   (sheetContext, _) => StyledSheet(
                     title: t.biblePlans.startPlanQuestion.toText(),
@@ -136,6 +140,17 @@ class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<Stri
                         (menuContext, _) => StyledSheet(
                           title: plan.getDisplayName(planId).toText(),
                           children: [
+                            if (hasHistory)
+                              BiblePlanHistoryListItem(
+                                onPressed: () async {
+                                  menuContext.pop();
+                                  final resumedPlanId = await context.push(BiblePlanHistoryPage(planId: planId));
+                                  if (resumedPlanId == null || !context.mounted) return;
+
+                                  sheetContext.pop();
+                                  context.pop(resumedPlanId);
+                                },
+                              ),
                             BiblePlanShareListItem(plan: plan, displayName: plan.getDisplayName(planId)),
                             BiblePlanDownloadListItem(plan: plan, displayName: plan.getDisplayName(planId)),
                             if (isCustom)
@@ -147,13 +162,18 @@ class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<Stri
                                   final shouldDelete = await context.showStyledDialog(
                                     (context) => StyledDialog.confirmDelete(
                                       title: t.biblePlans.deletePlanQuestion.toText(),
-                                      body: t.biblePlans.deletePlanConfirmation(name: plan.name).toText(),
+                                      body:
+                                          (hasHistory
+                                                  ? t.biblePlans.deletePlanWithHistoryConfirmation(name: plan.name)
+                                                  : t.biblePlans.deletePlanConfirmation(name: plan.name))
+                                              .toText(),
                                       cancelLabel: t.common.nevermind.toText(),
                                     ),
                                   );
                                   if (shouldDelete != true) return;
+
                                   ref.read(customBiblePlansProvider.notifier).delete(planId);
-                                  ref.updateUser((user) => user.withRemovedCompletedPlan(planId));
+                                  ref.read(biblePlanHistoryProvider.notifier).deleteAllForPlan(planId);
                                   if (context.mounted) context.pop();
                                 },
                               ),

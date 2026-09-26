@@ -1,4 +1,5 @@
 import 'package:bible/models/calendar_date_time.dart';
+import 'package:bible/models/hydrated_bible_plan_progress.dart';
 import 'package:bible/models/reminder.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -101,6 +102,30 @@ sealed class BiblePlanProgress with _$BiblePlanProgress {
       lastCompletedAt: !previousDay.isComplete && updatedDay.isComplete ? .now() : lastCompletedAt,
     );
   }
+
+  // A different instance means a run was swapped in, so its already-completed days aren't new completions.
+  bool hasCompletedDaySince(BiblePlanProgress? previous) =>
+      previous != null &&
+      previous.instanceId == instanceId &&
+      days.anyIndexed(
+        (dayIndex, day) => day.isComplete && previous.days.elementAtOrNull(dayIndex)?.isComplete == false,
+      );
+}
+
+@freezed
+sealed class BiblePlanHistoryEntry with _$BiblePlanHistoryEntry {
+  const BiblePlanHistoryEntry._();
+
+  const factory BiblePlanHistoryEntry({
+    required String planId,
+    required BiblePlanProgress progress,
+    required CalendarDateTime endedAt,
+  }) = _BiblePlanHistoryEntry;
+
+  factory BiblePlanHistoryEntry.fromJson(Map<String, dynamic> json) => _$BiblePlanHistoryEntryFromJson(json);
+
+  HydratedBiblePlanProgress hydrate(BiblePlan plan) =>
+      HydratedBiblePlanProgress(id: planId, plan: plan, progress: progress);
 }
 
 @freezed

@@ -1954,14 +1954,59 @@ class Translations$biblePlans$en {
 	/// en: 'Stop Plan'
 	String get stopPlan => 'Stop Plan';
 
-	/// en: 'Remove this plan and its progress.'
-	String get stopPlanDescription => 'Remove this plan and its progress.';
+	/// en: 'Move this plan and its progress to history.'
+	String get stopPlanDescription => 'Move this plan and its progress to history.';
 
 	/// en: 'Read Entire Chapter'
 	String get readEntireChapter => 'Read Entire Chapter';
 
 	/// en: 'Review Day Annotations'
 	String get reviewDayAnnotations => 'Review Day Annotations';
+
+	/// en: 'History'
+	String get history => 'History';
+
+	/// en: 'Review past progress or resume a stopped plan.'
+	String get historyDescription => 'Review past progress or resume a stopped plan.';
+
+	/// en: 'Resume'
+	String get resume => 'Resume';
+
+	/// en: 'Continue this plan where you left off.'
+	String get resumeDescription => 'Continue this plan where you left off.';
+
+	/// en: 'Replace'
+	String get replace => 'Replace';
+
+	/// en: 'Replace Current Plan?'
+	String get replacePlanQuestion => 'Replace Current Plan?';
+
+	/// en: 'You're already following "{name}". Resuming this one will move your current progress to this plan's history.'
+	String replacePlanConfirmation({required Object name}) => 'You\'re already following "${name}". Resuming this one will move your current progress to this plan\'s history.';
+
+	/// en: 'View All Plan Annotations'
+	String get viewAllAnnotations => 'View All Plan Annotations';
+
+	/// en: 'Review every annotation made while reading this plan.'
+	String get viewAllAnnotationsDescription => 'Review every annotation made while reading this plan.';
+
+	/// en: 'Stopped {date}'
+	String stoppedOn({required Object date}) => 'Stopped ${date}';
+
+	/// en: 'Finished {date}'
+	String finishedOn({required Object date}) => 'Finished ${date}';
+
+	/// en: 'Remove this progress from history.'
+	String get deleteFromHistoryDescription => 'Remove this progress from history.';
+
+	/// en: 'Delete From History?'
+	String get deleteFromHistoryQuestion => 'Delete From History?';
+
+	/// en: 'This progress on "{name}" will be deleted. Its annotations will stay in Annotations.'
+	String deleteFromHistoryConfirmation({required Object name}) => 'This progress on "${name}" will be deleted. Its annotations will stay in Annotations.';
+
+	/// en: 'Are you sure you want to delete "{name}"? Its history will also be deleted.'
+	String deletePlanWithHistoryConfirmation({required Object name}) => 'Are you sure you want to delete "${name}"? Its history will also be deleted.';
 
 	/// en: 'Read In Context'
 	String get readInContext => 'Read In Context';
@@ -1978,8 +2023,8 @@ class Translations$biblePlans$en {
 		other: '${count} days',
 	);
 
-	/// en: 'Are you sure you want to stop "{name}"? Your progress will be lost.'
-	String stopConfirmation({required Object name}) => 'Are you sure you want to stop "${name}"? Your progress will be lost.';
+	/// en: 'Stop "{name}"? You can resume it later from this plan's history in Find A Bible Plan.'
+	String stopConfirmation({required Object name}) => 'Stop "${name}"? You can resume it later from this plan\'s history in Find A Bible Plan.';
 
 	/// en: '"{name}" completed.'
 	String completed({required Object name}) => '"${name}" completed.';
@@ -5712,14 +5757,29 @@ extension on Translations {
 			'biblePlans.reminderSchedulingFailedBody' => 'Lux couldn\'t schedule this reminder. Please try again.',
 			'biblePlans.reminderSaved' => ({required Object name, required Object time}) => 'Reminder saved for "${name}" daily at ${time}.',
 			'biblePlans.stopPlan' => 'Stop Plan',
-			'biblePlans.stopPlanDescription' => 'Remove this plan and its progress.',
+			'biblePlans.stopPlanDescription' => 'Move this plan and its progress to history.',
 			'biblePlans.readEntireChapter' => 'Read Entire Chapter',
 			'biblePlans.reviewDayAnnotations' => 'Review Day Annotations',
+			'biblePlans.history' => 'History',
+			'biblePlans.historyDescription' => 'Review past progress or resume a stopped plan.',
+			'biblePlans.resume' => 'Resume',
+			'biblePlans.resumeDescription' => 'Continue this plan where you left off.',
+			'biblePlans.replace' => 'Replace',
+			'biblePlans.replacePlanQuestion' => 'Replace Current Plan?',
+			'biblePlans.replacePlanConfirmation' => ({required Object name}) => 'You\'re already following "${name}". Resuming this one will move your current progress to this plan\'s history.',
+			'biblePlans.viewAllAnnotations' => 'View All Plan Annotations',
+			'biblePlans.viewAllAnnotationsDescription' => 'Review every annotation made while reading this plan.',
+			'biblePlans.stoppedOn' => ({required Object date}) => 'Stopped ${date}',
+			'biblePlans.finishedOn' => ({required Object date}) => 'Finished ${date}',
+			'biblePlans.deleteFromHistoryDescription' => 'Remove this progress from history.',
+			'biblePlans.deleteFromHistoryQuestion' => 'Delete From History?',
+			'biblePlans.deleteFromHistoryConfirmation' => ({required Object name}) => 'This progress on "${name}" will be deleted. Its annotations will stay in Annotations.',
+			'biblePlans.deletePlanWithHistoryConfirmation' => ({required Object name}) => 'Are you sure you want to delete "${name}"? Its history will also be deleted.',
 			'biblePlans.readInContext' => 'Read In Context',
 			'biblePlans.startNew' => 'Start New',
 			'biblePlans.day' => ({required Object day}) => 'Day ${day}',
 			'biblePlans.dayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} day', other: '${count} days', ), 
-			'biblePlans.stopConfirmation' => ({required Object name}) => 'Are you sure you want to stop "${name}"? Your progress will be lost.',
+			'biblePlans.stopConfirmation' => ({required Object name}) => 'Stop "${name}"? You can resume it later from this plan\'s history in Find A Bible Plan.',
 			'biblePlans.completed' => ({required Object name}) => '"${name}" completed.',
 			'biblePlans.addPlan' => 'Add Bible plan',
 			'searchUi.searchBible' => 'Search Bible',
@@ -6167,6 +6227,8 @@ extension on Translations {
 			'morphology.tense.aorist.name' => 'Aorist',
 			'morphology.tense.aorist.description' => 'Simple past action viewed as a whole.',
 			'morphology.tense.aorist.examples' => 'he said|they went',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.tense.perfect.name' => 'Perfect',
 			'morphology.tense.perfect.description' => 'Past action with a continuing present consequence.',
 			'morphology.tense.perfect.examples' => 'has been written|has come',
@@ -6182,8 +6244,6 @@ extension on Translations {
 			'morphology.mood.subjunctive.name' => 'Subjunctive',
 			'morphology.mood.subjunctive.description' => 'Expresses possibility, purpose, or contingency.',
 			'morphology.mood.subjunctive.examples' => 'that he might write|if he goes',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.mood.optative.name' => 'Optative',
 			'morphology.mood.optative.description' => 'Expresses a wish or remote possibility.',
 			'morphology.mood.optative.examples' => 'may it be so|may you have grace',

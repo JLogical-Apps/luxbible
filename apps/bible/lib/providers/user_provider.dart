@@ -86,17 +86,17 @@ class UserNotifier extends _$UserNotifier {
   }
 
   void logAnalytics(User previousUser, User user) {
-    if (user.planProgressById.keys.any((planId) => !previousUser.planProgressById.containsKey(planId))) {
+    if (user.planProgressById.entries.any(
+      (entry) => previousUser.planProgressById[entry.key]?.instanceId != entry.value.instanceId,
+    )) {
       AnalyticsEvent.planStarted.log();
     }
 
-    final hasCompletedPlanDay = user.planProgressById.entries.any((entry) {
-      final previousDays = previousUser.planProgressById[entry.key]?.days ?? [];
-      return entry.value.days.asMap().entries.any(
-        (day) => day.value.isComplete && (day.key >= previousDays.length || !previousDays[day.key].isComplete),
-      );
-    });
-    if (hasCompletedPlanDay) AnalyticsEvent.planDayCompleted.log();
+    if (user.planProgressById.entries.any(
+      (entry) => entry.value.hasCompletedDaySince(previousUser.planProgressById[entry.key]),
+    )) {
+      AnalyticsEvent.planDayCompleted.log();
+    }
 
     if (user.mainToolbar != previousUser.mainToolbar ||
         user.verseSelection != previousUser.verseSelection ||

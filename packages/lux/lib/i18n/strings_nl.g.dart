@@ -886,9 +886,24 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	@override String get reminderSchedulingFailedBody => 'Lux kon deze herinnering niet instellen. Probeer het opnieuw.';
 	@override String reminderSaved({required Object name, required Object time}) => 'Herinnering voor "${name}" opgeslagen voor dagelijks om ${time}.';
 	@override String get stopPlan => 'Leesplan stoppen';
-	@override String get stopPlanDescription => 'Verwijder dit leesplan en de voortgang.';
+	@override String get stopPlanDescription => 'Verplaats dit leesplan en de voortgang naar de geschiedenis.';
 	@override String get readEntireChapter => 'Hele hoofdstuk lezen';
 	@override String get reviewDayAnnotations => 'Annotaties van de dag bekijken';
+	@override String get history => 'Geschiedenis';
+	@override String get historyDescription => 'Bekijk eerdere voortgang of hervat een gestopt leesplan.';
+	@override String get resume => 'Hervatten';
+	@override String get resumeDescription => 'Ga verder waar je gebleven was.';
+	@override String get replace => 'Vervangen';
+	@override String get replacePlanQuestion => 'Huidig leesplan vervangen?';
+	@override String replacePlanConfirmation({required Object name}) => 'Je volgt "${name}" al. Als je dit hervat, wordt je huidige voortgang naar de geschiedenis van dit leesplan verplaatst.';
+	@override String get viewAllAnnotations => 'Alle annotaties van het leesplan bekijken';
+	@override String get viewAllAnnotationsDescription => 'Bekijk alle annotaties die je tijdens dit leesplan hebt gemaakt.';
+	@override String stoppedOn({required Object date}) => 'Gestopt op ${date}';
+	@override String finishedOn({required Object date}) => 'Voltooid op ${date}';
+	@override String get deleteFromHistoryDescription => 'Verwijder deze voortgang uit de geschiedenis.';
+	@override String get deleteFromHistoryQuestion => 'Uit geschiedenis verwijderen?';
+	@override String deleteFromHistoryConfirmation({required Object name}) => 'Deze voortgang van "${name}" wordt verwijderd. De annotaties blijven bewaard bij Annotaties.';
+	@override String deletePlanWithHistoryConfirmation({required Object name}) => 'Weet je zeker dat je "${name}" wilt verwijderen? De geschiedenis wordt ook verwijderd.';
 	@override String get readInContext => 'In context lezen';
 	@override String get startNew => 'Nieuw starten';
 	@override String day({required Object day}) => 'Dag ${day}';
@@ -896,7 +911,7 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 		one: '${count} dag',
 		other: '${count} dagen',
 	);
-	@override String stopConfirmation({required Object name}) => 'Weet je zeker dat je "${name}" wilt stoppen? Je voortgang gaat verloren.';
+	@override String stopConfirmation({required Object name}) => '"${name}" stoppen? Je kunt het later hervatten via de geschiedenis van dit leesplan in Een Bijbelleesplan zoeken.';
 	@override String completed({required Object name}) => '"${name}" voltooid.';
 	@override String get addPlan => 'Bijbelleesplan toevoegen';
 }
@@ -3523,14 +3538,29 @@ extension on TranslationsNl {
 			'biblePlans.reminderSchedulingFailedBody' => 'Lux kon deze herinnering niet instellen. Probeer het opnieuw.',
 			'biblePlans.reminderSaved' => ({required Object name, required Object time}) => 'Herinnering voor "${name}" opgeslagen voor dagelijks om ${time}.',
 			'biblePlans.stopPlan' => 'Leesplan stoppen',
-			'biblePlans.stopPlanDescription' => 'Verwijder dit leesplan en de voortgang.',
+			'biblePlans.stopPlanDescription' => 'Verplaats dit leesplan en de voortgang naar de geschiedenis.',
 			'biblePlans.readEntireChapter' => 'Hele hoofdstuk lezen',
 			'biblePlans.reviewDayAnnotations' => 'Annotaties van de dag bekijken',
+			'biblePlans.history' => 'Geschiedenis',
+			'biblePlans.historyDescription' => 'Bekijk eerdere voortgang of hervat een gestopt leesplan.',
+			'biblePlans.resume' => 'Hervatten',
+			'biblePlans.resumeDescription' => 'Ga verder waar je gebleven was.',
+			'biblePlans.replace' => 'Vervangen',
+			'biblePlans.replacePlanQuestion' => 'Huidig leesplan vervangen?',
+			'biblePlans.replacePlanConfirmation' => ({required Object name}) => 'Je volgt "${name}" al. Als je dit hervat, wordt je huidige voortgang naar de geschiedenis van dit leesplan verplaatst.',
+			'biblePlans.viewAllAnnotations' => 'Alle annotaties van het leesplan bekijken',
+			'biblePlans.viewAllAnnotationsDescription' => 'Bekijk alle annotaties die je tijdens dit leesplan hebt gemaakt.',
+			'biblePlans.stoppedOn' => ({required Object date}) => 'Gestopt op ${date}',
+			'biblePlans.finishedOn' => ({required Object date}) => 'Voltooid op ${date}',
+			'biblePlans.deleteFromHistoryDescription' => 'Verwijder deze voortgang uit de geschiedenis.',
+			'biblePlans.deleteFromHistoryQuestion' => 'Uit geschiedenis verwijderen?',
+			'biblePlans.deleteFromHistoryConfirmation' => ({required Object name}) => 'Deze voortgang van "${name}" wordt verwijderd. De annotaties blijven bewaard bij Annotaties.',
+			'biblePlans.deletePlanWithHistoryConfirmation' => ({required Object name}) => 'Weet je zeker dat je "${name}" wilt verwijderen? De geschiedenis wordt ook verwijderd.',
 			'biblePlans.readInContext' => 'In context lezen',
 			'biblePlans.startNew' => 'Nieuw starten',
 			'biblePlans.day' => ({required Object day}) => 'Dag ${day}',
 			'biblePlans.dayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: '${count} dag', other: '${count} dagen', ), 
-			'biblePlans.stopConfirmation' => ({required Object name}) => 'Weet je zeker dat je "${name}" wilt stoppen? Je voortgang gaat verloren.',
+			'biblePlans.stopConfirmation' => ({required Object name}) => '"${name}" stoppen? Je kunt het later hervatten via de geschiedenis van dit leesplan in Een Bijbelleesplan zoeken.',
 			'biblePlans.completed' => ({required Object name}) => '"${name}" voltooid.',
 			'biblePlans.addPlan' => 'Bijbelleesplan toevoegen',
 			'searchUi.searchBible' => 'Bijbel doorzoeken',
@@ -3976,6 +4006,8 @@ extension on TranslationsNl {
 			'morphology.tense.future.description' => 'Een handeling die zal plaatsvinden.',
 			'morphology.tense.future.examples' => 'hij zal komen|zij zullen zien',
 			'morphology.tense.aorist.name' => 'Aoristus',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.tense.aorist.description' => 'Een eenvoudige handeling in het verleden, als geheel beschouwd.',
 			'morphology.tense.aorist.examples' => 'hij zei|zij gingen',
 			'morphology.tense.perfect.name' => 'Perfectum',
@@ -3991,8 +4023,6 @@ extension on TranslationsNl {
 			'morphology.mood.imperative.description' => 'Geeft een bevel.',
 			'morphology.mood.imperative.examples' => 'Ga!|Geloof!|Vrees niet!',
 			'morphology.mood.subjunctive.name' => 'Conjunctief',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.mood.subjunctive.description' => 'Drukt mogelijkheid, doel of voorwaardelijkheid uit.',
 			'morphology.mood.subjunctive.examples' => 'opdat hij zou schrijven|als hij gaat',
 			'morphology.mood.optative.name' => 'Optatief',

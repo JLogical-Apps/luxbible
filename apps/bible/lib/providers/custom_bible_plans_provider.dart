@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bible/models/bible_plan.dart';
 import 'package:lux/lux.dart';
+import 'package:path/path.dart' as path;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:utils_core/utils_core.dart';
 import 'package:uuid/uuid.dart';
@@ -17,11 +18,17 @@ class CustomBiblePlans extends _$CustomBiblePlans {
   @override
   Map<String, BiblePlan> build() => !directory.existsSync()
       ? {}
-      : directory.listSync().whereType<File>().mapToMap((file) {
-          final filename = file.uri.pathSegments.last;
-          final id = filename.endsWith('.json') ? filename.substring(0, filename.length - 5) : '';
-          return MapEntry(id, guard(() => BiblePlan.tryFromJson(jsonDecode(file.readAsStringSync()))));
-        }).withoutNulls;
+      : directory
+            .listSync()
+            .whereType<File>()
+            .where((file) => path.extension(file.path) == '.json')
+            .mapToMap(
+              (file) => MapEntry(
+                path.basenameWithoutExtension(file.path),
+                guard(() => BiblePlan.tryFromJson(jsonDecode(file.readAsStringSync()))),
+              ),
+            )
+            .withoutNulls;
 
   String create(BiblePlan plan) {
     if (!plan.isValid) throw ArgumentError.value(plan, 'plan', 'Invalid Bible plan');

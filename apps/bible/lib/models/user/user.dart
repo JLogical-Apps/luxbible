@@ -67,7 +67,6 @@ sealed class User with _$User {
     List<OnboardingStep>? completedOnboardingSteps,
     @JsonKey(name: 'highlightStyles') List<(HighlightStyle, String label)>? highlightStyleOverrides,
     @JsonKey(name: 'planProgressByType') @Default({}) Map<String, BiblePlanProgress> planProgressById,
-    @Default({}) Set<String> completedPlans,
     Reminder? verseOfTheDayReminder,
     @Default(AudioBibleConfiguration()) AudioBibleConfiguration audio,
     Migration? latestMigration,
@@ -409,20 +408,21 @@ sealed class User with _$User {
   List<Annotation> getPlanDayAnnotations(BiblePlanDayId planDay) =>
       annotations.where((annotation) => annotation.planDay == planDay).toList();
 
+  List<Annotation> getPlanInstanceAnnotations(String instanceId) =>
+      annotations.where((annotation) => annotation.planDay?.instanceId == instanceId).toList();
+
   User withStartedPlan({required String planId, required BiblePlan plan}) => planProgressById.containsKey(planId)
       ? this
       : copyWith(planProgressById: {...planProgressById, planId: BiblePlanProgress.start(plan)});
 
-  User withStoppedPlan(String planId) => copyWith(planProgressById: {...planProgressById}..remove(planId));
+  User withResumedPlan({required String planId, required BiblePlanProgress progress}) =>
+      copyWith(planProgressById: {...planProgressById, planId: progress});
 
-  User withRemovedCompletedPlan(String planId) => copyWith(completedPlans: {...completedPlans}..remove(planId));
+  User withStoppedPlan(String planId) => copyWith(planProgressById: {...planProgressById}..remove(planId));
 
   User withReorderedPlans(List<String> orderedPlanIds) => copyWith(
     planProgressById: orderedPlanIds.mapToMap((planId) => MapEntry(planId, planProgressById[planId])).withoutNullValues,
   );
-
-  User withCompletedPlan(String planId) =>
-      copyWith(planProgressById: {...planProgressById}..remove(planId), completedPlans: {...completedPlans, planId});
 
   User withPlanReminder(String planId, Reminder reminder) =>
       withUpdatePlanProgress(planId, (progress) => progress.copyWith(reminder: reminder));

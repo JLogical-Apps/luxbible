@@ -145,6 +145,7 @@ extension CoreMapExtensions<K, V> on Map<K, V> {
   Map<K, V> withRemoved(K key) => {...this}..remove(key);
 
   Map<K, V> get withDistinctValues => entries.distinctBy((entry) => entry.value).toMap();
+  Map<K, V> get reversed => entries.toList().reversed.toMap();
 }
 
 extension CoreNullKeyMapExtensions<K, V> on Map<K?, V> {

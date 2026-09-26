@@ -842,6 +842,287 @@ $ReminderCopyWith<$Res>? get reminder {
 
 
 /// @nodoc
+mixin _$BiblePlanHistoryEntry {
+
+ String get planId; BiblePlanProgress get progress; CalendarDateTime get endedAt;
+/// Create a copy of BiblePlanHistoryEntry
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$BiblePlanHistoryEntryCopyWith<BiblePlanHistoryEntry> get copyWith => _$BiblePlanHistoryEntryCopyWithImpl<BiblePlanHistoryEntry>(this as BiblePlanHistoryEntry, _$identity);
+
+  /// Serializes this BiblePlanHistoryEntry to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlanHistoryEntry&&(identical(other.planId, planId) || other.planId == planId)&&(identical(other.progress, progress) || other.progress == progress)&&(identical(other.endedAt, endedAt) || other.endedAt == endedAt));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,planId,progress,endedAt);
+
+@override
+String toString() {
+  return 'BiblePlanHistoryEntry(planId: $planId, progress: $progress, endedAt: $endedAt)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $BiblePlanHistoryEntryCopyWith<$Res>  {
+  factory $BiblePlanHistoryEntryCopyWith(BiblePlanHistoryEntry value, $Res Function(BiblePlanHistoryEntry) _then) = _$BiblePlanHistoryEntryCopyWithImpl;
+@useResult
+$Res call({
+ String planId, BiblePlanProgress progress, CalendarDateTime endedAt
+});
+
+
+$BiblePlanProgressCopyWith<$Res> get progress;
+
+}
+/// @nodoc
+class _$BiblePlanHistoryEntryCopyWithImpl<$Res>
+    implements $BiblePlanHistoryEntryCopyWith<$Res> {
+  _$BiblePlanHistoryEntryCopyWithImpl(this._self, this._then);
+
+  final BiblePlanHistoryEntry _self;
+  final $Res Function(BiblePlanHistoryEntry) _then;
+
+/// Create a copy of BiblePlanHistoryEntry
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? planId = null,Object? progress = null,Object? endedAt = null,}) {
+  return _then(BiblePlanHistoryEntry(
+planId: null == planId ? _self.planId : planId // ignore: cast_nullable_to_non_nullable
+as String,progress: null == progress ? _self.progress : progress // ignore: cast_nullable_to_non_nullable
+as BiblePlanProgress,endedAt: null == endedAt ? _self.endedAt : endedAt // ignore: cast_nullable_to_non_nullable
+as CalendarDateTime,
+  ));
+}
+/// Create a copy of BiblePlanHistoryEntry
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$BiblePlanProgressCopyWith<$Res> get progress {
+  
+  return $BiblePlanProgressCopyWith<$Res>(_self.progress, (value) {
+    return _then(_self.copyWith(progress: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [BiblePlanHistoryEntry].
+extension BiblePlanHistoryEntryPatterns on BiblePlanHistoryEntry {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _BiblePlanHistoryEntry value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _BiblePlanHistoryEntry() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _BiblePlanHistoryEntry value)  $default,){
+final _that = this;
+switch (_that) {
+case _BiblePlanHistoryEntry():
+return $default(_that);}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _BiblePlanHistoryEntry value)?  $default,){
+final _that = this;
+switch (_that) {
+case _BiblePlanHistoryEntry() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String planId,  BiblePlanProgress progress,  CalendarDateTime endedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _BiblePlanHistoryEntry() when $default != null:
+return $default(_that.planId,_that.progress,_that.endedAt);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String planId,  BiblePlanProgress progress,  CalendarDateTime endedAt)  $default,) {final _that = this;
+switch (_that) {
+case _BiblePlanHistoryEntry():
+return $default(_that.planId,_that.progress,_that.endedAt);}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String planId,  BiblePlanProgress progress,  CalendarDateTime endedAt)?  $default,) {final _that = this;
+switch (_that) {
+case _BiblePlanHistoryEntry() when $default != null:
+return $default(_that.planId,_that.progress,_that.endedAt);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _BiblePlanHistoryEntry extends BiblePlanHistoryEntry {
+  const _BiblePlanHistoryEntry({required this.planId, required this.progress, required this.endedAt}): super._();
+  factory _BiblePlanHistoryEntry.fromJson(Map<String, dynamic> json) => _$BiblePlanHistoryEntryFromJson(json);
+
+@override final  String planId;
+@override final  BiblePlanProgress progress;
+@override final  CalendarDateTime endedAt;
+
+/// Create a copy of BiblePlanHistoryEntry
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$BiblePlanHistoryEntryCopyWith<_BiblePlanHistoryEntry> get copyWith => __$BiblePlanHistoryEntryCopyWithImpl<_BiblePlanHistoryEntry>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$BiblePlanHistoryEntryToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BiblePlanHistoryEntry&&(identical(other.planId, planId) || other.planId == planId)&&(identical(other.progress, progress) || other.progress == progress)&&(identical(other.endedAt, endedAt) || other.endedAt == endedAt));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,planId,progress,endedAt);
+
+@override
+String toString() {
+  return 'BiblePlanHistoryEntry(planId: $planId, progress: $progress, endedAt: $endedAt)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$BiblePlanHistoryEntryCopyWith<$Res> implements $BiblePlanHistoryEntryCopyWith<$Res> {
+  factory _$BiblePlanHistoryEntryCopyWith(_BiblePlanHistoryEntry value, $Res Function(_BiblePlanHistoryEntry) _then) = __$BiblePlanHistoryEntryCopyWithImpl;
+@override @useResult
+$Res call({
+ String planId, BiblePlanProgress progress, CalendarDateTime endedAt
+});
+
+
+@override $BiblePlanProgressCopyWith<$Res> get progress;
+
+}
+/// @nodoc
+class __$BiblePlanHistoryEntryCopyWithImpl<$Res>
+    implements _$BiblePlanHistoryEntryCopyWith<$Res> {
+  __$BiblePlanHistoryEntryCopyWithImpl(this._self, this._then);
+
+  final _BiblePlanHistoryEntry _self;
+  final $Res Function(_BiblePlanHistoryEntry) _then;
+
+/// Create a copy of BiblePlanHistoryEntry
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? planId = null,Object? progress = null,Object? endedAt = null,}) {
+  return _then(_BiblePlanHistoryEntry(
+planId: null == planId ? _self.planId : planId // ignore: cast_nullable_to_non_nullable
+as String,progress: null == progress ? _self.progress : progress // ignore: cast_nullable_to_non_nullable
+as BiblePlanProgress,endedAt: null == endedAt ? _self.endedAt : endedAt // ignore: cast_nullable_to_non_nullable
+as CalendarDateTime,
+  ));
+}
+
+/// Create a copy of BiblePlanHistoryEntry
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$BiblePlanProgressCopyWith<$Res> get progress {
+  
+  return $BiblePlanProgressCopyWith<$Res>(_self.progress, (value) {
+    return _then(_self.copyWith(progress: value));
+  });
+}
+}
+
+
+/// @nodoc
 mixin _$BiblePlanDayId {
 
  String get instanceId; int get dayIndex;

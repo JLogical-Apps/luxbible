@@ -41,7 +41,7 @@ final class CustomBiblePlansProvider
   }
 }
 
-String _$customBiblePlansHash() => r'7e06d1acbca7fe70d84a190d35c31d1c82182b84';
+String _$customBiblePlansHash() => r'ea8517e24a534050f5df9586a40e6837d7b864c4';
 
 abstract class _$CustomBiblePlans extends $Notifier<Map<String, BiblePlan>> {
   Map<String, BiblePlan> build();
