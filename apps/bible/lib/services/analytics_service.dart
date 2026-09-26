@@ -6,6 +6,8 @@ enum AnalyticsEvent {
   planStarted('plan_started'),
   biblePlanFileOpened('bible_plan_file_opened'),
   search('search'),
+  verseShared('verse_shared'),
+  sharedPassageOpened('shared_passage_opened'),
   verseOfTheDayTapped('verse_of_the_day_tapped'),
   verseOfTheDayWidgetTapped('verse_of_the_day_widget_tapped'),
   notificationTapped('notification_tapped'),

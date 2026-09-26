@@ -7,7 +7,11 @@ declare global {
   }
 }
 
-export function trackStoreNavigation(store: StoreName, campaign?: Campaign) {
+export function trackStoreNavigation(
+  store: StoreName,
+  campaign?: Campaign,
+  onSent?: () => void,
+) {
   window.gtag?.('event', 'store_navigation', {
     store,
     ...(campaign && {
@@ -15,5 +19,6 @@ export function trackStoreNavigation(store: StoreName, campaign?: Campaign) {
       campaign_medium: campaign.medium,
       campaign_name: campaign.name,
     }),
+    ...(onSent && { event_callback: onSent, event_timeout: 1000 }),
   });
 }

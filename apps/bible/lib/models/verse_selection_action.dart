@@ -3,6 +3,7 @@ import 'package:bible/models/reference/region_type.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/services/analytics_service.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/sheets/copy_sheet.dart';
 import 'package:bible/ui/sheets/study_sheet.dart';
@@ -100,12 +101,14 @@ enum VerseSelectionAction {
       case share:
         final renderObject = context.findRenderObject();
         final origin = renderObject is RenderBox ? renderObject.localToGlobal(.zero) & renderObject.size : null;
-        await SharePlus.instance.share(
+        final result = await SharePlus.instance.share(
           ShareParams(
             uri: Uri.https('app.luxbible.app', '/passage/${selectedVerseSelection.osisId()}'),
             sharePositionOrigin: origin,
           ),
         );
+        // Platforms that can't report the outcome return `unavailable`, so only explicit dismissals are excluded.
+        if (result.status != .dismissed) AnalyticsEvent.verseShared.log();
 
       case study:
         StudySheet.show(

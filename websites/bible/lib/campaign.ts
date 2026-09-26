@@ -44,6 +44,13 @@ export const campaignsBySourceCode = {
   },
 } satisfies Record<string, Campaign>;
 
+export const passageShareCampaign: Campaign = {
+  source: 'lux_bible',
+  medium: 'share',
+  name: 'passage_share',
+  appleToken: 'passage-share',
+};
+
 export function getCampaign(search: string): Campaign | undefined {
   const sourceCode = new URLSearchParams(search).get('s');
   return sourceCode && sourceCode in campaignsBySourceCode

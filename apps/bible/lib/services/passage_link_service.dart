@@ -1,3 +1,4 @@
+import 'package:bible/services/analytics_service.dart';
 import 'package:bible/services/bible_navigation_service.dart';
 import 'package:bible/services/launch_link_channel.dart';
 import 'package:lux/lux.dart';
@@ -25,6 +26,7 @@ class PassageLinkService {
   void open(String link) {
     if (Uri.tryParse(link) case final uri? when uri.scheme == 'https' && uri.host == 'app.luxbible.app') {
       if (uri.pathSegments case ['passage', final osisId] when VerseSelection.isOsisId(osisId)) {
+        AnalyticsEvent.sharedPassageOpened.log();
         navigation.navigateTo(VerseSelection.fromOsisId(osisId));
       }
     }

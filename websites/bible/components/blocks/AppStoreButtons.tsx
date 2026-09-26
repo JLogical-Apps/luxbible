@@ -44,13 +44,15 @@ export default function AppStoreButtons({
   appStoreUrl,
   appStoreProviderToken,
   googlePlayUrl,
+  defaultCampaign,
 }: {
   appStoreUrl?: string;
   appStoreProviderToken?: string;
   googlePlayUrl?: string;
+  defaultCampaign?: Campaign;
 }) {
   const [preferredStore, setPreferredStore] = useState<StoreName>();
-  const campaign = useCampaign();
+  const campaign = useCampaign() ?? defaultCampaign;
   useEffect(() => {
     setPreferredStore(getPreferredStore(navigator));
   }, []);
