@@ -57,7 +57,7 @@ Lux counts distinct active days locally. After seven active days, it makes one n
 - RVG: Reina Valera Gómez 2010 in Spanish
 - ELB1905: Unrevidierte Elberfelder 1905 in German
 - LUT1912: Lutherbibel 1912 in German
-- SYNO: Russian Synodal Bible 1876
+- SYNO: Синодальный перевод 1876 in Russian
 - LXX: Septuagint, Rahlfs
 - TR: Textus Receptus, Stephens 1550
 - BYZ: Robinson-Pierpont Byzantine Textform 2005
@@ -71,10 +71,10 @@ Lux counts distinct active days locally. After seven active days, it makes one n
 - NIV
 - NLT
 - NKJV
-- NRT: New Russian Translation 2010 in Russian
+- NRT: Новый русский перевод 2010 in Russian
 - HTB: Het Boek 2007 in Dutch
 - HFA: Hoffnung für alle in German
-- NTR: New Romanian Translation 2021 in Romanian
+- NTR: Noua Traducere Românească 2021 in Romanian
 
 Online chapters are cached on the device after they are loaded. A cached chapter remains available without a
 connection for fourteen days, after which Lux requires a connection to load it again.

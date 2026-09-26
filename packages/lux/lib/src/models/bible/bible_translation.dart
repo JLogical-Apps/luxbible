@@ -76,7 +76,7 @@ enum BibleTranslation {
     byz => 'Byzantine Textform 2005',
     statresgnt => 'Statistical Restoration Greek New Testament',
     sv => 'Statenvertaling',
-    nrt => 'New Russian Translation 2010',
+    nrt => 'Новый русский перевод 2010',
     fob => 'La Sainte Bible (Ostervald 1744)',
     martin1744 => 'Bible David Martin 1744',
     rvg => 'Reina Valera Gómez 2010',
@@ -86,7 +86,7 @@ enum BibleTranslation {
     elb1905 => 'Unrevidierte Elberfelder 1905',
     lut1912 => 'Lutherbibel 1912',
     synodal => 'Синодальный перевод 1876',
-    ntr => 'New Romanian Translation 2021',
+    ntr => 'Noua Traducere Românească 2021',
   };
 
   BibleTranslationSource get source => switch (this) {
