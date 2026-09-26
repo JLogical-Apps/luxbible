@@ -10,7 +10,6 @@ import 'package:utils_core/utils_core.dart';
 
 part 'verse_of_the_day_widget_provider.g.dart';
 
-// How long the widget keeps working without the app being opened.
 const verseOfTheDayWidgetHorizonDays = 14;
 
 @Riverpod(keepAlive: true)

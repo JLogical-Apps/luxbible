@@ -1,7 +1,5 @@
 import 'package:flutter/services.dart';
 
-// The Dart end of the native LaunchLinkBridge: the value that launched Lux is fetched once, and
-// every later one is pushed through the open method.
 class LaunchLinkChannel {
   final MethodChannel channel;
   final String launchMethod;

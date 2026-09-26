@@ -1,3 +1,5 @@
+const appStoreId = '6759510218';
+
 export const site = {
   name: 'Lux Bible',
   tagline: 'Scripture Deserves Better Software',
@@ -5,7 +7,8 @@ export const site = {
   description:
     'A modern Bible app built for real study. Interlinear, cross-references, commentary, and global search, all fully offline. Free forever, no ads, no account required.',
 
-  appStoreUrl: 'https://apps.apple.com/us/app/lux-bible/id6759510218',
+  appStoreId,
+  appStoreUrl: `https://apps.apple.com/us/app/lux-bible/id${appStoreId}`,
   appStoreProviderToken: '119076898',
   googlePlayUrl:
     'https://play.google.com/store/apps/details?id=app.luxbible.app',

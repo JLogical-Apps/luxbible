@@ -57,6 +57,19 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="https" android:host="app.luxbible.app" android:pathPrefix="/passage/"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="app.luxbible.app.BiblePlanOpenActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -64,12 +77,6 @@
                 <data android:mimeType="application/vnd.luxbible.plan+json"/>
                 <data android:mimeType="application/json"/>
                 <data android:mimeType="application/octet-stream"/>
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data android:scheme="https" android:host="app.luxbible.app" android:pathPrefix="/passage/"/>
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND"/>

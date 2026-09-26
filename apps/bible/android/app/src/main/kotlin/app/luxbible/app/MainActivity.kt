@@ -10,7 +10,8 @@ class MainActivity : AudioServiceActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         bridges.forEach { it.register(this, flutterEngine.dartExecutor.binaryMessenger) }
-        deliver(intent)
+        // Reopening from Recents restores the intent that first started the task, which was already handled.
+        if ((intent.flags and Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) == 0) deliver(intent)
     }
 
     override fun onNewIntent(intent: Intent) {

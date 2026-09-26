@@ -15,7 +15,7 @@ Lees de Statenvertaling (SV) en Petrus Canisiusvertaling 1939 volledig offline. 
 
 Lees de grondteksten offline met de Griekse Septuaginta, Textus Receptus, Byzantine Textform, Statistical Restoration Greek New Testament en Open Scriptures Hebrew Bible.
 
-Luister naar de BSB of KJV met instelbare afspeelsnelheid, een slaaptimer en afspelen op de achtergrond. Begin elke dag met het Vers van de dag en stel dagelijkse herinneringen in voor dit vers of een actief leesplan. Kies een bestaand leesplan of maak er zelf een met passages of geselecteerde Bijbelboeken en een looptijd. Importeer en deel plannen als bestanden, volg meerdere plannen tegelijk en houd je voortgang bij.
+Luister naar de BSB of KJV met instelbare afspeelsnelheid, een slaaptimer en afspelen op de achtergrond. Begin elke dag met het Vers van de dag, ook als widget op je beginscherm, en stel dagelijkse herinneringen in voor dit vers of een actief leesplan. Kies een bestaand leesplan of maak er zelf een met passages of geselecteerde Bijbelboeken en een looptijd. Importeer en deel plannen als bestanden, volg meerdere plannen tegelijk en houd je voortgang bij.
 
 NOTITIES
 Markeer verzen, woorden of zinnen met een kleur, onderstreping of golvende lijn. Voeg notities toe, maak je eigen markeerstijlen en orden alles in notitieboeken. Filter je annotaties of verberg een notitieboek voor een rustigere leesweergave.

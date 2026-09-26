@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 import AppStoreButtons from '@/components/blocks/AppStoreButtons';
-import StoreRedirect from '@/components/blocks/StoreRedirect';
+import AndroidAppRedirect from '@/components/blocks/AndroidAppRedirect';
 import Page from '@/components/layout/Page';
 import { passageShareCampaign } from '@/lib/campaign';
 import { site } from '@/lib/site';
@@ -20,14 +20,13 @@ export function generateMetadata({ params }: Props): Metadata {
   const title = reference
     ? `${reference} in Lux Bible`
     : 'Passage in Lux Bible';
+  const url = `https://app.luxbible.app/passage/${encodeURIComponent(
+    params.reference,
+  )}`;
   return {
     title,
-    openGraph: {
-      title,
-      url: `https://app.luxbible.app/passage/${encodeURIComponent(
-        params.reference,
-      )}`,
-    },
+    openGraph: { title, url },
+    itunes: { appId: site.appStoreId, appArgument: url },
   };
 }
 
@@ -50,9 +49,7 @@ export default function PassagePage({ params }: Props) {
           googlePlayUrl={site.googlePlayUrl}
           defaultCampaign={passageShareCampaign}
         />
-        <StoreRedirect
-          appStoreUrl={site.appStoreUrl}
-          appStoreProviderToken={site.appStoreProviderToken}
+        <AndroidAppRedirect
           googlePlayUrl={site.googlePlayUrl}
           defaultCampaign={passageShareCampaign}
         />

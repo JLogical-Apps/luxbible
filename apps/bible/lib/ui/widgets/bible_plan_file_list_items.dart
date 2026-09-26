@@ -23,6 +23,7 @@ class BiblePlanShareListItem extends StatelessWidget {
       final renderObject = context.findRenderObject();
       final origin = renderObject is RenderBox ? renderObject.localToGlobal(.zero) & renderObject.size : null;
       final filename = BiblePlanFileService.getFilename(displayName);
+      context.pop();
       await SharePlus.instance.share(
         ShareParams(
           files: [
@@ -52,6 +53,7 @@ class BiblePlanDownloadListItem extends StatelessWidget {
     title: t.biblePlans.download.toText(),
     subtitle: t.biblePlans.downloadDescription.toText(),
     onPressed: () async {
+      context.pop();
       try {
         await FlutterFileSaver().writeFileAsBytes(
           fileName: BiblePlanFileService.getFilename(displayName),

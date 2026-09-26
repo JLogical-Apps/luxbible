@@ -38,7 +38,7 @@ Lux precomputes a rolling fourteen days of verses whenever it is opened or resum
 
 Lux measures visits to its main pages and a small set of prominent actions: starting audio playback, starting a plan, completing a plan day, opening an externally supplied plan file, searching, sharing verses, opening a shared passage link, opening Verse of the Day, opening the Verse of the Day widget, opening a local notification, changing toolbar configuration, opening a community link, pressing Rate Lux, requesting the native review prompt, and starting, completing, or skipping onboarding. These events contain no user-created content or dynamic identifiers from the app.
 
-On Android, Lux measures the general campaign source that led to installation through Google Play Install Referrer. The website maps compact, fixed social-profile and boosted-post source codes to aggregate campaign values, reports website traffic and store navigation through Google Analytics, and passes the same values to Google Play. When a shared verse link opens the website instead of Lux, iPhone, iPad, and Android visitors are sent straight to their store, and desktop visitors see both store buttons. Both paths use a fixed passage-share campaign, so installs from shared verse links are attributed on Google Play and the App Store. These values identify a marketing source such as Facebook or TikTok, not a person or social-media account.
+On Android, Lux measures the general campaign source that led to installation through Google Play Install Referrer. The website maps compact, fixed social-profile and boosted-post source codes to aggregate campaign values, reports website traffic and store navigation through Google Analytics, and passes the same values to Google Play. When a shared verse link opens the website instead of Lux, Android visitors are sent to the passage in Lux when it is installed and to Google Play otherwise. iPhone and iPad visitors see Safari's app banner, which offers to open the passage in Lux or get it, along with an App Store button, and desktop visitors see both store buttons. The store links use a fixed passage-share campaign, so installs from shared verse links are attributed on Google Play and the App Store. These values identify a marketing source such as Facebook or TikTok, not a person or social-media account.
 
 Lux counts distinct active days locally. After seven active days, it makes one native app-review request after the user finishes viewing a study action, completes a Bible plan day, or creates an annotation. The platform decides whether to display the native prompt.
 
@@ -240,6 +240,8 @@ The verse toolbar appears after one or more verses are selected. Available short
 - Highlight
 - Share
 - Copy
+
+The verse overflow menu always provides Annotate, Study, Share, and Copy. Share sends an `app.luxbible.app` link to the selected verses through the platform share sheet.
 
 Long-pressing an existing verse selection invokes the configured verse-selection long-press action.
 

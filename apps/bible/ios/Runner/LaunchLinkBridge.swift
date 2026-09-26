@@ -24,9 +24,6 @@ class LaunchLinkBridge: NSObject, FlutterSceneLifeCycleDelegate {
   /// The value to hand Dart for `url`, or nil when the URL does not belong to this bridge.
   func value(for url: URL) -> String? { nil }
 
-  /// Universal-link bridges take their URL from the scene's user activity rather than its URL contexts.
-  var readsUserActivity: Bool { false }
-
   /// Handles a method beyond the launch method, returning whether it was recognized.
   func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) -> Bool { false }
 
@@ -80,38 +77,30 @@ class LaunchLinkBridge: NSObject, FlutterSceneLifeCycleDelegate {
   ) -> Bool {
     guard let connectionOptions else { return false }
 
-    if readsUserActivity {
-      webpageURLs(of: connectionOptions.userActivities).forEach { deliver($0) }
-    } else {
-      connectionOptions.urlContexts.forEach { deliver($0.url) }
-    }
+    webpageURLs(of: connectionOptions.userActivities).forEach { deliver($0) }
+    connectionOptions.urlContexts.forEach { deliver($0.url) }
     return false
   }
 
   @objc(scene:openURLContexts:)
   func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) -> Bool {
-    guard !readsUserActivity else { return false }
-
-    return URLContexts.reduce(false) { handled, context in deliver(context.url) || handled }
+    URLContexts.reduce(false) { handled, context in deliver(context.url) || handled }
   }
 
   @objc(scene:continueUserActivity:)
   func scene(_ scene: UIScene, continue userActivity: NSUserActivity) -> Bool {
-    guard readsUserActivity else { return false }
-
-    return webpageURLs(of: [userActivity]).reduce(false) { handled, url in deliver(url) || handled }
+    webpageURLs(of: [userActivity]).reduce(false) { handled, url in deliver(url) || handled }
   }
 }
 
-/// Universal links to a passage, as `https://app.luxbible.app/passage/<osisId>`.
+/// Links to a passage, as `https://app.luxbible.app/passage/<osisId>`. They arrive as universal links,
+/// or as a URL when the website's Smart App Banner opens Lux.
 final class PassageLinkBridge: LaunchLinkBridge {
   static let shared = PassageLinkBridge()
 
   private init() {
     super.init(channelName: "app.luxbible.app/passage-link", launchMethod: "getLaunchLink", openMethod: "openPassage")
   }
-
-  override var readsUserActivity: Bool { true }
 
   override func value(for url: URL) -> String? {
     let isPassage =

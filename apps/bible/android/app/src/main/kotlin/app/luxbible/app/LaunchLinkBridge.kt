@@ -64,7 +64,12 @@ object PassageLinkBridge : LaunchLinkBridge("app.luxbible.app/passage-link", "ge
 
 /** Bible plan files opened from elsewhere on the device, delivered to Dart as their contents. */
 object BiblePlanOpenBridge : LaunchLinkBridge("app.luxbible.app/bible-plan-open", "getLaunchPlan", "openPlan") {
-    override fun read(context: Context, intent: Intent): String? {
+    const val EXTRA_CONTENTS = "app.luxbible.app.extra.BIBLE_PLAN_CONTENTS"
+
+    override fun read(context: Context, intent: Intent): String? = intent.getStringExtra(EXTRA_CONTENTS)
+
+    /** The contents of the `.lxbp` file [intent] opens or shares, empty when it can't be read. */
+    fun readFile(context: Context, intent: Intent): String? {
         val uri = when (intent.action) {
             Intent.ACTION_VIEW -> intent.data
             Intent.ACTION_SEND -> intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM)
