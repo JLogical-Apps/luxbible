@@ -47,3 +47,13 @@ When preparing local Lux social posts, read [`tools/socials/PREPARING_POSTS.md`]
 When working on short-form reels, read [`tools/reels/CONTEXT.md`](tools/reels/CONTEXT.md) for the
 vision and current state, and [`tools/reels/README.md`](tools/reels/README.md) for usage. Videos are
 defined as Dart files there; rendering is pure Dart and the Flutter app is only a preview wrapper.
+
+## Improving Agent Context
+
+After finishing a task, consider whether this file, the `context/` files, a skill, or a tool README should change so the next agent has an easier time. Good candidates:
+
+- A relevant file, command, or workflow that took real searching to find and is likely to come up again.
+- An instruction here or in `context/` that was missing, outdated, or misleading.
+- A repeated multi-step process that would work better as a skill or a documented script.
+
+Don't make these edits on your own. At the end of your response, briefly propose the specific change and where it would go, and ask whether to make it. Skip the suggestion when nothing learned would generalize beyond the current task, and keep proposed additions short so this file stays easy to scan.
