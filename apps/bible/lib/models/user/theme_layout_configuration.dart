@@ -128,12 +128,9 @@ enum SectionHeadings {
       : true;
 }
 
-SectionHeadings _sectionHeadingsFromJson(dynamic json) {
-  if (json is bool) {
-    return json ? .all : .none;
-  } else if (json is SectionHeadings) {
-    return json;
-  } else {
-    return .all;
-  }
-}
+SectionHeadings _sectionHeadingsFromJson(Object? json) => switch (json) {
+  true => .all,
+  false => .none,
+  String value => SectionHeadings.values.byNameOrNull(value) ?? .all,
+  _ => .all,
+};
