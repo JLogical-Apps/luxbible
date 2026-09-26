@@ -3,6 +3,7 @@ import 'package:bible/models/highlight_style.dart';
 import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/providers/viewed_bible_plan_day_provider.dart';
 import 'package:bible/ui/pages/notebook_icon.dart';
 import 'package:bible/ui/sheets/highlight_style_sheet.dart';
 import 'package:bible/ui/sheets/notebook_sheet.dart';
@@ -28,6 +29,7 @@ class AnnotationSheet {
         ? annotation.notebookId
         : user.getNotebookById(user.lastNotebookId)?.id;
     final initialStyle = annotation?.style ?? user.defaultAnnotationStyle;
+    final planDay = annotation == null ? ref.read(viewedBiblePlanDayProvider) : annotation.planDay;
 
     final port =
         Port.of({
@@ -41,6 +43,7 @@ class AnnotationSheet {
             style: values['style'],
             note: (values['note'] as String).trim(),
             notebookId: values['notebookId'],
+            planDay: planDay,
           ),
         );
 

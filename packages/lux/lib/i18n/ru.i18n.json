@@ -626,6 +626,7 @@
     "stopPlan": "Остановить план",
     "stopPlanDescription": "Удалите этот план и его ход.",
     "readEntireChapter": "Читать всю главу",
+    "reviewDayAnnotations": "Просмотреть аннотации дня",
     "readInContext": "Читать в контексте",
     "startNew": "Начать заново",
     "day": "День {day}",

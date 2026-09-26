@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Annotation {
 
-@JsonKey(readValue: _readAnnotationSelection) AnnotationSelection get selection;@JsonKey(readValue: _readHighlightStyle) HighlightStyle get style; String get note; String? get notebookId; DateTime get createdAt;
+@JsonKey(readValue: _readAnnotationSelection) AnnotationSelection get selection;@JsonKey(readValue: _readHighlightStyle) HighlightStyle get style; String get note; String? get notebookId; BiblePlanDayId? get planDay; DateTime get createdAt;
 /// Create a copy of Annotation
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $AnnotationCopyWith<Annotation> get copyWith => _$AnnotationCopyWithImpl<Annotat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Annotation&&(identical(other.selection, selection) || other.selection == selection)&&(identical(other.style, style) || other.style == style)&&(identical(other.note, note) || other.note == note)&&(identical(other.notebookId, notebookId) || other.notebookId == notebookId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Annotation&&(identical(other.selection, selection) || other.selection == selection)&&(identical(other.style, style) || other.style == style)&&(identical(other.note, note) || other.note == note)&&(identical(other.notebookId, notebookId) || other.notebookId == notebookId)&&(identical(other.planDay, planDay) || other.planDay == planDay)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,selection,style,note,notebookId,createdAt);
+int get hashCode => Object.hash(runtimeType,selection,style,note,notebookId,planDay,createdAt);
 
 @override
 String toString() {
-  return 'Annotation(selection: $selection, style: $style, note: $note, notebookId: $notebookId, createdAt: $createdAt)';
+  return 'Annotation(selection: $selection, style: $style, note: $note, notebookId: $notebookId, planDay: $planDay, createdAt: $createdAt)';
 }
 
 
@@ -49,11 +49,11 @@ abstract mixin class $AnnotationCopyWith<$Res>  {
   factory $AnnotationCopyWith(Annotation value, $Res Function(Annotation) _then) = _$AnnotationCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(readValue: _readAnnotationSelection) AnnotationSelection selection,@JsonKey(readValue: _readHighlightStyle) HighlightStyle style, String note, String? notebookId, DateTime createdAt
+@JsonKey(readValue: _readAnnotationSelection) AnnotationSelection selection,@JsonKey(readValue: _readHighlightStyle) HighlightStyle style, String note, String? notebookId, BiblePlanDayId? planDay, DateTime createdAt
 });
 
 
-$AnnotationSelectionCopyWith<$Res> get selection;$HighlightStyleCopyWith<$Res> get style;
+$AnnotationSelectionCopyWith<$Res> get selection;$HighlightStyleCopyWith<$Res> get style;$BiblePlanDayIdCopyWith<$Res>? get planDay;
 
 }
 /// @nodoc
@@ -66,13 +66,14 @@ class _$AnnotationCopyWithImpl<$Res>
 
 /// Create a copy of Annotation
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? selection = null,Object? style = null,Object? note = null,Object? notebookId = freezed,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? selection = null,Object? style = null,Object? note = null,Object? notebookId = freezed,Object? planDay = freezed,Object? createdAt = null,}) {
   return _then(Annotation(
 selection: null == selection ? _self.selection : selection // ignore: cast_nullable_to_non_nullable
 as AnnotationSelection,style: null == style ? _self.style : style // ignore: cast_nullable_to_non_nullable
 as HighlightStyle,note: null == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String,notebookId: freezed == notebookId ? _self.notebookId : notebookId // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,planDay: freezed == planDay ? _self.planDay : planDay // ignore: cast_nullable_to_non_nullable
+as BiblePlanDayId?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
 }
@@ -93,6 +94,18 @@ $HighlightStyleCopyWith<$Res> get style {
   
   return $HighlightStyleCopyWith<$Res>(_self.style, (value) {
     return _then(_self.copyWith(style: value));
+  });
+}/// Create a copy of Annotation
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$BiblePlanDayIdCopyWith<$Res>? get planDay {
+    if (_self.planDay == null) {
+    return null;
+  }
+
+  return $BiblePlanDayIdCopyWith<$Res>(_self.planDay!, (value) {
+    return _then(_self.copyWith(planDay: value));
   });
 }
 }
@@ -173,10 +186,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readAnnotationSelection)  AnnotationSelection selection, @JsonKey(readValue: _readHighlightStyle)  HighlightStyle style,  String note,  String? notebookId,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readAnnotationSelection)  AnnotationSelection selection, @JsonKey(readValue: _readHighlightStyle)  HighlightStyle style,  String note,  String? notebookId,  BiblePlanDayId? planDay,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Annotation() when $default != null:
-return $default(_that.selection,_that.style,_that.note,_that.notebookId,_that.createdAt);case _:
+return $default(_that.selection,_that.style,_that.note,_that.notebookId,_that.planDay,_that.createdAt);case _:
   return orElse();
 
 }
@@ -194,10 +207,10 @@ return $default(_that.selection,_that.style,_that.note,_that.notebookId,_that.cr
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readAnnotationSelection)  AnnotationSelection selection, @JsonKey(readValue: _readHighlightStyle)  HighlightStyle style,  String note,  String? notebookId,  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(readValue: _readAnnotationSelection)  AnnotationSelection selection, @JsonKey(readValue: _readHighlightStyle)  HighlightStyle style,  String note,  String? notebookId,  BiblePlanDayId? planDay,  DateTime createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _Annotation():
-return $default(_that.selection,_that.style,_that.note,_that.notebookId,_that.createdAt);}
+return $default(_that.selection,_that.style,_that.note,_that.notebookId,_that.planDay,_that.createdAt);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -211,10 +224,10 @@ return $default(_that.selection,_that.style,_that.note,_that.notebookId,_that.cr
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(readValue: _readAnnotationSelection)  AnnotationSelection selection, @JsonKey(readValue: _readHighlightStyle)  HighlightStyle style,  String note,  String? notebookId,  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(readValue: _readAnnotationSelection)  AnnotationSelection selection, @JsonKey(readValue: _readHighlightStyle)  HighlightStyle style,  String note,  String? notebookId,  BiblePlanDayId? planDay,  DateTime createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Annotation() when $default != null:
-return $default(_that.selection,_that.style,_that.note,_that.notebookId,_that.createdAt);case _:
+return $default(_that.selection,_that.style,_that.note,_that.notebookId,_that.planDay,_that.createdAt);case _:
   return null;
 
 }
@@ -226,13 +239,14 @@ return $default(_that.selection,_that.style,_that.note,_that.notebookId,_that.cr
 @JsonSerializable()
 
 class _Annotation extends Annotation {
-  const _Annotation({@JsonKey(readValue: _readAnnotationSelection) required this.selection, @JsonKey(readValue: _readHighlightStyle) this.style = HighlightStyle.fallback, this.note = '', this.notebookId, required this.createdAt}): super._();
+  const _Annotation({@JsonKey(readValue: _readAnnotationSelection) required this.selection, @JsonKey(readValue: _readHighlightStyle) this.style = HighlightStyle.fallback, this.note = '', this.notebookId, this.planDay, required this.createdAt}): super._();
   factory _Annotation.fromJson(Map<String, dynamic> json) => _$AnnotationFromJson(json);
 
 @override@JsonKey(readValue: _readAnnotationSelection) final  AnnotationSelection selection;
 @override@JsonKey(readValue: _readHighlightStyle) final  HighlightStyle style;
 @override@JsonKey() final  String note;
 @override final  String? notebookId;
+@override final  BiblePlanDayId? planDay;
 @override final  DateTime createdAt;
 
 /// Create a copy of Annotation
@@ -248,16 +262,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Annotation&&(identical(other.selection, selection) || other.selection == selection)&&(identical(other.style, style) || other.style == style)&&(identical(other.note, note) || other.note == note)&&(identical(other.notebookId, notebookId) || other.notebookId == notebookId)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Annotation&&(identical(other.selection, selection) || other.selection == selection)&&(identical(other.style, style) || other.style == style)&&(identical(other.note, note) || other.note == note)&&(identical(other.notebookId, notebookId) || other.notebookId == notebookId)&&(identical(other.planDay, planDay) || other.planDay == planDay)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,selection,style,note,notebookId,createdAt);
+int get hashCode => Object.hash(runtimeType,selection,style,note,notebookId,planDay,createdAt);
 
 @override
 String toString() {
-  return 'Annotation(selection: $selection, style: $style, note: $note, notebookId: $notebookId, createdAt: $createdAt)';
+  return 'Annotation(selection: $selection, style: $style, note: $note, notebookId: $notebookId, planDay: $planDay, createdAt: $createdAt)';
 }
 
 
@@ -268,11 +282,11 @@ abstract mixin class _$AnnotationCopyWith<$Res> implements $AnnotationCopyWith<$
   factory _$AnnotationCopyWith(_Annotation value, $Res Function(_Annotation) _then) = __$AnnotationCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(readValue: _readAnnotationSelection) AnnotationSelection selection,@JsonKey(readValue: _readHighlightStyle) HighlightStyle style, String note, String? notebookId, DateTime createdAt
+@JsonKey(readValue: _readAnnotationSelection) AnnotationSelection selection,@JsonKey(readValue: _readHighlightStyle) HighlightStyle style, String note, String? notebookId, BiblePlanDayId? planDay, DateTime createdAt
 });
 
 
-@override $AnnotationSelectionCopyWith<$Res> get selection;@override $HighlightStyleCopyWith<$Res> get style;
+@override $AnnotationSelectionCopyWith<$Res> get selection;@override $HighlightStyleCopyWith<$Res> get style;@override $BiblePlanDayIdCopyWith<$Res>? get planDay;
 
 }
 /// @nodoc
@@ -285,13 +299,14 @@ class __$AnnotationCopyWithImpl<$Res>
 
 /// Create a copy of Annotation
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? selection = null,Object? style = null,Object? note = null,Object? notebookId = freezed,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? selection = null,Object? style = null,Object? note = null,Object? notebookId = freezed,Object? planDay = freezed,Object? createdAt = null,}) {
   return _then(_Annotation(
 selection: null == selection ? _self.selection : selection // ignore: cast_nullable_to_non_nullable
 as AnnotationSelection,style: null == style ? _self.style : style // ignore: cast_nullable_to_non_nullable
 as HighlightStyle,note: null == note ? _self.note : note // ignore: cast_nullable_to_non_nullable
 as String,notebookId: freezed == notebookId ? _self.notebookId : notebookId // ignore: cast_nullable_to_non_nullable
-as String?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String?,planDay: freezed == planDay ? _self.planDay : planDay // ignore: cast_nullable_to_non_nullable
+as BiblePlanDayId?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
 }
@@ -313,6 +328,18 @@ $HighlightStyleCopyWith<$Res> get style {
   
   return $HighlightStyleCopyWith<$Res>(_self.style, (value) {
     return _then(_self.copyWith(style: value));
+  });
+}/// Create a copy of Annotation
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$BiblePlanDayIdCopyWith<$Res>? get planDay {
+    if (_self.planDay == null) {
+    return null;
+  }
+
+  return $BiblePlanDayIdCopyWith<$Res>(_self.planDay!, (value) {
+    return _then(_self.copyWith(planDay: value));
   });
 }
 }

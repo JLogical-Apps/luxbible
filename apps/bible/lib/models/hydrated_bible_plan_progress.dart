@@ -9,6 +9,11 @@ class HydratedBiblePlanProgress {
 
   const HydratedBiblePlanProgress({required this.id, required this.plan, required this.progress});
 
+  // Progress started before instance IDs existed falls back to the plan ID so its annotations stay linked.
+  String get instanceId => progress.instanceId ?? id;
+
+  BiblePlanDayId getDayId(int dayIndex) => BiblePlanDayId(instanceId: instanceId, dayIndex: dayIndex);
+
   bool isPassageComplete({required int dayIndex, required VerseSelection passage}) =>
       (progress.days.elementAtOrNull(dayIndex) ?? BiblePlanDayProgress.incomplete()).isPassageComplete(passage);
 

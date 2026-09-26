@@ -3,6 +3,7 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/flows/bible_plan_reminder_flow.dart';
 import 'package:bible/ui/pages/bible_plan_read_page.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
+import 'package:bible/ui/sheets/bible_plan_day_annotations_sheet.dart';
 import 'package:bible/ui/widgets/bible_plan_file_list_items.dart';
 import 'package:bible/ui/widgets/bible_plan_thumbnail.dart';
 import 'package:bible/utils/bible_hook_utils.dart';
@@ -107,6 +108,7 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                       );
                       final dayIndex = useListenableSelector(tabController, () => tabController.index);
                       final day = plan.days[dayIndex];
+                      final planDay = progress.getDayId(dayIndex);
 
                       return SafeArea(
                         bottom: false,
@@ -283,6 +285,22 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                                           )
                                           .toList(),
                               ),
+                              if (user.getPlanDayAnnotations(planDay).isNotEmpty)
+                                Padding(
+                                  padding: .all(16),
+                                  child: StyledRectButton.secondary(
+                                    label: t.biblePlans.reviewDayAnnotations.toText(),
+                                    onPressed: () => BiblePlanDayAnnotationsSheet.show(
+                                      context,
+                                      planDay: planDay,
+                                      planName: plan.getDisplayName(planId),
+                                      onNavigateToVerseSelection: (selection) {
+                                        context.pop();
+                                        context.pop(selection);
+                                      },
+                                    ),
+                                  ),
+                                ),
                               if (progress.isCompleted)
                                 Padding(
                                   padding: .all(16),

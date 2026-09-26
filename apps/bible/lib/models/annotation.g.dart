@@ -17,6 +17,9 @@ _Annotation _$AnnotationFromJson(Map<String, dynamic> json) => _Annotation(
         ),
   note: json['note'] as String? ?? '',
   notebookId: json['notebookId'] as String?,
+  planDay: json['planDay'] == null
+      ? null
+      : BiblePlanDayId.fromJson(json['planDay'] as Map<String, dynamic>),
   createdAt: DateTime.parse(json['createdAt'] as String),
 );
 
@@ -26,6 +29,7 @@ Map<String, dynamic> _$AnnotationToJson(_Annotation instance) =>
       'style': instance.style.toJson(),
       'note': instance.note,
       'notebookId': instance.notebookId,
+      'planDay': instance.planDay?.toJson(),
       'createdAt': instance.createdAt.toIso8601String(),
     };
 

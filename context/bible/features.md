@@ -479,7 +479,10 @@ Each annotation has:
 - A highlight style
 - An optional note
 - An optional notebook
+- An optional Bible plan day
 - Its creation time
+
+An annotation created while reading a Bible plan day, including from a passage preview opened there, is linked to that day of the user's current run of the plan. Editing an annotation keeps its existing link.
 
 ### Highlight Styles
 
@@ -557,6 +560,7 @@ Users can:
 - Follow more than one plan at a time
 - Reorder active plans
 - Open any previous or current day
+- Review the annotations made while reading a day from a Review Day Annotations button below its passages, which opens them in a sheet
 - Mark individual passages or review days complete
 - Listen through a day's passages with automatic verse following and progress completion
 - Adjust reading-plan audio speed or skip backward and forward by ten seconds
@@ -587,6 +591,8 @@ While a reading-plan audio session is active, its full playback controls replace
 Daily plan reminders follow the device's local time and include the plan name plus every passage from the earliest incomplete day. Review days use the localized Review & Reflect label. Completing any plan day suppresses that plan's remaining reminder for the current local calendar day, including when a later day is completed out of order. If no day has been completed today, the reminder uses today's occurrence when its time is still ahead and tomorrow's occurrence after that time has passed. Lux asks for notification permission only when a reminder is saved. If permission is disabled, Lux can open the system settings and completes the attempted save when permission is enabled before returning. A confirmation appears after every successful save. Reminders can appear while Lux is open. Tapping a reminder opens the earliest incomplete passage in its plan, with Bible and Bible Plans remaining behind it in the page history. A Review & Reflect day opens Bible Plans instead. If the plan is no longer active or is complete, the reminder opens Bible Plans safely.
 
 After a user completes a plan day for the first time, Lux asks whether they want a daily reminder if they have not already answered or configured one for that plan. The prompt appears when the Bible Plans page is visible again, including after reading or listening on the focused reading page. Declining or canceling reminder setup resolves the prompt for that plan. Stopping and restarting a plan resets this eligibility with its fresh progress.
+
+Each start of a plan is a separate run. Annotations stay linked to the run in which they were made, so restarting a stopped or finished plan begins with no linked annotations, while earlier annotations remain on the Annotations page.
 
 ## More
 

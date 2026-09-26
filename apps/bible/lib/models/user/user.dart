@@ -406,14 +406,12 @@ sealed class User with _$User {
   bool hasCompletedPlanDay({required String planId, required int dayIndex}) =>
       planProgressById[planId]?.days.elementAtOrNull(dayIndex)?.isComplete ?? false;
 
+  List<Annotation> getPlanDayAnnotations(BiblePlanDayId planDay) =>
+      annotations.where((annotation) => annotation.planDay == planDay).toList();
+
   User withStartedPlan({required String planId, required BiblePlan plan}) => planProgressById.containsKey(planId)
       ? this
-      : copyWith(
-          planProgressById: {
-            ...planProgressById,
-            planId: BiblePlanProgress(days: plan.days.map((day) => BiblePlanDayProgress.incomplete()).toList()),
-          },
-        );
+      : copyWith(planProgressById: {...planProgressById, planId: BiblePlanProgress.start(plan)});
 
   User withStoppedPlan(String planId) => copyWith(planProgressById: {...planProgressById}..remove(planId));
 

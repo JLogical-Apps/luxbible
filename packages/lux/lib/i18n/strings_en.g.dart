@@ -1960,6 +1960,9 @@ class Translations$biblePlans$en {
 	/// en: 'Read Entire Chapter'
 	String get readEntireChapter => 'Read Entire Chapter';
 
+	/// en: 'Review Day Annotations'
+	String get reviewDayAnnotations => 'Review Day Annotations';
+
 	/// en: 'Read In Context'
 	String get readInContext => 'Read In Context';
 
@@ -5711,6 +5714,7 @@ extension on Translations {
 			'biblePlans.stopPlan' => 'Stop Plan',
 			'biblePlans.stopPlanDescription' => 'Remove this plan and its progress.',
 			'biblePlans.readEntireChapter' => 'Read Entire Chapter',
+			'biblePlans.reviewDayAnnotations' => 'Review Day Annotations',
 			'biblePlans.readInContext' => 'Read In Context',
 			'biblePlans.startNew' => 'Start New',
 			'biblePlans.day' => ({required Object day}) => 'Day ${day}',
@@ -6178,9 +6182,9 @@ extension on Translations {
 			'morphology.mood.subjunctive.name' => 'Subjunctive',
 			'morphology.mood.subjunctive.description' => 'Expresses possibility, purpose, or contingency.',
 			'morphology.mood.subjunctive.examples' => 'that he might write|if he goes',
-			'morphology.mood.optative.name' => 'Optative',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.mood.optative.name' => 'Optative',
 			'morphology.mood.optative.description' => 'Expresses a wish or remote possibility.',
 			'morphology.mood.optative.examples' => 'may it be so|may you have grace',
 			'morphology.mood.infinitive.name' => 'Infinitive',

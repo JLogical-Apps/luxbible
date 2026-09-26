@@ -620,6 +620,7 @@
     "stopPlan": "Stop Plan",
     "stopPlanDescription": "Remove this plan and its progress.",
     "readEntireChapter": "Read Entire Chapter",
+    "reviewDayAnnotations": "Review Day Annotations",
     "readInContext": "Read In Context",
     "startNew": "Start New",
     "day": "Day {day}",

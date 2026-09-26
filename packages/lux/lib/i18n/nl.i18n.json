@@ -622,6 +622,7 @@
     "stopPlan": "Leesplan stoppen",
     "stopPlanDescription": "Verwijder dit leesplan en de voortgang.",
     "readEntireChapter": "Hele hoofdstuk lezen",
+    "reviewDayAnnotations": "Annotaties van de dag bekijken",
     "readInContext": "In context lezen",
     "startNew": "Nieuw starten",
     "day": "Dag {day}",

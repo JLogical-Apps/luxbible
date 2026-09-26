@@ -1,3 +1,4 @@
+import 'package:bible/models/bible_plan.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/highlight_style.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -17,6 +18,7 @@ sealed class Annotation with _$Annotation {
     @Default(HighlightStyle.fallback) @JsonKey(readValue: _readHighlightStyle) HighlightStyle style,
     @Default('') String note,
     String? notebookId,
+    BiblePlanDayId? planDay,
     required DateTime createdAt,
   }) = _Annotation;
 

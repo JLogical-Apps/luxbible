@@ -3,6 +3,7 @@ import 'package:bible/providers/audio_bible_player_provider.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/providers/viewed_bible_plan_day_provider.dart';
 import 'package:bible/services/analytics_service.dart';
 import 'package:bible/ui/hooks/audio_bible_passage_sync.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
@@ -47,6 +48,14 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
     final user = ref.watch(userProvider);
     final progress = user.getHydratedPlanProgress(planId: planId, planById: plans);
     final currentProgress = progress?.progress.days.elementAtOrNull(dayIndex) ?? BiblePlanDayProgress.incomplete();
+
+    final planDay = progress?.getDayId(dayIndex);
+    useEffect(() {
+      if (planDay == null) return null;
+      final viewedPlanDayNotifier = ref.read(viewedBiblePlanDayProvider.notifier);
+      WidgetsBinding.instance.addPostFrameCallback((_) => viewedPlanDayNotifier.view(planDay));
+      return () => WidgetsBinding.instance.addPostFrameCallback((_) => viewedPlanDayNotifier.leave(planDay));
+    }, [planDay]);
 
     final selectionController = usePassageSelectionController(ref.watch(luxReaderConfigurationProvider).selection);
 

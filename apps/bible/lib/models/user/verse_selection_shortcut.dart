@@ -6,6 +6,7 @@ import 'package:bible/models/user/user.dart';
 import 'package:bible/models/verse_selection_action.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/providers/viewed_bible_plan_day_provider.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/widgets/highlight_style_icon.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -99,6 +100,7 @@ enum VerseSelectionShortcut {
             createdAt: .now(),
             style: user.lastHighlightStyle,
             notebookId: user.lastNotebookId,
+            planDay: ref.read(viewedBiblePlanDayProvider),
             selection: AnnotationSelection.verses(verseSelection: verseSelection),
           );
           ref.updateUser((user) => user.withAnnotation(annotation));

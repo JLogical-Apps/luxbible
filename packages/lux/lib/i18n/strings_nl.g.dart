@@ -888,6 +888,7 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	@override String get stopPlan => 'Leesplan stoppen';
 	@override String get stopPlanDescription => 'Verwijder dit leesplan en de voortgang.';
 	@override String get readEntireChapter => 'Hele hoofdstuk lezen';
+	@override String get reviewDayAnnotations => 'Annotaties van de dag bekijken';
 	@override String get readInContext => 'In context lezen';
 	@override String get startNew => 'Nieuw starten';
 	@override String day({required Object day}) => 'Dag ${day}';
@@ -3524,6 +3525,7 @@ extension on TranslationsNl {
 			'biblePlans.stopPlan' => 'Leesplan stoppen',
 			'biblePlans.stopPlanDescription' => 'Verwijder dit leesplan en de voortgang.',
 			'biblePlans.readEntireChapter' => 'Hele hoofdstuk lezen',
+			'biblePlans.reviewDayAnnotations' => 'Annotaties van de dag bekijken',
 			'biblePlans.readInContext' => 'In context lezen',
 			'biblePlans.startNew' => 'Nieuw starten',
 			'biblePlans.day' => ({required Object day}) => 'Dag ${day}',
@@ -3989,9 +3991,9 @@ extension on TranslationsNl {
 			'morphology.mood.imperative.description' => 'Geeft een bevel.',
 			'morphology.mood.imperative.examples' => 'Ga!|Geloof!|Vrees niet!',
 			'morphology.mood.subjunctive.name' => 'Conjunctief',
-			'morphology.mood.subjunctive.description' => 'Drukt mogelijkheid, doel of voorwaardelijkheid uit.',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.mood.subjunctive.description' => 'Drukt mogelijkheid, doel of voorwaardelijkheid uit.',
 			'morphology.mood.subjunctive.examples' => 'opdat hij zou schrijven|als hij gaat',
 			'morphology.mood.optative.name' => 'Optatief',
 			'morphology.mood.optative.description' => 'Drukt een wens of onwaarschijnlijke mogelijkheid uit.',

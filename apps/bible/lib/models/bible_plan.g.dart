@@ -46,6 +46,7 @@ Map<String, dynamic> _$BiblePlanDayToJson(_BiblePlanDay instance) =>
 
 _BiblePlanProgress _$BiblePlanProgressFromJson(Map<String, dynamic> json) =>
     _BiblePlanProgress(
+      instanceId: json['instanceId'] as String?,
       days: (json['days'] as List<dynamic>)
           .map((e) => BiblePlanDayProgress.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -59,9 +60,22 @@ _BiblePlanProgress _$BiblePlanProgressFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$BiblePlanProgressToJson(_BiblePlanProgress instance) =>
     <String, dynamic>{
+      'instanceId': instance.instanceId,
       'days': instance.days.map((e) => e.toJson()).toList(),
       'reminder': instance.reminder?.toJson(),
       'lastCompletedAt': instance.lastCompletedAt?.toJson(),
+    };
+
+_BiblePlanDayId _$BiblePlanDayIdFromJson(Map<String, dynamic> json) =>
+    _BiblePlanDayId(
+      instanceId: json['instanceId'] as String,
+      dayIndex: (json['dayIndex'] as num).toInt(),
+    );
+
+Map<String, dynamic> _$BiblePlanDayIdToJson(_BiblePlanDayId instance) =>
+    <String, dynamic>{
+      'instanceId': instance.instanceId,
+      'dayIndex': instance.dayIndex,
     };
 
 IncompleteBiblePlanDayProgress _$IncompleteBiblePlanDayProgressFromJson(

@@ -5,6 +5,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:utils_core/utils_core.dart';
+import 'package:uuid/uuid.dart';
 
 part 'bible_plan.freezed.dart';
 part 'bible_plan.g.dart';
@@ -70,10 +71,16 @@ sealed class BiblePlanProgress with _$BiblePlanProgress {
   const BiblePlanProgress._();
 
   const factory BiblePlanProgress({
+    String? instanceId,
     required List<BiblePlanDayProgress> days,
     Reminder? reminder,
     CalendarDateTime? lastCompletedAt,
   }) = _BiblePlanProgress;
+
+  factory BiblePlanProgress.start(BiblePlan plan) => BiblePlanProgress(
+    instanceId: Uuid().v4(),
+    days: plan.days.map((day) => BiblePlanDayProgress.incomplete()).toList(),
+  );
 
   factory BiblePlanProgress.fromJson(Map<String, dynamic> json) => _$BiblePlanProgressFromJson(json);
 
@@ -94,6 +101,13 @@ sealed class BiblePlanProgress with _$BiblePlanProgress {
       lastCompletedAt: !previousDay.isComplete && updatedDay.isComplete ? .now() : lastCompletedAt,
     );
   }
+}
+
+@freezed
+sealed class BiblePlanDayId with _$BiblePlanDayId {
+  const factory BiblePlanDayId({required String instanceId, required int dayIndex}) = _BiblePlanDayId;
+
+  factory BiblePlanDayId.fromJson(Map<String, dynamic> json) => _$BiblePlanDayIdFromJson(json);
 }
 
 @freezed

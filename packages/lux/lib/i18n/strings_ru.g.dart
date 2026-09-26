@@ -892,6 +892,7 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	@override String get stopPlan => 'Остановить план';
 	@override String get stopPlanDescription => 'Удалите этот план и его ход.';
 	@override String get readEntireChapter => 'Читать всю главу';
+	@override String get reviewDayAnnotations => 'Просмотреть аннотации дня';
 	@override String get readInContext => 'Читать в контексте';
 	@override String get startNew => 'Начать заново';
 	@override String day({required Object day}) => 'День ${day}';
@@ -3532,6 +3533,7 @@ extension on TranslationsRu {
 			'biblePlans.stopPlan' => 'Остановить план',
 			'biblePlans.stopPlanDescription' => 'Удалите этот план и его ход.',
 			'biblePlans.readEntireChapter' => 'Читать всю главу',
+			'biblePlans.reviewDayAnnotations' => 'Просмотреть аннотации дня',
 			'biblePlans.readInContext' => 'Читать в контексте',
 			'biblePlans.startNew' => 'Начать заново',
 			'biblePlans.day' => ({required Object day}) => 'День ${day}',
@@ -3997,9 +3999,9 @@ extension on TranslationsRu {
 			'morphology.mood.imperative.description' => 'Выдает команду.',
 			'morphology.mood.imperative.examples' => 'Идите!|Верьте!|Не бойтесь!',
 			'morphology.mood.subjunctive.name' => 'Сослагательное наклонение',
-			'morphology.mood.subjunctive.description' => 'Выражает возможность, цель или непредвиденное обстоятельство.',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.mood.subjunctive.description' => 'Выражает возможность, цель или непредвиденное обстоятельство.',
 			'morphology.mood.subjunctive.examples' => 'что он мог бы написать|если пойдёт',
 			'morphology.mood.optative.name' => 'Оптатив',
 			'morphology.mood.optative.description' => 'Выражает желание или отдаленную возможность.',
