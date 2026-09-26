@@ -1,3 +1,4 @@
+import 'package:bible/models/hydrated_bible_plan_progress.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/bible_plan_local_notification_schedules_provider.dart';
 import 'package:bible/providers/root_ref.dart';
@@ -11,12 +12,13 @@ import 'package:style/style.dart';
 
 class BiblePlanReminderFlow {
   static Future<void> showDiscoveryPrompt({required BuildContext context, required String planId}) async {
-    final user = ref.read(userProvider);
-    final progress = user.planProgressById[planId];
-    final plan = ref.read(biblePlansProvider)[planId];
-    if (plan == null || progress == null || progress.reminder != null || !progress.days.any((day) => day.isComplete)) {
-      return;
-    }
+    final hydratedProgress = ref
+        .read(userProvider)
+        .getHydratedPlanProgress(planId: planId, planById: ref.read(biblePlansProvider));
+    if (hydratedProgress == null) return;
+
+    final HydratedBiblePlanProgress(:plan, :progress, :isCompleted) = hydratedProgress;
+    if (isCompleted || progress.reminder != null || !progress.days.any((day) => day.isComplete)) return;
 
     final shouldAdd = await context.showStyledDialog(
       (context) => StyledDialog.confirmOrCancel(
