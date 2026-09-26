@@ -1,0 +1,6 @@
+• Nieuwe widget met het Vers van de dag. Wisselt dagelijks, werkt offline en past zich aan.
+• Deel een link naar geselecteerde verzen. Met Lux opent die direct bij de passage.
+• De Russische Synodale vertaling (1876) is nu offline inbegrepen.
+• Open .lxbp-leesplannen uit andere apps om ze te importeren.
+• Je keuze voor Tussenkoppen blijft bewaard na een herstart.
+• Navigatievelden reageren meteen op een tik na het scrollen.

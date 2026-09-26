@@ -1,0 +1,6 @@
+• New Verse of the Day home screen widget. It changes daily, works offline, and resizes to fit.
+• Share a link to selected verses. Anyone with Lux opens it right to the passage.
+• The Russian Synodal Bible 1876 is now included offline.
+• Open .lxbp reading plan files from other apps to import them.
+• Your Section Headings choice now stays after a restart.
+• Navigation fields respond to taps right away after scrolling.

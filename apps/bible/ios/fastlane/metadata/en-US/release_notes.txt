@@ -1,0 +1,6 @@
+• Add Verse of the Day to your Home Screen. The widget comes in small, medium, and large sizes, changes each day, and works offline. Tap it to open that day's passage in Lux.
+• Share a link to selected verses with the new Share action in the verse toolbar. Anyone who has Lux opens the link right to the passage.
+• The Russian Synodal Bible 1876 is now included and works offline.
+• Open or share a .lxbp reading plan file from another app to import it straight into Lux.
+• Your Section Headings choice in Theme & Layout now stays after you restart the app.
+• The book, chapter, and verse fields in navigation respond to a tap right away after you scroll the list.

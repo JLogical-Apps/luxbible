@@ -1,0 +1,6 @@
+• Zet het Vers van de dag op je beginscherm. De widget is er in klein, middelgroot en groot formaat, wisselt elke dag en werkt offline. Tik erop om de passage van die dag in Lux te openen.
+• Deel een link naar geselecteerde verzen met de nieuwe actie Delen in de versbalk. Wie Lux heeft, komt via de link direct bij de passage.
+• De Russische Synodale vertaling uit 1876 is nu inbegrepen en werkt offline.
+• Open of deel een .lxbp-leesplan vanuit een andere app om het direct in Lux te importeren.
+• Je keuze voor Tussenkoppen in Thema en indeling blijft nu bewaard nadat je de app opnieuw start.
+• De velden voor boek, hoofdstuk en vers in de navigatie reageren nu meteen op een tik nadat je door de lijst hebt gescrold.

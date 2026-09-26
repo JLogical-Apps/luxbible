@@ -1,11 +1,3 @@
-# General Info
-
-**Name**: Lux Bible: Read, Note, & Study
-**Subtitle**: Greek & Hebrew interlinear
-**Keywords**: concordance,lexicon,offline,KJV,NASB,NIV,AMP,commentary,audio,dictionary,search,Greek,Hebrew,strongs
-
-# Description
-
 Lux Bible brings serious Bible study into a calm, modern reading experience. Read Scripture, take notes, explore Greek and Hebrew, compare translations, and follow reading plans without ads, subscriptions, purchases, or an account.
 
 Powerful enough for serious study and clean enough for everyday reading.
@@ -15,7 +7,7 @@ Choose from the Berean Standard Bible (BSB), Christian Standard Bible (CSB), Kin
 
 Read the original texts offline with the Greek Septuagint, Textus Receptus, Byzantine Textform, Statistical Restoration Greek New Testament, and Open Scriptures Hebrew Bible.
 
-Listen to the BSB or KJV with playback speed controls, a sleep timer, and background playback. Begin each day with Verse of the Day, also available as a Home Screen widget, and set daily reminders for it or any active reading plan. Choose an included plan or create your own from passages or selected books and a duration. Import and share plans as files, follow more than one plan, and track your progress.
+Listen to the BSB or KJV with playback speed controls, a sleep timer, and background playback. Begin each day with Verse of the Day, also available as a home screen widget, and set daily reminders for it or any active reading plan. Choose an included plan or create your own from passages or selected books and a duration. Import and share plans as files, follow more than one plan, and track your progress.
 
 NOTE
 Highlight verses, words, or phrases by color, underline, or squiggly line. Add notes, create your own highlight styles, and organize everything into notebooks. Filter your annotations or hide a notebook when you want a cleaner reading view.
