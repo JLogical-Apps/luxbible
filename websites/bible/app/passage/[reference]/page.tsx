@@ -4,19 +4,16 @@ import AppStoreButtons from '@/components/blocks/AppStoreButtons';
 import AndroidAppRedirect from '@/components/blocks/AndroidAppRedirect';
 import Page from '@/components/layout/Page';
 import { passageShareCampaign } from '@/lib/campaign';
+import { formatPassage } from '@/lib/passage';
 import { site } from '@/lib/site';
 
 type Props = { params: { reference: string } };
 
-const getReference = (value: string) =>
-  /^[1-3]?[A-Za-z][A-Za-z0-9]*(?:\.\d+(?:\.\d+)?)(?:-[1-3]?[A-Za-z][A-Za-z0-9]*\.\d+(?:\.\d+)?)?(?: [1-3]?[A-Za-z][A-Za-z0-9]*(?:\.\d+(?:\.\d+)?)(?:-[1-3]?[A-Za-z][A-Za-z0-9]*\.\d+(?:\.\d+)?)?)*$/.test(
-    value,
-  )
-    ? value
-    : null;
+// An empty list makes every passage render on its first request and cache from then on.
+export const generateStaticParams = () => [];
 
 export function generateMetadata({ params }: Props): Metadata {
-  const reference = getReference(params.reference);
+  const reference = formatPassage(decodeURIComponent(params.reference));
   const title = reference
     ? `${reference} in Lux Bible`
     : 'Passage in Lux Bible';
@@ -31,7 +28,7 @@ export function generateMetadata({ params }: Props): Metadata {
 }
 
 export default function PassagePage({ params }: Props) {
-  const reference = getReference(params.reference);
+  const reference = formatPassage(decodeURIComponent(params.reference));
 
   return (
     <Page>
