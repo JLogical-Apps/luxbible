@@ -6,22 +6,25 @@ import 'package:lux/lux_core.dart';
 import 'release_utils.dart';
 
 /// Pushes the App Store and Google Play listing text in the fastlane metadata folders, or pulls the
-/// live listings over them with `--pull` so `git diff` shows what differs.
+/// live listings over them with `--pull` so `git diff` shows what differs. `--screenshots` does the
+/// same for the screenshots instead of the text.
 ///
 /// Usage:
 ///   dart run tool/release/listings.dart                  # push both listings
 ///   dart run tool/release/listings.dart --ios            # App Store only
 ///   dart run tool/release/listings.dart --android        # Google Play only
 ///   dart run tool/release/listings.dart --pull [--ios | --android]
+///   dart run tool/release/listings.dart --screenshots [--pull] [--ios | --android]
 ///
-/// Pushing never uploads builds or screenshots and never submits for review.
+/// Pushing never uploads builds and never submits for review.
 Future<void> main(List<String> args) async {
-  final unknown = args.where((arg) => !['--ios', '--android', '--pull'].contains(arg)).toList();
+  final unknown = args.where((arg) => !['--ios', '--android', '--pull', '--screenshots'].contains(arg)).toList();
   if (unknown.isNotEmpty) {
-    fail('Unknown argument(s): ${unknown.join(', ')}. Use --pull, --ios, and/or --android.');
+    fail('Unknown argument(s): ${unknown.join(', ')}. Use --pull, --screenshots, --ios, and/or --android.');
   }
 
   final isPull = args.has('--pull');
+  final isScreenshots = args.has('--screenshots');
   final includesIos = args.has('--ios') || !args.has('--android');
   final includesAndroid = args.has('--android') || !args.has('--ios');
 
@@ -29,22 +32,40 @@ Future<void> main(List<String> args) async {
   final (:marketingVersion, :buildNumber) = readPubspecVersion();
 
   if (includesAndroid) {
-    printSection('Google Play');
-    isPull ? await pullAndroid(env) : await pushAndroid(env, buildNumber: buildNumber);
+    printSection(isScreenshots ? 'Google Play screenshots' : 'Google Play');
+    await switch ((isPull, isScreenshots)) {
+      (false, false) => pushAndroid(env, buildNumber: buildNumber),
+      (true, false) => pullAndroid(env),
+      (false, true) => pushAndroidScreenshots(env, buildNumber: buildNumber),
+      (true, true) => pullAndroidScreenshots(env),
+    };
   }
 
   if (includesIos) {
-    printSection('App Store');
-    isPull ? await pullIos(env) : await pushIos(env, marketingVersion: marketingVersion);
+    printSection(isScreenshots ? 'App Store screenshots' : 'App Store');
+    await switch ((isPull, isScreenshots)) {
+      (false, false) => pushIos(env, marketingVersion: marketingVersion),
+      (true, false) => pullIos(env),
+      (false, true) => pushIosScreenshots(env, marketingVersion: marketingVersion),
+      (true, true) => pullIosScreenshots(env),
+    };
   }
 
   printSection('Done');
-  stdout.writeln(isPull ? 'Live listings pulled. Review them with `git diff`.' : 'Listings pushed.');
+  stdout.writeln(isPull ? 'Live listings pulled. Review them with `git status` and `git diff`.' : 'Listings pushed.');
 }
 
 const iosBundleId = 'app.luxbible.app';
 const iosMetadataPath = 'ios/fastlane/metadata';
+const iosScreenshotsPath = 'ios/fastlane/screenshots';
 const androidMetadataPath = 'android/fastlane/metadata/android';
+const androidScreenshotTypes = [
+  'phoneScreenshots',
+  'sevenInchScreenshots',
+  'tenInchScreenshots',
+  'tvScreenshots',
+  'wearScreenshots',
+];
 
 // Builds from `deploy` land on the internal track, and promoting a release keeps its notes.
 const playReleaseNotesTrack = 'internal';
@@ -99,12 +120,61 @@ Future<void> pullIos(Map<String, String> env) {
   );
 }
 
+Future<void> pushIosScreenshots(Map<String, String> env, {required String marketingVersion}) {
+  requireScreenshots(getImages(iosScreenshotsPath), path: iosScreenshotsPath);
+  return withAppStoreConnectKey(env, (keyPath) async {
+    stdout.writeln(
+      'fastlane shows a preview, then replaces the $marketingVersion screenshots of each language that has a '
+      'folder in $iosScreenshotsPath.',
+    );
+    await runFastlane([
+      'deliver',
+      ...appStoreConnectArgs(keyPath),
+      '--app_version',
+      marketingVersion,
+      '--metadata_path',
+      iosMetadataPath,
+      '--screenshots_path',
+      iosScreenshotsPath,
+      '--overwrite_screenshots',
+      'true',
+      '--skip_metadata',
+      'true',
+      '--skip_binary_upload',
+      'true',
+      '--submit_for_review',
+      'false',
+    ]);
+  });
+}
+
+Future<void> pullIosScreenshots(Map<String, String> env) {
+  requireCommitted(iosScreenshotsPath);
+  return withAppStoreConnectKey(
+    env,
+    (keyPath) => withTemporaryDirectory((directory) async {
+      final downloadPath = '$directory/screenshots';
+      await runFastlane([
+        'deliver',
+        'download_screenshots',
+        ...appStoreConnectArgs(keyPath),
+        '--screenshots_path',
+        downloadPath,
+        '--use_live_version',
+        'true',
+      ]);
+      mirrorScreenshots(
+        getLanguages(
+          iosMetadataPath,
+        ).map((language) => (from: '$downloadPath/$language', to: '$iosScreenshotsPath/$language')),
+      );
+    }),
+  );
+}
+
 Future<void> pushAndroid(Map<String, String> env, {required String buildNumber}) async {
-  final languages = Directory(
-    androidMetadataPath,
-  ).listSync().whereType<Directory>().map((dir) => dir.path.split('/').last);
   stdout.write(
-    'Push the Google Play listing for ${languages.join(', ')} and the build $buildNumber release notes on the '
+    'Push the Google Play listing for ${getLanguages(androidMetadataPath).join(', ')} and the build $buildNumber release notes on the '
     '$playReleaseNotesTrack track? This goes live immediately. [y/N] ',
   );
   if (stdin.readLineSync()?.trim().toLowerCase() != 'y') fail('Canceled.');
@@ -135,6 +205,54 @@ Future<void> pullAndroid(Map<String, String> env) {
     final downloadPath = '$directory/metadata';
     await runFastlane(['supply', 'init', ...playArgs(env), '--metadata_path', downloadPath]);
     copyTrackedFiles(from: downloadPath, to: androidMetadataPath);
+  });
+}
+
+// Play attaches listing uploads to a release, so this needs the build on the internal track too.
+Future<void> pushAndroidScreenshots(Map<String, String> env, {required String buildNumber}) async {
+  requireScreenshots(androidScreenshots, path: androidMetadataPath);
+  stdout.write(
+    'Replace the Google Play screenshots of each language that has screenshot folders in $androidMetadataPath? '
+    'This goes live immediately. [y/N] ',
+  );
+  if (stdin.readLineSync()?.trim().toLowerCase() != 'y') fail('Canceled.');
+
+  await runFastlane([
+    'supply',
+    ...playArgs(env),
+    '--metadata_path',
+    androidMetadataPath,
+    '--track',
+    playReleaseNotesTrack,
+    '--version_code',
+    buildNumber,
+    '--skip_upload_apk',
+    'true',
+    '--skip_upload_aab',
+    'true',
+    '--skip_upload_metadata',
+    'true',
+    '--skip_upload_changelogs',
+    'true',
+    '--skip_upload_images',
+    'true',
+    '--sync_image_upload',
+    'true',
+  ]);
+}
+
+Future<void> pullAndroidScreenshots(Map<String, String> env) {
+  requireCommitted('$androidMetadataPath/*/images');
+  return withTemporaryDirectory((directory) async {
+    final downloadPath = '$directory/metadata';
+    await runFastlane(['supply', 'init', ...playArgs(env), '--metadata_path', downloadPath]);
+    mirrorScreenshots(
+      getLanguages(androidMetadataPath).expand(
+        (language) => androidScreenshotTypes.map(
+          (type) => (from: '$downloadPath/$language/images/$type', to: '$androidMetadataPath/$language/images/$type'),
+        ),
+      ),
+    );
   });
 }
 
@@ -181,6 +299,24 @@ Future<void> withTemporaryDirectory(Future<void> Function(String path) action) a
   }
 }
 
+Iterable<String> getLanguages(String metadataPath) =>
+    Directory(metadataPath).listSync().whereType<Directory>().map((dir) => dir.path.split('/').last);
+
+void requireScreenshots(Iterable<File> screenshots, {required String path}) {
+  if (screenshots.isEmpty) {
+    fail('No screenshots found in $path. Add them, or start from the live ones with --pull --screenshots.');
+  }
+}
+
+Iterable<File> get androidScreenshots =>
+    getImages(androidMetadataPath).where((file) => androidScreenshotTypes.contains(file.parent.path.split('/').last));
+
+Iterable<File> getImages(String path) => Directory(path).existsSync()
+    ? Directory(path).listSync(recursive: true).whereType<File>().where((file) => imageExtension.hasMatch(file.path))
+    : [];
+
+final imageExtension = RegExp(r'\.(png|jpe?g)$', caseSensitive: false);
+
 // A pull overwrites the local files, so they must be recoverable from git.
 void requireCommitted(String path) {
   final status = Process.runSync('git', ['status', '--porcelain', '--', path]).stdout.toString().trim();
@@ -195,6 +331,7 @@ void copyTrackedFiles({required String from, required String to}) {
   final updates = Directory(to)
       .listSync(recursive: true)
       .whereType<File>()
+      .where((file) => file.path.endsWith('.txt'))
       .map((local) => (local: local, live: File('$from${local.path.substring(to.length)}')))
       .where((pair) => pair.live.existsSync())
       .map((pair) => (local: pair.local, text: '${pair.live.readAsStringSync().trim()}\n'))
@@ -209,6 +346,30 @@ void copyTrackedFiles({required String from, required String to}) {
     updates.isEmpty
         ? 'The live listing matches the local files.'
         : 'Updated from the live listing:\n${updates.map((update) => '  ${update.local.path}').join('\n')}',
+  );
+}
+
+// Only languages the repo already lists are mirrored, so a pull never adds a store locale.
+void mirrorScreenshots(Iterable<({String from, String to})> folders) {
+  for (final folder in folders) {
+    final target = Directory(folder.to);
+    if (target.existsSync()) target.deleteSync(recursive: true);
+
+    final images = getImages(folder.from).toList();
+    if (images.isNotEmpty) target.createSync(recursive: true);
+    for (final image in images) {
+      image.copySync('${target.path}/${image.uri.pathSegments.last}');
+    }
+  }
+
+  final pulled = folders
+      .map((folder) => (path: folder.to, count: getImages(folder.to).length))
+      .where((folder) => folder.count > 0)
+      .toList();
+  stdout.writeln(
+    pulled.isEmpty
+        ? 'No live screenshots were found.'
+        : 'Pulled the live screenshots:\n${pulled.map((folder) => '  ${folder.path}: ${folder.count}').join('\n')}',
   );
 }
 
