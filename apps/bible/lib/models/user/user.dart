@@ -411,9 +411,15 @@ sealed class User with _$User {
   List<Annotation> getPlanInstanceAnnotations(String instanceId) =>
       annotations.where((annotation) => annotation.planDay?.instanceId == instanceId).toList();
 
-  User withStartedPlan({required String planId, required BiblePlan plan}) => planProgressById.containsKey(planId)
+  User withStartedPlan({required String planId, required BiblePlan plan, required BiblePlanPace pace}) =>
+      planProgressById.containsKey(planId)
       ? this
-      : copyWith(planProgressById: {...planProgressById, planId: BiblePlanProgress.start(plan)});
+      : copyWith(
+          planProgressById: {
+            ...planProgressById,
+            planId: BiblePlanProgress.start(plan, pace: pace),
+          },
+        );
 
   User withResumedPlan({required String planId, required BiblePlanProgress progress}) =>
       copyWith(planProgressById: {...planProgressById, planId: progress});
@@ -426,6 +432,9 @@ sealed class User with _$User {
 
   User withPlanReminder(String planId, Reminder reminder) =>
       withUpdatePlanProgress(planId, (progress) => progress.copyWith(reminder: reminder));
+
+  User withPlanPace(String planId, BiblePlanPace pace) =>
+      withUpdatePlanProgress(planId, (progress) => progress.copyWith(pace: pace));
 
   User withVerseOfTheDayNotificationReminder(Reminder reminder) => copyWith(verseOfTheDayReminder: reminder);
 

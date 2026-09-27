@@ -408,7 +408,7 @@
     "noAnnotations": "You haven't created any annotations.",
     "noBookmarks": "You haven't created any bookmarks.",
     "noNotebooks": "You haven't created any notebooks. Notebooks let you organize your annotations.",
-    "noPlans": "You aren't following any reading plans yet. Find one to start reading through the Bible."
+    "noPlans": "You aren't following any reading plans yet. Start one to begin reading through the Bible."
   },
   "annotationUi": {
     "yourAnnotations": "Your Annotations",
@@ -497,7 +497,7 @@
     "footnotesDescription": "Show footnote markers within the text."
   },
   "biblePlans": {
-    "find": "Find A Bible Plan",
+    "startABiblePlan": "Start A Bible Plan",
     "includedPlans": "Included Plans",
     "includedPlansDescription": "Plans included with Lux.",
     "customPlansDescription": "Plans you've created.",
@@ -620,6 +620,24 @@
     "stopPlan": "Stop Plan",
     "stopPlanDescription": "Move this plan and its progress to history.",
     "readEntireChapter": "Read Entire Chapter",
+    "pace": "Pace",
+    "choosePace": "Choose Your Pace",
+    "relaxed": "Relaxed",
+    "relaxedDescription": "Read whenever you like, with no schedule to keep up with.",
+    "paced": "Paced",
+    "pacedDescription": "Set a target end date and see whether you're on track.",
+    "pacedToEnd": "Paced to end {date}",
+    "targetEndDate": "Target End Date",
+    "onTrack": "On track",
+    "daysBehind(param=count)": {
+      "one": "{count} day behind",
+      "other": "{count} days behind"
+    },
+    "daysAhead(param=count)": {
+      "one": "{count} day ahead",
+      "other": "{count} days ahead"
+    },
+    "catchUp": "Catch Up",
     "reviewDayAnnotations": "Review Day Annotations",
     "history": "History",
     "historyDescription": "Review past progress or resume a stopped plan.",
@@ -643,7 +661,7 @@
       "one": "{count} day",
       "other": "{count} days"
     },
-    "stopConfirmation": "Stop \"{name}\"? You can resume it later from this plan's history in Find A Bible Plan.",
+    "stopConfirmation": "Stop \"{name}\"? You can resume it later from this plan's history in Start A Bible Plan.",
     "completed": "\"{name}\" completed.",
     "addPlan": "Add Bible plan"
   },

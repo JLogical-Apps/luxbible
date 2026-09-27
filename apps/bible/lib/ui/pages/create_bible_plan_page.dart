@@ -3,6 +3,7 @@ import 'package:bible/models/bible_plan.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/custom_bible_plans_provider.dart';
 import 'package:bible/services/bible_plan_file_service.dart';
+import 'package:bible/ui/sheets/bible_plan_pace_sheet.dart';
 import 'package:bible/ui/widgets/bible_plan_thumbnail.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
@@ -491,11 +492,19 @@ class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<Stri
               StyledRectButton.primary(
                 label: t.biblePlans.createAndStart.toText(),
                 onPressed: plan.isValid
-                    ? () {
+                    ? () async {
+                        final pace = await BiblePlanPaceSheet.showStart(
+                          context,
+                          planName: plan.name,
+                          dayCount: plan.dayCount,
+                        );
+                        if (pace == null || !context.mounted) return;
+
                         final id = ref.read(customBiblePlansProvider.notifier).create(plan);
                         ref.updateUser(
-                          (user) =>
-                              user.withStartedPlan(planId: id, plan: plan).withOnboardingStepCompleted(.startBiblePlan),
+                          (user) => user
+                              .withStartedPlan(planId: id, plan: plan, pace: pace)
+                              .withOnboardingStepCompleted(.startBiblePlan),
                         );
                         context.pop(id);
                       }

@@ -21,6 +21,7 @@ export 'src/widgets/sliver/styled_sliver_list.dart';
 export 'src/widgets/sliver/styled_sticky_sliver_header.dart';
 export 'src/widgets/styled_badge.dart';
 export 'src/widgets/styled_banner.dart';
+export 'src/widgets/styled_calendar.dart';
 export 'src/widgets/styled_card.dart';
 export 'src/widgets/styled_checkbox.dart';
 export 'src/widgets/styled_chip.dart';

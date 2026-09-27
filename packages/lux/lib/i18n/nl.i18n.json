@@ -410,7 +410,7 @@
     "noAnnotations": "Je hebt nog geen annotaties gemaakt.",
     "noBookmarks": "Je hebt nog geen bladwijzers gemaakt.",
     "noNotebooks": "Je hebt nog geen notitieboeken gemaakt. Met notitieboeken kun je je annotaties ordenen.",
-    "noPlans": "Je volgt nog geen leesplannen. Zoek er een om met het lezen van de Bijbel te beginnen."
+    "noPlans": "Je volgt nog geen leesplannen. Start er een om met het lezen van de Bijbel te beginnen."
   },
   "annotationUi": {
     "yourAnnotations": "Je annotaties",
@@ -499,7 +499,7 @@
     "footnotesDescription": "Toon voetnootmarkeringen in de tekst."
   },
   "biblePlans": {
-    "find": "Een Bijbelleesplan zoeken",
+    "startABiblePlan": "Een Bijbelleesplan starten",
     "includedPlans": "Inbegrepen leesplannen",
     "includedPlansDescription": "Leesplannen die met Lux worden meegeleverd.",
     "customPlansDescription": "Leesplannen die je zelf hebt gemaakt.",
@@ -622,6 +622,24 @@
     "stopPlan": "Leesplan stoppen",
     "stopPlanDescription": "Verplaats dit leesplan en de voortgang naar de geschiedenis.",
     "readEntireChapter": "Hele hoofdstuk lezen",
+    "pace": "Tempo",
+    "choosePace": "Kies je tempo",
+    "relaxed": "Ontspannen",
+    "relaxedDescription": "Lees wanneer je wilt, zonder schema om bij te houden.",
+    "paced": "Met schema",
+    "pacedDescription": "Kies een einddatum en zie of je op schema ligt.",
+    "pacedToEnd": "Met schema tot {date}",
+    "targetEndDate": "Beoogde einddatum",
+    "onTrack": "Op schema",
+    "daysBehind(param=count)": {
+      "one": "{count} dag achter op schema",
+      "other": "{count} dagen achter op schema"
+    },
+    "daysAhead(param=count)": {
+      "one": "{count} dag voor op schema",
+      "other": "{count} dagen voor op schema"
+    },
+    "catchUp": "Inhalen",
     "reviewDayAnnotations": "Annotaties van de dag bekijken",
     "history": "Geschiedenis",
     "historyDescription": "Bekijk eerdere voortgang of hervat een gestopt leesplan.",
@@ -645,7 +663,7 @@
       "one": "{count} dag",
       "other": "{count} dagen"
     },
-    "stopConfirmation": "\"{name}\" stoppen? Je kunt het later hervatten via de geschiedenis van dit leesplan in Een Bijbelleesplan zoeken.",
+    "stopConfirmation": "\"{name}\" stoppen? Je kunt het later hervatten via de geschiedenis van dit leesplan in Een Bijbelleesplan starten.",
     "completed": "\"{name}\" voltooid.",
     "addPlan": "Bijbelleesplan toevoegen"
   },

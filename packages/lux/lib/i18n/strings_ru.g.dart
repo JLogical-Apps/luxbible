@@ -650,7 +650,7 @@ class _Translations$emptyStates$ru extends Translations$emptyStates$en {
 	@override String get noAnnotations => 'Вы не создали ни одной аннотации.';
 	@override String get noBookmarks => 'Вы не создали ни одной закладки.';
 	@override String get noNotebooks => 'Вы не создали ни одного блокнота. Блокноты позволяют систематизировать ваши аннотации.';
-	@override String get noPlans => 'Вы пока не выполняете ни одного плана чтения. Найдите один, чтобы начать читать Библию.';
+	@override String get noPlans => 'Вы пока не выполняете ни одного плана чтения. Начните один, чтобы приступить к чтению Библии.';
 }
 
 // Path: annotationUi
@@ -783,7 +783,7 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	final TranslationsRu _root; // ignore: unused_field
 
 	// Translations
-	@override String get find => 'Найдите библейский план';
+	@override String get startABiblePlan => 'Начните библейский план';
 	@override String get includedPlans => 'Включённые планы';
 	@override String get includedPlansDescription => 'Планы, включённые в Lux.';
 	@override String get customPlansDescription => 'Планы, созданные вами.';
@@ -892,6 +892,28 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	@override String get stopPlan => 'Остановить план';
 	@override String get stopPlanDescription => 'Переместите этот план и его прогресс в историю.';
 	@override String get readEntireChapter => 'Читать всю главу';
+	@override String get pace => 'Темп';
+	@override String get choosePace => 'Выберите темп';
+	@override String get relaxed => 'Свободный';
+	@override String get relaxedDescription => 'Читайте когда хотите, без графика, за которым нужно успевать.';
+	@override String get paced => 'По графику';
+	@override String get pacedDescription => 'Выберите дату окончания и следите, успеваете ли вы.';
+	@override String pacedToEnd({required Object date}) => 'По графику до ${date}';
+	@override String get targetEndDate => 'Дата окончания';
+	@override String get onTrack => 'По графику';
+	@override String daysBehind({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count,
+		one: 'Отставание на ${count} день',
+		few: 'Отставание на ${count} дня',
+		many: 'Отставание на ${count} дней',
+		other: 'Отставание на ${count} дня',
+	);
+	@override String daysAhead({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count,
+		one: 'Опережение на ${count} день',
+		few: 'Опережение на ${count} дня',
+		many: 'Опережение на ${count} дней',
+		other: 'Опережение на ${count} дня',
+	);
+	@override String get catchUp => 'Наверстать';
 	@override String get reviewDayAnnotations => 'Просмотреть аннотации дня';
 	@override String get history => 'История';
 	@override String get historyDescription => 'Просмотрите прошлый прогресс или возобновите остановленный план.';
@@ -917,7 +939,7 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 		many: '${count} дней',
 		other: '${count} дня',
 	);
-	@override String stopConfirmation({required Object name}) => 'Остановить «${name}»? Вы сможете возобновить его позже из истории этого плана в разделе «Найдите библейский план».';
+	@override String stopConfirmation({required Object name}) => 'Остановить «${name}»? Вы сможете возобновить его позже из истории этого плана в разделе «Начните библейский план».';
 	@override String completed({required Object name}) => '«${name}» завершено.';
 	@override String get addPlan => 'Добавить библейский план';
 }
@@ -3358,7 +3380,7 @@ extension on TranslationsRu {
 			'emptyStates.noAnnotations' => 'Вы не создали ни одной аннотации.',
 			'emptyStates.noBookmarks' => 'Вы не создали ни одной закладки.',
 			'emptyStates.noNotebooks' => 'Вы не создали ни одного блокнота. Блокноты позволяют систематизировать ваши аннотации.',
-			'emptyStates.noPlans' => 'Вы пока не выполняете ни одного плана чтения. Найдите один, чтобы начать читать Библию.',
+			'emptyStates.noPlans' => 'Вы пока не выполняете ни одного плана чтения. Начните один, чтобы приступить к чтению Библии.',
 			'annotationUi.yourAnnotations' => 'Ваши аннотации',
 			'annotationUi.annotate' => 'Аннотировать',
 			'annotationUi.withNotes' => 'С примечаниями',
@@ -3432,7 +3454,7 @@ extension on TranslationsRu {
 			'themeSettings.verseNumbers' => 'Номера стихов',
 			'themeSettings.paragraphsDescription' => 'Разбейте стихи на абзацы.',
 			'themeSettings.footnotesDescription' => 'Показывать маркеры сносок внутри текста.',
-			'biblePlans.find' => 'Найдите библейский план',
+			'biblePlans.startABiblePlan' => 'Начните библейский план',
 			'biblePlans.includedPlans' => 'Включённые планы',
 			'biblePlans.includedPlansDescription' => 'Планы, включённые в Lux.',
 			'biblePlans.customPlansDescription' => 'Планы, созданные вами.',
@@ -3548,6 +3570,18 @@ extension on TranslationsRu {
 			'biblePlans.stopPlan' => 'Остановить план',
 			'biblePlans.stopPlanDescription' => 'Переместите этот план и его прогресс в историю.',
 			'biblePlans.readEntireChapter' => 'Читать всю главу',
+			'biblePlans.pace' => 'Темп',
+			'biblePlans.choosePace' => 'Выберите темп',
+			'biblePlans.relaxed' => 'Свободный',
+			'biblePlans.relaxedDescription' => 'Читайте когда хотите, без графика, за которым нужно успевать.',
+			'biblePlans.paced' => 'По графику',
+			'biblePlans.pacedDescription' => 'Выберите дату окончания и следите, успеваете ли вы.',
+			'biblePlans.pacedToEnd' => ({required Object date}) => 'По графику до ${date}',
+			'biblePlans.targetEndDate' => 'Дата окончания',
+			'biblePlans.onTrack' => 'По графику',
+			'biblePlans.daysBehind' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: 'Отставание на ${count} день', few: 'Отставание на ${count} дня', many: 'Отставание на ${count} дней', other: 'Отставание на ${count} дня', ), 
+			'biblePlans.daysAhead' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: 'Опережение на ${count} день', few: 'Опережение на ${count} дня', many: 'Опережение на ${count} дней', other: 'Опережение на ${count} дня', ), 
+			'biblePlans.catchUp' => 'Наверстать',
 			'biblePlans.reviewDayAnnotations' => 'Просмотреть аннотации дня',
 			'biblePlans.history' => 'История',
 			'biblePlans.historyDescription' => 'Просмотрите прошлый прогресс или возобновите остановленный план.',
@@ -3568,7 +3602,7 @@ extension on TranslationsRu {
 			'biblePlans.startNew' => 'Начать заново',
 			'biblePlans.day' => ({required Object day}) => 'День ${day}',
 			'biblePlans.dayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: '${count} день', few: '${count} дня', many: '${count} дней', other: '${count} дня', ), 
-			'biblePlans.stopConfirmation' => ({required Object name}) => 'Остановить «${name}»? Вы сможете возобновить его позже из истории этого плана в разделе «Найдите библейский план».',
+			'biblePlans.stopConfirmation' => ({required Object name}) => 'Остановить «${name}»? Вы сможете возобновить его позже из истории этого плана в разделе «Начните библейский план».',
 			'biblePlans.completed' => ({required Object name}) => '«${name}» завершено.',
 			'biblePlans.addPlan' => 'Добавить библейский план',
 			'searchUi.searchBible' => 'Поиск в Библии',
@@ -4002,6 +4036,8 @@ extension on TranslationsRu {
 			'morphology.hebrewMood.cohortative.description' => 'Волевой глагол от 1-го лица, например «давайте» или «я буду».',
 			'morphology.hebrewMood.cohortative.examples' => 'Пойдём|Я похвалю',
 			'morphology.hebrewMood.hSuffix.name' => 'h-суффикс',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.hebrewMood.hSuffix.description' => 'Упорное -ah, оканчивающееся на несовершенном, часто похожем на когортативное.',
 			'morphology.hebrewMood.hSuffix.examples' => 'Я обязательно приду|позволь мне приблизиться',
 			'morphology.tense.present.name' => 'Настоящее',
@@ -4014,8 +4050,6 @@ extension on TranslationsRu {
 			'morphology.tense.future.description' => 'Действие, которое произойдет.',
 			'morphology.tense.future.examples' => 'он придет|они увидят',
 			'morphology.tense.aorist.name' => 'Аорист',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.tense.aorist.description' => 'Простое прошедшее действие, рассматриваемое в целом.',
 			'morphology.tense.aorist.examples' => 'он сказал|они пошли',
 			'morphology.tense.perfect.name' => 'Перфект',

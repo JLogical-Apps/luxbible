@@ -1,10 +1,14 @@
+import 'dart:math';
+
 import 'package:bible/models/calendar_date_time.dart';
 import 'package:bible/models/hydrated_bible_plan_progress.dart';
 import 'package:bible/models/reminder.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:utils_core/utils_core.dart';
 import 'package:uuid/uuid.dart';
 
@@ -76,11 +80,13 @@ sealed class BiblePlanProgress with _$BiblePlanProgress {
     required List<BiblePlanDayProgress> days,
     Reminder? reminder,
     CalendarDateTime? lastCompletedAt,
+    @Default(BiblePlanPace.relaxed()) BiblePlanPace pace,
   }) = _BiblePlanProgress;
 
-  factory BiblePlanProgress.start(BiblePlan plan) => BiblePlanProgress(
+  factory BiblePlanProgress.start(BiblePlan plan, {required BiblePlanPace pace}) => BiblePlanProgress(
     instanceId: Uuid().v4(),
     days: plan.days.map((day) => BiblePlanDayProgress.incomplete()).toList(),
+    pace: pace,
   );
 
   factory BiblePlanProgress.fromJson(Map<String, dynamic> json) => _$BiblePlanProgressFromJson(json);
@@ -110,6 +116,61 @@ sealed class BiblePlanProgress with _$BiblePlanProgress {
       days.anyIndexed(
         (dayIndex, day) => day.isComplete && previous.days.elementAtOrNull(dayIndex)?.isComplete == false,
       );
+}
+
+enum BiblePlanPaceType {
+  relaxed,
+  paced;
+
+  String title() => switch (this) {
+    relaxed => t.biblePlans.relaxed,
+    paced => t.biblePlans.paced,
+  };
+
+  String description() => switch (this) {
+    relaxed => t.biblePlans.relaxedDescription,
+    paced => t.biblePlans.pacedDescription,
+  };
+
+  IconData get icon => switch (this) {
+    relaxed => Symbols.directions_walk,
+    paced => Symbols.sports_score,
+  };
+}
+
+@freezed
+sealed class BiblePlanPace with _$BiblePlanPace {
+  const BiblePlanPace._();
+
+  const factory BiblePlanPace.relaxed() = RelaxedBiblePlanPace;
+
+  const factory BiblePlanPace.paced({@isoDate required DateTime endDate}) = PacedBiblePlanPace;
+
+  factory BiblePlanPace.fromType(BiblePlanPaceType type, {required DateTime endDate}) => switch (type) {
+    .relaxed => BiblePlanPace.relaxed(),
+    .paced => BiblePlanPace.paced(endDate: endDate),
+  };
+
+  factory BiblePlanPace.fromJson(Map<String, dynamic> json) => _$BiblePlanPaceFromJson(json);
+
+  // A day already completed today counts as today's reading, so the remaining days start tomorrow.
+  static DateTime getNaturalEndDate({
+    required int dayCount,
+    int completedDayCount = 0,
+    bool hasCompletedToday = false,
+  }) => DateTime.now().withoutTime().addDays(max(dayCount - completedDayCount, 1) - (hasCompletedToday ? 0 : 1));
+
+  BiblePlanPaceType get type => switch (this) {
+    RelaxedBiblePlanPace() => .relaxed,
+    PacedBiblePlanPace() => .paced,
+  };
+
+  DateTime? get endDate => as<PacedBiblePlanPace>()?.endDate;
+
+  String format() => switch (this) {
+    RelaxedBiblePlanPace() => t.biblePlans.relaxed,
+    PacedBiblePlanPace(:final endDate) => t.biblePlans.pacedToEnd(date: endDate.formatDate()),
+  };
 }
 
 @freezed

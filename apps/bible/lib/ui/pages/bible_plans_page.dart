@@ -1,3 +1,4 @@
+import 'package:bible/models/bible_plan.dart';
 import 'package:bible/providers/bible_plan_history_provider.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -6,6 +7,7 @@ import 'package:bible/ui/pages/bible_plan_history_page.dart';
 import 'package:bible/ui/pages/bible_plan_read_page.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
 import 'package:bible/ui/sheets/bible_plan_annotations_sheet.dart';
+import 'package:bible/ui/sheets/bible_plan_pace_sheet.dart';
 import 'package:bible/ui/widgets/bible_plan_file_list_items.dart';
 import 'package:bible/ui/widgets/bible_plan_history_list_items.dart';
 import 'package:bible/ui/widgets/bible_plan_progress_card.dart';
@@ -92,6 +94,18 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
               final planId = progress.id;
               final displayName = plan.getDisplayName(planId);
               final dailyReminderTime = progress.progress.reminder?.dailyTime;
+              final pace = progress.progress.pace;
+              final daysAheadOfPace = progress.daysAheadOfPace;
+
+              Future<void> editPace({required String title, required BiblePlanPace initialPace}) async {
+                final newPace = await BiblePlanPaceSheet.showEdit(
+                  context,
+                  title: title,
+                  progress: progress,
+                  initialPace: initialPace,
+                );
+                if (newPace != null) ref.updateUser((user) => user.withPlanPace(planId, newPace));
+              }
 
               return SafeArea(
                 key: ValueKey(progress.instanceId),
@@ -101,6 +115,12 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                   child: BiblePlanProgressCard(
                     progress: progress,
                     initialDayIndex: progress.currentDayIndex,
+                    caption: switch (daysAheadOfPace) {
+                      null => null,
+                      0 => t.biblePlans.onTrack.toText(),
+                      final days when days < 0 => t.biblePlans.daysBehind(count: -days).toText(),
+                      final days => t.biblePlans.daysAhead(count: days).toText(),
+                    },
                     onNavigateToVerseSelection: (selection) {
                       context.pop();
                       context.pop(selection);
@@ -122,6 +142,15 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                     onReviewDayToggled: (dayIndex) =>
                         ref.updateUser((user) => user.withPlanDayToggled(planId: planId, dayIndex: dayIndex)),
                     menuItems: [
+                      StyledListItem(
+                        leading: pace.type.icon.toIcon(),
+                        title: t.biblePlans.pace.toText(),
+                        subtitle: pace.format().toText(),
+                        onPressed: () {
+                          context.pop();
+                          editPace(title: t.biblePlans.pace, initialPace: pace);
+                        },
+                      ),
                       StyledListItem(
                         leading: Icon(
                           dailyReminderTime == null ? Symbols.notifications_off : Symbols.notifications_active,
@@ -220,6 +249,14 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                                 duration: Duration(seconds: 10),
                               );
                             },
+                          )
+                        : daysAheadOfPace != null && daysAheadOfPace < 0
+                        ? StyledRectButton.secondary(
+                            label: t.biblePlans.catchUp.toText(),
+                            onPressed: () => editPace(
+                              title: t.biblePlans.catchUp,
+                              initialPace: BiblePlanPace.paced(endDate: progress.naturalEndDate),
+                            ),
                           )
                         : null,
                   ),

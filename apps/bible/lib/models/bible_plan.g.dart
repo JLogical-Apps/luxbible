@@ -56,6 +56,9 @@ _BiblePlanProgress _$BiblePlanProgressFromJson(Map<String, dynamic> json) =>
       lastCompletedAt: json['lastCompletedAt'] == null
           ? null
           : CalendarDateTime.fromJson(json['lastCompletedAt'] as String),
+      pace: json['pace'] == null
+          ? const BiblePlanPace.relaxed()
+          : BiblePlanPace.fromJson(json['pace'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$BiblePlanProgressToJson(_BiblePlanProgress instance) =>
@@ -64,6 +67,27 @@ Map<String, dynamic> _$BiblePlanProgressToJson(_BiblePlanProgress instance) =>
       'days': instance.days.map((e) => e.toJson()).toList(),
       'reminder': instance.reminder?.toJson(),
       'lastCompletedAt': instance.lastCompletedAt?.toJson(),
+      'pace': instance.pace.toJson(),
+    };
+
+RelaxedBiblePlanPace _$RelaxedBiblePlanPaceFromJson(
+  Map<String, dynamic> json,
+) => RelaxedBiblePlanPace($type: json['runtimeType'] as String?);
+
+Map<String, dynamic> _$RelaxedBiblePlanPaceToJson(
+  RelaxedBiblePlanPace instance,
+) => <String, dynamic>{'runtimeType': instance.$type};
+
+PacedBiblePlanPace _$PacedBiblePlanPaceFromJson(Map<String, dynamic> json) =>
+    PacedBiblePlanPace(
+      endDate: decodeIsoDate(json['endDate'] as String),
+      $type: json['runtimeType'] as String?,
+    );
+
+Map<String, dynamic> _$PacedBiblePlanPaceToJson(PacedBiblePlanPace instance) =>
+    <String, dynamic>{
+      'endDate': encodeIsoDate(instance.endDate),
+      'runtimeType': instance.$type,
     };
 
 _BiblePlanHistoryEntry _$BiblePlanHistoryEntryFromJson(

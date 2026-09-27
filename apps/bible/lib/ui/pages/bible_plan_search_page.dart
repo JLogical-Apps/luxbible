@@ -4,6 +4,7 @@ import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/custom_bible_plans_provider.dart';
 import 'package:bible/ui/pages/bible_plan_history_page.dart';
 import 'package:bible/ui/pages/create_bible_plan_page.dart';
+import 'package:bible/ui/sheets/bible_plan_pace_sheet.dart';
 import 'package:bible/ui/widgets/bible_plan_file_list_items.dart';
 import 'package:bible/ui/widgets/bible_plan_history_list_items.dart';
 import 'package:bible/ui/widgets/bible_plan_tile.dart';
@@ -47,7 +48,7 @@ class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<Stri
         .where((planId, plan) => scope == null || plan.scope == scope);
 
     return StyledPage(
-      title: t.biblePlans.find.toText(),
+      title: t.biblePlans.startABiblePlan.toText(),
       body: StyledDock(
         shrinkWrap: false,
         children: [
@@ -131,8 +132,8 @@ class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<Stri
               onPressed: () async {
                 final isCustom = ref.read(customBiblePlansProvider).containsKey(planId);
                 final hasHistory = ref.read(biblePlanHistoryProvider).hasEntriesForPlan(planId);
-                final shouldStartPlan = await context.showStyledSheet(
-                  (sheetContext, _) => StyledSheet(
+                final pace = await context.showStyledSheet(
+                  (sheetContext, _) => StyledSheet<BiblePlanPace>(
                     title: t.biblePlans.startPlanQuestion.toText(),
                     trailing: StyledCircleButton.md(
                       child: Symbols.more_vert.toIcon(),
@@ -215,15 +216,23 @@ class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<Stri
                     buttonsBuilder: (context) => [
                       StyledRectButton.primary(
                         label: t.biblePlans.startPlan.toText(),
-                        onPressed: () => context.pop(true),
+                        onPressed: () async {
+                          final pace = await BiblePlanPaceSheet.showStart(
+                            sheetContext,
+                            planName: plan.getDisplayName(planId),
+                            dayCount: plan.dayCount,
+                          );
+                          if (pace != null && sheetContext.mounted) sheetContext.pop(pace);
+                        },
                       ),
                     ],
                   ),
                 );
-                if (shouldStartPlan == true && context.mounted) {
+                if (pace != null && context.mounted) {
                   ref.updateUser(
-                    (user) =>
-                        user.withStartedPlan(planId: planId, plan: plan).withOnboardingStepCompleted(.startBiblePlan),
+                    (user) => user
+                        .withStartedPlan(planId: planId, plan: plan, pace: pace)
+                        .withOnboardingStepCompleted(.startBiblePlan),
                   );
                   context.pop(planId);
                 }

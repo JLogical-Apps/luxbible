@@ -1381,8 +1381,8 @@ class Translations$emptyStates$en {
 	/// en: 'You haven't created any notebooks. Notebooks let you organize your annotations.'
 	String get noNotebooks => 'You haven\'t created any notebooks. Notebooks let you organize your annotations.';
 
-	/// en: 'You aren't following any reading plans yet. Find one to start reading through the Bible.'
-	String get noPlans => 'You aren\'t following any reading plans yet. Find one to start reading through the Bible.';
+	/// en: 'You aren't following any reading plans yet. Start one to begin reading through the Bible.'
+	String get noPlans => 'You aren\'t following any reading plans yet. Start one to begin reading through the Bible.';
 }
 
 // Path: annotationUi
@@ -1660,8 +1660,8 @@ class Translations$biblePlans$en {
 
 	// Translations
 
-	/// en: 'Find A Bible Plan'
-	String get find => 'Find A Bible Plan';
+	/// en: 'Start A Bible Plan'
+	String get startABiblePlan => 'Start A Bible Plan';
 
 	/// en: 'Included Plans'
 	String get includedPlans => 'Included Plans';
@@ -1960,6 +1960,48 @@ class Translations$biblePlans$en {
 	/// en: 'Read Entire Chapter'
 	String get readEntireChapter => 'Read Entire Chapter';
 
+	/// en: 'Pace'
+	String get pace => 'Pace';
+
+	/// en: 'Choose Your Pace'
+	String get choosePace => 'Choose Your Pace';
+
+	/// en: 'Relaxed'
+	String get relaxed => 'Relaxed';
+
+	/// en: 'Read whenever you like, with no schedule to keep up with.'
+	String get relaxedDescription => 'Read whenever you like, with no schedule to keep up with.';
+
+	/// en: 'Paced'
+	String get paced => 'Paced';
+
+	/// en: 'Set a target end date and see whether you're on track.'
+	String get pacedDescription => 'Set a target end date and see whether you\'re on track.';
+
+	/// en: 'Paced to end {date}'
+	String pacedToEnd({required Object date}) => 'Paced to end ${date}';
+
+	/// en: 'Target End Date'
+	String get targetEndDate => 'Target End Date';
+
+	/// en: 'On track'
+	String get onTrack => 'On track';
+
+	/// en: '(one) {{count} day behind} (other) {{count} days behind}'
+	String daysBehind({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count,
+		one: '${count} day behind',
+		other: '${count} days behind',
+	);
+
+	/// en: '(one) {{count} day ahead} (other) {{count} days ahead}'
+	String daysAhead({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count,
+		one: '${count} day ahead',
+		other: '${count} days ahead',
+	);
+
+	/// en: 'Catch Up'
+	String get catchUp => 'Catch Up';
+
 	/// en: 'Review Day Annotations'
 	String get reviewDayAnnotations => 'Review Day Annotations';
 
@@ -2023,8 +2065,8 @@ class Translations$biblePlans$en {
 		other: '${count} days',
 	);
 
-	/// en: 'Stop "{name}"? You can resume it later from this plan's history in Find A Bible Plan.'
-	String stopConfirmation({required Object name}) => 'Stop "${name}"? You can resume it later from this plan\'s history in Find A Bible Plan.';
+	/// en: 'Stop "{name}"? You can resume it later from this plan's history in Start A Bible Plan.'
+	String stopConfirmation({required Object name}) => 'Stop "${name}"? You can resume it later from this plan\'s history in Start A Bible Plan.';
 
 	/// en: '"{name}" completed.'
 	String completed({required Object name}) => '"${name}" completed.';
@@ -5569,7 +5611,7 @@ extension on Translations {
 			'emptyStates.noAnnotations' => 'You haven\'t created any annotations.',
 			'emptyStates.noBookmarks' => 'You haven\'t created any bookmarks.',
 			'emptyStates.noNotebooks' => 'You haven\'t created any notebooks. Notebooks let you organize your annotations.',
-			'emptyStates.noPlans' => 'You aren\'t following any reading plans yet. Find one to start reading through the Bible.',
+			'emptyStates.noPlans' => 'You aren\'t following any reading plans yet. Start one to begin reading through the Bible.',
 			'annotationUi.yourAnnotations' => 'Your Annotations',
 			'annotationUi.annotate' => 'Annotate',
 			'annotationUi.withNotes' => 'With Notes',
@@ -5643,7 +5685,7 @@ extension on Translations {
 			'themeSettings.verseNumbers' => 'Verse Numbers',
 			'themeSettings.paragraphsDescription' => 'Format verses into paragraphs.',
 			'themeSettings.footnotesDescription' => 'Show footnote markers within the text.',
-			'biblePlans.find' => 'Find A Bible Plan',
+			'biblePlans.startABiblePlan' => 'Start A Bible Plan',
 			'biblePlans.includedPlans' => 'Included Plans',
 			'biblePlans.includedPlansDescription' => 'Plans included with Lux.',
 			'biblePlans.customPlansDescription' => 'Plans you\'ve created.',
@@ -5759,6 +5801,18 @@ extension on Translations {
 			'biblePlans.stopPlan' => 'Stop Plan',
 			'biblePlans.stopPlanDescription' => 'Move this plan and its progress to history.',
 			'biblePlans.readEntireChapter' => 'Read Entire Chapter',
+			'biblePlans.pace' => 'Pace',
+			'biblePlans.choosePace' => 'Choose Your Pace',
+			'biblePlans.relaxed' => 'Relaxed',
+			'biblePlans.relaxedDescription' => 'Read whenever you like, with no schedule to keep up with.',
+			'biblePlans.paced' => 'Paced',
+			'biblePlans.pacedDescription' => 'Set a target end date and see whether you\'re on track.',
+			'biblePlans.pacedToEnd' => ({required Object date}) => 'Paced to end ${date}',
+			'biblePlans.targetEndDate' => 'Target End Date',
+			'biblePlans.onTrack' => 'On track',
+			'biblePlans.daysBehind' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} day behind', other: '${count} days behind', ), 
+			'biblePlans.daysAhead' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} day ahead', other: '${count} days ahead', ), 
+			'biblePlans.catchUp' => 'Catch Up',
 			'biblePlans.reviewDayAnnotations' => 'Review Day Annotations',
 			'biblePlans.history' => 'History',
 			'biblePlans.historyDescription' => 'Review past progress or resume a stopped plan.',
@@ -5779,7 +5833,7 @@ extension on Translations {
 			'biblePlans.startNew' => 'Start New',
 			'biblePlans.day' => ({required Object day}) => 'Day ${day}',
 			'biblePlans.dayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} day', other: '${count} days', ), 
-			'biblePlans.stopConfirmation' => ({required Object name}) => 'Stop "${name}"? You can resume it later from this plan\'s history in Find A Bible Plan.',
+			'biblePlans.stopConfirmation' => ({required Object name}) => 'Stop "${name}"? You can resume it later from this plan\'s history in Start A Bible Plan.',
 			'biblePlans.completed' => ({required Object name}) => '"${name}" completed.',
 			'biblePlans.addPlan' => 'Add Bible plan',
 			'searchUi.searchBible' => 'Search Bible',
@@ -6215,6 +6269,8 @@ extension on Translations {
 			'morphology.hebrewMood.hSuffix.name' => 'h-suffix',
 			'morphology.hebrewMood.hSuffix.description' => 'An emphatic -ah ending on the imperfect, often cohortative-like.',
 			'morphology.hebrewMood.hSuffix.examples' => 'I will surely come|let me draw near',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.tense.present.name' => 'Present',
 			'morphology.tense.present.description' => 'Ongoing or general action.',
 			'morphology.tense.present.examples' => 'he loves|they walk',
@@ -6227,8 +6283,6 @@ extension on Translations {
 			'morphology.tense.aorist.name' => 'Aorist',
 			'morphology.tense.aorist.description' => 'Simple past action viewed as a whole.',
 			'morphology.tense.aorist.examples' => 'he said|they went',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.tense.perfect.name' => 'Perfect',
 			'morphology.tense.perfect.description' => 'Past action with a continuing present consequence.',
 			'morphology.tense.perfect.examples' => 'has been written|has come',

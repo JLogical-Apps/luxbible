@@ -548,7 +548,7 @@ as List<VerseSelection>,
 /// @nodoc
 mixin _$BiblePlanProgress {
 
- String? get instanceId; List<BiblePlanDayProgress> get days; Reminder? get reminder; CalendarDateTime? get lastCompletedAt;
+ String? get instanceId; List<BiblePlanDayProgress> get days; Reminder? get reminder; CalendarDateTime? get lastCompletedAt; BiblePlanPace get pace;
 /// Create a copy of BiblePlanProgress
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -561,16 +561,16 @@ $BiblePlanProgressCopyWith<BiblePlanProgress> get copyWith => _$BiblePlanProgres
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlanProgress&&(identical(other.instanceId, instanceId) || other.instanceId == instanceId)&&const DeepCollectionEquality().equals(other.days, days)&&(identical(other.reminder, reminder) || other.reminder == reminder)&&(identical(other.lastCompletedAt, lastCompletedAt) || other.lastCompletedAt == lastCompletedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlanProgress&&(identical(other.instanceId, instanceId) || other.instanceId == instanceId)&&const DeepCollectionEquality().equals(other.days, days)&&(identical(other.reminder, reminder) || other.reminder == reminder)&&(identical(other.lastCompletedAt, lastCompletedAt) || other.lastCompletedAt == lastCompletedAt)&&(identical(other.pace, pace) || other.pace == pace));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,instanceId,const DeepCollectionEquality().hash(days),reminder,lastCompletedAt);
+int get hashCode => Object.hash(runtimeType,instanceId,const DeepCollectionEquality().hash(days),reminder,lastCompletedAt,pace);
 
 @override
 String toString() {
-  return 'BiblePlanProgress(instanceId: $instanceId, days: $days, reminder: $reminder, lastCompletedAt: $lastCompletedAt)';
+  return 'BiblePlanProgress(instanceId: $instanceId, days: $days, reminder: $reminder, lastCompletedAt: $lastCompletedAt, pace: $pace)';
 }
 
 
@@ -581,11 +581,11 @@ abstract mixin class $BiblePlanProgressCopyWith<$Res>  {
   factory $BiblePlanProgressCopyWith(BiblePlanProgress value, $Res Function(BiblePlanProgress) _then) = _$BiblePlanProgressCopyWithImpl;
 @useResult
 $Res call({
- String? instanceId, List<BiblePlanDayProgress> days, Reminder? reminder, CalendarDateTime? lastCompletedAt
+ String? instanceId, List<BiblePlanDayProgress> days, Reminder? reminder, CalendarDateTime? lastCompletedAt, BiblePlanPace pace
 });
 
 
-$ReminderCopyWith<$Res>? get reminder;
+$ReminderCopyWith<$Res>? get reminder;$BiblePlanPaceCopyWith<$Res> get pace;
 
 }
 /// @nodoc
@@ -598,13 +598,14 @@ class _$BiblePlanProgressCopyWithImpl<$Res>
 
 /// Create a copy of BiblePlanProgress
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? instanceId = freezed,Object? days = null,Object? reminder = freezed,Object? lastCompletedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? instanceId = freezed,Object? days = null,Object? reminder = freezed,Object? lastCompletedAt = freezed,Object? pace = null,}) {
   return _then(BiblePlanProgress(
 instanceId: freezed == instanceId ? _self.instanceId : instanceId // ignore: cast_nullable_to_non_nullable
 as String?,days: null == days ? _self.days : days // ignore: cast_nullable_to_non_nullable
 as List<BiblePlanDayProgress>,reminder: freezed == reminder ? _self.reminder : reminder // ignore: cast_nullable_to_non_nullable
 as Reminder?,lastCompletedAt: freezed == lastCompletedAt ? _self.lastCompletedAt : lastCompletedAt // ignore: cast_nullable_to_non_nullable
-as CalendarDateTime?,
+as CalendarDateTime?,pace: null == pace ? _self.pace : pace // ignore: cast_nullable_to_non_nullable
+as BiblePlanPace,
   ));
 }
 /// Create a copy of BiblePlanProgress
@@ -618,6 +619,15 @@ $ReminderCopyWith<$Res>? get reminder {
 
   return $ReminderCopyWith<$Res>(_self.reminder!, (value) {
     return _then(_self.copyWith(reminder: value));
+  });
+}/// Create a copy of BiblePlanProgress
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$BiblePlanPaceCopyWith<$Res> get pace {
+  
+  return $BiblePlanPaceCopyWith<$Res>(_self.pace, (value) {
+    return _then(_self.copyWith(pace: value));
   });
 }
 }
@@ -698,10 +708,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? instanceId,  List<BiblePlanDayProgress> days,  Reminder? reminder,  CalendarDateTime? lastCompletedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? instanceId,  List<BiblePlanDayProgress> days,  Reminder? reminder,  CalendarDateTime? lastCompletedAt,  BiblePlanPace pace)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BiblePlanProgress() when $default != null:
-return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt);case _:
+return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt,_that.pace);case _:
   return orElse();
 
 }
@@ -719,10 +729,10 @@ return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? instanceId,  List<BiblePlanDayProgress> days,  Reminder? reminder,  CalendarDateTime? lastCompletedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? instanceId,  List<BiblePlanDayProgress> days,  Reminder? reminder,  CalendarDateTime? lastCompletedAt,  BiblePlanPace pace)  $default,) {final _that = this;
 switch (_that) {
 case _BiblePlanProgress():
-return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt);}
+return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt,_that.pace);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -736,10 +746,10 @@ return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? instanceId,  List<BiblePlanDayProgress> days,  Reminder? reminder,  CalendarDateTime? lastCompletedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? instanceId,  List<BiblePlanDayProgress> days,  Reminder? reminder,  CalendarDateTime? lastCompletedAt,  BiblePlanPace pace)?  $default,) {final _that = this;
 switch (_that) {
 case _BiblePlanProgress() when $default != null:
-return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt);case _:
+return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt,_that.pace);case _:
   return null;
 
 }
@@ -751,7 +761,7 @@ return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt
 @JsonSerializable()
 
 class _BiblePlanProgress extends BiblePlanProgress {
-  const _BiblePlanProgress({this.instanceId, required  List<BiblePlanDayProgress> days, this.reminder, this.lastCompletedAt}): _days = days,super._();
+  const _BiblePlanProgress({this.instanceId, required  List<BiblePlanDayProgress> days, this.reminder, this.lastCompletedAt, this.pace = const BiblePlanPace.relaxed()}): _days = days,super._();
   factory _BiblePlanProgress.fromJson(Map<String, dynamic> json) => _$BiblePlanProgressFromJson(json);
 
 @override final  String? instanceId;
@@ -764,6 +774,7 @@ class _BiblePlanProgress extends BiblePlanProgress {
 
 @override final  Reminder? reminder;
 @override final  CalendarDateTime? lastCompletedAt;
+@override@JsonKey() final  BiblePlanPace pace;
 
 /// Create a copy of BiblePlanProgress
 /// with the given fields replaced by the non-null parameter values.
@@ -778,16 +789,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BiblePlanProgress&&(identical(other.instanceId, instanceId) || other.instanceId == instanceId)&&const DeepCollectionEquality().equals(other._days, _days)&&(identical(other.reminder, reminder) || other.reminder == reminder)&&(identical(other.lastCompletedAt, lastCompletedAt) || other.lastCompletedAt == lastCompletedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BiblePlanProgress&&(identical(other.instanceId, instanceId) || other.instanceId == instanceId)&&const DeepCollectionEquality().equals(other._days, _days)&&(identical(other.reminder, reminder) || other.reminder == reminder)&&(identical(other.lastCompletedAt, lastCompletedAt) || other.lastCompletedAt == lastCompletedAt)&&(identical(other.pace, pace) || other.pace == pace));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,instanceId,const DeepCollectionEquality().hash(_days),reminder,lastCompletedAt);
+int get hashCode => Object.hash(runtimeType,instanceId,const DeepCollectionEquality().hash(_days),reminder,lastCompletedAt,pace);
 
 @override
 String toString() {
-  return 'BiblePlanProgress(instanceId: $instanceId, days: $days, reminder: $reminder, lastCompletedAt: $lastCompletedAt)';
+  return 'BiblePlanProgress(instanceId: $instanceId, days: $days, reminder: $reminder, lastCompletedAt: $lastCompletedAt, pace: $pace)';
 }
 
 
@@ -798,11 +809,11 @@ abstract mixin class _$BiblePlanProgressCopyWith<$Res> implements $BiblePlanProg
   factory _$BiblePlanProgressCopyWith(_BiblePlanProgress value, $Res Function(_BiblePlanProgress) _then) = __$BiblePlanProgressCopyWithImpl;
 @override @useResult
 $Res call({
- String? instanceId, List<BiblePlanDayProgress> days, Reminder? reminder, CalendarDateTime? lastCompletedAt
+ String? instanceId, List<BiblePlanDayProgress> days, Reminder? reminder, CalendarDateTime? lastCompletedAt, BiblePlanPace pace
 });
 
 
-@override $ReminderCopyWith<$Res>? get reminder;
+@override $ReminderCopyWith<$Res>? get reminder;@override $BiblePlanPaceCopyWith<$Res> get pace;
 
 }
 /// @nodoc
@@ -815,13 +826,14 @@ class __$BiblePlanProgressCopyWithImpl<$Res>
 
 /// Create a copy of BiblePlanProgress
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? instanceId = freezed,Object? days = null,Object? reminder = freezed,Object? lastCompletedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? instanceId = freezed,Object? days = null,Object? reminder = freezed,Object? lastCompletedAt = freezed,Object? pace = null,}) {
   return _then(_BiblePlanProgress(
 instanceId: freezed == instanceId ? _self.instanceId : instanceId // ignore: cast_nullable_to_non_nullable
 as String?,days: null == days ? _self._days : days // ignore: cast_nullable_to_non_nullable
 as List<BiblePlanDayProgress>,reminder: freezed == reminder ? _self.reminder : reminder // ignore: cast_nullable_to_non_nullable
 as Reminder?,lastCompletedAt: freezed == lastCompletedAt ? _self.lastCompletedAt : lastCompletedAt // ignore: cast_nullable_to_non_nullable
-as CalendarDateTime?,
+as CalendarDateTime?,pace: null == pace ? _self.pace : pace // ignore: cast_nullable_to_non_nullable
+as BiblePlanPace,
   ));
 }
 
@@ -837,7 +849,314 @@ $ReminderCopyWith<$Res>? get reminder {
   return $ReminderCopyWith<$Res>(_self.reminder!, (value) {
     return _then(_self.copyWith(reminder: value));
   });
+}/// Create a copy of BiblePlanProgress
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$BiblePlanPaceCopyWith<$Res> get pace {
+  
+  return $BiblePlanPaceCopyWith<$Res>(_self.pace, (value) {
+    return _then(_self.copyWith(pace: value));
+  });
 }
+}
+
+BiblePlanPace _$BiblePlanPaceFromJson(
+  Map<String, dynamic> json
+) {
+        switch (json['runtimeType']) {
+                  case 'relaxed':
+          return RelaxedBiblePlanPace.fromJson(
+            json
+          );
+                case 'paced':
+          return PacedBiblePlanPace.fromJson(
+            json
+          );
+        
+          default:
+            throw CheckedFromJsonException(
+  json,
+  'runtimeType',
+  'BiblePlanPace',
+  'Invalid union type "${json['runtimeType']}"!'
+);
+        }
+      
+}
+
+/// @nodoc
+mixin _$BiblePlanPace {
+
+
+
+  /// Serializes this BiblePlanPace to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlanPace);
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'BiblePlanPace()';
+}
+
+
+}
+
+/// @nodoc
+class $BiblePlanPaceCopyWith<$Res>  {
+$BiblePlanPaceCopyWith(BiblePlanPace _, $Res Function(BiblePlanPace) __);
+}
+
+
+/// Adds pattern-matching-related methods to [BiblePlanPace].
+extension BiblePlanPacePatterns on BiblePlanPace {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( RelaxedBiblePlanPace value)?  relaxed,TResult Function( PacedBiblePlanPace value)?  paced,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case RelaxedBiblePlanPace() when relaxed != null:
+return relaxed(_that);case PacedBiblePlanPace() when paced != null:
+return paced(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( RelaxedBiblePlanPace value)  relaxed,required TResult Function( PacedBiblePlanPace value)  paced,}){
+final _that = this;
+switch (_that) {
+case RelaxedBiblePlanPace():
+return relaxed(_that);case PacedBiblePlanPace():
+return paced(_that);}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( RelaxedBiblePlanPace value)?  relaxed,TResult? Function( PacedBiblePlanPace value)?  paced,}){
+final _that = this;
+switch (_that) {
+case RelaxedBiblePlanPace() when relaxed != null:
+return relaxed(_that);case PacedBiblePlanPace() when paced != null:
+return paced(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  relaxed,TResult Function(@isoDate  DateTime endDate)?  paced,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case RelaxedBiblePlanPace() when relaxed != null:
+return relaxed();case PacedBiblePlanPace() when paced != null:
+return paced(_that.endDate);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  relaxed,required TResult Function(@isoDate  DateTime endDate)  paced,}) {final _that = this;
+switch (_that) {
+case RelaxedBiblePlanPace():
+return relaxed();case PacedBiblePlanPace():
+return paced(_that.endDate);}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  relaxed,TResult? Function(@isoDate  DateTime endDate)?  paced,}) {final _that = this;
+switch (_that) {
+case RelaxedBiblePlanPace() when relaxed != null:
+return relaxed();case PacedBiblePlanPace() when paced != null:
+return paced(_that.endDate);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class RelaxedBiblePlanPace extends BiblePlanPace {
+  const RelaxedBiblePlanPace({ String? $type}): $type = $type ?? 'relaxed',super._();
+  factory RelaxedBiblePlanPace.fromJson(Map<String, dynamic> json) => _$RelaxedBiblePlanPaceFromJson(json);
+
+
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+
+@override
+Map<String, dynamic> toJson() {
+  return _$RelaxedBiblePlanPaceToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RelaxedBiblePlanPace);
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'BiblePlanPace.relaxed()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+@JsonSerializable()
+
+class PacedBiblePlanPace extends BiblePlanPace {
+  const PacedBiblePlanPace({@isoDate required this.endDate,  String? $type}): $type = $type ?? 'paced',super._();
+  factory PacedBiblePlanPace.fromJson(Map<String, dynamic> json) => _$PacedBiblePlanPaceFromJson(json);
+
+@isoDate final  DateTime endDate;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
+/// Create a copy of BiblePlanPace
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$PacedBiblePlanPaceCopyWith<PacedBiblePlanPace> get copyWith => _$PacedBiblePlanPaceCopyWithImpl<PacedBiblePlanPace>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$PacedBiblePlanPaceToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PacedBiblePlanPace&&(identical(other.endDate, endDate) || other.endDate == endDate));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,endDate);
+
+@override
+String toString() {
+  return 'BiblePlanPace.paced(endDate: $endDate)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $PacedBiblePlanPaceCopyWith<$Res> implements $BiblePlanPaceCopyWith<$Res> {
+  factory $PacedBiblePlanPaceCopyWith(PacedBiblePlanPace value, $Res Function(PacedBiblePlanPace) _then) = _$PacedBiblePlanPaceCopyWithImpl;
+@useResult
+$Res call({
+@isoDate DateTime endDate
+});
+
+
+
+
+}
+/// @nodoc
+class _$PacedBiblePlanPaceCopyWithImpl<$Res>
+    implements $PacedBiblePlanPaceCopyWith<$Res> {
+  _$PacedBiblePlanPaceCopyWithImpl(this._self, this._then);
+
+  final PacedBiblePlanPace _self;
+  final $Res Function(PacedBiblePlanPace) _then;
+
+/// Create a copy of BiblePlanPace
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? endDate = null,}) {
+  return _then(PacedBiblePlanPace(
+endDate: null == endDate ? _self.endDate : endDate // ignore: cast_nullable_to_non_nullable
+as DateTime,
+  ));
+}
+
+
 }
 
 

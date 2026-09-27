@@ -30,4 +30,16 @@ class HydratedBiblePlanProgress {
   int get numCompletedDays => plan.dayIndexes.where((index) => isDayComplete(dayIndex: index)).length;
 
   bool get isCompleted => numCompletedDays == plan.dayCount;
+
+  DateTime get naturalEndDate => BiblePlanPace.getNaturalEndDate(
+    dayCount: plan.dayCount,
+    completedDayCount: numCompletedDays,
+    hasCompletedToday: progress.wasCompletedToday(),
+  );
+
+  // How many days sooner than the target the reader would finish at one plan day per day, so negative means behind.
+  int? get daysAheadOfPace => switch (progress.pace) {
+    PacedBiblePlanPace(:final endDate) when !isCompleted => naturalEndDate.getDaysUntil(endDate),
+    _ => null,
+  };
 }

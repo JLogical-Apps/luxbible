@@ -650,7 +650,7 @@ class _Translations$emptyStates$nl extends Translations$emptyStates$en {
 	@override String get noAnnotations => 'Je hebt nog geen annotaties gemaakt.';
 	@override String get noBookmarks => 'Je hebt nog geen bladwijzers gemaakt.';
 	@override String get noNotebooks => 'Je hebt nog geen notitieboeken gemaakt. Met notitieboeken kun je je annotaties ordenen.';
-	@override String get noPlans => 'Je volgt nog geen leesplannen. Zoek er een om met het lezen van de Bijbel te beginnen.';
+	@override String get noPlans => 'Je volgt nog geen leesplannen. Start er een om met het lezen van de Bijbel te beginnen.';
 }
 
 // Path: annotationUi
@@ -781,7 +781,7 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	final TranslationsNl _root; // ignore: unused_field
 
 	// Translations
-	@override String get find => 'Een Bijbelleesplan zoeken';
+	@override String get startABiblePlan => 'Een Bijbelleesplan starten';
 	@override String get includedPlans => 'Inbegrepen leesplannen';
 	@override String get includedPlansDescription => 'Leesplannen die met Lux worden meegeleverd.';
 	@override String get customPlansDescription => 'Leesplannen die je zelf hebt gemaakt.';
@@ -888,6 +888,24 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	@override String get stopPlan => 'Leesplan stoppen';
 	@override String get stopPlanDescription => 'Verplaats dit leesplan en de voortgang naar de geschiedenis.';
 	@override String get readEntireChapter => 'Hele hoofdstuk lezen';
+	@override String get pace => 'Tempo';
+	@override String get choosePace => 'Kies je tempo';
+	@override String get relaxed => 'Ontspannen';
+	@override String get relaxedDescription => 'Lees wanneer je wilt, zonder schema om bij te houden.';
+	@override String get paced => 'Met schema';
+	@override String get pacedDescription => 'Kies een einddatum en zie of je op schema ligt.';
+	@override String pacedToEnd({required Object date}) => 'Met schema tot ${date}';
+	@override String get targetEndDate => 'Beoogde einddatum';
+	@override String get onTrack => 'Op schema';
+	@override String daysBehind({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count,
+		one: '${count} dag achter op schema',
+		other: '${count} dagen achter op schema',
+	);
+	@override String daysAhead({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count,
+		one: '${count} dag voor op schema',
+		other: '${count} dagen voor op schema',
+	);
+	@override String get catchUp => 'Inhalen';
 	@override String get reviewDayAnnotations => 'Annotaties van de dag bekijken';
 	@override String get history => 'Geschiedenis';
 	@override String get historyDescription => 'Bekijk eerdere voortgang of hervat een gestopt leesplan.';
@@ -911,7 +929,7 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 		one: '${count} dag',
 		other: '${count} dagen',
 	);
-	@override String stopConfirmation({required Object name}) => '"${name}" stoppen? Je kunt het later hervatten via de geschiedenis van dit leesplan in Een Bijbelleesplan zoeken.';
+	@override String stopConfirmation({required Object name}) => '"${name}" stoppen? Je kunt het later hervatten via de geschiedenis van dit leesplan in Een Bijbelleesplan starten.';
 	@override String completed({required Object name}) => '"${name}" voltooid.';
 	@override String get addPlan => 'Bijbelleesplan toevoegen';
 }
@@ -3350,7 +3368,7 @@ extension on TranslationsNl {
 			'emptyStates.noAnnotations' => 'Je hebt nog geen annotaties gemaakt.',
 			'emptyStates.noBookmarks' => 'Je hebt nog geen bladwijzers gemaakt.',
 			'emptyStates.noNotebooks' => 'Je hebt nog geen notitieboeken gemaakt. Met notitieboeken kun je je annotaties ordenen.',
-			'emptyStates.noPlans' => 'Je volgt nog geen leesplannen. Zoek er een om met het lezen van de Bijbel te beginnen.',
+			'emptyStates.noPlans' => 'Je volgt nog geen leesplannen. Start er een om met het lezen van de Bijbel te beginnen.',
 			'annotationUi.yourAnnotations' => 'Je annotaties',
 			'annotationUi.annotate' => 'Annoteren',
 			'annotationUi.withNotes' => 'Met notities',
@@ -3424,7 +3442,7 @@ extension on TranslationsNl {
 			'themeSettings.verseNumbers' => 'Versnummers',
 			'themeSettings.paragraphsDescription' => 'Geef verzen als alinea\'s weer.',
 			'themeSettings.footnotesDescription' => 'Toon voetnootmarkeringen in de tekst.',
-			'biblePlans.find' => 'Een Bijbelleesplan zoeken',
+			'biblePlans.startABiblePlan' => 'Een Bijbelleesplan starten',
 			'biblePlans.includedPlans' => 'Inbegrepen leesplannen',
 			'biblePlans.includedPlansDescription' => 'Leesplannen die met Lux worden meegeleverd.',
 			'biblePlans.customPlansDescription' => 'Leesplannen die je zelf hebt gemaakt.',
@@ -3540,6 +3558,18 @@ extension on TranslationsNl {
 			'biblePlans.stopPlan' => 'Leesplan stoppen',
 			'biblePlans.stopPlanDescription' => 'Verplaats dit leesplan en de voortgang naar de geschiedenis.',
 			'biblePlans.readEntireChapter' => 'Hele hoofdstuk lezen',
+			'biblePlans.pace' => 'Tempo',
+			'biblePlans.choosePace' => 'Kies je tempo',
+			'biblePlans.relaxed' => 'Ontspannen',
+			'biblePlans.relaxedDescription' => 'Lees wanneer je wilt, zonder schema om bij te houden.',
+			'biblePlans.paced' => 'Met schema',
+			'biblePlans.pacedDescription' => 'Kies een einddatum en zie of je op schema ligt.',
+			'biblePlans.pacedToEnd' => ({required Object date}) => 'Met schema tot ${date}',
+			'biblePlans.targetEndDate' => 'Beoogde einddatum',
+			'biblePlans.onTrack' => 'Op schema',
+			'biblePlans.daysBehind' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: '${count} dag achter op schema', other: '${count} dagen achter op schema', ), 
+			'biblePlans.daysAhead' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: '${count} dag voor op schema', other: '${count} dagen voor op schema', ), 
+			'biblePlans.catchUp' => 'Inhalen',
 			'biblePlans.reviewDayAnnotations' => 'Annotaties van de dag bekijken',
 			'biblePlans.history' => 'Geschiedenis',
 			'biblePlans.historyDescription' => 'Bekijk eerdere voortgang of hervat een gestopt leesplan.',
@@ -3560,7 +3590,7 @@ extension on TranslationsNl {
 			'biblePlans.startNew' => 'Nieuw starten',
 			'biblePlans.day' => ({required Object day}) => 'Dag ${day}',
 			'biblePlans.dayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: '${count} dag', other: '${count} dagen', ), 
-			'biblePlans.stopConfirmation' => ({required Object name}) => '"${name}" stoppen? Je kunt het later hervatten via de geschiedenis van dit leesplan in Een Bijbelleesplan zoeken.',
+			'biblePlans.stopConfirmation' => ({required Object name}) => '"${name}" stoppen? Je kunt het later hervatten via de geschiedenis van dit leesplan in Een Bijbelleesplan starten.',
 			'biblePlans.completed' => ({required Object name}) => '"${name}" voltooid.',
 			'biblePlans.addPlan' => 'Bijbelleesplan toevoegen',
 			'searchUi.searchBible' => 'Bijbel doorzoeken',
@@ -3994,6 +4024,8 @@ extension on TranslationsNl {
 			'morphology.hebrewMood.cohortative.description' => 'Een wilsvorm in de 1e persoon, zoals "laten wij" of "ik zal".',
 			'morphology.hebrewMood.cohortative.examples' => 'Laten wij gaan|Ik zal prijzen',
 			'morphology.hebrewMood.hSuffix.name' => 'h-achtervoegsel',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.hebrewMood.hSuffix.description' => 'Een nadrukkelijke uitgang -ah bij het imperfectum, vaak cohortatief van aard.',
 			'morphology.hebrewMood.hSuffix.examples' => 'Ik zal zeker komen|laat mij naderen',
 			'morphology.tense.present.name' => 'Praesens',
@@ -4006,8 +4038,6 @@ extension on TranslationsNl {
 			'morphology.tense.future.description' => 'Een handeling die zal plaatsvinden.',
 			'morphology.tense.future.examples' => 'hij zal komen|zij zullen zien',
 			'morphology.tense.aorist.name' => 'Aoristus',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.tense.aorist.description' => 'Een eenvoudige handeling in het verleden, als geheel beschouwd.',
 			'morphology.tense.aorist.examples' => 'hij zei|zij gingen',
 			'morphology.tense.perfect.name' => 'Perfectum',
