@@ -129,6 +129,8 @@ Bible text uses the closest Lux reading size to the system accessibility text si
 
 Users can pinch Bible text with two fingers to change its font size and spacing.
 
+Theme & Layout pins a preview of John 9:35 in BSB below its app bar. It always uses BSB so its section heading, red letters, and footnote marker can show whichever translation is selected, and it updates as the text and layout settings change.
+
 KJV, ASV, and WEB can use section headings synthetically inserted from BSB. Footnote markers open their content without leaving the passage.
 
 ### Immersive Reading

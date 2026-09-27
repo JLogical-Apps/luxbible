@@ -21,128 +21,149 @@ class ThemeSettingsPage extends ConsumerWidget implements StyledRoute<void> {
     return StyledPage(
       title: t.themeSettings.title.toText(),
       backgroundColor: .backgroundPrimary,
-      body: ListView(
+      body: Column(
         children: [
-          StyledSection.child(
-            title: t.themeSettings.brightness.toText(),
-            child: StyledCard.child(
-              padding: .all(4),
-              child: StyledSegmentedControl(
-                colorBuilder: .surfacePrimary,
-                options: ThemeMode.values,
-                selectedOption: user.theme,
-                onOptionSelected: (theme) => ref.updateUser((user) => user.copyWith(theme: theme)),
-                optionBuilder: (theme) => StyledSelectOption(title: Text(theme.title()), leading: theme.icon.toIcon()),
-              ),
+          ColoredBox(
+            color: context.colors.surfacePrimary,
+            child: PassageBuilder(
+              verseSelection: .reference(Reference(book: .john, chapterNum: 9, verseNum: 35)),
+              translation: .bsb,
+              padding: .all(16),
+              shrinkWrap: true,
             ),
           ),
-          StyledSection.child(
-            title: t.labels.text.toText(),
-            child: StyledCard(
+          Expanded(
+            child: ListView(
               children: [
-                StyledListItem(
-                  title: t.themeSettings.font.toText(),
-                  subtitle: user.themeLayout.font.title().toText(),
-                  trailing: StyledPillButton.md(
-                    label: t.common.edit.toText(),
-                    onPressed: () async {
-                      final newFont = await context.showStyledSheet(
-                        (context, _) => StyledSelectionSheet(
-                          title: t.themeSettings.font.toText(),
-                          options: ThemeFont.values,
-                          optionMapper: (option) => StyledSelectOption(
-                            title: Text(option.title(), style: TextStyle(fontFamily: option.fontFamily)),
-                          ),
-                          initialOption: user.themeLayout.font,
+                StyledSection.child(
+                  title: t.themeSettings.brightness.toText(),
+                  child: StyledCard.child(
+                    padding: .all(4),
+                    child: StyledSegmentedControl(
+                      colorBuilder: .surfacePrimary,
+                      options: ThemeMode.values,
+                      selectedOption: user.theme,
+                      onOptionSelected: (theme) => ref.updateUser((user) => user.copyWith(theme: theme)),
+                      optionBuilder: (theme) =>
+                          StyledSelectOption(title: Text(theme.title()), leading: theme.icon.toIcon()),
+                    ),
+                  ),
+                ),
+                StyledSection.child(
+                  title: t.labels.text.toText(),
+                  child: StyledCard(
+                    children: [
+                      StyledListItem(
+                        title: t.themeSettings.font.toText(),
+                        subtitle: user.themeLayout.font.title().toText(),
+                        trailing: StyledPillButton.md(
+                          label: t.common.edit.toText(),
+                          onPressed: () async {
+                            final newFont = await context.showStyledSheet(
+                              (context, _) => StyledSelectionSheet(
+                                title: t.themeSettings.font.toText(),
+                                options: ThemeFont.values,
+                                optionMapper: (option) => StyledSelectOption(
+                                  title: Text(option.title(), style: TextStyle(fontFamily: option.fontFamily)),
+                                ),
+                                initialOption: user.themeLayout.font,
+                              ),
+                            );
+                            if (newFont != null) {
+                              ref.updateUser((user) => user.copyWith.themeLayout(font: newFont));
+                            }
+                          },
                         ),
-                      );
-                      if (newFont != null) {
-                        ref.updateUser((user) => user.copyWith.themeLayout(font: newFont));
-                      }
-                    },
-                  ),
-                ),
-                getFontSizeSpacingItem(
-                  context,
-                  title: t.themeSettings.fontSizeSpacing,
-                  value: user.themeLayout.fontSizeSpacing,
-                  fallbackTitle: t.themeSettings.system,
-                  fallbackDescription: t.themeSettings.systemTextSizeDescription,
-                  onChanged: (value) => ref.updateUser((user) => user.copyWith.themeLayout(fontSizeSpacing: value)),
-                ),
-                if (user.recentBibles.any((bible) => bible.bibleLanguage == .greek) ||
-                    user.themeLayout.greekFontSizeSpacing != null)
-                  getFontSizeSpacingItem(
-                    context,
-                    title: t.themeSettings.greekFontSizeSpacing,
-                    value: user.themeLayout.greekFontSizeSpacing,
-                    onChanged: (value) =>
-                        ref.updateUser((user) => user.copyWith.themeLayout(greekFontSizeSpacing: value)),
-                  ),
-                if (user.recentBibles.any((bible) => bible.bibleLanguage == .hebrew) ||
-                    user.themeLayout.hebrewFontSizeSpacing != null)
-                  getFontSizeSpacingItem(
-                    context,
-                    title: t.themeSettings.hebrewFontSizeSpacing,
-                    value: user.themeLayout.hebrewFontSizeSpacing,
-                    onChanged: (value) =>
-                        ref.updateUser((user) => user.copyWith.themeLayout(hebrewFontSizeSpacing: value)),
-                  ),
-                StyledListItem.switchControl(
-                  title: t.themeSettings.redLetters.toText(),
-                  subtitle: t.themeSettings.redLettersDescription.toText(),
-                  thirdLine: user.translation.hasRedLetters
-                      ? null
-                      : t.common.notAvailableIn(translation: user.translation.title()).toText(),
-                  isSelected: user.themeLayout.redLetters,
-                  onSelected: (newValue) => ref.updateUser((user) => user.copyWith.themeLayout(redLetters: newValue)),
-                ),
-              ],
-            ),
-          ),
-          StyledSection.child(
-            title: t.labels.layout.toText(),
-            child: StyledCard(
-              children: [
-                StyledListItem(
-                  title: t.themeSettings.sectionHeadings.toText(),
-                  subtitle: user.themeLayout.sections.title().toText(),
-                  trailing: StyledPillButton.md(
-                    label: t.common.edit.toText(),
-                    onPressed: () async {
-                      final newSectionHeadings = await context.showStyledSheet(
-                        (context, _) => StyledSelectionSheet(
-                          title: t.themeSettings.sectionHeadings.toText(),
-                          options: SectionHeadings.values,
-                          optionMapper: (option) => StyledSelectOption(
-                            title: option.title().toText(),
-                            subtitle: option.description().toText(),
-                          ),
-                          initialOption: user.themeLayout.sections,
+                      ),
+                      getFontSizeSpacingItem(
+                        context,
+                        title: t.themeSettings.fontSizeSpacing,
+                        value: user.themeLayout.fontSizeSpacing,
+                        fallbackTitle: t.themeSettings.system,
+                        fallbackDescription: t.themeSettings.systemTextSizeDescription,
+                        onChanged: (value) =>
+                            ref.updateUser((user) => user.copyWith.themeLayout(fontSizeSpacing: value)),
+                      ),
+                      if (user.recentBibles.any((bible) => bible.bibleLanguage == .greek) ||
+                          user.themeLayout.greekFontSizeSpacing != null)
+                        getFontSizeSpacingItem(
+                          context,
+                          title: t.themeSettings.greekFontSizeSpacing,
+                          value: user.themeLayout.greekFontSizeSpacing,
+                          onChanged: (value) =>
+                              ref.updateUser((user) => user.copyWith.themeLayout(greekFontSizeSpacing: value)),
                         ),
-                      );
-                      if (newSectionHeadings != null) {
-                        ref.updateUser((user) => user.copyWith.themeLayout(sections: newSectionHeadings));
-                      }
-                    },
+                      if (user.recentBibles.any((bible) => bible.bibleLanguage == .hebrew) ||
+                          user.themeLayout.hebrewFontSizeSpacing != null)
+                        getFontSizeSpacingItem(
+                          context,
+                          title: t.themeSettings.hebrewFontSizeSpacing,
+                          value: user.themeLayout.hebrewFontSizeSpacing,
+                          onChanged: (value) =>
+                              ref.updateUser((user) => user.copyWith.themeLayout(hebrewFontSizeSpacing: value)),
+                        ),
+                      StyledListItem.switchControl(
+                        title: t.themeSettings.redLetters.toText(),
+                        subtitle: t.themeSettings.redLettersDescription.toText(),
+                        thirdLine: user.translation.hasRedLetters
+                            ? null
+                            : t.common.notAvailableIn(translation: user.translation.title()).toText(),
+                        isSelected: user.themeLayout.redLetters,
+                        onSelected: (newValue) =>
+                            ref.updateUser((user) => user.copyWith.themeLayout(redLetters: newValue)),
+                      ),
+                    ],
                   ),
                 ),
-                StyledListItem.switchControl(
-                  title: t.themeSettings.verseNumbers.toText(),
-                  isSelected: user.themeLayout.verseNumbers,
-                  onSelected: (newValue) => ref.updateUser((user) => user.copyWith.themeLayout(verseNumbers: newValue)),
-                ),
-                StyledListItem.switchControl(
-                  title: t.labels.paragraphs.toText(),
-                  subtitle: t.themeSettings.paragraphsDescription.toText(),
-                  isSelected: user.themeLayout.paragraphs,
-                  onSelected: (newValue) => ref.updateUser((user) => user.copyWith.themeLayout(paragraphs: newValue)),
-                ),
-                StyledListItem.switchControl(
-                  title: t.labels.footnotes.toText(),
-                  subtitle: t.themeSettings.footnotesDescription.toText(),
-                  isSelected: user.themeLayout.footnotes,
-                  onSelected: (newValue) => ref.updateUser((user) => user.copyWith.themeLayout(footnotes: newValue)),
+                StyledSection.child(
+                  title: t.labels.layout.toText(),
+                  child: StyledCard(
+                    children: [
+                      StyledListItem(
+                        title: t.themeSettings.sectionHeadings.toText(),
+                        subtitle: user.themeLayout.sections.title().toText(),
+                        trailing: StyledPillButton.md(
+                          label: t.common.edit.toText(),
+                          onPressed: () async {
+                            final newSectionHeadings = await context.showStyledSheet(
+                              (context, _) => StyledSelectionSheet(
+                                title: t.themeSettings.sectionHeadings.toText(),
+                                options: SectionHeadings.values,
+                                optionMapper: (option) => StyledSelectOption(
+                                  title: option.title().toText(),
+                                  subtitle: option.description().toText(),
+                                ),
+                                initialOption: user.themeLayout.sections,
+                              ),
+                            );
+                            if (newSectionHeadings != null) {
+                              ref.updateUser((user) => user.copyWith.themeLayout(sections: newSectionHeadings));
+                            }
+                          },
+                        ),
+                      ),
+                      StyledListItem.switchControl(
+                        title: t.themeSettings.verseNumbers.toText(),
+                        isSelected: user.themeLayout.verseNumbers,
+                        onSelected: (newValue) =>
+                            ref.updateUser((user) => user.copyWith.themeLayout(verseNumbers: newValue)),
+                      ),
+                      StyledListItem.switchControl(
+                        title: t.labels.paragraphs.toText(),
+                        subtitle: t.themeSettings.paragraphsDescription.toText(),
+                        isSelected: user.themeLayout.paragraphs,
+                        onSelected: (newValue) =>
+                            ref.updateUser((user) => user.copyWith.themeLayout(paragraphs: newValue)),
+                      ),
+                      StyledListItem.switchControl(
+                        title: t.labels.footnotes.toText(),
+                        subtitle: t.themeSettings.footnotesDescription.toText(),
+                        isSelected: user.themeLayout.footnotes,
+                        onSelected: (newValue) =>
+                            ref.updateUser((user) => user.copyWith.themeLayout(footnotes: newValue)),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
