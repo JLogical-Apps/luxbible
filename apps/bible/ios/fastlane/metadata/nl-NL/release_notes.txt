@@ -1,6 +1,8 @@
-• Zet het Vers van de dag op je beginscherm. De widget is er in klein, middelgroot en groot formaat, wisselt elke dag en werkt offline. Tik erop om de passage van die dag in Lux te openen.
-• Deel een link naar geselecteerde verzen met de nieuwe actie Delen in de versbalk. Wie Lux heeft, komt via de link direct bij de passage.
-• De Russische Synodale vertaling uit 1876 is nu inbegrepen en werkt offline.
-• Open of deel een .lxbp-leesplan vanuit een andere app om het direct in Lux te importeren.
-• Je keuze voor Tussenkoppen in Thema en indeling blijft nu bewaard nadat je de app opnieuw start.
-• De velden voor boek, hoofdstuk en vers in de navigatie reageren nu meteen op een tik nadat je door de lijst hebt gescrold.
+• Kies een tempo wanneer je een leesplan start. Kies Ontspannen en lees wanneer je wilt, of kies een einddatum en Lux laat zien of je op schema ligt, achterloopt of voorloopt. Loop je achter, dan zet Inhalen een nieuwe einddatum waarmee je weer op schema ligt.
+• Als je een leesplan stopt of afrondt, gaat het nu naar de Geschiedenis van dat plan. Kijk terug op eerdere rondes, hervat een gestopt plan waar je gebleven was of verwijder rondes die je niet meer nodig hebt.
+• Markeringen en notities die je maakt terwijl je een dag van een leesplan leest, worden nu aan die dag gekoppeld. Bekijk ze met Annotaties van de dag bekijken onder de passages van die dag, of bekijk alle annotaties van het plan via het menu.
+• Lux is nu beschikbaar in het Duits.
+• De Majority Standard Bible (MSB) en World English Bible (WEB) zijn nu inbegrepen en werken offline.
+• Thema en indeling toont nu een live voorbeeld van je tekst- en indelingsinstellingen.
+• Leesplannen van één dag vragen niet meer naar een dagelijkse herinnering nadat je ze hebt afgerond.
+• Een paar verkeerd geplaatste versnummers in de BSB en ASV zijn verbeterd.

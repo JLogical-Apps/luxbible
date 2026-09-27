@@ -1,6 +1,8 @@
-• Hol dir den Vers des Tages auf deinen Home-Bildschirm. Das Widget gibt es in klein, mittel und groß, es wechselt jeden Tag und funktioniert offline. Tippe darauf, um den Abschnitt des Tages in Lux zu öffnen.
-• Teile einen Link zu ausgewählten Versen mit der neuen Aktion Teilen in der Versleiste. Wer Lux hat, landet über den Link direkt beim Abschnitt.
-• Die russische Synodalbibel von 1876 ist jetzt enthalten und funktioniert offline.
-• Öffne oder teile eine .lxbp-Leseplandatei aus einer anderen App, um sie direkt in Lux zu importieren.
-• Deine Auswahl für Zwischenüberschriften in Design & Layout bleibt jetzt nach einem Neustart der App erhalten.
-• Die Felder für Buch, Kapitel und Vers in der Navigation reagieren jetzt sofort auf Tippen, nachdem du durch die Liste gescrollt hast.
+• Wähle ein Tempo, wenn du einen Leseplan startest. Bleib Entspannt und lies, wann immer du möchtest, oder lege ein Zielenddatum fest, und Lux zeigt dir, ob du im Plan liegst, hinterher oder voraus bist. Wenn du in Rückstand gerätst, setzt Aufholen ein neues Enddatum, mit dem du wieder im Plan liegst.
+• Wenn du einen Plan beendest oder abschließt, landet er jetzt im Verlauf dieses Plans. Schau dir frühere Durchgänge an, setze einen beendeten Plan dort fort, wo du aufgehört hast, oder lösche Durchgänge, die du nicht mehr brauchst.
+• Markierungen und Notizen, die du beim Lesen eines Plantages machst, sind jetzt mit diesem Tag verknüpft. Sieh sie dir über Annotationen des Tages ansehen unter den Abschnitten des Tages an, oder finde alle Annotationen des Plans in seinem Menü.
+• Lux gibt es jetzt auf Deutsch.
+• Die Majority Standard Bible (MSB) und die World English Bible (WEB) sind jetzt enthalten und funktionieren offline.
+• Design & Layout zeigt jetzt eine Live-Vorschau deiner Text- und Layouteinstellungen.
+• Eintägige Lesepläne fragen nach dem Abschluss nicht mehr nach einer täglichen Erinnerung.
+• Ein paar falsch platzierte Versnummern in der BSB und ASV wurden korrigiert.
