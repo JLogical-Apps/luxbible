@@ -107,6 +107,7 @@ flutter:
     - assets/translations/lxx/
     - assets/translations/lut1912/
     - assets/translations/martin1744/
+    - assets/translations/msb/
     - assets/translations/nld1939/
     - assets/translations/oshb/
     - assets/translations/rvg/
@@ -114,6 +115,7 @@ flutter:
     - assets/translations/synodal/
     - assets/translations/sv/
     - assets/translations/tr/
+    - assets/translations/web/
     - assets/strongs/
     - assets/dictionary/
     - assets/commentary/calvin/

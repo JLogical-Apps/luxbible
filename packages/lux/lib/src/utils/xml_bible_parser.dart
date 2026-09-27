@@ -120,8 +120,10 @@ abstract final class XmlBibleParser {
       VersesParagraph? buildVersesParagraph(
         ParagraphType paragraphType,
         int? previousLastVerseNum,
-        List<Verse> verses,
+        List<Verse> parsedVerses,
       ) {
+        // A verse marker with only whitespace after it would otherwise render as a bare verse number.
+        final verses = parsedVerses.where((verse) => !verse.isEmpty).toList();
         if (verses.isEmpty) return null;
 
         final otherParagraphsWithVerse = paragraphs
@@ -179,7 +181,7 @@ abstract final class XmlBibleParser {
               's' || 's1' || 'cl' => sectionParagraph(.s1),
               's2' => sectionParagraph(.s2),
               'd' || 'qd' => sectionParagraph(.d),
-              'p' || 'pmo' || 'pmc' || 'po' => versesParagraph(.p),
+              'p' || 'pmo' || 'pmc' || 'po' || 'lf' => versesParagraph(.p),
               'pm' => versesParagraph(.pm),
               'pc' => versesParagraph(.pc),
               'nb' => versesParagraph(.nb),

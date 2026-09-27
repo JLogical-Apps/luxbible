@@ -106,9 +106,11 @@ Taps open `luxbible://verse-of-the-day?date=<yyyy-MM-dd>`. A link without a vali
 The following are bundled with the app and work offline:
 
 - BSB
+- MSB
 - CSB
 - KJV
 - ASV
+- WEB
 - SV
 - NLD1939
 - ELB1905
@@ -220,10 +222,10 @@ Capabilities vary by translation:
 
 - Study and interlinear: BSB, KJV
 - Audio: BSB, KJV
-- Synthetic BSB headings: KJV, ASV
-- Footnotes: BSB, KJV, ASV, AMP, NASB95, NIV, CSB, NLT, NKJV, HFA, NTR
-- Red letters: BSB, KJV, AMP, NASB95, NIV, CSB, NLT, NKJV
-- Native headings: BSB, Martin, NRT, AMP, NASB95, NIV, CSB, NLT, NKJV, HFA, NTR
+- Synthetic BSB headings: KJV, ASV, WEB
+- Footnotes: BSB, MSB, KJV, ASV, WEB, AMP, NASB95, NIV, CSB, NLT, NKJV, HFA, NTR
+- Red letters: BSB, MSB, KJV, WEB, AMP, NASB95, NIV, CSB, NLT, NKJV
+- Native headings: BSB, MSB, Martin, NRT, AMP, NASB95, NIV, CSB, NLT, NKJV, HFA, NTR
 - Paragraph formatting: all except OSHB, SV, Martin, NRT, ELB1905, LUT1912, NLD1939, FOB, and SYNO
 
 ## Study Data Sources

@@ -47,7 +47,7 @@ final class BiblePlanHistoryProvider
   }
 }
 
-String _$biblePlanHistoryHash() => r'5c32431b61ea9e9ac66e8aab0e73e3bc14b6c600';
+String _$biblePlanHistoryHash() => r'5496fb1000140acb0d761f8a80166dc614f4b129';
 
 abstract class _$BiblePlanHistory
     extends $Notifier<Map<String, BiblePlanHistoryEntry>> {

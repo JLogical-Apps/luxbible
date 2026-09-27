@@ -4,7 +4,11 @@ import 'package:lux/src/models/reference/chapter_reference.dart';
 import 'package:lux/src/models/testament.dart';
 
 enum BibleTranslation {
+  sv,
+  nld1939,
+  htb,
   bsb,
+  msb,
   csb,
   nasb95,
   amp,
@@ -13,120 +17,124 @@ enum BibleTranslation {
   nkjv,
   kjv,
   asv,
+  web,
+  fob,
+  martin1744,
+  hfa,
+  elb1905,
+  lut1912,
   lxx,
   tr,
   byz,
   statresgnt,
   oshb,
-  hfa,
-  elb1905,
-  lut1912,
-  sv,
+  ntr,
   nrt,
-  fob,
-  martin1744,
-  rvg,
-  nld1939,
   synodal,
-  htb,
-  ntr;
+  rvg;
 
   String title() => switch (this) {
+    sv => 'SV',
+    nld1939 => 'NLD1939',
+    htb => 'HTB',
     bsb => 'BSB',
+    msb => 'MSB',
+    csb => 'CSB',
     nasb95 => 'NASB95',
     amp => 'AMP',
     niv11 => 'NIV',
-    csb => 'CSB',
     nlt => 'NLT',
     nkjv => 'NKJV',
     kjv => 'KJV',
     asv => 'ASV',
-    oshb => 'OSHB',
+    web => 'WEB',
+    fob => 'FOB',
+    martin1744 => 'Martin',
+    hfa => 'HFA',
+    elb1905 => 'ELB1905',
+    lut1912 => 'LUT1912',
     lxx => 'LXX',
     tr => 'TR',
     byz => 'BYZ',
     statresgnt => 'SR',
-    sv => 'SV',
-    nrt => 'NRT',
-    fob => 'FOB',
-    martin1744 => 'Martin',
-    rvg => 'RVG',
-    nld1939 => 'NLD1939',
-    htb => 'HTB',
-    hfa => 'HFA',
-    elb1905 => 'ELB1905',
-    lut1912 => 'LUT1912',
-    synodal => 'SYNO',
+    oshb => 'OSHB',
     ntr => 'NTR',
+    nrt => 'NRT',
+    synodal => 'SYNO',
+    rvg => 'RVG',
   };
 
   String fullName() => switch (this) {
+    sv => 'Statenvertaling',
+    nld1939 => 'De Heilige Schrift, Petrus Canisiusvertaling, 1939',
+    htb => 'Het Boek 2007',
     bsb => 'Berean Standard Bible',
+    msb => 'Majority Standard Bible',
+    csb => 'Christian Standard Bible',
     nasb95 => 'New American Standard Bible 1995',
     amp => 'Amplified Bible',
     niv11 => 'New International Version 2011',
-    csb => 'Christian Standard Bible',
     nlt => 'New Living Translation',
     nkjv => 'New King James Version',
     kjv => 'King James Version',
     asv => 'American Standard Version',
-    oshb => 'Open Scriptures Hebrew Bible',
+    web => 'World English Bible',
+    fob => 'La Sainte Bible (Ostervald 1744)',
+    martin1744 => 'Bible David Martin 1744',
+    hfa => 'Hoffnung für alle',
+    elb1905 => 'Unrevidierte Elberfelder 1905',
+    lut1912 => 'Lutherbibel 1912',
     lxx => 'Septuagint (Rahlfs)',
     tr => 'Textus Receptus (Stephens 1550)',
     byz => 'Byzantine Textform 2005',
     statresgnt => 'Statistical Restoration Greek New Testament',
-    sv => 'Statenvertaling',
-    nrt => 'Новый русский перевод 2010',
-    fob => 'La Sainte Bible (Ostervald 1744)',
-    martin1744 => 'Bible David Martin 1744',
-    rvg => 'Reina Valera Gómez 2010',
-    nld1939 => 'De Heilige Schrift, Petrus Canisiusvertaling, 1939',
-    htb => 'Het Boek 2007',
-    hfa => 'Hoffnung für alle',
-    elb1905 => 'Unrevidierte Elberfelder 1905',
-    lut1912 => 'Lutherbibel 1912',
-    synodal => 'Синодальный перевод 1876',
+    oshb => 'Open Scriptures Hebrew Bible',
     ntr => 'Noua Traducere Românească 2021',
+    nrt => 'Новый русский перевод 2010',
+    synodal => 'Синодальный перевод 1876',
+    rvg => 'Reina Valera Gómez 2010',
   };
 
   BibleTranslationSource get source => switch (this) {
+    sv ||
+    nld1939 ||
     bsb ||
+    msb ||
     csb ||
-    asv ||
     kjv ||
-    oshb ||
+    asv ||
+    web ||
+    fob ||
+    martin1744 ||
+    elb1905 ||
+    lut1912 ||
     lxx ||
     tr ||
     byz ||
     statresgnt ||
-    sv ||
-    fob ||
-    martin1744 ||
-    rvg ||
-    nld1939 ||
-    elb1905 ||
-    lut1912 ||
-    synodal => .local,
+    oshb ||
+    synodal ||
+    rvg => .local,
+    htb => .youVersion(75),
     nasb95 => .youVersion(100),
     amp => .youVersion(1588),
     niv11 => .youVersion(111),
-    nrt => .youVersion(143),
-    htb => .youVersion(75),
     hfa => .youVersion(73),
     ntr => .youVersion(126),
+    nrt => .youVersion(143),
     nlt || nkjv => .apiBible(),
   };
 
   BibleLanguage get bibleLanguage => switch (this) {
+    sv || nld1939 || htb => .dutch,
+    bsb || msb || csb || nasb95 || amp || niv11 || nlt || nkjv || kjv || asv || web => .english,
+    fob || martin1744 => .french,
+    hfa || elb1905 || lut1912 => .german,
     lxx || tr || byz || statresgnt => .greek,
     oshb => .hebrew,
-    sv || nld1939 || htb => .dutch,
-    nrt || synodal => .russian,
-    fob || martin1744 => .french,
-    elb1905 || lut1912 || hfa => .german,
     ntr => .romanian,
+    nrt || synodal => .russian,
     rvg => .spanish,
-    _ => .english,
   };
 
   String? get copyright => switch (this) {
@@ -198,22 +206,22 @@ enum BibleTranslation {
       : null;
 
   bool get hasRedLetters => switch (this) {
-    bsb || kjv || nasb95 || amp || niv11 || csb || nlt || nkjv => true,
+    bsb || msb || kjv || web || nasb95 || amp || niv11 || csb || nlt || nkjv => true,
     _ => false,
   };
 
   bool get hasNativeHeadings => switch (this) {
-    bsb || nasb95 || amp || niv11 || csb || nlt || nkjv || nrt || martin1744 || hfa || ntr => true,
+    bsb || msb || nasb95 || amp || niv11 || csb || nlt || nkjv || nrt || martin1744 || hfa || ntr => true,
     _ => false,
   };
 
   bool get hasSyntheticHeadings => switch (this) {
-    kjv || asv => true,
+    kjv || asv || web => true,
     _ => false,
   };
 
   bool get hasFootnotes => switch (this) {
-    bsb || kjv || nasb95 || amp || niv11 || csb || nlt || nkjv || asv || hfa || ntr => true,
+    bsb || msb || kjv || nasb95 || amp || niv11 || csb || nlt || nkjv || asv || web || hfa || ntr => true,
     _ => false,
   };
 
@@ -254,25 +262,25 @@ class YouVersionTranslationSource implements BibleTranslationSource {
 class ApiBibleTranslationSource implements BibleTranslationSource {}
 
 enum BibleLanguage {
+  dutch,
   english,
+  french,
+  german,
   greek,
   hebrew,
-  german,
-  dutch,
+  romanian,
   russian,
-  french,
-  spanish,
-  romanian;
+  spanish;
 
   String title() => switch (this) {
+    dutch => t.languages.dutch,
     english => t.languages.english,
+    french => t.languages.french,
+    german => t.languages.german,
     greek => t.languages.greek,
     hebrew => t.languages.hebrew,
-    dutch => t.languages.dutch,
-    russian => t.languages.russian,
-    french => t.languages.french,
-    spanish => t.languages.spanish,
     romanian => t.languages.romanian,
-    german => t.languages.german,
+    russian => t.languages.russian,
+    spanish => t.languages.spanish,
   };
 }

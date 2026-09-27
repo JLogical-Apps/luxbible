@@ -47,9 +47,11 @@ Lux counts distinct active days locally. After seven active days, it makes one n
 ### Offline Bibles
 
 - BSB: Berean Standard Bible and the default English Bible
+- MSB: Majority Standard Bible, the BSB with a New Testament translated from the Byzantine Majority Text
 - CSB: Christian Standard Bible
 - KJV: King James Version
 - ASV: American Standard Version
+- WEB: World English Bible
 - SV: Statenvertaling in Dutch
 - NLD1939: Petrus Canisiusvertaling 1939 in Dutch
 - FOB: Ostervald 1744 in French
@@ -81,7 +83,7 @@ connection for fourteen days, after which Lux requires a connection to load it a
 
 ### Bible Selection and Compare Management
 
-The Bible selector shows every available Bible grouped by language, with up to five recently used Bibles at the top.
+The Bible selector shows every available Bible grouped by language, with up to five recently used Bibles at the top. The device's language comes first, followed by the other languages in alphabetical order by English name.
 Recent Bibles can be removed from that list without removing the translation from Lux. Below the full list, a tile
 invites users to join Lux's Discord to propose a translation that isn't yet available.
 
@@ -127,7 +129,7 @@ Bible text uses the closest Lux reading size to the system accessibility text si
 
 Users can pinch Bible text with two fingers to change its font size and spacing.
 
-KJV and ASV can use section headings synthetically inserted from BSB. Footnote markers open their content without leaving the passage.
+KJV, ASV, and WEB can use section headings synthetically inserted from BSB. Footnote markers open their content without leaving the passage.
 
 ### Immersive Reading
 

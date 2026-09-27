@@ -50,7 +50,7 @@ final class VerseOfTheDayWidgetPayloadProvider
 }
 
 String _$verseOfTheDayWidgetPayloadHash() =>
-    r'd9e7eef8b74e11469956320d2a311940f4c8cd3a';
+    r'799c168832325e6a92a4dd14385e9b33d2f56ffd';
 
 @ProviderFor(verseOfTheDayWidgetSynchronizer)
 final verseOfTheDayWidgetSynchronizerProvider =

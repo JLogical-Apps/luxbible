@@ -21,6 +21,7 @@ sealed class Verse with _$Verse {
 
   String get text => words.map((word) => word.text).nonNulls.join();
   List<String> get strongIds => words.map((word) => word.data?.strongId).nonNulls.toList();
+  bool get isEmpty => text.isBlank && (footnotes?.isEmpty ?? true) && words.every((word) => word.data == null);
 
   @override
   late final List<String> searchTerms = text.bibleSearchTerms;
@@ -89,27 +90,26 @@ extension IterableVerseExtensions on Iterable<Verse> {
     return [if (verses.firstOrNull case final first?) first.trimStart(), ...verses.skip(1)];
   }
 
-  Iterable<Verse> withSameVersesCombined() => isEmpty
-      ? this
-      : fold<List<Verse>>([], (verses, verse) {
-          final lastVerse = verses.lastOrNull;
-          if (lastVerse == null) {
-            return verses..add(verse);
-          }
+  // A single pass, because XmlBibleParser's lazy verse iterables advance the current verse as they are read.
+  Iterable<Verse> withSameVersesCombined() => fold<List<Verse>>([], (verses, verse) {
+    final lastVerse = verses.lastOrNull;
+    if (lastVerse == null) {
+      return verses..add(verse);
+    }
 
-          return lastVerse.verseNum == verse.verseNum
-              ? (verses
-                  ..[verses.length - 1] = Verse(
-                    verseNum: verse.verseNum,
-                    words: lastVerse.words + verse.words,
-                    originalVerse: lastVerse.originalVerse ?? verse.originalVerse,
-                    footnotes: [
-                      ...?lastVerse.footnotes,
-                      ...?verse.footnotes?.map(
-                        (footnote) => footnote.copyWith(offset: lastVerse.text.length + footnote.offset),
-                      ),
-                    ].nullIfEmpty?.toList(),
-                  ))
-              : (verses..add(verse));
-        });
+    return lastVerse.verseNum == verse.verseNum
+        ? (verses
+            ..[verses.length - 1] = Verse(
+              verseNum: verse.verseNum,
+              words: lastVerse.words + verse.words,
+              originalVerse: lastVerse.originalVerse ?? verse.originalVerse,
+              footnotes: [
+                ...?lastVerse.footnotes,
+                ...?verse.footnotes?.map(
+                  (footnote) => footnote.copyWith(offset: lastVerse.text.length + footnote.offset),
+                ),
+              ].nullIfEmpty?.toList(),
+            ))
+        : (verses..add(verse));
+  });
 }

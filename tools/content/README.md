@@ -9,9 +9,11 @@ cd ../..
 dart pub get
 cd tools/content
 dart run bin/generate_bsb_json.dart
+dart run bin/generate_msb_json.dart
 dart run bin/generate_csb_json.dart
 dart run bin/generate_kjv_json.dart
 dart run bin/generate_asv_json.dart
+dart run bin/generate_web_json.dart
 dart run bin/generate_osis_json.dart
 dart run bin/generate_bible_plans_json.dart
 dart run bin/generate_commentary_json.dart
@@ -33,6 +35,18 @@ presentation, and source tables.
 
 Raw SWORD modules and downloaded archives belong under `content/sources/sword/` and remain ignored. Generators read committed, extracted inputs elsewhere in `content/sources/` so runtime assets do not depend on local SWORD downloads.
 
+The MSB sources in `content/sources/bibles/msb/` are the `MSB_strongs_usx.zip` files from a [bsb2usfm release](https://github.com/BSB-publishing/bsb2usfm/releases), renamed to their book codes. They keep their Strong's numbers, but MSB lacks the word positions and transliterations of a full study Bible, so it is generated as a reading text. The WEB is prepared once from eBible.org's USFM by [`python/web/prepare_web.py`](python/web/prepare_web.py), whose docstring lists its setup and download steps.
+
 The licensed CSB DBL bundle belongs under `content/sources/bibles/csb/`. Both that source directory and the generated JSON files under `apps/bible/assets/translations/csb/` remain ignored so the licensed text is available to local release builds without being distributed through GitHub.
 
 `generate_verse_of_the_day.dart` reads the committed Daily Light extraction at `content/sources/verse_of_the_day/daily_light.json`, validates all morning and evening OSIS selections and complete leap-year calendar coverage, then writes the first morning passage for each date to `apps/bible/assets/verse_of_the_day.json`. The source extraction records the official CrossWire Daily module download and extraction steps.
+
+## Adding a bundled translation
+
+1. Put the source under `content/sources/bibles/<name>/`, as one USX file per book or OSIS files for `generate_osis_json.dart`. Raw downloads go in `content/sources/sword/`. If the source needs a one-time conversion, add a script under `python/<name>/` whose docstring lists the setup and download steps.
+2. Add a generator in `bin/`, or add the translation to `generate_osis_json.dart`. Run it and compare each verse's text in the generated JSON against the source.
+3. Add the value to `BibleTranslation` in `packages/lux/lib/src/models/bible/bible_translation.dart`, inside its language group. Language groups are alphabetical by English name, and the order within a language sets the default Compare order. Fill in `title`, `fullName`, `source`, `bibleLanguage`, and whichever of `copyright`, `testament`, `expirationDate`, and the feature flags apply.
+4. For a new language, add it to `BibleLanguage` alphabetically, add its name to every `packages/lux/lib/i18n/*.i18n.json` file, and map it in `BibleLanguageAppExtensions` in `apps/bible/lib/models/user/language.dart` when Lux has a matching app language.
+5. Declare `assets/translations/<name>/` in `apps/bible/pubspec.yaml` and add a license entry to `apps/bible/lib/licenses.dart`.
+6. Update the Bible Library in `context/bible/features.md`, and the bundled list, capability lists, and any versification notes in `context/bible/technical.md`.
+7. Run `dart analyze` on `packages/lux`, `apps/bible`, and `tools/content`.
