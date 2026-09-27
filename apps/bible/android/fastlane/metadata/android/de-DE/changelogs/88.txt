@@ -1,0 +1,6 @@
+• Neues Widget mit dem Vers des Tages. Wechselt täglich, funktioniert offline und passt sich der Größe an.
+• Teile einen Link zu ausgewählten Versen. Mit Lux öffnet er direkt beim Abschnitt.
+• Die russische Synodalbibel (1876) ist jetzt offline enthalten.
+• Öffne .lxbp-Lesepläne aus anderen Apps, um sie zu importieren.
+• Deine Auswahl für Zwischenüberschriften bleibt nach einem Neustart erhalten.
+• Navigationsfelder reagieren nach dem Scrollen sofort auf Tippen.

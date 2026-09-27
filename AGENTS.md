@@ -21,7 +21,8 @@ Lux Bible is one app in a product family. Check the shared packages before treat
 
 - `packages/lux` contains shared Bible models and providers, plus the product-neutral passage renderer, selection logic, and passage preview.
 - `packages/style` contains the shared visual language and widgets, including `StyledListItem`, `StyledSheet`, and `StyledModulePage`.
-- User-facing strings live in `packages/lux/lib/i18n/{en,nl,ru}.i18n.json` with generated Dart alongside; keep every language in sync.
+- User-facing strings live in `packages/lux/lib/i18n/{en,nl,de,ru}.i18n.json` with generated Dart alongside; keep every language in sync.
+- Adding a language also touches `Language` in `apps/bible/lib/models/user/language.dart`, timeago messages in `apps/bible/lib/main.dart`, iOS `CFBundleLocalizations` (Runner and widget `Info.plist`), `knownRegions` in `project.pbxproj`, the widget's `Localizable.xcstrings`, Android `res/xml/locale_config.xml` and `res/values-<lang>/`, and the fastlane metadata folders.
 - `apps/memory` is the exploratory Lux Memory app and the reference for shared patterns.
 
 Never hand-edit generated `*.g.dart` or `*.freezed.dart` files.

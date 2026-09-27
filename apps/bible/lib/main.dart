@@ -61,6 +61,8 @@ Future<void> main() async {
 
       LocaleSettings.setLocaleSync(Language.device.appLocale);
       timeago.setLocaleMessages('nl', timeago.NlMessages());
+      timeago.setLocaleMessages('de', timeago.DeMessages());
+      timeago.setLocaleMessages('ru', timeago.RuMessages());
 
       await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 

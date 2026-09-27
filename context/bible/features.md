@@ -12,7 +12,7 @@ Lux uses a single reading area with optional study panels. Panels appear below t
 
 ## Languages
 
-Lux supports English, Dutch, and Russian. By default, it follows the device language when that language is supported and otherwise uses English. More > Settings > Language opens the device's native app-language setting, where available. Android 13 and later opens Lux's Language screen directly; iOS opens Lux's app settings, which include its Language control.
+Lux supports English, Dutch, German, and Russian. By default, it follows the device language when that language is supported and otherwise uses English. More > Settings > Language opens the device's native app-language setting, where available. Android 13 and later opens Lux's Language screen directly; iOS opens Lux's app settings, which include its Language control.
 
 The selected language controls Lux's interface, Bible book names, reference formatting, reading-plan metadata, study terminology, and other app-authored text. It does not translate Bible text, translation names, user-created content, imported study-resource bodies, or legal copy.
 
@@ -99,7 +99,7 @@ At least one Bible must remain in Compare. Its order controls the temporary Comp
 shown when adding a Compare study panel. Both of those sheets link to Compare settings and update after changes.
 
 For a new or uncustomized Compare list, English includes BSB followed by the other English Bibles, matching the existing
-default order. Dutch includes SV, the other Dutch Bibles, and then BSB. Russian includes NRT followed by BSB. Changing
+default order. Dutch includes SV, the other Dutch Bibles, and then BSB. German includes HFA, ELB1905, LUT1912, and then BSB. Russian includes NRT followed by BSB. Changing
 the app language updates this language-based default list only while the user has not customized Compare. It does not
 change the currently selected translation.
 

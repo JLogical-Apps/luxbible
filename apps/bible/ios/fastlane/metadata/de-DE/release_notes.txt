@@ -1,0 +1,6 @@
+• Hol dir den Vers des Tages auf deinen Home-Bildschirm. Das Widget gibt es in klein, mittel und groß, es wechselt jeden Tag und funktioniert offline. Tippe darauf, um den Abschnitt des Tages in Lux zu öffnen.
+• Teile einen Link zu ausgewählten Versen mit der neuen Aktion Teilen in der Versleiste. Wer Lux hat, landet über den Link direkt beim Abschnitt.
+• Die russische Synodalbibel von 1876 ist jetzt enthalten und funktioniert offline.
+• Öffne oder teile eine .lxbp-Leseplandatei aus einer anderen App, um sie direkt in Lux zu importieren.
+• Deine Auswahl für Zwischenüberschriften in Design & Layout bleibt jetzt nach einem Neustart der App erhalten.
+• Die Felder für Buch, Kapitel und Vers in der Navigation reagieren jetzt sofort auf Tippen, nachdem du durch die Liste gescrollt hast.

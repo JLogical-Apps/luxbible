@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="verse_of_the_day_widget_title">Vers des Tages</string>
+    <string name="verse_of_the_day_widget_description">Der Vers von heute auf deinem Startbildschirm.</string>
+    <string name="verse_of_the_day_widget_empty">Öffne Lux, um den Vers des Tages zu laden.</string>
+</resources>

@@ -3,8 +3,8 @@
 /// Source: lib/i18n
 /// To regenerate, run: `dart run slang`
 ///
-/// Locales: 3
-/// Strings: 3418 (1139 per locale)
+/// Locales: 4
+/// Strings: 4552 (1138 per locale)
 
 // coverage:ignore-file
 // ignore_for_file: type=lint, unused_import
@@ -15,6 +15,7 @@ import 'package:slang/generated.dart';
 import 'package:slang/slang.dart';
 export 'package:slang/slang.dart';
 
+import 'strings_de.g.dart' as l_de;
 import 'strings_nl.g.dart' as l_nl;
 import 'strings_ru.g.dart' as l_ru;
 part 'strings_en.g.dart';
@@ -27,6 +28,7 @@ part 'strings_en.g.dart';
 /// - if (LocaleSettings.currentLocale == AppLocale.en) // locale check
 enum AppLocale with BaseAppLocale<AppLocale, Translations> {
 	en(languageCode: 'en'),
+	de(languageCode: 'de'),
 	nl(languageCode: 'nl'),
 	ru(languageCode: 'ru');
 
@@ -62,6 +64,12 @@ enum AppLocale with BaseAppLocale<AppLocale, Translations> {
 		switch (this) {
 			case AppLocale.en:
 				return TranslationsEn(
+					overrides: overrides,
+					cardinalResolver: cardinalResolver,
+					ordinalResolver: ordinalResolver,
+				);
+			case AppLocale.de:
+				return l_de.TranslationsDe(
 					overrides: overrides,
 					cardinalResolver: cardinalResolver,
 					ordinalResolver: ordinalResolver,

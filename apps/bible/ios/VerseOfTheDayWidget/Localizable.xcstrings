@@ -4,6 +4,12 @@
     "widget.description": {
       "extractionState": "manual",
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Vers von heute auf deinem Home-Bildschirm und im StandBy-Modus."
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
@@ -27,6 +33,12 @@
     "widget.empty": {
       "extractionState": "manual",
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öffne Lux, um den Vers des Tages zu laden."
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
@@ -50,6 +62,12 @@
     "widget.title": {
       "extractionState": "manual",
       "localizations": {
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vers des Tages"
+          }
+        },
         "en": {
           "stringUnit": {
             "state": "translated",
