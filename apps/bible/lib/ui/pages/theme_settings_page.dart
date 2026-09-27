@@ -9,6 +9,8 @@ import 'package:lux/lux.dart';
 import 'package:style/style.dart';
 
 class ThemeSettingsPage extends ConsumerWidget implements StyledRoute<void> {
+  static final minPreviewScreenHeight = 500.0;
+
   const ThemeSettingsPage({super.key});
 
   @override
@@ -23,15 +25,20 @@ class ThemeSettingsPage extends ConsumerWidget implements StyledRoute<void> {
       backgroundColor: .backgroundPrimary,
       body: Column(
         children: [
-          ColoredBox(
-            color: context.colors.surfacePrimary,
-            child: PassageBuilder(
-              verseSelection: .reference(Reference(book: .john, chapterNum: 9, verseNum: 35)),
-              translation: .bsb,
-              padding: .all(16),
-              shrinkWrap: true,
+          if (MediaQuery.sizeOf(context).height > minPreviewScreenHeight)
+            ColoredBox(
+              color: context.colors.surfacePrimary,
+              child: SafeArea(
+                top: false,
+                bottom: false,
+                child: PassageBuilder(
+                  verseSelection: .reference(Reference(book: .john, chapterNum: 9, verseNum: 35)),
+                  translation: .bsb,
+                  padding: .all(16),
+                  shrinkWrap: true,
+                ),
+              ),
             ),
-          ),
           Expanded(
             child: ListView(
               children: [
