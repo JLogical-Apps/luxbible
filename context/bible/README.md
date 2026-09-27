@@ -10,6 +10,7 @@ These files provide product and technical context for Lux Bible. They describe t
 | What can users currently do in the app? | [`features.md`](features.md) |
 | How is the app built, where does its data come from, and what requires a connection? | [`technical.md`](technical.md) |
 | What might be built later? | [`roadmap.md`](roadmap.md) |
+| How does Lux reach people, and what has been tried? | [`marketing.md`](marketing.md) |
 | What metadata, copy, and release notes are pending for the Apple App Store? | [`apps/bible/ios/fastlane/metadata/`](../../apps/bible/ios/fastlane/metadata/) |
 | What metadata, copy, and release notes are pending for the Google Play Store? | [`apps/bible/android/fastlane/metadata/android/`](../../apps/bible/android/fastlane/metadata/android/) |
 
@@ -25,6 +26,7 @@ The source code remains authoritative for implementation details. If the impleme
 ## Maintenance
 
 - Keep strategy and positioning in `product.md`, not in the feature specification.
+- Keep channel results and growth decisions in `marketing.md`, not in `product.md`.
 - Keep user-visible behavior in `features.md`, not in the technical reference.
 - Keep implementation constraints and external service boundaries in `technical.md`.
 - Move a roadmap item into `features.md` only after it is implemented in the working tree.

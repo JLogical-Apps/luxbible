@@ -72,3 +72,4 @@ apps/bible/assets/translations/csb/*.json
 
 # Local prepared social posts and source media
 /socials/
+/context/bible/marketing.md
