@@ -11,6 +11,7 @@ export default function SiteHeader() {
           <img
             src="/media/lux-logo.svg"
             alt={`${site.name} logo`}
+            className="rounded-[24%]"
             style={{ width: 'auto', height: '40px' }}
           />
         </Link>
