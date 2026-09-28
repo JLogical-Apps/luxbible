@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 class LaunchLinkChannel {
   final MethodChannel channel;
@@ -14,5 +17,21 @@ class LaunchLinkChannel {
     });
   }
 
-  Future<String?> getLaunchValue() => channel.invokeMethod<String>(launchMethod);
+  Future<String?> getLaunchValue() => invokeMethod<String>(launchMethod);
+
+  Future<T?> invokeMethod<T>(String method, [Object? arguments]) async {
+    await waitUntilAttached();
+    return channel.invokeMethod<T>(method, arguments);
+  }
+
+  // Android's audio service can run Dart without an activity, and MainActivity only registers the
+  // native side of these channels when it attaches, which always happens before it first resumes.
+  static Future<void> waitUntilAttached() async {
+    if (WidgetsBinding.instance.lifecycleState == .resumed) return;
+
+    final completer = Completer<void>();
+    final listener = AppLifecycleListener(onResume: completer.complete);
+    await completer.future;
+    listener.dispose();
+  }
 }

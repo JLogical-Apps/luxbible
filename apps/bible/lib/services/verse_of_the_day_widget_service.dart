@@ -19,7 +19,7 @@ class VerseOfTheDayWidgetService {
   }
 
   Future<void> synchronize(VerseOfTheDayWidgetPayload payload) =>
-      channel.channel.invokeMethod<void>('setVerses', payload.encode());
+      channel.invokeMethod<void>('setVerses', payload.encode());
 }
 
 @Riverpod(keepAlive: true)

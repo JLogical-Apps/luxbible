@@ -76,7 +76,15 @@ Future<void> main() async {
       await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
       FlutterError.onError = kDebugMode
           ? FlutterError.dumpErrorToConsole
-          : FirebaseCrashlytics.instance.recordFlutterFatalError;
+          : FirebaseCrashlytics.instance.recordFlutterError;
+      // "none" means no screen has been shown yet, such as when Android's audio service starts the app.
+      FirebaseCrashlytics.instance.setCustomKey(
+        'lifecycleState',
+        WidgetsBinding.instance.lifecycleState?.name ?? 'none',
+      );
+      AppLifecycleListener(
+        onStateChange: (state) => FirebaseCrashlytics.instance.setCustomKey('lifecycleState', state.name),
+      );
 
       const androidDebugToken = String.fromEnvironment('APP_CHECK_ANDROID_DEBUG_TOKEN');
       const appleDebugToken = String.fromEnvironment('APP_CHECK_APPLE_DEBUG_TOKEN');
@@ -162,7 +170,7 @@ Future<void> main() async {
         print(error);
         print(stack);
       } else if (Firebase.apps.isNotEmpty) {
-        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+        FirebaseCrashlytics.instance.recordError(error, stack);
       }
     },
   );
