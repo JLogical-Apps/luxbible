@@ -8,14 +8,12 @@ void main() => writeBibleBooks(
   books: BookType.values.map(
     (type) => parseUsxBook(
       type,
-      sourceFile('bibles/csb/release/USX_1/${type.usxCode()}.usx')
-          .readAsStringSync()
-          .replaceAll('#', '')
-          .replaceAll(RegExp(r'\s+(?=<note)'), ''),
+      sourceFile(
+        'bibles/csb/release/USX_1/${type.usxCode()}.usx',
+      ).readAsStringSync().replaceAll('#', '').replaceAll(RegExp(r'\s+(?=<note)'), ''),
       includeInterlinear: false,
       shouldIgnoreElement: (element) =>
-          element.getAttribute('style') == 'sup' ||
-          element.getAttribute('category') == '(IV)',
+          element.getAttribute('style') == 'sup' || element.getAttribute('category') == '(IV)',
       transformText: (text) => text.replaceAll('\u00a0', ' '),
     ),
   ),

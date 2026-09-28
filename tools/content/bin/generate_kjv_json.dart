@@ -6,9 +6,6 @@ void main() => writeBibleBooks(
   translation: 'kjv',
   app: .bible,
   books: BookType.values.map(
-    (type) => parseUsxBook(
-      type,
-      sourceFile('bibles/kjv/${type.usxCode()}.usx').readAsStringSync(),
-    ),
+    (type) => parseUsxBook(type, sourceFile('bibles/kjv/${type.usxCode()}.usx').readAsStringSync()),
   ),
 );

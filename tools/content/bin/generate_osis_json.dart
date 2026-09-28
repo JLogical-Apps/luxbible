@@ -28,12 +28,7 @@ void main() {
           .listSync()
           .whereType<File>()
           .where((file) => file.path.endsWith('.xml'))
-          .map(
-            (file) => parseOsisBook(
-              file.readAsStringSync(),
-              verseParagraphs: !translation.hasParagraphs,
-            ),
-          )
+          .map((file) => parseOsisBook(file.readAsStringSync(), verseParagraphs: !translation.hasParagraphs))
           .sortedBy((book) => book.bookType.index),
     );
   }
