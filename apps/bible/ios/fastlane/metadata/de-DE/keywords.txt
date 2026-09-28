@@ -1,1 +1,1 @@
-Bibel,Luther,Elberfelder,Hoffnung für alle,offline,Kommentar,Konkordanz,Hörbibel,Lexikon,Strong
+Hoffnung für alle,HFA,offline,Kommentar,Konkordanz,Hörbibel,Lexikon,Strong,Leseplan,Interlinear

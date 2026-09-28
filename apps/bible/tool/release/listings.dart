@@ -95,6 +95,8 @@ Future<void> pushIos(Map<String, String> env, {required String marketingVersion}
         'true',
         '--submit_for_review',
         'false',
+        '--run_precheck_before_submit',
+        'false',
       ]);
     });
 
@@ -144,6 +146,8 @@ Future<void> pushIosScreenshots(Map<String, String> env, {required String market
       'true',
       '--submit_for_review',
       'false',
+      '--run_precheck_before_submit',
+      'false',
     ]);
   });
 }
@@ -173,9 +177,10 @@ Future<void> pullIosScreenshots(Map<String, String> env) {
 }
 
 Future<void> pushAndroid(Map<String, String> env, {required String buildNumber}) async {
+  requireChangelogs(buildNumber: buildNumber);
   stdout.write(
     'Push the Google Play listing for ${getLanguages(androidMetadataPath).join(', ')} and the build $buildNumber release notes on the '
-    '$playReleaseNotesTrack track? This goes live immediately. [y/N] ',
+    '$playReleaseNotesTrack track? This sends the changes for review. [y/N] ',
   );
   if (stdin.readLineSync()?.trim().toLowerCase() != 'y') fail('Canceled.');
 
@@ -213,7 +218,7 @@ Future<void> pushAndroidScreenshots(Map<String, String> env, {required String bu
   requireScreenshots(androidScreenshots, path: androidMetadataPath);
   stdout.write(
     'Replace the Google Play screenshots of each language that has screenshot folders in $androidMetadataPath? '
-    'This goes live immediately. [y/N] ',
+    'This sends the changes for review. [y/N] ',
   );
   if (stdin.readLineSync()?.trim().toLowerCase() != 'y') fail('Canceled.');
 
@@ -301,6 +306,16 @@ Future<void> withTemporaryDirectory(Future<void> Function(String path) action) a
 
 Iterable<String> getLanguages(String metadataPath) =>
     Directory(metadataPath).listSync().whereType<Directory>().map((dir) => dir.path.split('/').last);
+
+// supply pushes blank release notes instead of failing when a language has no notes for the build.
+void requireChangelogs({required String buildNumber}) {
+  final missing = getLanguages(androidMetadataPath)
+      .map((language) => '$androidMetadataPath/$language/changelogs/$buildNumber.txt')
+      .where((path) => !File(path).existsSync());
+  if (missing.isNotEmpty) {
+    fail('Missing Google Play release notes for build $buildNumber:\n${missing.map((path) => '  $path').join('\n')}');
+  }
+}
 
 void requireScreenshots(Iterable<File> screenshots, {required String path}) {
   if (screenshots.isEmpty) {

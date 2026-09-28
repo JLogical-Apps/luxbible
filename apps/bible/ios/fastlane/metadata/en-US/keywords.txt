@@ -1,1 +1,1 @@
-concordance,lexicon,offline,KJV,NASB,NIV,AMP,commentary,audio,dictionary,search,strongs,verse,plans
+concordance,lexicon,offline,KJV,NASB,NIV,AMP,commentary,audio,dictionary,NKJV,strongs,verse,plans
