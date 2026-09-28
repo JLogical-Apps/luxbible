@@ -81,7 +81,6 @@ const playReleaseNotesTrack = 'internal';
 
 Future<void> pushIos(Map<String, String> env, {required String marketingVersion}) =>
     withAppStoreConnectKey(env, (keyPath) async {
-      stdout.writeln('fastlane shows a preview of the $marketingVersion listing and asks before uploading.');
       await runFastlane([
         'deliver',
         ...appStoreConnectArgs(keyPath),
@@ -89,6 +88,8 @@ Future<void> pushIos(Map<String, String> env, {required String marketingVersion}
         marketingVersion,
         '--metadata_path',
         iosMetadataPath,
+        '--force',
+        'true',
         '--skip_binary_upload',
         'true',
         '--skip_screenshots',
@@ -126,8 +127,7 @@ Future<void> pushIosScreenshots(Map<String, String> env, {required String market
   requireScreenshots(getImages(iosScreenshotsPath), path: iosScreenshotsPath);
   return withAppStoreConnectKey(env, (keyPath) async {
     stdout.writeln(
-      'fastlane shows a preview, then replaces the $marketingVersion screenshots of each language that has a '
-      'folder in $iosScreenshotsPath.',
+      'Replacing the $marketingVersion screenshots of each language that has a folder in $iosScreenshotsPath.',
     );
     await runFastlane([
       'deliver',
@@ -139,6 +139,8 @@ Future<void> pushIosScreenshots(Map<String, String> env, {required String market
       '--screenshots_path',
       iosScreenshotsPath,
       '--overwrite_screenshots',
+      'true',
+      '--force',
       'true',
       '--skip_metadata',
       'true',
