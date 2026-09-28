@@ -125,10 +125,8 @@
   @apply bg-gradient-to-r from-emphasis to-emphasis-soft;
 }
 
-.marquee {
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scrollbar-width: none;
+/* Masking the scroll container itself flickers in Safari while scrolling. */
+.marquee-fade {
   mask-image: linear-gradient(
     to right,
     transparent,
@@ -136,6 +134,12 @@
     black 92%,
     transparent
   );
+}
+
+.marquee {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
 }
 
 .marquee::-webkit-scrollbar {

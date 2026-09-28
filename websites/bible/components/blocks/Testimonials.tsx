@@ -16,6 +16,7 @@ export type Testimonial = {
 
 const pixelsPerSecond = 45;
 const resumeDelayMs = 2000;
+const copies = 3;
 
 const stores = {
   appStore: { label: 'App Store', Icon: IconBrandAppleFilled },
@@ -67,18 +68,21 @@ export default function Testimonials({
     const isReducedMotion = matchMedia(
       '(prefers-reduced-motion: reduce)',
     ).matches;
-    let position = marquee.scrollLeft;
+    const getCopyWidth = () => marquee.scrollWidth / copies;
+    let position = getCopyWidth();
     let resumeAt = 0;
     let isHovered = false;
     let isTouching = false;
     let lastTime: number | undefined;
     let frame: number;
+    marquee.scrollLeft = position;
 
-    // Kept in (0, loopWidth] rather than [0, loopWidth) so there is always room to scroll left.
+    // Stays in the middle copy so a swipe has a full copy of room either way. Only wrapped while
+    // auto-scrolling, since writing scrollLeft mid-swipe cuts off iOS momentum and flickers.
     const wrap = (x: number) => {
-      const loopWidth = marquee.scrollWidth / 2;
-      if (x <= 0) return x + loopWidth;
-      if (x > loopWidth) return x - loopWidth;
+      const copyWidth = getCopyWidth();
+      if (x < copyWidth) return x + copyWidth;
+      if (x >= copyWidth * 2) return x - copyWidth;
       return x;
     };
 
@@ -98,8 +102,7 @@ export default function Testimonials({
     const handleScroll = () => {
       // Our own writes land within a pixel of position; anything else came from the user.
       if (Math.abs(marquee.scrollLeft - position) < 1) return;
-      position = wrap(marquee.scrollLeft);
-      if (position !== marquee.scrollLeft) marquee.scrollLeft = position;
+      position = marquee.scrollLeft;
       resumeAt = performance.now() + resumeDelayMs;
     };
     const handlePointerEnter = (event: PointerEvent) => {
@@ -136,23 +139,25 @@ export default function Testimonials({
   }, []);
 
   return (
-    <div ref={marqueeRef} className="marquee -mx-8">
-      {/* Two identical copies so scrolling can wrap by one copy's width without a visible jump. */}
-      <div className="flex w-max">
-        {[0, 1].map((copy) => (
-          <div
-            key={copy}
-            aria-hidden={copy === 1}
-            className="flex items-stretch gap-4 pr-4"
-          >
-            {testimonials.map((testimonial) => (
-              <TestimonialCard
-                key={testimonial.name}
-                testimonial={testimonial}
-              />
-            ))}
-          </div>
-        ))}
+    <div className="marquee-fade -mx-8">
+      <div ref={marqueeRef} className="marquee">
+        {/* Identical copies so scrolling can wrap by one copy's width without a visible jump. */}
+        <div className="flex w-max">
+          {Array.from({ length: copies }, (_, copy) => (
+            <div
+              key={copy}
+              aria-hidden={copy !== 0}
+              className="flex items-stretch gap-4 pr-4"
+            >
+              {testimonials.map((testimonial) => (
+                <TestimonialCard
+                  key={testimonial.name}
+                  testimonial={testimonial}
+                />
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
