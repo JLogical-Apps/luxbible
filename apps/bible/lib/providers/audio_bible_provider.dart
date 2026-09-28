@@ -341,6 +341,8 @@ class AudioBibleController extends _$AudioBibleController {
       if (shouldPlay) {
         await handler?.play();
       }
+    } on PlayerInterruptedException {
+      // A newer load superseded this one, which owns the player now.
     } on PlayerException catch (error) {
       handleError(error);
     }

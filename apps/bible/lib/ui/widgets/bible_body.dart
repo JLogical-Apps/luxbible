@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:bible/models/main_action.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/onboarding_step.dart';
@@ -572,7 +574,7 @@ class BibleBody extends HookConsumerWidget {
         child: HookConsumerBuilder(
           builder: (context, ref) {
             final minStudyPanelHeight = 82.0;
-            final maxStudyPanelHeight = MediaQuery.sizeOf(context).height * 0.75;
+            final maxStudyPanelHeight = max(minStudyPanelHeight, MediaQuery.sizeOf(context).height * 0.75);
 
             final studyPanelHeightRef = useRef(
               (maxStudyPanelHeight * user.studyPanelBottomPosition).clamp(minStudyPanelHeight, maxStudyPanelHeight),
