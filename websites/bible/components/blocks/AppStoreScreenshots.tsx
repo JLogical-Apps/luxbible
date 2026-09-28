@@ -7,7 +7,7 @@ const screenshots = [
   },
   {
     src: '/media/app-store-screenshots/Screenshot 2.png',
-    alt: 'Lux Bible search',
+    alt: 'Lux Bible annotations',
   },
   {
     src: '/media/app-store-screenshots/Screenshot 3.png',
@@ -15,7 +15,7 @@ const screenshots = [
   },
   {
     src: '/media/app-store-screenshots/Screenshot 4.png',
-    alt: 'Lux Bible annotations',
+    alt: 'Lux Bible study panels',
   },
   {
     src: '/media/app-store-screenshots/Screenshot 5.png',
@@ -23,11 +23,11 @@ const screenshots = [
   },
   {
     src: '/media/app-store-screenshots/Screenshot 6.png',
-    alt: 'Lux Bible navigation',
+    alt: 'Lux Bible search',
   },
   {
     src: '/media/app-store-screenshots/Screenshot 7.png',
-    alt: 'Lux Bible study panels',
+    alt: 'Lux Bible navigation',
   },
   {
     src: '/media/app-store-screenshots/Screenshot 8.png',

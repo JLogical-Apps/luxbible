@@ -21,6 +21,7 @@ dart run bin/generate_easton_json.dart
 dart run bin/generate_strongs_json.dart
 dart run bin/generate_audio_bible_timings_json.dart
 dart run bin/generate_verse_of_the_day.dart
+dart run bin/generate_website_bsb_json.dart
 ```
 
 Bible generators write one minified runtime asset per book under `assets/translations/<translation>/`, using USX book codes such as `GEN.json`. The book type is derived from the asset path and is not repeated inside the JSON.
@@ -31,11 +32,13 @@ presentation, and source tables.
 
 `generate_audio_bible_timings_json.dart` validates their canonical chapter and verse coverage, removes the verse text and source metadata, and writes one minified runtime asset per Audio Bible.
 
+`generate_website_bsb_json.dart` writes the BSB as plain verse text to [`websites/bible/data/bsb.json`](../../websites/bible/data/bsb.json), keyed by OSIS book ID with one array of verses per chapter. The marketing site reads it to render passage share previews. Omitted verses are empty strings so array positions stay aligned with verse numbers.
+
 `generate_navigators_5x5x5_source.dart` writes its normalized input file into `content/sources/reading_plans/` before `generate_bible_plans_json.dart` reads it.
 
 Raw SWORD modules and downloaded archives belong under `content/sources/sword/` and remain ignored. Generators read committed, extracted inputs elsewhere in `content/sources/` so runtime assets do not depend on local SWORD downloads.
 
-The MSB sources in `content/sources/bibles/msb/` are the `MSB_strongs_usx.zip` files from a [bsb2usfm release](https://github.com/BSB-publishing/bsb2usfm/releases), renamed to their book codes. They keep their Strong's numbers, but MSB lacks the word positions and transliterations of a full study Bible, so it is generated as a reading text. The WEB is prepared once from eBible.org's USFM by [`python/web/prepare_web.py`](python/web/prepare_web.py), whose docstring lists its setup and download steps.
+The MSB sources in `content/sources/bibles/msb/` are the `MSB_strongs_usx.zip` files from a [bsb2usfm release](https://github.com/BSB-publishing/bsb2usfm/releases), renamed to their book codes. They keep their Strong's numbers, but MSB lacks the word positions and transliterations of a full study Bible, so it is generated as a reading text. The WEB is prepared once from eBible.org's USFM by [`python/web/prepare_web.py`](python/web/prepare_web.py), whose docstring lists its setup and download steps. The WEB has no section headings of its own, so `generate_web_json.dart` inserts the BSB's through [`lib/src/section_headings.dart`](lib/src/section_headings.dart), leaving the WEB source untouched. The KJV and ASV sources already contain the BSB headings.
 
 The licensed CSB DBL bundle belongs under `content/sources/bibles/csb/`. Both that source directory and the generated JSON files under `apps/bible/assets/translations/csb/` remain ignored so the licensed text is available to local release builds without being distributed through GitHub.
 

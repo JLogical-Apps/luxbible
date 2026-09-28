@@ -3,9 +3,11 @@ import type { Metadata } from 'next';
 import AppStoreButtons from '@/components/blocks/AppStoreButtons';
 import AndroidAppRedirect from '@/components/blocks/AndroidAppRedirect';
 import Page from '@/components/layout/Page';
+import { getPassageText } from '@/lib/bible';
 import { passageShareCampaign } from '@/lib/campaign';
 import { formatPassage } from '@/lib/passage';
 import { site } from '@/lib/site';
+import { truncateText } from '@/lib/utils';
 
 type Props = { params: { reference: string } };
 
@@ -13,16 +15,22 @@ type Props = { params: { reference: string } };
 export const generateStaticParams = () => [];
 
 export function generateMetadata({ params }: Props): Metadata {
-  const reference = formatPassage(decodeURIComponent(params.reference));
+  const osisId = decodeURIComponent(params.reference);
+  const reference = formatPassage(osisId);
   const title = reference
     ? `${reference} in Lux Bible`
     : 'Passage in Lux Bible';
+  const text = getPassageText(osisId);
+  const description = text
+    ? truncateText(text, 200)
+    : 'Open this passage in Lux Bible.';
   const url = `https://app.luxbible.app/passage/${encodeURIComponent(
     params.reference,
   )}`;
   return {
-    title,
-    openGraph: { title, url },
+    title: { absolute: title },
+    description,
+    openGraph: { title, description, url },
     itunes: { appId: site.appStoreId, appArgument: url },
   };
 }

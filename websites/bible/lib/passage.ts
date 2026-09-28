@@ -67,18 +67,19 @@ const bookTitlesByOsisId: Record<string, string> = {
   Rev: 'Revelation',
 };
 
-const bookTitlesByUppercaseOsisId = new Map(
-  Object.entries(bookTitlesByOsisId).map(([osisId, title]) => [
+const osisIdsByUppercaseOsisId = new Map(
+  Object.keys(bookTitlesByOsisId).map((osisId) => [
     osisId.toUpperCase(),
-    title,
+    osisId,
   ]),
 );
 
-type Pointer = { book: string; chapter: number; verse?: number };
+export type Pointer = { book: string; chapter: number; verse?: number };
+export type PassageSpan = { start: Pointer; end?: Pointer };
 
 const parsePointer = (value: string): Pointer | null => {
   const match = /^([1-3]?[A-Za-z]+)\.(\d+)(?:\.(\d+))?$/.exec(value);
-  const book = match && bookTitlesByUppercaseOsisId.get(match[1].toUpperCase());
+  const book = match && osisIdsByUppercaseOsisId.get(match[1].toUpperCase());
   if (!match || !book) return null;
   return {
     book,
@@ -92,14 +93,13 @@ const formatPointer = (pointer: Pointer, previous?: Pointer) => {
     .filter((part) => part !== undefined)
     .join(':');
   if (!previous || pointer.book !== previous.book) {
-    return `${pointer.book} ${location}`;
+    return `${bookTitlesByOsisId[pointer.book]} ${location}`;
   }
   if (pointer.chapter !== previous.chapter) return location;
   return String(pointer.verse ?? pointer.chapter);
 };
 
-// Mirrors VerseSelection.format() in packages/lux, e.g. `Rom.1.2-Rom.1.5 Rom.2.1` is `Romans 1:2-5; 2:1`.
-export const formatPassage = (osisId: string) => {
+export const parsePassage = (osisId: string) => {
   const spans = osisId.split(' ').map((span) => {
     const pointers = span.split('-').map(parsePointer);
     if (pointers.length > 2 || pointers.some((pointer) => !pointer)) {
@@ -108,10 +108,13 @@ export const formatPassage = (osisId: string) => {
     const [start, end] = pointers as Pointer[];
     return { start, end };
   });
-  if (spans.some((span) => !span)) return null;
+  return spans.some((span) => !span) ? null : (spans as PassageSpan[]);
+};
 
-  return (spans as { start: Pointer; end?: Pointer }[])
-    .map(({ start, end }, index, all) => {
+// Mirrors VerseSelection.format() in packages/lux, e.g. `Rom.1.2-Rom.1.5 Rom.2.1` is `Romans 1:2-5; 2:1`.
+export const formatPassage = (osisId: string) =>
+  parsePassage(osisId)
+    ?.map(({ start, end }, index, all) => {
       const previous = index > 0 ? all[index - 1] : undefined;
       const previousEnd = previous && (previous.end ?? previous.start);
       const separator = !previousEnd
@@ -126,5 +129,4 @@ export const formatPassage = (osisId: string) => {
       ].join('-');
       return `${separator}${range}`;
     })
-    .join('');
-};
+    .join('') ?? null;

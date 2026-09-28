@@ -16,6 +16,8 @@ File appAssetFile(String path, {required LuxApp app}) =>
 Directory appAssetDirectory(String path, {required LuxApp app}) =>
     Directory.fromUri(repositoryRoot.uri.resolve('apps/${app.name}/assets/$path'));
 
+File websiteFile(String path) => File.fromUri(repositoryRoot.uri.resolve('websites/bible/$path'));
+
 void writeBibleBooks({required String translation, required LuxApp app, required Iterable<Book> books}) {
   final directory = appAssetDirectory('translations/$translation', app: app)..createSync(recursive: true);
   books.forEach(

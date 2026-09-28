@@ -15,6 +15,7 @@ export const metadata: Metadata = {
     description,
     url: `${site.domain}/resources/lxbp`,
     type: 'article',
+    images: '/opengraph-image',
   },
 };
 
