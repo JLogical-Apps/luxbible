@@ -8,6 +8,7 @@ import AppStoreScreenshots from '@/components/blocks/AppStoreScreenshots';
 import CtaButton from '@/components/blocks/CtaButton';
 import DownloadCtaButton from '@/components/blocks/DownloadCtaButton';
 import FeatureShowcase from '@/components/blocks/FeatureShowcase';
+import Testimonials from '@/components/blocks/Testimonials';
 import Page from '@/components/layout/Page';
 import Section from '@/components/layout/Section';
 import { site } from '@/lib/site';
@@ -181,6 +182,65 @@ export default function HomePage() {
               subtitle:
                 'Look up words in the built-in lexicon and dictionary to bring context and shed light on Scripture.',
               video: '/media/videos/word-lookup.webm',
+            },
+          ]}
+        />
+      </Section>
+
+      <Section
+        id="reviews"
+        align="center"
+        title="What Readers Are Saying"
+        subtitle="Reviews from people reading and studying with Lux, straight from the App Store and Google Play."
+      >
+        <Testimonials
+          testimonials={[
+            {
+              quote:
+                "I like this app because it: 1. Has tools that aid the reader (partial verse highlighting is a game changer). 2. Is easy-to-use and pleasant to look at. 3. Doesn't have distracting social or engagement farming features.",
+              name: 'Joshua Libassi',
+              store: 'googlePlay',
+              rating: 5,
+            },
+            {
+              quote:
+                'This Bible app is a great combination of simplicity and depth. It is easy to use and has a lot of valuable tools, which allows me to dive into Scripture without being overwhelmed. Highly recommend using it!',
+              name: 'TeeZeeb',
+              store: 'appStore',
+              rating: 5,
+            },
+            {
+              quote: 'Love the app! Thank you for making this available to us!',
+              name: 'John Shedd',
+              store: 'googlePlay',
+              rating: 5,
+            },
+            {
+              quote:
+                "I've switched to using Lux as my main Bible app after years of searching for a replacement for YouVersion.",
+              name: 'Mark Kimball',
+              store: 'googlePlay',
+              rating: 5,
+            },
+            {
+              quote:
+                'Great app for studying the Bible! It’s visually appealing, versatile, and very easy to use for both casual reading and in-depth study.',
+              name: 'K D',
+              store: 'googlePlay',
+              rating: 5,
+            },
+            {
+              quote: 'Amazing tool. perfect!',
+              name: 'Edward Bondaruk',
+              store: 'googlePlay',
+              rating: 5,
+            },
+            {
+              quote:
+                'I Honestly with a whole heart love it, its has all the features I need for studying scriptures.',
+              name: 'Maurice Small',
+              store: 'googlePlay',
+              rating: 5,
             },
           ]}
         />

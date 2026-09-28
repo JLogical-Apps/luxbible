@@ -124,3 +124,20 @@
   @apply bg-clip-text text-transparent box-decoration-clone;
   @apply bg-gradient-to-r from-emphasis to-emphasis-soft;
 }
+
+.marquee {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 8%,
+    black 92%,
+    transparent
+  );
+}
+
+.marquee::-webkit-scrollbar {
+  display: none;
+}

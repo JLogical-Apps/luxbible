@@ -107,6 +107,7 @@ Lux does not currently have structured in-app feedback collection, a public road
 
 - Explain the reading, writing, and study experience
 - Demonstrate the design through screenshots and short videos
+- Share what readers say in their App Store and Google Play reviews
 - Publish practical articles about Bible reading, study methods, and Lux workflows
 - Link to the App Store and Google Play
 - Invite users to the Discord community
