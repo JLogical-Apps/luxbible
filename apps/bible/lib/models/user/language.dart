@@ -47,9 +47,17 @@ List<BibleTranslation> getDefaultBibleTranslations(Language language) => switch 
     .bsb,
     ...BibleTranslation.values.where((translation) => translation != .bsb && translation.bibleLanguage == .english),
   ],
-  .dutch => [...BibleTranslation.values.where((translation) => translation.bibleLanguage == .dutch), .bsb],
-  .german => [...BibleTranslation.values.where((translation) => translation.bibleLanguage == .german), .bsb],
-  .russian => [.nrt, .bsb],
+  .dutch => [
+    .sv,
+    ...BibleTranslation.values.where((translation) => translation != .sv && translation.bibleLanguage == .dutch),
+    .bsb,
+  ],
+  .german => [
+    .hfa,
+    ...BibleTranslation.values.where((translation) => translation != .hfa && translation.bibleLanguage == .german),
+    .bsb,
+  ],
+  .russian => [.nrt, .synodal, .bsb],
 };
 
 extension BibleLanguageAppExtensions on BibleLanguage {
