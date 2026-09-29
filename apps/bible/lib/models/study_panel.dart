@@ -107,7 +107,7 @@ sealed class StudyPanel with _$StudyPanel {
                       final annotationText = ref
                           .watch(
                             annotationSelectionTextProvider(
-                              translation: user.translation,
+                              translation: user.getTranslationFor(annotation.selection.startingReference.book),
                               selection: annotation.selection,
                             ),
                           )

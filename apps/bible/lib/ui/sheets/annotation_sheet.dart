@@ -177,7 +177,10 @@ class NewAnnotationSheet {
   }) async {
     final user = ref.read(userProvider);
     final selectionText = await ref.read(
-      annotationSelectionTextProvider(translation: user.translation, selection: selection).future,
+      annotationSelectionTextProvider(
+        translation: user.getTranslationFor(selection.startingReference.book),
+        selection: selection,
+      ).future,
     );
 
     final hasAnnotation = selection.when(

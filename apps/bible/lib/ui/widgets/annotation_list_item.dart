@@ -22,7 +22,12 @@ class AnnotationListItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
     final annotationSelectionText = ref
-        .watch(annotationSelectionTextProvider(selection: annotation.selection, translation: user.translation))
+        .watch(
+          annotationSelectionTextProvider(
+            selection: annotation.selection,
+            translation: user.getTranslationFor(annotation.selection.startingReference.book),
+          ),
+        )
         .value;
 
     Future<void> delete() async {

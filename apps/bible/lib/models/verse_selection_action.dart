@@ -69,7 +69,10 @@ enum VerseSelectionAction {
 
         final user = ref.read(userProvider);
         final text = await ref.read(
-          verseSelectionTextProvider(selection: selectedVerseSelection, translation: user.translation).future,
+          verseSelectionTextProvider(
+            selection: selectedVerseSelection,
+            translation: user.getTranslationFor(selectedVerseSelection.references.first.book),
+          ).future,
         );
         final copy = CopySheet.getCopyText(
           text: text.trim(),
