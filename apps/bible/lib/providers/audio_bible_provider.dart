@@ -311,8 +311,11 @@ class AudioBibleController extends _$AudioBibleController {
   }) async {
     if (state.activeContext case final activeContext? when activeContext != context) {
       positions[activeContext] = player?.position ?? .zero;
-      await handler?.pause();
-    } else if (state.activeContext == context) {
+    }
+
+    // Pausing between passages lets Android drop the foreground service and wake lock, so loading the next
+    // passage stalls while the screen is locked. Staying in the playing state starts it once it's loaded instead.
+    if (!shouldPlay) {
       await handler?.pause();
     }
 
@@ -328,9 +331,9 @@ class AudioBibleController extends _$AudioBibleController {
           title: session.passage.format(),
           artUri: (await ref.read(pathServiceProvider)?.getAssetAsFile('assets/images/lux-logo-full.png'))?.uri,
         ),
+        initialPosition: initialPosition,
         clipEnd: session.passage.isChapter ? null : session.passage.getLastAudioTiming(session.timings)?.end,
       );
-      await handler?.seek(initialPosition.clamp(.zero, player?.duration ?? .zero));
       positions[context] = initialPosition;
       errorSubject.add(null);
 
@@ -371,22 +374,20 @@ class AudioBibleController extends _$AudioBibleController {
     if (context != null && session != null && canFollow && reference != null) {
       emitSpokenReference(context: context, reference: reference);
     }
-    if (session != null && player?.playing == true && session.passage.hasReachedAudioEnd(position, session.timings)) {
-      completeActivePassage();
-    }
   }
 
-  Future<void> completeActivePassage() async {
+  void completeActivePassage() {
     final context = state.activeContext;
     final session = context == null ? null : state.getSessionFor(context);
     if (context == null || session == null) {
       return;
     }
 
-    await handler?.pause();
-    final isStillCurrent = state.activeContext == context && state.getSessionFor(context)?.passage == session.passage;
-    if (isStillCurrent) {
-      completionSubjects[context]!.add(session.passage);
+    final completionSubject = completionSubjects[context]!;
+    if (completionSubject.hasListener) {
+      completionSubject.add(session.passage);
+    } else {
+      handler?.pause();
     }
   }
 
