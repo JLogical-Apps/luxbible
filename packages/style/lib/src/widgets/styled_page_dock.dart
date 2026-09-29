@@ -59,7 +59,7 @@ class StyledPageDock extends HookWidget {
                                       ),
                                     )
                                   : StyledListView(
-                                      controller: scrollController,
+                                      controller: i == pageState.value ? scrollController : null,
                                       children: page.children,
                                       physics: AlwaysScrollableScrollPhysics(),
                                     ),
