@@ -88,7 +88,10 @@ sealed class StudyPanel with _$StudyPanel {
       final noteAnnotations = [
         ...user.getVerseSelectionAnnotations(verseSelection),
         ...user
-            .getTextSelectionAnnotationsInVerseSelection(verseSelection, translation: user.translation)
+            .getTextSelectionAnnotationsInVerseSelection(
+              verseSelection,
+              translation: user.getTranslationFor(verseSelection.references.first.book),
+            )
             .map((record) => record.$1),
       ].where((annotation) => annotation.note.isNotEmpty).sortedBy((a) => a.selection);
 
