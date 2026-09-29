@@ -91,6 +91,7 @@ dev_dependencies:
   json_serializable: ^6.11.1
   googleapis: ^16.0.0
   googleapis_auth: ^2.0.0
+  dart_jsonwebtoken: ^3.4.1
 flutter:
   uses-material-design: true
   config:
