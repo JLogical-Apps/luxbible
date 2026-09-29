@@ -35,6 +35,7 @@ import 'package:bible/services/timezone_service.dart';
 import 'package:bible/services/verse_of_the_day_widget_service.dart';
 import 'package:bible/ui/bible_reader_configuration.dart';
 import 'package:bible/ui/pages/bible_page.dart';
+import 'package:bible/utils/connectivity_error.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -44,6 +45,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:hooks_riverpod/misc.dart';
 import 'package:lux/i18n_flutter.dart';
 import 'package:lux/lux.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -76,7 +78,9 @@ Future<void> main() async {
       await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode);
       FlutterError.onError = kDebugMode
           ? FlutterError.dumpErrorToConsole
-          : FirebaseCrashlytics.instance.recordFlutterError;
+          : (details) {
+              if (!isConnectivityError(details.exception)) FirebaseCrashlytics.instance.recordFlutterError(details);
+            };
       // "none" means no screen has been shown yet, such as when Android's audio service starts the app.
       FirebaseCrashlytics.instance.setCustomKey(
         'lifecycleState',
@@ -169,7 +173,7 @@ Future<void> main() async {
       if (kDebugMode) {
         print(error);
         print(stack);
-      } else if (Firebase.apps.isNotEmpty) {
+      } else if (Firebase.apps.isNotEmpty && !isConnectivityError(error)) {
         FirebaseCrashlytics.instance.recordError(error, stack);
       }
     },
@@ -249,7 +253,8 @@ final class ProviderErrorObserver extends ProviderObserver {
   void providerDidFail(ProviderObserverContext context, Object error, StackTrace stackTrace) {
     developer.log('Provider ${context.provider.name ?? context.provider.runtimeType} failed with: $error');
     developer.log('Stacktrace: $stackTrace');
-    if (!kDebugMode) {
+    // A dependent provider rethrows its dependency's failure as a ProviderException, which was already reported.
+    if (!kDebugMode && error is! ProviderException && !isConnectivityError(error)) {
       FirebaseCrashlytics.instance.recordError(
         error,
         stackTrace,
