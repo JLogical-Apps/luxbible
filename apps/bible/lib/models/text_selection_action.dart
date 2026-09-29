@@ -130,8 +130,6 @@ enum TextSelectionAction {
           isTextSelection: true,
           translation: textSelection.translation,
           selection: textSelection.toVerseSelection(),
-          useReference: textSelection.translation.isOnline,
-          useTranslation: textSelection.translation.isOnline,
         );
         onDeselect();
 

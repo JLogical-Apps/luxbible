@@ -11,8 +11,8 @@ class CopySheet {
     required bool isTextSelection,
     required BibleTranslation translation,
     required VerseSelection selection,
-    required bool useReference,
-    required bool useTranslation,
+    bool useReference = true,
+    bool useTranslation = true,
   }) => useReference || useTranslation
       ? [
           '"$text"',

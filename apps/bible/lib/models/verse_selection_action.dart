@@ -79,8 +79,6 @@ enum VerseSelectionAction {
           isTextSelection: false,
           translation: user.translation,
           selection: selectedVerseSelection,
-          useReference: user.translation.isOnline,
-          useTranslation: user.translation.isOnline,
         );
 
         if (!context.mounted) return;

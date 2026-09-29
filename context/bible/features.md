@@ -144,7 +144,7 @@ Users can:
 - Tap additional verses to extend a verse selection
 - Long-press a word or number to select it
 - Continue dragging after a long-press to select a phrase
-- Copy verses or selected text
+- Copy verses or selected text, quoted with its reference and translation; the Edit action in the confirmation can remove them for local translations
 - Share a link to selected verses from the verse toolbar
 
 Opening a shared passage link returns to the Bible page, closing any pages above it, then selects and scrolls to the linked verses.
