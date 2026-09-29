@@ -68,17 +68,16 @@ enum VerseSelectionAction {
         final rootContext = context.rootContext;
 
         final user = ref.read(userProvider);
+        final translation = user.getTranslationFor(selectedVerseSelection.references.first.book);
         final text = await ref.read(
-          verseSelectionTextProvider(
-            selection: selectedVerseSelection,
-            translation: user.getTranslationFor(selectedVerseSelection.references.first.book),
-          ).future,
+          verseSelectionTextProvider(selection: selectedVerseSelection, translation: translation).future,
         );
-        final copy = CopySheet.getCopyText(
+        final copyText = CopySheet.getCopyText(
           text: text.trim(),
           isTextSelection: false,
-          translation: user.translation,
+          translation: translation,
           selection: selectedVerseSelection,
+          configuration: user.copy,
         );
 
         if (!context.mounted) return;
@@ -92,12 +91,12 @@ enum VerseSelectionAction {
               rootContext,
               text: text.trim(),
               isTextSelection: false,
-              translation: user.translation,
+              translation: translation,
               selection: selectedVerseSelection,
             ),
           ),
         );
-        await Clipboard.setData(ClipboardData(text: copy));
+        await Clipboard.setData(ClipboardData(text: copyText));
 
       case share:
         final renderObject = context.findRenderObject();

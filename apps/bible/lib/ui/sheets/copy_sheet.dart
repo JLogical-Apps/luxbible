@@ -1,3 +1,6 @@
+import 'package:bible/models/user/copy_configuration.dart';
+import 'package:bible/providers/user_provider.dart';
+import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -11,14 +14,13 @@ class CopySheet {
     required bool isTextSelection,
     required BibleTranslation translation,
     required VerseSelection selection,
-    bool useReference = true,
-    bool useTranslation = true,
-  }) => useReference || useTranslation
+    required CopyConfiguration configuration,
+  }) => configuration.isReferenceIncluded(translation)
       ? [
           '"$text"',
           '(${[
             if (isTextSelection) t.copySheet.textIn,
-            [if (useReference) selection.format(), if (useTranslation) translation.title()].join(', '),
+            [selection.format(), if (configuration.isTranslationIncluded(translation)) translation.title()].join(', '),
           ].join(' ')})',
         ].join('\n')
       : text;
@@ -29,20 +31,16 @@ class CopySheet {
     required bool isTextSelection,
     required BibleTranslation translation,
     required VerseSelection selection,
-  }) => context.showStyledSheet((context, _) {
-    final useReferenceState = useState(true);
-    final useReference = useReferenceState.value;
+  }) => context.showStyledSheet((context, ref) {
+    final configurationState = useState(ref.read(userProvider).copy);
+    final configuration = configurationState.value;
 
-    final useTranslationState = useState(true);
-    final useTranslation = useReference ? useTranslationState.value : false;
-
-    final copy = getCopyText(
+    final copyText = getCopyText(
       text: text,
       isTextSelection: isTextSelection,
       translation: translation,
       selection: selection,
-      useReference: useReference,
-      useTranslation: useTranslation,
+      configuration: configuration,
     );
 
     return StyledSheet(
@@ -51,7 +49,7 @@ class CopySheet {
         StyledSection.child(
           title: t.copySheet.preview.toText(),
           padding: .only(top: 24),
-          child: Text(copy, style: context.textStyle.paragraphMd),
+          child: Text(copyText, style: context.textStyle.paragraphMd),
         ),
         StyledSection(
           title: t.copySheet.citation.toText(),
@@ -64,15 +62,17 @@ class CopySheet {
             StyledListItem.switchControl(
               title: t.copySheet.includeReference.toText(),
               isEnabled: translation.isLocal,
-              isSelected: useReference,
-              onSelected: translation.isLocal ? (newValue) => useReferenceState.value = newValue : null,
+              isSelected: configuration.isReferenceIncluded(translation),
+              onSelected: translation.isLocal
+                  ? (isIncluded) => configurationState.value = configuration.copyWith(includesReference: isIncluded)
+                  : null,
             ),
             StyledListItem.switchControl(
               title: t.copySheet.includeTranslation.toText(),
-              isEnabled: translation.isLocal && useReference,
-              isSelected: useTranslation,
-              onSelected: translation.isLocal && useReference
-                  ? (newValue) => useTranslationState.value = newValue
+              isEnabled: translation.isLocal && configuration.includesReference,
+              isSelected: configuration.isTranslationIncluded(translation),
+              onSelected: translation.isLocal && configuration.includesReference
+                  ? (isIncluded) => configurationState.value = configuration.copyWith(includesTranslation: isIncluded)
                   : null,
             ),
           ],
@@ -86,7 +86,8 @@ class CopySheet {
               message: t.selectionActions.copiedVerses(reference: selection.format()).toText(),
             );
 
-            Clipboard.setData(ClipboardData(text: copy));
+            ref.updateUser((user) => user.copyWith(copy: configuration));
+            Clipboard.setData(ClipboardData(text: copyText));
             context.pop();
           },
         ),

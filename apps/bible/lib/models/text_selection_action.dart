@@ -1,5 +1,6 @@
 import 'package:bible/models/annotation.dart';
 import 'package:bible/providers/root_ref.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/sheets/copy_sheet.dart';
@@ -124,12 +125,14 @@ enum TextSelectionAction {
       case copy:
         final rootContext = context.rootContext;
 
+        final user = ref.read(userProvider);
         final text = await ref.read(textSelectionTextProvider(textSelection).future);
-        final copy = CopySheet.getCopyText(
+        final copyText = CopySheet.getCopyText(
           text: text,
           isTextSelection: true,
           translation: textSelection.translation,
           selection: textSelection.toVerseSelection(),
+          configuration: user.copy,
         );
         onDeselect();
 
@@ -147,7 +150,7 @@ enum TextSelectionAction {
             ),
           ),
         );
-        await Clipboard.setData(ClipboardData(text: copy));
+        await Clipboard.setData(ClipboardData(text: copyText));
     }
   }
 }

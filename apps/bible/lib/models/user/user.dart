@@ -10,6 +10,7 @@ import 'package:bible/models/notebook.dart';
 import 'package:bible/models/reminder.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/audio_bible_configuration.dart';
+import 'package:bible/models/user/copy_configuration.dart';
 import 'package:bible/models/user/language.dart';
 import 'package:bible/models/user/main_toolbar_configuration.dart';
 import 'package:bible/models/user/message.dart';
@@ -74,6 +75,7 @@ sealed class User with _$User {
     @Default(0) int activeDayCount,
     CalendarDateTime? lastActiveDate,
     @Default(false) bool hasRequestedReview,
+    @Default(CopyConfiguration()) CopyConfiguration copy,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

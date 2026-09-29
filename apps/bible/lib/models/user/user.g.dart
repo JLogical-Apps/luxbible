@@ -175,6 +175,9 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
       ? null
       : CalendarDateTime.fromJson(json['lastActiveDate'] as String),
   hasRequestedReview: json['hasRequestedReview'] as bool? ?? false,
+  copy: json['copy'] == null
+      ? const CopyConfiguration()
+      : CopyConfiguration.fromJson(json['copy'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -230,37 +233,38 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'activeDayCount': instance.activeDayCount,
   'lastActiveDate': instance.lastActiveDate?.toJson(),
   'hasRequestedReview': instance.hasRequestedReview,
+  'copy': instance.copy.toJson(),
 };
 
 const _$BibleTranslationEnumMap = {
-  BibleTranslation.bsb: 'bsb',
-  BibleTranslation.msb: 'msb',
-  BibleTranslation.csb: 'csb',
-  BibleTranslation.nasb95: 'nasb95',
-  BibleTranslation.amp: 'amp',
-  BibleTranslation.niv11: 'niv11',
-  BibleTranslation.nlt: 'nlt',
-  BibleTranslation.nkjv: 'nkjv',
-  BibleTranslation.kjv: 'kjv',
-  BibleTranslation.asv: 'asv',
-  BibleTranslation.web: 'web',
-  BibleTranslation.lxx: 'lxx',
-  BibleTranslation.tr: 'tr',
-  BibleTranslation.byz: 'byz',
-  BibleTranslation.statresgnt: 'statresgnt',
-  BibleTranslation.oshb: 'oshb',
-  BibleTranslation.hfa: 'hfa',
-  BibleTranslation.elb1905: 'elb1905',
-  BibleTranslation.lut1912: 'lut1912',
+  BibleTranslation.htb: 'htb',
+  BibleTranslation.nld1939: 'nld1939',
   BibleTranslation.sv: 'sv',
-  BibleTranslation.nrt: 'nrt',
+  BibleTranslation.amp: 'amp',
+  BibleTranslation.asv: 'asv',
+  BibleTranslation.bsb: 'bsb',
+  BibleTranslation.csb: 'csb',
+  BibleTranslation.kjv: 'kjv',
+  BibleTranslation.msb: 'msb',
+  BibleTranslation.nasb95: 'nasb95',
+  BibleTranslation.niv11: 'niv11',
+  BibleTranslation.nkjv: 'nkjv',
+  BibleTranslation.nlt: 'nlt',
+  BibleTranslation.web: 'web',
   BibleTranslation.fob: 'fob',
   BibleTranslation.martin1744: 'martin1744',
-  BibleTranslation.rvg: 'rvg',
-  BibleTranslation.nld1939: 'nld1939',
-  BibleTranslation.synodal: 'synodal',
-  BibleTranslation.htb: 'htb',
+  BibleTranslation.elb1905: 'elb1905',
+  BibleTranslation.hfa: 'hfa',
+  BibleTranslation.lut1912: 'lut1912',
+  BibleTranslation.byz: 'byz',
+  BibleTranslation.lxx: 'lxx',
+  BibleTranslation.statresgnt: 'statresgnt',
+  BibleTranslation.tr: 'tr',
+  BibleTranslation.oshb: 'oshb',
   BibleTranslation.ntr: 'ntr',
+  BibleTranslation.nrt: 'nrt',
+  BibleTranslation.synodal: 'synodal',
+  BibleTranslation.rvg: 'rvg',
 };
 
 const _$CommentaryTypeEnumMap = {
