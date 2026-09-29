@@ -1,8 +1,4 @@
-• Choose a pace when you start a reading plan. Stay Relaxed and read whenever you like, or pick a target end date and Lux shows whether you're on track, behind, or ahead. If you fall behind, Catch Up sets a new end date that puts you back on track.
-• Stopping or finishing a plan now moves it to that plan's History. Look back at past runs, resume a stopped plan where you left off, or delete runs you no longer need.
-• Highlights and notes you make while reading a plan day are now linked to that day. Review them with Review Day Annotations below the day's passages, or see every annotation from the plan in its menu.
-• Lux is now available in German.
-• The Majority Standard Bible (MSB) and World English Bible (WEB) are now included and work offline.
-• Theme & Layout now shows a live preview of your text and layout settings.
-• One-day plans no longer ask about a daily reminder once you finish them.
-• Fixed a few misplaced verse numbers in the BSB and ASV.
+• Lux now remembers your copy settings. After copying verses, tap Edit to include or leave out the reference and translation, and later copies follow your choice. Online translations always include both.
+• The WEB is now the World English Bible Classic, which renders God's name as Yahweh where the previous edition used "the LORD".
+• When your selected Bible covers only one Testament, such as the LXX, copied verses and the passages shown with your notes now use the text you're reading in the other Testament.
+• Fixed a few crashes, including one during audio playback.

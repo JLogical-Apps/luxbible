@@ -1,0 +1,4 @@
+• Lux merkt sich jetzt, ob du beim Kopieren Bibelstelle und Übersetzung angibst.
+• Die WEB ist jetzt die World English Bible Classic, die Gottes Namen mit Yahweh wiedergibt.
+• Enthält deine Bibel nur ein Testament, etwa die LXX, verwenden kopierte Verse und die Stellen zu deinen Notizen jetzt den Text, den du liest.
+• Einige Abstürze behoben, darunter einer bei der Audiowiedergabe.

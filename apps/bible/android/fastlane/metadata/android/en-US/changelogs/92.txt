@@ -1,0 +1,4 @@
+• Lux now remembers whether you include the reference and translation when copying verses.
+• The WEB is now the World English Bible Classic, which renders God's name as Yahweh.
+• When your Bible covers only one Testament, such as the LXX, copied verses and the passages shown with your notes now use the text you're reading.
+• Fixed a few crashes, including one during audio playback.

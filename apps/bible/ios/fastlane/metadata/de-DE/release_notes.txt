@@ -1,8 +1,4 @@
-• Wähle ein Tempo, wenn du einen Leseplan startest. Bleib Entspannt und lies, wann immer du möchtest, oder lege ein Zielenddatum fest, und Lux zeigt dir, ob du im Plan liegst, hinterher oder voraus bist. Wenn du in Rückstand gerätst, setzt Aufholen ein neues Enddatum, mit dem du wieder im Plan liegst.
-• Wenn du einen Plan beendest oder abschließt, landet er jetzt im Verlauf dieses Plans. Schau dir frühere Durchgänge an, setze einen beendeten Plan dort fort, wo du aufgehört hast, oder lösche Durchgänge, die du nicht mehr brauchst.
-• Markierungen und Notizen, die du beim Lesen eines Plantages machst, sind jetzt mit diesem Tag verknüpft. Sieh sie dir über Annotationen des Tages ansehen unter den Abschnitten des Tages an, oder finde alle Annotationen des Plans in seinem Menü.
-• Lux gibt es jetzt auf Deutsch.
-• Die Majority Standard Bible (MSB) und die World English Bible (WEB) sind jetzt enthalten und funktionieren offline.
-• Design & Layout zeigt jetzt eine Live-Vorschau deiner Text- und Layouteinstellungen.
-• Eintägige Lesepläne fragen nach dem Abschluss nicht mehr nach einer täglichen Erinnerung.
-• Ein paar falsch platzierte Versnummern in der BSB und ASV wurden korrigiert.
+• Lux merkt sich jetzt deine Kopiereinstellungen. Tippe nach dem Kopieren von Versen auf Bearbeiten, um Bibelstelle und Übersetzung ein- oder auszuschließen, und spätere Kopien folgen deiner Wahl. Online-Übersetzungen geben beides immer an.
+• Die WEB ist jetzt die World English Bible Classic, die Gottes Namen mit Yahweh wiedergibt, wo die vorherige Ausgabe „der HERR“ verwendete.
+• Enthält deine gewählte Bibel nur ein Testament, etwa die LXX, verwenden kopierte Verse und die Stellen zu deinen Notizen im anderen Testament jetzt den Text, den du liest.
+• Einige Abstürze behoben, darunter einer bei der Audiowiedergabe.

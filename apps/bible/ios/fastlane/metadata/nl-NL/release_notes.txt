@@ -1,8 +1,4 @@
-• Kies een tempo wanneer je een leesplan start. Kies Ontspannen en lees wanneer je wilt, of kies een einddatum en Lux laat zien of je op schema ligt, achterloopt of voorloopt. Loop je achter, dan zet Inhalen een nieuwe einddatum waarmee je weer op schema ligt.
-• Als je een leesplan stopt of afrondt, gaat het nu naar de Geschiedenis van dat plan. Kijk terug op eerdere rondes, hervat een gestopt plan waar je gebleven was of verwijder rondes die je niet meer nodig hebt.
-• Markeringen en notities die je maakt terwijl je een dag van een leesplan leest, worden nu aan die dag gekoppeld. Bekijk ze met Annotaties van de dag bekijken onder de passages van die dag, of bekijk alle annotaties van het plan via het menu.
-• Lux is nu beschikbaar in het Duits.
-• De Majority Standard Bible (MSB) en World English Bible (WEB) zijn nu inbegrepen en werken offline.
-• Thema en indeling toont nu een live voorbeeld van je tekst- en indelingsinstellingen.
-• Leesplannen van één dag vragen niet meer naar een dagelijkse herinnering nadat je ze hebt afgerond.
-• Een paar verkeerd geplaatste versnummers in de BSB en ASV zijn verbeterd.
+• Lux onthoudt nu je kopieerinstellingen. Tik na het kopiëren van verzen op Bewerken om de bijbelverwijzing en vertaling wel of niet op te nemen, en volgende keren gaat het net zo. Online vertalingen nemen ze altijd allebei op.
+• De WEB is nu de World English Bible Classic, die Gods naam weergeeft als Yahweh waar de vorige editie "de HEER" gebruikte.
+• Bevat je gekozen Bijbel maar één testament, zoals de LXX, dan gebruiken gekopieerde verzen en de passages bij je notities in het andere testament nu de tekst die je leest.
+• Een paar crashes verholpen, waaronder één tijdens het afspelen van audio.
