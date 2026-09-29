@@ -51,7 +51,7 @@ Lux counts distinct active days locally. After seven active days, it makes one n
 - CSB: Christian Standard Bible
 - KJV: King James Version
 - ASV: American Standard Version
-- WEB: World English Bible
+- WEB: World English Bible Classic
 - SV: Statenvertaling in Dutch
 - NLD1939: Petrus Canisiusvertaling 1939 in Dutch
 - FOB: Ostervald 1744 in French

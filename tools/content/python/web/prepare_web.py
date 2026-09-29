@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Converts the World English Bible from eBible.org's USFM into per-book USX.
+"""Converts the World English Bible Classic from eBible.org's USFM into per-book USX.
 
 Writes the 66 canonical books to content/sources/bibles/web/. The text is not
 changed, since a modified text may not be called the World English Bible. Only
@@ -7,12 +7,12 @@ the Strong's word tags are removed: they are machine-assigned and too unreliable
 for Lux's study features.
 
 Setup:
-  pip install usfmtc
-  curl -o content/sources/sword/engwebp_usfm.zip https://ebible.org/Scriptures/engwebp_usfm.zip
-  unzip content/sources/sword/engwebp_usfm.zip -d content/sources/sword/engwebp_usfm
+  python3 -m venv .tmp/venv && .tmp/venv/bin/pip install usfmtc
+  curl -o content/sources/sword/eng-web_usfm.zip https://ebible.org/Scriptures/eng-web_usfm.zip
+  unzip content/sources/sword/eng-web_usfm.zip -d content/sources/sword/eng-web_usfm
 
 Run from the repository root:
-  python3 tools/content/python/web/prepare_web.py content/sources/sword/engwebp_usfm
+  .tmp/venv/bin/python tools/content/python/web/prepare_web.py content/sources/sword/eng-web_usfm
 """
 import re
 import sys
@@ -34,7 +34,7 @@ STRONGS_WORD = re.compile(r'\\(\+?)w (.*?)\|strong="[^"]*"\\\1w\*')
 def main(usfm_dir):
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     for book in BOOKS:
-        [source] = usfm_dir.glob(f'*-{book}engwebp.usfm')
+        [source] = usfm_dir.glob(f'*-{book}eng-web.usfm')
         usfm = STRONGS_WORD.sub(r'\2', source.read_text(encoding='utf-8'))
         if '\\w ' in usfm or '\\+w ' in usfm:
             raise ValueError(f'{book} has a word tag without a Strong\'s number')
