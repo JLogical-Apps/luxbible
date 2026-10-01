@@ -17,6 +17,7 @@ import 'release_utils.dart';
 ///   dart run tool/release/store_stats.dart --days 90
 ///   dart run tool/release/store_stats.dart --ios         # App Store only
 ///   dart run tool/release/store_stats.dart --android     # Google Play only
+///   dart run tool/release/store_stats.dart --json        # raw report rows as JSON on stdout
 ///
 /// The App Store side reads Apple's analytics reports. The first run requests them, which needs an Admin
 /// API key, and Apple takes a day or two to generate the first ones. After that the key only needs the
@@ -26,10 +27,11 @@ import 'release_utils.dart';
 Future<void> main(List<String> args) async {
   final daysIndex = args.indexOf('--days');
   final unknown = args.whereIndexed(
-    (index, arg) => !['--ios', '--android', '--days'].contains(arg) && (daysIndex == -1 || index != daysIndex + 1),
+    (index, arg) =>
+        !['--ios', '--android', '--days', '--json'].contains(arg) && (daysIndex == -1 || index != daysIndex + 1),
   );
   if (unknown.isNotEmpty) {
-    fail('Unknown argument(s): ${unknown.join(', ')}. Use --days <count>, --ios, and/or --android.');
+    fail('Unknown argument(s): ${unknown.join(', ')}. Use --days <count>, --ios, --android, and/or --json.');
   }
 
   final days = daysIndex == -1
@@ -41,14 +43,26 @@ Future<void> main(List<String> args) async {
   final env = loadReleaseEnv();
   final since = DateTime.now().subtract(Duration(days: days)).isoDate;
 
+  if (args.has('--json')) {
+    stdout.write(
+      jsonEncode({
+        'since': since,
+        if (includesIos)
+          'appStore': (await getAppStoreReports(env, since: since)).map((report, rows) => MapEntry(report.name, rows)),
+        if (includesAndroid) 'googlePlay': (await getPlayReports(env, since: since)).toJson(),
+      }),
+    );
+    return;
+  }
+
   if (includesIos) {
     printSection('App Store since $since');
-    await printAppStoreStats(env, since: since);
+    printAppStoreStats(await getAppStoreReports(env, since: since));
   }
 
   if (includesAndroid) {
     printSection('Google Play since $since');
-    await printPlayStats(env, since: since);
+    printPlayStats(await getPlayReports(env, since: since));
   }
 }
 
@@ -92,7 +106,7 @@ enum AppStoreReport {
   bool matches(String name) => name.contains(nameFragment) && name.endsWith(isDetailed ? 'Detailed' : 'Standard');
 }
 
-Future<void> printAppStoreStats(Map<String, String> env, {required String since}) async {
+Future<Map<AppStoreReport, List<Row>>> getAppStoreReports(Map<String, String> env, {required String since}) async {
   final api = AppStoreConnect(
     keyId: getReportsSetting(env, 'ASC_REPORTS_KEY_ID', fallback: 'ASC_KEY_ID'),
     issuerId: env.require('ASC_ISSUER_ID'),
@@ -103,52 +117,54 @@ Future<void> printAppStoreStats(Map<String, String> env, {required String since}
     final apps = await api.getAll('/v1/apps?filter[bundleId]=$iosBundleId');
     final appId = apps.firstOrNull?['id'] as String? ?? fail('No App Store app found for $iosBundleId.');
     final requests = await getReportRequests(api, appId);
-    final reports = await AppStoreReport.values
+    return await AppStoreReport.values
         .map((report) async => MapEntry(report, await getAppStoreRows(api, requests, report, since: since)))
         .waitToMap;
-
-    if (reports.values.every((rows) => rows.isEmpty)) {
-      stdout.writeln('Apple has no reports for this period yet. They usually appear a day or two after the first run.');
-      return;
-    }
-
-    final daily = getAppStoreFunnels(
-      'date',
-      engagement: reports[AppStoreReport.engagement]!,
-      downloads: reports[AppStoreReport.downloads]!,
-    );
-    printAppStoreTable('Daily', daily.sortedBy((date, _) => date), showsTotal: true);
-    printAppStoreTable(
-      'By source',
-      getAppStoreFunnels(
-        'source type',
-        engagement: reports[AppStoreReport.engagement]!,
-        downloads: reports[AppStoreReport.downloads]!,
-      ).sortedByDescending((_, funnel) => funnel.impressions),
-    );
-    printAppStoreTable(
-      'Top storefronts',
-      Map.fromEntries(
-        getAppStoreFunnels(
-          'territory',
-          engagement: reports[AppStoreReport.engagement]!,
-          downloads: reports[AppStoreReport.downloads]!,
-        ).sortedByDescending((_, funnel) => funnel.impressions).entries.take(10),
-      ),
-    );
-    printAppStoreTable(
-      'By campaign (Apple hides rows from fewer than 5 devices, so these undercount)',
-      Map.fromEntries(
-        getAppStoreFunnels(
-          'campaign',
-          engagement: reports[AppStoreReport.engagementDetailed]!,
-          downloads: reports[AppStoreReport.downloadsDetailed]!,
-        ).entries.where((entry) => entry.key.isNotEmpty),
-      ).sortedByDescending((_, funnel) => funnel.pageViews),
-    );
   } finally {
     api.client.close();
   }
+}
+
+void printAppStoreStats(Map<AppStoreReport, List<Row>> reports) {
+  if (reports.values.every((rows) => rows.isEmpty)) {
+    stdout.writeln('Apple has no reports for this period yet. They usually appear a day or two after the first run.');
+    return;
+  }
+
+  final daily = getAppStoreFunnels(
+    'date',
+    engagement: reports[AppStoreReport.engagement]!,
+    downloads: reports[AppStoreReport.downloads]!,
+  );
+  printAppStoreTable('Daily', daily.sortedBy((date, _) => date), showsTotal: true);
+  printAppStoreTable(
+    'By source',
+    getAppStoreFunnels(
+      'source type',
+      engagement: reports[AppStoreReport.engagement]!,
+      downloads: reports[AppStoreReport.downloads]!,
+    ).sortedByDescending((_, funnel) => funnel.impressions),
+  );
+  printAppStoreTable(
+    'Top storefronts',
+    Map.fromEntries(
+      getAppStoreFunnels(
+        'territory',
+        engagement: reports[AppStoreReport.engagement]!,
+        downloads: reports[AppStoreReport.downloads]!,
+      ).sortedByDescending((_, funnel) => funnel.impressions).entries.take(10),
+    ),
+  );
+  printAppStoreTable(
+    'By campaign (Apple hides rows from fewer than 5 devices, so these undercount)',
+    Map.fromEntries(
+      getAppStoreFunnels(
+        'campaign',
+        engagement: reports[AppStoreReport.engagementDetailed]!,
+        downloads: reports[AppStoreReport.downloadsDetailed]!,
+      ).entries.where((entry) => entry.key.isNotEmpty),
+    ).sortedByDescending((_, funnel) => funnel.pageViews),
+  );
 }
 
 Future<List<Map<String, dynamic>>> getReportRequests(AppStoreConnect api, String appId) async {
@@ -181,7 +197,7 @@ Future<List<Map<String, dynamic>>> getReportRequests(AppStoreConnect api, String
     ),
   );
   if (created.isNotEmpty) {
-    stdout.writeln('Requested ${missing.join(' and ')} analytics reports from Apple.');
+    stderr.writeln('Requested ${missing.join(' and ')} analytics reports from Apple.');
   }
   return [...existing, ...created].sortedBy<num>((request) => request['attributes']['accessType'] == 'ONGOING' ? 0 : 1);
 }
@@ -357,7 +373,13 @@ const playTrafficColumns = [
 const playCountryColumns = ['date', 'store listing visitors', 'store listing acquisitions'];
 const playInstallColumns = ['date', 'daily device installs', 'daily device uninstalls'];
 
-Future<void> printPlayStats(Map<String, String> env, {required String since}) async {
+typedef PlayReports = ({List<Row> traffic, List<Row> countries, List<Row> installs});
+
+extension on PlayReports {
+  Map<String, List<Row>> toJson() => {'traffic': traffic, 'countries': countries, 'installs': installs};
+}
+
+Future<PlayReports> getPlayReports(Map<String, String> env, {required String since}) async {
   final packageName = env.require('ANDROID_PACKAGE_NAME');
   final bucket = env.require('PLAY_REPORTS_BUCKET').replaceFirst('gs://', '').split('/').first;
   final credentials = ServiceAccountCredentials.fromJson(readFile(env.require('PLAY_SERVICE_ACCOUNT_JSON')));
@@ -381,40 +403,43 @@ Future<void> printPlayStats(Map<String, String> env, {required String since}) as
       (month) => 'stats/installs/installs_${packageName}_${month}_overview.csv',
       playInstallColumns,
     );
-
-    if (traffic.isEmpty && installs.isEmpty) {
-      stdout.writeln('Play Console has no reports for this period yet.');
-      return;
-    }
-
-    final installsByDate = groupRows(installs, 'date');
-    final dailyFunnels = getPlayFunnels('date', traffic);
-    final dates = {...dailyFunnels.keys, ...installsByDate.keys}.sorted();
-    List<Object> getDailyCells(String label, PlayFunnel funnel, List<Row> dateInstalls) => [
-      ...getPlayCells(label, funnel),
-      sumColumn(dateInstalls, 'daily device installs'),
-      sumColumn(dateInstalls, 'daily device uninstalls'),
-    ];
-    printTable(
-      'Daily',
-      ['', 'Visitors', 'Acquisitions', 'Conversion', 'Installs', 'Uninstalls'],
-      [
-        ...dates.map(
-          (date) =>
-              getDailyCells(date, dailyFunnels[date] ?? (visitors: 0, acquisitions: 0), installsByDate[date] ?? []),
-        ),
-        getDailyCells('Total', getPlayFunnel(traffic), installs),
-      ],
-    );
-
-    printPlayTable('By source', getPlayFunnels('traffic source', traffic));
-    printPlayTable('Top search terms', getPlayFunnels('search term', traffic), limit: 15);
-    printPlayTable('By UTM campaign', getPlayFunnels('utm campaign', traffic));
-    if (countries.firstOrNull?.keys.firstWhereOrNull((column) => column.startsWith('country')) case final column?) {
-      printPlayTable('Top countries', getPlayFunnels(column, countries), limit: 10);
-    }
+    return (traffic: traffic, countries: countries, installs: installs);
   } finally {
     client.close();
+  }
+}
+
+void printPlayStats(PlayReports reports) {
+  final (:traffic, :countries, :installs) = reports;
+  if (traffic.isEmpty && installs.isEmpty) {
+    stdout.writeln('Play Console has no reports for this period yet.');
+    return;
+  }
+
+  final installsByDate = groupRows(installs, 'date');
+  final dailyFunnels = getPlayFunnels('date', traffic);
+  final dates = {...dailyFunnels.keys, ...installsByDate.keys}.sorted();
+  List<Object> getDailyCells(String label, PlayFunnel funnel, List<Row> dateInstalls) => [
+    ...getPlayCells(label, funnel),
+    sumColumn(dateInstalls, 'daily device installs'),
+    sumColumn(dateInstalls, 'daily device uninstalls'),
+  ];
+  printTable(
+    'Daily',
+    ['', 'Visitors', 'Acquisitions', 'Conversion', 'Installs', 'Uninstalls'],
+    [
+      ...dates.map(
+        (date) => getDailyCells(date, dailyFunnels[date] ?? (visitors: 0, acquisitions: 0), installsByDate[date] ?? []),
+      ),
+      getDailyCells('Total', getPlayFunnel(traffic), installs),
+    ],
+  );
+
+  printPlayTable('By source', getPlayFunnels('traffic source', traffic));
+  printPlayTable('Top search terms', getPlayFunnels('search term', traffic), limit: 15);
+  printPlayTable('By UTM campaign', getPlayFunnels('utm campaign', traffic));
+  if (countries.firstOrNull?.keys.firstWhereOrNull((column) => column.startsWith('country')) case final column?) {
+    printPlayTable('Top countries', getPlayFunnels(column, countries), limit: 10);
   }
 }
 

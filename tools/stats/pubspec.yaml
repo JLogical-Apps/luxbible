@@ -1,0 +1,10 @@
+name: lux_stats
+description: Collects dated snapshots of Lux socials, store, analytics, and crash stats.
+publish_to: none
+
+environment:
+  sdk: ^3.10.0
+dependencies:
+  args: ^2.7.0
+  http: ^1.6.0
+  path: ^1.9.1

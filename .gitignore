@@ -76,3 +76,5 @@ apps/bible/assets/translations/csb/*.json
 
 /context/bible/marketing-notes.md
 Preview.html
+# Local stats snapshots from tools/stats
+/stats/

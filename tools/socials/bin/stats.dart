@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io' hide Platform;
 import 'package:args/args.dart';
 import 'package:collection/collection.dart';
@@ -32,6 +33,19 @@ class PostStats {
     this.saves,
     this.averageWatchMs,
   });
+
+  Map<String, dynamic> toJson() => {
+    'date': date.toUtc().toIso8601String(),
+    'type': type,
+    'caption': caption,
+    'views': views,
+    'reach': reach,
+    'likes': likes,
+    'comments': comments,
+    'shares': shares,
+    'saves': saves,
+    'averageWatchMs': averageWatchMs,
+  };
 }
 
 class AccountStats {
@@ -48,6 +62,14 @@ class AccountStats {
     this.gained,
     required this.posts,
   });
+
+  Map<String, dynamic> toJson() => {
+    'platform': platform.name,
+    'handle': handle,
+    'followers': followers,
+    'gained': gained,
+    'posts': posts.map((post) => post.toJson()).toList(),
+  };
 }
 
 extension on Platform {
@@ -86,9 +108,19 @@ Future<void> main(List<String> args) async {
       }),
     );
     final accounts = results.whereType<AccountStats>().toList();
-    accounts.forEach(printPosts);
-    printSummary(accounts, since);
     final failures = results.whereType<String>();
+    if (options.flag('json')) {
+      stdout.write(
+        jsonEncode({
+          'since': since.toUtc().toIso8601String(),
+          'accounts': accounts.map((account) => account.toJson()).toList(),
+          'failures': failures.toList(),
+        }),
+      );
+    } else {
+      accounts.forEach(printPosts);
+      printSummary(accounts, since);
+    }
     if (failures.isNotEmpty) {
       stderr.writeln('\nFailed:\n${failures.join('\n')}');
       exitCode = 1;
@@ -533,6 +565,11 @@ String getSnippet(String text) {
 
 ArgParser getParser() => ArgParser()
   ..addFlag('help', abbr: 'h', negatable: false, help: 'Show usage.')
+  ..addFlag(
+    'json',
+    negatable: false,
+    help: 'Print every account and post as JSON instead of tables.',
+  )
   ..addOption(
     'days',
     defaultsTo: '28',

@@ -100,6 +100,8 @@ dart run bin/stats.dart
 dart run bin/stats.dart --days 90 --platform=instagram,facebook
 ```
 
+Add `--json` to print every account and post as JSON instead of tables; [`tools/stats`](../stats/README.md) uses it for snapshots.
+
 Prints every post published in the period (28 days by default) for each platform, then a summary with followers, follower gain, views, likes, comments and shares. Native posts are included, not only ones published by this tool. Post metrics are lifetime totals, so older posts have had longer to collect views.
 
 TikTok and YouTube come from Zernio's analytics using the same `.env` credentials as publishing. Instagram and Facebook come straight from Meta's Graph API, because WoopSocial only reports posts it published. That needs `META_ACCESS_TOKEN` in `.env`: a non-expiring system user token from Meta Business Settings, assigned the Lux Page and Instagram account, for a Meta app with `pages_show_list`, `pages_read_engagement`, `read_insights`, `instagram_basic`, `instagram_manage_insights` and `business_management`. The script finds the Page and linked Instagram account from the token.

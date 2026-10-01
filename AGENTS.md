@@ -45,7 +45,7 @@ HOME="$PWD/.tmp/dart-home" "$FLUTTER_ROOT/bin/cache/dart-sdk/bin/dart" format <p
 
 When preparing local Lux social posts, read [`tools/socials/PREPARING_POSTS.md`](tools/socials/PREPARING_POSTS.md).
 
-For social media performance across TikTok, YouTube, Instagram and Facebook, run `dart run bin/stats.dart` from `tools/socials` (see its README). App Store and Google Play listing stats come from `apps/bible/tool/release/store_stats.dart`.
+For stats on socials, the App Store, Google Play, Google Analytics (app and website), or Crashlytics, read the newest `stats/<yyyy-MM-dd>/` snapshot first. If it's more than a few days old or lacks what you need, run `dart run bin/collect.dart` from `tools/stats` (see its README). Query the sources directly only for what a snapshot doesn't cover, such as GA funnels.
 
 When working on short-form reels, read [`tools/reels/CONTEXT.md`](tools/reels/CONTEXT.md) for the
 vision and current state, and [`tools/reels/README.md`](tools/reels/README.md) for usage. Videos are

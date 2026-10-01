@@ -171,6 +171,9 @@ enough to answer which content and which pages drive installs.
 
 ### Where to read the numbers
 
+- **Snapshots.** [`tools/stats`](../../tools/stats/README.md) collects the raw data from every source
+  below into a dated `stats/<yyyy-MM-dd>/` folder. Read the newest one before querying a source
+  directly.
 - **Store stats.** From `apps/bible`, run `dart run tool/release/store_stats.dart` (`--days 90`,
   `--ios`, `--android`). It prints daily store traffic and conversion for both stores: App Store
   impressions, product page views, and first-time downloads by source, storefront, and `ct`
