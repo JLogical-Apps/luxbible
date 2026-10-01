@@ -1,5 +1,4 @@
 import 'dart:io' hide Platform;
-import 'dart:io' as io;
 import 'package:args/args.dart';
 import 'package:path/path.dart' as p;
 import '../lib/api.dart';
@@ -29,18 +28,6 @@ Provider getProvider(Platform platform) => switch (platform) {
     platform,
   ),
 };
-
-Directory getRepository() {
-  var directory = File.fromUri(io.Platform.script).parent;
-  while (!File(p.join(directory.path, 'AGENTS.md')).existsSync() ||
-      !Directory(p.join(directory.path, 'context')).existsSync()) {
-    final parent = directory.parent;
-    if (parent.path == directory.path)
-      throw FormatException('Could not locate repository from script path');
-    directory = parent;
-  }
-  return directory;
-}
 
 class PublishResult {
   final bool isSuccess;

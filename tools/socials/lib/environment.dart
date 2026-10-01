@@ -1,7 +1,20 @@
 import 'dart:io';
 import 'package:dotenv/dotenv.dart';
+import 'package:path/path.dart' as p;
 
 final environment = DotEnv(includePlatformEnvironment: true, quiet: true);
+
+Directory getRepository() {
+  var directory = File.fromUri(Platform.script).parent;
+  while (!File(p.join(directory.path, 'AGENTS.md')).existsSync() ||
+      !Directory(p.join(directory.path, 'context')).existsSync()) {
+    final parent = directory.parent;
+    if (parent.path == directory.path)
+      throw FormatException('Could not locate repository from script path');
+    directory = parent;
+  }
+  return directory;
+}
 
 void loadEnvironment(String path) => environment
   ..clear()
@@ -30,4 +43,5 @@ Iterable<String> getSecrets() => [
       .map((entry) => entry.value),
   getEnvironment('ZERNIO_API_KEY'),
   getEnvironment('WOOPSOCIAL_API_KEY'),
+  getEnvironment('META_ACCESS_TOKEN'),
 ].where((value) => value.isNotEmpty);

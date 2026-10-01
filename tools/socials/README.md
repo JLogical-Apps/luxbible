@@ -45,7 +45,7 @@ cp -n .env.example .env
 chmod 600 .env
 ```
 
-Edit `.env` to fill in your API keys, provider account IDs and WoopSocial project ID:
+Edit `.env` to fill in your API keys, provider account IDs and WoopSocial project ID. `META_ACCESS_TOKEN` is only needed for [stats](#stats).
 
 ```dotenv
 ZERNIO_API_KEY=your-private-key
@@ -55,6 +55,7 @@ WOOPSOCIAL_API_KEY=your-private-key
 WOOPSOCIAL_PROJECT_ID=lux-project-id
 WOOPSOCIAL_INSTAGRAM_ACCOUNT_ID=provider-account-id
 WOOPSOCIAL_FACEBOOK_ACCOUNT_ID=provider-account-id
+META_ACCESS_TOKEN=your-private-token
 ```
 
 The command locates this file relative to the repository, independent of your shell directory. No `export` or shell `source` is needed. `.env` is gitignored; `.env.example` contains only empty template values. Existing exported environment variables take precedence, including empty values. If switching from an old credentials shell file, remove its source line from `.zshrc` and unset stale exports or start a new terminal. An absent `.env` is allowed for environment-only setup. API keys loaded from `.env` are included in diagnostic redaction. Never put credentials into `post.yaml` or tracked files.
@@ -91,6 +92,19 @@ Delivery status is read every 10 seconds for up to 15 minutes. TikTok successful
 Share published Instagram posts or Reels to your Story manually in Instagram.
 
 If every requested destination succeeds, pending moves to posted automatically. Partial failures or timeouts retain the pending folder. Existing posted folders are never overwritten. `--posted` never moves the folder. Exit status is nonzero for any failed, blocked or timed-out destination. There is no persistent success ledger or automatic skip of previously published destinations. After partial delivery, check the dashboard and native accounts, then explicitly select only destinations to retry.
+
+## Stats
+
+```sh
+dart run bin/stats.dart
+dart run bin/stats.dart --days 90 --platform=instagram,facebook
+```
+
+Prints every post published in the period (28 days by default) for each platform, then a summary with followers, follower gain, views, likes, comments and shares. Native posts are included, not only ones published by this tool. Post metrics are lifetime totals, so older posts have had longer to collect views.
+
+TikTok and YouTube come from Zernio's analytics using the same `.env` credentials as publishing. Instagram and Facebook come straight from Meta's Graph API, because WoopSocial only reports posts it published. That needs `META_ACCESS_TOKEN` in `.env`: a non-expiring system user token from Meta Business Settings, assigned the Lux Page and Instagram account, for a Meta app with `pages_show_list`, `pages_read_engagement`, `read_insights`, `instagram_basic`, `instagram_manage_insights` and `business_management`. The script finds the Page and linked Instagram account from the token.
+
+Known gaps: Instagram follower gain needs 100+ followers before Meta reports it. Facebook comment counts need the `pages_read_user_content` permission, which the token does not have. YouTube reach, shares, saves and watch time aren't available through Zernio. Meta renames insights metrics fairly often; if a request starts failing with an invalid metric error, check Meta's changelog for the replacement.
 
 ## Provider limitations and verification
 
