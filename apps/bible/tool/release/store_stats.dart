@@ -19,8 +19,10 @@ import 'release_utils.dart';
 ///   dart run tool/release/store_stats.dart --android     # Google Play only
 ///
 /// The App Store side reads Apple's analytics reports. The first run requests them, which needs an Admin
-/// API key, and Apple takes a day or two to generate the first ones. The Google Play side reads the
-/// monthly CSVs that Play Console exports to PLAY_REPORTS_BUCKET.
+/// API key, and Apple takes a day or two to generate the first ones. After that the key only needs the
+/// Sales role, unless Apple stops the ongoing request after long inactivity. The Google Play side reads
+/// the monthly CSVs that Play Console exports to PLAY_REPORTS_BUCKET, which needs the service account to
+/// have "View app information and download bulk reports" in Play Console, or the bucket returns a 403.
 Future<void> main(List<String> args) async {
   final daysIndex = args.indexOf('--days');
   final unknown = args.whereIndexed(
