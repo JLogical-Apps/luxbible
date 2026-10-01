@@ -8,6 +8,7 @@ import 'package:reels/src/model/framing.dart';
 import 'package:reels/src/model/video.dart';
 import 'package:reels/src/paths.dart';
 import 'package:reels/src/render/ass.dart';
+import 'package:reels/src/render/zoom.dart';
 
 // Matches the Remotion facecam captions. libass sizes text by the font's Windows ascent + descent (1.631 em for
 // Bitter) where CSS sizes by the em, so 117 here is their 72px.
@@ -44,13 +45,14 @@ List<String> getCaptionEvents(List<ResolvedClip> clips, List<Transcript> transcr
   return buildCaptionEvents(
     getCaptionPages(words, fps: fps),
     clips: clips,
+    changes: clips.mapIndexed((index, clip) => getCropChanges(clip, transcripts[index], fps: fps)).toList(),
     fps: fps,
   ).toList();
 }
 
 /// When a word lights up, in frames from the start of its clip.
 int getWordOnset(Word word, {required int frameCount, required int fps}) =>
-    min(word.start, frameCount - 1) - msToFrames(captionLeadMs, fps);
+    max(0, min(word.start, frameCount - 1) - msToFrames(captionLeadMs, fps));
 
 // Words light up slightly before they're spoken. Only onsets are trusted: whisper's word end times drift late, so each
 // word runs until the next one starts, held to between 0.1 and 1 s.
@@ -62,7 +64,7 @@ List<Word> getTimelineWords(List<(ResolvedClip, Transcript)> pairs, {required in
         (index, pair) => pair.$2.words.map(
           (word) => (
             text: word.text.toUpperCase(),
-            start: max(0, offsets[index] + getWordOnset(word, frameCount: pair.$1.take.frameCount, fps: fps)),
+            start: offsets[index] + getWordOnset(word, frameCount: pair.$1.take.frameCount, fps: fps),
           ),
         ),
       )
@@ -90,19 +92,27 @@ List<List<Word>> getCaptionPages(List<Word> words, {required int fps}) => words.
 });
 
 // A page is one line of words; it is split into an event per stretch of time with a different spoken word, so the
-// highlight moves while the line stays put. Each event sits at the height its clip's framing wants, so a page spanning
-// a cut moves with the framing.
-Iterable<String> buildCaptionEvents(List<List<Word>> pages, {required List<ResolvedClip> clips, required int fps}) {
+// highlight moves while the line stays put. Each event sits at the height the framing wants when it starts, so a page
+// spanning a cut or the start of a zoom moves with the framing. A page ends with its last word's clip, since one frame
+// of the old caption over the next shot reads as a glitch in the cut.
+Iterable<String> buildCaptionEvents(
+  List<List<Word>> pages, {
+  required List<ResolvedClip> clips,
+  required List<List<CropChange>> changes,
+  required int fps,
+}) {
   final starts = getClipStarts(clips);
-  final totalFrames = starts.last;
-  double getCenterY(int frame) =>
-      getCaptionCenterY(clips[starts.lastIndexWhere((start) => start <= frame).clamp(0, clips.length - 1)].framing);
+  double getCenterY(int frame) {
+    final index = starts.lastIndexWhere((start) => start <= frame).clamp(0, clips.length - 1);
+    return getCaptionCenterY(getFramingAt(clips[index], changes[index], frame - starts[index]));
+  }
 
   return pages.expandIndexed((index, page) {
+    final clipEnd = starts.firstWhere((start) => start > page.last.start, orElse: () => starts.last);
     final pageEnd = [
-      pages.elementAtOrNull(index + 1)?.first.start ?? totalFrames,
+      pages.elementAtOrNull(index + 1)?.first.start ?? clipEnd,
       page.last.end + msToFrames(400, fps),
-      totalFrames,
+      clipEnd,
     ].min;
     int getActiveEnd(int j) => j + 1 < page.length ? page[j + 1].start : page[j].end;
 

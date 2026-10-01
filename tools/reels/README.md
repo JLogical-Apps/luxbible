@@ -17,7 +17,15 @@ your code; reordering clips never touches a frame number.
 
 ## Workflow
 
-1. Write `lib/videos/my_video.dart` pointing at the recording, with `clips: []`.
+1. Write `lib/videos/my_video.dart` pointing at the recording, with `clips: []`. Keep the video in a top-level
+   function: hot reload never updates an inline closure, so `runVideo(args, () => Video(...))` would keep showing the
+   video as it was at launch.
+
+   ```dart
+   void main(List<String> args) => runVideo(args, video);
+
+   Video video() => Video(src: '~/Downloads/my_video.MOV', clips: []);
+   ```
 2. `dart run lib/videos/my_video.dart ingest` — normalizes the source and detects clips.
 3. `flutter run -d macos -t lib/videos/my_video.dart` — play clips, trim and rename them. The
    checkboxes mirror the video file's `clips:` list; ticking or unticking one marks the file as out of
@@ -25,8 +33,10 @@ your code; reordering clips never touches a frame number.
    their place in the recording. The focused clip has a caption field for fixing transcription
    mistakes, which saves to `clips.json` as you type.
 4. Paste the clips into the Dart file. Hot reload re-reads it, resets the checkboxes to match, and
-   rebuilds the preview.
-5. `dart run lib/videos/my_video.dart render`, or the Render button.
+   rebuilds the preview, as does any other edit to the file, such as a modifier.
+
+In the player, space plays and pauses, ← and → seek 2 s, and `,` and `.` step back and forward one frame.
+5. `dart run lib/videos/my_video.dart render`, or the Render button. On macOS, the finished video opens in Finder.
 
 ## Framing
 
@@ -47,9 +57,19 @@ Video(
 ## Titles
 
 A `Title` shows a card of text over its clip, for the whole clip by default. Text wraps on its own, and `\n` forces a
-break. `y` moves the card's center, as a fraction of the height (0.25 by default). Titles sharing a `y` share one card,
-one after another, and the card grows a line at a time as they appear. `opacity` fades a title's text. The same title
-on consecutive clips reads as one card held across the cut.
+break. `y` moves the card's center, as a fraction of the height (0.25 by default). Titles sharing an `x` and `y` share
+one card, one after another, and the card grows a line at a time as they appear. `opacity` fades a title's text. The
+same title on consecutive clips reads as one card held across the cut.
+
+A card spans the frame unless it has an `x`. With one, it becomes a label that fits its text, centered at that fraction
+of the width, so several can sit side by side:
+
+```dart
+Clip('old_enough', modifiers: [
+  Title('KJV', x: 0.3, start: .word('KJV')),
+  Title('ASV', x: 0.7, start: .word('ASV')),
+]),
+```
 
 ```dart
 Clip('hook', modifiers: [Title('How I take Bible notes')]),
@@ -116,6 +136,61 @@ Clip('tap_annotate', modifiers: [
 
 `dart run lib/videos/<name>.dart media` lists each file's tags and how the video plays them, including every speed.
 
+## Zoom
+
+`Zoom` eases the clip's crop into another framing partway through, over 12 frames unless `frames:` says otherwise.
+Captions move to the new framing's height as it starts. Give the clip its starting framing, since a `Scatter` or `Media`
+would otherwise frame it for media from the start:
+
+```dart
+Clip('hook', framing: .title, modifiers: [
+  Title('Someone owns the NIV', end: .word('is')),
+  Zoom(.media, at: .word('is')),
+]),
+```
+
+`ZoomOut` is an entrance: the clip starts `from` (1.15) times further in than its framing, holds until `at`, then eases
+out to it over 30 `frames`:
+
+```dart
+Clip('hook', framing: .title, modifiers: [ZoomOut(at: .frames(15))]), // holds for half a second
+```
+
+Both take an `easing:`, `.quarticInOut` for a `Zoom` and `.cubicInOut` for a `ZoomOut` by default.
+
+## Scatter
+
+`Scatter` shows images from the media folder whose names match a pattern, where `*` matches anything. They appear one
+at a time in natural order (`comment_2` before `comment_10`), the first at `start` and the last at `by`. The rate
+they come at eases up over the first second, then holds until the last one lands. They pile up above the head until
+`end`, each turned up to 6°. Each one tries 64 random spots and takes the one that covers the most empty space, so the
+pile fills evenly, and may hang a fifth of its width off either side. Spots and turns are seeded by the file's name, so
+they're stable across renders; rename files to reorder or reroll them. Images are drawn at 0.9x, shrunk to fit 65% of the width.
+
+```dart
+Clip('hook', modifiers: [Scatter('comment_*.jpg', start: .word('is'), by: .word("it's not as"))]),
+```
+
+Like `Media`, a clip with a `Scatter` is framed for media unless `framing:` says otherwise.
+
+`sound:` plays a sound effect from the media folder as each image appears. It starts from its first sound, so leading
+silence in the file doesn't make it late. `volume` is in dB, -10 by default.
+
+```dart
+Scatter('comment_*.jpg', start: .word('is'), sound: Sound('pop.mp3')),
+```
+
+## Music
+
+`Music` plays a track from the media folder under the whole video, lined up so its `cue` lands `at` a moment in the clip
+it's on (the clip's start by default). If the cue is further into the track than that moment is into the video, the
+track starts partway through; otherwise it waits. It fades out over the video's last second. `volume` is in dB, -20 by
+default. A video has at most one.
+
+```dart
+Clip('two_sources', modifiers: [Music('kulakovka.mp3', cue: Duration(seconds: 30))]), // 0:30 lands on this cut
+```
+
 ## Commands
 
 ```sh
@@ -123,7 +198,7 @@ dart run lib/videos/<name>.dart ingest   # normalize + detect clips
 dart run lib/videos/<name>.dart clips    # list detected clips
 dart run lib/videos/<name>.dart captions # list caption words and their start times
 dart run lib/videos/<name>.dart media    # list media tags and how the video plays them
-dart run lib/videos/<name>.dart render   # render to out/<name>.mp4
+dart run lib/videos/<name>.dart render   # render to out/<name>.mp4 and reveal it in Finder
 ```
 
 Rendering is pure Dart — `package:reels/reels.dart` has no Flutter in its import graph. The Flutter
@@ -150,7 +225,7 @@ file and renamed when finished, so an interrupted ingest resumes instead of reus
 | `media/<file>_*.mp4` | the same frames as H.264, 960px tall, for the Media tab's player |
 | `media/<file>_*.frames` | the media file's frame count |
 | `subtitles_*.ass` | burned-in captions and titles, keyed by their content |
-| `preview_*.mp4` | stitched previews, keyed by clip list, framing, media, subtitles and voice |
+| `preview_*.mp4` | stitched previews, keyed by the ffmpeg command that builds them |
 
 Clips are detected with `silencedetect` at −40 dB over 1.0 s, padded by 0.1 s for breathing room.
 Each detected span becomes its own clip with a single take; grouping repeated attempts into one clip
@@ -172,7 +247,7 @@ renumbers auto-generated names — harmless once clips are named meaningfully, a
 ## Scope
 
 Minimal on purpose: clips, trimming, captions, titles, media, voice processing, framing, preview, render. Captions are
-always on, in one fixed style, and come from each clip's `text` in `clips.json`. Titles and media are the only modifiers
-so far, each in one fixed style, and media is videos only, not screenshots. The voice gets one fixed processing chain.
-No keyframes or music yet; those attach to `Clip` as modifiers. See [`CONTEXT.md`](CONTEXT.md) for how captions,
-titles and media are drawn and what that means for the rest.
+always on, in one fixed style, and come from each clip's `text` in `clips.json`. Titles, media, zooms and
+scatters are the only visual modifiers so far, each in one fixed style. Media is videos only; images are shown only by
+`Scatter`. The voice gets one fixed processing chain, and music and sound effects a fixed gain each. See
+[`CONTEXT.md`](CONTEXT.md) for how captions, titles and media are drawn and what that means for the rest.

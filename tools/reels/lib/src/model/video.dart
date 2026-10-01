@@ -26,7 +26,7 @@ class Video {
     final zoom = getZoom(
       clip.framing,
       clip.name,
-      previousZoom: previous != null && previous.framing.headY == clip.framing.headY ? previous.crop.zoom : null,
+      previousZoom: previous != null && previous.endFraming.headY == clip.framing.headY ? previous.endCrop.zoom : null,
     );
     return resolved..add(
       ResolvedClip(

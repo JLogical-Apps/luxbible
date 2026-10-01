@@ -5,6 +5,6 @@ export 'src/launch/video_builder.dart';
 export 'src/model/clip.dart';
 export 'src/model/clips.dart';
 export 'src/model/modifier.dart';
-export 'src/model/framing.dart' show Framing;
+export 'src/model/framing.dart' show Easing, Framing;
 export 'src/model/video.dart';
 export 'src/render/render.dart' show buildPreview, render;

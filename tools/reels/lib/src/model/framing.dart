@@ -41,11 +41,33 @@ class Crop {
   String toString() => 'Crop(${zoom.toStringAsFixed(4)}, ${top.toStringAsFixed(4)})';
 }
 
+enum Easing { cubicInOut, quarticInOut }
+
+/// The clip's crop easing into [crop] over [frames] from [at], a frame from the clip's start.
+class CropChange {
+  const CropChange({
+    required this.at,
+    required this.frames,
+    required this.framing,
+    required this.crop,
+    required this.easing,
+  });
+
+  final int at;
+  final int frames;
+  final Framing framing;
+  final Crop crop;
+  final Easing easing;
+
+  @override
+  String toString() => '$at+$frames:$crop:${easing.name}';
+}
+
 // FNV-1a rather than String.hashCode, which isn't guaranteed stable across SDK versions.
-double getZoomJitter(String name) =>
-    name.codeUnits.fold(0x811c9dc5, (hash, unit) => ((hash ^ unit) * 0x01000193) & 0xffffffff) /
-    0x100000000 *
-    maxZoomJitter;
+double getStableFraction(String seed) =>
+    seed.codeUnits.fold(0x811c9dc5, (hash, unit) => ((hash ^ unit) * 0x01000193) & 0xffffffff) / 0x100000000;
+
+double getZoomJitter(String name) => getStableFraction(name) * maxZoomJitter;
 
 // Near-identical zooms on either side of a cut read as a glitch rather than a deliberate jump, so a clip too close to the
 // previous one is pushed just far enough away, on whichever side stays within its framing's range.

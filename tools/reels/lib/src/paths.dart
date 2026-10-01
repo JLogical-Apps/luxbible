@@ -19,15 +19,25 @@ File mediaTagsFileFor(Video video) => File(p.join(projectRoot.path, 'lib', 'vide
 
 Directory cacheDirFor(Video video) => Directory(p.join(projectRoot.path, '.cache', video.name));
 
+final inProgress = <String, Future<File>>{};
+
 // Existence is the only freshness check, so an interrupted job must never leave a file at the target path. The pid
-// keeps the CLI and the app from writing the same partial file when both build the same artifact.
+// keeps the CLI and the app from writing the same partial file when both build the same artifact, and within one
+// process a second request joins the first: two hot reloads once had two ffmpegs interleave into one corrupt preview.
 Future<File> cached(File target, Future<void> Function(File partial) create) async {
-  if (!target.existsSync()) {
+  if (target.existsSync()) return target;
+
+  Future<File> build() async {
     final partial = File(
       p.join(target.parent.path, '${p.basenameWithoutExtension(target.path)}.partial-$pid${p.extension(target.path)}'),
     );
     await create(partial);
     partial.renameSync(target.path);
+    return target;
   }
-  return target;
+
+  return inProgress[target.path] ??= build().whenComplete(() {
+    // A block body, since `remove` returns this very future, and whenComplete would wait on it forever.
+    inProgress.remove(target.path);
+  });
 }

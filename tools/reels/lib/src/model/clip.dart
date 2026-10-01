@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:reels/src/model/clips.dart';
 import 'package:reels/src/model/framing.dart';
 import 'package:reels/src/model/modifier.dart';
@@ -17,7 +18,7 @@ class Clip {
 
   Framing get framing =>
       declaredFraming ??
-      (modifiers.any((m) => m is Media)
+      (modifiers.any((m) => m is Media || m is Scatter)
           ? .media
           : modifiers.any((m) => m is Title)
           ? .title
@@ -47,4 +48,26 @@ class ResolvedClip {
   Iterable<Title> get titles => modifiers.whereType<Title>();
 
   Iterable<Media> get media => modifiers.whereType<Media>();
+
+  Iterable<Scatter> get scatters => modifiers.whereType<Scatter>();
+
+  Iterable<Zoom> get zooms => modifiers.whereType<Zoom>();
+
+  Iterable<Music> get music => modifiers.whereType<Music>();
+
+  ZoomOut? get zoomOut => modifiers.whereType<ZoomOut>().firstOrNull;
+
+  Crop get startCrop => switch (zoomOut) {
+    final zoomOut? => Crop.framing(framing, zoom: crop.zoom * zoomOut.from),
+    null => crop,
+  };
+
+  Framing get endFraming => zooms.lastOrNull?.framing ?? framing;
+
+  Crop get endCrop => switch (zooms.lastOrNull) {
+    final zoom? => getZoomCrop(zoom),
+    null => crop,
+  };
+
+  Crop getZoomCrop(Zoom zoom) => Crop.framing(zoom.framing, zoom: getZoom(zoom.framing, name));
 }

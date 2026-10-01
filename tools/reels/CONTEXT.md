@@ -16,10 +16,12 @@ A video is a Dart file. The Flutter app is a preview wrapper around a pure-Dart 
 gives instant feedback on edits Jake makes himself.
 
 ```dart
-void main(List<String> args) => runVideo(args, () => const Video(
+void main(List<String> args) => runVideo(args, video);
+
+Video video() => Video(
   src: '~/Downloads/IMG_7193.MOV',
   clips: [Clip('intro_hook'), Clip('problem_distractions')],
-));
+);
 ```
 
 Non-negotiables that shape the design:
@@ -28,9 +30,10 @@ Non-negotiables that shape the design:
   graph. The UI reaches the same `render()` the CLI does. A conditional export on `dart.library.ui`
   (`src/launch/launch.dart`) lets one video file serve both `dart run` and `flutter run`.
 - **Video files import only `package:reels/reels.dart`.** No Flutter types in the DSL surface.
-- **The builder is a closure.** `main()` does not re-run on hot reload, so `runVideo` takes
-  `VideoBuilder` and the app calls it during `build`. Passing a `Video` by value freezes the clip
-  list against hot reload.
+- **The builder is a top-level function.** `main()` does not re-run on hot reload, so `runVideo` takes
+  `VideoBuilder` and the app calls it during `build`. Passing a `Video` by value freezes it against hot reload, and so
+  does an inline closure: the VM keeps running a closure's old code after a reload, where a top-level function's
+  tear-off picks up the new body.
 - **Derived media is disposable.** Everything in `.cache/` can be deleted and rebuilt, as long as the
   source still exists. Existence is the only freshness check, so every cache write goes through
   `cached()` (`src/paths.dart`), which renames a `*.partial-<pid>.*` file into place on success.
@@ -68,14 +71,19 @@ Working and verified end to end on real footage:
 - Caption editing: the focused clip's text is editable in the UI, or by hand in `clips.json`
 - Captions burned into preview and render, in the style of the Remotion facecam videos
 - Voice processing: one processed track per recording, heard in the Clips view, preview and render
-- Framing: a static, slightly random zoom per clip that places the head for a title, media or nothing
+- Framing: a slightly random zoom per clip that places the head for a title, media or nothing, which a `Zoom` can
+  ease into another framing partway through
 - Titles: a card of text over a clip, growing a line at a time as titles sharing it appear, timed to the clip or its
   caption words, cut in and out with no animation
 - Media: screen recordings from a linked folder, tagged in the Media tab, played over clips at a speed fit to the words
   they're timed to, cut in and out with no animation
+- Scatter: images from the linked folder, appearing one at a time above the head, each where it covers the most empty
+  space, piling up
+- Music and sound effects: one track under the whole video, synced to a moment in a clip, and a sound as each
+  scattered image appears
 - CLI: `ingest`, `clips`, `captions`, `media`, `render`
 
-Not built yet: take grouping, screenshots as media, and every other modifier (music, animated zoom).
+Not built yet: take grouping and images as `Media`.
 
 ### Transcription
 
@@ -113,9 +121,9 @@ meaningfully, since real names are stable.
 
 Captions are burned in by libass (ffmpeg's `ass` filter), not composited in Flutter. `writeSubtitles`
 (`src/render/ass.dart`) turns every clip's corrected transcript, plus its titles, into one ASS file on the output
-timeline, and `stitch` draws it after scaling, so the preview (540×960) and the render (1080×1920)
-come from the same file and the same renderer. Editing a caption or title changes the file's hash, which is
-part of the preview key, so the preview rebuilds.
+timeline, and the stitch draws it after scaling, so the preview (540×960) and the render (1080×1920)
+come from the same file and the same renderer. Editing a caption or title changes the file's hash, and with it
+the file's path in the ffmpeg command, so the preview rebuilds.
 
 Event times aim half a frame before their frame (`getAssTime`). ASS times are centiseconds, and rounding a frame's own
 timestamp can land just after it, which showed an event a frame late.
@@ -139,6 +147,9 @@ deliberately no customization API yet; the constants live at the top of `caption
   `captionLeadMs` before its onset. A 200 ms window missed "transformed" in `hook`, which started 270 ms before its DTW time.
   Onsets are cached beside the transcript as `<start>-<end>.onsets_<settings>.json`, keyed by the detection settings. Word ends come from the next word's onset, since whisper's own end times drift
   late.
+- **Captions stay inside their clip.** A word lights up no earlier than its clip's first frame, and a page ends by the
+  end of its last word's clip. Without that, every cut showed the old caption over the new shot for a frame, since the
+  next clip's first word rarely lights up exactly on the cut, and it read as the cut itself being a frame off.
 - The canvas is assumed to be 1080×1920, matching a 9:16 source.
 
 ## Titles
@@ -148,9 +159,14 @@ deliberately no customization API yet; the constants live at the top of `caption
 the same title on consecutive clips reads as one card held across the cut. A clip with a title gets `.title` framing
 unless `framing:` overrides it.
 
-Titles sharing a `y` share one card, one title after another, centered on that `y` as if every title were showing.
-Each title keeps its rows from the start, and the card covers only the rows showing, so it grows as titles appear
-without any text moving. `goal_definition` in `bible_notes` builds a list this way, revealing each line with
+Titles sharing an `x` and `y` share one card, one title after another, centered on that `y` as if every title were
+showing. Each title keeps its rows from the start, and the card covers only the rows showing, so it grows as titles
+appear without any text moving.
+
+Without an `x`, a card spans the frame, inset 82 px from each side. With one, it becomes a label: centered on `x`, as
+wide as the card's widest row plus padding, and wrapping only at the widest card that keeps that inset on its nearer
+side. The width comes from every row, not just the ones showing, so a growing label never changes width. Nothing stops
+labels overlapping, so space them by eye. `goal_definition` in `bible_notes` builds a list this way, revealing each line with
 `.word(...)`. Since the card is shared, `opacity` fades only its title's text, never the card.
 
 A `.word` phrase is matched on letters and digits alone, against the first occurrence in the clip's corrected captions;
@@ -204,6 +220,61 @@ window never stretches across a gap. `dart run <video> media` prints every segme
   spin forever on it. The copy has the same frames and timestamps, so its frame numbers are the ones render uses. Seeks
   aim a quarter frame in, and the position is read back by flooring, so the frame shown and the frame reported agree.
 
+## Scatter
+
+`Scatter` (`src/render/scatter.dart`) resolves to one `ScatterImage` per file on the output timeline, each overlaid
+after the media and before the `ass` filter. It's built for a pile of comment screenshots over a hook.
+
+- **Images aren't ingested.** Each is a single-frame ffmpeg input, scaled in the graph and overlaid with `enable`;
+  overlay repeats a stream's last frame once it ends, so one frame is enough. The Media tab doesn't list them. Each
+  plan probes their sizes with ffprobe, in parallel.
+- **Placement is chosen in Dart, greedily** (`getScatterCenters`). In order, each image tries 64 spots seeded by its
+  filename and takes the one whose rotated bounds cover the most still-empty cells of a 20 px grid over the band (2% to
+  56% of the height). Independent random spots left whole rows empty; on the last frame of the hook this took the band
+  from 61% covered to 76%, with no block of a 6×6 split under 18%. 24 spots got the same total but left a corner at 1%.
+  What's left is bounded by the images' total area. An image may hang a fifth of its width off either side. Dart passes
+  the center and the unrotated width, and the overlay centers whatever size `rotate` produced.
+- **Seeds put their salt first** (`x3 comment_1.jpg`): FNV-1a barely mixes a final character, and with the salt last
+  every image landed on the diagonal, its `x` nearly equal to its `y`.
+- **Scale is per image.** Each is drawn at 0.9x and shrunk to fit 65% of the width, so text size varies between wide
+  and narrow screenshots. Keeping images narrower than the frame gives every one sideways room; at 90% the wide ones
+  filled it and all stacked in the middle.
+- **Rotation** is `rotate` with `c=none` on RGBA, which grows the frame to fit and leaves the corners clear.
+- **Appearance times ease.** The first image appears at `start` and the last at `by`. In between, the rate smoothsteps
+  up over 1 s (the whole span if it's shorter), then holds until the last image, stopping abruptly. Each image appears on the
+  first frame whose share of that curve's area reaches its share of the images (`getRampedFraction`).
+
+## Music and sound effects
+
+`getMusicCue` and `getScatterSounds` (`src/render/audio.dart`) place each sound on the output timeline in seconds, and
+`getAudioMix` (`src/render/stitch.dart`) mixes them into the concat's voice. Audio files live in the media folder, which
+the Media tab ignores since it lists only videos.
+
+- **Mixed in stereo at 48 kHz.** The mono voice is copied to both sides with `pan`; letting `aformat` upmix it would
+  lower it 3 dB. `amix` runs with `normalize=0`, since by default it divides every input by the input count. Then the
+  voice's own limiter settings catch any peak the extra audio pushes past it. A video with no music or sounds keeps the
+  bare voice track.
+- **Music seeks with `-ss` and places with `adelay`**, whichever the cue needs, and `amix=duration=first` ends it with
+  the voice. Checked against the source track, the music came out sample-aligned.
+- **Sound effects drop leading silence** (`silenceremove` at -50 dB), since a pop file can open on 150 ms of nothing,
+  4 frames late. Each is its own input, like each scattered image; all 13 pops on `niv_is_owned` landed within 1 ms of
+  their image.
+- Audio inputs are keyed by path in the preview cache, like images, so replacing a file in place keeps the old preview.
+- `-t` on the output hung ffmpeg 7 with this many inputs once it reached the limit, so test a stretch by rendering the
+  whole preview, not by cutting the output short.
+
+## Preview cache
+
+A preview is keyed by a hash of its whole ffmpeg command (`StitchPlan.getArgs`), which `render` runs too, with the
+master and the delivery codec. Anything that changes what's drawn, or how, changes the command, so the key can't miss
+a setting the way a hand-picked one did: an earlier key listed crops and zoom changes but not `ZoomOut.from`, and kept
+serving the old preview. Inputs appear by path, so they need content-keyed names: subtitles and the voice track hash
+their content, and media is keyed by size and date. Images in a `Scatter` are named as they are, so editing one in
+place without renaming it keeps the old preview.
+
+On the Preview tab, every hot reload (`useReloadCount`) asks for the preview again. The key makes that cheap when
+nothing drawn changed, and playback only restarts at the focused clip when the file did change.
+
 ## Voice
 
 Ingest runs the master's audio through one fixed chain (`src/ffmpeg/voice.dart`) into
@@ -248,14 +319,26 @@ Each clip is cropped to one fixed window (`src/model/framing.dart`), chosen by i
   rename. A clip within 4% of the previous clip's zoom, when both put the head in the same place, is pushed just far
   enough away, since near-identical zooms on either side of a cut read as a glitch. `title` and `none` count as the
   same place.
-- **Framing derives from modifiers.** `Media` gives `.media`, over a `Title`'s `.title`, and an explicit `framing:`
-  always wins.
+- **Framing derives from modifiers.** `Media` or `Scatter` gives `.media`, over a `Title`'s `.title`, and an explicit
+  `framing:` always wins. It is the framing a clip starts in.
 - **It is a plain ffmpeg `crop` per clip**, scaled to the output size before the concat, since every concat input must
   match. The crop is in fractions, so the proxy preview and the master render frame identically; the preview is a
   little soft from upscaling the proxy.
-- **Captions follow the framing.** They sit at 75% of the height, or 82% on `media` clips, whose head at 70% would put
-  them over the chin. The height is chosen per caption event, by the clip it starts in, so a page spanning a cut moves
-  with the framing.
+- **A `ZoomOut` is an entrance.** The clip starts at its own crop zoomed `from` times further, and a change at `at`
+  eases out to its crop.
+- **A `Zoom` eases into another framing.** Its target crop gets the same name-seeded jitter as the clip's own, and the
+  next clip's neighbour check compares against where the clip ends.
+- **A clip with zooms goes through `perspective`** (`src/render/zoom.dart`), with `eval=frame` and its four corners set
+  to the crop window's, so it samples between pixels. `crop` fixes its size when the graph is built, and `zoompan`
+  snaps the window to whole source pixels: on the 540 px proxy a slowing zoom stepped 1, 1, 0, 1, 0 px a frame, which
+  read as the video stuttering against the zoom. A tracked edge moved 4.1, 1.6, 4.1, 1.5 px a frame under zoompan and
+  0.2, 0.3, 0.4, 0.5... under perspective. It costs ~24 ms a frame on the 4K master, only on zooming clips.
+- **Each crop value is one expression over the clip's frame**: the start value plus each change's difference, eased
+  over its frames. perspective's `in` counts from 1. Wrap each eased term in parentheses: an unparenthesized
+  `1-pow(...)` multiplied out as `delta*1 - pow(...)` and once ran the entrance backwards.
+- **Captions follow the framing.** They sit at 75% of the height, or 82% on `media` framing, whose head at 70% would put
+  them over the chin. The height is chosen per caption event, by the framing at its start, so a page spanning a cut or
+  the start of a zoom moves with the framing.
 
 ## The constraint that governs what comes next
 

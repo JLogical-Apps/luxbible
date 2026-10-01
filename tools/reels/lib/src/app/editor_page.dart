@@ -11,6 +11,7 @@ import 'package:reels/src/app/clips_list.dart';
 import 'package:reels/src/app/media_list.dart';
 import 'package:reels/src/app/media_panel.dart';
 import 'package:reels/src/app/trim_controls.dart';
+import 'package:reels/src/app/use_reload_count.dart';
 import 'package:reels/src/ffmpeg/ingest.dart';
 import 'package:reels/src/ffmpeg/media.dart';
 import 'package:reels/src/launch/video_builder.dart';
@@ -50,6 +51,8 @@ class EditorPage extends HookWidget {
     final loaded = useState<String?>(null);
     final busy = useState(false);
     final pauseAt = useRef<Duration?>(null);
+    final hasPendingReload = useRef(false);
+    final reloads = useReloadCount();
 
     Duration at(int frame) => Duration(microseconds: frame * 1000000 ~/ source.value!.fps);
 
@@ -109,20 +112,40 @@ class EditorPage extends HookWidget {
       return at(clips.takeWhile((c) => c.name != focused.value).map((c) => c.take.frameCount).sum);
     }
 
-    Future<void> showPreview() async {
-      if (busy.value || source.value == null || video.clips.isEmpty) return;
+    // A reload only replays when the preview changed, so reloading unrelated code doesn't restart playback.
+    Future<void> showPreview({bool isReload = false}) async {
+      if (busy.value) {
+        if (isReload) hasPendingReload.value = true;
+        return;
+      }
+      if (source.value == null || video.clips.isEmpty) return;
 
       busy.value = true;
       try {
         final file = await buildPreview(video, onProgress: (step, f) => progress.value = (step, f));
-        if (loaded.value != file.path) await openMedia(file.path);
-        await player.seek(getPreviewStart());
-        await player.play();
+        if (!isReload || loaded.value != file.path) {
+          if (loaded.value != file.path) await openMedia(file.path);
+          await player.seek(getPreviewStart());
+          await player.play();
+        }
       } on Object catch (e) {
         error.value = e;
       } finally {
         busy.value = false;
         progress.value = null;
+      }
+
+      // A reload that landed mid-build would otherwise be lost, leaving the preview a version behind the file.
+      if (hasPendingReload.value && mode.value == EditorMode.preview) {
+        hasPendingReload.value = false;
+        await showPreview(isReload: true);
+      }
+    }
+
+    // mpv steps whole decoded frames, which a seek by duration can't promise, and pauses as it does.
+    Future<void> stepFrame({bool isBackward = false}) async {
+      if (player.platform case final NativePlayer native) {
+        await native.command([isBackward ? 'frame-back-step' : 'frame-step']);
       }
     }
 
@@ -213,7 +236,12 @@ class EditorPage extends HookWidget {
         case EditorMode.clips:
       }
       return null;
-    }, [mode.value, fileClips.join(',')]);
+    }, [mode.value]);
+
+    useEffect(() {
+      if (mode.value == EditorMode.preview) showPreview(isReload: true);
+      return null;
+    }, [reloads]);
 
     if (error.value case final failure?) {
       return ErrorScreen(error: failure, onRetry: () => error.value = null);
@@ -285,7 +313,13 @@ class EditorPage extends HookWidget {
                   Expanded(
                     child: mode.value == EditorMode.preview && video.clips.isEmpty
                         ? const EmptyPreviewHint()
-                        : mkv.Video(controller: controller, fit: .contain),
+                        : CallbackShortcuts(
+                            bindings: {
+                              SingleActivator(LogicalKeyboardKey.period): stepFrame,
+                              SingleActivator(LogicalKeyboardKey.comma): () => stepFrame(isBackward: true),
+                            },
+                            child: mkv.Video(controller: controller, fit: .contain),
+                          ),
                   ),
                   if (progress.value case final active?)
                     Padding(

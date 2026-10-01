@@ -1,13 +1,19 @@
+import 'package:reels/src/model/framing.dart';
+
 /// Something added to a clip.
 sealed class Modifier {
   const Modifier();
 }
 
-/// A card of text over the clip. Titles sharing a `y` share one card, one after another in the order given.
+/// A card of text over the clip. Titles sharing an `x` and `y` share one card, one after another in the order given.
 class Title extends Modifier {
-  const Title(this.text, {this.y = 0.25, this.start = .clipStart, this.end = .clipEnd, this.opacity = 1});
+  const Title(this.text, {this.x, this.y = 0.25, this.start = .clipStart, this.end = .clipEnd, this.opacity = 1});
 
   final String text;
+
+  /// Center of the card, as a fraction of the frame's width. Without it the card spans the frame; with it the card
+  /// fits its text, like a label.
+  final double? x;
 
   /// Center of the card, as a fraction of the frame's height.
   final double y;
@@ -30,6 +36,65 @@ class Media extends Modifier {
 
   final ClipTime start;
   final ClipTime end;
+}
+
+/// Eases the clip's crop into [framing] over [frames], starting [at] a moment in the clip. A clip's zooms are given in
+/// the order they happen.
+class Zoom extends Modifier {
+  const Zoom(this.framing, {required this.at, this.frames = 12, this.easing = .quarticInOut});
+
+  final Framing framing;
+  final ClipTime at;
+  final int frames;
+  final Easing easing;
+}
+
+/// Starts the clip [from] times further in than its framing, holds until [at], then eases out to its framing over
+/// [frames].
+class ZoomOut extends Modifier {
+  const ZoomOut({this.from = 1.45, this.at = .clipStart, this.frames = 30, this.easing = .quarticInOut});
+
+  final double from;
+  final ClipTime at;
+  final int frames;
+  final Easing easing;
+}
+
+/// Images from the video's `media` folder whose names match [pattern], where `*` matches anything. They appear one at a
+/// time in their natural order, the first at [start] and the last at [by], coming slowly at first, then quickly until
+/// the last. Each lands at a random spot above the head, turned a little, and they pile up until [end]. [sound]
+/// plays as each one appears.
+class Scatter extends Modifier {
+  const Scatter(this.pattern, {this.start = .clipStart, this.by = .clipEnd, this.end = .clipEnd, this.sound});
+
+  final String pattern;
+  final ClipTime start;
+  final ClipTime by;
+  final ClipTime end;
+  final Sound? sound;
+}
+
+/// A track from the video's `media` folder, playing under the whole video, lined up so [cue] into the track plays [at]
+/// a moment in this clip. A video has at most one.
+class Music extends Modifier {
+  const Music(this.file, {this.cue = Duration.zero, this.at = .clipStart, this.volume = -20});
+
+  final String file;
+  final Duration cue;
+  final ClipTime at;
+
+  /// Gain in dB.
+  final double volume;
+}
+
+/// A sound effect from the video's `media` folder, starting at its first sound so it lands on its moment.
+class Sound {
+  const Sound(this.file, {this.volume = -10});
+
+  final String file;
+
+  /// Gain in dB.
+  final double volume;
 }
 
 /// Plays the media to the tag [to], starting [at] a moment in its clip, or when the media appears.
