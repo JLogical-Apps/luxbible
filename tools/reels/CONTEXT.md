@@ -19,7 +19,7 @@ gives instant feedback on edits Jake makes himself.
 void main(List<String> args) => runVideo(args, video);
 
 Video video() => Video(
-  src: '~/Downloads/IMG_7193.MOV',
+  sources: ['~/Downloads/IMG_7193.MOV'],
   clips: [Clip('intro_hook'), Clip('problem_distractions')],
 );
 ```
@@ -62,6 +62,8 @@ when the clip is retrimmed, where a frame offset drifts.
 Working and verified end to end on real footage:
 
 - Ingest: rotation, HDR→SDR tone-mapping, CFR normalization, native-resolution master, 960px proxy
+- Multiple sources: a recording split across files is joined into one master, so everything after ingest sees one
+  recording
 - Clip detection via `silencedetect`, one take per clip
 - Transcription via `whisper-cli`, one transcript per take
 - Preview: proxy opened once, seek per clip; stitched preview for the full video, opened at the
@@ -360,6 +362,13 @@ display-matrix rotation. Consequences, all handled in `src/ffmpeg/ingest.dart`:
 - Rotation means the decoded frame is portrait (2160×3840) even though ffprobe reports 3840×2160.
 
 Ingest costs ~9 minutes and ~1.2 GB per 5-minute recording. It is cached and one-time.
+
+**Several sources are joined at ingest, nowhere else.** Each is tone-mapped on its own branch of one `concat` filter
+graph, so the master, and every frame number, run straight through the joins. `concat` pads a source's audio with
+silence when it ends before its video, and `audio.wav` is extracted from the master rather than the sources, so the
+voice and the silence detection stay on the master's timeline. Silence detection doesn't know where the joins are, so a
+take can span one if a recording ends mid-sentence; trim it in the UI. `source.json` records every source's size, so
+swapping, adding or reordering sources (other than two with the same size) refuses to ingest.
 
 ## Conventions
 

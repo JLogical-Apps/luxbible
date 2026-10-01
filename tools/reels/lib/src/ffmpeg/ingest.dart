@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:path/path.dart' as p;
 import 'package:reels/src/ffmpeg/ffmpeg.dart';
 import 'package:reels/src/ffmpeg/silence.dart';
@@ -38,41 +39,39 @@ class MissingSourceException implements Exception {
 }
 
 class SourceChangedException implements Exception {
-  const SourceChangedException(this.path, this.cache);
+  const SourceChangedException(this.paths, this.cache);
 
-  final String path;
+  final List<String> paths;
   final Directory cache;
 
   @override
   String toString() =>
-      'Source video changed since it was ingested: $path\n'
-      'Its clips.json frame numbers point into the old recording. Give the video a new name, '
+      'Source videos changed since they were ingested: ${paths.join(', ')}\n'
+      'Its clips.json frame numbers point into the old recordings. Give the video a new name, '
       'or delete ${cache.path} and its clips.json to start over.';
 }
 
 Future<Ingest> ingest(Video video, {IngestProgress? onProgress}) async {
-  final src = File(expandHome(video.src));
+  final sources = video.sources.map((src) => File(expandHome(src))).toList();
   final cache = cacheDirFor(video)..createSync(recursive: true);
 
   final audio = File(p.join(cache.path, 'audio.wav'));
   final master = File(p.join(cache.path, 'master.mp4'));
   final proxy = File(p.join(cache.path, 'proxy.mp4'));
 
-  verifySource(src, cache: cache, derived: [audio, master]);
-
-  await cached(audio, (partial) async {
-    onProgress?.call('Extracting audio', 0);
-    await runFfmpeg(['-i', src.path, '-vn', '-ac', '1', '-ar', '16000', '-c:a', 'pcm_s16le', partial.path]);
-  });
+  verifySources(sources, cache: cache, derived: [audio, master]);
 
   await cached(
     master,
     (partial) async => runFfmpeg(
       [
-        '-i',
-        src.path,
-        '-vf',
-        toneMap,
+        for (final src in sources) ...['-i', src.path],
+        '-filter_complex',
+        getConcatGraph(sources.length),
+        '-map',
+        '[v]',
+        '-map',
+        '[a]',
         '-r',
         '$outputFps',
         '-c:v',
@@ -87,10 +86,16 @@ Future<Ingest> ingest(Video video, {IngestProgress? onProgress}) async {
         '256k',
         partial.path,
       ],
-      total: await probeDuration(src.path),
+      total: (await Future.wait(sources.map((src) => probeDuration(src.path)))).reduce((a, b) => a + b),
       onProgress: (f) => onProgress?.call('Normalizing master (tone-mapping HDR)', f),
     ),
   );
+
+  // Taken from the master rather than the sources, so its timeline matches the master's across every join.
+  await cached(audio, (partial) async {
+    onProgress?.call('Extracting audio', 0);
+    await runFfmpeg(['-i', master.path, '-vn', '-ac', '1', '-ar', '16000', '-c:a', 'pcm_s16le', partial.path]);
+  });
 
   await cached(
     proxy,
@@ -139,21 +144,27 @@ Future<Ingest> ingest(Video video, {IngestProgress? onProgress}) async {
   return Ingest(master: master, proxy: proxy, audio: audio, voice: voice);
 }
 
-// The recorded size lets render run after the source is deleted, while still catching a swapped recording that
-// would make every frame number in clips.json point at the wrong footage.
-void verifySource(File src, {required Directory cache, required List<File> derived}) {
+// concat pads a source's audio with silence when it ends before its video, so the voice stays on the lips after a join.
+String getConcatGraph(int count) => [
+  ...Iterable.generate(count, (i) => '[$i:v]$toneMap[v$i]'),
+  '${Iterable.generate(count, (i) => '[v$i][$i:a]').join()}concat=n=$count:v=1:a=1[v][a]',
+].join(';');
+
+// The recorded sizes let render run after the sources are deleted, while still catching a swapped or added recording
+// that would make every frame number in clips.json point at the wrong footage.
+void verifySources(List<File> sources, {required Directory cache, required List<File> derived}) {
   final record = File(p.join(cache.path, 'source.json'));
 
-  if (!src.existsSync()) {
+  if (sources.firstWhereOrNull((src) => !src.existsSync()) case final missing?) {
     if (derived.every((f) => f.existsSync())) return;
-    throw MissingSourceException(src.path);
+    throw MissingSourceException(missing.path);
   }
 
-  final size = src.lengthSync();
+  final sizes = sources.map((src) => src.lengthSync()).toList();
   if (!record.existsSync()) {
-    record.writeAsStringSync(jsonEncode({'path': src.path, 'size': size}));
-  } else if ((jsonDecode(record.readAsStringSync()) as Map<String, dynamic>)['size'] != size) {
-    throw SourceChangedException(src.path, cache);
+    record.writeAsStringSync(jsonEncode({'paths': sources.map((src) => src.path).toList(), 'sizes': sizes}));
+  } else if (!ListEquality().equals((jsonDecode(record.readAsStringSync()) as Map<String, dynamic>)['sizes'], sizes)) {
+    throw SourceChangedException(sources.map((src) => src.path).toList(), cache);
   }
 }
 

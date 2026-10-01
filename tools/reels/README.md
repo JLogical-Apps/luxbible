@@ -24,7 +24,14 @@ your code; reordering clips never touches a frame number.
    ```dart
    void main(List<String> args) => runVideo(args, video);
 
-   Video video() => Video(src: '~/Downloads/my_video.MOV', clips: []);
+   Video video() => Video(sources: ['~/Downloads/my_video.MOV'], clips: []);
+   ```
+
+   A recording split across several files lists them all, in order. They play back to back as one recording, so
+   frame numbers run straight through the joins:
+
+   ```dart
+   Video video() => Video(sources: ['~/Downloads/part_1.MOV', '~/Downloads/part_2.MOV'], name: 'my_video', clips: []);
    ```
 2. `dart run lib/videos/my_video.dart ingest` — normalizes the source and detects clips.
 3. `flutter run -d macos -t lib/videos/my_video.dart` — play clips, trim and rename them. The
@@ -45,7 +52,7 @@ The head is assumed to be centered in the recording. A clip with a title or medi
 
 ```dart
 Video(
-  src: '~/Downloads/my_video.MOV',
+  sources: ['~/Downloads/my_video.MOV'],
   clips: [
     Clip('hook', modifiers: [Title('How I take Bible notes')]), // .title: slight zoom, head centered
     Clip('demo', modifiers: [Media('demo.mp4')]), // .media: more zoom, head below center
@@ -216,10 +223,10 @@ file and renamed when finished, so an interrupted ingest resumes instead of reus
 
 | File | Purpose |
 | --- | --- |
-| `source.json` | size of the source at ingest, to catch a swapped recording |
-| `master.mp4` | normalized source, whose video is what render reads |
+| `source.json` | size of each source at ingest, to catch a swapped or added recording |
+| `master.mp4` | normalized sources joined into one, whose video is what render reads |
 | `proxy.mp4` | 960px preview copy |
-| `audio.wav` | mono 16k, used for silence detection |
+| `audio.wav` | mono 16k from the master, used for silence detection |
 | `voice_*.wav` | processed 48k mono voice, the audio every view plays; keyed by the processing chain |
 | `media/<file>_*.mov` | each media file as ProRes 4444 with alpha, at 30fps and 1280px tall; keyed by its size and date |
 | `media/<file>_*.mp4` | the same frames as H.264, 960px tall, for the Media tab's player |
@@ -236,8 +243,8 @@ written into `clips.json`. Requires `brew install whisper-cpp` and a model at
 `~/.cache/whisper/ggml-base.en.bin`. Raw word-level output and each take's sound onsets are cached under
 `.cache/<name>/transcripts/`.
 
-Once ingested, the source recording can be deleted: render and preview only read the cache. If the
-source is replaced with a different file under the same name, ingest refuses to run, since `clips.json`
+Once ingested, the source recordings can be deleted: render and preview only read the cache. If a
+source is replaced with a different file under the same name, or the list of sources changes, ingest refuses to run, since `clips.json`
 frame numbers would point into the wrong footage.
 
 Spans that transcribe to nothing were breath or movement rather than speech; they are dropped and

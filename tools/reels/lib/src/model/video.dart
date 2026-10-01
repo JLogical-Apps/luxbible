@@ -5,9 +5,10 @@ import 'package:reels/src/model/clips.dart';
 import 'package:reels/src/model/framing.dart';
 
 class Video {
-  const Video({required this.src, String? name, this.media, this.clips = const []}) : declaredName = name;
+  const Video({required this.sources, String? name, this.media, this.clips = const []}) : declaredName = name;
 
-  final String src;
+  /// Recordings that play back to back as one, in this order.
+  final List<String> sources;
 
   /// A folder of screen recordings for `Media` modifiers to show.
   final String? media;
@@ -15,8 +16,8 @@ class Video {
 
   final List<Clip> clips;
 
-  /// Defaults to the source filename; override it when the camera's name is meaningless.
-  String get name => declaredName ?? p.basenameWithoutExtension(src);
+  /// Defaults to the first source's filename; override it when the camera's name is meaningless.
+  String get name => declaredName ?? p.basenameWithoutExtension(sources.first);
 
   List<ResolvedClip> resolve(Clips source) => clips.fold([], (resolved, clip) {
     final found = source[clip.name];
