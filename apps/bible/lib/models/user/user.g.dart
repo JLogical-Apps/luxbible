@@ -174,7 +174,12 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   lastActiveDate: json['lastActiveDate'] == null
       ? null
       : CalendarDateTime.fromJson(json['lastActiveDate'] as String),
-  hasRequestedReview: json['hasRequestedReview'] as bool? ?? false,
+  lastReviewRequestDate:
+      _readLastReviewRequestDate(json, 'lastReviewRequestDate') == null
+      ? null
+      : CalendarDateTime.fromJson(
+          _readLastReviewRequestDate(json, 'lastReviewRequestDate') as String,
+        ),
   copy: json['copy'] == null
       ? const CopyConfiguration()
       : CopyConfiguration.fromJson(json['copy'] as Map<String, dynamic>),
@@ -232,7 +237,7 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'messages': instance.messages.map((e) => _$MessageEnumMap[e]!).toList(),
   'activeDayCount': instance.activeDayCount,
   'lastActiveDate': instance.lastActiveDate?.toJson(),
-  'hasRequestedReview': instance.hasRequestedReview,
+  'lastReviewRequestDate': instance.lastReviewRequestDate?.toJson(),
   'copy': instance.copy.toJson(),
 };
 

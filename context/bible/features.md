@@ -40,7 +40,7 @@ Lux measures visits to its main pages and a small set of prominent actions: star
 
 On Android, Lux measures the general campaign source that led to installation through Google Play Install Referrer. The website maps compact, fixed social-profile and boosted-post source codes to aggregate campaign values, reports website traffic and store navigation through Google Analytics, and passes the same values to Google Play. When a shared verse link opens the website instead of Lux, Android visitors are sent to the passage in Lux when it is installed and to Google Play otherwise. iPhone and iPad visitors see Safari's app banner, which offers to open the passage in Lux or get it, along with an App Store button, and desktop visitors see both store buttons. The store links use a fixed passage-share campaign, so installs from shared verse links are attributed on Google Play and the App Store. These values identify a marketing source such as Facebook or TikTok, not a person or social-media account.
 
-Lux counts distinct active days locally. After seven active days, it makes one native app-review request after the user finishes viewing a study action, completes a Bible plan day, or creates an annotation. The platform decides whether to display the native prompt.
+Lux counts distinct active days locally. After three active days, it makes a native app-review request after the user finishes viewing a study action, completes a Bible plan day, or creates an annotation, and it repeats the request at most once every 120 days. The platform decides whether to display the native prompt.
 
 ## Bible Library
 

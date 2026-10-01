@@ -74,7 +74,7 @@ sealed class User with _$User {
     @Default({}) Set<Message> messages,
     @Default(0) int activeDayCount,
     CalendarDateTime? lastActiveDate,
-    @Default(false) bool hasRequestedReview,
+    @JsonKey(readValue: _readLastReviewRequestDate) CalendarDateTime? lastReviewRequestDate,
     @Default(CopyConfiguration()) CopyConfiguration copy,
   }) = _User;
 
@@ -92,7 +92,12 @@ sealed class User with _$User {
   (BibleTranslation, BibleTranslation, BibleTranslation, BibleTranslation) get translationsSelection =>
       (translation, oldTestamentTranslation, newTestamentTranslation, studyTranslation);
 
-  bool get isReviewRequestEligible => activeDayCount >= 7 && !hasRequestedReview;
+  bool get isReviewRequestEligible =>
+      activeDayCount >= 3 &&
+      switch (lastReviewRequestDate) {
+        null => true,
+        final date => date.toDateTime().getDaysUntil(DateTime.now()) >= 120,
+      };
 
   bool shouldRequestReviewAfterUpdate(User previousUser) =>
       isReviewRequestEligible && annotations.length > previousUser.annotations.length;
@@ -493,6 +498,10 @@ sealed class User with _$User {
       ? this
       : copyWith(activeDayCount: activeDayCount + 1, lastActiveDate: CalendarDateTime.fromDateTime(date));
 }
+
+// Users who were asked before the interval existed restart it from their first launch after updating.
+Object? _readLastReviewRequestDate(Map data, String key) =>
+    data[key] ?? (data['hasRequestedReview'] == true ? CalendarDateTime.now().toJson() : null);
 
 Object? _readLastHighlightStyle(Map data, String key) {
   final existing = data[key];

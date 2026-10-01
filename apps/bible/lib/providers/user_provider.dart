@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:bible/models/calendar_date_time.dart';
 import 'package:bible/models/user/language.dart';
 import 'package:bible/models/user/migration.dart';
 import 'package:bible/models/user/user.dart';
@@ -80,7 +81,7 @@ class UserNotifier extends _$UserNotifier {
     final appReview = InAppReview.instance;
     if (!state.isReviewRequestEligible || !await appReview.isAvailable()) return;
 
-    update((user) => user.copyWith(hasRequestedReview: true));
+    update((user) => user.copyWith(lastReviewRequestDate: CalendarDateTime.now()));
     AnalyticsEvent.reviewPromptRequested.log();
     await appReview.requestReview();
   }
