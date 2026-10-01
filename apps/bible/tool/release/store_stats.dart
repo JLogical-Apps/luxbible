@@ -252,7 +252,7 @@ AppStoreFunnel getAppStoreFunnel(Iterable<Row> engagement, Iterable<Row> downloa
     engagement.where((row) => row['event'] == 'Page view' && row['page type'] == 'Product page'),
     'unique counts',
   ),
-  downloads: sumColumn(downloads.where((row) => row['download type'] == 'First-time Download'), 'counts'),
+  downloads: sumColumn(downloads.where((row) => row['download type'] == 'First-time download'), 'counts'),
 );
 
 void printAppStoreTable(String title, Map<String, AppStoreFunnel> funnels, {bool showsTotal = false}) {
@@ -442,7 +442,8 @@ Future<List<Row>> downloadPlayReport(StorageApi storage, String bucket, String p
       404 => [],
       403 => fail(
         'The Play service account cannot read gs://$bucket. In Play Console, open Users and permissions and give it '
-        '"View app information and download bulk reports". The change can take up to a day to apply.',
+        '"View app information and download bulk reports". The change can take up to a day to apply.\n'
+        'Google said: ${error.message}',
       ),
       _ => throw error,
     };
