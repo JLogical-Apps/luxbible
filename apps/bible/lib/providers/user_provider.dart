@@ -105,13 +105,19 @@ class UserNotifier extends _$UserNotifier {
       AnalyticsEvent.toolbarCustomized.log();
     }
 
+    final previousCompletedSteps = previousUser.completedOnboardingSteps ?? [];
+    (user.completedOnboardingSteps ?? [])
+        .where((step) => !previousCompletedSteps.contains(step))
+        .forEach((step) => AnalyticsEvent.onboardingStepComplete(step).log());
+
     if (!previousUser.isOnboardingActive && user.isOnboardingActive) {
       AnalyticsEvent.onboardingStarted.log();
     } else if (previousUser.isOnboardingActive && !user.isOnboardingActive) {
-      (previousUser.currentOnboardingStep == null
-              ? AnalyticsEvent.onboardingComplete
-              : AnalyticsEvent.onboardingSkipped)
-          .log();
+      if (previousUser.currentOnboardingStep case final step?) {
+        AnalyticsEvent.onboardingSkipped(step).log();
+      } else {
+        AnalyticsEvent.onboardingComplete.log();
+      }
     }
   }
 

@@ -1,6 +1,7 @@
+import 'package:bible/models/user/onboarding_step.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 
-enum AnalyticsEvent {
+enum AnalyticsEventType {
   audioPlayed('audio_played'),
   planDayCompleted('plan_day_completed'),
   planStarted('plan_started'),
@@ -16,12 +17,43 @@ enum AnalyticsEvent {
   rateLuxPressed('rate_lux_pressed'),
   reviewPromptRequested('review_prompt_requested'),
   onboardingStarted('onboarding_started'),
+  onboardingStepComplete('onboarding_step_complete'),
   onboardingComplete('onboarding_complete'),
   onboardingSkipped('onboarding_skipped');
 
   final String eventName;
 
-  const AnalyticsEvent(this.eventName);
+  const AnalyticsEventType(this.eventName);
+}
 
-  void log() => FirebaseAnalytics.instance.logEvent(name: eventName);
+class AnalyticsEvent {
+  final AnalyticsEventType type;
+  final Map<String, Object>? parameters;
+
+  AnalyticsEvent._(this.type, [this.parameters]);
+
+  static final audioPlayed = AnalyticsEvent._(.audioPlayed);
+  static final planDayCompleted = AnalyticsEvent._(.planDayCompleted);
+  static final planStarted = AnalyticsEvent._(.planStarted);
+  static final biblePlanFileOpened = AnalyticsEvent._(.biblePlanFileOpened);
+  static final search = AnalyticsEvent._(.search);
+  static final verseShared = AnalyticsEvent._(.verseShared);
+  static final sharedPassageOpened = AnalyticsEvent._(.sharedPassageOpened);
+  static final verseOfTheDayTapped = AnalyticsEvent._(.verseOfTheDayTapped);
+  static final verseOfTheDayWidgetTapped = AnalyticsEvent._(.verseOfTheDayWidgetTapped);
+  static final notificationTapped = AnalyticsEvent._(.notificationTapped);
+  static final toolbarCustomized = AnalyticsEvent._(.toolbarCustomized);
+  static final communityLinkPressed = AnalyticsEvent._(.communityLinkPressed);
+  static final rateLuxPressed = AnalyticsEvent._(.rateLuxPressed);
+  static final reviewPromptRequested = AnalyticsEvent._(.reviewPromptRequested);
+  static final onboardingStarted = AnalyticsEvent._(.onboardingStarted);
+  static final onboardingComplete = AnalyticsEvent._(.onboardingComplete);
+
+  static AnalyticsEvent onboardingStepComplete(OnboardingStep step) =>
+      AnalyticsEvent._(.onboardingStepComplete, {'step': step.name});
+
+  static AnalyticsEvent onboardingSkipped(OnboardingStep step) =>
+      AnalyticsEvent._(.onboardingSkipped, {'step': step.name});
+
+  void log() => FirebaseAnalytics.instance.logEvent(name: type.eventName, parameters: parameters);
 }
