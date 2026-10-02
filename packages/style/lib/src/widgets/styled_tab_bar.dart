@@ -6,12 +6,21 @@ import 'package:style/src/style_context_extensions.dart';
 class StyledTabBar extends StatelessWidget {
   final TabController tabController;
   final List<Widget> tabTitles;
+  final Function(int)? onTabPressed;
 
   final bool scrollable;
 
-  const StyledTabBar({super.key, required this.tabController, required this.tabTitles, required this.scrollable});
-  const StyledTabBar.fill({super.key, required this.tabController, required this.tabTitles}) : scrollable = false;
-  const StyledTabBar.scrollable({super.key, required this.tabController, required this.tabTitles}) : scrollable = true;
+  const StyledTabBar({
+    super.key,
+    required this.tabController,
+    required this.tabTitles,
+    required this.scrollable,
+    this.onTabPressed,
+  });
+  const StyledTabBar.fill({super.key, required this.tabController, required this.tabTitles, this.onTabPressed})
+    : scrollable = false;
+  const StyledTabBar.scrollable({super.key, required this.tabController, required this.tabTitles, this.onTabPressed})
+    : scrollable = true;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +32,7 @@ class StyledTabBar extends StatelessWidget {
           Positioned.fill(top: null, child: Container(height: 4, color: context.colors.borderOpaque)),
           TabBar(
             controller: tabController,
+            onTap: onTabPressed,
             splashFactory: NoSplash.splashFactory,
             overlayColor: WidgetStateProperty.resolveWith<Color?>(
               (Set<WidgetState> states) => states.has(.focused) ? null : Colors.transparent,

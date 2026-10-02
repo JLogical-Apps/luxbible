@@ -596,6 +596,7 @@ A Paced plan's status compares its target end date with its natural end date, th
 
 Daily passages open in a focused reading flow that retains access to normal Bible selection and study behavior.
 The chapter-preview action reads "Read In Context" when the assigned passage already covers the full chapter and "Read Entire Chapter" otherwise.
+Each passage tab shows whether it is complete. Moving to another tab completes the passage being left only if its final paragraph has appeared on screen, which includes passages short enough to fit on screen. Tapping the selected tab toggles its passage between complete and incomplete, and a passage toggled this way is not completed automatically when leaving it. Next and Done always complete the current passage.
 Reading-plan audio starts at the first assigned verse, stops at the final assigned verse, marks the passage complete, and continues to the next incomplete tab. It stops after every passage for the day is complete. Manual scrolling or selecting text pauses playback. A passage whose active Bible does not support audio prompts the user to switch Bibles.
 While a reading-plan audio session is active, its full playback controls replace the Next button. The page's top-right stop button closes that session and restores the Next button. Its scrubber is limited to the assigned passage rather than the whole chapter.
 

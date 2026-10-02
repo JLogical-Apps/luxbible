@@ -78,6 +78,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
     );
 
     final passageControllerRegistry = useRegistry<VerseSelection, PassageController>();
+    final readPassages = useMemoized(() => <VerseSelection>{});
 
     void playPassage(int passageIndex) async {
       final passage = passages[passageIndex];
@@ -154,10 +155,12 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
           await audioBibleController.pause(context: .plan);
           await audioBibleController.replacePassage(context: .plan, passage: passages[currentIndex]);
         }
-        ref.updateUser(
-          (user) =>
-              user.withPassageCompleted(planId: planId, dayIndex: dayIndex, day: day, passage: passages[oldIndex]),
-        );
+        final oldPassage = passages[oldIndex];
+        if (readPassages.contains(oldPassage)) {
+          ref.updateUser(
+            (user) => user.withPassageCompleted(planId: planId, dayIndex: dayIndex, day: day, passage: oldPassage),
+          );
+        }
       });
     });
 
@@ -175,6 +178,13 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
         children: [
           StyledTabBar.scrollable(
             tabController: tabController,
+            onTabPressed: (index) {
+              if (index != currentIndex) return;
+              ref.updateUser(
+                (user) =>
+                    user.withPassageToggled(planId: planId, dayIndex: dayIndex, day: day, passage: passages[index]),
+              );
+            },
             tabTitles: passages.map((passage) {
               final isCompleted = currentProgress.isPassageComplete(passage);
               return Row(
@@ -201,6 +211,14 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
                         final chapterReference = passage.references.first.toChapterReference();
                         final passageController = usePassageController(chapterReference);
                         useRegistryItem(passageControllerRegistry, passage, passageController);
+
+                        final listController = passageController.listController;
+                        useOnListenableChange(listController, () {
+                          if (listController.isAttached &&
+                              listController.visibleRange?.$2 == listController.numberOfItems - 1) {
+                            readPassages.add(passage);
+                          }
+                        });
 
                         return SafeArea(
                           top: false,
