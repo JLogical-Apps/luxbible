@@ -456,7 +456,6 @@ It supports:
 - Scrubbing within the chapter
 - Verse previews while scrubbing
 - Passage scrolling to the selected verse after scrubbing
-- Seeking to a verse by tapping it while the audio panel is active
 - Playback speeds of 0.7x, 1x, 1.2x, 1.5x, 1.7x, and 2x
 - Sleep timers
 - Background playback
@@ -467,7 +466,7 @@ It supports:
 
 Verse 1 is emphasized during chapter introductions, and each later verse receives emphasis 300 milliseconds before its recorded start.
 
-Manually scrolling the passage or selecting a verse or text pauses playback. Starting playback clears the current selection.
+Manually scrolling the passage or selecting a verse or text pauses playback. Tapping a verse only selects it and never moves the playhead, so scrubbing is the only way to jump to a verse. Starting playback clears the current selection. Resuming from the play button restarts the emphasized verse from its beginning rather than continuing mid-verse, but never skips forward past a chapter introduction.
 
 When the current Bible has no audio, Lux offers to switch to the user's most recently selected audio-enabled Bible.
 

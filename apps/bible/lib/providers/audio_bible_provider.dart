@@ -37,6 +37,12 @@ sealed class AudioBibleContextState with _$AudioBibleContextState {
 
   Reference? getReferenceAtPosition(Duration position) =>
       timings.getReferenceAtPosition(passage: passage, position: position);
+
+  // Only rewinds, so resuming during a chapter introduction doesn't skip ahead to verse 1.
+  Duration getVerseStartPosition(Duration position) {
+    final start = timings[getReferenceAtPosition(position)]?.start;
+    return start != null && start < position ? start : position;
+  }
 }
 
 class AudioBibleState {
@@ -149,16 +155,18 @@ class AudioBibleController extends _$AudioBibleController {
     }
 
     if (state.activeContext == context && isSamePassage && session != null && error == null) {
-      if (player?.processingState == .completed ||
-          session.passage.hasReachedAudioEnd(player?.position ?? .zero, timings)) {
+      final position = player?.position ?? .zero;
+      if (player?.processingState == .completed || session.passage.hasReachedAudioEnd(position, timings)) {
         await seekTo(context: context, position: passage.getAudioStartPosition(timings));
+      } else if (player?.playing != true) {
+        await seekTo(context: context, position: session.getVerseStartPosition(position));
       }
       await handler?.play();
       return true;
     }
 
-    final initialPosition = isSamePassage
-        ? positions[context] ?? session?.startPosition ?? passage.getAudioStartPosition(timings)
+    final initialPosition = isSamePassage && session != null
+        ? session.getVerseStartPosition(positions[context] ?? session.startPosition)
         : passage.getAudioStartPosition(timings);
 
     await activate(
@@ -235,14 +243,6 @@ class AudioBibleController extends _$AudioBibleController {
     await handler?.seek(clampedPosition);
     if (reference != null) {
       emitSpokenReference(context: context, reference: reference, force: true);
-    }
-  }
-
-  Future<void> seekToReference({required AudioBibleContext context, required Reference reference}) async {
-    final session = state.getSessionFor(context);
-    final timing = session?.timings[reference];
-    if (timing != null) {
-      await seekTo(context: context, position: timing.start);
     }
   }
 

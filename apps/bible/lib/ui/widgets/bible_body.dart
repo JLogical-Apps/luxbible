@@ -496,7 +496,6 @@ class BibleBody extends HookConsumerWidget {
                     chapter: chapter,
                     selection: selectionController,
                     onNavigateToVerseSelection: navigateToVerseSelection,
-                    onReferencePressed: audioBibleSync.onReferencePressed,
                     removeScrollbarPadding: isSideLayout && panelCount > 0,
                   ),
                   Positioned(

@@ -5,16 +5,9 @@ import 'package:lux/lux.dart';
 
 class AudioBiblePassageSync {
   final AudioBiblePlayerState player;
-  final AudioBibleController audioBibleController;
-  final AudioBibleContext context;
   final Reference? spokenReference;
 
-  AudioBiblePassageSync({
-    required this.player,
-    required this.audioBibleController,
-    required this.context,
-    required this.spokenReference,
-  });
+  AudioBiblePassageSync({required this.player, required this.spokenReference});
 
   Reference? getEmphasizedReferenceForChapter(ChapterReference chapterReference) =>
       player.isPlaying && spokenReference?.toChapterReference() == chapterReference ? spokenReference : null;
@@ -25,10 +18,6 @@ class AudioBiblePassageSync {
         ? spokenReference
         : null;
   }
-
-  Function(Reference)? get onReferencePressed => player.isActive
-      ? (reference) => audioBibleController.seekToReference(context: context, reference: reference)
-      : null;
 }
 
 AudioBiblePassageSync useAudioBiblePassageSync<K>({
@@ -91,10 +80,5 @@ AudioBiblePassageSync useAudioBiblePassageSync<K>({
     if (removeOnDispose) audioBibleController.remove(context: context);
   });
 
-  return AudioBiblePassageSync(
-    player: player,
-    audioBibleController: audioBibleController,
-    context: context,
-    spokenReference: spokenReference,
-  );
+  return AudioBiblePassageSync(player: player, spokenReference: spokenReference);
 }
