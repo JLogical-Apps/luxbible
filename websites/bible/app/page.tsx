@@ -7,6 +7,7 @@ import AppStoreButtons from '@/components/blocks/AppStoreButtons';
 import AppStoreScreenshots from '@/components/blocks/AppStoreScreenshots';
 import CtaButton from '@/components/blocks/CtaButton';
 import DownloadCtaButton from '@/components/blocks/DownloadCtaButton';
+import DownloadSection from '@/components/blocks/DownloadSection';
 import FeatureShowcase from '@/components/blocks/FeatureShowcase';
 import Testimonials from '@/components/blocks/Testimonials';
 import Page from '@/components/layout/Page';
@@ -246,26 +247,9 @@ export default function HomePage() {
         />
       </Section>
 
-      <Section
-        id="download"
-        contained
-        align="responsive"
-        title={
-          <>
-            Download Lux for <span className="gradient-heading">Free</span>
-          </>
-        }
-        subtitle={site.description}
-      >
-        <div className="flex flex-col gap-12">
-          <AppStoreButtons
-            appStoreUrl={site.appStoreUrl}
-            appStoreProviderToken={site.appStoreProviderToken}
-            googlePlayUrl={site.googlePlayUrl}
-          />
-          <AppStoreScreenshots />
-        </div>
-      </Section>
+      <DownloadSection>
+        <AppStoreScreenshots />
+      </DownloadSection>
 
       <Section
         id="community"

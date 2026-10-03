@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 
+import DownloadSection from '@/components/blocks/DownloadSection';
 import ArticleTableOfContents from '@/components/layout/ArticleTableOfContents';
 import type { ArticleTableOfContentsItem } from '@/components/layout/ArticleTableOfContents';
 import Page from '@/components/layout/Page';
@@ -39,6 +40,7 @@ export default function ArticlePage({
           </Prose>
         </div>
       </article>
+      <DownloadSection />
     </Page>
   );
 }

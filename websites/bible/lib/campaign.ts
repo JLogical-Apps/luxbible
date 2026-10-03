@@ -18,6 +18,12 @@ export const campaignsBySourceCode = {
     name: 'social_profile',
     appleToken: 'instagram-profile',
   },
+  id: {
+    source: 'instagram',
+    medium: 'organic_social',
+    name: 'direct_message',
+    appleToken: 'instagram-dm',
+  },
   ia: {
     source: 'instagram',
     medium: 'paid_social',

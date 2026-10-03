@@ -24,12 +24,14 @@ store attribution:
 
 - `?s=fp`: Facebook profile
 - `?s=ip`: Instagram profile
+- `?s=id`: Instagram direct message
 - `?s=ia`: Instagram boosted post
 - `?s=tp`: TikTok profile
 - `?s=ta`: TikTok boosted post
 - `?s=yp`: YouTube profile
 
 Boosted posts use `paid_social` as the medium and `boosted_post` as the campaign.
+Direct messages use `direct_message` as the campaign.
 
 ## Structure
 

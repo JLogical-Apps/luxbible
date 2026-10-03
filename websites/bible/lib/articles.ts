@@ -32,7 +32,17 @@ export const noteTakingArticle: Article = {
     '/media/articles/bible-word-study-without-greek-or-hebrew/thumbnail.png',
 };
 
-export const articles = [soapArticle, noteTakingArticle];
+export const focusArticle: Article = {
+  slug: 'stop-getting-distracted',
+  title: 'How to Read the Bible on Your Phone Without Getting Distracted',
+  shortName: 'Stop Getting Distracted',
+  description:
+    'Simple iPhone and Android settings that silence notifications, limit distracting apps, and make Scripture the easy thing to open.',
+  category: 'Bible Study',
+  thumbnail: '/media/articles/stop-getting-distracted/thumbnail.png',
+};
+
+export const articles = [focusArticle, noteTakingArticle, soapArticle];
 
 export const bibleStudyArticles = articles.filter(
   ({ category }) => category === 'Bible Study',
