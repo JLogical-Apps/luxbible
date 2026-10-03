@@ -3,9 +3,14 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:path/path.dart' as p;
+import 'package:reels/src/model/modifier.dart';
 
 // Screen recordings tend to open and close on a few janky frames.
 const mediaEdgeTrim = 10;
+
+const imageExtensions = {'.jpg', '.jpeg', '.png'};
+
+bool isImage(String name) => imageExtensions.contains(p.extension(name).toLowerCase());
 
 /// A file in the media folder, normalized to the video's frame rate so tags can be frame numbers.
 class MediaFile {
@@ -21,17 +26,25 @@ class MediaFile {
 }
 
 class MediaLibrary {
-  const MediaLibrary({required this.files, this.tags = const {}});
+  const MediaLibrary({required this.files, this.images = const [], this.tags = const {}});
 
   static const empty = MediaLibrary(files: []);
 
   final List<MediaFile> files;
 
+  /// Stills in the media folder, which are shown as they are, with no ingest or tags.
+  final List<File> images;
+
   /// Tool-owned, keyed by filename. `start` and `end` are implicit, and only stored once moved.
   final Map<String, Map<String, int>> tags;
 
+  Iterable<String> get names => [...files.map((f) => f.name), ...images.map((image) => p.basename(image.path))];
+
   MediaFile operator [](String name) =>
-      files.firstWhereOrNull((f) => f.name == name) ?? (throw UnknownMediaException(name, files.map((f) => f.name)));
+      files.firstWhereOrNull((f) => f.name == name) ?? (throw UnknownMediaException(name, names));
+
+  File getImage(String name) =>
+      images.firstWhereOrNull((image) => p.basename(image.path) == name) ?? (throw UnknownMediaException(name, names));
 
   Map<String, int> getTags(String name) {
     final file = this[name];
@@ -48,49 +61,54 @@ class MediaLibrary {
       getTags(name)[tag] ?? (throw UnknownTagException(name, tag, getSortedTags(name).map((t) => t.key)));
 
   MediaLibrary withTags(String name, Map<String, int> fileTags) =>
-      MediaLibrary(files: files, tags: {...tags, name: fileTags}..removeWhere((_, t) => t.isEmpty));
+      MediaLibrary(files: files, images: images, tags: {...tags, name: fileTags}..removeWhere((_, t) => t.isEmpty));
 }
 
-/// A stretch of the output timeline showing one media file, playing from [from] towards [to] at [speed], then holding
-/// wherever it got to. A hold is `from == to`.
+/// A stretch of the output timeline showing the media [name] from [file], playing from [from] towards [to] at [speed],
+/// then holding wherever it got to, cut to its [mask]. A hold is `from == to`, and an image is a hold on frame 0.
 class MediaSegment {
   const MediaSegment({
-    required this.media,
+    required this.name,
+    required this.file,
     required this.outputStart,
     required this.outputEnd,
     required this.from,
     required this.to,
     this.speed = 1,
+    this.mask,
   });
 
-  final MediaFile media;
+  final String name;
+  final File file;
   final int outputStart;
   final int outputEnd;
   final int from;
   final int to;
   final double speed;
+  final Mask? mask;
 
   int get frameCount => outputEnd - outputStart;
 
   int getFrameAt(int output) => min(to, from + ((output - outputStart) * speed).floor());
 
-  MediaSegment? clipped(int start, int end) {
+  MediaSegment? clipped(int start, int end, {Mask? mask}) {
     final clippedStart = max(start, outputStart);
     final clippedEnd = min(end, outputEnd);
     if (clippedStart >= clippedEnd) return null;
     return MediaSegment(
-      media: media,
+      name: name,
+      file: file,
       outputStart: clippedStart,
       outputEnd: clippedEnd,
       from: getFrameAt(clippedStart),
       to: to,
       speed: speed,
+      mask: mask,
     );
   }
 
   @override
-  String toString() =>
-      '${p.basename(media.normalized.path)}:$outputStart-$outputEnd:$from-$to@${speed.toStringAsFixed(3)}';
+  String toString() => '${p.basename(file.path)}:$outputStart-$outputEnd:$from-$to@${speed.toStringAsFixed(3)}';
 }
 
 class UnknownMediaException implements Exception {
@@ -127,4 +145,13 @@ class BackwardsPlayException implements Exception {
   @override
   String toString() =>
       'Play("$tag") in $file would play backwards, from frame $from to $to. Give it a `from:` tag to jump first.';
+}
+
+class ImagePlayException implements Exception {
+  const ImagePlayException(this.file);
+
+  final String file;
+
+  @override
+  String toString() => 'Media("$file") is an image, which has nothing to play. Remove its `play:`.';
 }

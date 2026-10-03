@@ -26,7 +26,7 @@ class Clip {
 
   String toDart() => switch (declaredFraming) {
     null => "Clip('$name')",
-    final framing => "Clip('$name', framing: .${framing.name})",
+    final framing => "Clip('$name', framing: ${framing.toDart()})",
   };
 }
 
@@ -36,6 +36,7 @@ class ResolvedClip {
     required this.take,
     required this.framing,
     required this.crop,
+    required this.headY,
     required this.modifiers,
   });
 
@@ -43,6 +44,7 @@ class ResolvedClip {
   final Take take;
   final Framing framing;
   final Crop crop;
+  final double headY;
   final List<Modifier> modifiers;
 
   Iterable<Title> get titles => modifiers.whereType<Title>();
@@ -58,7 +60,7 @@ class ResolvedClip {
   ZoomOut? get zoomOut => modifiers.whereType<ZoomOut>().firstOrNull;
 
   Crop get startCrop => switch (zoomOut) {
-    final zoomOut? => Crop.framing(framing, zoom: crop.zoom * zoomOut.from),
+    final zoomOut? => Crop.framing(framing, zoom: crop.zoom * zoomOut.from, headY: headY),
     null => crop,
   };
 
@@ -69,5 +71,9 @@ class ResolvedClip {
     null => crop,
   };
 
-  Crop getZoomCrop(Zoom zoom) => Crop.framing(zoom.framing, zoom: getZoom(zoom.framing, name));
+  Crop getZoomCrop(Zoom zoom) => Crop.framing(
+    zoom.framing,
+    zoom: zoom.zoom ?? getZoom(zoom.framing, name, headY: headY),
+    headY: headY,
+  );
 }

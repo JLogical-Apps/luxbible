@@ -17,11 +17,6 @@ const captionFontSize = 117;
 const captionOutline = 3.5;
 const captionLeadMs = 60;
 
-// Media framing puts the head at 70%, so captions drop below the chin.
-double getCaptionCenterY(Framing framing) => switch (framing) {
-  .media => 0.82,
-  .title || .none => 0.75,
-};
 const captionMaxWords = 4;
 const captionMaxCharacters = 22;
 
@@ -104,7 +99,7 @@ Iterable<String> buildCaptionEvents(
   final starts = getClipStarts(clips);
   double getCenterY(int frame) {
     final index = starts.lastIndexWhere((start) => start <= frame).clamp(0, clips.length - 1);
-    return getCaptionCenterY(getFramingAt(clips[index], changes[index], frame - starts[index]));
+    return getFramingAt(clips[index], changes[index], frame - starts[index]).captionY;
   }
 
   return pages.expandIndexed((index, page) {

@@ -64,9 +64,7 @@ Future<void> runVideo(List<String> args, VideoBuilder builder) async {
         final action = segment.from == segment.to
             ? 'hold ${segment.from}'
             : 'play ${segment.from}→${segment.to} at ${segment.speed.toStringAsFixed(2)}x';
-        stdout.writeln(
-          '${clip.padRight(24)} ${segment.outputStart}-${segment.outputEnd} ${segment.media.name}: $action',
-        );
+        stdout.writeln('${clip.padRight(24)} ${segment.outputStart}-${segment.outputEnd} ${segment.name}: $action');
       }
     case 'render':
       final output = await render(video, onProgress: report);

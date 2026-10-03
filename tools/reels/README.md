@@ -61,6 +61,17 @@ Video(
 )
 ```
 
+`.at(x, y)` centers the window on a spot in the recording instead, as fractions of its size, with the same zoom as
+`.none`. The window stops at the recording's edges, and `.at(0.5, 0.5)` frames like `.none`.
+
+`.media` puts the middle of the face at 75% of the height, below the media. It assumes the face is halfway down the
+recording; if it sits higher, give its height as a fraction, and `.media` zooms in further to bring it down to the same
+place:
+
+```dart
+Video(sources: ['~/Downloads/my_video.MOV'], headY: 0.42, clips: [...])
+```
+
 ## Titles
 
 A `Title` shows a card of text over its clip, for the whole clip by default. Text wraps on its own, and `\n` forces a
@@ -100,8 +111,8 @@ The editor's copied clip list doesn't include modifiers, so re-add titles after 
 
 ## Media
 
-`Video(media: '~/Downloads/my_video')` links a folder of screen recordings. A `Media` modifier shows one of them above
-the head, centered from 1% to 56% of the height, and cuts in and out like a title. Captions drop to 82% of the
+`Video(media: '~/Downloads/my_video')` links a folder of screen recordings and images. A `Media` modifier shows one of
+them above the head, fit inside 1% to 56% of the height and the frame's width, and cuts in and out like a title. Captions drop to 82% of the
 height on those clips, below the chin. On its own, it plays the file once
 over its clips, from its `start` tag to its `end` tag:
 
@@ -143,6 +154,28 @@ Clip('tap_annotate', modifiers: [
 
 `dart run lib/videos/<name>.dart media` lists each file's tags and how the video plays them, including every speed.
 
+An image (`.png`, `.jpg` or `.jpeg`) works the same way, minus the playing: it shows for its stretch of the clip, and
+takes no `play:`. `start:` and `end:` swap one image for another partway through:
+
+```dart
+Clip('shortcuts', modifiers: [Media('shortcut.png')]),
+Clip('phone_features', modifiers: [
+  Media('downtime.png', end: .word('app')),
+  Media('app_limits.png', start: .word('app')),
+]),
+```
+
+Images aren't ingested and don't appear in the Media tab. They're read as they are, so editing one in place without
+renaming it keeps the old preview.
+
+`mask:` cuts a shape around the media. `.bevel()` rounds its corners and frames it in a black device bezel, for
+screenshots that lack the device frame RocketSim records. `radius` and `border` are fractions of the media's width,
+0.14 and 0.035 by default, and the media shrinks to fit the bezel in the same space:
+
+```dart
+Clip('shortcuts', modifiers: [Media('shortcut.png', mask: .bevel())]),
+```
+
 ## Zoom
 
 `Zoom` eases the clip's crop into another framing partway through, over 12 frames unless `frames:` says otherwise.
@@ -154,6 +187,13 @@ Clip('hook', framing: .title, modifiers: [
   Title('Someone owns the NIV', end: .word('is')),
   Zoom(.media, at: .word('is')),
 ]),
+```
+
+`zoom:` sets the magnification exactly (the framings sit between 1.1 and 1.4), with no random jitter. Together with
+`.at`, it zooms into a spot:
+
+```dart
+Clip('hook', framing: .title, modifiers: [Zoom(.at(0.4, 0.35), zoom: 1.8, at: .word('is'))]),
 ```
 
 `ZoomOut` is an entrance: the clip starts `from` (1.15) times further in than its framing, holds until `at`, then eases
@@ -255,6 +295,6 @@ renumbers auto-generated names — harmless once clips are named meaningfully, a
 
 Minimal on purpose: clips, trimming, captions, titles, media, voice processing, framing, preview, render. Captions are
 always on, in one fixed style, and come from each clip's `text` in `clips.json`. Titles, media, zooms and
-scatters are the only visual modifiers so far, each in one fixed style. Media is videos only; images are shown only by
-`Scatter`. The voice gets one fixed processing chain, and music and sound effects a fixed gain each. See
+scatters are the only visual modifiers so far, each in one fixed style. Media shows videos and still images, and `Scatter` piles up
+images. The voice gets one fixed processing chain, and music and sound effects a fixed gain each. See
 [`CONTEXT.md`](CONTEXT.md) for how captions, titles and media are drawn and what that means for the rest.

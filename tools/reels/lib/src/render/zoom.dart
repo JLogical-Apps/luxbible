@@ -34,8 +34,8 @@ Framing getFramingAt(ResolvedClip clip, List<CropChange> changes, int frame) =>
 String getZoomFilter(Crop start, List<CropChange> changes) {
   final zoom = getCropExpression(start, changes, (crop) => crop.zoom);
   final top = 'H*(${getCropExpression(start, changes, (crop) => crop.top)})';
-  final left = 'W*(1-1/($zoom))/2';
-  final right = 'W*(1+1/($zoom))/2';
+  final left = 'W*(${getCropExpression(start, changes, (crop) => crop.left)})';
+  final right = '$left+W/($zoom)';
   final bottom = '$top+H/($zoom)';
   return "perspective=x0='$left':y0='$top':x1='$right':y1='$top':x2='$left':y2='$bottom':x3='$right':y3='$bottom'"
       ':eval=frame';

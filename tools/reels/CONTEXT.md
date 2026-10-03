@@ -77,7 +77,7 @@ Working and verified end to end on real footage:
   ease into another framing partway through
 - Titles: a card of text over a clip, growing a line at a time as titles sharing it appear, timed to the clip or its
   caption words, cut in and out with no animation
-- Media: screen recordings from a linked folder, tagged in the Media tab, played over clips at a speed fit to the words
+- Media: screen recordings and images from a linked folder, recordings tagged in the Media tab and played over clips at a speed fit to the words
   they're timed to, cut in and out with no animation
 - Scatter: images from the linked folder, appearing one at a time above the head, each where it covers the most empty
   space, piling up
@@ -85,7 +85,7 @@ Working and verified end to end on real footage:
   scattered image appears
 - CLI: `ingest`, `clips`, `captions`, `media`, `render`
 
-Not built yet: take grouping and images as `Media`.
+Not built yet: take grouping.
 
 ### Transcription
 
@@ -187,7 +187,7 @@ constants live at the top of `src/render/titles.dart`.
 
 ## Media
 
-`Video(media: ...)` links a folder, and `Media('file.mp4')` shows one of its recordings over a clip. README.md covers
+`Video(media: ...)` links a folder, and `Media('file.mp4')` shows one of its recordings or images over a clip. README.md covers
 the `Media`/`Play` API; this is how it works.
 
 **Media timing follows the clips' timing split.** The Media tab owns `lib/videos/<name>.media.json`, a map from filename
@@ -216,8 +216,17 @@ window never stretches across a gap. `dart run <video> media` prints every segme
   which flickered the media off for a frame at every segment boundary, so each segment runs one frame long and
   `enable='between(n,...)'` cuts it to its stretch. concat stamps the main stream in microseconds, which can land a
   frame a microsecond before a segment's exact start, so overlay found no media frame yet and blanked it; `setpts=N`
-  after concat makes both sides exact frame counts. It's centered from 1% to 56% of the height, larger than the
-  Remotion `SimulatorOverlay`. The recordings bring their own rounded device frame, so there's no mask.
+  after concat makes both sides exact frame counts. It's centered and fit inside 1% to 56% of the height and the
+  frame's width, larger than the Remotion `SimulatorOverlay`. The recordings bring their own rounded device frame, and
+  images show with square corners unless masked.
+- **A `Bevel` mask is drawn in the graph** (`getBevelFilter`), before the segment's `tpad`, so an image is masked
+  once rather than every frame. The media is scaled to leave room for the bezel, padded with black, then a `geq` takes
+  each pixel's distance from its corner's center: the screen fades to black past `radius` and the bezel to transparent
+  past `radius + border`, antialiased over a pixel. Sizes come from the padded `W`, so Dart never needs the media's
+  size. Its look copies the frame RocketSim records, black only.
+- **An image is a hold on frame 0.** It isn't ingested or tagged, so `MediaLibrary.images` lists it straight from the
+  folder, and each showing becomes one hold segment pointing at the original file. It goes through the same input and
+  filter chain as a video segment, which gives a still frame-exact timing too. A `play:` on one throws.
 - **The tab plays an H.264 copy of the normalized file.** The bundled libmpv can't decode ProRes (see Voice), and would
   spin forever on it. The copy has the same frames and timestamps, so its frame numbers are the ones render uses. Seeks
   aim a quarter frame in, and the position is read back by flooring, so the frame shown and the frame reported agree.
@@ -271,8 +280,8 @@ A preview is keyed by a hash of its whole ffmpeg command (`StitchPlan.getArgs`),
 master and the delivery codec. Anything that changes what's drawn, or how, changes the command, so the key can't miss
 a setting the way a hand-picked one did: an earlier key listed crops and zoom changes but not `ZoomOut.from`, and kept
 serving the old preview. Inputs appear by path, so they need content-keyed names: subtitles and the voice track hash
-their content, and media is keyed by size and date. Images in a `Scatter` are named as they are, so editing one in
-place without renaming it keeps the old preview.
+their content, and media is keyed by size and date. Images in a `Scatter` or `Media` are named as they are, so
+editing one in place without renaming it keeps the old preview.
 
 On the Preview tab, every hot reload (`useReloadCount`) asks for the preview again. The key makes that cheap when
 nothing drawn changed, and playback only restarts at the focused clip when the file did change.
@@ -308,15 +317,19 @@ Each clip is cropped to one fixed window (`src/model/framing.dart`), chosen by i
 | Framing | Used when | Base zoom | Head lands at |
 | --- | --- | --- | --- |
 | `title` | a title is shown above | 1.10× | the center |
-| `media` | media is shown above | 1.40× | 70% of the height |
+| `media` | media is shown above | 1.45×, or more for a high head | 75% of the height |
 | `none` | nothing else is shown | 1.20× | the center |
+| `.at(x, y)` | asked for, to show a spot | 1.20× | the center, with the spot in place of the head |
 
-- **The head is assumed to be at the center of the source.** Crops are always centered horizontally, and only move
-  vertically to place the head. Aiming at the measured head position was tried and dropped: at low zooms the crop hit
-  the source's edge and landed the head off center, which looked worse than a centered zoom. Record centered.
-- **The crop is clamped vertically to the source**, so the head only reaches its target height when the zoom allows it.
-  `media` needs 1.40× to move a centered head to 70%, which its base zoom is. Lifting the head above center was
-  tried for `none` and was too tight a zoom.
+- **A framing puts a source point at a frame height.** `title` and `none` put the source's center at theirs, `media`
+  puts the head (`Video.headY`, 0.5 by default) at its, and all three stay centered horizontally; `.at` puts its point at
+  the center. One `Crop.framing` covers them all, so `.at(0.5, 0.5)` crops exactly like `none`.
+- **Only `media` aims at the head.** Aiming `title` and `none` at the measured head position was tried and dropped: at
+  low zooms the crop hit the source's edge and landed the head off center, which looked worse than a centered zoom.
+  `media` instead zooms in until the edge lets the head reach 75% (`Framing.getBaseZoom`), since a head higher than
+  that runs into the media. `bible_phone_2`'s face sits at 0.42, which takes 1.79× rather than 1.45×.
+- **The crop is clamped to the source**, so `title`, `none` and `.at` only reach their target height when the zoom
+  allows it. Lifting the head above center was tried for `none` and was too tight a zoom.
 - **Each clip adds 0–10% zoom**, from an FNV hash of its name: stable across runs and reordering, rerolled by a
   rename. A clip within 4% of the previous clip's zoom, when both put the head in the same place, is pushed just far
   enough away, since near-identical zooms on either side of a cut read as a glitch. `title` and `none` count as the
@@ -328,8 +341,8 @@ Each clip is cropped to one fixed window (`src/model/framing.dart`), chosen by i
   little soft from upscaling the proxy.
 - **A `ZoomOut` is an entrance.** The clip starts at its own crop zoomed `from` times further, and a change at `at`
   eases out to its crop.
-- **A `Zoom` eases into another framing.** Its target crop gets the same name-seeded jitter as the clip's own, and the
-  next clip's neighbour check compares against where the clip ends.
+- **A `Zoom` eases into another framing.** Its target crop gets the same name-seeded jitter as the clip's own unless
+  `zoom:` sets it exactly, and the next clip's neighbour check compares against where the clip ends.
 - **A clip with zooms goes through `perspective`** (`src/render/zoom.dart`), with `eval=frame` and its four corners set
   to the crop window's, so it samples between pixels. `crop` fixes its size when the graph is built, and `zoompan`
   snaps the window to whole source pixels: on the 540 px proxy a slowing zoom stepped 1, 1, 0, 1, 0 px a frame, which
@@ -338,9 +351,9 @@ Each clip is cropped to one fixed window (`src/model/framing.dart`), chosen by i
 - **Each crop value is one expression over the clip's frame**: the start value plus each change's difference, eased
   over its frames. perspective's `in` counts from 1. Wrap each eased term in parentheses: an unparenthesized
   `1-pow(...)` multiplied out as `delta*1 - pow(...)` and once ran the entrance backwards.
-- **Captions follow the framing.** They sit at 75% of the height, or 82% on `media` framing, whose head at 70% would put
-  them over the chin. The height is chosen per caption event, by the framing at its start, so a page spanning a cut or
-  the start of a zoom moves with the framing.
+- **Captions follow the framing's `captionY`.** They sit at 75% of the height, or 82% on `media` framing, whose head at
+  70% would put them over the chin. The height is chosen per caption event, by the framing at its start, so a page
+  spanning a cut or the start of a zoom moves with the framing.
 
 ## The constraint that governs what comes next
 

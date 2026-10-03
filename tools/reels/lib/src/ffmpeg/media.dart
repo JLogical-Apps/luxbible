@@ -24,7 +24,7 @@ class MissingMediaFolderException implements Exception {
   String toString() => 'Media folder not found: $path';
 }
 
-/// Normalizes every video in the media folder, once per version of each file.
+/// Normalizes every video in the media folder, once per version of each file, and lists its images as they are.
 Future<MediaLibrary> ingestMedia(Video video, {IngestProgress? onProgress}) async {
   final folderPath = video.media;
   if (folderPath == null) return MediaLibrary.empty;
@@ -32,11 +32,8 @@ Future<MediaLibrary> ingestMedia(Video video, {IngestProgress? onProgress}) asyn
   final folder = Directory(expandHome(folderPath));
   if (!folder.existsSync()) throw MissingMediaFolderException(folder.path);
 
-  final sources = folder
-      .listSync()
-      .whereType<File>()
-      .where((f) => mediaExtensions.contains(p.extension(f.path).toLowerCase()))
-      .sortedBy((f) => p.basename(f.path));
+  final contents = folder.listSync().whereType<File>().sortedBy((f) => p.basename(f.path));
+  final sources = contents.where((f) => mediaExtensions.contains(p.extension(f.path).toLowerCase())).toList();
   final cache = Directory(p.join(cacheDirFor(video).path, 'media'))..createSync(recursive: true);
 
   Future<MediaFile> normalize(int index, File source) async {
@@ -84,7 +81,11 @@ Future<MediaLibrary> ingestMedia(Video video, {IngestProgress? onProgress}) asyn
   }
 
   final files = [for (final (index, source) in sources.indexed) await normalize(index, source)];
-  return MediaLibrary(files: files, tags: loadMediaTags(video));
+  return MediaLibrary(
+    files: files,
+    images: contents.where((f) => isImage(f.path)).toList(),
+    tags: loadMediaTags(video),
+  );
 }
 
 // RocketSim records HEVC with alpha, whose alpha layer ffmpeg can't decode, so AVFoundation first converts it to ProRes

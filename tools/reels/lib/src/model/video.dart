@@ -5,14 +5,19 @@ import 'package:reels/src/model/clips.dart';
 import 'package:reels/src/model/framing.dart';
 
 class Video {
-  const Video({required this.sources, String? name, this.media, this.clips = const []}) : declaredName = name;
+  const Video({required this.sources, String? name, this.media, this.headY = 0.5, this.clips = const []})
+    : declaredName = name;
 
   /// Recordings that play back to back as one, in this order.
   final List<String> sources;
 
-  /// A folder of screen recordings for `Media` modifiers to show.
+  /// A folder of screen recordings and images for `Media` modifiers to show.
   final String? media;
   final String? declaredName;
+
+  /// Where the middle of the face usually sits in the recordings, as a fraction of their height. `.media` framing
+  /// brings it down to the same place below the media whatever it is.
+  final double headY;
 
   final List<Clip> clips;
 
@@ -27,14 +32,18 @@ class Video {
     final zoom = getZoom(
       clip.framing,
       clip.name,
-      previousZoom: previous != null && previous.endFraming.headY == clip.framing.headY ? previous.endCrop.zoom : null,
+      headY: headY,
+      previousZoom: previous != null && previous.endFraming.hasSamePlacement(clip.framing)
+          ? previous.endCrop.zoom
+          : null,
     );
     return resolved..add(
       ResolvedClip(
         name: found.name,
         take: found.keeper,
         framing: clip.framing,
-        crop: Crop.framing(clip.framing, zoom: zoom),
+        crop: Crop.framing(clip.framing, zoom: zoom, headY: headY),
+        headY: headY,
         modifiers: clip.modifiers,
       ),
     );

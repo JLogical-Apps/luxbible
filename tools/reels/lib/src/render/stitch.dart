@@ -62,7 +62,7 @@ List<String> getStitchArgs({
     '-t',
     '${(segment.to - segment.from + 1) / fps}',
     '-i',
-    segment.media.normalized.path,
+    segment.file.path,
   ];
 
   final inputs = [
@@ -96,7 +96,8 @@ List<String> getStitchArgs({
   final mediaHeight = ((mediaBottom - mediaTop) * codec.height).round();
   final overlays = media.mapIndexed(
     (i, segment) =>
-        '[${2 * clips.length + i}:v]trim=end_frame=${segment.to - segment.from + 1},scale=-2:$mediaHeight,'
+        '[${2 * clips.length + i}:v]trim=end_frame=${segment.to - segment.from + 1},'
+        '${getMediaFitFilter(segment.mask, width: codec.width, height: mediaHeight)},'
         'setpts=(PTS-STARTPTS)/${segment.speed},fps=$fps,tpad=stop_mode=clone:stop=-1,'
         'trim=end_frame=${segment.frameCount + 1},setpts=PTS-STARTPTS+${segment.outputStart / fps}/TB[m$i];'
         '[b$i][m$i]overlay=x=(W-w)/2:y=${(mediaTop * codec.height).round()}:eof_action=pass:'

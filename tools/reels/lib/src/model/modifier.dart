@@ -23,27 +23,46 @@ class Title extends Modifier {
   final double opacity;
 }
 
-/// A video from the video's `media` folder, shown above the head.
+/// A video or image from the video's `media` folder, shown above the head.
 ///
-/// Consecutive clips showing the same file form a run, and its playhead carries across their cuts. A run with no
-/// [play] plays the file once, from its `start` tag to its `end` tag, fit to the run.
+/// Consecutive clips showing the same video form a run, and its playhead carries across their cuts. A run with no
+/// [play] plays the video once, from its `start` tag to its `end` tag, fit to the run. An image just shows, with no
+/// [play].
 class Media extends Modifier {
-  const Media(this.file, {this.play = const [], this.start = .clipStart, this.end = .clipEnd});
+  const Media(this.file, {this.play = const [], this.start = .clipStart, this.end = .clipEnd, this.mask});
 
   /// A filename within the media folder.
   final String file;
   final List<Play> play;
+  final Mask? mask;
 
   final ClipTime start;
   final ClipTime end;
 }
 
+/// A shape cut around a `Media`.
+sealed class Mask {
+  const Mask();
+
+  const factory Mask.bevel({double radius, double border}) = Bevel;
+}
+
+/// Rounds the media's corners by [radius] and frames it in a black device bezel [border] thick, both as fractions of
+/// the media's width, for screenshots without a device frame of their own.
+class Bevel extends Mask {
+  const Bevel({this.radius = 0.14, this.border = 0.035});
+
+  final double radius;
+  final double border;
+}
+
 /// Eases the clip's crop into [framing] over [frames], starting [at] a moment in the clip. A clip's zooms are given in
-/// the order they happen.
+/// the order they happen. [zoom] replaces the framing's magnification and the clip's random jitter on it.
 class Zoom extends Modifier {
-  const Zoom(this.framing, {required this.at, this.frames = 12, this.easing = .quarticInOut});
+  const Zoom(this.framing, {this.zoom, required this.at, this.frames = 12, this.easing = .quarticInOut});
 
   final Framing framing;
+  final double? zoom;
   final ClipTime at;
   final int frames;
   final Easing easing;

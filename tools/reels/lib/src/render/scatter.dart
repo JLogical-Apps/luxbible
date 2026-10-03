@@ -14,8 +14,6 @@ import 'package:reels/src/paths.dart';
 import 'package:reels/src/render/ass.dart';
 import 'package:reels/src/render/clip_time.dart';
 
-const scatterExtensions = {'.jpg', '.jpeg', '.png'};
-
 // The same band as media, above a head framed for it. Images may hang this much of their width off either side.
 const scatterTop = 0.02;
 const scatterBottom = 0.56;
@@ -194,7 +192,7 @@ List<File> getScatterFiles(Video video, String pattern) {
   final images = Directory(expandHome(folder))
       .listSync()
       .whereType<File>()
-      .where((file) => scatterExtensions.contains(p.extension(file.path).toLowerCase()))
+      .where((file) => isImage(file.path))
       .sortedByCompare((file) => p.basename(file.path), compareNatural);
   final matcher = RegExp('^${pattern.split('*').map(RegExp.escape).join('.*')}\$');
   final matches = images.where((file) => matcher.hasMatch(p.basename(file.path))).toList();
