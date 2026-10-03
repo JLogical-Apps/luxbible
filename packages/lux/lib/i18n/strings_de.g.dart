@@ -1082,6 +1082,7 @@ class _Translations$commentaryUi$de extends Translations$commentaryUi$en {
 	final TranslationsDe _root; // ignore: unused_field
 
 	// Translations
+	@override String atAGlance({required Object book}) => '${book} auf einen Blick';
 	@override String introTo({required Object book}) => 'Einleitung zu ${book}';
 	@override String get chapterOutline => 'Kapitelübersicht';
 	@override String get previousSection => 'Vorheriger Abschnitt';
@@ -3652,6 +3653,7 @@ extension on TranslationsDe {
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => '${translation} zählt Kapitel und Verse anders als die meisten englischen Übersetzungen.\n\nDer hier bei ${reference} angezeigte Text stammt aus ${originalReference} in ${translation} und wurde so zugeordnet, dass er zu den anderen Übersetzungen passt.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} enthält diese Auswahl nicht.',
+			'commentaryUi.atAGlance' => ({required Object book}) => '${book} auf einen Blick',
 			'commentaryUi.introTo' => ({required Object book}) => 'Einleitung zu ${book}',
 			'commentaryUi.chapterOutline' => 'Kapitelübersicht',
 			'commentaryUi.previousSection' => 'Vorheriger Abschnitt',
@@ -4022,9 +4024,9 @@ extension on TranslationsDe {
 			'morphology.hebrewMood.cohortative.description' => 'Eine Willensform der 1. Person, etwa „lasst uns“ oder „ich will“.',
 			'morphology.hebrewMood.cohortative.examples' => 'Lasst uns gehen|Ich will loben',
 			'morphology.hebrewMood.hSuffix.name' => 'h-Suffix',
-			'morphology.hebrewMood.hSuffix.description' => 'Eine betonte Endung -ah am Imperfekt, oft ähnlich dem Kohortativ.',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.hebrewMood.hSuffix.description' => 'Eine betonte Endung -ah am Imperfekt, oft ähnlich dem Kohortativ.',
 			'morphology.hebrewMood.hSuffix.examples' => 'ich will gewiss kommen|lass mich nahen',
 			'morphology.tense.present.name' => 'Präsens',
 			'morphology.tense.present.description' => 'Andauernde oder allgemeine Handlung.',

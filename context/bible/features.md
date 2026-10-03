@@ -323,6 +323,8 @@ Lux bundles:
 
 Commentary can be opened for a chapter or verse selection. It also includes available book introductions, including
 Tyndale's book introductions and Calvin's book-level Argument material.
+At verse 1 of a book's first chapter, Tyndale shows a short "{book} at a Glance" section before its "Intro to {book}"
+section, listing the book's purpose, author, date, and setting. Each has its own header.
 Tyndale's verse notes can cover a verse or a passage, and a passage note is listed before the notes inside it. A note
 that covers a wider passage than its heading shows keeps that passage as a short italic line above its text.
 Existing users with a saved commentary list get Tyndale added at the end.
@@ -424,7 +426,7 @@ Study panels stay visible while the user reads. Most show the currently visible 
 
 Compare and Commentary panels are linked reading surfaces. They show the entire current chapter and remain aligned to
 the top visible verse in the main Bible. Scrolling either the Bible or a linked panel moves the other surface to the
-corresponding verse. Commentary book introductions and chapter outlines remain at verse 1 until verse-linked
+corresponding verse. Commentary book summaries, book introductions, and chapter outlines remain at verse 1 until verse-linked
 commentary reaches the top of the panel.
 
 Available panel types are:

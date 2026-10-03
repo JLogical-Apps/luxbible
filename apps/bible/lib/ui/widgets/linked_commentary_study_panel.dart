@@ -43,9 +43,9 @@ class LinkedCommentaryStudyPanel extends HookConsumerWidget {
     final commentary = commentaryValue.value;
 
     final blocks = commentary?.blocksByChapter[chapterReference.chapterNum] ?? [];
-    final hasIntroduction = chapterReference.chapterNum == 1 && commentary?.introduction.isNotEmpty == true;
+    final contentByBookSection = {if (chapterReference.chapterNum == 1) ...?commentary?.contentByBookSection};
     final syncSelections = [
-      if (hasIntroduction) null,
+      ...contentByBookSection.keys.map((_) => null),
       ...blocks.map(
         (block) => switch (block) {
           CommentaryOutline() => null,
@@ -74,15 +74,16 @@ class LinkedCommentaryStudyPanel extends HookConsumerWidget {
     }
 
     final itemCount = syncSelections.length;
-    final introductionOffset = hasIntroduction ? 1 : 0;
     final children = [
-      if (hasIntroduction)
-        CommentaryIntroductionView(
+      ...contentByBookSection.entries.mapIndexed(
+        (index, entry) => CommentaryBookSectionView(
           book: chapterReference.book,
-          content: commentary!.introduction,
+          section: entry.key,
+          content: entry.value,
           onNavigateToVerseSelection: onNavigateToVerseSelection,
-          trailing: CommentaryHeaderNavigation(index: 0, itemCount: itemCount, onNavigateToIndex: scrollToIndex),
+          trailing: CommentaryHeaderNavigation(index: index, itemCount: itemCount, onNavigateToIndex: scrollToIndex),
         ),
+      ),
       ...blocks.mapIndexed(
         (index, block) => CommentaryBlockView(
           block: block,
@@ -93,7 +94,7 @@ class LinkedCommentaryStudyPanel extends HookConsumerWidget {
             if (index != null) scrollToIndex(index, reference: reference);
           },
           trailing: CommentaryHeaderNavigation(
-            index: index + introductionOffset,
+            index: index + contentByBookSection.length,
             itemCount: itemCount,
             onNavigateToIndex: scrollToIndex,
           ),

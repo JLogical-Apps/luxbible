@@ -756,6 +756,7 @@
     "unavailable": "{translation} enthält diese Auswahl nicht."
   },
   "commentaryUi": {
+    "atAGlance": "{book} auf einen Blick",
     "introTo": "Einleitung zu {book}",
     "chapterOutline": "Kapitelübersicht",
     "previousSection": "Vorheriger Abschnitt",

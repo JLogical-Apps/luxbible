@@ -2331,6 +2331,9 @@ class Translations$commentaryUi$en {
 
 	// Translations
 
+	/// en: '{book} at a Glance'
+	String atAGlance({required Object book}) => '${book} at a Glance';
+
 	/// en: 'Intro to {book}'
 	String introTo({required Object book}) => 'Intro to ${book}';
 
@@ -5901,6 +5904,7 @@ extension on Translations {
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => 'The ${translation} numbers its chapters and verses differently from most English translations.\n\nThe text shown here at ${reference} comes from ${originalReference} in the ${translation}, remapped so it lines up with the other translations.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} doesn\'t include this selection.',
+			'commentaryUi.atAGlance' => ({required Object book}) => '${book} at a Glance',
 			'commentaryUi.introTo' => ({required Object book}) => 'Intro to ${book}',
 			'commentaryUi.chapterOutline' => 'Chapter Outline',
 			'commentaryUi.previousSection' => 'Previous section',
@@ -6271,9 +6275,9 @@ extension on Translations {
 			'morphology.hebrewMood.cohortative.description' => 'A 1st-person volitional, such as "let us" or "I will".',
 			'morphology.hebrewMood.cohortative.examples' => 'Let us go|I will praise',
 			'morphology.hebrewMood.hSuffix.name' => 'h-suffix',
-			'morphology.hebrewMood.hSuffix.description' => 'An emphatic -ah ending on the imperfect, often cohortative-like.',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.hebrewMood.hSuffix.description' => 'An emphatic -ah ending on the imperfect, often cohortative-like.',
 			'morphology.hebrewMood.hSuffix.examples' => 'I will surely come|let me draw near',
 			'morphology.tense.present.name' => 'Present',
 			'morphology.tense.present.description' => 'Ongoing or general action.',

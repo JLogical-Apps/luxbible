@@ -9,6 +9,11 @@ part of 'commentary.dart';
 _CommentaryBook _$CommentaryBookFromJson(
   Map<String, dynamic> json,
 ) => _CommentaryBook(
+  summary:
+      (json['s'] as List<dynamic>?)
+          ?.map((e) => CommentaryContent.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
   introduction:
       (json['i'] as List<dynamic>?)
           ?.map((e) => CommentaryContent.fromJson(e as Map<String, dynamic>))
@@ -28,7 +33,8 @@ _CommentaryBook _$CommentaryBookFromJson(
 
 Map<String, dynamic> _$CommentaryBookToJson(_CommentaryBook instance) =>
     <String, dynamic>{
-      'i': instance.introduction.map((e) => e.toJson()).toList(),
+      's': ?nullIfEmpty(instance.summary),
+      'i': ?nullIfEmpty(instance.introduction),
       'c': instance.blocksByChapter.map(
         (k, e) => MapEntry(k.toString(), e.map((e) => e.toJson()).toList()),
       ),

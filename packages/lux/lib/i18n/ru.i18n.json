@@ -768,6 +768,7 @@
     "unavailable": "{translation} не включает этот выбор."
   },
   "commentaryUi": {
+    "atAGlance": "Кратко: {book}",
     "introTo": "Знакомство с {book}",
     "chapterOutline": "План главы",
     "previousSection": "Предыдущий раздел",

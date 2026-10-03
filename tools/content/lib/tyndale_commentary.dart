@@ -6,6 +6,7 @@ import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
 
 Map<BookType, CommentaryBook> extractTyndaleCommentary() {
+  final summaries = _extractSummaries();
   final introductions = _extractIntroductions();
   final notesByChapter = _extractNotes().groupListsBy((note) => note.selection.start.toChapterReference());
 
@@ -13,6 +14,7 @@ Map<BookType, CommentaryBook> extractTyndaleCommentary() {
     (book) => MapEntry(
       book,
       CommentaryBook(
+        summary: summaries[book] ?? [],
         introduction: introductions[book] ?? [],
         blocksByChapter: notesByChapter
             .where((chapter, notes) => chapter.book == book)
@@ -71,6 +73,30 @@ List<CommentaryBlock> _getSections(List<_Note> notes) => notes
     .map(
       (entry) =>
           CommentaryBlock.section(selection: entry.key, content: entry.value.expand((note) => note.content).toList()),
+    )
+    .toList();
+
+Map<BookType, List<CommentaryContent>> _extractSummaries() =>
+    XmlDocument.parse(sourceFile('commentary/tyndale/BookIntroSummaries.xml').readAsStringSync())
+        .findAllElements('item')
+        .mapToMap(
+          (item) => MapEntry(
+            _getBook(item.getElement('refs')!.innerText.split('.').first),
+            _getSummaryContent(item.getElement('body')!.childElements),
+          ),
+        );
+
+// The intro-title paragraph ("The Book of Genesis") is dropped since the section header already names the book.
+List<CommentaryContent> _getSummaryContent(Iterable<XmlElement> paragraphs) => paragraphs
+    .where((paragraph) => paragraph.getAttribute('class') != 'intro-title')
+    .slices(2)
+    .map(
+      (pair) => switch (pair.map((paragraph) => paragraph.getAttribute('class')).toList()) {
+        ['intro-sidebar-h1', 'intro-sidebar-body-fl'] => CommentaryContent.paragraph(
+          text: Markdown('**${_getMarkdown(pair.first).text}:** ${_getMarkdown(pair.last).text}'),
+        ),
+        final classes => throw FormatException('Unexpected book summary paragraph classes `$classes`.'),
+      },
     )
     .toList();
 

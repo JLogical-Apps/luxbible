@@ -1084,6 +1084,7 @@ class _Translations$commentaryUi$nl extends Translations$commentaryUi$en {
 	final TranslationsNl _root; // ignore: unused_field
 
 	// Translations
+	@override String atAGlance({required Object book}) => '${book} in één oogopslag';
 	@override String introTo({required Object book}) => 'Inleiding tot ${book}';
 	@override String get chapterOutline => 'Hoofdstukoverzicht';
 	@override String get previousSection => 'Vorige sectie';
@@ -3656,6 +3657,7 @@ extension on TranslationsNl {
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => 'De hoofdstukken en verzen van de ${translation} zijn anders genummerd dan in de meeste Engelse vertalingen.\n\nDe tekst die hier bij ${reference} wordt getoond, komt uit ${originalReference} in de ${translation} en is opnieuw gekoppeld om met de andere vertalingen overeen te komen.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} bevat deze selectie niet.',
+			'commentaryUi.atAGlance' => ({required Object book}) => '${book} in één oogopslag',
 			'commentaryUi.introTo' => ({required Object book}) => 'Inleiding tot ${book}',
 			'commentaryUi.chapterOutline' => 'Hoofdstukoverzicht',
 			'commentaryUi.previousSection' => 'Vorige sectie',
@@ -4024,9 +4026,9 @@ extension on TranslationsNl {
 			'morphology.hebrewMood.jussive.examples' => 'Laat er licht zijn|Moge de HEER u zegenen',
 			'morphology.hebrewMood.cohortative.name' => 'Cohortatief',
 			'morphology.hebrewMood.cohortative.description' => 'Een wilsvorm in de 1e persoon, zoals "laten wij" of "ik zal".',
-			'morphology.hebrewMood.cohortative.examples' => 'Laten wij gaan|Ik zal prijzen',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.hebrewMood.cohortative.examples' => 'Laten wij gaan|Ik zal prijzen',
 			'morphology.hebrewMood.hSuffix.name' => 'h-achtervoegsel',
 			'morphology.hebrewMood.hSuffix.description' => 'Een nadrukkelijke uitgang -ah bij het imperfectum, vaak cohortatief van aard.',
 			'morphology.hebrewMood.hSuffix.examples' => 'Ik zal zeker komen|laat mij naderen',

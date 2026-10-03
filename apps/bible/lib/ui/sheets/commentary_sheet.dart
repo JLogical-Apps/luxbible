@@ -21,15 +21,18 @@ class CommentarySheet {
       return [Padding(padding: .all(16), child: StyledLoading())];
     }
 
-    final hasIntroduction =
-        commentary.introduction.isNotEmpty &&
-        verseSelection.references.any((reference) => reference.chapterNum == 1 && reference.verseNum == 1);
+    final hasBookSections = verseSelection.references.any(
+      (reference) => reference.chapterNum == 1 && reference.verseNum == 1,
+    );
     final children = [
-      if (hasIntroduction)
-        CommentaryIntroductionView(
-          book: book,
-          content: commentary.introduction,
-          onNavigateToVerseSelection: onNavigateToVerseSelection,
+      if (hasBookSections)
+        ...commentary.contentByBookSection.entries.map(
+          (entry) => CommentaryBookSectionView(
+            book: book,
+            section: entry.key,
+            content: entry.value,
+            onNavigateToVerseSelection: onNavigateToVerseSelection,
+          ),
         ),
       ...commentary
           .getBlocksFor(verseSelection)

@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CommentaryBook {
 
-@JsonKey(name: 'i') List<CommentaryContent> get introduction;@JsonKey(name: 'c') Map<int, List<CommentaryBlock>> get blocksByChapter;
+@IgnoreIfEmpty(name: 's') List<CommentaryContent> get summary;@IgnoreIfEmpty(name: 'i') List<CommentaryContent> get introduction;@JsonKey(name: 'c') Map<int, List<CommentaryBlock>> get blocksByChapter;
 /// Create a copy of CommentaryBook
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $CommentaryBookCopyWith<CommentaryBook> get copyWith => _$CommentaryBookCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommentaryBook&&const DeepCollectionEquality().equals(other.introduction, introduction)&&const DeepCollectionEquality().equals(other.blocksByChapter, blocksByChapter));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommentaryBook&&const DeepCollectionEquality().equals(other.summary, summary)&&const DeepCollectionEquality().equals(other.introduction, introduction)&&const DeepCollectionEquality().equals(other.blocksByChapter, blocksByChapter));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(introduction),const DeepCollectionEquality().hash(blocksByChapter));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(summary),const DeepCollectionEquality().hash(introduction),const DeepCollectionEquality().hash(blocksByChapter));
 
 @override
 String toString() {
-  return 'CommentaryBook(introduction: $introduction, blocksByChapter: $blocksByChapter)';
+  return 'CommentaryBook(summary: $summary, introduction: $introduction, blocksByChapter: $blocksByChapter)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $CommentaryBookCopyWith<$Res>  {
   factory $CommentaryBookCopyWith(CommentaryBook value, $Res Function(CommentaryBook) _then) = _$CommentaryBookCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'i') List<CommentaryContent> introduction,@JsonKey(name: 'c') Map<int, List<CommentaryBlock>> blocksByChapter
+@IgnoreIfEmpty(name: 's') List<CommentaryContent> summary,@IgnoreIfEmpty(name: 'i') List<CommentaryContent> introduction,@JsonKey(name: 'c') Map<int, List<CommentaryBlock>> blocksByChapter
 });
 
 
@@ -66,9 +66,10 @@ class _$CommentaryBookCopyWithImpl<$Res>
 
 /// Create a copy of CommentaryBook
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? introduction = null,Object? blocksByChapter = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? summary = null,Object? introduction = null,Object? blocksByChapter = null,}) {
   return _then(CommentaryBook(
-introduction: null == introduction ? _self.introduction : introduction // ignore: cast_nullable_to_non_nullable
+summary: null == summary ? _self.summary : summary // ignore: cast_nullable_to_non_nullable
+as List<CommentaryContent>,introduction: null == introduction ? _self.introduction : introduction // ignore: cast_nullable_to_non_nullable
 as List<CommentaryContent>,blocksByChapter: null == blocksByChapter ? _self.blocksByChapter : blocksByChapter // ignore: cast_nullable_to_non_nullable
 as Map<int, List<CommentaryBlock>>,
   ));
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  List<CommentaryContent> introduction, @JsonKey(name: 'c')  Map<int, List<CommentaryBlock>> blocksByChapter)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@IgnoreIfEmpty(name: 's')  List<CommentaryContent> summary, @IgnoreIfEmpty(name: 'i')  List<CommentaryContent> introduction, @JsonKey(name: 'c')  Map<int, List<CommentaryBlock>> blocksByChapter)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CommentaryBook() when $default != null:
-return $default(_that.introduction,_that.blocksByChapter);case _:
+return $default(_that.summary,_that.introduction,_that.blocksByChapter);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.introduction,_that.blocksByChapter);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  List<CommentaryContent> introduction, @JsonKey(name: 'c')  Map<int, List<CommentaryBlock>> blocksByChapter)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@IgnoreIfEmpty(name: 's')  List<CommentaryContent> summary, @IgnoreIfEmpty(name: 'i')  List<CommentaryContent> introduction, @JsonKey(name: 'c')  Map<int, List<CommentaryBlock>> blocksByChapter)  $default,) {final _that = this;
 switch (_that) {
 case _CommentaryBook():
-return $default(_that.introduction,_that.blocksByChapter);}
+return $default(_that.summary,_that.introduction,_that.blocksByChapter);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -190,10 +191,10 @@ return $default(_that.introduction,_that.blocksByChapter);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'i')  List<CommentaryContent> introduction, @JsonKey(name: 'c')  Map<int, List<CommentaryBlock>> blocksByChapter)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@IgnoreIfEmpty(name: 's')  List<CommentaryContent> summary, @IgnoreIfEmpty(name: 'i')  List<CommentaryContent> introduction, @JsonKey(name: 'c')  Map<int, List<CommentaryBlock>> blocksByChapter)?  $default,) {final _that = this;
 switch (_that) {
 case _CommentaryBook() when $default != null:
-return $default(_that.introduction,_that.blocksByChapter);case _:
+return $default(_that.summary,_that.introduction,_that.blocksByChapter);case _:
   return null;
 
 }
@@ -205,11 +206,18 @@ return $default(_that.introduction,_that.blocksByChapter);case _:
 @JsonSerializable()
 
 class _CommentaryBook extends CommentaryBook {
-  const _CommentaryBook({@JsonKey(name: 'i')  List<CommentaryContent> introduction = const [], @JsonKey(name: 'c')  Map<int, List<CommentaryBlock>> blocksByChapter = const {}}): _introduction = introduction,_blocksByChapter = blocksByChapter,super._();
+  const _CommentaryBook({@IgnoreIfEmpty(name: 's')  List<CommentaryContent> summary = const [], @IgnoreIfEmpty(name: 'i')  List<CommentaryContent> introduction = const [], @JsonKey(name: 'c')  Map<int, List<CommentaryBlock>> blocksByChapter = const {}}): _summary = summary,_introduction = introduction,_blocksByChapter = blocksByChapter,super._();
   factory _CommentaryBook.fromJson(Map<String, dynamic> json) => _$CommentaryBookFromJson(json);
 
+ final  List<CommentaryContent> _summary;
+@override@IgnoreIfEmpty(name: 's') List<CommentaryContent> get summary {
+  if (_summary is EqualUnmodifiableListView) return _summary;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_summary);
+}
+
  final  List<CommentaryContent> _introduction;
-@override@JsonKey(name: 'i') List<CommentaryContent> get introduction {
+@override@IgnoreIfEmpty(name: 'i') List<CommentaryContent> get introduction {
   if (_introduction is EqualUnmodifiableListView) return _introduction;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_introduction);
@@ -236,16 +244,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CommentaryBook&&const DeepCollectionEquality().equals(other._introduction, _introduction)&&const DeepCollectionEquality().equals(other._blocksByChapter, _blocksByChapter));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CommentaryBook&&const DeepCollectionEquality().equals(other._summary, _summary)&&const DeepCollectionEquality().equals(other._introduction, _introduction)&&const DeepCollectionEquality().equals(other._blocksByChapter, _blocksByChapter));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_introduction),const DeepCollectionEquality().hash(_blocksByChapter));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_summary),const DeepCollectionEquality().hash(_introduction),const DeepCollectionEquality().hash(_blocksByChapter));
 
 @override
 String toString() {
-  return 'CommentaryBook(introduction: $introduction, blocksByChapter: $blocksByChapter)';
+  return 'CommentaryBook(summary: $summary, introduction: $introduction, blocksByChapter: $blocksByChapter)';
 }
 
 
@@ -256,7 +264,7 @@ abstract mixin class _$CommentaryBookCopyWith<$Res> implements $CommentaryBookCo
   factory _$CommentaryBookCopyWith(_CommentaryBook value, $Res Function(_CommentaryBook) _then) = __$CommentaryBookCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'i') List<CommentaryContent> introduction,@JsonKey(name: 'c') Map<int, List<CommentaryBlock>> blocksByChapter
+@IgnoreIfEmpty(name: 's') List<CommentaryContent> summary,@IgnoreIfEmpty(name: 'i') List<CommentaryContent> introduction,@JsonKey(name: 'c') Map<int, List<CommentaryBlock>> blocksByChapter
 });
 
 
@@ -273,9 +281,10 @@ class __$CommentaryBookCopyWithImpl<$Res>
 
 /// Create a copy of CommentaryBook
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? introduction = null,Object? blocksByChapter = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? summary = null,Object? introduction = null,Object? blocksByChapter = null,}) {
   return _then(_CommentaryBook(
-introduction: null == introduction ? _self._introduction : introduction // ignore: cast_nullable_to_non_nullable
+summary: null == summary ? _self._summary : summary // ignore: cast_nullable_to_non_nullable
+as List<CommentaryContent>,introduction: null == introduction ? _self._introduction : introduction // ignore: cast_nullable_to_non_nullable
 as List<CommentaryContent>,blocksByChapter: null == blocksByChapter ? _self._blocksByChapter : blocksByChapter // ignore: cast_nullable_to_non_nullable
 as Map<int, List<CommentaryBlock>>,
   ));

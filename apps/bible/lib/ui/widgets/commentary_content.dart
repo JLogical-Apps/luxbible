@@ -6,27 +6,35 @@ import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:style/style.dart';
 
-class CommentaryIntroductionView extends StatelessWidget {
+class CommentaryBookSectionView extends StatelessWidget {
   final BookType book;
+  final CommentaryBookSection section;
   final List<CommentaryContent> content;
   final Function(VerseSelection) onNavigateToVerseSelection;
   final Widget? trailing;
 
-  const CommentaryIntroductionView({
+  const CommentaryBookSectionView({
     super.key,
     required this.book,
+    required this.section,
     required this.content,
     required this.onNavigateToVerseSelection,
     this.trailing,
   });
 
   @override
-  Widget build(BuildContext context) => CommentarySectionContainer(
-    title: t.commentaryUi.introTo(book: book.title(isPlural: true)),
-    content: content,
-    onNavigateToVerseSelection: onNavigateToVerseSelection,
-    trailing: trailing,
-  );
+  Widget build(BuildContext context) {
+    final bookTitle = book.title(isPlural: true);
+    return CommentarySectionContainer(
+      title: switch (section) {
+        .summary => t.commentaryUi.atAGlance(book: bookTitle),
+        .introduction => t.commentaryUi.introTo(book: bookTitle),
+      },
+      content: content,
+      onNavigateToVerseSelection: onNavigateToVerseSelection,
+      trailing: trailing,
+    );
+  }
 }
 
 class CommentaryBlockView extends StatelessWidget {

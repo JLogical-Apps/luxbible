@@ -758,6 +758,7 @@
     "unavailable": "{translation} bevat deze selectie niet."
   },
   "commentaryUi": {
+    "atAGlance": "{book} in één oogopslag",
     "introTo": "Inleiding tot {book}",
     "chapterOutline": "Hoofdstukoverzicht",
     "previousSection": "Vorige sectie",

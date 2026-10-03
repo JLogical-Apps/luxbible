@@ -1094,6 +1094,7 @@ class _Translations$commentaryUi$ru extends Translations$commentaryUi$en {
 	final TranslationsRu _root; // ignore: unused_field
 
 	// Translations
+	@override String atAGlance({required Object book}) => 'Кратко: ${book}';
 	@override String introTo({required Object book}) => 'Знакомство с ${book}';
 	@override String get chapterOutline => 'План главы';
 	@override String get previousSection => 'Предыдущий раздел';
@@ -3668,6 +3669,7 @@ extension on TranslationsRu {
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => '${translation} нумерует главы и стихи иначе, чем в большинстве английских переводов.\n\nТекст, показанный здесь в ${reference}, взят из ${originalReference} в ${translation} и переназначен, чтобы соответствовать другим переводам.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} не включает этот выбор.',
+			'commentaryUi.atAGlance' => ({required Object book}) => 'Кратко: ${book}',
 			'commentaryUi.introTo' => ({required Object book}) => 'Знакомство с ${book}',
 			'commentaryUi.chapterOutline' => 'План главы',
 			'commentaryUi.previousSection' => 'Предыдущий раздел',
@@ -4036,9 +4038,9 @@ extension on TranslationsRu {
 			'morphology.hebrewMood.jussive.examples' => 'Да будет свет|Да благословит тебя Господь',
 			'morphology.hebrewMood.cohortative.name' => 'когортативный',
 			'morphology.hebrewMood.cohortative.description' => 'Волевой глагол от 1-го лица, например «давайте» или «я буду».',
-			'morphology.hebrewMood.cohortative.examples' => 'Пойдём|Я похвалю',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.hebrewMood.cohortative.examples' => 'Пойдём|Я похвалю',
 			'morphology.hebrewMood.hSuffix.name' => 'h-суффикс',
 			'morphology.hebrewMood.hSuffix.description' => 'Упорное -ah, оканчивающееся на несовершенном, часто похожем на когортативное.',
 			'morphology.hebrewMood.hSuffix.examples' => 'Я обязательно приду|позволь мне приблизиться',

@@ -10,11 +10,17 @@ sealed class CommentaryBook with _$CommentaryBook {
   const CommentaryBook._();
 
   const factory CommentaryBook({
-    @JsonKey(name: 'i') @Default([]) List<CommentaryContent> introduction,
+    @IgnoreIfEmpty(name: 's') @Default([]) List<CommentaryContent> summary,
+    @IgnoreIfEmpty(name: 'i') @Default([]) List<CommentaryContent> introduction,
     @JsonKey(name: 'c') @Default({}) Map<int, List<CommentaryBlock>> blocksByChapter,
   }) = _CommentaryBook;
 
   factory CommentaryBook.fromJson(Map<String, dynamic> json) => _$CommentaryBookFromJson(json);
+
+  Map<CommentaryBookSection, List<CommentaryContent>> get contentByBookSection => {
+    if (summary.isNotEmpty) .summary: summary,
+    if (introduction.isNotEmpty) .introduction: introduction,
+  };
 
   List<CommentaryBlock> getBlocksFor(VerseSelection verseSelection) => verseSelection.references
       .groupListsBy((reference) => reference.chapterNum)
@@ -29,6 +35,8 @@ sealed class CommentaryBook with _$CommentaryBook {
       )
       .toList();
 }
+
+enum CommentaryBookSection { summary, introduction }
 
 @Freezed(unionKey: 'r')
 sealed class CommentaryBlock with _$CommentaryBlock {
