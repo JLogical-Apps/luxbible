@@ -3,7 +3,8 @@ import 'package:lux/lux.dart';
 
 enum Migration {
   renamedBiblePlans,
-  anonymousAnalytics;
+  anonymousAnalytics,
+  addedTyndaleCommentary;
 
   User migrate(User user) => switch (this) {
     renamedBiblePlans =>
@@ -11,5 +12,9 @@ enum Migration {
           ? user.withMessage(.renamedBiblePlans)
           : user,
     anonymousAnalytics => user.withMessage(.anonymousAnalytics),
+    addedTyndaleCommentary => switch (user.commentaries) {
+      final commentaries? when !commentaries.has(.tyndale) => user.copyWith(commentaries: [...commentaries, .tyndale]),
+      _ => user,
+    },
   };
 }

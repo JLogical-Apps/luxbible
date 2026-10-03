@@ -2454,6 +2454,9 @@ class Translations$commentaryTypes$en {
 
 	// Translations
 
+	/// en: 'Verse-by-verse study notes on the whole Bible, written for the New Living Translation (NLT). Clear, scholarly, and practical.'
+	String get tyndaleDescription => 'Verse-by-verse study notes on the whole Bible, written for the New Living Translation (NLT). Clear, scholarly, and practical.';
+
 	/// en: 'A concise, devotional commentary on the whole Bible from the Puritan tradition. Warm, practical, and easy to read.'
 	String get matthewHenryDescription => 'A concise, devotional commentary on the whole Bible from the Puritan tradition. Warm, practical, and easy to read.';
 
@@ -5927,6 +5930,7 @@ extension on Translations {
 			'toolbarPresets.readerDescription' => 'Tuned for distraction-free reading and quick navigation.',
 			'toolbarPresets.noteTakerDescription' => 'Tuned for highlighting and taking notes.',
 			'toolbarPresets.studierDescription' => 'Tuned for cross-references, commentary, and deep study.',
+			'commentaryTypes.tyndaleDescription' => 'Verse-by-verse study notes on the whole Bible, written for the New Living Translation (NLT). Clear, scholarly, and practical.',
 			'commentaryTypes.matthewHenryDescription' => 'A concise, devotional commentary on the whole Bible from the Puritan tradition. Warm, practical, and easy to read.',
 			'commentaryTypes.jamiesonFaussetBrownDescription' => 'A compact, verse-by-verse commentary on the whole Bible. Balanced and accessible.',
 			'commentaryTypes.calvinDescription' => 'The Reformer\'s classic exposition. Deep and doctrinal.',
@@ -6268,9 +6272,9 @@ extension on Translations {
 			'morphology.hebrewMood.cohortative.examples' => 'Let us go|I will praise',
 			'morphology.hebrewMood.hSuffix.name' => 'h-suffix',
 			'morphology.hebrewMood.hSuffix.description' => 'An emphatic -ah ending on the imperfect, often cohortative-like.',
-			'morphology.hebrewMood.hSuffix.examples' => 'I will surely come|let me draw near',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.hebrewMood.hSuffix.examples' => 'I will surely come|let me draw near',
 			'morphology.tense.present.name' => 'Present',
 			'morphology.tense.present.description' => 'Ongoing or general action.',
 			'morphology.tense.present.examples' => 'he loves|they walk',

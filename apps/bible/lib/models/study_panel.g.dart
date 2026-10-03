@@ -83,6 +83,7 @@ Map<String, dynamic> _$CommentaryStudyPanelToJson(
 };
 
 const _$CommentaryTypeEnumMap = {
+  CommentaryType.tyndale: 'tyndale',
   CommentaryType.matthewHenry: 'matthewHenry',
   CommentaryType.jamiesonFaussetBrown: 'jamiesonFaussetBrown',
   CommentaryType.calvin: 'calvin',

@@ -1159,6 +1159,7 @@ class _Translations$commentaryTypes$ru extends Translations$commentaryTypes$en {
 	final TranslationsRu _root; // ignore: unused_field
 
 	// Translations
+	@override String get tyndaleDescription => 'Пояснения к стихам всей Библии для изучения, написанные для New Living Translation (NLT). Ясные, научные и практичные.';
 	@override String get matthewHenryDescription => 'Краткий, религиозный комментарий ко всей Библии пуританской традиции. Теплый, практичный и легко читаемый.';
 	@override String get jamiesonFaussetBrownDescription => 'Компактный, поэтапный комментарий ко всей Библии. Сбалансированный и доступный.';
 	@override String get calvinDescription => 'Классическое изложение реформатора. Глубокий и доктринальный.';
@@ -3696,6 +3697,7 @@ extension on TranslationsRu {
 			'toolbarPresets.readerDescription' => 'Настроен для чтения без отвлекающих факторов и быстрой навигации.',
 			'toolbarPresets.noteTakerDescription' => 'Настроен для выделения и создания заметок.',
 			'toolbarPresets.studierDescription' => 'Настроен на перекрестные ссылки, комментарии и глубокое изучение.',
+			'commentaryTypes.tyndaleDescription' => 'Пояснения к стихам всей Библии для изучения, написанные для New Living Translation (NLT). Ясные, научные и практичные.',
 			'commentaryTypes.matthewHenryDescription' => 'Краткий, религиозный комментарий ко всей Библии пуританской традиции. Теплый, практичный и легко читаемый.',
 			'commentaryTypes.jamiesonFaussetBrownDescription' => 'Компактный, поэтапный комментарий ко всей Библии. Сбалансированный и доступный.',
 			'commentaryTypes.calvinDescription' => 'Классическое изложение реформатора. Глубокий и доктринальный.',
@@ -4035,9 +4037,9 @@ extension on TranslationsRu {
 			'morphology.hebrewMood.cohortative.name' => 'когортативный',
 			'morphology.hebrewMood.cohortative.description' => 'Волевой глагол от 1-го лица, например «давайте» или «я буду».',
 			'morphology.hebrewMood.cohortative.examples' => 'Пойдём|Я похвалю',
-			'morphology.hebrewMood.hSuffix.name' => 'h-суффикс',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.hebrewMood.hSuffix.name' => 'h-суффикс',
 			'morphology.hebrewMood.hSuffix.description' => 'Упорное -ah, оканчивающееся на несовершенном, часто похожем на когортативное.',
 			'morphology.hebrewMood.hSuffix.examples' => 'Я обязательно приду|позволь мне приблизиться',
 			'morphology.tense.present.name' => 'Настоящее',

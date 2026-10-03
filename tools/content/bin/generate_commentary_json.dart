@@ -1,20 +1,17 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bible/models/commentary.dart';
 import 'package:bible/models/commentary_type.dart';
 import 'package:collection/collection.dart';
 import 'package:lux/lux_core.dart';
 import 'package:lux_content_tools/repository_paths.dart';
+import 'package:lux_content_tools/tyndale_commentary.dart';
 import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
 
 void main() {
   for (final source in CommentaryType.values) {
-    final commentaryByBook = source.inputs
-        .map((path) => _extractCommentary(XmlDocument.parse(File(path).readAsStringSync()), source))
-        .reduce(_mergeCommentaries);
-
+    final commentaryByBook = source.extract();
     final directory = appAssetDirectory('commentary/${source.output}', app: .bible)..createSync(recursive: true);
     for (final book in BookType.values) {
       (directory - '${book.usxCode()}.json').writeAsStringSync(
@@ -66,6 +63,7 @@ Map<BookType, CommentaryBook> _extractCommentary(XmlDocument doc, CommentaryType
             (argument) => MapEntry(_bookOf(argument.parent), _introContent(argument.childElements, sourceStyles)),
           )
           .withoutNullKeys,
+    .tyndale => throw UnsupportedError('Tyndale is extracted by extractTyndaleCommentary.'),
   };
 
   final blocksByChapter = <ChapterReference, List<CommentaryBlock>>{};
@@ -354,14 +352,17 @@ extension on CommentaryType {
     .matthewHenry => 'matthew_henry',
     .jamiesonFaussetBrown => 'jamieson_fausset_brown',
     .calvin => 'calvin',
+    .tyndale => 'tyndale',
   };
 
-  List<String> get inputs => switch (this) {
-    .matthewHenry => [sourceFile('commentary/matthew_henry.xml').path],
-    .jamiesonFaussetBrown => [sourceFile('commentary/jfb.xml').path],
-    .calvin => Range.generate(
-      1,
-      45,
-    ).map((i) => sourceFile('commentary/calvin/calcom${i.toString().padLeft(2, '0')}.xml').path).toList(),
+  Map<BookType, CommentaryBook> extract() => switch (this) {
+    .matthewHenry => extractFrom(['matthew_henry.xml']),
+    .jamiesonFaussetBrown => extractFrom(['jfb.xml']),
+    .calvin => extractFrom(Range.generate(1, 45).map((i) => 'calvin/calcom${i.toString().padLeft(2, '0')}.xml')),
+    .tyndale => extractTyndaleCommentary(),
   };
+
+  Map<BookType, CommentaryBook> extractFrom(Iterable<String> paths) => paths
+      .map((path) => _extractCommentary(XmlDocument.parse(sourceFile('commentary/$path').readAsStringSync()), this))
+      .reduce(_mergeCommentaries);
 }

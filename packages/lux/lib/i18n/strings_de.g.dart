@@ -1147,6 +1147,7 @@ class _Translations$commentaryTypes$de extends Translations$commentaryTypes$en {
 	final TranslationsDe _root; // ignore: unused_field
 
 	// Translations
+	@override String get tyndaleDescription => 'Vers-für-Vers-Studienanmerkungen zur ganzen Bibel, verfasst für die New Living Translation (NLT). Klar, fundiert und praxisnah.';
 	@override String get matthewHenryDescription => 'Ein knapper, erbaulicher Kommentar zur ganzen Bibel aus der puritanischen Tradition. Warmherzig, praktisch und leicht zu lesen.';
 	@override String get jamiesonFaussetBrownDescription => 'Ein kompakter Vers-für-Vers-Kommentar zur ganzen Bibel. Ausgewogen und zugänglich.';
 	@override String get calvinDescription => 'Die klassische Auslegung des Reformators. Tiefgründig und lehrmäßig.';
@@ -3680,6 +3681,7 @@ extension on TranslationsDe {
 			'toolbarPresets.readerDescription' => 'Abgestimmt auf ungestörtes Lesen und schnelle Navigation.',
 			'toolbarPresets.noteTakerDescription' => 'Abgestimmt auf Markieren und Notizen.',
 			'toolbarPresets.studierDescription' => 'Abgestimmt auf Querverweise, Kommentare und tiefes Studium.',
+			'commentaryTypes.tyndaleDescription' => 'Vers-für-Vers-Studienanmerkungen zur ganzen Bibel, verfasst für die New Living Translation (NLT). Klar, fundiert und praxisnah.',
 			'commentaryTypes.matthewHenryDescription' => 'Ein knapper, erbaulicher Kommentar zur ganzen Bibel aus der puritanischen Tradition. Warmherzig, praktisch und leicht zu lesen.',
 			'commentaryTypes.jamiesonFaussetBrownDescription' => 'Ein kompakter Vers-für-Vers-Kommentar zur ganzen Bibel. Ausgewogen und zugänglich.',
 			'commentaryTypes.calvinDescription' => 'Die klassische Auslegung des Reformators. Tiefgründig und lehrmäßig.',
@@ -4021,9 +4023,9 @@ extension on TranslationsDe {
 			'morphology.hebrewMood.cohortative.examples' => 'Lasst uns gehen|Ich will loben',
 			'morphology.hebrewMood.hSuffix.name' => 'h-Suffix',
 			'morphology.hebrewMood.hSuffix.description' => 'Eine betonte Endung -ah am Imperfekt, oft ähnlich dem Kohortativ.',
-			'morphology.hebrewMood.hSuffix.examples' => 'ich will gewiss kommen|lass mich nahen',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.hebrewMood.hSuffix.examples' => 'ich will gewiss kommen|lass mich nahen',
 			'morphology.tense.present.name' => 'Präsens',
 			'morphology.tense.present.description' => 'Andauernde oder allgemeine Handlung.',
 			'morphology.tense.present.examples' => 'er liebt|sie gehen',

@@ -1149,6 +1149,7 @@ class _Translations$commentaryTypes$nl extends Translations$commentaryTypes$en {
 	final TranslationsNl _root; // ignore: unused_field
 
 	// Translations
+	@override String get tyndaleDescription => 'Vers-voor-versstudienotities bij de hele Bijbel, geschreven voor de New Living Translation (NLT). Helder, wetenschappelijk en praktisch.';
 	@override String get matthewHenryDescription => 'Een beknopt, devoot commentaar op de hele Bijbel vanuit de puriteinse traditie. Warm, praktisch en toegankelijk.';
 	@override String get jamiesonFaussetBrownDescription => 'Een compact vers-voor-verscommentaar op de hele Bijbel. Evenwichtig en toegankelijk.';
 	@override String get calvinDescription => 'De klassieke uiteenzetting van de reformator. Diepgaand en leerstellig.';
@@ -3684,6 +3685,7 @@ extension on TranslationsNl {
 			'toolbarPresets.readerDescription' => 'Afgestemd op ongestoord lezen en snel navigeren.',
 			'toolbarPresets.noteTakerDescription' => 'Afgestemd op markeren en notities maken.',
 			'toolbarPresets.studierDescription' => 'Afgestemd op kruisverwijzingen, commentaren en diepgaande studie.',
+			'commentaryTypes.tyndaleDescription' => 'Vers-voor-versstudienotities bij de hele Bijbel, geschreven voor de New Living Translation (NLT). Helder, wetenschappelijk en praktisch.',
 			'commentaryTypes.matthewHenryDescription' => 'Een beknopt, devoot commentaar op de hele Bijbel vanuit de puriteinse traditie. Warm, praktisch en toegankelijk.',
 			'commentaryTypes.jamiesonFaussetBrownDescription' => 'Een compact vers-voor-verscommentaar op de hele Bijbel. Evenwichtig en toegankelijk.',
 			'commentaryTypes.calvinDescription' => 'De klassieke uiteenzetting van de reformator. Diepgaand en leerstellig.',
@@ -4023,9 +4025,9 @@ extension on TranslationsNl {
 			'morphology.hebrewMood.cohortative.name' => 'Cohortatief',
 			'morphology.hebrewMood.cohortative.description' => 'Een wilsvorm in de 1e persoon, zoals "laten wij" of "ik zal".',
 			'morphology.hebrewMood.cohortative.examples' => 'Laten wij gaan|Ik zal prijzen',
-			'morphology.hebrewMood.hSuffix.name' => 'h-achtervoegsel',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.hebrewMood.hSuffix.name' => 'h-achtervoegsel',
 			'morphology.hebrewMood.hSuffix.description' => 'Een nadrukkelijke uitgang -ah bij het imperfectum, vaak cohortatief van aard.',
 			'morphology.hebrewMood.hSuffix.examples' => 'Ik zal zeker komen|laat mij naderen',
 			'morphology.tense.present.name' => 'Praesens',

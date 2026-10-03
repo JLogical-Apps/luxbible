@@ -273,6 +273,7 @@ const _$BibleTranslationEnumMap = {
 };
 
 const _$CommentaryTypeEnumMap = {
+  CommentaryType.tyndale: 'tyndale',
   CommentaryType.matthewHenry: 'matthewHenry',
   CommentaryType.jamiesonFaussetBrown: 'jamiesonFaussetBrown',
   CommentaryType.calvin: 'calvin',
@@ -314,6 +315,7 @@ $Rec _$recordConvert<$Rec>(Object? value, $Rec Function(Map) convert) =>
 const _$MigrationEnumMap = {
   Migration.renamedBiblePlans: 'renamedBiblePlans',
   Migration.anonymousAnalytics: 'anonymousAnalytics',
+  Migration.addedTyndaleCommentary: 'addedTyndaleCommentary',
 };
 
 const _$MessageEnumMap = {

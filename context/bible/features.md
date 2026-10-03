@@ -316,12 +316,16 @@ When a non-study Bible is active, chapter and verse interlinear use the user's m
 
 Lux bundles:
 
+- Tyndale Open Study Notes (first in the default order; written for the NLT, which its description says)
 - Matthew Henry
 - John Calvin
 - Jamieson-Fausset-Brown
 
 Commentary can be opened for a chapter or verse selection. It also includes available book introductions, including
-Calvin's book-level Argument material.
+Tyndale's book introductions and Calvin's book-level Argument material.
+Tyndale's verse notes can cover a verse or a passage, and a passage note is listed before the notes inside it. A note
+that covers a wider passage than its heading shows keeps that passage as a short italic line above its text.
+Existing users with a saved commentary list get Tyndale added at the end.
 Matthew Henry includes its available chapter outlines before the verse commentary.
 Commentary formatting preserves source distinctions such as headings, quotations, poetry, attribution lines, and
 tables. Selecting an item in a chapter outline scrolls both the commentary and Bible directly to that passage.

@@ -15,6 +15,7 @@ class CommentaryImporter {
 
 extension on CommentaryType {
   String get assetName => switch (this) {
+    .tyndale => 'tyndale',
     .matthewHenry => 'matthew_henry',
     .jamiesonFaussetBrown => 'jamieson_fausset_brown',
     .calvin => 'calvin',

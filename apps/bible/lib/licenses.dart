@@ -251,6 +251,20 @@ Source: https://github.com/openscriptures/morphhb''',
     );
 
     yield const LicenseEntryWithLineBreaks(
+      ['Tyndale Open Study Notes'],
+      '''
+Tyndale Open Study Notes. Copyright © 2022 Tyndale House Publishers.
+
+Licensed under Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0): https://creativecommons.org/licenses/by-sa/4.0/
+
+Adapted from Tyndale Open Study Notes. The original work by Tyndale House Publishers is available for free at http://www.tyndaleopenresources.com.
+
+Changes made by Lux: the study notes and book introductions were converted into Lux's bundled commentary format, with bullet-separated points split into paragraphs. Printed reference labels that repeat the section heading were removed, malformed scripture links were repaired, links to content not included in Lux were removed, and a few verse numbers were aligned with Lux's versification.
+
+Source: http://www.tyndaleopenresources.com''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
       ["Matthew Henry's Commentary"],
       '''
 Matthew Henry's Commentary on the Whole Bible.
