@@ -84,6 +84,7 @@ class TranslationsNl extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$planTypes$nl planTypes = _Translations$planTypes$nl._(_root);
 	@override late final _Translations$onboardingSteps$nl onboardingSteps = _Translations$onboardingSteps$nl._(_root);
 	@override late final _Translations$dictionary$nl dictionary = _Translations$dictionary$nl._(_root);
+	@override late final _Translations$articles$nl articles = _Translations$articles$nl._(_root);
 	@override late final _Translations$navigation$nl navigation = _Translations$navigation$nl._(_root);
 	@override late final _Translations$bibleSheet$nl bibleSheet = _Translations$bibleSheet$nl._(_root);
 	@override late final _Translations$passageSelection$nl passageSelection = _Translations$passageSelection$nl._(_root);
@@ -339,7 +340,7 @@ class _Translations$mainActions$nl extends Translations$mainActions$en {
 	@override String get verseOfTheDayUnavailable => 'Het vers van vandaag kan niet worden geladen.';
 	@override String get studyPanelDescription => 'Zet een paneel naast de tekst vast dat meeloopt en studiehulpmiddelen toont voor wat je leest.';
 	@override String get searchDescription => 'Zoek naar woorden in de Bijbel.';
-	@override String get resourcesDescription => 'Zoek woorden op in het woordenboek en lexicon.';
+	@override String get resourcesDescription => 'Ontdek studiebronnen zoals het woordenboek, het lexicon, personen en thema\'s.';
 	@override String get plansDescription => 'Lees de Bijbel met begeleide leesplannen.';
 	@override String get settingsDescription => 'Bekijk de instellingen van Lux.';
 	@override String get moreDescription => 'Bekijk instellingen, je inhoud en links naar de community.';
@@ -382,11 +383,14 @@ class _Translations$studyActions$nl extends Translations$studyActions$en {
 	@override String get interlinear => 'Interlineair';
 	@override String get commentary => 'Commentaar';
 	@override String get crossReferences => 'Kruisverwijzingen';
+	@override String get linkedResources => 'Gekoppelde bronnen';
 	@override String compareDescription({required Object region}) => 'Vergelijk ${region} in verschillende vertalingen.';
 	@override String interlinearDescription({required Object region}) => 'Bekijk een lexicale analyse van ${region} met Strong-coderingen.';
 	@override String commentaryDescription({required Object region}) => 'Bekijk commentaren op ${region}.';
 	@override String crossReferencesDescription({required Object region}) => 'Bekijk kruisverwijzingen voor ${region}.';
+	@override String linkedResourcesDescription({required Object region}) => 'Bekijk personen en thema\'s die bij ${region} horen.';
 	@override String get noCrossReferences => 'Geen kruisverwijzingen gevonden';
+	@override String get noLinkedResources => 'Geen gekoppelde bronnen gevonden';
 	@override String crossReferencesUse({required Object translation}) => 'Kruisverwijzingen gebruiken ${translation}';
 	@override String get onlineCrossReferencesExplanation => 'Omdat de geselecteerde vertaling alleen online beschikbaar is, worden kruisverwijzingen getoond met de meest recent gebruikte studiebijbel om prestaties en kosten te besparen. Overal elders in de app wordt de geselecteerde vertaling gebruikt.';
 }
@@ -498,6 +502,8 @@ class _Translations$toolbarShortcuts$nl extends Translations$toolbarShortcuts$en
 	@override String get switchBibleDescription => 'Wissel van Bijbelvertaling.';
 	@override String get dictionaryDescription => 'Zoek personen, plaatsen en onderwerpen op in Easton\'s Bible Dictionary.';
 	@override String get lexiconDescription => 'Bestudeer de oorspronkelijke Hebreeuwse en Griekse woorden met Strong\'s Lexicon.';
+	@override String get peopleDescription => 'Lees profielen van personen uit de Bijbel.';
+	@override String get themesDescription => 'Lees artikelen over belangrijke thema\'s in de Bijbel.';
 	@override String get themeAndLayoutDescription => 'Pas het thema en de indeling van de Bijbel aan.';
 }
 
@@ -547,6 +553,7 @@ class _Translations$labels$nl extends Translations$labels$en {
 	@override String get notebooks => 'Notitieboeken';
 	@override String get notes => 'Notities';
 	@override String get paragraphs => 'Alinea\'s';
+	@override String get people => 'Personen';
 	@override String get resources => 'Bronnen';
 	@override String get scope => 'Bereik';
 	@override String get search => 'Zoeken';
@@ -556,6 +563,7 @@ class _Translations$labels$nl extends Translations$labels$en {
 	@override String get study => 'Studie';
 	@override String get style => 'Stijl';
 	@override String get text => 'Tekst';
+	@override String get themes => 'Thema\'s';
 	@override String get toolbar => 'Werkbalk';
 	@override String get toolbars => 'Werkbalken';
 	@override String get type => 'Type';
@@ -1264,6 +1272,20 @@ class _Translations$dictionary$nl extends Translations$dictionary$en {
 
 	// Translations
 	@override String get eastons => 'Easton\'s Bible Dictionary';
+}
+
+// Path: articles
+class _Translations$articles$nl extends Translations$articles$en {
+	_Translations$articles$nl._(TranslationsNl root) : this._root = root, super.internal(root);
+
+	final TranslationsNl _root; // ignore: unused_field
+
+	// Translations
+	@override String get personHint => 'Zoek naar een persoon';
+	@override String get themeHint => 'Zoek naar een thema';
+	@override String get noMatchingPeople => 'Geen overeenkomende personen';
+	@override String get noMatchingThemes => 'Geen overeenkomende thema\'s';
+	@override String get passagesForFurtherStudy => 'Passages voor verdere studie';
 }
 
 // Path: navigation
@@ -3167,7 +3189,7 @@ extension on TranslationsNl {
 			'mainActions.verseOfTheDayUnavailable' => 'Het vers van vandaag kan niet worden geladen.',
 			'mainActions.studyPanelDescription' => 'Zet een paneel naast de tekst vast dat meeloopt en studiehulpmiddelen toont voor wat je leest.',
 			'mainActions.searchDescription' => 'Zoek naar woorden in de Bijbel.',
-			'mainActions.resourcesDescription' => 'Zoek woorden op in het woordenboek en lexicon.',
+			'mainActions.resourcesDescription' => 'Ontdek studiebronnen zoals het woordenboek, het lexicon, personen en thema\'s.',
 			'mainActions.plansDescription' => 'Lees de Bijbel met begeleide leesplannen.',
 			'mainActions.settingsDescription' => 'Bekijk de instellingen van Lux.',
 			'mainActions.moreDescription' => 'Bekijk instellingen, je inhoud en links naar de community.',
@@ -3192,11 +3214,14 @@ extension on TranslationsNl {
 			'studyActions.interlinear' => 'Interlineair',
 			'studyActions.commentary' => 'Commentaar',
 			'studyActions.crossReferences' => 'Kruisverwijzingen',
+			'studyActions.linkedResources' => 'Gekoppelde bronnen',
 			'studyActions.compareDescription' => ({required Object region}) => 'Vergelijk ${region} in verschillende vertalingen.',
 			'studyActions.interlinearDescription' => ({required Object region}) => 'Bekijk een lexicale analyse van ${region} met Strong-coderingen.',
 			'studyActions.commentaryDescription' => ({required Object region}) => 'Bekijk commentaren op ${region}.',
 			'studyActions.crossReferencesDescription' => ({required Object region}) => 'Bekijk kruisverwijzingen voor ${region}.',
+			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Bekijk personen en thema\'s die bij ${region} horen.',
 			'studyActions.noCrossReferences' => 'Geen kruisverwijzingen gevonden',
+			'studyActions.noLinkedResources' => 'Geen gekoppelde bronnen gevonden',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Kruisverwijzingen gebruiken ${translation}',
 			'studyActions.onlineCrossReferencesExplanation' => 'Omdat de geselecteerde vertaling alleen online beschikbaar is, worden kruisverwijzingen getoond met de meest recent gebruikte studiebijbel om prestaties en kosten te besparen. Overal elders in de app wordt de geselecteerde vertaling gebruikt.',
 			'selectionActions.annotate' => 'Annoteren',
@@ -3254,6 +3279,8 @@ extension on TranslationsNl {
 			'toolbarShortcuts.switchBibleDescription' => 'Wissel van Bijbelvertaling.',
 			'toolbarShortcuts.dictionaryDescription' => 'Zoek personen, plaatsen en onderwerpen op in Easton\'s Bible Dictionary.',
 			'toolbarShortcuts.lexiconDescription' => 'Bestudeer de oorspronkelijke Hebreeuwse en Griekse woorden met Strong\'s Lexicon.',
+			'toolbarShortcuts.peopleDescription' => 'Lees profielen van personen uit de Bijbel.',
+			'toolbarShortcuts.themesDescription' => 'Lees artikelen over belangrijke thema\'s in de Bijbel.',
 			'toolbarShortcuts.themeAndLayoutDescription' => 'Pas het thema en de indeling van de Bijbel aan.',
 			'labels.about' => 'Over',
 			'labels.annotation' => 'Annotatie',
@@ -3294,6 +3321,7 @@ extension on TranslationsNl {
 			'labels.notebooks' => 'Notitieboeken',
 			'labels.notes' => 'Notities',
 			'labels.paragraphs' => 'Alinea\'s',
+			'labels.people' => 'Personen',
 			'labels.resources' => 'Bronnen',
 			'labels.scope' => 'Bereik',
 			'labels.search' => 'Zoeken',
@@ -3303,6 +3331,7 @@ extension on TranslationsNl {
 			'labels.study' => 'Studie',
 			'labels.style' => 'Stijl',
 			'labels.text' => 'Tekst',
+			'labels.themes' => 'Thema\'s',
 			'labels.toolbar' => 'Werkbalk',
 			'labels.toolbars' => 'Werkbalken',
 			'labels.type' => 'Type',
@@ -3505,6 +3534,8 @@ extension on TranslationsNl {
 			'biblePlans.chooseBooks' => 'Boeken kiezen',
 			'biblePlans.filterBooks' => 'Boeken filteren',
 			'biblePlans.chooseDuration' => 'Duur kiezen',
+			_ => null,
+		} ?? switch (path) {
 			'biblePlans.durationInstructions' => 'Hoeveel dagen moet je leesplan duren?',
 			'biblePlans.durationDayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: '${count} dag', other: '${count} dagen', ), 
 			'biblePlans.generatedNames.twoBooks' => ({required Object first, required Object second}) => '${first} en ${second}',
@@ -3512,8 +3543,6 @@ extension on TranslationsNl {
 			'biblePlans.generatedNames.bible' => 'Bijbel',
 			'biblePlans.generatedNames.inOneDay' => ({required Object books}) => '${books} in 1 dag',
 			'biblePlans.generatedNames.inDays' => ({required Object books, required Object count}) => '${books} in ${count} dagen',
-			_ => null,
-		} ?? switch (path) {
 			'biblePlans.generatedNames.inAYear' => ({required Object books}) => '${books} in een jaar',
 			'biblePlans.nameAndColor' => 'Naam en kleur',
 			'biblePlans.review' => 'Leesplan controleren',
@@ -3765,6 +3794,11 @@ extension on TranslationsNl {
 			'onboardingSteps.customizeToolbarSuffix' => 'Werkbalken en kies een werkbalkpreset of wijzig een snelkoppeling',
 			'onboardingSteps.startPlanSuffix' => ' → Bijbelleesplannen en start een leesplan',
 			'dictionary.eastons' => 'Easton\'s Bible Dictionary',
+			'articles.personHint' => 'Zoek naar een persoon',
+			'articles.themeHint' => 'Zoek naar een thema',
+			'articles.noMatchingPeople' => 'Geen overeenkomende personen',
+			'articles.noMatchingThemes' => 'Geen overeenkomende thema\'s',
+			'articles.passagesForFurtherStudy' => 'Passages voor verdere studie',
 			'navigation.recents' => 'Recent',
 			'navigation.navigate' => 'Navigeren',
 			'navigation.book' => 'Boek',
@@ -4014,6 +4048,8 @@ extension on TranslationsNl {
 			'morphology.aspect.consecutiveImperfect.examples' => 'en hij zei|en zij gingen',
 			'morphology.aspect.conjunctiveImperfect.name' => 'Conjunctief imperfectum',
 			'morphology.aspect.conjunctiveImperfect.description' => 'Imperfectum met conjunctieve waw, met een toekomstige of modale betekenis.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.aspect.conjunctiveImperfect.examples' => 'en hij zal schrijven',
 			'morphology.aspect.conjunctivePerfect.name' => 'Conjunctief perfectum',
 			'morphology.aspect.conjunctivePerfect.description' => 'Perfectum met conjunctieve waw, vaak toekomstig of opeenvolgend.',
@@ -4026,8 +4062,6 @@ extension on TranslationsNl {
 			'morphology.hebrewMood.jussive.examples' => 'Laat er licht zijn|Moge de HEER u zegenen',
 			'morphology.hebrewMood.cohortative.name' => 'Cohortatief',
 			'morphology.hebrewMood.cohortative.description' => 'Een wilsvorm in de 1e persoon, zoals "laten wij" of "ik zal".',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.hebrewMood.cohortative.examples' => 'Laten wij gaan|Ik zal prijzen',
 			'morphology.hebrewMood.hSuffix.name' => 'h-achtervoegsel',
 			'morphology.hebrewMood.hSuffix.description' => 'Een nadrukkelijke uitgang -ah bij het imperfectum, vaak cohortatief van aard.',

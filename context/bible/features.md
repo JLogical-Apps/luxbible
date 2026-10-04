@@ -218,6 +218,7 @@ The main toolbar appears when no Bible selection is active. Available shortcuts 
 - Interlinear
 - Commentary
 - Cross References
+- Linked Resources
 - Add Study Panel
 - Switch Bible
 - Search
@@ -240,6 +241,7 @@ The verse toolbar appears after one or more verses are selected. Available short
 - Interlinear
 - Commentary
 - Cross References
+- Linked Resources
 - Annotate
 - Highlight
 - Share
@@ -271,6 +273,7 @@ The Study action groups:
 - Interlinear
 - Commentary
 - Cross References
+- Linked Resources
 
 These tools can be opened as temporary bottom sheets. Supported tools can also be pinned into a persistent study panel.
 Temporary study sheets opened from the main Bible reader provide a pin action that closes the sheet and opens the
@@ -316,7 +319,7 @@ When a non-study Bible is active, chapter and verse interlinear use the user's m
 
 Lux bundles:
 
-- Tyndale Open Study Notes (first in the default order; written for the NLT, which its description says)
+- Tyndale Study Notes (first in the default order; written for the NLT, which its description says)
 - Matthew Henry
 - John Calvin
 - Jamieson-Fausset-Brown
@@ -353,6 +356,22 @@ Cross-references are powered by OpenBible data.
 - Cross-references can be pinned as a study panel
 
 When an online Bible is active, cross-reference previews use the user's study Bible to avoid repeated online requests.
+
+## Linked Resources
+
+Linked Resources lists the resources whose passages overlap a chapter or verse selection. It currently includes
+Tyndale Study Notes' people profiles and theme articles.
+
+- An item is linked when its main passage or any of its passages for further study overlaps the selection, including
+  passages that span several chapters
+- Results are grouped into People and Themes, and a group without results is hidden
+- Within a group, items whose overlapping passage is narrowest come first, then items are ordered by title
+- Each result shows its title and the start of its first paragraph
+- Tapping a result opens the full article, where Scripture links open passage previews. Its passages for further
+  study, starting with the article's main passage, show their reference and the first two lines of their text, and
+  each opens a passage preview. Like Cross References, they use the study Bible when an online Bible is active
+- A message appears when nothing is linked
+- Linked Resources can be pinned as a study panel
 
 ## Search
 
@@ -418,6 +437,20 @@ The Resources action opens:
 - Definitions, derivations, related words, and available verse usage
 - Scripture navigation from word usage
 
+### People
+
+- Tyndale Study Notes' profiles of people in the Bible
+- Alphabetical browsing
+- Search where each typed word matches the start of any word in a name, in any order
+- Each profile opens the same article view as Linked Resources
+
+### Themes
+
+- Tyndale Study Notes' theme articles
+- Alphabetical browsing
+- Search where each typed word matches the start of any word in a title, in any order
+- Each theme opens the same article view as Linked Resources
+
 The Dictionary and Lexicon are also available as independent main-toolbar shortcuts.
 
 ## Study Panels
@@ -435,6 +468,7 @@ Available panel types are:
 - Forward or reverse Interlinear
 - A selected Commentary
 - Cross References
+- Linked Resources
 - Notes from visible annotations
 
 Users can:

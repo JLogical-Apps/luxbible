@@ -1,3 +1,4 @@
+import 'package:bible/models/article_collection.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
@@ -9,6 +10,7 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/verse_of_the_day_provider.dart';
 import 'package:bible/services/analytics_service.dart';
 import 'package:bible/ui/flows/verse_of_the_day_reminder_flow.dart';
+import 'package:bible/ui/pages/articles_page.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:bible/ui/pages/dictionary_page.dart';
@@ -290,6 +292,8 @@ enum MainAction {
               }
             case .crossReferences:
               onAddStudyPanel(StudyPanel.crossReferences());
+            case .linkedResources:
+              onAddStudyPanel(StudyPanel.linkedResources());
             case .notes:
               onAddStudyPanel(StudyPanel.notes());
           }
@@ -300,7 +304,7 @@ enum MainAction {
           onNavigateToVerseSelection(result);
         }
       case resources:
-        final resource = await context.showStyledSheet<_Resource>(
+        final resourcePage = await context.showStyledSheet<StyledRoute<VerseSelection>>(
           (context, _) => StyledSheet(
             title: t.labels.resources.toText(),
             children: [
@@ -308,24 +312,29 @@ enum MainAction {
                 title: t.labels.dictionary.toText(),
                 subtitle: t.toolbarShortcuts.dictionaryDescription.toText(),
                 leading: Symbols.menu_book.toIcon(),
-                onPressed: () => context.pop(_Resource.dictionary),
+                onPressed: () => context.pop(DictionaryPage()),
               ),
               StyledListItem.navigation(
                 title: t.labels.lexicon.toText(),
                 subtitle: t.toolbarShortcuts.lexiconDescription.toText(),
                 leading: Symbols.translate.toIcon(),
-                onPressed: () => context.pop(_Resource.lexicon),
+                onPressed: () => context.pop(LexiconPage()),
+              ),
+              ...ArticleCollection.values.map(
+                (collection) => StyledListItem.navigation(
+                  title: collection.title().toText(),
+                  subtitle: collection.description().toText(),
+                  leading: collection.icon.toIcon(),
+                  onPressed: () => context.pop(ArticlesPage(collection: collection)),
+                ),
               ),
             ],
           ),
         );
-        if (resource == null || !context.mounted) {
+        if (resourcePage == null || !context.mounted) {
           return;
         }
-        final result = await switch (resource) {
-          _Resource.dictionary => context.push(DictionaryPage()),
-          _Resource.lexicon => context.push(LexiconPage()),
-        };
+        final result = await context.push(resourcePage);
         if (result != null) {
           onNavigateToVerseSelection(result);
         }
@@ -349,5 +358,3 @@ enum MainAction {
     }
   }
 }
-
-enum _Resource { dictionary, lexicon }

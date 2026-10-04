@@ -9,6 +9,7 @@ import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
 import 'package:bible/ui/sheets/cross_references_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_sheet.dart';
+import 'package:bible/ui/sheets/linked_resources_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:bible/ui/widgets/pin_study_panel_button.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -24,13 +25,15 @@ enum StudyAction {
   compare,
   interlinear,
   commentary,
-  crossReferences;
+  crossReferences,
+  linkedResources;
 
   String title() => switch (this) {
     compare => t.studyActions.compare,
     interlinear => t.studyActions.interlinear,
     commentary => t.studyActions.commentary,
     crossReferences => t.studyActions.crossReferences,
+    linkedResources => t.studyActions.linkedResources,
   };
 
   String description({required String? regionFormat, required RegionType regionType}) {
@@ -40,6 +43,7 @@ enum StudyAction {
       interlinear => t.studyActions.interlinearDescription(region: regionText),
       commentary => t.studyActions.commentaryDescription(region: regionText),
       crossReferences => t.studyActions.crossReferencesDescription(region: regionText),
+      linkedResources => t.studyActions.linkedResourcesDescription(region: regionText),
     };
   }
 
@@ -48,6 +52,7 @@ enum StudyAction {
     interlinear => Symbols.dictionary,
     commentary => Symbols.tooltip_2,
     crossReferences => Symbols.graph_4,
+    linkedResources => Symbols.link,
   };
 
   BibleTranslation? getTranslationOverride({required User user}) => switch (this) {
@@ -237,6 +242,22 @@ enum StudyAction {
             trailing: onAddStudyPanel != null
                 ? PinStudyPanelButton(studyPanel: .crossReferences(), onAddStudyPanel: onAddStudyPanel)
                 : null,
+          ),
+        );
+      case .linkedResources:
+        await context.showStyledSheet(
+          (context, _) => StyledSheet.builder(
+            title: title().toText(),
+            subtitle: regionFormat.toText(),
+            trailing: onAddStudyPanel == null
+                ? null
+                : PinStudyPanelButton(studyPanel: .linkedResources(), onAddStudyPanel: onAddStudyPanel),
+            childrenBuilder: (context, ref) => LinkedResourcesSheet.buildSheetChildren(
+              context,
+              ref,
+              verseSelection: verseSelection,
+              onNavigateToVerseSelection: onNavigateToVerseSelection,
+            ),
           ),
         );
     }

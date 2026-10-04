@@ -181,7 +181,7 @@
     "verseOfTheDayDescription": "View the verse of the day.",
     "studyPanelDescription": "Pin a panel beside the text that follows along and shows study tools for whatever you're reading.",
     "searchDescription": "Search for words across the Bible.",
-    "resourcesDescription": "Look up words in the dictionary and lexicon.",
+    "resourcesDescription": "Explore Bible study resources like the dictionary, lexicon, people, and themes.",
     "plansDescription": "Read through the Bible with guided reading plans.",
     "settingsDescription": "View the settings for Lux.",
     "moreDescription": "View settings, your content, and community links."
@@ -210,11 +210,14 @@
     "interlinear": "Interlinear",
     "commentary": "Commentary",
     "crossReferences": "Cross References",
+    "linkedResources": "Linked Resources",
     "compareDescription": "Compare {region} across a variety of translations.",
     "interlinearDescription": "View a lexical breakdown of {region} using Strong's.",
     "commentaryDescription": "View commentaries of {region}.",
     "crossReferencesDescription": "View cross references of {region}.",
+    "linkedResourcesDescription": "View people and themes linked to {region}.",
     "noCrossReferences": "No Cross References Found",
+    "noLinkedResources": "No Linked Resources Found",
     "crossReferencesUse": "Cross references use {translation}",
     "onlineCrossReferencesExplanation": "Because your selected translation is only available online, cross references are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app."
   },
@@ -284,6 +287,8 @@
     "switchBibleDescription": "Switch the Bible translation.",
     "dictionaryDescription": "Look up people, places, and topics in Easton's Bible Dictionary.",
     "lexiconDescription": "Study the original Hebrew and Greek words with Strong's Lexicon.",
+    "peopleDescription": "Read profiles of people in the Bible.",
+    "themesDescription": "Read articles on the Bible's major themes.",
     "themeAndLayoutDescription": "Customize the theme & layout of the Bible."
   },
   "labels": {
@@ -326,6 +331,7 @@
     "notebooks": "Notebooks",
     "notes": "Notes",
     "paragraphs": "Paragraphs",
+    "people": "People",
     "resources": "Resources",
     "scope": "Scope",
     "search": "Search",
@@ -335,6 +341,7 @@
     "study": "Study",
     "style": "Style",
     "text": "Text",
+    "themes": "Themes",
     "toolbar": "Toolbar",
     "toolbars": "Toolbars",
     "type": "Type",
@@ -880,6 +887,13 @@
   },
   "dictionary": {
     "eastons": "Easton's Bible Dictionary"
+  },
+  "articles": {
+    "personHint": "Search for a person",
+    "themeHint": "Search for a theme",
+    "noMatchingPeople": "No matching people",
+    "noMatchingThemes": "No matching themes",
+    "passagesForFurtherStudy": "Passages for Further Study"
   },
   "navigation": {
     "recents": "Recents",

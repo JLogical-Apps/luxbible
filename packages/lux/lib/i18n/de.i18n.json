@@ -181,7 +181,7 @@
     "verseOfTheDayDescription": "Den Vers des Tages anzeigen.",
     "studyPanelDescription": "Hefte ein Panel neben den Text, das mitläuft und Studienwerkzeuge für das zeigt, was du gerade liest.",
     "searchDescription": "Suche nach Wörtern in der ganzen Bibel.",
-    "resourcesDescription": "Schlage Wörter im Wörterbuch und im Lexikon nach.",
+    "resourcesDescription": "Entdecke Studienressourcen wie Wörterbuch, Lexikon, Personen und Themen.",
     "plansDescription": "Lies die Bibel mit geführten Leseplänen.",
     "settingsDescription": "Die Einstellungen von Lux anzeigen.",
     "moreDescription": "Einstellungen, deine Inhalte und Community-Links anzeigen."
@@ -210,11 +210,14 @@
     "interlinear": "Interlinear",
     "commentary": "Kommentar",
     "crossReferences": "Querverweise",
+    "linkedResources": "Verknüpfte Ressourcen",
     "compareDescription": "Vergleiche {region} in verschiedenen Übersetzungen.",
     "interlinearDescription": "Zeige eine lexikalische Aufschlüsselung für {region} mit Strong's.",
     "commentaryDescription": "Zeige Kommentare für {region}.",
     "crossReferencesDescription": "Zeige Querverweise für {region}.",
+    "linkedResourcesDescription": "Zeige verknüpfte Personen und Themen für {region}.",
     "noCrossReferences": "Keine Querverweise gefunden",
+    "noLinkedResources": "Keine verknüpften Ressourcen gefunden",
     "crossReferencesUse": "Querverweise aus {translation}",
     "onlineCrossReferencesExplanation": "Da deine gewählte Übersetzung nur online verfügbar ist, werden Querverweise mit der zuletzt verwendeten Studienbibel angezeigt, um Leistung und Kosten zu sparen. Überall sonst in der App wird deine gewählte Übersetzung verwendet."
   },
@@ -284,6 +287,8 @@
     "switchBibleDescription": "Die Bibelübersetzung wechseln.",
     "dictionaryDescription": "Schlage Personen, Orte und Themen in Easton's Bible Dictionary nach.",
     "lexiconDescription": "Studiere die hebräischen und griechischen Grundwörter mit dem Strong-Lexikon.",
+    "peopleDescription": "Lies Porträts biblischer Personen.",
+    "themesDescription": "Lies Artikel zu zentralen Themen der Bibel.",
     "themeAndLayoutDescription": "Passe Design & Layout der Bibel an."
   },
   "labels": {
@@ -326,6 +331,7 @@
     "notebooks": "Notizbücher",
     "notes": "Notizen",
     "paragraphs": "Absätze",
+    "people": "Personen",
     "resources": "Ressourcen",
     "scope": "Umfang",
     "search": "Suche",
@@ -335,6 +341,7 @@
     "study": "Studium",
     "style": "Stil",
     "text": "Text",
+    "themes": "Themen",
     "toolbar": "Symbolleiste",
     "toolbars": "Symbolleisten",
     "type": "Art",
@@ -880,6 +887,13 @@
   },
   "dictionary": {
     "eastons": "Easton's Bible Dictionary"
+  },
+  "articles": {
+    "personHint": "Nach einer Person suchen",
+    "themeHint": "Nach einem Thema suchen",
+    "noMatchingPeople": "Keine passenden Personen",
+    "noMatchingThemes": "Keine passenden Themen",
+    "passagesForFurtherStudy": "Stellen zum Weiterstudieren"
   },
   "navigation": {
     "recents": "Zuletzt",

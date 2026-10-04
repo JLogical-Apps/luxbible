@@ -80,6 +80,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$planTypes$en planTypes = Translations$planTypes$en.internal(_root);
 	late final Translations$onboardingSteps$en onboardingSteps = Translations$onboardingSteps$en.internal(_root);
 	late final Translations$dictionary$en dictionary = Translations$dictionary$en.internal(_root);
+	late final Translations$articles$en articles = Translations$articles$en.internal(_root);
 	late final Translations$navigation$en navigation = Translations$navigation$en.internal(_root);
 	late final Translations$bibleSheet$en bibleSheet = Translations$bibleSheet$en.internal(_root);
 	late final Translations$passageSelection$en passageSelection = Translations$passageSelection$en.internal(_root);
@@ -664,8 +665,8 @@ class Translations$mainActions$en {
 	/// en: 'Search for words across the Bible.'
 	String get searchDescription => 'Search for words across the Bible.';
 
-	/// en: 'Look up words in the dictionary and lexicon.'
-	String get resourcesDescription => 'Look up words in the dictionary and lexicon.';
+	/// en: 'Explore Bible study resources like the dictionary, lexicon, people, and themes.'
+	String get resourcesDescription => 'Explore Bible study resources like the dictionary, lexicon, people, and themes.';
 
 	/// en: 'Read through the Bible with guided reading plans.'
 	String get plansDescription => 'Read through the Bible with guided reading plans.';
@@ -757,6 +758,9 @@ class Translations$studyActions$en {
 	/// en: 'Cross References'
 	String get crossReferences => 'Cross References';
 
+	/// en: 'Linked Resources'
+	String get linkedResources => 'Linked Resources';
+
 	/// en: 'Compare {region} across a variety of translations.'
 	String compareDescription({required Object region}) => 'Compare ${region} across a variety of translations.';
 
@@ -769,8 +773,14 @@ class Translations$studyActions$en {
 	/// en: 'View cross references of {region}.'
 	String crossReferencesDescription({required Object region}) => 'View cross references of ${region}.';
 
+	/// en: 'View people and themes linked to {region}.'
+	String linkedResourcesDescription({required Object region}) => 'View people and themes linked to ${region}.';
+
 	/// en: 'No Cross References Found'
 	String get noCrossReferences => 'No Cross References Found';
+
+	/// en: 'No Linked Resources Found'
+	String get noLinkedResources => 'No Linked Resources Found';
 
 	/// en: 'Cross references use {translation}'
 	String crossReferencesUse({required Object translation}) => 'Cross references use ${translation}';
@@ -997,6 +1007,12 @@ class Translations$toolbarShortcuts$en {
 	/// en: 'Study the original Hebrew and Greek words with Strong's Lexicon.'
 	String get lexiconDescription => 'Study the original Hebrew and Greek words with Strong\'s Lexicon.';
 
+	/// en: 'Read profiles of people in the Bible.'
+	String get peopleDescription => 'Read profiles of people in the Bible.';
+
+	/// en: 'Read articles on the Bible's major themes.'
+	String get themesDescription => 'Read articles on the Bible\'s major themes.';
+
 	/// en: 'Customize the theme & layout of the Bible.'
 	String get themeAndLayoutDescription => 'Customize the theme & layout of the Bible.';
 }
@@ -1126,6 +1142,9 @@ class Translations$labels$en {
 	/// en: 'Paragraphs'
 	String get paragraphs => 'Paragraphs';
 
+	/// en: 'People'
+	String get people => 'People';
+
 	/// en: 'Resources'
 	String get resources => 'Resources';
 
@@ -1152,6 +1171,9 @@ class Translations$labels$en {
 
 	/// en: 'Text'
 	String get text => 'Text';
+
+	/// en: 'Themes'
+	String get themes => 'Themes';
 
 	/// en: 'Toolbar'
 	String get toolbar => 'Toolbar';
@@ -2726,6 +2748,30 @@ class Translations$dictionary$en {
 
 	/// en: 'Easton's Bible Dictionary'
 	String get eastons => 'Easton\'s Bible Dictionary';
+}
+
+// Path: articles
+class Translations$articles$en {
+	Translations$articles$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Search for a person'
+	String get personHint => 'Search for a person';
+
+	/// en: 'Search for a theme'
+	String get themeHint => 'Search for a theme';
+
+	/// en: 'No matching people'
+	String get noMatchingPeople => 'No matching people';
+
+	/// en: 'No matching themes'
+	String get noMatchingThemes => 'No matching themes';
+
+	/// en: 'Passages for Further Study'
+	String get passagesForFurtherStudy => 'Passages for Further Study';
 }
 
 // Path: navigation
@@ -5414,7 +5460,7 @@ extension on Translations {
 			'mainActions.verseOfTheDayDescription' => 'View the verse of the day.',
 			'mainActions.studyPanelDescription' => 'Pin a panel beside the text that follows along and shows study tools for whatever you\'re reading.',
 			'mainActions.searchDescription' => 'Search for words across the Bible.',
-			'mainActions.resourcesDescription' => 'Look up words in the dictionary and lexicon.',
+			'mainActions.resourcesDescription' => 'Explore Bible study resources like the dictionary, lexicon, people, and themes.',
 			'mainActions.plansDescription' => 'Read through the Bible with guided reading plans.',
 			'mainActions.settingsDescription' => 'View the settings for Lux.',
 			'mainActions.moreDescription' => 'View settings, your content, and community links.',
@@ -5439,11 +5485,14 @@ extension on Translations {
 			'studyActions.interlinear' => 'Interlinear',
 			'studyActions.commentary' => 'Commentary',
 			'studyActions.crossReferences' => 'Cross References',
+			'studyActions.linkedResources' => 'Linked Resources',
 			'studyActions.compareDescription' => ({required Object region}) => 'Compare ${region} across a variety of translations.',
 			'studyActions.interlinearDescription' => ({required Object region}) => 'View a lexical breakdown of ${region} using Strong\'s.',
 			'studyActions.commentaryDescription' => ({required Object region}) => 'View commentaries of ${region}.',
 			'studyActions.crossReferencesDescription' => ({required Object region}) => 'View cross references of ${region}.',
+			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'View people and themes linked to ${region}.',
 			'studyActions.noCrossReferences' => 'No Cross References Found',
+			'studyActions.noLinkedResources' => 'No Linked Resources Found',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Cross references use ${translation}',
 			'studyActions.onlineCrossReferencesExplanation' => 'Because your selected translation is only available online, cross references are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app.',
 			'selectionActions.annotate' => 'Annotate',
@@ -5501,6 +5550,8 @@ extension on Translations {
 			'toolbarShortcuts.switchBibleDescription' => 'Switch the Bible translation.',
 			'toolbarShortcuts.dictionaryDescription' => 'Look up people, places, and topics in Easton\'s Bible Dictionary.',
 			'toolbarShortcuts.lexiconDescription' => 'Study the original Hebrew and Greek words with Strong\'s Lexicon.',
+			'toolbarShortcuts.peopleDescription' => 'Read profiles of people in the Bible.',
+			'toolbarShortcuts.themesDescription' => 'Read articles on the Bible\'s major themes.',
 			'toolbarShortcuts.themeAndLayoutDescription' => 'Customize the theme & layout of the Bible.',
 			'labels.about' => 'About',
 			'labels.annotation' => 'Annotation',
@@ -5541,6 +5592,7 @@ extension on Translations {
 			'labels.notebooks' => 'Notebooks',
 			'labels.notes' => 'Notes',
 			'labels.paragraphs' => 'Paragraphs',
+			'labels.people' => 'People',
 			'labels.resources' => 'Resources',
 			'labels.scope' => 'Scope',
 			'labels.search' => 'Search',
@@ -5550,6 +5602,7 @@ extension on Translations {
 			'labels.study' => 'Study',
 			'labels.style' => 'Style',
 			'labels.text' => 'Text',
+			'labels.themes' => 'Themes',
 			'labels.toolbar' => 'Toolbar',
 			'labels.toolbars' => 'Toolbars',
 			'labels.type' => 'Type',
@@ -5754,6 +5807,8 @@ extension on Translations {
 			'biblePlans.chooseDuration' => 'Choose Duration',
 			'biblePlans.durationInstructions' => 'How many days should your plan last?',
 			'biblePlans.durationDayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} Day', other: '${count} Days', ), 
+			_ => null,
+		} ?? switch (path) {
 			'biblePlans.generatedNames.twoBooks' => ({required Object first, required Object second}) => '${first} & ${second}',
 			'biblePlans.generatedNames.bookCount' => ({required Object count}) => '${count} Books',
 			'biblePlans.generatedNames.bible' => 'Bible',
@@ -5761,8 +5816,6 @@ extension on Translations {
 			'biblePlans.generatedNames.inDays' => ({required Object books, required Object count}) => '${books} in ${count} Days',
 			'biblePlans.generatedNames.inAYear' => ({required Object books}) => '${books} in a Year',
 			'biblePlans.nameAndColor' => 'Name & Color',
-			_ => null,
-		} ?? switch (path) {
 			'biblePlans.review' => 'Review Plan',
 			'biblePlans.createAndStart' => 'Create & Start',
 			'biblePlans.myBiblePlan' => 'My Bible Plan',
@@ -6012,6 +6065,11 @@ extension on Translations {
 			'onboardingSteps.customizeToolbarSuffix' => 'Toolbars and pick a toolbar preset or change any of your toolbar shortcuts',
 			'onboardingSteps.startPlanSuffix' => ' → Bible Plans and start any Bible plan',
 			'dictionary.eastons' => 'Easton\'s Bible Dictionary',
+			'articles.personHint' => 'Search for a person',
+			'articles.themeHint' => 'Search for a theme',
+			'articles.noMatchingPeople' => 'No matching people',
+			'articles.noMatchingThemes' => 'No matching themes',
+			'articles.passagesForFurtherStudy' => 'Passages for Further Study',
 			'navigation.recents' => 'Recents',
 			'navigation.navigate' => 'Navigate',
 			'navigation.book' => 'Book',
@@ -6263,6 +6321,8 @@ extension on Translations {
 			'morphology.aspect.conjunctiveImperfect.description' => 'Imperfect with conjunctive waw, with a future or modal sense.',
 			'morphology.aspect.conjunctiveImperfect.examples' => 'and he will write',
 			'morphology.aspect.conjunctivePerfect.name' => 'Conjunctive perfect',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.aspect.conjunctivePerfect.description' => 'Perfect with conjunctive waw, often future or sequential.',
 			'morphology.aspect.conjunctivePerfect.examples' => 'and you shall do|and he will judge',
 			'morphology.aspect.passiveParticiple.name' => 'Passive participle',
@@ -6275,8 +6335,6 @@ extension on Translations {
 			'morphology.hebrewMood.cohortative.description' => 'A 1st-person volitional, such as "let us" or "I will".',
 			'morphology.hebrewMood.cohortative.examples' => 'Let us go|I will praise',
 			'morphology.hebrewMood.hSuffix.name' => 'h-suffix',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.hebrewMood.hSuffix.description' => 'An emphatic -ah ending on the imperfect, often cohortative-like.',
 			'morphology.hebrewMood.hSuffix.examples' => 'I will surely come|let me draw near',
 			'morphology.tense.present.name' => 'Present',

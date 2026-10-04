@@ -84,6 +84,7 @@ class TranslationsRu extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$planTypes$ru planTypes = _Translations$planTypes$ru._(_root);
 	@override late final _Translations$onboardingSteps$ru onboardingSteps = _Translations$onboardingSteps$ru._(_root);
 	@override late final _Translations$dictionary$ru dictionary = _Translations$dictionary$ru._(_root);
+	@override late final _Translations$articles$ru articles = _Translations$articles$ru._(_root);
 	@override late final _Translations$navigation$ru navigation = _Translations$navigation$ru._(_root);
 	@override late final _Translations$bibleSheet$ru bibleSheet = _Translations$bibleSheet$ru._(_root);
 	@override late final _Translations$passageSelection$ru passageSelection = _Translations$passageSelection$ru._(_root);
@@ -339,7 +340,7 @@ class _Translations$mainActions$ru extends Translations$mainActions$en {
 	@override String get verseOfTheDayUnavailable => 'Не удалось загрузить сегодняшний стих.';
 	@override String get studyPanelDescription => 'Прикрепите панель рядом с текстом, который следует по тексту и на котором показаны инструменты изучения того, что вы читаете.';
 	@override String get searchDescription => 'Ищите слова в Библии.';
-	@override String get resourcesDescription => 'Найдите слова в словаре и лексиконе.';
+	@override String get resourcesDescription => 'Откройте ресурсы для изучения Библии: словарь, лексикон, людей и темы.';
 	@override String get plansDescription => 'Читайте Библию с помощью управляемых планов чтения.';
 	@override String get settingsDescription => 'Откройте настройки Lux.';
 	@override String get moreDescription => 'Просматривайте настройки, ваш контент и ссылки на сообщество.';
@@ -382,11 +383,14 @@ class _Translations$studyActions$ru extends Translations$studyActions$en {
 	@override String get interlinear => 'Подстрочный';
 	@override String get commentary => 'Комментарий';
 	@override String get crossReferences => 'Перекрестные ссылки';
+	@override String get linkedResources => 'Связанные ресурсы';
 	@override String compareDescription({required Object region}) => 'Сравните ${region} в различных переводах.';
 	@override String interlinearDescription({required Object region}) => 'Просмотрите лексическую разбивку ${region} с помощью Strong\'s.';
 	@override String commentaryDescription({required Object region}) => 'Посмотреть комментарии ${region}.';
 	@override String crossReferencesDescription({required Object region}) => 'Просмотрите перекрестные ссылки ${region}.';
+	@override String linkedResourcesDescription({required Object region}) => 'Просмотрите людей и темы, связанные с отрывком: ${region}.';
 	@override String get noCrossReferences => 'Перекрестных ссылок не найдено';
+	@override String get noLinkedResources => 'Связанных ресурсов не найдено';
 	@override String crossReferencesUse({required Object translation}) => 'В перекрестных ссылках используется ${translation}.';
 	@override String get onlineCrossReferencesExplanation => 'Поскольку выбранный вами перевод доступен только в Интернете, перекрестные ссылки показаны с использованием последней версии Учебной Библии, которую вы использовали, чтобы сэкономить на производительности и затратах. Выбранный вами перевод используется повсюду в приложении.';
 }
@@ -498,6 +502,8 @@ class _Translations$toolbarShortcuts$ru extends Translations$toolbarShortcuts$en
 	@override String get switchBibleDescription => 'Переключите перевод Библии.';
 	@override String get dictionaryDescription => 'Ищите людей, места и темы в Библейском словаре Истона.';
 	@override String get lexiconDescription => 'Изучите оригинальные еврейские и греческие слова с помощью «Лексикона Стронга».';
+	@override String get peopleDescription => 'Читайте о людях Библии.';
+	@override String get themesDescription => 'Читайте статьи о главных темах Библии.';
 	@override String get themeAndLayoutDescription => 'Настройте тему и макет Библии.';
 }
 
@@ -547,6 +553,7 @@ class _Translations$labels$ru extends Translations$labels$en {
 	@override String get notebooks => 'Блокноты';
 	@override String get notes => 'Примечания';
 	@override String get paragraphs => 'Абзацы';
+	@override String get people => 'Люди';
 	@override String get resources => 'Ресурсы';
 	@override String get scope => 'Объем';
 	@override String get search => 'Поиск';
@@ -556,6 +563,7 @@ class _Translations$labels$ru extends Translations$labels$en {
 	@override String get study => 'Изучение';
 	@override String get style => 'Стиль';
 	@override String get text => 'Текст';
+	@override String get themes => 'Темы';
 	@override String get toolbar => 'Панель инструментов';
 	@override String get toolbars => 'Панели инструментов';
 	@override String get type => 'Тип';
@@ -1274,6 +1282,20 @@ class _Translations$dictionary$ru extends Translations$dictionary$en {
 
 	// Translations
 	@override String get eastons => 'Библейский словарь Истона';
+}
+
+// Path: articles
+class _Translations$articles$ru extends Translations$articles$en {
+	_Translations$articles$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get personHint => 'Поиск человека';
+	@override String get themeHint => 'Поиск темы';
+	@override String get noMatchingPeople => 'Нет подходящих людей';
+	@override String get noMatchingThemes => 'Нет подходящих тем';
+	@override String get passagesForFurtherStudy => 'Отрывки для дальнейшего изучения';
 }
 
 // Path: navigation
@@ -3179,7 +3201,7 @@ extension on TranslationsRu {
 			'mainActions.verseOfTheDayUnavailable' => 'Не удалось загрузить сегодняшний стих.',
 			'mainActions.studyPanelDescription' => 'Прикрепите панель рядом с текстом, который следует по тексту и на котором показаны инструменты изучения того, что вы читаете.',
 			'mainActions.searchDescription' => 'Ищите слова в Библии.',
-			'mainActions.resourcesDescription' => 'Найдите слова в словаре и лексиконе.',
+			'mainActions.resourcesDescription' => 'Откройте ресурсы для изучения Библии: словарь, лексикон, людей и темы.',
 			'mainActions.plansDescription' => 'Читайте Библию с помощью управляемых планов чтения.',
 			'mainActions.settingsDescription' => 'Откройте настройки Lux.',
 			'mainActions.moreDescription' => 'Просматривайте настройки, ваш контент и ссылки на сообщество.',
@@ -3204,11 +3226,14 @@ extension on TranslationsRu {
 			'studyActions.interlinear' => 'Подстрочный',
 			'studyActions.commentary' => 'Комментарий',
 			'studyActions.crossReferences' => 'Перекрестные ссылки',
+			'studyActions.linkedResources' => 'Связанные ресурсы',
 			'studyActions.compareDescription' => ({required Object region}) => 'Сравните ${region} в различных переводах.',
 			'studyActions.interlinearDescription' => ({required Object region}) => 'Просмотрите лексическую разбивку ${region} с помощью Strong\'s.',
 			'studyActions.commentaryDescription' => ({required Object region}) => 'Посмотреть комментарии ${region}.',
 			'studyActions.crossReferencesDescription' => ({required Object region}) => 'Просмотрите перекрестные ссылки ${region}.',
+			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Просмотрите людей и темы, связанные с отрывком: ${region}.',
 			'studyActions.noCrossReferences' => 'Перекрестных ссылок не найдено',
+			'studyActions.noLinkedResources' => 'Связанных ресурсов не найдено',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'В перекрестных ссылках используется ${translation}.',
 			'studyActions.onlineCrossReferencesExplanation' => 'Поскольку выбранный вами перевод доступен только в Интернете, перекрестные ссылки показаны с использованием последней версии Учебной Библии, которую вы использовали, чтобы сэкономить на производительности и затратах. Выбранный вами перевод используется повсюду в приложении.',
 			'selectionActions.annotate' => 'Аннотировать',
@@ -3266,6 +3291,8 @@ extension on TranslationsRu {
 			'toolbarShortcuts.switchBibleDescription' => 'Переключите перевод Библии.',
 			'toolbarShortcuts.dictionaryDescription' => 'Ищите людей, места и темы в Библейском словаре Истона.',
 			'toolbarShortcuts.lexiconDescription' => 'Изучите оригинальные еврейские и греческие слова с помощью «Лексикона Стронга».',
+			'toolbarShortcuts.peopleDescription' => 'Читайте о людях Библии.',
+			'toolbarShortcuts.themesDescription' => 'Читайте статьи о главных темах Библии.',
 			'toolbarShortcuts.themeAndLayoutDescription' => 'Настройте тему и макет Библии.',
 			'labels.about' => 'О приложении',
 			'labels.annotation' => 'Аннотация',
@@ -3306,6 +3333,7 @@ extension on TranslationsRu {
 			'labels.notebooks' => 'Блокноты',
 			'labels.notes' => 'Примечания',
 			'labels.paragraphs' => 'Абзацы',
+			'labels.people' => 'Люди',
 			'labels.resources' => 'Ресурсы',
 			'labels.scope' => 'Объем',
 			'labels.search' => 'Поиск',
@@ -3315,6 +3343,7 @@ extension on TranslationsRu {
 			'labels.study' => 'Изучение',
 			'labels.style' => 'Стиль',
 			'labels.text' => 'Текст',
+			'labels.themes' => 'Темы',
 			'labels.toolbar' => 'Панель инструментов',
 			'labels.toolbars' => 'Панели инструментов',
 			'labels.type' => 'Тип',
@@ -3517,6 +3546,8 @@ extension on TranslationsRu {
 			'biblePlans.chooseBooks' => 'Выбрать книги',
 			'biblePlans.filterBooks' => 'Фильтровать книги',
 			'biblePlans.chooseDuration' => 'Выбрать продолжительность',
+			_ => null,
+		} ?? switch (path) {
 			'biblePlans.durationInstructions' => 'Сколько дней должен длиться ваш план?',
 			'biblePlans.durationDayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: '${count} день', few: '${count} дня', many: '${count} дней', other: '${count} дня', ), 
 			'biblePlans.generatedNames.twoBooks' => ({required Object first, required Object second}) => '${first} и ${second}',
@@ -3524,8 +3555,6 @@ extension on TranslationsRu {
 			'biblePlans.generatedNames.bible' => 'Библия',
 			'biblePlans.generatedNames.inOneDay' => ({required Object books}) => '${books} за 1 день',
 			'biblePlans.generatedNames.inDays' => ({required Object books, required Object count}) => '${books} за ${count} дней',
-			_ => null,
-		} ?? switch (path) {
 			'biblePlans.generatedNames.inAYear' => ({required Object books}) => '${books} за год',
 			'biblePlans.nameAndColor' => 'Название и цвет',
 			'biblePlans.review' => 'Проверка плана',
@@ -3777,6 +3806,11 @@ extension on TranslationsRu {
 			'onboardingSteps.customizeToolbarSuffix' => 'Панели инструментов: выберите предустановку или измените ярлыки панели инструментов.',
 			'onboardingSteps.startPlanSuffix' => '→ Библейские планы и начните любой библейский план',
 			'dictionary.eastons' => 'Библейский словарь Истона',
+			'articles.personHint' => 'Поиск человека',
+			'articles.themeHint' => 'Поиск темы',
+			'articles.noMatchingPeople' => 'Нет подходящих людей',
+			'articles.noMatchingThemes' => 'Нет подходящих тем',
+			'articles.passagesForFurtherStudy' => 'Отрывки для дальнейшего изучения',
 			'navigation.recents' => 'Недавние',
 			'navigation.navigate' => 'Навигация',
 			'navigation.book' => 'Книга',
@@ -4026,6 +4060,8 @@ extension on TranslationsRu {
 			'morphology.aspect.consecutiveImperfect.examples' => 'и он сказал|и они пошли',
 			'morphology.aspect.conjunctiveImperfect.name' => 'Союзный имперфект',
 			'morphology.aspect.conjunctiveImperfect.description' => 'Несовершенный вид с союзным союзом waw, с будущим или модальным значением.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.aspect.conjunctiveImperfect.examples' => 'и он напишет',
 			'morphology.aspect.conjunctivePerfect.name' => 'Союзный совершенный',
 			'morphology.aspect.conjunctivePerfect.description' => 'Идеально сочетается с союзным союзом waw, часто будущим или последовательным.',
@@ -4038,8 +4074,6 @@ extension on TranslationsRu {
 			'morphology.hebrewMood.jussive.examples' => 'Да будет свет|Да благословит тебя Господь',
 			'morphology.hebrewMood.cohortative.name' => 'когортативный',
 			'morphology.hebrewMood.cohortative.description' => 'Волевой глагол от 1-го лица, например «давайте» или «я буду».',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.hebrewMood.cohortative.examples' => 'Пойдём|Я похвалю',
 			'morphology.hebrewMood.hSuffix.name' => 'h-суффикс',
 			'morphology.hebrewMood.hSuffix.description' => 'Упорное -ah, оканчивающееся на несовершенном, часто похожем на когортативное.',

@@ -55,6 +55,7 @@ const _$VerseSelectionShortcutEnumMap = {
   VerseSelectionShortcut.interlinear: 'interlinear',
   VerseSelectionShortcut.commentary: 'commentary',
   VerseSelectionShortcut.crossReferences: 'crossReferences',
+  VerseSelectionShortcut.linkedResources: 'linkedResources',
   VerseSelectionShortcut.annotate: 'annotate',
   VerseSelectionShortcut.highlight: 'highlight',
   VerseSelectionShortcut.share: 'share',

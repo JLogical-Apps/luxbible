@@ -6,6 +6,7 @@ import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
 import 'package:bible/ui/sheets/cross_references_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_sheet.dart';
+import 'package:bible/ui/sheets/linked_resources_sheet.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,7 @@ sealed class StudyPanel with _$StudyPanel {
   const factory StudyPanel.interlinear({required InterlinearDirection direction}) = InterlinearStudyPanel;
   const factory StudyPanel.commentary({required CommentaryType type}) = CommentaryStudyPanel;
   const factory StudyPanel.crossReferences() = CrossReferencesStudyPanel;
+  const factory StudyPanel.linkedResources() = LinkedResourcesStudyPanel;
   const factory StudyPanel.notes() = NotesStudyPanel;
 
   factory StudyPanel.fromJson(Map<String, dynamic> json) => _$StudyPanelFromJson(json);
@@ -36,6 +38,7 @@ sealed class StudyPanel with _$StudyPanel {
     InterlinearStudyPanel() => .interlinear,
     CommentaryStudyPanel() => .commentary,
     CrossReferencesStudyPanel() => .crossReferences,
+    LinkedResourcesStudyPanel() => .linkedResources,
     _ => null,
   };
 
@@ -82,6 +85,13 @@ sealed class StudyPanel with _$StudyPanel {
       verseSelection: verseSelection,
       onNavigateToVerseSelection: onNavigateToVerseSelection,
       user: user,
+      popOnAction: false,
+    ),
+    LinkedResourcesStudyPanel() => LinkedResourcesSheet.buildSheetChildren(
+      context,
+      ref,
+      verseSelection: verseSelection,
+      onNavigateToVerseSelection: onNavigateToVerseSelection,
       popOnAction: false,
     ),
     NotesStudyPanel() => () {
@@ -135,6 +145,7 @@ enum StudyPanelType {
   interlinear,
   commentary,
   crossReferences,
+  linkedResources,
   notes;
 
   StudyAction? get studyAction => switch (this) {
@@ -142,6 +153,7 @@ enum StudyPanelType {
     interlinear => .interlinear,
     commentary => .commentary,
     crossReferences => .crossReferences,
+    linkedResources => .linkedResources,
     _ => null,
   };
 

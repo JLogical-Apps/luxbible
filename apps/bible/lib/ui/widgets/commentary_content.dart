@@ -102,19 +102,26 @@ class CommentarySectionContainer extends StatelessWidget {
     headerPadding: .symmetric(horizontal: 16, vertical: trailing == null ? 16 : 8),
     child: Padding(
       padding: .only(bottom: 16),
-      child: DefaultTextStyle(
-        style: context.textStyle.paragraphMd,
-        child: Column(
-          crossAxisAlignment: .stretch,
-          spacing: 12,
-          children: content
-              .map(
-                (block) =>
-                    CommentaryContentView(content: block, onNavigateToVerseSelection: onNavigateToVerseSelection),
-              )
-              .toList(),
-        ),
-      ),
+      child: CommentaryContentList(content: content, onNavigateToVerseSelection: onNavigateToVerseSelection),
+    ),
+  );
+}
+
+class CommentaryContentList extends StatelessWidget {
+  final List<CommentaryContent> content;
+  final Function(VerseSelection) onNavigateToVerseSelection;
+
+  const CommentaryContentList({super.key, required this.content, required this.onNavigateToVerseSelection});
+
+  @override
+  Widget build(BuildContext context) => DefaultTextStyle(
+    style: context.textStyle.paragraphMd,
+    child: Column(
+      crossAxisAlignment: .stretch,
+      spacing: 12,
+      children: content
+          .map((block) => CommentaryContentView(content: block, onNavigateToVerseSelection: onNavigateToVerseSelection))
+          .toList(),
     ),
   );
 }

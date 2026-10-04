@@ -183,7 +183,7 @@
     "verseOfTheDayUnavailable": "Het vers van vandaag kan niet worden geladen.",
     "studyPanelDescription": "Zet een paneel naast de tekst vast dat meeloopt en studiehulpmiddelen toont voor wat je leest.",
     "searchDescription": "Zoek naar woorden in de Bijbel.",
-    "resourcesDescription": "Zoek woorden op in het woordenboek en lexicon.",
+    "resourcesDescription": "Ontdek studiebronnen zoals het woordenboek, het lexicon, personen en thema's.",
     "plansDescription": "Lees de Bijbel met begeleide leesplannen.",
     "settingsDescription": "Bekijk de instellingen van Lux.",
     "moreDescription": "Bekijk instellingen, je inhoud en links naar de community."
@@ -212,11 +212,14 @@
     "interlinear": "Interlineair",
     "commentary": "Commentaar",
     "crossReferences": "Kruisverwijzingen",
+    "linkedResources": "Gekoppelde bronnen",
     "compareDescription": "Vergelijk {region} in verschillende vertalingen.",
     "interlinearDescription": "Bekijk een lexicale analyse van {region} met Strong-coderingen.",
     "commentaryDescription": "Bekijk commentaren op {region}.",
     "crossReferencesDescription": "Bekijk kruisverwijzingen voor {region}.",
+    "linkedResourcesDescription": "Bekijk personen en thema's die bij {region} horen.",
     "noCrossReferences": "Geen kruisverwijzingen gevonden",
+    "noLinkedResources": "Geen gekoppelde bronnen gevonden",
     "crossReferencesUse": "Kruisverwijzingen gebruiken {translation}",
     "onlineCrossReferencesExplanation": "Omdat de geselecteerde vertaling alleen online beschikbaar is, worden kruisverwijzingen getoond met de meest recent gebruikte studiebijbel om prestaties en kosten te besparen. Overal elders in de app wordt de geselecteerde vertaling gebruikt."
   },
@@ -286,6 +289,8 @@
     "switchBibleDescription": "Wissel van Bijbelvertaling.",
     "dictionaryDescription": "Zoek personen, plaatsen en onderwerpen op in Easton's Bible Dictionary.",
     "lexiconDescription": "Bestudeer de oorspronkelijke Hebreeuwse en Griekse woorden met Strong's Lexicon.",
+    "peopleDescription": "Lees profielen van personen uit de Bijbel.",
+    "themesDescription": "Lees artikelen over belangrijke thema's in de Bijbel.",
     "themeAndLayoutDescription": "Pas het thema en de indeling van de Bijbel aan."
   },
   "labels": {
@@ -328,6 +333,7 @@
     "notebooks": "Notitieboeken",
     "notes": "Notities",
     "paragraphs": "Alinea's",
+    "people": "Personen",
     "resources": "Bronnen",
     "scope": "Bereik",
     "search": "Zoeken",
@@ -337,6 +343,7 @@
     "study": "Studie",
     "style": "Stijl",
     "text": "Tekst",
+    "themes": "Thema's",
     "toolbar": "Werkbalk",
     "toolbars": "Werkbalken",
     "type": "Type",
@@ -882,6 +889,13 @@
   },
   "dictionary": {
     "eastons": "Easton's Bible Dictionary"
+  },
+  "articles": {
+    "personHint": "Zoek naar een persoon",
+    "themeHint": "Zoek naar een thema",
+    "noMatchingPeople": "Geen overeenkomende personen",
+    "noMatchingThemes": "Geen overeenkomende thema's",
+    "passagesForFurtherStudy": "Passages voor verdere studie"
   },
   "navigation": {
     "recents": "Recent",

@@ -25,6 +25,7 @@ enum MainToolbarShortcut {
   interlinear,
   commentary,
   crossReferences,
+  linkedResources,
   studyPanel,
   switchBible,
   search,
@@ -126,6 +127,7 @@ enum MainToolbarShortcut {
     interlinear => .interlinear,
     commentary => .commentary,
     crossReferences => .crossReferences,
+    linkedResources => .linkedResources,
     _ => null,
   };
 }

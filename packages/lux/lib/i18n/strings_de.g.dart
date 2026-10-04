@@ -84,6 +84,7 @@ class TranslationsDe extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$planTypes$de planTypes = _Translations$planTypes$de._(_root);
 	@override late final _Translations$onboardingSteps$de onboardingSteps = _Translations$onboardingSteps$de._(_root);
 	@override late final _Translations$dictionary$de dictionary = _Translations$dictionary$de._(_root);
+	@override late final _Translations$articles$de articles = _Translations$articles$de._(_root);
 	@override late final _Translations$navigation$de navigation = _Translations$navigation$de._(_root);
 	@override late final _Translations$bibleSheet$de bibleSheet = _Translations$bibleSheet$de._(_root);
 	@override late final _Translations$passageSelection$de passageSelection = _Translations$passageSelection$de._(_root);
@@ -337,7 +338,7 @@ class _Translations$mainActions$de extends Translations$mainActions$en {
 	@override String get verseOfTheDayDescription => 'Den Vers des Tages anzeigen.';
 	@override String get studyPanelDescription => 'Hefte ein Panel neben den Text, das mitläuft und Studienwerkzeuge für das zeigt, was du gerade liest.';
 	@override String get searchDescription => 'Suche nach Wörtern in der ganzen Bibel.';
-	@override String get resourcesDescription => 'Schlage Wörter im Wörterbuch und im Lexikon nach.';
+	@override String get resourcesDescription => 'Entdecke Studienressourcen wie Wörterbuch, Lexikon, Personen und Themen.';
 	@override String get plansDescription => 'Lies die Bibel mit geführten Leseplänen.';
 	@override String get settingsDescription => 'Die Einstellungen von Lux anzeigen.';
 	@override String get moreDescription => 'Einstellungen, deine Inhalte und Community-Links anzeigen.';
@@ -380,11 +381,14 @@ class _Translations$studyActions$de extends Translations$studyActions$en {
 	@override String get interlinear => 'Interlinear';
 	@override String get commentary => 'Kommentar';
 	@override String get crossReferences => 'Querverweise';
+	@override String get linkedResources => 'Verknüpfte Ressourcen';
 	@override String compareDescription({required Object region}) => 'Vergleiche ${region} in verschiedenen Übersetzungen.';
 	@override String interlinearDescription({required Object region}) => 'Zeige eine lexikalische Aufschlüsselung für ${region} mit Strong\'s.';
 	@override String commentaryDescription({required Object region}) => 'Zeige Kommentare für ${region}.';
 	@override String crossReferencesDescription({required Object region}) => 'Zeige Querverweise für ${region}.';
+	@override String linkedResourcesDescription({required Object region}) => 'Zeige verknüpfte Personen und Themen für ${region}.';
 	@override String get noCrossReferences => 'Keine Querverweise gefunden';
+	@override String get noLinkedResources => 'Keine verknüpften Ressourcen gefunden';
 	@override String crossReferencesUse({required Object translation}) => 'Querverweise aus ${translation}';
 	@override String get onlineCrossReferencesExplanation => 'Da deine gewählte Übersetzung nur online verfügbar ist, werden Querverweise mit der zuletzt verwendeten Studienbibel angezeigt, um Leistung und Kosten zu sparen. Überall sonst in der App wird deine gewählte Übersetzung verwendet.';
 }
@@ -496,6 +500,8 @@ class _Translations$toolbarShortcuts$de extends Translations$toolbarShortcuts$en
 	@override String get switchBibleDescription => 'Die Bibelübersetzung wechseln.';
 	@override String get dictionaryDescription => 'Schlage Personen, Orte und Themen in Easton\'s Bible Dictionary nach.';
 	@override String get lexiconDescription => 'Studiere die hebräischen und griechischen Grundwörter mit dem Strong-Lexikon.';
+	@override String get peopleDescription => 'Lies Porträts biblischer Personen.';
+	@override String get themesDescription => 'Lies Artikel zu zentralen Themen der Bibel.';
 	@override String get themeAndLayoutDescription => 'Passe Design & Layout der Bibel an.';
 }
 
@@ -545,6 +551,7 @@ class _Translations$labels$de extends Translations$labels$en {
 	@override String get notebooks => 'Notizbücher';
 	@override String get notes => 'Notizen';
 	@override String get paragraphs => 'Absätze';
+	@override String get people => 'Personen';
 	@override String get resources => 'Ressourcen';
 	@override String get scope => 'Umfang';
 	@override String get search => 'Suche';
@@ -554,6 +561,7 @@ class _Translations$labels$de extends Translations$labels$en {
 	@override String get study => 'Studium';
 	@override String get style => 'Stil';
 	@override String get text => 'Text';
+	@override String get themes => 'Themen';
 	@override String get toolbar => 'Symbolleiste';
 	@override String get toolbars => 'Symbolleisten';
 	@override String get type => 'Art';
@@ -1262,6 +1270,20 @@ class _Translations$dictionary$de extends Translations$dictionary$en {
 
 	// Translations
 	@override String get eastons => 'Easton\'s Bible Dictionary';
+}
+
+// Path: articles
+class _Translations$articles$de extends Translations$articles$en {
+	_Translations$articles$de._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get personHint => 'Nach einer Person suchen';
+	@override String get themeHint => 'Nach einem Thema suchen';
+	@override String get noMatchingPeople => 'Keine passenden Personen';
+	@override String get noMatchingThemes => 'Keine passenden Themen';
+	@override String get passagesForFurtherStudy => 'Stellen zum Weiterstudieren';
 }
 
 // Path: navigation
@@ -3163,7 +3185,7 @@ extension on TranslationsDe {
 			'mainActions.verseOfTheDayDescription' => 'Den Vers des Tages anzeigen.',
 			'mainActions.studyPanelDescription' => 'Hefte ein Panel neben den Text, das mitläuft und Studienwerkzeuge für das zeigt, was du gerade liest.',
 			'mainActions.searchDescription' => 'Suche nach Wörtern in der ganzen Bibel.',
-			'mainActions.resourcesDescription' => 'Schlage Wörter im Wörterbuch und im Lexikon nach.',
+			'mainActions.resourcesDescription' => 'Entdecke Studienressourcen wie Wörterbuch, Lexikon, Personen und Themen.',
 			'mainActions.plansDescription' => 'Lies die Bibel mit geführten Leseplänen.',
 			'mainActions.settingsDescription' => 'Die Einstellungen von Lux anzeigen.',
 			'mainActions.moreDescription' => 'Einstellungen, deine Inhalte und Community-Links anzeigen.',
@@ -3188,11 +3210,14 @@ extension on TranslationsDe {
 			'studyActions.interlinear' => 'Interlinear',
 			'studyActions.commentary' => 'Kommentar',
 			'studyActions.crossReferences' => 'Querverweise',
+			'studyActions.linkedResources' => 'Verknüpfte Ressourcen',
 			'studyActions.compareDescription' => ({required Object region}) => 'Vergleiche ${region} in verschiedenen Übersetzungen.',
 			'studyActions.interlinearDescription' => ({required Object region}) => 'Zeige eine lexikalische Aufschlüsselung für ${region} mit Strong\'s.',
 			'studyActions.commentaryDescription' => ({required Object region}) => 'Zeige Kommentare für ${region}.',
 			'studyActions.crossReferencesDescription' => ({required Object region}) => 'Zeige Querverweise für ${region}.',
+			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Zeige verknüpfte Personen und Themen für ${region}.',
 			'studyActions.noCrossReferences' => 'Keine Querverweise gefunden',
+			'studyActions.noLinkedResources' => 'Keine verknüpften Ressourcen gefunden',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Querverweise aus ${translation}',
 			'studyActions.onlineCrossReferencesExplanation' => 'Da deine gewählte Übersetzung nur online verfügbar ist, werden Querverweise mit der zuletzt verwendeten Studienbibel angezeigt, um Leistung und Kosten zu sparen. Überall sonst in der App wird deine gewählte Übersetzung verwendet.',
 			'selectionActions.annotate' => 'Annotieren',
@@ -3250,6 +3275,8 @@ extension on TranslationsDe {
 			'toolbarShortcuts.switchBibleDescription' => 'Die Bibelübersetzung wechseln.',
 			'toolbarShortcuts.dictionaryDescription' => 'Schlage Personen, Orte und Themen in Easton\'s Bible Dictionary nach.',
 			'toolbarShortcuts.lexiconDescription' => 'Studiere die hebräischen und griechischen Grundwörter mit dem Strong-Lexikon.',
+			'toolbarShortcuts.peopleDescription' => 'Lies Porträts biblischer Personen.',
+			'toolbarShortcuts.themesDescription' => 'Lies Artikel zu zentralen Themen der Bibel.',
 			'toolbarShortcuts.themeAndLayoutDescription' => 'Passe Design & Layout der Bibel an.',
 			'labels.about' => 'Über',
 			'labels.annotation' => 'Annotation',
@@ -3290,6 +3317,7 @@ extension on TranslationsDe {
 			'labels.notebooks' => 'Notizbücher',
 			'labels.notes' => 'Notizen',
 			'labels.paragraphs' => 'Absätze',
+			'labels.people' => 'Personen',
 			'labels.resources' => 'Ressourcen',
 			'labels.scope' => 'Umfang',
 			'labels.search' => 'Suche',
@@ -3299,6 +3327,7 @@ extension on TranslationsDe {
 			'labels.study' => 'Studium',
 			'labels.style' => 'Stil',
 			'labels.text' => 'Text',
+			'labels.themes' => 'Themen',
 			'labels.toolbar' => 'Symbolleiste',
 			'labels.toolbars' => 'Symbolleisten',
 			'labels.type' => 'Art',
@@ -3503,6 +3532,8 @@ extension on TranslationsDe {
 			'biblePlans.chooseDuration' => 'Dauer wählen',
 			'biblePlans.durationInstructions' => 'Wie viele Tage soll dein Plan dauern?',
 			'biblePlans.durationDayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: '${count} Tag', other: '${count} Tage', ), 
+			_ => null,
+		} ?? switch (path) {
 			'biblePlans.generatedNames.twoBooks' => ({required Object first, required Object second}) => '${first} & ${second}',
 			'biblePlans.generatedNames.bookCount' => ({required Object count}) => '${count} Bücher',
 			'biblePlans.generatedNames.bible' => 'Bibel',
@@ -3510,8 +3541,6 @@ extension on TranslationsDe {
 			'biblePlans.generatedNames.inDays' => ({required Object books, required Object count}) => '${books} in ${count} Tagen',
 			'biblePlans.generatedNames.inAYear' => ({required Object books}) => '${books} in einem Jahr',
 			'biblePlans.nameAndColor' => 'Name & Farbe',
-			_ => null,
-		} ?? switch (path) {
 			'biblePlans.review' => 'Plan prüfen',
 			'biblePlans.createAndStart' => 'Erstellen & starten',
 			'biblePlans.myBiblePlan' => 'Mein Leseplan',
@@ -3761,6 +3790,11 @@ extension on TranslationsDe {
 			'onboardingSteps.customizeToolbarSuffix' => 'Symbolleisten und wähle eine Vorlage oder ändere deine Kurzbefehle',
 			'onboardingSteps.startPlanSuffix' => ' → Lesepläne und starte einen beliebigen Leseplan',
 			'dictionary.eastons' => 'Easton\'s Bible Dictionary',
+			'articles.personHint' => 'Nach einer Person suchen',
+			'articles.themeHint' => 'Nach einem Thema suchen',
+			'articles.noMatchingPeople' => 'Keine passenden Personen',
+			'articles.noMatchingThemes' => 'Keine passenden Themen',
+			'articles.passagesForFurtherStudy' => 'Stellen zum Weiterstudieren',
 			'navigation.recents' => 'Zuletzt',
 			'navigation.navigate' => 'Navigieren',
 			'navigation.book' => 'Buch',
@@ -4012,6 +4046,8 @@ extension on TranslationsDe {
 			'morphology.aspect.conjunctiveImperfect.description' => 'Imperfekt mit verbindendem Waw, mit zukünftigem oder modalem Sinn.',
 			'morphology.aspect.conjunctiveImperfect.examples' => 'und er wird schreiben',
 			'morphology.aspect.conjunctivePerfect.name' => 'Perfekt mit Waw',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.aspect.conjunctivePerfect.description' => 'Perfekt mit verbindendem Waw, oft zukünftig oder fortführend.',
 			'morphology.aspect.conjunctivePerfect.examples' => 'und du sollst tun|und er wird richten',
 			'morphology.aspect.passiveParticiple.name' => 'Passives Partizip',
@@ -4024,8 +4060,6 @@ extension on TranslationsDe {
 			'morphology.hebrewMood.cohortative.description' => 'Eine Willensform der 1. Person, etwa „lasst uns“ oder „ich will“.',
 			'morphology.hebrewMood.cohortative.examples' => 'Lasst uns gehen|Ich will loben',
 			'morphology.hebrewMood.hSuffix.name' => 'h-Suffix',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.hebrewMood.hSuffix.description' => 'Eine betonte Endung -ah am Imperfekt, oft ähnlich dem Kohortativ.',
 			'morphology.hebrewMood.hSuffix.examples' => 'ich will gewiss kommen|lass mich nahen',
 			'morphology.tense.present.name' => 'Präsens',

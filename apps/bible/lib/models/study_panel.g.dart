@@ -97,6 +97,14 @@ Map<String, dynamic> _$CrossReferencesStudyPanelToJson(
   CrossReferencesStudyPanel instance,
 ) => <String, dynamic>{'runtimeType': instance.$type};
 
+LinkedResourcesStudyPanel _$LinkedResourcesStudyPanelFromJson(
+  Map<String, dynamic> json,
+) => LinkedResourcesStudyPanel($type: json['runtimeType'] as String?);
+
+Map<String, dynamic> _$LinkedResourcesStudyPanelToJson(
+  LinkedResourcesStudyPanel instance,
+) => <String, dynamic>{'runtimeType': instance.$type};
+
 NotesStudyPanel _$NotesStudyPanelFromJson(Map<String, dynamic> json) =>
     NotesStudyPanel($type: json['runtimeType'] as String?);
 

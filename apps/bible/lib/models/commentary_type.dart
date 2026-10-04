@@ -7,7 +7,7 @@ enum CommentaryType {
   calvin;
 
   String title() => switch (this) {
-    tyndale => 'Tyndale Open Study Notes',
+    tyndale => 'Tyndale Study Notes',
     matthewHenry => 'Matthew Henry',
     jamiesonFaussetBrown => 'Jamieson-Fausset-Brown',
     calvin => 'John Calvin',

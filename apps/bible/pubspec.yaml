@@ -124,6 +124,8 @@ flutter:
     - assets/commentary/matthew_henry/
     - assets/commentary/tyndale/
     - assets/cross_references/
+    - assets/people/
+    - assets/themes/
     - assets/bible_plans/
     - assets/audio_bible_timings/
     - assets/images/

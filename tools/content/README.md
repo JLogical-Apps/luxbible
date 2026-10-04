@@ -17,6 +17,7 @@ dart run bin/generate_web_json.dart
 dart run bin/generate_osis_json.dart
 dart run bin/generate_bible_plans_json.dart
 dart run bin/generate_commentary_json.dart
+dart run bin/generate_articles_json.dart
 dart run bin/generate_easton_json.dart
 dart run bin/generate_strongs_json.dart
 dart run bin/generate_audio_bible_timings_json.dart
@@ -29,6 +30,11 @@ Bible generators write one minified runtime asset per book under `assets/transla
 `generate_commentary_json.dart` writes the same per-book layout under `assets/commentary/<commentary>/`. Commentary
 assets preserve book introductions, Matthew Henry chapter outlines, ordered verse-linked sections, normalized paragraph
 presentation, and source tables.
+
+`generate_articles_json.dart` writes Tyndale's people profiles and theme articles as one minified list each to
+`assets/people/tyndale.json` and `assets/themes/tyndale.json`. Tyndale's link, book-code, and formatting conversion
+lives in [`lib/tyndale.dart`](lib/tyndale.dart) and is shared with the commentary generator, so after changing it,
+regenerate the commentary too and confirm its assets are unchanged unless the change was meant to affect them.
 
 `generate_audio_bible_timings_json.dart` validates their canonical chapter and verse coverage, removes the verse text and source metadata, and writes one minified runtime asset per Audio Bible.
 

@@ -23,6 +23,7 @@ enum VerseSelectionShortcut {
   interlinear,
   commentary,
   crossReferences,
+  linkedResources,
   annotate,
   highlight,
   share,
@@ -131,6 +132,7 @@ enum VerseSelectionShortcut {
     interlinear => .interlinear,
     commentary => .commentary,
     crossReferences => .crossReferences,
+    linkedResources => .linkedResources,
     _ => null,
   };
 

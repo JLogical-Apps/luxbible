@@ -49,6 +49,7 @@ const _$MainToolbarShortcutEnumMap = {
   MainToolbarShortcut.interlinear: 'interlinear',
   MainToolbarShortcut.commentary: 'commentary',
   MainToolbarShortcut.crossReferences: 'crossReferences',
+  MainToolbarShortcut.linkedResources: 'linkedResources',
   MainToolbarShortcut.studyPanel: 'studyPanel',
   MainToolbarShortcut.switchBible: 'switchBible',
   MainToolbarShortcut.search: 'search',
