@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:style/src/widgets/styled_list_item_context.dart';
+import 'package:super_sliver_list/super_sliver_list.dart';
 
 class StyledListView extends StatelessWidget {
   final List<Widget> children;
@@ -9,6 +10,7 @@ class StyledListView extends StatelessWidget {
   final EdgeInsets padding;
   final ScrollPhysics? physics;
   final ScrollController? controller;
+  final ListController? listController;
 
   const StyledListView({
     super.key,
@@ -17,6 +19,7 @@ class StyledListView extends StatelessWidget {
     this.padding = .zero,
     this.physics,
     this.controller,
+    this.listController,
   });
 
   StyledListView.child({
@@ -26,6 +29,7 @@ class StyledListView extends StatelessWidget {
     this.padding = .zero,
     this.physics,
     this.controller,
+    this.listController,
   }) : children = [child];
 
   @override
@@ -41,7 +45,8 @@ class StyledListView extends StatelessWidget {
         slivers: [
           SliverPadding(
             padding: padding,
-            sliver: SliverList.builder(
+            sliver: SuperSliverList.builder(
+              listController: listController,
               itemCount: separatedChildren.length,
               itemBuilder: (context, index) => separatedChildren[index],
             ),

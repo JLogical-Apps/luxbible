@@ -17,6 +17,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:style/style.dart';
 
 enum StudyAction {
@@ -125,6 +126,7 @@ enum StudyAction {
           );
           final index = useListenableSelector(tabController, () => tabController.index);
           final selectedCommentary = user.commentariesOrDefault[index];
+          final listController = useListController();
 
           return StyledSheet.builder(
             title: title().toText(),
@@ -161,6 +163,7 @@ enum StudyAction {
             ),
             showDivider: false,
             childrenKey: ValueKey(selectedCommentary),
+            listController: listController,
             childrenWrapper: (context, child) => SwipeGestureDetector(
               index: () => index,
               maxIndex: tabController.length,
@@ -180,6 +183,13 @@ enum StudyAction {
                 context.pop();
                 onNavigateToVerseSelection(verseSelection);
               },
+              onNavigateToIndex: (index) => listController.animateToItem(
+                index: index,
+                scrollController: ModalScrollController.of(context)!,
+                alignment: 0,
+                duration: (_) => Duration(milliseconds: 200),
+                curve: (_) => Curves.easeInOutCubic,
+              ),
             ),
           );
         });

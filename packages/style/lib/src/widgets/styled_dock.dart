@@ -9,6 +9,7 @@ import 'package:style/src/style_context_extensions.dart';
 import 'package:style/src/styled_shadow.dart';
 import 'package:style/src/widgets/styled_list_view.dart';
 import 'package:style/src/widgets/styled_size_and_fade.dart';
+import 'package:super_sliver_list/super_sliver_list.dart';
 
 class StyledDock extends HookWidget {
   final List<Widget> children;
@@ -25,6 +26,7 @@ class StyledDock extends HookWidget {
   final bool? forceBottomShadow;
 
   final ScrollController? controller;
+  final ListController? listController;
 
   const StyledDock({
     super.key,
@@ -38,6 +40,7 @@ class StyledDock extends HookWidget {
     this.activeScrollKey,
     this.forceBottomShadow,
     this.controller,
+    this.listController,
   });
 
   @override
@@ -129,6 +132,7 @@ class StyledDock extends HookWidget {
                                 : StyledListView(
                                     shrinkWrap: shrinkWrap,
                                     controller: controller,
+                                    listController: listController,
                                     physics: shrinkWrap ? ClampingScrollPhysics() : null,
                                     padding:
                                         childrenPadding +

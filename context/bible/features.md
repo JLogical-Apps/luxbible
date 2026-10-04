@@ -339,7 +339,7 @@ Users can:
 - Swipe between commentaries in the temporary sheet
 - Pin a specific commentary as a study panel
 - Keep a Commentary study panel aligned with the top visible verse while scrolling either surface
-- Move directly between adjacent Commentary headings from each sticky header
+- Move directly between adjacent Commentary headings from each sticky header, in both the sheet and the study panel
 - Open Scripture links in commentary as passage previews
 
 ## Cross References

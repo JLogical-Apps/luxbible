@@ -15,6 +15,7 @@ import 'package:style/src/widgets/styled_chip.dart';
 import 'package:style/src/widgets/styled_circle_button.dart';
 import 'package:style/src/widgets/styled_divider.dart';
 import 'package:style/src/widgets/styled_dock.dart';
+import 'package:super_sliver_list/super_sliver_list.dart';
 
 class StyledSheet<T> extends HookConsumerWidget {
   final Widget? title;
@@ -36,6 +37,7 @@ class StyledSheet<T> extends HookConsumerWidget {
   final bool shrinkWrap;
   final bool forceHeight;
   final ScrollController? controller;
+  final ListController? listController;
 
   final bool? forceBottomShadow;
   final Object? activeScrollKey;
@@ -57,6 +59,7 @@ class StyledSheet<T> extends HookConsumerWidget {
     this.shrinkWrap = true,
     this.forceHeight = false,
     this.controller,
+    this.listController,
     this.forceBottomShadow,
     this.activeScrollKey,
   }) : childrenBuilder = ((context, ref) => children),
@@ -79,6 +82,7 @@ class StyledSheet<T> extends HookConsumerWidget {
     this.shrinkWrap = true,
     this.forceHeight = false,
     this.controller,
+    this.listController,
     this.forceBottomShadow,
     this.activeScrollKey,
   }) : childrenBuilder = ((context, ref) => [child]),
@@ -101,6 +105,7 @@ class StyledSheet<T> extends HookConsumerWidget {
     this.shrinkWrap = true,
     this.forceHeight = false,
     this.controller,
+    this.listController,
     this.forceBottomShadow,
     this.activeScrollKey,
   }) : childrenWrapper = childrenWrapper ?? ((context, child) => child);
@@ -212,6 +217,7 @@ class StyledSheet<T> extends HookConsumerWidget {
                 StyledDock(
                   key: childrenKey,
                   controller: scrollController,
+                  listController: listController,
                   aboveButtons: aboveButtons,
                   buttonsBuilder: buttonsBuilder,
                   children: children,

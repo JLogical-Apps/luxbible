@@ -30,6 +30,7 @@ dependencies:
   provider: ^6.1.5+1
   shimmer: ^3.0.0
   sticky_headers: ^0.3.0+2
+  super_sliver_list: ^0.4.1
   utils_core:
     git:
       url: https://github.com/JLogical-Apps/flood.git

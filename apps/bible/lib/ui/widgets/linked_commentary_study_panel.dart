@@ -9,7 +9,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
 
@@ -224,53 +223,6 @@ class CommentaryPanelController {
     if (index == null) return;
     await scrollToIndex(index, duration: duration);
   }
-}
-
-class CommentaryHeaderNavigation extends StatelessWidget {
-  final int index;
-  final int itemCount;
-  final Function(int) onNavigateToIndex;
-
-  const CommentaryHeaderNavigation({
-    super.key,
-    required this.index,
-    required this.itemCount,
-    required this.onNavigateToIndex,
-  });
-
-  @override
-  Widget build(BuildContext context) => Row(
-    mainAxisSize: .min,
-    spacing: 4,
-    children: [
-      Visibility(
-        visible: index > 0,
-        maintainSize: true,
-        maintainAnimation: true,
-        maintainState: true,
-        child: Tooltip(
-          message: t.commentaryUi.previousSection,
-          child: StyledCircleButton.md(
-            child: Symbols.arrow_upward.toIcon(),
-            onPressed: () => onNavigateToIndex(index - 1),
-          ),
-        ),
-      ),
-      Visibility(
-        visible: index < itemCount - 1,
-        maintainSize: true,
-        maintainAnimation: true,
-        maintainState: true,
-        child: Tooltip(
-          message: t.commentaryUi.nextSection,
-          child: StyledCircleButton.md(
-            child: Symbols.arrow_downward.toIcon(),
-            onPressed: () => onNavigateToIndex(index + 1),
-          ),
-        ),
-      ),
-    ],
-  );
 }
 
 CommentaryPanelController useCommentaryPanelController(
