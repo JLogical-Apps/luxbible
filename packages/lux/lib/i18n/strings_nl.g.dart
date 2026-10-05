@@ -85,6 +85,7 @@ class TranslationsNl extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$onboardingSteps$nl onboardingSteps = _Translations$onboardingSteps$nl._(_root);
 	@override late final _Translations$dictionary$nl dictionary = _Translations$dictionary$nl._(_root);
 	@override late final _Translations$articles$nl articles = _Translations$articles$nl._(_root);
+	@override late final _Translations$maps$nl maps = _Translations$maps$nl._(_root);
 	@override late final _Translations$navigation$nl navigation = _Translations$navigation$nl._(_root);
 	@override late final _Translations$bibleSheet$nl bibleSheet = _Translations$bibleSheet$nl._(_root);
 	@override late final _Translations$passageSelection$nl passageSelection = _Translations$passageSelection$nl._(_root);
@@ -388,7 +389,7 @@ class _Translations$studyActions$nl extends Translations$studyActions$en {
 	@override String interlinearDescription({required Object region}) => 'Bekijk een lexicale analyse van ${region} met Strong-coderingen.';
 	@override String commentaryDescription({required Object region}) => 'Bekijk commentaren op ${region}.';
 	@override String crossReferencesDescription({required Object region}) => 'Bekijk kruisverwijzingen voor ${region}.';
-	@override String linkedResourcesDescription({required Object region}) => 'Bekijk personen en thema\'s die bij ${region} horen.';
+	@override String linkedResourcesDescription({required Object region}) => 'Bekijk personen, thema\'s en kaarten die bij ${region} horen.';
 	@override String get noCrossReferences => 'Geen kruisverwijzingen gevonden';
 	@override String get noLinkedResources => 'Geen gekoppelde bronnen gevonden';
 	@override String crossReferencesUse({required Object translation}) => 'Kruisverwijzingen gebruiken ${translation}';
@@ -500,10 +501,11 @@ class _Translations$toolbarShortcuts$nl extends Translations$toolbarShortcuts$en
 	@override String get lexicon => 'Lexicon';
 	@override String get themeAndLayout => 'Thema en indeling';
 	@override String get switchBibleDescription => 'Wissel van Bijbelvertaling.';
-	@override String get dictionaryDescription => 'Zoek personen, plaatsen en onderwerpen op in Easton\'s Bible Dictionary.';
+	@override String get dictionaryDescription => 'Zoek personen, plaatsen en onderwerpen op in de Tyndale Open Bible Dictionary.';
 	@override String get lexiconDescription => 'Bestudeer de oorspronkelijke Hebreeuwse en Griekse woorden met Strong\'s Lexicon.';
 	@override String get peopleDescription => 'Lees profielen van personen uit de Bijbel.';
 	@override String get themesDescription => 'Lees artikelen over belangrijke thema\'s in de Bijbel.';
+	@override String get mapsDescription => 'Bekijk kaarten van de plaatsen en reizen in de Bijbel.';
 	@override String get themeAndLayoutDescription => 'Pas het thema en de indeling van de Bijbel aan.';
 }
 
@@ -547,6 +549,7 @@ class _Translations$labels$nl extends Translations$labels$en {
 	@override String get lexicon => 'Lexicon';
 	@override String get licenses => 'Licenties';
 	@override String get locations => 'Locaties';
+	@override String get maps => 'Kaarten';
 	@override String get name => 'Naam';
 	@override String get note => 'Notitie';
 	@override String get notebook => 'Notitieboek';
@@ -1271,7 +1274,7 @@ class _Translations$dictionary$nl extends Translations$dictionary$en {
 	final TranslationsNl _root; // ignore: unused_field
 
 	// Translations
-	@override String get eastons => 'Easton\'s Bible Dictionary';
+	@override String get tyndale => 'Tyndale Open Bible Dictionary';
 }
 
 // Path: articles
@@ -1286,6 +1289,17 @@ class _Translations$articles$nl extends Translations$articles$en {
 	@override String get noMatchingPeople => 'Geen overeenkomende personen';
 	@override String get noMatchingThemes => 'Geen overeenkomende thema\'s';
 	@override String get passagesForFurtherStudy => 'Passages voor verdere studie';
+}
+
+// Path: maps
+class _Translations$maps$nl extends Translations$maps$en {
+	_Translations$maps$nl._(TranslationsNl root) : this._root = root, super.internal(root);
+
+	final TranslationsNl _root; // ignore: unused_field
+
+	// Translations
+	@override String get searchHint => 'Zoek naar een kaart';
+	@override String get noMatchingMaps => 'Geen overeenkomende kaarten';
 }
 
 // Path: navigation
@@ -3219,7 +3233,7 @@ extension on TranslationsNl {
 			'studyActions.interlinearDescription' => ({required Object region}) => 'Bekijk een lexicale analyse van ${region} met Strong-coderingen.',
 			'studyActions.commentaryDescription' => ({required Object region}) => 'Bekijk commentaren op ${region}.',
 			'studyActions.crossReferencesDescription' => ({required Object region}) => 'Bekijk kruisverwijzingen voor ${region}.',
-			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Bekijk personen en thema\'s die bij ${region} horen.',
+			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Bekijk personen, thema\'s en kaarten die bij ${region} horen.',
 			'studyActions.noCrossReferences' => 'Geen kruisverwijzingen gevonden',
 			'studyActions.noLinkedResources' => 'Geen gekoppelde bronnen gevonden',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Kruisverwijzingen gebruiken ${translation}',
@@ -3277,10 +3291,11 @@ extension on TranslationsNl {
 			'toolbarShortcuts.lexicon' => 'Lexicon',
 			'toolbarShortcuts.themeAndLayout' => 'Thema en indeling',
 			'toolbarShortcuts.switchBibleDescription' => 'Wissel van Bijbelvertaling.',
-			'toolbarShortcuts.dictionaryDescription' => 'Zoek personen, plaatsen en onderwerpen op in Easton\'s Bible Dictionary.',
+			'toolbarShortcuts.dictionaryDescription' => 'Zoek personen, plaatsen en onderwerpen op in de Tyndale Open Bible Dictionary.',
 			'toolbarShortcuts.lexiconDescription' => 'Bestudeer de oorspronkelijke Hebreeuwse en Griekse woorden met Strong\'s Lexicon.',
 			'toolbarShortcuts.peopleDescription' => 'Lees profielen van personen uit de Bijbel.',
 			'toolbarShortcuts.themesDescription' => 'Lees artikelen over belangrijke thema\'s in de Bijbel.',
+			'toolbarShortcuts.mapsDescription' => 'Bekijk kaarten van de plaatsen en reizen in de Bijbel.',
 			'toolbarShortcuts.themeAndLayoutDescription' => 'Pas het thema en de indeling van de Bijbel aan.',
 			'labels.about' => 'Over',
 			'labels.annotation' => 'Annotatie',
@@ -3315,6 +3330,7 @@ extension on TranslationsNl {
 			'labels.lexicon' => 'Lexicon',
 			'labels.licenses' => 'Licenties',
 			'labels.locations' => 'Locaties',
+			'labels.maps' => 'Kaarten',
 			'labels.name' => 'Naam',
 			'labels.note' => 'Notitie',
 			'labels.notebook' => 'Notitieboek',
@@ -3532,10 +3548,10 @@ extension on TranslationsNl {
 			'biblePlans.chooseBooksAndDuration' => 'Boeken en duur kiezen',
 			'biblePlans.chooseBooksAndDurationDescription' => 'Lees boeken gedurende een zelfgekozen periode.',
 			'biblePlans.chooseBooks' => 'Boeken kiezen',
-			'biblePlans.filterBooks' => 'Boeken filteren',
-			'biblePlans.chooseDuration' => 'Duur kiezen',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.filterBooks' => 'Boeken filteren',
+			'biblePlans.chooseDuration' => 'Duur kiezen',
 			'biblePlans.durationInstructions' => 'Hoeveel dagen moet je leesplan duren?',
 			'biblePlans.durationDayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: '${count} dag', other: '${count} dagen', ), 
 			'biblePlans.generatedNames.twoBooks' => ({required Object first, required Object second}) => '${first} en ${second}',
@@ -3793,12 +3809,14 @@ extension on TranslationsNl {
 			'onboardingSteps.moreSeparator' => ' → Meer → ',
 			'onboardingSteps.customizeToolbarSuffix' => 'Werkbalken en kies een werkbalkpreset of wijzig een snelkoppeling',
 			'onboardingSteps.startPlanSuffix' => ' → Bijbelleesplannen en start een leesplan',
-			'dictionary.eastons' => 'Easton\'s Bible Dictionary',
+			'dictionary.tyndale' => 'Tyndale Open Bible Dictionary',
 			'articles.personHint' => 'Zoek naar een persoon',
 			'articles.themeHint' => 'Zoek naar een thema',
 			'articles.noMatchingPeople' => 'Geen overeenkomende personen',
 			'articles.noMatchingThemes' => 'Geen overeenkomende thema\'s',
 			'articles.passagesForFurtherStudy' => 'Passages voor verdere studie',
+			'maps.searchHint' => 'Zoek naar een kaart',
+			'maps.noMatchingMaps' => 'Geen overeenkomende kaarten',
 			'navigation.recents' => 'Recent',
 			'navigation.navigate' => 'Navigeren',
 			'navigation.book' => 'Boek',
@@ -4044,12 +4062,12 @@ extension on TranslationsNl {
 			'morphology.aspect.participle.description' => 'Een verbaal bijvoeglijk naamwoord dat een voortdurende handeling beschrijft.',
 			'morphology.aspect.participle.examples' => 'schrijvend|degene die hoort',
 			'morphology.aspect.consecutiveImperfect.name' => 'Consecutief imperfectum',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.aspect.consecutiveImperfect.description' => 'Verhalende verleden vorm: waw + imperfectum.',
 			'morphology.aspect.consecutiveImperfect.examples' => 'en hij zei|en zij gingen',
 			'morphology.aspect.conjunctiveImperfect.name' => 'Conjunctief imperfectum',
 			'morphology.aspect.conjunctiveImperfect.description' => 'Imperfectum met conjunctieve waw, met een toekomstige of modale betekenis.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.aspect.conjunctiveImperfect.examples' => 'en hij zal schrijven',
 			'morphology.aspect.conjunctivePerfect.name' => 'Conjunctief perfectum',
 			'morphology.aspect.conjunctivePerfect.description' => 'Perfectum met conjunctieve waw, vaak toekomstig of opeenvolgend.',

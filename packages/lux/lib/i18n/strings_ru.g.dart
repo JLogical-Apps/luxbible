@@ -85,6 +85,7 @@ class TranslationsRu extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$onboardingSteps$ru onboardingSteps = _Translations$onboardingSteps$ru._(_root);
 	@override late final _Translations$dictionary$ru dictionary = _Translations$dictionary$ru._(_root);
 	@override late final _Translations$articles$ru articles = _Translations$articles$ru._(_root);
+	@override late final _Translations$maps$ru maps = _Translations$maps$ru._(_root);
 	@override late final _Translations$navigation$ru navigation = _Translations$navigation$ru._(_root);
 	@override late final _Translations$bibleSheet$ru bibleSheet = _Translations$bibleSheet$ru._(_root);
 	@override late final _Translations$passageSelection$ru passageSelection = _Translations$passageSelection$ru._(_root);
@@ -388,7 +389,7 @@ class _Translations$studyActions$ru extends Translations$studyActions$en {
 	@override String interlinearDescription({required Object region}) => 'Просмотрите лексическую разбивку ${region} с помощью Strong\'s.';
 	@override String commentaryDescription({required Object region}) => 'Посмотреть комментарии ${region}.';
 	@override String crossReferencesDescription({required Object region}) => 'Просмотрите перекрестные ссылки ${region}.';
-	@override String linkedResourcesDescription({required Object region}) => 'Просмотрите людей и темы, связанные с отрывком: ${region}.';
+	@override String linkedResourcesDescription({required Object region}) => 'Просмотрите людей, темы и карты, связанные с отрывком: ${region}.';
 	@override String get noCrossReferences => 'Перекрестных ссылок не найдено';
 	@override String get noLinkedResources => 'Связанных ресурсов не найдено';
 	@override String crossReferencesUse({required Object translation}) => 'В перекрестных ссылках используется ${translation}.';
@@ -500,10 +501,11 @@ class _Translations$toolbarShortcuts$ru extends Translations$toolbarShortcuts$en
 	@override String get lexicon => 'Лексикон';
 	@override String get themeAndLayout => 'Тема и макет';
 	@override String get switchBibleDescription => 'Переключите перевод Библии.';
-	@override String get dictionaryDescription => 'Ищите людей, места и темы в Библейском словаре Истона.';
+	@override String get dictionaryDescription => 'Ищите людей, места и темы в Tyndale Open Bible Dictionary.';
 	@override String get lexiconDescription => 'Изучите оригинальные еврейские и греческие слова с помощью «Лексикона Стронга».';
 	@override String get peopleDescription => 'Читайте о людях Библии.';
 	@override String get themesDescription => 'Читайте статьи о главных темах Библии.';
+	@override String get mapsDescription => 'Изучайте карты мест и путешествий из Библии.';
 	@override String get themeAndLayoutDescription => 'Настройте тему и макет Библии.';
 }
 
@@ -547,6 +549,7 @@ class _Translations$labels$ru extends Translations$labels$en {
 	@override String get lexicon => 'Лексикон';
 	@override String get licenses => 'Лицензии';
 	@override String get locations => 'Локации';
+	@override String get maps => 'Карты';
 	@override String get name => 'Имя';
 	@override String get note => 'Примечание';
 	@override String get notebook => 'Блокнот';
@@ -1281,7 +1284,7 @@ class _Translations$dictionary$ru extends Translations$dictionary$en {
 	final TranslationsRu _root; // ignore: unused_field
 
 	// Translations
-	@override String get eastons => 'Библейский словарь Истона';
+	@override String get tyndale => 'Tyndale Open Bible Dictionary';
 }
 
 // Path: articles
@@ -1296,6 +1299,17 @@ class _Translations$articles$ru extends Translations$articles$en {
 	@override String get noMatchingPeople => 'Нет подходящих людей';
 	@override String get noMatchingThemes => 'Нет подходящих тем';
 	@override String get passagesForFurtherStudy => 'Отрывки для дальнейшего изучения';
+}
+
+// Path: maps
+class _Translations$maps$ru extends Translations$maps$en {
+	_Translations$maps$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get searchHint => 'Поиск карты';
+	@override String get noMatchingMaps => 'Нет подходящих карт';
 }
 
 // Path: navigation
@@ -3231,7 +3245,7 @@ extension on TranslationsRu {
 			'studyActions.interlinearDescription' => ({required Object region}) => 'Просмотрите лексическую разбивку ${region} с помощью Strong\'s.',
 			'studyActions.commentaryDescription' => ({required Object region}) => 'Посмотреть комментарии ${region}.',
 			'studyActions.crossReferencesDescription' => ({required Object region}) => 'Просмотрите перекрестные ссылки ${region}.',
-			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Просмотрите людей и темы, связанные с отрывком: ${region}.',
+			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Просмотрите людей, темы и карты, связанные с отрывком: ${region}.',
 			'studyActions.noCrossReferences' => 'Перекрестных ссылок не найдено',
 			'studyActions.noLinkedResources' => 'Связанных ресурсов не найдено',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'В перекрестных ссылках используется ${translation}.',
@@ -3289,10 +3303,11 @@ extension on TranslationsRu {
 			'toolbarShortcuts.lexicon' => 'Лексикон',
 			'toolbarShortcuts.themeAndLayout' => 'Тема и макет',
 			'toolbarShortcuts.switchBibleDescription' => 'Переключите перевод Библии.',
-			'toolbarShortcuts.dictionaryDescription' => 'Ищите людей, места и темы в Библейском словаре Истона.',
+			'toolbarShortcuts.dictionaryDescription' => 'Ищите людей, места и темы в Tyndale Open Bible Dictionary.',
 			'toolbarShortcuts.lexiconDescription' => 'Изучите оригинальные еврейские и греческие слова с помощью «Лексикона Стронга».',
 			'toolbarShortcuts.peopleDescription' => 'Читайте о людях Библии.',
 			'toolbarShortcuts.themesDescription' => 'Читайте статьи о главных темах Библии.',
+			'toolbarShortcuts.mapsDescription' => 'Изучайте карты мест и путешествий из Библии.',
 			'toolbarShortcuts.themeAndLayoutDescription' => 'Настройте тему и макет Библии.',
 			'labels.about' => 'О приложении',
 			'labels.annotation' => 'Аннотация',
@@ -3327,6 +3342,7 @@ extension on TranslationsRu {
 			'labels.lexicon' => 'Лексикон',
 			'labels.licenses' => 'Лицензии',
 			'labels.locations' => 'Локации',
+			'labels.maps' => 'Карты',
 			'labels.name' => 'Имя',
 			'labels.note' => 'Примечание',
 			'labels.notebook' => 'Блокнот',
@@ -3544,10 +3560,10 @@ extension on TranslationsRu {
 			'biblePlans.chooseBooksAndDuration' => 'Выбрать книги и продолжительность',
 			'biblePlans.chooseBooksAndDurationDescription' => 'Читайте книги в течение заданного срока.',
 			'biblePlans.chooseBooks' => 'Выбрать книги',
-			'biblePlans.filterBooks' => 'Фильтровать книги',
-			'biblePlans.chooseDuration' => 'Выбрать продолжительность',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.filterBooks' => 'Фильтровать книги',
+			'biblePlans.chooseDuration' => 'Выбрать продолжительность',
 			'biblePlans.durationInstructions' => 'Сколько дней должен длиться ваш план?',
 			'biblePlans.durationDayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: '${count} день', few: '${count} дня', many: '${count} дней', other: '${count} дня', ), 
 			'biblePlans.generatedNames.twoBooks' => ({required Object first, required Object second}) => '${first} и ${second}',
@@ -3805,12 +3821,14 @@ extension on TranslationsRu {
 			'onboardingSteps.moreSeparator' => ' → Ещё → ',
 			'onboardingSteps.customizeToolbarSuffix' => 'Панели инструментов: выберите предустановку или измените ярлыки панели инструментов.',
 			'onboardingSteps.startPlanSuffix' => '→ Библейские планы и начните любой библейский план',
-			'dictionary.eastons' => 'Библейский словарь Истона',
+			'dictionary.tyndale' => 'Tyndale Open Bible Dictionary',
 			'articles.personHint' => 'Поиск человека',
 			'articles.themeHint' => 'Поиск темы',
 			'articles.noMatchingPeople' => 'Нет подходящих людей',
 			'articles.noMatchingThemes' => 'Нет подходящих тем',
 			'articles.passagesForFurtherStudy' => 'Отрывки для дальнейшего изучения',
+			'maps.searchHint' => 'Поиск карты',
+			'maps.noMatchingMaps' => 'Нет подходящих карт',
 			'navigation.recents' => 'Недавние',
 			'navigation.navigate' => 'Навигация',
 			'navigation.book' => 'Книга',
@@ -4056,12 +4074,12 @@ extension on TranslationsRu {
 			'morphology.aspect.participle.description' => 'Глагольное прилагательное, описывающее продолжающееся действие.',
 			'morphology.aspect.participle.examples' => 'пишу|тот, кто слышит',
 			'morphology.aspect.consecutiveImperfect.name' => 'Последовательный несовершенный',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.aspect.consecutiveImperfect.description' => 'Форма прошедшего повествования: waw + несовершенный.',
 			'morphology.aspect.consecutiveImperfect.examples' => 'и он сказал|и они пошли',
 			'morphology.aspect.conjunctiveImperfect.name' => 'Союзный имперфект',
 			'morphology.aspect.conjunctiveImperfect.description' => 'Несовершенный вид с союзным союзом waw, с будущим или модальным значением.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.aspect.conjunctiveImperfect.examples' => 'и он напишет',
 			'morphology.aspect.conjunctivePerfect.name' => 'Союзный совершенный',
 			'morphology.aspect.conjunctivePerfect.description' => 'Идеально сочетается с союзным союзом waw, часто будущим или последовательным.',

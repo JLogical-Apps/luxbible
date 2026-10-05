@@ -112,6 +112,28 @@ Map<String, dynamic> _$CommentaryTableToJson(CommentaryTable instance) =>
       'r': instance.$type,
     };
 
+CommentaryBibleMap _$CommentaryBibleMapFromJson(Map<String, dynamic> json) =>
+    CommentaryBibleMap(id: json['i'] as String, $type: json['r'] as String?);
+
+Map<String, dynamic> _$CommentaryBibleMapToJson(CommentaryBibleMap instance) =>
+    <String, dynamic>{'i': instance.id, 'r': instance.$type};
+
+CommentaryBox _$CommentaryBoxFromJson(Map<String, dynamic> json) =>
+    CommentaryBox(
+      title: json['h'] as String,
+      content: (json['c'] as List<dynamic>)
+          .map((e) => CommentaryContent.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      $type: json['r'] as String?,
+    );
+
+Map<String, dynamic> _$CommentaryBoxToJson(CommentaryBox instance) =>
+    <String, dynamic>{
+      'h': instance.title,
+      'c': instance.content.map((e) => e.toJson()).toList(),
+      'r': instance.$type,
+    };
+
 _CommentaryOutlineItem _$CommentaryOutlineItemFromJson(
   Map<String, dynamic> json,
 ) => _CommentaryOutlineItem(

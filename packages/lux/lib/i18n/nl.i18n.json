@@ -217,7 +217,7 @@
     "interlinearDescription": "Bekijk een lexicale analyse van {region} met Strong-coderingen.",
     "commentaryDescription": "Bekijk commentaren op {region}.",
     "crossReferencesDescription": "Bekijk kruisverwijzingen voor {region}.",
-    "linkedResourcesDescription": "Bekijk personen en thema's die bij {region} horen.",
+    "linkedResourcesDescription": "Bekijk personen, thema's en kaarten die bij {region} horen.",
     "noCrossReferences": "Geen kruisverwijzingen gevonden",
     "noLinkedResources": "Geen gekoppelde bronnen gevonden",
     "crossReferencesUse": "Kruisverwijzingen gebruiken {translation}",
@@ -287,10 +287,11 @@
     "lexicon": "Lexicon",
     "themeAndLayout": "Thema en indeling",
     "switchBibleDescription": "Wissel van Bijbelvertaling.",
-    "dictionaryDescription": "Zoek personen, plaatsen en onderwerpen op in Easton's Bible Dictionary.",
+    "dictionaryDescription": "Zoek personen, plaatsen en onderwerpen op in de Tyndale Open Bible Dictionary.",
     "lexiconDescription": "Bestudeer de oorspronkelijke Hebreeuwse en Griekse woorden met Strong's Lexicon.",
     "peopleDescription": "Lees profielen van personen uit de Bijbel.",
     "themesDescription": "Lees artikelen over belangrijke thema's in de Bijbel.",
+    "mapsDescription": "Bekijk kaarten van de plaatsen en reizen in de Bijbel.",
     "themeAndLayoutDescription": "Pas het thema en de indeling van de Bijbel aan."
   },
   "labels": {
@@ -327,6 +328,7 @@
     "lexicon": "Lexicon",
     "licenses": "Licenties",
     "locations": "Locaties",
+    "maps": "Kaarten",
     "name": "Naam",
     "note": "Notitie",
     "notebook": "Notitieboek",
@@ -888,7 +890,7 @@
     "startPlanSuffix": " → Bijbelleesplannen en start een leesplan"
   },
   "dictionary": {
-    "eastons": "Easton's Bible Dictionary"
+    "tyndale": "Tyndale Open Bible Dictionary"
   },
   "articles": {
     "personHint": "Zoek naar een persoon",
@@ -896,6 +898,10 @@
     "noMatchingPeople": "Geen overeenkomende personen",
     "noMatchingThemes": "Geen overeenkomende thema's",
     "passagesForFurtherStudy": "Passages voor verdere studie"
+  },
+  "maps": {
+    "searchHint": "Zoek naar een kaart",
+    "noMatchingMaps": "Geen overeenkomende kaarten"
   },
   "navigation": {
     "recents": "Recent",

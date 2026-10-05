@@ -1,5 +1,10 @@
+import 'package:bible/models/article.dart';
 import 'package:bible/models/commentary.dart';
+import 'package:bible/providers/articles_provider.dart';
+import 'package:bible/providers/root_ref.dart';
+import 'package:bible/ui/sheets/article_sheet.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
+import 'package:bible/ui/widgets/bible_map_card.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:lux/i18n.dart';
@@ -143,7 +148,45 @@ class CommentaryContentView extends StatelessWidget {
       rows: rows,
       onNavigateToVerseSelection: onNavigateToVerseSelection,
     ),
+    CommentaryBibleMap(:final id) => BibleMapCard(mapId: id),
+    CommentaryBox(:final title, :final content) => StyledTile(
+      padding: .all(16),
+      child: Column(
+        crossAxisAlignment: .stretch,
+        spacing: 12,
+        children: [
+          Text(title, style: context.textStyle.headingXxs),
+          CommentaryContentList(content: content, onNavigateToVerseSelection: onNavigateToVerseSelection),
+        ],
+      ),
+    ),
   };
+}
+
+Future<void> openCommentaryLink(
+  BuildContext context,
+  String link, {
+  required Function(VerseSelection) onNavigateToVerseSelection,
+}) async {
+  if (!link.startsWith(Article.dictionaryLinkPrefix)) {
+    return PreviewPassageSheet.show(
+      context,
+      verseSelection: VerseSelection.fromOsisId(link),
+      onNavigateToVerseSelection: onNavigateToVerseSelection,
+    );
+  }
+
+  final articleId = link.substring(Article.dictionaryLinkPrefix.length);
+  final dictionary = await ref.read(articlesProvider(collection: .dictionary).future);
+  final article = dictionary.firstWhereOrNull((article) => article.id == articleId);
+  if (article == null || !context.mounted) return;
+
+  await ArticleSheet.show(
+    context,
+    collection: .dictionary,
+    article: article,
+    onNavigateToVerseSelection: onNavigateToVerseSelection,
+  );
 }
 
 class CommentaryParagraphView extends StatelessWidget {
@@ -186,11 +229,8 @@ class CommentaryParagraphView extends StatelessWidget {
           .attribution => .end,
           _ => null,
         },
-        onLinkPressed: (text, link) => PreviewPassageSheet.show(
-          context,
-          verseSelection: VerseSelection.fromOsisId(link),
-          onNavigateToVerseSelection: onNavigateToVerseSelection,
-        ),
+        onLinkPressed: (text, link) =>
+            openCommentaryLink(context, link, onNavigateToVerseSelection: onNavigateToVerseSelection),
       ),
     );
   }
@@ -222,11 +262,8 @@ class CommentaryTableView extends StatelessWidget {
                         child: MarkdownBuilder(
                           text,
                           style: rowIndex == 0 ? context.textStyle.labelSm.bold : context.textStyle.paragraphSm,
-                          onLinkPressed: (text, link) => PreviewPassageSheet.show(
-                            context,
-                            verseSelection: VerseSelection.fromOsisId(link),
-                            onNavigateToVerseSelection: onNavigateToVerseSelection,
-                          ),
+                          onLinkPressed: (text, link) =>
+                              openCommentaryLink(context, link, onNavigateToVerseSelection: onNavigateToVerseSelection),
                         ),
                       );
                     }).toList(),

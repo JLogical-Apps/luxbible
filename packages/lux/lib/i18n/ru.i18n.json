@@ -217,7 +217,7 @@
     "interlinearDescription": "Просмотрите лексическую разбивку {region} с помощью Strong's.",
     "commentaryDescription": "Посмотреть комментарии {region}.",
     "crossReferencesDescription": "Просмотрите перекрестные ссылки {region}.",
-    "linkedResourcesDescription": "Просмотрите людей и темы, связанные с отрывком: {region}.",
+    "linkedResourcesDescription": "Просмотрите людей, темы и карты, связанные с отрывком: {region}.",
     "noCrossReferences": "Перекрестных ссылок не найдено",
     "noLinkedResources": "Связанных ресурсов не найдено",
     "crossReferencesUse": "В перекрестных ссылках используется {translation}.",
@@ -287,10 +287,11 @@
     "lexicon": "Лексикон",
     "themeAndLayout": "Тема и макет",
     "switchBibleDescription": "Переключите перевод Библии.",
-    "dictionaryDescription": "Ищите людей, места и темы в Библейском словаре Истона.",
+    "dictionaryDescription": "Ищите людей, места и темы в Tyndale Open Bible Dictionary.",
     "lexiconDescription": "Изучите оригинальные еврейские и греческие слова с помощью «Лексикона Стронга».",
     "peopleDescription": "Читайте о людях Библии.",
     "themesDescription": "Читайте статьи о главных темах Библии.",
+    "mapsDescription": "Изучайте карты мест и путешествий из Библии.",
     "themeAndLayoutDescription": "Настройте тему и макет Библии."
   },
   "labels": {
@@ -327,6 +328,7 @@
     "lexicon": "Лексикон",
     "licenses": "Лицензии",
     "locations": "Локации",
+    "maps": "Карты",
     "name": "Имя",
     "note": "Примечание",
     "notebook": "Блокнот",
@@ -898,7 +900,7 @@
     "startPlanSuffix": "→ Библейские планы и начните любой библейский план"
   },
   "dictionary": {
-    "eastons": "Библейский словарь Истона"
+    "tyndale": "Tyndale Open Bible Dictionary"
   },
   "articles": {
     "personHint": "Поиск человека",
@@ -906,6 +908,10 @@
     "noMatchingPeople": "Нет подходящих людей",
     "noMatchingThemes": "Нет подходящих тем",
     "passagesForFurtherStudy": "Отрывки для дальнейшего изучения"
+  },
+  "maps": {
+    "searchHint": "Поиск карты",
+    "noMatchingMaps": "Нет подходящих карт"
   },
   "navigation": {
     "recents": "Недавние",

@@ -19,7 +19,7 @@ Tap any word to see its Greek or Hebrew root, Strong's number, morphology, and i
 - Search words, phrases, or Strong's numbers
 - Compare translations side by side
 - Follow cross-references powered by OpenBible
-- Browse Strong's Lexicon and Easton's Bible Dictionary
+- Browse Strong's Lexicon, the Tyndale Open Bible Dictionary, and 70 Bible maps
 - Read commentary from Matthew Henry, John Calvin, and Jamieson-Fausset-Brown
 
 MAKE IT YOURS

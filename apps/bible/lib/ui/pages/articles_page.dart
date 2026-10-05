@@ -1,6 +1,6 @@
 import 'package:bible/models/article_collection.dart';
+import 'package:bible/models/linked_resource.dart';
 import 'package:bible/providers/articles_provider.dart';
-import 'package:bible/ui/pages/search_page.dart';
 import 'package:bible/ui/widgets/article_list_item.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -25,19 +25,7 @@ class ArticlesPage extends HookConsumerWidget implements StyledRoute<VerseSelect
     final sortedArticles = useMemoized(() => articles?.sortedBy((article) => article.title.toUpperCase()), [articles]);
 
     final searchState = useState('');
-    final searchTerms = searchState.value.bibleSearchTerms;
-
-    final matchingArticles = searchTerms.isEmpty
-        ? sortedArticles
-        : sortedArticles
-              ?.where(
-                (article) => searchTerms.every(
-                  (searchTerm) => article.title.bibleSearchTerms.any(
-                    (word) => SearchWordMatching.startOfWord.matches(word, searchTerm),
-                  ),
-                ),
-              )
-              .toList();
+    final matchingArticles = sortedArticles?.whereMatchingTitleSearch(searchState.value).toList();
 
     return StyledPage(
       title: collection.title().toText(),
@@ -75,6 +63,7 @@ class ArticlesPage extends HookConsumerWidget implements StyledRoute<VerseSelect
                     ),
                   ...?matchingArticles?.map(
                     (article) => ArticleListItem(
+                      collection: collection,
                       article: article,
                       onNavigateToVerseSelection: (verseSelection) => context.pop(verseSelection),
                     ),

@@ -6,6 +6,7 @@ class StyledListItem extends StatelessWidget {
   final Widget? title;
   final Widget? subtitle;
   final Widget? thirdLine;
+  final double leadingWidth;
   final Widget? leading;
   final Widget? trailing;
 
@@ -20,6 +21,7 @@ class StyledListItem extends StatelessWidget {
     this.title,
     this.subtitle,
     this.thirdLine,
+    this.leadingWidth = 64,
     this.leading,
     this.trailing,
     this.onPressed,
@@ -33,6 +35,7 @@ class StyledListItem extends StatelessWidget {
     this.title,
     this.subtitle,
     this.thirdLine,
+    this.leadingWidth = 64,
     this.leading,
     this.onPressed,
     this.size = ComponentSize.md,
@@ -45,6 +48,7 @@ class StyledListItem extends StatelessWidget {
     this.title,
     this.subtitle,
     this.thirdLine,
+    this.leadingWidth = 64,
     this.leading,
     this.onPressed,
     this.size = ComponentSize.md,
@@ -57,6 +61,7 @@ class StyledListItem extends StatelessWidget {
     this.title,
     this.subtitle,
     this.thirdLine,
+    this.leadingWidth = 64,
     this.leading,
     required bool isSelected,
     required Function() onSelected,
@@ -71,6 +76,7 @@ class StyledListItem extends StatelessWidget {
     this.title,
     this.subtitle,
     this.thirdLine,
+    this.leadingWidth = 64,
     this.leading,
     required bool isSelected,
     required Function(bool newValue)? onSelected,
@@ -85,6 +91,7 @@ class StyledListItem extends StatelessWidget {
     this.title,
     this.subtitle,
     this.thirdLine,
+    this.leadingWidth = 64,
     this.leading,
     required bool isSelected,
     required Function(bool newValue)? onSelected,
@@ -99,6 +106,7 @@ class StyledListItem extends StatelessWidget {
     this.title,
     this.subtitle,
     this.thirdLine,
+    this.leadingWidth = 64,
     this.leading,
     this.onPressed,
     this.size = ComponentSize.md,
@@ -128,7 +136,7 @@ class StyledListItem extends StatelessWidget {
                   SizedBox(width: MediaQuery.viewPaddingOf(context).left),
                   if (leading case final leading?)
                     SizedBox(
-                      width: 64,
+                      width: leadingWidth,
                       child: Center(
                         child: IconTheme.merge(
                           data: IconThemeData(color: context.colors.content(isDisabled: !isEnabled), size: 24),

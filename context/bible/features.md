@@ -360,16 +360,17 @@ When an online Bible is active, cross-reference previews use the user's study Bi
 ## Linked Resources
 
 Linked Resources lists the resources whose passages overlap a chapter or verse selection. It currently includes
-Tyndale Study Notes' people profiles and theme articles.
+Tyndale Study Notes' people profiles and theme articles, and the Tyndale Open Bible Dictionary's maps.
 
-- An item is linked when its main passage or any of its passages for further study overlaps the selection, including
-  passages that span several chapters
-- Results are grouped into People and Themes, and a group without results is hidden
+- An article is linked when its main passage or any of its passages for further study overlaps the selection, and a
+  map when any passage it illustrates does, including passages that span several chapters
+- Results are grouped into People, Themes, and Maps, and a group without results is hidden
 - Within a group, items whose overlapping passage is narrowest come first, then items are ordered by title
-- Each result shows its title and the start of its first paragraph
+- Each article shows its title and the start of its first paragraph, and each map shows a thumbnail and its title
 - Tapping a result opens the full article, where Scripture links open passage previews. Its passages for further
   study, starting with the article's main passage, show their reference and the first two lines of their text, and
   each opens a passage preview. Like Cross References, they use the study Bible when an online Bible is active
+- Tapping a map opens the map viewer
 - A message appears when nothing is linked
 - Linked Resources can be pinned as a study panel
 
@@ -411,7 +412,7 @@ Strong's-number searches remain exact and do not use word matching.
 
 - Matching text or Strong's occurrences are emphasized.
 - A matching Strong's entry appears above Strong's search results.
-- A matching Easton's Bible Dictionary entry appears above word-search results.
+- Dictionary entries whose title matches the search, ignoring a qualifier such as "(Place)", appear above word-search results.
 - Tapping a result opens a passage preview.
 - The preview can be moved into the main Bible.
 - The five most recent search queries are retained and can be removed individually.
@@ -424,10 +425,11 @@ The Resources action opens:
 
 ### Dictionary
 
-- Easton's Bible Dictionary
+- The Tyndale Open Bible Dictionary's articles on people, places, books of the Bible, and topics
 - Alphabetical browsing
-- Prefix search by people, places, and topics
-- Scripture links that can open passage previews or navigate to the Bible
+- Search where each typed word matches the start of any word in a title, in any order
+- Each entry opens the same article view as People and Themes, with its text boxes, charts, and maps shown inline
+- Scripture links open passage previews that can navigate to the Bible, and cross-references open the linked entry
 
 ### Lexicon
 
@@ -450,6 +452,14 @@ The Resources action opens:
 - Alphabetical browsing
 - Search where each typed word matches the start of any word in a title, in any order
 - Each theme opens the same article view as Linked Resources
+
+### Maps
+
+- The Tyndale Open Bible Dictionary's 70 maps of journeys, battles, regions, and each book's key places
+- Listed in Bible order by the first passage each map illustrates, with a thumbnail and title
+- Search where each typed word matches the start of any word in a title, in any order
+- Tapping a map opens a full-screen viewer that can be pinch-zoomed, with the map's title and caption below it
+- Maps stay on a light background in dark mode
 
 The Dictionary and Lexicon are also available as independent main-toolbar shortcuts.
 

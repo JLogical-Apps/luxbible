@@ -1,4 +1,5 @@
 import 'package:bible/models/commentary.dart';
+import 'package:bible/models/linked_resource.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lux/lux_core.dart';
@@ -7,30 +8,29 @@ part 'article.freezed.dart';
 part 'article.g.dart';
 
 @freezed
-sealed class Article with _$Article {
+sealed class Article with _$Article, LinkedResource {
   const Article._();
+
+  static const dictionaryLinkPrefix = 'dictionary:';
 
   const factory Article({
     @JsonKey(name: 'i') required String id,
     @JsonKey(name: 't') required String title,
     @JsonKey(name: 'b') required List<CommentaryContent> body,
-    @JsonKey(name: 'p') required List<VerseSelection> passages,
+    @IgnoreIfEmpty(name: 'p') @Default([]) List<VerseSelection> passages,
   }) = _Article;
 
   factory Article.fromJson(Map<String, dynamic> json) => _$ArticleFromJson(json);
 
-  Markdown? get preview =>
-      body.whereType<CommentaryParagraph>().firstWhereOrNull((paragraph) => paragraph.style == .body)?.text;
+  // Some dictionary entries start with a numbered list, such as one item per person with the same name.
+  Markdown? get preview {
+    final paragraphs = body.whereType<CommentaryParagraph>();
+    return (paragraphs.firstWhereOrNull((paragraph) => paragraph.style == .body) ??
+            paragraphs.firstWhereOrNull((paragraph) => paragraph.style != .heading))
+        ?.text;
+  }
 
-  int? getNarrowestOverlap(VerseSelection selection) =>
-      passages.where((passage) => passage.hasAnyOf(selection)).map((passage) => passage.references.length).minOrNull;
-}
-
-extension ArticleListExtensions on List<Article> {
-  List<Article> getLinkedTo(VerseSelection selection) =>
-      map((article) => (article: article, overlap: article.getNarrowestOverlap(selection)))
-          .where((entry) => entry.overlap != null)
-          .sorted((a, b) => a.overlap!.compareTo(b.overlap!).nullIfZero ?? a.article.title.compareTo(b.article.title))
-          .map((entry) => entry.article)
-          .toList();
+  // Dictionary titles qualify repeated names, as in "Abel (Person)" and "Abel (Place)".
+  bool isTitled(String name) =>
+      title.replaceFirst(RegExp(r'\s*\(.*\)$'), '').toUpperCase() == name.trim().toUpperCase();
 }

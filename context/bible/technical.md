@@ -125,7 +125,7 @@ The following are bundled with the app and work offline:
 - SR
 - OSHB
 - Strong's Greek and Hebrew lexicon
-- Easton's Bible Dictionary
+- Tyndale Open Bible Dictionary articles and maps
 - Tyndale Open Study Notes commentary, people profiles, and theme articles
 - Matthew Henry commentary
 - John Calvin commentary
@@ -171,13 +171,17 @@ items Lux does not bundle, folds the NLT-only 3 John 15 and Revelation 12:18 int
 reference it cannot resolve. Notes separate their sub-points with bullets, which become separate paragraphs. Quoted NLT wording is bold and the divine name is written as LORD.
 
 Tyndale's Scripture links, book codes, and inline formatting are converted by the shared
-`tools/content/lib/tyndale.dart`, which the commentary generator and `tools/content/lib/tyndale_articles.dart` both
-use. Besides the repairs above, it normalizes hrefs that use en dashes or colons as separators or repeat a range end,
-clamps a range end past its chapter to the chapter's last verse, and keeps the one link to 2 Maccabees as plain text.
+`tools/content/lib/tyndale.dart`, which the commentary generator, `tools/content/lib/tyndale_articles.dart`, and
+`tools/content/lib/tyndale_dictionary.dart` all use. Besides the repairs above, it normalizes hrefs that use en dashes
+or colons as separators, partial-verse letters such as `6:6b`, or a repeated range end, turns verse lists such as
+`Ps.115.10,12` into multi-span selections that continue in the previous reference's chapter unless the display text
+names another, as in "Pss 17:7, 98:1" for `Ps.17.7,98`, clamps a range end past its chapter to the
+chapter's last verse, and keeps links to deuterocanonical books as plain text.
 
 Passage-linked content has no generic resource model. Each kind of content is its own list of items, each item has its
 own linked passages, and Linked Resources filters each relevant list for items with a passage that overlaps the
-selection. People and themes share one `Article` shape: an ID, a title, a body of the same content blocks commentary
+selection. The lists share only the `LinkedResource` mixin, which ranks items by their narrowest overlapping passage and
+matches title searches. People and themes share one `Article` shape: an ID, a title, a body of the same content blocks commentary
 uses, and a list of `VerseSelection` passages. `generate_articles_json.dart` writes them as one minified list per kind
 to `assets/people/tyndale.json` and `assets/themes/tyndale.json`, which are decoded on first use and kept in memory.
 Items are classified by source file because `ThemeNotes.xml` marks one theme with the Profile type name. An article's
@@ -186,6 +190,25 @@ every link in its "Passages for Further Study" paragraph, without duplicates. Th
 kept in the body. Overlap compares every verse a passage covers, so a range that crosses chapters matches in each of
 them, unlike commentary sections, which are keyed by their starting chapter. There is no link index; the lists are
 filtered whenever the selection or visible verses change.
+
+The Tyndale Open Bible Dictionary (CC BY-SA 4.0) uses the same `Article` shape without passages, so it is never
+loaded for Linked Resources. `generate_dictionary_json.dart` writes all 6,010 articles from
+`content/sources/dictionary/tyndale/Articles/` to `assets/dictionary/tyndale.json` (about 10 MB), which is decoded the
+first time the Dictionary, a dictionary link, or Search needs it. The title paragraph and the asterisks that
+mark terms missing from the NLT are dropped. Cross-references become `dictionary:<id>` links that open the linked
+article, and in-article outline anchors become plain text. Included text boxes and charts become `box` content blocks
+holding their paragraphs and tables, and included maps become `bibleMap` blocks that show the map inline. Pictures are
+omitted because the open release has only their captions. Articles, Textboxes.xml, and Charts.xml disagree on the case
+of some included names (`AbrahamSBosom` for `AbrahamsBosom`), so includes and map aliases are matched case-insensitively.
+The generator keeps the few links it cannot resolve as plain text and lists them, rather than failing.
+
+The dictionary's maps are their own list of `BibleMap` items: an ID, a title, an optional caption, and passages. The
+image path is derived from the ID as `assets/maps/tyndale/<id>.webp`. `content/sources/dictionary/tyndale/maps.json`
+is the hand-curated source, with one entry per image, the Maps.xml entry names that use it as aliases, a checked
+caption, and the passages the map illustrates; `generate_maps_json.dart` validates it and writes
+`assets/maps/tyndale.json`. The WebP images are rasterized once from the PDFs by
+`tools/content/python/maps/rasterize_tyndale_maps.py`, about 9 MB in total. Maps are shown on a light background in
+dark mode because inverting the grayscale print art turns its relief shading into a negative.
 
 ### Online Bible Text
 
@@ -263,7 +286,7 @@ Capabilities vary by translation:
 ## Study Data Sources
 
 - Cross-references: OpenBible cross-reference mapping
-- Dictionary: Easton's Bible Dictionary
+- Dictionary and maps: Tyndale Open Bible Dictionary
 - Lexicon: Strong's Greek and Hebrew dictionaries
 - Commentaries: Tyndale Open Study Notes, Matthew Henry, John Calvin, and Jamieson-Fausset-Brown
 - People and themes: Tyndale Open Study Notes profiles and theme articles

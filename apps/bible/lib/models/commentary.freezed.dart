@@ -651,6 +651,14 @@ CommentaryContent _$CommentaryContentFromJson(
           return CommentaryTable.fromJson(
             json
           );
+                case 'm':
+          return CommentaryBibleMap.fromJson(
+            json
+          );
+                case 'b':
+          return CommentaryBox.fromJson(
+            json
+          );
         
           default:
             throw CheckedFromJsonException(
@@ -709,12 +717,14 @@ extension CommentaryContentPatterns on CommentaryContent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( CommentaryParagraph value)?  paragraph,TResult Function( CommentaryTable value)?  table,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( CommentaryParagraph value)?  paragraph,TResult Function( CommentaryTable value)?  table,TResult Function( CommentaryBibleMap value)?  bibleMap,TResult Function( CommentaryBox value)?  box,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case CommentaryParagraph() when paragraph != null:
 return paragraph(_that);case CommentaryTable() when table != null:
-return table(_that);case _:
+return table(_that);case CommentaryBibleMap() when bibleMap != null:
+return bibleMap(_that);case CommentaryBox() when box != null:
+return box(_that);case _:
   return orElse();
 
 }
@@ -732,12 +742,14 @@ return table(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( CommentaryParagraph value)  paragraph,required TResult Function( CommentaryTable value)  table,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( CommentaryParagraph value)  paragraph,required TResult Function( CommentaryTable value)  table,required TResult Function( CommentaryBibleMap value)  bibleMap,required TResult Function( CommentaryBox value)  box,}){
 final _that = this;
 switch (_that) {
 case CommentaryParagraph():
 return paragraph(_that);case CommentaryTable():
-return table(_that);}
+return table(_that);case CommentaryBibleMap():
+return bibleMap(_that);case CommentaryBox():
+return box(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -751,12 +763,14 @@ return table(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( CommentaryParagraph value)?  paragraph,TResult? Function( CommentaryTable value)?  table,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( CommentaryParagraph value)?  paragraph,TResult? Function( CommentaryTable value)?  table,TResult? Function( CommentaryBibleMap value)?  bibleMap,TResult? Function( CommentaryBox value)?  box,}){
 final _that = this;
 switch (_that) {
 case CommentaryParagraph() when paragraph != null:
 return paragraph(_that);case CommentaryTable() when table != null:
-return table(_that);case _:
+return table(_that);case CommentaryBibleMap() when bibleMap != null:
+return bibleMap(_that);case CommentaryBox() when box != null:
+return box(_that);case _:
   return null;
 
 }
@@ -773,11 +787,13 @@ return table(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function(@JsonKey(name: 'x', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown text, @JsonKey(name: 's')  CommentaryParagraphStyle style)?  paragraph,TResult Function(@JsonKey(name: 'w', toJson: Markdown.toJsonTable, fromJson: Markdown.fromJsonTable)  List<List<Markdown>> rows)?  table,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function(@JsonKey(name: 'x', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown text, @JsonKey(name: 's')  CommentaryParagraphStyle style)?  paragraph,TResult Function(@JsonKey(name: 'w', toJson: Markdown.toJsonTable, fromJson: Markdown.fromJsonTable)  List<List<Markdown>> rows)?  table,TResult Function(@JsonKey(name: 'i')  String id)?  bibleMap,TResult Function(@JsonKey(name: 'h')  String title, @JsonKey(name: 'c')  List<CommentaryContent> content)?  box,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case CommentaryParagraph() when paragraph != null:
 return paragraph(_that.text,_that.style);case CommentaryTable() when table != null:
-return table(_that.rows);case _:
+return table(_that.rows);case CommentaryBibleMap() when bibleMap != null:
+return bibleMap(_that.id);case CommentaryBox() when box != null:
+return box(_that.title,_that.content);case _:
   return orElse();
 
 }
@@ -795,11 +811,13 @@ return table(_that.rows);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function(@JsonKey(name: 'x', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown text, @JsonKey(name: 's')  CommentaryParagraphStyle style)  paragraph,required TResult Function(@JsonKey(name: 'w', toJson: Markdown.toJsonTable, fromJson: Markdown.fromJsonTable)  List<List<Markdown>> rows)  table,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function(@JsonKey(name: 'x', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown text, @JsonKey(name: 's')  CommentaryParagraphStyle style)  paragraph,required TResult Function(@JsonKey(name: 'w', toJson: Markdown.toJsonTable, fromJson: Markdown.fromJsonTable)  List<List<Markdown>> rows)  table,required TResult Function(@JsonKey(name: 'i')  String id)  bibleMap,required TResult Function(@JsonKey(name: 'h')  String title, @JsonKey(name: 'c')  List<CommentaryContent> content)  box,}) {final _that = this;
 switch (_that) {
 case CommentaryParagraph():
 return paragraph(_that.text,_that.style);case CommentaryTable():
-return table(_that.rows);}
+return table(_that.rows);case CommentaryBibleMap():
+return bibleMap(_that.id);case CommentaryBox():
+return box(_that.title,_that.content);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -813,11 +831,13 @@ return table(_that.rows);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function(@JsonKey(name: 'x', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown text, @JsonKey(name: 's')  CommentaryParagraphStyle style)?  paragraph,TResult? Function(@JsonKey(name: 'w', toJson: Markdown.toJsonTable, fromJson: Markdown.fromJsonTable)  List<List<Markdown>> rows)?  table,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function(@JsonKey(name: 'x', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown text, @JsonKey(name: 's')  CommentaryParagraphStyle style)?  paragraph,TResult? Function(@JsonKey(name: 'w', toJson: Markdown.toJsonTable, fromJson: Markdown.fromJsonTable)  List<List<Markdown>> rows)?  table,TResult? Function(@JsonKey(name: 'i')  String id)?  bibleMap,TResult? Function(@JsonKey(name: 'h')  String title, @JsonKey(name: 'c')  List<CommentaryContent> content)?  box,}) {final _that = this;
 switch (_that) {
 case CommentaryParagraph() when paragraph != null:
 return paragraph(_that.text,_that.style);case CommentaryTable() when table != null:
-return table(_that.rows);case _:
+return table(_that.rows);case CommentaryBibleMap() when bibleMap != null:
+return bibleMap(_that.id);case CommentaryBox() when box != null:
+return box(_that.title,_that.content);case _:
   return null;
 
 }
@@ -973,6 +993,160 @@ class _$CommentaryTableCopyWithImpl<$Res>
   return _then(CommentaryTable(
 rows: null == rows ? _self._rows : rows // ignore: cast_nullable_to_non_nullable
 as List<List<Markdown>>,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class CommentaryBibleMap implements CommentaryContent {
+  const CommentaryBibleMap({@JsonKey(name: 'i') required this.id,  String? $type}): $type = $type ?? 'm';
+  factory CommentaryBibleMap.fromJson(Map<String, dynamic> json) => _$CommentaryBibleMapFromJson(json);
+
+@JsonKey(name: 'i') final  String id;
+
+@JsonKey(name: 'r')
+final String $type;
+
+
+/// Create a copy of CommentaryContent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CommentaryBibleMapCopyWith<CommentaryBibleMap> get copyWith => _$CommentaryBibleMapCopyWithImpl<CommentaryBibleMap>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$CommentaryBibleMapToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommentaryBibleMap&&(identical(other.id, id) || other.id == id));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id);
+
+@override
+String toString() {
+  return 'CommentaryContent.bibleMap(id: $id)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CommentaryBibleMapCopyWith<$Res> implements $CommentaryContentCopyWith<$Res> {
+  factory $CommentaryBibleMapCopyWith(CommentaryBibleMap value, $Res Function(CommentaryBibleMap) _then) = _$CommentaryBibleMapCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'i') String id
+});
+
+
+
+
+}
+/// @nodoc
+class _$CommentaryBibleMapCopyWithImpl<$Res>
+    implements $CommentaryBibleMapCopyWith<$Res> {
+  _$CommentaryBibleMapCopyWithImpl(this._self, this._then);
+
+  final CommentaryBibleMap _self;
+  final $Res Function(CommentaryBibleMap) _then;
+
+/// Create a copy of CommentaryContent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? id = null,}) {
+  return _then(CommentaryBibleMap(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class CommentaryBox implements CommentaryContent {
+  const CommentaryBox({@JsonKey(name: 'h') required this.title, @JsonKey(name: 'c') required  List<CommentaryContent> content,  String? $type}): _content = content,$type = $type ?? 'b';
+  factory CommentaryBox.fromJson(Map<String, dynamic> json) => _$CommentaryBoxFromJson(json);
+
+@JsonKey(name: 'h') final  String title;
+ final  List<CommentaryContent> _content;
+@JsonKey(name: 'c') List<CommentaryContent> get content {
+  if (_content is EqualUnmodifiableListView) return _content;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_content);
+}
+
+
+@JsonKey(name: 'r')
+final String $type;
+
+
+/// Create a copy of CommentaryContent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$CommentaryBoxCopyWith<CommentaryBox> get copyWith => _$CommentaryBoxCopyWithImpl<CommentaryBox>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$CommentaryBoxToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommentaryBox&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other._content, _content));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,title,const DeepCollectionEquality().hash(_content));
+
+@override
+String toString() {
+  return 'CommentaryContent.box(title: $title, content: $content)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $CommentaryBoxCopyWith<$Res> implements $CommentaryContentCopyWith<$Res> {
+  factory $CommentaryBoxCopyWith(CommentaryBox value, $Res Function(CommentaryBox) _then) = _$CommentaryBoxCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'h') String title,@JsonKey(name: 'c') List<CommentaryContent> content
+});
+
+
+
+
+}
+/// @nodoc
+class _$CommentaryBoxCopyWithImpl<$Res>
+    implements $CommentaryBoxCopyWith<$Res> {
+  _$CommentaryBoxCopyWithImpl(this._self, this._then);
+
+  final CommentaryBox _self;
+  final $Res Function(CommentaryBox) _then;
+
+/// Create a copy of CommentaryContent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? title = null,Object? content = null,}) {
+  return _then(CommentaryBox(
+title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,content: null == content ? _self._content : content // ignore: cast_nullable_to_non_nullable
+as List<CommentaryContent>,
   ));
 }
 

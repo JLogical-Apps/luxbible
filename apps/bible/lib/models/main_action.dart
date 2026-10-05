@@ -11,9 +11,9 @@ import 'package:bible/providers/verse_of_the_day_provider.dart';
 import 'package:bible/services/analytics_service.dart';
 import 'package:bible/ui/flows/verse_of_the_day_reminder_flow.dart';
 import 'package:bible/ui/pages/articles_page.dart';
+import 'package:bible/ui/pages/bible_maps_page.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
-import 'package:bible/ui/pages/dictionary_page.dart';
 import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/more_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
@@ -304,29 +304,31 @@ enum MainAction {
           onNavigateToVerseSelection(result);
         }
       case resources:
+        Widget buildCollectionItem(BuildContext context, ArticleCollection collection) => StyledListItem.navigation(
+          title: collection.title().toText(),
+          subtitle: collection.description().toText(),
+          leading: collection.icon.toIcon(),
+          onPressed: () => context.pop(ArticlesPage(collection: collection)),
+        );
+
         final resourcePage = await context.showStyledSheet<StyledRoute<VerseSelection>>(
           (context, _) => StyledSheet(
             title: t.labels.resources.toText(),
             children: [
-              StyledListItem.navigation(
-                title: t.labels.dictionary.toText(),
-                subtitle: t.toolbarShortcuts.dictionaryDescription.toText(),
-                leading: Symbols.menu_book.toIcon(),
-                onPressed: () => context.pop(DictionaryPage()),
-              ),
+              buildCollectionItem(context, .dictionary),
               StyledListItem.navigation(
                 title: t.labels.lexicon.toText(),
                 subtitle: t.toolbarShortcuts.lexiconDescription.toText(),
                 leading: Symbols.translate.toIcon(),
                 onPressed: () => context.pop(LexiconPage()),
               ),
-              ...ArticleCollection.values.map(
-                (collection) => StyledListItem.navigation(
-                  title: collection.title().toText(),
-                  subtitle: collection.description().toText(),
-                  leading: collection.icon.toIcon(),
-                  onPressed: () => context.pop(ArticlesPage(collection: collection)),
-                ),
+              buildCollectionItem(context, .people),
+              buildCollectionItem(context, .themes),
+              StyledListItem.navigation(
+                title: t.labels.maps.toText(),
+                subtitle: t.toolbarShortcuts.mapsDescription.toText(),
+                leading: Symbols.map.toIcon(),
+                onPressed: () => context.pop(BibleMapsPage()),
               ),
             ],
           ),

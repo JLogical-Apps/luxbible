@@ -69,6 +69,15 @@ sealed class CommentaryContent with _$CommentaryContent {
     required List<List<Markdown>> rows,
   }) = CommentaryTable;
 
+  @FreezedUnionValue('m')
+  const factory CommentaryContent.bibleMap({@JsonKey(name: 'i') required String id}) = CommentaryBibleMap;
+
+  @FreezedUnionValue('b')
+  const factory CommentaryContent.box({
+    @JsonKey(name: 'h') required String title,
+    @JsonKey(name: 'c') required List<CommentaryContent> content,
+  }) = CommentaryBox;
+
   factory CommentaryContent.fromJson(Map<String, dynamic> json) => _$CommentaryContentFromJson(json);
 }
 

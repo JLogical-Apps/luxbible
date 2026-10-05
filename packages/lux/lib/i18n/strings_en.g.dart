@@ -81,6 +81,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$onboardingSteps$en onboardingSteps = Translations$onboardingSteps$en.internal(_root);
 	late final Translations$dictionary$en dictionary = Translations$dictionary$en.internal(_root);
 	late final Translations$articles$en articles = Translations$articles$en.internal(_root);
+	late final Translations$maps$en maps = Translations$maps$en.internal(_root);
 	late final Translations$navigation$en navigation = Translations$navigation$en.internal(_root);
 	late final Translations$bibleSheet$en bibleSheet = Translations$bibleSheet$en.internal(_root);
 	late final Translations$passageSelection$en passageSelection = Translations$passageSelection$en.internal(_root);
@@ -773,8 +774,8 @@ class Translations$studyActions$en {
 	/// en: 'View cross references of {region}.'
 	String crossReferencesDescription({required Object region}) => 'View cross references of ${region}.';
 
-	/// en: 'View people and themes linked to {region}.'
-	String linkedResourcesDescription({required Object region}) => 'View people and themes linked to ${region}.';
+	/// en: 'View people, themes, and maps linked to {region}.'
+	String linkedResourcesDescription({required Object region}) => 'View people, themes, and maps linked to ${region}.';
 
 	/// en: 'No Cross References Found'
 	String get noCrossReferences => 'No Cross References Found';
@@ -1001,8 +1002,8 @@ class Translations$toolbarShortcuts$en {
 	/// en: 'Switch the Bible translation.'
 	String get switchBibleDescription => 'Switch the Bible translation.';
 
-	/// en: 'Look up people, places, and topics in Easton's Bible Dictionary.'
-	String get dictionaryDescription => 'Look up people, places, and topics in Easton\'s Bible Dictionary.';
+	/// en: 'Look up people, places, and topics in the Tyndale Open Bible Dictionary.'
+	String get dictionaryDescription => 'Look up people, places, and topics in the Tyndale Open Bible Dictionary.';
 
 	/// en: 'Study the original Hebrew and Greek words with Strong's Lexicon.'
 	String get lexiconDescription => 'Study the original Hebrew and Greek words with Strong\'s Lexicon.';
@@ -1012,6 +1013,9 @@ class Translations$toolbarShortcuts$en {
 
 	/// en: 'Read articles on the Bible's major themes.'
 	String get themesDescription => 'Read articles on the Bible\'s major themes.';
+
+	/// en: 'Explore maps of the places and journeys in the Bible.'
+	String get mapsDescription => 'Explore maps of the places and journeys in the Bible.';
 
 	/// en: 'Customize the theme & layout of the Bible.'
 	String get themeAndLayoutDescription => 'Customize the theme & layout of the Bible.';
@@ -1123,6 +1127,9 @@ class Translations$labels$en {
 
 	/// en: 'Locations'
 	String get locations => 'Locations';
+
+	/// en: 'Maps'
+	String get maps => 'Maps';
 
 	/// en: 'Name'
 	String get name => 'Name';
@@ -2746,8 +2753,8 @@ class Translations$dictionary$en {
 
 	// Translations
 
-	/// en: 'Easton's Bible Dictionary'
-	String get eastons => 'Easton\'s Bible Dictionary';
+	/// en: 'Tyndale Open Bible Dictionary'
+	String get tyndale => 'Tyndale Open Bible Dictionary';
 }
 
 // Path: articles
@@ -2772,6 +2779,21 @@ class Translations$articles$en {
 
 	/// en: 'Passages for Further Study'
 	String get passagesForFurtherStudy => 'Passages for Further Study';
+}
+
+// Path: maps
+class Translations$maps$en {
+	Translations$maps$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Search for a map'
+	String get searchHint => 'Search for a map';
+
+	/// en: 'No matching maps'
+	String get noMatchingMaps => 'No matching maps';
 }
 
 // Path: navigation
@@ -5490,7 +5512,7 @@ extension on Translations {
 			'studyActions.interlinearDescription' => ({required Object region}) => 'View a lexical breakdown of ${region} using Strong\'s.',
 			'studyActions.commentaryDescription' => ({required Object region}) => 'View commentaries of ${region}.',
 			'studyActions.crossReferencesDescription' => ({required Object region}) => 'View cross references of ${region}.',
-			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'View people and themes linked to ${region}.',
+			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'View people, themes, and maps linked to ${region}.',
 			'studyActions.noCrossReferences' => 'No Cross References Found',
 			'studyActions.noLinkedResources' => 'No Linked Resources Found',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Cross references use ${translation}',
@@ -5548,10 +5570,11 @@ extension on Translations {
 			'toolbarShortcuts.lexicon' => 'Lexicon',
 			'toolbarShortcuts.themeAndLayout' => 'Theme & Layout',
 			'toolbarShortcuts.switchBibleDescription' => 'Switch the Bible translation.',
-			'toolbarShortcuts.dictionaryDescription' => 'Look up people, places, and topics in Easton\'s Bible Dictionary.',
+			'toolbarShortcuts.dictionaryDescription' => 'Look up people, places, and topics in the Tyndale Open Bible Dictionary.',
 			'toolbarShortcuts.lexiconDescription' => 'Study the original Hebrew and Greek words with Strong\'s Lexicon.',
 			'toolbarShortcuts.peopleDescription' => 'Read profiles of people in the Bible.',
 			'toolbarShortcuts.themesDescription' => 'Read articles on the Bible\'s major themes.',
+			'toolbarShortcuts.mapsDescription' => 'Explore maps of the places and journeys in the Bible.',
 			'toolbarShortcuts.themeAndLayoutDescription' => 'Customize the theme & layout of the Bible.',
 			'labels.about' => 'About',
 			'labels.annotation' => 'Annotation',
@@ -5586,6 +5609,7 @@ extension on Translations {
 			'labels.lexicon' => 'Lexicon',
 			'labels.licenses' => 'Licenses',
 			'labels.locations' => 'Locations',
+			'labels.maps' => 'Maps',
 			'labels.name' => 'Name',
 			'labels.note' => 'Note',
 			'labels.notebook' => 'Notebook',
@@ -5805,10 +5829,10 @@ extension on Translations {
 			'biblePlans.chooseBooks' => 'Choose Books',
 			'biblePlans.filterBooks' => 'Filter books',
 			'biblePlans.chooseDuration' => 'Choose Duration',
-			'biblePlans.durationInstructions' => 'How many days should your plan last?',
-			'biblePlans.durationDayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} Day', other: '${count} Days', ), 
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.durationInstructions' => 'How many days should your plan last?',
+			'biblePlans.durationDayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} Day', other: '${count} Days', ), 
 			'biblePlans.generatedNames.twoBooks' => ({required Object first, required Object second}) => '${first} & ${second}',
 			'biblePlans.generatedNames.bookCount' => ({required Object count}) => '${count} Books',
 			'biblePlans.generatedNames.bible' => 'Bible',
@@ -6064,12 +6088,14 @@ extension on Translations {
 			'onboardingSteps.moreSeparator' => ' → More → ',
 			'onboardingSteps.customizeToolbarSuffix' => 'Toolbars and pick a toolbar preset or change any of your toolbar shortcuts',
 			'onboardingSteps.startPlanSuffix' => ' → Bible Plans and start any Bible plan',
-			'dictionary.eastons' => 'Easton\'s Bible Dictionary',
+			'dictionary.tyndale' => 'Tyndale Open Bible Dictionary',
 			'articles.personHint' => 'Search for a person',
 			'articles.themeHint' => 'Search for a theme',
 			'articles.noMatchingPeople' => 'No matching people',
 			'articles.noMatchingThemes' => 'No matching themes',
 			'articles.passagesForFurtherStudy' => 'Passages for Further Study',
+			'maps.searchHint' => 'Search for a map',
+			'maps.noMatchingMaps' => 'No matching maps',
 			'navigation.recents' => 'Recents',
 			'navigation.navigate' => 'Navigate',
 			'navigation.book' => 'Book',
@@ -6317,12 +6343,12 @@ extension on Translations {
 			'morphology.aspect.consecutiveImperfect.name' => 'Consecutive imperfect',
 			'morphology.aspect.consecutiveImperfect.description' => 'Past narrative form: waw + imperfect.',
 			'morphology.aspect.consecutiveImperfect.examples' => 'and he said|and they went',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.aspect.conjunctiveImperfect.name' => 'Conjunctive imperfect',
 			'morphology.aspect.conjunctiveImperfect.description' => 'Imperfect with conjunctive waw, with a future or modal sense.',
 			'morphology.aspect.conjunctiveImperfect.examples' => 'and he will write',
 			'morphology.aspect.conjunctivePerfect.name' => 'Conjunctive perfect',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.aspect.conjunctivePerfect.description' => 'Perfect with conjunctive waw, often future or sequential.',
 			'morphology.aspect.conjunctivePerfect.examples' => 'and you shall do|and he will judge',
 			'morphology.aspect.passiveParticiple.name' => 'Passive participle',

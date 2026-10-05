@@ -215,7 +215,7 @@
     "interlinearDescription": "View a lexical breakdown of {region} using Strong's.",
     "commentaryDescription": "View commentaries of {region}.",
     "crossReferencesDescription": "View cross references of {region}.",
-    "linkedResourcesDescription": "View people and themes linked to {region}.",
+    "linkedResourcesDescription": "View people, themes, and maps linked to {region}.",
     "noCrossReferences": "No Cross References Found",
     "noLinkedResources": "No Linked Resources Found",
     "crossReferencesUse": "Cross references use {translation}",
@@ -285,10 +285,11 @@
     "lexicon": "Lexicon",
     "themeAndLayout": "Theme & Layout",
     "switchBibleDescription": "Switch the Bible translation.",
-    "dictionaryDescription": "Look up people, places, and topics in Easton's Bible Dictionary.",
+    "dictionaryDescription": "Look up people, places, and topics in the Tyndale Open Bible Dictionary.",
     "lexiconDescription": "Study the original Hebrew and Greek words with Strong's Lexicon.",
     "peopleDescription": "Read profiles of people in the Bible.",
     "themesDescription": "Read articles on the Bible's major themes.",
+    "mapsDescription": "Explore maps of the places and journeys in the Bible.",
     "themeAndLayoutDescription": "Customize the theme & layout of the Bible."
   },
   "labels": {
@@ -325,6 +326,7 @@
     "lexicon": "Lexicon",
     "licenses": "Licenses",
     "locations": "Locations",
+    "maps": "Maps",
     "name": "Name",
     "note": "Note",
     "notebook": "Notebook",
@@ -886,7 +888,7 @@
     "startPlanSuffix": " → Bible Plans and start any Bible plan"
   },
   "dictionary": {
-    "eastons": "Easton's Bible Dictionary"
+    "tyndale": "Tyndale Open Bible Dictionary"
   },
   "articles": {
     "personHint": "Search for a person",
@@ -894,6 +896,10 @@
     "noMatchingPeople": "No matching people",
     "noMatchingThemes": "No matching themes",
     "passagesForFurtherStudy": "Passages for Further Study"
+  },
+  "maps": {
+    "searchHint": "Search for a map",
+    "noMatchingMaps": "No matching maps"
   },
   "navigation": {
     "recents": "Recents",

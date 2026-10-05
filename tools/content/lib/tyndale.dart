@@ -1,13 +1,17 @@
 import 'package:lux/lux_core.dart';
 import 'package:xml/xml.dart';
 
-Markdown getTyndaleMarkdown(XmlElement paragraph, {XmlElement? omittedLabel}) {
+Markdown getTyndaleMarkdown(
+  XmlElement paragraph, {
+  XmlElement? omittedLabel,
+  List<MarkdownElement> Function(XmlElement link, List<MarkdownElement> children) getLinkElements = _getLinkElements,
+}) {
   final markdown = Markdown.fromXmlNodes(paragraph.children, (element, children) {
     if (identical(element, omittedLabel)) return [];
     return switch (element.name.local) {
       'span' => _getSpanElements(element, children),
-      'a' => _getLinkElements(element, children),
-      'x2002' => [.text(' ')],
+      'a' => getLinkElements(element, children),
+      'x2002' || 'tab' => [.text(' ')],
       final other => throw FormatException('Unknown element `<$other>`.'),
     };
   }, textEscaping: .all);
@@ -28,12 +32,29 @@ List<MarkdownElement> _getSpanElements(XmlElement span, List<MarkdownElement> ch
       'divine-name-ital' => [
         .italic([.text(_getDivineName(span.innerText))]),
       ],
-      'ital' || 'hebrew' || 'greek' || 'latin' || 'aramaic' || 'sn-excerpt-roman' => [.italic(children)],
-      'ital-bold' => [
+      'ital' ||
+      'hebrew' ||
+      'greek' ||
+      'latin' ||
+      'aramaic' ||
+      'sn-excerpt-roman' ||
+      'sc-ital' ||
+      'ital-super' => [.italic(children)],
+      'ital-bold' || 'ital-bold-sc' => [
         .bold([.italic(children)]),
       ],
       'sc' => [.text(span.innerText.length <= 3 ? span.innerText.toUpperCase() : span.innerText)],
-      'era' || 'intro-h2-era' || 'sup' || 'sub' || 'sn-hebrew-chars' || 'sn-ref' || 'sn-ref-sc' => children,
+      'era' ||
+      'intro-h2-era' ||
+      'sup' ||
+      'sub' ||
+      'sn-hebrew-chars' ||
+      'sn-ref' ||
+      'sn-ref-sc' ||
+      'lc' ||
+      'overbar' ||
+      'right-arrow' => children,
+      'vn' => [.bold(children), .text(' ')],
       final other => throw FormatException('Unknown span class `$other`.'),
     };
 
@@ -46,22 +67,66 @@ List<MarkdownElement> _getLinkElements(XmlElement link, List<MarkdownElement> ch
     };
 
 String? getTyndaleLinkOsisId(XmlElement link) {
-  // A few hrefs have a stray leading backslash, en dashes or colons as separators, a doubled hyphen, or a repeated
-  // range end (`John.2.13-16-20` for "John 2:13-16").
+  // A few hrefs have a stray leading backslash, en dashes or colons as separators, a doubled hyphen, partial-verse
+  // letters (`Mark.6.6b`), or a repeated range end (`John.2.13-16-20` for "John 2:13-16").
   final href = link
       .getAttribute('href')!
       .trim()
       .replaceFirst(RegExp(r'^\\'), '')
       .replaceAll('–', '-')
       .replaceAll(':', '.')
+      .replaceAll(' ', '')
       .replaceFirst('--', '-')
-      .replaceFirstMapped(RegExp(r'^([^-]+-[^-]+)-.*$'), (match) => match[1]!)
+      .replaceAllMapped(RegExp(r'(\d)[abc](?=$|[-,])'), (match) => match[1]!)
       .replaceFirst('?bref=', '');
-  // Lux has no deuterocanonical books, and one theme links to 2 Maccabees.
+  // Lux has no deuterocanonical books.
   final isUnsupportedTarget =
-      href.startsWith('?item=') || href.endsWith('_StudyNote_Filament') || href.startsWith('2Macc.');
-  return isUnsupportedTarget ? null : _getOsisId(_getRepairedHref(href, link.innerText));
+      href.startsWith('?item=') ||
+      href.endsWith('_StudyNote_Filament') ||
+      _deuterocanonicalBookIds.contains(href.split('.').first);
+  if (isUnsupportedTarget) return null;
+
+  // Verse lists such as `Ps.115.10,12` continue in the previous reference's chapter. A few lost a later chapter that
+  // their display text still shows, as in `Ps.17.7,98` for "Pss 17:7, 98:1".
+  final [first, ...rest] = href.split(',').map(_withoutRepeatedRangeEnd).toList();
+  final displayedParts = link.innerText.split(',');
+  var chapterId = first.split('.').take(2).join('.');
+  return [
+    _getOsisId(_getRepairedHref(first, link.innerText)),
+    ...rest.indexed.map((entry) {
+      final (index, verses) = entry;
+      final displayedReference = displayedParts.length == rest.length + 1
+          ? RegExp(r'^\s*(\d+):(\d+(?:[-–]\d+)?)\s*$').firstMatch(displayedParts[index + 1])
+          : null;
+      if (displayedReference == null) return _getOsisId('$chapterId.$verses');
+
+      chapterId = '${chapterId.split('.').first}.${displayedReference[1]}';
+      return _getOsisId('$chapterId.${displayedReference[2]!.replaceAll('–', '-')}');
+    }),
+  ].join(' ');
 }
+
+String _withoutRepeatedRangeEnd(String href) =>
+    href.replaceFirstMapped(RegExp(r'^([^-]+-[^-]+)-.*$'), (match) => match[1]!);
+
+const _deuterocanonicalBookIds = {
+  '1Macc',
+  '2Macc',
+  '3Macc',
+  '4Macc',
+  '1Esd',
+  '2Esd',
+  'Tb',
+  'Jdt',
+  'AddEsth',
+  'Wisd',
+  'Ecclus',
+  'Bar',
+  'PrAzar',
+  'Sus',
+  'Bel',
+  'PrMan',
+};
 
 // Some links lost their end verse: `Gen.1.3-2` is displayed as "1:3–2:3" and the end chapter took its place.
 String _getRepairedHref(String href, String displayText) {
@@ -117,6 +182,8 @@ const _bookIdByTyndaleId = {
   '1Jn': '1John',
   '2Jn': '2John',
   '3Jn': '3John',
+  'Mt': 'Matt',
+  'Esther': 'Esth',
 };
 
 BookType getTyndaleBook(String tyndaleId) => BookType.fromOsisId(_bookIdByTyndaleId[tyndaleId] ?? tyndaleId);

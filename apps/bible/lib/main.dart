@@ -7,7 +7,6 @@ import 'package:bible/functions/audio_bible_timings_importer.dart';
 import 'package:bible/functions/bible_plan_importer.dart';
 import 'package:bible/functions/bible_plan_notification.dart';
 import 'package:bible/functions/cross_references_importer.dart';
-import 'package:bible/functions/dictionary_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
 import 'package:bible/functions/verse_of_the_day_importer.dart';
 import 'package:bible/functions/verse_of_the_day_notification.dart';
@@ -18,7 +17,6 @@ import 'package:bible/providers/audio_bible_timings_provider.dart';
 import 'package:bible/providers/bible_data_providers.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
-import 'package:bible/providers/dictionary_provider.dart';
 import 'package:bible/providers/language_provider.dart';
 import 'package:bible/providers/local_notification_scheduler_provider.dart';
 import 'package:bible/providers/local_notification_schedules_provider.dart';
@@ -120,7 +118,6 @@ Future<void> main() async {
       await registerLicenses();
 
       final strongs = await StrongImporter().import();
-      final dictionary = await DictionaryImporter().import();
       final crossReferences = await CrossReferencesImporter().import();
       final biblePlans = await BiblePlanImporter().import();
       final audioBibleTimings = await AudioBibleTimingsImporter().import();
@@ -148,7 +145,6 @@ Future<void> main() async {
           audioBibleHandlerProvider.overrideWithValue(audioBibleHandler),
           audioBibleTimingsProvider.overrideWithValue(audioBibleTimings),
           strongsProvider.overrideWithValue(strongs),
-          dictionaryProvider.overrideWithValue(dictionary),
           crossReferencesProvider.overrideWithValue(crossReferences),
           includedBiblePlansProvider.overrideWithValue(biblePlans),
           verseOfTheDaySelectionsProvider.overrideWithValue(verseOfTheDaySelections),

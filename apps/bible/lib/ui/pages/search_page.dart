@@ -1,10 +1,10 @@
 import 'package:bible/providers/app_bible_provider.dart';
-import 'package:bible/providers/dictionary_provider.dart';
+import 'package:bible/providers/articles_provider.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/analytics_service.dart';
 import 'package:bible/ui/dialogs/tutorial_dialog.dart';
-import 'package:bible/ui/sheets/dictionary_sheet.dart';
+import 'package:bible/ui/widgets/article_list_item.dart';
 import 'package:bible/ui/sheets/strong_sheet.dart';
 import 'package:bible/ui/widgets/search_location_button.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -40,7 +40,7 @@ class SearchPage extends HookConsumerWidget implements StyledRoute<VerseSelectio
         : studyBible;
 
     final strongs = ref.watch(strongsProvider);
-    final dictionary = ref.watch(dictionaryProvider);
+    final dictionary = ref.watch(articlesProvider(collection: .dictionary)).value ?? [];
 
     final textState = useState(initialSearch ?? '');
     final searchState = useState(textState.value);
@@ -58,6 +58,7 @@ class SearchPage extends HookConsumerWidget implements StyledRoute<VerseSelectio
     final searchResults = searchResultsState.value ?? [];
 
     final isStrongSearch = search.isStrongId;
+    final dictionaryEntries = dictionary.where((article) => article.isTitled(search)).toList();
     final searchBible = isStrongSearch ? studyBible : localBible;
     final isSearchLoading = isSearchActive && searchResultsState.value == null;
 
@@ -296,21 +297,20 @@ class SearchPage extends HookConsumerWidget implements StyledRoute<VerseSelectio
                                     ),
                                   ),
                                 ),
-                            ] else if (dictionary[searchState.value.trim().toUpperCase()] case final entry?)
+                            ] else if (dictionaryEntries.isNotEmpty)
                               Padding(
                                 padding: .all(16),
                                 child: StyledTile(
-                                  child: StyledListItem.navigation(
-                                    title: entry.title.toText(),
-                                    subtitle: MarkdownBuilder(
-                                      entry.definitions.first.withCollapsedWhitespace,
-                                      maxLines: 2,
-                                    ),
-                                    onPressed: () => DictionarySheet.show(
-                                      context,
-                                      entry: entry,
-                                      onNavigateToVerseSelection: (verseSelection) => context.pop(verseSelection),
-                                    ),
+                                  child: StyledList(
+                                    children: dictionaryEntries
+                                        .map(
+                                          (article) => ArticleListItem(
+                                            collection: .dictionary,
+                                            article: article,
+                                            onNavigateToVerseSelection: (verseSelection) => context.pop(verseSelection),
+                                          ),
+                                        )
+                                        .toList(),
                                   ),
                                 ),
                               ),

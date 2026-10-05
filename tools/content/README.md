@@ -18,7 +18,8 @@ dart run bin/generate_osis_json.dart
 dart run bin/generate_bible_plans_json.dart
 dart run bin/generate_commentary_json.dart
 dart run bin/generate_articles_json.dart
-dart run bin/generate_easton_json.dart
+dart run bin/generate_dictionary_json.dart
+dart run bin/generate_maps_json.dart
 dart run bin/generate_strongs_json.dart
 dart run bin/generate_audio_bible_timings_json.dart
 dart run bin/generate_verse_of_the_day.dart
@@ -35,6 +36,17 @@ presentation, and source tables.
 `assets/people/tyndale.json` and `assets/themes/tyndale.json`. Tyndale's link, book-code, and formatting conversion
 lives in [`lib/tyndale.dart`](lib/tyndale.dart) and is shared with the commentary generator, so after changing it,
 regenerate the commentary too and confirm its assets are unchanged unless the change was meant to affect them.
+
+`generate_dictionary_json.dart` writes the Tyndale Open Bible Dictionary from `content/sources/dictionary/tyndale/` to
+`assets/dictionary/tyndale.json`, with its text boxes, charts, and map references inline, and prints the links it kept
+as plain text because they cannot be resolved. It also uses [`lib/tyndale.dart`](lib/tyndale.dart).
+
+The dictionary's maps are curated by hand in `content/sources/dictionary/tyndale/maps.json`: one entry per map image,
+with its title, the Maps.xml entry names that use the image as aliases (dictionary articles embed maps by these names),
+a caption checked against the image, and the OSIS passages it illustrates. `generate_maps_json.dart` validates the
+passages and writes `assets/maps/tyndale.json`. The images in `assets/maps/tyndale/` come from the map PDFs through
+[`python/maps/rasterize_tyndale_maps.py`](python/maps/rasterize_tyndale_maps.py), whose docstring lists its venv setup;
+rerun it only when the PDFs or the ids in `maps.json` change.
 
 `generate_audio_bible_timings_json.dart` validates their canonical chapter and verse coverage, removes the verse text and source metadata, and writes one minified runtime asset per Audio Bible.
 

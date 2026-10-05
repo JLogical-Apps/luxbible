@@ -119,6 +119,8 @@ flutter:
     - assets/translations/web/
     - assets/strongs/
     - assets/dictionary/
+    - assets/maps/
+    - assets/maps/tyndale/
     - assets/commentary/calvin/
     - assets/commentary/jamieson_fausset_brown/
     - assets/commentary/matthew_henry/

@@ -12,14 +12,16 @@ _Article _$ArticleFromJson(Map<String, dynamic> json) => _Article(
   body: (json['b'] as List<dynamic>)
       .map((e) => CommentaryContent.fromJson(e as Map<String, dynamic>))
       .toList(),
-  passages: (json['p'] as List<dynamic>)
-      .map((e) => VerseSelection.fromJson(e as String))
-      .toList(),
+  passages:
+      (json['p'] as List<dynamic>?)
+          ?.map((e) => VerseSelection.fromJson(e as String))
+          .toList() ??
+      const [],
 );
 
 Map<String, dynamic> _$ArticleToJson(_Article instance) => <String, dynamic>{
   'i': instance.id,
   't': instance.title,
   'b': instance.body.map((e) => e.toJson()).toList(),
-  'p': instance.passages.map((e) => e.toJson()).toList(),
+  'p': ?nullIfEmpty(instance.passages),
 };

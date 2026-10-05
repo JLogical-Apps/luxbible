@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Article {
 
-@JsonKey(name: 'i') String get id;@JsonKey(name: 't') String get title;@JsonKey(name: 'b') List<CommentaryContent> get body;@JsonKey(name: 'p') List<VerseSelection> get passages;
+@JsonKey(name: 'i') String get id;@JsonKey(name: 't') String get title;@JsonKey(name: 'b') List<CommentaryContent> get body;@IgnoreIfEmpty(name: 'p') List<VerseSelection> get passages;
 /// Create a copy of Article
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $ArticleCopyWith<$Res>  {
   factory $ArticleCopyWith(Article value, $Res Function(Article) _then) = _$ArticleCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'i') String id,@JsonKey(name: 't') String title,@JsonKey(name: 'b') List<CommentaryContent> body,@JsonKey(name: 'p') List<VerseSelection> passages
+@JsonKey(name: 'i') String id,@JsonKey(name: 't') String title,@JsonKey(name: 'b') List<CommentaryContent> body,@IgnoreIfEmpty(name: 'p') List<VerseSelection> passages
 });
 
 
@@ -154,7 +154,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<CommentaryContent> body, @JsonKey(name: 'p')  List<VerseSelection> passages)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<CommentaryContent> body, @IgnoreIfEmpty(name: 'p')  List<VerseSelection> passages)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Article() when $default != null:
 return $default(_that.id,_that.title,_that.body,_that.passages);case _:
@@ -175,7 +175,7 @@ return $default(_that.id,_that.title,_that.body,_that.passages);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<CommentaryContent> body, @JsonKey(name: 'p')  List<VerseSelection> passages)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<CommentaryContent> body, @IgnoreIfEmpty(name: 'p')  List<VerseSelection> passages)  $default,) {final _that = this;
 switch (_that) {
 case _Article():
 return $default(_that.id,_that.title,_that.body,_that.passages);}
@@ -192,7 +192,7 @@ return $default(_that.id,_that.title,_that.body,_that.passages);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<CommentaryContent> body, @JsonKey(name: 'p')  List<VerseSelection> passages)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<CommentaryContent> body, @IgnoreIfEmpty(name: 'p')  List<VerseSelection> passages)?  $default,) {final _that = this;
 switch (_that) {
 case _Article() when $default != null:
 return $default(_that.id,_that.title,_that.body,_that.passages);case _:
@@ -207,7 +207,7 @@ return $default(_that.id,_that.title,_that.body,_that.passages);case _:
 @JsonSerializable()
 
 class _Article extends Article {
-  const _Article({@JsonKey(name: 'i') required this.id, @JsonKey(name: 't') required this.title, @JsonKey(name: 'b') required  List<CommentaryContent> body, @JsonKey(name: 'p') required  List<VerseSelection> passages}): _body = body,_passages = passages,super._();
+  const _Article({@JsonKey(name: 'i') required this.id, @JsonKey(name: 't') required this.title, @JsonKey(name: 'b') required  List<CommentaryContent> body, @IgnoreIfEmpty(name: 'p')  List<VerseSelection> passages = const []}): _body = body,_passages = passages,super._();
   factory _Article.fromJson(Map<String, dynamic> json) => _$ArticleFromJson(json);
 
 @override@JsonKey(name: 'i') final  String id;
@@ -220,7 +220,7 @@ class _Article extends Article {
 }
 
  final  List<VerseSelection> _passages;
-@override@JsonKey(name: 'p') List<VerseSelection> get passages {
+@override@IgnoreIfEmpty(name: 'p') List<VerseSelection> get passages {
   if (_passages is EqualUnmodifiableListView) return _passages;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_passages);
@@ -260,7 +260,7 @@ abstract mixin class _$ArticleCopyWith<$Res> implements $ArticleCopyWith<$Res> {
   factory _$ArticleCopyWith(_Article value, $Res Function(_Article) _then) = __$ArticleCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'i') String id,@JsonKey(name: 't') String title,@JsonKey(name: 'b') List<CommentaryContent> body,@JsonKey(name: 'p') List<VerseSelection> passages
+@JsonKey(name: 'i') String id,@JsonKey(name: 't') String title,@JsonKey(name: 'b') List<CommentaryContent> body,@IgnoreIfEmpty(name: 'p') List<VerseSelection> passages
 });
 
 

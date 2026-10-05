@@ -215,7 +215,7 @@
     "interlinearDescription": "Zeige eine lexikalische Aufschlüsselung für {region} mit Strong's.",
     "commentaryDescription": "Zeige Kommentare für {region}.",
     "crossReferencesDescription": "Zeige Querverweise für {region}.",
-    "linkedResourcesDescription": "Zeige verknüpfte Personen und Themen für {region}.",
+    "linkedResourcesDescription": "Zeige verknüpfte Personen, Themen und Karten für {region}.",
     "noCrossReferences": "Keine Querverweise gefunden",
     "noLinkedResources": "Keine verknüpften Ressourcen gefunden",
     "crossReferencesUse": "Querverweise aus {translation}",
@@ -285,10 +285,11 @@
     "lexicon": "Lexikon",
     "themeAndLayout": "Design & Layout",
     "switchBibleDescription": "Die Bibelübersetzung wechseln.",
-    "dictionaryDescription": "Schlage Personen, Orte und Themen in Easton's Bible Dictionary nach.",
+    "dictionaryDescription": "Schlage Personen, Orte und Themen im Tyndale Open Bible Dictionary nach.",
     "lexiconDescription": "Studiere die hebräischen und griechischen Grundwörter mit dem Strong-Lexikon.",
     "peopleDescription": "Lies Porträts biblischer Personen.",
     "themesDescription": "Lies Artikel zu zentralen Themen der Bibel.",
+    "mapsDescription": "Erkunde Karten der Orte und Reisen in der Bibel.",
     "themeAndLayoutDescription": "Passe Design & Layout der Bibel an."
   },
   "labels": {
@@ -325,6 +326,7 @@
     "lexicon": "Lexikon",
     "licenses": "Lizenzen",
     "locations": "Bereiche",
+    "maps": "Karten",
     "name": "Name",
     "note": "Notiz",
     "notebook": "Notizbuch",
@@ -886,7 +888,7 @@
     "startPlanSuffix": " → Lesepläne und starte einen beliebigen Leseplan"
   },
   "dictionary": {
-    "eastons": "Easton's Bible Dictionary"
+    "tyndale": "Tyndale Open Bible Dictionary"
   },
   "articles": {
     "personHint": "Nach einer Person suchen",
@@ -894,6 +896,10 @@
     "noMatchingPeople": "Keine passenden Personen",
     "noMatchingThemes": "Keine passenden Themen",
     "passagesForFurtherStudy": "Stellen zum Weiterstudieren"
+  },
+  "maps": {
+    "searchHint": "Nach einer Karte suchen",
+    "noMatchingMaps": "Keine passenden Karten"
   },
   "navigation": {
     "recents": "Zuletzt",

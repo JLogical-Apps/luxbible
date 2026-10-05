@@ -85,6 +85,7 @@ class TranslationsDe extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$onboardingSteps$de onboardingSteps = _Translations$onboardingSteps$de._(_root);
 	@override late final _Translations$dictionary$de dictionary = _Translations$dictionary$de._(_root);
 	@override late final _Translations$articles$de articles = _Translations$articles$de._(_root);
+	@override late final _Translations$maps$de maps = _Translations$maps$de._(_root);
 	@override late final _Translations$navigation$de navigation = _Translations$navigation$de._(_root);
 	@override late final _Translations$bibleSheet$de bibleSheet = _Translations$bibleSheet$de._(_root);
 	@override late final _Translations$passageSelection$de passageSelection = _Translations$passageSelection$de._(_root);
@@ -386,7 +387,7 @@ class _Translations$studyActions$de extends Translations$studyActions$en {
 	@override String interlinearDescription({required Object region}) => 'Zeige eine lexikalische Aufschlüsselung für ${region} mit Strong\'s.';
 	@override String commentaryDescription({required Object region}) => 'Zeige Kommentare für ${region}.';
 	@override String crossReferencesDescription({required Object region}) => 'Zeige Querverweise für ${region}.';
-	@override String linkedResourcesDescription({required Object region}) => 'Zeige verknüpfte Personen und Themen für ${region}.';
+	@override String linkedResourcesDescription({required Object region}) => 'Zeige verknüpfte Personen, Themen und Karten für ${region}.';
 	@override String get noCrossReferences => 'Keine Querverweise gefunden';
 	@override String get noLinkedResources => 'Keine verknüpften Ressourcen gefunden';
 	@override String crossReferencesUse({required Object translation}) => 'Querverweise aus ${translation}';
@@ -498,10 +499,11 @@ class _Translations$toolbarShortcuts$de extends Translations$toolbarShortcuts$en
 	@override String get lexicon => 'Lexikon';
 	@override String get themeAndLayout => 'Design & Layout';
 	@override String get switchBibleDescription => 'Die Bibelübersetzung wechseln.';
-	@override String get dictionaryDescription => 'Schlage Personen, Orte und Themen in Easton\'s Bible Dictionary nach.';
+	@override String get dictionaryDescription => 'Schlage Personen, Orte und Themen im Tyndale Open Bible Dictionary nach.';
 	@override String get lexiconDescription => 'Studiere die hebräischen und griechischen Grundwörter mit dem Strong-Lexikon.';
 	@override String get peopleDescription => 'Lies Porträts biblischer Personen.';
 	@override String get themesDescription => 'Lies Artikel zu zentralen Themen der Bibel.';
+	@override String get mapsDescription => 'Erkunde Karten der Orte und Reisen in der Bibel.';
 	@override String get themeAndLayoutDescription => 'Passe Design & Layout der Bibel an.';
 }
 
@@ -545,6 +547,7 @@ class _Translations$labels$de extends Translations$labels$en {
 	@override String get lexicon => 'Lexikon';
 	@override String get licenses => 'Lizenzen';
 	@override String get locations => 'Bereiche';
+	@override String get maps => 'Karten';
 	@override String get name => 'Name';
 	@override String get note => 'Notiz';
 	@override String get notebook => 'Notizbuch';
@@ -1269,7 +1272,7 @@ class _Translations$dictionary$de extends Translations$dictionary$en {
 	final TranslationsDe _root; // ignore: unused_field
 
 	// Translations
-	@override String get eastons => 'Easton\'s Bible Dictionary';
+	@override String get tyndale => 'Tyndale Open Bible Dictionary';
 }
 
 // Path: articles
@@ -1284,6 +1287,17 @@ class _Translations$articles$de extends Translations$articles$en {
 	@override String get noMatchingPeople => 'Keine passenden Personen';
 	@override String get noMatchingThemes => 'Keine passenden Themen';
 	@override String get passagesForFurtherStudy => 'Stellen zum Weiterstudieren';
+}
+
+// Path: maps
+class _Translations$maps$de extends Translations$maps$en {
+	_Translations$maps$de._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get searchHint => 'Nach einer Karte suchen';
+	@override String get noMatchingMaps => 'Keine passenden Karten';
 }
 
 // Path: navigation
@@ -3215,7 +3229,7 @@ extension on TranslationsDe {
 			'studyActions.interlinearDescription' => ({required Object region}) => 'Zeige eine lexikalische Aufschlüsselung für ${region} mit Strong\'s.',
 			'studyActions.commentaryDescription' => ({required Object region}) => 'Zeige Kommentare für ${region}.',
 			'studyActions.crossReferencesDescription' => ({required Object region}) => 'Zeige Querverweise für ${region}.',
-			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Zeige verknüpfte Personen und Themen für ${region}.',
+			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Zeige verknüpfte Personen, Themen und Karten für ${region}.',
 			'studyActions.noCrossReferences' => 'Keine Querverweise gefunden',
 			'studyActions.noLinkedResources' => 'Keine verknüpften Ressourcen gefunden',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Querverweise aus ${translation}',
@@ -3273,10 +3287,11 @@ extension on TranslationsDe {
 			'toolbarShortcuts.lexicon' => 'Lexikon',
 			'toolbarShortcuts.themeAndLayout' => 'Design & Layout',
 			'toolbarShortcuts.switchBibleDescription' => 'Die Bibelübersetzung wechseln.',
-			'toolbarShortcuts.dictionaryDescription' => 'Schlage Personen, Orte und Themen in Easton\'s Bible Dictionary nach.',
+			'toolbarShortcuts.dictionaryDescription' => 'Schlage Personen, Orte und Themen im Tyndale Open Bible Dictionary nach.',
 			'toolbarShortcuts.lexiconDescription' => 'Studiere die hebräischen und griechischen Grundwörter mit dem Strong-Lexikon.',
 			'toolbarShortcuts.peopleDescription' => 'Lies Porträts biblischer Personen.',
 			'toolbarShortcuts.themesDescription' => 'Lies Artikel zu zentralen Themen der Bibel.',
+			'toolbarShortcuts.mapsDescription' => 'Erkunde Karten der Orte und Reisen in der Bibel.',
 			'toolbarShortcuts.themeAndLayoutDescription' => 'Passe Design & Layout der Bibel an.',
 			'labels.about' => 'Über',
 			'labels.annotation' => 'Annotation',
@@ -3311,6 +3326,7 @@ extension on TranslationsDe {
 			'labels.lexicon' => 'Lexikon',
 			'labels.licenses' => 'Lizenzen',
 			'labels.locations' => 'Bereiche',
+			'labels.maps' => 'Karten',
 			'labels.name' => 'Name',
 			'labels.note' => 'Notiz',
 			'labels.notebook' => 'Notizbuch',
@@ -3530,10 +3546,10 @@ extension on TranslationsDe {
 			'biblePlans.chooseBooks' => 'Bücher wählen',
 			'biblePlans.filterBooks' => 'Bücher filtern',
 			'biblePlans.chooseDuration' => 'Dauer wählen',
-			'biblePlans.durationInstructions' => 'Wie viele Tage soll dein Plan dauern?',
-			'biblePlans.durationDayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: '${count} Tag', other: '${count} Tage', ), 
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.durationInstructions' => 'Wie viele Tage soll dein Plan dauern?',
+			'biblePlans.durationDayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: '${count} Tag', other: '${count} Tage', ), 
 			'biblePlans.generatedNames.twoBooks' => ({required Object first, required Object second}) => '${first} & ${second}',
 			'biblePlans.generatedNames.bookCount' => ({required Object count}) => '${count} Bücher',
 			'biblePlans.generatedNames.bible' => 'Bibel',
@@ -3789,12 +3805,14 @@ extension on TranslationsDe {
 			'onboardingSteps.moreSeparator' => ' → Mehr → ',
 			'onboardingSteps.customizeToolbarSuffix' => 'Symbolleisten und wähle eine Vorlage oder ändere deine Kurzbefehle',
 			'onboardingSteps.startPlanSuffix' => ' → Lesepläne und starte einen beliebigen Leseplan',
-			'dictionary.eastons' => 'Easton\'s Bible Dictionary',
+			'dictionary.tyndale' => 'Tyndale Open Bible Dictionary',
 			'articles.personHint' => 'Nach einer Person suchen',
 			'articles.themeHint' => 'Nach einem Thema suchen',
 			'articles.noMatchingPeople' => 'Keine passenden Personen',
 			'articles.noMatchingThemes' => 'Keine passenden Themen',
 			'articles.passagesForFurtherStudy' => 'Stellen zum Weiterstudieren',
+			'maps.searchHint' => 'Nach einer Karte suchen',
+			'maps.noMatchingMaps' => 'Keine passenden Karten',
 			'navigation.recents' => 'Zuletzt',
 			'navigation.navigate' => 'Navigieren',
 			'navigation.book' => 'Buch',
@@ -4042,12 +4060,12 @@ extension on TranslationsDe {
 			'morphology.aspect.consecutiveImperfect.name' => 'Imperfectum consecutivum',
 			'morphology.aspect.consecutiveImperfect.description' => 'Erzählform der Vergangenheit: Waw + Imperfekt.',
 			'morphology.aspect.consecutiveImperfect.examples' => 'und er sprach|und sie gingen',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.aspect.conjunctiveImperfect.name' => 'Imperfekt mit Waw',
 			'morphology.aspect.conjunctiveImperfect.description' => 'Imperfekt mit verbindendem Waw, mit zukünftigem oder modalem Sinn.',
 			'morphology.aspect.conjunctiveImperfect.examples' => 'und er wird schreiben',
 			'morphology.aspect.conjunctivePerfect.name' => 'Perfekt mit Waw',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.aspect.conjunctivePerfect.description' => 'Perfekt mit verbindendem Waw, oft zukünftig oder fortführend.',
 			'morphology.aspect.conjunctivePerfect.examples' => 'und du sollst tun|und er wird richten',
 			'morphology.aspect.passiveParticiple.name' => 'Passives Partizip',

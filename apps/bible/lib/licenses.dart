@@ -328,15 +328,19 @@ https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=StrongsGreek''',
     );
 
     yield const LicenseEntryWithLineBreaks(
-      ["Easton's Bible Dictionary"],
+      ['Tyndale Open Bible Dictionary'],
       '''
-Easton's Bible Dictionary.
+Tyndale Open Bible Dictionary. Copyright © 2023 Tyndale House Publishers.
 
-These dictionary topics are from M.G. Easton M.A., D.D., Illustrated Bible Dictionary, Third Edition, published by Thomas Nelson, 1897. Public Domain — Copy Freely.
+Licensed under Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0): https://creativecommons.org/licenses/by-sa/4.0/
 
-Sourced from the Christian Classics Ethereal Library (CCEL).
+Adapted from Tyndale Open Bible Dictionary. The original work by Tyndale House Publishers is available for free at http://www.tyndaleopenresources.com.
 
-Source: https://www.ccel.org/ccel/easton/ebd2''',
+Changes made by Lux: the dictionary articles were converted into Lux's article format, with their title lines removed, the asterisks that mark terms missing from the New Living Translation removed, and their text boxes and charts placed inline. Malformed scripture links were repaired, links to deuterocanonical books and to content not included in Lux were removed, and a few verse numbers were aligned with Lux's versification. The pictures were omitted because the open release does not include their images.
+
+The maps were rasterized from their PDFs. Map entries that share an image were merged into one map, several titles were rewritten to describe what the map shows, captions that did not match their map or only repeated a reference printed on the map were removed, scripture references in captions were given their book names, typos in captions were corrected, and each map was linked to the passages it illustrates.
+
+Source: http://www.tyndaleopenresources.com''',
     );
 
     yield const LicenseEntryWithLineBreaks(

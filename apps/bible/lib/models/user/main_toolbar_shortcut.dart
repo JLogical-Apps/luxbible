@@ -5,7 +5,7 @@ import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/ui/pages/dictionary_page.dart';
+import 'package:bible/ui/pages/articles_page.dart';
 import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/theme_settings_page.dart';
 import 'package:bible/ui/sheets/bible_sheet.dart';
@@ -95,7 +95,7 @@ enum MainToolbarShortcut {
           }
         }(),
         dictionary => () async {
-          final result = await context.push(DictionaryPage());
+          final result = await context.push(ArticlesPage(collection: .dictionary));
           if (result != null) {
             onNavigateToVerseSelection(result);
           }
