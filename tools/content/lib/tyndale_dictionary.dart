@@ -133,7 +133,7 @@ String _withoutAsterisks(String text) => text.replaceAll('*', '');
 RichParagraphStyle _getParagraphStyle(String? paragraphClass) => switch (paragraphClass) {
   null || 'fl' || 'sp' || 'list-text' || 'list-text-fl' || 'preview-text' || 'box-first' || 'td' => .body,
   'h2' || 'h2-preview' || 'h2-list' || 'box-h2' || 'box-h2-poetic' => .heading,
-  'h3' => .bold,
+  'h3' => .subheading,
   'h4' || 'h5' => .italic,
   'list' ||
   'list-space' ||

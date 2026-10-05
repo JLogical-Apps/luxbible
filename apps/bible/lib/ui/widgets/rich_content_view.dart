@@ -25,7 +25,9 @@ class RichContentList extends StatelessWidget {
       children: content.mapIndexed((index, block) {
         final view = RichContentView(content: block, onNavigateToVerseSelection: onNavigateToVerseSelection);
         return switch (block) {
-          RichParagraph(style: .heading) when index > 0 => Padding(padding: .only(top: 12), child: view),
+          _ when index == 0 => view,
+          RichParagraph(style: .heading) => Padding(padding: .only(top: 24), child: view),
+          RichParagraph(style: .subheading) => Padding(padding: .only(top: 12), child: view),
           _ => view,
         };
       }).toList(),
@@ -118,6 +120,7 @@ class RichParagraphView extends StatelessWidget {
         text,
         style: switch (style) {
           .heading => context.textStyle.headingXxs,
+          .subheading => context.textStyle.labelMd.bold,
           .attribution || .italic => baseStyle.copyWith(fontStyle: .italic),
           .bold => baseStyle.bold,
           .boldItalic || .poetry => baseStyle.bold.copyWith(fontStyle: .italic),

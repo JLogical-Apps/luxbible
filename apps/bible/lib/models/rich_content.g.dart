@@ -29,6 +29,7 @@ const _$RichParagraphStyleEnumMap = {
   RichParagraphStyle.centered: 'c',
   RichParagraphStyle.attribution: 'a',
   RichParagraphStyle.heading: 'h',
+  RichParagraphStyle.subheading: 's',
   RichParagraphStyle.indented: 'i',
   RichParagraphStyle.italic: 'e',
   RichParagraphStyle.bold: 'd',

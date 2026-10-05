@@ -43,6 +43,8 @@ enum RichParagraphStyle {
   attribution,
   @JsonValue('h')
   heading,
+  @JsonValue('s')
+  subheading,
   @JsonValue('i')
   indented,
   @JsonValue('e')

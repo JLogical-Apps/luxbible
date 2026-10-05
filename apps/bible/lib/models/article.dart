@@ -26,7 +26,7 @@ sealed class Article with _$Article, LinkedResource {
   Markdown? get preview {
     final paragraphs = body.whereType<RichParagraph>();
     return (paragraphs.firstWhereOrNull((paragraph) => paragraph.style == .body) ??
-            paragraphs.firstWhereOrNull((paragraph) => paragraph.style != .heading))
+            paragraphs.firstWhereOrNull((paragraph) => paragraph.style != .heading && paragraph.style != .subheading))
         ?.text;
   }
 
