@@ -64,7 +64,7 @@ final class ArticlesProvider
   }
 }
 
-String _$articlesHash() => r'bb9ba5a2827a178ccd849d17e4715c5c16ca6c63';
+String _$articlesHash() => r'6b055a159384d2984224c3ea40f3ccab20a232ae';
 
 final class ArticlesFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<List<Article>>, ArticleCollection> {

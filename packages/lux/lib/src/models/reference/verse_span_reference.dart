@@ -76,14 +76,19 @@ class VerseSpanReference extends Equatable {
   String toJson() => osisId();
   factory VerseSpanReference.fromJson(String json) = VerseSpanReference.fromOsisId;
 
-  List<Reference> get references =>
-      Reference.getReferencesBetween(start.startReference, end?.endReference ?? start.endReference).toList();
+  Reference get startReference => start.startReference;
+  Reference get endReference => (end ?? start).endReference;
+
+  List<Reference> get references => Reference.getReferencesBetween(startReference, endReference).toList();
 
   VerseSelection toVerseSelection() => VerseSelection(spans: [this]);
 
   String osisId() => [start, end].nonNulls.map((pointer) => pointer.osisId()).join('-');
 
-  bool containsReference(Reference reference) => references.has(reference);
+  bool containsReference(Reference reference) => startReference <= reference && reference <= endReference;
+
+  bool overlaps(VerseSpanReference other) =>
+      startReference <= other.endReference && other.startReference <= endReference;
 }
 
 sealed class BiblePointer {

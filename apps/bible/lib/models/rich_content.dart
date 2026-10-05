@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lux/lux_core.dart';
 
@@ -28,6 +29,15 @@ sealed class RichContent with _$RichContent {
   }) = RichBox;
 
   factory RichContent.fromJson(Map<String, dynamic> json) => _$RichContentFromJson(json);
+}
+
+extension RichContentExtensions on RichContent {
+  Iterable<Markdown> get texts => switch (this) {
+    RichParagraph(:final text) => [text],
+    RichTable(:final rows) => rows.flattened,
+    RichBibleMap() => [],
+    RichBox(:final content) => content.expand((content) => content.texts),
+  };
 }
 
 enum RichParagraphStyle {

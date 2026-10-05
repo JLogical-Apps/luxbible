@@ -389,7 +389,7 @@ class _Translations$studyActions$nl extends Translations$studyActions$en {
 	@override String interlinearDescription({required Object region}) => 'Bekijk een lexicale analyse van ${region} met Strong-coderingen.';
 	@override String commentaryDescription({required Object region}) => 'Bekijk commentaren op ${region}.';
 	@override String crossReferencesDescription({required Object region}) => 'Bekijk kruisverwijzingen voor ${region}.';
-	@override String linkedResourcesDescription({required Object region}) => 'Bekijk personen, thema\'s en kaarten die bij ${region} horen.';
+	@override String linkedResourcesDescription({required Object region}) => 'Bekijk personen, thema\'s, kaarten en woordenboekartikelen die bij ${region} horen.';
 	@override String get noCrossReferences => 'Geen kruisverwijzingen gevonden';
 	@override String get noLinkedResources => 'Geen gekoppelde bronnen gevonden';
 	@override String crossReferencesUse({required Object translation}) => 'Kruisverwijzingen gebruiken ${translation}';
@@ -556,7 +556,7 @@ class _Translations$labels$nl extends Translations$labels$en {
 	@override String get notebooks => 'Notitieboeken';
 	@override String get notes => 'Notities';
 	@override String get paragraphs => 'Alinea\'s';
-	@override String get people => 'Personen';
+	@override String get people => 'Personenprofielen';
 	@override String get resources => 'Bronnen';
 	@override String get scope => 'Bereik';
 	@override String get search => 'Zoeken';
@@ -3238,7 +3238,7 @@ extension on TranslationsNl {
 			'studyActions.interlinearDescription' => ({required Object region}) => 'Bekijk een lexicale analyse van ${region} met Strong-coderingen.',
 			'studyActions.commentaryDescription' => ({required Object region}) => 'Bekijk commentaren op ${region}.',
 			'studyActions.crossReferencesDescription' => ({required Object region}) => 'Bekijk kruisverwijzingen voor ${region}.',
-			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Bekijk personen, thema\'s en kaarten die bij ${region} horen.',
+			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Bekijk personen, thema\'s, kaarten en woordenboekartikelen die bij ${region} horen.',
 			'studyActions.noCrossReferences' => 'Geen kruisverwijzingen gevonden',
 			'studyActions.noLinkedResources' => 'Geen gekoppelde bronnen gevonden',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Kruisverwijzingen gebruiken ${translation}',
@@ -3342,7 +3342,7 @@ extension on TranslationsNl {
 			'labels.notebooks' => 'Notitieboeken',
 			'labels.notes' => 'Notities',
 			'labels.paragraphs' => 'Alinea\'s',
-			'labels.people' => 'Personen',
+			'labels.people' => 'Personenprofielen',
 			'labels.resources' => 'Bronnen',
 			'labels.scope' => 'Bereik',
 			'labels.search' => 'Zoeken',

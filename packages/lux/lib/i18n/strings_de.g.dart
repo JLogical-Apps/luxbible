@@ -387,7 +387,7 @@ class _Translations$studyActions$de extends Translations$studyActions$en {
 	@override String interlinearDescription({required Object region}) => 'Zeige eine lexikalische Aufschlüsselung für ${region} mit Strong\'s.';
 	@override String commentaryDescription({required Object region}) => 'Zeige Kommentare für ${region}.';
 	@override String crossReferencesDescription({required Object region}) => 'Zeige Querverweise für ${region}.';
-	@override String linkedResourcesDescription({required Object region}) => 'Zeige verknüpfte Personen, Themen und Karten für ${region}.';
+	@override String linkedResourcesDescription({required Object region}) => 'Zeige verknüpfte Personen, Themen, Karten und Wörterbucheinträge für ${region}.';
 	@override String get noCrossReferences => 'Keine Querverweise gefunden';
 	@override String get noLinkedResources => 'Keine verknüpften Ressourcen gefunden';
 	@override String crossReferencesUse({required Object translation}) => 'Querverweise aus ${translation}';
@@ -554,7 +554,7 @@ class _Translations$labels$de extends Translations$labels$en {
 	@override String get notebooks => 'Notizbücher';
 	@override String get notes => 'Notizen';
 	@override String get paragraphs => 'Absätze';
-	@override String get people => 'Personen';
+	@override String get people => 'Personenprofile';
 	@override String get resources => 'Ressourcen';
 	@override String get scope => 'Umfang';
 	@override String get search => 'Suche';
@@ -3234,7 +3234,7 @@ extension on TranslationsDe {
 			'studyActions.interlinearDescription' => ({required Object region}) => 'Zeige eine lexikalische Aufschlüsselung für ${region} mit Strong\'s.',
 			'studyActions.commentaryDescription' => ({required Object region}) => 'Zeige Kommentare für ${region}.',
 			'studyActions.crossReferencesDescription' => ({required Object region}) => 'Zeige Querverweise für ${region}.',
-			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Zeige verknüpfte Personen, Themen und Karten für ${region}.',
+			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Zeige verknüpfte Personen, Themen, Karten und Wörterbucheinträge für ${region}.',
 			'studyActions.noCrossReferences' => 'Keine Querverweise gefunden',
 			'studyActions.noLinkedResources' => 'Keine verknüpften Ressourcen gefunden',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Querverweise aus ${translation}',
@@ -3338,7 +3338,7 @@ extension on TranslationsDe {
 			'labels.notebooks' => 'Notizbücher',
 			'labels.notes' => 'Notizen',
 			'labels.paragraphs' => 'Absätze',
-			'labels.people' => 'Personen',
+			'labels.people' => 'Personenprofile',
 			'labels.resources' => 'Ressourcen',
 			'labels.scope' => 'Umfang',
 			'labels.search' => 'Suche',

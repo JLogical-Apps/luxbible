@@ -123,7 +123,7 @@ class VerseSelection extends Equatable {
   bool get isNotEmpty => spans.isNotEmpty;
 
   bool hasReference(Reference reference) => spans.any((span) => span.containsReference(reference));
-  bool hasAnyOf(VerseSelection verseSelection) => verseSelection.references.any((reference) => hasReference(reference));
+  bool hasAnyOf(VerseSelection verseSelection) => spans.any((span) => verseSelection.spans.any(span.overlaps));
 
   List<VerseSelection> splitByChapter() => references
       .groupListsBy((reference) => reference.toChapterReference())

@@ -11,7 +11,12 @@ part 'articles_provider.g.dart';
 @Riverpod(keepAlive: true)
 Future<List<Article>> articles(Ref ref, {required ArticleCollection collection}) async {
   final json = await rootBundle.loadString(collection.assetPath);
-  return Isolate.run(() => (jsonDecode(json) as List).map((article) => Article.fromJson(article)).toList());
+  // Filling each dictionary entry's late scriptureLinks here keeps the few-hundred-millisecond parse off the UI thread.
+  return Isolate.run(
+    () =>
+        (jsonDecode(json) as List).map((article) => Article.fromJson(article)).toList()
+          ..forEach(collection.getLinkedPassages),
+  );
 }
 
 @riverpod

@@ -188,18 +188,21 @@ Items are classified by source file because `ThemeNotes.xml` marks one theme wit
 ID is the source item name, its title paragraph is dropped, and its passages are the source anchor passage followed by
 every link in its "Passages for Further Study" paragraph, without duplicates. The further-study title and list are not
 kept in the body. Overlap compares every verse a passage covers, so a range that crosses chapters matches in each of
-them, unlike commentary sections, which are keyed by their starting chapter. There is no link index; the lists are
-filtered whenever the selection or visible verses change.
+them, unlike commentary sections, which are keyed by their starting chapter. Overlap compares span endpoints rather
+than enumerating verses. There is no link index; the lists are filtered whenever the selection or visible verses
+change. Profiles and themes link through their stored passages, and dictionary entries through every Scripture link
+in their body. Parsing those links takes a few hundred milliseconds, so `Article.scriptureLinks` is a `late final` that
+`articlesProvider` fills in its decode isolate.
 
 Profiles and themes also carry the IDs of dictionary entries on the same subject. They come from the hand-curated
 `content/sources/commentary/tyndale/dictionary_links.json`, which skips "*See*" stubs in favor of the entry they point
 to. The generator fails on any unknown ID. Dictionary entries don't store the reverse link; the article view finds the
 profiles and themes that list them.
 
-The Tyndale Open Bible Dictionary (CC BY-SA 4.0) uses the same `Article` shape without passages, so it is never
-loaded for Linked Resources. `generate_dictionary_json.dart` writes all 6,010 articles from
+The Tyndale Open Bible Dictionary (CC BY-SA 4.0) uses the same `Article` shape without stored passages; Linked
+Resources derives an entry's passages from the Scripture it cites. `generate_dictionary_json.dart` writes all 6,010 articles from
 `content/sources/dictionary/tyndale/Articles/` to `assets/dictionary/tyndale.json` (about 10 MB), which is decoded the
-first time the Dictionary, a dictionary link, or Search needs it. The title paragraph and the asterisks that
+first time the Dictionary, a dictionary link, Search, or Linked Resources needs it. The title paragraph and the asterisks that
 mark terms missing from the NLT are dropped. Cross-references become `dictionary:<id>` links that open the linked
 article, and in-article outline anchors become plain text. Included text boxes and charts become `box` content blocks
 holding their paragraphs and tables, and included maps become `bibleMap` blocks that show the map inline. Pictures are

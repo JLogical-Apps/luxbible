@@ -105,6 +105,8 @@ extension type Markdown(String text) {
 
   String get withStrippedMarkdown => elements.plainText;
 
+  Iterable<String> get linkTargets => elements.linkTargets;
+
   Markdown get withCollapsedWhitespace => Markdown(text.replaceAll(RegExp(r'\s+'), ' ').trim());
 
   List<MarkdownElement> get elements {
@@ -211,6 +213,17 @@ final class MarkdownIndented extends MarkdownElement {
 
 extension MarkdownElementsExtension on Iterable<MarkdownElement> {
   String get plainText => map((element) => element.plainText).join();
+
+  Iterable<String> get linkTargets => expand(
+    (element) => switch (element) {
+      MarkdownLink(:final target) => [target],
+      MarkdownBold(:final children) ||
+      MarkdownItalic(:final children) ||
+      MarkdownParagraph(:final children) ||
+      MarkdownIndented(:final children) => children.linkTargets,
+      MarkdownText() || MarkdownLineBreak() => <String>[],
+    },
+  );
 }
 
 extension on List<MarkdownElement> {

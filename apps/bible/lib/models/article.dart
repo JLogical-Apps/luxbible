@@ -9,11 +9,11 @@ part 'article.g.dart';
 
 @freezed
 sealed class Article with _$Article, LinkedResource {
-  const Article._();
+  Article._();
 
   static const dictionaryLinkPrefix = 'dictionary:';
 
-  const factory Article({
+  factory Article({
     @JsonKey(name: 'i') required String id,
     @JsonKey(name: 't') required String title,
     @JsonKey(name: 'b') required List<RichContent> body,
@@ -30,6 +30,14 @@ sealed class Article with _$Article, LinkedResource {
             paragraphs.firstWhereOrNull((paragraph) => paragraph.style != .heading && paragraph.style != .subheading))
         ?.text;
   }
+
+  @override
+  late final List<VerseSelection> scriptureLinks = body
+      .expand((content) => content.texts)
+      .expand((text) => text.linkTargets)
+      .whereNot((link) => link.startsWith(dictionaryLinkPrefix))
+      .map(VerseSelection.fromOsisId)
+      .toList();
 
   // Dictionary titles qualify repeated names, as in "Abel (Person)" and "Abel (Place)".
   bool isTitled(String name) =>

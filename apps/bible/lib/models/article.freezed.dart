@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Article {
 
-@JsonKey(name: 'i') String get id;@JsonKey(name: 't') String get title;@JsonKey(name: 'b') List<RichContent> get body;@IgnoreIfEmpty(name: 'p') List<VerseSelection> get passages;@IgnoreIfEmpty(name: 'd') List<String> get dictionaryIds;
+ List<VerseSelection> get scriptureLinks;@JsonKey(name: 'i') String get id;@JsonKey(name: 't') String get title;@JsonKey(name: 'b') List<RichContent> get body;@IgnoreIfEmpty(name: 'p') List<VerseSelection> get passages;@IgnoreIfEmpty(name: 'd') List<String> get dictionaryIds;
 /// Create a copy of Article
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $ArticleCopyWith<Article> get copyWith => _$ArticleCopyWithImpl<Article>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Article&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other.body, body)&&const DeepCollectionEquality().equals(other.passages, passages)&&const DeepCollectionEquality().equals(other.dictionaryIds, dictionaryIds));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Article&&const DeepCollectionEquality().equals(other.scriptureLinks, scriptureLinks)&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other.body, body)&&const DeepCollectionEquality().equals(other.passages, passages)&&const DeepCollectionEquality().equals(other.dictionaryIds, dictionaryIds));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,const DeepCollectionEquality().hash(body),const DeepCollectionEquality().hash(passages),const DeepCollectionEquality().hash(dictionaryIds));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(scriptureLinks),id,title,const DeepCollectionEquality().hash(body),const DeepCollectionEquality().hash(passages),const DeepCollectionEquality().hash(dictionaryIds));
 
 @override
 String toString() {
-  return 'Article(id: $id, title: $title, body: $body, passages: $passages, dictionaryIds: $dictionaryIds)';
+  return 'Article(scriptureLinks: $scriptureLinks, id: $id, title: $title, body: $body, passages: $passages, dictionaryIds: $dictionaryIds)';
 }
 
 
@@ -208,7 +208,7 @@ return $default(_that.id,_that.title,_that.body,_that.passages,_that.dictionaryI
 @JsonSerializable()
 
 class _Article extends Article {
-  const _Article({@JsonKey(name: 'i') required this.id, @JsonKey(name: 't') required this.title, @JsonKey(name: 'b') required  List<RichContent> body, @IgnoreIfEmpty(name: 'p')  List<VerseSelection> passages = const [], @IgnoreIfEmpty(name: 'd')  List<String> dictionaryIds = const []}): _body = body,_passages = passages,_dictionaryIds = dictionaryIds,super._();
+   _Article({@JsonKey(name: 'i') required this.id, @JsonKey(name: 't') required this.title, @JsonKey(name: 'b') required  List<RichContent> body, @IgnoreIfEmpty(name: 'p')  List<VerseSelection> passages = const [], @IgnoreIfEmpty(name: 'd')  List<String> dictionaryIds = const []}): _body = body,_passages = passages,_dictionaryIds = dictionaryIds,super._();
   factory _Article.fromJson(Map<String, dynamic> json) => _$ArticleFromJson(json);
 
 @override@JsonKey(name: 'i') final  String id;

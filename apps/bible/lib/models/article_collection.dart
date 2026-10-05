@@ -1,6 +1,8 @@
+import 'package:bible/models/article.dart';
 import 'package:bible/models/commentary_type.dart';
 import 'package:flutter/widgets.dart';
 import 'package:lux/i18n.dart';
+import 'package:lux/lux_core.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 enum ArticleCollection {
@@ -49,10 +51,10 @@ enum ArticleCollection {
     themes => Symbols.category,
   };
 
-  // Dictionary entries have no passages, so Linked Resources skips loading them.
-  bool get hasPassages => switch (this) {
-    dictionary => false,
-    people || themes => true,
+  // Dictionary entries have no curated passages, so they link through the Scripture they cite.
+  List<VerseSelection> getLinkedPassages(Article article) => switch (this) {
+    dictionary => article.scriptureLinks,
+    people || themes => article.passages,
   };
 
   String get assetPath => 'assets/$name/tyndale.json';

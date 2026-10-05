@@ -304,26 +304,24 @@ enum MainAction {
           onNavigateToVerseSelection(result);
         }
       case resources:
-        Widget buildCollectionItem(BuildContext context, ArticleCollection collection) => StyledListItem.navigation(
-          title: collection.title().toText(),
-          subtitle: collection.description().toText(),
-          leading: collection.icon.toIcon(),
-          onPressed: () => context.pop(ArticlesPage(collection: collection)),
-        );
-
         final resourcePage = await context.showStyledSheet<StyledRoute<VerseSelection>>(
           (context, _) => StyledSheet(
             title: t.labels.resources.toText(),
             children: [
-              buildCollectionItem(context, .dictionary),
               StyledListItem.navigation(
                 title: t.labels.lexicon.toText(),
                 subtitle: t.toolbarShortcuts.lexiconDescription.toText(),
                 leading: Symbols.translate.toIcon(),
                 onPressed: () => context.pop(LexiconPage()),
               ),
-              buildCollectionItem(context, .people),
-              buildCollectionItem(context, .themes),
+              ...<ArticleCollection>[.people, .themes, .dictionary].map(
+                (collection) => StyledListItem.navigation(
+                  title: collection.title().toText(),
+                  subtitle: collection.description().toText(),
+                  leading: collection.icon.toIcon(),
+                  onPressed: () => context.pop(ArticlesPage(collection: collection)),
+                ),
+              ),
               StyledListItem.navigation(
                 title: t.labels.maps.toText(),
                 subtitle: t.toolbarShortcuts.mapsDescription.toText(),

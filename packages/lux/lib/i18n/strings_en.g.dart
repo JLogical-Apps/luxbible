@@ -774,8 +774,8 @@ class Translations$studyActions$en {
 	/// en: 'View cross references of {region}.'
 	String crossReferencesDescription({required Object region}) => 'View cross references of ${region}.';
 
-	/// en: 'View people, themes, and maps linked to {region}.'
-	String linkedResourcesDescription({required Object region}) => 'View people, themes, and maps linked to ${region}.';
+	/// en: 'View people, themes, maps, and dictionary entries linked to {region}.'
+	String linkedResourcesDescription({required Object region}) => 'View people, themes, maps, and dictionary entries linked to ${region}.';
 
 	/// en: 'No Cross References Found'
 	String get noCrossReferences => 'No Cross References Found';
@@ -1149,8 +1149,8 @@ class Translations$labels$en {
 	/// en: 'Paragraphs'
 	String get paragraphs => 'Paragraphs';
 
-	/// en: 'People'
-	String get people => 'People';
+	/// en: 'People Profiles'
+	String get people => 'People Profiles';
 
 	/// en: 'Resources'
 	String get resources => 'Resources';
@@ -5527,7 +5527,7 @@ extension on Translations {
 			'studyActions.interlinearDescription' => ({required Object region}) => 'View a lexical breakdown of ${region} using Strong\'s.',
 			'studyActions.commentaryDescription' => ({required Object region}) => 'View commentaries of ${region}.',
 			'studyActions.crossReferencesDescription' => ({required Object region}) => 'View cross references of ${region}.',
-			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'View people, themes, and maps linked to ${region}.',
+			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'View people, themes, maps, and dictionary entries linked to ${region}.',
 			'studyActions.noCrossReferences' => 'No Cross References Found',
 			'studyActions.noLinkedResources' => 'No Linked Resources Found',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Cross references use ${translation}',
@@ -5631,7 +5631,7 @@ extension on Translations {
 			'labels.notebooks' => 'Notebooks',
 			'labels.notes' => 'Notes',
 			'labels.paragraphs' => 'Paragraphs',
-			'labels.people' => 'People',
+			'labels.people' => 'People Profiles',
 			'labels.resources' => 'Resources',
 			'labels.scope' => 'Scope',
 			'labels.search' => 'Search',

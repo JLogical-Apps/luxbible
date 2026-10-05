@@ -19,38 +19,42 @@ class LinkedResourcesSheet {
     required Function(VerseSelection) onNavigateToVerseSelection,
     bool popOnAction = true,
   }) {
-    final articlesByCollection = ArticleCollection.values
-        .where((collection) => collection.hasPassages)
-        .mapToMap((collection) => MapEntry(collection, ref.watch(articlesProvider(collection: collection)).value));
+    final articlesByCollection = ArticleCollection.values.mapToMap(
+      (collection) => MapEntry(collection, ref.watch(articlesProvider(collection: collection)).value),
+    );
     final maps = ref.watch(bibleMapsProvider).value;
     if (articlesByCollection.values.contains(null) || maps == null) {
       return [Padding(padding: .all(16), child: StyledLoading())];
     }
 
-    final linkedArticlesByCollection = articlesByCollection
-        .mapValues((collection, articles) => articles!.whereLinkedTo(verseSelection).toList())
-        .where((collection, articles) => articles.isNotEmpty);
-    final linkedMaps = maps.whereLinkedTo(verseSelection).toList();
+    final linkedMaps = maps.whereLinkedTo(verseSelection, getPassages: (map) => map.passages).toList();
+    final linkedArticlesByCollection = articlesByCollection.map(
+      (collection, articles) => MapEntry(
+        collection,
+        articles!.whereLinkedTo(verseSelection, getPassages: collection.getLinkedPassages).toList(),
+      ),
+    );
 
     final sections = [
-      ...linkedArticlesByCollection.mapToIterable(
-        (collection, articles) => StyledSection(
-          title: collection.title().toText(),
-          padding: .only(top: 16, bottom: 8),
-          children: articles
-              .map(
-                (article) => ArticleListItem(
-                  collection: collection,
-                  article: article,
-                  onNavigateToVerseSelection: (selection) {
-                    if (popOnAction) context.pop();
-                    onNavigateToVerseSelection(selection);
-                  },
-                ),
-              )
-              .toList(),
-        ),
-      ),
+      ...<ArticleCollection>[.people, .themes, .dictionary]
+          .where((collection) => linkedArticlesByCollection[collection]!.isNotEmpty)
+          .map(
+            (collection) => StyledSection(
+              title: collection.title().toText(),
+              children: linkedArticlesByCollection[collection]!
+                  .map(
+                    (article) => ArticleListItem(
+                      collection: collection,
+                      article: article,
+                      onNavigateToVerseSelection: (selection) {
+                        if (popOnAction) context.pop();
+                        onNavigateToVerseSelection(selection);
+                      },
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
       if (linkedMaps.isNotEmpty)
         StyledSection(
           title: t.labels.maps.toText(),

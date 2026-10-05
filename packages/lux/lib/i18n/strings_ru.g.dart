@@ -389,7 +389,7 @@ class _Translations$studyActions$ru extends Translations$studyActions$en {
 	@override String interlinearDescription({required Object region}) => 'Просмотрите лексическую разбивку ${region} с помощью Strong\'s.';
 	@override String commentaryDescription({required Object region}) => 'Посмотреть комментарии ${region}.';
 	@override String crossReferencesDescription({required Object region}) => 'Просмотрите перекрестные ссылки ${region}.';
-	@override String linkedResourcesDescription({required Object region}) => 'Просмотрите людей, темы и карты, связанные с отрывком: ${region}.';
+	@override String linkedResourcesDescription({required Object region}) => 'Просмотрите людей, темы, карты и статьи словаря, связанные с отрывком: ${region}.';
 	@override String get noCrossReferences => 'Перекрестных ссылок не найдено';
 	@override String get noLinkedResources => 'Связанных ресурсов не найдено';
 	@override String crossReferencesUse({required Object translation}) => 'В перекрестных ссылках используется ${translation}.';
@@ -556,7 +556,7 @@ class _Translations$labels$ru extends Translations$labels$en {
 	@override String get notebooks => 'Блокноты';
 	@override String get notes => 'Примечания';
 	@override String get paragraphs => 'Абзацы';
-	@override String get people => 'Люди';
+	@override String get people => 'Профили людей';
 	@override String get resources => 'Ресурсы';
 	@override String get scope => 'Объем';
 	@override String get search => 'Поиск';
@@ -3250,7 +3250,7 @@ extension on TranslationsRu {
 			'studyActions.interlinearDescription' => ({required Object region}) => 'Просмотрите лексическую разбивку ${region} с помощью Strong\'s.',
 			'studyActions.commentaryDescription' => ({required Object region}) => 'Посмотреть комментарии ${region}.',
 			'studyActions.crossReferencesDescription' => ({required Object region}) => 'Просмотрите перекрестные ссылки ${region}.',
-			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Просмотрите людей, темы и карты, связанные с отрывком: ${region}.',
+			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Просмотрите людей, темы, карты и статьи словаря, связанные с отрывком: ${region}.',
 			'studyActions.noCrossReferences' => 'Перекрестных ссылок не найдено',
 			'studyActions.noLinkedResources' => 'Связанных ресурсов не найдено',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'В перекрестных ссылках используется ${translation}.',
@@ -3354,7 +3354,7 @@ extension on TranslationsRu {
 			'labels.notebooks' => 'Блокноты',
 			'labels.notes' => 'Примечания',
 			'labels.paragraphs' => 'Абзацы',
-			'labels.people' => 'Люди',
+			'labels.people' => 'Профили людей',
 			'labels.resources' => 'Ресурсы',
 			'labels.scope' => 'Объем',
 			'labels.search' => 'Поиск',
