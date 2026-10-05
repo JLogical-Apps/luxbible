@@ -898,7 +898,9 @@
     "passagesForFurtherStudy": "Passages for Further Study",
     "relatedDictionaryEntry": "The full Bible Dictionary entry, with more background and detail",
     "relatedProfile": "A shorter profile from Tyndale Study Notes, with passages for further study",
-    "relatedTheme": "A shorter article from Tyndale Study Notes, with passages for further study"
+    "relatedTheme": "A shorter article from Tyndale Study Notes, with passages for further study",
+    "usingTranslation": "Using {translation} for passages",
+    "onlinePassagesExplanation": "Because your selected translation is only available online, passages for further study are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app."
   },
   "maps": {
     "searchHint": "Search for a map",

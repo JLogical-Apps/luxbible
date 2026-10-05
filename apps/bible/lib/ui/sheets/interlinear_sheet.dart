@@ -19,7 +19,6 @@ class InterlinearSheet {
     required InterlinearDirection direction,
     required User user,
     bool showDirectionBanner = true,
-    bool popOnAction = true,
   }) {
     final showInterlinearStudyBanner = !user.translation.isStudy && !user.tutorials.has(.interlinearStudy);
 
@@ -70,7 +69,6 @@ class InterlinearSheet {
                     data: data,
                     direction: direction,
                     onNavigateToVerseSelection: onNavigateToVerseSelection,
-                    popOnAction: popOnAction,
                   ),
                 )
                 .toList(),

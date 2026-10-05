@@ -900,7 +900,9 @@
     "passagesForFurtherStudy": "Passages voor verdere studie",
     "relatedDictionaryEntry": "Het volledige artikel uit het bijbelwoordenboek, met meer achtergrond en details",
     "relatedProfile": "Een korter profiel uit de Tyndale Study Notes, met passages voor verdere studie",
-    "relatedTheme": "Een korter artikel uit de Tyndale Study Notes, met passages voor verdere studie"
+    "relatedTheme": "Een korter artikel uit de Tyndale Study Notes, met passages voor verdere studie",
+    "usingTranslation": "{translation} wordt gebruikt voor passages",
+    "onlinePassagesExplanation": "Omdat de geselecteerde vertaling alleen online beschikbaar is, worden passages voor verdere studie getoond met de meest recent gebruikte studiebijbel om prestaties en kosten te besparen. Overal elders in de app wordt de geselecteerde vertaling gebruikt."
   },
   "maps": {
     "searchHint": "Zoek naar een kaart",

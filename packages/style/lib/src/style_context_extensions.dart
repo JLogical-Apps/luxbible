@@ -74,7 +74,11 @@ extension StyleContextExtensions on BuildContext {
     StyledSheet<T> Function(BuildContext, WidgetRef) sheetBuilder, {
     required String breadcrumbText,
   }) async {
-    final sheetContext = read<SheetNavigationBreadcrumbContext?>() ?? SheetNavigationBreadcrumbContext(breadcrumbs: []);
+    final parentSheetContext = read<SheetNavigationBreadcrumbContext?>();
+    // The new sheet carries the parent in its breadcrumbs, so keeping the parent open would duplicate it.
+    if (parentSheetContext != null) pop();
+
+    final sheetContext = parentSheetContext ?? SheetNavigationBreadcrumbContext(breadcrumbs: []);
     return await showCustomModalBottomSheet(
       context: this,
       expand: false,

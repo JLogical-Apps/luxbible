@@ -1290,6 +1290,8 @@ class _Translations$articles$de extends Translations$articles$en {
 	@override String get relatedDictionaryEntry => 'Der vollständige Eintrag im Bibelwörterbuch, mit mehr Hintergrund und Details';
 	@override String get relatedProfile => 'Ein kürzeres Profil aus den Tyndale Study Notes, mit Stellen zum Weiterstudieren';
 	@override String get relatedTheme => 'Ein kürzerer Artikel aus den Tyndale Study Notes, mit Stellen zum Weiterstudieren';
+	@override String usingTranslation({required Object translation}) => 'Stellen aus ${translation}';
+	@override String get onlinePassagesExplanation => 'Da deine gewählte Übersetzung nur online verfügbar ist, werden Stellen zum Weiterstudieren mit der zuletzt verwendeten Studienbibel angezeigt, um Leistung und Kosten zu sparen. Überall sonst in der App wird deine gewählte Übersetzung verwendet.';
 }
 
 // Path: maps
@@ -3817,6 +3819,8 @@ extension on TranslationsDe {
 			'articles.relatedDictionaryEntry' => 'Der vollständige Eintrag im Bibelwörterbuch, mit mehr Hintergrund und Details',
 			'articles.relatedProfile' => 'Ein kürzeres Profil aus den Tyndale Study Notes, mit Stellen zum Weiterstudieren',
 			'articles.relatedTheme' => 'Ein kürzerer Artikel aus den Tyndale Study Notes, mit Stellen zum Weiterstudieren',
+			'articles.usingTranslation' => ({required Object translation}) => 'Stellen aus ${translation}',
+			'articles.onlinePassagesExplanation' => 'Da deine gewählte Übersetzung nur online verfügbar ist, werden Stellen zum Weiterstudieren mit der zuletzt verwendeten Studienbibel angezeigt, um Leistung und Kosten zu sparen. Überall sonst in der App wird deine gewählte Übersetzung verwendet.',
 			'maps.searchHint' => 'Nach einer Karte suchen',
 			'maps.noMatchingMaps' => 'Keine passenden Karten',
 			'navigation.recents' => 'Zuletzt',
@@ -4061,10 +4065,10 @@ extension on TranslationsDe {
 			'morphology.aspect.infinitiveAbsolute.description' => 'Ein selbstständiges Verbalsubstantiv, oft zur Betonung.',
 			'morphology.aspect.infinitiveAbsolute.examples' => 'gewiss sterben|gründlich schreiben',
 			'morphology.aspect.participle.name' => 'Partizip',
-			'morphology.aspect.participle.description' => 'Ein Verbaladjektiv, das eine andauernde Handlung beschreibt.',
-			'morphology.aspect.participle.examples' => 'schreibend|der Hörende',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.aspect.participle.description' => 'Ein Verbaladjektiv, das eine andauernde Handlung beschreibt.',
+			'morphology.aspect.participle.examples' => 'schreibend|der Hörende',
 			'morphology.aspect.consecutiveImperfect.name' => 'Imperfectum consecutivum',
 			'morphology.aspect.consecutiveImperfect.description' => 'Erzählform der Vergangenheit: Waw + Imperfekt.',
 			'morphology.aspect.consecutiveImperfect.examples' => 'und er sprach|und sie gingen',

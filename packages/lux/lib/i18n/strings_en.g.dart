@@ -2788,6 +2788,12 @@ class Translations$articles$en {
 
 	/// en: 'A shorter article from Tyndale Study Notes, with passages for further study'
 	String get relatedTheme => 'A shorter article from Tyndale Study Notes, with passages for further study';
+
+	/// en: 'Using {translation} for passages'
+	String usingTranslation({required Object translation}) => 'Using ${translation} for passages';
+
+	/// en: 'Because your selected translation is only available online, passages for further study are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app.'
+	String get onlinePassagesExplanation => 'Because your selected translation is only available online, passages for further study are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app.';
 }
 
 // Path: maps
@@ -6106,6 +6112,8 @@ extension on Translations {
 			'articles.relatedDictionaryEntry' => 'The full Bible Dictionary entry, with more background and detail',
 			'articles.relatedProfile' => 'A shorter profile from Tyndale Study Notes, with passages for further study',
 			'articles.relatedTheme' => 'A shorter article from Tyndale Study Notes, with passages for further study',
+			'articles.usingTranslation' => ({required Object translation}) => 'Using ${translation} for passages',
+			'articles.onlinePassagesExplanation' => 'Because your selected translation is only available online, passages for further study are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app.',
 			'maps.searchHint' => 'Search for a map',
 			'maps.noMatchingMaps' => 'No matching maps',
 			'navigation.recents' => 'Recents',
@@ -6350,10 +6358,10 @@ extension on Translations {
 			'morphology.aspect.infinitiveAbsolute.description' => 'An independent verbal noun, often emphatic.',
 			'morphology.aspect.infinitiveAbsolute.examples' => 'surely die|write thoroughly',
 			'morphology.aspect.participle.name' => 'Participle',
-			'morphology.aspect.participle.description' => 'A verbal adjective describing ongoing action.',
-			'morphology.aspect.participle.examples' => 'writing|the one who hears',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.aspect.participle.description' => 'A verbal adjective describing ongoing action.',
+			'morphology.aspect.participle.examples' => 'writing|the one who hears',
 			'morphology.aspect.consecutiveImperfect.name' => 'Consecutive imperfect',
 			'morphology.aspect.consecutiveImperfect.description' => 'Past narrative form: waw + imperfect.',
 			'morphology.aspect.consecutiveImperfect.examples' => 'and he said|and they went',

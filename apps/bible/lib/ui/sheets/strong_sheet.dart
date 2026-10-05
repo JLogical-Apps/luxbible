@@ -32,14 +32,11 @@ class StrongSheet {
 
     final user = ref.read(userProvider);
 
-    void openStrong(BuildContext context, String strongId) {
-      context.pop();
-      StrongSheet.showWithBreadcrumbs(
-        context,
-        strongId: strongId,
-        onNavigateToVerseSelection: onNavigateToVerseSelection,
-      );
-    }
+    void openStrong(BuildContext context, String strongId) => StrongSheet.showWithBreadcrumbs(
+      context,
+      strongId: strongId,
+      onNavigateToVerseSelection: onNavigateToVerseSelection,
+    );
 
     final breadcrumbText = word?.data?.inflection ?? strong?.id ?? '';
     await context.showStyledSheetWithBreadcrumbs(breadcrumbText: breadcrumbText, (context, _) {

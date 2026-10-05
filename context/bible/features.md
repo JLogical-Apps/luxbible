@@ -369,7 +369,10 @@ Tyndale Study Notes' people profiles and theme articles, and the Tyndale Open Bi
 - Each article shows its title and the start of its first paragraph, and each map shows a thumbnail and its title
 - Tapping a result opens the full article, where Scripture links open passage previews. Its passages for further
   study, starting with the article's main passage, show their reference and the first two lines of their text, and
-  each opens a passage preview. Like Cross References, they use the study Bible when an online Bible is active
+  each opens a passage preview. Like Cross References, they use the study Bible when an online Bible is active, and a
+  banner names it until the user dismisses its explanation
+- Opening a dictionary entry or related article from an article replaces the open article, and breadcrumbs at the top
+  lead back to earlier ones
 - Tapping a map opens the map viewer
 - A message appears when nothing is linked
 - Linked Resources can be pinned as a study panel

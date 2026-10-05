@@ -1302,6 +1302,8 @@ class _Translations$articles$ru extends Translations$articles$en {
 	@override String get relatedDictionaryEntry => 'Полная статья из библейского словаря, с более подробным контекстом';
 	@override String get relatedProfile => 'Краткий очерк из Tyndale Study Notes, с отрывками для дальнейшего изучения';
 	@override String get relatedTheme => 'Краткая статья из Tyndale Study Notes, с отрывками для дальнейшего изучения';
+	@override String usingTranslation({required Object translation}) => 'Использование ${translation} для отрывков';
+	@override String get onlinePassagesExplanation => 'Поскольку выбранный вами перевод доступен только в Интернете, отрывки для дальнейшего изучения показаны с использованием последней версии Учебной Библии, которую вы использовали, чтобы сэкономить на производительности и затратах. Выбранный вами перевод используется повсюду в приложении.';
 }
 
 // Path: maps
@@ -3833,6 +3835,8 @@ extension on TranslationsRu {
 			'articles.relatedDictionaryEntry' => 'Полная статья из библейского словаря, с более подробным контекстом',
 			'articles.relatedProfile' => 'Краткий очерк из Tyndale Study Notes, с отрывками для дальнейшего изучения',
 			'articles.relatedTheme' => 'Краткая статья из Tyndale Study Notes, с отрывками для дальнейшего изучения',
+			'articles.usingTranslation' => ({required Object translation}) => 'Использование ${translation} для отрывков',
+			'articles.onlinePassagesExplanation' => 'Поскольку выбранный вами перевод доступен только в Интернете, отрывки для дальнейшего изучения показаны с использованием последней версии Учебной Библии, которую вы использовали, чтобы сэкономить на производительности и затратах. Выбранный вами перевод используется повсюду в приложении.',
 			'maps.searchHint' => 'Поиск карты',
 			'maps.noMatchingMaps' => 'Нет подходящих карт',
 			'navigation.recents' => 'Недавние',
@@ -4075,10 +4079,10 @@ extension on TranslationsRu {
 			'morphology.aspect.infinitiveConstruct.examples' => 'писать | когда пишешь',
 			'morphology.aspect.infinitiveAbsolute.name' => 'Инфинитив абсолютный',
 			'morphology.aspect.infinitiveAbsolute.description' => 'Самостоятельное отглагольное существительное, часто эмфатическое.',
-			'morphology.aspect.infinitiveAbsolute.examples' => 'обязательно умру|напиши тщательно',
-			'morphology.aspect.participle.name' => 'Причастие',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.aspect.infinitiveAbsolute.examples' => 'обязательно умру|напиши тщательно',
+			'morphology.aspect.participle.name' => 'Причастие',
 			'morphology.aspect.participle.description' => 'Глагольное прилагательное, описывающее продолжающееся действие.',
 			'morphology.aspect.participle.examples' => 'пишу|тот, кто слышит',
 			'morphology.aspect.consecutiveImperfect.name' => 'Последовательный несовершенный',

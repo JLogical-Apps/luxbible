@@ -898,7 +898,9 @@
     "passagesForFurtherStudy": "Stellen zum Weiterstudieren",
     "relatedDictionaryEntry": "Der vollständige Eintrag im Bibelwörterbuch, mit mehr Hintergrund und Details",
     "relatedProfile": "Ein kürzeres Profil aus den Tyndale Study Notes, mit Stellen zum Weiterstudieren",
-    "relatedTheme": "Ein kürzerer Artikel aus den Tyndale Study Notes, mit Stellen zum Weiterstudieren"
+    "relatedTheme": "Ein kürzerer Artikel aus den Tyndale Study Notes, mit Stellen zum Weiterstudieren",
+    "usingTranslation": "Stellen aus {translation}",
+    "onlinePassagesExplanation": "Da deine gewählte Übersetzung nur online verfügbar ist, werden Stellen zum Weiterstudieren mit der zuletzt verwendeten Studienbibel angezeigt, um Leistung und Kosten zu sparen. Überall sonst in der App wird deine gewählte Übersetzung verwendet."
   },
   "maps": {
     "searchHint": "Nach einer Karte suchen",

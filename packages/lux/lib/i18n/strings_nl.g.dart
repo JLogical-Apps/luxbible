@@ -1292,6 +1292,8 @@ class _Translations$articles$nl extends Translations$articles$en {
 	@override String get relatedDictionaryEntry => 'Het volledige artikel uit het bijbelwoordenboek, met meer achtergrond en details';
 	@override String get relatedProfile => 'Een korter profiel uit de Tyndale Study Notes, met passages voor verdere studie';
 	@override String get relatedTheme => 'Een korter artikel uit de Tyndale Study Notes, met passages voor verdere studie';
+	@override String usingTranslation({required Object translation}) => '${translation} wordt gebruikt voor passages';
+	@override String get onlinePassagesExplanation => 'Omdat de geselecteerde vertaling alleen online beschikbaar is, worden passages voor verdere studie getoond met de meest recent gebruikte studiebijbel om prestaties en kosten te besparen. Overal elders in de app wordt de geselecteerde vertaling gebruikt.';
 }
 
 // Path: maps
@@ -3821,6 +3823,8 @@ extension on TranslationsNl {
 			'articles.relatedDictionaryEntry' => 'Het volledige artikel uit het bijbelwoordenboek, met meer achtergrond en details',
 			'articles.relatedProfile' => 'Een korter profiel uit de Tyndale Study Notes, met passages voor verdere studie',
 			'articles.relatedTheme' => 'Een korter artikel uit de Tyndale Study Notes, met passages voor verdere studie',
+			'articles.usingTranslation' => ({required Object translation}) => '${translation} wordt gebruikt voor passages',
+			'articles.onlinePassagesExplanation' => 'Omdat de geselecteerde vertaling alleen online beschikbaar is, worden passages voor verdere studie getoond met de meest recent gebruikte studiebijbel om prestaties en kosten te besparen. Overal elders in de app wordt de geselecteerde vertaling gebruikt.',
 			'maps.searchHint' => 'Zoek naar een kaart',
 			'maps.noMatchingMaps' => 'Geen overeenkomende kaarten',
 			'navigation.recents' => 'Recent',
@@ -4063,10 +4067,10 @@ extension on TranslationsNl {
 			'morphology.aspect.infinitiveConstruct.examples' => 'schrijven|bij het schrijven',
 			'morphology.aspect.infinitiveAbsolute.name' => 'Infinitivus absolutus',
 			'morphology.aspect.infinitiveAbsolute.description' => 'Een zelfstandig verbaal naamwoord, vaak met nadruk.',
-			'morphology.aspect.infinitiveAbsolute.examples' => 'zeker sterven|grondig schrijven',
-			'morphology.aspect.participle.name' => 'Participium',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.aspect.infinitiveAbsolute.examples' => 'zeker sterven|grondig schrijven',
+			'morphology.aspect.participle.name' => 'Participium',
 			'morphology.aspect.participle.description' => 'Een verbaal bijvoeglijk naamwoord dat een voortdurende handeling beschrijft.',
 			'morphology.aspect.participle.examples' => 'schrijvend|degene die hoort',
 			'morphology.aspect.consecutiveImperfect.name' => 'Consecutief imperfectum',

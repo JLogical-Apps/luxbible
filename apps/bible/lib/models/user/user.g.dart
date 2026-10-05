@@ -294,6 +294,7 @@ const _$TutorialEnumMap = {
   Tutorial.interlinearStudy: 'interlinearStudy',
   Tutorial.crossReferencesStudy: 'crossReferencesStudy',
   Tutorial.searchStudy: 'searchStudy',
+  Tutorial.articlePassagesStudy: 'articlePassagesStudy',
 };
 
 const _$OnboardingStepEnumMap = {

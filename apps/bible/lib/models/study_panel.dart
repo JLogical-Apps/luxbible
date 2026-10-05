@@ -71,7 +71,6 @@ sealed class StudyPanel with _$StudyPanel {
       user: user,
       direction: direction,
       showDirectionBanner: false,
-      popOnAction: false,
     ),
     CommentaryStudyPanel(:final type) => CommentarySheet.buildSheetChildren(
       context,
