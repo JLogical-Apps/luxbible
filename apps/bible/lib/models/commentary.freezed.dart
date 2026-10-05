@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CommentaryBook {
 
-@IgnoreIfEmpty(name: 's') List<CommentaryContent> get summary;@IgnoreIfEmpty(name: 'i') List<CommentaryContent> get introduction;@JsonKey(name: 'c') Map<int, List<CommentaryBlock>> get blocksByChapter;
+@IgnoreIfEmpty(name: 's') List<RichContent> get summary;@IgnoreIfEmpty(name: 'i') List<RichContent> get introduction;@JsonKey(name: 'c') Map<int, List<CommentaryBlock>> get blocksByChapter;
 /// Create a copy of CommentaryBook
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,7 +49,7 @@ abstract mixin class $CommentaryBookCopyWith<$Res>  {
   factory $CommentaryBookCopyWith(CommentaryBook value, $Res Function(CommentaryBook) _then) = _$CommentaryBookCopyWithImpl;
 @useResult
 $Res call({
-@IgnoreIfEmpty(name: 's') List<CommentaryContent> summary,@IgnoreIfEmpty(name: 'i') List<CommentaryContent> introduction,@JsonKey(name: 'c') Map<int, List<CommentaryBlock>> blocksByChapter
+@IgnoreIfEmpty(name: 's') List<RichContent> summary,@IgnoreIfEmpty(name: 'i') List<RichContent> introduction,@JsonKey(name: 'c') Map<int, List<CommentaryBlock>> blocksByChapter
 });
 
 
@@ -69,8 +69,8 @@ class _$CommentaryBookCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? summary = null,Object? introduction = null,Object? blocksByChapter = null,}) {
   return _then(CommentaryBook(
 summary: null == summary ? _self.summary : summary // ignore: cast_nullable_to_non_nullable
-as List<CommentaryContent>,introduction: null == introduction ? _self.introduction : introduction // ignore: cast_nullable_to_non_nullable
-as List<CommentaryContent>,blocksByChapter: null == blocksByChapter ? _self.blocksByChapter : blocksByChapter // ignore: cast_nullable_to_non_nullable
+as List<RichContent>,introduction: null == introduction ? _self.introduction : introduction // ignore: cast_nullable_to_non_nullable
+as List<RichContent>,blocksByChapter: null == blocksByChapter ? _self.blocksByChapter : blocksByChapter // ignore: cast_nullable_to_non_nullable
 as Map<int, List<CommentaryBlock>>,
   ));
 }
@@ -153,7 +153,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@IgnoreIfEmpty(name: 's')  List<CommentaryContent> summary, @IgnoreIfEmpty(name: 'i')  List<CommentaryContent> introduction, @JsonKey(name: 'c')  Map<int, List<CommentaryBlock>> blocksByChapter)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@IgnoreIfEmpty(name: 's')  List<RichContent> summary, @IgnoreIfEmpty(name: 'i')  List<RichContent> introduction, @JsonKey(name: 'c')  Map<int, List<CommentaryBlock>> blocksByChapter)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CommentaryBook() when $default != null:
 return $default(_that.summary,_that.introduction,_that.blocksByChapter);case _:
@@ -174,7 +174,7 @@ return $default(_that.summary,_that.introduction,_that.blocksByChapter);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@IgnoreIfEmpty(name: 's')  List<CommentaryContent> summary, @IgnoreIfEmpty(name: 'i')  List<CommentaryContent> introduction, @JsonKey(name: 'c')  Map<int, List<CommentaryBlock>> blocksByChapter)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@IgnoreIfEmpty(name: 's')  List<RichContent> summary, @IgnoreIfEmpty(name: 'i')  List<RichContent> introduction, @JsonKey(name: 'c')  Map<int, List<CommentaryBlock>> blocksByChapter)  $default,) {final _that = this;
 switch (_that) {
 case _CommentaryBook():
 return $default(_that.summary,_that.introduction,_that.blocksByChapter);}
@@ -191,7 +191,7 @@ return $default(_that.summary,_that.introduction,_that.blocksByChapter);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@IgnoreIfEmpty(name: 's')  List<CommentaryContent> summary, @IgnoreIfEmpty(name: 'i')  List<CommentaryContent> introduction, @JsonKey(name: 'c')  Map<int, List<CommentaryBlock>> blocksByChapter)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@IgnoreIfEmpty(name: 's')  List<RichContent> summary, @IgnoreIfEmpty(name: 'i')  List<RichContent> introduction, @JsonKey(name: 'c')  Map<int, List<CommentaryBlock>> blocksByChapter)?  $default,) {final _that = this;
 switch (_that) {
 case _CommentaryBook() when $default != null:
 return $default(_that.summary,_that.introduction,_that.blocksByChapter);case _:
@@ -206,18 +206,18 @@ return $default(_that.summary,_that.introduction,_that.blocksByChapter);case _:
 @JsonSerializable()
 
 class _CommentaryBook extends CommentaryBook {
-  const _CommentaryBook({@IgnoreIfEmpty(name: 's')  List<CommentaryContent> summary = const [], @IgnoreIfEmpty(name: 'i')  List<CommentaryContent> introduction = const [], @JsonKey(name: 'c')  Map<int, List<CommentaryBlock>> blocksByChapter = const {}}): _summary = summary,_introduction = introduction,_blocksByChapter = blocksByChapter,super._();
+  const _CommentaryBook({@IgnoreIfEmpty(name: 's')  List<RichContent> summary = const [], @IgnoreIfEmpty(name: 'i')  List<RichContent> introduction = const [], @JsonKey(name: 'c')  Map<int, List<CommentaryBlock>> blocksByChapter = const {}}): _summary = summary,_introduction = introduction,_blocksByChapter = blocksByChapter,super._();
   factory _CommentaryBook.fromJson(Map<String, dynamic> json) => _$CommentaryBookFromJson(json);
 
- final  List<CommentaryContent> _summary;
-@override@IgnoreIfEmpty(name: 's') List<CommentaryContent> get summary {
+ final  List<RichContent> _summary;
+@override@IgnoreIfEmpty(name: 's') List<RichContent> get summary {
   if (_summary is EqualUnmodifiableListView) return _summary;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_summary);
 }
 
- final  List<CommentaryContent> _introduction;
-@override@IgnoreIfEmpty(name: 'i') List<CommentaryContent> get introduction {
+ final  List<RichContent> _introduction;
+@override@IgnoreIfEmpty(name: 'i') List<RichContent> get introduction {
   if (_introduction is EqualUnmodifiableListView) return _introduction;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_introduction);
@@ -264,7 +264,7 @@ abstract mixin class _$CommentaryBookCopyWith<$Res> implements $CommentaryBookCo
   factory _$CommentaryBookCopyWith(_CommentaryBook value, $Res Function(_CommentaryBook) _then) = __$CommentaryBookCopyWithImpl;
 @override @useResult
 $Res call({
-@IgnoreIfEmpty(name: 's') List<CommentaryContent> summary,@IgnoreIfEmpty(name: 'i') List<CommentaryContent> introduction,@JsonKey(name: 'c') Map<int, List<CommentaryBlock>> blocksByChapter
+@IgnoreIfEmpty(name: 's') List<RichContent> summary,@IgnoreIfEmpty(name: 'i') List<RichContent> introduction,@JsonKey(name: 'c') Map<int, List<CommentaryBlock>> blocksByChapter
 });
 
 
@@ -284,8 +284,8 @@ class __$CommentaryBookCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? summary = null,Object? introduction = null,Object? blocksByChapter = null,}) {
   return _then(_CommentaryBook(
 summary: null == summary ? _self._summary : summary // ignore: cast_nullable_to_non_nullable
-as List<CommentaryContent>,introduction: null == introduction ? _self._introduction : introduction // ignore: cast_nullable_to_non_nullable
-as List<CommentaryContent>,blocksByChapter: null == blocksByChapter ? _self._blocksByChapter : blocksByChapter // ignore: cast_nullable_to_non_nullable
+as List<RichContent>,introduction: null == introduction ? _self._introduction : introduction // ignore: cast_nullable_to_non_nullable
+as List<RichContent>,blocksByChapter: null == blocksByChapter ? _self._blocksByChapter : blocksByChapter // ignore: cast_nullable_to_non_nullable
 as Map<int, List<CommentaryBlock>>,
   ));
 }
@@ -427,7 +427,7 @@ return section(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function(@JsonKey(name: 'i')  List<CommentaryOutlineItem> items)?  outline,TResult Function(@JsonKey(name: 'v')  VerseSelection selection, @JsonKey(name: 'b')  List<CommentaryContent> content)?  section,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function(@JsonKey(name: 'i')  List<CommentaryOutlineItem> items)?  outline,TResult Function(@JsonKey(name: 'v')  VerseSelection selection, @JsonKey(name: 'b')  List<RichContent> content)?  section,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case CommentaryOutline() when outline != null:
 return outline(_that.items);case CommentarySection() when section != null:
@@ -449,7 +449,7 @@ return section(_that.selection,_that.content);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function(@JsonKey(name: 'i')  List<CommentaryOutlineItem> items)  outline,required TResult Function(@JsonKey(name: 'v')  VerseSelection selection, @JsonKey(name: 'b')  List<CommentaryContent> content)  section,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function(@JsonKey(name: 'i')  List<CommentaryOutlineItem> items)  outline,required TResult Function(@JsonKey(name: 'v')  VerseSelection selection, @JsonKey(name: 'b')  List<RichContent> content)  section,}) {final _that = this;
 switch (_that) {
 case CommentaryOutline():
 return outline(_that.items);case CommentarySection():
@@ -467,7 +467,7 @@ return section(_that.selection,_that.content);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function(@JsonKey(name: 'i')  List<CommentaryOutlineItem> items)?  outline,TResult? Function(@JsonKey(name: 'v')  VerseSelection selection, @JsonKey(name: 'b')  List<CommentaryContent> content)?  section,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function(@JsonKey(name: 'i')  List<CommentaryOutlineItem> items)?  outline,TResult? Function(@JsonKey(name: 'v')  VerseSelection selection, @JsonKey(name: 'b')  List<RichContent> content)?  section,}) {final _that = this;
 switch (_that) {
 case CommentaryOutline() when outline != null:
 return outline(_that.items);case CommentarySection() when section != null:
@@ -562,12 +562,12 @@ as List<CommentaryOutlineItem>,
 @JsonSerializable()
 
 class CommentarySection extends CommentaryBlock {
-  const CommentarySection({@JsonKey(name: 'v') required this.selection, @JsonKey(name: 'b') required  List<CommentaryContent> content,  String? $type}): _content = content,$type = $type ?? 's',super._();
+  const CommentarySection({@JsonKey(name: 'v') required this.selection, @JsonKey(name: 'b') required  List<RichContent> content,  String? $type}): _content = content,$type = $type ?? 's',super._();
   factory CommentarySection.fromJson(Map<String, dynamic> json) => _$CommentarySectionFromJson(json);
 
 @JsonKey(name: 'v') final  VerseSelection selection;
- final  List<CommentaryContent> _content;
-@JsonKey(name: 'b') List<CommentaryContent> get content {
+ final  List<RichContent> _content;
+@JsonKey(name: 'b') List<RichContent> get content {
   if (_content is EqualUnmodifiableListView) return _content;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_content);
@@ -611,7 +611,7 @@ abstract mixin class $CommentarySectionCopyWith<$Res> implements $CommentaryBloc
   factory $CommentarySectionCopyWith(CommentarySection value, $Res Function(CommentarySection) _then) = _$CommentarySectionCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'v') VerseSelection selection,@JsonKey(name: 'b') List<CommentaryContent> content
+@JsonKey(name: 'v') VerseSelection selection,@JsonKey(name: 'b') List<RichContent> content
 });
 
 
@@ -632,521 +632,7 @@ class _$CommentarySectionCopyWithImpl<$Res>
   return _then(CommentarySection(
 selection: null == selection ? _self.selection : selection // ignore: cast_nullable_to_non_nullable
 as VerseSelection,content: null == content ? _self._content : content // ignore: cast_nullable_to_non_nullable
-as List<CommentaryContent>,
-  ));
-}
-
-
-}
-
-CommentaryContent _$CommentaryContentFromJson(
-  Map<String, dynamic> json
-) {
-        switch (json['r']) {
-                  case 'p':
-          return CommentaryParagraph.fromJson(
-            json
-          );
-                case 't':
-          return CommentaryTable.fromJson(
-            json
-          );
-                case 'm':
-          return CommentaryBibleMap.fromJson(
-            json
-          );
-                case 'b':
-          return CommentaryBox.fromJson(
-            json
-          );
-        
-          default:
-            throw CheckedFromJsonException(
-  json,
-  'r',
-  'CommentaryContent',
-  'Invalid union type "${json['r']}"!'
-);
-        }
-      
-}
-
-/// @nodoc
-mixin _$CommentaryContent {
-
-
-
-  /// Serializes this CommentaryContent to a JSON map.
-  Map<String, dynamic> toJson();
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommentaryContent);
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => runtimeType.hashCode;
-
-@override
-String toString() {
-  return 'CommentaryContent()';
-}
-
-
-}
-
-/// @nodoc
-class $CommentaryContentCopyWith<$Res>  {
-$CommentaryContentCopyWith(CommentaryContent _, $Res Function(CommentaryContent) __);
-}
-
-
-/// Adds pattern-matching-related methods to [CommentaryContent].
-extension CommentaryContentPatterns on CommentaryContent {
-/// A variant of `map` that fallback to returning `orElse`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( CommentaryParagraph value)?  paragraph,TResult Function( CommentaryTable value)?  table,TResult Function( CommentaryBibleMap value)?  bibleMap,TResult Function( CommentaryBox value)?  box,required TResult orElse(),}){
-final _that = this;
-switch (_that) {
-case CommentaryParagraph() when paragraph != null:
-return paragraph(_that);case CommentaryTable() when table != null:
-return table(_that);case CommentaryBibleMap() when bibleMap != null:
-return bibleMap(_that);case CommentaryBox() when box != null:
-return box(_that);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// Callbacks receives the raw object, upcasted.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case final Subclass2 value:
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( CommentaryParagraph value)  paragraph,required TResult Function( CommentaryTable value)  table,required TResult Function( CommentaryBibleMap value)  bibleMap,required TResult Function( CommentaryBox value)  box,}){
-final _that = this;
-switch (_that) {
-case CommentaryParagraph():
-return paragraph(_that);case CommentaryTable():
-return table(_that);case CommentaryBibleMap():
-return bibleMap(_that);case CommentaryBox():
-return box(_that);}
-}
-/// A variant of `map` that fallback to returning `null`.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case final Subclass value:
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( CommentaryParagraph value)?  paragraph,TResult? Function( CommentaryTable value)?  table,TResult? Function( CommentaryBibleMap value)?  bibleMap,TResult? Function( CommentaryBox value)?  box,}){
-final _that = this;
-switch (_that) {
-case CommentaryParagraph() when paragraph != null:
-return paragraph(_that);case CommentaryTable() when table != null:
-return table(_that);case CommentaryBibleMap() when bibleMap != null:
-return bibleMap(_that);case CommentaryBox() when box != null:
-return box(_that);case _:
-  return null;
-
-}
-}
-/// A variant of `when` that fallback to an `orElse` callback.
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return orElse();
-/// }
-/// ```
-
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function(@JsonKey(name: 'x', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown text, @JsonKey(name: 's')  CommentaryParagraphStyle style)?  paragraph,TResult Function(@JsonKey(name: 'w', toJson: Markdown.toJsonTable, fromJson: Markdown.fromJsonTable)  List<List<Markdown>> rows)?  table,TResult Function(@JsonKey(name: 'i')  String id)?  bibleMap,TResult Function(@JsonKey(name: 'h')  String title, @JsonKey(name: 'c')  List<CommentaryContent> content)?  box,required TResult orElse(),}) {final _that = this;
-switch (_that) {
-case CommentaryParagraph() when paragraph != null:
-return paragraph(_that.text,_that.style);case CommentaryTable() when table != null:
-return table(_that.rows);case CommentaryBibleMap() when bibleMap != null:
-return bibleMap(_that.id);case CommentaryBox() when box != null:
-return box(_that.title,_that.content);case _:
-  return orElse();
-
-}
-}
-/// A `switch`-like method, using callbacks.
-///
-/// As opposed to `map`, this offers destructuring.
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case Subclass2(:final field2):
-///     return ...;
-/// }
-/// ```
-
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function(@JsonKey(name: 'x', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown text, @JsonKey(name: 's')  CommentaryParagraphStyle style)  paragraph,required TResult Function(@JsonKey(name: 'w', toJson: Markdown.toJsonTable, fromJson: Markdown.fromJsonTable)  List<List<Markdown>> rows)  table,required TResult Function(@JsonKey(name: 'i')  String id)  bibleMap,required TResult Function(@JsonKey(name: 'h')  String title, @JsonKey(name: 'c')  List<CommentaryContent> content)  box,}) {final _that = this;
-switch (_that) {
-case CommentaryParagraph():
-return paragraph(_that.text,_that.style);case CommentaryTable():
-return table(_that.rows);case CommentaryBibleMap():
-return bibleMap(_that.id);case CommentaryBox():
-return box(_that.title,_that.content);}
-}
-/// A variant of `when` that fallback to returning `null`
-///
-/// It is equivalent to doing:
-/// ```dart
-/// switch (sealedClass) {
-///   case Subclass(:final field):
-///     return ...;
-///   case _:
-///     return null;
-/// }
-/// ```
-
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function(@JsonKey(name: 'x', toJson: Markdown.toJson, fromJson: Markdown.fromJson)  Markdown text, @JsonKey(name: 's')  CommentaryParagraphStyle style)?  paragraph,TResult? Function(@JsonKey(name: 'w', toJson: Markdown.toJsonTable, fromJson: Markdown.fromJsonTable)  List<List<Markdown>> rows)?  table,TResult? Function(@JsonKey(name: 'i')  String id)?  bibleMap,TResult? Function(@JsonKey(name: 'h')  String title, @JsonKey(name: 'c')  List<CommentaryContent> content)?  box,}) {final _that = this;
-switch (_that) {
-case CommentaryParagraph() when paragraph != null:
-return paragraph(_that.text,_that.style);case CommentaryTable() when table != null:
-return table(_that.rows);case CommentaryBibleMap() when bibleMap != null:
-return bibleMap(_that.id);case CommentaryBox() when box != null:
-return box(_that.title,_that.content);case _:
-  return null;
-
-}
-}
-
-}
-
-/// @nodoc
-@JsonSerializable()
-
-class CommentaryParagraph implements CommentaryContent {
-  const CommentaryParagraph({@JsonKey(name: 'x', toJson: Markdown.toJson, fromJson: Markdown.fromJson) required this.text, @JsonKey(name: 's') this.style = CommentaryParagraphStyle.body,  String? $type}): $type = $type ?? 'p';
-  factory CommentaryParagraph.fromJson(Map<String, dynamic> json) => _$CommentaryParagraphFromJson(json);
-
-@JsonKey(name: 'x', toJson: Markdown.toJson, fromJson: Markdown.fromJson) final  Markdown text;
-@JsonKey(name: 's') final  CommentaryParagraphStyle style;
-
-@JsonKey(name: 'r')
-final String $type;
-
-
-/// Create a copy of CommentaryContent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$CommentaryParagraphCopyWith<CommentaryParagraph> get copyWith => _$CommentaryParagraphCopyWithImpl<CommentaryParagraph>(this, _$identity);
-
-@override
-Map<String, dynamic> toJson() {
-  return _$CommentaryParagraphToJson(this, );
-}
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommentaryParagraph&&(identical(other.text, text) || other.text == text)&&(identical(other.style, style) || other.style == style));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,text,style);
-
-@override
-String toString() {
-  return 'CommentaryContent.paragraph(text: $text, style: $style)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $CommentaryParagraphCopyWith<$Res> implements $CommentaryContentCopyWith<$Res> {
-  factory $CommentaryParagraphCopyWith(CommentaryParagraph value, $Res Function(CommentaryParagraph) _then) = _$CommentaryParagraphCopyWithImpl;
-@useResult
-$Res call({
-@JsonKey(name: 'x', toJson: Markdown.toJson, fromJson: Markdown.fromJson) Markdown text,@JsonKey(name: 's') CommentaryParagraphStyle style
-});
-
-
-
-
-}
-/// @nodoc
-class _$CommentaryParagraphCopyWithImpl<$Res>
-    implements $CommentaryParagraphCopyWith<$Res> {
-  _$CommentaryParagraphCopyWithImpl(this._self, this._then);
-
-  final CommentaryParagraph _self;
-  final $Res Function(CommentaryParagraph) _then;
-
-/// Create a copy of CommentaryContent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? text = null,Object? style = null,}) {
-  return _then(CommentaryParagraph(
-text: null == text ? _self.text : text // ignore: cast_nullable_to_non_nullable
-as Markdown,style: null == style ? _self.style : style // ignore: cast_nullable_to_non_nullable
-as CommentaryParagraphStyle,
-  ));
-}
-
-
-}
-
-/// @nodoc
-@JsonSerializable()
-
-class CommentaryTable implements CommentaryContent {
-  const CommentaryTable({@JsonKey(name: 'w', toJson: Markdown.toJsonTable, fromJson: Markdown.fromJsonTable) required  List<List<Markdown>> rows,  String? $type}): _rows = rows,$type = $type ?? 't';
-  factory CommentaryTable.fromJson(Map<String, dynamic> json) => _$CommentaryTableFromJson(json);
-
- final  List<List<Markdown>> _rows;
-@JsonKey(name: 'w', toJson: Markdown.toJsonTable, fromJson: Markdown.fromJsonTable) List<List<Markdown>> get rows {
-  if (_rows is EqualUnmodifiableListView) return _rows;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_rows);
-}
-
-
-@JsonKey(name: 'r')
-final String $type;
-
-
-/// Create a copy of CommentaryContent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$CommentaryTableCopyWith<CommentaryTable> get copyWith => _$CommentaryTableCopyWithImpl<CommentaryTable>(this, _$identity);
-
-@override
-Map<String, dynamic> toJson() {
-  return _$CommentaryTableToJson(this, );
-}
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommentaryTable&&const DeepCollectionEquality().equals(other._rows, _rows));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_rows));
-
-@override
-String toString() {
-  return 'CommentaryContent.table(rows: $rows)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $CommentaryTableCopyWith<$Res> implements $CommentaryContentCopyWith<$Res> {
-  factory $CommentaryTableCopyWith(CommentaryTable value, $Res Function(CommentaryTable) _then) = _$CommentaryTableCopyWithImpl;
-@useResult
-$Res call({
-@JsonKey(name: 'w', toJson: Markdown.toJsonTable, fromJson: Markdown.fromJsonTable) List<List<Markdown>> rows
-});
-
-
-
-
-}
-/// @nodoc
-class _$CommentaryTableCopyWithImpl<$Res>
-    implements $CommentaryTableCopyWith<$Res> {
-  _$CommentaryTableCopyWithImpl(this._self, this._then);
-
-  final CommentaryTable _self;
-  final $Res Function(CommentaryTable) _then;
-
-/// Create a copy of CommentaryContent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? rows = null,}) {
-  return _then(CommentaryTable(
-rows: null == rows ? _self._rows : rows // ignore: cast_nullable_to_non_nullable
-as List<List<Markdown>>,
-  ));
-}
-
-
-}
-
-/// @nodoc
-@JsonSerializable()
-
-class CommentaryBibleMap implements CommentaryContent {
-  const CommentaryBibleMap({@JsonKey(name: 'i') required this.id,  String? $type}): $type = $type ?? 'm';
-  factory CommentaryBibleMap.fromJson(Map<String, dynamic> json) => _$CommentaryBibleMapFromJson(json);
-
-@JsonKey(name: 'i') final  String id;
-
-@JsonKey(name: 'r')
-final String $type;
-
-
-/// Create a copy of CommentaryContent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$CommentaryBibleMapCopyWith<CommentaryBibleMap> get copyWith => _$CommentaryBibleMapCopyWithImpl<CommentaryBibleMap>(this, _$identity);
-
-@override
-Map<String, dynamic> toJson() {
-  return _$CommentaryBibleMapToJson(this, );
-}
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommentaryBibleMap&&(identical(other.id, id) || other.id == id));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,id);
-
-@override
-String toString() {
-  return 'CommentaryContent.bibleMap(id: $id)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $CommentaryBibleMapCopyWith<$Res> implements $CommentaryContentCopyWith<$Res> {
-  factory $CommentaryBibleMapCopyWith(CommentaryBibleMap value, $Res Function(CommentaryBibleMap) _then) = _$CommentaryBibleMapCopyWithImpl;
-@useResult
-$Res call({
-@JsonKey(name: 'i') String id
-});
-
-
-
-
-}
-/// @nodoc
-class _$CommentaryBibleMapCopyWithImpl<$Res>
-    implements $CommentaryBibleMapCopyWith<$Res> {
-  _$CommentaryBibleMapCopyWithImpl(this._self, this._then);
-
-  final CommentaryBibleMap _self;
-  final $Res Function(CommentaryBibleMap) _then;
-
-/// Create a copy of CommentaryContent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? id = null,}) {
-  return _then(CommentaryBibleMap(
-id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,
-  ));
-}
-
-
-}
-
-/// @nodoc
-@JsonSerializable()
-
-class CommentaryBox implements CommentaryContent {
-  const CommentaryBox({@JsonKey(name: 'h') required this.title, @JsonKey(name: 'c') required  List<CommentaryContent> content,  String? $type}): _content = content,$type = $type ?? 'b';
-  factory CommentaryBox.fromJson(Map<String, dynamic> json) => _$CommentaryBoxFromJson(json);
-
-@JsonKey(name: 'h') final  String title;
- final  List<CommentaryContent> _content;
-@JsonKey(name: 'c') List<CommentaryContent> get content {
-  if (_content is EqualUnmodifiableListView) return _content;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_content);
-}
-
-
-@JsonKey(name: 'r')
-final String $type;
-
-
-/// Create a copy of CommentaryContent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$CommentaryBoxCopyWith<CommentaryBox> get copyWith => _$CommentaryBoxCopyWithImpl<CommentaryBox>(this, _$identity);
-
-@override
-Map<String, dynamic> toJson() {
-  return _$CommentaryBoxToJson(this, );
-}
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommentaryBox&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other._content, _content));
-}
-
-@JsonKey(includeFromJson: false, includeToJson: false)
-@override
-int get hashCode => Object.hash(runtimeType,title,const DeepCollectionEquality().hash(_content));
-
-@override
-String toString() {
-  return 'CommentaryContent.box(title: $title, content: $content)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $CommentaryBoxCopyWith<$Res> implements $CommentaryContentCopyWith<$Res> {
-  factory $CommentaryBoxCopyWith(CommentaryBox value, $Res Function(CommentaryBox) _then) = _$CommentaryBoxCopyWithImpl;
-@useResult
-$Res call({
-@JsonKey(name: 'h') String title,@JsonKey(name: 'c') List<CommentaryContent> content
-});
-
-
-
-
-}
-/// @nodoc
-class _$CommentaryBoxCopyWithImpl<$Res>
-    implements $CommentaryBoxCopyWith<$Res> {
-  _$CommentaryBoxCopyWithImpl(this._self, this._then);
-
-  final CommentaryBox _self;
-  final $Res Function(CommentaryBox) _then;
-
-/// Create a copy of CommentaryContent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? title = null,Object? content = null,}) {
-  return _then(CommentaryBox(
-title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,content: null == content ? _self._content : content // ignore: cast_nullable_to_non_nullable
-as List<CommentaryContent>,
+as List<RichContent>,
   ));
 }
 

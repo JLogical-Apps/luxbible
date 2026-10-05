@@ -1,5 +1,5 @@
 import 'package:bible/models/article.dart';
-import 'package:bible/models/commentary.dart';
+import 'package:bible/models/rich_content.dart';
 import 'package:lux/lux_core.dart';
 import 'package:lux_content_tools/repository_paths.dart';
 import 'package:lux_content_tools/tyndale.dart';
@@ -18,7 +18,7 @@ Article _getArticle(XmlElement item) {
     body: paragraphs
         .where((paragraph) => !_isTitleOrReferences(paragraph))
         .map(
-          (paragraph) => CommentaryContent.paragraph(
+          (paragraph) => RichContent.paragraph(
             text: getTyndaleMarkdown(paragraph),
             style: switch (paragraph.getAttribute('class')) {
               'profile-body' ||

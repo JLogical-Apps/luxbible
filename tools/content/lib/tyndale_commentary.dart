@@ -1,4 +1,5 @@
 import 'package:bible/models/commentary.dart';
+import 'package:bible/models/rich_content.dart';
 import 'package:collection/collection.dart';
 import 'package:lux/lux_core.dart';
 import 'package:lux_content_tools/repository_paths.dart';
@@ -25,7 +26,7 @@ Map<BookType, CommentaryBook> extractTyndaleCommentary() {
   );
 }
 
-typedef _Note = ({VerseSelection selection, int index, List<CommentaryContent> content});
+typedef _Note = ({VerseSelection selection, int index, List<RichContent> content});
 
 List<_Note> _extractNotes() => XmlDocument.parse(sourceFile('commentary/tyndale/StudyNotes.xml').readAsStringSync())
     .findAllElements('item')
@@ -39,17 +40,17 @@ List<_Note> _extractNotes() => XmlDocument.parse(sourceFile('commentary/tyndale/
     })
     .toList();
 
-List<CommentaryContent> _getNoteContent(List<XmlElement> paragraphs, VerseSelection selection) {
+List<RichContent> _getNoteContent(List<XmlElement> paragraphs, VerseSelection selection) {
   final label = _getLeadingLabel(paragraphs.first);
   return [
     if (label != null && !_isLabelRedundant(label.innerText, selection))
-      CommentaryContent.paragraph(text: Markdown(label.innerText), style: .italic),
+      RichContent.paragraph(text: Markdown(label.innerText), style: .italic),
     ...paragraphs.expand(
       (paragraph) => getTyndaleMarkdown(paragraph, omittedLabel: label).text
           .split(RegExp(r'\s*•\s*'))
           .where((text) => text.isNotEmpty)
           .map(
-            (text) => CommentaryContent.paragraph(
+            (text) => RichContent.paragraph(
               text: Markdown(text),
               style: switch (paragraph.getAttribute('class')) {
                 'sn-text' => .body,
@@ -77,7 +78,7 @@ List<CommentaryBlock> _getSections(List<_Note> notes) => notes
     )
     .toList();
 
-Map<BookType, List<CommentaryContent>> _extractSummaries() =>
+Map<BookType, List<RichContent>> _extractSummaries() =>
     XmlDocument.parse(sourceFile('commentary/tyndale/BookIntroSummaries.xml').readAsStringSync())
         .findAllElements('item')
         .mapToMap(
@@ -88,12 +89,12 @@ Map<BookType, List<CommentaryContent>> _extractSummaries() =>
         );
 
 // The intro-title paragraph ("The Book of Genesis") is dropped since the section header already names the book.
-List<CommentaryContent> _getSummaryContent(Iterable<XmlElement> paragraphs) => paragraphs
+List<RichContent> _getSummaryContent(Iterable<XmlElement> paragraphs) => paragraphs
     .where((paragraph) => paragraph.getAttribute('class') != 'intro-title')
     .slices(2)
     .map(
       (pair) => switch (pair.map((paragraph) => paragraph.getAttribute('class')).toList()) {
-        ['intro-sidebar-h1', 'intro-sidebar-body-fl'] => CommentaryContent.paragraph(
+        ['intro-sidebar-h1', 'intro-sidebar-body-fl'] => RichContent.paragraph(
           text: Markdown('**${getTyndaleMarkdown(pair.first).text}:** ${getTyndaleMarkdown(pair.last).text}'),
         ),
         final classes => throw FormatException('Unexpected book summary paragraph classes `$classes`.'),
@@ -101,7 +102,7 @@ List<CommentaryContent> _getSummaryContent(Iterable<XmlElement> paragraphs) => p
     )
     .toList();
 
-Map<BookType, List<CommentaryContent>> _extractIntroductions() =>
+Map<BookType, List<RichContent>> _extractIntroductions() =>
     XmlDocument.parse(sourceFile('commentary/tyndale/BookIntros.xml').readAsStringSync())
         .findAllElements('item')
         .mapToMap(
@@ -111,11 +112,11 @@ Map<BookType, List<CommentaryContent>> _extractIntroductions() =>
           ),
         );
 
-List<CommentaryContent> _getIntroductionContent(Iterable<XmlElement> paragraphs) => paragraphs
+List<RichContent> _getIntroductionContent(Iterable<XmlElement> paragraphs) => paragraphs
     .splitBetween((previous, next) => !(_isPoetry(previous) && _isPoetry(next)))
     .map(
       (group) => switch (group) {
-        [final paragraph] when !_isPoetry(paragraph) => CommentaryContent.paragraph(
+        [final paragraph] when !_isPoetry(paragraph) => RichContent.paragraph(
           text: getTyndaleMarkdown(paragraph),
           style: switch (paragraph.getAttribute('class')) {
             'intro-overview' ||
@@ -129,7 +130,7 @@ List<CommentaryContent> _getIntroductionContent(Iterable<XmlElement> paragraphs)
             final other => throw FormatException('Unknown book introduction paragraph class `$other`.'),
           },
         ),
-        _ => CommentaryContent.paragraph(
+        _ => RichContent.paragraph(
           text: Markdown(
             group
                 .map(

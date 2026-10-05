@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:bible/models/article.dart';
-import 'package:bible/models/commentary.dart';
+import 'package:bible/models/rich_content.dart';
 import 'package:collection/collection.dart';
 import 'package:lux/lux_core.dart';
 import 'package:lux_content_tools/repository_paths.dart';
@@ -55,10 +55,10 @@ List<Article> extractTyndaleDictionary({required Function(String articleId, Stri
       }
     }
 
-    List<CommentaryContent> getContent(Iterable<XmlElement> elements) => elements.expand<CommentaryContent>((element) {
+    List<RichContent> getContent(Iterable<XmlElement> elements) => elements.expand<RichContent>((element) {
       if (element.name.local == 'table') {
         return [
-          CommentaryContent.table(
+          RichContent.table(
             rows: element
                 .findElements('tr')
                 .map(
@@ -85,13 +85,13 @@ List<Article> extractTyndaleDictionary({required Function(String articleId, Stri
         final name = element.getAttribute('name')!;
         return switch (element.getAttribute('src')) {
           '../Maps/Maps.xml' => [
-            CommentaryContent.bibleMap(
+            RichContent.bibleMap(
               id: mapIdsByAlias[name.toLowerCase()] ?? (throw FormatException('Unknown map `$name` in `$id`.')),
             ),
           ],
           final source? when boxesBySource.containsKey(source) => [
             switch (boxesBySource[source]![name.toLowerCase()]) {
-              final box? => CommentaryContent.box(
+              final box? => RichContent.box(
                 title: box.getElement('title')!.innerText.trim(),
                 content: getContent(box.getElement('body')!.childElements.where(_isNotTitle)),
               ),
@@ -104,7 +104,7 @@ List<Article> extractTyndaleDictionary({required Function(String articleId, Stri
         };
       }
       return [
-        CommentaryContent.paragraph(
+        RichContent.paragraph(
           text: getTyndaleMarkdown(element, getLinkElements: getLinkElements),
           style: _getParagraphStyle(element.getAttribute('class')),
         ),
@@ -130,7 +130,7 @@ bool _isNotTitle(XmlElement element) => element.getAttribute('class') != 'h1';
 // An asterisk marks a term that is missing from the NLT, which Lux does not explain or use.
 String _withoutAsterisks(String text) => text.replaceAll('*', '');
 
-CommentaryParagraphStyle _getParagraphStyle(String? paragraphClass) => switch (paragraphClass) {
+RichParagraphStyle _getParagraphStyle(String? paragraphClass) => switch (paragraphClass) {
   null || 'fl' || 'sp' || 'list-text' || 'list-text-fl' || 'preview-text' || 'box-first' || 'td' => .body,
   'h2' || 'h2-preview' || 'h2-list' || 'box-h2' || 'box-h2-poetic' => .heading,
   'h3' => .bold,

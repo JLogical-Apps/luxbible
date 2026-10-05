@@ -6,30 +6,31 @@ part of 'commentary.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_CommentaryBook _$CommentaryBookFromJson(
-  Map<String, dynamic> json,
-) => _CommentaryBook(
-  summary:
-      (json['s'] as List<dynamic>?)
-          ?.map((e) => CommentaryContent.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const [],
-  introduction:
-      (json['i'] as List<dynamic>?)
-          ?.map((e) => CommentaryContent.fromJson(e as Map<String, dynamic>))
-          .toList() ??
-      const [],
-  blocksByChapter:
-      (json['c'] as Map<String, dynamic>?)?.map(
-        (k, e) => MapEntry(
-          int.parse(k),
-          (e as List<dynamic>)
-              .map((e) => CommentaryBlock.fromJson(e as Map<String, dynamic>))
-              .toList(),
-        ),
-      ) ??
-      const {},
-);
+_CommentaryBook _$CommentaryBookFromJson(Map<String, dynamic> json) =>
+    _CommentaryBook(
+      summary:
+          (json['s'] as List<dynamic>?)
+              ?.map((e) => RichContent.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      introduction:
+          (json['i'] as List<dynamic>?)
+              ?.map((e) => RichContent.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      blocksByChapter:
+          (json['c'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(
+              int.parse(k),
+              (e as List<dynamic>)
+                  .map(
+                    (e) => CommentaryBlock.fromJson(e as Map<String, dynamic>),
+                  )
+                  .toList(),
+            ),
+          ) ??
+          const {},
+    );
 
 Map<String, dynamic> _$CommentaryBookToJson(_CommentaryBook instance) =>
     <String, dynamic>{
@@ -58,7 +59,7 @@ CommentarySection _$CommentarySectionFromJson(Map<String, dynamic> json) =>
     CommentarySection(
       selection: VerseSelection.fromJson(json['v'] as String),
       content: (json['b'] as List<dynamic>)
-          .map((e) => CommentaryContent.fromJson(e as Map<String, dynamic>))
+          .map((e) => RichContent.fromJson(e as Map<String, dynamic>))
           .toList(),
       $type: json['r'] as String?,
     );
@@ -67,70 +68,6 @@ Map<String, dynamic> _$CommentarySectionToJson(CommentarySection instance) =>
     <String, dynamic>{
       'v': instance.selection.toJson(),
       'b': instance.content.map((e) => e.toJson()).toList(),
-      'r': instance.$type,
-    };
-
-CommentaryParagraph _$CommentaryParagraphFromJson(Map<String, dynamic> json) =>
-    CommentaryParagraph(
-      text: Markdown.fromJson(json['x'] as String),
-      style:
-          $enumDecodeNullable(_$CommentaryParagraphStyleEnumMap, json['s']) ??
-          CommentaryParagraphStyle.body,
-      $type: json['r'] as String?,
-    );
-
-Map<String, dynamic> _$CommentaryParagraphToJson(
-  CommentaryParagraph instance,
-) => <String, dynamic>{
-  'x': Markdown.toJson(instance.text),
-  's': _$CommentaryParagraphStyleEnumMap[instance.style]!,
-  'r': instance.$type,
-};
-
-const _$CommentaryParagraphStyleEnumMap = {
-  CommentaryParagraphStyle.body: 'b',
-  CommentaryParagraphStyle.quote: 'q',
-  CommentaryParagraphStyle.poetry: 'p',
-  CommentaryParagraphStyle.centered: 'c',
-  CommentaryParagraphStyle.attribution: 'a',
-  CommentaryParagraphStyle.heading: 'h',
-  CommentaryParagraphStyle.indented: 'i',
-  CommentaryParagraphStyle.italic: 'e',
-  CommentaryParagraphStyle.bold: 'd',
-  CommentaryParagraphStyle.boldItalic: 'f',
-};
-
-CommentaryTable _$CommentaryTableFromJson(Map<String, dynamic> json) =>
-    CommentaryTable(
-      rows: Markdown.fromJsonTable(json['w'] as List),
-      $type: json['r'] as String?,
-    );
-
-Map<String, dynamic> _$CommentaryTableToJson(CommentaryTable instance) =>
-    <String, dynamic>{
-      'w': Markdown.toJsonTable(instance.rows),
-      'r': instance.$type,
-    };
-
-CommentaryBibleMap _$CommentaryBibleMapFromJson(Map<String, dynamic> json) =>
-    CommentaryBibleMap(id: json['i'] as String, $type: json['r'] as String?);
-
-Map<String, dynamic> _$CommentaryBibleMapToJson(CommentaryBibleMap instance) =>
-    <String, dynamic>{'i': instance.id, 'r': instance.$type};
-
-CommentaryBox _$CommentaryBoxFromJson(Map<String, dynamic> json) =>
-    CommentaryBox(
-      title: json['h'] as String,
-      content: (json['c'] as List<dynamic>)
-          .map((e) => CommentaryContent.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      $type: json['r'] as String?,
-    );
-
-Map<String, dynamic> _$CommentaryBoxToJson(CommentaryBox instance) =>
-    <String, dynamic>{
-      'h': instance.title,
-      'c': instance.content.map((e) => e.toJson()).toList(),
       'r': instance.$type,
     };
 

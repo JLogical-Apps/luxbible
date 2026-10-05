@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bible/models/commentary.dart';
 import 'package:bible/models/commentary_type.dart';
+import 'package:bible/models/rich_content.dart';
 import 'package:collection/collection.dart';
 import 'package:lux/lux_core.dart';
 import 'package:lux_content_tools/repository_paths.dart';
@@ -162,7 +163,7 @@ BookType? _bookOf(XmlNode? container) => container
     .first
     .mapIfNonNull(BookType.fromOsisId);
 
-List<CommentaryContent> _introContent(
+List<RichContent> _introContent(
   Iterable<XmlElement> elements,
   Map<String, Map<String, String>> sourceStyles, {
   bool skipHeadings = false,
@@ -221,12 +222,12 @@ String _commentaryMarkdown(Iterable<XmlElement> blocks) => Markdown.fromXmlNodes
   };
 }).text.trim();
 
-Iterable<CommentaryContent> _commentaryContent(
+Iterable<RichContent> _commentaryContent(
   Iterable<XmlElement> elements,
   Map<String, Map<String, String>> sourceStyles, {
   bool skipIntroduction = false,
   bool skipHeadings = false,
-  CommentaryParagraphStyle? inheritedStyle,
+  RichParagraphStyle? inheritedStyle,
 }) => elements.expand((element) {
   final elementStyle = _getParagraphStyle(element, sourceStyles) ?? inheritedStyle;
   return switch (element.name.local) {
@@ -236,17 +237,15 @@ Iterable<CommentaryContent> _commentaryContent(
         r'^INTRODUCTION\.?$',
       ).hasMatch(markdown.withStrippedMarkdown.trim().toUpperCase());
       return markdown.text.isEmpty || (skipIntroduction && isIntroductionHeading)
-          ? <CommentaryContent>[]
-          : [CommentaryContent.paragraph(text: markdown, style: elementStyle ?? .body)];
+          ? <RichContent>[]
+          : [RichContent.paragraph(text: markdown, style: elementStyle ?? .body)];
     }(),
     'h1' || 'h2' || 'h3' || 'h4' || 'h5' || 'h6' =>
       skipHeadings
-          ? <CommentaryContent>[]
+          ? <RichContent>[]
           : () {
               final markdown = Markdown(_commentaryMarkdown([element]));
-              return markdown.text.isEmpty
-                  ? <CommentaryContent>[]
-                  : [CommentaryContent.paragraph(text: markdown, style: .heading)];
+              return markdown.text.isEmpty ? <RichContent>[] : [RichContent.paragraph(text: markdown, style: .heading)];
             }(),
     'table' => _getCommentaryTable(element),
     'blockquote' => _commentaryContent(
@@ -266,7 +265,7 @@ Iterable<CommentaryContent> _commentaryContent(
   };
 });
 
-Iterable<CommentaryContent> _getCommentaryTable(XmlElement table) {
+Iterable<RichContent> _getCommentaryTable(XmlElement table) {
   final rows = table
       .findAllElements('tr')
       .map(
@@ -277,12 +276,12 @@ Iterable<CommentaryContent> _getCommentaryTable(XmlElement table) {
       )
       .where((row) => row.isNotEmpty)
       .toList();
-  return rows.isEmpty ? [] : [CommentaryContent.table(rows: rows)];
+  return rows.isEmpty ? [] : [RichContent.table(rows: rows)];
 }
 
-CommentaryParagraphStyle? _getParagraphStyle(XmlElement element, Map<String, Map<String, String>> sourceStyles) {
+RichParagraphStyle? _getParagraphStyle(XmlElement element, Map<String, Map<String, String>> sourceStyles) {
   final className = element.getAttribute('class') ?? '';
-  final CommentaryParagraphStyle? classStyle = switch (className.toLowerCase()) {
+  final RichParagraphStyle? classStyle = switch (className.toLowerCase()) {
     'attribution' => .attribution,
     'center' => .centered,
     'bold' => .bold,

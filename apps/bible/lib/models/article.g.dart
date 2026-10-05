@@ -10,7 +10,7 @@ _Article _$ArticleFromJson(Map<String, dynamic> json) => _Article(
   id: json['i'] as String,
   title: json['t'] as String,
   body: (json['b'] as List<dynamic>)
-      .map((e) => CommentaryContent.fromJson(e as Map<String, dynamic>))
+      .map((e) => RichContent.fromJson(e as Map<String, dynamic>))
       .toList(),
   passages:
       (json['p'] as List<dynamic>?)

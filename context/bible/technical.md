@@ -152,7 +152,7 @@ distinct. Summaries and introductions are omitted from the JSON when empty, so o
 summary. Section titles are derived from the book in the UI rather than stored. Only verse-linked sections participate in linked-panel
 synchronization, though summaries and introductions still take part in header navigation. They and outlines remain
 positioned at verse 1 until their linked commentary reaches the top.
-Commentary sections contain normalized content blocks rather than source-specific XML classes. Paragraph blocks retain
+Commentary sections contain normalized `RichContent` blocks rather than source-specific XML classes. Paragraph blocks retain
 semantic presentation such as quotations, poetry, headings, and attribution, while table blocks retain their rows and
 cells. The bundled explicit outlines are all scoped to one chapter, although each outline item can target any verse
 range supported by `VerseSelection`. Linked Commentary panels precalculate every item extent so their scroll range and
@@ -181,7 +181,7 @@ chapter's last verse, and keeps links to deuterocanonical books as plain text.
 Passage-linked content has no generic resource model. Each kind of content is its own list of items, each item has its
 own linked passages, and Linked Resources filters each relevant list for items with a passage that overlaps the
 selection. The lists share only the `LinkedResource` mixin, which ranks items by their narrowest overlapping passage and
-matches title searches. People and themes share one `Article` shape: an ID, a title, a body of the same content blocks commentary
+matches title searches. People and themes share one `Article` shape: an ID, a title, a body of the same `RichContent` blocks commentary
 uses, and a list of `VerseSelection` passages. `generate_articles_json.dart` writes them as one minified list per kind
 to `assets/people/tyndale.json` and `assets/themes/tyndale.json`, which are decoded on first use and kept in memory.
 Items are classified by source file because `ThemeNotes.xml` marks one theme with the Profile type name. An article's

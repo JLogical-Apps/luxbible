@@ -1,5 +1,5 @@
-import 'package:bible/models/commentary.dart';
 import 'package:bible/models/linked_resource.dart';
+import 'package:bible/models/rich_content.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lux/lux_core.dart';
@@ -16,7 +16,7 @@ sealed class Article with _$Article, LinkedResource {
   const factory Article({
     @JsonKey(name: 'i') required String id,
     @JsonKey(name: 't') required String title,
-    @JsonKey(name: 'b') required List<CommentaryContent> body,
+    @JsonKey(name: 'b') required List<RichContent> body,
     @IgnoreIfEmpty(name: 'p') @Default([]) List<VerseSelection> passages,
   }) = _Article;
 
@@ -24,7 +24,7 @@ sealed class Article with _$Article, LinkedResource {
 
   // Some dictionary entries start with a numbered list, such as one item per person with the same name.
   Markdown? get preview {
-    final paragraphs = body.whereType<CommentaryParagraph>();
+    final paragraphs = body.whereType<RichParagraph>();
     return (paragraphs.firstWhereOrNull((paragraph) => paragraph.style == .body) ??
             paragraphs.firstWhereOrNull((paragraph) => paragraph.style != .heading))
         ?.text;
