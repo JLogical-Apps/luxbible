@@ -17,6 +17,9 @@ _Article _$ArticleFromJson(Map<String, dynamic> json) => _Article(
           ?.map((e) => VerseSelection.fromJson(e as String))
           .toList() ??
       const [],
+  dictionaryIds:
+      (json['d'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+      const [],
 );
 
 Map<String, dynamic> _$ArticleToJson(_Article instance) => <String, dynamic>{
@@ -24,4 +27,5 @@ Map<String, dynamic> _$ArticleToJson(_Article instance) => <String, dynamic>{
   't': instance.title,
   'b': instance.body.map((e) => e.toJson()).toList(),
   'p': ?nullIfEmpty(instance.passages),
+  'd': ?nullIfEmpty(instance.dictionaryIds),
 };

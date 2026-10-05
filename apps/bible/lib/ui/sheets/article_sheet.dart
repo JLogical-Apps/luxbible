@@ -3,6 +3,7 @@ import 'package:bible/models/article_collection.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
 import 'package:bible/ui/widgets/rich_content_view.dart';
 import 'package:bible/ui/widgets/passage_list_item.dart';
+import 'package:bible/ui/widgets/related_articles_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
@@ -24,6 +25,11 @@ class ArticleSheet {
       title: article.title.toText(),
       subtitle: collection.source().toText(),
       children: [
+        RelatedArticlesTile(
+          collection: collection,
+          article: article,
+          onNavigateToVerseSelection: navigateToVerseSelection,
+        ),
         Padding(
           padding: .all(16),
           child: RichContentList(content: article.body, onNavigateToVerseSelection: navigateToVerseSelection),

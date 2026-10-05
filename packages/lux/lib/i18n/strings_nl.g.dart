@@ -1289,6 +1289,9 @@ class _Translations$articles$nl extends Translations$articles$en {
 	@override String get noMatchingPeople => 'Geen overeenkomende personen';
 	@override String get noMatchingThemes => 'Geen overeenkomende thema\'s';
 	@override String get passagesForFurtherStudy => 'Passages voor verdere studie';
+	@override String get relatedDictionaryEntry => 'Het volledige artikel uit het bijbelwoordenboek, met meer achtergrond en details';
+	@override String get relatedProfile => 'Een korter profiel uit de Tyndale Study Notes, met passages voor verdere studie';
+	@override String get relatedTheme => 'Een korter artikel uit de Tyndale Study Notes, met passages voor verdere studie';
 }
 
 // Path: maps
@@ -3815,6 +3818,9 @@ extension on TranslationsNl {
 			'articles.noMatchingPeople' => 'Geen overeenkomende personen',
 			'articles.noMatchingThemes' => 'Geen overeenkomende thema\'s',
 			'articles.passagesForFurtherStudy' => 'Passages voor verdere studie',
+			'articles.relatedDictionaryEntry' => 'Het volledige artikel uit het bijbelwoordenboek, met meer achtergrond en details',
+			'articles.relatedProfile' => 'Een korter profiel uit de Tyndale Study Notes, met passages voor verdere studie',
+			'articles.relatedTheme' => 'Een korter artikel uit de Tyndale Study Notes, met passages voor verdere studie',
 			'maps.searchHint' => 'Zoek naar een kaart',
 			'maps.noMatchingMaps' => 'Geen overeenkomende kaarten',
 			'navigation.recents' => 'Recent',
@@ -4059,11 +4065,11 @@ extension on TranslationsNl {
 			'morphology.aspect.infinitiveAbsolute.description' => 'Een zelfstandig verbaal naamwoord, vaak met nadruk.',
 			'morphology.aspect.infinitiveAbsolute.examples' => 'zeker sterven|grondig schrijven',
 			'morphology.aspect.participle.name' => 'Participium',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.aspect.participle.description' => 'Een verbaal bijvoeglijk naamwoord dat een voortdurende handeling beschrijft.',
 			'morphology.aspect.participle.examples' => 'schrijvend|degene die hoort',
 			'morphology.aspect.consecutiveImperfect.name' => 'Consecutief imperfectum',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.aspect.consecutiveImperfect.description' => 'Verhalende verleden vorm: waw + imperfectum.',
 			'morphology.aspect.consecutiveImperfect.examples' => 'en hij zei|en zij gingen',
 			'morphology.aspect.conjunctiveImperfect.name' => 'Conjunctief imperfectum',

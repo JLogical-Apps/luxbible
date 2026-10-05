@@ -191,6 +191,11 @@ kept in the body. Overlap compares every verse a passage covers, so a range that
 them, unlike commentary sections, which are keyed by their starting chapter. There is no link index; the lists are
 filtered whenever the selection or visible verses change.
 
+Profiles and themes also carry the IDs of dictionary entries on the same subject. They come from the hand-curated
+`content/sources/commentary/tyndale/dictionary_links.json`, which skips "*See*" stubs in favor of the entry they point
+to. The generator fails on any unknown ID. Dictionary entries don't store the reverse link; the article view finds the
+profiles and themes that list them.
+
 The Tyndale Open Bible Dictionary (CC BY-SA 4.0) uses the same `Article` shape without passages, so it is never
 loaded for Linked Resources. `generate_dictionary_json.dart` writes all 6,010 articles from
 `content/sources/dictionary/tyndale/Articles/` to `assets/dictionary/tyndale.json` (about 10 MB), which is decoded the

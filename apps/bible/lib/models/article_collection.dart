@@ -37,6 +37,12 @@ enum ArticleCollection {
     themes => t.articles.noMatchingThemes,
   };
 
+  String relatedDescription() => switch (this) {
+    dictionary => t.articles.relatedDictionaryEntry,
+    people => t.articles.relatedProfile,
+    themes => t.articles.relatedTheme,
+  };
+
   IconData get icon => switch (this) {
     dictionary => Symbols.menu_book,
     people => Symbols.groups,

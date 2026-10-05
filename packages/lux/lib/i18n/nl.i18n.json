@@ -897,7 +897,10 @@
     "themeHint": "Zoek naar een thema",
     "noMatchingPeople": "Geen overeenkomende personen",
     "noMatchingThemes": "Geen overeenkomende thema's",
-    "passagesForFurtherStudy": "Passages voor verdere studie"
+    "passagesForFurtherStudy": "Passages voor verdere studie",
+    "relatedDictionaryEntry": "Het volledige artikel uit het bijbelwoordenboek, met meer achtergrond en details",
+    "relatedProfile": "Een korter profiel uit de Tyndale Study Notes, met passages voor verdere studie",
+    "relatedTheme": "Een korter artikel uit de Tyndale Study Notes, met passages voor verdere studie"
   },
   "maps": {
     "searchHint": "Zoek naar een kaart",

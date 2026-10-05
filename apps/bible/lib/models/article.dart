@@ -18,6 +18,7 @@ sealed class Article with _$Article, LinkedResource {
     @JsonKey(name: 't') required String title,
     @JsonKey(name: 'b') required List<RichContent> body,
     @IgnoreIfEmpty(name: 'p') @Default([]) List<VerseSelection> passages,
+    @IgnoreIfEmpty(name: 'd') @Default([]) List<String> dictionaryIds,
   }) = _Article;
 
   factory Article.fromJson(Map<String, dynamic> json) => _$ArticleFromJson(json);

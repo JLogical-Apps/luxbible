@@ -14,7 +14,7 @@ List<Map<String, dynamic>> readTyndaleMaps() =>
 
 // Links the source cannot resolve are kept as plain text and reported through `onDroppedLink`.
 List<Article> extractTyndaleDictionary({required Function(String articleId, String href, String text) onDroppedLink}) {
-  final articles = _readItems('Articles').where((item) => item.getAttribute('typename') == 'Article').toList();
+  final articles = _readArticleItems().toList();
   final articleIds = articles.map((item) => item.getAttribute('name')!).toSet();
   final boxesBySource = {
     for (final directory in ['Textboxes', 'Charts'])
@@ -118,6 +118,11 @@ List<Article> extractTyndaleDictionary({required Function(String articleId, Stri
     );
   }).toList();
 }
+
+Set<String> readTyndaleDictionaryIds() => _readArticleItems().map((item) => item.getAttribute('name')!).toSet();
+
+Iterable<XmlElement> _readArticleItems() =>
+    _readItems('Articles').where((item) => item.getAttribute('typename') == 'Article');
 
 Iterable<XmlElement> _readItems(String directory) => sourceDirectory('dictionary/tyndale/$directory')
     .listSync()

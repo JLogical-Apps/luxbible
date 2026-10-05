@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Article {
 
-@JsonKey(name: 'i') String get id;@JsonKey(name: 't') String get title;@JsonKey(name: 'b') List<RichContent> get body;@IgnoreIfEmpty(name: 'p') List<VerseSelection> get passages;
+@JsonKey(name: 'i') String get id;@JsonKey(name: 't') String get title;@JsonKey(name: 'b') List<RichContent> get body;@IgnoreIfEmpty(name: 'p') List<VerseSelection> get passages;@IgnoreIfEmpty(name: 'd') List<String> get dictionaryIds;
 /// Create a copy of Article
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $ArticleCopyWith<Article> get copyWith => _$ArticleCopyWithImpl<Article>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Article&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other.body, body)&&const DeepCollectionEquality().equals(other.passages, passages));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Article&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other.body, body)&&const DeepCollectionEquality().equals(other.passages, passages)&&const DeepCollectionEquality().equals(other.dictionaryIds, dictionaryIds));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,const DeepCollectionEquality().hash(body),const DeepCollectionEquality().hash(passages));
+int get hashCode => Object.hash(runtimeType,id,title,const DeepCollectionEquality().hash(body),const DeepCollectionEquality().hash(passages),const DeepCollectionEquality().hash(dictionaryIds));
 
 @override
 String toString() {
-  return 'Article(id: $id, title: $title, body: $body, passages: $passages)';
+  return 'Article(id: $id, title: $title, body: $body, passages: $passages, dictionaryIds: $dictionaryIds)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $ArticleCopyWith<$Res>  {
   factory $ArticleCopyWith(Article value, $Res Function(Article) _then) = _$ArticleCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'i') String id,@JsonKey(name: 't') String title,@JsonKey(name: 'b') List<RichContent> body,@IgnoreIfEmpty(name: 'p') List<VerseSelection> passages
+@JsonKey(name: 'i') String id,@JsonKey(name: 't') String title,@JsonKey(name: 'b') List<RichContent> body,@IgnoreIfEmpty(name: 'p') List<VerseSelection> passages,@IgnoreIfEmpty(name: 'd') List<String> dictionaryIds
 });
 
 
@@ -66,13 +66,14 @@ class _$ArticleCopyWithImpl<$Res>
 
 /// Create a copy of Article
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? body = null,Object? passages = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? body = null,Object? passages = null,Object? dictionaryIds = null,}) {
   return _then(Article(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
 as List<RichContent>,passages: null == passages ? _self.passages : passages // ignore: cast_nullable_to_non_nullable
-as List<VerseSelection>,
+as List<VerseSelection>,dictionaryIds: null == dictionaryIds ? _self.dictionaryIds : dictionaryIds // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 
@@ -154,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<RichContent> body, @IgnoreIfEmpty(name: 'p')  List<VerseSelection> passages)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<RichContent> body, @IgnoreIfEmpty(name: 'p')  List<VerseSelection> passages, @IgnoreIfEmpty(name: 'd')  List<String> dictionaryIds)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Article() when $default != null:
-return $default(_that.id,_that.title,_that.body,_that.passages);case _:
+return $default(_that.id,_that.title,_that.body,_that.passages,_that.dictionaryIds);case _:
   return orElse();
 
 }
@@ -175,10 +176,10 @@ return $default(_that.id,_that.title,_that.body,_that.passages);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<RichContent> body, @IgnoreIfEmpty(name: 'p')  List<VerseSelection> passages)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<RichContent> body, @IgnoreIfEmpty(name: 'p')  List<VerseSelection> passages, @IgnoreIfEmpty(name: 'd')  List<String> dictionaryIds)  $default,) {final _that = this;
 switch (_that) {
 case _Article():
-return $default(_that.id,_that.title,_that.body,_that.passages);}
+return $default(_that.id,_that.title,_that.body,_that.passages,_that.dictionaryIds);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -192,10 +193,10 @@ return $default(_that.id,_that.title,_that.body,_that.passages);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<RichContent> body, @IgnoreIfEmpty(name: 'p')  List<VerseSelection> passages)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<RichContent> body, @IgnoreIfEmpty(name: 'p')  List<VerseSelection> passages, @IgnoreIfEmpty(name: 'd')  List<String> dictionaryIds)?  $default,) {final _that = this;
 switch (_that) {
 case _Article() when $default != null:
-return $default(_that.id,_that.title,_that.body,_that.passages);case _:
+return $default(_that.id,_that.title,_that.body,_that.passages,_that.dictionaryIds);case _:
   return null;
 
 }
@@ -207,7 +208,7 @@ return $default(_that.id,_that.title,_that.body,_that.passages);case _:
 @JsonSerializable()
 
 class _Article extends Article {
-  const _Article({@JsonKey(name: 'i') required this.id, @JsonKey(name: 't') required this.title, @JsonKey(name: 'b') required  List<RichContent> body, @IgnoreIfEmpty(name: 'p')  List<VerseSelection> passages = const []}): _body = body,_passages = passages,super._();
+  const _Article({@JsonKey(name: 'i') required this.id, @JsonKey(name: 't') required this.title, @JsonKey(name: 'b') required  List<RichContent> body, @IgnoreIfEmpty(name: 'p')  List<VerseSelection> passages = const [], @IgnoreIfEmpty(name: 'd')  List<String> dictionaryIds = const []}): _body = body,_passages = passages,_dictionaryIds = dictionaryIds,super._();
   factory _Article.fromJson(Map<String, dynamic> json) => _$ArticleFromJson(json);
 
 @override@JsonKey(name: 'i') final  String id;
@@ -226,6 +227,13 @@ class _Article extends Article {
   return EqualUnmodifiableListView(_passages);
 }
 
+ final  List<String> _dictionaryIds;
+@override@IgnoreIfEmpty(name: 'd') List<String> get dictionaryIds {
+  if (_dictionaryIds is EqualUnmodifiableListView) return _dictionaryIds;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_dictionaryIds);
+}
+
 
 /// Create a copy of Article
 /// with the given fields replaced by the non-null parameter values.
@@ -240,16 +248,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Article&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other._body, _body)&&const DeepCollectionEquality().equals(other._passages, _passages));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Article&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other._body, _body)&&const DeepCollectionEquality().equals(other._passages, _passages)&&const DeepCollectionEquality().equals(other._dictionaryIds, _dictionaryIds));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,const DeepCollectionEquality().hash(_body),const DeepCollectionEquality().hash(_passages));
+int get hashCode => Object.hash(runtimeType,id,title,const DeepCollectionEquality().hash(_body),const DeepCollectionEquality().hash(_passages),const DeepCollectionEquality().hash(_dictionaryIds));
 
 @override
 String toString() {
-  return 'Article(id: $id, title: $title, body: $body, passages: $passages)';
+  return 'Article(id: $id, title: $title, body: $body, passages: $passages, dictionaryIds: $dictionaryIds)';
 }
 
 
@@ -260,7 +268,7 @@ abstract mixin class _$ArticleCopyWith<$Res> implements $ArticleCopyWith<$Res> {
   factory _$ArticleCopyWith(_Article value, $Res Function(_Article) _then) = __$ArticleCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'i') String id,@JsonKey(name: 't') String title,@JsonKey(name: 'b') List<RichContent> body,@IgnoreIfEmpty(name: 'p') List<VerseSelection> passages
+@JsonKey(name: 'i') String id,@JsonKey(name: 't') String title,@JsonKey(name: 'b') List<RichContent> body,@IgnoreIfEmpty(name: 'p') List<VerseSelection> passages,@IgnoreIfEmpty(name: 'd') List<String> dictionaryIds
 });
 
 
@@ -277,13 +285,14 @@ class __$ArticleCopyWithImpl<$Res>
 
 /// Create a copy of Article
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? body = null,Object? passages = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? body = null,Object? passages = null,Object? dictionaryIds = null,}) {
   return _then(_Article(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,body: null == body ? _self._body : body // ignore: cast_nullable_to_non_nullable
 as List<RichContent>,passages: null == passages ? _self._passages : passages // ignore: cast_nullable_to_non_nullable
-as List<VerseSelection>,
+as List<VerseSelection>,dictionaryIds: null == dictionaryIds ? _self._dictionaryIds : dictionaryIds // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 

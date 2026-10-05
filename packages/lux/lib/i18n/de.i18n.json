@@ -895,7 +895,10 @@
     "themeHint": "Nach einem Thema suchen",
     "noMatchingPeople": "Keine passenden Personen",
     "noMatchingThemes": "Keine passenden Themen",
-    "passagesForFurtherStudy": "Stellen zum Weiterstudieren"
+    "passagesForFurtherStudy": "Stellen zum Weiterstudieren",
+    "relatedDictionaryEntry": "Der vollständige Eintrag im Bibelwörterbuch, mit mehr Hintergrund und Details",
+    "relatedProfile": "Ein kürzeres Profil aus den Tyndale Study Notes, mit Stellen zum Weiterstudieren",
+    "relatedTheme": "Ein kürzerer Artikel aus den Tyndale Study Notes, mit Stellen zum Weiterstudieren"
   },
   "maps": {
     "searchHint": "Nach einer Karte suchen",

@@ -1287,6 +1287,9 @@ class _Translations$articles$de extends Translations$articles$en {
 	@override String get noMatchingPeople => 'Keine passenden Personen';
 	@override String get noMatchingThemes => 'Keine passenden Themen';
 	@override String get passagesForFurtherStudy => 'Stellen zum Weiterstudieren';
+	@override String get relatedDictionaryEntry => 'Der vollständige Eintrag im Bibelwörterbuch, mit mehr Hintergrund und Details';
+	@override String get relatedProfile => 'Ein kürzeres Profil aus den Tyndale Study Notes, mit Stellen zum Weiterstudieren';
+	@override String get relatedTheme => 'Ein kürzerer Artikel aus den Tyndale Study Notes, mit Stellen zum Weiterstudieren';
 }
 
 // Path: maps
@@ -3811,6 +3814,9 @@ extension on TranslationsDe {
 			'articles.noMatchingPeople' => 'Keine passenden Personen',
 			'articles.noMatchingThemes' => 'Keine passenden Themen',
 			'articles.passagesForFurtherStudy' => 'Stellen zum Weiterstudieren',
+			'articles.relatedDictionaryEntry' => 'Der vollständige Eintrag im Bibelwörterbuch, mit mehr Hintergrund und Details',
+			'articles.relatedProfile' => 'Ein kürzeres Profil aus den Tyndale Study Notes, mit Stellen zum Weiterstudieren',
+			'articles.relatedTheme' => 'Ein kürzerer Artikel aus den Tyndale Study Notes, mit Stellen zum Weiterstudieren',
 			'maps.searchHint' => 'Nach einer Karte suchen',
 			'maps.noMatchingMaps' => 'Keine passenden Karten',
 			'navigation.recents' => 'Zuletzt',
@@ -4057,11 +4063,11 @@ extension on TranslationsDe {
 			'morphology.aspect.participle.name' => 'Partizip',
 			'morphology.aspect.participle.description' => 'Ein Verbaladjektiv, das eine andauernde Handlung beschreibt.',
 			'morphology.aspect.participle.examples' => 'schreibend|der Hörende',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.aspect.consecutiveImperfect.name' => 'Imperfectum consecutivum',
 			'morphology.aspect.consecutiveImperfect.description' => 'Erzählform der Vergangenheit: Waw + Imperfekt.',
 			'morphology.aspect.consecutiveImperfect.examples' => 'und er sprach|und sie gingen',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.aspect.conjunctiveImperfect.name' => 'Imperfekt mit Waw',
 			'morphology.aspect.conjunctiveImperfect.description' => 'Imperfekt mit verbindendem Waw, mit zukünftigem oder modalem Sinn.',
 			'morphology.aspect.conjunctiveImperfect.examples' => 'und er wird schreiben',

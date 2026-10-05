@@ -33,7 +33,9 @@ assets preserve book introductions, Matthew Henry chapter outlines, ordered vers
 presentation, and source tables.
 
 `generate_articles_json.dart` writes Tyndale's people profiles and theme articles as one minified list each to
-`assets/people/tyndale.json` and `assets/themes/tyndale.json`. Tyndale's link, book-code, and formatting conversion
+`assets/people/tyndale.json` and `assets/themes/tyndale.json`. Each article's links to dictionary entries on the same
+subject come from the hand-curated `content/sources/commentary/tyndale/dictionary_links.json`, and the generator fails
+on any article or dictionary ID it doesn't recognize. Tyndale's link, book-code, and formatting conversion
 lives in [`lib/tyndale.dart`](lib/tyndale.dart) and is shared with the commentary generator, so after changing it,
 regenerate the commentary too and confirm its assets are unchanged unless the change was meant to affect them.
 

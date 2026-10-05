@@ -2779,6 +2779,15 @@ class Translations$articles$en {
 
 	/// en: 'Passages for Further Study'
 	String get passagesForFurtherStudy => 'Passages for Further Study';
+
+	/// en: 'The full Bible Dictionary entry, with more background and detail'
+	String get relatedDictionaryEntry => 'The full Bible Dictionary entry, with more background and detail';
+
+	/// en: 'A shorter profile from Tyndale Study Notes, with passages for further study'
+	String get relatedProfile => 'A shorter profile from Tyndale Study Notes, with passages for further study';
+
+	/// en: 'A shorter article from Tyndale Study Notes, with passages for further study'
+	String get relatedTheme => 'A shorter article from Tyndale Study Notes, with passages for further study';
 }
 
 // Path: maps
@@ -6094,6 +6103,9 @@ extension on Translations {
 			'articles.noMatchingPeople' => 'No matching people',
 			'articles.noMatchingThemes' => 'No matching themes',
 			'articles.passagesForFurtherStudy' => 'Passages for Further Study',
+			'articles.relatedDictionaryEntry' => 'The full Bible Dictionary entry, with more background and detail',
+			'articles.relatedProfile' => 'A shorter profile from Tyndale Study Notes, with passages for further study',
+			'articles.relatedTheme' => 'A shorter article from Tyndale Study Notes, with passages for further study',
 			'maps.searchHint' => 'Search for a map',
 			'maps.noMatchingMaps' => 'No matching maps',
 			'navigation.recents' => 'Recents',
@@ -6340,11 +6352,11 @@ extension on Translations {
 			'morphology.aspect.participle.name' => 'Participle',
 			'morphology.aspect.participle.description' => 'A verbal adjective describing ongoing action.',
 			'morphology.aspect.participle.examples' => 'writing|the one who hears',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.aspect.consecutiveImperfect.name' => 'Consecutive imperfect',
 			'morphology.aspect.consecutiveImperfect.description' => 'Past narrative form: waw + imperfect.',
 			'morphology.aspect.consecutiveImperfect.examples' => 'and he said|and they went',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.aspect.conjunctiveImperfect.name' => 'Conjunctive imperfect',
 			'morphology.aspect.conjunctiveImperfect.description' => 'Imperfect with conjunctive waw, with a future or modal sense.',
 			'morphology.aspect.conjunctiveImperfect.examples' => 'and he will write',

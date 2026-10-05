@@ -1,19 +1,28 @@
+import 'dart:convert';
+
 import 'package:bible/models/article.dart';
 import 'package:bible/models/rich_content.dart';
 import 'package:lux/lux_core.dart';
 import 'package:lux_content_tools/repository_paths.dart';
 import 'package:lux_content_tools/tyndale.dart';
+import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
 
-// ThemeNotes.xml marks one theme with typename="Profile", so callers classify items by file rather than by typename.
-List<Article> extractTyndaleArticles(String fileName) => XmlDocument.parse(
-  sourceFile('commentary/tyndale/$fileName').readAsStringSync(),
-).findAllElements('item').map(_getArticle).toList();
+Map<String, List<String>> readTyndaleDictionaryLinks() =>
+    (jsonDecode(sourceFile('commentary/tyndale/dictionary_links.json').readAsStringSync()) as Map<String, dynamic>)
+        .mapValues((articleId, dictionaryIds) => (dictionaryIds as List).cast<String>());
 
-Article _getArticle(XmlElement item) {
+// ThemeNotes.xml marks one theme with typename="Profile", so callers classify items by file rather than by typename.
+List<Article> extractTyndaleArticles(String fileName, {required Map<String, List<String>> dictionaryLinks}) =>
+    XmlDocument.parse(
+      sourceFile('commentary/tyndale/$fileName').readAsStringSync(),
+    ).findAllElements('item').map((item) => _getArticle(item, dictionaryLinks: dictionaryLinks)).toList();
+
+Article _getArticle(XmlElement item, {required Map<String, List<String>> dictionaryLinks}) {
+  final id = item.getAttribute('name')!;
   final paragraphs = item.getElement('body')!.childElements;
   return Article(
-    id: item.getAttribute('name')!,
+    id: id,
     title: item.getElement('title')!.innerText.trim(),
     body: paragraphs
         .where((paragraph) => !_isTitleOrReferences(paragraph))
@@ -47,6 +56,7 @@ Article _getArticle(XmlElement item) {
           )
           .map(VerseSelection.fromOsisId),
     }.toList(),
+    dictionaryIds: dictionaryLinks[id] ?? [],
   );
 }
 

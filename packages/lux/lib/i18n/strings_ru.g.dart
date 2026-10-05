@@ -1299,6 +1299,9 @@ class _Translations$articles$ru extends Translations$articles$en {
 	@override String get noMatchingPeople => 'Нет подходящих людей';
 	@override String get noMatchingThemes => 'Нет подходящих тем';
 	@override String get passagesForFurtherStudy => 'Отрывки для дальнейшего изучения';
+	@override String get relatedDictionaryEntry => 'Полная статья из библейского словаря, с более подробным контекстом';
+	@override String get relatedProfile => 'Краткий очерк из Tyndale Study Notes, с отрывками для дальнейшего изучения';
+	@override String get relatedTheme => 'Краткая статья из Tyndale Study Notes, с отрывками для дальнейшего изучения';
 }
 
 // Path: maps
@@ -3827,6 +3830,9 @@ extension on TranslationsRu {
 			'articles.noMatchingPeople' => 'Нет подходящих людей',
 			'articles.noMatchingThemes' => 'Нет подходящих тем',
 			'articles.passagesForFurtherStudy' => 'Отрывки для дальнейшего изучения',
+			'articles.relatedDictionaryEntry' => 'Полная статья из библейского словаря, с более подробным контекстом',
+			'articles.relatedProfile' => 'Краткий очерк из Tyndale Study Notes, с отрывками для дальнейшего изучения',
+			'articles.relatedTheme' => 'Краткая статья из Tyndale Study Notes, с отрывками для дальнейшего изучения',
 			'maps.searchHint' => 'Поиск карты',
 			'maps.noMatchingMaps' => 'Нет подходящих карт',
 			'navigation.recents' => 'Недавние',
@@ -4071,11 +4077,11 @@ extension on TranslationsRu {
 			'morphology.aspect.infinitiveAbsolute.description' => 'Самостоятельное отглагольное существительное, часто эмфатическое.',
 			'morphology.aspect.infinitiveAbsolute.examples' => 'обязательно умру|напиши тщательно',
 			'morphology.aspect.participle.name' => 'Причастие',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.aspect.participle.description' => 'Глагольное прилагательное, описывающее продолжающееся действие.',
 			'morphology.aspect.participle.examples' => 'пишу|тот, кто слышит',
 			'morphology.aspect.consecutiveImperfect.name' => 'Последовательный несовершенный',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.aspect.consecutiveImperfect.description' => 'Форма прошедшего повествования: waw + несовершенный.',
 			'morphology.aspect.consecutiveImperfect.examples' => 'и он сказал|и они пошли',
 			'morphology.aspect.conjunctiveImperfect.name' => 'Союзный имперфект',

@@ -895,7 +895,10 @@
     "themeHint": "Search for a theme",
     "noMatchingPeople": "No matching people",
     "noMatchingThemes": "No matching themes",
-    "passagesForFurtherStudy": "Passages for Further Study"
+    "passagesForFurtherStudy": "Passages for Further Study",
+    "relatedDictionaryEntry": "The full Bible Dictionary entry, with more background and detail",
+    "relatedProfile": "A shorter profile from Tyndale Study Notes, with passages for further study",
+    "relatedTheme": "A shorter article from Tyndale Study Notes, with passages for further study"
   },
   "maps": {
     "searchHint": "Search for a map",

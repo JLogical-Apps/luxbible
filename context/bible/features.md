@@ -429,6 +429,8 @@ The Resources action opens:
 - Alphabetical browsing
 - Search where each typed word matches the start of any word in a title, in any order
 - Each entry opens the same article view as People and Themes, with its text boxes, charts, and maps shown inline
+- An entry that covers the same subject as a Tyndale Study Notes profile or theme article starts with a tile linking
+  to each one, described as a shorter overview with passages for further study
 - Scripture links open passage previews that can navigate to the Bible, and cross-references open the linked entry
 
 ### Lexicon
@@ -445,6 +447,8 @@ The Resources action opens:
 - Alphabetical browsing
 - Search where each typed word matches the start of any word in a name, in any order
 - Each profile opens the same article view as Linked Resources
+- A profile that has a matching dictionary entry starts with a tile linking to it, described as the full entry with
+  more background and detail. A profile of several people or nations, such as Moab and Ammon, links to each entry
 
 ### Themes
 
@@ -452,6 +456,7 @@ The Resources action opens:
 - Alphabetical browsing
 - Search where each typed word matches the start of any word in a title, in any order
 - Each theme opens the same article view as Linked Resources
+- A theme whose subject has its own dictionary entry, such as The Fall, starts with a tile linking to it
 
 ### Maps
 

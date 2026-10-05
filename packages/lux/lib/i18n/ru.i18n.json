@@ -907,7 +907,10 @@
     "themeHint": "Поиск темы",
     "noMatchingPeople": "Нет подходящих людей",
     "noMatchingThemes": "Нет подходящих тем",
-    "passagesForFurtherStudy": "Отрывки для дальнейшего изучения"
+    "passagesForFurtherStudy": "Отрывки для дальнейшего изучения",
+    "relatedDictionaryEntry": "Полная статья из библейского словаря, с более подробным контекстом",
+    "relatedProfile": "Краткий очерк из Tyndale Study Notes, с отрывками для дальнейшего изучения",
+    "relatedTheme": "Краткая статья из Tyndale Study Notes, с отрывками для дальнейшего изучения"
   },
   "maps": {
     "searchHint": "Поиск карты",
