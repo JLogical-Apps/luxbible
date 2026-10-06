@@ -47,4 +47,5 @@ Notes for reading them:
 - **Google Analytics and Crashlytics** use gcloud Application Default Credentials, the same ones the `analytics` MCP
   server uses. They impersonate `analytics-mcp@lux-bible.iam.gserviceaccount.com`, and `gcloud` must be on `PATH`.
   Crashlytics additionally needs the Firebase Crashlytics API enabled on the `lux-bible` project, and that service
-  account needs the Firebase Crashlytics Viewer role.
+  account needs the Firebase Crashlytics Viewer role. When running `dart` with a workspace-local `HOME` (see the root
+  `CLAUDE.md`), also set `CLOUDSDK_CONFIG="/Users/<you>/.config/gcloud"`, or gcloud can't find the credentials.
