@@ -20,6 +20,7 @@ dart run bin/generate_commentary_json.dart
 dart run bin/generate_articles_json.dart
 dart run bin/generate_dictionary_json.dart
 dart run bin/generate_maps_json.dart
+dart run bin/generate_creeds_json.dart
 dart run bin/generate_strongs_json.dart
 dart run bin/generate_audio_bible_timings_json.dart
 dart run bin/generate_verse_of_the_day.dart
@@ -49,6 +50,10 @@ a caption checked against the image, and the OSIS passages it illustrates. `gene
 passages and writes `assets/maps/tyndale.json`. The images in `assets/maps/tyndale/` come from the map PDFs through
 [`python/maps/rasterize_tyndale_maps.py`](python/maps/rasterize_tyndale_maps.py), whose docstring lists its venv setup;
 rerun it only when the PDFs or the ids in `maps.json` change.
+
+`generate_creeds_json.dart` writes the creeds, confessions, and catechisms vendored from Creeds.json in
+`content/sources/creeds/` to `assets/creeds/creeds.json`. It fails on any Scripture proof that isn't a valid OSIS
+reference to an existing verse. Data fixes go in the vendored JSON files, and the source README lists them.
 
 `generate_audio_bible_timings_json.dart` validates their canonical chapter and verse coverage, removes the verse text and source metadata, and writes one minified runtime asset per Audio Bible.
 

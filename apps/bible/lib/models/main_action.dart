@@ -12,6 +12,7 @@ import 'package:bible/services/analytics_service.dart';
 import 'package:bible/ui/flows/verse_of_the_day_reminder_flow.dart';
 import 'package:bible/ui/pages/articles_page.dart';
 import 'package:bible/ui/pages/bible_maps_page.dart';
+import 'package:bible/ui/pages/creeds_page.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:bible/ui/pages/lexicon_page.dart';
@@ -327,6 +328,12 @@ enum MainAction {
                 subtitle: t.toolbarShortcuts.mapsDescription.toText(),
                 leading: Symbols.map.toIcon(),
                 onPressed: () => context.pop(BibleMapsPage()),
+              ),
+              StyledListItem.navigation(
+                title: t.labels.creeds.toText(),
+                subtitle: t.toolbarShortcuts.creedsDescription.toText(),
+                leading: Symbols.history_edu.toIcon(),
+                onPressed: () => context.pop(CreedsPage()),
               ),
             ],
           ),

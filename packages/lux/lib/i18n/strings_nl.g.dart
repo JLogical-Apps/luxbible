@@ -86,6 +86,7 @@ class TranslationsNl extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$dictionary$nl dictionary = _Translations$dictionary$nl._(_root);
 	@override late final _Translations$articles$nl articles = _Translations$articles$nl._(_root);
 	@override late final _Translations$maps$nl maps = _Translations$maps$nl._(_root);
+	@override late final _Translations$creeds$nl creeds = _Translations$creeds$nl._(_root);
 	@override late final _Translations$navigation$nl navigation = _Translations$navigation$nl._(_root);
 	@override late final _Translations$bibleSheet$nl bibleSheet = _Translations$bibleSheet$nl._(_root);
 	@override late final _Translations$passageSelection$nl passageSelection = _Translations$passageSelection$nl._(_root);
@@ -506,6 +507,7 @@ class _Translations$toolbarShortcuts$nl extends Translations$toolbarShortcuts$en
 	@override String get peopleDescription => 'Lees profielen van personen uit de Bijbel.';
 	@override String get themesDescription => 'Lees artikelen over belangrijke thema\'s in de Bijbel.';
 	@override String get mapsDescription => 'Bekijk kaarten van de plaatsen en reizen in de Bijbel.';
+	@override String get creedsDescription => 'Lees de historische geloofsbelijdenissen, belijdenisgeschriften en catechismussen van de kerk.';
 	@override String get themeAndLayoutDescription => 'Pas het thema en de indeling van de Bijbel aan.';
 }
 
@@ -550,6 +552,7 @@ class _Translations$labels$nl extends Translations$labels$en {
 	@override String get licenses => 'Licenties';
 	@override String get locations => 'Locaties';
 	@override String get maps => 'Kaarten';
+	@override String get creeds => 'Belijdenissen';
 	@override String get name => 'Naam';
 	@override String get note => 'Notitie';
 	@override String get notebook => 'Notitieboek';
@@ -1305,6 +1308,23 @@ class _Translations$maps$nl extends Translations$maps$en {
 	// Translations
 	@override String get searchHint => 'Zoek naar een kaart';
 	@override String get noMatchingMaps => 'Geen overeenkomende kaarten';
+}
+
+// Path: creeds
+class _Translations$creeds$nl extends Translations$creeds$en {
+	_Translations$creeds$nl._(TranslationsNl root) : this._root = root, super.internal(root);
+
+	final TranslationsNl _root; // ignore: unused_field
+
+	// Translations
+	@override String get creeds => 'Geloofsbelijdenissen';
+	@override String get confessions => 'Belijdenisgeschriften';
+	@override String get catechisms => 'Catechismussen';
+	@override String questionNumber({required Object number}) => 'V. ${number}';
+	@override String sectionNumber({required Object number}) => 'Paragraaf ${number}';
+	@override String get searchHint => 'Zoek naar een belijdenis';
+	@override String get noMatchingCreeds => 'Geen overeenkomende belijdenissen';
+	@override String get scriptureProofs => 'Schriftbewijzen';
 }
 
 // Path: navigation
@@ -3301,6 +3321,7 @@ extension on TranslationsNl {
 			'toolbarShortcuts.peopleDescription' => 'Lees profielen van personen uit de Bijbel.',
 			'toolbarShortcuts.themesDescription' => 'Lees artikelen over belangrijke thema\'s in de Bijbel.',
 			'toolbarShortcuts.mapsDescription' => 'Bekijk kaarten van de plaatsen en reizen in de Bijbel.',
+			'toolbarShortcuts.creedsDescription' => 'Lees de historische geloofsbelijdenissen, belijdenisgeschriften en catechismussen van de kerk.',
 			'toolbarShortcuts.themeAndLayoutDescription' => 'Pas het thema en de indeling van de Bijbel aan.',
 			'labels.about' => 'Over',
 			'labels.annotation' => 'Annotatie',
@@ -3336,6 +3357,7 @@ extension on TranslationsNl {
 			'labels.licenses' => 'Licenties',
 			'labels.locations' => 'Locaties',
 			'labels.maps' => 'Kaarten',
+			'labels.creeds' => 'Belijdenissen',
 			'labels.name' => 'Naam',
 			'labels.note' => 'Notitie',
 			'labels.notebook' => 'Notitieboek',
@@ -3551,10 +3573,10 @@ extension on TranslationsNl {
 			'biblePlans.manual' => 'Handmatig',
 			'biblePlans.manualDescription' => 'Voeg zelf elke passage toe.',
 			'biblePlans.chooseBooksAndDuration' => 'Boeken en duur kiezen',
-			'biblePlans.chooseBooksAndDurationDescription' => 'Lees boeken gedurende een zelfgekozen periode.',
-			'biblePlans.chooseBooks' => 'Boeken kiezen',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.chooseBooksAndDurationDescription' => 'Lees boeken gedurende een zelfgekozen periode.',
+			'biblePlans.chooseBooks' => 'Boeken kiezen',
 			'biblePlans.filterBooks' => 'Boeken filteren',
 			'biblePlans.chooseDuration' => 'Duur kiezen',
 			'biblePlans.durationInstructions' => 'Hoeveel dagen moet je leesplan duren?',
@@ -3827,6 +3849,14 @@ extension on TranslationsNl {
 			'articles.onlinePassagesExplanation' => 'Omdat de geselecteerde vertaling alleen online beschikbaar is, worden passages voor verdere studie getoond met de meest recent gebruikte studiebijbel om prestaties en kosten te besparen. Overal elders in de app wordt de geselecteerde vertaling gebruikt.',
 			'maps.searchHint' => 'Zoek naar een kaart',
 			'maps.noMatchingMaps' => 'Geen overeenkomende kaarten',
+			'creeds.creeds' => 'Geloofsbelijdenissen',
+			'creeds.confessions' => 'Belijdenisgeschriften',
+			'creeds.catechisms' => 'Catechismussen',
+			'creeds.questionNumber' => ({required Object number}) => 'V. ${number}',
+			'creeds.sectionNumber' => ({required Object number}) => 'Paragraaf ${number}',
+			'creeds.searchHint' => 'Zoek naar een belijdenis',
+			'creeds.noMatchingCreeds' => 'Geen overeenkomende belijdenissen',
+			'creeds.scriptureProofs' => 'Schriftbewijzen',
 			'navigation.recents' => 'Recent',
 			'navigation.navigate' => 'Navigeren',
 			'navigation.book' => 'Boek',
@@ -4057,6 +4087,8 @@ extension on TranslationsNl {
 			'morphology.aspect.perfect.description' => 'Voltooide handeling, doorgaans vertaald als verleden tijd.',
 			'morphology.aspect.perfect.examples' => 'hij schreef|zij heeft gesproken',
 			'morphology.aspect.imperfect.name' => 'Imperfectum',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.aspect.imperfect.description' => 'Onvoltooide of toekomstige handeling, vaak vertaald als toekomstig of gewoonlijk.',
 			'morphology.aspect.imperfect.examples' => 'hij zal schrijven|hij schrijft',
 			'morphology.aspect.imperative.name' => 'Imperatief',
@@ -4067,8 +4099,6 @@ extension on TranslationsNl {
 			'morphology.aspect.infinitiveConstruct.examples' => 'schrijven|bij het schrijven',
 			'morphology.aspect.infinitiveAbsolute.name' => 'Infinitivus absolutus',
 			'morphology.aspect.infinitiveAbsolute.description' => 'Een zelfstandig verbaal naamwoord, vaak met nadruk.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.aspect.infinitiveAbsolute.examples' => 'zeker sterven|grondig schrijven',
 			'morphology.aspect.participle.name' => 'Participium',
 			'morphology.aspect.participle.description' => 'Een verbaal bijvoeglijk naamwoord dat een voortdurende handeling beschrijft.',

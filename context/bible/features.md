@@ -360,13 +360,16 @@ When an online Bible is active, cross-reference previews use the user's study Bi
 ## Linked Resources
 
 Linked Resources lists the resources whose passages overlap a chapter or verse selection. It currently includes
-Tyndale Study Notes' people profiles and theme articles, and the Tyndale Open Bible Dictionary's maps and entries.
+Tyndale Study Notes' people profiles and theme articles, the Tyndale Open Bible Dictionary's maps and entries, and
+the questions and sections of the creeds, confessions, and catechisms that cite the passage as a Scripture proof.
 
 - An article is linked when its main passage or any of its passages for further study overlaps the selection, a
-  dictionary entry when any Scripture it cites does, and a map when any passage it illustrates does, including passages
-  that span several chapters
-- Results are grouped into People Profiles, Themes, Dictionary, and Maps, and a group without results is hidden
-- Within a group, items whose overlapping passage is narrowest come first, then items are ordered by title
+  dictionary entry when any Scripture it cites does, a map when any passage it illustrates does, and a creed question or
+  section when any of its Scripture proofs does, including passages that span several chapters
+- Results are grouped into People Profiles, Themes, Dictionary, Maps, and Creeds & Confessions, and a group without
+  results is hidden
+- Within a group, items whose overlapping passage is narrowest come first, then items are ordered by title. Creeds &
+  Confessions instead lists documents by year and each document's questions or sections in their own order
 - Each article and dictionary entry shows its title and the start of its first paragraph, and each map shows a thumbnail and its title
 - Tapping a result opens the full article, where Scripture links open passage previews. Its passages for further
   study, starting with the article's main passage, show their reference and the first two lines of their text, and
@@ -375,6 +378,8 @@ Tyndale Study Notes' people profiles and theme articles, and the Tyndale Open Bi
 - Opening a dictionary entry or related article from an article replaces the open article, and breadcrumbs at the top
   lead back to earlier ones
 - Tapping a map opens the map viewer
+- Each creed result shows the document and its citation, such as "Heidelberg Catechism Q. 1", with the question or
+  the start of the section, and opens the item in a sheet with the same collapsed Scripture Proofs tile as the page
 - A message appears when nothing is linked
 - Linked Resources can be pinned as a study panel
 
@@ -469,6 +474,21 @@ The Resources action opens:
 - Search where each typed word matches the start of any word in a title, in any order
 - Tapping a map opens a full-screen viewer that can be pinch-zoomed, with the map's title and caption below it
 - Maps stay on a light background in dark mode
+
+### Creeds & Confessions
+
+- 35 public-domain creeds, confessions, and catechisms, in English only, from the early church rules of faith and
+  ecumenical creeds through the Reformation confessions, the Westminster Standards, and Baptist catechisms
+- Grouped into Creeds, Confessions, and Catechisms, each listed in order of its year with its year and authors
+- Search where each typed word matches the start of any word in a title, in any order
+- A creed opens as a single page of text
+- A confession or catechism shows its full text, with a sticky header above each question, article, or section. In a
+  document with chapters, such as the Westminster Confession, the chapter header stays pinned with the section header
+  below it
+- When the document has Scripture proofs, a collapsed Scripture Proofs tile follows each item's text. Expanding it
+  lists each proof's reference and the first two lines of its text, and each opens a passage preview. Like Cross
+  References, proofs use the study Bible when an online Bible is active
+- The Apostles' Creed uses its traditional wording ("he descended into hell")
 
 The Dictionary and Lexicon are also available as independent main-toolbar shortcuts.
 

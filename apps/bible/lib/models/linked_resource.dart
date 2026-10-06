@@ -19,8 +19,13 @@ extension LinkedResourceIterableExtensions<T extends LinkedResource> on Iterable
             ),
           )
           .where((entry) => entry.overlap != null)
-          .sorted((a, b) => a.overlap!.compareTo(b.overlap!).nullIfZero ?? a.resource.title.compareTo(b.resource.title))
+          .sorted(
+            (a, b) => a.overlap!.compareTo(b.overlap!).nullIfZero ?? compareNatural(a.resource.title, b.resource.title),
+          )
           .map((entry) => entry.resource);
+
+  Iterable<T> whereLinkedToInOrder(VerseSelection selection, {required List<VerseSelection> Function(T) getPassages}) =>
+      where((resource) => getPassages(resource).any((passage) => passage.hasAnyOf(selection)));
 
   Iterable<T> whereMatchingTitleSearch(String search) {
     final searchTerms = search.bibleSearchTerms;

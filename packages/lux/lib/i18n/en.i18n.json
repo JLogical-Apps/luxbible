@@ -290,6 +290,7 @@
     "peopleDescription": "Read profiles of people in the Bible.",
     "themesDescription": "Read articles on the Bible's major themes.",
     "mapsDescription": "Explore maps of the places and journeys in the Bible.",
+    "creedsDescription": "Read the historic creeds, confessions, and catechisms of the church.",
     "themeAndLayoutDescription": "Customize the theme & layout of the Bible."
   },
   "labels": {
@@ -327,6 +328,7 @@
     "licenses": "Licenses",
     "locations": "Locations",
     "maps": "Maps",
+    "creeds": "Creeds & Confessions",
     "name": "Name",
     "note": "Note",
     "notebook": "Notebook",
@@ -905,6 +907,16 @@
   "maps": {
     "searchHint": "Search for a map",
     "noMatchingMaps": "No matching maps"
+  },
+  "creeds": {
+    "creeds": "Creeds",
+    "confessions": "Confessions",
+    "catechisms": "Catechisms",
+    "questionNumber": "Q. {number}",
+    "sectionNumber": "Section {number}",
+    "searchHint": "Search for a creed",
+    "noMatchingCreeds": "No matching creeds",
+    "scriptureProofs": "Scripture Proofs"
   },
   "navigation": {
     "recents": "Recents",

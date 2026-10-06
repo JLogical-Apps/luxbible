@@ -130,6 +130,7 @@ The following are bundled with the app and work offline:
 - Matthew Henry commentary
 - John Calvin commentary
 - Jamieson-Fausset-Brown commentary
+- Creeds, confessions, and catechisms
 - OpenBible cross-reference data
 - Reading-plan schedules
 - Verse of the Day schedule
@@ -218,6 +219,18 @@ caption, and the passages the map illustrates; `generate_maps_json.dart` validat
 `tools/content/python/maps/rasterize_tyndale_maps.py`, about 9 MB in total. Maps are shown on a light background in
 dark mode because inverting the grayscale print art turns its relief shading into a negative.
 
+Creeds, confessions, and catechisms are `Creed` items: an ID, a title, a year, authors, a type (creed, confession, or
+catechism), and chapters of `CreedItem`s. Each item has an optional number and title (a catechism question, or an
+article title), a `RichContent` body, and its Scripture proofs as passages. Catechisms and confessions without
+chapters have one untitled chapter. Linked Resources wraps each item with its document and chapter in a
+`CreedItemReference`, which derives the citation shown in results. Creed results skip the overlap ranking and keep
+document order, with documents sorted by year when `creedsProvider` decodes them. `generate_creeds_json.dart` reads the
+public-domain documents of [Creeds.json](https://github.com/NonlinearFruit/Creeds.json), vendored in
+`content/sources/creeds/` without the copyrighted ones, and writes all of them to `assets/creeds/creeds.json` (about
+3 MB), which is decoded on first use. It drops the footnote markers and keeps every proof, in footnote order and without
+duplicates, as one passage list per item. The generator fails on any proof reference that isn't a valid OSIS ID for a
+verse that exists. Fixes to the source data are made in the vendored files and listed in their README.
+
 ### Online Bible Text
 
 These translations are loaded online when they are not available from the device cache:
@@ -298,6 +311,7 @@ Capabilities vary by translation:
 - Lexicon: Strong's Greek and Hebrew dictionaries
 - Commentaries: Tyndale Open Study Notes, Matthew Henry, John Calvin, and Jamieson-Fausset-Brown
 - People and themes: Tyndale Open Study Notes profiles and theme articles
+- Creeds & Confessions: public-domain documents from Creeds.json
 - Reading plans: schedules from public-domain and licensed sources recorded in the in-app licenses, with source-level corrections documented alongside imported data
 - Verse of the Day: the first morning passage for each calendar date from Jonathan Bagster's public-domain *Daily Light on the Daily Path*, distributed as CrossWire's Daily SWORD module. The source schedule is offline; the displayed passage uses the selected translation when it can be loaded and otherwise falls back to the selected Study Bible for that passage.
 

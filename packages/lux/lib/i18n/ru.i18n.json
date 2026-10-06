@@ -292,6 +292,7 @@
     "peopleDescription": "Читайте о людях Библии.",
     "themesDescription": "Читайте статьи о главных темах Библии.",
     "mapsDescription": "Изучайте карты мест и путешествий из Библии.",
+    "creedsDescription": "Читайте исторические символы веры, исповедания и катехизисы церкви.",
     "themeAndLayoutDescription": "Настройте тему и макет Библии."
   },
   "labels": {
@@ -329,6 +330,7 @@
     "licenses": "Лицензии",
     "locations": "Локации",
     "maps": "Карты",
+    "creeds": "Символы веры и исповедания",
     "name": "Имя",
     "note": "Примечание",
     "notebook": "Блокнот",
@@ -917,6 +919,16 @@
   "maps": {
     "searchHint": "Поиск карты",
     "noMatchingMaps": "Нет подходящих карт"
+  },
+  "creeds": {
+    "creeds": "Символы веры",
+    "confessions": "Исповедания",
+    "catechisms": "Катехизисы",
+    "questionNumber": "В. {number}",
+    "sectionNumber": "Раздел {number}",
+    "searchHint": "Поиск исповедания",
+    "noMatchingCreeds": "Нет подходящих исповеданий",
+    "scriptureProofs": "Подтверждения из Писания"
   },
   "navigation": {
     "recents": "Недавние",

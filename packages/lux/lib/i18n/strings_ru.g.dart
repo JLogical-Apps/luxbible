@@ -86,6 +86,7 @@ class TranslationsRu extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$dictionary$ru dictionary = _Translations$dictionary$ru._(_root);
 	@override late final _Translations$articles$ru articles = _Translations$articles$ru._(_root);
 	@override late final _Translations$maps$ru maps = _Translations$maps$ru._(_root);
+	@override late final _Translations$creeds$ru creeds = _Translations$creeds$ru._(_root);
 	@override late final _Translations$navigation$ru navigation = _Translations$navigation$ru._(_root);
 	@override late final _Translations$bibleSheet$ru bibleSheet = _Translations$bibleSheet$ru._(_root);
 	@override late final _Translations$passageSelection$ru passageSelection = _Translations$passageSelection$ru._(_root);
@@ -506,6 +507,7 @@ class _Translations$toolbarShortcuts$ru extends Translations$toolbarShortcuts$en
 	@override String get peopleDescription => 'Читайте о людях Библии.';
 	@override String get themesDescription => 'Читайте статьи о главных темах Библии.';
 	@override String get mapsDescription => 'Изучайте карты мест и путешествий из Библии.';
+	@override String get creedsDescription => 'Читайте исторические символы веры, исповедания и катехизисы церкви.';
 	@override String get themeAndLayoutDescription => 'Настройте тему и макет Библии.';
 }
 
@@ -550,6 +552,7 @@ class _Translations$labels$ru extends Translations$labels$en {
 	@override String get licenses => 'Лицензии';
 	@override String get locations => 'Локации';
 	@override String get maps => 'Карты';
+	@override String get creeds => 'Символы веры и исповедания';
 	@override String get name => 'Имя';
 	@override String get note => 'Примечание';
 	@override String get notebook => 'Блокнот';
@@ -1315,6 +1318,23 @@ class _Translations$maps$ru extends Translations$maps$en {
 	// Translations
 	@override String get searchHint => 'Поиск карты';
 	@override String get noMatchingMaps => 'Нет подходящих карт';
+}
+
+// Path: creeds
+class _Translations$creeds$ru extends Translations$creeds$en {
+	_Translations$creeds$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get creeds => 'Символы веры';
+	@override String get confessions => 'Исповедания';
+	@override String get catechisms => 'Катехизисы';
+	@override String questionNumber({required Object number}) => 'В. ${number}';
+	@override String sectionNumber({required Object number}) => 'Раздел ${number}';
+	@override String get searchHint => 'Поиск исповедания';
+	@override String get noMatchingCreeds => 'Нет подходящих исповеданий';
+	@override String get scriptureProofs => 'Подтверждения из Писания';
 }
 
 // Path: navigation
@@ -3313,6 +3333,7 @@ extension on TranslationsRu {
 			'toolbarShortcuts.peopleDescription' => 'Читайте о людях Библии.',
 			'toolbarShortcuts.themesDescription' => 'Читайте статьи о главных темах Библии.',
 			'toolbarShortcuts.mapsDescription' => 'Изучайте карты мест и путешествий из Библии.',
+			'toolbarShortcuts.creedsDescription' => 'Читайте исторические символы веры, исповедания и катехизисы церкви.',
 			'toolbarShortcuts.themeAndLayoutDescription' => 'Настройте тему и макет Библии.',
 			'labels.about' => 'О приложении',
 			'labels.annotation' => 'Аннотация',
@@ -3348,6 +3369,7 @@ extension on TranslationsRu {
 			'labels.licenses' => 'Лицензии',
 			'labels.locations' => 'Локации',
 			'labels.maps' => 'Карты',
+			'labels.creeds' => 'Символы веры и исповедания',
 			'labels.name' => 'Имя',
 			'labels.note' => 'Примечание',
 			'labels.notebook' => 'Блокнот',
@@ -3563,10 +3585,10 @@ extension on TranslationsRu {
 			'biblePlans.manual' => 'Вручную',
 			'biblePlans.manualDescription' => 'Добавьте каждый отрывок самостоятельно.',
 			'biblePlans.chooseBooksAndDuration' => 'Выбрать книги и продолжительность',
-			'biblePlans.chooseBooksAndDurationDescription' => 'Читайте книги в течение заданного срока.',
-			'biblePlans.chooseBooks' => 'Выбрать книги',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.chooseBooksAndDurationDescription' => 'Читайте книги в течение заданного срока.',
+			'biblePlans.chooseBooks' => 'Выбрать книги',
 			'biblePlans.filterBooks' => 'Фильтровать книги',
 			'biblePlans.chooseDuration' => 'Выбрать продолжительность',
 			'biblePlans.durationInstructions' => 'Сколько дней должен длиться ваш план?',
@@ -3839,6 +3861,14 @@ extension on TranslationsRu {
 			'articles.onlinePassagesExplanation' => 'Поскольку выбранный вами перевод доступен только в Интернете, отрывки для дальнейшего изучения показаны с использованием последней версии Учебной Библии, которую вы использовали, чтобы сэкономить на производительности и затратах. Выбранный вами перевод используется повсюду в приложении.',
 			'maps.searchHint' => 'Поиск карты',
 			'maps.noMatchingMaps' => 'Нет подходящих карт',
+			'creeds.creeds' => 'Символы веры',
+			'creeds.confessions' => 'Исповедания',
+			'creeds.catechisms' => 'Катехизисы',
+			'creeds.questionNumber' => ({required Object number}) => 'В. ${number}',
+			'creeds.sectionNumber' => ({required Object number}) => 'Раздел ${number}',
+			'creeds.searchHint' => 'Поиск исповедания',
+			'creeds.noMatchingCreeds' => 'Нет подходящих исповеданий',
+			'creeds.scriptureProofs' => 'Подтверждения из Писания',
 			'navigation.recents' => 'Недавние',
 			'navigation.navigate' => 'Навигация',
 			'navigation.book' => 'Книга',
@@ -4069,6 +4099,8 @@ extension on TranslationsRu {
 			'morphology.aspect.perfect.description' => 'Завершенное действие обычно переводится как прошлое.',
 			'morphology.aspect.perfect.examples' => 'он написал|она говорила',
 			'morphology.aspect.imperfect.name' => 'Несовершенный',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.aspect.imperfect.description' => 'Незавершенное или будущее действие, часто переводится как будущее или привычное.',
 			'morphology.aspect.imperfect.examples' => 'он напишет | он напишет',
 			'morphology.aspect.imperative.name' => 'Императив',
@@ -4079,8 +4111,6 @@ extension on TranslationsRu {
 			'morphology.aspect.infinitiveConstruct.examples' => 'писать | когда пишешь',
 			'morphology.aspect.infinitiveAbsolute.name' => 'Инфинитив абсолютный',
 			'morphology.aspect.infinitiveAbsolute.description' => 'Самостоятельное отглагольное существительное, часто эмфатическое.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.aspect.infinitiveAbsolute.examples' => 'обязательно умру|напиши тщательно',
 			'morphology.aspect.participle.name' => 'Причастие',
 			'morphology.aspect.participle.description' => 'Глагольное прилагательное, описывающее продолжающееся действие.',

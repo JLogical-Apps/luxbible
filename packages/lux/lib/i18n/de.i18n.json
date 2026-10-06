@@ -290,6 +290,7 @@
     "peopleDescription": "Lies Porträts biblischer Personen.",
     "themesDescription": "Lies Artikel zu zentralen Themen der Bibel.",
     "mapsDescription": "Erkunde Karten der Orte und Reisen in der Bibel.",
+    "creedsDescription": "Lies die historischen Glaubensbekenntnisse, Bekenntnisschriften und Katechismen der Kirche.",
     "themeAndLayoutDescription": "Passe Design & Layout der Bibel an."
   },
   "labels": {
@@ -327,6 +328,7 @@
     "licenses": "Lizenzen",
     "locations": "Bereiche",
     "maps": "Karten",
+    "creeds": "Bekenntnisse",
     "name": "Name",
     "note": "Notiz",
     "notebook": "Notizbuch",
@@ -905,6 +907,16 @@
   "maps": {
     "searchHint": "Nach einer Karte suchen",
     "noMatchingMaps": "Keine passenden Karten"
+  },
+  "creeds": {
+    "creeds": "Glaubensbekenntnisse",
+    "confessions": "Bekenntnisschriften",
+    "catechisms": "Katechismen",
+    "questionNumber": "F. {number}",
+    "sectionNumber": "Abschnitt {number}",
+    "searchHint": "Nach einem Bekenntnis suchen",
+    "noMatchingCreeds": "Keine passenden Bekenntnisse",
+    "scriptureProofs": "Schriftbelege"
   },
   "navigation": {
     "recents": "Zuletzt",

@@ -344,6 +344,16 @@ Source: http://www.tyndaleopenresources.com''',
     );
 
     yield const LicenseEntryWithLineBreaks(
+      ['Creeds & Confessions'],
+      '''
+The creeds, confessions, and catechisms are historical documents in the public domain. Their electronic texts and Scripture proofs come from Creeds.json, released under the Unlicense.
+
+Changes made by Lux: the Apostles' Creed uses its traditional English wording, as given in Philip Schaff's The Creeds of Christendom. Two Scripture proof references were corrected, three chapter titles of the 1689 London Baptist Confession were corrected, the Canons of Dort were numbered by head of doctrine with their rejections of errors listed separately, and stray formatting characters were removed. Documents whose texts are under copyright were not included.
+
+Source: https://github.com/NonlinearFruit/Creeds.json''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
       ['Bible Reading Plans'],
       '''
 Reading plan schedules (daily passage references only; no Bible text is included).

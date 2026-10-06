@@ -20,6 +20,8 @@ extension type Markdown(String text) {
   static List<List<String>> toJsonTable(List<List<Markdown>> rows) =>
       rows.map((row) => row.map(toJson).toList()).toList();
 
+  static Markdown fromPlainText(String text) => Markdown(_escape(text));
+
   static Markdown? fromJsonNullable(String? text) => text == null ? null : Markdown(text);
   static String? toJsonNullable(Markdown? markdown) => markdown?.text;
 

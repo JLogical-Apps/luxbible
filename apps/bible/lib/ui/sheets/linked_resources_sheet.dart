@@ -2,8 +2,10 @@ import 'package:bible/models/article_collection.dart';
 import 'package:bible/models/linked_resource.dart';
 import 'package:bible/providers/articles_provider.dart';
 import 'package:bible/providers/bible_maps_provider.dart';
+import 'package:bible/providers/creeds_provider.dart';
 import 'package:bible/ui/widgets/article_list_item.dart';
 import 'package:bible/ui/widgets/bible_map_list_item.dart';
+import 'package:bible/ui/widgets/creed_item_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/i18n.dart';
@@ -23,17 +25,28 @@ class LinkedResourcesSheet {
       (collection) => MapEntry(collection, ref.watch(articlesProvider(collection: collection)).value),
     );
     final maps = ref.watch(bibleMapsProvider).value;
-    if (articlesByCollection.values.contains(null) || maps == null) {
+    final creeds = ref.watch(creedsProvider).value;
+    if (articlesByCollection.values.contains(null) || maps == null || creeds == null) {
       return [Padding(padding: .all(16), child: StyledLoading())];
     }
 
     final linkedMaps = maps.whereLinkedTo(verseSelection, getPassages: (map) => map.passages).toList();
+    final linkedCreedItems = creeds
+        .expand((creed) => creed.itemReferences)
+        // Ranking by overlap would scatter each document's questions, so they keep the order they're read in.
+        .whereLinkedToInOrder(verseSelection, getPassages: (reference) => reference.item.passages)
+        .toList();
     final linkedArticlesByCollection = articlesByCollection.map(
       (collection, articles) => MapEntry(
         collection,
         articles!.whereLinkedTo(verseSelection, getPassages: collection.getLinkedPassages).toList(),
       ),
     );
+
+    void navigateToVerseSelection(VerseSelection selection) {
+      if (popOnAction) context.pop();
+      onNavigateToVerseSelection(selection);
+    }
 
     final sections = [
       ...<ArticleCollection>[.people, .themes, .dictionary]
@@ -46,10 +59,7 @@ class LinkedResourcesSheet {
                     (article) => ArticleListItem(
                       collection: collection,
                       article: article,
-                      onNavigateToVerseSelection: (selection) {
-                        if (popOnAction) context.pop();
-                        onNavigateToVerseSelection(selection);
-                      },
+                      onNavigateToVerseSelection: navigateToVerseSelection,
                     ),
                   )
                   .toList(),
@@ -60,6 +70,17 @@ class LinkedResourcesSheet {
           title: t.labels.maps.toText(),
           padding: .only(top: 16, bottom: 8),
           children: linkedMaps.map((map) => BibleMapListItem(map: map)).toList(),
+        ),
+      if (linkedCreedItems.isNotEmpty)
+        StyledSection(
+          title: t.labels.creeds.toText(),
+          padding: .only(top: 16, bottom: 8),
+          children: linkedCreedItems
+              .map(
+                (reference) =>
+                    CreedItemListItem(reference: reference, onNavigateToVerseSelection: navigateToVerseSelection),
+              )
+              .toList(),
         ),
     ];
     return sections.isEmpty

@@ -86,6 +86,7 @@ class TranslationsDe extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$dictionary$de dictionary = _Translations$dictionary$de._(_root);
 	@override late final _Translations$articles$de articles = _Translations$articles$de._(_root);
 	@override late final _Translations$maps$de maps = _Translations$maps$de._(_root);
+	@override late final _Translations$creeds$de creeds = _Translations$creeds$de._(_root);
 	@override late final _Translations$navigation$de navigation = _Translations$navigation$de._(_root);
 	@override late final _Translations$bibleSheet$de bibleSheet = _Translations$bibleSheet$de._(_root);
 	@override late final _Translations$passageSelection$de passageSelection = _Translations$passageSelection$de._(_root);
@@ -504,6 +505,7 @@ class _Translations$toolbarShortcuts$de extends Translations$toolbarShortcuts$en
 	@override String get peopleDescription => 'Lies Porträts biblischer Personen.';
 	@override String get themesDescription => 'Lies Artikel zu zentralen Themen der Bibel.';
 	@override String get mapsDescription => 'Erkunde Karten der Orte und Reisen in der Bibel.';
+	@override String get creedsDescription => 'Lies die historischen Glaubensbekenntnisse, Bekenntnisschriften und Katechismen der Kirche.';
 	@override String get themeAndLayoutDescription => 'Passe Design & Layout der Bibel an.';
 }
 
@@ -548,6 +550,7 @@ class _Translations$labels$de extends Translations$labels$en {
 	@override String get licenses => 'Lizenzen';
 	@override String get locations => 'Bereiche';
 	@override String get maps => 'Karten';
+	@override String get creeds => 'Bekenntnisse';
 	@override String get name => 'Name';
 	@override String get note => 'Notiz';
 	@override String get notebook => 'Notizbuch';
@@ -1303,6 +1306,23 @@ class _Translations$maps$de extends Translations$maps$en {
 	// Translations
 	@override String get searchHint => 'Nach einer Karte suchen';
 	@override String get noMatchingMaps => 'Keine passenden Karten';
+}
+
+// Path: creeds
+class _Translations$creeds$de extends Translations$creeds$en {
+	_Translations$creeds$de._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get creeds => 'Glaubensbekenntnisse';
+	@override String get confessions => 'Bekenntnisschriften';
+	@override String get catechisms => 'Katechismen';
+	@override String questionNumber({required Object number}) => 'F. ${number}';
+	@override String sectionNumber({required Object number}) => 'Abschnitt ${number}';
+	@override String get searchHint => 'Nach einem Bekenntnis suchen';
+	@override String get noMatchingCreeds => 'Keine passenden Bekenntnisse';
+	@override String get scriptureProofs => 'Schriftbelege';
 }
 
 // Path: navigation
@@ -3297,6 +3317,7 @@ extension on TranslationsDe {
 			'toolbarShortcuts.peopleDescription' => 'Lies Porträts biblischer Personen.',
 			'toolbarShortcuts.themesDescription' => 'Lies Artikel zu zentralen Themen der Bibel.',
 			'toolbarShortcuts.mapsDescription' => 'Erkunde Karten der Orte und Reisen in der Bibel.',
+			'toolbarShortcuts.creedsDescription' => 'Lies die historischen Glaubensbekenntnisse, Bekenntnisschriften und Katechismen der Kirche.',
 			'toolbarShortcuts.themeAndLayoutDescription' => 'Passe Design & Layout der Bibel an.',
 			'labels.about' => 'Über',
 			'labels.annotation' => 'Annotation',
@@ -3332,6 +3353,7 @@ extension on TranslationsDe {
 			'labels.licenses' => 'Lizenzen',
 			'labels.locations' => 'Bereiche',
 			'labels.maps' => 'Karten',
+			'labels.creeds' => 'Bekenntnisse',
 			'labels.name' => 'Name',
 			'labels.note' => 'Notiz',
 			'labels.notebook' => 'Notizbuch',
@@ -3549,10 +3571,10 @@ extension on TranslationsDe {
 			'biblePlans.chooseBooksAndDuration' => 'Bücher & Dauer wählen',
 			'biblePlans.chooseBooksAndDurationDescription' => 'Lies Bücher über einen festgelegten Zeitraum.',
 			'biblePlans.chooseBooks' => 'Bücher wählen',
-			'biblePlans.filterBooks' => 'Bücher filtern',
-			'biblePlans.chooseDuration' => 'Dauer wählen',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.filterBooks' => 'Bücher filtern',
+			'biblePlans.chooseDuration' => 'Dauer wählen',
 			'biblePlans.durationInstructions' => 'Wie viele Tage soll dein Plan dauern?',
 			'biblePlans.durationDayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: '${count} Tag', other: '${count} Tage', ), 
 			'biblePlans.generatedNames.twoBooks' => ({required Object first, required Object second}) => '${first} & ${second}',
@@ -3823,6 +3845,14 @@ extension on TranslationsDe {
 			'articles.onlinePassagesExplanation' => 'Da deine gewählte Übersetzung nur online verfügbar ist, werden Stellen zum Weiterstudieren mit der zuletzt verwendeten Studienbibel angezeigt, um Leistung und Kosten zu sparen. Überall sonst in der App wird deine gewählte Übersetzung verwendet.',
 			'maps.searchHint' => 'Nach einer Karte suchen',
 			'maps.noMatchingMaps' => 'Keine passenden Karten',
+			'creeds.creeds' => 'Glaubensbekenntnisse',
+			'creeds.confessions' => 'Bekenntnisschriften',
+			'creeds.catechisms' => 'Katechismen',
+			'creeds.questionNumber' => ({required Object number}) => 'F. ${number}',
+			'creeds.sectionNumber' => ({required Object number}) => 'Abschnitt ${number}',
+			'creeds.searchHint' => 'Nach einem Bekenntnis suchen',
+			'creeds.noMatchingCreeds' => 'Keine passenden Bekenntnisse',
+			'creeds.scriptureProofs' => 'Schriftbelege',
 			'navigation.recents' => 'Zuletzt',
 			'navigation.navigate' => 'Navigieren',
 			'navigation.book' => 'Buch',
@@ -4055,6 +4085,8 @@ extension on TranslationsDe {
 			'morphology.aspect.imperfect.name' => 'Imperfekt',
 			'morphology.aspect.imperfect.description' => 'Unabgeschlossene oder zukünftige Handlung, oft mit Futur oder als Gewohnheit übersetzt.',
 			'morphology.aspect.imperfect.examples' => 'er wird schreiben|er schreibt',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.aspect.imperative.name' => 'Imperativ',
 			'morphology.aspect.imperative.description' => 'Ein direkter Befehl.',
 			'morphology.aspect.imperative.examples' => 'Schreib!|Höre!',
@@ -4065,8 +4097,6 @@ extension on TranslationsDe {
 			'morphology.aspect.infinitiveAbsolute.description' => 'Ein selbstständiges Verbalsubstantiv, oft zur Betonung.',
 			'morphology.aspect.infinitiveAbsolute.examples' => 'gewiss sterben|gründlich schreiben',
 			'morphology.aspect.participle.name' => 'Partizip',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.aspect.participle.description' => 'Ein Verbaladjektiv, das eine andauernde Handlung beschreibt.',
 			'morphology.aspect.participle.examples' => 'schreibend|der Hörende',
 			'morphology.aspect.consecutiveImperfect.name' => 'Imperfectum consecutivum',

@@ -82,6 +82,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$dictionary$en dictionary = Translations$dictionary$en.internal(_root);
 	late final Translations$articles$en articles = Translations$articles$en.internal(_root);
 	late final Translations$maps$en maps = Translations$maps$en.internal(_root);
+	late final Translations$creeds$en creeds = Translations$creeds$en.internal(_root);
 	late final Translations$navigation$en navigation = Translations$navigation$en.internal(_root);
 	late final Translations$bibleSheet$en bibleSheet = Translations$bibleSheet$en.internal(_root);
 	late final Translations$passageSelection$en passageSelection = Translations$passageSelection$en.internal(_root);
@@ -1017,6 +1018,9 @@ class Translations$toolbarShortcuts$en {
 	/// en: 'Explore maps of the places and journeys in the Bible.'
 	String get mapsDescription => 'Explore maps of the places and journeys in the Bible.';
 
+	/// en: 'Read the historic creeds, confessions, and catechisms of the church.'
+	String get creedsDescription => 'Read the historic creeds, confessions, and catechisms of the church.';
+
 	/// en: 'Customize the theme & layout of the Bible.'
 	String get themeAndLayoutDescription => 'Customize the theme & layout of the Bible.';
 }
@@ -1130,6 +1134,9 @@ class Translations$labels$en {
 
 	/// en: 'Maps'
 	String get maps => 'Maps';
+
+	/// en: 'Creeds & Confessions'
+	String get creeds => 'Creeds & Confessions';
 
 	/// en: 'Name'
 	String get name => 'Name';
@@ -2809,6 +2816,39 @@ class Translations$maps$en {
 
 	/// en: 'No matching maps'
 	String get noMatchingMaps => 'No matching maps';
+}
+
+// Path: creeds
+class Translations$creeds$en {
+	Translations$creeds$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Creeds'
+	String get creeds => 'Creeds';
+
+	/// en: 'Confessions'
+	String get confessions => 'Confessions';
+
+	/// en: 'Catechisms'
+	String get catechisms => 'Catechisms';
+
+	/// en: 'Q. {number}'
+	String questionNumber({required Object number}) => 'Q. ${number}';
+
+	/// en: 'Section {number}'
+	String sectionNumber({required Object number}) => 'Section ${number}';
+
+	/// en: 'Search for a creed'
+	String get searchHint => 'Search for a creed';
+
+	/// en: 'No matching creeds'
+	String get noMatchingCreeds => 'No matching creeds';
+
+	/// en: 'Scripture Proofs'
+	String get scriptureProofs => 'Scripture Proofs';
 }
 
 // Path: navigation
@@ -5590,6 +5630,7 @@ extension on Translations {
 			'toolbarShortcuts.peopleDescription' => 'Read profiles of people in the Bible.',
 			'toolbarShortcuts.themesDescription' => 'Read articles on the Bible\'s major themes.',
 			'toolbarShortcuts.mapsDescription' => 'Explore maps of the places and journeys in the Bible.',
+			'toolbarShortcuts.creedsDescription' => 'Read the historic creeds, confessions, and catechisms of the church.',
 			'toolbarShortcuts.themeAndLayoutDescription' => 'Customize the theme & layout of the Bible.',
 			'labels.about' => 'About',
 			'labels.annotation' => 'Annotation',
@@ -5625,6 +5666,7 @@ extension on Translations {
 			'labels.licenses' => 'Licenses',
 			'labels.locations' => 'Locations',
 			'labels.maps' => 'Maps',
+			'labels.creeds' => 'Creeds & Confessions',
 			'labels.name' => 'Name',
 			'labels.note' => 'Note',
 			'labels.notebook' => 'Notebook',
@@ -5842,10 +5884,10 @@ extension on Translations {
 			'biblePlans.chooseBooksAndDuration' => 'Choose Books & Duration',
 			'biblePlans.chooseBooksAndDurationDescription' => 'Read books over a set duration.',
 			'biblePlans.chooseBooks' => 'Choose Books',
-			'biblePlans.filterBooks' => 'Filter books',
-			'biblePlans.chooseDuration' => 'Choose Duration',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.filterBooks' => 'Filter books',
+			'biblePlans.chooseDuration' => 'Choose Duration',
 			'biblePlans.durationInstructions' => 'How many days should your plan last?',
 			'biblePlans.durationDayCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} Day', other: '${count} Days', ), 
 			'biblePlans.generatedNames.twoBooks' => ({required Object first, required Object second}) => '${first} & ${second}',
@@ -6116,6 +6158,14 @@ extension on Translations {
 			'articles.onlinePassagesExplanation' => 'Because your selected translation is only available online, passages for further study are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app.',
 			'maps.searchHint' => 'Search for a map',
 			'maps.noMatchingMaps' => 'No matching maps',
+			'creeds.creeds' => 'Creeds',
+			'creeds.confessions' => 'Confessions',
+			'creeds.catechisms' => 'Catechisms',
+			'creeds.questionNumber' => ({required Object number}) => 'Q. ${number}',
+			'creeds.sectionNumber' => ({required Object number}) => 'Section ${number}',
+			'creeds.searchHint' => 'Search for a creed',
+			'creeds.noMatchingCreeds' => 'No matching creeds',
+			'creeds.scriptureProofs' => 'Scripture Proofs',
 			'navigation.recents' => 'Recents',
 			'navigation.navigate' => 'Navigate',
 			'navigation.book' => 'Book',
@@ -6348,6 +6398,8 @@ extension on Translations {
 			'morphology.aspect.imperfect.name' => 'Imperfect',
 			'morphology.aspect.imperfect.description' => 'Incomplete or future action, often translated as future or habitual.',
 			'morphology.aspect.imperfect.examples' => 'he will write|he writes',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.aspect.imperative.name' => 'Imperative',
 			'morphology.aspect.imperative.description' => 'A direct command.',
 			'morphology.aspect.imperative.examples' => 'Write!|Listen!',
@@ -6358,8 +6410,6 @@ extension on Translations {
 			'morphology.aspect.infinitiveAbsolute.description' => 'An independent verbal noun, often emphatic.',
 			'morphology.aspect.infinitiveAbsolute.examples' => 'surely die|write thoroughly',
 			'morphology.aspect.participle.name' => 'Participle',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.aspect.participle.description' => 'A verbal adjective describing ongoing action.',
 			'morphology.aspect.participle.examples' => 'writing|the one who hears',
 			'morphology.aspect.consecutiveImperfect.name' => 'Consecutive imperfect',

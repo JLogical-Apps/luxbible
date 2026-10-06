@@ -24,7 +24,7 @@ Lux Bible is one app in a product family. Check the shared packages before treat
 - User-facing strings live in `packages/lux/lib/i18n/{en,nl,de,ru}.i18n.json` with generated Dart alongside; keep every language in sync.
 - Adding a language also touches `Language` in `apps/bible/lib/models/user/language.dart`, timeago messages in `apps/bible/lib/main.dart`, iOS `CFBundleLocalizations` (Runner and widget `Info.plist`), `knownRegions` in `project.pbxproj`, the widget's `Localizable.xcstrings`, Android `res/xml/locale_config.xml` and `res/values-<lang>/`, and the fastlane metadata folders.
 - `apps/memory` is the exploratory Lux Memory app and the reference for shared patterns.
-- `tools/content` can't import Flutter-dependent app files (anything importing `package:flutter` or `lux/i18n`), so keep values the generators need, like link prefixes, on pure-Dart models.
+- `tools/content` can't import Flutter-dependent app files (anything importing `package:flutter`), so keep values the generators need, like link prefixes, on pure-Dart models. `lux/i18n` is pure Dart and fine to import.
 
 Never hand-edit generated `*.g.dart` or `*.freezed.dart` files.
 

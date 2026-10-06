@@ -292,6 +292,7 @@
     "peopleDescription": "Lees profielen van personen uit de Bijbel.",
     "themesDescription": "Lees artikelen over belangrijke thema's in de Bijbel.",
     "mapsDescription": "Bekijk kaarten van de plaatsen en reizen in de Bijbel.",
+    "creedsDescription": "Lees de historische geloofsbelijdenissen, belijdenisgeschriften en catechismussen van de kerk.",
     "themeAndLayoutDescription": "Pas het thema en de indeling van de Bijbel aan."
   },
   "labels": {
@@ -329,6 +330,7 @@
     "licenses": "Licenties",
     "locations": "Locaties",
     "maps": "Kaarten",
+    "creeds": "Belijdenissen",
     "name": "Naam",
     "note": "Notitie",
     "notebook": "Notitieboek",
@@ -907,6 +909,16 @@
   "maps": {
     "searchHint": "Zoek naar een kaart",
     "noMatchingMaps": "Geen overeenkomende kaarten"
+  },
+  "creeds": {
+    "creeds": "Geloofsbelijdenissen",
+    "confessions": "Belijdenisgeschriften",
+    "catechisms": "Catechismussen",
+    "questionNumber": "V. {number}",
+    "sectionNumber": "Paragraaf {number}",
+    "searchHint": "Zoek naar een belijdenis",
+    "noMatchingCreeds": "Geen overeenkomende belijdenissen",
+    "scriptureProofs": "Schriftbewijzen"
   },
   "navigation": {
     "recents": "Recent",
