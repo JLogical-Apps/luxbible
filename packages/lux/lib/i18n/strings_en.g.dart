@@ -83,6 +83,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$articles$en articles = Translations$articles$en.internal(_root);
 	late final Translations$maps$en maps = Translations$maps$en.internal(_root);
 	late final Translations$creeds$en creeds = Translations$creeds$en.internal(_root);
+	late final Translations$videos$en videos = Translations$videos$en.internal(_root);
 	late final Translations$navigation$en navigation = Translations$navigation$en.internal(_root);
 	late final Translations$bibleSheet$en bibleSheet = Translations$bibleSheet$en.internal(_root);
 	late final Translations$passageSelection$en passageSelection = Translations$passageSelection$en.internal(_root);
@@ -1021,6 +1022,9 @@ class Translations$toolbarShortcuts$en {
 	/// en: 'Read the historic creeds, confessions, and catechisms of the church.'
 	String get creedsDescription => 'Read the historic creeds, confessions, and catechisms of the church.';
 
+	/// en: 'Watch BibleProject's animated videos on the books, themes, and words of the Bible.'
+	String get videosDescription => 'Watch BibleProject\'s animated videos on the books, themes, and words of the Bible.';
+
 	/// en: 'Customize the theme & layout of the Bible.'
 	String get themeAndLayoutDescription => 'Customize the theme & layout of the Bible.';
 }
@@ -1137,6 +1141,9 @@ class Translations$labels$en {
 
 	/// en: 'Creeds & Confessions'
 	String get creeds => 'Creeds & Confessions';
+
+	/// en: 'Videos'
+	String get videos => 'Videos';
 
 	/// en: 'Name'
 	String get name => 'Name';
@@ -2849,6 +2856,36 @@ class Translations$creeds$en {
 
 	/// en: 'Scripture Proofs'
 	String get scriptureProofs => 'Scripture Proofs';
+}
+
+// Path: videos
+class Translations$videos$en {
+	Translations$videos$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Search for a video'
+	String get searchHint => 'Search for a video';
+
+	/// en: 'No matching videos'
+	String get noMatchingVideos => 'No matching videos';
+
+	/// en: 'Passages'
+	String get passages => 'Passages';
+
+	/// en: 'The video could not be loaded'
+	String get loadError => 'The video could not be loaded';
+
+	/// en: 'Playback Speed'
+	String get playbackSpeed => 'Playback Speed';
+
+	/// en: 'BibleProject is the author and owner of this content. To find more BibleProject resources, visit '
+	String get attributionPrefix => 'BibleProject is the author and owner of this content. To find more BibleProject resources, visit ';
+
+	/// en: '.'
+	String get attributionSuffix => '.';
 }
 
 // Path: navigation
@@ -5631,6 +5668,7 @@ extension on Translations {
 			'toolbarShortcuts.themesDescription' => 'Read articles on the Bible\'s major themes.',
 			'toolbarShortcuts.mapsDescription' => 'Explore maps of the places and journeys in the Bible.',
 			'toolbarShortcuts.creedsDescription' => 'Read the historic creeds, confessions, and catechisms of the church.',
+			'toolbarShortcuts.videosDescription' => 'Watch BibleProject\'s animated videos on the books, themes, and words of the Bible.',
 			'toolbarShortcuts.themeAndLayoutDescription' => 'Customize the theme & layout of the Bible.',
 			'labels.about' => 'About',
 			'labels.annotation' => 'Annotation',
@@ -5667,6 +5705,7 @@ extension on Translations {
 			'labels.locations' => 'Locations',
 			'labels.maps' => 'Maps',
 			'labels.creeds' => 'Creeds & Confessions',
+			'labels.videos' => 'Videos',
 			'labels.name' => 'Name',
 			'labels.note' => 'Note',
 			'labels.notebook' => 'Notebook',
@@ -5882,10 +5921,10 @@ extension on Translations {
 			'biblePlans.manual' => 'Manual',
 			'biblePlans.manualDescription' => 'Add each passage yourself.',
 			'biblePlans.chooseBooksAndDuration' => 'Choose Books & Duration',
-			'biblePlans.chooseBooksAndDurationDescription' => 'Read books over a set duration.',
-			'biblePlans.chooseBooks' => 'Choose Books',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.chooseBooksAndDurationDescription' => 'Read books over a set duration.',
+			'biblePlans.chooseBooks' => 'Choose Books',
 			'biblePlans.filterBooks' => 'Filter books',
 			'biblePlans.chooseDuration' => 'Choose Duration',
 			'biblePlans.durationInstructions' => 'How many days should your plan last?',
@@ -6166,6 +6205,13 @@ extension on Translations {
 			'creeds.searchHint' => 'Search for a creed',
 			'creeds.noMatchingCreeds' => 'No matching creeds',
 			'creeds.scriptureProofs' => 'Scripture Proofs',
+			'videos.searchHint' => 'Search for a video',
+			'videos.noMatchingVideos' => 'No matching videos',
+			'videos.passages' => 'Passages',
+			'videos.loadError' => 'The video could not be loaded',
+			'videos.playbackSpeed' => 'Playback Speed',
+			'videos.attributionPrefix' => 'BibleProject is the author and owner of this content. To find more BibleProject resources, visit ',
+			'videos.attributionSuffix' => '.',
 			'navigation.recents' => 'Recents',
 			'navigation.navigate' => 'Navigate',
 			'navigation.book' => 'Book',
@@ -6389,6 +6435,8 @@ extension on Translations {
 			'morphology.stem.hithpael.name' => 'Hithpael',
 			'morphology.stem.hithpael.description' => 'The reflexive or reciprocal of the piel.',
 			'morphology.stem.hithpael.examples' => 'he sanctified himself|they walked about',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.stem.nithpael.name' => 'Nithpael',
 			'morphology.stem.nithpael.description' => 'A rare reflexive-passive stem.',
 			'morphology.stem.nithpael.examples' => 'it was atoned for',
@@ -6398,8 +6446,6 @@ extension on Translations {
 			'morphology.aspect.imperfect.name' => 'Imperfect',
 			'morphology.aspect.imperfect.description' => 'Incomplete or future action, often translated as future or habitual.',
 			'morphology.aspect.imperfect.examples' => 'he will write|he writes',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.aspect.imperative.name' => 'Imperative',
 			'morphology.aspect.imperative.description' => 'A direct command.',
 			'morphology.aspect.imperative.examples' => 'Write!|Listen!',

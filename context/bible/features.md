@@ -360,24 +360,27 @@ When an online Bible is active, cross-reference previews use the user's study Bi
 ## Linked Resources
 
 Linked Resources lists the resources whose passages overlap a chapter or verse selection. It currently includes
-Tyndale Study Notes' people profiles and theme articles, the Tyndale Open Bible Dictionary's maps and entries, and
-the questions and sections of the creeds, confessions, and catechisms that cite the passage as a Scripture proof.
+Tyndale Study Notes' people profiles and theme articles, the Tyndale Open Bible Dictionary's maps and entries,
+BibleProject's videos, and the questions and sections of the creeds, confessions, and catechisms that cite the passage
+as a Scripture proof.
 
 - An article is linked when its main passage or any of its passages for further study overlaps the selection, a
-  dictionary entry when any Scripture it cites does, a map when any passage it illustrates does, and a creed question or
-  section when any of its Scripture proofs does, including passages that span several chapters
-- Results are grouped into People Profiles, Themes, Dictionary, Maps, and Creeds & Confessions, and a group without
-  results is hidden
+  dictionary entry when any Scripture it cites does, a map when any passage it illustrates does, a video when any
+  passage it explains does, and a creed question or section when any of its Scripture proofs does, including passages
+  that span several chapters
+- Results are grouped into People Profiles, Themes, Dictionary, Maps, Videos, and Creeds & Confessions, and a group
+  without results is hidden
 - Within a group, items whose overlapping passage is narrowest come first, then items are ordered by title. Creeds &
   Confessions instead lists documents by year and each document's questions or sections in their own order
-- Each article and dictionary entry shows its title and the start of its first paragraph, and each map shows a thumbnail and its title
+- Each article and dictionary entry shows its title and the start of its first paragraph, each map shows a thumbnail
+  and its title, and each video shows its artwork, title, and length
 - Tapping a result opens the full article, where Scripture links open passage previews. Its passages for further
   study, starting with the article's main passage, show their reference and the first two lines of their text, and
   each opens a passage preview. Like Cross References, they use the study Bible when an online Bible is active, and a
   banner names it until the user dismisses its explanation
 - Opening a dictionary entry or related article from an article replaces the open article, and breadcrumbs at the top
   lead back to earlier ones
-- Tapping a map opens the map viewer
+- Tapping a map opens the map viewer, and tapping a video opens the video player
 - Each creed result shows the document and its citation, such as "Heidelberg Catechism Q. 1", with the question or
   the start of the section, and opens the item in a sheet with the same collapsed Scripture Proofs tile as the page
 - A message appears when nothing is linked
@@ -474,6 +477,29 @@ The Resources action opens:
 - Search where each typed word matches the start of any word in a title, in any order
 - Tapping a map opens a full-screen viewer that can be pinch-zoomed, with the map's title and caption below it
 - Maps stay on a light background in dark mode
+
+### Videos
+
+- 264 of BibleProject's animated videos, in English only: book overviews, series such as Torah, Luke-Acts, and the
+  Sermon on the Mount, visual commentaries on single passages, biblical themes, word studies, How to Read the Bible,
+  and the Deuterocanon / Apocrypha. BibleProject's Streetlights remixes, which repeat other videos, are not included
+- Grouped into BibleProject's collections, in BibleProject's own order, each video with its artwork, title, and length
+- Search where each typed word matches the start of any word in a title, in any order
+- Tapping a video opens a player that starts playing once the video loads. It uses the platform's style of video
+  controls, Cupertino on iOS and Material on Android, with play/pause, a scrubber, mute, playback speed, and
+  fullscreen. iOS adds buttons to skip fifteen seconds, and Android skips ten seconds on a double tap. Fullscreen turns
+  the screen to landscape and keeps it awake
+- Turning a phone sideways opens fullscreen. Leaving fullscreen while the phone is still sideways stays on the page,
+  where the player's height is capped so the title stays in view, as it is on iPad
+- Starting a video pauses the Audio Bible. Leaving the app pauses the video, and it resumes on return if it was
+  playing
+- Below the player are the title, BibleProject's attribution with a link to the video's page on bibleproject.com, and
+  the passages the video explains. Each passage shows its reference and the first two lines of its text and opens a
+  passage preview that can navigate to the Bible
+- Videos stream from BibleProject and require an internet connection. A video that fails to load shows a connection
+  message, and reopening the video tries again
+- The Deuterocanon / Apocrypha videos and the general How to Read the Bible videos, such as Plot and Poetry, have no
+  linked passages, so they appear here but never in Linked Resources
 
 ### Creeds & Confessions
 

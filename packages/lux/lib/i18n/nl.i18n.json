@@ -293,6 +293,7 @@
     "themesDescription": "Lees artikelen over belangrijke thema's in de Bijbel.",
     "mapsDescription": "Bekijk kaarten van de plaatsen en reizen in de Bijbel.",
     "creedsDescription": "Lees de historische geloofsbelijdenissen, belijdenisgeschriften en catechismussen van de kerk.",
+    "videosDescription": "Bekijk de animatievideo's van BibleProject over de boeken, thema's en woorden van de Bijbel.",
     "themeAndLayoutDescription": "Pas het thema en de indeling van de Bijbel aan."
   },
   "labels": {
@@ -331,6 +332,7 @@
     "locations": "Locaties",
     "maps": "Kaarten",
     "creeds": "Belijdenissen",
+    "videos": "Video's",
     "name": "Naam",
     "note": "Notitie",
     "notebook": "Notitieboek",
@@ -919,6 +921,15 @@
     "searchHint": "Zoek naar een belijdenis",
     "noMatchingCreeds": "Geen overeenkomende belijdenissen",
     "scriptureProofs": "Schriftbewijzen"
+  },
+  "videos": {
+    "searchHint": "Zoek naar een video",
+    "noMatchingVideos": "Geen overeenkomende video's",
+    "passages": "Passages",
+    "loadError": "De video kon niet worden geladen",
+    "playbackSpeed": "Afspeelsnelheid",
+    "attributionPrefix": "BibleProject is de auteur en eigenaar van deze inhoud. Ga voor meer bronnen van BibleProject naar ",
+    "attributionSuffix": "."
   },
   "navigation": {
     "recents": "Recent",

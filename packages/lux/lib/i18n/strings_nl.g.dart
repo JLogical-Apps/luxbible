@@ -87,6 +87,7 @@ class TranslationsNl extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$articles$nl articles = _Translations$articles$nl._(_root);
 	@override late final _Translations$maps$nl maps = _Translations$maps$nl._(_root);
 	@override late final _Translations$creeds$nl creeds = _Translations$creeds$nl._(_root);
+	@override late final _Translations$videos$nl videos = _Translations$videos$nl._(_root);
 	@override late final _Translations$navigation$nl navigation = _Translations$navigation$nl._(_root);
 	@override late final _Translations$bibleSheet$nl bibleSheet = _Translations$bibleSheet$nl._(_root);
 	@override late final _Translations$passageSelection$nl passageSelection = _Translations$passageSelection$nl._(_root);
@@ -508,6 +509,7 @@ class _Translations$toolbarShortcuts$nl extends Translations$toolbarShortcuts$en
 	@override String get themesDescription => 'Lees artikelen over belangrijke thema\'s in de Bijbel.';
 	@override String get mapsDescription => 'Bekijk kaarten van de plaatsen en reizen in de Bijbel.';
 	@override String get creedsDescription => 'Lees de historische geloofsbelijdenissen, belijdenisgeschriften en catechismussen van de kerk.';
+	@override String get videosDescription => 'Bekijk de animatievideo\'s van BibleProject over de boeken, thema\'s en woorden van de Bijbel.';
 	@override String get themeAndLayoutDescription => 'Pas het thema en de indeling van de Bijbel aan.';
 }
 
@@ -553,6 +555,7 @@ class _Translations$labels$nl extends Translations$labels$en {
 	@override String get locations => 'Locaties';
 	@override String get maps => 'Kaarten';
 	@override String get creeds => 'Belijdenissen';
+	@override String get videos => 'Video\'s';
 	@override String get name => 'Naam';
 	@override String get note => 'Notitie';
 	@override String get notebook => 'Notitieboek';
@@ -1325,6 +1328,22 @@ class _Translations$creeds$nl extends Translations$creeds$en {
 	@override String get searchHint => 'Zoek naar een belijdenis';
 	@override String get noMatchingCreeds => 'Geen overeenkomende belijdenissen';
 	@override String get scriptureProofs => 'Schriftbewijzen';
+}
+
+// Path: videos
+class _Translations$videos$nl extends Translations$videos$en {
+	_Translations$videos$nl._(TranslationsNl root) : this._root = root, super.internal(root);
+
+	final TranslationsNl _root; // ignore: unused_field
+
+	// Translations
+	@override String get searchHint => 'Zoek naar een video';
+	@override String get noMatchingVideos => 'Geen overeenkomende video\'s';
+	@override String get passages => 'Passages';
+	@override String get loadError => 'De video kon niet worden geladen';
+	@override String get playbackSpeed => 'Afspeelsnelheid';
+	@override String get attributionPrefix => 'BibleProject is de auteur en eigenaar van deze inhoud. Ga voor meer bronnen van BibleProject naar ';
+	@override String get attributionSuffix => '.';
 }
 
 // Path: navigation
@@ -3322,6 +3341,7 @@ extension on TranslationsNl {
 			'toolbarShortcuts.themesDescription' => 'Lees artikelen over belangrijke thema\'s in de Bijbel.',
 			'toolbarShortcuts.mapsDescription' => 'Bekijk kaarten van de plaatsen en reizen in de Bijbel.',
 			'toolbarShortcuts.creedsDescription' => 'Lees de historische geloofsbelijdenissen, belijdenisgeschriften en catechismussen van de kerk.',
+			'toolbarShortcuts.videosDescription' => 'Bekijk de animatievideo\'s van BibleProject over de boeken, thema\'s en woorden van de Bijbel.',
 			'toolbarShortcuts.themeAndLayoutDescription' => 'Pas het thema en de indeling van de Bijbel aan.',
 			'labels.about' => 'Over',
 			'labels.annotation' => 'Annotatie',
@@ -3358,6 +3378,7 @@ extension on TranslationsNl {
 			'labels.locations' => 'Locaties',
 			'labels.maps' => 'Kaarten',
 			'labels.creeds' => 'Belijdenissen',
+			'labels.videos' => 'Video\'s',
 			'labels.name' => 'Naam',
 			'labels.note' => 'Notitie',
 			'labels.notebook' => 'Notitieboek',
@@ -3571,10 +3592,10 @@ extension on TranslationsNl {
 			'biblePlans.importErrors.invalidPassage' => 'Het geïmporteerde leesplan bevat een ongeldige Bijbelverwijzing.',
 			'biblePlans.importErrors.duplicatePassage' => 'Een dag in het geïmporteerde leesplan bevat dezelfde passage meer dan één keer.',
 			'biblePlans.manual' => 'Handmatig',
-			'biblePlans.manualDescription' => 'Voeg zelf elke passage toe.',
-			'biblePlans.chooseBooksAndDuration' => 'Boeken en duur kiezen',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.manualDescription' => 'Voeg zelf elke passage toe.',
+			'biblePlans.chooseBooksAndDuration' => 'Boeken en duur kiezen',
 			'biblePlans.chooseBooksAndDurationDescription' => 'Lees boeken gedurende een zelfgekozen periode.',
 			'biblePlans.chooseBooks' => 'Boeken kiezen',
 			'biblePlans.filterBooks' => 'Boeken filteren',
@@ -3857,6 +3878,13 @@ extension on TranslationsNl {
 			'creeds.searchHint' => 'Zoek naar een belijdenis',
 			'creeds.noMatchingCreeds' => 'Geen overeenkomende belijdenissen',
 			'creeds.scriptureProofs' => 'Schriftbewijzen',
+			'videos.searchHint' => 'Zoek naar een video',
+			'videos.noMatchingVideos' => 'Geen overeenkomende video\'s',
+			'videos.passages' => 'Passages',
+			'videos.loadError' => 'De video kon niet worden geladen',
+			'videos.playbackSpeed' => 'Afspeelsnelheid',
+			'videos.attributionPrefix' => 'BibleProject is de auteur en eigenaar van deze inhoud. Ga voor meer bronnen van BibleProject naar ',
+			'videos.attributionSuffix' => '.',
 			'navigation.recents' => 'Recent',
 			'navigation.navigate' => 'Navigeren',
 			'navigation.book' => 'Boek',
@@ -4078,6 +4106,8 @@ extension on TranslationsNl {
 			'morphology.stem.hophal.description' => 'De passieve vorm van de hiphil.',
 			'morphology.stem.hophal.examples' => 'hij werd tot schrijven gebracht',
 			'morphology.stem.hithpael.name' => 'Hithpael',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.stem.hithpael.description' => 'De wederkerende of wederzijdse vorm van de piel.',
 			'morphology.stem.hithpael.examples' => 'hij heiligde zichzelf|zij liepen rond',
 			'morphology.stem.nithpael.name' => 'Nithpael',
@@ -4087,8 +4117,6 @@ extension on TranslationsNl {
 			'morphology.aspect.perfect.description' => 'Voltooide handeling, doorgaans vertaald als verleden tijd.',
 			'morphology.aspect.perfect.examples' => 'hij schreef|zij heeft gesproken',
 			'morphology.aspect.imperfect.name' => 'Imperfectum',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.aspect.imperfect.description' => 'Onvoltooide of toekomstige handeling, vaak vertaald als toekomstig of gewoonlijk.',
 			'morphology.aspect.imperfect.examples' => 'hij zal schrijven|hij schrijft',
 			'morphology.aspect.imperative.name' => 'Imperatief',

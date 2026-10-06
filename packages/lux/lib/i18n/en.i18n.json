@@ -291,6 +291,7 @@
     "themesDescription": "Read articles on the Bible's major themes.",
     "mapsDescription": "Explore maps of the places and journeys in the Bible.",
     "creedsDescription": "Read the historic creeds, confessions, and catechisms of the church.",
+    "videosDescription": "Watch BibleProject's animated videos on the books, themes, and words of the Bible.",
     "themeAndLayoutDescription": "Customize the theme & layout of the Bible."
   },
   "labels": {
@@ -329,6 +330,7 @@
     "locations": "Locations",
     "maps": "Maps",
     "creeds": "Creeds & Confessions",
+    "videos": "Videos",
     "name": "Name",
     "note": "Note",
     "notebook": "Notebook",
@@ -917,6 +919,15 @@
     "searchHint": "Search for a creed",
     "noMatchingCreeds": "No matching creeds",
     "scriptureProofs": "Scripture Proofs"
+  },
+  "videos": {
+    "searchHint": "Search for a video",
+    "noMatchingVideos": "No matching videos",
+    "passages": "Passages",
+    "loadError": "The video could not be loaded",
+    "playbackSpeed": "Playback Speed",
+    "attributionPrefix": "BibleProject is the author and owner of this content. To find more BibleProject resources, visit ",
+    "attributionSuffix": "."
   },
   "navigation": {
     "recents": "Recents",

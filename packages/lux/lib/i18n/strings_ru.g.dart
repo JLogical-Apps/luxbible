@@ -87,6 +87,7 @@ class TranslationsRu extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$articles$ru articles = _Translations$articles$ru._(_root);
 	@override late final _Translations$maps$ru maps = _Translations$maps$ru._(_root);
 	@override late final _Translations$creeds$ru creeds = _Translations$creeds$ru._(_root);
+	@override late final _Translations$videos$ru videos = _Translations$videos$ru._(_root);
 	@override late final _Translations$navigation$ru navigation = _Translations$navigation$ru._(_root);
 	@override late final _Translations$bibleSheet$ru bibleSheet = _Translations$bibleSheet$ru._(_root);
 	@override late final _Translations$passageSelection$ru passageSelection = _Translations$passageSelection$ru._(_root);
@@ -508,6 +509,7 @@ class _Translations$toolbarShortcuts$ru extends Translations$toolbarShortcuts$en
 	@override String get themesDescription => 'Читайте статьи о главных темах Библии.';
 	@override String get mapsDescription => 'Изучайте карты мест и путешествий из Библии.';
 	@override String get creedsDescription => 'Читайте исторические символы веры, исповедания и катехизисы церкви.';
+	@override String get videosDescription => 'Смотрите анимационные видео BibleProject о книгах, темах и словах Библии.';
 	@override String get themeAndLayoutDescription => 'Настройте тему и макет Библии.';
 }
 
@@ -553,6 +555,7 @@ class _Translations$labels$ru extends Translations$labels$en {
 	@override String get locations => 'Локации';
 	@override String get maps => 'Карты';
 	@override String get creeds => 'Символы веры и исповедания';
+	@override String get videos => 'Видео';
 	@override String get name => 'Имя';
 	@override String get note => 'Примечание';
 	@override String get notebook => 'Блокнот';
@@ -1335,6 +1338,22 @@ class _Translations$creeds$ru extends Translations$creeds$en {
 	@override String get searchHint => 'Поиск исповедания';
 	@override String get noMatchingCreeds => 'Нет подходящих исповеданий';
 	@override String get scriptureProofs => 'Подтверждения из Писания';
+}
+
+// Path: videos
+class _Translations$videos$ru extends Translations$videos$en {
+	_Translations$videos$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get searchHint => 'Поиск видео';
+	@override String get noMatchingVideos => 'Нет подходящих видео';
+	@override String get passages => 'Отрывки';
+	@override String get loadError => 'Не удалось загрузить видео';
+	@override String get playbackSpeed => 'Скорость воспроизведения';
+	@override String get attributionPrefix => 'BibleProject является автором и владельцем этого материала. Больше материалов BibleProject можно найти на сайте ';
+	@override String get attributionSuffix => '.';
 }
 
 // Path: navigation
@@ -3334,6 +3353,7 @@ extension on TranslationsRu {
 			'toolbarShortcuts.themesDescription' => 'Читайте статьи о главных темах Библии.',
 			'toolbarShortcuts.mapsDescription' => 'Изучайте карты мест и путешествий из Библии.',
 			'toolbarShortcuts.creedsDescription' => 'Читайте исторические символы веры, исповедания и катехизисы церкви.',
+			'toolbarShortcuts.videosDescription' => 'Смотрите анимационные видео BibleProject о книгах, темах и словах Библии.',
 			'toolbarShortcuts.themeAndLayoutDescription' => 'Настройте тему и макет Библии.',
 			'labels.about' => 'О приложении',
 			'labels.annotation' => 'Аннотация',
@@ -3370,6 +3390,7 @@ extension on TranslationsRu {
 			'labels.locations' => 'Локации',
 			'labels.maps' => 'Карты',
 			'labels.creeds' => 'Символы веры и исповедания',
+			'labels.videos' => 'Видео',
 			'labels.name' => 'Имя',
 			'labels.note' => 'Примечание',
 			'labels.notebook' => 'Блокнот',
@@ -3583,10 +3604,10 @@ extension on TranslationsRu {
 			'biblePlans.importErrors.invalidPassage' => 'Импортируемый план содержит недопустимую библейскую ссылку.',
 			'biblePlans.importErrors.duplicatePassage' => 'Один из дней импортируемого плана содержит один и тот же отрывок несколько раз.',
 			'biblePlans.manual' => 'Вручную',
-			'biblePlans.manualDescription' => 'Добавьте каждый отрывок самостоятельно.',
-			'biblePlans.chooseBooksAndDuration' => 'Выбрать книги и продолжительность',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.manualDescription' => 'Добавьте каждый отрывок самостоятельно.',
+			'biblePlans.chooseBooksAndDuration' => 'Выбрать книги и продолжительность',
 			'biblePlans.chooseBooksAndDurationDescription' => 'Читайте книги в течение заданного срока.',
 			'biblePlans.chooseBooks' => 'Выбрать книги',
 			'biblePlans.filterBooks' => 'Фильтровать книги',
@@ -3869,6 +3890,13 @@ extension on TranslationsRu {
 			'creeds.searchHint' => 'Поиск исповедания',
 			'creeds.noMatchingCreeds' => 'Нет подходящих исповеданий',
 			'creeds.scriptureProofs' => 'Подтверждения из Писания',
+			'videos.searchHint' => 'Поиск видео',
+			'videos.noMatchingVideos' => 'Нет подходящих видео',
+			'videos.passages' => 'Отрывки',
+			'videos.loadError' => 'Не удалось загрузить видео',
+			'videos.playbackSpeed' => 'Скорость воспроизведения',
+			'videos.attributionPrefix' => 'BibleProject является автором и владельцем этого материала. Больше материалов BibleProject можно найти на сайте ',
+			'videos.attributionSuffix' => '.',
 			'navigation.recents' => 'Недавние',
 			'navigation.navigate' => 'Навигация',
 			'navigation.book' => 'Книга',
@@ -4090,6 +4118,8 @@ extension on TranslationsRu {
 			'morphology.stem.hophal.description' => 'Пассив Хифила.',
 			'morphology.stem.hophal.examples' => 'его заставили написать',
 			'morphology.stem.hithpael.name' => 'Хитпаэль',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.stem.hithpael.description' => 'Рефлекторный или реципрокный пилель.',
 			'morphology.stem.hithpael.examples' => 'он освятил себя | они гуляли',
 			'morphology.stem.nithpael.name' => 'Нитпаэль',
@@ -4099,8 +4129,6 @@ extension on TranslationsRu {
 			'morphology.aspect.perfect.description' => 'Завершенное действие обычно переводится как прошлое.',
 			'morphology.aspect.perfect.examples' => 'он написал|она говорила',
 			'morphology.aspect.imperfect.name' => 'Несовершенный',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.aspect.imperfect.description' => 'Незавершенное или будущее действие, часто переводится как будущее или привычное.',
 			'morphology.aspect.imperfect.examples' => 'он напишет | он напишет',
 			'morphology.aspect.imperative.name' => 'Императив',

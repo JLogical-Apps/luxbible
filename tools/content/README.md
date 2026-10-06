@@ -21,6 +21,7 @@ dart run bin/generate_articles_json.dart
 dart run bin/generate_dictionary_json.dart
 dart run bin/generate_maps_json.dart
 dart run bin/generate_creeds_json.dart
+dart run bin/generate_videos_json.dart
 dart run bin/generate_strongs_json.dart
 dart run bin/generate_audio_bible_timings_json.dart
 dart run bin/generate_verse_of_the_day.dart
@@ -54,6 +55,12 @@ rerun it only when the PDFs or the ids in `maps.json` change.
 `generate_creeds_json.dart` writes the creeds, confessions, and catechisms vendored from Creeds.json in
 `content/sources/creeds/` to `assets/creeds/creeds.json`. It fails on any Scripture proof that isn't a valid OSIS
 reference to an existing verse. Data fixes go in the vendored JSON files, and the source README lists them.
+
+BibleProject's videos are curated by hand in `content/sources/videos/bibleproject.json`: its collections in order, each
+video's bibleproject.com slug, title, length, Mux playback ID, artwork URL, and the OSIS passages it explains. The
+catalog came from `bibleproject.com/en/sitemap.xml` and the `/videos/collections/<slug>/` pages, whose embedded page
+data holds each video's playback ID and 16:9 artwork. `generate_videos_json.dart` validates the passages and writes
+`assets/videos/bibleproject.json`.
 
 `generate_audio_bible_timings_json.dart` validates their canonical chapter and verse coverage, removes the verse text and source metadata, and writes one minified runtime asset per Audio Bible.
 

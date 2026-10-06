@@ -141,6 +141,9 @@ T useDisposable<T>(T object, Function(T) onDispose) {
   return object;
 }
 
+AsyncSnapshot<T> useMemoizedFuture<T>(Future<T> Function() futureBuilder, [List<Object?> keys = const []]) =>
+    useFuture(useMemoized(futureBuilder, keys));
+
 Function() useRefresh() {
   final state = useState(0);
   return () => state.value++;

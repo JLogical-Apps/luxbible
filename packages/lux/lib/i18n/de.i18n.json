@@ -291,6 +291,7 @@
     "themesDescription": "Lies Artikel zu zentralen Themen der Bibel.",
     "mapsDescription": "Erkunde Karten der Orte und Reisen in der Bibel.",
     "creedsDescription": "Lies die historischen Glaubensbekenntnisse, Bekenntnisschriften und Katechismen der Kirche.",
+    "videosDescription": "Sieh dir die Animationsvideos von BibleProject zu den Büchern, Themen und Wörtern der Bibel an.",
     "themeAndLayoutDescription": "Passe Design & Layout der Bibel an."
   },
   "labels": {
@@ -329,6 +330,7 @@
     "locations": "Bereiche",
     "maps": "Karten",
     "creeds": "Bekenntnisse",
+    "videos": "Videos",
     "name": "Name",
     "note": "Notiz",
     "notebook": "Notizbuch",
@@ -917,6 +919,15 @@
     "searchHint": "Nach einem Bekenntnis suchen",
     "noMatchingCreeds": "Keine passenden Bekenntnisse",
     "scriptureProofs": "Schriftbelege"
+  },
+  "videos": {
+    "searchHint": "Nach einem Video suchen",
+    "noMatchingVideos": "Keine passenden Videos",
+    "passages": "Stellen",
+    "loadError": "Das Video konnte nicht geladen werden",
+    "playbackSpeed": "Wiedergabegeschwindigkeit",
+    "attributionPrefix": "BibleProject ist Urheber und Eigentümer dieser Inhalte. Weitere Ressourcen von BibleProject findest du auf ",
+    "attributionSuffix": "."
   },
   "navigation": {
     "recents": "Zuletzt",

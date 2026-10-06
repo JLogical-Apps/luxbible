@@ -293,6 +293,7 @@
     "themesDescription": "Читайте статьи о главных темах Библии.",
     "mapsDescription": "Изучайте карты мест и путешествий из Библии.",
     "creedsDescription": "Читайте исторические символы веры, исповедания и катехизисы церкви.",
+    "videosDescription": "Смотрите анимационные видео BibleProject о книгах, темах и словах Библии.",
     "themeAndLayoutDescription": "Настройте тему и макет Библии."
   },
   "labels": {
@@ -331,6 +332,7 @@
     "locations": "Локации",
     "maps": "Карты",
     "creeds": "Символы веры и исповедания",
+    "videos": "Видео",
     "name": "Имя",
     "note": "Примечание",
     "notebook": "Блокнот",
@@ -929,6 +931,15 @@
     "searchHint": "Поиск исповедания",
     "noMatchingCreeds": "Нет подходящих исповеданий",
     "scriptureProofs": "Подтверждения из Писания"
+  },
+  "videos": {
+    "searchHint": "Поиск видео",
+    "noMatchingVideos": "Нет подходящих видео",
+    "passages": "Отрывки",
+    "loadError": "Не удалось загрузить видео",
+    "playbackSpeed": "Скорость воспроизведения",
+    "attributionPrefix": "BibleProject является автором и владельцем этого материала. Больше материалов BibleProject можно найти на сайте ",
+    "attributionSuffix": "."
   },
   "navigation": {
     "recents": "Недавние",

@@ -18,6 +18,7 @@ import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/more_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
+import 'package:bible/ui/pages/videos_page.dart';
 import 'package:bible/ui/sheets/bookmark_sheet.dart';
 import 'package:bible/ui/sheets/commentary_selection_sheet.dart';
 import 'package:bible/ui/sheets/compare_bible_sheet.dart';
@@ -328,6 +329,12 @@ enum MainAction {
                 subtitle: t.toolbarShortcuts.mapsDescription.toText(),
                 leading: Symbols.map.toIcon(),
                 onPressed: () => context.pop(BibleMapsPage()),
+              ),
+              StyledListItem.navigation(
+                title: t.labels.videos.toText(),
+                subtitle: t.toolbarShortcuts.videosDescription.toText(),
+                leading: Symbols.smart_display.toIcon(),
+                onPressed: () => context.pop(VideosPage()),
               ),
               StyledListItem.navigation(
                 title: t.labels.creeds.toText(),

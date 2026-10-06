@@ -71,7 +71,7 @@ The Bible page is the navigator's only root and is never replaced, so an entry p
 
 A passage requested from outside the reader's widget tree -- a shared link, a Verse of the Day notification or widget tap, a passage preview -- is raised as a navigation request on a shared service rather than routed back through a callback. The Bible body listens for requests, dismisses whatever sits above the root, and moves the reader to the passage. Entry points therefore need no reference to the reader, and a preview opened from one of them can still send the user into the text.
 
-Custom events cover audio playback starts, plan starts (including resuming a run from history), plan-day completions, incoming `.lxbp` file opens, searches, verse shares, shared passage link opens, Verse of the Day taps, Verse of the Day widget taps, notification taps, toolbar changes, community-link presses, Rate Lux presses, native review requests, onboarding lifecycle actions, and onboarding step completions. The events have fixed names. Onboarding step completions and skips include a `step` parameter with the fixed name of the completed or skipped checklist step; no other event has parameters. Plan and toolbar events are derived from successful persisted user-state transitions so canceled actions are not counted. An incoming file-open event records the handoff even when the file contents fail validation. Search events do not contain the query, plan events do not identify the plan or its reading content, and share and passage-link events do not identify the passage. A verse share is counted unless the user dismisses the share sheet, since some platforms cannot report the chosen target.
+Custom events cover audio and video playback starts, plan starts (including resuming a run from history), plan-day completions, incoming `.lxbp` file opens, searches, verse shares, shared passage link opens, Verse of the Day taps, Verse of the Day widget taps, notification taps, toolbar changes, community-link presses, Rate Lux presses, native review requests, onboarding lifecycle actions, and onboarding step completions. The events have fixed names. Onboarding step completions and skips include a `step` parameter with the fixed name of the completed or skipped checklist step; no other event has parameters. Plan and toolbar events are derived from successful persisted user-state transitions so canceled actions are not counted. An incoming file-open event records the handoff even when the file contents fail validation. Search events do not contain the query, plan events do not identify the plan or its reading content, and share and passage-link events do not identify the passage. A verse share is counted unless the user dismisses the share sheet, since some platforms cannot report the chosen target.
 
 Advertising-related collection is disabled. Android removes the Advertising ID permission and disables Advertising ID collection. Apple builds use the Analytics dependency without IDFA support and disable IDFV collection. Both platforms deny ad storage, ad user data, and ad-personalization consent signals. Analytics and Crashlytics still generate random app-installation identifiers required for measurement and crash deduplication.
 
@@ -231,6 +231,17 @@ public-domain documents of [Creeds.json](https://github.com/NonlinearFruit/Creed
 duplicates, as one passage list per item. The generator fails on any proof reference that isn't a valid OSIS ID for a
 verse that exists. Fixes to the source data are made in the vendored files and listed in their README.
 
+BibleProject videos are `Video` items: BibleProject's ID (its bibleproject.com slug), a title, a length, a Mux playback
+ID, an artwork URL, and passages, grouped into `VideoCollection`s that carry only a title. The stream URL
+(`stream.mux.com/<playbackId>.m3u8`), the video's bibleproject.com page, and resized artwork (ImageKit's `?tr=w-<width>`)
+are derived rather than stored. `content/sources/videos/bibleproject.json` is the hand-curated source: BibleProject's
+English collections and their video order, taken from its sitemap and collection pages, with the passages each video
+explains. Overviews, series, and visual commentaries link the books or passages in their titles, while theme and word
+study videos link a few key passages chosen from the video's content and the Scripture in its discussion questions.
+Videos without a specific passage, such as the Deuterocanon and genre explainers, have none. The Streetlights remixes
+are left out because they repeat other videos, and localized versions are left out for now. `generate_videos_json.dart`
+validates the passages and writes `assets/videos/bibleproject.json` (about 70 KB), decoded on first use.
+
 ### Online Bible Text
 
 These translations are loaded online when they are not available from the device cache:
@@ -257,6 +268,17 @@ The bundled CSB license expires on August 24, 2028. Requests after that calendar
 ### Audio
 
 BSB and KJV audio is streamed from `audio.luxbible.app`. Audio is not bundled for offline playback.
+
+### Video
+
+BibleProject videos are streamed with `video_player` as HLS from BibleProject's own Mux playback IDs, and their artwork
+is loaded from BibleProject's ImageKit CDN. Chewie provides the controls and fullscreen route. `useVideoPlayback`
+initializes the video controller itself and only then creates the `ChewieController`, because Chewie's own
+auto-initialization doesn't catch load failures. Only the catalog and passage links are bundled. BibleProject's terms allow
+free apps without ads or purchases to embed or stream its videos, but not to download, store, or edit them, and require
+a prominent attribution with a link to bibleproject.com near the video. Chewie keeps the screen awake only in
+fullscreen. Its `wakelock_plus` dependency resolves to 1.8.0 because 1.8.1 needs a `dbus` version that
+`flutter_local_notifications` excludes.
 
 ## Bible Roles
 
@@ -312,6 +334,7 @@ Capabilities vary by translation:
 - Commentaries: Tyndale Open Study Notes, Matthew Henry, John Calvin, and Jamieson-Fausset-Brown
 - People and themes: Tyndale Open Study Notes profiles and theme articles
 - Creeds & Confessions: public-domain documents from Creeds.json
+- Videos: BibleProject, streamed rather than bundled
 - Reading plans: schedules from public-domain and licensed sources recorded in the in-app licenses, with source-level corrections documented alongside imported data
 - Verse of the Day: the first morning passage for each calendar date from Jonathan Bagster's public-domain *Daily Light on the Daily Path*, distributed as CrossWire's Daily SWORD module. The source schedule is offline; the displayed passage uses the selected translation when it can be loaded and otherwise falls back to the selected Study Bible for that passage.
 
@@ -347,7 +370,7 @@ Search does not download or index online translations and does not search all ac
 - No user-data export
 - No cloud backup
 - No web target configuration
-- No offline audio downloads
+- No offline audio or video downloads
 - No full-text annotation-note search
 - Custom-plan creation drafts are not persisted, and saved custom plans cannot be edited
 

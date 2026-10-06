@@ -3,6 +3,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 
 enum AnalyticsEventType {
   audioPlayed('audio_played'),
+  videoPlayed('video_played'),
   planDayCompleted('plan_day_completed'),
   planStarted('plan_started'),
   biblePlanFileOpened('bible_plan_file_opened'),
@@ -33,6 +34,7 @@ class AnalyticsEvent {
   AnalyticsEvent._(this.type, [this.parameters]);
 
   static final audioPlayed = AnalyticsEvent._(.audioPlayed);
+  static final videoPlayed = AnalyticsEvent._(.videoPlayed);
   static final planDayCompleted = AnalyticsEvent._(.planDayCompleted);
   static final planStarted = AnalyticsEvent._(.planStarted);
   static final biblePlanFileOpened = AnalyticsEvent._(.biblePlanFileOpened);

@@ -87,6 +87,7 @@ class TranslationsDe extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$articles$de articles = _Translations$articles$de._(_root);
 	@override late final _Translations$maps$de maps = _Translations$maps$de._(_root);
 	@override late final _Translations$creeds$de creeds = _Translations$creeds$de._(_root);
+	@override late final _Translations$videos$de videos = _Translations$videos$de._(_root);
 	@override late final _Translations$navigation$de navigation = _Translations$navigation$de._(_root);
 	@override late final _Translations$bibleSheet$de bibleSheet = _Translations$bibleSheet$de._(_root);
 	@override late final _Translations$passageSelection$de passageSelection = _Translations$passageSelection$de._(_root);
@@ -506,6 +507,7 @@ class _Translations$toolbarShortcuts$de extends Translations$toolbarShortcuts$en
 	@override String get themesDescription => 'Lies Artikel zu zentralen Themen der Bibel.';
 	@override String get mapsDescription => 'Erkunde Karten der Orte und Reisen in der Bibel.';
 	@override String get creedsDescription => 'Lies die historischen Glaubensbekenntnisse, Bekenntnisschriften und Katechismen der Kirche.';
+	@override String get videosDescription => 'Sieh dir die Animationsvideos von BibleProject zu den Büchern, Themen und Wörtern der Bibel an.';
 	@override String get themeAndLayoutDescription => 'Passe Design & Layout der Bibel an.';
 }
 
@@ -551,6 +553,7 @@ class _Translations$labels$de extends Translations$labels$en {
 	@override String get locations => 'Bereiche';
 	@override String get maps => 'Karten';
 	@override String get creeds => 'Bekenntnisse';
+	@override String get videos => 'Videos';
 	@override String get name => 'Name';
 	@override String get note => 'Notiz';
 	@override String get notebook => 'Notizbuch';
@@ -1323,6 +1326,22 @@ class _Translations$creeds$de extends Translations$creeds$en {
 	@override String get searchHint => 'Nach einem Bekenntnis suchen';
 	@override String get noMatchingCreeds => 'Keine passenden Bekenntnisse';
 	@override String get scriptureProofs => 'Schriftbelege';
+}
+
+// Path: videos
+class _Translations$videos$de extends Translations$videos$en {
+	_Translations$videos$de._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get searchHint => 'Nach einem Video suchen';
+	@override String get noMatchingVideos => 'Keine passenden Videos';
+	@override String get passages => 'Stellen';
+	@override String get loadError => 'Das Video konnte nicht geladen werden';
+	@override String get playbackSpeed => 'Wiedergabegeschwindigkeit';
+	@override String get attributionPrefix => 'BibleProject ist Urheber und Eigentümer dieser Inhalte. Weitere Ressourcen von BibleProject findest du auf ';
+	@override String get attributionSuffix => '.';
 }
 
 // Path: navigation
@@ -3318,6 +3337,7 @@ extension on TranslationsDe {
 			'toolbarShortcuts.themesDescription' => 'Lies Artikel zu zentralen Themen der Bibel.',
 			'toolbarShortcuts.mapsDescription' => 'Erkunde Karten der Orte und Reisen in der Bibel.',
 			'toolbarShortcuts.creedsDescription' => 'Lies die historischen Glaubensbekenntnisse, Bekenntnisschriften und Katechismen der Kirche.',
+			'toolbarShortcuts.videosDescription' => 'Sieh dir die Animationsvideos von BibleProject zu den Büchern, Themen und Wörtern der Bibel an.',
 			'toolbarShortcuts.themeAndLayoutDescription' => 'Passe Design & Layout der Bibel an.',
 			'labels.about' => 'Über',
 			'labels.annotation' => 'Annotation',
@@ -3354,6 +3374,7 @@ extension on TranslationsDe {
 			'labels.locations' => 'Bereiche',
 			'labels.maps' => 'Karten',
 			'labels.creeds' => 'Bekenntnisse',
+			'labels.videos' => 'Videos',
 			'labels.name' => 'Name',
 			'labels.note' => 'Notiz',
 			'labels.notebook' => 'Notizbuch',
@@ -3569,10 +3590,10 @@ extension on TranslationsDe {
 			'biblePlans.manual' => 'Manuell',
 			'biblePlans.manualDescription' => 'Füge jeden Abschnitt selbst hinzu.',
 			'biblePlans.chooseBooksAndDuration' => 'Bücher & Dauer wählen',
-			'biblePlans.chooseBooksAndDurationDescription' => 'Lies Bücher über einen festgelegten Zeitraum.',
-			'biblePlans.chooseBooks' => 'Bücher wählen',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.chooseBooksAndDurationDescription' => 'Lies Bücher über einen festgelegten Zeitraum.',
+			'biblePlans.chooseBooks' => 'Bücher wählen',
 			'biblePlans.filterBooks' => 'Bücher filtern',
 			'biblePlans.chooseDuration' => 'Dauer wählen',
 			'biblePlans.durationInstructions' => 'Wie viele Tage soll dein Plan dauern?',
@@ -3853,6 +3874,13 @@ extension on TranslationsDe {
 			'creeds.searchHint' => 'Nach einem Bekenntnis suchen',
 			'creeds.noMatchingCreeds' => 'Keine passenden Bekenntnisse',
 			'creeds.scriptureProofs' => 'Schriftbelege',
+			'videos.searchHint' => 'Nach einem Video suchen',
+			'videos.noMatchingVideos' => 'Keine passenden Videos',
+			'videos.passages' => 'Stellen',
+			'videos.loadError' => 'Das Video konnte nicht geladen werden',
+			'videos.playbackSpeed' => 'Wiedergabegeschwindigkeit',
+			'videos.attributionPrefix' => 'BibleProject ist Urheber und Eigentümer dieser Inhalte. Weitere Ressourcen von BibleProject findest du auf ',
+			'videos.attributionSuffix' => '.',
 			'navigation.recents' => 'Zuletzt',
 			'navigation.navigate' => 'Navigieren',
 			'navigation.book' => 'Buch',
@@ -4076,6 +4104,8 @@ extension on TranslationsDe {
 			'morphology.stem.hithpael.name' => 'Hitpael',
 			'morphology.stem.hithpael.description' => 'Das Reflexiv oder Reziprok des Piel.',
 			'morphology.stem.hithpael.examples' => 'er heiligte sich|sie gingen umher',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.stem.nithpael.name' => 'Nitpael',
 			'morphology.stem.nithpael.description' => 'Ein seltener reflexiv-passiver Stamm.',
 			'morphology.stem.nithpael.examples' => 'es wurde gesühnt',
@@ -4085,8 +4115,6 @@ extension on TranslationsDe {
 			'morphology.aspect.imperfect.name' => 'Imperfekt',
 			'morphology.aspect.imperfect.description' => 'Unabgeschlossene oder zukünftige Handlung, oft mit Futur oder als Gewohnheit übersetzt.',
 			'morphology.aspect.imperfect.examples' => 'er wird schreiben|er schreibt',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.aspect.imperative.name' => 'Imperativ',
 			'morphology.aspect.imperative.description' => 'Ein direkter Befehl.',
 			'morphology.aspect.imperative.examples' => 'Schreib!|Höre!',

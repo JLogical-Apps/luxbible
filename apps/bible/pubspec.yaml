@@ -61,6 +61,8 @@ dependencies:
   modal_bottom_sheet: ^3.0.0
   audio_service: ^0.18.19
   just_audio: ^0.10.6
+  video_player: ^2.14.1
+  chewie: ^1.17.2
   rxdart: ^0.28.0
   in_app_review: ^2.0.10
   share_plus: ^13.3.0
@@ -126,6 +128,7 @@ flutter:
     - assets/commentary/matthew_henry/
     - assets/commentary/tyndale/
     - assets/creeds/
+    - assets/videos/
     - assets/cross_references/
     - assets/people/
     - assets/themes/

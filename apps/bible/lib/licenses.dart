@@ -354,6 +354,16 @@ Source: https://github.com/NonlinearFruit/Creeds.json''',
     );
 
     yield const LicenseEntryWithLineBreaks(
+      ['BibleProject Videos'],
+      '''
+BibleProject is the author and owner of this content. To find more BibleProject resources, visit bibleproject.com.
+
+The videos are streamed from BibleProject and are not stored in Lux. Lux lists them with their titles and artwork unchanged and links each video to the passages it explains.
+
+Source: https://bibleproject.com''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
       ['Bible Reading Plans'],
       '''
 Reading plan schedules (daily passage references only; no Bible text is included).
