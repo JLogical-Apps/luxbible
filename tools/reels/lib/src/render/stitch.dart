@@ -94,15 +94,18 @@ List<String> getStitchArgs({
   // Each segment plays at its speed, then holds its last frame for the rest of its stretch, placed at its output time.
   // overlay drops a stream's final frame at its EOF, so each segment runs a frame long and `enable` cuts it off.
   final mediaHeight = ((mediaBottom - mediaTop) * codec.height).round();
-  final overlays = media.mapIndexed(
-    (i, segment) =>
-        '[${2 * clips.length + i}:v]trim=end_frame=${segment.to - segment.from + 1},'
-        '${getMediaFitFilter(segment.mask, width: codec.width, height: mediaHeight)},'
+  final overlays = media.mapIndexed((i, segment) {
+    final scale = segment.showing?.media.scale ?? 1;
+    final height = (mediaHeight * scale).round();
+    final top = (mediaTop * codec.height + (mediaHeight - height) / 2).round();
+    return '[${2 * clips.length + i}:v]trim=end_frame=${segment.to - segment.from + 1},'
+        '${getMediaFitFilter(segment.showing?.media.mask, width: (codec.width * scale).round(), height: height)},'
         'setpts=(PTS-STARTPTS)/${segment.speed},fps=$fps,tpad=stop_mode=clone:stop=-1,'
-        'trim=end_frame=${segment.frameCount + 1},setpts=PTS-STARTPTS+${segment.outputStart / fps}/TB[m$i];'
-        '[b$i][m$i]overlay=x=(W-w)/2:y=${(mediaTop * codec.height).round()}:eof_action=pass:'
-        "enable='between(n,${segment.outputStart},${segment.outputEnd - 1})'[b${i + 1}];",
-  );
+        'trim=end_frame=${segment.frameCount + 1},setpts=PTS-STARTPTS+${segment.outputStart / fps}/TB'
+        '${getMediaEffectFilter(segment.showing, height: height, fps: fps)}[m$i];'
+        '[b$i][m$i]overlay=${getMediaPosition(segment.showing, top: top)}:eof_action=pass:'
+        "enable='between(n,${segment.outputStart},${segment.outputEnd - 1})'[b${i + 1}];";
+  });
   // Each image is a single frame, which overlay repeats once it runs out. Rotating grows it to fit, with clear corners,
   // and the overlay centers whatever size that came to.
   final images = scatter.mapIndexed((i, image) {

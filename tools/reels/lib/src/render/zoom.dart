@@ -47,11 +47,12 @@ String getCropExpression(Crop start, List<CropChange> changes, double Function(C
   '${valueOf(start)}',
   ...changes.mapIndexed((index, change) {
     final from = index == 0 ? start : changes[index - 1].crop;
-    final progress = 'clip((in-1-${change.at})/${change.frames},0,1)';
-    final eased = switch (change.easing) {
-      .cubicInOut => 'if(lt($progress,0.5),4*pow($progress,3),1-pow(2-2*$progress,3)/2)',
-      .quarticInOut => 'if(lt($progress,0.5),8*pow($progress,4),1-pow(2-2*$progress,4)/2)',
-    };
+    final eased = getEasedExpression(change.easing, 'clip((in-1-${change.at})/${change.frames},0,1)');
     return '(${valueOf(change.crop) - valueOf(from)})*($eased)';
   }),
 ].join('+');
+
+String getEasedExpression(Easing easing, String progress) => switch (easing) {
+  .cubicInOut => 'if(lt($progress,0.5),4*pow($progress,3),1-pow(2-2*$progress,3)/2)',
+  .quarticInOut => 'if(lt($progress,0.5),8*pow($progress,4),1-pow(2-2*$progress,4)/2)',
+};

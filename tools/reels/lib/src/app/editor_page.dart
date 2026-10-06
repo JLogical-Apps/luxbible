@@ -19,6 +19,7 @@ import 'package:reels/src/model/clip.dart';
 import 'package:reels/src/model/clips.dart';
 import 'package:reels/src/model/clips_list_order.dart';
 import 'package:reels/src/model/media.dart';
+import 'package:reels/src/model/video.dart';
 import 'package:reels/src/render/render.dart';
 
 enum EditorMode { clips, media, preview }
@@ -66,6 +67,14 @@ class EditorPage extends HookWidget {
       return subscription.cancel;
     }, [player]);
 
+    // The controls' arrow keys still change the volume, so it's pinned at full rather than only hidden.
+    useEffect(() {
+      final subscription = player.stream.volume.listen((volume) {
+        if (volume != 100) player.setVolume(100);
+      });
+      return subscription.cancel;
+    }, [player]);
+
     Future<void> openMedia(String path, {File? audio}) async {
       pauseAt.value = null;
       await player.open(Media(path), play: false);
@@ -106,7 +115,7 @@ class EditorPage extends HookWidget {
       }
     }
 
-    Duration getPreviewStart() {
+    Duration getPreviewStart(Video video) {
       final clips = video.resolve(source.value!);
       if (!clips.any((c) => c.name == focused.value)) return Duration.zero;
       return at(clips.takeWhile((c) => c.name != focused.value).map((c) => c.take.frameCount).sum);
@@ -118,14 +127,16 @@ class EditorPage extends HookWidget {
         if (isReload) hasPendingReload.value = true;
         return;
       }
-      if (source.value == null || video.clips.isEmpty) return;
+      // Not the `video` this closure captured: a reload that lands mid-build reruns the closure from an older build.
+      final latest = builder();
+      if (source.value == null || latest.clips.isEmpty) return;
 
       busy.value = true;
       try {
-        final file = await buildPreview(video, onProgress: (step, f) => progress.value = (step, f));
+        final file = await buildPreview(latest, onProgress: (step, f) => progress.value = (step, f));
         if (!isReload || loaded.value != file.path) {
           if (loaded.value != file.path) await openMedia(file.path);
-          await player.seek(getPreviewStart());
+          await player.seek(getPreviewStart(latest));
           await player.play();
         }
       } on Object catch (e) {
@@ -243,6 +254,18 @@ class EditorPage extends HookWidget {
       return null;
     }, [reloads]);
 
+    final controlsTheme = mkv.MaterialDesktopVideoControlsThemeData(
+      modifyVolumeOnScroll: false,
+      bottomButtonBar: [
+        mkv.MaterialDesktopSkipPreviousButton(),
+        mkv.MaterialDesktopPlayOrPauseButton(),
+        mkv.MaterialDesktopSkipNextButton(),
+        mkv.MaterialDesktopPositionIndicator(),
+        Spacer(),
+        mkv.MaterialDesktopFullscreenButton(),
+      ],
+    );
+
     if (error.value case final failure?) {
       return ErrorScreen(error: failure, onRetry: () => error.value = null);
     }
@@ -318,7 +341,11 @@ class EditorPage extends HookWidget {
                               SingleActivator(LogicalKeyboardKey.period): stepFrame,
                               SingleActivator(LogicalKeyboardKey.comma): () => stepFrame(isBackward: true),
                             },
-                            child: mkv.Video(controller: controller, fit: .contain),
+                            child: mkv.MaterialDesktopVideoControlsTheme(
+                              normal: controlsTheme,
+                              fullscreen: controlsTheme,
+                              child: mkv.Video(controller: controller, fit: .contain),
+                            ),
                           ),
                   ),
                   if (progress.value case final active?)

@@ -44,6 +44,8 @@ your code; reordering clips never touches a frame number.
 
 In the player, space plays and pauses, ← and → seek 2 s, and `,` and `.` step back and forward one frame.
 5. `dart run lib/videos/my_video.dart render`, or the Render button. On macOS, the finished video opens in Finder.
+6. To post it, copy `out/my_video.mp4` into a pending social post as described in
+   [`tools/socials/PREPARING_POSTS.md`](../socials/PREPARING_POSTS.md).
 
 ## Framing
 
@@ -112,7 +114,7 @@ The editor's copied clip list doesn't include modifiers, so re-add titles after 
 ## Media
 
 `Video(media: '~/Downloads/my_video')` links a folder of screen recordings and images. A `Media` modifier shows one of
-them above the head, fit inside 1% to 56% of the height and the frame's width, and cuts in and out like a title. Captions drop to 82% of the
+them above the head, fit inside 1% to 56% of the height and the frame's width, and cuts in and out like a title unless it slides in. Captions drop to 82% of the
 height on those clips, below the chin. On its own, it plays the file once
 over its clips, from its `start` tag to its `end` tag:
 
@@ -146,6 +148,8 @@ Clip('tap_annotate', modifiers: [
 - **The recording sets the pace, never slower than 1x.** A `Play` gets until the next `Play` of that file or the end of
   its run, even across a cut. If the footage fits, it plays at 1x and holds on its tag. If not, it speeds up just
   enough to reach the tag at the end of that stretch. `by:` ends the stretch sooner, and `speed:` fixes the speed.
+  `fit: true` slows it down too, so it reaches the tag right at the end instead of holding:
+  `Media('tasks_complete.mov', play: [Play('end', fit: true)])`.
 - **Consecutive clips showing the same file are one run.** Its playhead carries across their cuts. A run with no `Play`
   plays from wherever the playhead is to `end`, fit to the run.
 - **Before its first `Play`, the media holds on that play's `from`**, or wherever the playhead is.
@@ -174,6 +178,25 @@ screenshots that lack the device frame RocketSim records. `radius` and `border` 
 
 ```dart
 Clip('shortcuts', modifiers: [Media('shortcut.png', mask: .bevel())]),
+```
+
+`.rounded()` rounds the corners with no bezel, by a `radius` of 0.22 of the width unless told otherwise. `scale:`
+shrinks the space the media fits inside around its center, so `scale: 0.5` shows it at most half as wide and tall.
+
+`enter:` slides the media in from beyond an edge of the frame at its `start`, easing into place over 12 `frames` unless
+told otherwise:
+
+```dart
+Clip('hook', modifiers: [Media('tasks_complete.mov', start: .word('hundreds'), enter: Slide(.top))]),
+```
+
+`effect:` animates a filter over the whole showing. `.pixelate()` breaks the media into softened square blocks, 6
+across (`blocks:`), on a grid that jumps to a random offset every 4 frames (`posterize:`), for teasing something before
+showing it plainly in the next clip:
+
+```dart
+Clip('solution_built_it', modifiers: [Media('lux_512.png', effect: .pixelate())]),
+Clip('solution_lux_bible', modifiers: [Media('lux_512.png')]),
 ```
 
 ## Zoom

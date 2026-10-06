@@ -65,7 +65,7 @@ class MediaLibrary {
 }
 
 /// A stretch of the output timeline showing the media [name] from [file], playing from [from] towards [to] at [speed],
-/// then holding wherever it got to, cut to its [mask]. A hold is `from == to`, and an image is a hold on frame 0.
+/// then holding wherever it got to, styled by its [showing]. A hold is `from == to`, and an image is a hold on frame 0.
 class MediaSegment {
   const MediaSegment({
     required this.name,
@@ -75,7 +75,7 @@ class MediaSegment {
     required this.from,
     required this.to,
     this.speed = 1,
-    this.mask,
+    this.showing,
   });
 
   final String name;
@@ -85,15 +85,15 @@ class MediaSegment {
   final int from;
   final int to;
   final double speed;
-  final Mask? mask;
+  final MediaShowing? showing;
 
   int get frameCount => outputEnd - outputStart;
 
   int getFrameAt(int output) => min(to, from + ((output - outputStart) * speed).floor());
 
-  MediaSegment? clipped(int start, int end, {Mask? mask}) {
-    final clippedStart = max(start, outputStart);
-    final clippedEnd = min(end, outputEnd);
+  MediaSegment? clipped(MediaShowing showing) {
+    final clippedStart = max(showing.start, outputStart);
+    final clippedEnd = min(showing.end, outputEnd);
     if (clippedStart >= clippedEnd) return null;
     return MediaSegment(
       name: name,
@@ -103,12 +103,22 @@ class MediaSegment {
       from: getFrameAt(clippedStart),
       to: to,
       speed: speed,
-      mask: mask,
+      showing: showing,
     );
   }
 
   @override
   String toString() => '${p.basename(file.path)}:$outputStart-$outputEnd:$from-$to@${speed.toStringAsFixed(3)}';
+}
+
+/// A [media] modifier on the [clip] at that index, showing from [start] to [end] on the output timeline.
+class MediaShowing {
+  const MediaShowing(this.media, {required this.clip, required this.start, required this.end});
+
+  final Media media;
+  final int clip;
+  final int start;
+  final int end;
 }
 
 class UnknownMediaException implements Exception {

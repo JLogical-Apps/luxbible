@@ -78,7 +78,7 @@ Working and verified end to end on real footage:
 - Titles: a card of text over a clip, growing a line at a time as titles sharing it appear, timed to the clip or its
   caption words, cut in and out with no animation
 - Media: screen recordings and images from a linked folder, recordings tagged in the Media tab and played over clips at a speed fit to the words
-  they're timed to, cut in and out with no animation
+  they're timed to, cut in and out, or slid in from an edge
 - Scatter: images from the linked folder, appearing one at a time above the head, each where it covers the most empty
   space, piling up
 - Music and sound effects: one track under the whole video, synced to a moment in a clip, and a sound as each
@@ -199,7 +199,8 @@ frames. They are stored only once moved.
 **Resolution is pure** (`getMediaSegments`, `src/render/media.dart`). Each file's appearances are grouped into runs of
 consecutive clips, each `Play` gets a window up to the next one, its `by:`, or the end of the run, and the result is a
 list of `MediaSegment`s on the output timeline: play `from`→`to` at a speed, or hold one frame. The speed is
-`max(1, frames ÷ window)`, so the recording is always shown in full. The playhead position carries across runs, but a
+`max(1, frames ÷ window)`, so the recording is always shown in full, or `frames ÷ window` for a `fit` play. Slower
+than 1x, the `fps` filter repeats frames rather than blending them. The playhead position carries across runs, but a
 window never stretches across a gap. `dart run <video> media` prints every segment.
 
 - **RocketSim records HEVC with alpha, and ffmpeg 7 drops the alpha layer**, which leaves the area around the device
@@ -219,6 +220,14 @@ window never stretches across a gap. `dart run <video> media` prints every segme
   after concat makes both sides exact frame counts. It's centered and fit inside 1% to 56% of the height and the
   frame's width, larger than the Remotion `SimulatorOverlay`. The recordings bring their own rounded device frame, and
   images show with square corners unless masked.
+- **A `Slide` entrance is the overlay's `x` or `y` as an expression of `n`** (`getMediaPosition`), eased like a zoom.
+  Every segment carries its `MediaShowing`, since a slide or an effect can outlast the first segment.
+- **`Pixelate` is a `geq` after the segment is stamped with its output time**, so `T` counts the showing's frames, and
+  each `posterize` step's grid offset is a sine hash of the step number. Each block takes its center pixel after a
+  `gblur` scaled to the block, which stands in for averaging it.
+  An averaged mosaic (scaling down per frame with `eval=frame`, then back up) was tried and dropped: ffmpeg 7 kept 6 of
+  53 frames once the size changed every frame. The `geq` costs ~12 s of CPU per 50 frames at preview size.
+- **`scale` shrinks the fit box around the band's center**, and the slide and blur use the shrunk box.
 - **A `Bevel` mask is drawn in the graph** (`getBevelFilter`), before the segment's `tpad`, so an image is masked
   once rather than every frame. The media is scaled to leave room for the bezel, padded with black, then a `geq` takes
   each pixel's distance from its corner's center: the screen fades to black past `radius` and the bezel to transparent

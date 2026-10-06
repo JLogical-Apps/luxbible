@@ -7,6 +7,7 @@ import 'package:reels/src/model/media.dart';
 import 'package:reels/src/model/modifier.dart';
 import 'package:reels/src/render/ass.dart';
 import 'package:reels/src/render/clip_time.dart';
+import 'package:reels/src/render/zoom.dart';
 
 // Centered and fit inside this band and the frame's width. Larger than the Remotion facecam overlay's 2% to 50%.
 const mediaTop = 0.01;
@@ -18,7 +19,14 @@ typedef MediaCue = ({int at, int? by, Play play});
 String getMediaFitFilter(Mask? mask, {required int width, required int height}) => switch (mask) {
   null => 'scale=$width:$height:force_original_aspect_ratio=decrease',
   final Bevel bevel => getBevelFilter(bevel, width: width, height: height),
+  Rounded(:final radius) =>
+    'format=rgba,scale=$width:$height:force_original_aspect_ratio=decrease,'
+        "geq=r='r(X,Y)':g='g(X,Y)':b='b(X,Y)':a='alpha(X,Y)*clip(W*$radius-${getCornerDistance('W*$radius')}+0.5,0,1)'",
 };
+
+/// How far a pixel lies outside the square of corner centers inset [inset] from each edge.
+String getCornerDistance(String inset) =>
+    'hypot(max(max($inset-X-0.5,X+0.5-W+$inset),0),max(max($inset-Y-0.5,Y+0.5-H+$inset),0))';
 
 // The bezel is padded on before anything is known of the frame's size, so the scale leaves room for it, and the corners
 // are drawn from the padded width. The screen's corners and the bezel's share their centers, one distance apart.
@@ -26,12 +34,48 @@ String getBevelFilter(Bevel bevel, {required int width, required int height}) {
   final Bevel(:radius, :border) = bevel;
   final framed = 1 + 2 * border;
   final center = 'W*${(border + radius) / framed}';
-  final distance = 'hypot(max(max($center-X-0.5,X+0.5-W+$center),0),max(max($center-Y-0.5,Y+0.5-H+$center),0))';
+  final distance = getCornerDistance(center);
   final screen = 'clip(W*${radius / framed}-$distance+0.5,0,1)';
   final outline = 'clip($center-$distance+0.5,0,1)';
   return "format=rgba,scale=w='min($width/$framed,$height/(ih/iw+${2 * border}))':h=-1,"
       "pad=w='iw*$framed':h='ih+iw*${2 * border}':x='iw*$border':y='iw*$border':color=black,"
       "geq=r='r(X,Y)*$screen':g='g(X,Y)*$screen':b='b(X,Y)*$screen':a='alpha(X,Y)*$outline'";
+}
+
+/// The overlay's `x` and `y` for media whose top sits [top] px down the frame, sliding in as its [showing] starts.
+String getMediaPosition(MediaShowing? showing, {required int top}) {
+  const center = '(W-w)/2';
+  if (showing case MediaShowing(:final start, media: Media(enter: final slide?))) {
+    // Counted from 1, so the first frame shown has already moved in a little.
+    final remaining = '(1-${getEasedExpression(slide.easing, 'clip((n-$start+1)/${slide.frames},0,1)')})';
+    return switch (slide.from) {
+      .top => "x=$center:y='$top-($top+h)*$remaining'",
+      .bottom => "x=$center:y='$top+(H-$top)*$remaining'",
+      .left => "x='$center-(W+w)/2*$remaining':y=$top",
+      .right => "x='$center+(W+w)/2*$remaining':y=$top",
+    };
+  }
+  return 'x=$center:y=$top';
+}
+
+/// Filters for the [showing]'s effect, each led by a comma, over media already stamped with its output time and fit
+/// inside [height].
+String getMediaEffectFilter(MediaShowing? showing, {required int height, required int fps}) {
+  if (showing case MediaShowing(:final start, media: Media(effect: Pixelate(:final blocks, :final posterize)))) {
+    // A hash of the step number, the fraction of a sine's large multiple, gives each step its own offset on each axis.
+    String getOffset(double seed, double phase) =>
+        'st(2,sin(ld(1)*$seed+$phase)*43758.5453);(ld(2)-floor(ld(2)))*ld(0)';
+    // Each block shows the pixel at its center, blurred first so it stands for the whole block rather than a speck.
+    // geq has no variables, so each channel stores the block size and the grid's offsets before sampling.
+    final grid =
+        'st(0,W/$blocks);st(1,floor((round(T*$fps)-$start)/$posterize));'
+        'st(3,${getOffset(12.9898, 78.233)});st(4,${getOffset(39.3468, 11.135)})';
+    String sample(String function) =>
+        '$grid;$function((floor((X+ld(3))/ld(0))+0.5)*ld(0)-ld(3),(floor((Y+ld(4))/ld(0))+0.5)*ld(0)-ld(4))';
+    return ',format=rgba,gblur=sigma=${height / blocks / 4},'
+        "geq=r='${sample('r')}':g='${sample('g')}':b='${sample('b')}':a='${sample('alpha')}'";
+  }
+  return '';
 }
 
 /// Every stretch of the output timeline showing media, and which of its frames it shows.
@@ -46,7 +90,7 @@ List<MediaSegment> getMediaSegments(
 
   final showings = clips.expandIndexed(
     (index, clip) => clip.media.map(
-      (media) => (clip: index, start: getFrame(index, media.start), end: getFrame(index, media.end), media: media),
+      (media) => MediaShowing(media, clip: index, start: getFrame(index, media.start), end: getFrame(index, media.end)),
     ),
   );
 
@@ -64,7 +108,7 @@ List<MediaSegment> getMediaSegments(
               outputEnd: showing.end,
               from: 0,
               to: 0,
-              mask: showing.media.mask,
+              showing: showing,
             ),
           );
     }
@@ -100,9 +144,7 @@ List<MediaSegment> getMediaSegments(
         start: position,
       );
       position = reached;
-      return visible.expand(
-        (showing) => segments.map((s) => s.clipped(showing.start, showing.end, mask: showing.media.mask)).nonNulls,
-      );
+      return visible.expand((showing) => segments.map((s) => s.clipped(showing)).nonNulls);
     });
   }).toList();
 }
@@ -134,7 +176,8 @@ List<MediaSegment> getMediaSegments(
     final nextAt = cues.elementAtOrNull(index + 1)?.at ?? runEnd;
     final end = max(cue.at, min(cue.by ?? runEnd, min(nextAt, runEnd)));
     final window = end - cue.at;
-    final speed = play.speed ?? (window == 0 ? 1.0 : max(1.0, (to - from) / window));
+    final fitted = window == 0 || to == from ? 1.0 : (to - from) / window;
+    final speed = play.speed ?? (play.fit ? fitted : max(1.0, fitted));
     // Float error must not leave a fitted play a frame short of its tag.
     final playFrames = min(window, ((to - from) / speed - 1e-6).ceil());
     final reached = window == 0 || playFrames * speed + 1e-6 >= to - from ? to : from + (playFrames * speed).floor();

@@ -29,15 +29,59 @@ class Title extends Modifier {
 /// [play] plays the video once, from its `start` tag to its `end` tag, fit to the run. An image just shows, with no
 /// [play].
 class Media extends Modifier {
-  const Media(this.file, {this.play = const [], this.start = .clipStart, this.end = .clipEnd, this.mask});
+  const Media(
+    this.file, {
+    this.play = const [],
+    this.start = .clipStart,
+    this.end = .clipEnd,
+    this.mask,
+    this.enter,
+    this.effect,
+    this.scale = 1,
+  });
 
   /// A filename within the media folder.
   final String file;
   final List<Play> play;
   final Mask? mask;
 
+  /// Shrinks the space the media fits inside around its center, so 0.5 shows it at most half as wide and tall.
+  final double scale;
+
   final ClipTime start;
   final ClipTime end;
+
+  /// How the media arrives at [start]. Without it, the media cuts in.
+  final Slide? enter;
+
+  final Effect? effect;
+}
+
+/// Slides in from beyond the frame's [from] edge, easing into place over [frames].
+class Slide {
+  const Slide(this.from, {this.frames = 12, this.easing = .quarticInOut});
+
+  final Edge from;
+  final int frames;
+  final Easing easing;
+}
+
+enum Edge { top, bottom, left, right }
+
+/// A filter over a `Media`, animated over its whole showing.
+sealed class Effect {
+  const Effect();
+
+  const factory Effect.pixelate({int blocks, int posterize}) = Pixelate;
+}
+
+/// Breaks the media into square blocks, [blocks] across its width, on a grid that jumps to a random offset every
+/// [posterize] frames.
+class Pixelate extends Effect {
+  const Pixelate({this.blocks = 6, this.posterize = 4});
+
+  final int blocks;
+  final int posterize;
 }
 
 /// A shape cut around a `Media`.
@@ -45,6 +89,15 @@ sealed class Mask {
   const Mask();
 
   const factory Mask.bevel({double radius, double border}) = Bevel;
+
+  const factory Mask.rounded({double radius}) = Rounded;
+}
+
+/// Rounds the media's corners by [radius], a fraction of its width, with no border.
+class Rounded extends Mask {
+  const Rounded({this.radius = 0.22});
+
+  final double radius;
 }
 
 /// Rounds the media's corners by [radius] and frames it in a black device bezel [border] thick, both as fractions of
@@ -119,9 +172,10 @@ class Sound {
 /// Plays the media to the tag [to], starting [at] a moment in its clip, or when the media appears.
 ///
 /// It gets until the next [Play] of the same file, the end of its run, or [by], whichever is first. Unless [speed] is
-/// given, it plays at 1x and holds on [to] if that fits, or speeds up just enough to reach [to] at the end.
+/// given, it plays at 1x and holds on [to] if that fits, or speeds up just enough to reach [to] at the end. [fit] slows
+/// it down too, so it reaches [to] right at the end.
 class Play {
-  const Play(this.to, {this.from, this.at, this.by, this.speed});
+  const Play(this.to, {this.from, this.at, this.by, this.speed, this.fit = false});
 
   final String to;
 
@@ -131,6 +185,7 @@ class Play {
   final ClipTime? at;
   final ClipTime? by;
   final double? speed;
+  final bool fit;
 }
 
 /// A moment within a clip, relative to the clip rather than the recording so trimming never needs it rewritten.
