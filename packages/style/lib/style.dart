@@ -55,6 +55,7 @@ export 'src/widgets/styled_scrollbar.dart';
 export 'src/widgets/styled_section.dart';
 export 'src/widgets/styled_segmented_control.dart';
 export 'src/widgets/styled_select.dart';
+export 'src/widgets/styled_shrink_to_fit.dart';
 export 'src/widgets/styled_size_and_fade.dart';
 export 'src/widgets/styled_slider.dart';
 export 'src/widgets/styled_sticky_header.dart';

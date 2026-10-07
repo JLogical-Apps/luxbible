@@ -54,7 +54,7 @@ class StyledSheetHeader extends StatelessWidget {
                           style: context.textStyle.headingXs,
                           maxLines: 1,
                           overflow: .ellipsis,
-                          child: title,
+                          child: StyledShrinkToFit(child: title),
                         ),
                       if (subtitle case final subtitle?)
                         DefaultTextStyle(

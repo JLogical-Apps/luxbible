@@ -6,6 +6,7 @@ import 'package:style/src/gap.dart';
 import 'package:style/src/style_context_extensions.dart';
 import 'package:style/src/styled_shadow.dart';
 import 'package:style/src/widgets/styled_circle_button.dart';
+import 'package:style/src/widgets/styled_shrink_to_fit.dart';
 
 class StyledPage extends StatelessWidget {
   final Widget? title;
@@ -49,7 +50,7 @@ class StyledPage extends StatelessWidget {
               style: context.textStyle.headingXs,
               maxLines: 1,
               overflow: .ellipsis,
-              child: title ?? SizedBox.shrink(),
+              child: StyledShrinkToFit(child: title ?? SizedBox.shrink()),
             ),
             actions: [trailing ?? gapW48],
           )
