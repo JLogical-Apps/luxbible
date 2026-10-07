@@ -8,6 +8,7 @@ import 'package:bible/models/highlight_style.dart';
 import 'package:bible/models/hydrated_bible_plan_progress.dart';
 import 'package:bible/models/notebook.dart';
 import 'package:bible/models/reminder.dart';
+import 'package:bible/models/resource_type.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/audio_bible_configuration.dart';
 import 'package:bible/models/user/copy_configuration.dart';
@@ -44,6 +45,7 @@ sealed class User with _$User {
     @JsonKey(name: 'bibles') List<BibleTranslation>? compareBibles,
     @Default([]) List<BibleTranslation> recentBibles,
     List<CommentaryType>? commentaries,
+    List<ResourceType>? resourceOrder,
     @ChapterPositionFromReference('lastReference')
     @Default(ChapterPosition(reference: ChapterReference(chapterNum: 1, book: BookType.genesis)))
     ChapterPosition lastPosition,
@@ -103,6 +105,9 @@ sealed class User with _$User {
       isReviewRequestEligible && annotations.length > previousUser.annotations.length;
 
   List<CommentaryType> get commentariesOrDefault => commentaries ?? CommentaryType.values;
+
+  // Types added after the user last reordered go at the end.
+  List<ResourceType> get resourceOrderOrDefault => {...?resourceOrder, ...ResourceType.values}.toList();
 
   ChapterReference get lastReference => lastPosition.reference;
 

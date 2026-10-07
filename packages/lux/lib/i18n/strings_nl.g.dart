@@ -394,6 +394,7 @@ class _Translations$studyActions$nl extends Translations$studyActions$en {
 	@override String linkedResourcesDescription({required Object region}) => 'Bekijk personen, thema\'s, kaarten en woordenboekartikelen die bij ${region} horen.';
 	@override String get noCrossReferences => 'Geen kruisverwijzingen gevonden';
 	@override String get noLinkedResources => 'Geen gekoppelde bronnen gevonden';
+	@override String get editLinkedResources => 'Gekoppelde bronnen bewerken';
 	@override String crossReferencesUse({required Object translation}) => 'Kruisverwijzingen gebruiken ${translation}';
 	@override String get onlineCrossReferencesExplanation => 'Omdat de geselecteerde vertaling alleen online beschikbaar is, worden kruisverwijzingen getoond met de meest recent gebruikte studiebijbel om prestaties en kosten te besparen. Overal elders in de app wordt de geselecteerde vertaling gebruikt.';
 }
@@ -443,6 +444,7 @@ class _Translations$studyPanels$nl extends Translations$studyPanels$en {
 	// Translations
 	@override String get title => 'Studiepaneel';
 	@override String get pinAsStudyPanel => 'Vastzetten als studiepaneel';
+	@override String pinNamed({required Object name}) => '${name} vastzetten als studiepaneel';
 	@override String compareWith({required Object translation}) => 'Vergelijken met ${translation}';
 	@override String directionInterlinear({required Object direction}) => '${direction} interlineair';
 	@override String commentaryName({required Object commentary}) => 'Commentaar van ${commentary}';
@@ -489,6 +491,7 @@ class _Translations$commentaries$nl extends Translations$commentaries$en {
 
 	// Translations
 	@override String get addRemove => 'Commentaren toevoegen en verwijderen';
+	@override String get edit => 'Commentaren bewerken';
 }
 
 // Path: toolbarShortcuts
@@ -1478,6 +1481,7 @@ class _Translations$settings$nl extends Translations$settings$en {
 	@override String get resetTutorials => 'Uitleg opnieuw instellen';
 	@override String get resetTutorialsDescription => 'Toon de handige tips in de app opnieuw';
 	@override String get tutorialsReset => 'De uitleg is opnieuw ingesteld.';
+	@override String get resourceOrderDescription => 'Sleep om de volgorde te kiezen waarin bronnen verschijnen in Gekoppelde bronnen en het menu Bronnen.';
 }
 
 // Path: biblePlans.importErrors
@@ -3280,6 +3284,7 @@ extension on TranslationsNl {
 			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Bekijk personen, thema\'s, kaarten en woordenboekartikelen die bij ${region} horen.',
 			'studyActions.noCrossReferences' => 'Geen kruisverwijzingen gevonden',
 			'studyActions.noLinkedResources' => 'Geen gekoppelde bronnen gevonden',
+			'studyActions.editLinkedResources' => 'Gekoppelde bronnen bewerken',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Kruisverwijzingen gebruiken ${translation}',
 			'studyActions.onlineCrossReferencesExplanation' => 'Omdat de geselecteerde vertaling alleen online beschikbaar is, worden kruisverwijzingen getoond met de meest recent gebruikte studiebijbel om prestaties en kosten te besparen. Overal elders in de app wordt de geselecteerde vertaling gebruikt.',
 			'selectionActions.annotate' => 'Annoteren',
@@ -3311,6 +3316,7 @@ extension on TranslationsNl {
 			'selectionActions.textInReference' => ({required Object reference}) => 'Tekst in ${reference}',
 			'studyPanels.title' => 'Studiepaneel',
 			'studyPanels.pinAsStudyPanel' => 'Vastzetten als studiepaneel',
+			'studyPanels.pinNamed' => ({required Object name}) => '${name} vastzetten als studiepaneel',
 			'studyPanels.compareWith' => ({required Object translation}) => 'Vergelijken met ${translation}',
 			'studyPanels.directionInterlinear' => ({required Object direction}) => '${direction} interlineair',
 			'studyPanels.commentaryName' => ({required Object commentary}) => 'Commentaar van ${commentary}',
@@ -3330,6 +3336,7 @@ extension on TranslationsNl {
 			'bookmarks.deleteNamedConfirmation' => ({required Object name}) => 'Weet je zeker dat je "${name}" wilt verwijderen?',
 			'bookmarkPage.title' => 'Je bladwijzers',
 			'commentaries.addRemove' => 'Commentaren toevoegen en verwijderen',
+			'commentaries.edit' => 'Commentaren bewerken',
 			'toolbarShortcuts.switchBible' => 'Van Bijbel wisselen',
 			'toolbarShortcuts.dictionary' => 'Woordenboek',
 			'toolbarShortcuts.lexicon' => 'Lexicon',
@@ -3589,11 +3596,11 @@ extension on TranslationsNl {
 			'biblePlans.importErrors.nameRequired' => 'Het geïmporteerde leesplan moet een naam hebben.',
 			'biblePlans.importErrors.invalidDayCount' => 'Het geïmporteerde leesplan moet 1 tot 365 dagen bevatten.',
 			'biblePlans.importErrors.readingRequired' => 'Het geïmporteerde leesplan moet ten minste één leesdag hebben.',
+			_ => null,
+		} ?? switch (path) {
 			'biblePlans.importErrors.invalidPassage' => 'Het geïmporteerde leesplan bevat een ongeldige Bijbelverwijzing.',
 			'biblePlans.importErrors.duplicatePassage' => 'Een dag in het geïmporteerde leesplan bevat dezelfde passage meer dan één keer.',
 			'biblePlans.manual' => 'Handmatig',
-			_ => null,
-		} ?? switch (path) {
 			'biblePlans.manualDescription' => 'Voeg zelf elke passage toe.',
 			'biblePlans.chooseBooksAndDuration' => 'Boeken en duur kiezen',
 			'biblePlans.chooseBooksAndDurationDescription' => 'Lees boeken gedurende een zelfgekozen periode.',
@@ -4103,11 +4110,11 @@ extension on TranslationsNl {
 			'morphology.stem.hiphil.description' => 'De causatieve actieve stam.',
 			'morphology.stem.hiphil.examples' => 'hij liet schrijven|hij leidde naar buiten',
 			'morphology.stem.hophal.name' => 'Hophal',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.stem.hophal.description' => 'De passieve vorm van de hiphil.',
 			'morphology.stem.hophal.examples' => 'hij werd tot schrijven gebracht',
 			'morphology.stem.hithpael.name' => 'Hithpael',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.stem.hithpael.description' => 'De wederkerende of wederzijdse vorm van de piel.',
 			'morphology.stem.hithpael.examples' => 'hij heiligde zichzelf|zij liepen rond',
 			'morphology.stem.nithpael.name' => 'Nithpael',
@@ -4256,6 +4263,7 @@ extension on TranslationsNl {
 			'settings.resetTutorials' => 'Uitleg opnieuw instellen',
 			'settings.resetTutorialsDescription' => 'Toon de handige tips in de app opnieuw',
 			'settings.tutorialsReset' => 'De uitleg is opnieuw ingesteld.',
+			'settings.resourceOrderDescription' => 'Sleep om de volgorde te kiezen waarin bronnen verschijnen in Gekoppelde bronnen en het menu Bronnen.',
 			_ => null,
 		};
 	}

@@ -394,6 +394,7 @@ class _Translations$studyActions$ru extends Translations$studyActions$en {
 	@override String linkedResourcesDescription({required Object region}) => 'Просмотрите людей, темы, карты и статьи словаря, связанные с отрывком: ${region}.';
 	@override String get noCrossReferences => 'Перекрестных ссылок не найдено';
 	@override String get noLinkedResources => 'Связанных ресурсов не найдено';
+	@override String get editLinkedResources => 'Изменить связанные ресурсы';
 	@override String crossReferencesUse({required Object translation}) => 'В перекрестных ссылках используется ${translation}.';
 	@override String get onlineCrossReferencesExplanation => 'Поскольку выбранный вами перевод доступен только в Интернете, перекрестные ссылки показаны с использованием последней версии Учебной Библии, которую вы использовали, чтобы сэкономить на производительности и затратах. Выбранный вами перевод используется повсюду в приложении.';
 }
@@ -443,6 +444,7 @@ class _Translations$studyPanels$ru extends Translations$studyPanels$en {
 	// Translations
 	@override String get title => 'Панель изучения';
 	@override String get pinAsStudyPanel => 'Закрепить как панель изучения';
+	@override String pinNamed({required Object name}) => 'Закрепить «${name}» как панель изучения';
 	@override String compareWith({required Object translation}) => 'Сравнение с ${translation}';
 	@override String directionInterlinear({required Object direction}) => '${direction} подстрочник';
 	@override String commentaryName({required Object commentary}) => 'Комментарий ${commentary}';
@@ -489,6 +491,7 @@ class _Translations$commentaries$ru extends Translations$commentaries$en {
 
 	// Translations
 	@override String get addRemove => 'Добавить и удалить комментарии';
+	@override String get edit => 'Изменить комментарии';
 }
 
 // Path: toolbarShortcuts
@@ -1490,6 +1493,7 @@ class _Translations$settings$ru extends Translations$settings$en {
 	@override String get resetTutorials => 'Сбросить подсказки';
 	@override String get resetTutorialsDescription => 'Снова показывать полезные подсказки в приложении.';
 	@override String get tutorialsReset => 'Подсказки сброшены.';
+	@override String get resourceOrderDescription => 'Перетаскивайте, чтобы задать порядок ресурсов в разделе «Связанные ресурсы» и в меню «Ресурсы».';
 }
 
 // Path: biblePlans.importErrors
@@ -3292,6 +3296,7 @@ extension on TranslationsRu {
 			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Просмотрите людей, темы, карты и статьи словаря, связанные с отрывком: ${region}.',
 			'studyActions.noCrossReferences' => 'Перекрестных ссылок не найдено',
 			'studyActions.noLinkedResources' => 'Связанных ресурсов не найдено',
+			'studyActions.editLinkedResources' => 'Изменить связанные ресурсы',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'В перекрестных ссылках используется ${translation}.',
 			'studyActions.onlineCrossReferencesExplanation' => 'Поскольку выбранный вами перевод доступен только в Интернете, перекрестные ссылки показаны с использованием последней версии Учебной Библии, которую вы использовали, чтобы сэкономить на производительности и затратах. Выбранный вами перевод используется повсюду в приложении.',
 			'selectionActions.annotate' => 'Аннотировать',
@@ -3323,6 +3328,7 @@ extension on TranslationsRu {
 			'selectionActions.textInReference' => ({required Object reference}) => 'Текст в ${reference}',
 			'studyPanels.title' => 'Панель изучения',
 			'studyPanels.pinAsStudyPanel' => 'Закрепить как панель изучения',
+			'studyPanels.pinNamed' => ({required Object name}) => 'Закрепить «${name}» как панель изучения',
 			'studyPanels.compareWith' => ({required Object translation}) => 'Сравнение с ${translation}',
 			'studyPanels.directionInterlinear' => ({required Object direction}) => '${direction} подстрочник',
 			'studyPanels.commentaryName' => ({required Object commentary}) => 'Комментарий ${commentary}',
@@ -3342,6 +3348,7 @@ extension on TranslationsRu {
 			'bookmarks.deleteNamedConfirmation' => ({required Object name}) => 'Вы уверены, что хотите удалить «${name}»?',
 			'bookmarkPage.title' => 'Ваши закладки',
 			'commentaries.addRemove' => 'Добавить и удалить комментарии',
+			'commentaries.edit' => 'Изменить комментарии',
 			'toolbarShortcuts.switchBible' => 'Переключить Библию',
 			'toolbarShortcuts.dictionary' => 'Словарь',
 			'toolbarShortcuts.lexicon' => 'Лексикон',
@@ -3601,11 +3608,11 @@ extension on TranslationsRu {
 			'biblePlans.importErrors.nameRequired' => 'Импортируемому плану необходимо название.',
 			'biblePlans.importErrors.invalidDayCount' => 'Импортируемый план должен содержать от 1 до 365 дней.',
 			'biblePlans.importErrors.readingRequired' => 'Импортируемому плану необходим хотя бы один день чтения.',
+			_ => null,
+		} ?? switch (path) {
 			'biblePlans.importErrors.invalidPassage' => 'Импортируемый план содержит недопустимую библейскую ссылку.',
 			'biblePlans.importErrors.duplicatePassage' => 'Один из дней импортируемого плана содержит один и тот же отрывок несколько раз.',
 			'biblePlans.manual' => 'Вручную',
-			_ => null,
-		} ?? switch (path) {
 			'biblePlans.manualDescription' => 'Добавьте каждый отрывок самостоятельно.',
 			'biblePlans.chooseBooksAndDuration' => 'Выбрать книги и продолжительность',
 			'biblePlans.chooseBooksAndDurationDescription' => 'Читайте книги в течение заданного срока.',
@@ -4115,11 +4122,11 @@ extension on TranslationsRu {
 			'morphology.stem.hiphil.description' => 'Причинно-активная основа.',
 			'morphology.stem.hiphil.examples' => 'он заставил написать|он вывел',
 			'morphology.stem.hophal.name' => 'Хофал',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.stem.hophal.description' => 'Пассив Хифила.',
 			'morphology.stem.hophal.examples' => 'его заставили написать',
 			'morphology.stem.hithpael.name' => 'Хитпаэль',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.stem.hithpael.description' => 'Рефлекторный или реципрокный пилель.',
 			'morphology.stem.hithpael.examples' => 'он освятил себя | они гуляли',
 			'morphology.stem.nithpael.name' => 'Нитпаэль',
@@ -4268,6 +4275,7 @@ extension on TranslationsRu {
 			'settings.resetTutorials' => 'Сбросить подсказки',
 			'settings.resetTutorialsDescription' => 'Снова показывать полезные подсказки в приложении.',
 			'settings.tutorialsReset' => 'Подсказки сброшены.',
+			'settings.resourceOrderDescription' => 'Перетаскивайте, чтобы задать порядок ресурсов в разделе «Связанные ресурсы» и в меню «Ресурсы».',
 			_ => null,
 		};
 	}

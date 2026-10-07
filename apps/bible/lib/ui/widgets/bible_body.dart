@@ -11,6 +11,7 @@ import 'package:bible/services/bible_navigation_service.dart';
 import 'package:bible/ui/hooks/audio_bible_passage_sync.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/pages/position_page.dart';
+import 'package:bible/ui/pages/resource_order_settings_page.dart';
 import 'package:bible/ui/sheets/commentary_selection_sheet.dart';
 import 'package:bible/ui/sheets/compare_bible_sheet.dart';
 import 'package:bible/ui/sheets/interlinear_direction_sheet.dart';
@@ -800,6 +801,13 @@ class BibleBody extends HookConsumerWidget {
                                   swapStudyPanel(studyPanel.copyWith(direction: newDirection), i);
                                 }
                               },
+                            ),
+                          ),
+                          LinkedResourcesStudyPanel() => Tooltip(
+                            message: t.studyActions.editLinkedResources,
+                            child: StyledCircleButton.md(
+                              child: Symbols.tune.toIcon(),
+                              onPressed: () => context.push(ResourceOrderSettingsPage()),
                             ),
                           ),
                           _ => null,

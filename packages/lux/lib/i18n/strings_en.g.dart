@@ -785,6 +785,9 @@ class Translations$studyActions$en {
 	/// en: 'No Linked Resources Found'
 	String get noLinkedResources => 'No Linked Resources Found';
 
+	/// en: 'Edit Linked Resources'
+	String get editLinkedResources => 'Edit Linked Resources';
+
 	/// en: 'Cross references use {translation}'
 	String crossReferencesUse({required Object translation}) => 'Cross references use ${translation}';
 
@@ -896,6 +899,9 @@ class Translations$studyPanels$en {
 	/// en: 'Pin as Study Panel'
 	String get pinAsStudyPanel => 'Pin as Study Panel';
 
+	/// en: 'Pin {name} as a Study Panel'
+	String pinNamed({required Object name}) => 'Pin ${name} as a Study Panel';
+
 	/// en: 'Compare with {translation}'
 	String compareWith({required Object translation}) => 'Compare with ${translation}';
 
@@ -979,6 +985,9 @@ class Translations$commentaries$en {
 
 	/// en: 'Add & Remove Commentaries'
 	String get addRemove => 'Add & Remove Commentaries';
+
+	/// en: 'Edit Commentaries'
+	String get edit => 'Edit Commentaries';
 }
 
 // Path: toolbarShortcuts
@@ -3126,6 +3135,9 @@ class Translations$settings$en {
 
 	/// en: 'Tutorials have been reset.'
 	String get tutorialsReset => 'Tutorials have been reset.';
+
+	/// en: 'Drag to set the order resources appear in Linked Resources and the Resources menu.'
+	String get resourceOrderDescription => 'Drag to set the order resources appear in Linked Resources and the Resources menu.';
 }
 
 // Path: biblePlans.importErrors
@@ -5607,6 +5619,7 @@ extension on Translations {
 			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'View people, themes, maps, and dictionary entries linked to ${region}.',
 			'studyActions.noCrossReferences' => 'No Cross References Found',
 			'studyActions.noLinkedResources' => 'No Linked Resources Found',
+			'studyActions.editLinkedResources' => 'Edit Linked Resources',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Cross references use ${translation}',
 			'studyActions.onlineCrossReferencesExplanation' => 'Because your selected translation is only available online, cross references are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app.',
 			'selectionActions.annotate' => 'Annotate',
@@ -5638,6 +5651,7 @@ extension on Translations {
 			'selectionActions.textInReference' => ({required Object reference}) => 'Text in ${reference}',
 			'studyPanels.title' => 'Study Panel',
 			'studyPanels.pinAsStudyPanel' => 'Pin as Study Panel',
+			'studyPanels.pinNamed' => ({required Object name}) => 'Pin ${name} as a Study Panel',
 			'studyPanels.compareWith' => ({required Object translation}) => 'Compare with ${translation}',
 			'studyPanels.directionInterlinear' => ({required Object direction}) => '${direction} Interlinear',
 			'studyPanels.commentaryName' => ({required Object commentary}) => '${commentary} Commentary',
@@ -5657,6 +5671,7 @@ extension on Translations {
 			'bookmarks.deleteNamedConfirmation' => ({required Object name}) => 'Are you sure you want to delete "${name}"?',
 			'bookmarkPage.title' => 'Your Bookmarks',
 			'commentaries.addRemove' => 'Add & Remove Commentaries',
+			'commentaries.edit' => 'Edit Commentaries',
 			'toolbarShortcuts.switchBible' => 'Switch Bible',
 			'toolbarShortcuts.dictionary' => 'Dictionary',
 			'toolbarShortcuts.lexicon' => 'Lexicon',
@@ -5918,11 +5933,11 @@ extension on Translations {
 			'biblePlans.importErrors.readingRequired' => 'The imported plan needs at least one reading day.',
 			'biblePlans.importErrors.invalidPassage' => 'The imported plan contains an invalid Bible reference.',
 			'biblePlans.importErrors.duplicatePassage' => 'A day in the imported plan contains the same passage more than once.',
+			_ => null,
+		} ?? switch (path) {
 			'biblePlans.manual' => 'Manual',
 			'biblePlans.manualDescription' => 'Add each passage yourself.',
 			'biblePlans.chooseBooksAndDuration' => 'Choose Books & Duration',
-			_ => null,
-		} ?? switch (path) {
 			'biblePlans.chooseBooksAndDurationDescription' => 'Read books over a set duration.',
 			'biblePlans.chooseBooks' => 'Choose Books',
 			'biblePlans.filterBooks' => 'Filter books',
@@ -6432,11 +6447,11 @@ extension on Translations {
 			'morphology.stem.hophal.name' => 'Hophal',
 			'morphology.stem.hophal.description' => 'The passive of the hiphil.',
 			'morphology.stem.hophal.examples' => 'he was caused to write',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.stem.hithpael.name' => 'Hithpael',
 			'morphology.stem.hithpael.description' => 'The reflexive or reciprocal of the piel.',
 			'morphology.stem.hithpael.examples' => 'he sanctified himself|they walked about',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.stem.nithpael.name' => 'Nithpael',
 			'morphology.stem.nithpael.description' => 'A rare reflexive-passive stem.',
 			'morphology.stem.nithpael.examples' => 'it was atoned for',
@@ -6583,6 +6598,7 @@ extension on Translations {
 			'settings.resetTutorials' => 'Reset Tutorials',
 			'settings.resetTutorialsDescription' => 'Show helpful hints throughout the app again.',
 			'settings.tutorialsReset' => 'Tutorials have been reset.',
+			'settings.resourceOrderDescription' => 'Drag to set the order resources appear in Linked Resources and the Resources menu.',
 			_ => null,
 		};
 	}

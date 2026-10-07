@@ -43,6 +43,9 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   commentaries: (json['commentaries'] as List<dynamic>?)
       ?.map((e) => $enumDecode(_$CommentaryTypeEnumMap, e))
       .toList(),
+  resourceOrder: (json['resourceOrder'] as List<dynamic>?)
+      ?.map((e) => $enumDecode(_$ResourceTypeEnumMap, e))
+      .toList(),
   lastPosition: ChapterPositionFromReference.read(json, 'lastReference') == null
       ? const ChapterPosition(
           reference: ChapterReference(chapterNum: 1, book: BookType.genesis),
@@ -202,6 +205,9 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'commentaries': instance.commentaries
       ?.map((e) => _$CommentaryTypeEnumMap[e]!)
       .toList(),
+  'resourceOrder': instance.resourceOrder
+      ?.map((e) => _$ResourceTypeEnumMap[e]!)
+      .toList(),
   'lastReference': instance.lastPosition.toJson(),
   'currentBookmarkId': instance.currentBookmarkId,
   'viewHistory': instance.viewHistory.map((e) => e.toJson()).toList(),
@@ -277,6 +283,15 @@ const _$CommentaryTypeEnumMap = {
   CommentaryType.matthewHenry: 'matthewHenry',
   CommentaryType.jamiesonFaussetBrown: 'jamiesonFaussetBrown',
   CommentaryType.calvin: 'calvin',
+};
+
+const _$ResourceTypeEnumMap = {
+  ResourceType.people: 'people',
+  ResourceType.themes: 'themes',
+  ResourceType.dictionary: 'dictionary',
+  ResourceType.maps: 'maps',
+  ResourceType.videos: 'videos',
+  ResourceType.creeds: 'creeds',
 };
 
 const _$InterlinearDirectionEnumMap = {

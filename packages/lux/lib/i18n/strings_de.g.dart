@@ -392,6 +392,7 @@ class _Translations$studyActions$de extends Translations$studyActions$en {
 	@override String linkedResourcesDescription({required Object region}) => 'Zeige verknüpfte Personen, Themen, Karten und Wörterbucheinträge für ${region}.';
 	@override String get noCrossReferences => 'Keine Querverweise gefunden';
 	@override String get noLinkedResources => 'Keine verknüpften Ressourcen gefunden';
+	@override String get editLinkedResources => 'Verknüpfte Ressourcen bearbeiten';
 	@override String crossReferencesUse({required Object translation}) => 'Querverweise aus ${translation}';
 	@override String get onlineCrossReferencesExplanation => 'Da deine gewählte Übersetzung nur online verfügbar ist, werden Querverweise mit der zuletzt verwendeten Studienbibel angezeigt, um Leistung und Kosten zu sparen. Überall sonst in der App wird deine gewählte Übersetzung verwendet.';
 }
@@ -441,6 +442,7 @@ class _Translations$studyPanels$de extends Translations$studyPanels$en {
 	// Translations
 	@override String get title => 'Studienpanel';
 	@override String get pinAsStudyPanel => 'Als Studienpanel anheften';
+	@override String pinNamed({required Object name}) => '${name} als Studienpanel anheften';
 	@override String compareWith({required Object translation}) => 'Mit ${translation} vergleichen';
 	@override String directionInterlinear({required Object direction}) => 'Interlinear (${direction})';
 	@override String commentaryName({required Object commentary}) => 'Kommentar von ${commentary}';
@@ -487,6 +489,7 @@ class _Translations$commentaries$de extends Translations$commentaries$en {
 
 	// Translations
 	@override String get addRemove => 'Kommentare hinzufügen & entfernen';
+	@override String get edit => 'Kommentare bearbeiten';
 }
 
 // Path: toolbarShortcuts
@@ -1476,6 +1479,7 @@ class _Translations$settings$de extends Translations$settings$en {
 	@override String get resetTutorials => 'Tipps zurücksetzen';
 	@override String get resetTutorialsDescription => 'Hilfreiche Hinweise in der ganzen App wieder anzeigen.';
 	@override String get tutorialsReset => 'Tipps wurden zurückgesetzt.';
+	@override String get resourceOrderDescription => 'Ziehe, um festzulegen, in welcher Reihenfolge Ressourcen in „Verknüpfte Ressourcen“ und im Menü „Ressourcen“ erscheinen.';
 }
 
 // Path: biblePlans.importErrors
@@ -3276,6 +3280,7 @@ extension on TranslationsDe {
 			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Zeige verknüpfte Personen, Themen, Karten und Wörterbucheinträge für ${region}.',
 			'studyActions.noCrossReferences' => 'Keine Querverweise gefunden',
 			'studyActions.noLinkedResources' => 'Keine verknüpften Ressourcen gefunden',
+			'studyActions.editLinkedResources' => 'Verknüpfte Ressourcen bearbeiten',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Querverweise aus ${translation}',
 			'studyActions.onlineCrossReferencesExplanation' => 'Da deine gewählte Übersetzung nur online verfügbar ist, werden Querverweise mit der zuletzt verwendeten Studienbibel angezeigt, um Leistung und Kosten zu sparen. Überall sonst in der App wird deine gewählte Übersetzung verwendet.',
 			'selectionActions.annotate' => 'Annotieren',
@@ -3307,6 +3312,7 @@ extension on TranslationsDe {
 			'selectionActions.textInReference' => ({required Object reference}) => 'Text in ${reference}',
 			'studyPanels.title' => 'Studienpanel',
 			'studyPanels.pinAsStudyPanel' => 'Als Studienpanel anheften',
+			'studyPanels.pinNamed' => ({required Object name}) => '${name} als Studienpanel anheften',
 			'studyPanels.compareWith' => ({required Object translation}) => 'Mit ${translation} vergleichen',
 			'studyPanels.directionInterlinear' => ({required Object direction}) => 'Interlinear (${direction})',
 			'studyPanels.commentaryName' => ({required Object commentary}) => 'Kommentar von ${commentary}',
@@ -3326,6 +3332,7 @@ extension on TranslationsDe {
 			'bookmarks.deleteNamedConfirmation' => ({required Object name}) => 'Möchtest du „${name}“ wirklich löschen?',
 			'bookmarkPage.title' => 'Deine Lesezeichen',
 			'commentaries.addRemove' => 'Kommentare hinzufügen & entfernen',
+			'commentaries.edit' => 'Kommentare bearbeiten',
 			'toolbarShortcuts.switchBible' => 'Bibel wechseln',
 			'toolbarShortcuts.dictionary' => 'Wörterbuch',
 			'toolbarShortcuts.lexicon' => 'Lexikon',
@@ -3587,11 +3594,11 @@ extension on TranslationsDe {
 			'biblePlans.importErrors.readingRequired' => 'Der importierte Plan braucht mindestens einen Lesetag.',
 			'biblePlans.importErrors.invalidPassage' => 'Der importierte Plan enthält eine ungültige Bibelstelle.',
 			'biblePlans.importErrors.duplicatePassage' => 'Ein Tag im importierten Plan enthält denselben Abschnitt mehrmals.',
+			_ => null,
+		} ?? switch (path) {
 			'biblePlans.manual' => 'Manuell',
 			'biblePlans.manualDescription' => 'Füge jeden Abschnitt selbst hinzu.',
 			'biblePlans.chooseBooksAndDuration' => 'Bücher & Dauer wählen',
-			_ => null,
-		} ?? switch (path) {
 			'biblePlans.chooseBooksAndDurationDescription' => 'Lies Bücher über einen festgelegten Zeitraum.',
 			'biblePlans.chooseBooks' => 'Bücher wählen',
 			'biblePlans.filterBooks' => 'Bücher filtern',
@@ -4101,11 +4108,11 @@ extension on TranslationsDe {
 			'morphology.stem.hophal.name' => 'Hofal',
 			'morphology.stem.hophal.description' => 'Das Passiv des Hifil.',
 			'morphology.stem.hophal.examples' => 'er wurde zum Schreiben veranlasst',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.stem.hithpael.name' => 'Hitpael',
 			'morphology.stem.hithpael.description' => 'Das Reflexiv oder Reziprok des Piel.',
 			'morphology.stem.hithpael.examples' => 'er heiligte sich|sie gingen umher',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.stem.nithpael.name' => 'Nitpael',
 			'morphology.stem.nithpael.description' => 'Ein seltener reflexiv-passiver Stamm.',
 			'morphology.stem.nithpael.examples' => 'es wurde gesühnt',
@@ -4252,6 +4259,7 @@ extension on TranslationsDe {
 			'settings.resetTutorials' => 'Tipps zurücksetzen',
 			'settings.resetTutorialsDescription' => 'Hilfreiche Hinweise in der ganzen App wieder anzeigen.',
 			'settings.tutorialsReset' => 'Tipps wurden zurückgesetzt.',
+			'settings.resourceOrderDescription' => 'Ziehe, um festzulegen, in welcher Reihenfolge Ressourcen in „Verknüpfte Ressourcen“ und im Menü „Ressourcen“ erscheinen.',
 			_ => null,
 		};
 	}

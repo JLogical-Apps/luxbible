@@ -218,6 +218,7 @@
     "linkedResourcesDescription": "Zeige verknüpfte Personen, Themen, Karten und Wörterbucheinträge für {region}.",
     "noCrossReferences": "Keine Querverweise gefunden",
     "noLinkedResources": "Keine verknüpften Ressourcen gefunden",
+    "editLinkedResources": "Verknüpfte Ressourcen bearbeiten",
     "crossReferencesUse": "Querverweise aus {translation}",
     "onlineCrossReferencesExplanation": "Da deine gewählte Übersetzung nur online verfügbar ist, werden Querverweise mit der zuletzt verwendeten Studienbibel angezeigt, um Leistung und Kosten zu sparen. Überall sonst in der App wird deine gewählte Übersetzung verwendet."
   },
@@ -253,6 +254,7 @@
   "studyPanels": {
     "title": "Studienpanel",
     "pinAsStudyPanel": "Als Studienpanel anheften",
+    "pinNamed": "{name} als Studienpanel anheften",
     "compareWith": "Mit {translation} vergleichen",
     "directionInterlinear": "Interlinear ({direction})",
     "commentaryName": "Kommentar von {commentary}",
@@ -277,7 +279,8 @@
     "title": "Deine Lesezeichen"
   },
   "commentaries": {
-    "addRemove": "Kommentare hinzufügen & entfernen"
+    "addRemove": "Kommentare hinzufügen & entfernen",
+    "edit": "Kommentare bearbeiten"
   },
   "toolbarShortcuts": {
     "switchBible": "Bibel wechseln",
@@ -1146,6 +1149,7 @@
     "restartGetStartedDescription": "Die Checkliste „Erste Schritte“ erneut anzeigen.",
     "resetTutorials": "Tipps zurücksetzen",
     "resetTutorialsDescription": "Hilfreiche Hinweise in der ganzen App wieder anzeigen.",
-    "tutorialsReset": "Tipps wurden zurückgesetzt."
+    "tutorialsReset": "Tipps wurden zurückgesetzt.",
+    "resourceOrderDescription": "Ziehe, um festzulegen, in welcher Reihenfolge Ressourcen in „Verknüpfte Ressourcen“ und im Menü „Ressourcen“ erscheinen."
   }
 }

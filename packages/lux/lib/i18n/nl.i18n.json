@@ -220,6 +220,7 @@
     "linkedResourcesDescription": "Bekijk personen, thema's, kaarten en woordenboekartikelen die bij {region} horen.",
     "noCrossReferences": "Geen kruisverwijzingen gevonden",
     "noLinkedResources": "Geen gekoppelde bronnen gevonden",
+    "editLinkedResources": "Gekoppelde bronnen bewerken",
     "crossReferencesUse": "Kruisverwijzingen gebruiken {translation}",
     "onlineCrossReferencesExplanation": "Omdat de geselecteerde vertaling alleen online beschikbaar is, worden kruisverwijzingen getoond met de meest recent gebruikte studiebijbel om prestaties en kosten te besparen. Overal elders in de app wordt de geselecteerde vertaling gebruikt."
   },
@@ -255,6 +256,7 @@
   "studyPanels": {
     "title": "Studiepaneel",
     "pinAsStudyPanel": "Vastzetten als studiepaneel",
+    "pinNamed": "{name} vastzetten als studiepaneel",
     "compareWith": "Vergelijken met {translation}",
     "directionInterlinear": "{direction} interlineair",
     "commentaryName": "Commentaar van {commentary}",
@@ -279,7 +281,8 @@
     "title": "Je bladwijzers"
   },
   "commentaries": {
-    "addRemove": "Commentaren toevoegen en verwijderen"
+    "addRemove": "Commentaren toevoegen en verwijderen",
+    "edit": "Commentaren bewerken"
   },
   "toolbarShortcuts": {
     "switchBible": "Van Bijbel wisselen",
@@ -1148,6 +1151,7 @@
     "restartGetStartedDescription": "Toon de checklist Aan de slag opnieuw",
     "resetTutorials": "Uitleg opnieuw instellen",
     "resetTutorialsDescription": "Toon de handige tips in de app opnieuw",
-    "tutorialsReset": "De uitleg is opnieuw ingesteld."
+    "tutorialsReset": "De uitleg is opnieuw ingesteld.",
+    "resourceOrderDescription": "Sleep om de volgorde te kiezen waarin bronnen verschijnen in Gekoppelde bronnen en het menu Bronnen."
   }
 }

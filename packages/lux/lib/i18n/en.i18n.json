@@ -218,6 +218,7 @@
     "linkedResourcesDescription": "View people, themes, maps, and dictionary entries linked to {region}.",
     "noCrossReferences": "No Cross References Found",
     "noLinkedResources": "No Linked Resources Found",
+    "editLinkedResources": "Edit Linked Resources",
     "crossReferencesUse": "Cross references use {translation}",
     "onlineCrossReferencesExplanation": "Because your selected translation is only available online, cross references are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app."
   },
@@ -253,6 +254,7 @@
   "studyPanels": {
     "title": "Study Panel",
     "pinAsStudyPanel": "Pin as Study Panel",
+    "pinNamed": "Pin {name} as a Study Panel",
     "compareWith": "Compare with {translation}",
     "directionInterlinear": "{direction} Interlinear",
     "commentaryName": "{commentary} Commentary",
@@ -277,7 +279,8 @@
     "title": "Your Bookmarks"
   },
   "commentaries": {
-    "addRemove": "Add & Remove Commentaries"
+    "addRemove": "Add & Remove Commentaries",
+    "edit": "Edit Commentaries"
   },
   "toolbarShortcuts": {
     "switchBible": "Switch Bible",
@@ -1146,6 +1149,7 @@
     "restartGetStartedDescription": "Show the Get Started checklist again.",
     "resetTutorials": "Reset Tutorials",
     "resetTutorialsDescription": "Show helpful hints throughout the app again.",
-    "tutorialsReset": "Tutorials have been reset."
+    "tutorialsReset": "Tutorials have been reset.",
+    "resourceOrderDescription": "Drag to set the order resources appear in Linked Resources and the Resources menu."
   }
 }

@@ -182,7 +182,9 @@ chapter's last verse, and keeps links to deuterocanonical books as plain text.
 Passage-linked content has no generic resource model. Each kind of content is its own list of items, each item has its
 own linked passages, and Linked Resources filters each relevant list for items with a passage that overlaps the
 selection. The lists share only the `LinkedResource` mixin, which ranks items by their narrowest overlapping passage and
-matches title searches. People and themes share one `Article` shape: an ID, a title, a body of the same `RichContent` blocks commentary
+matches title searches. The `ResourceType` enum names each list with its title, icon, and browse page, and the user's
+saved `resourceOrder` of them orders both Linked Resources groups and Resources menu entries, with any type it lacks
+appended. People and themes share one `Article` shape: an ID, a title, a body of the same `RichContent` blocks commentary
 uses, and a list of `VerseSelection` passages. `generate_articles_json.dart` writes them as one minified list per kind
 to `assets/people/tyndale.json` and `assets/themes/tyndale.json`, which are decoded on first use and kept in memory.
 Items are classified by source file because `ThemeNotes.xml` marks one theme with the Profile type name. An article's

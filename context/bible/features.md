@@ -368,8 +368,9 @@ as a Scripture proof.
   dictionary entry when any Scripture it cites does, a map when any passage it illustrates does, a video when any
   passage it explains does, and a creed question or section when any of its Scripture proofs does, including passages
   that span several chapters
-- Results are grouped into People Profiles, Themes, Dictionary, Maps, Videos, and Creeds & Confessions, and a group
-  without results is hidden
+- Results are grouped into People Profiles, Themes, Dictionary, Maps, Videos, and Creeds & Confessions, in the order
+  set on the Linked Resources settings page, and a group without results is hidden. Each group's header stays pinned
+  while its results scroll
 - Within a group, items whose overlapping passage is narrowest come first, then items are ordered by title. Creeds &
   Confessions instead lists documents by year and each document's questions or sections in their own order
 - Each article and dictionary entry shows its title and the start of its first paragraph, each map shows a thumbnail
@@ -385,6 +386,12 @@ as a Scripture proof.
   the start of the section, and opens the item in a sheet with the same collapsed Scripture Proofs tile as the page
 - A message appears when nothing is linked
 - Linked Resources can be pinned as a study panel
+- The sheet's menu button offers Edit Linked Resources, which opens the settings page below, and Pin as Study Panel
+  wherever pinning is available
+
+More > Customize > Linked Resources lists the six resource kinds with drag handles. Dragging one changes the order of
+the groups in Linked Resources and of the matching entries in the Resources menu. The default order is the one listed
+above. Resource kinds added in a later version appear at the end of a customized order.
 
 ## Search
 
@@ -433,7 +440,8 @@ Search can be opened from the main toolbar or prefilled from a text selection.
 
 ## Resources
 
-The Resources action opens:
+The Resources action opens the Lexicon, followed by the other resources in the order set on the Linked Resources
+settings page:
 
 ### Lexicon
 
@@ -541,6 +549,7 @@ Users can:
 - Open multiple panels
 - Swipe between panels
 - Swap an Interlinear panel's direction or a Commentary panel's resource
+- Open the Linked Resources settings page from a Linked Resources panel
 - Close panels individually
 - Resize bottom panels
 - Keep panels open across navigation and app sessions
@@ -722,6 +731,7 @@ More is organized around:
 - Theme & Layout
 - Bibles
 - Commentaries
+- Linked Resources
 
 ### Toolbars
 

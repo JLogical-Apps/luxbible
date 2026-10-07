@@ -5,6 +5,7 @@ import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/pages/commentaries_page.dart';
 import 'package:bible/ui/pages/compare_settings_page.dart';
+import 'package:bible/ui/pages/resource_order_settings_page.dart';
 import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/compare_sheet.dart';
 import 'package:bible/ui/sheets/cross_references_sheet.dart';
@@ -144,12 +145,14 @@ enum StudyAction {
                       (context, _) => StyledSheet(
                         children: [
                           StyledListItem(
-                            title: 'Edit Commentaries'.toText(),
+                            title: t.commentaries.edit.toText(),
                             leading: Symbols.tune.toIcon(),
                             onPressed: () => context.pushReplacement(CommentariesPage()),
                           ),
                           StyledListItem(
-                            title: 'Pin ${selectedCommentary.title()} Commentary as a Study Panel'.toText(),
+                            title: t.studyPanels
+                                .pinNamed(name: StudyPanel.commentary(type: selectedCommentary).title())
+                                .toText(),
                             leading: Symbols.push_pin.toIcon(),
                             onPressed: () {
                               context.pop();
@@ -249,9 +252,30 @@ enum StudyAction {
           (context, _) => StyledSheet.builder(
             title: title().toText(),
             subtitle: regionFormat.toText(),
-            trailing: onAddStudyPanel == null
-                ? null
-                : PinStudyPanelButton(studyPanel: .linkedResources(), onAddStudyPanel: onAddStudyPanel),
+            trailing: StyledCircleButton.md(
+              child: Symbols.more_vert.toIcon(),
+              onPressed: () => context.showStyledSheet(
+                (context, _) => StyledSheet(
+                  children: [
+                    StyledListItem(
+                      title: t.studyActions.editLinkedResources.toText(),
+                      leading: Symbols.tune.toIcon(),
+                      onPressed: () => context.pushReplacement(ResourceOrderSettingsPage()),
+                    ),
+                    if (onAddStudyPanel != null)
+                      StyledListItem(
+                        title: t.studyPanels.pinAsStudyPanel.toText(),
+                        leading: Symbols.push_pin.toIcon(),
+                        onPressed: () {
+                          context.pop();
+                          context.pop();
+                          onAddStudyPanel(.linkedResources());
+                        },
+                      ),
+                  ],
+                ),
+              ),
+            ),
             childrenBuilder: (context, ref) => LinkedResourcesSheet.buildSheetChildren(
               context,
               ref,

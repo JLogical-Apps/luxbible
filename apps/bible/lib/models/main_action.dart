@@ -1,4 +1,3 @@
-import 'package:bible/models/article_collection.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
@@ -10,15 +9,11 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/verse_of_the_day_provider.dart';
 import 'package:bible/services/analytics_service.dart';
 import 'package:bible/ui/flows/verse_of_the_day_reminder_flow.dart';
-import 'package:bible/ui/pages/articles_page.dart';
-import 'package:bible/ui/pages/bible_maps_page.dart';
-import 'package:bible/ui/pages/creeds_page.dart';
 import 'package:bible/ui/pages/bible_plan_search_page.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/more_page.dart';
 import 'package:bible/ui/pages/search_page.dart';
-import 'package:bible/ui/pages/videos_page.dart';
 import 'package:bible/ui/sheets/bookmark_sheet.dart';
 import 'package:bible/ui/sheets/commentary_selection_sheet.dart';
 import 'package:bible/ui/sheets/compare_bible_sheet.dart';
@@ -316,31 +311,13 @@ enum MainAction {
                 leading: Symbols.translate.toIcon(),
                 onPressed: () => context.pop(LexiconPage()),
               ),
-              ...<ArticleCollection>[.people, .themes, .dictionary].map(
-                (collection) => StyledListItem.navigation(
-                  title: collection.title().toText(),
-                  subtitle: collection.description().toText(),
-                  leading: collection.icon.toIcon(),
-                  onPressed: () => context.pop(ArticlesPage(collection: collection)),
+              ...user.resourceOrderOrDefault.map(
+                (type) => StyledListItem.navigation(
+                  title: type.title().toText(),
+                  subtitle: type.description().toText(),
+                  leading: type.icon.toIcon(),
+                  onPressed: () => context.pop(type.page),
                 ),
-              ),
-              StyledListItem.navigation(
-                title: t.labels.maps.toText(),
-                subtitle: t.toolbarShortcuts.mapsDescription.toText(),
-                leading: Symbols.map.toIcon(),
-                onPressed: () => context.pop(BibleMapsPage()),
-              ),
-              StyledListItem.navigation(
-                title: t.labels.videos.toText(),
-                subtitle: t.toolbarShortcuts.videosDescription.toText(),
-                leading: Symbols.smart_display.toIcon(),
-                onPressed: () => context.pop(VideosPage()),
-              ),
-              StyledListItem.navigation(
-                title: t.labels.creeds.toText(),
-                subtitle: t.toolbarShortcuts.creedsDescription.toText(),
-                leading: Symbols.history_edu.toIcon(),
-                onPressed: () => context.pop(CreedsPage()),
               ),
             ],
           ),

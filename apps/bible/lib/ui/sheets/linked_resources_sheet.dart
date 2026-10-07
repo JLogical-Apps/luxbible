@@ -3,6 +3,7 @@ import 'package:bible/models/linked_resource.dart';
 import 'package:bible/providers/articles_provider.dart';
 import 'package:bible/providers/bible_maps_provider.dart';
 import 'package:bible/providers/creeds_provider.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/videos_provider.dart';
 import 'package:bible/ui/widgets/article_list_item.dart';
 import 'package:bible/ui/widgets/bible_map_list_item.dart';
@@ -55,49 +56,41 @@ class LinkedResourcesSheet {
       onNavigateToVerseSelection(selection);
     }
 
-    final sections = [
-      ...<ArticleCollection>[.people, .themes, .dictionary]
-          .where((collection) => linkedArticlesByCollection[collection]!.isNotEmpty)
-          .map(
-            (collection) => StyledSection(
-              title: collection.title().toText(),
-              children: linkedArticlesByCollection[collection]!
-                  .map(
-                    (article) => ArticleListItem(
-                      collection: collection,
-                      article: article,
-                      onNavigateToVerseSelection: navigateToVerseSelection,
-                    ),
-                  )
-                  .toList(),
-            ),
+    final sections = ref
+        .watch(userProvider)
+        .resourceOrderOrDefault
+        .map(
+          (type) => (
+            type: type,
+            items: switch (type) {
+              .people || .themes || .dictionary =>
+                linkedArticlesByCollection[type.articleCollection!]!
+                    .map(
+                      (article) => ArticleListItem(
+                        collection: type.articleCollection!,
+                        article: article,
+                        onNavigateToVerseSelection: navigateToVerseSelection,
+                      ),
+                    )
+                    .toList(),
+              .maps => linkedMaps.map((map) => BibleMapListItem(map: map)).toList(),
+              .videos =>
+                linkedVideos
+                    .map((video) => VideoListItem(video: video, onNavigateToVerseSelection: navigateToVerseSelection))
+                    .toList(),
+              .creeds =>
+                linkedCreedItems
+                    .map(
+                      (reference) =>
+                          CreedItemListItem(reference: reference, onNavigateToVerseSelection: navigateToVerseSelection),
+                    )
+                    .toList(),
+            },
           ),
-      if (linkedMaps.isNotEmpty)
-        StyledSection(
-          title: t.labels.maps.toText(),
-          padding: .only(top: 16, bottom: 8),
-          children: linkedMaps.map((map) => BibleMapListItem(map: map)).toList(),
-        ),
-      if (linkedVideos.isNotEmpty)
-        StyledSection(
-          title: t.labels.videos.toText(),
-          padding: .only(top: 16, bottom: 8),
-          children: linkedVideos
-              .map((video) => VideoListItem(video: video, onNavigateToVerseSelection: navigateToVerseSelection))
-              .toList(),
-        ),
-      if (linkedCreedItems.isNotEmpty)
-        StyledSection(
-          title: t.labels.creeds.toText(),
-          padding: .only(top: 16, bottom: 8),
-          children: linkedCreedItems
-              .map(
-                (reference) =>
-                    CreedItemListItem(reference: reference, onNavigateToVerseSelection: navigateToVerseSelection),
-              )
-              .toList(),
-        ),
-    ];
+        )
+        .where((section) => section.items.isNotEmpty)
+        .map((section) => StyledStickyHeader(title: section.type.title().toText(), children: section.items))
+        .toList();
     return sections.isEmpty
         ? [
             Padding(
@@ -105,6 +98,6 @@ class LinkedResourcesSheet {
               child: StyledBanner(message: t.studyActions.noLinkedResources.toText()),
             ),
           ]
-        : sections;
+        : StyledDivider(height: 2).wrapPositioned(sections);
   }
 }
