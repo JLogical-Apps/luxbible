@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 extension GlobalKeyExtensions on GlobalKey {
   RenderBox? get renderBox {
@@ -51,5 +52,22 @@ extension GlobalKeyExtensions on GlobalKey {
       duration: duration,
       curve: curve,
     );
+  }
+
+  Future<void> jumpSliverToTop() async {
+    final context = currentContext;
+    final sliver = context?.findRenderObject();
+    if (context == null || sliver is! RenderSliver) return;
+
+    final position = Scrollable.of(context).position;
+    void jumpTo(double offset) => position.jumpTo(offset.clamp(position.minScrollExtent, position.maxScrollExtent));
+
+    // getOffsetToReveal falls short in a SliverMainAxisGroup by subtracting every visible sticky header before it.
+    jumpTo(sliver.constraints.precedingScrollExtent);
+
+    // Pinned headers above the sliver only report how much they cover it once it is scrolled under them.
+    await WidgetsBinding.instance.endOfFrame;
+    if (!sliver.attached) return;
+    jumpTo(position.pixels - sliver.constraints.overlap);
   }
 }
