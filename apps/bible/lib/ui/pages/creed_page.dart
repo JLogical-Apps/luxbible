@@ -3,7 +3,9 @@ import 'package:bible/ui/widgets/creed_item_view.dart';
 import 'package:bible/ui/widgets/rich_content_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
 class CreedPage extends HookWidget implements StyledRoute<VerseSelection> {
@@ -36,6 +38,10 @@ class CreedPage extends HookWidget implements StyledRoute<VerseSelection> {
 
     return StyledPage(
       title: creed.title.toText(),
+      trailing: Tooltip(
+        message: t.labels.about,
+        child: StyledCircleButton.md(child: Symbols.info.toIcon(), onPressed: () => showInfo(context)),
+      ),
       body: MediaQuery.removeViewPadding(
         context: context,
         removeLeft: true,
@@ -83,4 +89,31 @@ class CreedPage extends HookWidget implements StyledRoute<VerseSelection> {
       ),
     );
   }
+
+  Future<void> showInfo(BuildContext context) => context.showStyledDialog(
+    (context) => StyledDialog.confirm(
+      title: creed.title.toText(),
+      bodyPadding: .zero,
+      body: StyledList(
+        children: [
+          StyledListItem(
+            leading: Symbols.history_edu.toIcon(),
+            title: creed.type.title().toText(),
+            subtitle: creed.type.description().toText(),
+          ),
+          StyledListItem(
+            leading: Symbols.calendar_month.toIcon(),
+            title: t.creeds.year.toText(),
+            subtitle: creed.year.toText(),
+          ),
+          if (creed.authors.isNotEmpty)
+            StyledListItem(
+              leading: Symbols.group.toIcon(),
+              title: t.creeds.authors(count: creed.authors.length).toText(),
+              subtitle: creed.authors.join(', ').toText(),
+            ),
+        ],
+      ),
+    ),
+  );
 }

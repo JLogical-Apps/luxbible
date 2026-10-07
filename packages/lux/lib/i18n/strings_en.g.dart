@@ -2874,6 +2874,15 @@ class Translations$creeds$en {
 
 	/// en: 'Scripture Proofs'
 	String get scriptureProofs => 'Scripture Proofs';
+
+	/// en: 'Year'
+	String get year => 'Year';
+
+	/// en: '(one) {Author} (other) {Authors}'
+	String authors({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count,
+		one: 'Author',
+		other: 'Authors',
+	);
 }
 
 // Path: videos
@@ -6232,6 +6241,8 @@ extension on Translations {
 			'creeds.searchHint' => 'Search for a creed',
 			'creeds.noMatchingCreeds' => 'No matching creeds',
 			'creeds.scriptureProofs' => 'Scripture Proofs',
+			'creeds.year' => 'Year',
+			'creeds.authors' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: 'Author', other: 'Authors', ), 
 			'videos.searchHint' => 'Search for a video',
 			'videos.noMatchingVideos' => 'No matching videos',
 			'videos.passages' => 'Passages',
@@ -6454,10 +6465,10 @@ extension on Translations {
 			'morphology.stem.pual.description' => 'The passive of the piel.',
 			'morphology.stem.pual.examples' => 'he was praised',
 			'morphology.stem.hiphil.name' => 'Hiphil',
-			'morphology.stem.hiphil.description' => 'The causative active stem.',
-			'morphology.stem.hiphil.examples' => 'he caused to write|he led out',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.stem.hiphil.description' => 'The causative active stem.',
+			'morphology.stem.hiphil.examples' => 'he caused to write|he led out',
 			'morphology.stem.hophal.name' => 'Hophal',
 			'morphology.stem.hophal.description' => 'The passive of the hiphil.',
 			'morphology.stem.hophal.examples' => 'he was caused to write',

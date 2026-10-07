@@ -1332,6 +1332,11 @@ class _Translations$creeds$de extends Translations$creeds$en {
 	@override String get searchHint => 'Nach einem Bekenntnis suchen';
 	@override String get noMatchingCreeds => 'Keine passenden Bekenntnisse';
 	@override String get scriptureProofs => 'Schriftbelege';
+	@override String get year => 'Jahr';
+	@override String authors({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count,
+		one: 'Autor',
+		other: 'Autoren',
+	);
 }
 
 // Path: videos
@@ -3887,6 +3892,8 @@ extension on TranslationsDe {
 			'creeds.searchHint' => 'Nach einem Bekenntnis suchen',
 			'creeds.noMatchingCreeds' => 'Keine passenden Bekenntnisse',
 			'creeds.scriptureProofs' => 'Schriftbelege',
+			'creeds.year' => 'Jahr',
+			'creeds.authors' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: 'Autor', other: 'Autoren', ), 
 			'videos.searchHint' => 'Nach einem Video suchen',
 			'videos.noMatchingVideos' => 'Keine passenden Videos',
 			'videos.passages' => 'Stellen',
@@ -4109,10 +4116,10 @@ extension on TranslationsDe {
 			'morphology.stem.pual.description' => 'Das Passiv des Piel.',
 			'morphology.stem.pual.examples' => 'er wurde gelobt',
 			'morphology.stem.hiphil.name' => 'Hifil',
-			'morphology.stem.hiphil.description' => 'Der kausative aktive Stamm.',
-			'morphology.stem.hiphil.examples' => 'er ließ schreiben|er führte heraus',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.stem.hiphil.description' => 'Der kausative aktive Stamm.',
+			'morphology.stem.hiphil.examples' => 'er ließ schreiben|er führte heraus',
 			'morphology.stem.hophal.name' => 'Hofal',
 			'morphology.stem.hophal.description' => 'Das Passiv des Hifil.',
 			'morphology.stem.hophal.examples' => 'er wurde zum Schreiben veranlasst',

@@ -1334,6 +1334,11 @@ class _Translations$creeds$nl extends Translations$creeds$en {
 	@override String get searchHint => 'Zoek naar een belijdenis';
 	@override String get noMatchingCreeds => 'Geen overeenkomende belijdenissen';
 	@override String get scriptureProofs => 'Schriftbewijzen';
+	@override String get year => 'Jaar';
+	@override String authors({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count,
+		one: 'Auteur',
+		other: 'Auteurs',
+	);
 }
 
 // Path: videos
@@ -3891,6 +3896,8 @@ extension on TranslationsNl {
 			'creeds.searchHint' => 'Zoek naar een belijdenis',
 			'creeds.noMatchingCreeds' => 'Geen overeenkomende belijdenissen',
 			'creeds.scriptureProofs' => 'Schriftbewijzen',
+			'creeds.year' => 'Jaar',
+			'creeds.authors' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: 'Auteur', other: 'Auteurs', ), 
 			'videos.searchHint' => 'Zoek naar een video',
 			'videos.noMatchingVideos' => 'Geen overeenkomende video\'s',
 			'videos.passages' => 'Passages',
@@ -4111,10 +4118,10 @@ extension on TranslationsNl {
 			'morphology.stem.piel.examples' => 'hij prees|hij zegende|hij verbrijzelde',
 			'morphology.stem.pual.name' => 'Pual',
 			'morphology.stem.pual.description' => 'De passieve vorm van de piel.',
-			'morphology.stem.pual.examples' => 'hij werd geprezen',
-			'morphology.stem.hiphil.name' => 'Hiphil',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.stem.pual.examples' => 'hij werd geprezen',
+			'morphology.stem.hiphil.name' => 'Hiphil',
 			'morphology.stem.hiphil.description' => 'De causatieve actieve stam.',
 			'morphology.stem.hiphil.examples' => 'hij liet schrijven|hij leidde naar buiten',
 			'morphology.stem.hophal.name' => 'Hophal',

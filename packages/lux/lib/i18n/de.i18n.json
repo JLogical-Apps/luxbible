@@ -924,7 +924,12 @@
     "sectionNumber": "Abschnitt {number}",
     "searchHint": "Nach einem Bekenntnis suchen",
     "noMatchingCreeds": "Keine passenden Bekenntnisse",
-    "scriptureProofs": "Schriftbelege"
+    "scriptureProofs": "Schriftbelege",
+    "year": "Jahr",
+    "authors(param=count)": {
+      "one": "Autor",
+      "other": "Autoren"
+    }
   },
   "videos": {
     "searchHint": "Nach einem Video suchen",

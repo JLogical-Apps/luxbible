@@ -1344,6 +1344,13 @@ class _Translations$creeds$ru extends Translations$creeds$en {
 	@override String get searchHint => 'Поиск исповедания';
 	@override String get noMatchingCreeds => 'Нет подходящих исповеданий';
 	@override String get scriptureProofs => 'Подтверждения из Писания';
+	@override String get year => 'Год';
+	@override String authors({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count,
+		one: 'Автор',
+		few: 'Авторы',
+		many: 'Авторы',
+		other: 'Авторы',
+	);
 }
 
 // Path: videos
@@ -3903,6 +3910,8 @@ extension on TranslationsRu {
 			'creeds.searchHint' => 'Поиск исповедания',
 			'creeds.noMatchingCreeds' => 'Нет подходящих исповеданий',
 			'creeds.scriptureProofs' => 'Подтверждения из Писания',
+			'creeds.year' => 'Год',
+			'creeds.authors' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: 'Автор', few: 'Авторы', many: 'Авторы', other: 'Авторы', ), 
 			'videos.searchHint' => 'Поиск видео',
 			'videos.noMatchingVideos' => 'Нет подходящих видео',
 			'videos.passages' => 'Отрывки',
@@ -4123,10 +4132,10 @@ extension on TranslationsRu {
 			'morphology.stem.piel.examples' => 'он похвалил|он благословил|он разбил',
 			'morphology.stem.pual.name' => 'Пуал',
 			'morphology.stem.pual.description' => 'Пассив пиеля.',
-			'morphology.stem.pual.examples' => 'его хвалили',
-			'morphology.stem.hiphil.name' => 'Хифил',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.stem.pual.examples' => 'его хвалили',
+			'morphology.stem.hiphil.name' => 'Хифил',
 			'morphology.stem.hiphil.description' => 'Причинно-активная основа.',
 			'morphology.stem.hiphil.examples' => 'он заставил написать|он вывел',
 			'morphology.stem.hophal.name' => 'Хофал',

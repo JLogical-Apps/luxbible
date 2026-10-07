@@ -936,7 +936,14 @@
     "sectionNumber": "Раздел {number}",
     "searchHint": "Поиск исповедания",
     "noMatchingCreeds": "Нет подходящих исповеданий",
-    "scriptureProofs": "Подтверждения из Писания"
+    "scriptureProofs": "Подтверждения из Писания",
+    "year": "Год",
+    "authors(param=count)": {
+      "one": "Автор",
+      "few": "Авторы",
+      "many": "Авторы",
+      "other": "Авторы"
+    }
   },
   "videos": {
     "searchHint": "Поиск видео",

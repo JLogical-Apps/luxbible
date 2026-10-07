@@ -926,7 +926,12 @@
     "sectionNumber": "Paragraaf {number}",
     "searchHint": "Zoek naar een belijdenis",
     "noMatchingCreeds": "Geen overeenkomende belijdenissen",
-    "scriptureProofs": "Schriftbewijzen"
+    "scriptureProofs": "Schriftbewijzen",
+    "year": "Jaar",
+    "authors(param=count)": {
+      "one": "Auteur",
+      "other": "Auteurs"
+    }
   },
   "videos": {
     "searchHint": "Zoek naar een video",

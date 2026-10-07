@@ -524,6 +524,8 @@ settings page:
 - When the document has Scripture proofs, a collapsed Scripture Proofs tile follows each item's text. Expanding it
   lists each proof's reference and the first two lines of its text, and each opens a passage preview. Like Cross
   References, proofs use the study Bible when an online Bible is active
+- An info button in the document's header opens a dialog with its kind (with that kind's description), year, and
+  authors when known
 - The Apostles' Creed uses its traditional wording ("he descended into hell")
 
 The Dictionary and Lexicon are also available as independent main-toolbar shortcuts.

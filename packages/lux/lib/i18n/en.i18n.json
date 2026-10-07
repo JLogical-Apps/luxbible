@@ -924,7 +924,12 @@
     "sectionNumber": "Section {number}",
     "searchHint": "Search for a creed",
     "noMatchingCreeds": "No matching creeds",
-    "scriptureProofs": "Scripture Proofs"
+    "scriptureProofs": "Scripture Proofs",
+    "year": "Year",
+    "authors(param=count)": {
+      "one": "Author",
+      "other": "Authors"
+    }
   },
   "videos": {
     "searchHint": "Search for a video",
