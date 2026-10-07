@@ -1326,6 +1326,9 @@ class _Translations$creeds$nl extends Translations$creeds$en {
 	@override String get creeds => 'Geloofsbelijdenissen';
 	@override String get confessions => 'Belijdenisgeschriften';
 	@override String get catechisms => 'Catechismussen';
+	@override String get creedsDescription => 'Korte samenvattingen van de kern van het geloof, vaak samen uitgesproken';
+	@override String get confessionsDescription => 'Uitgebreide verklaringen van wat een kerk gelooft, per onderwerp geordend';
+	@override String get catechismsDescription => 'Vragen en antwoorden om het geloof te onderwijzen';
 	@override String questionNumber({required Object number}) => 'V. ${number}';
 	@override String sectionNumber({required Object number}) => 'Paragraaf ${number}';
 	@override String get searchHint => 'Zoek naar een belijdenis';
@@ -3880,6 +3883,9 @@ extension on TranslationsNl {
 			'creeds.creeds' => 'Geloofsbelijdenissen',
 			'creeds.confessions' => 'Belijdenisgeschriften',
 			'creeds.catechisms' => 'Catechismussen',
+			'creeds.creedsDescription' => 'Korte samenvattingen van de kern van het geloof, vaak samen uitgesproken',
+			'creeds.confessionsDescription' => 'Uitgebreide verklaringen van wat een kerk gelooft, per onderwerp geordend',
+			'creeds.catechismsDescription' => 'Vragen en antwoorden om het geloof te onderwijzen',
 			'creeds.questionNumber' => ({required Object number}) => 'V. ${number}',
 			'creeds.sectionNumber' => ({required Object number}) => 'Paragraaf ${number}',
 			'creeds.searchHint' => 'Zoek naar een belijdenis',
@@ -4107,11 +4113,11 @@ extension on TranslationsNl {
 			'morphology.stem.pual.description' => 'De passieve vorm van de piel.',
 			'morphology.stem.pual.examples' => 'hij werd geprezen',
 			'morphology.stem.hiphil.name' => 'Hiphil',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.stem.hiphil.description' => 'De causatieve actieve stam.',
 			'morphology.stem.hiphil.examples' => 'hij liet schrijven|hij leidde naar buiten',
 			'morphology.stem.hophal.name' => 'Hophal',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.stem.hophal.description' => 'De passieve vorm van de hiphil.',
 			'morphology.stem.hophal.examples' => 'hij werd tot schrijven gebracht',
 			'morphology.stem.hithpael.name' => 'Hithpael',

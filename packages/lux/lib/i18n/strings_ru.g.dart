@@ -1336,6 +1336,9 @@ class _Translations$creeds$ru extends Translations$creeds$en {
 	@override String get creeds => 'Символы веры';
 	@override String get confessions => 'Исповедания';
 	@override String get catechisms => 'Катехизисы';
+	@override String get creedsDescription => 'Краткое изложение основ веры, часто читаемое вслух вместе';
+	@override String get confessionsDescription => 'Подробное изложение учения церкви, упорядоченное по темам';
+	@override String get catechismsDescription => 'Вопросы и ответы для обучения вере';
 	@override String questionNumber({required Object number}) => 'В. ${number}';
 	@override String sectionNumber({required Object number}) => 'Раздел ${number}';
 	@override String get searchHint => 'Поиск исповедания';
@@ -3892,6 +3895,9 @@ extension on TranslationsRu {
 			'creeds.creeds' => 'Символы веры',
 			'creeds.confessions' => 'Исповедания',
 			'creeds.catechisms' => 'Катехизисы',
+			'creeds.creedsDescription' => 'Краткое изложение основ веры, часто читаемое вслух вместе',
+			'creeds.confessionsDescription' => 'Подробное изложение учения церкви, упорядоченное по темам',
+			'creeds.catechismsDescription' => 'Вопросы и ответы для обучения вере',
 			'creeds.questionNumber' => ({required Object number}) => 'В. ${number}',
 			'creeds.sectionNumber' => ({required Object number}) => 'Раздел ${number}',
 			'creeds.searchHint' => 'Поиск исповедания',
@@ -4119,11 +4125,11 @@ extension on TranslationsRu {
 			'morphology.stem.pual.description' => 'Пассив пиеля.',
 			'morphology.stem.pual.examples' => 'его хвалили',
 			'morphology.stem.hiphil.name' => 'Хифил',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.stem.hiphil.description' => 'Причинно-активная основа.',
 			'morphology.stem.hiphil.examples' => 'он заставил написать|он вывел',
 			'morphology.stem.hophal.name' => 'Хофал',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.stem.hophal.description' => 'Пассив Хифила.',
 			'morphology.stem.hophal.examples' => 'его заставили написать',
 			'morphology.stem.hithpael.name' => 'Хитпаэль',

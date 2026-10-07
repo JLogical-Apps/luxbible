@@ -66,6 +66,7 @@ class CreedsPage extends HookConsumerWidget implements StyledRoute<VerseSelectio
                         .expand(
                           (type) => StyledSection(
                             title: type.title().toText(),
+                            subtitle: type.description().toText(),
                             padding: .only(top: 24),
                             children: matchingCreedsByType[type]!
                                 .map(

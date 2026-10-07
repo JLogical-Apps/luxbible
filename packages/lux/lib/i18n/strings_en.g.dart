@@ -2851,6 +2851,15 @@ class Translations$creeds$en {
 	/// en: 'Catechisms'
 	String get catechisms => 'Catechisms';
 
+	/// en: 'Short summaries of the core beliefs of the faith, often recited together'
+	String get creedsDescription => 'Short summaries of the core beliefs of the faith, often recited together';
+
+	/// en: 'Detailed statements of what a church believes, organized by topic'
+	String get confessionsDescription => 'Detailed statements of what a church believes, organized by topic';
+
+	/// en: 'Questions and answers for teaching the faith'
+	String get catechismsDescription => 'Questions and answers for teaching the faith';
+
 	/// en: 'Q. {number}'
 	String questionNumber({required Object number}) => 'Q. ${number}';
 
@@ -6215,6 +6224,9 @@ extension on Translations {
 			'creeds.creeds' => 'Creeds',
 			'creeds.confessions' => 'Confessions',
 			'creeds.catechisms' => 'Catechisms',
+			'creeds.creedsDescription' => 'Short summaries of the core beliefs of the faith, often recited together',
+			'creeds.confessionsDescription' => 'Detailed statements of what a church believes, organized by topic',
+			'creeds.catechismsDescription' => 'Questions and answers for teaching the faith',
 			'creeds.questionNumber' => ({required Object number}) => 'Q. ${number}',
 			'creeds.sectionNumber' => ({required Object number}) => 'Section ${number}',
 			'creeds.searchHint' => 'Search for a creed',
@@ -6444,11 +6456,11 @@ extension on Translations {
 			'morphology.stem.hiphil.name' => 'Hiphil',
 			'morphology.stem.hiphil.description' => 'The causative active stem.',
 			'morphology.stem.hiphil.examples' => 'he caused to write|he led out',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.stem.hophal.name' => 'Hophal',
 			'morphology.stem.hophal.description' => 'The passive of the hiphil.',
 			'morphology.stem.hophal.examples' => 'he was caused to write',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.stem.hithpael.name' => 'Hithpael',
 			'morphology.stem.hithpael.description' => 'The reflexive or reciprocal of the piel.',
 			'morphology.stem.hithpael.examples' => 'he sanctified himself|they walked about',

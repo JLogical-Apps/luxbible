@@ -514,7 +514,8 @@ settings page:
 
 - 35 public-domain creeds, confessions, and catechisms, in English only, from the early church rules of faith and
   ecumenical creeds through the Reformation confessions, the Westminster Standards, and Baptist catechisms
-- Grouped into Creeds, Confessions, and Catechisms, each listed in order of its year with its year and authors
+- Grouped into Creeds, Confessions, and Catechisms, each with a one-line description of that kind of document, and each
+  listed in order of its year with its year and authors
 - Search where each typed word matches the start of any word in a title, in any order
 - A creed opens as a single page of text
 - A confession or catechism shows its full text, with a sticky header above each question, article, or section. In a

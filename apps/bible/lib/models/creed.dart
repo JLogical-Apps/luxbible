@@ -18,6 +18,12 @@ enum CreedType {
     confession => t.creeds.confessions,
     catechism => t.creeds.catechisms,
   };
+
+  String description() => switch (this) {
+    creed => t.creeds.creedsDescription,
+    confession => t.creeds.confessionsDescription,
+    catechism => t.creeds.catechismsDescription,
+  };
 }
 
 @freezed

@@ -1324,6 +1324,9 @@ class _Translations$creeds$de extends Translations$creeds$en {
 	@override String get creeds => 'Glaubensbekenntnisse';
 	@override String get confessions => 'Bekenntnisschriften';
 	@override String get catechisms => 'Katechismen';
+	@override String get creedsDescription => 'Kurze Zusammenfassungen des Kerns des Glaubens, oft gemeinsam gesprochen';
+	@override String get confessionsDescription => 'Ausführliche Darlegungen dessen, was eine Kirche glaubt, nach Themen geordnet';
+	@override String get catechismsDescription => 'Fragen und Antworten zur Unterweisung im Glauben';
 	@override String questionNumber({required Object number}) => 'F. ${number}';
 	@override String sectionNumber({required Object number}) => 'Abschnitt ${number}';
 	@override String get searchHint => 'Nach einem Bekenntnis suchen';
@@ -3876,6 +3879,9 @@ extension on TranslationsDe {
 			'creeds.creeds' => 'Glaubensbekenntnisse',
 			'creeds.confessions' => 'Bekenntnisschriften',
 			'creeds.catechisms' => 'Katechismen',
+			'creeds.creedsDescription' => 'Kurze Zusammenfassungen des Kerns des Glaubens, oft gemeinsam gesprochen',
+			'creeds.confessionsDescription' => 'Ausführliche Darlegungen dessen, was eine Kirche glaubt, nach Themen geordnet',
+			'creeds.catechismsDescription' => 'Fragen und Antworten zur Unterweisung im Glauben',
 			'creeds.questionNumber' => ({required Object number}) => 'F. ${number}',
 			'creeds.sectionNumber' => ({required Object number}) => 'Abschnitt ${number}',
 			'creeds.searchHint' => 'Nach einem Bekenntnis suchen',
@@ -4105,11 +4111,11 @@ extension on TranslationsDe {
 			'morphology.stem.hiphil.name' => 'Hifil',
 			'morphology.stem.hiphil.description' => 'Der kausative aktive Stamm.',
 			'morphology.stem.hiphil.examples' => 'er ließ schreiben|er führte heraus',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.stem.hophal.name' => 'Hofal',
 			'morphology.stem.hophal.description' => 'Das Passiv des Hifil.',
 			'morphology.stem.hophal.examples' => 'er wurde zum Schreiben veranlasst',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.stem.hithpael.name' => 'Hitpael',
 			'morphology.stem.hithpael.description' => 'Das Reflexiv oder Reziprok des Piel.',
 			'morphology.stem.hithpael.examples' => 'er heiligte sich|sie gingen umher',
