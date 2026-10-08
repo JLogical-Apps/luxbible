@@ -9,7 +9,7 @@ import 'package:style/style.dart';
 
 class CommentarySelectionSheet {
   static Future<CommentaryType?> show(BuildContext context, {CommentaryType? initialCommentary}) =>
-      context.showStyledSheet((context, ref) {
+      context.showStyledSheetWithBreadcrumbs(breadcrumbText: t.labels.commentary, (context, ref) {
         final user = ref.watch(userProvider);
         return StyledSelectionSheet(
           title: t.labels.commentary.toText(),

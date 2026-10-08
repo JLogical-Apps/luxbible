@@ -16,7 +16,8 @@ class StudySheet {
     required RegionType regionType,
     required Function(VerseSelection) onNavigateToVerseSelection,
     Function(StudyPanel)? onAddStudyPanel,
-  }) => context.showStyledSheet(
+  }) => context.showStyledSheetWithBreadcrumbs(
+    breadcrumbText: t.labels.study,
     (context, _) => StyledSheet(
       title: t.labels.study.toText(),
       subtitle: regionFormat.toText(),
@@ -26,17 +27,14 @@ class StudySheet {
               title: action.title().toText(),
               subtitle: action.description(regionFormat: regionFormat, regionType: regionType).toText(),
               leading: action.icon.toIcon(),
-              onPressed: () {
-                context.pop();
-                action.onPressed(
-                  context,
-                  regionFormat: regionFormat,
-                  verseSelection: verseSelection,
-                  onNavigateToVerseSelection: onNavigateToVerseSelection,
-                  onAddStudyPanel: onAddStudyPanel,
-                  user: ref.read(userProvider),
-                );
-              },
+              onPressed: () => action.onPressed(
+                context,
+                regionFormat: regionFormat,
+                verseSelection: verseSelection,
+                onNavigateToVerseSelection: onNavigateToVerseSelection,
+                onAddStudyPanel: onAddStudyPanel,
+                user: ref.read(userProvider),
+              ),
             ),
           )
           .toList(),

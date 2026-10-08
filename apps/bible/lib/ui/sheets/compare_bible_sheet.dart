@@ -9,7 +9,7 @@ import 'package:style/style.dart';
 
 class CompareBibleSheet {
   static Future<BibleTranslation?> show(BuildContext context, {BibleTranslation? initialBible}) =>
-      context.showStyledSheet((context, ref) {
+      context.showStyledSheetWithBreadcrumbs(breadcrumbText: t.studyActions.compare, (context, ref) {
         final user = ref.watch(userProvider);
         return StyledSelectionSheet(
           title: t.studyActions.compare.toText(),

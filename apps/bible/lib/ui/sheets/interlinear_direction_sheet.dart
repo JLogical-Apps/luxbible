@@ -6,7 +6,8 @@ import 'package:style/style.dart';
 
 class InterlinearDirectionSheet {
   static Future<InterlinearDirection?> show(BuildContext context, {InterlinearDirection? initialDirection}) =>
-      context.showStyledSheet(
+      context.showStyledSheetWithBreadcrumbs(
+        breadcrumbText: t.labels.interlinear,
         (context, _) => StyledSelectionSheet(
           title: t.interlinearUi.direction.toText(),
           initialOption: initialDirection,

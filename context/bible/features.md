@@ -282,6 +282,10 @@ preserve the direction or resource currently selected in the sheet. When a panel
 clears the selection and scrolls its verses into view after the panel changes the reading area. Study sheets opened
 while reading a Bible plan do not offer pin actions.
 
+Opening a tool from the Study sheet replaces it, and breadcrumbs at the top, such as Study › Commentary, lead back to
+it. The breadcrumbs continue into sheets opened from a tool, such as a word in Interlinear or an article in Linked
+Resources. Tools opened directly from a toolbar shortcut start their own breadcrumbs.
+
 ## Compare
 
 Compare displays the selected chapter, verses, or passage in every configured Compare Bible, in the order configured
@@ -442,7 +446,7 @@ Search can be opened from the main toolbar or prefilled from a text selection.
 ## Resources
 
 The Resources action opens the Lexicon, followed by the other resources in the order set on the Linked Resources
-settings page:
+settings page. When opened from the main toolbar's Study sheet, it shows Study › Resources breadcrumbs that lead back:
 
 ### Lexicon
 
@@ -552,6 +556,9 @@ Available panel types are:
 - Cross References
 - Linked Resources
 - Notes from visible annotations
+
+Choosing Compare, Interlinear, or Commentary when adding a panel replaces the panel list with a picker for its Bible,
+direction, or resource, and breadcrumbs such as Study › Study Panel › Compare lead back.
 
 Users can:
 

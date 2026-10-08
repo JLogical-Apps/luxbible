@@ -72,7 +72,7 @@ enum StudyAction {
   }) async {
     switch (this) {
       case .interlinear:
-        await context.showStyledSheetWithBreadcrumbs(breadcrumbText: regionFormat, (context, _) {
+        await context.showStyledSheetWithBreadcrumbs(breadcrumbText: title(), (context, _) {
           final user = ref.read(userProvider);
 
           final tabController = useTabController(
@@ -124,7 +124,7 @@ enum StudyAction {
           );
         });
       case .commentary:
-        await context.showStyledSheet((context, ref) {
+        await context.showStyledSheetWithBreadcrumbs(breadcrumbText: title(), (context, ref) {
           final user = ref.watch(userProvider);
           final tabController = useTabController(
             initialLength: user.commentariesOrDefault.length,
@@ -202,7 +202,7 @@ enum StudyAction {
           );
         });
       case .compare:
-        await context.showStyledSheet((context, ref) {
+        await context.showStyledSheetWithBreadcrumbs(breadcrumbText: title(), (context, ref) {
           final user = ref.watch(userProvider);
           return StyledSheet(
             title: title().toText(),
@@ -221,7 +221,8 @@ enum StudyAction {
         });
       case .crossReferences:
         ref.markOnboardingStep(.crossReferences);
-        await context.showStyledSheet(
+        await context.showStyledSheetWithBreadcrumbs(
+          breadcrumbText: title(),
           (context, _) => StyledSheet(
             title: title().toText(),
             subtitle: SingleChildScrollView(
@@ -248,7 +249,8 @@ enum StudyAction {
           ),
         );
       case .linkedResources:
-        await context.showStyledSheet(
+        await context.showStyledSheetWithBreadcrumbs(
+          breadcrumbText: title(),
           (context, _) => StyledSheet.builder(
             title: title().toText(),
             subtitle: regionFormat.toText(),

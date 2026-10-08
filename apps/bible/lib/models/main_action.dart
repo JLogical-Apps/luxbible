@@ -192,8 +192,9 @@ enum MainAction {
           );
         }
       case study:
-        context.showStyledSheet(
-          (_, _) => StyledSheet(
+        context.showStyledSheetWithBreadcrumbs(
+          breadcrumbText: t.labels.study,
+          (sheetContext, _) => StyledSheet(
             title: t.labels.study.toText(),
             subtitle: reference.format().toText(),
             children: [
@@ -205,9 +206,12 @@ enum MainAction {
                         subtitle: action.description().toText(),
                         leading: action.buildIcon(context),
                         onPressed: () async {
-                          context.pop();
+                          // Study Panel and Resources continue these breadcrumbs and replace this sheet themselves.
+                          final isBreadcrumb = action != search;
+                          if (!isBreadcrumb) sheetContext.pop();
+
                           await action.onPressed(
-                            context,
+                            isBreadcrumb ? sheetContext : context,
                             reference: reference,
                             onNavigateToVerseSelection: onNavigateToVerseSelection,
                             onAddStudyPanel: onAddStudyPanel,
@@ -227,17 +231,14 @@ enum MainAction {
                         title: action.title().toText(),
                         subtitle: action.description(regionFormat: reference.format(), regionType: .chapter).toText(),
                         leading: action.icon.toIcon(),
-                        onPressed: () {
-                          context.pop();
-                          action.onPressed(
-                            context,
-                            regionFormat: reference.format(),
-                            verseSelection: reference.toVerseSelection(),
-                            onNavigateToVerseSelection: onNavigateToVerseSelection,
-                            onAddStudyPanel: onAddStudyPanel,
-                            user: ref.read(userProvider),
-                          );
-                        },
+                        onPressed: () => action.onPressed(
+                          sheetContext,
+                          regionFormat: reference.format(),
+                          verseSelection: reference.toVerseSelection(),
+                          onNavigateToVerseSelection: onNavigateToVerseSelection,
+                          onAddStudyPanel: onAddStudyPanel,
+                          user: ref.read(userProvider),
+                        ),
                       ),
                     )
                     .toList(),
@@ -255,53 +256,54 @@ enum MainAction {
         );
         if (context.mounted) await VerseOfTheDayReminderFlow.showDiscoveryPrompt(context);
       case studyPanel:
-        final studyPanelType = await context.showStyledSheet<StudyPanelType>(
+        await context.showStyledSheetWithBreadcrumbs(
+          breadcrumbText: t.studyPanels.title,
           (context, _) => StyledSheet(
             title: t.studyPanels.title.toText(),
             children: StudyPanelType.values
                 .map(
-                  (studyAction) => StyledListItem(
-                    title: studyAction.title().toText(),
-                    subtitle: studyAction.description().toText(),
-                    leading: studyAction.icon.toIcon(),
-                    onPressed: () => context.pop(studyAction),
+                  (type) => StyledListItem(
+                    title: type.title().toText(),
+                    subtitle: type.description().toText(),
+                    leading: type.icon.toIcon(),
+                    onPressed: () async {
+                      // The option pickers replace this sheet in the breadcrumbs, so only the others close it.
+                      switch (type) {
+                        case .compare:
+                          final translation = await CompareBibleSheet.show(context);
+                          if (translation != null) onAddStudyPanel(.compare(translation: translation));
+                        case .interlinear:
+                          final direction = await InterlinearDirectionSheet.show(context);
+                          if (direction != null) onAddStudyPanel(.interlinear(direction: direction));
+                        case .commentary:
+                          final commentaryType = await CommentarySelectionSheet.show(context);
+                          if (commentaryType != null) onAddStudyPanel(.commentary(type: commentaryType));
+                        case .crossReferences:
+                          context.pop();
+                          onAddStudyPanel(.crossReferences());
+                        case .linkedResources:
+                          context.pop();
+                          onAddStudyPanel(.linkedResources());
+                        case .notes:
+                          context.pop();
+                          onAddStudyPanel(.notes());
+                      }
+                    },
                   ),
                 )
                 .toList(),
           ),
         );
-        if (studyPanelType != null && context.mounted) {
-          switch (studyPanelType) {
-            case .compare:
-              final translation = await CompareBibleSheet.show(context);
-              if (translation != null) {
-                onAddStudyPanel(StudyPanel.compare(translation: translation));
-              }
-            case .interlinear:
-              final direction = await InterlinearDirectionSheet.show(context);
-              if (direction != null) {
-                onAddStudyPanel(StudyPanel.interlinear(direction: direction));
-              }
-            case .commentary:
-              final commentaryType = await CommentarySelectionSheet.show(context);
-              if (commentaryType != null) {
-                onAddStudyPanel(StudyPanel.commentary(type: commentaryType));
-              }
-            case .crossReferences:
-              onAddStudyPanel(StudyPanel.crossReferences());
-            case .linkedResources:
-              onAddStudyPanel(StudyPanel.linkedResources());
-            case .notes:
-              onAddStudyPanel(StudyPanel.notes());
-          }
-        }
       case search:
         final result = await context.push(SearchPage(currentChapterReference: reference));
         if (result != null) {
           onNavigateToVerseSelection(result);
         }
       case resources:
-        final resourcePage = await context.showStyledSheet<StyledRoute<VerseSelection>>(
+        // The Study sheet this may have replaced is gone once a resource is picked.
+        final navigatorContext = context.rootContext;
+        final resourcePage = await context.showStyledSheetWithBreadcrumbs<StyledRoute<VerseSelection>>(
+          breadcrumbText: t.labels.resources,
           (context, _) => StyledSheet(
             title: t.labels.resources.toText(),
             children: [
@@ -322,10 +324,11 @@ enum MainAction {
             ],
           ),
         );
-        if (resourcePage == null || !context.mounted) {
+        if (resourcePage == null || !navigatorContext.mounted) {
           return;
         }
-        final result = await context.push(resourcePage);
+
+        final result = await navigatorContext.push(resourcePage);
         if (result != null) {
           onNavigateToVerseSelection(result);
         }
