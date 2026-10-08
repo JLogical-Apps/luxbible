@@ -6,7 +6,7 @@ import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/pages/search_page.dart';
 import 'package:collection/collection.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/i18n.dart';
@@ -91,51 +91,20 @@ class StrongSheet {
                         StyledLink(t.strongSheet.legend, onPressed: () => showDefinitionLegend(context)),
                       ],
                     ),
-                    subtitle: MarkdownBuilder(
-                      strong.formattedDefinition,
-                      onLinkPressed: (text, link) {
-                        final marker = StrongDefinitionMarker.fromLinkTarget(link);
-                        if (marker != null) {
-                          context.showStyledDialog(
-                            (context) => StyledDialog.confirm(
-                              title: marker.title.toText(),
-                              bodyPadding: .zero,
-                              body: StyledListItem(
-                                leading: Text(marker.symbol, style: context.textStyle.labelLg),
-                                title: marker.title.toText(),
-                                subtitle: marker.description.toText(),
-                              ),
-                            ),
-                          );
-                        } else {
-                          openStrong(context, link);
-                        }
-                      },
-                    ),
-                  ),
-                  if (strong.definition != strong.usage)
-                    StyledListItem(
-                      title: t.strongSheet.biblicalUsage.toText(),
-                      subtitle: MarkdownBuilder(
-                        strong.formattedUsage,
+                    subtitle: SelectionArea(
+                      child: MarkdownBuilder(
+                        strong.formattedDefinition,
                         onLinkPressed: (text, link) {
-                          final stem = HebrewStem.fromLinkTarget(link);
-                          if (stem != null) {
+                          final marker = StrongDefinitionMarker.fromLinkTarget(link);
+                          if (marker != null) {
                             context.showStyledDialog(
                               (context) => StyledDialog.confirm(
-                                title: stem.displayName.toText(),
+                                title: marker.title.toText(),
                                 bodyPadding: .zero,
-                                body: StyledList(
-                                  children: [
-                                    StyledListItem(
-                                      title: t.strongSheet.definition.toText(),
-                                      subtitle: stem.description.toText(),
-                                    ),
-                                    StyledListItem(
-                                      title: t.strongSheet.examples.toText(),
-                                      subtitle: stem.examples.map((example) => '"$example"').join(', ').toText(),
-                                    ),
-                                  ],
+                                body: StyledListItem(
+                                  leading: Text(marker.symbol, style: context.textStyle.labelLg),
+                                  title: marker.title.toText(),
+                                  subtitle: marker.description.toText(),
                                 ),
                               ),
                             );
@@ -145,12 +114,49 @@ class StrongSheet {
                         },
                       ),
                     ),
+                  ),
+                  if (strong.definition != strong.usage)
+                    StyledListItem(
+                      title: t.strongSheet.biblicalUsage.toText(),
+                      subtitle: SelectionArea(
+                        child: MarkdownBuilder(
+                          strong.formattedUsage,
+                          onLinkPressed: (text, link) {
+                            final stem = HebrewStem.fromLinkTarget(link);
+                            if (stem != null) {
+                              context.showStyledDialog(
+                                (context) => StyledDialog.confirm(
+                                  title: stem.displayName.toText(),
+                                  bodyPadding: .zero,
+                                  body: StyledList(
+                                    children: [
+                                      StyledListItem(
+                                        title: t.strongSheet.definition.toText(),
+                                        subtitle: stem.description.toText(),
+                                      ),
+                                      StyledListItem(
+                                        title: t.strongSheet.examples.toText(),
+                                        subtitle: stem.examples.map((example) => '"$example"').join(', ').toText(),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            } else {
+                              openStrong(context, link);
+                            }
+                          },
+                        ),
+                      ),
+                    ),
                   if (strong.partOfSpeech case final partOfSpeech?)
                     StyledListItem(title: t.strongSheet.partOfSpeech.toText(), subtitle: partOfSpeech.toText()),
                   if (strong.derivation case final derivation?)
                     StyledListItem(
                       title: t.strongSheet.derivation.toText(),
-                      subtitle: MarkdownBuilder(derivation, onLinkPressed: (text, link) => openStrong(context, link)),
+                      subtitle: SelectionArea(
+                        child: MarkdownBuilder(derivation, onLinkPressed: (text, link) => openStrong(context, link)),
+                      ),
                     ),
                 ],
               ),

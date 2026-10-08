@@ -102,7 +102,9 @@ class CommentarySectionContainer extends StatelessWidget {
     headerPadding: .symmetric(horizontal: 16, vertical: trailing == null ? 16 : 8),
     child: Padding(
       padding: .only(bottom: 16),
-      child: RichContentList(content: content, onNavigateToVerseSelection: onNavigateToVerseSelection),
+      child: SelectionArea(
+        child: RichContentList(content: content, onNavigateToVerseSelection: onNavigateToVerseSelection),
+      ),
     ),
   );
 }

@@ -20,7 +20,9 @@ class CreedItemView extends StatelessWidget {
       crossAxisAlignment: .stretch,
       spacing: 16,
       children: [
-        RichContentList(content: item.body, onNavigateToVerseSelection: onNavigateToVerseSelection),
+        SelectionArea(
+          child: RichContentList(content: item.body, onNavigateToVerseSelection: onNavigateToVerseSelection),
+        ),
         if (item.passages.isNotEmpty)
           StyledExpandableTile(
             title: t.creeds.scriptureProofs.toText(),

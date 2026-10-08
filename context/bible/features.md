@@ -353,6 +353,7 @@ Users can:
 - Keep a Commentary study panel aligned with the top visible verse while scrolling either surface
 - Move directly between adjacent Commentary headings from each sticky header, in both the sheet and the study panel
 - Open Scripture links in commentary as passage previews
+- Select and copy commentary text, across paragraphs within a section
 - Open the profiles and theme notes that Tyndale's study notes refer to, such as "See 'Blessing' Theme Note", as
   articles. Going back to the Commentary sheet returns to the commentary that was selected
 
@@ -389,7 +390,8 @@ as a Scripture proof.
 - Tapping a result opens the full article, where Scripture links open passage previews. Its passages for further
   study, starting with the article's main passage, show their reference and the first two lines of their text, and
   each opens a passage preview. Like Cross References, they use the study Bible when an online Bible is active, and a
-  banner names it until the user dismisses its explanation
+  banner names it until the user dismisses its explanation. The article's text can be selected and copied across
+  paragraphs, while map cards stay tappable
 - Opening a dictionary entry or related article from an article replaces the open article, and breadcrumbs at the top
   lead back to earlier ones
 - Tapping a map opens the map viewer, and tapping a video opens the video player
@@ -461,6 +463,7 @@ settings page. When opened from the main toolbar's Study sheet, it shows Study â
 - Search by Strong's number
 - Greek or Hebrew language filtering
 - Definitions, derivations, related words, and available verse usage
+- Select and copy a definition, biblical usage, or derivation
 - Scripture navigation from word usage
 
 ### People Profiles
@@ -532,6 +535,7 @@ settings page. When opened from the main toolbar's Study sheet, it shows Study â
   listed in order of its year with its year and authors
 - Search where each typed word matches the start of any word in a title, in any order
 - A creed opens as a single page of text
+- A creed's text, or each question, article, or section of a confession or catechism, can be selected and copied
 - A confession or catechism shows its full text, with a sticky header above each question, article, or section. In a
   document with chapters, such as the Westminster Confession, the chapter header stays pinned with the section header
   below it

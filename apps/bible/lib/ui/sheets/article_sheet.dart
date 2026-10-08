@@ -60,12 +60,14 @@ class ArticleSheet {
           article: article,
           onNavigateToVerseSelection: navigateToVerseSelection,
         ),
-        Padding(
-          padding: .all(16),
-          child: RichContentList(
-            content: article.body,
-            keysByIndex: keysByIndex,
-            onNavigateToVerseSelection: navigateToVerseSelection,
+        SelectionArea(
+          child: Padding(
+            padding: .all(16),
+            child: RichContentList(
+              content: article.body,
+              keysByIndex: keysByIndex,
+              onNavigateToVerseSelection: navigateToVerseSelection,
+            ),
           ),
         ),
         if (article.passages.isNotEmpty)

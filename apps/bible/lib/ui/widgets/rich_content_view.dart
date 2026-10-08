@@ -59,7 +59,7 @@ class RichContentView extends StatelessWidget {
       onNavigateToVerseSelection: onNavigateToVerseSelection,
     ),
     RichTable(:final rows) => RichTableView(rows: rows, onNavigateToVerseSelection: onNavigateToVerseSelection),
-    RichBibleMap(:final id) => BibleMapCard(mapId: id),
+    RichBibleMap(:final id) => SelectionContainer.disabled(child: BibleMapCard(mapId: id)),
     RichBox(:final title, :final content) => StyledTile(
       padding: .all(16),
       child: Column(

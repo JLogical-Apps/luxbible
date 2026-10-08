@@ -103,12 +103,14 @@ class CreedPage extends HookWidget implements StyledRoute<VerseSelection> {
                       SliverPadding(
                         padding: .all(16),
                         sliver: SliverToBoxAdapter(
-                          child: RichContentList(
-                            content: creed.chapters
-                                .expand((chapter) => chapter.items)
-                                .expand((item) => item.body)
-                                .toList(),
-                            onNavigateToVerseSelection: navigateToVerseSelection,
+                          child: SelectionArea(
+                            child: RichContentList(
+                              content: creed.chapters
+                                  .expand((chapter) => chapter.items)
+                                  .expand((item) => item.body)
+                                  .toList(),
+                              onNavigateToVerseSelection: navigateToVerseSelection,
+                            ),
                           ),
                         ),
                       )
