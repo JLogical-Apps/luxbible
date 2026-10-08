@@ -185,9 +185,10 @@ own linked passages, and Linked Resources filters each relevant list for items w
 selection. The lists share only the `LinkedResource` mixin, which ranks items by their narrowest overlapping passage and
 matches title searches. The `ResourceType` enum names each list with its title, icon, and browse page, and the user's
 saved `resourceOrder` of them orders both Linked Resources groups and Resources menu entries, with any type it lacks
-appended. People and themes share one `Article` shape: an ID, a title, a body of the same `RichContent` blocks commentary
+appended. Every list is decoded in the background at launch and kept in memory, so Linked Resources rarely has to wait
+for it. People and themes share one `Article` shape: an ID, a title, a body of the same `RichContent` blocks commentary
 uses, and a list of `VerseSelection` passages. `generate_articles_json.dart` writes them as one minified list per kind
-to `assets/people/tyndale.json` and `assets/themes/tyndale.json`, which are decoded on first use and kept in memory.
+to `assets/people/tyndale.json` and `assets/themes/tyndale.json`, which are decoded at launch.
 Items are classified by source file because `ThemeNotes.xml` marks one theme with the Profile type name. An article's
 ID is the source item name, its title paragraph is dropped, and its passages are the source anchor passage followed by
 every link in its "Passages for Further Study" paragraph, without duplicates. The further-study title and list are not
@@ -205,8 +206,8 @@ profiles and themes that list them.
 
 The Tyndale Open Bible Dictionary (CC BY-SA 4.0) uses the same `Article` shape without stored passages; Linked
 Resources derives an entry's passages from the Scripture it cites. `generate_dictionary_json.dart` writes all 6,010 articles from
-`content/sources/dictionary/tyndale/Articles/` to `assets/dictionary/tyndale.json` (about 10 MB), which is decoded the
-first time the Dictionary, a dictionary link, Search, or Linked Resources needs it. The title paragraph and the asterisks that
+`content/sources/dictionary/tyndale/Articles/` to `assets/dictionary/tyndale.json` (about 10 MB), which is decoded at
+launch. The title paragraph and the asterisks that
 mark terms missing from the NLT are dropped. Cross-references become `dictionary:<id>` links that open the linked
 article, and in-article outline anchors become plain text. Included text boxes and charts become `box` content blocks
 holding their paragraphs and tables, and included maps become `bibleMap` blocks that show the map inline. Pictures are
@@ -230,7 +231,7 @@ chapters have one untitled chapter. Linked Resources wraps each item with its do
 document order, with documents sorted by year when `creedsProvider` decodes them. `generate_creeds_json.dart` reads the
 public-domain documents of [Creeds.json](https://github.com/NonlinearFruit/Creeds.json), vendored in
 `content/sources/creeds/` without the copyrighted ones, and writes all of them to `assets/creeds/creeds.json` (about
-3 MB), which is decoded on first use. It drops the footnote markers and keeps every proof, in footnote order and without
+3 MB), which is decoded at launch. It drops the footnote markers and keeps every proof, in footnote order and without
 duplicates, as one passage list per item. The generator fails on any proof reference that isn't a valid OSIS ID for a
 verse that exists. Fixes to the source data are made in the vendored files and listed in their README.
 
@@ -243,7 +244,7 @@ explains. Overviews, series, and visual commentaries link the books or passages 
 study videos link a few key passages chosen from the video's content and the Scripture in its discussion questions.
 Videos without a specific passage, such as the Deuterocanon and genre explainers, have none. The Streetlights remixes
 are left out because they repeat other videos, and localized versions are left out for now. `generate_videos_json.dart`
-validates the passages and writes `assets/videos/bibleproject.json` (about 70 KB), decoded on first use.
+validates the passages and writes `assets/videos/bibleproject.json` (about 70 KB), decoded at launch.
 
 ### Online Bible Text
 

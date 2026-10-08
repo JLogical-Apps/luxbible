@@ -11,11 +11,15 @@ import 'package:bible/functions/strong_importer.dart';
 import 'package:bible/functions/verse_of_the_day_importer.dart';
 import 'package:bible/functions/verse_of_the_day_notification.dart';
 import 'package:bible/licenses.dart';
+import 'package:bible/models/article_collection.dart';
 import 'package:bible/models/user/language.dart';
+import 'package:bible/providers/articles_provider.dart';
 import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/audio_bible_timings_provider.dart';
 import 'package:bible/providers/bible_data_providers.dart';
+import 'package:bible/providers/bible_maps_provider.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
+import 'package:bible/providers/creeds_provider.dart';
 import 'package:bible/providers/cross_references_provider.dart';
 import 'package:bible/providers/language_provider.dart';
 import 'package:bible/providers/local_notification_scheduler_provider.dart';
@@ -25,6 +29,7 @@ import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/verse_of_the_day_provider.dart';
 import 'package:bible/providers/verse_of_the_day_widget_provider.dart';
+import 'package:bible/providers/videos_provider.dart';
 import 'package:bible/services/audio_bible_handler.dart';
 import 'package:bible/services/bible_plan_open_service.dart';
 import 'package:bible/services/local_notification_service.dart';
@@ -180,6 +185,12 @@ void eagerlyLoad() {
   ref.listen(verseOfTheDayProvider, (_, _) {});
   ref.listen(localNotificationSchedulerProvider, (_, _) {});
   ref.listen(verseOfTheDayWidgetSynchronizerProvider, (_, _) {});
+  for (final collection in ArticleCollection.values) {
+    ref.listen(articlesProvider(collection: collection), (_, _) {});
+  }
+  ref.listen(bibleMapsProvider, (_, _) {});
+  ref.listen(creedsProvider, (_, _) {});
+  ref.listen(videoCollectionsProvider, (_, _) {});
 }
 
 class BibleApp extends HookConsumerWidget {
