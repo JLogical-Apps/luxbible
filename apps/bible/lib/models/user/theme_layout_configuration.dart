@@ -45,7 +45,7 @@ enum ThemeFont {
   libron,
   openDyslexic;
 
-  String title() => switch (this) {
+  String get fontFamily => switch (this) {
     inter => 'Inter',
     lora => 'Lora',
     merriweather => 'Merriweather',
@@ -56,16 +56,7 @@ enum ThemeFont {
     openDyslexic => 'OpenDyslexic',
   };
 
-  String get fontFamily => switch (this) {
-    inter => 'Inter',
-    lora => 'Lora',
-    merriweather => 'Merriweather',
-    ptSerif => 'PTSerif',
-    openSans => 'OpenSans',
-    lato => 'Lato',
-    libron => 'Libron',
-    openDyslexic => 'OpenDyslexic',
-  };
+  String title() => fontFamily;
 }
 
 enum FontSizeSpacing {
