@@ -200,6 +200,24 @@ Source: https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=RusSynodal''
     );
 
     yield const LicenseEntryWithLineBreaks(
+      ['Tagalog Unlocked Literal Bible (ULB)'],
+      '''
+banal na Bibliya. Tagalog Unlocked Literal Bible.
+
+Copyright © 2018 Door43 World Missions Community.
+
+Translation by: Door43 World Missions Community
+
+Contributors: Abantes, Glosamie R., Abluyan, Nieves, Aggasid, John Stephen, Aldana, Marvin J., Ancheta, Jonathan, Andaya, Reymond, Aril, Rene, Atienza, Melchizedek Eleazar, Atmagol, Efraim P., Auxillo, Alfredo S., Balbieran, Ruth M., Bibay, Roland Dave, Cadiente, Dandel, Ca s, Randy, Ca , Benedicto, Canonoy, Neil Ian P., Castelo, Kathleen, Castillo, Madeline, Chiong, Armie, Co, Corizin F., Covita, Mark, Delos Reyes, Rachel, Dingle, Buena Kathleen, Eloja, Nestor Raul P., Emboc, Tano, Eugenio, Alfred, Evangelista, Carmelita, Fajardo-Barcebal, Rosalle, Fianza, Arlyn, Flores, Christopher V., Flores, Rommel, Fradejas, Daniel G., Frias, Ronald, Galvez, Garry C., Gatchalian, James A., Gomez, Roniza May L., Inway, Jennilyn, Langres, Arsenio, Langres, Vicki M., Langres, Zimri, Lantion, Ralph, Lapira, Ronaldo Jr, C., Laya, Anita, Lazo, Jeffrey, Lopez, Josephine, Lorona, Marvina U., Mampo, Genelyn U., Mijares, Racquel, Monteverde, Julian Angelo, Morales, Gilbert, Oday, Gabriel, Ong, Reynante, Ordo Arsenio Jr., Osabel, Hesa Joyce, Pabellion-Lasinga, Beryl Joi, Palagimlan, Ray Mart E., Paller, Beth, Paller, Romy, Palomar, Carmina, Panes, Jona Mae K., Pawid, Jake, Pido, Miriam, Pin-ag, Rose Ann, Revilla Adelaido D. Jr, Reyes, Dominic, Riate, Erick Jan, Rivera, Diana, Salda Helen, Saptang, Bethlehem P., Sibayan, Mizpha, Talimodao, Sheldon Jay T., Tuang, Mandel John C., Umpatang, Jimmy, Vergara, Johanne G., Villorente, Dea Rose, Achacoso, Hamir Ibrahim, Adriano, Wilfredo R., AKI, Aril, Lala, Atienza, Melchizedek Eleazar, Auxillo, Alfredo S., Bagamaspao, Elison C., Balbieran, Romilyn, Balbieran, Ruth, Baldemor, Emily Mary Jane, Baldemor, Nathaniel, Bantique, Flor, Basto, Pacifico Jr., Bayang, Rochelle , Bernales, Vicente P., BJMP, Bubod, Fortunato M., Buzeta, Drake Nikko, Cabigting, Romeo, Cabrera, Teresita, Camandero, Vivian, Castillo, Madeline, Cuarto, Victor Immanuel, Depending2Christ1990, Eloja, Nestor Raul P., Emboc, Tano, Enojas, David James, Evangelista, Carmelita, Fianza, Arlyn, Gab, Galvez, Garry, Ganiban, Rafael, Gatchalian, James A., Glosa, Gumangan, Julius, Gutierrez, Robin Rhoy, Inway, Jennilyn, Jimenez, Alvin, Julito Opider, Lanira, Rolando U. Jr, Laya, Anita, Lopez, Josephine, Madawat, Glory, Mam, Geneohoy, Manaois, Charlie Jay, Mharus, Mijares, Racquel, Palagimlan, Rey Mart E., Palileo, Reynaldo Jr., Paller, Romy, Panes, Jona Mae K., Pangadlin, Jun, Paraiso, Lorelie Rachel, Pavin, Pawid, Jake, Peralta, Rodolfo, Perez, Ian Hudson, Phraim 91, Pin-ag, Rose Ann, Pobadora, Josephine M., Pura, Saniel, Ralph, Lantion, Rene Aril, Revilla, Adelaido Jr, Rull, Fernando, Rupa, Jonathan, Saptang, Bethlehem P., Selle, Serqui Bernard, Singgangan, Josie, Talimodao, Sheldon Jay T., Veloso, Alfonil, Veloso, Helen, Venus, Jorito, Vergara, Johanne G., Villorente, Dea Rose, Yosores, Momer B.
+
+Licensed under Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0): https://creativecommons.org/licenses/by-sa/4.0/
+
+Adapted from the tglulb2018eb SWORD module distributed by eBible.org. The original licensor does not necessarily endorse these changes. Lux transforms the module into its bundled Bible data format and keeps the module's NRSV verse references in `origin` where they differ from Lux's: 3 John 1:15 is combined with 3 John 1:14, and Revelation 12:18 with Revelation 13:1. Verses the translators merged into a neighboring verse, which the source leaves as a "-" placeholder (1 Chronicles 8:17, 19, 20, 22-24, and 26, and Daniel 4:28), and the repeated half of the Numbers 14:36-37 verse bridge are omitted. The adapted text is distributed under the same license.
+
+Source: https://eBible.org/tglulb/''',
+    );
+
+    yield const LicenseEntryWithLineBreaks(
       ['Septuagint, Rahlfs (LXX)'],
       '''
 Septuagint, Morphologically Tagged Rahlfs' text.

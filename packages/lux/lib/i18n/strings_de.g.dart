@@ -113,6 +113,7 @@ class _Translations$languages$de extends Translations$languages$en {
 	@override String get spanish => 'Spanisch';
 	@override String get german => 'Deutsch';
 	@override String get romanian => 'Rumänisch';
+	@override String get tagalog => 'Tagalog';
 }
 
 // Path: highlightStyles
@@ -3099,6 +3100,7 @@ extension on TranslationsDe {
 			'languages.spanish' => 'Spanisch',
 			'languages.german' => 'Deutsch',
 			'languages.romanian' => 'Rumänisch',
+			'languages.tagalog' => 'Tagalog',
 			'highlightStyles.red' => 'Rot',
 			'highlightStyles.orange' => 'Orange',
 			'highlightStyles.yellow' => 'Gelb',
@@ -3601,9 +3603,9 @@ extension on TranslationsDe {
 			'biblePlans.importErrors.invalidDayCount' => 'Der importierte Plan muss 1 bis 365 Tage enthalten.',
 			'biblePlans.importErrors.readingRequired' => 'Der importierte Plan braucht mindestens einen Lesetag.',
 			'biblePlans.importErrors.invalidPassage' => 'Der importierte Plan enthält eine ungültige Bibelstelle.',
-			'biblePlans.importErrors.duplicatePassage' => 'Ein Tag im importierten Plan enthält denselben Abschnitt mehrmals.',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.importErrors.duplicatePassage' => 'Ein Tag im importierten Plan enthält denselben Abschnitt mehrmals.',
 			'biblePlans.manual' => 'Manuell',
 			'biblePlans.manualDescription' => 'Füge jeden Abschnitt selbst hinzu.',
 			'biblePlans.chooseBooksAndDuration' => 'Bücher & Dauer wählen',
@@ -4115,9 +4117,9 @@ extension on TranslationsDe {
 			'morphology.stem.pual.name' => 'Pual',
 			'morphology.stem.pual.description' => 'Das Passiv des Piel.',
 			'morphology.stem.pual.examples' => 'er wurde gelobt',
-			'morphology.stem.hiphil.name' => 'Hifil',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.stem.hiphil.name' => 'Hifil',
 			'morphology.stem.hiphil.description' => 'Der kausative aktive Stamm.',
 			'morphology.stem.hiphil.examples' => 'er ließ schreiben|er führte heraus',
 			'morphology.stem.hophal.name' => 'Hofal',

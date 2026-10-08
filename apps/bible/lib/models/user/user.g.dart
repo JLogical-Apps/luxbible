@@ -276,6 +276,7 @@ const _$BibleTranslationEnumMap = {
   BibleTranslation.nrt: 'nrt',
   BibleTranslation.synodal: 'synodal',
   BibleTranslation.rvg: 'rvg',
+  BibleTranslation.tglulb: 'tglulb',
 };
 
 const _$CommentaryTypeEnumMap = {

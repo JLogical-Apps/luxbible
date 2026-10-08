@@ -20,6 +20,7 @@ void main() {
     .elb1905,
     .lut1912,
     .synodal,
+    .tglulb,
   ]) {
     writeBibleBooks(
       translation: translation.name,

@@ -113,6 +113,7 @@ class _Translations$languages$nl extends Translations$languages$en {
 	@override String get spanish => 'Spaans';
 	@override String get german => 'Duits';
 	@override String get romanian => 'Roemeens';
+	@override String get tagalog => 'Tagalog';
 }
 
 // Path: highlightStyles
@@ -3101,6 +3102,7 @@ extension on TranslationsNl {
 			'languages.spanish' => 'Spaans',
 			'languages.german' => 'Duits',
 			'languages.romanian' => 'Roemeens',
+			'languages.tagalog' => 'Tagalog',
 			'highlightStyles.red' => 'Rood',
 			'highlightStyles.orange' => 'Oranje',
 			'highlightStyles.yellow' => 'Geel',
@@ -3603,9 +3605,9 @@ extension on TranslationsNl {
 			'biblePlans.importErrors.invalidStructure' => 'Dit bestand is geen geldig Bijbelleesplan.',
 			'biblePlans.importErrors.nameRequired' => 'Het geïmporteerde leesplan moet een naam hebben.',
 			'biblePlans.importErrors.invalidDayCount' => 'Het geïmporteerde leesplan moet 1 tot 365 dagen bevatten.',
-			'biblePlans.importErrors.readingRequired' => 'Het geïmporteerde leesplan moet ten minste één leesdag hebben.',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.importErrors.readingRequired' => 'Het geïmporteerde leesplan moet ten minste één leesdag hebben.',
 			'biblePlans.importErrors.invalidPassage' => 'Het geïmporteerde leesplan bevat een ongeldige Bijbelverwijzing.',
 			'biblePlans.importErrors.duplicatePassage' => 'Een dag in het geïmporteerde leesplan bevat dezelfde passage meer dan één keer.',
 			'biblePlans.manual' => 'Handmatig',
@@ -4117,9 +4119,9 @@ extension on TranslationsNl {
 			'morphology.stem.piel.description' => 'De intensieve of factitieve actieve stam.',
 			'morphology.stem.piel.examples' => 'hij prees|hij zegende|hij verbrijzelde',
 			'morphology.stem.pual.name' => 'Pual',
-			'morphology.stem.pual.description' => 'De passieve vorm van de piel.',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.stem.pual.description' => 'De passieve vorm van de piel.',
 			'morphology.stem.pual.examples' => 'hij werd geprezen',
 			'morphology.stem.hiphil.name' => 'Hiphil',
 			'morphology.stem.hiphil.description' => 'De causatieve actieve stam.',

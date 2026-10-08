@@ -127,6 +127,9 @@ class Translations$languages$en {
 
 	/// en: 'Romanian'
 	String get romanian => 'Romanian';
+
+	/// en: 'Tagalog'
+	String get tagalog => 'Tagalog';
 }
 
 // Path: highlightStyles
@@ -5448,6 +5451,7 @@ extension on Translations {
 			'languages.spanish' => 'Spanish',
 			'languages.german' => 'German',
 			'languages.romanian' => 'Romanian',
+			'languages.tagalog' => 'Tagalog',
 			'highlightStyles.red' => 'Red',
 			'highlightStyles.orange' => 'Orange',
 			'highlightStyles.yellow' => 'Yellow',
@@ -5950,9 +5954,9 @@ extension on Translations {
 			'biblePlans.importErrors.invalidDayCount' => 'The imported plan must contain 1 to 365 days.',
 			'biblePlans.importErrors.readingRequired' => 'The imported plan needs at least one reading day.',
 			'biblePlans.importErrors.invalidPassage' => 'The imported plan contains an invalid Bible reference.',
-			'biblePlans.importErrors.duplicatePassage' => 'A day in the imported plan contains the same passage more than once.',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.importErrors.duplicatePassage' => 'A day in the imported plan contains the same passage more than once.',
 			'biblePlans.manual' => 'Manual',
 			'biblePlans.manualDescription' => 'Add each passage yourself.',
 			'biblePlans.chooseBooksAndDuration' => 'Choose Books & Duration',
@@ -6464,9 +6468,9 @@ extension on Translations {
 			'morphology.stem.pual.name' => 'Pual',
 			'morphology.stem.pual.description' => 'The passive of the piel.',
 			'morphology.stem.pual.examples' => 'he was praised',
-			'morphology.stem.hiphil.name' => 'Hiphil',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.stem.hiphil.name' => 'Hiphil',
 			'morphology.stem.hiphil.description' => 'The causative active stem.',
 			'morphology.stem.hiphil.examples' => 'he caused to write|he led out',
 			'morphology.stem.hophal.name' => 'Hophal',

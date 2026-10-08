@@ -60,6 +60,7 @@ Lux counts distinct active days locally. After three active days, it makes a nat
 - ELB1905: Unrevidierte Elberfelder 1905 in German
 - LUT1912: Lutherbibel 1912 in German
 - SYNO: Синодальный перевод 1876 in Russian
+- ULB: Tagalog Unlocked Literal Bible
 - LXX: Septuagint, Rahlfs
 - TR: Textus Receptus, Stephens 1550
 - BYZ: Robinson-Pierpont Byzantine Textform 2005

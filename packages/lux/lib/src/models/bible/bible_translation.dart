@@ -48,7 +48,10 @@ enum BibleTranslation {
   synodal,
 
   // Spanish
-  rvg;
+  rvg,
+
+  // Tagalog
+  tglulb;
 
   String title() => switch (this) {
     htb => 'HTB',
@@ -79,6 +82,7 @@ enum BibleTranslation {
     nrt => 'NRT',
     synodal => 'SYNO',
     rvg => 'RVG',
+    tglulb => 'ULB',
   };
 
   String fullName() => switch (this) {
@@ -110,6 +114,7 @@ enum BibleTranslation {
     nrt => 'Новый русский перевод 2010',
     synodal => 'Синодальный перевод 1876',
     rvg => 'Reina Valera Gómez 2010',
+    tglulb => 'Tagalog Unlocked Literal Bible',
   };
 
   BibleTranslationSource get source => switch (this) {
@@ -131,7 +136,8 @@ enum BibleTranslation {
     statresgnt ||
     oshb ||
     synodal ||
-    rvg => .local,
+    rvg ||
+    tglulb => .local,
     htb => .youVersion(75),
     nasb95 => .youVersion(100),
     amp => .youVersion(1588),
@@ -152,6 +158,7 @@ enum BibleTranslation {
     ntr => .romanian,
     nrt || synodal => .russian,
     rvg => .spanish,
+    tglulb => .tagalog,
   };
 
   String? get copyright => switch (this) {
@@ -243,7 +250,7 @@ enum BibleTranslation {
   };
 
   bool get hasParagraphs => switch (this) {
-    oshb || sv || nrt || martin1744 || elb1905 || lut1912 || nld1939 || fob || synodal => false,
+    oshb || sv || nrt || martin1744 || elb1905 || lut1912 || nld1939 || fob || synodal || tglulb => false,
     _ => true,
   };
 
@@ -287,7 +294,8 @@ enum BibleLanguage {
   hebrew,
   romanian,
   russian,
-  spanish;
+  spanish,
+  tagalog;
 
   String title() => switch (this) {
     dutch => t.languages.dutch,
@@ -299,5 +307,6 @@ enum BibleLanguage {
     romanian => t.languages.romanian,
     russian => t.languages.russian,
     spanish => t.languages.spanish,
+    tagalog => t.languages.tagalog,
   };
 }
