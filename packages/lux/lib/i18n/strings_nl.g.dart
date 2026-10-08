@@ -502,7 +502,6 @@ class _Translations$toolbarShortcuts$nl extends Translations$toolbarShortcuts$en
 
 	// Translations
 	@override String get switchBible => 'Van Bijbel wisselen';
-	@override String get dictionary => 'Woordenboek';
 	@override String get lexicon => 'Lexicon';
 	@override String get themeAndLayout => 'Thema en indeling';
 	@override String get switchBibleDescription => 'Wissel van Bijbelvertaling.';
@@ -3347,7 +3346,6 @@ extension on TranslationsNl {
 			'commentaries.addRemove' => 'Commentaren toevoegen en verwijderen',
 			'commentaries.edit' => 'Commentaren bewerken',
 			'toolbarShortcuts.switchBible' => 'Van Bijbel wisselen',
-			'toolbarShortcuts.dictionary' => 'Woordenboek',
 			'toolbarShortcuts.lexicon' => 'Lexicon',
 			'toolbarShortcuts.themeAndLayout' => 'Thema en indeling',
 			'toolbarShortcuts.switchBibleDescription' => 'Wissel van Bijbelvertaling.',
@@ -3605,9 +3603,9 @@ extension on TranslationsNl {
 			'biblePlans.importErrors.invalidStructure' => 'Dit bestand is geen geldig Bijbelleesplan.',
 			'biblePlans.importErrors.nameRequired' => 'Het geïmporteerde leesplan moet een naam hebben.',
 			'biblePlans.importErrors.invalidDayCount' => 'Het geïmporteerde leesplan moet 1 tot 365 dagen bevatten.',
+			'biblePlans.importErrors.readingRequired' => 'Het geïmporteerde leesplan moet ten minste één leesdag hebben.',
 			_ => null,
 		} ?? switch (path) {
-			'biblePlans.importErrors.readingRequired' => 'Het geïmporteerde leesplan moet ten minste één leesdag hebben.',
 			'biblePlans.importErrors.invalidPassage' => 'Het geïmporteerde leesplan bevat een ongeldige Bijbelverwijzing.',
 			'biblePlans.importErrors.duplicatePassage' => 'Een dag in het geïmporteerde leesplan bevat dezelfde passage meer dan één keer.',
 			'biblePlans.manual' => 'Handmatig',
@@ -4119,9 +4117,9 @@ extension on TranslationsNl {
 			'morphology.stem.piel.description' => 'De intensieve of factitieve actieve stam.',
 			'morphology.stem.piel.examples' => 'hij prees|hij zegende|hij verbrijzelde',
 			'morphology.stem.pual.name' => 'Pual',
+			'morphology.stem.pual.description' => 'De passieve vorm van de piel.',
 			_ => null,
 		} ?? switch (path) {
-			'morphology.stem.pual.description' => 'De passieve vorm van de piel.',
 			'morphology.stem.pual.examples' => 'hij werd geprezen',
 			'morphology.stem.hiphil.name' => 'Hiphil',
 			'morphology.stem.hiphil.description' => 'De causatieve actieve stam.',

@@ -1,11 +1,11 @@
 import 'package:bible/models/main_action.dart';
 import 'package:bible/models/reference/region_type.dart';
+import 'package:bible/models/resource_type.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/ui/pages/articles_page.dart';
 import 'package:bible/ui/pages/lexicon_page.dart';
 import 'package:bible/ui/pages/theme_settings_page.dart';
 import 'package:bible/ui/sheets/bible_sheet.dart';
@@ -30,7 +30,12 @@ enum MainToolbarShortcut {
   switchBible,
   search,
   resources,
+  people,
+  themes,
   dictionary,
+  maps,
+  videos,
+  creeds,
   lexicon,
   plans,
   themeAndLayout;
@@ -38,9 +43,9 @@ enum MainToolbarShortcut {
   String title() =>
       toStudyAction()?.title() ??
       toMainAction()?.title() ??
+      toResourceType()?.title() ??
       switch (this) {
         switchBible => t.toolbarShortcuts.switchBible,
-        dictionary => t.toolbarShortcuts.dictionary,
         lexicon => t.toolbarShortcuts.lexicon,
         _ => t.toolbarShortcuts.themeAndLayout,
       };
@@ -48,9 +53,9 @@ enum MainToolbarShortcut {
   String description({User? user}) =>
       toStudyAction()?.description(regionFormat: null, regionType: RegionType.chapter) ??
       toMainAction()?.description(user: user) ??
+      toResourceType()?.description() ??
       switch (this) {
         switchBible => t.toolbarShortcuts.switchBibleDescription,
-        dictionary => t.toolbarShortcuts.dictionaryDescription,
         lexicon => t.toolbarShortcuts.lexiconDescription,
         _ => t.toolbarShortcuts.themeAndLayoutDescription,
       };
@@ -58,9 +63,9 @@ enum MainToolbarShortcut {
   Widget buildIcon(BuildContext context, {User? user}) =>
       toStudyAction()?.icon.mapIfNonNull(Icon.new) ??
       toMainAction()?.buildIcon(context, user: user) ??
+      toResourceType()?.icon.toIcon() ??
       switch (this) {
         switchBible => Symbols.book.toIcon(),
-        dictionary => Symbols.menu_book.toIcon(),
         lexicon => Symbols.translate.toIcon(),
         _ => Symbols.custom_typography.toIcon(),
       };
@@ -87,17 +92,17 @@ enum MainToolbarShortcut {
         onAddStudyPanel: onAddStudyPanel,
         onBookmarkAdded: onBookmarkAdded,
       ) ??
+      toResourceType()?.page.mapIfNonNull((page) async {
+        final result = await context.push(page);
+        if (result != null) {
+          onNavigateToVerseSelection(result);
+        }
+      }) ??
       switch (this) {
         switchBible => () async {
           final newTranslation = await BibleSheet.show(context);
           if (newTranslation != null) {
             ref.updateUser((user) => user.withTranslation(newTranslation));
-          }
-        }(),
-        dictionary => () async {
-          final result = await context.push(ArticlesPage(collection: .dictionary));
-          if (result != null) {
-            onNavigateToVerseSelection(result);
           }
         }(),
         lexicon => () async {
@@ -128,6 +133,16 @@ enum MainToolbarShortcut {
     commentary => .commentary,
     crossReferences => .crossReferences,
     linkedResources => .linkedResources,
+    _ => null,
+  };
+
+  ResourceType? toResourceType() => switch (this) {
+    people => .people,
+    themes => .themes,
+    dictionary => .dictionary,
+    maps => .maps,
+    videos => .videos,
+    creeds => .creeds,
     _ => null,
   };
 }

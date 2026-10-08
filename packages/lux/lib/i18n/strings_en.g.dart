@@ -1001,9 +1001,6 @@ class Translations$toolbarShortcuts$en {
 	/// en: 'Switch Bible'
 	String get switchBible => 'Switch Bible';
 
-	/// en: 'Dictionary'
-	String get dictionary => 'Dictionary';
-
 	/// en: 'Lexicon'
 	String get lexicon => 'Lexicon';
 
@@ -5694,7 +5691,6 @@ extension on Translations {
 			'commentaries.addRemove' => 'Add & Remove Commentaries',
 			'commentaries.edit' => 'Edit Commentaries',
 			'toolbarShortcuts.switchBible' => 'Switch Bible',
-			'toolbarShortcuts.dictionary' => 'Dictionary',
 			'toolbarShortcuts.lexicon' => 'Lexicon',
 			'toolbarShortcuts.themeAndLayout' => 'Theme & Layout',
 			'toolbarShortcuts.switchBibleDescription' => 'Switch the Bible translation.',
@@ -5954,9 +5950,9 @@ extension on Translations {
 			'biblePlans.importErrors.invalidDayCount' => 'The imported plan must contain 1 to 365 days.',
 			'biblePlans.importErrors.readingRequired' => 'The imported plan needs at least one reading day.',
 			'biblePlans.importErrors.invalidPassage' => 'The imported plan contains an invalid Bible reference.',
+			'biblePlans.importErrors.duplicatePassage' => 'A day in the imported plan contains the same passage more than once.',
 			_ => null,
 		} ?? switch (path) {
-			'biblePlans.importErrors.duplicatePassage' => 'A day in the imported plan contains the same passage more than once.',
 			'biblePlans.manual' => 'Manual',
 			'biblePlans.manualDescription' => 'Add each passage yourself.',
 			'biblePlans.chooseBooksAndDuration' => 'Choose Books & Duration',
@@ -6468,9 +6464,9 @@ extension on Translations {
 			'morphology.stem.pual.name' => 'Pual',
 			'morphology.stem.pual.description' => 'The passive of the piel.',
 			'morphology.stem.pual.examples' => 'he was praised',
+			'morphology.stem.hiphil.name' => 'Hiphil',
 			_ => null,
 		} ?? switch (path) {
-			'morphology.stem.hiphil.name' => 'Hiphil',
 			'morphology.stem.hiphil.description' => 'The causative active stem.',
 			'morphology.stem.hiphil.examples' => 'he caused to write|he led out',
 			'morphology.stem.hophal.name' => 'Hophal',

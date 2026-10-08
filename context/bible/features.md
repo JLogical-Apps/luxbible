@@ -223,7 +223,12 @@ The main toolbar appears when no Bible selection is active. Available shortcuts 
 - Switch Bible
 - Search
 - Resources
+- People
+- Themes
 - Dictionary
+- Maps
+- Videos
+- Creeds & Confessions
 - Lexicon
 - Bible Plans
 - Theme & Layout
@@ -539,7 +544,7 @@ settings page. When opened from the main toolbar's Study sheet, it shows Study â
   the top, and jumps to the chosen one
 - The Apostles' Creed uses its traditional wording ("he descended into hell")
 
-The Dictionary and Lexicon are also available as independent main-toolbar shortcuts.
+Each resource, plus the Lexicon, is also available as an independent main-toolbar shortcut.
 
 ## Study Panels
 

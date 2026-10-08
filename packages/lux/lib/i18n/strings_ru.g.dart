@@ -502,7 +502,6 @@ class _Translations$toolbarShortcuts$ru extends Translations$toolbarShortcuts$en
 
 	// Translations
 	@override String get switchBible => 'Переключить Библию';
-	@override String get dictionary => 'Словарь';
 	@override String get lexicon => 'Лексикон';
 	@override String get themeAndLayout => 'Тема и макет';
 	@override String get switchBibleDescription => 'Переключите перевод Библии.';
@@ -3361,7 +3360,6 @@ extension on TranslationsRu {
 			'commentaries.addRemove' => 'Добавить и удалить комментарии',
 			'commentaries.edit' => 'Изменить комментарии',
 			'toolbarShortcuts.switchBible' => 'Переключить Библию',
-			'toolbarShortcuts.dictionary' => 'Словарь',
 			'toolbarShortcuts.lexicon' => 'Лексикон',
 			'toolbarShortcuts.themeAndLayout' => 'Тема и макет',
 			'toolbarShortcuts.switchBibleDescription' => 'Переключите перевод Библии.',
@@ -3619,9 +3617,9 @@ extension on TranslationsRu {
 			'biblePlans.importErrors.invalidStructure' => 'Этот файл не является допустимым библейским планом.',
 			'biblePlans.importErrors.nameRequired' => 'Импортируемому плану необходимо название.',
 			'biblePlans.importErrors.invalidDayCount' => 'Импортируемый план должен содержать от 1 до 365 дней.',
+			'biblePlans.importErrors.readingRequired' => 'Импортируемому плану необходим хотя бы один день чтения.',
 			_ => null,
 		} ?? switch (path) {
-			'biblePlans.importErrors.readingRequired' => 'Импортируемому плану необходим хотя бы один день чтения.',
 			'biblePlans.importErrors.invalidPassage' => 'Импортируемый план содержит недопустимую библейскую ссылку.',
 			'biblePlans.importErrors.duplicatePassage' => 'Один из дней импортируемого плана содержит один и тот же отрывок несколько раз.',
 			'biblePlans.manual' => 'Вручную',
@@ -4133,9 +4131,9 @@ extension on TranslationsRu {
 			'morphology.stem.piel.description' => 'Интенсивная или фактивная активная основа.',
 			'morphology.stem.piel.examples' => 'он похвалил|он благословил|он разбил',
 			'morphology.stem.pual.name' => 'Пуал',
+			'morphology.stem.pual.description' => 'Пассив пиеля.',
 			_ => null,
 		} ?? switch (path) {
-			'morphology.stem.pual.description' => 'Пассив пиеля.',
 			'morphology.stem.pual.examples' => 'его хвалили',
 			'morphology.stem.hiphil.name' => 'Хифил',
 			'morphology.stem.hiphil.description' => 'Причинно-активная основа.',
