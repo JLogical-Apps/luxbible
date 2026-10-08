@@ -11,7 +11,6 @@ class PassageBuilder extends HookConsumerWidget {
   final PassageSelectionController? selection;
   final Reference? emphasizedReference;
   final Function(VerseSelection)? onNavigateToVerseSelection;
-  final Function(Reference)? onReferencePressed;
 
   final Widget Function(BuildContext, Widget)? contentBuilder;
   final Widget? footer;
@@ -29,7 +28,6 @@ class PassageBuilder extends HookConsumerWidget {
     this.selection,
     this.emphasizedReference,
     this.onNavigateToVerseSelection,
-    this.onReferencePressed,
     this.contentBuilder,
     this.footer,
     this.controller,
@@ -87,7 +85,6 @@ class PassageBuilder extends HookConsumerWidget {
               selection: selection,
               emphasizedReference: emphasizedReference,
               onNavigateToVerseSelection: onNavigateToVerseSelection,
-              onReferencePressed: onReferencePressed,
               controller: controller,
               padding: padding,
               shrinkWrap: shrinkWrap,

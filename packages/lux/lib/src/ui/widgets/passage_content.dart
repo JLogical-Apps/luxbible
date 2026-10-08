@@ -17,7 +17,6 @@ class PassageContent extends StatelessWidget {
   final List<Reference> underlinedReferences;
   final Reference? emphasizedReference;
   final Function(VerseSelection)? onNavigateToVerseSelection;
-  final Function(Reference)? onReferencePressed;
 
   final PassageController? controller;
 
@@ -41,7 +40,6 @@ class PassageContent extends StatelessWidget {
     this.underlinedReferences = const [],
     this.emphasizedReference,
     this.onNavigateToVerseSelection,
-    this.onReferencePressed,
     this.controller,
     this.padding,
     this.shrinkWrap = false,
@@ -93,12 +91,7 @@ class PassageContent extends StatelessWidget {
               verseParagraphOffset,
               onNavigateToVerseSelection,
             ),
-      onReferencePressed: selection == null && onReferencePressed == null
-          ? null
-          : (reference) {
-              onReferencePressed?.call(reference);
-              selection?.onReferencePressed(reference);
-            },
+      onReferencePressed: selection?.onReferencePressed,
       onTextSelectionLongPressed: selection == null || onNavigateToVerseSelection == null
           ? null
           : (textSelection) => selection.onTextSelectionLongPressed(context, textSelection, onNavigateToVerseSelection),

@@ -10,7 +10,7 @@ part 'articles_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 Future<List<Article>> articles(Ref ref, {required ArticleCollection collection}) async {
-  final json = await rootBundle.loadString(collection.assetPath);
+  final json = await rootBundle.loadString(collection.assetPath, cache: false);
   // Filling each dictionary entry's late scriptureLinks here keeps the few-hundred-millisecond parse off the UI thread.
   return Isolate.run(
     () =>

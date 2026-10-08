@@ -6,7 +6,7 @@ import 'package:utils_core/utils_core.dart';
 
 class StrongImporter {
   Future<Map<String, Strong>> import() async =>
-      (jsonDecode(await rootBundle.loadString('assets/strongs/strongs.json')) as List)
+      (jsonDecode(await rootBundle.loadString('assets/strongs/strongs.json', cache: false)) as List)
           .cast<Map<String, dynamic>>()
           .mapToMap((entry) => MapEntry(entry['i'], Strong.fromJson(entry)));
 }

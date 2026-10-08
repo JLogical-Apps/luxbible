@@ -8,7 +8,7 @@ class AudioBibleTimingsImporter {
   Future<Map<BibleTranslation, Map<Reference, AudioBibleVerseTiming>>> import() async =>
       await <BibleTranslation>[.bsb, .kjv].map((translation) async {
         final raw =
-            jsonDecode(await rootBundle.loadString('assets/audio_bible_timings/${translation.name}.json'))
+            jsonDecode(await rootBundle.loadString('assets/audio_bible_timings/${translation.name}.json', cache: false))
                 as Map<String, dynamic>;
 
         return MapEntry(

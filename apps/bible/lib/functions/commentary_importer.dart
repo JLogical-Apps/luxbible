@@ -8,7 +8,7 @@ import 'package:lux/lux_core.dart';
 
 class CommentaryImporter {
   Future<CommentaryBook> import({required CommentaryType type, required BookType book}) async {
-    final json = await rootBundle.loadString(type.getAssetPath(book));
+    final json = await rootBundle.loadString(type.getAssetPath(book), cache: false);
     return Isolate.run(() => CommentaryBook.fromJson(jsonDecode(json)));
   }
 }

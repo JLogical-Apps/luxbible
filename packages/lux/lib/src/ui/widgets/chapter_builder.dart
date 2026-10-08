@@ -14,7 +14,6 @@ class ChapterBuilder extends HookConsumerWidget {
   final Reference? emphasizedReference;
   final PassageSelectionController? selection;
   final Function(VerseSelection)? onNavigateToVerseSelection;
-  final Function(Reference)? onReferencePressed;
 
   final EdgeInsetsGeometry? padding;
   final bool shrinkWrap;
@@ -31,7 +30,6 @@ class ChapterBuilder extends HookConsumerWidget {
     this.emphasizedReference,
     this.selection,
     this.onNavigateToVerseSelection,
-    this.onReferencePressed,
     this.padding,
     this.shrinkWrap = false,
     this.removeScrollbarPadding = false,
@@ -82,7 +80,6 @@ class ChapterBuilder extends HookConsumerWidget {
       underlinedReferences: underlinedReferences,
       emphasizedReference: emphasizedReference,
       onNavigateToVerseSelection: onNavigateToVerseSelection,
-      onReferencePressed: onReferencePressed,
       controller: controller,
       padding: padding,
       shrinkWrap: shrinkWrap,

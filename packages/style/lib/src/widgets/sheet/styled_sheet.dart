@@ -16,6 +16,7 @@ import 'package:style/src/widgets/styled_circle_button.dart';
 import 'package:style/src/widgets/styled_divider.dart';
 import 'package:style/src/widgets/styled_dock.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
+import 'package:utils_core/utils_core.dart';
 
 class StyledSheet<T> extends HookConsumerWidget {
   final Widget? title;
@@ -149,7 +150,9 @@ class StyledSheet<T> extends HookConsumerWidget {
         wrapper: (sheetBuilder) => provider.Provider.value(
           value: SheetNavigationBreadcrumbContext(
             breadcrumbs: sheetNavigationContext.breadcrumbs.take(breadcrumbIndex + 1).toList(),
-            scrollOffsetByDepth: sheetNavigationContext.scrollOffsetByDepth.withRemoved(depth),
+            scrollOffsetByDepth: sheetNavigationContext.scrollOffsetByDepth.where(
+              (offsetDepth, _) => offsetDepth <= breadcrumbIndex,
+            ),
           ),
           child: HookConsumerBuilder(builder: sheetBuilder),
         ),

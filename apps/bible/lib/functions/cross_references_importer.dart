@@ -4,7 +4,7 @@ import 'package:lux/lux.dart';
 
 class CrossReferencesImporter {
   Future<CrossReferences> import() async => CrossReferences(
-    rawCrossReferences: (await rootBundle.loadString('assets/cross_references/cross_references.txt'))
+    rawCrossReferences: (await rootBundle.loadString('assets/cross_references/cross_references.txt', cache: false))
         .split('\n')
         .skip(1)
         .where((line) => line.isNotEmpty)

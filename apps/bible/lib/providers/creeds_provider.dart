@@ -10,7 +10,7 @@ part 'creeds_provider.g.dart';
 
 @Riverpod(keepAlive: true)
 Future<List<Creed>> creeds(Ref ref) async {
-  final json = await rootBundle.loadString('assets/creeds/creeds.json');
+  final json = await rootBundle.loadString('assets/creeds/creeds.json', cache: false);
   return Isolate.run(
     () =>
         (jsonDecode(json) as List).map((creed) => Creed.fromJson(creed)).toList()

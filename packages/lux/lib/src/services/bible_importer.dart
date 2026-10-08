@@ -22,7 +22,7 @@ class BibleImporter {
   }
 
   Future<Bible> parseStructuredJsonBible({required BibleTranslation translation}) async {
-    final raw = await rootBundle.loadString(BibleAssetPaths.translation(translation));
+    final raw = await rootBundle.loadString(BibleAssetPaths.translation(translation), cache: false);
     return Bible(
       translation: translation,
       books: await Isolate.run(() => (jsonDecode(raw) as List).map((bookJson) => Book.fromJson(bookJson)).toList()),
@@ -30,7 +30,7 @@ class BibleImporter {
   }
 
   Future<Book> parseStructuredJsonBook({required BibleTranslation translation, required BookType book}) async {
-    final raw = await rootBundle.loadString(BibleAssetPaths.book(translation, book));
+    final raw = await rootBundle.loadString(BibleAssetPaths.book(translation, book), cache: false);
     return Isolate.run(() => Book.fromJson({...jsonDecode(raw), 'b': book.name}));
   }
 }
