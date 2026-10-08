@@ -3,7 +3,7 @@ Lies die Lutherbibel 1912 und die Elberfelder 1905 komplett offline in einer ruh
 Stark genug für gründliches Bibelstudium und übersichtlich genug für jeden Tag.
 
 LESEN
-Lies die Lutherbibel 1912 (LUT1912) und die unrevidierte Elberfelder 1905 (ELB1905) komplett offline. Hoffnung für alle (HFA) ist online verfügbar. Die englische Berean Standard Bible (BSB), Majority Standard Bible (MSB), Christian Standard Bible (CSB), King James Version (KJV), American Standard Version (ASV) und World English Bible (WEB) funktionieren offline, AMP, NIV, NASB95, NLT und NKJV sind online verfügbar. Dazu kommen Übersetzungen auf Niederländisch, Französisch, Spanisch, Rumänisch und Russisch.
+Lies die Lutherbibel 1912 (LUT1912) und die unrevidierte Elberfelder 1905 (ELB1905) komplett offline. Hoffnung für alle (HFA) ist online verfügbar. Die englische Berean Standard Bible (BSB), Majority Standard Bible (MSB), Christian Standard Bible (CSB), King James Version (KJV), American Standard Version (ASV) und World English Bible (WEB) funktionieren offline, AMP, NIV, NASB95, NLT und NKJV sind online verfügbar. Dazu kommen Übersetzungen auf Niederländisch, Französisch, Spanisch, Rumänisch, Russisch und Tagalog.
 
 Lies die Grundtexte offline mit der griechischen Septuaginta, dem Textus Receptus, der Byzantine Textform, dem Statistical Restoration Greek New Testament und der Open Scriptures Hebrew Bible.
 
@@ -12,18 +12,26 @@ Hör dir die BSB oder KJV mit einstellbarer Geschwindigkeit, Schlaftimer und Wie
 NOTIZEN
 Markiere Verse, Wörter oder Sätze mit Farbe, Unterstreichung oder Wellenlinie. Füge Notizen hinzu, erstelle eigene Markierungsstile und ordne alles in Notizbüchern. Filtere deine Annotationen oder blende ein Notizbuch aus, wenn du eine ruhigere Leseansicht möchtest.
 
-STUDIEREN
+DEN TEXT STUDIEREN
 Tippe auf ein Wort, um die griechische oder hebräische Grundform, die Strong-Nummer, die Morphologie und die Flexion zu sehen. Lux macht das Studium der Grundsprachen zugänglich, ohne dass sich der Rest der App wie akademische Software anfühlt.
 
 - Entdecke eine vollständige griechische und hebräische Interlinearbibel
 - Suche nach Wörtern, Ausdrücken oder Strong-Nummern
 - Vergleiche Übersetzungen nebeneinander
 - Folge Querverweisen von OpenBible
-- Nutze Strong's Lexicon, das Tyndale Open Bible Dictionary und 70 Bibelkarten
-- Lies Kommentare von Matthew Henry, Johannes Calvin und Jamieson-Fausset-Brown
+- Schlag griechische und hebräische Wörter in Strong's Lexicon nach
+
+ALLES ZUR BIBELSTELLE
+Öffne „Verknüpfte Ressourcen“ zu einem Kapitel oder Vers und sieh, was damit zusammenhängt: Personen und Themen, Wörterbuchartikel, Karten, Videos und die Bekenntnisse und Katechismen, die die Stelle zitieren. Als Studienpanel angeheftet, läuft alles beim Lesen mit. Diese Ressourcen sind auf Englisch.
+
+- Lies die Tyndale Study Notes und Kommentare von Matthew Henry, Johannes Calvin und Jamieson-Fausset-Brown
+- Schlag Personen, Orte und Themen im Tyndale Open Bible Dictionary nach
+- Zoome in 70 Bibelkarten zu Reisen, Schlachten und Regionen
+- Sieh dir 264 Videos von BibleProject an, jeweils verknüpft mit den Stellen, die sie erklären
+- Lies 35 historische Bekenntnisse und Katechismen mit ihren Schriftbelegen
 
 DEINE APP, DEIN STIL
 Starte mit der Vorlage Leser, Notizenschreiber oder Bibelstudent und passe dann deine Symbolleisten und Kurzbefehle an. Halte parallele Bibeln, Interlinear, Kommentare, Querverweise und Notizen beim Lesen in Studienpanels offen, zwischen denen du hin- und herwischen kannst. Auf Tablets stehen die Panels direkt neben dem Text.
 
 KOSTENLOS, PRIVAT UND OFFLINE
-Enthaltene Bibeln, Grundtexte, Notizen und Studienressourcen funktionieren ohne Internetverbindung. Deine Inhalte bleiben auf deinem Gerät. Lux hat keine Werbung, keine Abos, keine In-App-Käufe und keine Konten. Datenschutzfreundliche Analysen und Absturzberichte helfen, Funktionen und Zuverlässigkeit zu verbessern, und werden nie für Werbung, Personalisierung oder App-übergreifendes Tracking genutzt. Lux ist kostenlos und soll es auch bleiben.
+Enthaltene Bibeln, Grundtexte, Notizen und Studienressourcen funktionieren ohne Internetverbindung, die Videos von BibleProject werden online gestreamt. Deine Inhalte bleiben auf deinem Gerät. Lux hat keine Werbung, keine Abos, keine In-App-Käufe und keine Konten. Datenschutzfreundliche Analysen und Absturzberichte helfen, Funktionen und Zuverlässigkeit zu verbessern, und werden nie für Werbung, Personalisierung oder App-übergreifendes Tracking genutzt. Lux ist kostenlos und soll es auch bleiben.

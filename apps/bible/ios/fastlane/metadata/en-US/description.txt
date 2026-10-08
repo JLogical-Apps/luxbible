@@ -1,9 +1,9 @@
-Lux Bible brings in-depth Bible study into a calm, modern reading experience. Read Scripture, take notes, explore Greek and Hebrew, compare translations, and follow reading plans without ads, subscriptions, purchases, or an account.
+Lux Bible brings in-depth Bible study into a calm, modern reading experience. Read Scripture, take notes, explore Greek and Hebrew, dig into study notes, maps, and videos, and follow reading plans without ads, subscriptions, purchases, or an account.
 
 Powerful enough for serious study and clean enough for everyday reading.
 
 READ
-Choose from the Berean Standard Bible (BSB), Majority Standard Bible (MSB), Christian Standard Bible (CSB), King James Version (KJV), American Standard Version (ASV), and World English Bible (WEB), available offline. AMP, NIV, NASB95, NLT, and NKJV are also available online. Additional Dutch, French, Spanish, German, Romanian, and Russian translations are available.
+Choose from the Berean Standard Bible (BSB), Majority Standard Bible (MSB), Christian Standard Bible (CSB), King James Version (KJV), American Standard Version (ASV), and World English Bible (WEB), available offline. AMP, NIV, NASB95, NLT, and NKJV are also available online. Additional Dutch, French, Spanish, German, Romanian, Russian, and Tagalog translations are available.
 
 Read the original texts offline with the Greek Septuagint, Textus Receptus, Byzantine Textform, Statistical Restoration Greek New Testament, and Open Scriptures Hebrew Bible.
 
@@ -12,18 +12,26 @@ Listen to the BSB or KJV with playback speed controls, a sleep timer, and backgr
 NOTE
 Highlight verses, words, or phrases by color, underline, or squiggly line. Add notes, create your own highlight styles, and organize everything into notebooks. Filter your annotations or hide a notebook when you want a cleaner reading view.
 
-STUDY
+STUDY THE TEXT
 Tap any word to see its Greek or Hebrew root, Strong's number, morphology, and inflection. Lux makes original-language study approachable without making the rest of the app feel like academic software.
 
 - Explore a full Greek and Hebrew interlinear
 - Search words, phrases, or Strong's numbers
 - Compare translations side by side
 - Follow cross-references powered by OpenBible
-- Browse Strong's Lexicon, the Tyndale Open Bible Dictionary, and 70 Bible maps
-- Read commentary from Matthew Henry, John Calvin, and Jamieson-Fausset-Brown
+- Look up Greek and Hebrew words in Strong's Lexicon
+
+EVERYTHING ON THE PASSAGE
+Open Linked Resources on any chapter or verse to see what connects to it: the people and themes it involves, dictionary articles, maps, videos, and the creeds and catechisms that cite it. Pin it as a study panel and it follows along as you read.
+
+- Read Tyndale Study Notes, with book introductions and "at a glance" summaries, alongside commentary from Matthew Henry, John Calvin, and Jamieson-Fausset-Brown
+- Look up people, places, and topics in the Tyndale Open Bible Dictionary
+- Zoom into 70 Bible maps of journeys, battles, and regions
+- Watch 264 BibleProject videos, each linked to the passages it explains
+- Read 35 historic creeds, confessions, and catechisms with their Scripture proofs
 
 MAKE IT YOURS
 Start with a Reader, Note-taker, or Studier setup, then customize your toolbars and shortcuts. Keep parallel Bibles, interlinear study, commentary, cross-references, and notes open in swipeable study panels while you read. On iPad, panels sit right beside the text.
 
 FREE, PRIVATE, AND OFFLINE-FIRST
-Bundled Bibles, original-language texts, notes, and study resources work without a connection. Your content stays on your device. Lux has no ads, subscriptions, in-app purchases, or accounts. Privacy-respecting analytics and crash reports help improve features and reliability, and are never used for ads, personalization, or cross-app tracking. Lux is free and committed to staying that way.
+Bundled Bibles, original-language texts, notes, and study resources work without a connection, while BibleProject videos stream online. Your content stays on your device. Lux has no ads, subscriptions, in-app purchases, or accounts. Privacy-respecting analytics and crash reports help improve features and reliability, and are never used for ads, personalization, or cross-app tracking. Lux is free and committed to staying that way.

@@ -1,4 +1,13 @@
-• Lux now remembers your copy settings. After copying verses, tap Edit to include or leave out the reference and translation, and later copies follow your choice. Online translations always include both.
-• The WEB is now the World English Bible Classic, which renders God's name as Yahweh where the previous edition used "the LORD".
-• When your selected Bible covers only one Testament, such as the LXX, copied verses and the passages shown with your notes now use the text you're reading in the other Testament.
-• Fixed a few crashes, including one during audio playback.
+• New Linked Resources: open it on any chapter or verse to see the people, themes, dictionary entries, maps, videos, and creeds connected to it. Pin it as a study panel and it follows along as you read.
+• Tyndale Study Notes are now one of the commentaries, with book introductions, "at a glance" summaries of each book's purpose, author, date, and setting, and links to profiles of people and theme articles.
+• The Tyndale Open Bible Dictionary replaces Easton's, with charts and maps right in its articles and a Contents button for longer entries.
+• Browse 70 Bible maps and zoom in on any of them.
+• Watch 264 BibleProject videos, each linked to the passages it explains. Videos stream, so they need a connection.
+• Read 35 historic creeds, confessions, and catechisms, with the Scripture proofs for each question or section.
+• Each resource has its own page in the Resources menu and can be added as a main toolbar shortcut. Reorder them in More > Customize > Linked Resources.
+• Select and copy text in commentaries, articles, lexicon entries, and creeds.
+• Study sheets now show where you came from, so you can step back with one tap.
+• New Tagalog Bible: the Unlocked Literal Bible, available offline.
+• New Libron reading font.
+• Bible plans: moving to another passage marks the one you left complete once you've reached its end, and tapping the current passage marks it complete or not.
+• While listening, tapping a verse now just selects it, and playback no longer jumps there.

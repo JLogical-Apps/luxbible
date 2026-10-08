@@ -3,7 +3,7 @@ Lees de Statenvertaling volledig offline in een rustige, moderne Bijbelapp. Maak
 Krachtig genoeg voor diepgaande studie en overzichtelijk genoeg voor elke dag.
 
 LEZEN
-Lees de Statenvertaling (SV) en Petrus Canisiusvertaling 1939 volledig offline. Het Boek is online beschikbaar. De Engelse Berean Standard Bible (BSB), Majority Standard Bible (MSB), Christian Standard Bible (CSB), King James Version (KJV), American Standard Version (ASV) en World English Bible (WEB) werken offline; AMP, NIV, NASB95, NLT en NKJV zijn online beschikbaar. Er zijn ook vertalingen in het Frans, Spaans, Duits, Roemeens en Russisch.
+Lees de Statenvertaling (SV) en Petrus Canisiusvertaling 1939 volledig offline. Het Boek is online beschikbaar. De Engelse Berean Standard Bible (BSB), Majority Standard Bible (MSB), Christian Standard Bible (CSB), King James Version (KJV), American Standard Version (ASV) en World English Bible (WEB) werken offline; AMP, NIV, NASB95, NLT en NKJV zijn online beschikbaar. Er zijn ook vertalingen in het Frans, Spaans, Duits, Roemeens, Russisch en Tagalog.
 
 Lees de grondteksten offline met de Griekse Septuaginta, Textus Receptus, Byzantine Textform, Statistical Restoration Greek New Testament en Open Scriptures Hebrew Bible.
 
@@ -12,18 +12,26 @@ Luister naar de BSB of KJV met instelbare afspeelsnelheid, een slaaptimer en afs
 NOTITIES
 Markeer verzen, woorden of zinnen met een kleur, onderstreping of golvende lijn. Voeg notities toe, maak je eigen markeerstijlen en orden alles in notitieboeken. Filter je annotaties of verberg een notitieboek voor een rustigere leesweergave.
 
-STUDEREN
+DE TEKST BESTUDEREN
 Tik op een woord om de Griekse of Hebreeuwse stam, het Strong-nummer, de morfologie en de woordvorm te bekijken. Lux maakt studie van de grondtalen toegankelijk zonder dat de rest van de app aanvoelt als academische software.
 
 - Verken een volledig Grieks en Hebreeuws interlineair
 - Zoek naar woorden, zinnen of Strong-nummers
 - Vergelijk vertalingen naast elkaar
 - Volg kruisverwijzingen van OpenBible
-- Raadpleeg Strong's Lexicon, de Tyndale Open Bible Dictionary en 70 bijbelkaarten
-- Lees commentaren van Matthew Henry, Johannes Calvijn en Jamieson-Fausset-Brown
+- Zoek Griekse en Hebreeuwse woorden op in Strong's Lexicon
+
+ALLES BIJ DE PASSAGE
+Open Gekoppelde bronnen bij een hoofdstuk of vers en zie wat ermee samenhangt: personen en thema's, woordenboekartikelen, kaarten, video's en de belijdenissen en catechismussen die de passage aanhalen. Zet het vast als studiepaneel en het leest met je mee. Deze bronnen zijn in het Engels.
+
+- Lees de Tyndale Study Notes met inleidingen op de Bijbelboeken en overzichten "in één oogopslag", naast commentaren van Matthew Henry, Johannes Calvijn en Jamieson-Fausset-Brown
+- Zoek personen, plaatsen en onderwerpen op in de Tyndale Open Bible Dictionary
+- Zoom in op 70 bijbelkaarten van reizen, veldslagen en gebieden
+- Bekijk 264 video's van BibleProject, elk gekoppeld aan de passages die ze uitleggen
+- Lees 35 historische geloofsbelijdenissen, belijdenisgeschriften en catechismussen met hun Schriftbewijzen
 
 MAAK HET EIGEN
 Begin met de instelling Lezer, Notitiemaker of Bijbelstudent en pas daarna je werkbalken en snelkoppelingen aan. Houd parallelle Bijbels, interlineaire studie, commentaren, kruisverwijzingen en notities geopend in studiepanelen waar je tijdens het lezen doorheen kunt vegen. Op de iPad staan de panelen direct naast de tekst.
 
 GRATIS, PRIVÉ EN OFFLINE EERST
-Ingebouwde Bijbels, grondteksten, notities en studiebronnen werken zonder internetverbinding. Je content blijft op je apparaat. Lux heeft geen advertenties, abonnementen, in-appaankopen of accounts. Privacyvriendelijke analytics en crashrapportage helpen het gebruik van functies en de betrouwbaarheid te verbeteren, nooit voor advertenties, personalisatie of tracking tussen apps. De app is gratis en blijft dat ook.
+Ingebouwde Bijbels, grondteksten, notities en studiebronnen werken zonder internetverbinding; de video's van BibleProject worden online gestreamd. Je content blijft op je apparaat. Lux heeft geen advertenties, abonnementen, in-appaankopen of accounts. Privacyvriendelijke analytics en crashrapportage helpen het gebruik van functies en de betrouwbaarheid te verbeteren, nooit voor advertenties, personalisatie of tracking tussen apps. De app is gratis en blijft dat ook.

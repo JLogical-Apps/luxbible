@@ -1,4 +1,13 @@
-• Lux onthoudt nu je kopieerinstellingen. Tik na het kopiëren van verzen op Bewerken om de bijbelverwijzing en vertaling wel of niet op te nemen, en volgende keren gaat het net zo. Online vertalingen nemen ze altijd allebei op.
-• De WEB is nu de World English Bible Classic, die Gods naam weergeeft als Yahweh waar de vorige editie "de HEER" gebruikte.
-• Bevat je gekozen Bijbel maar één testament, zoals de LXX, dan gebruiken gekopieerde verzen en de passages bij je notities in het andere testament nu de tekst die je leest.
-• Een paar crashes verholpen, waaronder één tijdens het afspelen van audio.
+• Nieuw: Gekoppelde bronnen. Open het bij een hoofdstuk of vers en zie de personen, thema's, woordenboekartikelen, kaarten, video's en belijdenissen die ermee samenhangen. Zet het vast als studiepaneel en het leest met je mee. De nieuwe bronnen zijn in het Engels.
+• De Tyndale Study Notes zijn nu een van de commentaren, met inleidingen op de Bijbelboeken, overzichten "in één oogopslag" van het doel, de schrijver, de datering en de achtergrond van elk boek, en links naar personenprofielen en thema-artikelen.
+• De Tyndale Open Bible Dictionary vervangt Easton's, met tabellen en kaarten direct in de artikelen en een knop Inhoud bij langere artikelen.
+• Bekijk 70 bijbelkaarten en zoom in op elke kaart.
+• Bekijk 264 video's van BibleProject, elk gekoppeld aan de passages die ze uitleggen. Video's worden gestreamd en hebben een internetverbinding nodig.
+• Lees 35 historische geloofsbelijdenissen, belijdenisgeschriften en catechismussen, met de Schriftbewijzen bij elke vraag of elk onderdeel.
+• Elke bron heeft een eigen pagina in het menu Bronnen en kan als snelkoppeling aan de hoofdwerkbalk worden toegevoegd. Wijzig de volgorde via Meer > Aanpassen > Gekoppelde bronnen.
+• Selecteer en kopieer tekst in commentaren, artikelen, lexiconartikelen en belijdenissen.
+• Studievensters laten nu zien waar je vandaan kwam, zodat je met één tik terug kunt.
+• Nieuwe Tagalog Bijbel: de Unlocked Literal Bible, offline beschikbaar.
+• Nieuw lettertype om te lezen: Libron.
+• Bijbelleesplannen: ga je naar een andere passage, dan wordt de vorige als gelezen gemarkeerd zodra je het einde hebt bereikt. Tik op de huidige passage om die als gelezen of ongelezen te markeren.
+• Tik je tijdens het luisteren op een vers, dan wordt het alleen geselecteerd en springt het afspelen er niet meer naartoe.

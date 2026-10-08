@@ -1,4 +1,13 @@
-• Lux merkt sich jetzt deine Kopiereinstellungen. Tippe nach dem Kopieren von Versen auf Bearbeiten, um Bibelstelle und Übersetzung ein- oder auszuschließen, und spätere Kopien folgen deiner Wahl. Online-Übersetzungen geben beides immer an.
-• Die WEB ist jetzt die World English Bible Classic, die Gottes Namen mit Yahweh wiedergibt, wo die vorherige Ausgabe „der HERR“ verwendete.
-• Enthält deine gewählte Bibel nur ein Testament, etwa die LXX, verwenden kopierte Verse und die Stellen zu deinen Notizen im anderen Testament jetzt den Text, den du liest.
-• Einige Abstürze behoben, darunter einer bei der Audiowiedergabe.
+• Neu: Verknüpfte Ressourcen. Öffne sie zu einem Kapitel oder Vers und sieh die Personen, Themen, Wörterbuchartikel, Karten, Videos und Bekenntnisse, die damit zusammenhängen. Als Studienpanel angeheftet, laufen sie beim Lesen mit. Die neuen Ressourcen sind auf Englisch.
+• Die Tyndale Study Notes sind jetzt einer der Kommentare, mit Bucheinleitungen, Übersichten „auf einen Blick“ zu Zweck, Verfasser, Entstehungszeit und Hintergrund jedes Buchs sowie Links zu Personenprofilen und Themenartikeln.
+• Das Tyndale Open Bible Dictionary ersetzt Easton's, mit Tabellen und Karten direkt in den Artikeln und der Schaltfläche „Inhalt“ bei längeren Einträgen.
+• Entdecke 70 Bibelkarten und zoome in jede hinein.
+• Sieh dir 264 Videos von BibleProject an, jeweils verknüpft mit den Stellen, die sie erklären. Videos werden gestreamt und brauchen eine Internetverbindung.
+• Lies 35 historische Glaubensbekenntnisse, Bekenntnisschriften und Katechismen mit den Schriftbelegen zu jeder Frage und jedem Abschnitt.
+• Jede Ressource hat ihre eigene Seite im Menü „Ressourcen“ und lässt sich als Kurzbefehl zur Hauptleiste hinzufügen. Die Reihenfolge änderst du unter Mehr > Anpassen > Verknüpfte Ressourcen.
+• Markiere und kopiere Text in Kommentaren, Artikeln, Lexikoneinträgen und Bekenntnissen.
+• Studienfenster zeigen jetzt, woher du kommst, sodass du mit einem Tippen zurückgehen kannst.
+• Neue Bibel auf Tagalog: die Unlocked Literal Bible, offline verfügbar.
+• Neue Leseschrift: Libron.
+• Lesepläne: Wechselst du zu einem anderen Abschnitt, wird der vorherige als erledigt markiert, sobald du sein Ende erreicht hast. Tippe auf den aktuellen Abschnitt, um ihn als erledigt oder offen zu markieren.
+• Beim Zuhören wählt ein Tippen auf einen Vers diesen nur noch aus, die Wiedergabe springt nicht mehr dorthin.
