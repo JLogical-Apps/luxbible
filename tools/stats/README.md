@@ -37,6 +37,9 @@ Notes for reading them:
 - The Lux App property has iOS and Android events from September 3, 2026. Its `web` platform rows are website hits from
   before the Lux Website property existed.
 - Social post metrics are lifetime totals, so older posts have had longer to collect views.
+- Social posts have no ID, so match a post across snapshots by its `date` plus the start of its `caption`.
+- `appDaily` carries `dauPerMau` and `dauPerWau` as 0 to 1 ratios for each day. They stay out of `appTotals` because
+  without a date dimension GA sums them and inflates the `activeUsers` requested alongside them.
 - Crashlytics only accepts intervals within the last 90 days, so its window is capped at 89.
 
 ## Setup

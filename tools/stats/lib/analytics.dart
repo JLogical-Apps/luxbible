@@ -66,8 +66,18 @@ enum AnalyticsReport {
   };
 
   List<String> get metrics => switch (this) {
-    appTotals => ['activeUsers', 'newUsers', 'sessions', 'userEngagementDuration', 'dauPerMau', 'dauPerWau'],
-    appDaily => ['activeUsers', 'newUsers', 'sessions', 'engagedSessions', 'userEngagementDuration', 'screenPageViews'],
+    appTotals => ['activeUsers', 'newUsers', 'sessions', 'userEngagementDuration'],
+    // dauPerMau and dauPerWau are only meaningful per date; without one, GA sums them and the user counts beside them.
+    appDaily => [
+      'activeUsers',
+      'newUsers',
+      'sessions',
+      'engagedSessions',
+      'userEngagementDuration',
+      'screenPageViews',
+      'dauPerMau',
+      'dauPerWau',
+    ],
     appEvents || appEventUsers || websiteEvents || websiteStoreClicks => ['eventCount', 'totalUsers'],
     appCohorts => ['activeUsers'],
     appAcquisition || appVersions || appLanguages => ['newUsers', 'activeUsers'],
