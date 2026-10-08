@@ -58,4 +58,10 @@ enum ArticleCollection {
   };
 
   String get assetPath => 'assets/$name/tyndale.json';
+
+  String get linkPrefix => switch (this) {
+    dictionary => Article.dictionaryLinkPrefix,
+    people => Article.peopleLinkPrefix,
+    themes => Article.themesLinkPrefix,
+  };
 }

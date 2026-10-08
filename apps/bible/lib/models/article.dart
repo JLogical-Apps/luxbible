@@ -13,6 +13,8 @@ sealed class Article with _$Article, LinkedResource {
   Article._();
 
   static const dictionaryLinkPrefix = 'dictionary:';
+  static const peopleLinkPrefix = 'people:';
+  static const themesLinkPrefix = 'themes:';
 
   factory Article({
     @JsonKey(name: 'i') required String id,
@@ -46,7 +48,7 @@ sealed class Article with _$Article, LinkedResource {
   late final List<VerseSelection> scriptureLinks = body
       .expand((content) => content.texts)
       .expand((text) => text.linkTargets)
-      .whereNot((link) => link.startsWith(dictionaryLinkPrefix))
+      .whereNot((link) => [dictionaryLinkPrefix, peopleLinkPrefix, themesLinkPrefix].any(link.startsWith))
       .map(VerseSelection.fromOsisId)
       .toList();
 

@@ -1,4 +1,7 @@
+import 'package:bible/models/article.dart';
+import 'package:collection/collection.dart';
 import 'package:lux/lux_core.dart';
+import 'package:lux_content_tools/repository_paths.dart';
 import 'package:xml/xml.dart';
 
 Markdown getTyndaleMarkdown(
@@ -61,10 +64,37 @@ List<MarkdownElement> _getSpanElements(XmlElement span, List<MarkdownElement> ch
 String _getDivineName(String text) => text.replaceAll('Lord', 'LORD').replaceAll(RegExp(r'\bAm\b'), 'AM');
 
 List<MarkdownElement> _getLinkElements(XmlElement link, List<MarkdownElement> children) =>
-    switch (getTyndaleLinkOsisId(link)) {
-      final osisId? => [.link(osisId, children)],
+    switch (getTyndaleLinkOsisId(link) ?? _getArticleLink(link)) {
+      final target? => [.link(target, children)],
       null => children,
     };
+
+// Links name the article's type, but one theme is typed as a profile, so the collection comes from the file it's in.
+final _linkableArticles = [('Profiles.xml', Article.peopleLinkPrefix), ('ThemeNotes.xml', Article.themesLinkPrefix)]
+    .expand(
+      (source) => XmlDocument.parse(sourceFile('commentary/tyndale/${source.$1}').readAsStringSync())
+          .findAllElements('item')
+          .map(
+            (item) => (
+              id: item.getAttribute('name')!,
+              title: item.getElement('title')!.innerText.trim(),
+              linkPrefix: source.$2,
+            ),
+          ),
+    )
+    .toList();
+
+String? _getArticleLink(XmlElement link) {
+  final articleId = RegExp(r'^\?item=(.+)_(?:Profile|ThemeNote)_Filament$').firstMatch(link.getAttribute('href')!)?[1];
+  if (articleId == null) return null;
+
+  // One link misspells its theme's ID (`TheMessiahsBanquet`) but still shows its title.
+  final article =
+      _linkableArticles.firstWhereOrNull((article) => article.id == articleId) ??
+      _linkableArticles.firstWhereOrNull((article) => article.title == link.innerText.trim()) ??
+      (throw FormatException('Unknown article link `${link.getAttribute('href')}`.'));
+  return '${article.linkPrefix}${article.id}';
+}
 
 String? getTyndaleLinkOsisId(XmlElement link) {
   // A few hrefs have a stray leading backslash, en dashes or colons as separators, a doubled hyphen, partial-verse

@@ -40,6 +40,8 @@ subject come from the hand-curated `content/sources/commentary/tyndale/dictionar
 on any article or dictionary ID it doesn't recognize. Tyndale's link, book-code, and formatting conversion
 lives in [`lib/tyndale.dart`](lib/tyndale.dart) and is shared with the commentary generator, so after changing it,
 regenerate the commentary too and confirm its assets are unchanged unless the change was meant to affect them.
+It turns links to Tyndale profiles and theme notes into `people:` and `themes:` article links, assigning each to the
+file that contains it, and fails on a link it can't match by ID or title.
 
 `generate_dictionary_json.dart` writes the Tyndale Open Bible Dictionary from `content/sources/dictionary/tyndale/` to
 `assets/dictionary/tyndale.json`, with its text boxes, charts, and map references inline, and prints the links it kept

@@ -1,4 +1,4 @@
-import 'package:bible/models/article.dart';
+import 'package:bible/models/article_collection.dart';
 import 'package:bible/models/rich_content.dart';
 import 'package:bible/providers/articles_provider.dart';
 import 'package:bible/providers/root_ref.dart';
@@ -79,7 +79,8 @@ Future<void> openRichContentLink(
   String link, {
   required Function(VerseSelection) onNavigateToVerseSelection,
 }) async {
-  if (!link.startsWith(Article.dictionaryLinkPrefix)) {
+  final collection = ArticleCollection.values.firstWhereOrNull((collection) => link.startsWith(collection.linkPrefix));
+  if (collection == null) {
     return PreviewPassageSheet.show(
       context,
       verseSelection: VerseSelection.fromOsisId(link),
@@ -87,14 +88,14 @@ Future<void> openRichContentLink(
     );
   }
 
-  final articleId = link.substring(Article.dictionaryLinkPrefix.length);
-  final dictionary = await ref.read(articlesProvider(collection: .dictionary).future);
-  final article = dictionary.firstWhereOrNull((article) => article.id == articleId);
+  final articleId = link.substring(collection.linkPrefix.length);
+  final articles = await ref.read(articlesProvider(collection: collection).future);
+  final article = articles.firstWhereOrNull((article) => article.id == articleId);
   if (article == null || !context.mounted) return;
 
   await ArticleSheet.show(
     context,
-    collection: .dictionary,
+    collection: collection,
     article: article,
     onNavigateToVerseSelection: onNavigateToVerseSelection,
   );

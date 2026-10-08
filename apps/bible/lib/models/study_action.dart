@@ -124,12 +124,16 @@ enum StudyAction {
           );
         });
       case .commentary:
+        // Outlives the sheet so returning from a linked article reopens the same commentary.
+        var commentaryIndex = 0;
         await context.showStyledSheetWithBreadcrumbs(breadcrumbText: title(), (context, ref) {
           final user = ref.watch(userProvider);
           final tabController = useTabController(
             initialLength: user.commentariesOrDefault.length,
+            initialIndex: commentaryIndex.clamp(0, user.commentariesOrDefault.length - 1),
             keys: [user.commentariesOrDefault.length],
           );
+          useOnListenableChange(tabController, () => commentaryIndex = tabController.index);
           final index = useListenableSelector(tabController, () => tabController.index);
           final selectedCommentary = user.commentariesOrDefault[index];
           final listController = useListController();
@@ -188,7 +192,8 @@ enum StudyAction {
               verseSelection: verseSelection,
               commentaryType: selectedCommentary,
               onNavigateToVerseSelection: (verseSelection) {
-                context.pop();
+                // A linked article replaces this sheet in the breadcrumbs.
+                if (context.mounted) context.pop();
                 onNavigateToVerseSelection(verseSelection);
               },
               onNavigateToIndex: (index) => listController.animateToItem(

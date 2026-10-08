@@ -284,7 +284,7 @@ while reading a Bible plan do not offer pin actions.
 
 Opening a tool from the Study sheet replaces it, and breadcrumbs at the top, such as Study › Commentary, lead back to
 it. The breadcrumbs continue into sheets opened from a tool, such as a word in Interlinear or an article in Linked
-Resources. Tools opened directly from a toolbar shortcut start their own breadcrumbs.
+Resources or Commentary. Tools opened directly from a toolbar shortcut start their own breadcrumbs.
 
 ## Compare
 
@@ -348,6 +348,8 @@ Users can:
 - Keep a Commentary study panel aligned with the top visible verse while scrolling either surface
 - Move directly between adjacent Commentary headings from each sticky header, in both the sheet and the study panel
 - Open Scripture links in commentary as passage previews
+- Open the profiles and theme notes that Tyndale's study notes refer to, such as "See 'Blessing' Theme Note", as
+  articles. Going back to the Commentary sheet returns to the commentary that was selected
 
 ## Cross References
 
