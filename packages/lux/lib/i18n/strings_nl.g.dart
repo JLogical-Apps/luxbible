@@ -537,6 +537,7 @@ class _Translations$labels$nl extends Translations$labels$en {
 	@override String get commentary => 'Commentaar';
 	@override String get community => 'Community';
 	@override String get completed => 'Voltooid';
+	@override String get contents => 'Inhoud';
 	@override String get crossReferences => 'Kruisverwijzingen';
 	@override String get days => 'Dagen';
 	@override String get dictionary => 'Woordenboek';
@@ -3372,6 +3373,7 @@ extension on TranslationsNl {
 			'labels.commentary' => 'Commentaar',
 			'labels.community' => 'Community',
 			'labels.completed' => 'Voltooid',
+			'labels.contents' => 'Inhoud',
 			'labels.crossReferences' => 'Kruisverwijzingen',
 			'labels.days' => 'Dagen',
 			'labels.dictionary' => 'Woordenboek',
@@ -3603,9 +3605,9 @@ extension on TranslationsNl {
 			'biblePlans.importErrors.invalidStructure' => 'Dit bestand is geen geldig Bijbelleesplan.',
 			'biblePlans.importErrors.nameRequired' => 'Het geïmporteerde leesplan moet een naam hebben.',
 			'biblePlans.importErrors.invalidDayCount' => 'Het geïmporteerde leesplan moet 1 tot 365 dagen bevatten.',
-			'biblePlans.importErrors.readingRequired' => 'Het geïmporteerde leesplan moet ten minste één leesdag hebben.',
 			_ => null,
 		} ?? switch (path) {
+			'biblePlans.importErrors.readingRequired' => 'Het geïmporteerde leesplan moet ten minste één leesdag hebben.',
 			'biblePlans.importErrors.invalidPassage' => 'Het geïmporteerde leesplan bevat een ongeldige Bijbelverwijzing.',
 			'biblePlans.importErrors.duplicatePassage' => 'Een dag in het geïmporteerde leesplan bevat dezelfde passage meer dan één keer.',
 			'biblePlans.manual' => 'Handmatig',
@@ -4117,9 +4119,9 @@ extension on TranslationsNl {
 			'morphology.stem.piel.description' => 'De intensieve of factitieve actieve stam.',
 			'morphology.stem.piel.examples' => 'hij prees|hij zegende|hij verbrijzelde',
 			'morphology.stem.pual.name' => 'Pual',
-			'morphology.stem.pual.description' => 'De passieve vorm van de piel.',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.stem.pual.description' => 'De passieve vorm van de piel.',
 			'morphology.stem.pual.examples' => 'hij werd geprezen',
 			'morphology.stem.hiphil.name' => 'Hiphil',
 			'morphology.stem.hiphil.description' => 'De causatieve actieve stam.',

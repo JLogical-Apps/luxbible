@@ -475,6 +475,9 @@ settings page:
 - Alphabetical browsing
 - Search where each typed word matches the start of any word in a title, in any order
 - Each entry opens the same article view as People Profiles and Themes, with its text boxes, charts, and maps shown inline
+- An article with at least two headings, such as Paul, the Apostle, has a Contents button in its header. It lists the
+  headings, with subheadings indented, marks the section currently at the top, and jumps to the chosen heading with a
+  little space above it. Tyndale's own Preview outlines of an entry's sections are left out in favor of Contents
 - An entry that covers the same subject as a Tyndale Study Notes profile or theme article starts with a tile linking
   to each one, described as a shorter overview with passages for further study
 - Scripture links open passage previews that can navigate to the Bible, and cross-references open the linked entry
@@ -524,8 +527,10 @@ settings page:
 - When the document has Scripture proofs, a collapsed Scripture Proofs tile follows each item's text. Expanding it
   lists each proof's reference and the first two lines of its text, and each opens a passage preview. Like Cross
   References, proofs use the study Bible when an online Bible is active
-- An info button in the document's header opens a dialog with its kind (with that kind's description), year, and
-  authors when known
+- A more button in the document's header opens a menu with About, which shows a dialog with its kind (with that kind's
+  description), year, and authors when known. For confessions and catechisms, the menu also has Contents, which lists
+  each chapter (or each question, article, or section when the document has no chapters), marks the one currently at
+  the top, and jumps to the chosen one
 - The Apostles' Creed uses its traditional wording ("he descended into hell")
 
 The Dictionary and Lexicon are also available as independent main-toolbar shortcuts.

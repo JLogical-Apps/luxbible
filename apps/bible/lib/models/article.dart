@@ -3,6 +3,7 @@ import 'package:bible/models/rich_content.dart';
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lux/lux_core.dart';
+import 'package:utils_core/utils_core.dart';
 
 part 'article.freezed.dart';
 part 'article.g.dart';
@@ -30,6 +31,16 @@ sealed class Article with _$Article, LinkedResource {
             paragraphs.firstWhereOrNull((paragraph) => paragraph.style != .heading && paragraph.style != .subheading))
         ?.text;
   }
+
+  Map<int, RichParagraph> get headingsByIndex => body
+      .mapIndexed(
+        (index, content) => switch (content) {
+          RichParagraph(style: .heading || .subheading) => MapEntry(index, content),
+          _ => null,
+        },
+      )
+      .nonNulls
+      .toMap();
 
   @override
   late final List<VerseSelection> scriptureLinks = body

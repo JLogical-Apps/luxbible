@@ -12,9 +12,15 @@ import 'package:style/style.dart';
 
 class RichContentList extends StatelessWidget {
   final List<RichContent> content;
+  final Map<int, GlobalKey> keysByIndex;
   final Function(VerseSelection) onNavigateToVerseSelection;
 
-  const RichContentList({super.key, required this.content, required this.onNavigateToVerseSelection});
+  const RichContentList({
+    super.key,
+    required this.content,
+    this.keysByIndex = const {},
+    required this.onNavigateToVerseSelection,
+  });
 
   @override
   Widget build(BuildContext context) => DefaultTextStyle(
@@ -23,7 +29,11 @@ class RichContentList extends StatelessWidget {
       crossAxisAlignment: .stretch,
       spacing: 12,
       children: content.mapIndexed((index, block) {
-        final view = RichContentView(content: block, onNavigateToVerseSelection: onNavigateToVerseSelection);
+        final view = RichContentView(
+          key: keysByIndex[index],
+          content: block,
+          onNavigateToVerseSelection: onNavigateToVerseSelection,
+        );
         return switch (block) {
           _ when index == 0 => view,
           RichParagraph(style: .heading) => Padding(padding: .only(top: 24), child: view),

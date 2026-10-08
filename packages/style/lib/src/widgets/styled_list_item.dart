@@ -199,7 +199,7 @@ class StyledListItem extends StatelessWidget {
           ),
           if ((showDividerOverride ?? itemContext?.showDivider) == true)
             Positioned(
-              left: (leading == null ? 16 : 64) + MediaQuery.viewPaddingOf(context).left,
+              left: (leading == null ? 16 : leadingWidth) + MediaQuery.viewPaddingOf(context).left,
               right: 0,
               bottom: 0,
               child: StyledDivider(),

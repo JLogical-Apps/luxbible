@@ -114,7 +114,7 @@ List<Article> extractTyndaleDictionary({required Function(String articleId, Stri
     return Article(
       id: id,
       title: _withoutAsterisks(item.getElement('title')!.innerText.trim()),
-      body: getContent(item.getElement('body')!.childElements.where(_isNotTitle)),
+      body: getContent(_withoutSectionPreviews(item.getElement('body')!.childElements.where(_isNotTitle))),
     );
   }).toList();
 }
@@ -131,6 +131,23 @@ Iterable<XmlElement> _readItems(String directory) => sourceDirectory('dictionary
     .expand((file) => XmlDocument.parse(file.readAsStringSync()).findAllElements('item'));
 
 bool _isNotTitle(XmlElement element) => element.getAttribute('class') != 'h1';
+
+// A preview that only links to the entry's own headings duplicates the app's Contents action. Previews linking to
+// other entries, as in Bible, are kept.
+Iterable<XmlElement> _withoutSectionPreviews(Iterable<XmlElement> elements) {
+  bool isPreview(XmlElement element) =>
+      element.getAttribute('class')?.startsWith(RegExp('h2-preview|preview-')) ?? false;
+  bool isPreviewList(XmlElement element) => element.getAttribute('class')?.startsWith('preview-list') ?? false;
+  bool isSectionLink(XmlElement element) =>
+      element.findAllElements('a').every((link) => link.getAttribute('href')!.startsWith('#'));
+
+  return elements
+      .splitBetween((previous, next) => isPreview(previous) != isPreview(next))
+      .whereNot(
+        (run) => isPreview(run.first) && run.any(isPreviewList) && run.where(isPreviewList).every(isSectionLink),
+      )
+      .flattened;
+}
 
 // An asterisk marks a term that is missing from the NLT, which Lux does not explain or use.
 String _withoutAsterisks(String text) => text.replaceAll('*', '');

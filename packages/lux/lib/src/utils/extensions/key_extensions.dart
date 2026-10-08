@@ -54,16 +54,34 @@ extension GlobalKeyExtensions on GlobalKey {
     );
   }
 
-  Future<void> jumpSliverToTop() async {
+  // getOffsetToReveal falls short in a SliverMainAxisGroup by subtracting every visible sticky header before it.
+  double? get scrollOffset => switch (currentContext?.findRenderObject()) {
+    final RenderSliver sliver when sliver.attached => sliver.constraints.precedingScrollExtent,
+    final RenderObject object when object.attached => RenderAbstractViewport.of(
+      object,
+    ).getOffsetToReveal(object, 0).offset,
+    _ => null,
+  };
+
+  // The extra pixel absorbs rounding after jumpToTop lands exactly on the offset.
+  bool hasReachedTop({double padding = 0}) {
     final context = currentContext;
-    final sliver = context?.findRenderObject();
-    if (context == null || sliver is! RenderSliver) return;
+    final offset = scrollOffset;
+    return context != null && offset != null && offset - padding <= Scrollable.of(context).position.pixels + 1;
+  }
+
+  Future<void> jumpToTop({double padding = 0}) async {
+    final context = currentContext;
+    final offset = scrollOffset;
+    if (context == null || !context.mounted || offset == null) return;
 
     final position = Scrollable.of(context).position;
     void jumpTo(double offset) => position.jumpTo(offset.clamp(position.minScrollExtent, position.maxScrollExtent));
 
-    // getOffsetToReveal falls short in a SliverMainAxisGroup by subtracting every visible sticky header before it.
-    jumpTo(sliver.constraints.precedingScrollExtent);
+    jumpTo(offset - padding);
+
+    final sliver = context.findRenderObject();
+    if (sliver is! RenderSliver) return;
 
     // Pinned headers above the sliver only report how much they cover it once it is scrolled under them.
     await WidgetsBinding.instance.endOfFrame;
