@@ -50,6 +50,7 @@ const _$ThemeFontEnumMap = {
   ThemeFont.ptSerif: 'ptSerif',
   ThemeFont.openSans: 'openSans',
   ThemeFont.lato: 'lato',
+  ThemeFont.libron: 'libron',
   ThemeFont.openDyslexic: 'openDyslexic',
 };
 

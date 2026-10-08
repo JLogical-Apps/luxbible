@@ -42,6 +42,7 @@ enum ThemeFont {
   ptSerif,
   openSans,
   lato,
+  libron,
   openDyslexic;
 
   String title() => switch (this) {
@@ -51,6 +52,7 @@ enum ThemeFont {
     ptSerif => 'PT Serif',
     openSans => 'Open Sans',
     lato => 'Lato',
+    libron => 'Libron',
     openDyslexic => 'OpenDyslexic',
   };
 
@@ -61,6 +63,7 @@ enum ThemeFont {
     ptSerif => 'PTSerif',
     openSans => 'OpenSans',
     lato => 'Lato',
+    libron => 'Libron',
     openDyslexic => 'OpenDyslexic',
   };
 }

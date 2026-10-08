@@ -9,6 +9,7 @@ Future<void> registerLicenses() async {
     yield LicenseEntryWithLineBreaks(['PT Serif'], await rootBundle.loadString('fonts/PTSerif-OFL.txt'));
     yield LicenseEntryWithLineBreaks(['Open Sans'], await rootBundle.loadString('fonts/OpenSans-OFL.txt'));
     yield LicenseEntryWithLineBreaks(['Lato'], await rootBundle.loadString('fonts/Lato-OFL.txt'));
+    yield LicenseEntryWithLineBreaks(['Libron'], await rootBundle.loadString('fonts/Libron-OFL.txt'));
     yield LicenseEntryWithLineBreaks(['OpenDyslexic'], await rootBundle.loadString('fonts/OpenDyslexic-OFL.txt'));
     yield LicenseEntryWithLineBreaks(['Ezra SIL'], await rootBundle.loadString('fonts/EzraSIL-OFL.txt'));
 

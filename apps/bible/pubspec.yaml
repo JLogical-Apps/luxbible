@@ -170,6 +170,16 @@ flutter:
         - asset: fonts/Lato-Regular.ttf
         - asset: fonts/Lato-Italic.ttf
           style: italic
+    - family: Libron
+      fonts:
+        - asset: fonts/Libron-Regular.ttf
+        - asset: fonts/Libron-Italic.ttf
+          style: italic
+        - asset: fonts/Libron-Bold.ttf
+          weight: 700
+        - asset: fonts/Libron-BoldItalic.ttf
+          weight: 700
+          style: italic
     - family: OpenDyslexic
       fonts:
         - asset: fonts/OpenDyslexic-Regular.ttf
