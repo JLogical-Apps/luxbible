@@ -1,8 +1,9 @@
-const JEV_URL = 'https://api.typesafe.ai/v1/systemone';
+const CLAUDE_URL = 'https://api.anthropic.com/v1/messages';
+const CLAUDE_MODEL = 'claude-haiku-5-5';
+const CLAUDE_EFFORT = 'low';
 const F5BOT_SENDER = 'alerts@f5bot.com';
 const ALWAYS_NOTIFY_KEYWORDS = ['lux bible'];
 const MY_REDDIT_USERNAME = 'MacAndCheeseRamen';
-const DEFAULT_THRESHOLD = 0.7;
 const FIRST_RUN_LOOKBACK_MS = 24 * 60 * 60 * 1000;
 
 const SHEET_HEADERS = [
@@ -12,42 +13,49 @@ const SHEET_HEADERS = [
   'Type',
   'Title',
   'Excerpt',
-  'Worth replying',
-  'Category',
   'Notified',
+  'Category',
+  'Reason',
   'Link',
   'Your verdict',
 ];
 
-const QUESTIONS = {
-  worth_replying: {
-    type: 'noul',
-    instructions:
-      'Is the author of this Reddit post or comment asking for help with reading or studying the Bible, or for a Bible study tool recommendation?',
-    criteria: {
-      true:
-        'The author is asking how to read, study, or understand the Bible; for a reading plan or study method; ' +
-        'for a Bible app, translation, commentary, or study resource; or what a word or passage means in the original Greek or Hebrew.',
-      false:
-        'The author is not asking for Bible reading or study help. This includes asking for help with a different problem ' +
-        '(health, relationships, phone habits, doubts, church conflict) even if they mention studying the Bible; ' +
-        'recommending resources to someone else; announcing or promoting their own app or project; ' +
-        'and sharing news, testimony, opinions, or debate.',
-    },
+const REPLY_CATEGORIES = ['recommend_lux', 'share_soap'];
+
+const CATEGORIES = [
+  ...REPLY_CATEGORIES,
+  'passage_question',
+  'other_help_request',
+  'recommending_to_others',
+  'own_project',
+  'discussion',
+];
+
+const SYSTEM_PROMPT = `You screen Reddit posts and comments for the developer of Lux Bible, a free iPhone, iPad, and Android Bible app with no ads, subscriptions, or account. Lux is for people who want more study depth than a mainstream reading app without the complexity of academic Bible software. It has Greek and Hebrew word data, cross-references, commentaries, translation comparison, reading plans with reminders, highlights, and notes.
+
+The developer replies to two kinds of posts:
+- recommend_lux: the author wants something Lux provides, so recommending Lux directly answers them. They're asking for a Bible app, study tools, commentaries, a reading plan, a way to stay consistent with reading, or a way to see the original Greek or Hebrew, or they're unhappy with the Bible app they use.
+- share_soap: the author is asking how to study the Bible, how to start reading it, how to get more out of their reading, or how to understand what they read. The developer replies with the SOAP method (Scripture, Observation, Application, Prayer) and mentions Lux only if they follow up.
+
+Everything else gets one of these categories:
+- passage_question: asking what a specific passage or word means, or a doctrinal or theological question
+- other_help_request: asking for help with a different problem (health, relationships, phone habits, doubts, church conflict), even if they mention studying the Bible
+- recommending_to_others: recommending or mentioning Bible resources to someone else
+- own_project: announcing, promoting, or sharing stats about their own app, product, or project
+- discussion: opinions, testimony, news, debate, or general discussion where the Bible comes up in passing
+
+Each input is one Reddit post, or one comment along with the title of the post it was left on. Excerpts can be cut off. For a comment, judge what the comment's author wants, not the post's author. When a post fits both recommend_lux and share_soap, choose recommend_lux.
+
+In reason, explain the category in one short sentence.`;
+
+const OUTPUT_SCHEMA = {
+  type: 'object',
+  properties: {
+    reason: { type: 'string' },
+    category: { type: 'string', enum: CATEGORIES },
   },
-  category: {
-    type: 'choice',
-    instructions: 'What is the author mainly doing in this Reddit post or comment?',
-    criteria: {
-      wants_study_tools: 'Asking for a Bible app, translation, commentary, or other study resource recommendation',
-      wants_study_method: 'Asking how to read, study, or understand the Bible, or for a reading plan or study approach',
-      original_language_question: 'Asking about a Greek or Hebrew word or the original-language meaning of a passage',
-      other_help_request: 'Asking for help with something other than Bible reading or study',
-      recommending_to_others: 'Recommending or mentioning Bible resources to someone else',
-      own_project: 'Announcing, promoting, or sharing stats about their own app, product, or project',
-      discussion: 'Sharing opinions, testimony, news, theological debate, or general discussion',
-    },
-  },
+  required: ['reason', 'category'],
+  additionalProperties: false,
 };
 
 function setup() {
@@ -62,7 +70,7 @@ function run() {
   const alerts = getNewAlerts();
   if (alerts.length === 0) return;
 
-  // Everything is classified before anything is committed, so a failed Jev call retries the whole batch next run.
+  // Everything is classified before anything is committed, so a failed Claude call retries the whole batch next run.
   const decisions = alerts.flatMap((message) =>
     parseHits(message.getBody())
       .filter((hit) => hit.author.toLowerCase() !== MY_REDDIT_USERNAME.toLowerCase())
@@ -111,35 +119,51 @@ function parseRedditHit(html, keyword) {
 
 function decide(hit) {
   if (ALWAYS_NOTIFY_KEYWORDS.includes(hit.keyword.toLowerCase())) {
-    return { ...hit, probability: 1, category: 'lux_mention', shouldNotify: true };
+    return { ...hit, shouldNotify: true, category: 'lux_mention', reason: 'Mentions Lux Bible' };
   }
-  const answers = askJev(toState(hit));
-  const probability = answers.worth_replying.noul;
-  return { ...hit, probability, category: answers.category.choice, shouldNotify: probability >= getThreshold() };
+  const { category, reason } = askClaude(toPrompt(hit));
+  return { ...hit, shouldNotify: REPLY_CATEGORIES.includes(category), category, reason };
 }
 
-const toState = (hit) => ({
-  source: hit.kind === 'post' ? 'Reddit post' : 'Reddit comment',
-  subreddit: `r/${hit.subreddit}`,
-  post_title: hit.title,
-  [hit.kind === 'post' ? 'post_text' : 'comment_text']: hit.excerpt,
-});
+const toPrompt = (hit) =>
+  JSON.stringify(
+    {
+      source: hit.kind === 'post' ? 'Reddit post' : 'Reddit comment',
+      subreddit: `r/${hit.subreddit}`,
+      post_title: hit.title,
+      [hit.kind === 'post' ? 'post_text' : 'comment_text']: hit.excerpt,
+    },
+    null,
+    2,
+  );
 
-function askJev(state) {
-  const apiKey = getProperties().getProperty('TYPESAFE_API_KEY');
-  if (!apiKey) throw new Error('Add TYPESAFE_API_KEY under Project Settings > Script properties.');
+function askClaude(prompt) {
+  const apiKey = getProperties().getProperty('ANTHROPIC_API_KEY');
+  if (!apiKey) throw new Error('Add ANTHROPIC_API_KEY under Project Settings > Script properties.');
 
-  const response = UrlFetchApp.fetch(JEV_URL, {
+  const response = UrlFetchApp.fetch(CLAUDE_URL, {
     method: 'post',
     contentType: 'application/json',
-    headers: { Authorization: `Bearer ${apiKey}` },
-    payload: JSON.stringify({ model: 'jev-latest', state, questions: QUESTIONS }),
+    headers: { 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
+    payload: JSON.stringify({
+      model: CLAUDE_MODEL,
+      max_tokens: 8000,
+      system: SYSTEM_PROMPT,
+      messages: [{ role: 'user', content: prompt }],
+      output_config: { effort: CLAUDE_EFFORT, format: { type: 'json_schema', schema: OUTPUT_SCHEMA } },
+    }),
     muteHttpExceptions: true,
   });
   if (response.getResponseCode() !== 200) {
-    throw new Error(`Jev returned ${response.getResponseCode()}: ${response.getContentText()}`);
+    throw new Error(`Claude returned ${response.getResponseCode()}: ${response.getContentText()}`);
   }
-  return JSON.parse(response.getContentText()).answers;
+
+  const message = JSON.parse(response.getContentText());
+  // Retrying a refusal returns another refusal, so log it instead of throwing and blocking every later run.
+  if (message.stop_reason === 'refusal') {
+    return { category: 'refused', reason: `Refused (${message.stop_details?.category})` };
+  }
+  return JSON.parse(message.content.find((block) => block.type === 'text').text);
 }
 
 function logDecisions(decisions) {
@@ -153,9 +177,9 @@ function logDecisions(decisions) {
     decision.kind,
     decision.title,
     decision.excerpt,
-    decision.probability,
-    decision.category,
     decision.shouldNotify,
+    decision.category,
+    decision.reason,
     decision.url,
     '',
   ]);
@@ -182,8 +206,8 @@ function notify(decisions) {
 const toEmailHtml = (decision) => `
   <p>
     <a href="${decision.url}"><b>${escapeHtml(decision.title)}</b></a><br>
-    <small>r/${decision.subreddit} · ${decision.kind} · "${escapeHtml(decision.keyword)}" ·
-    ${Math.round(decision.probability * 100)}% · ${decision.category}</small>
+    <small>r/${decision.subreddit} · ${decision.kind} · "${escapeHtml(decision.keyword)}" · ${decision.category}</small><br>
+    <i>${escapeHtml(decision.reason)}</i>
   </p>
   <p>${escapeHtml(decision.excerpt)}</p>`;
 
@@ -196,14 +220,11 @@ function getSheet() {
   const sheet = spreadsheet.getSheets()[0];
   sheet.appendRow(SHEET_HEADERS);
   sheet.setFrozenRows(1);
-  sheet.getRange('G:G').setNumberFormat('0%');
   properties.setProperty('SHEET_ID', spreadsheet.getId());
   return sheet;
 }
 
 const getProperties = () => PropertiesService.getScriptProperties();
-
-const getThreshold = () => Number(getProperties().getProperty('THRESHOLD') ?? DEFAULT_THRESHOLD);
 
 const unwrapF5botUrl = (url) => {
   const target = url.match(/^https:\/\/f5bot\.com\/url\?u=([^&]+)/)?.[1];
