@@ -81,13 +81,10 @@ const playReleaseNotesTrack = 'internal';
 
 Future<void> pushIos(Map<String, String> env, {required String marketingVersion}) =>
     withAppStoreConnectKey(env, (keyPath) async {
-      await runFastlane([
-        'deliver',
+      await runDeliver([
         ...appStoreConnectArgs(keyPath),
         '--app_version',
         marketingVersion,
-        '--metadata_path',
-        iosMetadataPath,
         '--force',
         'true',
         '--skip_binary_upload',
@@ -129,15 +126,12 @@ Future<void> pushIosScreenshots(Map<String, String> env, {required String market
     stdout.writeln(
       'Replacing the $marketingVersion screenshots of each language that has a folder in $iosScreenshotsPath.',
     );
-    await runFastlane([
-      'deliver',
+    await runDeliver([
       ...appStoreConnectArgs(keyPath),
       '--app_version',
       marketingVersion,
-      '--metadata_path',
-      iosMetadataPath,
       '--screenshots_path',
-      iosScreenshotsPath,
+      File(iosScreenshotsPath).absolute.path,
       '--overwrite_screenshots',
       'true',
       '--force',
@@ -390,11 +384,21 @@ void mirrorScreenshots(Iterable<({String from, String to})> folders) {
   );
 }
 
-Future<void> runFastlane(List<String> args) async {
+// Without fastlane/metadata in the working directory, deliver offers to run its setup, which
+// downloads the live listing over the local files instead of pushing them.
+Future<void> runDeliver(List<String> args) => runFastlane([
+  'deliver',
+  ...args,
+  '--metadata_path',
+  File(iosMetadataPath).absolute.path,
+], workingDirectory: File(iosMetadataPath).parent.parent.path);
+
+Future<void> runFastlane(List<String> args, {String? workingDirectory}) async {
   stdout.writeln('\$ fastlane ${args.join(' ')}');
   final process = await Process.start(
     'fastlane',
     args,
+    workingDirectory: workingDirectory,
     mode: ProcessStartMode.inheritStdio,
     environment: {
       'LC_ALL': 'en_US.UTF-8',
