@@ -355,7 +355,7 @@ Licensed under Creative Commons Attribution-ShareAlike 4.0 International (CC BY-
 
 Adapted from Tyndale Open Bible Dictionary. The original work by Tyndale House Publishers is available for free at http://www.tyndaleopenresources.com.
 
-Changes made by Lux: the dictionary articles were converted into Lux's article format, with their title lines removed, the asterisks that mark terms missing from the New Living Translation removed, and their text boxes and charts placed inline. Malformed scripture links were repaired, links to deuterocanonical books and to content not included in Lux were removed, and a few verse numbers were aligned with Lux's versification. The pictures were omitted because the open release does not include their images.
+Changes made by Lux: the dictionary articles were converted into Lux's article format, with their title lines removed, the asterisks that mark terms missing from the New Living Translation removed, and their text boxes and charts placed inline. Malformed scripture links were repaired, a few scripture references that pointed to the wrong passage were corrected, links to deuterocanonical books and to content not included in Lux were removed, and a few verse numbers were aligned with Lux's versification. The pictures were omitted because the open release does not include their images.
 
 The maps were rasterized from their PDFs. Map entries that share an image were merged into one map, several titles were rewritten to describe what the map shows, captions that did not match their map or only repeated a reference printed on the map were removed, scripture references in captions were given their book names, typos in captions were corrected, and each map was linked to the passages it illustrates.
 
