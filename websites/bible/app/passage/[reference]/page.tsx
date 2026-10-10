@@ -24,7 +24,7 @@ export function generateMetadata({ params }: Props): Metadata {
   const description = text
     ? truncateText(text, 200)
     : 'Open this passage in Lux Bible.';
-  const url = `https://app.luxbible.app/passage/${encodeURIComponent(
+  const url = `${site.appDomain}/passage/${encodeURIComponent(
     params.reference,
   )}`;
   return {

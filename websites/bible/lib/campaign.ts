@@ -57,6 +57,13 @@ export const passageShareCampaign: Campaign = {
   appleToken: 'passage-share',
 };
 
+export const adventCampaign: Campaign = {
+  source: 'lux_bible',
+  medium: 'website',
+  name: 'advent',
+  appleToken: 'advent',
+};
+
 export function getCampaign(search: string): Campaign | undefined {
   const sourceCode = new URLSearchParams(search).get('s');
   return sourceCode && sourceCode in campaignsBySourceCode

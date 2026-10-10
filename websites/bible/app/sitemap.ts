@@ -24,6 +24,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     })),
     {
+      url: `${site.domain}/plans/advent`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
       url: `${site.domain}/resources/lxbp`,
       lastModified: new Date(),
       changeFrequency: 'monthly',

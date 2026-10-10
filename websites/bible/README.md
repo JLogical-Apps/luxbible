@@ -35,7 +35,7 @@ Direct messages use `direct_message` as the campaign.
 
 ## Structure
 
-- `app/` — routes (`page.tsx` = home, `privacy-policy/`, `resources/lxbp/`).
+- `app/` — routes (`page.tsx` = home, `privacy-policy/`, `resources/lxbp/`, `plans/advent/`).
   Pages are composed by assembling blocks.
 - `components/blocks/` — content blocks (Hero pieces, FeatureShowcase, CtaButton,
   AppStoreButtons).
@@ -49,7 +49,9 @@ Direct messages use `direct_message` as the campaign.
 
 Deployed on Vercel as a Next.js site.
 
-The `app.luxbible.app` domain serves `/passage/<OSIS selection>` from this project as a
-browser fallback for shared verse links. Assign the subdomain to this Vercel project
+The `app.luxbible.app` domain serves `/passage/<OSIS selection>` and `/plans/<plan ID>` from
+this project as browser fallbacks for app links. The same routes on the main domain are regular
+pages: `/plans/advent` is the public Advent page, and only the app domain sends Android visitors on
+to Lux or Google Play. Assign the subdomain to this Vercel project
 and serve the association files in `public/.well-known/` from it. Verify both
 files are reachable over HTTPS without redirects before treating app links as live.

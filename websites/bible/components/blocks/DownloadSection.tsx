@@ -2,11 +2,14 @@ import { ReactNode } from 'react';
 
 import AppStoreButtons from '@/components/blocks/AppStoreButtons';
 import Section from '@/components/layout/Section';
+import { Campaign } from '@/lib/campaign';
 import { site } from '@/lib/site';
 
 export default function DownloadSection({
+  defaultCampaign,
   children,
 }: {
+  defaultCampaign?: Campaign;
   children?: ReactNode;
 }) {
   return (
@@ -26,6 +29,7 @@ export default function DownloadSection({
           appStoreUrl={site.appStoreUrl}
           appStoreProviderToken={site.appStoreProviderToken}
           googlePlayUrl={site.googlePlayUrl}
+          defaultCampaign={defaultCampaign}
         />
         {children}
       </div>

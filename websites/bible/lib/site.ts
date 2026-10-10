@@ -4,6 +4,7 @@ export const site = {
   name: 'Lux Bible',
   tagline: 'Scripture Deserves Better Software',
   domain: 'https://www.luxbible.app',
+  appDomain: 'https://app.luxbible.app',
   description:
     'A modern Bible app built for real study. Interlinear, cross-references, commentary, and global search, all fully offline. Free forever, no ads, no account required.',
 

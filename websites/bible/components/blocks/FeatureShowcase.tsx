@@ -1,5 +1,6 @@
 'use client';
 
+import Image, { StaticImageData } from 'next/image';
 import { useEffect, useState } from 'react';
 
 import Video from '@/components/media/Video';
@@ -14,8 +15,7 @@ import { cn } from '@/lib/utils';
 export type Feature = {
   title: string;
   subtitle: string;
-  video: string;
-};
+} & ({ video: string } | { image: StaticImageData });
 
 export default function FeatureShowcase({ features }: { features: Feature[] }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -54,18 +54,27 @@ export default function FeatureShowcase({ features }: { features: Feature[] }) {
         ))}
       </ul>
       <div className="relative w-full h-full">
-        {features.map((feature, i) => (
-          <Video
-            key={i}
-            src={feature.video}
-            ariaLabel={feature.title}
-            active={selectedIndex === i}
-            className={cn(
-              'w-auto h-full max-h-[40rem] mx-auto',
-              selectedIndex === i ? 'block' : 'hidden',
-            )}
-          />
-        ))}
+        {features.map((feature, i) => {
+          const visibility = selectedIndex === i ? 'block' : 'hidden';
+          return 'video' in feature ? (
+            <Video
+              key={i}
+              src={feature.video}
+              ariaLabel={feature.title}
+              active={selectedIndex === i}
+              className={cn('w-auto h-full max-h-[40rem] mx-auto', visibility)}
+            />
+          ) : (
+            // Sized by width so the space is reserved before the image loads, matching a 40rem-tall video.
+            <Image
+              key={i}
+              src={feature.image}
+              alt={feature.title}
+              sizes="320px"
+              className={cn('w-full max-w-80 h-auto mx-auto', visibility)}
+            />
+          );
+        })}
       </div>
       <Carousel className="block md:hidden w-full" setApi={setApi}>
         <CarouselContent className="space-x-2">
