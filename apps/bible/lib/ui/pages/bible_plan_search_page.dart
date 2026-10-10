@@ -26,7 +26,9 @@ import 'package:utils_core/utils_core.dart';
 enum BiblePlanSearchSource { included, custom }
 
 class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<String> {
-  const BiblePlanSearchPage({super.key});
+  final String? initialPlanId;
+
+  const BiblePlanSearchPage({super.key, this.initialPlanId});
 
   @override
   String get path => '/bible-plans/find';
@@ -165,6 +167,12 @@ class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<Stri
         context.pop(planId);
       }
     }
+
+    usePostFrameEffect(() {
+      if (initialPlanId case final planId?) {
+        if (planById[planId] case final plan?) showPlan(planId, plan);
+      }
+    });
 
     return StyledPage(
       title: t.biblePlans.startABiblePlan.toText(),

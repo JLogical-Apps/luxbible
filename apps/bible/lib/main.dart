@@ -30,10 +30,10 @@ import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/verse_of_the_day_provider.dart';
 import 'package:bible/providers/verse_of_the_day_widget_provider.dart';
 import 'package:bible/providers/videos_provider.dart';
+import 'package:bible/services/app_link_service.dart';
 import 'package:bible/services/audio_bible_handler.dart';
 import 'package:bible/services/bible_plan_open_service.dart';
 import 'package:bible/services/local_notification_service.dart';
-import 'package:bible/services/passage_link_service.dart';
 import 'package:bible/services/timezone_service.dart';
 import 'package:bible/services/verse_of_the_day_widget_service.dart';
 import 'package:bible/ui/bible_reader_configuration.dart';
@@ -163,7 +163,7 @@ Future<void> main() async {
       );
 
       ref.read(biblePlanOpenServiceProvider).initialize();
-      ref.read(passageLinkServiceProvider).initialize();
+      ref.read(appLinkServiceProvider).initialize();
       ref.read(verseOfTheDayWidgetServiceProvider).initialize();
       ref.read(userProvider.notifier).refreshActiveDay();
       eagerlyLoad();
@@ -200,7 +200,7 @@ class BibleApp extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     usePostFrameEffect(() async {
       await ref.read(biblePlanOpenServiceProvider).openLaunchPlan();
-      await ref.read(passageLinkServiceProvider).openLaunchLink();
+      await ref.read(appLinkServiceProvider).openLaunchLink();
       final localNotificationService = ref.read(localNotificationServiceProvider);
       final payload = await localNotificationService.getLaunchPayload();
       if (payload != null) {

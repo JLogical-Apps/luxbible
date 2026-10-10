@@ -17,7 +17,7 @@ import UserNotifications
     // claim the scene connection that carries its URL.
     LuxWidgetBridge.shared.register(with: engineBridge)
     BiblePlanOpenBridge.shared.register(with: engineBridge)
-    PassageLinkBridge.shared.register(with: engineBridge)
+    AppLinkBridge.shared.register(with: engineBridge)
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
   }
 }

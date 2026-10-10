@@ -52,13 +52,15 @@ sealed class LaunchLinkBridge(
     }
 }
 
-/** Universal links to a passage, as `https://app.luxbible.app/passage/<osisId>`. */
-object PassageLinkBridge : LaunchLinkBridge("app.luxbible.app/passage-link", "getLaunchLink", "openPassage") {
+/** App links into Lux, as `https://app.luxbible.app/passage/<osisId>` or `https://app.luxbible.app/plans/<planId>`. */
+object AppLinkBridge : LaunchLinkBridge("app.luxbible.app/app-link", "getLaunchLink", "openLink") {
+    private val sections = setOf("passage", "plans")
+
     override fun read(context: Context, intent: Intent): String? {
         val uri = intent.takeIf { it.action == Intent.ACTION_VIEW }?.data ?: return null
-        val isPassage = uri.scheme == "https" && uri.host == "app.luxbible.app" &&
-            uri.pathSegments.size == 2 && uri.pathSegments[0] == "passage"
-        return if (isPassage) uri.toString() else null
+        val isAppLink = uri.scheme == "https" && uri.host == "app.luxbible.app" &&
+            uri.pathSegments.size == 2 && uri.pathSegments[0] in sections
+        return if (isAppLink) uri.toString() else null
     }
 }
 

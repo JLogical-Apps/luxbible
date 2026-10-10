@@ -10,6 +10,7 @@ enum AnalyticsEventType {
   search('search'),
   verseShared('verse_shared'),
   sharedPassageOpened('shared_passage_opened'),
+  planLinkOpened('plan_link_opened'),
   verseOfTheDayTapped('verse_of_the_day_tapped'),
   verseOfTheDayWidgetTapped('verse_of_the_day_widget_tapped'),
   notificationTapped('notification_tapped'),
@@ -41,6 +42,7 @@ class AnalyticsEvent {
   static final search = AnalyticsEvent._(.search);
   static final verseShared = AnalyticsEvent._(.verseShared);
   static final sharedPassageOpened = AnalyticsEvent._(.sharedPassageOpened);
+  static final planLinkOpened = AnalyticsEvent._(.planLinkOpened);
   static final verseOfTheDayTapped = AnalyticsEvent._(.verseOfTheDayTapped);
   static final verseOfTheDayWidgetTapped = AnalyticsEvent._(.verseOfTheDayWidgetTapped);
   static final notificationTapped = AnalyticsEvent._(.notificationTapped);

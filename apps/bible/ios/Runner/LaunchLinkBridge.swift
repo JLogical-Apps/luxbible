@@ -93,20 +93,21 @@ class LaunchLinkBridge: NSObject, FlutterSceneLifeCycleDelegate {
   }
 }
 
-/// Links to a passage, as `https://app.luxbible.app/passage/<osisId>`. They arrive as universal links,
-/// or as a URL when the website's Smart App Banner opens Lux.
-final class PassageLinkBridge: LaunchLinkBridge {
-  static let shared = PassageLinkBridge()
+/// Links into Lux, as `https://app.luxbible.app/passage/<osisId>` or `https://app.luxbible.app/plans/<planId>`.
+/// They arrive as universal links, or as a URL when the website's Smart App Banner opens Lux.
+final class AppLinkBridge: LaunchLinkBridge {
+  static let shared = AppLinkBridge()
+  private static let sections: Set<String> = ["passage", "plans"]
 
   private init() {
-    super.init(channelName: "app.luxbible.app/passage-link", launchMethod: "getLaunchLink", openMethod: "openPassage")
+    super.init(channelName: "app.luxbible.app/app-link", launchMethod: "getLaunchLink", openMethod: "openLink")
   }
 
   override func value(for url: URL) -> String? {
-    let isPassage =
+    let isAppLink =
       url.scheme == "https" && url.host == "app.luxbible.app"
-      && url.pathComponents.count == 3 && url.pathComponents[1] == "passage"
-    return isPassage ? url.absoluteString : nil
+      && url.pathComponents.count == 3 && Self.sections.contains(url.pathComponents[1])
+    return isAppLink ? url.absoluteString : nil
   }
 }
 
