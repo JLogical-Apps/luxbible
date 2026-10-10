@@ -165,6 +165,11 @@ StreamSubscription<T>? useOnStreamData<T>(Stream<T>? stream, Function(T) onData)
   return useOnStreamChange(stream, onData: (data) => onDataRef.value(data));
 }
 
+void useHandler<T>(List<T> handlers, T handler, [List<Object?> keys = const []]) => useEffect(() {
+  handlers.add(handler);
+  return () => handlers.remove(handler);
+}, [handlers, ...keys]);
+
 void useOneTimeEffect(Function() effect) => useEffect(() => effect(), []);
 
 bool useOnContentLoaded({ScrollController? controller, Function(double maxScrollExtent)? onContentLoaded}) {

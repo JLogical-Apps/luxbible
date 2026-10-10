@@ -18,6 +18,26 @@ enum BiblePlanFileError {
   readingRequired,
   invalidPassage,
   duplicatePassage,
+  readFailed,
+}
+
+class BiblePlanFileImport {
+  final BiblePlan? plan;
+  final BiblePlanFileError? error;
+
+  const BiblePlanFileImport.success(BiblePlan this.plan) : error = null;
+
+  const BiblePlanFileImport.failure(BiblePlanFileError this.error) : plan = null;
+
+  factory BiblePlanFileImport.decode(String contents) {
+    try {
+      return .success(BiblePlanFileService.decode(contents));
+    } on BiblePlanFileException catch (exception) {
+      return .failure(exception.error);
+    } catch (_) {
+      return .failure(.readFailed);
+    }
+  }
 }
 
 class BiblePlanFileService {

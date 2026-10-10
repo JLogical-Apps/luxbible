@@ -3,6 +3,7 @@ import 'package:bible/models/bible_plan.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/custom_bible_plans_provider.dart';
 import 'package:bible/services/bible_plan_file_service.dart';
+import 'package:bible/services/bible_plan_open_service.dart';
 import 'package:bible/ui/sheets/bible_plan_pace_sheet.dart';
 import 'package:bible/ui/widgets/bible_plan_thumbnail.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -23,23 +24,42 @@ const biblePlanFileExtension = '.lxbp';
 final biblePlanFormatUri = Uri.parse('https://www.luxbible.app/resources/lxbp');
 
 class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<String> {
-  final BiblePlan? initialPlan;
-  final String? initialImportError;
+  final BiblePlanFileImport? fileImport;
 
-  const CreateBiblePlanPage({super.key, this.initialPlan, this.initialImportError});
+  const CreateBiblePlanPage({super.key, this.fileImport});
 
   @override
   String get path => '/bible-plans/create';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isExternalImport = initialPlan != null || initialImportError != null;
+    final fileImportState = useState(fileImport);
+
+    // Swapping the contents instead of the route lets whoever pushed this page still receive the created plan's ID.
+    useHandler(ref.read(biblePlanOpenServiceProvider).createPageImportHandlers, (newFileImport) {
+      final route = ModalRoute.of(context);
+      Navigator.of(context).popUntil((otherRoute) => otherRoute == route);
+      fileImportState.value = newFileImport;
+    });
+
+    return CreateBiblePlanFlow(key: ObjectKey(fileImportState.value), initialFileImport: fileImportState.value);
+  }
+}
+
+class CreateBiblePlanFlow extends HookConsumerWidget {
+  final BiblePlanFileImport? initialFileImport;
+
+  const CreateBiblePlanFlow({super.key, this.initialFileImport});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isExternalImport = initialFileImport != null;
     final methodState = useState<BiblePlanCreationMethod?>(isExternalImport ? .importFile : null);
     final method = methodState.value;
 
-    final importedPlanState = useState<BiblePlan?>(initialPlan);
-    final importedPlan = importedPlanState.value;
-    final importErrorState = useState<String?>(initialImportError);
+    final fileImportState = useState(initialFileImport);
+    final importedPlan = fileImportState.value?.plan;
+    final importError = fileImportState.value?.error;
 
     // AI
     final descriptionState = useDependentState(() => '', [method]);
@@ -109,18 +129,7 @@ class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<Stri
       _ => 2,
     };
 
-    void importPlanContents(String contents) {
-      try {
-        importedPlanState.value = BiblePlanFileService.decode(contents);
-        importErrorState.value = null;
-      } on BiblePlanFileException catch (exception) {
-        importedPlanState.value = null;
-        importErrorState.value = exception.error.message();
-      } catch (_) {
-        importedPlanState.value = null;
-        importErrorState.value = t.biblePlans.importErrors.readFailed;
-      }
-    }
+    void importPlanContents(String contents) => fileImportState.value = BiblePlanFileImport.decode(contents);
 
     Future<void> importPlanFile() async {
       try {
@@ -138,8 +147,7 @@ class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<Stri
 
         importPlanContents(await file.readAsString());
       } catch (_) {
-        importedPlanState.value = null;
-        importErrorState.value = t.biblePlans.importErrors.readFailed;
+        fileImportState.value = .failure(.readFailed);
       }
     }
 
@@ -168,7 +176,7 @@ class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<Stri
             childrenBuilder: (context) => [
               BiblePlanImportContent(
                 plan: importedPlan,
-                error: importErrorState.value,
+                error: importError?.message(),
                 description: StyledRichText(
                   parts: [
                     StyledRichTextPart.text(t.biblePlans.importOptionsHintPrefix),
@@ -183,7 +191,7 @@ class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<Stri
                 ),
               ),
             ],
-            buttons: .next(canGoNext: importedPlan != null && importErrorState.value == null),
+            buttons: .next(canGoNext: importedPlan != null),
           ),
         if (method == .ai)
           StyledModuleStep(
@@ -227,7 +235,7 @@ class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<Stri
               gapH32,
               BiblePlanImportContent(
                 plan: importedPlan,
-                error: importErrorState.value,
+                error: importError?.message(),
                 description: StyledRichText(
                   parts: [
                     StyledRichTextPart.text(t.biblePlans.aiImportOptionsHintPrefix),
@@ -244,7 +252,7 @@ class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<Stri
                     : null,
               ),
             ],
-            buttons: .next(canGoNext: importedPlan != null && importErrorState.value == null),
+            buttons: .next(canGoNext: importedPlan != null),
           ),
         if (method == .booksAndDuration)
           StyledModuleStep(
@@ -760,5 +768,6 @@ extension BiblePlanFileErrorMessage on BiblePlanFileError {
     .readingRequired => t.biblePlans.importErrors.readingRequired,
     .invalidPassage => t.biblePlans.importErrors.invalidPassage,
     .duplicatePassage => t.biblePlans.importErrors.duplicatePassage,
+    .readFailed => t.biblePlans.importErrors.readFailed,
   };
 }

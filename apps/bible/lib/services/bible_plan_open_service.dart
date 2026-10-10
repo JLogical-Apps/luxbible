@@ -4,7 +4,6 @@ import 'package:bible/services/bible_plan_file_service.dart';
 import 'package:bible/services/launch_link_channel.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:bible/ui/pages/create_bible_plan_page.dart';
-import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -16,6 +15,8 @@ class BiblePlanOpenService {
     launchMethod: 'getLaunchPlan',
     openMethod: 'openPlan',
   );
+
+  final createPageImportHandlers = <Function(BiblePlanFileImport)>[];
 
   void initialize() => channel.listen(openContents);
 
@@ -29,19 +30,18 @@ class BiblePlanOpenService {
 
     AnalyticsEvent.biblePlanFileOpened.log();
 
-    late CreateBiblePlanPage page;
-    try {
-      final plan = BiblePlanFileService.decode(contents);
-      page = CreateBiblePlanPage(initialPlan: plan);
-    } on BiblePlanFileException catch (exception) {
-      page = CreateBiblePlanPage(initialImportError: exception.error.message());
-    } catch (_) {
-      page = CreateBiblePlanPage(initialImportError: t.biblePlans.importErrors.readFailed);
-    }
+    final fileImport = BiblePlanFileImport.decode(contents);
     if (isLaunch) {
-      context.goToRoot(pages: [BiblePlansPage(), page]);
+      context.goToRoot(
+        pages: [
+          BiblePlansPage(),
+          CreateBiblePlanPage(fileImport: fileImport),
+        ],
+      );
+    } else if (createPageImportHandlers.lastOrNull case final onImport?) {
+      onImport(fileImport);
     } else {
-      context.push(page);
+      context.push(CreateBiblePlanPage(fileImport: fileImport));
     }
   }
 }

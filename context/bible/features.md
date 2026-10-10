@@ -697,7 +697,7 @@ Users can:
 - Narrow the book list by typing a book, testament, or whole-Bible name above the current selection summary
 - Describe a plan, copy a compatible prompt into their own AI, and import the file or file contents it creates
 - Import a portable `.lxbp` plan from a file or pasted file contents, then edit its name and selected color before reviewing it
-- Open or share a `.lxbp` file from another app into Lux to begin importing it at the name and color step, followed by review
+- Open or share a `.lxbp` file from another app into Lux to begin importing it at the name and color step, followed by review. If a plan creation flow is already open, the opened file replaces it instead of stacking a second flow on top
 - Add, reorder, move, or remove exact passages across as many as 365 reading and reflection days
 - Open a passage preview by tapping a passage in the review step before creating a plan
 - Share or download included and custom plan definitions as portable `.lxbp` files
