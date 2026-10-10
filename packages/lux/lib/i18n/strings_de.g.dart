@@ -926,6 +926,16 @@ class _Translations$biblePlans$de extends Translations$biblePlans$en {
 	);
 	@override String get catchUp => 'Aufholen';
 	@override String get reviewDayAnnotations => 'Annotationen des Tages ansehen';
+	@override String get studyNotes => 'Studiennotizen';
+	@override String beginsInDays({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count,
+		one: 'Beginnt in ${count} Tag',
+		other: 'Beginnt in ${count} Tagen',
+	);
+	@override String daysUntilChristmas({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count,
+		one: 'Noch ${count} Tag bis Weihnachten',
+		other: 'Noch ${count} Tage bis Weihnachten',
+	);
+	@override String get christmasDay => 'Erster Weihnachtstag';
 	@override String get history => 'Verlauf';
 	@override String get historyDescription => 'Früheren Fortschritt ansehen oder einen beendeten Plan fortsetzen.';
 	@override String get resume => 'Fortsetzen';
@@ -1220,6 +1230,8 @@ class _Translations$planTypes$de extends Translations$planTypes$en {
 	@override String get chroniclesAndProphetsDescription => 'Ein Jahr, das die Geschichte der Chronikbücher mit den Botschaften der Propheten verbindet.';
 	@override String get pentateuchAndHistoryDescription => 'Geh in einem Jahr durch die fünf Bücher Mose und die Geschichte Israels.';
 	@override String get psalmsAndWisdomDescription => 'Verbringe das Jahr in den Psalmen und Weisheitsbüchern wie Sprüche, Hiob und Prediger.';
+	@override String get advent => 'Advent';
+	@override String get adventDescription => 'Lies auf Weihnachten zu, mit täglichen Abschnitten und Studiennotizen, von den Verheißungen der Propheten bis zur Geburt Jesu.';
 	@override String get oldAndNewTestamentDescription => 'Lies die ganze Bibel in einem Jahr und folge dabei dem Alten und Neuen Testament gemeinsam in kanonischer Reihenfolge.';
 	@override String get historicallyBlendedDescription => 'Lies die ganze Bibel in einem Jahr, mit Büchern und Abschnitten, die um zusammenhängende Ereignisse und Epochen angeordnet sind.';
 	@override String get differentTopicsDescription => 'Lies jeden Tag einen anderen Teil der Schrift und entdecke in einem Jahr jedes Buch der Bibel.';
@@ -3679,6 +3691,10 @@ extension on TranslationsDe {
 			'biblePlans.daysAhead' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: '${count} Tag voraus', other: '${count} Tage voraus', ), 
 			'biblePlans.catchUp' => 'Aufholen',
 			'biblePlans.reviewDayAnnotations' => 'Annotationen des Tages ansehen',
+			'biblePlans.studyNotes' => 'Studiennotizen',
+			'biblePlans.beginsInDays' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: 'Beginnt in ${count} Tag', other: 'Beginnt in ${count} Tagen', ), 
+			'biblePlans.daysUntilChristmas' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: 'Noch ${count} Tag bis Weihnachten', other: 'Noch ${count} Tage bis Weihnachten', ), 
+			'biblePlans.christmasDay' => 'Erster Weihnachtstag',
 			'biblePlans.history' => 'Verlauf',
 			'biblePlans.historyDescription' => 'Früheren Fortschritt ansehen oder einen beendeten Plan fortsetzen.',
 			'biblePlans.resume' => 'Fortsetzen',
@@ -3826,6 +3842,8 @@ extension on TranslationsDe {
 			'planTypes.chroniclesAndProphetsDescription' => 'Ein Jahr, das die Geschichte der Chronikbücher mit den Botschaften der Propheten verbindet.',
 			'planTypes.pentateuchAndHistoryDescription' => 'Geh in einem Jahr durch die fünf Bücher Mose und die Geschichte Israels.',
 			'planTypes.psalmsAndWisdomDescription' => 'Verbringe das Jahr in den Psalmen und Weisheitsbüchern wie Sprüche, Hiob und Prediger.',
+			'planTypes.advent' => 'Advent',
+			'planTypes.adventDescription' => 'Lies auf Weihnachten zu, mit täglichen Abschnitten und Studiennotizen, von den Verheißungen der Propheten bis zur Geburt Jesu.',
 			'planTypes.oldAndNewTestamentDescription' => 'Lies die ganze Bibel in einem Jahr und folge dabei dem Alten und Neuen Testament gemeinsam in kanonischer Reihenfolge.',
 			'planTypes.historicallyBlendedDescription' => 'Lies die ganze Bibel in einem Jahr, mit Büchern und Abschnitten, die um zusammenhängende Ereignisse und Epochen angeordnet sind.',
 			'planTypes.differentTopicsDescription' => 'Lies jeden Tag einen anderen Teil der Schrift und entdecke in einem Jahr jedes Buch der Bibel.',
@@ -4111,14 +4129,14 @@ extension on TranslationsDe {
 			'morphology.stem.niphal.name' => 'Nifal',
 			'morphology.stem.niphal.description' => 'Der einfache passive oder reflexive Stamm.',
 			'morphology.stem.niphal.examples' => 'er wurde getötet|sie versammelten sich',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.stem.piel.name' => 'Piel',
 			'morphology.stem.piel.description' => 'Der intensive oder faktitive aktive Stamm.',
 			'morphology.stem.piel.examples' => 'er lobte|er segnete|er zerschmetterte',
 			'morphology.stem.pual.name' => 'Pual',
 			'morphology.stem.pual.description' => 'Das Passiv des Piel.',
 			'morphology.stem.pual.examples' => 'er wurde gelobt',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.stem.hiphil.name' => 'Hifil',
 			'morphology.stem.hiphil.description' => 'Der kausative aktive Stamm.',
 			'morphology.stem.hiphil.examples' => 'er ließ schreiben|er führte heraus',

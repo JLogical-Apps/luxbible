@@ -656,6 +656,16 @@
     },
     "catchUp": "Catch Up",
     "reviewDayAnnotations": "Review Day Annotations",
+    "studyNotes": "Study Notes",
+    "beginsInDays(param=count)": {
+      "one": "Begins in {count} day",
+      "other": "Begins in {count} days"
+    },
+    "daysUntilChristmas(param=count)": {
+      "one": "{count} day until Christmas",
+      "other": "{count} days until Christmas"
+    },
+    "christmasDay": "Christmas Day",
     "history": "History",
     "historyDescription": "Review past progress or resume a stopped plan.",
     "resume": "Resume",
@@ -848,6 +858,8 @@
     "chroniclesAndProphetsDescription": "A year that pairs the history in Chronicles with the messages of the Prophets.",
     "pentateuchAndHistoryDescription": "Journey through the five books of Moses and the history of Israel over a year.",
     "psalmsAndWisdomDescription": "Spend the year in the Psalms and wisdom books like Proverbs, Job, and Ecclesiastes.",
+    "advent": "Advent",
+    "adventDescription": "Read toward Christmas with daily passages and study notes, from the prophets' promises to the birth of Jesus.",
     "oldAndNewTestamentDescription": "Read the whole Bible in one year, following the Old and New Testaments together in canonical order.",
     "historicallyBlendedDescription": "Read the whole Bible in one year, with books and passages arranged around related events and historical periods.",
     "differentTopicsDescription": "Rotate through a different section of Scripture each day, exploring every book of the Bible over a year.",

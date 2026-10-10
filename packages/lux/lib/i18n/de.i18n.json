@@ -656,6 +656,16 @@
     },
     "catchUp": "Aufholen",
     "reviewDayAnnotations": "Annotationen des Tages ansehen",
+    "studyNotes": "Studiennotizen",
+    "beginsInDays(param=count)": {
+      "one": "Beginnt in {count} Tag",
+      "other": "Beginnt in {count} Tagen"
+    },
+    "daysUntilChristmas(param=count)": {
+      "one": "Noch {count} Tag bis Weihnachten",
+      "other": "Noch {count} Tage bis Weihnachten"
+    },
+    "christmasDay": "Erster Weihnachtstag",
     "history": "Verlauf",
     "historyDescription": "Früheren Fortschritt ansehen oder einen beendeten Plan fortsetzen.",
     "resume": "Fortsetzen",
@@ -848,6 +858,8 @@
     "chroniclesAndProphetsDescription": "Ein Jahr, das die Geschichte der Chronikbücher mit den Botschaften der Propheten verbindet.",
     "pentateuchAndHistoryDescription": "Geh in einem Jahr durch die fünf Bücher Mose und die Geschichte Israels.",
     "psalmsAndWisdomDescription": "Verbringe das Jahr in den Psalmen und Weisheitsbüchern wie Sprüche, Hiob und Prediger.",
+    "advent": "Advent",
+    "adventDescription": "Lies auf Weihnachten zu, mit täglichen Abschnitten und Studiennotizen, von den Verheißungen der Propheten bis zur Geburt Jesu.",
     "oldAndNewTestamentDescription": "Lies die ganze Bibel in einem Jahr und folge dabei dem Alten und Neuen Testament gemeinsam in kanonischer Reihenfolge.",
     "historicallyBlendedDescription": "Lies die ganze Bibel in einem Jahr, mit Büchern und Abschnitten, die um zusammenhängende Ereignisse und Epochen angeordnet sind.",
     "differentTopicsDescription": "Lies jeden Tag einen anderen Teil der Schrift und entdecke in einem Jahr jedes Buch der Bibel.",

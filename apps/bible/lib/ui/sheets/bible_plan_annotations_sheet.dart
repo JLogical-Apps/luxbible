@@ -59,7 +59,10 @@ class BiblePlanAnnotationsSheet {
               (annotation) => AnnotationListItem(
                 key: ValueKey(annotation),
                 annotation: annotation,
-                onNavigateToVerseSelection: onNavigateToVerseSelection,
+                onNavigateToVerseSelection: (selection) {
+                  context.pop();
+                  onNavigateToVerseSelection(selection);
+                },
               ),
             )
             .toList();

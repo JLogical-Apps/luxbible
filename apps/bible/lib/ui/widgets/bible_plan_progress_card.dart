@@ -1,6 +1,11 @@
+import 'package:bible/models/advent_stage.dart';
+import 'package:bible/models/bible_plan.dart';
 import 'package:bible/models/hydrated_bible_plan_progress.dart';
+import 'package:bible/providers/bible_plan_study_notes_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/sheets/bible_plan_annotations_sheet.dart';
+import 'package:bible/ui/sheets/bible_plan_study_note_sheet.dart';
+import 'package:bible/ui/widgets/advent_card_header.dart';
 import 'package:bible/ui/widgets/bible_plan_thumbnail.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -41,89 +46,110 @@ class BiblePlanProgressCard extends HookConsumerWidget {
     final user = ref.watch(userProvider);
     final plan = progress.plan;
     final displayName = plan.getDisplayName(progress.id);
+    final season = BiblePlanType.getById(progress.id)?.season;
 
     final tabController = useTabController(initialLength: plan.dayCount, initialIndex: initialDayIndex);
     final dayIndex = useListenableSelector(tabController, () => tabController.index);
     final day = plan.days[dayIndex];
     final planDay = progress.getDayId(dayIndex);
 
+    final studyNote = ref.watch(biblePlanStudyNotesProvider(planId: progress.id)).value?.elementAtOrNull(dayIndex);
+
+    final header = StyledListItem(
+      // The advent header already draws the scene behind the thumbnail.
+      leading: BiblePlanThumbnail.fromPlan(
+        plan: plan,
+        id: progress.id,
+        hasBackground: season == null,
+        completedDayCount: progress.numCompletedDays,
+      ),
+      title: displayName.toText(),
+      subtitle: Padding(
+        padding: .symmetric(vertical: 4),
+        child: StyledProgressBar(
+          value: progress.numCompletedDays / plan.dayCount,
+          color: plan.getHue(context.colors).primary,
+        ),
+      ),
+      thirdLine: caption,
+      showDividerOverride: false,
+      trailing: StyledCircleButton.md(
+        child: Symbols.more_vert.toIcon(),
+        onPressed: () =>
+            context.showStyledSheet((_, _) => StyledSheet(title: displayName.toText(), children: menuItems)),
+      ),
+    );
+
+    final tabBar = StyledTabBar.scrollable(
+      tabController: tabController,
+      tabTitles: plan.dayIndexes
+          .map(
+            (dayIndex) => BiblePlanDayTab(
+              dayIndex: dayIndex,
+              isCompleted: progress.isDayComplete(dayIndex: dayIndex),
+              isFuture: dayIndex > progress.currentDayIndex,
+            ),
+          )
+          .toList(),
+    );
+
     return StyledCard(
       children: [
-        StyledListItem(
-          leading: BiblePlanThumbnail.fromPlan(plan: plan, id: progress.id),
-          title: displayName.toText(),
-          subtitle: Padding(
-            padding: .symmetric(vertical: 4),
-            child: StyledProgressBar(
-              value: progress.numCompletedDays / plan.dayCount,
-              color: plan.getHue(context.colors).primary,
+        ...switch (season) {
+          .advent => [
+            AdventCardHeader(
+              stage: AdventStage.fromCompletedDays(progress.numCompletedDays, dayCount: plan.dayCount),
+              header: header,
+              tabBar: tabBar,
             ),
-          ),
-          thirdLine: caption,
-          showDividerOverride: false,
-          trailing: StyledCircleButton.md(
-            child: Symbols.more_vert.toIcon(),
-            onPressed: () =>
-                context.showStyledSheet((_, _) => StyledSheet(title: displayName.toText(), children: menuItems)),
-          ),
-        ),
-        StyledTabBar.scrollable(
-          tabController: tabController,
-          tabTitles: plan.dayIndexes.map((dayIndex) {
-            final isCompleted = progress.isDayComplete(dayIndex: dayIndex);
-            final isFuture = dayIndex > progress.currentDayIndex;
-
-            return Row(
-              spacing: 8,
-              children: [
-                Text(
-                  t.biblePlans.day(day: dayIndex + 1),
-                  style: TextStyle(color: isFuture ? context.colors.contentDisabled : null),
-                ),
-                Icon(
-                  isCompleted ? Symbols.check_circle : Symbols.circle,
-                  fill: isCompleted ? 1 : 0,
-                  color: isCompleted
-                      ? context.colors.contentPrimary
-                      : isFuture
-                      ? context.colors.contentDisabled
-                      : context.colors.contentSecondary,
-                  size: 16,
-                ),
-              ],
-            );
-          }).toList(),
-        ),
+          ],
+          null => [header, tabBar],
+        },
         StyledList(
-          children: day.isReviewAndReflect
-              ? [
-                  StyledListItem(
-                    title: t.biblePlans.reviewAndReflect.toText(),
-                    trailing: StyledCheckbox(isSelected: progress.isDayComplete(dayIndex: dayIndex)),
-                    onPressed: switch (onReviewDayToggled) {
-                      final onReviewDayToggled? => () => onReviewDayToggled(dayIndex),
-                      null => null,
-                    },
-                  ),
-                ]
-              : day.passages
-                    .mapIndexed(
-                      (passageIndex, passage) => StyledListItem(
-                        title: passage.format().toText(),
-                        onPressed: switch (onPassagePressed) {
-                          final onPassagePressed? => () => onPassagePressed(dayIndex, passageIndex),
-                          null => null,
-                        },
-                        trailing: StyledCheckbox(
-                          isSelected: progress.isPassageComplete(dayIndex: dayIndex, passage: passage),
-                          onChanged: switch (onPassageToggled) {
-                            final onPassageToggled? => (_) => onPassageToggled(dayIndex, passage),
+          children: [
+            ...day.isReviewAndReflect
+                ? [
+                    StyledListItem(
+                      title: t.biblePlans.reviewAndReflect.toText(),
+                      trailing: StyledCheckbox(isSelected: progress.isDayComplete(dayIndex: dayIndex)),
+                      onPressed: switch (onReviewDayToggled) {
+                        final onReviewDayToggled? => () => onReviewDayToggled(dayIndex),
+                        null => null,
+                      },
+                    ),
+                  ]
+                : day.passages
+                      .mapIndexed(
+                        (passageIndex, passage) => StyledListItem(
+                          title: passage.format().toText(),
+                          onPressed: switch (onPassagePressed) {
+                            final onPassagePressed? => () => onPassagePressed(dayIndex, passageIndex),
                             null => null,
                           },
+                          trailing: StyledCheckbox(
+                            isSelected: progress.isPassageComplete(dayIndex: dayIndex, passage: passage),
+                            onChanged: switch (onPassageToggled) {
+                              final onPassageToggled? => (_) => onPassageToggled(dayIndex, passage),
+                              null => null,
+                            },
+                          ),
                         ),
-                      ),
-                    )
-                    .toList(),
+                      )
+                      .toList(),
+            if (studyNote != null)
+              StyledListItem.navigation(
+                leading: Symbols.auto_stories.toIcon(),
+                title: t.biblePlans.studyNotes.toText(),
+                subtitle: studyNote.title.toText(),
+                onPressed: () => BiblePlanStudyNoteSheet.show(
+                  context,
+                  note: studyNote,
+                  planName: displayName,
+                  dayIndex: dayIndex,
+                  onNavigateToVerseSelection: onNavigateToVerseSelection,
+                ),
+              ),
+          ],
         ),
         if (user.getPlanDayAnnotations(planDay).isNotEmpty || footer != null)
           Padding(
@@ -148,4 +174,33 @@ class BiblePlanProgressCard extends HookConsumerWidget {
       ],
     );
   }
+}
+
+class BiblePlanDayTab extends StatelessWidget {
+  final int dayIndex;
+  final bool isCompleted;
+  final bool isFuture;
+
+  const BiblePlanDayTab({super.key, required this.dayIndex, required this.isCompleted, required this.isFuture});
+
+  @override
+  Widget build(BuildContext context) => Row(
+    spacing: 8,
+    children: [
+      Text(
+        t.biblePlans.day(day: dayIndex + 1),
+        style: TextStyle(color: isFuture ? context.colors.contentDisabled : null),
+      ),
+      Icon(
+        isCompleted ? Symbols.check_circle : Symbols.circle,
+        fill: isCompleted ? 1 : 0,
+        color: isCompleted
+            ? context.colors.contentPrimary
+            : isFuture
+            ? context.colors.contentDisabled
+            : context.colors.contentSecondary,
+        size: 16,
+      ),
+    ],
+  );
 }

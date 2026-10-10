@@ -1,10 +1,13 @@
 import 'package:bible/models/bible_plan.dart';
+import 'package:bible/models/bible_plan_season.dart';
 import 'package:bible/providers/bible_plan_history_provider.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/custom_bible_plans_provider.dart';
+import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/pages/bible_plan_history_page.dart';
 import 'package:bible/ui/pages/create_bible_plan_page.dart';
 import 'package:bible/ui/sheets/bible_plan_pace_sheet.dart';
+import 'package:bible/ui/widgets/advent_banner.dart';
 import 'package:bible/ui/widgets/bible_plan_file_list_items.dart';
 import 'package:bible/ui/widgets/bible_plan_history_list_items.dart';
 import 'package:bible/ui/widgets/bible_plan_tile.dart';
@@ -32,6 +35,7 @@ class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<Stri
   Widget build(BuildContext context, WidgetRef ref) {
     final planById = ref.watch(biblePlansProvider);
     final customPlanById = ref.watch(customBiblePlansProvider);
+    final user = ref.watch(userProvider);
 
     final scopeState = useState<BiblePlanScope?>(null);
     final scope = scopeState.value;
@@ -47,10 +51,125 @@ class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<Stri
         )
         .where((planId, plan) => scope == null || plan.scope == scope);
 
+    final now = DateTime.now();
+    final promotedAdventPlan =
+        BiblePlanSeason.advent.isPromotedOn(now) && !user.hasStartedPlan(BiblePlanType.advent.name)
+        ? matchingPlanById[BiblePlanType.advent.name]
+        : null;
+
+    Future<void> showPlan(String planId, BiblePlan plan) async {
+      final isCustom = ref.read(customBiblePlansProvider).containsKey(planId);
+      final hasHistory = ref.read(biblePlanHistoryProvider).hasEntriesForPlan(planId);
+      final pace = await context.showStyledSheet(
+        (sheetContext, _) => StyledSheet<BiblePlanPace>(
+          title: t.biblePlans.startPlanQuestion.toText(),
+          trailing: StyledCircleButton.md(
+            child: Symbols.more_vert.toIcon(),
+            onPressed: () => context.showStyledSheet(
+              (menuContext, _) => StyledSheet(
+                title: plan.getDisplayName(planId).toText(),
+                children: [
+                  if (hasHistory)
+                    BiblePlanHistoryListItem(
+                      onPressed: () async {
+                        menuContext.pop();
+                        final resumedPlanId = await context.push(BiblePlanHistoryPage(planId: planId));
+                        if (resumedPlanId == null || !context.mounted) return;
+
+                        sheetContext.pop();
+                        context.pop(resumedPlanId);
+                      },
+                    ),
+                  BiblePlanShareListItem(plan: plan, displayName: plan.getDisplayName(planId)),
+                  BiblePlanDownloadListItem(plan: plan, displayName: plan.getDisplayName(planId)),
+                  if (isCustom)
+                    StyledListItem(
+                      leading: Icon(Symbols.delete, color: menuContext.colors.contentCritical),
+                      title: t.biblePlans.deletePlan.toText(),
+                      onPressed: () async {
+                        menuContext.pop();
+                        final shouldDelete = await context.showStyledDialog(
+                          (context) => StyledDialog.confirmDelete(
+                            title: t.biblePlans.deletePlanQuestion.toText(),
+                            body:
+                                (hasHistory
+                                        ? t.biblePlans.deletePlanWithHistoryConfirmation(name: plan.name)
+                                        : t.biblePlans.deletePlanConfirmation(name: plan.name))
+                                    .toText(),
+                            cancelLabel: t.common.nevermind.toText(),
+                          ),
+                        );
+                        if (shouldDelete != true) return;
+
+                        ref.read(customBiblePlansProvider.notifier).delete(planId);
+                        ref.read(biblePlanHistoryProvider.notifier).deleteAllForPlan(planId);
+                        if (context.mounted) context.pop();
+                      },
+                    ),
+                ],
+              ),
+            ),
+          ),
+          children: [
+            BiblePlanTile(planId: planId, plan: plan, showTags: false),
+            StyledListItem(
+              leading: Symbols.calendar_month.toIcon(),
+              title: t.labels.duration.toText(),
+              subtitle: t.biblePlans.dayCount(count: plan.dayCount).toText(),
+            ),
+            if (BiblePlanType.getById(planId)?.source case final source?)
+              StyledListItem(
+                leading: Symbols.source.toIcon(),
+                title: t.labels.source.toText(),
+                subtitle: source.name.toText(),
+                trailing: Symbols.arrow_outward.toIcon(),
+                onPressed: () => launchUrl(Uri.parse(source.link)),
+              ),
+            StyledDivider(height: 2),
+            ...StyledSection(
+              padding: .only(top: 24),
+              title: t.labels.days.toText(),
+              children: plan.days
+                  .mapIndexed<Widget>(
+                    (dayIndex, day) => StyledListItem(
+                      title: t.biblePlans.day(day: dayIndex + 1).toText(),
+                      subtitle: day.isReviewAndReflect
+                          ? t.biblePlans.reviewAndReflect.toText()
+                          : Text(day.passages.map((passage) => passage.format()).join(' • ')),
+                    ),
+                  )
+                  .toList(),
+            ).buildChildren(context),
+          ],
+          buttonsBuilder: (context) => [
+            StyledRectButton.primary(
+              label: t.biblePlans.startPlan.toText(),
+              onPressed: () async {
+                final pace = await BiblePlanPaceSheet.showStart(
+                  sheetContext,
+                  planName: plan.getDisplayName(planId),
+                  dayCount: plan.dayCount,
+                  season: BiblePlanType.getById(planId)?.season,
+                );
+                if (pace != null && sheetContext.mounted) sheetContext.pop(pace);
+              },
+            ),
+          ],
+        ),
+      );
+      if (pace != null && context.mounted) {
+        ref.updateUser(
+          (user) =>
+              user.withStartedPlan(planId: planId, plan: plan, pace: pace).withOnboardingStepCompleted(.startBiblePlan),
+        );
+        context.pop(planId);
+      }
+    }
+
     return StyledPage(
       title: t.biblePlans.startABiblePlan.toText(),
-      body: StyledDock(
-        shrinkWrap: false,
+      body: Column(
+        crossAxisAlignment: .stretch,
         children: [
           SingleChildScrollView(
             scrollDirection: .horizontal,
@@ -116,137 +235,48 @@ class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<Stri
             ),
           ),
           gapH8,
-          if (matchingPlanById.isEmpty)
-            Padding(
-              padding: .all(16),
-              child: StyledTile.message(
-                leading: Symbols.search_off.toIcon(),
-                title: t.emptyStates.noMatchingPlans.toText(),
-              ),
-            ),
-          ...matchingPlanById.mapToIterable(
-            (planId, plan) => BiblePlanTile(
-              planId: planId,
-              plan: plan,
-              trailing: Icon(Symbols.chevron_right),
-              onPressed: () async {
-                final isCustom = ref.read(customBiblePlansProvider).containsKey(planId);
-                final hasHistory = ref.read(biblePlanHistoryProvider).hasEntriesForPlan(planId);
-                final pace = await context.showStyledSheet(
-                  (sheetContext, _) => StyledSheet<BiblePlanPace>(
-                    title: t.biblePlans.startPlanQuestion.toText(),
-                    trailing: StyledCircleButton.md(
-                      child: Symbols.more_vert.toIcon(),
-                      onPressed: () => context.showStyledSheet(
-                        (menuContext, _) => StyledSheet(
-                          title: plan.getDisplayName(planId).toText(),
-                          children: [
-                            if (hasHistory)
-                              BiblePlanHistoryListItem(
-                                onPressed: () async {
-                                  menuContext.pop();
-                                  final resumedPlanId = await context.push(BiblePlanHistoryPage(planId: planId));
-                                  if (resumedPlanId == null || !context.mounted) return;
-
-                                  sheetContext.pop();
-                                  context.pop(resumedPlanId);
-                                },
-                              ),
-                            BiblePlanShareListItem(plan: plan, displayName: plan.getDisplayName(planId)),
-                            BiblePlanDownloadListItem(plan: plan, displayName: plan.getDisplayName(planId)),
-                            if (isCustom)
-                              StyledListItem(
-                                leading: Icon(Symbols.delete, color: menuContext.colors.contentCritical),
-                                title: t.biblePlans.deletePlan.toText(),
-                                onPressed: () async {
-                                  menuContext.pop();
-                                  final shouldDelete = await context.showStyledDialog(
-                                    (context) => StyledDialog.confirmDelete(
-                                      title: t.biblePlans.deletePlanQuestion.toText(),
-                                      body:
-                                          (hasHistory
-                                                  ? t.biblePlans.deletePlanWithHistoryConfirmation(name: plan.name)
-                                                  : t.biblePlans.deletePlanConfirmation(name: plan.name))
-                                              .toText(),
-                                      cancelLabel: t.common.nevermind.toText(),
-                                    ),
-                                  );
-                                  if (shouldDelete != true) return;
-
-                                  ref.read(customBiblePlansProvider.notifier).delete(planId);
-                                  ref.read(biblePlanHistoryProvider.notifier).deleteAllForPlan(planId);
-                                  if (context.mounted) context.pop();
-                                },
-                              ),
-                          ],
-                        ),
+          Expanded(
+            child: StyledDock(
+              shrinkWrap: false,
+              children: [
+                if (matchingPlanById.isEmpty)
+                  Padding(
+                    padding: .all(16),
+                    child: StyledTile.message(
+                      leading: Symbols.search_off.toIcon(),
+                      title: t.emptyStates.noMatchingPlans.toText(),
+                    ),
+                  ),
+                if (promotedAdventPlan != null)
+                  Padding(
+                    padding: MediaQuery.viewPaddingOf(context).onlyHorizontal + .symmetric(horizontal: 16, vertical: 4),
+                    child: AdventBanner(
+                      plan: promotedAdventPlan,
+                      date: now,
+                      onPressed: () => showPlan(BiblePlanType.advent.name, promotedAdventPlan),
+                    ),
+                  ),
+                ...matchingPlanById
+                    .where((planId, _) => promotedAdventPlan == null || planId != BiblePlanType.advent.name)
+                    .mapToIterable(
+                      (planId, plan) => BiblePlanTile(
+                        planId: planId,
+                        plan: plan,
+                        trailing: Icon(Symbols.chevron_right),
+                        onPressed: () => showPlan(planId, plan),
                       ),
                     ),
-                    children: [
-                      BiblePlanTile(planId: planId, plan: plan, showTags: false),
-                      StyledListItem(
-                        leading: Symbols.calendar_month.toIcon(),
-                        title: t.labels.duration.toText(),
-                        subtitle: t.biblePlans.dayCount(count: plan.dayCount).toText(),
-                      ),
-                      if (BiblePlanType.getById(planId)?.source case final source?)
-                        StyledListItem(
-                          leading: Symbols.source.toIcon(),
-                          title: t.labels.source.toText(),
-                          subtitle: source.name.toText(),
-                          trailing: Symbols.arrow_outward.toIcon(),
-                          onPressed: () => launchUrl(Uri.parse(source.link)),
-                        ),
-                      StyledDivider(height: 2),
-                      ...StyledSection(
-                        padding: .only(top: 24),
-                        title: t.labels.days.toText(),
-                        children: plan.days
-                            .mapIndexed<Widget>(
-                              (dayIndex, day) => StyledListItem(
-                                title: t.biblePlans.day(day: dayIndex + 1).toText(),
-                                subtitle: day.isReviewAndReflect
-                                    ? t.biblePlans.reviewAndReflect.toText()
-                                    : Text(day.passages.map((passage) => passage.format()).join(' • ')),
-                              ),
-                            )
-                            .toList(),
-                      ).buildChildren(context),
-                    ],
-                    buttonsBuilder: (context) => [
-                      StyledRectButton.primary(
-                        label: t.biblePlans.startPlan.toText(),
-                        onPressed: () async {
-                          final pace = await BiblePlanPaceSheet.showStart(
-                            sheetContext,
-                            planName: plan.getDisplayName(planId),
-                            dayCount: plan.dayCount,
-                          );
-                          if (pace != null && sheetContext.mounted) sheetContext.pop(pace);
-                        },
-                      ),
-                    ],
-                  ),
-                );
-                if (pace != null && context.mounted) {
-                  ref.updateUser(
-                    (user) => user
-                        .withStartedPlan(planId: planId, plan: plan, pace: pace)
-                        .withOnboardingStepCompleted(.startBiblePlan),
-                  );
-                  context.pop(planId);
-                }
-              },
+              ],
+              buttonsBuilder: (context) => [
+                StyledRectButton.primary(
+                  label: t.biblePlans.createCustomPlan.toText(),
+                  onPressed: () async {
+                    final planId = await context.push(CreateBiblePlanPage());
+                    if (planId != null && context.mounted) context.pop(planId);
+                  },
+                ),
+              ],
             ),
-          ),
-        ],
-        buttonsBuilder: (context) => [
-          StyledRectButton.primary(
-            label: t.biblePlans.createCustomPlan.toText(),
-            onPressed: () async {
-              final planId = await context.push(CreateBiblePlanPage());
-              if (planId != null && context.mounted) context.pop(planId);
-            },
           ),
         ],
       ),

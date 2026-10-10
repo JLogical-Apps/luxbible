@@ -936,6 +936,20 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	);
 	@override String get catchUp => 'Наверстать';
 	@override String get reviewDayAnnotations => 'Просмотреть аннотации дня';
+	@override String get studyNotes => 'Учебные заметки';
+	@override String beginsInDays({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count,
+		one: 'Начнётся через ${count} день',
+		few: 'Начнётся через ${count} дня',
+		many: 'Начнётся через ${count} дней',
+		other: 'Начнётся через ${count} дня',
+	);
+	@override String daysUntilChristmas({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count,
+		one: 'До Рождества ${count} день',
+		few: 'До Рождества ${count} дня',
+		many: 'До Рождества ${count} дней',
+		other: 'До Рождества ${count} дня',
+	);
+	@override String get christmasDay => 'Рождество';
 	@override String get history => 'История';
 	@override String get historyDescription => 'Просмотрите прошлый прогресс или возобновите остановленный план.';
 	@override String get resume => 'Возобновить';
@@ -1232,6 +1246,8 @@ class _Translations$planTypes$ru extends Translations$planTypes$en {
 	@override String get chroniclesAndProphetsDescription => 'Год, в котором история Хроник сочетается с посланиями Пророков.';
 	@override String get pentateuchAndHistoryDescription => 'Путешествие по пяти книгам Моисея и истории Израиля за год.';
 	@override String get psalmsAndWisdomDescription => 'Проведите год за чтением псалмов и книг мудрости, таких как Притчи, Иов и Экклезиаст.';
+	@override String get advent => 'Адвент';
+	@override String get adventDescription => 'Читайте в преддверии Рождества: ежедневные отрывки и учебные заметки, от обетований пророков до рождения Иисуса.';
 	@override String get oldAndNewTestamentDescription => 'Прочитайте всю Библию за год, читая Ветхий и Новый Заветы параллельно в каноническом порядке.';
 	@override String get historicallyBlendedDescription => 'Прочитайте всю Библию за год: книги и отрывки расположены вокруг связанных событий и исторических периодов.';
 	@override String get differentTopicsDescription => 'Каждый день просматривайте разные разделы Священного Писания, исследуя каждую книгу Библии в течение года.';
@@ -3697,6 +3713,10 @@ extension on TranslationsRu {
 			'biblePlans.daysAhead' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: 'Опережение на ${count} день', few: 'Опережение на ${count} дня', many: 'Опережение на ${count} дней', other: 'Опережение на ${count} дня', ), 
 			'biblePlans.catchUp' => 'Наверстать',
 			'biblePlans.reviewDayAnnotations' => 'Просмотреть аннотации дня',
+			'biblePlans.studyNotes' => 'Учебные заметки',
+			'biblePlans.beginsInDays' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: 'Начнётся через ${count} день', few: 'Начнётся через ${count} дня', many: 'Начнётся через ${count} дней', other: 'Начнётся через ${count} дня', ), 
+			'biblePlans.daysUntilChristmas' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: 'До Рождества ${count} день', few: 'До Рождества ${count} дня', many: 'До Рождества ${count} дней', other: 'До Рождества ${count} дня', ), 
+			'biblePlans.christmasDay' => 'Рождество',
 			'biblePlans.history' => 'История',
 			'biblePlans.historyDescription' => 'Просмотрите прошлый прогресс или возобновите остановленный план.',
 			'biblePlans.resume' => 'Возобновить',
@@ -3844,6 +3864,8 @@ extension on TranslationsRu {
 			'planTypes.chroniclesAndProphetsDescription' => 'Год, в котором история Хроник сочетается с посланиями Пророков.',
 			'planTypes.pentateuchAndHistoryDescription' => 'Путешествие по пяти книгам Моисея и истории Израиля за год.',
 			'planTypes.psalmsAndWisdomDescription' => 'Проведите год за чтением псалмов и книг мудрости, таких как Притчи, Иов и Экклезиаст.',
+			'planTypes.advent' => 'Адвент',
+			'planTypes.adventDescription' => 'Читайте в преддверии Рождества: ежедневные отрывки и учебные заметки, от обетований пророков до рождения Иисуса.',
 			'planTypes.oldAndNewTestamentDescription' => 'Прочитайте всю Библию за год, читая Ветхий и Новый Заветы параллельно в каноническом порядке.',
 			'planTypes.historicallyBlendedDescription' => 'Прочитайте всю Библию за год: книги и отрывки расположены вокруг связанных событий и исторических периодов.',
 			'planTypes.differentTopicsDescription' => 'Каждый день просматривайте разные разделы Священного Писания, исследуя каждую книгу Библии в течение года.',
@@ -4127,14 +4149,14 @@ extension on TranslationsRu {
 			'morphology.stem.qalPassive.description' => 'Редкий пассив простой основы.',
 			'morphology.stem.qalPassive.examples' => 'это было принято',
 			'morphology.stem.niphal.name' => 'Нифаль',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.stem.niphal.description' => 'Простая пассивная или рефлексивная основа.',
 			'morphology.stem.niphal.examples' => 'его убили|они собрались сами',
 			'morphology.stem.piel.name' => 'Пиль',
 			'morphology.stem.piel.description' => 'Интенсивная или фактивная активная основа.',
 			'morphology.stem.piel.examples' => 'он похвалил|он благословил|он разбил',
 			'morphology.stem.pual.name' => 'Пуал',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.stem.pual.description' => 'Пассив пиеля.',
 			'morphology.stem.pual.examples' => 'его хвалили',
 			'morphology.stem.hiphil.name' => 'Хифил',

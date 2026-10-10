@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:bible/models/bible_plan_season.dart';
 import 'package:bible/models/calendar_date_time.dart';
 import 'package:bible/models/hydrated_bible_plan_progress.dart';
 import 'package:bible/models/reminder.dart';
@@ -151,6 +152,11 @@ sealed class BiblePlanPace with _$BiblePlanPace {
     .paced => BiblePlanPace.paced(endDate: endDate),
   };
 
+  factory BiblePlanPace.initial({BiblePlanSeason? season}) => switch (season?.getUpcomingEndDate(.now())) {
+    final endDate? => BiblePlanPace.paced(endDate: endDate),
+    null => BiblePlanPace.relaxed(),
+  };
+
   factory BiblePlanPace.fromJson(Map<String, dynamic> json) => _$BiblePlanPaceFromJson(json);
 
   // A day already completed today counts as today's reading, so the remaining days start tomorrow.
@@ -260,7 +266,8 @@ enum BiblePlanType {
   esv_gospels_and_epistles,
   esv_pentateuch_and_history_of_israel,
   esv_chronicles_and_prophets,
-  esv_psalms_and_wisdom_literature;
+  esv_psalms_and_wisdom_literature,
+  advent;
 
   static BiblePlanType? getById(String id) => values.firstWhereOrNull((type) => type.name == id);
 
@@ -281,6 +288,7 @@ enum BiblePlanType {
     esv_pentateuch_and_history_of_israel => t.planTypes.pentateuchAndHistory,
     esv_chronicles_and_prophets => t.planTypes.chroniclesAndProphets,
     esv_psalms_and_wisdom_literature => t.planTypes.psalmsAndWisdom,
+    advent => t.planTypes.advent,
   };
 
   String description() => switch (this) {
@@ -298,6 +306,7 @@ enum BiblePlanType {
     heartlight_different_topics => t.planTypes.differentTopicsDescription,
     heartlight_nt_psalms_proverbs => t.planTypes.newTestamentPsalmsProverbsDescription,
     navigators_5x5x5_nt => t.planTypes.fiveByFiveByFiveDescription,
+    advent => t.planTypes.adventDescription,
   };
 
   BiblePlanSource? get source => switch (this) {
@@ -333,7 +342,17 @@ enum BiblePlanType {
       name: 'The Navigators',
       link: 'https://www.navigators.org/resource/bible-reading-plans/',
     ),
+    advent => BiblePlanSource(name: 'Lux', link: 'https://www.luxbible.app'),
   };
+
+  bool get isCuratedByLux => this == advent;
+
+  BiblePlanSeason? get season => switch (this) {
+    advent => .advent,
+    _ => null,
+  };
+
+  String? get studyNotesAssetPath => isCuratedByLux ? 'assets/bible_plan_study_notes/$name.json' : null;
 }
 
 enum BiblePlanScope {

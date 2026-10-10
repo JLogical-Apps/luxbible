@@ -2060,6 +2060,24 @@ class Translations$biblePlans$en {
 	/// en: 'Review Day Annotations'
 	String get reviewDayAnnotations => 'Review Day Annotations';
 
+	/// en: 'Study Notes'
+	String get studyNotes => 'Study Notes';
+
+	/// en: '(one) {Begins in {count} day} (other) {Begins in {count} days}'
+	String beginsInDays({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count,
+		one: 'Begins in ${count} day',
+		other: 'Begins in ${count} days',
+	);
+
+	/// en: '(one) {{count} day until Christmas} (other) {{count} days until Christmas}'
+	String daysUntilChristmas({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count,
+		one: '${count} day until Christmas',
+		other: '${count} days until Christmas',
+	);
+
+	/// en: 'Christmas Day'
+	String get christmasDay => 'Christmas Day';
+
 	/// en: 'History'
 	String get history => 'History';
 
@@ -2628,6 +2646,12 @@ class Translations$planTypes$en {
 
 	/// en: 'Spend the year in the Psalms and wisdom books like Proverbs, Job, and Ecclesiastes.'
 	String get psalmsAndWisdomDescription => 'Spend the year in the Psalms and wisdom books like Proverbs, Job, and Ecclesiastes.';
+
+	/// en: 'Advent'
+	String get advent => 'Advent';
+
+	/// en: 'Read toward Christmas with daily passages and study notes, from the prophets' promises to the birth of Jesus.'
+	String get adventDescription => 'Read toward Christmas with daily passages and study notes, from the prophets\' promises to the birth of Jesus.';
 
 	/// en: 'Read the whole Bible in one year, following the Old and New Testaments together in canonical order.'
 	String get oldAndNewTestamentDescription => 'Read the whole Bible in one year, following the Old and New Testaments together in canonical order.';
@@ -6030,6 +6054,10 @@ extension on Translations {
 			'biblePlans.daysAhead' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} day ahead', other: '${count} days ahead', ), 
 			'biblePlans.catchUp' => 'Catch Up',
 			'biblePlans.reviewDayAnnotations' => 'Review Day Annotations',
+			'biblePlans.studyNotes' => 'Study Notes',
+			'biblePlans.beginsInDays' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: 'Begins in ${count} day', other: 'Begins in ${count} days', ), 
+			'biblePlans.daysUntilChristmas' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} day until Christmas', other: '${count} days until Christmas', ), 
+			'biblePlans.christmasDay' => 'Christmas Day',
 			'biblePlans.history' => 'History',
 			'biblePlans.historyDescription' => 'Review past progress or resume a stopped plan.',
 			'biblePlans.resume' => 'Resume',
@@ -6177,6 +6205,8 @@ extension on Translations {
 			'planTypes.chroniclesAndProphetsDescription' => 'A year that pairs the history in Chronicles with the messages of the Prophets.',
 			'planTypes.pentateuchAndHistoryDescription' => 'Journey through the five books of Moses and the history of Israel over a year.',
 			'planTypes.psalmsAndWisdomDescription' => 'Spend the year in the Psalms and wisdom books like Proverbs, Job, and Ecclesiastes.',
+			'planTypes.advent' => 'Advent',
+			'planTypes.adventDescription' => 'Read toward Christmas with daily passages and study notes, from the prophets\' promises to the birth of Jesus.',
 			'planTypes.oldAndNewTestamentDescription' => 'Read the whole Bible in one year, following the Old and New Testaments together in canonical order.',
 			'planTypes.historicallyBlendedDescription' => 'Read the whole Bible in one year, with books and passages arranged around related events and historical periods.',
 			'planTypes.differentTopicsDescription' => 'Rotate through a different section of Scripture each day, exploring every book of the Bible over a year.',
@@ -6462,14 +6492,14 @@ extension on Translations {
 			'morphology.stem.niphal.name' => 'Niphal',
 			'morphology.stem.niphal.description' => 'The simple passive or reflexive stem.',
 			'morphology.stem.niphal.examples' => 'he was killed|they gathered themselves',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.stem.piel.name' => 'Piel',
 			'morphology.stem.piel.description' => 'The intensive or factitive active stem.',
 			'morphology.stem.piel.examples' => 'he praised|he blessed|he shattered',
 			'morphology.stem.pual.name' => 'Pual',
 			'morphology.stem.pual.description' => 'The passive of the piel.',
 			'morphology.stem.pual.examples' => 'he was praised',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.stem.hiphil.name' => 'Hiphil',
 			'morphology.stem.hiphil.description' => 'The causative active stem.',
 			'morphology.stem.hiphil.examples' => 'he caused to write|he led out',

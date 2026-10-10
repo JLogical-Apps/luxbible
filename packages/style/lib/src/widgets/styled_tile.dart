@@ -58,32 +58,18 @@ class StyledTile extends StatelessWidget {
        );
 
   @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
+  Widget build(BuildContext context) => AnimatedContainer(
+    duration: Duration(milliseconds: 300),
+    curve: Curves.easeInOutCubic,
+    foregroundDecoration: BoxDecoration(
       borderRadius: .circular(12),
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeInOutCubic,
-        foregroundDecoration: BoxDecoration(
-          borderRadius: .circular(12),
-          border: Border.all(color: context.colors.border(isSelected), width: isSelected ? 3 : 2),
-        ),
-        child: Stack(
-          fit: StackFit.passthrough,
-          children: [
-            Padding(
-              padding: padding,
-              child: DefaultTextStyle(style: context.textStyle.paragraphMd, textAlign: .start, child: child),
-            ),
-            Positioned.fill(
-              child: IgnorePointer(
-                ignoring: onPressed == null,
-                child: StyledMaterial(onPressed: onPressed, padding: .all(16), child: SizedBox.expand()),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+      border: Border.all(color: context.colors.border(isSelected), width: isSelected ? 3 : 2),
+    ),
+    child: StyledMaterial.overlay(
+      onPressed: onPressed,
+      borderRadius: .circular(12),
+      padding: padding,
+      child: DefaultTextStyle(style: context.textStyle.paragraphMd, textAlign: .start, child: child),
+    ),
+  );
 }

@@ -658,6 +658,16 @@
     },
     "catchUp": "Inhalen",
     "reviewDayAnnotations": "Annotaties van de dag bekijken",
+    "studyNotes": "Studienotities",
+    "beginsInDays(param=count)": {
+      "one": "Begint over {count} dag",
+      "other": "Begint over {count} dagen"
+    },
+    "daysUntilChristmas(param=count)": {
+      "one": "Nog {count} dag tot Kerst",
+      "other": "Nog {count} dagen tot Kerst"
+    },
+    "christmasDay": "Eerste Kerstdag",
     "history": "Geschiedenis",
     "historyDescription": "Bekijk eerdere voortgang of hervat een gestopt leesplan.",
     "resume": "Hervatten",
@@ -850,6 +860,8 @@
     "chroniclesAndProphetsDescription": "Een jaar waarin de geschiedenis uit Kronieken wordt gekoppeld aan de boodschappen van de profeten.",
     "pentateuchAndHistoryDescription": "Reis in één jaar door de vijf boeken van Mozes en de geschiedenis van Israël.",
     "psalmsAndWisdomDescription": "Breng een jaar door in de Psalmen en wijsheidsboeken zoals Spreuken, Job en Prediker.",
+    "advent": "Advent",
+    "adventDescription": "Lees naar Kerst toe met dagelijkse gedeelten en studienotities, van de beloften van de profeten tot de geboorte van Jezus.",
     "oldAndNewTestamentDescription": "Lees de hele Bijbel in één jaar en volg het Oude en Nieuwe Testament samen in de gebruikelijke Bijbelvolgorde.",
     "historicallyBlendedDescription": "Lees de hele Bijbel in één jaar, met boeken en passages gerangschikt rond verwante gebeurtenissen en historische perioden.",
     "differentTopicsDescription": "Lees elke dag een ander gedeelte van de Bijbel en verken in één jaar elk Bijbelboek.",

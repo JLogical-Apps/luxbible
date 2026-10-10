@@ -121,10 +121,7 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                       final days when days < 0 => t.biblePlans.daysBehind(count: -days).toText(),
                       final days => t.biblePlans.daysAhead(count: days).toText(),
                     },
-                    onNavigateToVerseSelection: (selection) {
-                      context.pop();
-                      context.pop(selection);
-                    },
+                    onNavigateToVerseSelection: (selection) => context.pop(selection),
                     onPassagePressed: (dayIndex, passageIndex) async {
                       final result = await context.push(
                         BiblePlanReadPage(planId: planId, dayIndex: dayIndex, initialPassageIndex: passageIndex),
@@ -200,10 +197,7 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                               context,
                               instanceId: progress.instanceId,
                               planName: displayName,
-                              onNavigateToVerseSelection: (selection) {
-                                context.pop();
-                                context.pop(selection);
-                              },
+                              onNavigateToVerseSelection: (selection) => context.pop(selection),
                             );
                           },
                         ),

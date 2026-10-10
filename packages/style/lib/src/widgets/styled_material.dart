@@ -13,6 +13,8 @@ class StyledMaterial extends StatelessWidget {
   final BorderRadius borderRadius;
   final EdgeInsets padding;
 
+  final bool isOverlay;
+
   const StyledMaterial({
     super.key,
     required this.child,
@@ -24,7 +26,23 @@ class StyledMaterial extends StatelessWidget {
     this.isCritical = false,
     this.borderRadius = .zero,
     this.padding = .zero,
-  }) : isEnabled = isEnabled ?? (onPressed != null || onLongPressed != null);
+  }) : isEnabled = isEnabled ?? (onPressed != null || onLongPressed != null),
+       isOverlay = false;
+
+  // Draws the ink on top of the child instead of behind it, for content that paints its own background.
+  const StyledMaterial.overlay({
+    super.key,
+    required this.child,
+    this.onPressed,
+    this.onLongPressed,
+    bool? isEnabled,
+    this.isSelected,
+    this.colorBuilder,
+    this.borderRadius = .zero,
+    this.padding = .zero,
+  }) : isEnabled = isEnabled ?? (onPressed != null || onLongPressed != null),
+       isCritical = false,
+       isOverlay = true;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +51,32 @@ class StyledMaterial extends StatelessWidget {
     final foregroundColor = color == Colors.transparent
         ? context.colors.contentPrimary
         : backgroundColor?.foreground(isDisabled: !isEnabled, isCritical: isCritical);
+    final inkWell = Material(
+      color: Colors.transparent,
+      borderRadius: borderRadius,
+      child: InkWell(
+        borderRadius: borderRadius,
+        onTap: onPressed,
+        onLongPress: onLongPressed,
+        overlayColor: foregroundColor == null ? null : .all(foregroundColor.withValues(alpha: 0.1)),
+        child: isOverlay
+            ? SizedBox.expand()
+            : Padding(
+                padding: padding,
+                child: DefaultTextStyle(
+                  style: context.textStyle.labelLg
+                      .copyWith(color: foregroundColor)
+                      .disabled(isDisabled: !isEnabled)
+                      .critical(isCritical: isCritical),
+                  child: IconTheme.merge(
+                    data: IconThemeData(color: foregroundColor),
+                    child: child,
+                  ),
+                ),
+              ),
+      ),
+    );
+
     return AnimatedContainer(
       duration: Duration(milliseconds: 300),
       curve: Curves.easeInOutCubic,
@@ -45,29 +89,20 @@ class StyledMaterial extends StatelessWidget {
           null => null,
         },
       ),
-      child: Material(
-        color: Colors.transparent,
-        borderRadius: borderRadius,
-        child: InkWell(
-          borderRadius: borderRadius,
-          onTap: onPressed,
-          onLongPress: onLongPressed,
-          overlayColor: foregroundColor == null ? null : .all(foregroundColor.withValues(alpha: 0.1)),
-          child: Padding(
-            padding: padding,
-            child: DefaultTextStyle(
-              style: context.textStyle.labelLg
-                  .copyWith(color: foregroundColor)
-                  .disabled(isDisabled: !isEnabled)
-                  .critical(isCritical: isCritical),
-              child: IconTheme.merge(
-                data: IconThemeData(color: foregroundColor),
-                child: child,
+      child: isOverlay
+          ? ClipRRect(
+              borderRadius: borderRadius,
+              child: Stack(
+                fit: .passthrough,
+                children: [
+                  Padding(padding: padding, child: child),
+                  Positioned.fill(
+                    child: IgnorePointer(ignoring: !isEnabled, child: inkWell),
+                  ),
+                ],
               ),
-            ),
-          ),
-        ),
-      ),
+            )
+          : inkWell,
     );
   }
 }

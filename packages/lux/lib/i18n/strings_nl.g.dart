@@ -928,6 +928,16 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	);
 	@override String get catchUp => 'Inhalen';
 	@override String get reviewDayAnnotations => 'Annotaties van de dag bekijken';
+	@override String get studyNotes => 'Studienotities';
+	@override String beginsInDays({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count,
+		one: 'Begint over ${count} dag',
+		other: 'Begint over ${count} dagen',
+	);
+	@override String daysUntilChristmas({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count,
+		one: 'Nog ${count} dag tot Kerst',
+		other: 'Nog ${count} dagen tot Kerst',
+	);
+	@override String get christmasDay => 'Eerste Kerstdag';
 	@override String get history => 'Geschiedenis';
 	@override String get historyDescription => 'Bekijk eerdere voortgang of hervat een gestopt leesplan.';
 	@override String get resume => 'Hervatten';
@@ -1222,6 +1232,8 @@ class _Translations$planTypes$nl extends Translations$planTypes$en {
 	@override String get chroniclesAndProphetsDescription => 'Een jaar waarin de geschiedenis uit Kronieken wordt gekoppeld aan de boodschappen van de profeten.';
 	@override String get pentateuchAndHistoryDescription => 'Reis in één jaar door de vijf boeken van Mozes en de geschiedenis van Israël.';
 	@override String get psalmsAndWisdomDescription => 'Breng een jaar door in de Psalmen en wijsheidsboeken zoals Spreuken, Job en Prediker.';
+	@override String get advent => 'Advent';
+	@override String get adventDescription => 'Lees naar Kerst toe met dagelijkse gedeelten en studienotities, van de beloften van de profeten tot de geboorte van Jezus.';
 	@override String get oldAndNewTestamentDescription => 'Lees de hele Bijbel in één jaar en volg het Oude en Nieuwe Testament samen in de gebruikelijke Bijbelvolgorde.';
 	@override String get historicallyBlendedDescription => 'Lees de hele Bijbel in één jaar, met boeken en passages gerangschikt rond verwante gebeurtenissen en historische perioden.';
 	@override String get differentTopicsDescription => 'Lees elke dag een ander gedeelte van de Bijbel en verken in één jaar elk Bijbelboek.';
@@ -3683,6 +3695,10 @@ extension on TranslationsNl {
 			'biblePlans.daysAhead' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: '${count} dag voor op schema', other: '${count} dagen voor op schema', ), 
 			'biblePlans.catchUp' => 'Inhalen',
 			'biblePlans.reviewDayAnnotations' => 'Annotaties van de dag bekijken',
+			'biblePlans.studyNotes' => 'Studienotities',
+			'biblePlans.beginsInDays' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: 'Begint over ${count} dag', other: 'Begint over ${count} dagen', ), 
+			'biblePlans.daysUntilChristmas' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: 'Nog ${count} dag tot Kerst', other: 'Nog ${count} dagen tot Kerst', ), 
+			'biblePlans.christmasDay' => 'Eerste Kerstdag',
 			'biblePlans.history' => 'Geschiedenis',
 			'biblePlans.historyDescription' => 'Bekijk eerdere voortgang of hervat een gestopt leesplan.',
 			'biblePlans.resume' => 'Hervatten',
@@ -3830,6 +3846,8 @@ extension on TranslationsNl {
 			'planTypes.chroniclesAndProphetsDescription' => 'Een jaar waarin de geschiedenis uit Kronieken wordt gekoppeld aan de boodschappen van de profeten.',
 			'planTypes.pentateuchAndHistoryDescription' => 'Reis in één jaar door de vijf boeken van Mozes en de geschiedenis van Israël.',
 			'planTypes.psalmsAndWisdomDescription' => 'Breng een jaar door in de Psalmen en wijsheidsboeken zoals Spreuken, Job en Prediker.',
+			'planTypes.advent' => 'Advent',
+			'planTypes.adventDescription' => 'Lees naar Kerst toe met dagelijkse gedeelten en studienotities, van de beloften van de profeten tot de geboorte van Jezus.',
 			'planTypes.oldAndNewTestamentDescription' => 'Lees de hele Bijbel in één jaar en volg het Oude en Nieuwe Testament samen in de gebruikelijke Bijbelvolgorde.',
 			'planTypes.historicallyBlendedDescription' => 'Lees de hele Bijbel in één jaar, met boeken en passages gerangschikt rond verwante gebeurtenissen en historische perioden.',
 			'planTypes.differentTopicsDescription' => 'Lees elke dag een ander gedeelte van de Bijbel en verken in één jaar elk Bijbelboek.',
@@ -4113,14 +4131,14 @@ extension on TranslationsNl {
 			'morphology.stem.qalPassive.description' => 'Een zeldzame passieve vorm van de eenvoudige stam.',
 			'morphology.stem.qalPassive.examples' => 'het werd genomen',
 			'morphology.stem.niphal.name' => 'Niphal',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.stem.niphal.description' => 'De eenvoudige passieve of wederkerende stam.',
 			'morphology.stem.niphal.examples' => 'hij werd gedood|zij verzamelden zich',
 			'morphology.stem.piel.name' => 'Piel',
 			'morphology.stem.piel.description' => 'De intensieve of factitieve actieve stam.',
 			'morphology.stem.piel.examples' => 'hij prees|hij zegende|hij verbrijzelde',
 			'morphology.stem.pual.name' => 'Pual',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.stem.pual.description' => 'De passieve vorm van de piel.',
 			'morphology.stem.pual.examples' => 'hij werd geprezen',
 			'morphology.stem.hiphil.name' => 'Hiphil',

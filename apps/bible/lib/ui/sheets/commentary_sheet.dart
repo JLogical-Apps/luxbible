@@ -9,11 +9,36 @@ import 'package:lux/lux.dart';
 import 'package:style/style.dart';
 
 class CommentarySheet {
+  static Future<void> show(
+    BuildContext context, {
+    required CommentaryType commentaryType,
+    required VerseSelection verseSelection,
+    required Function(VerseSelection) onNavigateToVerseSelection,
+  }) => context.showStyledSheetWithBreadcrumbs(
+    breadcrumbText: commentaryType.title(),
+    (context, ref) => StyledSheet(
+      title: commentaryType.title().toText(),
+      subtitle: verseSelection.format().toText(),
+      children: buildSheetChildren(
+        context,
+        ref,
+        verseSelection: verseSelection,
+        commentaryType: commentaryType,
+        isLink: true,
+        onNavigateToVerseSelection: (selection) {
+          if (context.mounted) context.pop();
+          onNavigateToVerseSelection(selection);
+        },
+      ),
+    ),
+  );
+
   static List<Widget> buildSheetChildren(
     BuildContext context,
     WidgetRef ref, {
     required VerseSelection verseSelection,
     required CommentaryType commentaryType,
+    bool isLink = false,
     required Function(VerseSelection) onNavigateToVerseSelection,
     Function(int)? onNavigateToIndex,
   }) {
@@ -23,11 +48,10 @@ class CommentarySheet {
       return [Padding(padding: .all(16), child: StyledLoading())];
     }
 
-    final hasBookSections = verseSelection.references.any(
-      (reference) => reference.chapterNum == 1 && reference.verseNum == 1,
-    );
+    final hasBookSections =
+        !isLink && verseSelection.references.any((reference) => reference.chapterNum == 1 && reference.verseNum == 1);
     final contentByBookSection = {if (hasBookSections) ...commentary.contentByBookSection};
-    final blocks = commentary.getBlocksFor(verseSelection);
+    final blocks = isLink ? commentary.getLinkedBlocksFor(verseSelection) : commentary.getBlocksFor(verseSelection);
     final itemCount = contentByBookSection.length + blocks.length;
 
     Widget? getNavigation(int index) => onNavigateToIndex == null

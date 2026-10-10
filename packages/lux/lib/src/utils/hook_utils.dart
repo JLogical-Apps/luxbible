@@ -239,8 +239,15 @@ class MapTween<K, T extends Object> extends Tween<Map<K, T>> {
       end!.mapValues((key, endValue) => Tween(begin: begin![key] ?? initialValue, end: endValue).transform(t));
 }
 
-Map<K, T> useAnimatedValues<K, T extends Object>(Map<K, T> targetValues, {required T initialValue}) {
-  final controller = useAnimationController(duration: Duration(milliseconds: 300));
+T useAnimatedValue<T extends Object>(T targetValue, {Duration duration = const Duration(milliseconds: 300)}) =>
+    useAnimatedValues({(): targetValue}, initialValue: targetValue, duration: duration)[()]!;
+
+Map<K, T> useAnimatedValues<K, T extends Object>(
+  Map<K, T> targetValues, {
+  required T initialValue,
+  Duration duration = const Duration(milliseconds: 300),
+}) {
+  final controller = useAnimationController(duration: duration);
   final progress = useAnimation(controller);
 
   final curve = Curves.easeInOutCubic;
@@ -276,20 +283,17 @@ Map<K, T> useAnimatedValues<K, T extends Object>(Map<K, T> targetValues, {requir
   return activeTween?.transform(curvedProgress) ?? {};
 }
 
-T useIf<T>(T value, bool Function(T) predicate, [List<Object?> keys = const []]) {
+// Updates during build rather than in an effect, so the build that makes the predicate pass already returns the new
+// value instead of waiting for some later rebuild.
+T useIf<T>(T value, bool Function(T) predicate) {
   final ref = useRef(value);
-  useEffect(() {
-    if (predicate(value)) ref.value = value;
-    return null;
-  }, [value, ...keys]);
-
+  if (predicate(value)) ref.value = value;
   return ref.value;
 }
 
 T useWhenVisible<T>(T value) {
-  final context = useContext();
-  final isVisible = ModalRoute.of(context)?.isCurrent ?? true;
-  return useIf(value, (_) => isVisible, [isVisible]);
+  final isVisible = ModalRoute.of(useContext())?.isCurrent ?? true;
+  return useIf(value, (_) => isVisible);
 }
 
 void useWhenValueChanged<T>(T value, Function(T prev, T curr) callback) =>

@@ -1,11 +1,12 @@
 import 'dart:convert';
 
 import 'package:bible/models/bible_plan.dart';
+import 'package:collection/collection.dart';
 import 'package:lux/lux_core.dart';
 import 'package:lux_content_tools/repository_paths.dart';
 
 void main() {
-  for (final type in BiblePlanType.values) {
+  for (final type in BiblePlanType.values.whereNot((type) => type.isCuratedByLux)) {
     final raw = jsonDecode(sourceFile('reading_plans/${type.name}.json').readAsStringSync()) as Map<String, dynamic>;
     appAssetFile('bible_plans/${type.name}.json', app: .bible).writeAsStringSync(
       jsonEncode(

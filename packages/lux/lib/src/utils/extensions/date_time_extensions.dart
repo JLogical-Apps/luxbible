@@ -22,6 +22,8 @@ extension DateTimeExtensions on DateTime {
   int getDaysUntil(DateTime other) =>
       DateTime.utc(other.year, other.month, other.day).difference(DateTime.utc(year, month, day)).inDays;
 
+  bool isBetween(DateTime start, DateTime end) => start.getDaysUntil(this) >= 0 && getDaysUntil(end) >= 0;
+
   int getMonthsUntil(DateTime other) => (other.year - year) * 12 + other.month - month;
 
   List<DateTime> getFollowingDates({required int count}) =>

@@ -1,8 +1,10 @@
 import 'package:bible/models/article_collection.dart';
+import 'package:bible/models/commentary_type.dart';
 import 'package:bible/models/rich_content.dart';
 import 'package:bible/providers/articles_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/ui/sheets/article_sheet.dart';
+import 'package:bible/ui/sheets/commentary_sheet.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
 import 'package:bible/ui/widgets/bible_map_card.dart';
 import 'package:collection/collection.dart';
@@ -79,6 +81,15 @@ Future<void> openRichContentLink(
   String link, {
   required Function(VerseSelection) onNavigateToVerseSelection,
 }) async {
+  if (CommentaryType.parseLink(link) case (final commentaryType, final verseSelection)) {
+    return CommentarySheet.show(
+      context,
+      commentaryType: commentaryType,
+      verseSelection: verseSelection,
+      onNavigateToVerseSelection: onNavigateToVerseSelection,
+    );
+  }
+
   final collection = ArticleCollection.values.firstWhereOrNull((collection) => link.startsWith(collection.linkPrefix));
   if (collection == null) {
     return PreviewPassageSheet.show(

@@ -35,6 +35,12 @@ sealed class CommentaryBook with _$CommentaryBook {
         ),
       )
       .toList();
+
+  List<CommentaryBlock> getLinkedBlocksFor(VerseSelection verseSelection) {
+    final blocks = getBlocksFor(verseSelection);
+    final exactBlocks = blocks.where((block) => block is CommentarySection && block.selection == verseSelection);
+    return exactBlocks.isEmpty ? blocks : exactBlocks.toList();
+  }
 }
 
 enum CommentaryBookSection { summary, introduction }
