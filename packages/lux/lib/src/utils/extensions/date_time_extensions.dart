@@ -33,6 +33,8 @@ extension DateTimeExtensions on DateTime {
 
   String formatDate() => DateFormat.yMMMd(LocaleSettings.currentLocale.languageCode).format(this);
 
+  String formatMonthAndDay() => DateFormat.MMMd(LocaleSettings.currentLocale.languageCode).format(this);
+
   String formatMonthAndYear() => DateFormat.yMMMM(LocaleSettings.currentLocale.languageCode).format(this);
 
   /// The calendar date alone, as `yyyy-MM-dd`.

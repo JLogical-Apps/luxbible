@@ -936,6 +936,8 @@ class _Translations$biblePlans$de extends Translations$biblePlans$en {
 		other: 'Noch ${count} Tage bis Weihnachten',
 	);
 	@override String get christmasDay => 'Erster Weihnachtstag';
+	@override String startsOn({required Object date}) => 'Beginnt am ${date}';
+	@override String endsOn({required Object date}) => 'Endet am ${date}';
 	@override String get history => 'Verlauf';
 	@override String get historyDescription => 'Früheren Fortschritt ansehen oder einen beendeten Plan fortsetzen.';
 	@override String get resume => 'Fortsetzen';
@@ -3695,6 +3697,8 @@ extension on TranslationsDe {
 			'biblePlans.beginsInDays' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: 'Beginnt in ${count} Tag', other: 'Beginnt in ${count} Tagen', ), 
 			'biblePlans.daysUntilChristmas' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: 'Noch ${count} Tag bis Weihnachten', other: 'Noch ${count} Tage bis Weihnachten', ), 
 			'biblePlans.christmasDay' => 'Erster Weihnachtstag',
+			'biblePlans.startsOn' => ({required Object date}) => 'Beginnt am ${date}',
+			'biblePlans.endsOn' => ({required Object date}) => 'Endet am ${date}',
 			'biblePlans.history' => 'Verlauf',
 			'biblePlans.historyDescription' => 'Früheren Fortschritt ansehen oder einen beendeten Plan fortsetzen.',
 			'biblePlans.resume' => 'Fortsetzen',
@@ -4127,10 +4131,10 @@ extension on TranslationsDe {
 			'morphology.stem.qalPassive.description' => 'Ein seltenes Passiv des einfachen Stammes.',
 			'morphology.stem.qalPassive.examples' => 'es wurde genommen',
 			'morphology.stem.niphal.name' => 'Nifal',
-			'morphology.stem.niphal.description' => 'Der einfache passive oder reflexive Stamm.',
-			'morphology.stem.niphal.examples' => 'er wurde getötet|sie versammelten sich',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.stem.niphal.description' => 'Der einfache passive oder reflexive Stamm.',
+			'morphology.stem.niphal.examples' => 'er wurde getötet|sie versammelten sich',
 			'morphology.stem.piel.name' => 'Piel',
 			'morphology.stem.piel.description' => 'Der intensive oder faktitive aktive Stamm.',
 			'morphology.stem.piel.examples' => 'er lobte|er segnete|er zerschmetterte',

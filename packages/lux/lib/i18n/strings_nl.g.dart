@@ -938,6 +938,8 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 		other: 'Nog ${count} dagen tot Kerst',
 	);
 	@override String get christmasDay => 'Eerste Kerstdag';
+	@override String startsOn({required Object date}) => 'Begint ${date}';
+	@override String endsOn({required Object date}) => 'Eindigt ${date}';
 	@override String get history => 'Geschiedenis';
 	@override String get historyDescription => 'Bekijk eerdere voortgang of hervat een gestopt leesplan.';
 	@override String get resume => 'Hervatten';
@@ -3699,6 +3701,8 @@ extension on TranslationsNl {
 			'biblePlans.beginsInDays' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: 'Begint over ${count} dag', other: 'Begint over ${count} dagen', ), 
 			'biblePlans.daysUntilChristmas' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: 'Nog ${count} dag tot Kerst', other: 'Nog ${count} dagen tot Kerst', ), 
 			'biblePlans.christmasDay' => 'Eerste Kerstdag',
+			'biblePlans.startsOn' => ({required Object date}) => 'Begint ${date}',
+			'biblePlans.endsOn' => ({required Object date}) => 'Eindigt ${date}',
 			'biblePlans.history' => 'Geschiedenis',
 			'biblePlans.historyDescription' => 'Bekijk eerdere voortgang of hervat een gestopt leesplan.',
 			'biblePlans.resume' => 'Hervatten',
@@ -4129,10 +4133,10 @@ extension on TranslationsNl {
 			'morphology.stem.qal.examples' => 'hij schreef|zij hoorde',
 			'morphology.stem.qalPassive.name' => 'Qal passief',
 			'morphology.stem.qalPassive.description' => 'Een zeldzame passieve vorm van de eenvoudige stam.',
-			'morphology.stem.qalPassive.examples' => 'het werd genomen',
-			'morphology.stem.niphal.name' => 'Niphal',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.stem.qalPassive.examples' => 'het werd genomen',
+			'morphology.stem.niphal.name' => 'Niphal',
 			'morphology.stem.niphal.description' => 'De eenvoudige passieve of wederkerende stam.',
 			'morphology.stem.niphal.examples' => 'hij werd gedood|zij verzamelden zich',
 			'morphology.stem.piel.name' => 'Piel',

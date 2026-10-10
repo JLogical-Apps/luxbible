@@ -668,6 +668,8 @@
       "other": "Nog {count} dagen tot Kerst"
     },
     "christmasDay": "Eerste Kerstdag",
+    "startsOn": "Begint {date}",
+    "endsOn": "Eindigt {date}",
     "history": "Geschiedenis",
     "historyDescription": "Bekijk eerdere voortgang of hervat een gestopt leesplan.",
     "resume": "Hervatten",

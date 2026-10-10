@@ -950,6 +950,8 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 		other: 'До Рождества ${count} дня',
 	);
 	@override String get christmasDay => 'Рождество';
+	@override String startsOn({required Object date}) => 'Начинается ${date}';
+	@override String endsOn({required Object date}) => 'Заканчивается ${date}';
 	@override String get history => 'История';
 	@override String get historyDescription => 'Просмотрите прошлый прогресс или возобновите остановленный план.';
 	@override String get resume => 'Возобновить';
@@ -3717,6 +3719,8 @@ extension on TranslationsRu {
 			'biblePlans.beginsInDays' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: 'Начнётся через ${count} день', few: 'Начнётся через ${count} дня', many: 'Начнётся через ${count} дней', other: 'Начнётся через ${count} дня', ), 
 			'biblePlans.daysUntilChristmas' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: 'До Рождества ${count} день', few: 'До Рождества ${count} дня', many: 'До Рождества ${count} дней', other: 'До Рождества ${count} дня', ), 
 			'biblePlans.christmasDay' => 'Рождество',
+			'biblePlans.startsOn' => ({required Object date}) => 'Начинается ${date}',
+			'biblePlans.endsOn' => ({required Object date}) => 'Заканчивается ${date}',
 			'biblePlans.history' => 'История',
 			'biblePlans.historyDescription' => 'Просмотрите прошлый прогресс или возобновите остановленный план.',
 			'biblePlans.resume' => 'Возобновить',
@@ -4147,10 +4151,10 @@ extension on TranslationsRu {
 			'morphology.stem.qal.examples' => 'он написал|она услышала',
 			'morphology.stem.qalPassive.name' => 'Кал пассивный',
 			'morphology.stem.qalPassive.description' => 'Редкий пассив простой основы.',
-			'morphology.stem.qalPassive.examples' => 'это было принято',
-			'morphology.stem.niphal.name' => 'Нифаль',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.stem.qalPassive.examples' => 'это было принято',
+			'morphology.stem.niphal.name' => 'Нифаль',
 			'morphology.stem.niphal.description' => 'Простая пассивная или рефлексивная основа.',
 			'morphology.stem.niphal.examples' => 'его убили|они собрались сами',
 			'morphology.stem.piel.name' => 'Пиль',

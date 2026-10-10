@@ -666,6 +666,8 @@
       "other": "{count} days until Christmas"
     },
     "christmasDay": "Christmas Day",
+    "startsOn": "Starts {date}",
+    "endsOn": "Ends {date}",
     "history": "History",
     "historyDescription": "Review past progress or resume a stopped plan.",
     "resume": "Resume",

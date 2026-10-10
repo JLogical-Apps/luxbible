@@ -689,7 +689,7 @@ The Through the Bible plan reads from Genesis to Revelation in canonical order. 
 
 ### Advent
 
-Advent is a seasonal plan curated by Lux. It follows liturgical Advent, from the first Sunday of Advent through Christmas Day (Nov 29 to Dec 25 in 2026, 27 days), moving from the Old Testament promises to the prophets who prepared the way, the announcements to Zechariah, Mary, and Joseph, and the birth of Jesus. It is listed with the other included plans all year, and its source is shown as Lux.
+Advent is a seasonal plan curated by Lux. It follows liturgical Advent, from the first Sunday of Advent through Christmas Day (Nov 29 to Dec 25 in 2026, 27 days), moving from the Old Testament promises to the prophets who prepared the way, the announcements to Zechariah, Mary, and Joseph, and the birth of Jesus. It is listed with the other included plans all year, and its source is shown as Lux. Its list item and plan details carry a tag next to the title with the date Advent starts, or the date it ends once Advent has begun. After Christmas the tag shows next year's start date.
 
 Each day has Study Notes, written in English only: a short summary of the passage, excerpts from bundled commentaries in attributed boxes, and links to related dictionary entries, people profiles, and themes. A Study Notes row below the day's passages on Bible Plans opens them in a sheet with breadcrumbs. Verse links open passage previews, and a commentary link opens only that commentary's section for the quoted passage, without the broader or overlapping sections around it. The summaries describe the passage and attribute interpretive claims to the cited sources rather than speaking for a tradition.
 

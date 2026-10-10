@@ -2078,6 +2078,12 @@ class Translations$biblePlans$en {
 	/// en: 'Christmas Day'
 	String get christmasDay => 'Christmas Day';
 
+	/// en: 'Starts {date}'
+	String startsOn({required Object date}) => 'Starts ${date}';
+
+	/// en: 'Ends {date}'
+	String endsOn({required Object date}) => 'Ends ${date}';
+
 	/// en: 'History'
 	String get history => 'History';
 
@@ -6058,6 +6064,8 @@ extension on Translations {
 			'biblePlans.beginsInDays' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: 'Begins in ${count} day', other: 'Begins in ${count} days', ), 
 			'biblePlans.daysUntilChristmas' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} day until Christmas', other: '${count} days until Christmas', ), 
 			'biblePlans.christmasDay' => 'Christmas Day',
+			'biblePlans.startsOn' => ({required Object date}) => 'Starts ${date}',
+			'biblePlans.endsOn' => ({required Object date}) => 'Ends ${date}',
 			'biblePlans.history' => 'History',
 			'biblePlans.historyDescription' => 'Review past progress or resume a stopped plan.',
 			'biblePlans.resume' => 'Resume',
@@ -6490,10 +6498,10 @@ extension on Translations {
 			'morphology.stem.qalPassive.description' => 'A rare passive of the simple stem.',
 			'morphology.stem.qalPassive.examples' => 'it was taken',
 			'morphology.stem.niphal.name' => 'Niphal',
-			'morphology.stem.niphal.description' => 'The simple passive or reflexive stem.',
-			'morphology.stem.niphal.examples' => 'he was killed|they gathered themselves',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.stem.niphal.description' => 'The simple passive or reflexive stem.',
+			'morphology.stem.niphal.examples' => 'he was killed|they gathered themselves',
 			'morphology.stem.piel.name' => 'Piel',
 			'morphology.stem.piel.description' => 'The intensive or factitive active stem.',
 			'morphology.stem.piel.examples' => 'he praised|he blessed|he shattered',

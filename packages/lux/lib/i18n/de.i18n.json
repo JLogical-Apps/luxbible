@@ -666,6 +666,8 @@
       "other": "Noch {count} Tage bis Weihnachten"
     },
     "christmasDay": "Erster Weihnachtstag",
+    "startsOn": "Beginnt am {date}",
+    "endsOn": "Endet am {date}",
     "history": "Verlauf",
     "historyDescription": "Früheren Fortschritt ansehen oder einen beendeten Plan fortsetzen.",
     "resume": "Fortsetzen",
