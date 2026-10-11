@@ -352,6 +352,12 @@ enum BiblePlanType {
     _ => null,
   };
 
+  // Advent stays out of search until its first promotion so it can ship quietly, while its link still opens it.
+  bool isListedOn(DateTime date) => switch (this) {
+    advent => !date.isBefore(BiblePlanSeason.advent.getPromotionStartDate(2026)),
+    _ => true,
+  };
+
   String? get studyNotesAssetPath => isCuratedByLux ? 'assets/bible_plan_study_notes/$name.json' : null;
 }
 

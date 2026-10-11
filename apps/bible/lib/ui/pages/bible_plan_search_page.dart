@@ -45,7 +45,9 @@ class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<Stri
     final sourceState = useState<BiblePlanSearchSource?>(null);
     final source = sourceState.value;
 
+    final now = DateTime.now();
     final matchingPlanById = planById
+        .where((planId, _) => BiblePlanType.getById(planId)?.isListedOn(now) ?? true)
         .where(
           (planId, _) =>
               source == null ||
@@ -53,7 +55,6 @@ class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<Stri
         )
         .where((planId, plan) => scope == null || plan.scope == scope);
 
-    final now = DateTime.now();
     final promotedAdventPlan =
         BiblePlanSeason.advent.isPromotedOn(now) && !user.hasStartedPlan(BiblePlanType.advent.name)
         ? matchingPlanById[BiblePlanType.advent.name]
