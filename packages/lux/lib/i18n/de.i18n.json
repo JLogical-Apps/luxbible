@@ -562,6 +562,21 @@
     "shareDescription": "Diese Leseplan-Datei mit einer anderen App oder Person teilen.",
     "download": "Herunterladen",
     "downloadDescription": "Diese Leseplan-Datei auf deinem Gerät speichern.",
+    "includeProgress": "Fortschritt einbeziehen",
+    "includeProgressDescription(param=total)": {
+      "one": "{completed} von {total} Tag und gelesene Abschnitte als abgeschlossen markieren.",
+      "other": "{completed} von {total} Tagen und gelesene Abschnitte als abgeschlossen markieren."
+    },
+    "includeTargetDate": "Zielenddatum einbeziehen",
+    "includeTargetDateDescription": "Vorschlagen, den Plan mit Zeitplan bis {date} abzuschließen.",
+    "importStartQuestion": "Wo möchtest du beginnen?",
+    "continueProgress": "Fortschritt übernehmen",
+    "continueProgressDescription(param=total)": {
+      "one": "Mit {completed} von {total} bereits abgeschlossenen Tag beginnen. Du kannst den Plan dann nicht bearbeiten.",
+      "other": "Mit {completed} von {total} bereits abgeschlossenen Tagen beginnen. Du kannst den Plan dann nicht bearbeiten."
+    },
+    "startFresh": "Neu beginnen",
+    "startFreshDescription": "Ohne abgeschlossene Tage beginnen. Du kannst den Plan vorher prüfen und bearbeiten.",
     "importErrors": {
       "readFailed": "Lux konnte diese Datei nicht lesen. Versuche, sie erneut auszuwählen.",
       "malformedJson": "Diese Datei ist nicht richtig formatiert.",

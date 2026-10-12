@@ -1846,6 +1846,39 @@ class Translations$biblePlans$en {
 	/// en: 'Save this Bible Plan file to your device.'
 	String get downloadDescription => 'Save this Bible Plan file to your device.';
 
+	/// en: 'Include Progress'
+	String get includeProgress => 'Include Progress';
+
+	/// en: '(one) {Include the {completed} of {total} day you've completed and any passages you've read.} (other) {Include the {completed} of {total} days you've completed and any passages you've read.}'
+	String includeProgressDescription({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(total,
+		one: 'Include the ${completed} of ${total} day you\'ve completed and any passages you\'ve read.',
+		other: 'Include the ${completed} of ${total} days you\'ve completed and any passages you\'ve read.',
+	);
+
+	/// en: 'Include Target End Date'
+	String get includeTargetDate => 'Include Target End Date';
+
+	/// en: 'Suggest pacing the plan to end {date}.'
+	String includeTargetDateDescription({required Object date}) => 'Suggest pacing the plan to end ${date}.';
+
+	/// en: 'Where would you like to start?'
+	String get importStartQuestion => 'Where would you like to start?';
+
+	/// en: 'Continue Progress'
+	String get continueProgress => 'Continue Progress';
+
+	/// en: '(one) {Start with {completed} of {total} day already complete. You won't be able to edit the plan.} (other) {Start with {completed} of {total} days already complete. You won't be able to edit the plan.}'
+	String continueProgressDescription({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(total,
+		one: 'Start with ${completed} of ${total} day already complete. You won\'t be able to edit the plan.',
+		other: 'Start with ${completed} of ${total} days already complete. You won\'t be able to edit the plan.',
+	);
+
+	/// en: 'Start Fresh'
+	String get startFresh => 'Start Fresh';
+
+	/// en: 'Start with no days complete. You can review and edit the plan first.'
+	String get startFreshDescription => 'Start with no days complete. You can review and edit the plan first.';
+
 	late final Translations$biblePlans$importErrors$en importErrors = Translations$biblePlans$importErrors$en.internal(_root);
 
 	/// en: 'Manual'
@@ -5977,6 +6010,17 @@ extension on Translations {
 			'biblePlans.shareDescription' => 'Share this Bible Plan file with another app or person.',
 			'biblePlans.download' => 'Download',
 			'biblePlans.downloadDescription' => 'Save this Bible Plan file to your device.',
+			'biblePlans.includeProgress' => 'Include Progress',
+			'biblePlans.includeProgressDescription' => ({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(total, one: 'Include the ${completed} of ${total} day you\'ve completed and any passages you\'ve read.', other: 'Include the ${completed} of ${total} days you\'ve completed and any passages you\'ve read.', ), 
+			'biblePlans.includeTargetDate' => 'Include Target End Date',
+			'biblePlans.includeTargetDateDescription' => ({required Object date}) => 'Suggest pacing the plan to end ${date}.',
+			'biblePlans.importStartQuestion' => 'Where would you like to start?',
+			'biblePlans.continueProgress' => 'Continue Progress',
+			'biblePlans.continueProgressDescription' => ({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(total, one: 'Start with ${completed} of ${total} day already complete. You won\'t be able to edit the plan.', other: 'Start with ${completed} of ${total} days already complete. You won\'t be able to edit the plan.', ), 
+			_ => null,
+		} ?? switch (path) {
+			'biblePlans.startFresh' => 'Start Fresh',
+			'biblePlans.startFreshDescription' => 'Start with no days complete. You can review and edit the plan first.',
 			'biblePlans.importErrors.readFailed' => 'Lux couldn\'t read this file. Try choosing it again.',
 			'biblePlans.importErrors.malformedJson' => 'This file isn\'t formatted correctly.',
 			'biblePlans.importErrors.invalidStructure' => 'This file isn\'t a valid Bible plan.',
@@ -5984,8 +6028,6 @@ extension on Translations {
 			'biblePlans.importErrors.invalidDayCount' => 'The imported plan must contain 1 to 365 days.',
 			'biblePlans.importErrors.readingRequired' => 'The imported plan needs at least one reading day.',
 			'biblePlans.importErrors.invalidPassage' => 'The imported plan contains an invalid Bible reference.',
-			_ => null,
-		} ?? switch (path) {
 			'biblePlans.importErrors.duplicatePassage' => 'A day in the imported plan contains the same passage more than once.',
 			'biblePlans.manual' => 'Manual',
 			'biblePlans.manualDescription' => 'Add each passage yourself.',
@@ -6489,6 +6531,8 @@ extension on Translations {
 			'morphology.state.construct.description' => 'Bound to a following noun, expressing "X of Y".',
 			'morphology.state.construct.examples' => 'king of Israel|word of the LORD',
 			'morphology.state.determined.name' => 'Determined',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.state.determined.description' => 'Marked as definite, often by the article.',
 			'morphology.state.determined.examples' => 'the king|the word',
 			'morphology.stem.qal.name' => 'Qal',
@@ -6498,8 +6542,6 @@ extension on Translations {
 			'morphology.stem.qalPassive.description' => 'A rare passive of the simple stem.',
 			'morphology.stem.qalPassive.examples' => 'it was taken',
 			'morphology.stem.niphal.name' => 'Niphal',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.stem.niphal.description' => 'The simple passive or reflexive stem.',
 			'morphology.stem.niphal.examples' => 'he was killed|they gathered themselves',
 			'morphology.stem.piel.name' => 'Piel',

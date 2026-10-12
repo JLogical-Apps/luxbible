@@ -562,6 +562,21 @@
     "shareDescription": "Share this Bible Plan file with another app or person.",
     "download": "Download",
     "downloadDescription": "Save this Bible Plan file to your device.",
+    "includeProgress": "Include Progress",
+    "includeProgressDescription(param=total)": {
+      "one": "Include the {completed} of {total} day you've completed and any passages you've read.",
+      "other": "Include the {completed} of {total} days you've completed and any passages you've read."
+    },
+    "includeTargetDate": "Include Target End Date",
+    "includeTargetDateDescription": "Suggest pacing the plan to end {date}.",
+    "importStartQuestion": "Where would you like to start?",
+    "continueProgress": "Continue Progress",
+    "continueProgressDescription(param=total)": {
+      "one": "Start with {completed} of {total} day already complete. You won't be able to edit the plan.",
+      "other": "Start with {completed} of {total} days already complete. You won't be able to edit the plan."
+    },
+    "startFresh": "Start Fresh",
+    "startFreshDescription": "Start with no days complete. You can review and edit the plan first.",
     "importErrors": {
       "readFailed": "Lux couldn't read this file. Try choosing it again.",
       "malformedJson": "This file isn't formatted correctly.",

@@ -58,8 +58,15 @@ class CreateBiblePlanFlow extends HookConsumerWidget {
     final method = methodState.value;
 
     final fileImportState = useState(initialFileImport);
-    final importedPlan = fileImportState.value?.plan;
+    final importedFile = fileImportState.value?.file;
+    final importedPlan = importedFile?.plan;
     final importError = fileImportState.value?.error;
+
+    // An earlier import stays loaded after switching methods, so its progress and target date only apply to imports.
+    final isImporting = method == .ai || method == .importFile;
+    final hasImportedProgress = isImporting && importedFile?.progress != null;
+    final importStartState = useDependentState(() => BiblePlanImportStart.fromProgress, [importedFile]);
+    final isStartingFromProgress = hasImportedProgress && importStartState.value == .fromProgress;
 
     // AI
     final descriptionState = useDependentState(() => '', [method]);
@@ -123,11 +130,32 @@ class CreateBiblePlanFlow extends HookConsumerWidget {
 
     final stepIndexState = useState(0);
 
-    final reviewStepIndex = switch (method) {
-      .ai || .booksAndDuration => 4,
-      .importFile => isExternalImport ? (importedPlan == null ? 2 : 1) : 3,
-      _ => 2,
-    };
+    final reviewStepIndex =
+        switch (method) {
+          .ai || .booksAndDuration => 4,
+          .importFile => isExternalImport ? (importedPlan == null ? 2 : 1) : 3,
+          _ => 2,
+        } +
+        (hasImportedProgress ? 1 : 0);
+
+    Future<void> createAndStart(BiblePlan plan, {List<BiblePlanDayProgress>? progress}) async {
+      final pace = await BiblePlanPaceSheet.showStart(
+        context,
+        planName: plan.name,
+        dayCount: plan.dayCount,
+        completedDayCount: progress?.where((day) => day.isComplete).length ?? 0,
+        targetDate: isImporting ? importedFile?.targetDate : null,
+      );
+      if (pace == null || !context.mounted) return;
+
+      final id = ref.read(customBiblePlansProvider.notifier).create(plan);
+      ref.updateUser(
+        (user) => user
+            .withStartedPlan(planId: id, plan: plan, pace: pace, days: progress)
+            .withOnboardingStepCompleted(.startBiblePlan),
+      );
+      context.pop(id);
+    }
 
     void importPlanContents(String contents) => fileImportState.value = BiblePlanFileImport.decode(contents);
 
@@ -341,186 +369,198 @@ class CreateBiblePlanFlow extends HookConsumerWidget {
           ],
           buttons: .next(canGoNext: nameError == null),
         ),
-        StyledModuleStep(
-          bodyPadding: .zero,
-          onBackPressed: (goBack) async {
-            final shouldDiscard = await context.showStyledDialog(
-              (context) => StyledDialog.confirmDelete(
-                title: t.biblePlans.discardPlanQuestion.toText(),
-                body: t.biblePlans.discardPlanConfirmation.toText(),
-                deleteLabel: t.biblePlans.discard.toText(),
-                cancelLabel: t.common.nevermind.toText(),
-              ),
-            );
-            if (shouldDiscard == true && context.mounted) goBack();
-          },
-          childrenBuilder: (context) => [
-            ...StyledDivider(height: 2).wrapPositioned(
-              days
-                  .mapIndexed(
-                    (dayIndex, day) => StyledSwipeable(
-                      key: ValueKey((day, days.length)),
-                      actions: [
-                        .remove(
-                          onPressed: () async {
-                            final shouldRemove = day.isReviewAndReflect
-                                ? true
-                                : await context.showStyledDialog(
-                                    (context) => StyledDialog.confirmDelete(
-                                      title: t.biblePlans.removeDayQuestion.toText(),
-                                      body: t.biblePlans.removeDayConfirmation(day: dayIndex + 1).toText(),
-                                      deleteLabel: t.common.remove.toText(),
-                                      cancelLabel: t.common.nevermind.toText(),
-                                    ),
+        if (importedFile case BiblePlanFile(progress: final progress?) when isImporting)
+          StyledModuleStep.selection(
+            title: t.biblePlans.importStartQuestion.toText(),
+            options: BiblePlanImportStart.values,
+            selectedOption: importStartState.value,
+            optionMapper: (start) => StyledSelectOption(
+              title: start.title().toText(),
+              subtitle: start
+                  .description(completedDayCount: importedFile.completedDayCount, dayCount: importedFile.plan.dayCount)
+                  .toText(),
+              leading: start.icon.toIcon(),
+            ),
+            onSelectOption: (start) => importStartState.value = start,
+            buttons: isStartingFromProgress
+                ? .custom(
+                    buttonsBuilder: (context, _) => [
+                      StyledRectButton.primary(
+                        label: t.biblePlans.createAndStart.toText(),
+                        onPressed: () =>
+                            createAndStart(plan.copyWith(days: importedFile.plan.days), progress: progress),
+                      ),
+                    ],
+                  )
+                : null,
+          ),
+        if (!isStartingFromProgress)
+          StyledModuleStep(
+            bodyPadding: .zero,
+            onBackPressed: (goBack) async {
+              final shouldDiscard = await context.showStyledDialog(
+                (context) => StyledDialog.confirmDelete(
+                  title: t.biblePlans.discardPlanQuestion.toText(),
+                  body: t.biblePlans.discardPlanConfirmation.toText(),
+                  deleteLabel: t.biblePlans.discard.toText(),
+                  cancelLabel: t.common.nevermind.toText(),
+                ),
+              );
+              if (shouldDiscard == true && context.mounted) goBack();
+            },
+            childrenBuilder: (context) => [
+              ...StyledDivider(height: 2).wrapPositioned(
+                days
+                    .mapIndexed(
+                      (dayIndex, day) => StyledSwipeable(
+                        key: ValueKey((day, days.length)),
+                        actions: [
+                          .remove(
+                            onPressed: () async {
+                              final shouldRemove = day.isReviewAndReflect
+                                  ? true
+                                  : await context.showStyledDialog(
+                                      (context) => StyledDialog.confirmDelete(
+                                        title: t.biblePlans.removeDayQuestion.toText(),
+                                        body: t.biblePlans.removeDayConfirmation(day: dayIndex + 1).toText(),
+                                        deleteLabel: t.common.remove.toText(),
+                                        cancelLabel: t.common.nevermind.toText(),
+                                      ),
+                                    );
+                              if (shouldRemove == true) daysState.value = days.withRemovedAt(dayIndex);
+                            },
+                          ),
+                        ],
+                        child: StyledStickyHeader(
+                          title: t.biblePlans.day(day: dayIndex + 1).toText(),
+                          headerPadding: .symmetric(horizontal: 16, vertical: 8),
+                          trailing: Row(
+                            children: [
+                              StyledCircleButton.md(
+                                child: Symbols.add.toIcon(),
+                                colorBuilder: .surfaceSecondary,
+                                onPressed: () async {
+                                  final passage = await FindInBibleSheet.show(
+                                    context,
+                                    selectionConfiguration: ref.watch(luxReaderConfigurationProvider).selection,
+                                    title: t.biblePlans.addPassage.toText(),
                                   );
-                            if (shouldRemove == true) daysState.value = days.withRemovedAt(dayIndex);
-                          },
-                        ),
-                      ],
-                      child: StyledStickyHeader(
-                        title: t.biblePlans.day(day: dayIndex + 1).toText(),
-                        headerPadding: .symmetric(horizontal: 16, vertical: 8),
-                        trailing: Row(
-                          children: [
-                            StyledCircleButton.md(
-                              child: Symbols.add.toIcon(),
-                              colorBuilder: .surfaceSecondary,
-                              onPressed: () async {
-                                final passage = await FindInBibleSheet.show(
-                                  context,
-                                  selectionConfiguration: ref.watch(luxReaderConfigurationProvider).selection,
-                                  title: t.biblePlans.addPassage.toText(),
-                                );
-                                if (passage != null) daysState.value = days.withPassageAdded(dayIndex, passage);
-                              },
-                            ),
-                          ],
-                        ),
-                        children: [
-                          if (day.isReviewAndReflect)
-                            Padding(
-                              padding: EdgeInsets.all(16).copyWith(top: 0),
-                              child: StyledTile.message(
-                                leading: Symbols.book_ribbon.toIcon(),
-                                title: t.biblePlans.reviewAndReflect.toText(),
+                                  if (passage != null) daysState.value = days.withPassageAdded(dayIndex, passage);
+                                },
                               ),
-                            )
-                          else
-                            StyledReorderableList(
-                              shrinkWrap: true,
-                              onReorder: (oldIndex, newIndex) =>
-                                  daysState.value = days.withPassageReordered(dayIndex, oldIndex, newIndex),
-                              children: day.passages.map((passage) {
-                                return StyledSwipeable(
-                                  key: ValueKey(passage),
-                                  actions: [
-                                    .remove(
-                                      onPressed: () => daysState.value = days.withPassageRemoved(dayIndex, passage),
-                                    ),
-                                  ],
-                                  child: StyledListItem(
-                                    size: .sm,
-                                    title: passage.format().toText(),
-                                    onPressed: () => PassagePreviewPage.show(context, verseSelection: passage),
-                                    trailing: StyledCircleButton.md(
-                                      child: Symbols.more_vert.toIcon(),
-                                      onPressed: () => context.showStyledSheet(
-                                        (sheetContext, _) => StyledSheet(
-                                          title: passage.format().toText(),
-                                          children: [
-                                            if (days.length >= 2)
-                                              StyledListItem.navigation(
-                                                leading: Symbols.move_group.toIcon(),
-                                                title: t.biblePlans.moveToAnotherDay.toText(),
+                            ],
+                          ),
+                          children: [
+                            if (day.isReviewAndReflect)
+                              Padding(
+                                padding: EdgeInsets.all(16).copyWith(top: 0),
+                                child: StyledTile.message(
+                                  leading: Symbols.book_ribbon.toIcon(),
+                                  title: t.biblePlans.reviewAndReflect.toText(),
+                                ),
+                              )
+                            else
+                              StyledReorderableList(
+                                shrinkWrap: true,
+                                onReorder: (oldIndex, newIndex) =>
+                                    daysState.value = days.withPassageReordered(dayIndex, oldIndex, newIndex),
+                                children: day.passages.map((passage) {
+                                  return StyledSwipeable(
+                                    key: ValueKey(passage),
+                                    actions: [
+                                      .remove(
+                                        onPressed: () => daysState.value = days.withPassageRemoved(dayIndex, passage),
+                                      ),
+                                    ],
+                                    child: StyledListItem(
+                                      size: .sm,
+                                      title: passage.format().toText(),
+                                      onPressed: () => PassagePreviewPage.show(context, verseSelection: passage),
+                                      trailing: StyledCircleButton.md(
+                                        child: Symbols.more_vert.toIcon(),
+                                        onPressed: () => context.showStyledSheet(
+                                          (sheetContext, _) => StyledSheet(
+                                            title: passage.format().toText(),
+                                            children: [
+                                              if (days.length >= 2)
+                                                StyledListItem.navigation(
+                                                  leading: Symbols.move_group.toIcon(),
+                                                  title: t.biblePlans.moveToAnotherDay.toText(),
+                                                  onPressed: () {
+                                                    sheetContext.pop();
+                                                    context.showStyledSheet(
+                                                      (sheetContext, _) => StyledSheet(
+                                                        title: t.biblePlans.moveToAnotherDay.toText(),
+                                                        children: days.indexed
+                                                            .where((entry) => entry.$1 != dayIndex)
+                                                            .map(
+                                                              (entry) => StyledListItem(
+                                                                title: t.biblePlans.day(day: entry.$1 + 1).toText(),
+                                                                subtitle: entry.$2.isReviewAndReflect
+                                                                    ? t.biblePlans.reviewAndReflect.toText()
+                                                                    : Text(
+                                                                        entry.$2.passages
+                                                                            .map((passage) => passage.format())
+                                                                            .join(' • '),
+                                                                      ),
+                                                                onPressed: () {
+                                                                  daysState.value = days.withPassageMoved(
+                                                                    sourceDayIndex: dayIndex,
+                                                                    destinationDayIndex: entry.$1,
+                                                                    passage: passage,
+                                                                  );
+                                                                  sheetContext.pop();
+                                                                },
+                                                              ),
+                                                            )
+                                                            .toList(),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              StyledListItem(
+                                                leading: Icon(
+                                                  Symbols.delete,
+                                                  color: sheetContext.colors.contentCritical,
+                                                ),
+                                                title: t.common.remove.toText(),
                                                 onPressed: () {
+                                                  daysState.value = days.withPassageRemoved(dayIndex, passage);
                                                   sheetContext.pop();
-                                                  context.showStyledSheet(
-                                                    (sheetContext, _) => StyledSheet(
-                                                      title: t.biblePlans.moveToAnotherDay.toText(),
-                                                      children: days.indexed
-                                                          .where((entry) => entry.$1 != dayIndex)
-                                                          .map(
-                                                            (entry) => StyledListItem(
-                                                              title: t.biblePlans.day(day: entry.$1 + 1).toText(),
-                                                              subtitle: entry.$2.isReviewAndReflect
-                                                                  ? t.biblePlans.reviewAndReflect.toText()
-                                                                  : Text(
-                                                                      entry.$2.passages
-                                                                          .map((passage) => passage.format())
-                                                                          .join(' • '),
-                                                                    ),
-                                                              onPressed: () {
-                                                                daysState.value = days.withPassageMoved(
-                                                                  sourceDayIndex: dayIndex,
-                                                                  destinationDayIndex: entry.$1,
-                                                                  passage: passage,
-                                                                );
-                                                                sheetContext.pop();
-                                                              },
-                                                            ),
-                                                          )
-                                                          .toList(),
-                                                    ),
-                                                  );
                                                 },
                                               ),
-                                            StyledListItem(
-                                              leading: Icon(Symbols.delete, color: sheetContext.colors.contentCritical),
-                                              title: t.common.remove.toText(),
-                                              onPressed: () {
-                                                daysState.value = days.withPassageRemoved(dayIndex, passage);
-                                                sheetContext.pop();
-                                              },
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              }).toList(),
-                            ),
-                        ],
+                                  );
+                                }).toList(),
+                              ),
+                          ],
+                        ),
                       ),
-                    ),
-                  )
-                  .toList(),
-            ),
-            gapH32,
-            Padding(
-              padding: .all(16),
-              child: StyledRectButton.secondary(
-                label: t.biblePlans.addDay.toText(),
-                onPressed: days.length < 365 ? () => daysState.value = [...days, BiblePlanDay()] : null,
+                    )
+                    .toList(),
               ),
-            ),
-          ],
-          buttons: .custom(
-            buttonsBuilder: (context, _) => [
-              StyledRectButton.primary(
-                label: t.biblePlans.createAndStart.toText(),
-                onPressed: plan.isValid
-                    ? () async {
-                        final pace = await BiblePlanPaceSheet.showStart(
-                          context,
-                          planName: plan.name,
-                          dayCount: plan.dayCount,
-                        );
-                        if (pace == null || !context.mounted) return;
-
-                        final id = ref.read(customBiblePlansProvider.notifier).create(plan);
-                        ref.updateUser(
-                          (user) => user
-                              .withStartedPlan(planId: id, plan: plan, pace: pace)
-                              .withOnboardingStepCompleted(.startBiblePlan),
-                        );
-                        context.pop(id);
-                      }
-                    : null,
+              gapH32,
+              Padding(
+                padding: .all(16),
+                child: StyledRectButton.secondary(
+                  label: t.biblePlans.addDay.toText(),
+                  onPressed: days.length < 365 ? () => daysState.value = [...days, BiblePlanDay()] : null,
+                ),
               ),
             ],
+            buttons: .custom(
+              buttonsBuilder: (context, _) => [
+                StyledRectButton.primary(
+                  label: t.biblePlans.createAndStart.toText(),
+                  onPressed: plan.isValid ? () => createAndStart(plan) : null,
+                ),
+              ],
+            ),
           ),
-        ),
       ],
     );
   }
@@ -551,6 +591,26 @@ enum BiblePlanCreationMethod {
     booksAndDuration => Symbols.menu_book,
     importFile => Symbols.download,
     manual => Symbols.edit_note,
+  };
+}
+
+enum BiblePlanImportStart {
+  fromProgress,
+  fresh;
+
+  String title() => switch (this) {
+    fromProgress => t.biblePlans.continueProgress,
+    fresh => t.biblePlans.startFresh,
+  };
+
+  String description({required int completedDayCount, required int dayCount}) => switch (this) {
+    fromProgress => t.biblePlans.continueProgressDescription(completed: completedDayCount, total: dayCount),
+    fresh => t.biblePlans.startFreshDescription,
+  };
+
+  IconData get icon => switch (this) {
+    fromProgress => Symbols.task_alt,
+    fresh => Symbols.restart_alt,
   };
 }
 

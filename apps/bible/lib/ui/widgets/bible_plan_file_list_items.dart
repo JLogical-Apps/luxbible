@@ -1,5 +1,6 @@
 import 'package:bible/models/bible_plan.dart';
 import 'package:bible/services/bible_plan_file_service.dart';
+import 'package:bible/ui/sheets/bible_plan_export_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_file_saver/flutter_file_saver.dart';
 import 'package:lux/i18n.dart';
@@ -9,10 +10,11 @@ import 'package:share_plus/share_plus.dart';
 import 'package:style/style.dart';
 
 class BiblePlanShareListItem extends StatelessWidget {
+  final String planId;
   final BiblePlan plan;
-  final String displayName;
+  final BiblePlanProgress? progress;
 
-  const BiblePlanShareListItem({super.key, required this.plan, required this.displayName});
+  const BiblePlanShareListItem({super.key, required this.planId, required this.plan, this.progress});
 
   @override
   Widget build(BuildContext context) => StyledListItem(
@@ -22,16 +24,23 @@ class BiblePlanShareListItem extends StatelessWidget {
     onPressed: () async {
       final renderObject = context.findRenderObject();
       final origin = renderObject is RenderBox ? renderObject.localToGlobal(.zero) & renderObject.size : null;
+      final displayName = plan.getDisplayName(planId);
       final filename = BiblePlanFileService.getFilename(displayName);
+      final rootContext = context.rootContext;
       context.pop();
+
+      final file = await BiblePlanExportSheet.show(
+        rootContext,
+        title: t.biblePlans.share,
+        planId: planId,
+        plan: plan,
+        progress: progress,
+      );
+      if (file == null) return;
+
       await SharePlus.instance.share(
         ShareParams(
-          files: [
-            XFile.fromData(
-              BiblePlanFileService.getBytes(plan, displayName: displayName),
-              mimeType: BiblePlanFileService.mimeType,
-            ),
-          ],
+          files: [XFile.fromData(BiblePlanFileService.getBytes(file), mimeType: BiblePlanFileService.mimeType)],
           fileNameOverrides: [filename],
           title: displayName,
           sharePositionOrigin: origin,
@@ -42,10 +51,11 @@ class BiblePlanShareListItem extends StatelessWidget {
 }
 
 class BiblePlanDownloadListItem extends StatelessWidget {
+  final String planId;
   final BiblePlan plan;
-  final String displayName;
+  final BiblePlanProgress? progress;
 
-  const BiblePlanDownloadListItem({super.key, required this.plan, required this.displayName});
+  const BiblePlanDownloadListItem({super.key, required this.planId, required this.plan, this.progress});
 
   @override
   Widget build(BuildContext context) => StyledListItem(
@@ -53,11 +63,22 @@ class BiblePlanDownloadListItem extends StatelessWidget {
     title: t.biblePlans.download.toText(),
     subtitle: t.biblePlans.downloadDescription.toText(),
     onPressed: () async {
+      final rootContext = context.rootContext;
       context.pop();
+
+      final file = await BiblePlanExportSheet.show(
+        rootContext,
+        title: t.biblePlans.download,
+        planId: planId,
+        plan: plan,
+        progress: progress,
+      );
+      if (file == null) return;
+
       try {
         await FlutterFileSaver().writeFileAsBytes(
-          fileName: BiblePlanFileService.getFilename(displayName),
-          bytes: BiblePlanFileService.getBytes(plan, displayName: displayName),
+          fileName: BiblePlanFileService.getFilename(plan.getDisplayName(planId)),
+          bytes: BiblePlanFileService.getBytes(file),
         );
       } on FileSaverCancelledException {
         return;

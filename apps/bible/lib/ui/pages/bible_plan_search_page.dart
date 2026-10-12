@@ -83,8 +83,8 @@ class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<Stri
                         context.pop(resumedPlanId);
                       },
                     ),
-                  BiblePlanShareListItem(plan: plan, displayName: plan.getDisplayName(planId)),
-                  BiblePlanDownloadListItem(plan: plan, displayName: plan.getDisplayName(planId)),
+                  BiblePlanShareListItem(planId: planId, plan: plan),
+                  BiblePlanDownloadListItem(planId: planId, plan: plan),
                   if (isCustom)
                     StyledListItem(
                       leading: Icon(Symbols.delete, color: menuContext.colors.contentCritical),
@@ -152,7 +152,7 @@ class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<Stri
                   sheetContext,
                   planName: plan.getDisplayName(planId),
                   dayCount: plan.dayCount,
-                  season: BiblePlanType.getById(planId)?.season,
+                  targetDate: BiblePlanType.getById(planId)?.getUpcomingTargetDate(.now()),
                 );
                 if (pace != null && sheetContext.mounted) sheetContext.pop(pace);
               },

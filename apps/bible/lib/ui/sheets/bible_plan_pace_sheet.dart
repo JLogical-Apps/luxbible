@@ -1,5 +1,4 @@
 import 'package:bible/models/bible_plan.dart';
-import 'package:bible/models/bible_plan_season.dart';
 import 'package:bible/models/hydrated_bible_plan_progress.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -14,13 +13,14 @@ class BiblePlanPaceSheet {
     BuildContext context, {
     required String planName,
     required int dayCount,
-    BiblePlanSeason? season,
+    int completedDayCount = 0,
+    DateTime? targetDate,
   }) => show(
     context,
     title: t.biblePlans.choosePace,
     planName: planName,
-    initialPace: BiblePlanPace.initial(season: season),
-    naturalEndDate: BiblePlanPace.getNaturalEndDate(dayCount: dayCount),
+    initialPace: BiblePlanPace.initial(targetDate: targetDate),
+    naturalEndDate: BiblePlanPace.getNaturalEndDate(dayCount: dayCount, completedDayCount: completedDayCount),
     confirmLabel: t.biblePlans.startPlan,
   );
 

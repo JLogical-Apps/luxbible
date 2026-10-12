@@ -564,6 +564,21 @@
     "shareDescription": "Deel dit Bijbelleesplanbestand met een andere app of persoon.",
     "download": "Downloaden",
     "downloadDescription": "Sla dit Bijbelleesplanbestand op je apparaat op.",
+    "includeProgress": "Voortgang meenemen",
+    "includeProgressDescription(param=total)": {
+      "one": "Neem de {completed} van {total} dag die je hebt voltooid mee, plus de passages die je hebt gelezen.",
+      "other": "Neem de {completed} van {total} dagen die je hebt voltooid mee, plus de passages die je hebt gelezen."
+    },
+    "includeTargetDate": "Beoogde einddatum meenemen",
+    "includeTargetDateDescription": "Stel voor om het leesplan met schema af te ronden op {date}.",
+    "importStartQuestion": "Waar wil je beginnen?",
+    "continueProgress": "Verdergaan met voortgang",
+    "continueProgressDescription(param=total)": {
+      "one": "Begin met {completed} van {total} dag al voltooid. Je kunt het leesplan dan niet bewerken.",
+      "other": "Begin met {completed} van {total} dagen al voltooid. Je kunt het leesplan dan niet bewerken."
+    },
+    "startFresh": "Opnieuw beginnen",
+    "startFreshDescription": "Begin zonder voltooide dagen. Je kunt het leesplan eerst bekijken en bewerken.",
     "importErrors": {
       "readFailed": "Lux kon dit bestand niet lezen. Probeer het opnieuw te kiezen.",
       "malformedJson": "Dit bestand heeft niet de juiste indeling.",

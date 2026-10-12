@@ -423,13 +423,17 @@ sealed class User with _$User {
   List<Annotation> getPlanInstanceAnnotations(String instanceId) =>
       annotations.where((annotation) => annotation.planDay?.instanceId == instanceId).toList();
 
-  User withStartedPlan({required String planId, required BiblePlan plan, required BiblePlanPace pace}) =>
-      planProgressById.containsKey(planId)
+  User withStartedPlan({
+    required String planId,
+    required BiblePlan plan,
+    required BiblePlanPace pace,
+    List<BiblePlanDayProgress>? days,
+  }) => planProgressById.containsKey(planId)
       ? this
       : copyWith(
           planProgressById: {
             ...planProgressById,
-            planId: BiblePlanProgress.start(plan, pace: pace),
+            planId: BiblePlanProgress.start(plan, pace: pace, days: days),
           },
         );
 

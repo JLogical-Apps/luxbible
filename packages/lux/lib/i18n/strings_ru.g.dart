@@ -852,6 +852,25 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	@override String get shareDescription => 'Поделитесь этим файлом библейского плана с другим приложением или человеком.';
 	@override String get download => 'Скачать';
 	@override String get downloadDescription => 'Сохраните этот файл библейского плана на устройстве.';
+	@override String get includeProgress => 'Включить прогресс';
+	@override String includeProgressDescription({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(total,
+		one: 'Отметьте завершённые дни (${completed} из ${total}) и прочитанные отрывки.',
+		few: 'Отметьте завершённые дни (${completed} из ${total}) и прочитанные отрывки.',
+		many: 'Отметьте завершённые дни (${completed} из ${total}) и прочитанные отрывки.',
+		other: 'Отметьте завершённые дни (${completed} из ${total}) и прочитанные отрывки.',
+	);
+	@override String get includeTargetDate => 'Включить дату окончания';
+	@override String includeTargetDateDescription({required Object date}) => 'Предложите завершить план по графику к ${date}.';
+	@override String get importStartQuestion => 'С чего вы хотите начать?';
+	@override String get continueProgress => 'Продолжить с прогрессом';
+	@override String continueProgressDescription({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(total,
+		one: 'Сохраните завершённые дни (${completed} из ${total}). Изменить план будет нельзя.',
+		few: 'Сохраните завершённые дни (${completed} из ${total}). Изменить план будет нельзя.',
+		many: 'Сохраните завершённые дни (${completed} из ${total}). Изменить план будет нельзя.',
+		other: 'Сохраните завершённые дни (${completed} из ${total}). Изменить план будет нельзя.',
+	);
+	@override String get startFresh => 'Начать сначала';
+	@override String get startFreshDescription => 'Начните без завершённых дней. Сначала вы сможете просмотреть и изменить план.';
 	@override late final _Translations$biblePlans$importErrors$ru importErrors = _Translations$biblePlans$importErrors$ru._(_root);
 	@override String get manual => 'Вручную';
 	@override String get manualDescription => 'Добавьте каждый отрывок самостоятельно.';
@@ -3632,13 +3651,22 @@ extension on TranslationsRu {
 			'biblePlans.shareDescription' => 'Поделитесь этим файлом библейского плана с другим приложением или человеком.',
 			'biblePlans.download' => 'Скачать',
 			'biblePlans.downloadDescription' => 'Сохраните этот файл библейского плана на устройстве.',
+			'biblePlans.includeProgress' => 'Включить прогресс',
+			'biblePlans.includeProgressDescription' => ({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(total, one: 'Отметьте завершённые дни (${completed} из ${total}) и прочитанные отрывки.', few: 'Отметьте завершённые дни (${completed} из ${total}) и прочитанные отрывки.', many: 'Отметьте завершённые дни (${completed} из ${total}) и прочитанные отрывки.', other: 'Отметьте завершённые дни (${completed} из ${total}) и прочитанные отрывки.', ), 
+			'biblePlans.includeTargetDate' => 'Включить дату окончания',
+			'biblePlans.includeTargetDateDescription' => ({required Object date}) => 'Предложите завершить план по графику к ${date}.',
+			'biblePlans.importStartQuestion' => 'С чего вы хотите начать?',
+			_ => null,
+		} ?? switch (path) {
+			'biblePlans.continueProgress' => 'Продолжить с прогрессом',
+			'biblePlans.continueProgressDescription' => ({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(total, one: 'Сохраните завершённые дни (${completed} из ${total}). Изменить план будет нельзя.', few: 'Сохраните завершённые дни (${completed} из ${total}). Изменить план будет нельзя.', many: 'Сохраните завершённые дни (${completed} из ${total}). Изменить план будет нельзя.', other: 'Сохраните завершённые дни (${completed} из ${total}). Изменить план будет нельзя.', ), 
+			'biblePlans.startFresh' => 'Начать сначала',
+			'biblePlans.startFreshDescription' => 'Начните без завершённых дней. Сначала вы сможете просмотреть и изменить план.',
 			'biblePlans.importErrors.readFailed' => 'Lux не удалось прочитать этот файл. Попробуйте выбрать его ещё раз.',
 			'biblePlans.importErrors.malformedJson' => 'Этот файл имеет неверный формат.',
 			'biblePlans.importErrors.invalidStructure' => 'Этот файл не является допустимым библейским планом.',
 			'biblePlans.importErrors.nameRequired' => 'Импортируемому плану необходимо название.',
 			'biblePlans.importErrors.invalidDayCount' => 'Импортируемый план должен содержать от 1 до 365 дней.',
-			_ => null,
-		} ?? switch (path) {
 			'biblePlans.importErrors.readingRequired' => 'Импортируемому плану необходим хотя бы один день чтения.',
 			'biblePlans.importErrors.invalidPassage' => 'Импортируемый план содержит недопустимую библейскую ссылку.',
 			'biblePlans.importErrors.duplicatePassage' => 'Один из дней импортируемого плана содержит один и тот же отрывок несколько раз.',
@@ -4142,6 +4170,8 @@ extension on TranslationsRu {
 			'morphology.state.absolute.examples' => 'король | слово',
 			'morphology.state.construct.name' => 'Построить',
 			'morphology.state.construct.description' => 'Связан со следующим существительным, выражающим «X из Y».',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.state.construct.examples' => 'царь Израиля | слово Господне',
 			'morphology.state.determined.name' => 'Определенный',
 			'morphology.state.determined.description' => 'Помечено как определенное, часто по артиклю.',
@@ -4151,8 +4181,6 @@ extension on TranslationsRu {
 			'morphology.stem.qal.examples' => 'он написал|она услышала',
 			'morphology.stem.qalPassive.name' => 'Кал пассивный',
 			'morphology.stem.qalPassive.description' => 'Редкий пассив простой основы.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.stem.qalPassive.examples' => 'это было принято',
 			'morphology.stem.niphal.name' => 'Нифаль',
 			'morphology.stem.niphal.description' => 'Простая пассивная или рефлексивная основа.',

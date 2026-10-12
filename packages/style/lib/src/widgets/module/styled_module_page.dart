@@ -169,6 +169,7 @@ class StyledModuleStep {
     required StyledSelectOption<T> Function(T) optionMapper,
     required Function(T) onSelectOption,
     bool canGoNext = true,
+    StyledModuleButtons? buttons,
   }) => StyledModuleStep(
     title: title,
     subtitle: subtitle,
@@ -192,7 +193,7 @@ class StyledModuleStep {
             .toList(),
       ),
     ],
-    buttons: .next(canGoNext: canGoNext),
+    buttons: buttons ?? .next(canGoNext: canGoNext),
   );
 }
 

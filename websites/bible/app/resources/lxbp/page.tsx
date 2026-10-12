@@ -40,6 +40,20 @@ const fullExample = `{
   ]
 }`;
 
+const progressExample = `{
+  "name": "Ruth in 4 Days",
+  "targetDate": "2026-12-25",
+  "days": [
+    { "passages": ["Ruth.1"], "completed": true },
+    {
+      "passages": ["Ruth.2.1-Ruth.2.12", "Ruth.2.13-Ruth.2.23"],
+      "completedPassages": ["Ruth.2.1-Ruth.2.12"]
+    },
+    { "passages": ["Ruth.3"] },
+    { "passages": ["Ruth.4"] }
+  ]
+}`;
+
 export default function LxbpFormatPage() {
   return (
     <Page>
@@ -66,7 +80,7 @@ export default function LxbpFormatPage() {
 
             <h2>File structure</h2>
 
-            <p>A file has three top-level fields:</p>
+            <p>A file has these top-level fields:</p>
 
             <ul>
               <li>
@@ -81,6 +95,11 @@ export default function LxbpFormatPage() {
                 <code>orange</code>, <code>yellow</code>, <code>green</code>,{' '}
                 <code>blue</code>, or <code>violet</code>. Lux picks a color
                 automatically when this is left out.
+              </li>
+              <li>
+                <code>targetDate</code> (optional): a suggested end date for
+                the plan, covered in{' '}
+                <a href="#progress">Progress and target dates</a>.
               </li>
             </ul>
 
@@ -124,6 +143,47 @@ export default function LxbpFormatPage() {
               <code>{fullExample}</code>
             </pre>
 
+            <h2 id="progress">Progress and target dates</h2>
+
+            <p>
+              When you export a plan you&apos;re following, Lux can include
+              how far you&apos;ve read and the end date you&apos;re pacing
+              toward. Both are optional, and a plan without them is just a
+              plan.
+            </p>
+
+            <ul>
+              <li>
+                <code>completed</code> (optional, on a day):{' '}
+                <code>true</code> marks the whole day as read, including a
+                Review &amp; Reflect day.
+              </li>
+              <li>
+                <code>completedPassages</code> (optional, on a day): the
+                passages read so far on a day that isn&apos;t finished yet.
+                Each one must match one of that day&apos;s{' '}
+                <code>passages</code> exactly. Lux ignores any that don&apos;t,
+                and counts the day as complete once every passage is listed.
+              </li>
+              <li>
+                <code>targetDate</code> (optional, top level): a date written
+                as <code>YYYY-MM-DD</code>.
+              </li>
+            </ul>
+
+            <pre>
+              <code>{progressExample}</code>
+            </pre>
+
+            <p>
+              When a file has progress, Lux asks whether to continue from it
+              or start fresh. Continuing starts the plan with those days and
+              passages already checked off, and the plan can&apos;t be edited
+              first. When a file has a target date, Lux suggests a Paced pace
+              ending on that date, and you can still choose Relaxed or a
+              different date.
+            </p>
+
             <h2>Rules at a glance</h2>
 
             <ul>
@@ -140,9 +200,15 @@ export default function LxbpFormatPage() {
               </li>
               <li>Every reference must resolve to real, existing Scripture.</li>
               <li>
+                <code>targetDate</code> has to be a real calendar date in{' '}
+                <code>YYYY-MM-DD</code> form.
+              </li>
+              <li>
                 Nothing outside <code>name</code>, <code>days</code>,{' '}
-                <code>color</code>, and <code>passages</code> is recognized;
-                extra fields are ignored rather than rejected.
+                <code>color</code>, <code>targetDate</code>,{' '}
+                <code>passages</code>, <code>completed</code>, and{' '}
+                <code>completedPassages</code> is recognized; extra fields are
+                ignored rather than rejected.
               </li>
             </ul>
 

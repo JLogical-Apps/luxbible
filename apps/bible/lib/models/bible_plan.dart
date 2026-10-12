@@ -84,11 +84,12 @@ sealed class BiblePlanProgress with _$BiblePlanProgress {
     @Default(BiblePlanPace.relaxed()) BiblePlanPace pace,
   }) = _BiblePlanProgress;
 
-  factory BiblePlanProgress.start(BiblePlan plan, {required BiblePlanPace pace}) => BiblePlanProgress(
-    instanceId: Uuid().v4(),
-    days: plan.days.map((day) => BiblePlanDayProgress.incomplete()).toList(),
-    pace: pace,
-  );
+  factory BiblePlanProgress.start(BiblePlan plan, {required BiblePlanPace pace, List<BiblePlanDayProgress>? days}) =>
+      BiblePlanProgress(
+        instanceId: Uuid().v4(),
+        days: days ?? plan.days.map((day) => BiblePlanDayProgress.incomplete()).toList(),
+        pace: pace,
+      );
 
   factory BiblePlanProgress.fromJson(Map<String, dynamic> json) => _$BiblePlanProgressFromJson(json);
 
@@ -152,7 +153,7 @@ sealed class BiblePlanPace with _$BiblePlanPace {
     .paced => BiblePlanPace.paced(endDate: endDate),
   };
 
-  factory BiblePlanPace.initial({BiblePlanSeason? season}) => switch (season?.getUpcomingEndDate(.now())) {
+  factory BiblePlanPace.initial({DateTime? targetDate}) => switch (targetDate) {
     final endDate? => BiblePlanPace.paced(endDate: endDate),
     null => BiblePlanPace.relaxed(),
   };
@@ -220,6 +221,11 @@ sealed class BiblePlanDayProgress with _$BiblePlanDayProgress {
 
   bool get isComplete => this is CompleteBiblePlanDayProgress;
 
+  bool get hasProgress => switch (this) {
+    IncompleteBiblePlanDayProgress(:final completedPassages) => completedPassages.isNotEmpty,
+    CompleteBiblePlanDayProgress() => true,
+  };
+
   BiblePlanDayProgress withCompletionToggled() =>
       isComplete ? BiblePlanDayProgress.incomplete() : BiblePlanDayProgress.complete();
 
@@ -230,12 +236,16 @@ sealed class BiblePlanDayProgress with _$BiblePlanDayProgress {
       .keys
       .firstOrNull;
 
-  BiblePlanDayProgress withPassageCompleted({required BiblePlanDay day, required VerseSelection passage}) {
+  BiblePlanDayProgress withPassageCompleted({required BiblePlanDay day, required VerseSelection passage}) =>
+      withPassagesCompleted(day: day, passages: [passage]);
+
+  // A Review & Reflect day has no passages, so it's only completed explicitly rather than by completing none.
+  BiblePlanDayProgress withPassagesCompleted({required BiblePlanDay day, required Iterable<VerseSelection> passages}) {
     final completedPassages = switch (this) {
-      IncompleteBiblePlanDayProgress(:final completedPassages) => {...completedPassages, passage},
+      IncompleteBiblePlanDayProgress(:final completedPassages) => {...completedPassages, ...passages},
       CompleteBiblePlanDayProgress() => day.passages.toSet(),
     };
-    return day.passages.every((passage) => completedPassages.has(passage))
+    return day.passages.isNotEmpty && day.passages.every(completedPassages.has)
         ? BiblePlanDayProgress.complete()
         : BiblePlanDayProgress.incomplete(completedPassages: completedPassages);
   }
@@ -352,11 +362,13 @@ enum BiblePlanType {
     _ => null,
   };
 
-  // Advent stays out of search until its first promotion so it can ship quietly, while its link still opens it.
-  bool isListedOn(DateTime date) => switch (this) {
-    advent => !date.isBefore(BiblePlanSeason.advent.getPromotionStartDate(2026)),
-    _ => true,
+  // Seasonal plans stay out of search until their promotion so they can ship quietly, while their links still open them.
+  bool isListedOn(DateTime date) => switch (season) {
+    final season? => !date.isBefore(season.promotionStartDate),
+    null => true,
   };
+
+  DateTime? getUpcomingTargetDate(DateTime date) => season?.getUpcomingEndDate(date);
 
   String? get studyNotesAssetPath => isCuratedByLux ? 'assets/bible_plan_study_notes/$name.json' : null;
 }

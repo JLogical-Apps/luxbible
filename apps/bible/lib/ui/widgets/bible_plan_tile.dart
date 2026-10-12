@@ -43,12 +43,8 @@ class BiblePlanTile extends ConsumerWidget {
           spacing: 8,
           children: [
             plan.getDisplayName(planId).toText(),
-            if (BiblePlanType.getById(planId)?.season case final season?)
-              StyledTag.sm(
-                leading: Symbols.event.toIcon(),
-                child: season.getScheduleLabel(DateTime.now()).toText(),
-                isEnabled: !hasStarted,
-              ),
+            if (BiblePlanType.getById(planId)?.season?.getScheduleLabel(.now()) case final scheduleLabel?)
+              StyledTag.sm(leading: Symbols.event.toIcon(), child: scheduleLabel.toText(), isEnabled: !hasStarted),
             if (hasStarted)
               StyledTag.sm(leading: Symbols.check.toIcon(), child: t.labels.following.toText(), isEnabled: false),
             if (ref.watch(biblePlanHistoryProvider).hasCompletedPlan(planId, plan))

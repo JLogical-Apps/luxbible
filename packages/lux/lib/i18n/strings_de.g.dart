@@ -848,6 +848,21 @@ class _Translations$biblePlans$de extends Translations$biblePlans$en {
 	@override String get shareDescription => 'Diese Leseplan-Datei mit einer anderen App oder Person teilen.';
 	@override String get download => 'Herunterladen';
 	@override String get downloadDescription => 'Diese Leseplan-Datei auf deinem Gerät speichern.';
+	@override String get includeProgress => 'Fortschritt einbeziehen';
+	@override String includeProgressDescription({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(total,
+		one: '${completed} von ${total} Tag und gelesene Abschnitte als abgeschlossen markieren.',
+		other: '${completed} von ${total} Tagen und gelesene Abschnitte als abgeschlossen markieren.',
+	);
+	@override String get includeTargetDate => 'Zielenddatum einbeziehen';
+	@override String includeTargetDateDescription({required Object date}) => 'Vorschlagen, den Plan mit Zeitplan bis ${date} abzuschließen.';
+	@override String get importStartQuestion => 'Wo möchtest du beginnen?';
+	@override String get continueProgress => 'Fortschritt übernehmen';
+	@override String continueProgressDescription({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(total,
+		one: 'Mit ${completed} von ${total} bereits abgeschlossenen Tag beginnen. Du kannst den Plan dann nicht bearbeiten.',
+		other: 'Mit ${completed} von ${total} bereits abgeschlossenen Tagen beginnen. Du kannst den Plan dann nicht bearbeiten.',
+	);
+	@override String get startFresh => 'Neu beginnen';
+	@override String get startFreshDescription => 'Ohne abgeschlossene Tage beginnen. Du kannst den Plan vorher prüfen und bearbeiten.';
 	@override late final _Translations$biblePlans$importErrors$de importErrors = _Translations$biblePlans$importErrors$de._(_root);
 	@override String get manual => 'Manuell';
 	@override String get manualDescription => 'Füge jeden Abschnitt selbst hinzu.';
@@ -3610,6 +3625,17 @@ extension on TranslationsDe {
 			'biblePlans.shareDescription' => 'Diese Leseplan-Datei mit einer anderen App oder Person teilen.',
 			'biblePlans.download' => 'Herunterladen',
 			'biblePlans.downloadDescription' => 'Diese Leseplan-Datei auf deinem Gerät speichern.',
+			'biblePlans.includeProgress' => 'Fortschritt einbeziehen',
+			'biblePlans.includeProgressDescription' => ({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(total, one: '${completed} von ${total} Tag und gelesene Abschnitte als abgeschlossen markieren.', other: '${completed} von ${total} Tagen und gelesene Abschnitte als abgeschlossen markieren.', ), 
+			'biblePlans.includeTargetDate' => 'Zielenddatum einbeziehen',
+			'biblePlans.includeTargetDateDescription' => ({required Object date}) => 'Vorschlagen, den Plan mit Zeitplan bis ${date} abzuschließen.',
+			'biblePlans.importStartQuestion' => 'Wo möchtest du beginnen?',
+			'biblePlans.continueProgress' => 'Fortschritt übernehmen',
+			'biblePlans.continueProgressDescription' => ({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(total, one: 'Mit ${completed} von ${total} bereits abgeschlossenen Tag beginnen. Du kannst den Plan dann nicht bearbeiten.', other: 'Mit ${completed} von ${total} bereits abgeschlossenen Tagen beginnen. Du kannst den Plan dann nicht bearbeiten.', ), 
+			_ => null,
+		} ?? switch (path) {
+			'biblePlans.startFresh' => 'Neu beginnen',
+			'biblePlans.startFreshDescription' => 'Ohne abgeschlossene Tage beginnen. Du kannst den Plan vorher prüfen und bearbeiten.',
 			'biblePlans.importErrors.readFailed' => 'Lux konnte diese Datei nicht lesen. Versuche, sie erneut auszuwählen.',
 			'biblePlans.importErrors.malformedJson' => 'Diese Datei ist nicht richtig formatiert.',
 			'biblePlans.importErrors.invalidStructure' => 'Diese Datei ist kein gültiger Leseplan.',
@@ -3617,8 +3643,6 @@ extension on TranslationsDe {
 			'biblePlans.importErrors.invalidDayCount' => 'Der importierte Plan muss 1 bis 365 Tage enthalten.',
 			'biblePlans.importErrors.readingRequired' => 'Der importierte Plan braucht mindestens einen Lesetag.',
 			'biblePlans.importErrors.invalidPassage' => 'Der importierte Plan enthält eine ungültige Bibelstelle.',
-			_ => null,
-		} ?? switch (path) {
 			'biblePlans.importErrors.duplicatePassage' => 'Ein Tag im importierten Plan enthält denselben Abschnitt mehrmals.',
 			'biblePlans.manual' => 'Manuell',
 			'biblePlans.manualDescription' => 'Füge jeden Abschnitt selbst hinzu.',
@@ -4122,6 +4146,8 @@ extension on TranslationsDe {
 			'morphology.state.construct.description' => 'An ein folgendes Substantiv gebunden, drückt „X von Y“ aus.',
 			'morphology.state.construct.examples' => 'König von Israel|Wort des HERRN',
 			'morphology.state.determined.name' => 'Determinatus',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.state.determined.description' => 'Als bestimmt gekennzeichnet, oft durch den Artikel.',
 			'morphology.state.determined.examples' => 'der König|das Wort',
 			'morphology.stem.qal.name' => 'Qal',
@@ -4131,8 +4157,6 @@ extension on TranslationsDe {
 			'morphology.stem.qalPassive.description' => 'Ein seltenes Passiv des einfachen Stammes.',
 			'morphology.stem.qalPassive.examples' => 'es wurde genommen',
 			'morphology.stem.niphal.name' => 'Nifal',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.stem.niphal.description' => 'Der einfache passive oder reflexive Stamm.',
 			'morphology.stem.niphal.examples' => 'er wurde getötet|sie versammelten sich',
 			'morphology.stem.piel.name' => 'Piel',

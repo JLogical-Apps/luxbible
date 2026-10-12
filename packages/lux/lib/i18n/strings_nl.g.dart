@@ -850,6 +850,21 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	@override String get shareDescription => 'Deel dit Bijbelleesplanbestand met een andere app of persoon.';
 	@override String get download => 'Downloaden';
 	@override String get downloadDescription => 'Sla dit Bijbelleesplanbestand op je apparaat op.';
+	@override String get includeProgress => 'Voortgang meenemen';
+	@override String includeProgressDescription({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(total,
+		one: 'Neem de ${completed} van ${total} dag die je hebt voltooid mee, plus de passages die je hebt gelezen.',
+		other: 'Neem de ${completed} van ${total} dagen die je hebt voltooid mee, plus de passages die je hebt gelezen.',
+	);
+	@override String get includeTargetDate => 'Beoogde einddatum meenemen';
+	@override String includeTargetDateDescription({required Object date}) => 'Stel voor om het leesplan met schema af te ronden op ${date}.';
+	@override String get importStartQuestion => 'Waar wil je beginnen?';
+	@override String get continueProgress => 'Verdergaan met voortgang';
+	@override String continueProgressDescription({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(total,
+		one: 'Begin met ${completed} van ${total} dag al voltooid. Je kunt het leesplan dan niet bewerken.',
+		other: 'Begin met ${completed} van ${total} dagen al voltooid. Je kunt het leesplan dan niet bewerken.',
+	);
+	@override String get startFresh => 'Opnieuw beginnen';
+	@override String get startFreshDescription => 'Begin zonder voltooide dagen. Je kunt het leesplan eerst bekijken en bewerken.';
 	@override late final _Translations$biblePlans$importErrors$nl importErrors = _Translations$biblePlans$importErrors$nl._(_root);
 	@override String get manual => 'Handmatig';
 	@override String get manualDescription => 'Voeg zelf elke passage toe.';
@@ -3614,13 +3629,22 @@ extension on TranslationsNl {
 			'biblePlans.shareDescription' => 'Deel dit Bijbelleesplanbestand met een andere app of persoon.',
 			'biblePlans.download' => 'Downloaden',
 			'biblePlans.downloadDescription' => 'Sla dit Bijbelleesplanbestand op je apparaat op.',
+			'biblePlans.includeProgress' => 'Voortgang meenemen',
+			'biblePlans.includeProgressDescription' => ({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(total, one: 'Neem de ${completed} van ${total} dag die je hebt voltooid mee, plus de passages die je hebt gelezen.', other: 'Neem de ${completed} van ${total} dagen die je hebt voltooid mee, plus de passages die je hebt gelezen.', ), 
+			'biblePlans.includeTargetDate' => 'Beoogde einddatum meenemen',
+			'biblePlans.includeTargetDateDescription' => ({required Object date}) => 'Stel voor om het leesplan met schema af te ronden op ${date}.',
+			'biblePlans.importStartQuestion' => 'Waar wil je beginnen?',
+			_ => null,
+		} ?? switch (path) {
+			'biblePlans.continueProgress' => 'Verdergaan met voortgang',
+			'biblePlans.continueProgressDescription' => ({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(total, one: 'Begin met ${completed} van ${total} dag al voltooid. Je kunt het leesplan dan niet bewerken.', other: 'Begin met ${completed} van ${total} dagen al voltooid. Je kunt het leesplan dan niet bewerken.', ), 
+			'biblePlans.startFresh' => 'Opnieuw beginnen',
+			'biblePlans.startFreshDescription' => 'Begin zonder voltooide dagen. Je kunt het leesplan eerst bekijken en bewerken.',
 			'biblePlans.importErrors.readFailed' => 'Lux kon dit bestand niet lezen. Probeer het opnieuw te kiezen.',
 			'biblePlans.importErrors.malformedJson' => 'Dit bestand heeft niet de juiste indeling.',
 			'biblePlans.importErrors.invalidStructure' => 'Dit bestand is geen geldig Bijbelleesplan.',
 			'biblePlans.importErrors.nameRequired' => 'Het geïmporteerde leesplan moet een naam hebben.',
 			'biblePlans.importErrors.invalidDayCount' => 'Het geïmporteerde leesplan moet 1 tot 365 dagen bevatten.',
-			_ => null,
-		} ?? switch (path) {
 			'biblePlans.importErrors.readingRequired' => 'Het geïmporteerde leesplan moet ten minste één leesdag hebben.',
 			'biblePlans.importErrors.invalidPassage' => 'Het geïmporteerde leesplan bevat een ongeldige Bijbelverwijzing.',
 			'biblePlans.importErrors.duplicatePassage' => 'Een dag in het geïmporteerde leesplan bevat dezelfde passage meer dan één keer.',
@@ -4124,6 +4148,8 @@ extension on TranslationsNl {
 			'morphology.state.absolute.examples' => 'een koning|een woord',
 			'morphology.state.construct.name' => 'Constructus',
 			'morphology.state.construct.description' => 'Verbonden met een volgend zelfstandig naamwoord en drukt "X van Y" uit.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.state.construct.examples' => 'koning van Israël|woord van de HEER',
 			'morphology.state.determined.name' => 'Bepaald',
 			'morphology.state.determined.description' => 'Als bepaald gemarkeerd, vaak door het lidwoord.',
@@ -4133,8 +4159,6 @@ extension on TranslationsNl {
 			'morphology.stem.qal.examples' => 'hij schreef|zij hoorde',
 			'morphology.stem.qalPassive.name' => 'Qal passief',
 			'morphology.stem.qalPassive.description' => 'Een zeldzame passieve vorm van de eenvoudige stam.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.stem.qalPassive.examples' => 'het werd genomen',
 			'morphology.stem.niphal.name' => 'Niphal',
 			'morphology.stem.niphal.description' => 'De eenvoudige passieve of wederkerende stam.',

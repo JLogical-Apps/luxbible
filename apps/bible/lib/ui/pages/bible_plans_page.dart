@@ -208,8 +208,8 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                             context.push(BiblePlanHistoryPage(planId: planId));
                           },
                         ),
-                      BiblePlanShareListItem(plan: plan, displayName: displayName),
-                      BiblePlanDownloadListItem(plan: plan, displayName: displayName),
+                      BiblePlanShareListItem(planId: planId, plan: plan, progress: progress.progress),
+                      BiblePlanDownloadListItem(planId: planId, plan: plan, progress: progress.progress),
 
                       StyledListItem(
                         leading: Symbols.stop_circle.toIcon(),
