@@ -44,6 +44,8 @@ HOME="$PWD/.tmp/dart-home" "$FLUTTER_ROOT/bin/cache/dart-sdk/bin/dart" format <p
 
 `flutter analyze`, `flutter test`, and `flutter run` additionally write the SDK lockfile and require escalated full access.
 
+Reels commands (`dart run lib/videos/<name>.dart ...` in `tools/reels`) need the real `HOME`, since video sources are `~/` paths.
+
 When preparing local Lux social posts, read [`tools/socials/PREPARING_POSTS.md`](tools/socials/PREPARING_POSTS.md).
 
 For stats on socials, the App Store, Google Play, Google Analytics (app and website), or Crashlytics, read the newest `stats/<yyyy-MM-dd>/` snapshot first. If it's more than a few days old or lacks what you need, run `dart run bin/collect.dart` from `tools/stats` (see its README). Query the sources directly only for what a snapshot doesn't cover, such as GA funnels.

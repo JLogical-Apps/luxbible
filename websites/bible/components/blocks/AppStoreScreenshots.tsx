@@ -3,35 +3,35 @@ import Image from 'next/image';
 const screenshots = [
   {
     src: '/media/app-store-screenshots/Screenshot 1.png',
-    alt: 'Lux Bible reading experience',
+    alt: 'Lux Bible interlinear and original language study',
   },
   {
     src: '/media/app-store-screenshots/Screenshot 2.png',
-    alt: 'Lux Bible annotations',
+    alt: 'Lux Bible commentaries and dictionaries',
   },
   {
     src: '/media/app-store-screenshots/Screenshot 3.png',
-    alt: 'Lux Bible bible plans',
+    alt: 'Lux Bible highlights and notes',
   },
   {
     src: '/media/app-store-screenshots/Screenshot 4.png',
-    alt: 'Lux Bible study panels',
+    alt: 'Lux Bible linked resources',
   },
   {
     src: '/media/app-store-screenshots/Screenshot 5.png',
-    alt: 'Lux Bible cross references',
+    alt: 'Lux Bible reading plans',
   },
   {
     src: '/media/app-store-screenshots/Screenshot 6.png',
-    alt: 'Lux Bible search',
+    alt: 'Lux Bible translation comparison',
   },
   {
     src: '/media/app-store-screenshots/Screenshot 7.png',
-    alt: 'Lux Bible navigation',
+    alt: 'Lux Bible search',
   },
   {
     src: '/media/app-store-screenshots/Screenshot 8.png',
-    alt: 'Lux Bible toolbars',
+    alt: 'Lux Bible cross references',
   },
 ];
 

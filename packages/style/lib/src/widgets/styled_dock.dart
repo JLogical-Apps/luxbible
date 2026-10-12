@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -58,7 +56,8 @@ class StyledDock extends HookWidget {
                 child: Column(spacing: 8, mainAxisSize: .min, children: buttons),
               ),
             Builder(
-              builder: (context) => kIsWeb || !Platform.isIOS || MediaQuery.paddingOf(context).bottom <= 28
+              builder: (context) =>
+                  kIsWeb || defaultTargetPlatform != .iOS || MediaQuery.paddingOf(context).bottom <= 28
                   ? buttons.isNotEmpty
                         ? gapH16
                         : gapH8

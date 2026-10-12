@@ -58,6 +58,9 @@ tools/content/python/sword/data/TVTMS.txt
 content/sources/bibles/csb/
 apps/bible/assets/translations/csb/*.json
 
+# Apple's SF Pro license forbids redistribution, download it from developer.apple.com/fonts
+apps/bible/tool/screenshots/fonts/
+
 .tmp/
 /.env
 **/.dev.vars*
