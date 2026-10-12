@@ -31,6 +31,13 @@ class HydratedBiblePlanProgress {
 
   bool get isCompleted => numCompletedDays == plan.dayCount;
 
+  bool isCompletedThrough(int dayIndex) =>
+      plan.dayIndexes.take(dayIndex + 1).every((index) => isDayComplete(dayIndex: index)) &&
+      !hasProgressAfter(dayIndex);
+
+  bool hasProgressAfter(int dayIndex) =>
+      plan.dayIndexes.skip(dayIndex + 1).any((index) => progress.days.elementAtOrNull(index)?.hasProgress ?? false);
+
   DateTime get naturalEndDate => BiblePlanPace.getNaturalEndDate(
     dayCount: plan.dayCount,
     completedDayCount: numCompletedDays,

@@ -463,6 +463,9 @@ sealed class User with _$User {
       ? withPassageUncompleted(planId: planId, dayIndex: dayIndex, day: day, passage: passage)
       : withPassageCompleted(planId: planId, dayIndex: dayIndex, day: day, passage: passage);
 
+  User withPlanCompletedThrough({required String planId, required BiblePlan plan, required int dayIndex}) =>
+      withUpdatePlanProgress(planId, (progress) => progress.withCompletedThrough(plan, dayIndex: dayIndex));
+
   User withPlanDayToggled({required String planId, required int dayIndex}) => withProgressDayUpdated(
     planId: planId,
     dayIndex: dayIndex,

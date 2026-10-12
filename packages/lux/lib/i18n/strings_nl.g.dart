@@ -942,6 +942,13 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 		other: '${count} dagen voor op schema',
 	);
 	@override String get catchUp => 'Inhalen';
+	@override String completeThrough({required Object day}) => 'Tot en met dag ${day} voltooien';
+	@override String get completeThroughDescription => 'Markeer deze dag en alle dagen ervoor als voltooid.';
+	@override String completeThroughQuestion({required Object day}) => 'Tot en met dag ${day} voltooien?';
+	@override String get completeFirstDayConfirmation => 'Dag 1 wordt als voltooid gemarkeerd.';
+	@override String completeThroughConfirmation({required Object day}) => 'Dag 1 tot en met ${day} worden als voltooid gemarkeerd.';
+	@override String get laterProgressCleared => 'Je voortgang op latere dagen wordt gewist.';
+	@override String get complete => 'Voltooien';
 	@override String get reviewDayAnnotations => 'Annotaties van de dag bekijken';
 	@override String get studyNotes => 'Studienotities';
 	@override String beginsInDays({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count,
@@ -3720,6 +3727,13 @@ extension on TranslationsNl {
 			'biblePlans.daysBehind' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: '${count} dag achter op schema', other: '${count} dagen achter op schema', ), 
 			'biblePlans.daysAhead' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: '${count} dag voor op schema', other: '${count} dagen voor op schema', ), 
 			'biblePlans.catchUp' => 'Inhalen',
+			'biblePlans.completeThrough' => ({required Object day}) => 'Tot en met dag ${day} voltooien',
+			'biblePlans.completeThroughDescription' => 'Markeer deze dag en alle dagen ervoor als voltooid.',
+			'biblePlans.completeThroughQuestion' => ({required Object day}) => 'Tot en met dag ${day} voltooien?',
+			'biblePlans.completeFirstDayConfirmation' => 'Dag 1 wordt als voltooid gemarkeerd.',
+			'biblePlans.completeThroughConfirmation' => ({required Object day}) => 'Dag 1 tot en met ${day} worden als voltooid gemarkeerd.',
+			'biblePlans.laterProgressCleared' => 'Je voortgang op latere dagen wordt gewist.',
+			'biblePlans.complete' => 'Voltooien',
 			'biblePlans.reviewDayAnnotations' => 'Annotaties van de dag bekijken',
 			'biblePlans.studyNotes' => 'Studienotities',
 			'biblePlans.beginsInDays' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: 'Begint over ${count} dag', other: 'Begint over ${count} dagen', ), 
@@ -4141,6 +4155,8 @@ extension on TranslationsNl {
 			'morphology.kCase.accusative.description' => 'Markeert het lijdend voorwerp.',
 			'morphology.kCase.accusative.examples' => 'zag hem|heb je naaste lief',
 			'morphology.kCase.vocative.name' => 'Vocatief',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.kCase.vocative.description' => 'Wordt gebruikt bij een directe aanspreking.',
 			'morphology.kCase.vocative.examples' => 'Heer!|Vader!|Vriend!',
 			'morphology.state.absolute.name' => 'Absoluut',
@@ -4148,8 +4164,6 @@ extension on TranslationsNl {
 			'morphology.state.absolute.examples' => 'een koning|een woord',
 			'morphology.state.construct.name' => 'Constructus',
 			'morphology.state.construct.description' => 'Verbonden met een volgend zelfstandig naamwoord en drukt "X van Y" uit.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.state.construct.examples' => 'koning van Israël|woord van de HEER',
 			'morphology.state.determined.name' => 'Bepaald',
 			'morphology.state.determined.description' => 'Als bepaald gemarkeerd, vaak door het lidwoord.',

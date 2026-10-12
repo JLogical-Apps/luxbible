@@ -670,6 +670,13 @@
       "other": "{count} days ahead"
     },
     "catchUp": "Catch Up",
+    "completeThrough": "Complete Through Day {day}",
+    "completeThroughDescription": "Mark this day and every day before it complete.",
+    "completeThroughQuestion": "Complete Through Day {day}?",
+    "completeFirstDayConfirmation": "Day 1 will be marked complete.",
+    "completeThroughConfirmation": "Days 1 to {day} will be marked complete.",
+    "laterProgressCleared": "Your progress on later days will be cleared.",
+    "complete": "Complete",
     "reviewDayAnnotations": "Review Day Annotations",
     "studyNotes": "Study Notes",
     "beginsInDays(param=count)": {

@@ -954,6 +954,13 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 		other: 'Опережение на ${count} дня',
 	);
 	@override String get catchUp => 'Наверстать';
+	@override String completeThrough({required Object day}) => 'Завершить до дня ${day} включительно';
+	@override String get completeThroughDescription => 'Отметьте этот день и все предыдущие как завершённые.';
+	@override String completeThroughQuestion({required Object day}) => 'Завершить до дня ${day} включительно?';
+	@override String get completeFirstDayConfirmation => 'День 1 будет отмечен как завершённый.';
+	@override String completeThroughConfirmation({required Object day}) => 'Дни с 1 по ${day} будут отмечены как завершённые.';
+	@override String get laterProgressCleared => 'Ваш прогресс по последующим дням будет сброшен.';
+	@override String get complete => 'Завершить';
 	@override String get reviewDayAnnotations => 'Просмотреть аннотации дня';
 	@override String get studyNotes => 'Учебные заметки';
 	@override String beginsInDays({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count,
@@ -3742,6 +3749,13 @@ extension on TranslationsRu {
 			'biblePlans.daysBehind' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: 'Отставание на ${count} день', few: 'Отставание на ${count} дня', many: 'Отставание на ${count} дней', other: 'Отставание на ${count} дня', ), 
 			'biblePlans.daysAhead' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: 'Опережение на ${count} день', few: 'Опережение на ${count} дня', many: 'Опережение на ${count} дней', other: 'Опережение на ${count} дня', ), 
 			'biblePlans.catchUp' => 'Наверстать',
+			'biblePlans.completeThrough' => ({required Object day}) => 'Завершить до дня ${day} включительно',
+			'biblePlans.completeThroughDescription' => 'Отметьте этот день и все предыдущие как завершённые.',
+			'biblePlans.completeThroughQuestion' => ({required Object day}) => 'Завершить до дня ${day} включительно?',
+			'biblePlans.completeFirstDayConfirmation' => 'День 1 будет отмечен как завершённый.',
+			'biblePlans.completeThroughConfirmation' => ({required Object day}) => 'Дни с 1 по ${day} будут отмечены как завершённые.',
+			'biblePlans.laterProgressCleared' => 'Ваш прогресс по последующим дням будет сброшен.',
+			'biblePlans.complete' => 'Завершить',
 			'biblePlans.reviewDayAnnotations' => 'Просмотреть аннотации дня',
 			'biblePlans.studyNotes' => 'Учебные заметки',
 			'biblePlans.beginsInDays' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: 'Начнётся через ${count} день', few: 'Начнётся через ${count} дня', many: 'Начнётся через ${count} дней', other: 'Начнётся через ${count} дня', ), 
@@ -4163,6 +4177,8 @@ extension on TranslationsRu {
 			'morphology.kCase.accusative.description' => 'Отмечает прямой объект.',
 			'morphology.kCase.accusative.examples' => 'видел его|люби своего соседа',
 			'morphology.kCase.vocative.name' => 'Звательный падеж',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.kCase.vocative.description' => 'Используется по прямому адресу.',
 			'morphology.kCase.vocative.examples' => 'Господи!|Отец!|Друг!',
 			'morphology.state.absolute.name' => 'Абсолютный',
@@ -4170,8 +4186,6 @@ extension on TranslationsRu {
 			'morphology.state.absolute.examples' => 'король | слово',
 			'morphology.state.construct.name' => 'Построить',
 			'morphology.state.construct.description' => 'Связан со следующим существительным, выражающим «X из Y».',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.state.construct.examples' => 'царь Израиля | слово Господне',
 			'morphology.state.determined.name' => 'Определенный',
 			'morphology.state.determined.description' => 'Помечено как определенное, часто по артиклю.',

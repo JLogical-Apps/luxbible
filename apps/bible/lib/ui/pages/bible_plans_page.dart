@@ -138,7 +138,7 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                     ),
                     onReviewDayToggled: (dayIndex) =>
                         ref.updateUser((user) => user.withPlanDayToggled(planId: planId, dayIndex: dayIndex)),
-                    menuItems: [
+                    getMenuItems: (selectedDayIndex) => [
                       StyledListItem(
                         leading: pace.type.icon.toIcon(),
                         title: t.biblePlans.pace.toText(),
@@ -189,6 +189,37 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                           }
                         },
                       ),
+                      if (!progress.isCompletedThrough(selectedDayIndex))
+                        StyledListItem(
+                          leading: Symbols.done_all.toIcon(),
+                          title: t.biblePlans.completeThrough(day: selectedDayIndex + 1).toText(),
+                          subtitle: t.biblePlans.completeThroughDescription.toText(),
+                          onPressed: () async {
+                            context.pop();
+                            final confirmed = await context.showStyledDialog(
+                              (context) => StyledDialog.confirmOrCancel(
+                                title: t.biblePlans.completeThroughQuestion(day: selectedDayIndex + 1).toText(),
+                                body: [
+                                  selectedDayIndex == 0
+                                      ? t.biblePlans.completeFirstDayConfirmation
+                                      : t.biblePlans.completeThroughConfirmation(day: selectedDayIndex + 1),
+                                  if (progress.hasProgressAfter(selectedDayIndex)) t.biblePlans.laterProgressCleared,
+                                ].join(' ').toText(),
+                                confirmLabel: t.biblePlans.complete.toText(),
+                                cancelLabel: t.common.nevermind.toText(),
+                              ),
+                            );
+                            if (confirmed == true) {
+                              ref.updateUser(
+                                (user) => user.withPlanCompletedThrough(
+                                  planId: planId,
+                                  plan: plan,
+                                  dayIndex: selectedDayIndex,
+                                ),
+                              );
+                            }
+                          },
+                        ),
                       if (user.getPlanInstanceAnnotations(progress.instanceId).isNotEmpty)
                         BiblePlanAnnotationsListItem(
                           onPressed: () {

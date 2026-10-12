@@ -111,13 +111,16 @@ sealed class BiblePlanProgress with _$BiblePlanProgress {
     );
   }
 
+  // Leaves lastCompletedAt alone so marking days in bulk doesn't count as reading or as a new completion.
+  BiblePlanProgress withCompletedThrough(BiblePlan plan, {required int dayIndex}) => copyWith(
+    days: plan.dayIndexes
+        .map((index) => index <= dayIndex ? BiblePlanDayProgress.complete() : BiblePlanDayProgress.incomplete())
+        .toList(),
+  );
+
   // A different instance means a run was swapped in, so its already-completed days aren't new completions.
   bool hasCompletedDaySince(BiblePlanProgress? previous) =>
-      previous != null &&
-      previous.instanceId == instanceId &&
-      days.anyIndexed(
-        (dayIndex, day) => day.isComplete && previous.days.elementAtOrNull(dayIndex)?.isComplete == false,
-      );
+      previous != null && previous.instanceId == instanceId && lastCompletedAt != previous.lastCompletedAt;
 }
 
 enum BiblePlanPaceType {

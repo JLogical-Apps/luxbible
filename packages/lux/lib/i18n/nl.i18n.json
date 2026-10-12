@@ -672,6 +672,13 @@
       "other": "{count} dagen voor op schema"
     },
     "catchUp": "Inhalen",
+    "completeThrough": "Tot en met dag {day} voltooien",
+    "completeThroughDescription": "Markeer deze dag en alle dagen ervoor als voltooid.",
+    "completeThroughQuestion": "Tot en met dag {day} voltooien?",
+    "completeFirstDayConfirmation": "Dag 1 wordt als voltooid gemarkeerd.",
+    "completeThroughConfirmation": "Dag 1 tot en met {day} worden als voltooid gemarkeerd.",
+    "laterProgressCleared": "Je voortgang op latere dagen wordt gewist.",
+    "complete": "Voltooien",
     "reviewDayAnnotations": "Annotaties van de dag bekijken",
     "studyNotes": "Studienotities",
     "beginsInDays(param=count)": {

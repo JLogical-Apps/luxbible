@@ -20,7 +20,7 @@ class BiblePlanProgressCard extends HookConsumerWidget {
   final HydratedBiblePlanProgress progress;
   final int initialDayIndex;
   final Widget? caption;
-  final List<Widget> menuItems;
+  final List<Widget> Function(int dayIndex) getMenuItems;
   final Widget? footer;
 
   final Function(VerseSelection) onNavigateToVerseSelection;
@@ -33,7 +33,7 @@ class BiblePlanProgressCard extends HookConsumerWidget {
     required this.progress,
     required this.initialDayIndex,
     this.caption,
-    required this.menuItems,
+    required this.getMenuItems,
     this.footer,
     required this.onNavigateToVerseSelection,
     this.onPassagePressed,
@@ -75,8 +75,9 @@ class BiblePlanProgressCard extends HookConsumerWidget {
       showDividerOverride: false,
       trailing: StyledCircleButton.md(
         child: Symbols.more_vert.toIcon(),
-        onPressed: () =>
-            context.showStyledSheet((_, _) => StyledSheet(title: displayName.toText(), children: menuItems)),
+        onPressed: () => context.showStyledSheet(
+          (_, _) => StyledSheet(title: displayName.toText(), children: getMenuItems(dayIndex)),
+        ),
       ),
     );
 

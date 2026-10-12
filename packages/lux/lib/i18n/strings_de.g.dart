@@ -940,6 +940,13 @@ class _Translations$biblePlans$de extends Translations$biblePlans$en {
 		other: '${count} Tage voraus',
 	);
 	@override String get catchUp => 'Aufholen';
+	@override String completeThrough({required Object day}) => 'Bis einschließlich Tag ${day} abschließen';
+	@override String get completeThroughDescription => 'Diesen Tag und alle Tage davor als abgeschlossen markieren.';
+	@override String completeThroughQuestion({required Object day}) => 'Bis einschließlich Tag ${day} abschließen?';
+	@override String get completeFirstDayConfirmation => 'Tag 1 wird als abgeschlossen markiert.';
+	@override String completeThroughConfirmation({required Object day}) => 'Die Tage 1 bis ${day} werden als abgeschlossen markiert.';
+	@override String get laterProgressCleared => 'Dein Fortschritt bei späteren Tagen wird gelöscht.';
+	@override String get complete => 'Abschließen';
 	@override String get reviewDayAnnotations => 'Annotationen des Tages ansehen';
 	@override String get studyNotes => 'Studiennotizen';
 	@override String beginsInDays({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count,
@@ -3716,6 +3723,13 @@ extension on TranslationsDe {
 			'biblePlans.daysBehind' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: '${count} Tag im Rückstand', other: '${count} Tage im Rückstand', ), 
 			'biblePlans.daysAhead' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: '${count} Tag voraus', other: '${count} Tage voraus', ), 
 			'biblePlans.catchUp' => 'Aufholen',
+			'biblePlans.completeThrough' => ({required Object day}) => 'Bis einschließlich Tag ${day} abschließen',
+			'biblePlans.completeThroughDescription' => 'Diesen Tag und alle Tage davor als abgeschlossen markieren.',
+			'biblePlans.completeThroughQuestion' => ({required Object day}) => 'Bis einschließlich Tag ${day} abschließen?',
+			'biblePlans.completeFirstDayConfirmation' => 'Tag 1 wird als abgeschlossen markiert.',
+			'biblePlans.completeThroughConfirmation' => ({required Object day}) => 'Die Tage 1 bis ${day} werden als abgeschlossen markiert.',
+			'biblePlans.laterProgressCleared' => 'Dein Fortschritt bei späteren Tagen wird gelöscht.',
+			'biblePlans.complete' => 'Abschließen',
 			'biblePlans.reviewDayAnnotations' => 'Annotationen des Tages ansehen',
 			'biblePlans.studyNotes' => 'Studiennotizen',
 			'biblePlans.beginsInDays' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: 'Beginnt in ${count} Tag', other: 'Beginnt in ${count} Tagen', ), 
@@ -4139,6 +4153,8 @@ extension on TranslationsDe {
 			'morphology.kCase.vocative.name' => 'Vokativ',
 			'morphology.kCase.vocative.description' => 'Wird bei direkter Anrede verwendet.',
 			'morphology.kCase.vocative.examples' => 'Herr!|Vater!|Freund!',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.state.absolute.name' => 'Absolutus',
 			'morphology.state.absolute.description' => 'Die übliche, selbstständige Form eines Substantivs.',
 			'morphology.state.absolute.examples' => 'ein König|ein Wort',
@@ -4146,8 +4162,6 @@ extension on TranslationsDe {
 			'morphology.state.construct.description' => 'An ein folgendes Substantiv gebunden, drückt „X von Y“ aus.',
 			'morphology.state.construct.examples' => 'König von Israel|Wort des HERRN',
 			'morphology.state.determined.name' => 'Determinatus',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.state.determined.description' => 'Als bestimmt gekennzeichnet, oft durch den Artikel.',
 			'morphology.state.determined.examples' => 'der König|das Wort',
 			'morphology.stem.qal.name' => 'Qal',

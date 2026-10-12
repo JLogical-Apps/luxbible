@@ -684,6 +684,13 @@
       "other": "Опережение на {count} дня"
     },
     "catchUp": "Наверстать",
+    "completeThrough": "Завершить до дня {day} включительно",
+    "completeThroughDescription": "Отметьте этот день и все предыдущие как завершённые.",
+    "completeThroughQuestion": "Завершить до дня {day} включительно?",
+    "completeFirstDayConfirmation": "День 1 будет отмечен как завершённый.",
+    "completeThroughConfirmation": "Дни с 1 по {day} будут отмечены как завершённые.",
+    "laterProgressCleared": "Ваш прогресс по последующим дням будет сброшен.",
+    "complete": "Завершить",
     "reviewDayAnnotations": "Просмотреть аннотации дня",
     "studyNotes": "Учебные заметки",
     "beginsInDays(param=count)": {

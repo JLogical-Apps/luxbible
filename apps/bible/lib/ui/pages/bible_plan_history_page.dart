@@ -53,7 +53,7 @@ class BiblePlanHistoryPage extends ConsumerWidget implements StyledRoute<String>
                                 : t.biblePlans.stoppedOn(date: endedDate))
                             .toText(),
                     onNavigateToVerseSelection: ref.read(bibleNavigationServiceProvider).navigateTo,
-                    menuItems: [
+                    getMenuItems: (_) => [
                       if (!progress.isCompleted)
                         StyledListItem(
                           leading: Symbols.play_circle.toIcon(),

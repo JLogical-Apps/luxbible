@@ -670,6 +670,13 @@
       "other": "{count} Tage voraus"
     },
     "catchUp": "Aufholen",
+    "completeThrough": "Bis einschließlich Tag {day} abschließen",
+    "completeThroughDescription": "Diesen Tag und alle Tage davor als abgeschlossen markieren.",
+    "completeThroughQuestion": "Bis einschließlich Tag {day} abschließen?",
+    "completeFirstDayConfirmation": "Tag 1 wird als abgeschlossen markiert.",
+    "completeThroughConfirmation": "Die Tage 1 bis {day} werden als abgeschlossen markiert.",
+    "laterProgressCleared": "Dein Fortschritt bei späteren Tagen wird gelöscht.",
+    "complete": "Abschließen",
     "reviewDayAnnotations": "Annotationen des Tages ansehen",
     "studyNotes": "Studiennotizen",
     "beginsInDays(param=count)": {
