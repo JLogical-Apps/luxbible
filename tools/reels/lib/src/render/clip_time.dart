@@ -8,13 +8,9 @@ import 'package:reels/src/render/captions.dart';
 
 int getClipFrame(ClipTime time, ResolvedClip clip, Transcript transcript, {required int fps}) => switch (time) {
   ClipFrames(:final frames) => frames,
-  ClipEnd() => clip.take.frameCount,
-  ClipWord(:final phrase) => getWordOnset(
-    findPhrase(phrase, clip, transcript),
-    frameCount: clip.take.frameCount,
-    fps: fps,
-  ),
-}.clamp(0, clip.take.frameCount);
+  ClipEnd() => clip.frameCount,
+  ClipWord(:final phrase) => getWordOnset(findPhrase(phrase, clip, transcript), frameCount: clip.frameCount, fps: fps),
+}.clamp(0, clip.frameCount);
 
 // Matches on letters and digits alone, so punctuation and case in the captions don't matter.
 Word findPhrase(String phrase, ResolvedClip clip, Transcript transcript) {

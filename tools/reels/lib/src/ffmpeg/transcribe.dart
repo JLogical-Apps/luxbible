@@ -48,6 +48,13 @@ class Transcript {
   final String text;
   final List<Word> words;
 
+  Transcript atSpeed(double speed) => Transcript(
+    text: text,
+    words: words
+        .map((w) => Word(text: w.text, start: (w.start / speed).round(), end: (w.end / speed).round()))
+        .toList(),
+  );
+
   // DTW places words 50-300 ms late, and unevenly, worst on a take's first word. Where a word follows a pause the
   // waveform shows exactly when it starts, so it takes the nearest unclaimed onset; the rest keep DTW minus its usual lag.
   Transcript snapped(List<int> onsets, {required int fps}) {

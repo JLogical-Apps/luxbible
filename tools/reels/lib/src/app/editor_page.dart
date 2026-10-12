@@ -118,7 +118,7 @@ class EditorPage extends HookWidget {
     Duration getPreviewStart(Video video) {
       final clips = video.resolve(source.value!);
       if (!clips.any((c) => c.name == focused.value)) return Duration.zero;
-      return at(clips.takeWhile((c) => c.name != focused.value).map((c) => c.take.frameCount).sum);
+      return at(clips.takeWhile((c) => c.name != focused.value).map((c) => c.frameCount).sum);
     }
 
     // A reload only replays when the preview changed, so reloading unrelated code doesn't restart playback.

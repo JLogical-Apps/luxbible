@@ -183,6 +183,16 @@ Clip('shortcuts', modifiers: [Media('shortcut.png', mask: .bevel())]),
 `.rounded()` rounds the corners with no bezel, by a `radius` of 0.22 of the width unless told otherwise. `scale:`
 shrinks the space the media fits inside around its center, so `scale: 0.5` shows it at most half as wide and tall.
 
+`x` and `y` move the media's center, as fractions of the frame's width and height, so two can sit side by side. Without
+`y` it stays in the band above the head. Nothing stops them overlapping or running off the frame, so space them by eye:
+
+```dart
+Clip('youversion', modifiers: [
+  Media('youversion.mp4', x: 0.36, mask: .bevel()),
+  Media('youversion_logo.png', x: 0.8, y: 0.28, scale: 0.22, mask: .rounded()),
+]),
+```
+
 `enter:` slides the media in from beyond an edge of the frame at its `start`, easing into place over 12 `frames` unless
 told otherwise:
 
@@ -198,6 +208,18 @@ showing it plainly in the next clip:
 Clip('solution_built_it', modifiers: [Media('lux_512.png', effect: .pixelate())]),
 Clip('solution_lux_bible', modifiers: [Media('lux_512.png')]),
 ```
+
+## Speed
+
+`speed:` plays a clip faster than it was recorded, voice included, without changing its pitch:
+
+```dart
+Clip('no_1', speed: 1.5, modifiers: [Media('youversion.MP4')]),
+```
+
+Everything timed inside the clip is on the sped-up clip: `.frames(30)` is a second of the finished video, and `.word`
+follows the word to its new time. Trimming in the Clips view is still in the recording's own time. Speeds below 0.5
+aren't supported.
 
 ## Zoom
 
@@ -261,6 +283,9 @@ default. A video has at most one.
 Clip('two_sources', modifiers: [Music('kulakovka.mp3', cue: Duration(seconds: 30))]), // 0:30 lands on this cut
 ```
 
+`Video(isMuted: true)` silences the recording's own audio in the preview and render, leaving only music and sound
+effects. The Clips view still plays it, for trimming.
+
 ## Commands
 
 ```sh
@@ -313,6 +338,13 @@ frame numbers would point into the wrong footage.
 Spans that transcribe to nothing were breath or movement rather than speech; they are dropped and
 the remaining clips renumbered, but only on first detection. Regenerating `clips.json` therefore
 renumbers auto-generated names — harmless once clips are named meaningfully, and loud if not.
+
+A recording with no speech, such as a reaction-only reel, detects no clips at all. Write `clips.json` by hand instead,
+with frame numbers at 30fps and `"text": ""` on every take so ingest doesn't transcribe it:
+
+```json
+{"fps": 30, "clips": [{"name": "hook", "takes": [{"start": 54, "end": 180, "text": ""}]}]}
+```
 
 ## Scope
 

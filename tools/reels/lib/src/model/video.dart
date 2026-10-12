@@ -5,8 +5,14 @@ import 'package:reels/src/model/clips.dart';
 import 'package:reels/src/model/framing.dart';
 
 class Video {
-  const Video({required this.sources, String? name, this.media, this.headY = 0.5, this.clips = const []})
-    : declaredName = name;
+  const Video({
+    required this.sources,
+    String? name,
+    this.media,
+    this.headY = 0.5,
+    this.isMuted = false,
+    this.clips = const [],
+  }) : declaredName = name;
 
   /// Recordings that play back to back as one, in this order.
   final List<String> sources;
@@ -18,6 +24,9 @@ class Video {
   /// Where the middle of the face usually sits in the recordings, as a fraction of their height. `.media` framing
   /// brings it down to the same place below the media whatever it is.
   final double headY;
+
+  /// Silences the recording's own audio, leaving only music and sound effects.
+  final bool isMuted;
 
   final List<Clip> clips;
 
@@ -45,6 +54,7 @@ class Video {
         crop: Crop.framing(clip.framing, zoom: zoom, headY: headY),
         headY: headY,
         modifiers: clip.modifiers,
+        speed: clip.speed,
       ),
     );
   });

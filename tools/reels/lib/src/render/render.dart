@@ -30,6 +30,7 @@ class StitchPlan {
     required this.scatter,
     required this.music,
     required this.sounds,
+    required this.isMuted,
   });
 
   final Ingest artifacts;
@@ -42,8 +43,9 @@ class StitchPlan {
   final List<ScatterImage> scatter;
   final AudioCue? music;
   final List<AudioCue> sounds;
+  final bool isMuted;
 
-  Duration get duration => Duration(microseconds: clips.map((c) => c.take.frameCount).sum * 1000000 ~/ fps);
+  Duration get duration => Duration(microseconds: clips.map((c) => c.frameCount).sum * 1000000 ~/ fps);
 
   List<String> getArgs(File source, {required StitchCodec codec}) => getStitchArgs(
     source: source,
@@ -57,6 +59,7 @@ class StitchPlan {
     scatter: scatter,
     music: music,
     sounds: sounds,
+    isMuted: isMuted,
   );
 
   Future<File> stitchFrom(
@@ -92,6 +95,7 @@ Future<StitchPlan> getStitchPlan(Video video, {IngestProgress? onProgress}) asyn
     scatter: scatter,
     music: getMusicCue(video, clips, transcripts, fps: source.fps),
     sounds: getScatterSounds(video, scatter, fps: source.fps),
+    isMuted: video.isMuted,
   );
 }
 

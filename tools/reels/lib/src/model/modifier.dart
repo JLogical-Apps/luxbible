@@ -38,6 +38,8 @@ class Media extends Modifier {
     this.enter,
     this.effect,
     this.scale = 1,
+    this.x = 0.5,
+    this.y,
   });
 
   /// A filename within the media folder.
@@ -47,6 +49,12 @@ class Media extends Modifier {
 
   /// Shrinks the space the media fits inside around its center, so 0.5 shows it at most half as wide and tall.
   final double scale;
+
+  /// Center of the media, as a fraction of the frame's width.
+  final double x;
+
+  /// Center of the media, as a fraction of the frame's height. Without it, the media sits in the band above the head.
+  final double? y;
 
   final ClipTime start;
   final ClipTime end;

@@ -83,6 +83,7 @@ Working and verified end to end on real footage:
   space, piling up
 - Music and sound effects: one track under the whole video, synced to a moment in a clip, and a sound as each
   scattered image appears
+- Speed: a clip can play faster than recorded, with its voice's pitch kept
 - CLI: `ingest`, `clips`, `captions`, `media`, `render`
 
 Not built yet: take grouping.
@@ -227,7 +228,9 @@ window never stretches across a gap. `dart run <video> media` prints every segme
   `gblur` scaled to the block, which stands in for averaging it.
   An averaged mosaic (scaling down per frame with `eval=frame`, then back up) was tried and dropped: ffmpeg 7 kept 6 of
   53 frames once the size changed every frame. The `geq` costs ~12 s of CPU per 50 frames at preview size.
-- **`scale` shrinks the fit box around the band's center**, and the slide and blur use the shrunk box.
+- **`scale` shrinks the fit box around the band's center**, and the slide and blur use the shrunk box. `x` and `y`
+  center the media itself in the overlay's own expressions (`W*x-w/2`), since the fitted size isn't known in Dart; without
+  `y` it keeps the top of the shrunk box.
 - **A `Bevel` mask is drawn in the graph** (`getBevelFilter`), before the segment's `tpad`, so an image is masked
   once rather than every frame. The media is scaled to leave room for the bezel, padded with black, then a `geq` takes
   each pixel's distance from its corner's center: the screen fades to black past `radius` and the bezel to transparent
@@ -280,6 +283,8 @@ the Media tab ignores since it lists only videos.
   4 frames late. Each is its own input, like each scattered image; all 13 pops on `niv_is_owned` landed within 1 ms of
   their image.
 - Audio inputs are keyed by path in the preview cache, like images, so replacing a file in place keeps the old preview.
+- **`isMuted` zeroes the voice after its `pan`** rather than dropping it, so the mix keeps the same inputs and the output
+  always has an audio track, even a silent one.
 - `-t` on the output hung ffmpeg 7 with this many inputs once it reached the limit, so test a stretch by rendering the
   whole preview, not by cutting the output short.
 
@@ -294,6 +299,18 @@ editing one in place without renaming it keeps the old preview.
 
 On the Preview tab, every hot reload (`useReloadCount`) asks for the preview again. The key makes that cheap when
 nothing drawn changed, and playback only restarts at the focused clip when the file did change.
+
+## Speed
+
+`Clip(speed:)` changes a clip's length on the output timeline, so `ResolvedClip.frameCount` is the sped length and
+`take.frameCount` the recorded one. Everything on the output timeline uses the former: clip starts, `ClipTime`, and the
+transcripts, which `getTranscripts` rescales with `Transcript.atSpeed`, so captions, titles, media and zooms follow
+without knowing about speed.
+
+- **The clip is sped up before its framing**: `setpts=PTS/speed,fps`, then `tpad` and `trim` to the exact frame count,
+  since `fps` can leave one short. A zoom's `perspective` then counts output frames, matching its timing.
+- **The voice uses `atempo`**, which keeps the pitch and runs from 0.5x to 100x in ffmpeg 7.
+- A clip at speed 1 gets no extra filters, so its command and preview key are unchanged.
 
 ## Voice
 

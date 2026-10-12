@@ -42,20 +42,26 @@ String getBevelFilter(Bevel bevel, {required int width, required int height}) {
       "geq=r='r(X,Y)*$screen':g='g(X,Y)*$screen':b='b(X,Y)*$screen':a='alpha(X,Y)*$outline'";
 }
 
-/// The overlay's `x` and `y` for media whose top sits [top] px down the frame, sliding in as its [showing] starts.
+/// The overlay's `x` and `y` for media whose top sits [top] px down the frame unless its `y` centers it, sliding in as
+/// its [showing] starts.
 String getMediaPosition(MediaShowing? showing, {required int top}) {
-  const center = '(W-w)/2';
+  final media = showing?.media;
+  final left = '(W*${media?.x ?? 0.5}-w/2)';
+  final upper = switch (media?.y) {
+    final y? => '(H*$y-h/2)',
+    null => '$top',
+  };
   if (showing case MediaShowing(:final start, media: Media(enter: final slide?))) {
     // Counted from 1, so the first frame shown has already moved in a little.
     final remaining = '(1-${getEasedExpression(slide.easing, 'clip((n-$start+1)/${slide.frames},0,1)')})';
     return switch (slide.from) {
-      .top => "x=$center:y='$top-($top+h)*$remaining'",
-      .bottom => "x=$center:y='$top+(H-$top)*$remaining'",
-      .left => "x='$center-(W+w)/2*$remaining':y=$top",
-      .right => "x='$center+(W+w)/2*$remaining':y=$top",
+      .top => "x='$left':y='$upper-($upper+h)*$remaining'",
+      .bottom => "x='$left':y='$upper+(H-$upper)*$remaining'",
+      .left => "x='$left-($left+w)*$remaining':y='$upper'",
+      .right => "x='$left+(W-$left)*$remaining':y='$upper'",
     };
   }
-  return 'x=$center:y=$top';
+  return "x='$left':y='$upper'";
 }
 
 /// Filters for the [showing]'s effect, each led by a comma, over media already stamped with its output time and fit

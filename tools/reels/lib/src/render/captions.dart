@@ -29,7 +29,8 @@ Future<List<Transcript>> getTranscripts(
 }) async {
   Future<Transcript> getClipCaptions(int index, ResolvedClip clip) async {
     onProgress?.call('Preparing captions', index / clips.length);
-    return getCaptions(artifacts.audio, take: clip.take, fps: fps, cache: cacheDirFor(video));
+    final captions = await getCaptions(artifacts.audio, take: clip.take, fps: fps, cache: cacheDirFor(video));
+    return captions.atSpeed(clip.speed);
   }
 
   return [for (final (index, clip) in clips.indexed) await getClipCaptions(index, clip)];
@@ -59,7 +60,7 @@ List<Word> getTimelineWords(List<(ResolvedClip, Transcript)> pairs, {required in
         (index, pair) => pair.$2.words.map(
           (word) => (
             text: word.text.toUpperCase(),
-            start: offsets[index] + getWordOnset(word, frameCount: pair.$1.take.frameCount, fps: fps),
+            start: offsets[index] + getWordOnset(word, frameCount: pair.$1.frameCount, fps: fps),
           ),
         ),
       )

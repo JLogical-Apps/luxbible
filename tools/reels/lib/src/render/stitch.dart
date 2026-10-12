@@ -40,6 +40,7 @@ List<String> getStitchArgs({
   List<ScatterImage> scatter = const [],
   AudioCue? music,
   List<AudioCue> sounds = const [],
+  bool isMuted = false,
 }) {
   if (clips.isEmpty) throw StateError('Nothing to stitch: the video has no clips.');
 
@@ -82,11 +83,20 @@ List<String> getStitchArgs({
     return '$window,scale=${codec.width}:${codec.height},setsar=1';
   }
 
+  // Sped up before framing, so a zoom's frame counter runs on the output timeline like its timing. The clone pad makes
+  // sure `fps` leaves enough frames for the exact count.
+  String getSpeedFilter(ResolvedClip clip) => clip.speed == 1
+      ? ''
+      : 'setpts=PTS/${clip.speed},fps=$fps,tpad=stop_mode=clone:stop=1,trim=end_frame=${clip.frameCount},';
+  String getTempoFilter(ResolvedClip clip) => clip.speed == 1 ? '' : ',atempo=${clip.speed}';
+
   final labelled = clips
       .mapIndexed(
         (i, clip) =>
-            '[$i:v]trim=end_frame=${clip.take.frameCount},setpts=PTS-STARTPTS,${getFraming(clip.startCrop, zooms[i])}[v$i];'
-            '[${clips.length + i}:a]atrim=start=${lead(clip)}:duration=${clip.take.frameCount / fps},asetpts=PTS-STARTPTS[a$i];',
+            '[$i:v]trim=end_frame=${clip.take.frameCount},setpts=PTS-STARTPTS,${getSpeedFilter(clip)}'
+            '${getFraming(clip.startCrop, zooms[i])}[v$i];'
+            '[${clips.length + i}:a]atrim=start=${lead(clip)}:duration=${clip.take.frameCount / fps},asetpts=PTS-STARTPTS'
+            '${getTempoFilter(clip)}[a$i];',
       )
       .join();
   final streams = clips.mapIndexed((i, _) => '[v$i][a$i]').join();
@@ -119,8 +129,9 @@ List<String> getStitchArgs({
   final audio = getAudioMix(
     music: music,
     sounds: sounds,
+    isMuted: isMuted,
     firstInput: 2 * clips.length + media.length + scatter.length,
-    duration: clips.map((clip) => clip.take.frameCount).sum / fps,
+    duration: clips.map((clip) => clip.frameCount).sum / fps,
   );
   final graph =
       '$labelled${streams}concat=n=${clips.length}:v=1:a=1[cv][ca];'
@@ -138,7 +149,7 @@ List<String> getStitchArgs({
     '-map',
     '[vout]',
     '-map',
-    music == null && sounds.isEmpty ? '[ca]' : '[aout]',
+    audio.isEmpty ? '[ca]' : '[aout]',
     ...codec.args,
     '-r',
     '$fps',
@@ -156,10 +167,11 @@ List<String> getStitchArgs({
 String getAudioMix({
   required AudioCue? music,
   required List<AudioCue> sounds,
+  required bool isMuted,
   required int firstInput,
   required double duration,
 }) {
-  if (music == null && sounds.isEmpty) return '';
+  if (music == null && sounds.isEmpty && !isMuted) return '';
 
   String place(AudioCue cue) =>
       'aformat=sample_rates=$audioSampleRate:channel_layouts=stereo,volume=${cue.volume}dB,'
@@ -178,7 +190,7 @@ String getAudioMix({
   );
   final mixed = ['[voice]', if (music != null) '[music]', ...sounds.mapIndexed((i, _) => '[x$i]')];
 
-  return ';[ca]pan=stereo|c0=c0|c1=c0[voice];'
+  return ';[ca]pan=stereo|c0=c0|c1=c0${isMuted ? ',volume=0' : ''}[voice];'
       '$musicFilter'
       '${soundFilters.join()}'
       '${mixed.join()}amix=inputs=${mixed.length}:duration=first:normalize=0,'

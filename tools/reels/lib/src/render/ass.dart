@@ -50,7 +50,7 @@ Future<File> writeSubtitles(
 
 /// The output frame each clip starts on, followed by the total frame count.
 List<int> getClipStarts(List<ResolvedClip> clips) =>
-    clips.fold([0], (starts, clip) => starts..add(starts.last + clip.take.frameCount));
+    clips.fold([0], (starts, clip) => starts..add(starts.last + clip.frameCount));
 
 int msToFrames(int ms, int fps) => (ms * fps / 1000).round();
 

@@ -9,10 +9,13 @@ import 'package:reels/src/model/modifier.dart';
 /// plays and what modifiers apply to it.
 class Clip {
   // Dart can't mix optional positional and named parameters, so modifiers are named to leave room for `framing`.
-  const Clip(this.name, {this.modifiers = const [], Framing? framing}) : declaredFraming = framing;
+  const Clip(this.name, {this.modifiers = const [], Framing? framing, this.speed = 1}) : declaredFraming = framing;
 
   final String name;
   final List<Modifier> modifiers;
+
+  /// How much faster than recorded the clip plays, voice included.
+  final double speed;
 
   final Framing? declaredFraming;
 
@@ -24,10 +27,14 @@ class Clip {
           ? .title
           : .none);
 
-  String toDart() => switch (declaredFraming) {
-    null => "Clip('$name')",
-    final framing => "Clip('$name', framing: ${framing.toDart()})",
-  };
+  String toDart() {
+    final arguments = [
+      "'$name'",
+      if (declaredFraming case final framing?) 'framing: ${framing.toDart()}',
+      if (speed != 1) 'speed: $speed',
+    ];
+    return 'Clip(${arguments.join(', ')})';
+  }
 }
 
 class ResolvedClip {
@@ -38,14 +45,19 @@ class ResolvedClip {
     required this.crop,
     required this.headY,
     required this.modifiers,
+    this.speed = 1,
   });
 
   final String name;
   final Take take;
+  final double speed;
   final Framing framing;
   final Crop crop;
   final double headY;
   final List<Modifier> modifiers;
+
+  /// The clip's length on the output timeline, after its [speed].
+  int get frameCount => (take.frameCount / speed).round();
 
   Iterable<Title> get titles => modifiers.whereType<Title>();
 
