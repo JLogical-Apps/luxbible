@@ -67,8 +67,6 @@ class BiblePlanFile {
         IncompleteBiblePlanDayProgress() => {},
       };
 
-  int get completedDayCount => progress?.where((day) => day.isComplete).length ?? 0;
-
   Map<String, dynamic> toJson() => {
     ...plan.toJson(),
     'days': plan.days

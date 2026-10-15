@@ -18,11 +18,18 @@ class BiblePlanExportSheet {
     final displayName = plan.getDisplayName(planId);
     final namedPlan = plan.copyWith(name: displayName);
 
-    final hasProgress = progress?.days.any((day) => day.hasProgress) ?? false;
+    final progressDays = switch (progress?.days) {
+      final days? when days.any((day) => day.hasProgress) => days,
+      _ => null,
+    };
     final planTargetDate = BiblePlanType.getById(planId)?.getUpcomingTargetDate(.now());
-    final runTargetDate = progress?.pace.endDate;
-    final canIncludeRunTargetDate = runTargetDate != null && runTargetDate != planTargetDate;
-    if (!hasProgress && !canIncludeRunTargetDate) return BiblePlanFile(plan: namedPlan, targetDate: planTargetDate);
+    final runTargetDate = switch (progress?.pace.endDate) {
+      final endDate? when endDate != planTargetDate => endDate,
+      _ => null,
+    };
+    if (progressDays == null && runTargetDate == null) {
+      return BiblePlanFile(plan: namedPlan, targetDate: planTargetDate);
+    }
 
     return context.showStyledSheet((context, _) {
       final includesProgressState = useState(false);
@@ -32,20 +39,17 @@ class BiblePlanExportSheet {
         title: title.toText(),
         subtitle: displayName.toText(),
         children: [
-          if (progress != null && hasProgress)
+          if (progressDays != null)
             StyledListItem.switchControl(
               leading: Symbols.task_alt.toIcon(),
               title: t.biblePlans.includeProgress.toText(),
               subtitle: t.biblePlans
-                  .includeProgressDescription(
-                    completed: progress.days.where((day) => day.isComplete).length,
-                    total: plan.dayCount,
-                  )
+                  .includeProgressDescription(completed: progressDays.completedDayCount, total: plan.dayCount)
                   .toText(),
               isSelected: includesProgressState.value,
               onSelected: (isIncluded) => includesProgressState.value = isIncluded,
             ),
-          if (runTargetDate != null && canIncludeRunTargetDate)
+          if (runTargetDate != null)
             StyledListItem.switchControl(
               leading: BiblePlanPaceType.paced.icon.toIcon(),
               title: t.biblePlans.includeTargetDate.toText(),
@@ -60,7 +64,7 @@ class BiblePlanExportSheet {
             onPressed: () => context.pop(
               BiblePlanFile(
                 plan: namedPlan,
-                progress: includesProgressState.value ? progress?.days : null,
+                progress: includesProgressState.value ? progressDays : null,
                 targetDate: includesTargetDateState.value ? runTargetDate : planTargetDate,
               ),
             ),

@@ -143,7 +143,7 @@ class CreateBiblePlanFlow extends HookConsumerWidget {
         context,
         planName: plan.name,
         dayCount: plan.dayCount,
-        completedDayCount: progress?.where((day) => day.isComplete).length ?? 0,
+        completedDayCount: progress?.completedDayCount ?? 0,
         targetDate: isImporting ? importedFile?.targetDate : null,
       );
       if (pace == null || !context.mounted) return;
@@ -377,7 +377,7 @@ class CreateBiblePlanFlow extends HookConsumerWidget {
             optionMapper: (start) => StyledSelectOption(
               title: start.title().toText(),
               subtitle: start
-                  .description(completedDayCount: importedFile.completedDayCount, dayCount: importedFile.plan.dayCount)
+                  .description(completedDayCount: progress.completedDayCount, dayCount: importedFile.plan.dayCount)
                   .toText(),
               leading: start.icon.toIcon(),
             ),

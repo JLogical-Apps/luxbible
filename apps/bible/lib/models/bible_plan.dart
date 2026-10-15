@@ -422,6 +422,10 @@ enum BiblePlanColor { red, orange, yellow, green, blue, violet }
 
 enum BiblePlanValidationError { nameRequired, invalidDayCount, readingRequired, invalidPassage, duplicatePassage }
 
+extension BiblePlanDayProgressesExtension on Iterable<BiblePlanDayProgress> {
+  int get completedDayCount => where((day) => day.isComplete).length;
+}
+
 extension BiblePlanDraftDaysExtension on List<BiblePlanDay> {
   List<BiblePlanDay> withPassageAdded(int dayIndex, VerseSelection passage) {
     final day = this[dayIndex];
