@@ -12,27 +12,29 @@ import 'release_utils.dart';
 ///   dart run tool/release/deploy.dart            # both platforms
 ///   dart run tool/release/deploy.dart --ios      # iOS only -> TestFlight
 ///   dart run tool/release/deploy.dart --android  # Android only -> Play internal
+///   dart run tool/release/deploy.dart --no-build # upload the existing builds without rebuilding
 ///
 /// Configuration lives in tool/release/.env (see tool/release/.env.example).
 Future<void> main(List<String> args) async {
-  final unknown = args.where((a) => a != '--ios' && a != '--android').toList();
+  final unknown = args.where((a) => !['--ios', '--android', '--no-build'].has(a)).toList();
   if (unknown.isNotEmpty) {
-    fail('Unknown argument(s): ${unknown.join(', ')}. Use --ios and/or --android.');
+    fail('Unknown argument(s): ${unknown.join(', ')}. Use --ios, --android, and/or --no-build.');
   }
 
   final deployIos = args.has('--ios') || !args.has('--android');
   final deployAndroid = args.has('--android') || !args.has('--ios');
+  final isBuilding = !args.has('--no-build');
 
   final env = loadReleaseEnv();
 
   if (deployAndroid) {
     printSection('Android');
-    await _deployAndroid(env);
+    await _deployAndroid(env, isBuilding: isBuilding);
   }
 
   if (deployIos) {
     printSection('iOS');
-    await _deployIos(env);
+    await _deployIos(env, isBuilding: isBuilding);
   }
 
   printSection('Done');
@@ -43,14 +45,16 @@ Future<void> main(List<String> args) async {
 // Android -> Google Play internal testing
 // ---------------------------------------------------------------------------
 
-Future<void> _deployAndroid(Map<String, String> env) async {
+Future<void> _deployAndroid(Map<String, String> env, {required bool isBuilding}) async {
   final packageName = env.require('ANDROID_PACKAGE_NAME');
   final serviceAccountFile = _resolve(env.require('PLAY_SERVICE_ACCOUNT_JSON'));
   if (!serviceAccountFile.existsSync()) {
     fail('Play service account JSON not found at ${serviceAccountFile.path}');
   }
 
-  runCommand('flutter', ['build', 'appbundle', '--release']);
+  if (isBuilding) {
+    runCommand('flutter', ['build', 'appbundle', '--release']);
+  }
 
   final aab = File('build/app/outputs/bundle/release/app-release.aab');
   if (!aab.existsSync()) {
@@ -73,6 +77,7 @@ Future<void> _deployAndroid(Map<String, String> env) async {
       packageName,
       editId,
       uploadMedia: Media(aab.openRead(), aab.lengthSync(), contentType: 'application/octet-stream'),
+      uploadOptions: ResumableUploadOptions(),
     );
     final versionCode = upload.versionCode!;
     stdout.writeln('Uploaded version code $versionCode.');
@@ -102,7 +107,7 @@ Future<void> _deployAndroid(Map<String, String> env) async {
 // iOS -> TestFlight
 // ---------------------------------------------------------------------------
 
-Future<void> _deployIos(Map<String, String> env) async {
+Future<void> _deployIos(Map<String, String> env, {required bool isBuilding}) async {
   final keyId = env.require('ASC_KEY_ID');
   final issuerId = env.require('ASC_ISSUER_ID');
   final apiKey = _resolve(env.require('ASC_API_KEY_PATH'));
@@ -116,11 +121,13 @@ Future<void> _deployIos(Map<String, String> env) async {
   final destKey = File('${keyDir.path}/AuthKey_$keyId.p8');
   destKey.writeAsBytesSync(apiKey.readAsBytesSync());
 
-  runCommand(
-    'flutter',
-    ['build', 'ipa', '--release', '--export-method', 'app-store'],
-    environment: {...Platform.environment, 'FIREBASE_ANALYTICS_WITHOUT_ADID': 'true'},
-  );
+  if (isBuilding) {
+    runCommand(
+      'flutter',
+      ['build', 'ipa', '--release', '--export-method', 'app-store'],
+      environment: {...Platform.environment, 'FIREBASE_ANALYTICS_WITHOUT_ADID': 'true'},
+    );
+  }
 
   final ipaDir = Directory('build/ios/ipa');
   final ipa = ipaDir.existsSync()
