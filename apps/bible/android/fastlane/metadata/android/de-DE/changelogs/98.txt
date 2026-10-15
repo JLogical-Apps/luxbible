@@ -1,0 +1,5 @@
+• Plantage zeigen jetzt deine Hauptleiste mit Verknüpfungen, Studienpanels und Audio sowie eine Taste zum nächsten Abschnitt.
+• Teile einen Plan mit Fortschritt und Zielenddatum und mach nach dem Import damit weiter.
+• Schließe im Planmenü alle Tage bis zu einem gewählten Tag ab.
+• Neue Navigationseinstellungen: Bücher und Kapitel als Liste oder Raster, zuletzt gelesene ausblenden, Tastatur nach Wahl.
+• Neue Checklisten „Erste Schritte“ und „Fortgeschrittene Einführung“ unter Mehr > Hilfe.

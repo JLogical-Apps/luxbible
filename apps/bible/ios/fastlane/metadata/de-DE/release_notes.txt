@@ -1,13 +1,8 @@
-• Neu: Verknüpfte Ressourcen. Öffne sie zu einem Kapitel oder Vers und sieh die Personen, Themen, Wörterbuchartikel, Karten, Videos und Bekenntnisse, die damit zusammenhängen. Als Studienpanel angeheftet, laufen sie beim Lesen mit. Die neuen Ressourcen sind auf Englisch.
-• Die Tyndale Study Notes sind jetzt einer der Kommentare, mit Bucheinleitungen, Übersichten „auf einen Blick“ zu Zweck, Verfasser, Entstehungszeit und Hintergrund jedes Buchs sowie Links zu Personenprofilen und Themenartikeln.
-• Das Tyndale Open Bible Dictionary ersetzt Easton's, mit Tabellen und Karten direkt in den Artikeln und der Schaltfläche „Inhalt“ bei längeren Einträgen.
-• Entdecke 70 Bibelkarten und zoome in jede hinein.
-• Sieh dir 264 Videos von BibleProject an, jeweils verknüpft mit den Stellen, die sie erklären. Videos werden gestreamt und brauchen eine Internetverbindung.
-• Lies 35 historische Glaubensbekenntnisse, Bekenntnisschriften und Katechismen mit den Schriftbelegen zu jeder Frage und jedem Abschnitt.
-• Jede Ressource hat ihre eigene Seite im Menü „Ressourcen“ und lässt sich als Kurzbefehl zur Hauptleiste hinzufügen. Die Reihenfolge änderst du unter Mehr > Anpassen > Verknüpfte Ressourcen.
-• Markiere und kopiere Text in Kommentaren, Artikeln, Lexikoneinträgen und Bekenntnissen.
-• Studienfenster zeigen jetzt, woher du kommst, sodass du mit einem Tippen zurückgehen kannst.
-• Neue Bibel auf Tagalog: die Unlocked Literal Bible, offline verfügbar.
-• Neue Leseschrift: Libron.
-• Lesepläne: Wechselst du zu einem anderen Abschnitt, wird der vorherige als erledigt markiert, sobald du sein Ende erreicht hast. Tippe auf den aktuellen Abschnitt, um ihn als erledigt oder offen zu markieren.
-• Beim Zuhören wählt ein Tippen auf einen Vers diesen nur noch aus, die Wiedergabe springt nicht mehr dorthin.
+• Das Lesen eines Plantags funktioniert jetzt wie der normale Leser. Deine Hauptleiste liegt unten mit deinen angehefteten Verknüpfungen und dem Menü, und eine Taste vor dem Abschnitt springt zum nächsten oder schließt den Tag ab. Tippe auf die Leiste, um die Bibel zu wechseln.
+• Studienpanels öffnen sich jetzt auch beim Lesen eines Plans, mit denselben Panels wie in der normalen Bibel, und das Audio des Plans läuft in einem eigenen Panel daneben.
+• Teile oder lade einen aktiven Plan mit deinem Fortschritt und Zielenddatum herunter. Beim Importieren einer Datei mit Fortschritt wählst du, ob du damit weitermachst oder neu beginnst.
+• Etwas aufzuholen oder schon mittendrin? „Bis einschließlich Tag N abschließen“ im Planmenü markiert alle Tage bis zum gewählten Tag als abgeschlossen.
+• Neue Navigationseinstellungen, auch unter Mehr: Zeige Bücher und Kapitel als Liste oder Raster, blende zuletzt gelesene Stellen aus und lege fest, ob sich die Tastatur sofort öffnet.
+• Die Navigation gliedert die Bücher jetzt nach Altem und Neuem Testament und zeigt bis zu 20 zuletzt gelesene Stellen.
+• Neue Checklisten „Erste Schritte“ und „Fortgeschrittene Einführung“ führen dich durch die Grundlagen und fortgeschrittene Funktionen. Starte sie unter Mehr > Hilfe.
+• „Neuigkeiten“ unter Mehr > Über zeigt die wichtigsten Neuerungen des letzten Updates.

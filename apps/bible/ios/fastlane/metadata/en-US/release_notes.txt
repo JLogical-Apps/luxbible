@@ -1,13 +1,8 @@
-• New Linked Resources: open it on any chapter or verse to see the people, themes, dictionary entries, maps, videos, and creeds connected to it. Pin it as a study panel and it follows along as you read.
-• Tyndale Study Notes are now one of the commentaries, with book introductions, "at a glance" summaries of each book's purpose, author, date, and setting, and links to profiles of people and theme articles.
-• The Tyndale Open Bible Dictionary replaces Easton's, with charts and maps right in its articles and a Contents button for longer entries.
-• Browse 70 Bible maps and zoom in on any of them.
-• Watch 264 BibleProject videos, each linked to the passages it explains. Videos stream, so they need a connection.
-• Read 35 historic creeds, confessions, and catechisms, with the Scripture proofs for each question or section.
-• Each resource has its own page in the Resources menu and can be added as a main toolbar shortcut. Reorder them in More > Customize > Linked Resources.
-• Select and copy text in commentaries, articles, lexicon entries, and creeds.
-• Study sheets now show where you came from, so you can step back with one tap.
-• New Tagalog Bible: the Unlocked Literal Bible, available offline.
-• New Libron reading font.
-• Bible plans: moving to another passage marks the one you left complete once you've reached its end, and tapping the current passage marks it complete or not.
-• While listening, tapping a verse now just selects it, and playback no longer jumps there.
+• Reading a Bible plan day now works like the main reader. Your main toolbar sits at the bottom with your pinned shortcuts and menu, and a button before the passage moves to the next one or finishes the day. Tap the toolbar to switch Bibles.
+• Study panels now open while reading a plan, using the same panels as the main Bible, and plan audio plays in its own panel alongside them.
+• Share or download an active plan with your progress and target end date. When you import a file with progress, choose whether to continue from it or start fresh.
+• Catching up, or already partway through? Complete Through Day N in a plan's menu marks every day up to the one you choose complete.
+• New Navigation settings, also in More: show books and chapters as a list or a grid, hide recent positions, and choose whether the keyboard opens right away.
+• Navigation now groups books into the Old and New Testaments and lists up to 20 recent positions.
+• New Get Started and Advanced Tutorial checklists walk you through the basics and more advanced features. Start either one from More > Help.
+• What's New in More > About shows the highlights of the latest update.

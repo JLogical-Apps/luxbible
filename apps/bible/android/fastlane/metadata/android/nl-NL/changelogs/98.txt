@@ -1,0 +1,5 @@
+• Leesplandagen tonen nu je hoofdwerkbalk met snelkoppelingen, studiepanelen en audio, en een knop naar het volgende gedeelte.
+• Deel een leesplan met voortgang en beoogde einddatum, en ga na het importeren daarmee verder.
+• Voltooi via het leesplanmenu alle dagen tot en met een gekozen dag.
+• Nieuwe navigatie-instellingen: boeken en hoofdstukken als lijst of raster, recent verbergen en kiezen of het toetsenbord opent.
+• Nieuwe checklists Aan de slag en Geavanceerde uitleg in Meer > Help.

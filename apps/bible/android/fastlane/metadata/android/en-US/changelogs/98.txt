@@ -1,0 +1,5 @@
+• Plan days now show your main toolbar with your shortcuts, plus study panels and audio, and a button to move to the next passage.
+• Share a plan with your progress and target end date, and continue from that progress when you import it.
+• Mark every day through any day complete from a plan's menu.
+• New Navigation settings: books and chapters as a list or grid, hidden recents, and whether the keyboard opens.
+• New Get Started and Advanced Tutorial checklists in More > Help.
