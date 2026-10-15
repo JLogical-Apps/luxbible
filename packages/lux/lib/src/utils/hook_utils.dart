@@ -53,7 +53,11 @@ bool useDismissAndRestoreFocusOnScroll(
   useEffect(() {
     void rememberFocus() {
       final focusedNode = focusNodes.firstWhereOrNull((node) => node.hasPrimaryFocus);
-      if (focusedNode != null) lastFocusedNode.value = focusedNode;
+      if (focusedNode != null) {
+        lastFocusedNode.value = focusedNode;
+        // Tapping a field after scrolling down ends the dismissal, so later focus moves and scroll-downs still apply.
+        isScrollingDownState.value = false;
+      }
     }
 
     for (final node in focusNodes) {
@@ -77,7 +81,7 @@ bool useDismissAndRestoreFocusOnScroll(
         if (!focusNode.hasPrimaryFocus) focusNode.requestFocus();
       }
     });
-  });
+  }, [isScrollingDown]);
 
   return isScrollingDown;
 }
