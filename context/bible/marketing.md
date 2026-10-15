@@ -51,7 +51,7 @@ themselves and their media are kept locally in `socials/`, which is gitignored.
 | Narrated slideshow | Middling. Decent views and watch time, few shares or saves, and the topic mostly reaches people already interested in study tools. | Stopped. |
 | Question reels | Views without engagement. They present a fact and give the viewer nothing to react to. | Stopped. |
 | Scripture connection reels | Same as question reels. | Stopped. |
-| Release carousel | Reaches existing followers only. | For meaningful releases, as retention rather than acquisition. |
+| Release carousel | Reaches existing followers only. | For meaningful releases, as retention rather than acquisition. See [Release carousels](#release-carousels). |
 | Capability comparison reels | Untested. Low effort, with the same ingredients as the best performer: a point of disagreement, relevance to the viewer, and a reason to comment. | Next to test. |
 
 The best performer took a position someone could disagree with, was about something the viewer
@@ -64,6 +64,14 @@ yourself. Being on camera helps, but the position is what made the first one spr
 
 The idea is to name a frustration the reader already feels, not to attack another app. See
 [Guardrails](#guardrails).
+
+### Release carousels
+
+A release carousel is for the people who already have Lux, to give them a reason to open it again. Show only the biggest changes an existing user would notice and want to try, usually two to four. Leave out anything aimed at new users, such as onboarding checklists, and niche features most users won't care about, such as sharing a plan with its progress or marking several plan days complete at once. Leave out anything still hidden in the app, such as a seasonal plan before its promotion starts. A short carousel is better than a padded one.
+
+Slides follow the earlier carousels: a short title with its key phrase in yellow, one to three iPhone frames in dark mode, short handwritten callouts with arrows, and a closing card with the app icon, "Lux <version>", "Update or download Lux Bible today", the free-forever line, and the store and link-in-bio line.
+
+Screenshots come from the store screenshot harness in [`apps/bible/tool/screenshots`](../../apps/bible/tool/screenshots/README.md). Write the scenes in a temporary test file limited to `devices: [.iphone]`, copy the PNGs out of `build/screenshots/iphone/`, and delete the test afterward. Carousel scenes are one-offs and aren't committed.
 
 ### Honest losses
 

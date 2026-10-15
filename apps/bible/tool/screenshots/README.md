@@ -22,6 +22,8 @@ Each scene writes `build/screenshots/<device>/<scene>.png` (framed, transparent 
 - `status_bar.dart`: the iPhone, iPad, and Android status bars.
 - `preview_test.dart` and `recording.dart`: the store preview recordings.
 
+One-off shots, such as release carousel screenshots, go in a temporary test file that uses `screenshotTest` with `devices: [.iphone]` and is deleted once the PNGs are copied out. See [Release carousels](../../../../context/bible/marketing.md#release-carousels).
+
 ## Store preview video
 
 `preview_test.dart` records the app the same way, one PNG per 30 fps frame, for the App Store preview and Google Play promo video. Each scene drives the app with real gestures through `Recording` (`recording.dart`): taps, drags, long-press text selection, and typing. Frames advance the test clock by exactly one frame, so animations play at real speed.
