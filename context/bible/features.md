@@ -285,8 +285,8 @@ These tools can be opened as temporary bottom sheets. Supported tools can also b
 Temporary study sheets opened from the main Bible reader provide a pin action that closes the sheet and opens the
 corresponding persistent panel. Compare offers the action for each translation, while Interlinear and Commentary
 preserve the direction or resource currently selected in the sheet. When a panel is pinned from a verse selection, Lux
-clears the selection and scrolls its verses into view after the panel changes the reading area. Study sheets opened
-while reading a Bible plan do not offer pin actions.
+clears the selection and scrolls its verses into view after the panel changes the reading area. The same pin actions
+are available while reading a Bible plan.
 
 Opening a tool from the Study sheet replaces it, and breadcrumbs at the top, such as Study › Commentary, lead back to
 it. The breadcrumbs continue into sheets opened from a tool, such as a word in Interlinear or an article in Linked
@@ -584,6 +584,8 @@ Users can:
 
 On narrow layouts, panels dock below the Bible. On wide layouts, they appear to its right. The onboarding checklist and Audio Bible use the same swipeable panel area.
 
+The focused Bible plan reading page shows the same study panels, sharing their list, order, selected panel, and bottom panel height with the main Bible reader. Compare shows only the assigned passage in the other translation. The plan's audio panel takes the Audio Bible's place in the panel area, and the onboarding checklist is not shown there.
+
 The onboarding checklist ends with an invitation to join the Lux Discord community, where users can ask questions, share feedback, and meet other users. Completing the last checklist step scrolls the panel to the bottom.
 
 ## Audio Bible
@@ -757,10 +759,11 @@ A Paced plan's status compares its target end date with its natural end date, th
 An active plan's menu on Bible Plans offers Complete Through Day N for the day tab currently selected on its card. It asks for confirmation, then marks that day and every earlier day complete and every later day incomplete, including clearing passages read on later days. The confirmation mentions that later progress will be cleared only when there is some. The item is hidden when the plan is already in that state. Like imported progress, these days don't count as today's reading, so they don't suppress today's reminder, change the natural end date's start, trigger reminder discovery or the review prompt, or log a completed plan day. Completing through the last day completes the plan, which then offers Finish as usual.
 
 Daily passages open in a focused reading flow that retains access to normal Bible selection and study behavior.
+At the bottom, the reading page shows the main toolbar with the user's pinned shortcuts and overflow menu. It shows the current passage and its Bible, and it hides and reappears on scroll following the same Pin to Bottom setting. A small circle button before the passage shows a next arrow, or a check when no other passage is incomplete. Tapping it acts as Next or Done: it completes the current passage, then moves to the next incomplete tab or closes the page. Tapping anywhere else on the toolbar outside its buttons opens the Bible picker to switch translations. The toolbar's long-press shortcut and history swipes are disabled. Bible Plans, from a shortcut or the overflow menu, explains in a dialog that it isn't available while reading a plan day. Annotations, bookmarks, search, and other actions behave as in the main reader, with results that navigate to a passage returning to the main Bible.
 The chapter-preview action reads "Read In Context" when the assigned passage already covers the full chapter and "Read Entire Chapter" otherwise.
 Each passage tab shows whether it is complete. Moving to another tab completes the passage being left only if its final paragraph has appeared on screen, which includes passages short enough to fit on screen. Tapping the selected tab toggles its passage between complete and incomplete, and a passage toggled this way is not completed automatically when leaving it. Next and Done always complete the current passage.
-Reading-plan audio starts at the first assigned verse, stops at the final assigned verse, marks the passage complete, and continues to the next incomplete tab. It stops after every passage for the day is complete. Manual scrolling or selecting text pauses playback. A passage whose active Bible does not support audio prompts the user to switch Bibles.
-While a reading-plan audio session is active, its full playback controls replace the Next button. The page's top-right stop button closes that session and restores the Next button. Its scrubber is limited to the assigned passage rather than the whole chapter.
+The toolbar's Audio action plays and pauses reading-plan audio. Reading-plan audio starts at the first assigned verse, stops at the final assigned verse, marks the passage complete, and continues to the next incomplete tab. It stops after every passage for the day is complete. Manual scrolling or selecting text pauses playback. A passage whose active Bible does not support audio prompts the user to switch Bibles.
+While a reading-plan audio session is active, its full playback controls appear in an Audio Bible panel titled with the assigned passage, alongside any study panels. Closing the panel stops the session. Its scrubber is limited to the assigned passage rather than the whole chapter.
 
 Daily plan reminders follow the device's local time and include the plan name plus every passage from the earliest incomplete day. Review days use the localized Review & Reflect label. Completing any plan day suppresses that plan's remaining reminder for the current local calendar day, including when a later day is completed out of order. If no day has been completed today, the reminder uses today's occurrence when its time is still ahead and tomorrow's occurrence after that time has passed. Lux asks for notification permission only when a reminder is saved. If permission is disabled, Lux can open the system settings and completes the attempted save when permission is enabled before returning. A confirmation appears after every successful save. Reminders can appear while Lux is open. Tapping a reminder opens the earliest incomplete passage in its plan, with Bible and Bible Plans remaining behind it in the page history. A Review & Reflect day opens Bible Plans instead. If the plan is no longer active or is complete, the reminder opens Bible Plans safely.
 

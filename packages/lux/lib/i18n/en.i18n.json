@@ -705,6 +705,8 @@
     "deleteFromHistoryQuestion": "Delete From History?",
     "deleteFromHistoryConfirmation": "This progress on \"{name}\" will be deleted. Its annotations will stay in Annotations.",
     "deletePlanWithHistoryConfirmation": "Are you sure you want to delete \"{name}\"? Its history will also be deleted.",
+    "unavailableWhileReadingTitle": "Not Available Here",
+    "unavailableWhileReading": "Bible Plans can't be opened while you're reading a plan day.",
     "readInContext": "Read In Context",
     "startNew": "Start New",
     "day": "Day {day}",

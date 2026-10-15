@@ -4,6 +4,7 @@ import 'package:bible/models/resource_type.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
+import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/pages/lexicon_page.dart';
@@ -40,9 +41,9 @@ enum MainToolbarShortcut {
   plans,
   themeAndLayout;
 
-  String title() =>
+  String title({AudioBibleContext audioContext = .bible}) =>
       toStudyAction()?.title() ??
-      toMainAction()?.title() ??
+      toMainAction()?.title(audioContext: audioContext) ??
       toResourceType()?.title() ??
       switch (this) {
         switchBible => t.toolbarShortcuts.switchBible,
@@ -60,9 +61,9 @@ enum MainToolbarShortcut {
         _ => t.toolbarShortcuts.themeAndLayoutDescription,
       };
 
-  Widget buildIcon(BuildContext context, {User? user}) =>
+  Widget buildIcon(BuildContext context, {User? user, AudioBibleContext audioContext = .bible}) =>
       toStudyAction()?.icon.mapIfNonNull(Icon.new) ??
-      toMainAction()?.buildIcon(context, user: user) ??
+      toMainAction()?.buildIcon(context, user: user, audioContext: audioContext) ??
       toResourceType()?.icon.toIcon() ??
       switch (this) {
         switchBible => Symbols.book.toIcon(),

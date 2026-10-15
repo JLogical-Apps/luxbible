@@ -45,9 +45,9 @@ enum MainAction {
 
   static List<MainAction> get topLevelActions => MainAction.values.where((action) => action.isTopLevel).toList();
 
-  String title() => switch (this) {
+  String title({AudioBibleContext audioContext = .bible}) => switch (this) {
     audio =>
-      ref.read(audioBiblePlayerProvider(context: .bible)).isPlaying
+      ref.read(audioBiblePlayerProvider(context: audioContext)).isPlaying
           ? t.mainActions.pauseAudio
           : t.mainActions.playAudio,
     bookmark => t.mainActions.bookmark,
@@ -73,16 +73,21 @@ enum MainAction {
     more => t.mainActions.moreDescription,
   };
 
-  Widget buildIcon(BuildContext context, {User? user}) => switch (this) {
+  Widget buildIcon(BuildContext context, {User? user, AudioBibleContext audioContext = .bible}) => switch (this) {
     audio => Consumer(
       builder: (context, ref, child) {
-        final audioBiblePlayer = ref.watch(audioBiblePlayerProvider(context: .bible));
+        final audioBiblePlayer = ref.watch(audioBiblePlayerProvider(context: audioContext));
         final position = ref.watch(audioBiblePositionProvider).value;
+        final isPanelOpen = switch (audioContext) {
+          .bible => user?.audio.isOpen == true,
+          .plan => ref.watch(audioBibleProvider(context: .plan)) != null,
+        };
+
         return Stack(
           clipBehavior: .none,
           children: [
             Icon(audioBiblePlayer.isPlaying ? Symbols.pause : Symbols.play_arrow),
-            if (audioBiblePlayer.isActive && position != null && user?.audio.isOpen == true)
+            if (audioBiblePlayer.isActive && position != null && isPanelOpen)
               if (audioBiblePlayer.duration case final duration? when duration != .zero)
                 Positioned(
                   left: -4,

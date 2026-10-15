@@ -977,6 +977,8 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	@override String get deleteFromHistoryQuestion => 'Uit geschiedenis verwijderen?';
 	@override String deleteFromHistoryConfirmation({required Object name}) => 'Deze voortgang van "${name}" wordt verwijderd. De annotaties blijven bewaard bij Annotaties.';
 	@override String deletePlanWithHistoryConfirmation({required Object name}) => 'Weet je zeker dat je "${name}" wilt verwijderen? De geschiedenis wordt ook verwijderd.';
+	@override String get unavailableWhileReadingTitle => 'Hier niet beschikbaar';
+	@override String get unavailableWhileReading => 'Bijbelleesplannen kunnen niet worden geopend terwijl je een dag van een leesplan leest.';
 	@override String get readInContext => 'In context lezen';
 	@override String get startNew => 'Nieuw starten';
 	@override String day({required Object day}) => 'Dag ${day}';
@@ -3756,6 +3758,8 @@ extension on TranslationsNl {
 			'biblePlans.deleteFromHistoryQuestion' => 'Uit geschiedenis verwijderen?',
 			'biblePlans.deleteFromHistoryConfirmation' => ({required Object name}) => 'Deze voortgang van "${name}" wordt verwijderd. De annotaties blijven bewaard bij Annotaties.',
 			'biblePlans.deletePlanWithHistoryConfirmation' => ({required Object name}) => 'Weet je zeker dat je "${name}" wilt verwijderen? De geschiedenis wordt ook verwijderd.',
+			'biblePlans.unavailableWhileReadingTitle' => 'Hier niet beschikbaar',
+			'biblePlans.unavailableWhileReading' => 'Bijbelleesplannen kunnen niet worden geopend terwijl je een dag van een leesplan leest.',
 			'biblePlans.readInContext' => 'In context lezen',
 			'biblePlans.startNew' => 'Nieuw starten',
 			'biblePlans.day' => ({required Object day}) => 'Dag ${day}',
@@ -4153,10 +4157,10 @@ extension on TranslationsNl {
 			'morphology.kCase.dative.examples' => 'gaf aan hem|sprak tot hen',
 			'morphology.kCase.accusative.name' => 'Accusatief',
 			'morphology.kCase.accusative.description' => 'Markeert het lijdend voorwerp.',
-			'morphology.kCase.accusative.examples' => 'zag hem|heb je naaste lief',
-			'morphology.kCase.vocative.name' => 'Vocatief',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.kCase.accusative.examples' => 'zag hem|heb je naaste lief',
+			'morphology.kCase.vocative.name' => 'Vocatief',
 			'morphology.kCase.vocative.description' => 'Wordt gebruikt bij een directe aanspreking.',
 			'morphology.kCase.vocative.examples' => 'Heer!|Vader!|Vriend!',
 			'morphology.state.absolute.name' => 'Absoluut',

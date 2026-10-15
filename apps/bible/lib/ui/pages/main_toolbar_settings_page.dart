@@ -34,7 +34,8 @@ class MainToolbarSettingsPage extends ConsumerWidget implements StyledRoute<void
               padding: .symmetric(vertical: 16),
               child: MainToolbar(
                 mainToolbar: mainToolbar,
-                chapterReference: .values.first,
+                bookTitle: ChapterReference.values.first.book.title(),
+                location: ChapterReference.values.first.chapterNum.toString(),
                 translation: user.translation,
                 user: user,
                 onPressed: () {},

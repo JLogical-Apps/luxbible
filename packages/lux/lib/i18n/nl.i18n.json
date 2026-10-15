@@ -707,6 +707,8 @@
     "deleteFromHistoryQuestion": "Uit geschiedenis verwijderen?",
     "deleteFromHistoryConfirmation": "Deze voortgang van \"{name}\" wordt verwijderd. De annotaties blijven bewaard bij Annotaties.",
     "deletePlanWithHistoryConfirmation": "Weet je zeker dat je \"{name}\" wilt verwijderen? De geschiedenis wordt ook verwijderd.",
+    "unavailableWhileReadingTitle": "Hier niet beschikbaar",
+    "unavailableWhileReading": "Bijbelleesplannen kunnen niet worden geopend terwijl je een dag van een leesplan leest.",
     "readInContext": "In context lezen",
     "startNew": "Nieuw starten",
     "day": "Dag {day}",

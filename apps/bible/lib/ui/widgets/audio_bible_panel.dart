@@ -13,32 +13,36 @@ import 'package:style/style.dart';
 import 'package:utils_core/utils_core.dart';
 
 class AudioBiblePanel extends ConsumerWidget {
+  final AudioBibleContext context;
   final bool showDragHandle;
 
-  const AudioBiblePanel({super.key, required this.showDragHandle});
+  const AudioBiblePanel({super.key, required this.context, required this.showDragHandle});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final session = ref.watch(audioBibleProvider(context: .bible));
+    final session = ref.watch(audioBibleProvider(context: this.context));
 
-    final chapterReference = session?.passage.references.first.toChapterReference() ?? user.lastReference;
-    final translation = user.getTranslationFor(chapterReference.book);
+    final passage = switch (this.context) {
+      .bible => (session?.passage.references.first.toChapterReference() ?? user.lastReference).toVerseSelection(),
+      .plan => session?.passage ?? user.lastReference.toVerseSelection(),
+    };
+    final translation = user.getTranslationFor(passage.references.first.book);
 
     return StyledSheet(
       showDragHandle: showDragHandle,
-      title: chapterReference.format().toText(),
+      title: passage.format().toText(),
       subtitle: t.labels.audioBible.toText(),
       leading: StyledCircleButton.md(
         child: Symbols.close.toIcon(),
         onPressed: () {
-          ref.updateUser((user) => user.copyWith.audio(isOpen: false));
-          ref.read(audioBibleControllerProvider.notifier).remove(context: .bible);
+          if (this.context == .bible) ref.updateUser((user) => user.copyWith.audio(isOpen: false));
+          ref.read(audioBibleControllerProvider.notifier).remove(context: this.context);
         },
       ),
       children: [
         translation.hasAudioBible
-            ? AudioBiblePanelBody(context: .bible, passage: chapterReference.toVerseSelection())
+            ? AudioBiblePanelBody(context: this.context, passage: passage)
             : Padding(
                 padding: .all(16),
                 child: Column(

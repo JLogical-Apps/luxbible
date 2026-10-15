@@ -993,6 +993,8 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	@override String get deleteFromHistoryQuestion => 'Удалить из истории?';
 	@override String deleteFromHistoryConfirmation({required Object name}) => 'Этот прогресс по плану «${name}» будет удалён. Его аннотации останутся в разделе «Аннотации».';
 	@override String deletePlanWithHistoryConfirmation({required Object name}) => 'Вы уверены, что хотите удалить «${name}»? Его история тоже будет удалена.';
+	@override String get unavailableWhileReadingTitle => 'Здесь недоступно';
+	@override String get unavailableWhileReading => 'Библейские планы нельзя открыть во время чтения дня плана.';
 	@override String get readInContext => 'Читать в контексте';
 	@override String get startNew => 'Начать заново';
 	@override String day({required Object day}) => 'День ${day}';
@@ -3778,6 +3780,8 @@ extension on TranslationsRu {
 			'biblePlans.deleteFromHistoryQuestion' => 'Удалить из истории?',
 			'biblePlans.deleteFromHistoryConfirmation' => ({required Object name}) => 'Этот прогресс по плану «${name}» будет удалён. Его аннотации останутся в разделе «Аннотации».',
 			'biblePlans.deletePlanWithHistoryConfirmation' => ({required Object name}) => 'Вы уверены, что хотите удалить «${name}»? Его история тоже будет удалена.',
+			'biblePlans.unavailableWhileReadingTitle' => 'Здесь недоступно',
+			'biblePlans.unavailableWhileReading' => 'Библейские планы нельзя открыть во время чтения дня плана.',
 			'biblePlans.readInContext' => 'Читать в контексте',
 			'biblePlans.startNew' => 'Начать заново',
 			'biblePlans.day' => ({required Object day}) => 'День ${day}',
@@ -4175,10 +4179,10 @@ extension on TranslationsRu {
 			'morphology.kCase.dative.examples' => 'дал ему | поговорил с ними',
 			'morphology.kCase.accusative.name' => 'Винительный падеж',
 			'morphology.kCase.accusative.description' => 'Отмечает прямой объект.',
-			'morphology.kCase.accusative.examples' => 'видел его|люби своего соседа',
-			'morphology.kCase.vocative.name' => 'Звательный падеж',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.kCase.accusative.examples' => 'видел его|люби своего соседа',
+			'morphology.kCase.vocative.name' => 'Звательный падеж',
 			'morphology.kCase.vocative.description' => 'Используется по прямому адресу.',
 			'morphology.kCase.vocative.examples' => 'Господи!|Отец!|Друг!',
 			'morphology.state.absolute.name' => 'Абсолютный',

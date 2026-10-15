@@ -1,6 +1,7 @@
 import 'package:bible/models/user/main_toolbar_configuration.dart';
 import 'package:bible/models/user/main_toolbar_shortcut.dart';
 import 'package:bible/models/user/user.dart';
+import 'package:bible/providers/audio_bible_provider.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:lux/lux.dart';
@@ -9,9 +10,13 @@ import 'package:style/style.dart';
 
 class MainToolbar extends StatelessWidget {
   final MainToolbarConfiguration mainToolbar;
-  final ChapterReference chapterReference;
+  final String bookTitle;
+  final String location;
   final BibleTranslation translation;
   final User? user;
+  final AudioBibleContext audioContext;
+
+  final Widget? leading;
 
   final Function()? onPressed;
   final Function()? onLongPressed;
@@ -26,9 +31,12 @@ class MainToolbar extends StatelessWidget {
   const MainToolbar({
     super.key,
     required this.mainToolbar,
-    required this.chapterReference,
+    required this.bookTitle,
+    required this.location,
     required this.translation,
     this.user,
+    this.audioContext = .bible,
+    this.leading,
     this.onPressed,
     this.onLongPressed,
     this.onSwipeRight,
@@ -41,6 +49,7 @@ class MainToolbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final leading = this.leading;
     return GestureDetector(
       onHorizontalDragEnd: (details) {
         const sensitivity = 4;
@@ -53,11 +62,12 @@ class MainToolbar extends StatelessWidget {
       child: StyledMaterial(
         colorBuilder: colorBuilder ?? .surfacePrimary,
         borderRadius: .circular(999),
-        padding: .only(left: 24, right: 12),
+        padding: .only(left: leading == null ? 24 : 8, right: 12),
         onPressed: () => onPressed?.call(),
         onLongPressed: onLongPressed,
         child: Row(
           children: [
+            if (leading != null) ...[leading, gapW8],
             Expanded(
               child: Align(
                 alignment: .centerLeft,
@@ -67,19 +77,9 @@ class MainToolbar extends StatelessWidget {
                     spacing: 8,
                     children: [
                       Flexible(
-                        child: Text(
-                          chapterReference.book.title(),
-                          style: context.textStyle.labelLg,
-                          maxLines: 1,
-                          overflow: .ellipsis,
-                        ),
+                        child: Text(bookTitle, style: context.textStyle.labelLg, maxLines: 1, overflow: .ellipsis),
                       ),
-                      Text(
-                        chapterReference.chapterNum.toString(),
-                        style: context.textStyle.labelLg,
-                        maxLines: 1,
-                        overflow: .ellipsis,
-                      ),
+                      Text(location, style: context.textStyle.labelLg, maxLines: 1, overflow: .ellipsis),
                       StyledTag.sm(child: translation.title().toText()),
                       gapW12,
                     ],
@@ -91,10 +91,10 @@ class MainToolbar extends StatelessWidget {
               (i, shortcut) => StyledEditBadge(
                 isEdit: isEdit,
                 child: Tooltip(
-                  message: shortcut.title(),
+                  message: shortcut.title(audioContext: audioContext),
                   child: StyledCircleButton.md(
                     onPressed: () => onShorcutPressed?.call(i, shortcut),
-                    child: shortcut.buildIcon(context, user: user),
+                    child: shortcut.buildIcon(context, user: user, audioContext: audioContext),
                   ),
                 ),
               ),

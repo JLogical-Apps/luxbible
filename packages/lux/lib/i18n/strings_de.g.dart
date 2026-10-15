@@ -975,6 +975,8 @@ class _Translations$biblePlans$de extends Translations$biblePlans$en {
 	@override String get deleteFromHistoryQuestion => 'Aus dem Verlauf löschen?';
 	@override String deleteFromHistoryConfirmation({required Object name}) => 'Dieser Fortschritt bei „${name}“ wird gelöscht. Seine Annotationen bleiben unter Annotationen erhalten.';
 	@override String deletePlanWithHistoryConfirmation({required Object name}) => 'Möchtest du „${name}“ wirklich löschen? Der Verlauf des Plans wird ebenfalls gelöscht.';
+	@override String get unavailableWhileReadingTitle => 'Hier nicht verfügbar';
+	@override String get unavailableWhileReading => 'Lesepläne können nicht geöffnet werden, während du einen Tag eines Leseplans liest.';
 	@override String get readInContext => 'Im Zusammenhang lesen';
 	@override String get startNew => 'Neu starten';
 	@override String day({required Object day}) => 'Tag ${day}';
@@ -3752,6 +3754,8 @@ extension on TranslationsDe {
 			'biblePlans.deleteFromHistoryQuestion' => 'Aus dem Verlauf löschen?',
 			'biblePlans.deleteFromHistoryConfirmation' => ({required Object name}) => 'Dieser Fortschritt bei „${name}“ wird gelöscht. Seine Annotationen bleiben unter Annotationen erhalten.',
 			'biblePlans.deletePlanWithHistoryConfirmation' => ({required Object name}) => 'Möchtest du „${name}“ wirklich löschen? Der Verlauf des Plans wird ebenfalls gelöscht.',
+			'biblePlans.unavailableWhileReadingTitle' => 'Hier nicht verfügbar',
+			'biblePlans.unavailableWhileReading' => 'Lesepläne können nicht geöffnet werden, während du einen Tag eines Leseplans liest.',
 			'biblePlans.readInContext' => 'Im Zusammenhang lesen',
 			'biblePlans.startNew' => 'Neu starten',
 			'biblePlans.day' => ({required Object day}) => 'Tag ${day}',
@@ -4151,10 +4155,10 @@ extension on TranslationsDe {
 			'morphology.kCase.accusative.description' => 'Kennzeichnet das direkte Objekt.',
 			'morphology.kCase.accusative.examples' => 'sah ihn|liebe deinen Nächsten',
 			'morphology.kCase.vocative.name' => 'Vokativ',
-			'morphology.kCase.vocative.description' => 'Wird bei direkter Anrede verwendet.',
-			'morphology.kCase.vocative.examples' => 'Herr!|Vater!|Freund!',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.kCase.vocative.description' => 'Wird bei direkter Anrede verwendet.',
+			'morphology.kCase.vocative.examples' => 'Herr!|Vater!|Freund!',
 			'morphology.state.absolute.name' => 'Absolutus',
 			'morphology.state.absolute.description' => 'Die übliche, selbstständige Form eines Substantivs.',
 			'morphology.state.absolute.examples' => 'ein König|ein Wort',

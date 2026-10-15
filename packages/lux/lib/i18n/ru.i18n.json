@@ -723,6 +723,8 @@
     "deleteFromHistoryQuestion": "Удалить из истории?",
     "deleteFromHistoryConfirmation": "Этот прогресс по плану «{name}» будет удалён. Его аннотации останутся в разделе «Аннотации».",
     "deletePlanWithHistoryConfirmation": "Вы уверены, что хотите удалить «{name}»? Его история тоже будет удалена.",
+    "unavailableWhileReadingTitle": "Здесь недоступно",
+    "unavailableWhileReading": "Библейские планы нельзя открыть во время чтения дня плана.",
     "readInContext": "Читать в контексте",
     "startNew": "Начать заново",
     "day": "День {day}",

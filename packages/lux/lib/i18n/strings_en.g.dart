@@ -2183,6 +2183,12 @@ class Translations$biblePlans$en {
 	/// en: 'Are you sure you want to delete "{name}"? Its history will also be deleted.'
 	String deletePlanWithHistoryConfirmation({required Object name}) => 'Are you sure you want to delete "${name}"? Its history will also be deleted.';
 
+	/// en: 'Not Available Here'
+	String get unavailableWhileReadingTitle => 'Not Available Here';
+
+	/// en: 'Bible Plans can't be opened while you're reading a plan day.'
+	String get unavailableWhileReading => 'Bible Plans can\'t be opened while you\'re reading a plan day.';
+
 	/// en: 'Read In Context'
 	String get readInContext => 'Read In Context';
 
@@ -6151,6 +6157,8 @@ extension on Translations {
 			'biblePlans.deleteFromHistoryQuestion' => 'Delete From History?',
 			'biblePlans.deleteFromHistoryConfirmation' => ({required Object name}) => 'This progress on "${name}" will be deleted. Its annotations will stay in Annotations.',
 			'biblePlans.deletePlanWithHistoryConfirmation' => ({required Object name}) => 'Are you sure you want to delete "${name}"? Its history will also be deleted.',
+			'biblePlans.unavailableWhileReadingTitle' => 'Not Available Here',
+			'biblePlans.unavailableWhileReading' => 'Bible Plans can\'t be opened while you\'re reading a plan day.',
 			'biblePlans.readInContext' => 'Read In Context',
 			'biblePlans.startNew' => 'Start New',
 			'biblePlans.day' => ({required Object day}) => 'Day ${day}',
@@ -6550,10 +6558,10 @@ extension on Translations {
 			'morphology.kCase.accusative.description' => 'Marks the direct object.',
 			'morphology.kCase.accusative.examples' => 'saw him|love your neighbor',
 			'morphology.kCase.vocative.name' => 'Vocative',
-			'morphology.kCase.vocative.description' => 'Used in direct address.',
-			'morphology.kCase.vocative.examples' => 'Lord!|Father!|Friend!',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.kCase.vocative.description' => 'Used in direct address.',
+			'morphology.kCase.vocative.examples' => 'Lord!|Father!|Friend!',
 			'morphology.state.absolute.name' => 'Absolute',
 			'morphology.state.absolute.description' => 'The default, independent form of a noun.',
 			'morphology.state.absolute.examples' => 'a king|a word',
