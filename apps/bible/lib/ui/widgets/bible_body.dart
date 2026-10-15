@@ -14,6 +14,7 @@ import 'package:bible/ui/widgets/main_toolbar.dart';
 import 'package:bible/ui/widgets/onboarding_panel.dart';
 import 'package:bible/ui/widgets/reader_bottom_bar.dart';
 import 'package:bible/ui/widgets/selection_toolbar.dart';
+import 'package:bible/ui/widgets/side_layout_scope.dart';
 import 'package:bible/ui/widgets/study_panel_layout.dart';
 import 'package:bible/ui/widgets/visible_verse_utils.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -38,7 +39,7 @@ class BibleBody extends HookConsumerWidget {
 
     final initialPosition = user.lastPosition;
 
-    final isSideLayout = StudyPanelLayout.isSideLayoutFor(context);
+    final isSideLayout = SideLayoutScope.isSideLayoutOf(context);
 
     final pageController = usePageController(
       initialPage: initialPosition.reference.bibleChapterIndex,
@@ -111,8 +112,8 @@ class BibleBody extends HookConsumerWidget {
     void saveScroll() {
       final topReference = getVisibleReferencesInViewport(
         keyByReference: keyByReference,
-        viewportTop: MediaQuery.paddingOf(context).top + topBarHeight,
-        viewportBottom: MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).bottom,
+        viewportTop: context.untrackedMediaQuery.padding.top + topBarHeight,
+        viewportBottom: context.untrackedMediaQuery.size.height - context.untrackedMediaQuery.padding.bottom,
       ).firstOrNull;
 
       final viewportBounds = passageKey.globalBounds;
@@ -383,7 +384,7 @@ class BibleBody extends HookConsumerWidget {
                       left: 24,
                       top: MediaQuery.paddingOf(context).top + 40,
                       right: 24,
-                      bottom: MediaQuery.paddingOf(context).bottom + 96,
+                      bottom: MediaQuery.viewPaddingOf(context).bottom + 96,
                     ),
                     chapterReference: chapterReference,
                     chapter: chapter,
@@ -461,7 +462,7 @@ class BibleBody extends HookConsumerWidget {
       passage: currentChapterReference.toVerseSelection(),
       passageController: currentPassageController,
       selectionController: selectionController,
-      getViewportTop: () => MediaQuery.paddingOf(context).top + topBarHeight,
+      getViewportTop: () => context.untrackedMediaQuery.padding.top + topBarHeight,
       onScrollMainToReference: scrollMainToReference,
       onNavigateToVerseSelection: navigateToVerseSelection,
       child: mainArea(),

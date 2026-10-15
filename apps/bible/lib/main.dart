@@ -38,6 +38,7 @@ import 'package:bible/services/timezone_service.dart';
 import 'package:bible/services/verse_of_the_day_widget_service.dart';
 import 'package:bible/ui/bible_reader_configuration.dart';
 import 'package:bible/ui/pages/bible_page.dart';
+import 'package:bible/ui/widgets/side_layout_scope.dart';
 import 'package:bible/utils/connectivity_error.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
@@ -248,6 +249,7 @@ class BibleApp extends HookConsumerWidget {
             debugShowCheckedModeBanner: false,
             navigatorObservers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
             onGenerateRoute: (settings) => context.getStyledRoute(BiblePage()),
+            builder: (context, child) => SideLayoutScope(child: child!),
           ),
         ),
       ),

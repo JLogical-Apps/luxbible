@@ -8,6 +8,9 @@ extension BuildContextExtensions on BuildContext {
   double get textScaling => MediaQuery.textScalerOf(this).scale(20) / 20;
   TimeFormat get timeFormat => MediaQuery.alwaysUse24HourFormatOf(this) ? .twentyFourHour : .amPm;
 
+  // For callbacks: unlike MediaQuery.of, this doesn't subscribe the widget to rebuild on every inset change.
+  MediaQueryData get untrackedMediaQuery => getInheritedWidgetOfExactType<MediaQuery>()?.data ?? MediaQueryData();
+
   // Pops back to the root instead of replacing it so its reading position and scroll survive.
   void goToRoot({List<StyledRoute<dynamic>> pages = const [], Function(BuildContext)? onLoaded}) {
     final navigator = Navigator.of(this);

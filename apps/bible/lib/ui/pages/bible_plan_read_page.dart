@@ -17,6 +17,7 @@ import 'package:bible/ui/widgets/audio_bible_panel.dart';
 import 'package:bible/ui/widgets/main_toolbar.dart';
 import 'package:bible/ui/widgets/reader_bottom_bar.dart';
 import 'package:bible/ui/widgets/selection_toolbar.dart';
+import 'package:bible/ui/widgets/side_layout_scope.dart';
 import 'package:bible/ui/widgets/study_panel_layout.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
@@ -67,7 +68,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
       return () => WidgetsBinding.instance.addPostFrameCallback((_) => viewedPlanDayNotifier.leave(planDay));
     }, [planDay]);
 
-    final isSideLayout = StudyPanelLayout.isSideLayoutFor(context);
+    final isSideLayout = SideLayoutScope.isSideLayoutOf(context);
     final selectionController = usePassageSelectionController(readerConfiguration.selection);
 
     final planAudio = ref.watch(audioBibleProvider(context: .plan));
@@ -361,7 +362,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
                                         left: 24,
                                         top: 16,
                                         right: 24,
-                                        bottom: MediaQuery.paddingOf(context).bottom + 96,
+                                        bottom: MediaQuery.viewPaddingOf(context).bottom + 96,
                                       ),
                                       showLoading: false,
                                       contentBuilder: (context, passageContent) =>

@@ -47,9 +47,6 @@ class StudyPanelLayout extends StatelessWidget {
     required this.child,
   });
 
-  static bool isSideLayoutFor(BuildContext context) =>
-      MediaQuery.sizeOf(context).width - MediaQuery.viewPaddingOf(context).horizontal >= 700;
-
   @override
   Widget build(BuildContext context) {
     final section = MediaQuery.removeViewPadding(
@@ -149,7 +146,7 @@ class StudyPanelSection extends HookConsumerWidget {
         keyByReference: passageController?.keyByReference ?? {},
         viewportTop: getViewportTop(),
         viewportBottom: isSideLayout
-            ? MediaQuery.sizeOf(context).height - MediaQuery.paddingOf(context).bottom
+            ? MediaQuery.sizeOf(context).height - context.untrackedMediaQuery.padding.bottom
             : MediaQuery.sizeOf(context).height - studyPanelHeight,
       );
 
@@ -327,19 +324,21 @@ class StudyPanelSection extends HookConsumerWidget {
         return SizedBox.shrink();
       }
 
-      return Padding(
-        padding: .only(
-          top: MediaQuery.paddingOf(context).top + 8,
-          bottom: MediaQuery.paddingOf(context).bottom + 8,
-          left: 4,
-          right: 4,
-        ),
-        child: Stack(
-          children: [
-            carouselView,
-            if (carousel.panelCount > 1)
-              Positioned(bottom: 2, left: 0, right: 0, child: StudyPanelIndicator(carousel: carousel)),
-          ],
+      return Builder(
+        builder: (context) => Padding(
+          padding: .only(
+            top: MediaQuery.paddingOf(context).top + 8,
+            bottom: MediaQuery.paddingOf(context).bottom + 8,
+            left: 4,
+            right: 4,
+          ),
+          child: Stack(
+            children: [
+              carouselView,
+              if (carousel.panelCount > 1)
+                Positioned(bottom: 2, left: 0, right: 0, child: StudyPanelIndicator(carousel: carousel)),
+            ],
+          ),
         ),
       );
     }

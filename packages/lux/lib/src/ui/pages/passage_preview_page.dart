@@ -65,7 +65,7 @@ class PassagePreviewPage extends HookConsumerWidget implements StyledRoute<void>
                     context.pop();
                     onNavigateToVerseSelection(selection);
                   },
-            padding: .only(left: 24, top: 16, right: 24, bottom: MediaQuery.paddingOf(context).bottom + 40),
+            padding: .only(left: 24, top: 16, right: 24, bottom: MediaQuery.viewPaddingOf(context).bottom + 40),
           ),
         ),
       ),
