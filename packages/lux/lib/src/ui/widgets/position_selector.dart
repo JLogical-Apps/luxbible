@@ -7,11 +7,14 @@ import 'package:lux/lux.dart';
 import 'package:lux/src/ui/widgets/text_edit_value_extensions.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
+import 'package:utils_core/utils_core.dart';
 
 class PositionSelector extends HookWidget {
   final ChapterReference? initialReference;
   final Function(PositionResult) onSelect;
   final bool forceVerseNum;
+  final NavigationLayout layout;
+  final bool shouldOpenKeyboard;
 
   final Widget? trailing;
   final List<Widget> Function(BuildContext, Function(ChapterPosition) onSelect)? aboveBooksBuilder;
@@ -21,6 +24,8 @@ class PositionSelector extends HookWidget {
     required this.onSelect,
     this.initialReference,
     this.forceVerseNum = false,
+    this.layout = .list,
+    this.shouldOpenKeyboard = true,
     this.trailing,
     this.aboveBooksBuilder,
   });
@@ -28,8 +33,11 @@ class PositionSelector extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final initialReference = this.initialReference;
+    // Every book shows until the book is edited, even when the book field never gets focus.
     final selectorState = useState<SelectorState>(
-      initialReference == null ? SelectorState(focus: .book) : .chapter(initialReference, focus: .book),
+      initialReference == null
+          ? SelectorState(focus: .book)
+          : .chapter(initialReference, focus: .book, isBookFullySelected: true),
     );
 
     final scrollController = useScrollController();
@@ -42,15 +50,18 @@ class PositionSelector extends HookWidget {
           trailing: trailing,
           scrollController: scrollController,
           forceVerseNum: forceVerseNum,
+          shouldOpenKeyboard: shouldOpenKeyboard,
         ),
         Expanded(
           child: ListView(
             controller: scrollController,
+            physics: AlwaysScrollableScrollPhysics(),
             children: [
               PositionSelectorBody(
                 selectorState: selectorState,
                 onSelect: onSelect,
                 aboveBooksBuilder: aboveBooksBuilder,
+                layout: layout,
               ),
               Builder(builder: (context) => SizedBox(height: MediaQuery.viewInsetsOf(context).bottom)),
             ],
@@ -67,6 +78,7 @@ class PositionSelectorHeading extends HookWidget {
   final Function(PositionResult) onSelect;
 
   final bool forceVerseNum;
+  final bool shouldOpenKeyboard;
 
   final Widget? trailing;
   final ScrollController? scrollController;
@@ -82,6 +94,7 @@ class PositionSelectorHeading extends HookWidget {
     required this.onSelect,
     this.trailing,
     this.forceVerseNum = false,
+    this.shouldOpenKeyboard = true,
     this.scrollController,
     this.color,
     this.showShadow = true,
@@ -93,11 +106,12 @@ class PositionSelectorHeading extends HookWidget {
     final chapterFocusNode = useFocusNode();
     final verseFocusNode = useFocusNode();
 
-    final isScrollingDown = useDismissAndRestoreFocusOnScroll(scrollController, [
-      bookFocusNode,
-      chapterFocusNode,
-      verseFocusNode,
-    ]);
+    final focusNodes = [bookFocusNode, chapterFocusNode, verseFocusNode];
+    final isScrollingDown = useDismissAndRestoreFocusOnScroll(
+      scrollController,
+      focusNodes,
+      shouldRestoreFocus: shouldOpenKeyboard,
+    );
 
     final SelectorState(:book, :chapterNum, :verseText) = state;
 
@@ -115,7 +129,7 @@ class PositionSelectorHeading extends HookWidget {
     useOnFocusNodeFocused(verseFocusNode, () => selectorState.value = state.withFocus(.verse));
 
     usePostFrameEffect(() {
-      if (isScrollingDown) return;
+      if (isScrollingDown || (!shouldOpenKeyboard && !focusNodes.any((node) => node.hasFocus))) return;
       final focusNode = (switch (state.focus) {
         .book => bookFocusNode,
         .chapter => chapterFocusNode,
@@ -234,6 +248,7 @@ class PositionSelectorBody extends HookWidget {
   final Function(PositionResult) onSelect;
   final List<Widget> Function(BuildContext, Function(ChapterPosition) onSelect)? aboveBooksBuilder;
   final bool forceVerseNum;
+  final NavigationLayout layout;
   final Function(ChapterReference)? onSelectEntireChapter;
 
   const PositionSelectorBody({
@@ -242,8 +257,18 @@ class PositionSelectorBody extends HookWidget {
     required this.onSelect,
     this.aboveBooksBuilder,
     this.forceVerseNum = false,
+    this.layout = .list,
     this.onSelectEntireChapter,
   });
+
+  List<ChapterReference> getChapterReferences(BookType book, {required int? chapterNum}) =>
+      Range.generate(1, book.bookInfo.numChapters)
+          .map((number) => ChapterReference(book: book, chapterNum: number))
+          .where(
+            (chapterReference) =>
+                chapterNum == null || chapterReference.chapterNum.toString().startsWith(chapterNum.toString()),
+          )
+          .toList();
 
   @override
   Widget build(BuildContext context) {
@@ -254,6 +279,14 @@ class PositionSelectorBody extends HookWidget {
     void select(ChapterPosition position) {
       selectorState.value = .chapter(position.reference, focus: .chapter);
       onSelect(ChapterPositionResult(position: position));
+    }
+
+    void selectChapter(ChapterReference chapterReference) {
+      if (forceVerseNum) {
+        selectorState.value = .chapter(chapterReference, focus: .verse);
+      } else {
+        select(ChapterPosition(reference: chapterReference));
+      }
     }
 
     return switch (state.focus) {
@@ -269,53 +302,66 @@ class PositionSelectorBody extends HookWidget {
               child: StyledBanner(message: t.common.noMatches.toText()),
             )
           else
-            ...StyledSection(
-              title: t.labels.books.toText(),
-              padding: .only(top: 24),
-              children: (state.isBookFullySelected ? BookType.values : matchingBooks)
-                  .map(
-                    (book) => StyledListItem(
-                      title: book.title(isPlural: true).toText(),
-                      trailing: Symbols.chevron_right.toIcon(),
-                      onPressed: () => selectorState.value = .book(book, focus: .chapter),
+            ...(state.isBookFullySelected ? BookType.values : matchingBooks)
+                .groupListsBy((book) => book.testament)
+                .mapToIterable(
+                  (testament, books) => switch (layout) {
+                    .list => StyledSection(
+                      title: testament.title().toText(),
+                      padding: .only(top: 24),
+                      children: books
+                          .map(
+                            (book) => StyledListItem(
+                              title: book.title(isPlural: true).toText(),
+                              trailing: Symbols.chevron_right.toIcon(),
+                              onPressed: () => selectorState.value = .book(book, focus: .chapter),
+                            ),
+                          )
+                          .toList(),
                     ),
-                  )
-                  .toList(),
-            ).buildChildren(context),
+                    .grid => StyledSection.child(
+                      title: testament.title().toText(),
+                      padding: .only(top: 24),
+                      child: StyledTileGrid(
+                        items: books,
+                        sizingLabels: BookType.values.map((book) => book.abbreviation()).toList(),
+                        getLabel: (book) => book.abbreviation(),
+                        onSelect: (book) => selectorState.value = .book(book, focus: .chapter),
+                      ),
+                    ),
+                  },
+                )
+                .expand((section) => section.buildChildren(context)),
+          if (layout == .grid) gapH16,
         ],
       ),
-      .chapter =>
-        book == null
-            ? SizedBox.shrink()
-            : StyledList(
-                key: ValueKey(ChapterReference),
-                children:
-                    List.generate(
-                          book.bookInfo.numChapters,
-                          (chapterIndex) => ChapterReference(book: book, chapterNum: chapterIndex + 1),
-                        )
-                        .where(
-                          (chapterReference) =>
-                              chapterNum == null ||
-                              chapterReference.chapterNum.toString().startsWith(chapterNum.toString()),
-                        )
-                        .map(
-                          (chapterReference) => StyledListItem(
-                            title: chapterReference.format().toText(),
-                            trailing: forceVerseNum
-                                ? Symbols.chevron_right.toIcon()
-                                : Symbols.expand_circle_right.toIcon(),
-                            onPressed: () {
-                              if (forceVerseNum) {
-                                selectorState.value = .chapter(chapterReference, focus: .verse);
-                              } else {
-                                select(ChapterPosition(reference: chapterReference));
-                              }
-                            },
-                          ),
-                        )
-                        .toList(),
-              ),
+      .chapter => switch (book) {
+        null => SizedBox.shrink(),
+        final book => switch (layout) {
+          .list => StyledList(
+            key: ValueKey(ChapterReference),
+            children: getChapterReferences(book, chapterNum: chapterNum)
+                .map(
+                  (chapterReference) => StyledListItem(
+                    title: chapterReference.format().toText(),
+                    trailing: forceVerseNum ? Symbols.chevron_right.toIcon() : Symbols.expand_circle_right.toIcon(),
+                    onPressed: () => selectChapter(chapterReference),
+                  ),
+                )
+                .toList(),
+          ),
+          .grid => Padding(
+            key: ValueKey(ChapterReference),
+            padding: MediaQuery.viewPaddingOf(context).onlyHorizontal + .all(16),
+            child: StyledTileGrid(
+              items: getChapterReferences(book, chapterNum: chapterNum),
+              sizingLabels: [BookType.values.map((book) => book.bookInfo.numChapters).max.toString()],
+              getLabel: (chapterReference) => chapterReference.chapterNum.toString(),
+              onSelect: selectChapter,
+            ),
+          ),
+        },
+      },
       .verse =>
         chapterReference == null
             ? SizedBox.shrink()
@@ -374,12 +420,16 @@ class SelectorState {
   SelectorState.book(BookType book, {required PositionSelectorFocus focus})
     : this(bookText: book.title(isPlural: true), focus: focus);
 
-  SelectorState.chapter(ChapterReference chapterReference, {required PositionSelectorFocus focus})
-    : this(
-        bookText: chapterReference.book.title(isPlural: true),
-        chapterNum: chapterReference.chapterNum,
-        focus: focus,
-      );
+  SelectorState.chapter(
+    ChapterReference chapterReference, {
+    required PositionSelectorFocus focus,
+    bool isBookFullySelected = false,
+  }) : this(
+         bookText: chapterReference.book.title(isPlural: true),
+         isBookFullySelected: isBookFullySelected,
+         chapterNum: chapterReference.chapterNum,
+         focus: focus,
+       );
 
   SelectorState.verse(Reference reference)
     : this(
@@ -457,6 +507,16 @@ class SelectorState {
 }
 
 enum PositionSelectorFocus { book, chapter, verse }
+
+enum NavigationLayout {
+  list,
+  grid;
+
+  String title() => switch (this) {
+    list => t.navigationSettings.list,
+    grid => t.navigationSettings.grid,
+  };
+}
 
 sealed class PositionResult {
   const PositionResult();

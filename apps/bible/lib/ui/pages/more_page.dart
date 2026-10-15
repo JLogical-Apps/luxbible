@@ -10,6 +10,7 @@ import 'package:bible/ui/pages/commentaries_page.dart';
 import 'package:bible/ui/pages/compare_settings_page.dart';
 import 'package:bible/ui/pages/highlight_styles_page.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
+import 'package:bible/ui/pages/navigation_settings_page.dart';
 import 'package:bible/ui/pages/notebooks_page.dart';
 import 'package:bible/ui/pages/push_notifications_page.dart';
 import 'package:bible/ui/pages/resource_order_settings_page.dart';
@@ -61,6 +62,11 @@ class MorePage extends HookConsumerWidget implements StyledRoute<VerseSelection>
                   title: t.themeSettings.title.toText(),
                   leading: Symbols.custom_typography.toIcon(),
                   onPressed: () => context.push(ThemeSettingsPage()),
+                ),
+                StyledListItem.navigation(
+                  title: t.navigationSettings.title.toText(),
+                  leading: Symbols.explore.toIcon(),
+                  onPressed: () => context.push(NavigationSettingsPage()),
                 ),
                 StyledListItem.navigation(
                   title: t.studyActions.compare.toText(),

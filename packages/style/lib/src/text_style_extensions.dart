@@ -24,12 +24,13 @@ extension TextStyleExtensions on TextStyle {
 
   TextStyle get underlined => copyWith(decoration: TextDecoration.underline);
 
-  static final Map<(TextStyle, String), double> _textWidths = {};
-  double getWidth(String text) => _textWidths.putIfAbsent(
-    (this, text),
+  static final Map<(TextStyle, String, TextScaler), double> _textWidths = {};
+  double getWidth(String text, {TextScaler textScaler = .noScaling}) => _textWidths.putIfAbsent(
+    (this, text, textScaler),
     () => (TextPainter(
       text: TextSpan(text: text, style: this),
       textDirection: .ltr,
+      textScaler: textScaler,
     )..layout()).width,
   );
 

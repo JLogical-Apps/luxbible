@@ -1,7 +1,9 @@
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/ui/pages/navigation_settings_page.dart';
 import 'package:bible/ui/sheets/bible_sheet.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
@@ -16,7 +18,7 @@ class PositionPageResult {
   const PositionPageResult({required this.result, this.bookmarkId});
 }
 
-class PositionPage extends ConsumerWidget implements StyledRoute<PositionPageResult> {
+class PositionPage extends HookConsumerWidget implements StyledRoute<PositionPageResult> {
   final ChapterReference initialReference;
 
   const PositionPage({super.key, required this.initialReference});
@@ -28,11 +30,19 @@ class PositionPage extends ConsumerWidget implements StyledRoute<PositionPageRes
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
     final recents = user.viewHistory.where((position) => position.reference != initialReference).toList();
+    final isShowingAllRecentsState = useState(false);
+    final shownRecents = isShowingAllRecentsState.value ? recents : recents.take(5).toList();
 
     return StyledPage(
       leading: StyledCircleButton.md(child: Symbols.close.toIcon(), onPressed: () => context.pop()),
+      trailing: StyledCircleButton.md(
+        child: Symbols.tune.toIcon(),
+        onPressed: () => context.push(NavigationSettingsPage()),
+      ),
       body: PositionSelector(
         initialReference: initialReference,
+        layout: user.navigation.layout,
+        shouldOpenKeyboard: user.navigation.opensKeyboard,
         trailing: SizedBox(
           width: 112,
           child: StyledMaterial(
@@ -104,11 +114,17 @@ class PositionPage extends ConsumerWidget implements StyledRoute<PositionPageRes
                 ),
               ],
             ),
-          if (recents.isNotEmpty)
+          if (user.navigation.showsRecents && recents.isNotEmpty)
             StyledSection(
               title: t.navigation.recents.toText(),
+              trailing: recents.length > shownRecents.length
+                  ? StyledLink(
+                      t.navigation.showMore(count: recents.length - shownRecents.length),
+                      onPressed: () => isShowingAllRecentsState.value = true,
+                    )
+                  : null,
               padding: .only(top: 24),
-              children: recents
+              children: shownRecents
                   .map(
                     (position) => StyledSwipeable(
                       key: ValueKey(position.reference),

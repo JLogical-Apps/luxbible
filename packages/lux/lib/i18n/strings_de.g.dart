@@ -43,6 +43,7 @@ class TranslationsDe extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$colors$de colors = _Translations$colors$de._(_root);
 	@override late final _Translations$testaments$de testaments = _Translations$testaments$de._(_root);
 	@override late final _Translations$books$de books = _Translations$books$de._(_root);
+	@override late final _Translations$bookAbbreviations$de bookAbbreviations = _Translations$bookAbbreviations$de._(_root);
 	@override late final _Translations$common$de common = _Translations$common$de._(_root);
 	@override late final _Translations$copySheet$de copySheet = _Translations$copySheet$de._(_root);
 	@override late final _Translations$regionTypes$de regionTypes = _Translations$regionTypes$de._(_root);
@@ -89,6 +90,7 @@ class TranslationsDe extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$creeds$de creeds = _Translations$creeds$de._(_root);
 	@override late final _Translations$videos$de videos = _Translations$videos$de._(_root);
 	@override late final _Translations$navigation$de navigation = _Translations$navigation$de._(_root);
+	@override late final _Translations$navigationSettings$de navigationSettings = _Translations$navigationSettings$de._(_root);
 	@override late final _Translations$bibleSheet$de bibleSheet = _Translations$bibleSheet$de._(_root);
 	@override late final _Translations$passageSelection$de passageSelection = _Translations$passageSelection$de._(_root);
 	@override late final _Translations$selectionUi$de selectionUi = _Translations$selectionUi$de._(_root);
@@ -242,6 +244,81 @@ class _Translations$books$de extends Translations$books$en {
 	@override String get john3 => '3. Johannes';
 	@override String get jude => 'Judas';
 	@override String get revelation => 'Offenbarung';
+}
+
+// Path: bookAbbreviations
+class _Translations$bookAbbreviations$de extends Translations$bookAbbreviations$en {
+	_Translations$bookAbbreviations$de._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get genesis => '1 Mo';
+	@override String get exodus => '2 Mo';
+	@override String get leviticus => '3 Mo';
+	@override String get numbers => '4 Mo';
+	@override String get deuteronomy => '5 Mo';
+	@override String get joshua => 'Jos';
+	@override String get judges => 'Ri';
+	@override String get ruth => 'Rut';
+	@override String get samuel1 => '1 Sam';
+	@override String get samuel2 => '2 Sam';
+	@override String get kings1 => '1 Kön';
+	@override String get kings2 => '2 Kön';
+	@override String get chronicles1 => '1 Chr';
+	@override String get chronicles2 => '2 Chr';
+	@override String get ezra => 'Esra';
+	@override String get nehemiah => 'Neh';
+	@override String get esther => 'Est';
+	@override String get job => 'Hiob';
+	@override String get psalms => 'Ps';
+	@override String get proverbs => 'Spr';
+	@override String get ecclesiastes => 'Pred';
+	@override String get songOfSolomon => 'Hld';
+	@override String get isaiah => 'Jes';
+	@override String get jeremiah => 'Jer';
+	@override String get lamentations => 'Klgl';
+	@override String get ezekiel => 'Hes';
+	@override String get daniel => 'Dan';
+	@override String get hosea => 'Hos';
+	@override String get joel => 'Joel';
+	@override String get amos => 'Am';
+	@override String get obadiah => 'Obd';
+	@override String get jonah => 'Jona';
+	@override String get micah => 'Mi';
+	@override String get nahum => 'Nah';
+	@override String get habakkuk => 'Hab';
+	@override String get zephaniah => 'Zef';
+	@override String get haggai => 'Hag';
+	@override String get zechariah => 'Sach';
+	@override String get malachi => 'Mal';
+	@override String get matthew => 'Mt';
+	@override String get mark => 'Mk';
+	@override String get luke => 'Lk';
+	@override String get john => 'Joh';
+	@override String get acts => 'Apg';
+	@override String get romans => 'Röm';
+	@override String get corinthians1 => '1 Kor';
+	@override String get corinthians2 => '2 Kor';
+	@override String get galatians => 'Gal';
+	@override String get ephesians => 'Eph';
+	@override String get philippians => 'Phil';
+	@override String get colossians => 'Kol';
+	@override String get thessalonians1 => '1 Thess';
+	@override String get thessalonians2 => '2 Thess';
+	@override String get timothy1 => '1 Tim';
+	@override String get timothy2 => '2 Tim';
+	@override String get titus => 'Tit';
+	@override String get philemon => 'Phlm';
+	@override String get hebrews => 'Hebr';
+	@override String get james => 'Jak';
+	@override String get peter1 => '1 Petr';
+	@override String get peter2 => '2 Petr';
+	@override String get john1 => '1 Joh';
+	@override String get john2 => '2 Joh';
+	@override String get john3 => '3 Joh';
+	@override String get jude => 'Jud';
+	@override String get revelation => 'Offb';
 }
 
 // Path: common
@@ -1406,6 +1483,24 @@ class _Translations$navigation$de extends Translations$navigation$en {
 	@override String get book => 'Buch';
 	@override String get chapter => 'Kapitel';
 	@override String get verse => 'Vers';
+	@override String showMore({required Object count}) => '${count} weitere anzeigen';
+}
+
+// Path: navigationSettings
+class _Translations$navigationSettings$de extends Translations$navigationSettings$en {
+	_Translations$navigationSettings$de._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Navigation';
+	@override String get general => 'Allgemein';
+	@override String get list => 'Liste';
+	@override String get grid => 'Raster';
+	@override String get showRecents => 'Zuletzt gelesene anzeigen';
+	@override String get showRecentsDescription => 'Zeigt zuletzt gelesene Kapitel über den Büchern an.';
+	@override String get openKeyboard => 'Tastatur öffnen';
+	@override String get openKeyboardDescription => 'Öffnet die Tastatur, wenn die Navigation geöffnet wird und wenn du wieder nach oben scrollst, damit du sofort tippen kannst.';
 }
 
 // Path: bibleSheet
@@ -3231,6 +3326,72 @@ extension on TranslationsDe {
 			'books.john3' => '3. Johannes',
 			'books.jude' => 'Judas',
 			'books.revelation' => 'Offenbarung',
+			'bookAbbreviations.genesis' => '1 Mo',
+			'bookAbbreviations.exodus' => '2 Mo',
+			'bookAbbreviations.leviticus' => '3 Mo',
+			'bookAbbreviations.numbers' => '4 Mo',
+			'bookAbbreviations.deuteronomy' => '5 Mo',
+			'bookAbbreviations.joshua' => 'Jos',
+			'bookAbbreviations.judges' => 'Ri',
+			'bookAbbreviations.ruth' => 'Rut',
+			'bookAbbreviations.samuel1' => '1 Sam',
+			'bookAbbreviations.samuel2' => '2 Sam',
+			'bookAbbreviations.kings1' => '1 Kön',
+			'bookAbbreviations.kings2' => '2 Kön',
+			'bookAbbreviations.chronicles1' => '1 Chr',
+			'bookAbbreviations.chronicles2' => '2 Chr',
+			'bookAbbreviations.ezra' => 'Esra',
+			'bookAbbreviations.nehemiah' => 'Neh',
+			'bookAbbreviations.esther' => 'Est',
+			'bookAbbreviations.job' => 'Hiob',
+			'bookAbbreviations.psalms' => 'Ps',
+			'bookAbbreviations.proverbs' => 'Spr',
+			'bookAbbreviations.ecclesiastes' => 'Pred',
+			'bookAbbreviations.songOfSolomon' => 'Hld',
+			'bookAbbreviations.isaiah' => 'Jes',
+			'bookAbbreviations.jeremiah' => 'Jer',
+			'bookAbbreviations.lamentations' => 'Klgl',
+			'bookAbbreviations.ezekiel' => 'Hes',
+			'bookAbbreviations.daniel' => 'Dan',
+			'bookAbbreviations.hosea' => 'Hos',
+			'bookAbbreviations.joel' => 'Joel',
+			'bookAbbreviations.amos' => 'Am',
+			'bookAbbreviations.obadiah' => 'Obd',
+			'bookAbbreviations.jonah' => 'Jona',
+			'bookAbbreviations.micah' => 'Mi',
+			'bookAbbreviations.nahum' => 'Nah',
+			'bookAbbreviations.habakkuk' => 'Hab',
+			'bookAbbreviations.zephaniah' => 'Zef',
+			'bookAbbreviations.haggai' => 'Hag',
+			'bookAbbreviations.zechariah' => 'Sach',
+			'bookAbbreviations.malachi' => 'Mal',
+			'bookAbbreviations.matthew' => 'Mt',
+			'bookAbbreviations.mark' => 'Mk',
+			'bookAbbreviations.luke' => 'Lk',
+			'bookAbbreviations.john' => 'Joh',
+			'bookAbbreviations.acts' => 'Apg',
+			'bookAbbreviations.romans' => 'Röm',
+			'bookAbbreviations.corinthians1' => '1 Kor',
+			'bookAbbreviations.corinthians2' => '2 Kor',
+			'bookAbbreviations.galatians' => 'Gal',
+			'bookAbbreviations.ephesians' => 'Eph',
+			'bookAbbreviations.philippians' => 'Phil',
+			'bookAbbreviations.colossians' => 'Kol',
+			'bookAbbreviations.thessalonians1' => '1 Thess',
+			'bookAbbreviations.thessalonians2' => '2 Thess',
+			'bookAbbreviations.timothy1' => '1 Tim',
+			'bookAbbreviations.timothy2' => '2 Tim',
+			'bookAbbreviations.titus' => 'Tit',
+			'bookAbbreviations.philemon' => 'Phlm',
+			'bookAbbreviations.hebrews' => 'Hebr',
+			'bookAbbreviations.james' => 'Jak',
+			'bookAbbreviations.peter1' => '1 Petr',
+			'bookAbbreviations.peter2' => '2 Petr',
+			'bookAbbreviations.john1' => '1 Joh',
+			'bookAbbreviations.john2' => '2 Joh',
+			'bookAbbreviations.john3' => '3 Joh',
+			'bookAbbreviations.jude' => 'Jud',
+			'bookAbbreviations.revelation' => 'Offb',
 			'common.add' => 'Hinzufügen',
 			'common.addNew' => 'Neu hinzufügen',
 			'common.am' => 'AM',
@@ -3575,6 +3736,8 @@ extension on TranslationsDe {
 			'toolbarSettings.textShortcut' => 'Kurzbefehl der Textauswahl',
 			'themeSettings.title' => 'Design & Layout',
 			'themeSettings.brightness' => 'Helligkeit',
+			_ => null,
+		} ?? switch (path) {
 			'themeSettings.font' => 'Schriftart',
 			'themeSettings.fontSizeSpacing' => 'Schriftgröße & Abstand',
 			'themeSettings.greekFontSizeSpacing' => 'Griechisch: Schriftgröße & Abstand',
@@ -3641,8 +3804,6 @@ extension on TranslationsDe {
 			'biblePlans.importStartQuestion' => 'Wo möchtest du beginnen?',
 			'biblePlans.continueProgress' => 'Fortschritt übernehmen',
 			'biblePlans.continueProgressDescription' => ({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(total, one: 'Mit ${completed} von ${total} bereits abgeschlossenen Tag beginnen. Du kannst den Plan dann nicht bearbeiten.', other: 'Mit ${completed} von ${total} bereits abgeschlossenen Tagen beginnen. Du kannst den Plan dann nicht bearbeiten.', ), 
-			_ => null,
-		} ?? switch (path) {
 			'biblePlans.startFresh' => 'Neu beginnen',
 			'biblePlans.startFreshDescription' => 'Ohne abgeschlossene Tage beginnen. Du kannst den Plan vorher prüfen und bearbeiten.',
 			'biblePlans.importErrors.readFailed' => 'Lux konnte diese Datei nicht lesen. Versuche, sie erneut auszuwählen.',
@@ -3972,6 +4133,15 @@ extension on TranslationsDe {
 			'navigation.book' => 'Buch',
 			'navigation.chapter' => 'Kapitel',
 			'navigation.verse' => 'Vers',
+			'navigation.showMore' => ({required Object count}) => '${count} weitere anzeigen',
+			'navigationSettings.title' => 'Navigation',
+			'navigationSettings.general' => 'Allgemein',
+			'navigationSettings.list' => 'Liste',
+			'navigationSettings.grid' => 'Raster',
+			'navigationSettings.showRecents' => 'Zuletzt gelesene anzeigen',
+			'navigationSettings.showRecentsDescription' => 'Zeigt zuletzt gelesene Kapitel über den Büchern an.',
+			'navigationSettings.openKeyboard' => 'Tastatur öffnen',
+			'navigationSettings.openKeyboardDescription' => 'Öffnet die Tastatur, wenn die Navigation geöffnet wird und wenn du wieder nach oben scrollst, damit du sofort tippen kannst.',
 			'bibleSheet.allBibles' => 'Alle Bibeln',
 			'bibleSheet.availableCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: '${count} Bibel verfügbar', other: '${count} Bibeln verfügbar', ), 
 			'bibleSheet.wantAnotherTranslation' => 'Fehlt dir eine Übersetzung?',
@@ -4080,6 +4250,8 @@ extension on TranslationsDe {
 			'morphology.types.interrogativeParticle.description' => 'Eine Partikel, die eine Frage anzeigt.',
 			'morphology.types.interrogativeParticle.examples' => '(hebräisches Präfix ה, ohne deutsche Entsprechung)',
 			'morphology.types.demonstrativeParticle.name' => 'Hinweispartikel',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.demonstrativeParticle.description' => 'Eine hinweisende Partikel, etwa „siehe“.',
 			'morphology.types.demonstrativeParticle.examples' => 'siehe|sieh',
 			'morphology.types.genericParticle.name' => 'Allgemeine Partikel',
@@ -4155,8 +4327,6 @@ extension on TranslationsDe {
 			'morphology.kCase.accusative.description' => 'Kennzeichnet das direkte Objekt.',
 			'morphology.kCase.accusative.examples' => 'sah ihn|liebe deinen Nächsten',
 			'morphology.kCase.vocative.name' => 'Vokativ',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.kCase.vocative.description' => 'Wird bei direkter Anrede verwendet.',
 			'morphology.kCase.vocative.examples' => 'Herr!|Vater!|Freund!',
 			'morphology.state.absolute.name' => 'Absolutus',

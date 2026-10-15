@@ -35,7 +35,8 @@ class MarkdownBuilder extends HookWidget {
       },
     );
 
-    final indentationWidth = DefaultTextStyle.of(context).style.getWidth('   ');
+    final textScaler = MediaQuery.textScalerOf(context);
+    final indentationWidth = DefaultTextStyle.of(context).style.getWidth('   ', textScaler: textScaler);
     return Column(
       crossAxisAlignment: .stretch,
       children: spansByLine

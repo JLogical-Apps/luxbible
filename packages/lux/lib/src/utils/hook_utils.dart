@@ -41,7 +41,11 @@ ScrollController useUnfocusOnScrollDown(ScrollController scrollController) {
   return scrollController;
 }
 
-bool useDismissAndRestoreFocusOnScroll(ScrollController? scrollController, List<FocusNode> focusNodes) {
+bool useDismissAndRestoreFocusOnScroll(
+  ScrollController? scrollController,
+  List<FocusNode> focusNodes, {
+  bool shouldRestoreFocus = true,
+}) {
   final isScrollingDownState = useState(false);
   final lastFocusedNode = useRef<FocusNode?>(null);
   final isScrollingDown = isScrollingDownState.value;
@@ -69,7 +73,7 @@ bool useDismissAndRestoreFocusOnScroll(ScrollController? scrollController, List<
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (direction == ScrollDirection.reverse) {
         focusNodes.firstWhereOrNull((node) => node.hasPrimaryFocus)?.unfocus();
-      } else if (lastFocusedNode.value case final focusNode?) {
+      } else if (lastFocusedNode.value case final focusNode? when shouldRestoreFocus) {
         if (!focusNode.hasPrimaryFocus) focusNode.requestFocus();
       }
     });

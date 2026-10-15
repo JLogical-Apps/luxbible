@@ -39,6 +39,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$colors$en colors = Translations$colors$en.internal(_root);
 	late final Translations$testaments$en testaments = Translations$testaments$en.internal(_root);
 	late final Translations$books$en books = Translations$books$en.internal(_root);
+	late final Translations$bookAbbreviations$en bookAbbreviations = Translations$bookAbbreviations$en.internal(_root);
 	late final Translations$common$en common = Translations$common$en.internal(_root);
 	late final Translations$copySheet$en copySheet = Translations$copySheet$en.internal(_root);
 	late final Translations$regionTypes$en regionTypes = Translations$regionTypes$en.internal(_root);
@@ -85,6 +86,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$creeds$en creeds = Translations$creeds$en.internal(_root);
 	late final Translations$videos$en videos = Translations$videos$en.internal(_root);
 	late final Translations$navigation$en navigation = Translations$navigation$en.internal(_root);
+	late final Translations$navigationSettings$en navigationSettings = Translations$navigationSettings$en.internal(_root);
 	late final Translations$bibleSheet$en bibleSheet = Translations$bibleSheet$en.internal(_root);
 	late final Translations$passageSelection$en passageSelection = Translations$passageSelection$en.internal(_root);
 	late final Translations$selectionUi$en selectionUi = Translations$selectionUi$en.internal(_root);
@@ -442,6 +444,213 @@ class Translations$books$en {
 
 	/// en: 'Revelation'
 	String get revelation => 'Revelation';
+}
+
+// Path: bookAbbreviations
+class Translations$bookAbbreviations$en {
+	Translations$bookAbbreviations$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Gen'
+	String get genesis => 'Gen';
+
+	/// en: 'Exod'
+	String get exodus => 'Exod';
+
+	/// en: 'Lev'
+	String get leviticus => 'Lev';
+
+	/// en: 'Num'
+	String get numbers => 'Num';
+
+	/// en: 'Deut'
+	String get deuteronomy => 'Deut';
+
+	/// en: 'Josh'
+	String get joshua => 'Josh';
+
+	/// en: 'Judg'
+	String get judges => 'Judg';
+
+	/// en: 'Ruth'
+	String get ruth => 'Ruth';
+
+	/// en: '1 Sam'
+	String get samuel1 => '1 Sam';
+
+	/// en: '2 Sam'
+	String get samuel2 => '2 Sam';
+
+	/// en: '1 Kgs'
+	String get kings1 => '1 Kgs';
+
+	/// en: '2 Kgs'
+	String get kings2 => '2 Kgs';
+
+	/// en: '1 Chr'
+	String get chronicles1 => '1 Chr';
+
+	/// en: '2 Chr'
+	String get chronicles2 => '2 Chr';
+
+	/// en: 'Ezra'
+	String get ezra => 'Ezra';
+
+	/// en: 'Neh'
+	String get nehemiah => 'Neh';
+
+	/// en: 'Esth'
+	String get esther => 'Esth';
+
+	/// en: 'Job'
+	String get job => 'Job';
+
+	/// en: 'Ps'
+	String get psalms => 'Ps';
+
+	/// en: 'Prov'
+	String get proverbs => 'Prov';
+
+	/// en: 'Eccl'
+	String get ecclesiastes => 'Eccl';
+
+	/// en: 'Song'
+	String get songOfSolomon => 'Song';
+
+	/// en: 'Isa'
+	String get isaiah => 'Isa';
+
+	/// en: 'Jer'
+	String get jeremiah => 'Jer';
+
+	/// en: 'Lam'
+	String get lamentations => 'Lam';
+
+	/// en: 'Ezek'
+	String get ezekiel => 'Ezek';
+
+	/// en: 'Dan'
+	String get daniel => 'Dan';
+
+	/// en: 'Hos'
+	String get hosea => 'Hos';
+
+	/// en: 'Joel'
+	String get joel => 'Joel';
+
+	/// en: 'Amos'
+	String get amos => 'Amos';
+
+	/// en: 'Obad'
+	String get obadiah => 'Obad';
+
+	/// en: 'Jonah'
+	String get jonah => 'Jonah';
+
+	/// en: 'Mic'
+	String get micah => 'Mic';
+
+	/// en: 'Nah'
+	String get nahum => 'Nah';
+
+	/// en: 'Hab'
+	String get habakkuk => 'Hab';
+
+	/// en: 'Zeph'
+	String get zephaniah => 'Zeph';
+
+	/// en: 'Hag'
+	String get haggai => 'Hag';
+
+	/// en: 'Zech'
+	String get zechariah => 'Zech';
+
+	/// en: 'Mal'
+	String get malachi => 'Mal';
+
+	/// en: 'Matt'
+	String get matthew => 'Matt';
+
+	/// en: 'Mark'
+	String get mark => 'Mark';
+
+	/// en: 'Luke'
+	String get luke => 'Luke';
+
+	/// en: 'John'
+	String get john => 'John';
+
+	/// en: 'Acts'
+	String get acts => 'Acts';
+
+	/// en: 'Rom'
+	String get romans => 'Rom';
+
+	/// en: '1 Cor'
+	String get corinthians1 => '1 Cor';
+
+	/// en: '2 Cor'
+	String get corinthians2 => '2 Cor';
+
+	/// en: 'Gal'
+	String get galatians => 'Gal';
+
+	/// en: 'Eph'
+	String get ephesians => 'Eph';
+
+	/// en: 'Phil'
+	String get philippians => 'Phil';
+
+	/// en: 'Col'
+	String get colossians => 'Col';
+
+	/// en: '1 Thess'
+	String get thessalonians1 => '1 Thess';
+
+	/// en: '2 Thess'
+	String get thessalonians2 => '2 Thess';
+
+	/// en: '1 Tim'
+	String get timothy1 => '1 Tim';
+
+	/// en: '2 Tim'
+	String get timothy2 => '2 Tim';
+
+	/// en: 'Titus'
+	String get titus => 'Titus';
+
+	/// en: 'Phlm'
+	String get philemon => 'Phlm';
+
+	/// en: 'Heb'
+	String get hebrews => 'Heb';
+
+	/// en: 'Jas'
+	String get james => 'Jas';
+
+	/// en: '1 Pet'
+	String get peter1 => '1 Pet';
+
+	/// en: '2 Pet'
+	String get peter2 => '2 Pet';
+
+	/// en: '1 John'
+	String get john1 => '1 John';
+
+	/// en: '2 John'
+	String get john2 => '2 John';
+
+	/// en: '3 John'
+	String get john3 => '3 John';
+
+	/// en: 'Jude'
+	String get jude => 'Jude';
+
+	/// en: 'Rev'
+	String get revelation => 'Rev';
 }
 
 // Path: common
@@ -3030,6 +3239,42 @@ class Translations$navigation$en {
 
 	/// en: 'Verse'
 	String get verse => 'Verse';
+
+	/// en: 'Show {count} More'
+	String showMore({required Object count}) => 'Show ${count} More';
+}
+
+// Path: navigationSettings
+class Translations$navigationSettings$en {
+	Translations$navigationSettings$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Navigation'
+	String get title => 'Navigation';
+
+	/// en: 'General'
+	String get general => 'General';
+
+	/// en: 'List'
+	String get list => 'List';
+
+	/// en: 'Grid'
+	String get grid => 'Grid';
+
+	/// en: 'Show Recents'
+	String get showRecents => 'Show Recents';
+
+	/// en: 'Show recently read chapters above the books.'
+	String get showRecentsDescription => 'Show recently read chapters above the books.';
+
+	/// en: 'Open Keyboard'
+	String get openKeyboard => 'Open Keyboard';
+
+	/// en: 'Open the keyboard when navigation opens and when scrolling back up, so you can start typing right away.'
+	String get openKeyboardDescription => 'Open the keyboard when navigation opens and when scrolling back up, so you can start typing right away.';
 }
 
 // Path: bibleSheet
@@ -5634,6 +5879,72 @@ extension on Translations {
 			'books.john3' => '3 John',
 			'books.jude' => 'Jude',
 			'books.revelation' => 'Revelation',
+			'bookAbbreviations.genesis' => 'Gen',
+			'bookAbbreviations.exodus' => 'Exod',
+			'bookAbbreviations.leviticus' => 'Lev',
+			'bookAbbreviations.numbers' => 'Num',
+			'bookAbbreviations.deuteronomy' => 'Deut',
+			'bookAbbreviations.joshua' => 'Josh',
+			'bookAbbreviations.judges' => 'Judg',
+			'bookAbbreviations.ruth' => 'Ruth',
+			'bookAbbreviations.samuel1' => '1 Sam',
+			'bookAbbreviations.samuel2' => '2 Sam',
+			'bookAbbreviations.kings1' => '1 Kgs',
+			'bookAbbreviations.kings2' => '2 Kgs',
+			'bookAbbreviations.chronicles1' => '1 Chr',
+			'bookAbbreviations.chronicles2' => '2 Chr',
+			'bookAbbreviations.ezra' => 'Ezra',
+			'bookAbbreviations.nehemiah' => 'Neh',
+			'bookAbbreviations.esther' => 'Esth',
+			'bookAbbreviations.job' => 'Job',
+			'bookAbbreviations.psalms' => 'Ps',
+			'bookAbbreviations.proverbs' => 'Prov',
+			'bookAbbreviations.ecclesiastes' => 'Eccl',
+			'bookAbbreviations.songOfSolomon' => 'Song',
+			'bookAbbreviations.isaiah' => 'Isa',
+			'bookAbbreviations.jeremiah' => 'Jer',
+			'bookAbbreviations.lamentations' => 'Lam',
+			'bookAbbreviations.ezekiel' => 'Ezek',
+			'bookAbbreviations.daniel' => 'Dan',
+			'bookAbbreviations.hosea' => 'Hos',
+			'bookAbbreviations.joel' => 'Joel',
+			'bookAbbreviations.amos' => 'Amos',
+			'bookAbbreviations.obadiah' => 'Obad',
+			'bookAbbreviations.jonah' => 'Jonah',
+			'bookAbbreviations.micah' => 'Mic',
+			'bookAbbreviations.nahum' => 'Nah',
+			'bookAbbreviations.habakkuk' => 'Hab',
+			'bookAbbreviations.zephaniah' => 'Zeph',
+			'bookAbbreviations.haggai' => 'Hag',
+			'bookAbbreviations.zechariah' => 'Zech',
+			'bookAbbreviations.malachi' => 'Mal',
+			'bookAbbreviations.matthew' => 'Matt',
+			'bookAbbreviations.mark' => 'Mark',
+			'bookAbbreviations.luke' => 'Luke',
+			'bookAbbreviations.john' => 'John',
+			'bookAbbreviations.acts' => 'Acts',
+			'bookAbbreviations.romans' => 'Rom',
+			'bookAbbreviations.corinthians1' => '1 Cor',
+			'bookAbbreviations.corinthians2' => '2 Cor',
+			'bookAbbreviations.galatians' => 'Gal',
+			'bookAbbreviations.ephesians' => 'Eph',
+			'bookAbbreviations.philippians' => 'Phil',
+			'bookAbbreviations.colossians' => 'Col',
+			'bookAbbreviations.thessalonians1' => '1 Thess',
+			'bookAbbreviations.thessalonians2' => '2 Thess',
+			'bookAbbreviations.timothy1' => '1 Tim',
+			'bookAbbreviations.timothy2' => '2 Tim',
+			'bookAbbreviations.titus' => 'Titus',
+			'bookAbbreviations.philemon' => 'Phlm',
+			'bookAbbreviations.hebrews' => 'Heb',
+			'bookAbbreviations.james' => 'Jas',
+			'bookAbbreviations.peter1' => '1 Pet',
+			'bookAbbreviations.peter2' => '2 Pet',
+			'bookAbbreviations.john1' => '1 John',
+			'bookAbbreviations.john2' => '2 John',
+			'bookAbbreviations.john3' => '3 John',
+			'bookAbbreviations.jude' => 'Jude',
+			'bookAbbreviations.revelation' => 'Rev',
 			'common.add' => 'Add',
 			'common.addNew' => 'Add New',
 			'common.am' => 'AM',
@@ -5978,6 +6289,8 @@ extension on Translations {
 			'toolbarSettings.textShortcut' => 'Text Selection Shortcut',
 			'themeSettings.title' => 'Theme & Layout',
 			'themeSettings.brightness' => 'Brightness',
+			_ => null,
+		} ?? switch (path) {
 			'themeSettings.font' => 'Font',
 			'themeSettings.fontSizeSpacing' => 'Font Size & Spacing',
 			'themeSettings.greekFontSizeSpacing' => 'Greek Font Size & Spacing',
@@ -6044,8 +6357,6 @@ extension on Translations {
 			'biblePlans.importStartQuestion' => 'Where would you like to start?',
 			'biblePlans.continueProgress' => 'Continue Progress',
 			'biblePlans.continueProgressDescription' => ({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(total, one: 'Start with ${completed} of ${total} day already complete. You won\'t be able to edit the plan.', other: 'Start with ${completed} of ${total} days already complete. You won\'t be able to edit the plan.', ), 
-			_ => null,
-		} ?? switch (path) {
 			'biblePlans.startFresh' => 'Start Fresh',
 			'biblePlans.startFreshDescription' => 'Start with no days complete. You can review and edit the plan first.',
 			'biblePlans.importErrors.readFailed' => 'Lux couldn\'t read this file. Try choosing it again.',
@@ -6375,6 +6686,15 @@ extension on Translations {
 			'navigation.book' => 'Book',
 			'navigation.chapter' => 'Chapter',
 			'navigation.verse' => 'Verse',
+			'navigation.showMore' => ({required Object count}) => 'Show ${count} More',
+			'navigationSettings.title' => 'Navigation',
+			'navigationSettings.general' => 'General',
+			'navigationSettings.list' => 'List',
+			'navigationSettings.grid' => 'Grid',
+			'navigationSettings.showRecents' => 'Show Recents',
+			'navigationSettings.showRecentsDescription' => 'Show recently read chapters above the books.',
+			'navigationSettings.openKeyboard' => 'Open Keyboard',
+			'navigationSettings.openKeyboardDescription' => 'Open the keyboard when navigation opens and when scrolling back up, so you can start typing right away.',
 			'bibleSheet.allBibles' => 'All Bibles',
 			'bibleSheet.availableCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} Bible Available', other: '${count} Bibles Available', ), 
 			'bibleSheet.wantAnotherTranslation' => 'Want another translation?',
@@ -6483,6 +6803,8 @@ extension on Translations {
 			'morphology.types.interrogativeParticle.description' => 'A particle that marks a question.',
 			'morphology.types.interrogativeParticle.examples' => '(Hebrew prefix ה, no English equivalent)',
 			'morphology.types.demonstrativeParticle.name' => 'Demonstrative particle',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.demonstrativeParticle.description' => 'A pointing particle, such as "behold".',
 			'morphology.types.demonstrativeParticle.examples' => 'behold|lo',
 			'morphology.types.genericParticle.name' => 'Generic particle',
@@ -6558,8 +6880,6 @@ extension on Translations {
 			'morphology.kCase.accusative.description' => 'Marks the direct object.',
 			'morphology.kCase.accusative.examples' => 'saw him|love your neighbor',
 			'morphology.kCase.vocative.name' => 'Vocative',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.kCase.vocative.description' => 'Used in direct address.',
 			'morphology.kCase.vocative.examples' => 'Lord!|Father!|Friend!',
 			'morphology.state.absolute.name' => 'Absolute',

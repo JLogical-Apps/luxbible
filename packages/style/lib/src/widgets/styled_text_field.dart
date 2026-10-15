@@ -125,7 +125,9 @@ class StyledTextField extends HookWidget {
           if (focusNode.hasPrimaryFocus && onChanged != null && remainingSuggestedText != null)
             Positioned.fill(
               child: Padding(
-                padding: EdgeInsets.all(12) + .only(left: 6 + textStyle.getWidth(text)),
+                padding:
+                    EdgeInsets.all(12) +
+                    .only(left: 6 + textStyle.getWidth(text, textScaler: MediaQuery.textScalerOf(context))),
                 child: Text(remainingSuggestedText, style: textStyle.subtle()),
               ),
             ),

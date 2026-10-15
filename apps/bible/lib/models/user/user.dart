@@ -16,6 +16,7 @@ import 'package:bible/models/user/language.dart';
 import 'package:bible/models/user/main_toolbar_configuration.dart';
 import 'package:bible/models/user/message.dart';
 import 'package:bible/models/user/migration.dart';
+import 'package:bible/models/user/navigation_configuration.dart';
 import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/models/user/text_selection_configuration.dart';
 import 'package:bible/models/user/theme_layout_configuration.dart';
@@ -78,6 +79,7 @@ sealed class User with _$User {
     CalendarDateTime? lastActiveDate,
     @JsonKey(readValue: _readLastReviewRequestDate) CalendarDateTime? lastReviewRequestDate,
     @Default(CopyConfiguration()) CopyConfiguration copy,
+    @Default(NavigationConfiguration()) NavigationConfiguration navigation,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -295,11 +297,12 @@ sealed class User with _$User {
     return copyWith(
       lastPosition: position,
       currentBookmarkId: bookmarkId,
+      // The current position plus the 20 recents navigation shows.
       viewHistory: [
         position,
         lastPosition,
         ...viewHistory,
-      ].distinctBy((position) => position.reference).take(5).toList(),
+      ].distinctBy((position) => position.reference).take(21).toList(),
     );
   }
 

@@ -152,17 +152,18 @@ Opening a shared passage link returns to the Bible page, closing any pages above
 
 ## Navigation
 
-Tapping the main toolbar opens the reference navigation page.
+Tapping the main toolbar opens the reference navigation page. Its settings button opens Navigation settings, which are also on the More page.
 
 ### Book
 
-- Lists all Bible books
+- Lists all Bible books in Old Testament and New Testament sections
+- Shows books as a list of full names or a grid of short abbreviations, following the Navigation settings layout
 - Accepts typed filtering and fuzzy matching
 - Advances to Chapter when a typed book is disambiguated and followed by a space
 
 ### Chapter
 
-- Lists the chapters available for the selected book
+- Lists the chapters available for the selected book, as a list or a grid of chapter numbers following the Navigation settings layout
 - Accepts numeric filtering
 - Opens the selected chapter by tap or keyboard submission
 - Advances to Verse when a valid typed chapter is followed by a space
@@ -184,9 +185,13 @@ Tapping the main toolbar opens the reference navigation page.
 The navigation page displays:
 
 - Bookmarked chapters
-- Up to four other recent reading positions, because the five-position history includes the current position
+- Up to 20 other recent reading positions, starting with the five most recent and a Show More link for the rest
 
-Recent positions can be removed individually.
+Recent positions can be removed individually. Recents can be hidden in Navigation settings without clearing the history.
+
+### Keyboard
+
+By default the keyboard opens with the book field focused. Turning off Open Keyboard in Navigation settings leaves the keyboard closed until a field is tapped, and scrolling back up does not reopen it, so books and chapters can be picked by tapping alone.
 
 ### In-Session Undo and Redo
 

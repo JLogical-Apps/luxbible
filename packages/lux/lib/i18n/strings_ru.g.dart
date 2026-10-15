@@ -43,6 +43,7 @@ class TranslationsRu extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$colors$ru colors = _Translations$colors$ru._(_root);
 	@override late final _Translations$testaments$ru testaments = _Translations$testaments$ru._(_root);
 	@override late final _Translations$books$ru books = _Translations$books$ru._(_root);
+	@override late final _Translations$bookAbbreviations$ru bookAbbreviations = _Translations$bookAbbreviations$ru._(_root);
 	@override late final _Translations$common$ru common = _Translations$common$ru._(_root);
 	@override late final _Translations$copySheet$ru copySheet = _Translations$copySheet$ru._(_root);
 	@override late final _Translations$regionTypes$ru regionTypes = _Translations$regionTypes$ru._(_root);
@@ -89,6 +90,7 @@ class TranslationsRu extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$creeds$ru creeds = _Translations$creeds$ru._(_root);
 	@override late final _Translations$videos$ru videos = _Translations$videos$ru._(_root);
 	@override late final _Translations$navigation$ru navigation = _Translations$navigation$ru._(_root);
+	@override late final _Translations$navigationSettings$ru navigationSettings = _Translations$navigationSettings$ru._(_root);
 	@override late final _Translations$bibleSheet$ru bibleSheet = _Translations$bibleSheet$ru._(_root);
 	@override late final _Translations$passageSelection$ru passageSelection = _Translations$passageSelection$ru._(_root);
 	@override late final _Translations$selectionUi$ru selectionUi = _Translations$selectionUi$ru._(_root);
@@ -242,6 +244,81 @@ class _Translations$books$ru extends Translations$books$en {
 	@override String get john3 => '3 Иоанна';
 	@override String get jude => 'Иуда';
 	@override String get revelation => 'Откровение';
+}
+
+// Path: bookAbbreviations
+class _Translations$bookAbbreviations$ru extends Translations$bookAbbreviations$en {
+	_Translations$bookAbbreviations$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get genesis => 'Быт';
+	@override String get exodus => 'Исх';
+	@override String get leviticus => 'Лев';
+	@override String get numbers => 'Чис';
+	@override String get deuteronomy => 'Втор';
+	@override String get joshua => 'Нав';
+	@override String get judges => 'Суд';
+	@override String get ruth => 'Руф';
+	@override String get samuel1 => '1 Цар';
+	@override String get samuel2 => '2 Цар';
+	@override String get kings1 => '3 Цар';
+	@override String get kings2 => '4 Цар';
+	@override String get chronicles1 => '1 Пар';
+	@override String get chronicles2 => '2 Пар';
+	@override String get ezra => 'Ездр';
+	@override String get nehemiah => 'Неем';
+	@override String get esther => 'Есф';
+	@override String get job => 'Иов';
+	@override String get psalms => 'Пс';
+	@override String get proverbs => 'Притч';
+	@override String get ecclesiastes => 'Еккл';
+	@override String get songOfSolomon => 'Песн';
+	@override String get isaiah => 'Ис';
+	@override String get jeremiah => 'Иер';
+	@override String get lamentations => 'Плач';
+	@override String get ezekiel => 'Иез';
+	@override String get daniel => 'Дан';
+	@override String get hosea => 'Ос';
+	@override String get joel => 'Иоил';
+	@override String get amos => 'Ам';
+	@override String get obadiah => 'Авд';
+	@override String get jonah => 'Ион';
+	@override String get micah => 'Мих';
+	@override String get nahum => 'Наум';
+	@override String get habakkuk => 'Авв';
+	@override String get zephaniah => 'Соф';
+	@override String get haggai => 'Агг';
+	@override String get zechariah => 'Зах';
+	@override String get malachi => 'Мал';
+	@override String get matthew => 'Мф';
+	@override String get mark => 'Мк';
+	@override String get luke => 'Лк';
+	@override String get john => 'Ин';
+	@override String get acts => 'Деян';
+	@override String get romans => 'Рим';
+	@override String get corinthians1 => '1 Кор';
+	@override String get corinthians2 => '2 Кор';
+	@override String get galatians => 'Гал';
+	@override String get ephesians => 'Еф';
+	@override String get philippians => 'Флп';
+	@override String get colossians => 'Кол';
+	@override String get thessalonians1 => '1 Фес';
+	@override String get thessalonians2 => '2 Фес';
+	@override String get timothy1 => '1 Тим';
+	@override String get timothy2 => '2 Тим';
+	@override String get titus => 'Тит';
+	@override String get philemon => 'Флм';
+	@override String get hebrews => 'Евр';
+	@override String get james => 'Иак';
+	@override String get peter1 => '1 Пет';
+	@override String get peter2 => '2 Пет';
+	@override String get john1 => '1 Ин';
+	@override String get john2 => '2 Ин';
+	@override String get john3 => '3 Ин';
+	@override String get jude => 'Иуд';
+	@override String get revelation => 'Откр';
 }
 
 // Path: common
@@ -1428,6 +1505,24 @@ class _Translations$navigation$ru extends Translations$navigation$en {
 	@override String get book => 'Книга';
 	@override String get chapter => 'Глава';
 	@override String get verse => 'Стих';
+	@override String showMore({required Object count}) => 'Показать ещё ${count}';
+}
+
+// Path: navigationSettings
+class _Translations$navigationSettings$ru extends Translations$navigationSettings$en {
+	_Translations$navigationSettings$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Навигация';
+	@override String get general => 'Общие';
+	@override String get list => 'Список';
+	@override String get grid => 'Сетка';
+	@override String get showRecents => 'Показывать недавние';
+	@override String get showRecentsDescription => 'Показывать недавно прочитанные главы над списком книг.';
+	@override String get openKeyboard => 'Открывать клавиатуру';
+	@override String get openKeyboardDescription => 'Открывать клавиатуру при открытии навигации и при прокрутке вверх, чтобы можно было сразу начать ввод.';
 }
 
 // Path: bibleSheet
@@ -3255,6 +3350,72 @@ extension on TranslationsRu {
 			'books.john3' => '3 Иоанна',
 			'books.jude' => 'Иуда',
 			'books.revelation' => 'Откровение',
+			'bookAbbreviations.genesis' => 'Быт',
+			'bookAbbreviations.exodus' => 'Исх',
+			'bookAbbreviations.leviticus' => 'Лев',
+			'bookAbbreviations.numbers' => 'Чис',
+			'bookAbbreviations.deuteronomy' => 'Втор',
+			'bookAbbreviations.joshua' => 'Нав',
+			'bookAbbreviations.judges' => 'Суд',
+			'bookAbbreviations.ruth' => 'Руф',
+			'bookAbbreviations.samuel1' => '1 Цар',
+			'bookAbbreviations.samuel2' => '2 Цар',
+			'bookAbbreviations.kings1' => '3 Цар',
+			'bookAbbreviations.kings2' => '4 Цар',
+			'bookAbbreviations.chronicles1' => '1 Пар',
+			'bookAbbreviations.chronicles2' => '2 Пар',
+			'bookAbbreviations.ezra' => 'Ездр',
+			'bookAbbreviations.nehemiah' => 'Неем',
+			'bookAbbreviations.esther' => 'Есф',
+			'bookAbbreviations.job' => 'Иов',
+			'bookAbbreviations.psalms' => 'Пс',
+			'bookAbbreviations.proverbs' => 'Притч',
+			'bookAbbreviations.ecclesiastes' => 'Еккл',
+			'bookAbbreviations.songOfSolomon' => 'Песн',
+			'bookAbbreviations.isaiah' => 'Ис',
+			'bookAbbreviations.jeremiah' => 'Иер',
+			'bookAbbreviations.lamentations' => 'Плач',
+			'bookAbbreviations.ezekiel' => 'Иез',
+			'bookAbbreviations.daniel' => 'Дан',
+			'bookAbbreviations.hosea' => 'Ос',
+			'bookAbbreviations.joel' => 'Иоил',
+			'bookAbbreviations.amos' => 'Ам',
+			'bookAbbreviations.obadiah' => 'Авд',
+			'bookAbbreviations.jonah' => 'Ион',
+			'bookAbbreviations.micah' => 'Мих',
+			'bookAbbreviations.nahum' => 'Наум',
+			'bookAbbreviations.habakkuk' => 'Авв',
+			'bookAbbreviations.zephaniah' => 'Соф',
+			'bookAbbreviations.haggai' => 'Агг',
+			'bookAbbreviations.zechariah' => 'Зах',
+			'bookAbbreviations.malachi' => 'Мал',
+			'bookAbbreviations.matthew' => 'Мф',
+			'bookAbbreviations.mark' => 'Мк',
+			'bookAbbreviations.luke' => 'Лк',
+			'bookAbbreviations.john' => 'Ин',
+			'bookAbbreviations.acts' => 'Деян',
+			'bookAbbreviations.romans' => 'Рим',
+			'bookAbbreviations.corinthians1' => '1 Кор',
+			'bookAbbreviations.corinthians2' => '2 Кор',
+			'bookAbbreviations.galatians' => 'Гал',
+			'bookAbbreviations.ephesians' => 'Еф',
+			'bookAbbreviations.philippians' => 'Флп',
+			'bookAbbreviations.colossians' => 'Кол',
+			'bookAbbreviations.thessalonians1' => '1 Фес',
+			'bookAbbreviations.thessalonians2' => '2 Фес',
+			'bookAbbreviations.timothy1' => '1 Тим',
+			'bookAbbreviations.timothy2' => '2 Тим',
+			'bookAbbreviations.titus' => 'Тит',
+			'bookAbbreviations.philemon' => 'Флм',
+			'bookAbbreviations.hebrews' => 'Евр',
+			'bookAbbreviations.james' => 'Иак',
+			'bookAbbreviations.peter1' => '1 Пет',
+			'bookAbbreviations.peter2' => '2 Пет',
+			'bookAbbreviations.john1' => '1 Ин',
+			'bookAbbreviations.john2' => '2 Ин',
+			'bookAbbreviations.john3' => '3 Ин',
+			'bookAbbreviations.jude' => 'Иуд',
+			'bookAbbreviations.revelation' => 'Откр',
 			'common.add' => 'Добавить',
 			'common.addNew' => 'Добавить',
 			'common.am' => 'ДП',
@@ -3599,6 +3760,8 @@ extension on TranslationsRu {
 			'toolbarSettings.mainShortcut' => 'Ярлык на главной панели инструментов',
 			'toolbarSettings.verseShortcut' => 'Ярлык выбора стиха',
 			'toolbarSettings.textShortcut' => 'Ярлык выбора текста',
+			_ => null,
+		} ?? switch (path) {
 			'themeSettings.title' => 'Тема и макет',
 			'themeSettings.brightness' => 'Яркость',
 			'themeSettings.font' => 'Шрифт',
@@ -3665,8 +3828,6 @@ extension on TranslationsRu {
 			'biblePlans.includeTargetDate' => 'Включить дату окончания',
 			'biblePlans.includeTargetDateDescription' => ({required Object date}) => 'Предложите завершить план по графику к ${date}.',
 			'biblePlans.importStartQuestion' => 'С чего вы хотите начать?',
-			_ => null,
-		} ?? switch (path) {
 			'biblePlans.continueProgress' => 'Продолжить с прогрессом',
 			'biblePlans.continueProgressDescription' => ({required num total, required Object completed}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(total, one: 'Сохраните завершённые дни (${completed} из ${total}). Изменить план будет нельзя.', few: 'Сохраните завершённые дни (${completed} из ${total}). Изменить план будет нельзя.', many: 'Сохраните завершённые дни (${completed} из ${total}). Изменить план будет нельзя.', other: 'Сохраните завершённые дни (${completed} из ${total}). Изменить план будет нельзя.', ), 
 			'biblePlans.startFresh' => 'Начать сначала',
@@ -3998,6 +4159,15 @@ extension on TranslationsRu {
 			'navigation.book' => 'Книга',
 			'navigation.chapter' => 'Глава',
 			'navigation.verse' => 'Стих',
+			'navigation.showMore' => ({required Object count}) => 'Показать ещё ${count}',
+			'navigationSettings.title' => 'Навигация',
+			'navigationSettings.general' => 'Общие',
+			'navigationSettings.list' => 'Список',
+			'navigationSettings.grid' => 'Сетка',
+			'navigationSettings.showRecents' => 'Показывать недавние',
+			'navigationSettings.showRecentsDescription' => 'Показывать недавно прочитанные главы над списком книг.',
+			'navigationSettings.openKeyboard' => 'Открывать клавиатуру',
+			'navigationSettings.openKeyboardDescription' => 'Открывать клавиатуру при открытии навигации и при прокрутке вверх, чтобы можно было сразу начать ввод.',
 			'bibleSheet.allBibles' => 'Все Библии',
 			'bibleSheet.availableCount' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: '${count} Библия доступна', few: '${count} Библии доступны', many: '${count} Библий доступно', other: '${count} Библии доступны', ), 
 			'bibleSheet.wantAnotherTranslation' => 'Хотите другой перевод?',
@@ -4104,6 +4274,8 @@ extension on TranslationsRu {
 			'morphology.types.negativeParticle.examples' => 'нет|нет',
 			'morphology.types.interrogativeParticle.name' => 'Вопросительная частица',
 			'morphology.types.interrogativeParticle.description' => 'Частица, обозначающая вопрос.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.interrogativeParticle.examples' => '(префикс на иврите ה, английского эквивалента нет)',
 			'morphology.types.demonstrativeParticle.name' => 'Демонстративная частица',
 			'morphology.types.demonstrativeParticle.description' => 'Указательная частица, например «вот».',
@@ -4179,8 +4351,6 @@ extension on TranslationsRu {
 			'morphology.kCase.dative.examples' => 'дал ему | поговорил с ними',
 			'morphology.kCase.accusative.name' => 'Винительный падеж',
 			'morphology.kCase.accusative.description' => 'Отмечает прямой объект.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.kCase.accusative.examples' => 'видел его|люби своего соседа',
 			'morphology.kCase.vocative.name' => 'Звательный падеж',
 			'morphology.kCase.vocative.description' => 'Используется по прямому адресу.',
