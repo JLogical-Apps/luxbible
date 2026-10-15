@@ -99,7 +99,7 @@ Mac and Apple Vision availability inherited from Apple's compatibility system is
 - Discord is the primary discussion and feedback channel.
 - Instagram, TikTok, Facebook, and YouTube are used for tips, videos, and product updates.
 
-Lux does not currently have structured in-app feedback collection, a public roadmap, or a public changelog.
+Lux does not currently have structured in-app feedback collection, a public roadmap, or a public changelog. The in-app What's New shows highlights of the latest notable release only.
 
 ## Website
 

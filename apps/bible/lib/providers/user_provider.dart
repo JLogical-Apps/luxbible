@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:bible/models/calendar_date_time.dart';
+import 'package:bible/models/whats_new_highlight.dart';
 import 'package:bible/models/user/language.dart';
 import 'package:bible/models/user/migration.dart';
 import 'package:bible/models/user/onboarding_progress.dart';
@@ -31,6 +32,7 @@ class UserNotifier extends _$UserNotifier {
       translation: getDefaultBibleTranslations(Language.device).first,
       recentBibles: [getDefaultBibleTranslations(Language.device).first],
       latestMigration: Migration.values.last,
+      lastSeenWhatsNewVersion: WhatsNewHighlight.releaseVersion,
     );
   }
 
@@ -81,6 +83,11 @@ class UserNotifier extends _$UserNotifier {
     if (state.onboarding case final onboarding?) logOnboardingEnded(onboarding);
     update((user) => user.withOnboardingStarted(tour));
     AnalyticsEvent.onboardingStarted(tour).log();
+  }
+
+  void markWhatsNewOpened() {
+    AnalyticsEvent.whatsNewOpened.log();
+    update((user) => user.copyWith(lastSeenWhatsNewVersion: WhatsNewHighlight.releaseVersion));
   }
 
   void dismissOnboarding() {

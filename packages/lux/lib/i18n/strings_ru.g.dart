@@ -68,6 +68,7 @@ class TranslationsRu extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$biblePlans$ru biblePlans = _Translations$biblePlans$ru._(_root);
 	@override late final _Translations$searchUi$ru searchUi = _Translations$searchUi$ru._(_root);
 	@override late final _Translations$onboarding$ru onboarding = _Translations$onboarding$ru._(_root);
+	@override late final _Translations$whatsNew$ru whatsNew = _Translations$whatsNew$ru._(_root);
 	@override late final _Translations$analyticsNotice$ru analyticsNotice = _Translations$analyticsNotice$ru._(_root);
 	@override late final _Translations$renamedBiblePlansNotice$ru renamedBiblePlansNotice = _Translations$renamedBiblePlansNotice$ru._(_root);
 	@override late final _Translations$tutorials$ru tutorials = _Translations$tutorials$ru._(_root);
@@ -1122,6 +1123,32 @@ class _Translations$onboarding$ru extends Translations$onboarding$en {
 	@override String get skipHint => 'Торопитесь? Нажмите ✕, чтобы пропустить.';
 	@override String get joinDiscord => 'Присоединяйтесь к нашему сообществу в Discord';
 	@override String get discordInvitation => 'Задавайте вопросы, делитесь отзывами и общайтесь с другими пользователями Lux.';
+}
+
+// Path: whatsNew
+class _Translations$whatsNew$ru extends Translations$whatsNew$en {
+	_Translations$whatsNew$ru._(TranslationsRu root) : this._root = root, super.internal(root);
+
+	final TranslationsRu _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Что нового';
+	@override String get description => 'Посмотрите, что изменилось в этом обновлении.';
+	@override String get enjoyingLux => 'Нравится Lux?';
+	@override String reviewInvitation({required Object store}) => 'Отзыв в ${store} помогает другим найти Lux.';
+	@override String get rate => 'Оценить';
+	@override String get haveIdeas => 'Есть отзывы или идеи?';
+	@override String get discordInvitation => 'Поделитесь ими с нами и другими пользователями Lux в Discord.';
+	@override String get planToolbarTitle => 'Планы как основное чтение';
+	@override String get planToolbarDescription => 'В днях плана теперь есть главная панель инструментов, панели изучения и аудио, а также кнопка перехода к следующему отрывку.';
+	@override String get planTransferTitle => 'Делитесь планами с прогрессом';
+	@override String get planTransferDescription => 'Делитесь планом с прогрессом и датой окончания и продолжайте с этого прогресса после импорта.';
+	@override String get completeThroughTitle => 'Наверстайте за один шаг';
+	@override String get completeThroughDescription => 'Отметьте в меню плана все дни до выбранного как завершённые.';
+	@override String get navigationSettingsTitle => 'Настройки навигации';
+	@override String get navigationSettingsDescription => 'Выбирайте книги и главы из списка или сетки, скрывайте недавние и решайте, открывать ли клавиатуру.';
+	@override String get tutorialsTitle => 'Новые чек-листы';
+	@override String get tutorialsDescription => '«Начать» и «Расширенное обучение» знакомят с Lux. Запустите любой из них в разделе Ещё > Помощь.';
 }
 
 // Path: analyticsNotice
@@ -3979,6 +4006,23 @@ extension on TranslationsRu {
 			'onboarding.skipHint' => 'Торопитесь? Нажмите ✕, чтобы пропустить.',
 			'onboarding.joinDiscord' => 'Присоединяйтесь к нашему сообществу в Discord',
 			'onboarding.discordInvitation' => 'Задавайте вопросы, делитесь отзывами и общайтесь с другими пользователями Lux.',
+			'whatsNew.title' => 'Что нового',
+			'whatsNew.description' => 'Посмотрите, что изменилось в этом обновлении.',
+			'whatsNew.enjoyingLux' => 'Нравится Lux?',
+			'whatsNew.reviewInvitation' => ({required Object store}) => 'Отзыв в ${store} помогает другим найти Lux.',
+			'whatsNew.rate' => 'Оценить',
+			'whatsNew.haveIdeas' => 'Есть отзывы или идеи?',
+			'whatsNew.discordInvitation' => 'Поделитесь ими с нами и другими пользователями Lux в Discord.',
+			'whatsNew.planToolbarTitle' => 'Планы как основное чтение',
+			'whatsNew.planToolbarDescription' => 'В днях плана теперь есть главная панель инструментов, панели изучения и аудио, а также кнопка перехода к следующему отрывку.',
+			'whatsNew.planTransferTitle' => 'Делитесь планами с прогрессом',
+			'whatsNew.planTransferDescription' => 'Делитесь планом с прогрессом и датой окончания и продолжайте с этого прогресса после импорта.',
+			'whatsNew.completeThroughTitle' => 'Наверстайте за один шаг',
+			'whatsNew.completeThroughDescription' => 'Отметьте в меню плана все дни до выбранного как завершённые.',
+			'whatsNew.navigationSettingsTitle' => 'Настройки навигации',
+			'whatsNew.navigationSettingsDescription' => 'Выбирайте книги и главы из списка или сетки, скрывайте недавние и решайте, открывать ли клавиатуру.',
+			'whatsNew.tutorialsTitle' => 'Новые чек-листы',
+			'whatsNew.tutorialsDescription' => '«Начать» и «Расширенное обучение» знакомят с Lux. Запустите любой из них в разделе Ещё > Помощь.',
 			'analyticsNotice.title' => 'Об анонимной аналитике',
 			'analyticsNotice.description' => 'Lux теперь использует анонимную аналитику и отчёты о сбоях, чтобы понимать, какие функции востребованы, и повышать надёжность. Эти отчёты никогда не содержат ваши заметки, названия планов чтения или сведения о ходе чтения, поисковые запросы либо другой личный контент и не связаны с учётной записью. Продолжая пользоваться Lux, вы соглашаетесь на отправку этой информации.',
 			'renamedBiblePlansNotice.title' => 'Планы чтения Библии обновлены',
@@ -4257,6 +4301,8 @@ extension on TranslationsRu {
 			'morphology.types.interrogativePronoun.description' => 'Местоимение, используемое для задания вопроса.',
 			'morphology.types.interrogativePronoun.examples' => 'кто?|что?|что?',
 			'morphology.types.indefinitePronoun.name' => 'Неопределённое местоимение',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.indefinitePronoun.description' => 'Местоимение, обозначающее неспецифические сущности.',
 			'morphology.types.indefinitePronoun.examples' => 'кто-то|кто-то|ничего',
 			'morphology.types.reciprocalPronoun.name' => 'Взаимное местоимение',
@@ -4274,8 +4320,6 @@ extension on TranslationsRu {
 			'morphology.types.negativeParticle.name' => 'Отрицательная частица',
 			'morphology.types.negativeParticle.description' => 'Частица, обозначающая отрицание.',
 			'morphology.types.negativeParticle.examples' => 'нет|нет',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.interrogativeParticle.name' => 'Вопросительная частица',
 			'morphology.types.interrogativeParticle.description' => 'Частица, обозначающая вопрос.',
 			'morphology.types.interrogativeParticle.examples' => '(префикс на иврите ה, английского эквивалента нет)',

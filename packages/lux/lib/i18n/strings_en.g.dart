@@ -64,6 +64,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final Translations$biblePlans$en biblePlans = Translations$biblePlans$en.internal(_root);
 	late final Translations$searchUi$en searchUi = Translations$searchUi$en.internal(_root);
 	late final Translations$onboarding$en onboarding = Translations$onboarding$en.internal(_root);
+	late final Translations$whatsNew$en whatsNew = Translations$whatsNew$en.internal(_root);
 	late final Translations$analyticsNotice$en analyticsNotice = Translations$analyticsNotice$en.internal(_root);
 	late final Translations$renamedBiblePlansNotice$en renamedBiblePlansNotice = Translations$renamedBiblePlansNotice$en.internal(_root);
 	late final Translations$tutorials$en tutorials = Translations$tutorials$en.internal(_root);
@@ -2498,6 +2499,66 @@ class Translations$onboarding$en {
 
 	/// en: 'Ask questions, share feedback, and connect with others using Lux.'
 	String get discordInvitation => 'Ask questions, share feedback, and connect with others using Lux.';
+}
+
+// Path: whatsNew
+class Translations$whatsNew$en {
+	Translations$whatsNew$en.internal(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'What's New'
+	String get title => 'What\'s New';
+
+	/// en: 'See what changed in this update.'
+	String get description => 'See what changed in this update.';
+
+	/// en: 'Enjoying Lux?'
+	String get enjoyingLux => 'Enjoying Lux?';
+
+	/// en: 'A review on the {store} helps others find it.'
+	String reviewInvitation({required Object store}) => 'A review on the ${store} helps others find it.';
+
+	/// en: 'Rate'
+	String get rate => 'Rate';
+
+	/// en: 'Have feedback or ideas?'
+	String get haveIdeas => 'Have feedback or ideas?';
+
+	/// en: 'Share them with us and others using Lux on Discord.'
+	String get discordInvitation => 'Share them with us and others using Lux on Discord.';
+
+	/// en: 'Bible Plans Like the Main Reader'
+	String get planToolbarTitle => 'Bible Plans Like the Main Reader';
+
+	/// en: 'Plan days now show your main toolbar, study panels, and audio, with a button to move to the next passage.'
+	String get planToolbarDescription => 'Plan days now show your main toolbar, study panels, and audio, with a button to move to the next passage.';
+
+	/// en: 'Share Plans With Progress'
+	String get planTransferTitle => 'Share Plans With Progress';
+
+	/// en: 'Share a plan with your progress and target end date, then continue from that progress when you import it.'
+	String get planTransferDescription => 'Share a plan with your progress and target end date, then continue from that progress when you import it.';
+
+	/// en: 'Catch Up in One Step'
+	String get completeThroughTitle => 'Catch Up in One Step';
+
+	/// en: 'Mark every day up to the one you choose as complete from a plan's menu.'
+	String get completeThroughDescription => 'Mark every day up to the one you choose as complete from a plan\'s menu.';
+
+	/// en: 'Navigation Settings'
+	String get navigationSettingsTitle => 'Navigation Settings';
+
+	/// en: 'Pick books and chapters from a list or grid, hide recents, and choose whether the keyboard opens.'
+	String get navigationSettingsDescription => 'Pick books and chapters from a list or grid, hide recents, and choose whether the keyboard opens.';
+
+	/// en: 'New Checklists'
+	String get tutorialsTitle => 'New Checklists';
+
+	/// en: 'Get Started and the Advanced Tutorial walk you through Lux. Start either one from More > Help.'
+	String get tutorialsDescription => 'Get Started and the Advanced Tutorial walk you through Lux. Start either one from More > Help.';
 }
 
 // Path: analyticsNotice
@@ -6506,6 +6567,23 @@ extension on Translations {
 			'onboarding.skipHint' => 'In a hurry? Tap ✕ to skip.',
 			'onboarding.joinDiscord' => 'Join our Discord community',
 			'onboarding.discordInvitation' => 'Ask questions, share feedback, and connect with others using Lux.',
+			'whatsNew.title' => 'What\'s New',
+			'whatsNew.description' => 'See what changed in this update.',
+			'whatsNew.enjoyingLux' => 'Enjoying Lux?',
+			'whatsNew.reviewInvitation' => ({required Object store}) => 'A review on the ${store} helps others find it.',
+			'whatsNew.rate' => 'Rate',
+			'whatsNew.haveIdeas' => 'Have feedback or ideas?',
+			'whatsNew.discordInvitation' => 'Share them with us and others using Lux on Discord.',
+			'whatsNew.planToolbarTitle' => 'Bible Plans Like the Main Reader',
+			'whatsNew.planToolbarDescription' => 'Plan days now show your main toolbar, study panels, and audio, with a button to move to the next passage.',
+			'whatsNew.planTransferTitle' => 'Share Plans With Progress',
+			'whatsNew.planTransferDescription' => 'Share a plan with your progress and target end date, then continue from that progress when you import it.',
+			'whatsNew.completeThroughTitle' => 'Catch Up in One Step',
+			'whatsNew.completeThroughDescription' => 'Mark every day up to the one you choose as complete from a plan\'s menu.',
+			'whatsNew.navigationSettingsTitle' => 'Navigation Settings',
+			'whatsNew.navigationSettingsDescription' => 'Pick books and chapters from a list or grid, hide recents, and choose whether the keyboard opens.',
+			'whatsNew.tutorialsTitle' => 'New Checklists',
+			'whatsNew.tutorialsDescription' => 'Get Started and the Advanced Tutorial walk you through Lux. Start either one from More > Help.',
 			'analyticsNotice.title' => 'A Note About Anonymous Analytics',
 			'analyticsNotice.description' => 'Lux now uses anonymous analytics and crash reports to understand which features are used and improve reliability.\n\nThese reports never include your notes, Bible plan names or reading details, search terms, or other private content, and they are not linked to an account.\n\nBy continuing to use Lux, you agree to this information being sent.',
 			'renamedBiblePlansNotice.title' => 'Bible Plans Have Updated',
@@ -6786,6 +6864,8 @@ extension on Translations {
 			'morphology.types.indefinitePronoun.name' => 'Indefinite pronoun',
 			'morphology.types.indefinitePronoun.description' => 'A pronoun referring to non-specific entities.',
 			'morphology.types.indefinitePronoun.examples' => 'someone|anyone|nothing',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.reciprocalPronoun.name' => 'Reciprocal pronoun',
 			'morphology.types.reciprocalPronoun.description' => 'A pronoun expressing mutual action.',
 			'morphology.types.reciprocalPronoun.examples' => 'one another|each other',
@@ -6803,8 +6883,6 @@ extension on Translations {
 			'morphology.types.negativeParticle.examples' => 'not|no',
 			'morphology.types.interrogativeParticle.name' => 'Interrogative particle',
 			'morphology.types.interrogativeParticle.description' => 'A particle that marks a question.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.interrogativeParticle.examples' => '(Hebrew prefix ה, no English equivalent)',
 			'morphology.types.demonstrativeParticle.name' => 'Demonstrative particle',
 			'morphology.types.demonstrativeParticle.description' => 'A pointing particle, such as "behold".',

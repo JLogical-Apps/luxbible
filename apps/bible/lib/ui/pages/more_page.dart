@@ -18,6 +18,7 @@ import 'package:bible/ui/pages/resource_order_settings_page.dart';
 import 'package:bible/ui/pages/text_selection_settings_page.dart';
 import 'package:bible/ui/pages/theme_settings_page.dart';
 import 'package:bible/ui/pages/verse_selection_settings_page.dart';
+import 'package:bible/ui/sheets/whats_new_sheet.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -38,6 +39,16 @@ final youtubeUri = Uri.parse('https://www.youtube.com/@luxbibleapp');
 final tiktokUri = Uri.parse('https://www.tiktok.com/@lux.bible');
 final appStoreReviewUri = Uri.parse('https://apps.apple.com/app/id6759510218?action=write-review');
 final playStoreReviewUri = Uri.parse('https://play.google.com/store/apps/details?id=app.luxbible.app');
+
+void launchDiscord() {
+  AnalyticsEvent.communityLinkPressed.log();
+  launchUrl(discordUri);
+}
+
+Future<void> launchStoreReview() async {
+  AnalyticsEvent.rateLuxPressed.log();
+  await launchUrl(Platform.isIOS ? appStoreReviewUri : playStoreReviewUri, mode: .externalApplication);
+}
 
 class MorePage extends HookConsumerWidget implements StyledRoute<VerseSelection> {
   const MorePage({super.key});
@@ -224,10 +235,7 @@ class MorePage extends HookConsumerWidget implements StyledRoute<VerseSelection>
                   title: t.labels.discord.toText(),
                   subtitle: t.settings.discussionAndAnnouncements.toText(),
                   leading: FaIcon(FontAwesomeIcons.discord),
-                  onPressed: () {
-                    AnalyticsEvent.communityLinkPressed.log();
-                    launchUrl(discordUri);
-                  },
+                  onPressed: launchDiscord,
                 ),
                 StyledListItem.externalNavigation(
                   title: t.labels.instagram.toText(),
@@ -272,13 +280,7 @@ class MorePage extends HookConsumerWidget implements StyledRoute<VerseSelection>
                   title: t.settings.rateLux.toText(),
                   subtitle: t.settings.leaveReview(store: Platform.isIOS ? 'App Store' : 'Play Store').toText(),
                   leading: Symbols.star.toIcon(),
-                  onPressed: () async {
-                    AnalyticsEvent.rateLuxPressed.log();
-                    await launchUrl(
-                      Platform.isIOS ? appStoreReviewUri : playStoreReviewUri,
-                      mode: .externalApplication,
-                    );
-                  },
+                  onPressed: launchStoreReview,
                   trailing: Symbols.arrow_outward.toIcon(),
                 ),
                 Builder(
@@ -316,10 +318,7 @@ class MorePage extends HookConsumerWidget implements StyledRoute<VerseSelection>
                           title: t.labels.discord.toText(),
                           subtitle: t.settings.recommended.toText(),
                           leading: FaIcon(FontAwesomeIcons.discord),
-                          onPressed: () {
-                            AnalyticsEvent.communityLinkPressed.log();
-                            launchUrl(discordUri);
-                          },
+                          onPressed: launchDiscord,
                         ),
                         StyledListItem.externalNavigation(
                           title: t.settings.emailSupport.toText(),
@@ -361,6 +360,15 @@ class MorePage extends HookConsumerWidget implements StyledRoute<VerseSelection>
             title: t.labels.about.toText(),
             child: StyledCard(
               children: [
+                StyledListItem.navigation(
+                  title: t.whatsNew.title.toText(),
+                  subtitle: t.whatsNew.description.toText(),
+                  leading: StyledNotificationDot(
+                    isVisible: user.hasUnseenWhatsNew,
+                    child: Symbols.new_releases.toIcon(),
+                  ),
+                  onPressed: () => WhatsNewSheet.show(context),
+                ),
                 StyledListItem(
                   title: t.labels.version.toText(),
                   subtitle: packageInfo.version.toText(),

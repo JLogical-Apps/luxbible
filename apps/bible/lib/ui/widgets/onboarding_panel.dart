@@ -1,7 +1,6 @@
 import 'package:bible/models/user/onboarding_progress.dart';
 import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/services/analytics_service.dart';
 import 'package:bible/ui/pages/more_page.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +12,6 @@ import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 import 'package:utils_core/utils_core.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class OnboardingPanel extends HookConsumerWidget {
   final OnboardingProgress onboarding;
@@ -122,13 +120,7 @@ class OnboardingPanel extends HookConsumerWidget {
             leading: FaIcon(FontAwesomeIcons.discord),
             title: t.onboarding.joinDiscord.toText(),
             subtitle: t.onboarding.discordInvitation.toText(),
-            action: StyledTextAction(
-              label: t.common.join.toText(),
-              onPressed: () {
-                AnalyticsEvent.communityLinkPressed.log();
-                launchUrl(discordUri);
-              },
-            ),
+            action: StyledTextAction(label: t.common.join.toText(), onPressed: launchDiscord),
           ),
         ),
       ],

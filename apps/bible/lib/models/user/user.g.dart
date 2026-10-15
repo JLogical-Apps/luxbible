@@ -189,6 +189,7 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
       : NavigationConfiguration.fromJson(
           json['navigation'] as Map<String, dynamic>,
         ),
+  lastSeenWhatsNewVersion: json['lastSeenWhatsNewVersion'] as String?,
 );
 
 Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
@@ -251,6 +252,7 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'lastReviewRequestDate': instance.lastReviewRequestDate?.toJson(),
   'copy': instance.copy.toJson(),
   'navigation': instance.navigation.toJson(),
+  'lastSeenWhatsNewVersion': instance.lastSeenWhatsNewVersion,
 };
 
 const _$BibleTranslationEnumMap = {

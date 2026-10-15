@@ -274,7 +274,7 @@ class BibleBody extends HookConsumerWidget {
       mainToolbar: user.mainToolbar,
       translation: user.translation,
       user: user,
-      hasMoreNotification: user.pendingOnboardingTours.isNotEmpty,
+      hasMoreNotification: user.hasUnseenWhatsNew || user.pendingOnboardingTours.isNotEmpty,
       onSwipeLeft: () {
         var history = navigationHistoryState.value;
         if (!history.canUndo) {
@@ -322,7 +322,7 @@ class BibleBody extends HookConsumerWidget {
         onBookmarkAdded: onBookmarkAdded,
       ),
       onMorePressed: () async {
-        final action = await MainActionsSheet.show(context, showsOnboarding: true);
+        final action = await MainActionsSheet.show(context, showsPendingItems: true);
         if (action != null && context.mounted) {
           action.onPressed(
             context,

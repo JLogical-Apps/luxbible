@@ -10,6 +10,7 @@ import 'package:bible/models/notebook.dart';
 import 'package:bible/models/reminder.dart';
 import 'package:bible/models/resource_type.dart';
 import 'package:bible/models/study_panel.dart';
+import 'package:bible/models/whats_new_highlight.dart';
 import 'package:bible/models/user/audio_bible_configuration.dart';
 import 'package:bible/models/user/copy_configuration.dart';
 import 'package:bible/models/user/language.dart';
@@ -82,6 +83,7 @@ sealed class User with _$User {
     @JsonKey(readValue: _readLastReviewRequestDate) CalendarDateTime? lastReviewRequestDate,
     @Default(CopyConfiguration()) CopyConfiguration copy,
     @Default(NavigationConfiguration()) NavigationConfiguration navigation,
+    String? lastSeenWhatsNewVersion,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -184,6 +186,8 @@ sealed class User with _$User {
   List<OnboardingTour> get pendingOnboardingTours => OnboardingTour.values
       .where((tour) => !startedOnboardingTours.has(tour) && activeDayCount >= tour.requiredActiveDayCount)
       .toList();
+
+  bool get hasUnseenWhatsNew => lastSeenWhatsNewVersion != WhatsNewHighlight.releaseVersion;
 
   User withNewBookmark(String bookmarkId, Bookmark bookmark) =>
       copyWith(bookmarkById: {...bookmarkById, bookmarkId: bookmark}, currentBookmarkId: bookmarkId);

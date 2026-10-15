@@ -827,6 +827,25 @@
     "joinDiscord": "Tritt unserer Discord-Community bei",
     "discordInvitation": "Stell Fragen, gib Feedback und vernetze dich mit anderen, die Lux nutzen."
   },
+  "whatsNew": {
+    "title": "Neuigkeiten",
+    "description": "Sieh dir an, was sich mit diesem Update geändert hat.",
+    "enjoyingLux": "Gefällt dir Lux?",
+    "reviewInvitation": "Eine Bewertung im {store} hilft anderen, Lux zu finden.",
+    "rate": "Bewerten",
+    "haveIdeas": "Hast du Feedback oder Ideen?",
+    "discordInvitation": "Teile sie auf Discord mit uns und anderen, die Lux nutzen.",
+    "planToolbarTitle": "Lesepläne wie der normale Leser",
+    "planToolbarDescription": "Plantage zeigen jetzt deine Hauptleiste, Studienpanels und Audio, mit einer Taste zum nächsten Abschnitt.",
+    "planTransferTitle": "Pläne mit Fortschritt teilen",
+    "planTransferDescription": "Teile einen Plan mit Fortschritt und Zielenddatum und mach nach dem Import damit weiter.",
+    "completeThroughTitle": "In einem Schritt aufholen",
+    "completeThroughDescription": "Markiere im Planmenü alle Tage bis zu einem gewählten Tag als abgeschlossen.",
+    "navigationSettingsTitle": "Navigationseinstellungen",
+    "navigationSettingsDescription": "Wähle Bücher und Kapitel aus einer Liste oder einem Raster, blende zuletzt gelesene aus und lege fest, ob sich die Tastatur öffnet.",
+    "tutorialsTitle": "Neue Checklisten",
+    "tutorialsDescription": "„Erste Schritte“ und „Fortgeschrittene Einführung“ führen dich durch Lux. Starte sie unter Mehr > Hilfe."
+  },
   "analyticsNotice": {
     "title": "Ein Hinweis zu anonymen Analysen",
     "description": "Lux verwendet jetzt anonyme Analysen und Absturzberichte, um zu verstehen, welche Funktionen genutzt werden, und die Zuverlässigkeit zu verbessern.\n\nDiese Berichte enthalten niemals deine Notizen, Namen von Leseplänen oder Lesedetails, Suchbegriffe oder andere private Inhalte und sind nicht mit einem Konto verknüpft.\n\nWenn du Lux weiter nutzt, stimmst du der Übermittlung dieser Informationen zu."

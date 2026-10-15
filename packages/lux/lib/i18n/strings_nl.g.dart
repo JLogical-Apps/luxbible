@@ -68,6 +68,7 @@ class TranslationsNl extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$biblePlans$nl biblePlans = _Translations$biblePlans$nl._(_root);
 	@override late final _Translations$searchUi$nl searchUi = _Translations$searchUi$nl._(_root);
 	@override late final _Translations$onboarding$nl onboarding = _Translations$onboarding$nl._(_root);
+	@override late final _Translations$whatsNew$nl whatsNew = _Translations$whatsNew$nl._(_root);
 	@override late final _Translations$analyticsNotice$nl analyticsNotice = _Translations$analyticsNotice$nl._(_root);
 	@override late final _Translations$renamedBiblePlansNotice$nl renamedBiblePlansNotice = _Translations$renamedBiblePlansNotice$nl._(_root);
 	@override late final _Translations$tutorials$nl tutorials = _Translations$tutorials$nl._(_root);
@@ -1104,6 +1105,32 @@ class _Translations$onboarding$nl extends Translations$onboarding$en {
 	@override String get skipHint => 'Weinig tijd? Tik op ✕ om over te slaan.';
 	@override String get joinDiscord => 'Word lid van onze Discord-community';
 	@override String get discordInvitation => 'Stel vragen, deel je feedback en ontmoet anderen die Lux gebruiken.';
+}
+
+// Path: whatsNew
+class _Translations$whatsNew$nl extends Translations$whatsNew$en {
+	_Translations$whatsNew$nl._(TranslationsNl root) : this._root = root, super.internal(root);
+
+	final TranslationsNl _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Wat is er nieuw';
+	@override String get description => 'Bekijk wat er in deze update is veranderd.';
+	@override String get enjoyingLux => 'Vind je Lux fijn?';
+	@override String reviewInvitation({required Object store}) => 'Een recensie in de ${store} helpt anderen Lux te vinden.';
+	@override String get rate => 'Beoordelen';
+	@override String get haveIdeas => 'Heb je feedback of ideeën?';
+	@override String get discordInvitation => 'Deel ze op Discord met ons en anderen die Lux gebruiken.';
+	@override String get planToolbarTitle => 'Leesplannen zoals de gewone lezer';
+	@override String get planToolbarDescription => 'Leesplandagen tonen nu je hoofdwerkbalk, studiepanelen en audio, met een knop om naar het volgende gedeelte te gaan.';
+	@override String get planTransferTitle => 'Leesplannen delen met voortgang';
+	@override String get planTransferDescription => 'Deel een leesplan met je voortgang en beoogde einddatum, en ga na het importeren daarmee verder.';
+	@override String get completeThroughTitle => 'Achterstand inhalen in één stap';
+	@override String get completeThroughDescription => 'Markeer via het menu van een leesplan alle dagen tot en met een gekozen dag als voltooid.';
+	@override String get navigationSettingsTitle => 'Navigatie-instellingen';
+	@override String get navigationSettingsDescription => 'Kies boeken en hoofdstukken uit een lijst of raster, verberg recente items en kies of het toetsenbord opent.';
+	@override String get tutorialsTitle => 'Nieuwe checklists';
+	@override String get tutorialsDescription => 'Aan de slag en Geavanceerde uitleg leiden je door Lux. Start ze via Meer > Help.';
 }
 
 // Path: analyticsNotice
@@ -3957,6 +3984,23 @@ extension on TranslationsNl {
 			'onboarding.skipHint' => 'Weinig tijd? Tik op ✕ om over te slaan.',
 			'onboarding.joinDiscord' => 'Word lid van onze Discord-community',
 			'onboarding.discordInvitation' => 'Stel vragen, deel je feedback en ontmoet anderen die Lux gebruiken.',
+			'whatsNew.title' => 'Wat is er nieuw',
+			'whatsNew.description' => 'Bekijk wat er in deze update is veranderd.',
+			'whatsNew.enjoyingLux' => 'Vind je Lux fijn?',
+			'whatsNew.reviewInvitation' => ({required Object store}) => 'Een recensie in de ${store} helpt anderen Lux te vinden.',
+			'whatsNew.rate' => 'Beoordelen',
+			'whatsNew.haveIdeas' => 'Heb je feedback of ideeën?',
+			'whatsNew.discordInvitation' => 'Deel ze op Discord met ons en anderen die Lux gebruiken.',
+			'whatsNew.planToolbarTitle' => 'Leesplannen zoals de gewone lezer',
+			'whatsNew.planToolbarDescription' => 'Leesplandagen tonen nu je hoofdwerkbalk, studiepanelen en audio, met een knop om naar het volgende gedeelte te gaan.',
+			'whatsNew.planTransferTitle' => 'Leesplannen delen met voortgang',
+			'whatsNew.planTransferDescription' => 'Deel een leesplan met je voortgang en beoogde einddatum, en ga na het importeren daarmee verder.',
+			'whatsNew.completeThroughTitle' => 'Achterstand inhalen in één stap',
+			'whatsNew.completeThroughDescription' => 'Markeer via het menu van een leesplan alle dagen tot en met een gekozen dag als voltooid.',
+			'whatsNew.navigationSettingsTitle' => 'Navigatie-instellingen',
+			'whatsNew.navigationSettingsDescription' => 'Kies boeken en hoofdstukken uit een lijst of raster, verberg recente items en kies of het toetsenbord opent.',
+			'whatsNew.tutorialsTitle' => 'Nieuwe checklists',
+			'whatsNew.tutorialsDescription' => 'Aan de slag en Geavanceerde uitleg leiden je door Lux. Start ze via Meer > Help.',
 			'analyticsNotice.title' => 'Een opmerking over anonieme statistieken',
 			'analyticsNotice.description' => 'Lux gebruikt nu anonieme gebruiksstatistieken en crashrapporten om te begrijpen welke functies worden gebruikt en de betrouwbaarheid te verbeteren. Deze rapporten bevatten nooit je notities, namen of leesdetails van Bijbelplannen, zoektermen of andere privé-inhoud en zijn niet gekoppeld aan een account. Door Lux te blijven gebruiken, ga je ermee akkoord dat deze informatie wordt verzonden.',
 			'renamedBiblePlansNotice.title' => 'Bijbelplannen zijn bijgewerkt',
@@ -4235,6 +4279,8 @@ extension on TranslationsNl {
 			'morphology.types.interrogativePronoun.description' => 'Een voornaamwoord waarmee een vraag wordt gesteld.',
 			'morphology.types.interrogativePronoun.examples' => 'wie?|wat?|welke?',
 			'morphology.types.indefinitePronoun.name' => 'Onbepaald voornaamwoord',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.indefinitePronoun.description' => 'Een voornaamwoord dat naar niet-specifieke zaken verwijst.',
 			'morphology.types.indefinitePronoun.examples' => 'iemand|wie dan ook|niets',
 			'morphology.types.reciprocalPronoun.name' => 'Wederkerig voornaamwoord',
@@ -4252,8 +4298,6 @@ extension on TranslationsNl {
 			'morphology.types.negativeParticle.name' => 'Ontkennend partikel',
 			'morphology.types.negativeParticle.description' => 'Een partikel dat een ontkenning aangeeft.',
 			'morphology.types.negativeParticle.examples' => 'niet|geen',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.interrogativeParticle.name' => 'Vragend partikel',
 			'morphology.types.interrogativeParticle.description' => 'Een partikel dat een vraag aangeeft.',
 			'morphology.types.interrogativeParticle.examples' => '(Hebreeuws voorvoegsel ה, zonder Nederlands equivalent)',

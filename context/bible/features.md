@@ -36,7 +36,7 @@ Lux precomputes a rolling fourteen days of verses whenever it is opened or resum
 
 ## Privacy and Analytics
 
-Lux measures visits to its main pages and a small set of prominent actions: starting audio playback, starting a plan, completing a plan day, opening an externally supplied plan file, searching, sharing verses, opening a shared passage link, opening a plan link, opening Verse of the Day, opening the Verse of the Day widget, opening a local notification, changing toolbar configuration, opening a community link, pressing Rate Lux, requesting the native review prompt, and starting, completing, or skipping onboarding, including which checklist and which step was completed or skipped. These events contain no user-created content or dynamic identifiers from the app.
+Lux measures visits to its main pages and a small set of prominent actions: starting audio playback, starting a plan, completing a plan day, opening an externally supplied plan file, searching, sharing verses, opening a shared passage link, opening a plan link, opening Verse of the Day, opening the Verse of the Day widget, opening a local notification, changing toolbar configuration, opening a community link, pressing Rate Lux, requesting the native review prompt, opening What's New, and starting, completing, or skipping onboarding, including which checklist and which step was completed or skipped. These events contain no user-created content or dynamic identifiers from the app.
 
 On Android, Lux measures the general campaign source that led to installation through Google Play Install Referrer. The website maps compact, fixed social-profile and boosted-post source codes to aggregate campaign values, reports website traffic and store navigation through Google Analytics, and passes the same values to Google Play. When a shared verse link opens the website instead of Lux, Android visitors are sent to the passage in Lux when it is installed and to Google Play otherwise. iPhone and iPad visitors see Safari's app banner, which offers to open the passage in Lux or get it, along with an App Store button, and desktop visitors see both store buttons. The store links use a fixed passage-share campaign, so installs from shared verse links are attributed on Google Play and the App Store. These values identify a marketing source such as Facebook or TikTok, not a person or social-media account.
 
@@ -825,6 +825,7 @@ More is organized around:
 
 ### About
 
+- What's New for the latest notable release, marked with a blue dot until opened
 - App version
 - Open-source and content licenses
 
@@ -847,6 +848,12 @@ On the user's third active day, the same blue dots point to an Advanced Tutorial
 - Toolbar customization
 
 Users who installed Lux before this change don't get either blue dot. Each action leaves the More sheet once started. Both checklists can be skipped, and either can be started again from More > Help, where a blue dot also marks one that hasn't been started yet. Starting a checklist resets its progress and replaces any checklist in progress. Separate contextual tutorial banners can also be reset.
+
+## What's New
+
+After an update with a notable release, a blue dot on the main toolbar's More button leads to a What's New action at the top of the More sheet, above any pending checklist, which also has a blue dot. It opens a sheet listing a few highlights of that release, followed by two equal invitations: leave a review on the App Store or Play Store, or share feedback and ideas on Discord. There is no question before them, and the review button opens the store listing rather than the native review prompt. Opening the sheet clears the dots and removes the action from the More sheet. What's New stays available from More > About.
+
+The highlights and their release version are curated by hand in `WhatsNewHighlight`, so bug-fix updates that don't change it show nothing. New installs start with the current release marked as seen. Only the latest release's highlights are kept.
 
 ## Current Product Limitations
 

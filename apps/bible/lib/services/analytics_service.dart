@@ -21,7 +21,8 @@ enum AnalyticsEventType {
   onboardingStarted('onboarding_started'),
   onboardingStepComplete('onboarding_step_complete'),
   onboardingComplete('onboarding_complete'),
-  onboardingSkipped('onboarding_skipped');
+  onboardingSkipped('onboarding_skipped'),
+  whatsNewOpened('whats_new_opened');
 
   final String eventName;
 
@@ -50,6 +51,7 @@ class AnalyticsEvent {
   static final communityLinkPressed = AnalyticsEvent._(.communityLinkPressed);
   static final rateLuxPressed = AnalyticsEvent._(.rateLuxPressed);
   static final reviewPromptRequested = AnalyticsEvent._(.reviewPromptRequested);
+  static final whatsNewOpened = AnalyticsEvent._(.whatsNewOpened);
 
   static AnalyticsEvent onboardingStarted(OnboardingTour tour) =>
       AnalyticsEvent._(.onboardingStarted, {'tour': tour.name});

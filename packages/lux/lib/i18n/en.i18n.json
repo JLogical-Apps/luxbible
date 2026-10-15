@@ -827,6 +827,25 @@
     "joinDiscord": "Join our Discord community",
     "discordInvitation": "Ask questions, share feedback, and connect with others using Lux."
   },
+  "whatsNew": {
+    "title": "What's New",
+    "description": "See what changed in this update.",
+    "enjoyingLux": "Enjoying Lux?",
+    "reviewInvitation": "A review on the {store} helps others find it.",
+    "rate": "Rate",
+    "haveIdeas": "Have feedback or ideas?",
+    "discordInvitation": "Share them with us and others using Lux on Discord.",
+    "planToolbarTitle": "Bible Plans Like the Main Reader",
+    "planToolbarDescription": "Plan days now show your main toolbar, study panels, and audio, with a button to move to the next passage.",
+    "planTransferTitle": "Share Plans With Progress",
+    "planTransferDescription": "Share a plan with your progress and target end date, then continue from that progress when you import it.",
+    "completeThroughTitle": "Catch Up in One Step",
+    "completeThroughDescription": "Mark every day up to the one you choose as complete from a plan's menu.",
+    "navigationSettingsTitle": "Navigation Settings",
+    "navigationSettingsDescription": "Pick books and chapters from a list or grid, hide recents, and choose whether the keyboard opens.",
+    "tutorialsTitle": "New Checklists",
+    "tutorialsDescription": "Get Started and the Advanced Tutorial walk you through Lux. Start either one from More > Help."
+  },
   "analyticsNotice": {
     "title": "A Note About Anonymous Analytics",
     "description": "Lux now uses anonymous analytics and crash reports to understand which features are used and improve reliability.\n\nThese reports never include your notes, Bible plan names or reading details, search terms, or other private content, and they are not linked to an account.\n\nBy continuing to use Lux, you agree to this information being sent."

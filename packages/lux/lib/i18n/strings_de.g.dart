@@ -68,6 +68,7 @@ class TranslationsDe extends Translations with BaseTranslations<AppLocale, Trans
 	@override late final _Translations$biblePlans$de biblePlans = _Translations$biblePlans$de._(_root);
 	@override late final _Translations$searchUi$de searchUi = _Translations$searchUi$de._(_root);
 	@override late final _Translations$onboarding$de onboarding = _Translations$onboarding$de._(_root);
+	@override late final _Translations$whatsNew$de whatsNew = _Translations$whatsNew$de._(_root);
 	@override late final _Translations$analyticsNotice$de analyticsNotice = _Translations$analyticsNotice$de._(_root);
 	@override late final _Translations$renamedBiblePlansNotice$de renamedBiblePlansNotice = _Translations$renamedBiblePlansNotice$de._(_root);
 	@override late final _Translations$tutorials$de tutorials = _Translations$tutorials$de._(_root);
@@ -1102,6 +1103,32 @@ class _Translations$onboarding$de extends Translations$onboarding$en {
 	@override String get skipHint => 'Keine Zeit? Tippe auf ✕, um zu überspringen.';
 	@override String get joinDiscord => 'Tritt unserer Discord-Community bei';
 	@override String get discordInvitation => 'Stell Fragen, gib Feedback und vernetze dich mit anderen, die Lux nutzen.';
+}
+
+// Path: whatsNew
+class _Translations$whatsNew$de extends Translations$whatsNew$en {
+	_Translations$whatsNew$de._(TranslationsDe root) : this._root = root, super.internal(root);
+
+	final TranslationsDe _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'Neuigkeiten';
+	@override String get description => 'Sieh dir an, was sich mit diesem Update geändert hat.';
+	@override String get enjoyingLux => 'Gefällt dir Lux?';
+	@override String reviewInvitation({required Object store}) => 'Eine Bewertung im ${store} hilft anderen, Lux zu finden.';
+	@override String get rate => 'Bewerten';
+	@override String get haveIdeas => 'Hast du Feedback oder Ideen?';
+	@override String get discordInvitation => 'Teile sie auf Discord mit uns und anderen, die Lux nutzen.';
+	@override String get planToolbarTitle => 'Lesepläne wie der normale Leser';
+	@override String get planToolbarDescription => 'Plantage zeigen jetzt deine Hauptleiste, Studienpanels und Audio, mit einer Taste zum nächsten Abschnitt.';
+	@override String get planTransferTitle => 'Pläne mit Fortschritt teilen';
+	@override String get planTransferDescription => 'Teile einen Plan mit Fortschritt und Zielenddatum und mach nach dem Import damit weiter.';
+	@override String get completeThroughTitle => 'In einem Schritt aufholen';
+	@override String get completeThroughDescription => 'Markiere im Planmenü alle Tage bis zu einem gewählten Tag als abgeschlossen.';
+	@override String get navigationSettingsTitle => 'Navigationseinstellungen';
+	@override String get navigationSettingsDescription => 'Wähle Bücher und Kapitel aus einer Liste oder einem Raster, blende zuletzt gelesene aus und lege fest, ob sich die Tastatur öffnet.';
+	@override String get tutorialsTitle => 'Neue Checklisten';
+	@override String get tutorialsDescription => '„Erste Schritte“ und „Fortgeschrittene Einführung“ führen dich durch Lux. Starte sie unter Mehr > Hilfe.';
 }
 
 // Path: analyticsNotice
@@ -3953,6 +3980,23 @@ extension on TranslationsDe {
 			'onboarding.skipHint' => 'Keine Zeit? Tippe auf ✕, um zu überspringen.',
 			'onboarding.joinDiscord' => 'Tritt unserer Discord-Community bei',
 			'onboarding.discordInvitation' => 'Stell Fragen, gib Feedback und vernetze dich mit anderen, die Lux nutzen.',
+			'whatsNew.title' => 'Neuigkeiten',
+			'whatsNew.description' => 'Sieh dir an, was sich mit diesem Update geändert hat.',
+			'whatsNew.enjoyingLux' => 'Gefällt dir Lux?',
+			'whatsNew.reviewInvitation' => ({required Object store}) => 'Eine Bewertung im ${store} hilft anderen, Lux zu finden.',
+			'whatsNew.rate' => 'Bewerten',
+			'whatsNew.haveIdeas' => 'Hast du Feedback oder Ideen?',
+			'whatsNew.discordInvitation' => 'Teile sie auf Discord mit uns und anderen, die Lux nutzen.',
+			'whatsNew.planToolbarTitle' => 'Lesepläne wie der normale Leser',
+			'whatsNew.planToolbarDescription' => 'Plantage zeigen jetzt deine Hauptleiste, Studienpanels und Audio, mit einer Taste zum nächsten Abschnitt.',
+			'whatsNew.planTransferTitle' => 'Pläne mit Fortschritt teilen',
+			'whatsNew.planTransferDescription' => 'Teile einen Plan mit Fortschritt und Zielenddatum und mach nach dem Import damit weiter.',
+			'whatsNew.completeThroughTitle' => 'In einem Schritt aufholen',
+			'whatsNew.completeThroughDescription' => 'Markiere im Planmenü alle Tage bis zu einem gewählten Tag als abgeschlossen.',
+			'whatsNew.navigationSettingsTitle' => 'Navigationseinstellungen',
+			'whatsNew.navigationSettingsDescription' => 'Wähle Bücher und Kapitel aus einer Liste oder einem Raster, blende zuletzt gelesene aus und lege fest, ob sich die Tastatur öffnet.',
+			'whatsNew.tutorialsTitle' => 'Neue Checklisten',
+			'whatsNew.tutorialsDescription' => '„Erste Schritte“ und „Fortgeschrittene Einführung“ führen dich durch Lux. Starte sie unter Mehr > Hilfe.',
 			'analyticsNotice.title' => 'Ein Hinweis zu anonymen Analysen',
 			'analyticsNotice.description' => 'Lux verwendet jetzt anonyme Analysen und Absturzberichte, um zu verstehen, welche Funktionen genutzt werden, und die Zuverlässigkeit zu verbessern.\n\nDiese Berichte enthalten niemals deine Notizen, Namen von Leseplänen oder Lesedetails, Suchbegriffe oder andere private Inhalte und sind nicht mit einem Konto verknüpft.\n\nWenn du Lux weiter nutzt, stimmst du der Übermittlung dieser Informationen zu.',
 			'renamedBiblePlansNotice.title' => 'Lesepläne wurden aktualisiert',
@@ -4233,6 +4277,8 @@ extension on TranslationsDe {
 			'morphology.types.indefinitePronoun.name' => 'Indefinitpronomen',
 			'morphology.types.indefinitePronoun.description' => 'Ein Pronomen, das sich auf nicht bestimmte Personen oder Dinge bezieht.',
 			'morphology.types.indefinitePronoun.examples' => 'jemand|irgendwer|nichts',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.reciprocalPronoun.name' => 'Reziprokpronomen',
 			'morphology.types.reciprocalPronoun.description' => 'Ein Pronomen, das eine wechselseitige Handlung ausdrückt.',
 			'morphology.types.reciprocalPronoun.examples' => 'einander|gegenseitig',
@@ -4250,8 +4296,6 @@ extension on TranslationsDe {
 			'morphology.types.negativeParticle.examples' => 'nicht|kein',
 			'morphology.types.interrogativeParticle.name' => 'Fragepartikel',
 			'morphology.types.interrogativeParticle.description' => 'Eine Partikel, die eine Frage anzeigt.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.interrogativeParticle.examples' => '(hebräisches Präfix ה, ohne deutsche Entsprechung)',
 			'morphology.types.demonstrativeParticle.name' => 'Hinweispartikel',
 			'morphology.types.demonstrativeParticle.description' => 'Eine hinweisende Partikel, etwa „siehe“.',
