@@ -5,6 +5,8 @@ import 'dart:io';
 import 'package:bible/models/calendar_date_time.dart';
 import 'package:bible/models/user/language.dart';
 import 'package:bible/models/user/migration.dart';
+import 'package:bible/models/user/onboarding_progress.dart';
+import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/services/analytics_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -25,10 +27,8 @@ class UserNotifier extends _$UserNotifier {
     final existingUser = userOrNull;
     if (existingUser != null) return existingUser;
 
-    AnalyticsEvent.onboardingStarted.log();
     return User(
       translation: getDefaultBibleTranslations(Language.device).first,
-      completedOnboardingSteps: [],
       recentBibles: [getDefaultBibleTranslations(Language.device).first],
       latestMigration: Migration.values.last,
     );
@@ -77,6 +77,22 @@ class UserNotifier extends _$UserNotifier {
 
   void refreshActiveDay() => update((user) => user.withActiveDay(DateTime.now()));
 
+  void startOnboarding(OnboardingTour tour) {
+    if (state.onboarding case final onboarding?) logOnboardingEnded(onboarding);
+    update((user) => user.withOnboardingStarted(tour));
+    AnalyticsEvent.onboardingStarted(tour).log();
+  }
+
+  void dismissOnboarding() {
+    if (state.onboarding case final onboarding?) logOnboardingEnded(onboarding);
+    update((user) => user.withOnboardingDismissed());
+  }
+
+  void logOnboardingEnded(OnboardingProgress onboarding) => switch (onboarding.currentStep) {
+    final step? => AnalyticsEvent.onboardingSkipped(step),
+    null => AnalyticsEvent.onboardingComplete(onboarding.tour),
+  }.log();
+
   Future<void> requestReviewIfEligible() async {
     final appReview = InAppReview.instance;
     if (!state.isReviewRequestEligible || !await appReview.isAvailable()) return;
@@ -105,20 +121,10 @@ class UserNotifier extends _$UserNotifier {
       AnalyticsEvent.toolbarCustomized.log();
     }
 
-    final previousCompletedSteps = previousUser.completedOnboardingSteps ?? [];
-    (user.completedOnboardingSteps ?? [])
+    final previousCompletedSteps = previousUser.onboarding?.completedSteps ?? [];
+    (user.onboarding?.completedSteps ?? [])
         .where((step) => !previousCompletedSteps.contains(step))
         .forEach((step) => AnalyticsEvent.onboardingStepComplete(step).log());
-
-    if (!previousUser.isOnboardingActive && user.isOnboardingActive) {
-      AnalyticsEvent.onboardingStarted.log();
-    } else if (previousUser.isOnboardingActive && !user.isOnboardingActive) {
-      if (previousUser.currentOnboardingStep case final step?) {
-        AnalyticsEvent.onboardingSkipped(step).log();
-      } else {
-        AnalyticsEvent.onboardingComplete.log();
-      }
-    }
   }
 
   File get userFile => ref.read(pathServiceProvider)!.applicationSupport - 'user.json';

@@ -17,6 +17,7 @@ import 'package:bible/models/user/main_toolbar_configuration.dart';
 import 'package:bible/models/user/message.dart';
 import 'package:bible/models/user/migration.dart';
 import 'package:bible/models/user/navigation_configuration.dart';
+import 'package:bible/models/user/onboarding_progress.dart';
 import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/models/user/text_selection_configuration.dart';
 import 'package:bible/models/user/theme_layout_configuration.dart';
@@ -43,10 +44,10 @@ sealed class User with _$User {
     @Default(BibleTranslation.bsb) BibleTranslation audioTranslation,
     @Default(BibleTranslation.oshb) BibleTranslation oldTestamentTranslation,
     @Default(BibleTranslation.statresgnt) BibleTranslation newTestamentTranslation,
-    @JsonKey(name: 'bibles') List<BibleTranslation>? compareBibles,
-    @Default([]) List<BibleTranslation> recentBibles,
-    List<CommentaryType>? commentaries,
-    List<ResourceType>? resourceOrder,
+    @JsonKey(name: 'bibles') @KnownBibleTranslations() List<BibleTranslation>? compareBibles,
+    @Default([]) @KnownBibleTranslations() List<BibleTranslation> recentBibles,
+    @KnownCommentaryTypes() List<CommentaryType>? commentaries,
+    @KnownResourceTypes() List<ResourceType>? resourceOrder,
     @ChapterPositionFromReference('lastReference')
     @Default(ChapterPosition(reference: ChapterReference(chapterNum: 1, book: BookType.genesis)))
     ChapterPosition lastPosition,
@@ -67,8 +68,9 @@ sealed class User with _$User {
     @Default([]) List<StudyPanel> studyPanels,
     int? studyPanelIndex,
     @Default(0.5) double studyPanelBottomPosition,
-    @Default({}) @nullUnknownEnum Set<Tutorial?> tutorials,
-    List<OnboardingStep>? completedOnboardingSteps,
+    @Default({}) @KnownTutorials() Set<Tutorial> tutorials,
+    OnboardingProgress? onboarding,
+    @Default({}) @KnownOnboardingTours() Set<OnboardingTour> startedOnboardingTours,
     @JsonKey(name: 'highlightStyles') List<(HighlightStyle, String label)>? highlightStyleOverrides,
     @JsonKey(name: 'planProgressByType') @Default({}) Map<String, BiblePlanProgress> planProgressById,
     Reminder? verseOfTheDayReminder,
@@ -179,18 +181,9 @@ sealed class User with _$User {
 
   ToolbarPreset? get toolbarPreset => ToolbarPreset.values.firstWhereOrNull((preset) => preset.matches(this));
 
-  bool get isOnboardingActive => completedOnboardingSteps != null;
-
-  bool isOnboardingStepCompleted(OnboardingStep step) => completedOnboardingSteps?.has(step) ?? false;
-
-  int? get currentOnboardingStepIndex {
-    final completedOnboardingSteps = this.completedOnboardingSteps;
-    if (completedOnboardingSteps == null) return null;
-    return OnboardingStep.values.indexWhereOrNull((step) => !completedOnboardingSteps.has(step));
-  }
-
-  OnboardingStep? get currentOnboardingStep =>
-      currentOnboardingStepIndex?.mapIfNonNull((stepIndex) => OnboardingStep.values[stepIndex]);
+  List<OnboardingTour> get pendingOnboardingTours => OnboardingTour.values
+      .where((tour) => !startedOnboardingTours.has(tour) && activeDayCount >= tour.requiredActiveDayCount)
+      .toList();
 
   User withNewBookmark(String bookmarkId, Bookmark bookmark) =>
       copyWith(bookmarkById: {...bookmarkById, bookmarkId: bookmark}, currentBookmarkId: bookmarkId);
@@ -356,14 +349,14 @@ sealed class User with _$User {
 
   User withTutorialsReset() => copyWith(tutorials: {});
 
-  User withOnboardingStepCompleted(OnboardingStep step) {
-    final completed = completedOnboardingSteps;
-    return completed == null || completed.has(step) ? this : copyWith(completedOnboardingSteps: [...completed, step]);
-  }
+  User withOnboardingStepCompleted(OnboardingStep step) => copyWith(onboarding: onboarding?.withStepCompleted(step));
 
-  User withOnboardingReset() => copyWith(completedOnboardingSteps: []);
+  User withOnboardingStarted(OnboardingTour tour) => copyWith(
+    onboarding: OnboardingProgress(tour: tour),
+    startedOnboardingTours: {...startedOnboardingTours, tour},
+  );
 
-  User withOnboardingDismissed() => copyWith(completedOnboardingSteps: null);
+  User withOnboardingDismissed() => copyWith(onboarding: null);
 
   User withPreset(ToolbarPreset preset) => copyWith(
     mainToolbar: mainToolbar.copyWith(

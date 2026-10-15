@@ -1095,9 +1095,11 @@ class _Translations$onboarding$nl extends Translations$onboarding$en {
 
 	// Translations
 	@override String get skipQuestion => 'Introductie overslaan?';
-	@override String get skipConfirmation => 'Weet je zeker dat je de introductie wilt overslaan? Je kunt deze opnieuw starten via Instellingen > Help.';
+	@override String get skipConfirmation => 'Weet je zeker dat je de introductie wilt overslaan? Je kunt deze opnieuw starten via Meer > Help.';
 	@override String get getStarted => 'Aan de slag';
-	@override String get learnLux => 'Leer Lux gebruiken';
+	@override String get getStartedDescription => 'Leer de basis';
+	@override String get advancedTutorial => 'Geavanceerde uitleg';
+	@override String get advancedTutorialDescription => 'Leer geavanceerde functies';
 	@override String get checklistDescription => 'Voltooi de onderstaande lijst om Lux te leren gebruiken.';
 	@override String get skipHint => 'Weinig tijd? Tik op ✕ om over te slaan.';
 	@override String get joinDiscord => 'Word lid van onze Discord-community';
@@ -1618,8 +1620,6 @@ class _Translations$settings$nl extends Translations$settings$en {
 	@override String get reportProblemDescription => 'Krijg hulp bij bugs en andere problemen.';
 	@override String get recommended => 'Aanbevolen';
 	@override String get emailSupport => 'Ondersteuning via e-mail';
-	@override String get restartGetStarted => 'Aan de slag opnieuw starten';
-	@override String get restartGetStartedDescription => 'Toon de checklist Aan de slag opnieuw';
 	@override String get resetTutorials => 'Uitleg opnieuw instellen';
 	@override String get resetTutorialsDescription => 'Toon de handige tips in de app opnieuw';
 	@override String get tutorialsReset => 'De uitleg is opnieuw ingesteld.';
@@ -3948,9 +3948,11 @@ extension on TranslationsNl {
 			'searchUi.wordMatching.partOfWord.description' => 'Zoek woorden die je zoekopdracht ergens bevatten.',
 			'searchUi.wordMatching.partOfWord.example' => 'Voorbeeld: ‘licht’ vindt ook ‘verlichting’',
 			'onboarding.skipQuestion' => 'Introductie overslaan?',
-			'onboarding.skipConfirmation' => 'Weet je zeker dat je de introductie wilt overslaan? Je kunt deze opnieuw starten via Instellingen > Help.',
+			'onboarding.skipConfirmation' => 'Weet je zeker dat je de introductie wilt overslaan? Je kunt deze opnieuw starten via Meer > Help.',
 			'onboarding.getStarted' => 'Aan de slag',
-			'onboarding.learnLux' => 'Leer Lux gebruiken',
+			'onboarding.getStartedDescription' => 'Leer de basis',
+			'onboarding.advancedTutorial' => 'Geavanceerde uitleg',
+			'onboarding.advancedTutorialDescription' => 'Leer geavanceerde functies',
 			'onboarding.checklistDescription' => 'Voltooi de onderstaande lijst om Lux te leren gebruiken.',
 			'onboarding.skipHint' => 'Weinig tijd? Tik op ✕ om over te slaan.',
 			'onboarding.joinDiscord' => 'Word lid van onze Discord-community',
@@ -4250,10 +4252,10 @@ extension on TranslationsNl {
 			'morphology.types.negativeParticle.name' => 'Ontkennend partikel',
 			'morphology.types.negativeParticle.description' => 'Een partikel dat een ontkenning aangeeft.',
 			'morphology.types.negativeParticle.examples' => 'niet|geen',
-			'morphology.types.interrogativeParticle.name' => 'Vragend partikel',
-			'morphology.types.interrogativeParticle.description' => 'Een partikel dat een vraag aangeeft.',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.types.interrogativeParticle.name' => 'Vragend partikel',
+			'morphology.types.interrogativeParticle.description' => 'Een partikel dat een vraag aangeeft.',
 			'morphology.types.interrogativeParticle.examples' => '(Hebreeuws voorvoegsel ה, zonder Nederlands equivalent)',
 			'morphology.types.demonstrativeParticle.name' => 'Aanwijzend partikel',
 			'morphology.types.demonstrativeParticle.description' => 'Een aanwijzend partikel, zoals "zie".',
@@ -4507,8 +4509,6 @@ extension on TranslationsNl {
 			'settings.reportProblemDescription' => 'Krijg hulp bij bugs en andere problemen.',
 			'settings.recommended' => 'Aanbevolen',
 			'settings.emailSupport' => 'Ondersteuning via e-mail',
-			'settings.restartGetStarted' => 'Aan de slag opnieuw starten',
-			'settings.restartGetStartedDescription' => 'Toon de checklist Aan de slag opnieuw',
 			'settings.resetTutorials' => 'Uitleg opnieuw instellen',
 			'settings.resetTutorialsDescription' => 'Toon de handige tips in de app opnieuw',
 			'settings.tutorialsReset' => 'De uitleg is opnieuw ingesteld.',

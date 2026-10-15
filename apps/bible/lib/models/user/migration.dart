@@ -1,10 +1,12 @@
+import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:lux/lux.dart';
 
 enum Migration {
   renamedBiblePlans,
   anonymousAnalytics,
-  addedTyndaleCommentary;
+  addedTyndaleCommentary,
+  optInOnboarding;
 
   User migrate(User user) => switch (this) {
     renamedBiblePlans =>
@@ -16,5 +18,6 @@ enum Migration {
       final commentaries? when !commentaries.has(.tyndale) => user.copyWith(commentaries: [...commentaries, .tyndale]),
       _ => user,
     },
+    optInOnboarding => user.copyWith(startedOnboardingTours: OnboardingTour.values.toSet()),
   };
 }

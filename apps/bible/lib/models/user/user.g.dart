@@ -32,20 +32,21 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
         json['newTestamentTranslation'],
       ) ??
       BibleTranslation.statresgnt,
-  compareBibles: (json['bibles'] as List<dynamic>?)
-      ?.map((e) => $enumDecode(_$BibleTranslationEnumMap, e))
-      .toList(),
-  recentBibles:
-      (json['recentBibles'] as List<dynamic>?)
-          ?.map((e) => $enumDecode(_$BibleTranslationEnumMap, e))
-          .toList() ??
-      const [],
-  commentaries: (json['commentaries'] as List<dynamic>?)
-      ?.map((e) => $enumDecode(_$CommentaryTypeEnumMap, e))
-      .toList(),
-  resourceOrder: (json['resourceOrder'] as List<dynamic>?)
-      ?.map((e) => $enumDecode(_$ResourceTypeEnumMap, e))
-      .toList(),
+  compareBibles: _$JsonConverterFromJson<List<Object?>, List<BibleTranslation>>(
+    json['bibles'],
+    const KnownBibleTranslations().fromJson,
+  ),
+  recentBibles: json['recentBibles'] == null
+      ? const []
+      : const KnownBibleTranslations().fromJson(json['recentBibles'] as List),
+  commentaries: _$JsonConverterFromJson<List<Object?>, List<CommentaryType>>(
+    json['commentaries'],
+    const KnownCommentaryTypes().fromJson,
+  ),
+  resourceOrder: _$JsonConverterFromJson<List<Object?>, List<ResourceType>>(
+    json['resourceOrder'],
+    const KnownResourceTypes().fromJson,
+  ),
   lastPosition: ChapterPositionFromReference.read(json, 'lastReference') == null
       ? const ChapterPosition(
           reference: ChapterReference(chapterNum: 1, book: BookType.genesis),
@@ -125,20 +126,17 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
   studyPanelIndex: (json['studyPanelIndex'] as num?)?.toInt(),
   studyPanelBottomPosition:
       (json['studyPanelBottomPosition'] as num?)?.toDouble() ?? 0.5,
-  tutorials:
-      (json['tutorials'] as List<dynamic>?)
-          ?.map(
-            (e) => $enumDecodeNullable(
-              _$TutorialEnumMap,
-              e,
-              unknownValue: JsonKey.nullForUndefinedEnumValue,
-            ),
-          )
-          .toSet() ??
-      const {},
-  completedOnboardingSteps: (json['completedOnboardingSteps'] as List<dynamic>?)
-      ?.map((e) => $enumDecode(_$OnboardingStepEnumMap, e))
-      .toList(),
+  tutorials: json['tutorials'] == null
+      ? const {}
+      : const KnownTutorials().fromJson(json['tutorials'] as List),
+  onboarding: json['onboarding'] == null
+      ? null
+      : OnboardingProgress.fromJson(json['onboarding'] as Map<String, dynamic>),
+  startedOnboardingTours: json['startedOnboardingTours'] == null
+      ? const {}
+      : const KnownOnboardingTours().fromJson(
+          json['startedOnboardingTours'] as List,
+        ),
   highlightStyleOverrides: (json['highlightStyles'] as List<dynamic>?)
       ?.map(
         (e) => _$recordConvert(
@@ -201,18 +199,19 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
       _$BibleTranslationEnumMap[instance.oldTestamentTranslation]!,
   'newTestamentTranslation':
       _$BibleTranslationEnumMap[instance.newTestamentTranslation]!,
-  'bibles': instance.compareBibles
-      ?.map((e) => _$BibleTranslationEnumMap[e]!)
-      .toList(),
-  'recentBibles': instance.recentBibles
-      .map((e) => _$BibleTranslationEnumMap[e]!)
-      .toList(),
-  'commentaries': instance.commentaries
-      ?.map((e) => _$CommentaryTypeEnumMap[e]!)
-      .toList(),
-  'resourceOrder': instance.resourceOrder
-      ?.map((e) => _$ResourceTypeEnumMap[e]!)
-      .toList(),
+  'bibles': _$JsonConverterToJson<List<Object?>, List<BibleTranslation>>(
+    instance.compareBibles,
+    const KnownBibleTranslations().toJson,
+  ),
+  'recentBibles': const KnownBibleTranslations().toJson(instance.recentBibles),
+  'commentaries': _$JsonConverterToJson<List<Object?>, List<CommentaryType>>(
+    instance.commentaries,
+    const KnownCommentaryTypes().toJson,
+  ),
+  'resourceOrder': _$JsonConverterToJson<List<Object?>, List<ResourceType>>(
+    instance.resourceOrder,
+    const KnownResourceTypes().toJson,
+  ),
   'lastReference': instance.lastPosition.toJson(),
   'currentBookmarkId': instance.currentBookmarkId,
   'viewHistory': instance.viewHistory.map((e) => e.toJson()).toList(),
@@ -232,10 +231,11 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'studyPanels': instance.studyPanels.map((e) => e.toJson()).toList(),
   'studyPanelIndex': instance.studyPanelIndex,
   'studyPanelBottomPosition': instance.studyPanelBottomPosition,
-  'tutorials': instance.tutorials.map((e) => _$TutorialEnumMap[e]).toList(),
-  'completedOnboardingSteps': instance.completedOnboardingSteps
-      ?.map((e) => _$OnboardingStepEnumMap[e]!)
-      .toList(),
+  'tutorials': const KnownTutorials().toJson(instance.tutorials),
+  'onboarding': instance.onboarding?.toJson(),
+  'startedOnboardingTours': const KnownOnboardingTours().toJson(
+    instance.startedOnboardingTours,
+  ),
   'highlightStyles': instance.highlightStyleOverrides
       ?.map((e) => <String, dynamic>{r'$1': e.$1.toJson(), r'$2': e.$2})
       .toList(),
@@ -285,21 +285,10 @@ const _$BibleTranslationEnumMap = {
   BibleTranslation.tglulb: 'tglulb',
 };
 
-const _$CommentaryTypeEnumMap = {
-  CommentaryType.tyndale: 'tyndale',
-  CommentaryType.matthewHenry: 'matthewHenry',
-  CommentaryType.jamiesonFaussetBrown: 'jamiesonFaussetBrown',
-  CommentaryType.calvin: 'calvin',
-};
-
-const _$ResourceTypeEnumMap = {
-  ResourceType.people: 'people',
-  ResourceType.themes: 'themes',
-  ResourceType.dictionary: 'dictionary',
-  ResourceType.maps: 'maps',
-  ResourceType.videos: 'videos',
-  ResourceType.creeds: 'creeds',
-};
+Value? _$JsonConverterFromJson<Json, Value>(
+  Object? json,
+  Value? Function(Json json) fromJson,
+) => json == null ? null : fromJson(json as Json);
 
 const _$InterlinearDirectionEnumMap = {
   InterlinearDirection.reverse: 'reverse',
@@ -312,26 +301,6 @@ const _$ThemeModeEnumMap = {
   ThemeMode.dark: 'dark',
 };
 
-const _$TutorialEnumMap = {
-  Tutorial.interlinearStudy: 'interlinearStudy',
-  Tutorial.crossReferencesStudy: 'crossReferencesStudy',
-  Tutorial.searchStudy: 'searchStudy',
-  Tutorial.articlePassagesStudy: 'articlePassagesStudy',
-};
-
-const _$OnboardingStepEnumMap = {
-  OnboardingStep.crossReferences: 'crossReferences',
-  OnboardingStep.annotateVerse: 'annotateVerse',
-  OnboardingStep.searchWord: 'searchWord',
-  OnboardingStep.changeBible: 'changeBible',
-  OnboardingStep.navigateChapter: 'navigateChapter',
-  OnboardingStep.goBack: 'goBack',
-  OnboardingStep.swipeChapter: 'swipeChapter',
-  OnboardingStep.addStudyPanel: 'addStudyPanel',
-  OnboardingStep.customizeToolbar: 'customizeToolbar',
-  OnboardingStep.startBiblePlan: 'startBiblePlan',
-};
-
 $Rec _$recordConvert<$Rec>(Object? value, $Rec Function(Map) convert) =>
     convert(value as Map<String, dynamic>);
 
@@ -339,9 +308,15 @@ const _$MigrationEnumMap = {
   Migration.renamedBiblePlans: 'renamedBiblePlans',
   Migration.anonymousAnalytics: 'anonymousAnalytics',
   Migration.addedTyndaleCommentary: 'addedTyndaleCommentary',
+  Migration.optInOnboarding: 'optInOnboarding',
 };
 
 const _$MessageEnumMap = {
   Message.renamedBiblePlans: 'renamedBiblePlans',
   Message.anonymousAnalytics: 'anonymousAnalytics',
 };
+
+Json? _$JsonConverterToJson<Json, Value>(
+  Value? value,
+  Json? Function(Value value) toJson,
+) => value == null ? null : toJson(value);

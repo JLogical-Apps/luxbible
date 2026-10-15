@@ -1,9 +1,9 @@
+import 'package:bible/models/user/onboarding_progress.dart';
 import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/analytics_service.dart';
 import 'package:bible/ui/pages/more_page.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,24 +16,30 @@ import 'package:utils_core/utils_core.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class OnboardingPanel extends HookConsumerWidget {
+  final OnboardingProgress onboarding;
   final bool showDragHandle;
   final OnboardingState state;
   final bool isVisible;
 
-  const OnboardingPanel({super.key, required this.showDragHandle, required this.state, required this.isVisible});
+  const OnboardingPanel({
+    super.key,
+    required this.onboarding,
+    required this.showDragHandle,
+    required this.state,
+    required this.isVisible,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final currentStepIndex = user.currentOnboardingStepIndex;
-    final currentStep = user.currentOnboardingStep;
-    final isComplete = currentStep == null;
+    final tour = onboarding.tour;
+    final currentStep = onboarding.currentStep;
 
     final keyByStep = useMemoized(() => OnboardingStep.values.mapToMap((step) => MapEntry(step, GlobalKey())));
     final scrollController = useScrollController();
 
     usePostFrameEffect(() async {
-      if (currentStep == OnboardingStep.values.first || !isVisible) return;
+      if (currentStep == tour.steps.first || !isVisible) return;
       await Future.delayed(Duration(milliseconds: 200));
       if (currentStep == null) {
         if (scrollController.hasClients) {
@@ -62,12 +68,12 @@ class OnboardingPanel extends HookConsumerWidget {
             ),
           );
           if (shouldSkip == true) {
-            ref.updateUser((user) => user.withOnboardingDismissed());
+            ref.dismissOnboarding();
           }
         },
       ),
-      title: t.onboarding.getStarted.toText(),
-      subtitle: t.onboarding.learnLux.toText(),
+      title: tour.title().toText(),
+      subtitle: tour.description().toText(),
       children: [
         Padding(
           padding: .all(16),
@@ -77,9 +83,8 @@ class OnboardingPanel extends HookConsumerWidget {
             subtitle: t.onboarding.skipHint.toText(),
           ),
         ),
-        ...OnboardingStep.values.mapIndexed((stepIndex, step) {
-          final isStepCompleted = user.isOnboardingStepCompleted(step);
-          final isActiveStep = stepIndex == currentStepIndex;
+        ...tour.steps.map((step) {
+          final isActiveStep = step == currentStep;
           return StyledListItem.checkbox(
             key: keyByStep[step],
             leading: step.icon.toIcon(),
@@ -106,7 +111,7 @@ class OnboardingPanel extends HookConsumerWidget {
                         )
                         .toList(),
                   ),
-            isSelected: isStepCompleted,
+            isSelected: onboarding.completedSteps.has(step),
             onSelected: null,
             isEnabled: isActiveStep,
           );
@@ -128,11 +133,8 @@ class OnboardingPanel extends HookConsumerWidget {
         ),
       ],
       buttonsBuilder: (context) => [
-        if (isComplete)
-          StyledRectButton.primary(
-            label: t.common.finish.toText(),
-            onPressed: () => ref.updateUser((user) => user.withOnboardingDismissed()),
-          ),
+        if (onboarding.isComplete)
+          StyledRectButton.primary(label: t.common.finish.toText(), onPressed: () => ref.dismissOnboarding()),
       ],
     );
   }

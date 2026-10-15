@@ -1113,9 +1113,11 @@ class _Translations$onboarding$ru extends Translations$onboarding$en {
 
 	// Translations
 	@override String get skipQuestion => 'Пропустить адаптацию?';
-	@override String get skipConfirmation => 'Вы уверены, что хотите пропустить знакомство с приложением? Его можно запустить снова в разделе «Настройки» > «Справка».';
+	@override String get skipConfirmation => 'Вы уверены, что хотите пропустить знакомство с приложением? Его можно запустить снова в разделе «Ещё» > «Помощь».';
 	@override String get getStarted => 'Начать';
-	@override String get learnLux => 'Узнайте, как использовать Lux';
+	@override String get getStartedDescription => 'Освойте основы';
+	@override String get advancedTutorial => 'Расширенное обучение';
+	@override String get advancedTutorialDescription => 'Продвинутые функции';
 	@override String get checklistDescription => 'Заполните контрольный список ниже, чтобы узнать, как использовать Lux.';
 	@override String get skipHint => 'Торопитесь? Нажмите ✕, чтобы пропустить.';
 	@override String get joinDiscord => 'Присоединяйтесь к нашему сообществу в Discord';
@@ -1640,8 +1642,6 @@ class _Translations$settings$ru extends Translations$settings$en {
 	@override String get reportProblemDescription => 'Получите помощь с ошибками и другими проблемами.';
 	@override String get recommended => 'Рекомендуется';
 	@override String get emailSupport => 'Написать в поддержку';
-	@override String get restartGetStarted => 'Начать знакомство заново';
-	@override String get restartGetStartedDescription => 'Снова показать контрольный список знакомства с приложением.';
 	@override String get resetTutorials => 'Сбросить подсказки';
 	@override String get resetTutorialsDescription => 'Снова показывать полезные подсказки в приложении.';
 	@override String get tutorialsReset => 'Подсказки сброшены.';
@@ -3970,9 +3970,11 @@ extension on TranslationsRu {
 			'searchUi.wordMatching.partOfWord.description' => 'Находить слова, которые содержат запрос в любой позиции.',
 			'searchUi.wordMatching.partOfWord.example' => 'Пример: «свет» также находит «рассвет»',
 			'onboarding.skipQuestion' => 'Пропустить адаптацию?',
-			'onboarding.skipConfirmation' => 'Вы уверены, что хотите пропустить знакомство с приложением? Его можно запустить снова в разделе «Настройки» > «Справка».',
+			'onboarding.skipConfirmation' => 'Вы уверены, что хотите пропустить знакомство с приложением? Его можно запустить снова в разделе «Ещё» > «Помощь».',
 			'onboarding.getStarted' => 'Начать',
-			'onboarding.learnLux' => 'Узнайте, как использовать Lux',
+			'onboarding.getStartedDescription' => 'Освойте основы',
+			'onboarding.advancedTutorial' => 'Расширенное обучение',
+			'onboarding.advancedTutorialDescription' => 'Продвинутые функции',
 			'onboarding.checklistDescription' => 'Заполните контрольный список ниже, чтобы узнать, как использовать Lux.',
 			'onboarding.skipHint' => 'Торопитесь? Нажмите ✕, чтобы пропустить.',
 			'onboarding.joinDiscord' => 'Присоединяйтесь к нашему сообществу в Discord',
@@ -4272,10 +4274,10 @@ extension on TranslationsRu {
 			'morphology.types.negativeParticle.name' => 'Отрицательная частица',
 			'morphology.types.negativeParticle.description' => 'Частица, обозначающая отрицание.',
 			'morphology.types.negativeParticle.examples' => 'нет|нет',
-			'morphology.types.interrogativeParticle.name' => 'Вопросительная частица',
-			'morphology.types.interrogativeParticle.description' => 'Частица, обозначающая вопрос.',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.types.interrogativeParticle.name' => 'Вопросительная частица',
+			'morphology.types.interrogativeParticle.description' => 'Частица, обозначающая вопрос.',
 			'morphology.types.interrogativeParticle.examples' => '(префикс на иврите ה, английского эквивалента нет)',
 			'morphology.types.demonstrativeParticle.name' => 'Демонстративная частица',
 			'morphology.types.demonstrativeParticle.description' => 'Указательная частица, например «вот».',
@@ -4529,8 +4531,6 @@ extension on TranslationsRu {
 			'settings.reportProblemDescription' => 'Получите помощь с ошибками и другими проблемами.',
 			'settings.recommended' => 'Рекомендуется',
 			'settings.emailSupport' => 'Написать в поддержку',
-			'settings.restartGetStarted' => 'Начать знакомство заново',
-			'settings.restartGetStartedDescription' => 'Снова показать контрольный список знакомства с приложением.',
 			'settings.resetTutorials' => 'Сбросить подсказки',
 			'settings.resetTutorialsDescription' => 'Снова показывать полезные подсказки в приложении.',
 			'settings.tutorialsReset' => 'Подсказки сброшены.',

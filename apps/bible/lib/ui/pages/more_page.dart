@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app_settings/app_settings.dart';
+import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/models/user/toolbar_preset.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/services/analytics_service.dart';
@@ -330,14 +331,19 @@ class MorePage extends HookConsumerWidget implements StyledRoute<VerseSelection>
                     ),
                   ),
                 ),
-                StyledListItem(
-                  title: t.settings.restartGetStarted.toText(),
-                  subtitle: t.settings.restartGetStartedDescription.toText(),
-                  leading: Symbols.data_info_alert.toIcon(),
-                  onPressed: () {
-                    ref.updateUser((user) => user.withOnboardingReset());
-                    context.pop();
-                  },
+                ...OnboardingTour.values.map(
+                  (tour) => StyledListItem(
+                    title: tour.title().toText(),
+                    subtitle: tour.description().toText(),
+                    leading: StyledNotificationDot(
+                      isVisible: user.pendingOnboardingTours.has(tour),
+                      child: tour.icon.toIcon(),
+                    ),
+                    onPressed: () {
+                      ref.startOnboarding(tour);
+                      context.pop();
+                    },
+                  ),
                 ),
                 StyledListItem(
                   title: t.settings.resetTutorials.toText(),

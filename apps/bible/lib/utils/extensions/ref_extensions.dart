@@ -18,6 +18,10 @@ extension WidgetRefExtension on WidgetRef {
   User updateUser(User Function(User) updater) => read(userProvider.notifier).update(updater);
 
   User markOnboardingStep(OnboardingStep step) => updateUser((user) => user.withOnboardingStepCompleted(step));
+
+  void startOnboarding(OnboardingTour tour) => read(userProvider.notifier).startOnboarding(tour);
+
+  void dismissOnboarding() => read(userProvider.notifier).dismissOnboarding();
 }
 
 extension ProviderContainerExtension on ProviderContainer {

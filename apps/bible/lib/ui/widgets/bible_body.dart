@@ -217,20 +217,22 @@ class BibleBody extends HookConsumerWidget {
     final studyPanelCarousel = useStudyPanelCarousel(
       ref: ref,
       isSideLayout: isSideLayout,
-      leadingPanelBuilder: user.isOnboardingActive
-          ? (showDragHandle, isVisible) => OnboardingPanel(
-              key: onboardingPanelKey,
-              showDragHandle: showDragHandle,
-              state: OnboardingState(
-                isVerseSelected: selectionController.verseSelection != null,
-                isWordSelected: selectionController.textSelection != null,
-                isMainToolbarVisible: bottomBarVisibility.isVisible,
-                hasStudyPanel: user.studyPanels.isNotEmpty,
-                hasHistory: navigationHistoryState.value.canUndo,
-              ),
-              isVisible: isVisible,
-            )
-          : null,
+      leadingPanelBuilder: switch (user.onboarding) {
+        final onboarding? => (showDragHandle, isVisible) => OnboardingPanel(
+          key: onboardingPanelKey,
+          onboarding: onboarding,
+          showDragHandle: showDragHandle,
+          state: OnboardingState(
+            isVerseSelected: selectionController.verseSelection != null,
+            isWordSelected: selectionController.textSelection != null,
+            isMainToolbarVisible: bottomBarVisibility.isVisible,
+            hasStudyPanel: user.studyPanels.isNotEmpty,
+            hasHistory: navigationHistoryState.value.canUndo,
+          ),
+          isVisible: isVisible,
+        ),
+        null => null,
+      },
       trailingPanelBuilder: user.audio.isOpen
           ? (showDragHandle) => AudioBiblePanel(context: .bible, showDragHandle: showDragHandle)
           : null,
@@ -272,6 +274,7 @@ class BibleBody extends HookConsumerWidget {
       mainToolbar: user.mainToolbar,
       translation: user.translation,
       user: user,
+      hasMoreNotification: user.pendingOnboardingTours.isNotEmpty,
       onSwipeLeft: () {
         var history = navigationHistoryState.value;
         if (!history.canUndo) {
@@ -319,7 +322,7 @@ class BibleBody extends HookConsumerWidget {
         onBookmarkAdded: onBookmarkAdded,
       ),
       onMorePressed: () async {
-        final action = await MainActionsSheet.show(context);
+        final action = await MainActionsSheet.show(context, showsOnboarding: true);
         if (action != null && context.mounted) {
           action.onPressed(
             context,

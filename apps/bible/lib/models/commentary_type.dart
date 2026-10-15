@@ -38,3 +38,7 @@ enum CommentaryType {
     calvin => t.commentaryTypes.calvinDescription,
   };
 }
+
+class KnownCommentaryTypes extends KnownEnumList<CommentaryType> {
+  const KnownCommentaryTypes() : super(CommentaryType.values);
+}

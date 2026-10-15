@@ -41,6 +41,7 @@ export 'src/widgets/styled_list_item_context.dart';
 export 'src/widgets/styled_list_view.dart';
 export 'src/widgets/styled_loading.dart';
 export 'src/widgets/styled_material.dart';
+export 'src/widgets/styled_notification_dot.dart';
 export 'src/widgets/styled_page.dart';
 export 'src/widgets/styled_page_dock.dart';
 export 'src/widgets/styled_pill_button.dart';

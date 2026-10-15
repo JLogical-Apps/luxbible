@@ -1093,9 +1093,11 @@ class _Translations$onboarding$de extends Translations$onboarding$en {
 
 	// Translations
 	@override String get skipQuestion => 'Einführung überspringen?';
-	@override String get skipConfirmation => 'Möchtest du die Einführung wirklich überspringen? Du kannst sie unter Einstellungen > Hilfe erneut starten.';
+	@override String get skipConfirmation => 'Möchtest du die Einführung wirklich überspringen? Du kannst sie unter Mehr > Hilfe erneut starten.';
 	@override String get getStarted => 'Erste Schritte';
-	@override String get learnLux => 'Lerne Lux kennen';
+	@override String get getStartedDescription => 'Lerne die Grundlagen';
+	@override String get advancedTutorial => 'Fortgeschrittene Einführung';
+	@override String get advancedTutorialDescription => 'Für Fortgeschrittene';
 	@override String get checklistDescription => 'Arbeite die Checkliste unten ab, um Lux kennenzulernen.';
 	@override String get skipHint => 'Keine Zeit? Tippe auf ✕, um zu überspringen.';
 	@override String get joinDiscord => 'Tritt unserer Discord-Community bei';
@@ -1616,8 +1618,6 @@ class _Translations$settings$de extends Translations$settings$en {
 	@override String get reportProblemDescription => 'Hilfe bei Fehlern und anderen Problemen erhalten.';
 	@override String get recommended => 'Empfohlen';
 	@override String get emailSupport => 'E-Mail-Support';
-	@override String get restartGetStarted => 'Erste Schritte neu starten';
-	@override String get restartGetStartedDescription => 'Die Checkliste „Erste Schritte“ erneut anzeigen.';
 	@override String get resetTutorials => 'Tipps zurücksetzen';
 	@override String get resetTutorialsDescription => 'Hilfreiche Hinweise in der ganzen App wieder anzeigen.';
 	@override String get tutorialsReset => 'Tipps wurden zurückgesetzt.';
@@ -3944,9 +3944,11 @@ extension on TranslationsDe {
 			'searchUi.wordMatching.partOfWord.description' => 'Findet Wörter, die deine Suche irgendwo enthalten.',
 			'searchUi.wordMatching.partOfWord.example' => 'Beispiel: „Licht“ findet auch „Tageslicht“',
 			'onboarding.skipQuestion' => 'Einführung überspringen?',
-			'onboarding.skipConfirmation' => 'Möchtest du die Einführung wirklich überspringen? Du kannst sie unter Einstellungen > Hilfe erneut starten.',
+			'onboarding.skipConfirmation' => 'Möchtest du die Einführung wirklich überspringen? Du kannst sie unter Mehr > Hilfe erneut starten.',
 			'onboarding.getStarted' => 'Erste Schritte',
-			'onboarding.learnLux' => 'Lerne Lux kennen',
+			'onboarding.getStartedDescription' => 'Lerne die Grundlagen',
+			'onboarding.advancedTutorial' => 'Fortgeschrittene Einführung',
+			'onboarding.advancedTutorialDescription' => 'Für Fortgeschrittene',
 			'onboarding.checklistDescription' => 'Arbeite die Checkliste unten ab, um Lux kennenzulernen.',
 			'onboarding.skipHint' => 'Keine Zeit? Tippe auf ✕, um zu überspringen.',
 			'onboarding.joinDiscord' => 'Tritt unserer Discord-Community bei',
@@ -4248,10 +4250,10 @@ extension on TranslationsDe {
 			'morphology.types.negativeParticle.examples' => 'nicht|kein',
 			'morphology.types.interrogativeParticle.name' => 'Fragepartikel',
 			'morphology.types.interrogativeParticle.description' => 'Eine Partikel, die eine Frage anzeigt.',
-			'morphology.types.interrogativeParticle.examples' => '(hebräisches Präfix ה, ohne deutsche Entsprechung)',
-			'morphology.types.demonstrativeParticle.name' => 'Hinweispartikel',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.types.interrogativeParticle.examples' => '(hebräisches Präfix ה, ohne deutsche Entsprechung)',
+			'morphology.types.demonstrativeParticle.name' => 'Hinweispartikel',
 			'morphology.types.demonstrativeParticle.description' => 'Eine hinweisende Partikel, etwa „siehe“.',
 			'morphology.types.demonstrativeParticle.examples' => 'siehe|sieh',
 			'morphology.types.genericParticle.name' => 'Allgemeine Partikel',
@@ -4503,8 +4505,6 @@ extension on TranslationsDe {
 			'settings.reportProblemDescription' => 'Hilfe bei Fehlern und anderen Problemen erhalten.',
 			'settings.recommended' => 'Empfohlen',
 			'settings.emailSupport' => 'E-Mail-Support',
-			'settings.restartGetStarted' => 'Erste Schritte neu starten',
-			'settings.restartGetStartedDescription' => 'Die Checkliste „Erste Schritte“ erneut anzeigen.',
 			'settings.resetTutorials' => 'Tipps zurücksetzen',
 			'settings.resetTutorialsDescription' => 'Hilfreiche Hinweise in der ganzen App wieder anzeigen.',
 			'settings.tutorialsReset' => 'Tipps wurden zurückgesetzt.',

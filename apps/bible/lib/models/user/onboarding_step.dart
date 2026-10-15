@@ -111,17 +111,49 @@ enum OnboardingMicroStep {
   };
 }
 
+enum OnboardingTour {
+  getStarted,
+  advanced;
+
+  String title() => switch (this) {
+    getStarted => t.onboarding.getStarted,
+    advanced => t.onboarding.advancedTutorial,
+  };
+
+  String description() => switch (this) {
+    getStarted => t.onboarding.getStartedDescription,
+    advanced => t.onboarding.advancedTutorialDescription,
+  };
+
+  IconData get icon => switch (this) {
+    getStarted => Symbols.waving_hand,
+    advanced => Symbols.rocket_launch,
+  };
+
+  int get requiredActiveDayCount => switch (this) {
+    getStarted => 0,
+    advanced => 3,
+  };
+
+  List<OnboardingStep> get steps => OnboardingStep.values.where((step) => step.tour == this).toList();
+}
+
 enum OnboardingStep {
   crossReferences,
   annotateVerse,
   searchWord,
   changeBible,
   navigateChapter,
+  startBiblePlan,
   goBack,
   swipeChapter,
   addStudyPanel,
-  customizeToolbar,
-  startBiblePlan;
+  customizeToolbar;
+
+  OnboardingTour get tour => switch (this) {
+    crossReferences || annotateVerse || searchWord || changeBible || navigateChapter || startBiblePlan => .getStarted,
+    goBack || swipeChapter || addStudyPanel || customizeToolbar => .advanced,
+  };
 
   String title() => switch (this) {
     crossReferences => t.onboardingSteps.viewCrossReferences,
@@ -161,4 +193,12 @@ enum OnboardingStep {
     customizeToolbar => [.deselectEverything, .revealMainToolbar, .customizeToolbar],
     startBiblePlan => [.deselectEverything, .revealMainToolbar, .startBiblePlan],
   };
+}
+
+class KnownOnboardingTours extends KnownEnumSet<OnboardingTour> {
+  const KnownOnboardingTours() : super(OnboardingTour.values);
+}
+
+class KnownOnboardingSteps extends KnownEnumList<OnboardingStep> {
+  const KnownOnboardingSteps() : super(OnboardingStep.values);
 }

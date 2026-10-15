@@ -51,3 +51,7 @@ enum ResourceType {
     creeds => CreedsPage(),
   };
 }
+
+class KnownResourceTypes extends KnownEnumList<ResourceType> {
+  const KnownResourceTypes() : super(ResourceType.values);
+}

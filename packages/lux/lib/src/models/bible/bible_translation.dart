@@ -2,6 +2,7 @@ import 'package:lux/i18n.dart';
 import 'package:lux/src/models/bible/book_type.dart';
 import 'package:lux/src/models/reference/chapter_reference.dart';
 import 'package:lux/src/models/testament.dart';
+import 'package:lux/src/utils/serialization_utils.dart';
 
 enum BibleTranslation {
   // Dutch
@@ -309,4 +310,8 @@ enum BibleLanguage {
     spanish => t.languages.spanish,
     tagalog => t.languages.tagalog,
   };
+}
+
+class KnownBibleTranslations extends KnownEnumList<BibleTranslation> {
+  const KnownBibleTranslations() : super(BibleTranslation.values);
 }

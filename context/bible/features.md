@@ -36,7 +36,7 @@ Lux precomputes a rolling fourteen days of verses whenever it is opened or resum
 
 ## Privacy and Analytics
 
-Lux measures visits to its main pages and a small set of prominent actions: starting audio playback, starting a plan, completing a plan day, opening an externally supplied plan file, searching, sharing verses, opening a shared passage link, opening a plan link, opening Verse of the Day, opening the Verse of the Day widget, opening a local notification, changing toolbar configuration, opening a community link, pressing Rate Lux, requesting the native review prompt, and starting, completing, or skipping onboarding, including which checklist step was completed or skipped. These events contain no user-created content or dynamic identifiers from the app.
+Lux measures visits to its main pages and a small set of prominent actions: starting audio playback, starting a plan, completing a plan day, opening an externally supplied plan file, searching, sharing verses, opening a shared passage link, opening a plan link, opening Verse of the Day, opening the Verse of the Day widget, opening a local notification, changing toolbar configuration, opening a community link, pressing Rate Lux, requesting the native review prompt, and starting, completing, or skipping onboarding, including which checklist and which step was completed or skipped. These events contain no user-created content or dynamic identifiers from the app.
 
 On Android, Lux measures the general campaign source that led to installation through Google Play Install Referrer. The website maps compact, fixed social-profile and boosted-post source codes to aggregate campaign values, reports website traffic and store navigation through Google Analytics, and passes the same values to Google Play. When a shared verse link opens the website instead of Lux, Android visitors are sent to the passage in Lux when it is installed and to Google Play otherwise. iPhone and iPad visitors see Safari's app banner, which offers to open the passage in Lux or get it, along with an App Store button, and desktop visitors see both store buttons. The store links use a fixed passage-share campaign, so installs from shared verse links are attributed on Google Play and the App Store. These values identify a marketing source such as Facebook or TikTok, not a person or social-media account.
 
@@ -591,7 +591,7 @@ On narrow layouts, panels dock below the Bible. On wide layouts, they appear to 
 
 The focused Bible plan reading page shows the same study panels, sharing their list, order, selected panel, and bottom panel height with the main Bible reader. Compare shows only the assigned passage in the other translation. The plan's audio panel takes the Audio Bible's place in the panel area, and the onboarding checklist is not shown there.
 
-The onboarding checklist ends with an invitation to join the Lux Discord community, where users can ask questions, share feedback, and meet other users. Completing the last checklist step scrolls the panel to the bottom.
+Each onboarding checklist ends with an invitation to join the Lux Discord community, where users can ask questions, share feedback, and meet other users. Completing the last checklist step scrolls the panel to the bottom.
 
 ## Audio Bible
 
@@ -820,7 +820,7 @@ More is organized around:
 
 ### Help
 
-- Restart Get Started
+- Start Get Started or the Advanced Tutorial
 - Reset contextual tutorials
 
 ### About
@@ -830,20 +830,23 @@ More is organized around:
 
 ## Get Started and Tutorials
 
-New users see a Get Started checklist that teaches:
+New users open straight into the reader with no checklist showing. A blue dot on the main toolbar's More button leads to a Get Started action at the top of the More sheet, which also has a blue dot. Tapping it opens the Get Started checklist in the panel area and clears both dots. Get Started teaches:
 
 - Cross-references
 - Verse annotations
 - Word search
 - Switching Bibles
 - Chapter navigation
-- Toolbar undo
+- Bible reading plans
+
+On the user's third active day, the same blue dots point to an Advanced Tutorial checklist that teaches:
+
+- Swiping on the toolbar to go back
 - Swiping between chapters
 - Study panels
 - Toolbar customization
-- Bible reading plans
 
-The checklist can be skipped and restarted from More > Help. Separate contextual tutorial banners can also be reset.
+Users who installed Lux before this change don't get either blue dot. Each action leaves the More sheet once started. Both checklists can be skipped, and either can be started again from More > Help, where a blue dot also marks one that hasn't been started yet. Starting a checklist resets its progress and replaces any checklist in progress. Separate contextual tutorial banners can also be reset.
 
 ## Current Product Limitations
 

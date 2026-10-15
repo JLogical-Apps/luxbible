@@ -26,6 +26,7 @@ class MainToolbar extends StatelessWidget {
   final Function()? onMorePressed;
 
   final bool isEdit;
+  final bool hasMoreNotification;
   final ColorBuilder? colorBuilder;
 
   const MainToolbar({
@@ -44,6 +45,7 @@ class MainToolbar extends StatelessWidget {
     this.onShorcutPressed,
     this.onMorePressed,
     this.isEdit = false,
+    this.hasMoreNotification = false,
     this.colorBuilder,
   });
 
@@ -99,7 +101,10 @@ class MainToolbar extends StatelessWidget {
                 ),
               ),
             ),
-            StyledCircleButton.md(onPressed: () => onMorePressed?.call(), child: Symbols.more_vert.toIcon()),
+            StyledCircleButton.md(
+              onPressed: () => onMorePressed?.call(),
+              child: StyledNotificationDot(isVisible: hasMoreNotification, child: Symbols.more_vert.toIcon()),
+            ),
           ],
         ),
       ),

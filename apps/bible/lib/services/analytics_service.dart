@@ -50,14 +50,18 @@ class AnalyticsEvent {
   static final communityLinkPressed = AnalyticsEvent._(.communityLinkPressed);
   static final rateLuxPressed = AnalyticsEvent._(.rateLuxPressed);
   static final reviewPromptRequested = AnalyticsEvent._(.reviewPromptRequested);
-  static final onboardingStarted = AnalyticsEvent._(.onboardingStarted);
-  static final onboardingComplete = AnalyticsEvent._(.onboardingComplete);
+
+  static AnalyticsEvent onboardingStarted(OnboardingTour tour) =>
+      AnalyticsEvent._(.onboardingStarted, {'tour': tour.name});
+
+  static AnalyticsEvent onboardingComplete(OnboardingTour tour) =>
+      AnalyticsEvent._(.onboardingComplete, {'tour': tour.name});
 
   static AnalyticsEvent onboardingStepComplete(OnboardingStep step) =>
-      AnalyticsEvent._(.onboardingStepComplete, {'step': step.name});
+      AnalyticsEvent._(.onboardingStepComplete, {'tour': step.tour.name, 'step': step.name});
 
   static AnalyticsEvent onboardingSkipped(OnboardingStep step) =>
-      AnalyticsEvent._(.onboardingSkipped, {'step': step.name});
+      AnalyticsEvent._(.onboardingSkipped, {'tour': step.tour.name, 'step': step.name});
 
   void log() => FirebaseAnalytics.instance.logEvent(name: type.eventName, parameters: parameters);
 }

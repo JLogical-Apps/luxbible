@@ -2472,14 +2472,20 @@ class Translations$onboarding$en {
 	/// en: 'Skip Onboarding?'
 	String get skipQuestion => 'Skip Onboarding?';
 
-	/// en: 'Are you sure you want to skip the onboarding? You can restart it from Settings > Help.'
-	String get skipConfirmation => 'Are you sure you want to skip the onboarding? You can restart it from Settings > Help.';
+	/// en: 'Are you sure you want to skip the onboarding? You can restart it from More > Help.'
+	String get skipConfirmation => 'Are you sure you want to skip the onboarding? You can restart it from More > Help.';
 
 	/// en: 'Get Started'
 	String get getStarted => 'Get Started';
 
-	/// en: 'Learn how to use Lux'
-	String get learnLux => 'Learn how to use Lux';
+	/// en: 'Learn the basics'
+	String get getStartedDescription => 'Learn the basics';
+
+	/// en: 'Advanced Tutorial'
+	String get advancedTutorial => 'Advanced Tutorial';
+
+	/// en: 'Learn advanced features'
+	String get advancedTutorialDescription => 'Learn advanced features';
 
 	/// en: 'Complete the checklist below to learn how to use Lux.'
 	String get checklistDescription => 'Complete the checklist below to learn how to use Lux.';
@@ -3476,12 +3482,6 @@ class Translations$settings$en {
 
 	/// en: 'Email Support'
 	String get emailSupport => 'Email Support';
-
-	/// en: 'Restart Get Started'
-	String get restartGetStarted => 'Restart Get Started';
-
-	/// en: 'Show the Get Started checklist again.'
-	String get restartGetStartedDescription => 'Show the Get Started checklist again.';
 
 	/// en: 'Reset Tutorials'
 	String get resetTutorials => 'Reset Tutorials';
@@ -6497,9 +6497,11 @@ extension on Translations {
 			'searchUi.wordMatching.partOfWord.description' => 'Find words containing your search anywhere.',
 			'searchUi.wordMatching.partOfWord.example' => 'Example: “light” also matches “delight”',
 			'onboarding.skipQuestion' => 'Skip Onboarding?',
-			'onboarding.skipConfirmation' => 'Are you sure you want to skip the onboarding? You can restart it from Settings > Help.',
+			'onboarding.skipConfirmation' => 'Are you sure you want to skip the onboarding? You can restart it from More > Help.',
 			'onboarding.getStarted' => 'Get Started',
-			'onboarding.learnLux' => 'Learn how to use Lux',
+			'onboarding.getStartedDescription' => 'Learn the basics',
+			'onboarding.advancedTutorial' => 'Advanced Tutorial',
+			'onboarding.advancedTutorialDescription' => 'Learn advanced features',
 			'onboarding.checklistDescription' => 'Complete the checklist below to learn how to use Lux.',
 			'onboarding.skipHint' => 'In a hurry? Tap ✕ to skip.',
 			'onboarding.joinDiscord' => 'Join our Discord community',
@@ -6801,10 +6803,10 @@ extension on Translations {
 			'morphology.types.negativeParticle.examples' => 'not|no',
 			'morphology.types.interrogativeParticle.name' => 'Interrogative particle',
 			'morphology.types.interrogativeParticle.description' => 'A particle that marks a question.',
-			'morphology.types.interrogativeParticle.examples' => '(Hebrew prefix ה, no English equivalent)',
-			'morphology.types.demonstrativeParticle.name' => 'Demonstrative particle',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.types.interrogativeParticle.examples' => '(Hebrew prefix ה, no English equivalent)',
+			'morphology.types.demonstrativeParticle.name' => 'Demonstrative particle',
 			'morphology.types.demonstrativeParticle.description' => 'A pointing particle, such as "behold".',
 			'morphology.types.demonstrativeParticle.examples' => 'behold|lo',
 			'morphology.types.genericParticle.name' => 'Generic particle',
@@ -7056,8 +7058,6 @@ extension on Translations {
 			'settings.reportProblemDescription' => 'Get help with bugs and other issues.',
 			'settings.recommended' => 'Recommended',
 			'settings.emailSupport' => 'Email Support',
-			'settings.restartGetStarted' => 'Restart Get Started',
-			'settings.restartGetStartedDescription' => 'Show the Get Started checklist again.',
 			'settings.resetTutorials' => 'Reset Tutorials',
 			'settings.resetTutorialsDescription' => 'Show helpful hints throughout the app again.',
 			'settings.tutorialsReset' => 'Tutorials have been reset.',
