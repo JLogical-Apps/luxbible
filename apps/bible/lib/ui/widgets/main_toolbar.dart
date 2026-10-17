@@ -69,12 +69,12 @@ class MainToolbar extends StatelessWidget {
         onLongPressed: onLongPressed,
         child: Row(
           children: [
-            if (leading != null) ...[leading, gapW8],
+            if (leading != null) ...[leading, gapW4],
             Expanded(
               child: Align(
                 alignment: .centerLeft,
                 child: Padding(
-                  padding: .symmetric(vertical: 16),
+                  padding: EdgeInsets.symmetric(vertical: 16) + .only(right: 4),
                   child: Row(
                     spacing: 8,
                     children: [
@@ -83,7 +83,6 @@ class MainToolbar extends StatelessWidget {
                       ),
                       Text(location, style: context.textStyle.labelLg, maxLines: 1, overflow: .ellipsis),
                       StyledTag.sm(child: translation.title().toText()),
-                      gapW12,
                     ],
                   ),
                 ),
