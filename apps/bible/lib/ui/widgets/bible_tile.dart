@@ -1,3 +1,4 @@
+import 'package:bible/ui/widgets/bible_abbreviation.dart';
 import 'package:bible/ui/widgets/testament_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:lux/i18n.dart';
@@ -16,8 +17,9 @@ class BibleTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => StyledListItem(
-    title: translation.title().toText(),
-    subtitle: translation.fullName().toText(),
+    leading: BibleAbbreviation(translation: translation),
+    title: translation.fullName().toText(),
+    subtitle: translation.publisher.toText(),
     thirdLine: buildBibleChips(translation),
     trailing: trailing,
     onPressed: isEnabled ? onPressedOverride ?? () => showInfo(context) : null,
@@ -61,6 +63,7 @@ class BibleTile extends StatelessWidget {
   Future<void> showInfo(BuildContext context) => context.showStyledDialog(
     (context) => StyledDialog.confirm(
       title: translation.fullName().toText(),
+      subtitle: translation.publisher.toText(),
       bodyPadding: .zero,
       body: StyledList(
         children: [

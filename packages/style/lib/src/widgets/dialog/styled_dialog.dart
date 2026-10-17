@@ -7,6 +7,7 @@ import 'package:style/style.dart';
 
 class StyledDialog<T> extends HookWidget {
   final Widget title;
+  final Widget? subtitle;
 
   final Widget body;
   final EdgeInsets bodyPadding;
@@ -16,6 +17,7 @@ class StyledDialog<T> extends HookWidget {
   const StyledDialog({
     super.key,
     required this.title,
+    this.subtitle,
     required this.body,
     this.bodyPadding = const .symmetric(horizontal: 16),
     required this.buttonsBuilder,
@@ -23,10 +25,12 @@ class StyledDialog<T> extends HookWidget {
 
   static StyledDialog<bool> confirm({
     required Widget title,
+    Widget? subtitle,
     required Widget body,
     EdgeInsets bodyPadding = const .symmetric(horizontal: 16),
   }) => StyledDialog(
     title: title,
+    subtitle: subtitle,
     body: body,
     bodyPadding: bodyPadding,
     buttonsBuilder: ((context) => [
@@ -36,12 +40,14 @@ class StyledDialog<T> extends HookWidget {
 
   static StyledDialog<bool> confirmOrCancel({
     required Widget title,
+    Widget? subtitle,
     required Widget body,
     Widget? confirmLabel,
     Widget? cancelLabel,
     EdgeInsets bodyPadding = const .symmetric(horizontal: 16),
   }) => StyledDialog(
     title: title,
+    subtitle: subtitle,
     body: body,
     bodyPadding: bodyPadding,
     buttonsBuilder: ((context) => [
@@ -52,12 +58,14 @@ class StyledDialog<T> extends HookWidget {
 
   static StyledDialog<bool> confirmDelete({
     required Widget title,
+    Widget? subtitle,
     required Widget body,
     Widget? deleteLabel,
     Widget? cancelLabel,
     EdgeInsets bodyPadding = const .symmetric(horizontal: 16),
   }) => StyledDialog(
     title: title,
+    subtitle: subtitle,
     body: body,
     bodyPadding: bodyPadding,
     buttonsBuilder: ((context) => [
@@ -87,7 +95,14 @@ class StyledDialog<T> extends HookWidget {
                   spacing: 8,
                   children: [
                     Expanded(
-                      child: DefaultTextStyle(style: context.textStyle.headingSm, child: title),
+                      child: Column(
+                        crossAxisAlignment: .start,
+                        children: [
+                          DefaultTextStyle(style: context.textStyle.headingSm, child: title),
+                          if (subtitle case final subtitle?)
+                            DefaultTextStyle(style: context.textStyle.paragraphMd.subtle(), child: subtitle),
+                        ],
+                      ),
                     ),
                     if (isDismissible)
                       StyledCircleButton.md(

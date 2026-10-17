@@ -122,7 +122,7 @@ The following are bundled with the app and work offline:
 - SYNO
 - ULB
 - FOB
-- Martin
+- FMAR
 - RVG
 - LXX
 - TR
@@ -146,7 +146,7 @@ The following are bundled with the app and work offline:
 
 Bundled sources with alternate versification use Lux's KJV-compatible references in their OSIS `osisID` values and
 retain the source translation's reference in `origin`. When multiple source verses correspond to one Lux verse, they
-share the normalized reference and are combined when the chapter is read. This is used by LXX, FOB, Martin, NLD1939,
+share the normalized reference and are combined when the chapter is read. This is used by LXX, FOB, FMAR, NLD1939,
 LUT1912, SYNO, and ULB.
 
 Bundled translations are stored as one JSON asset per book. Ordinary reading decodes a book on demand and reuses it
@@ -332,8 +332,8 @@ Capabilities vary by translation:
 - Synthetic BSB headings: KJV, ASV, WEB
 - Footnotes: BSB, MSB, KJV, ASV, WEB, AMP, NASB95, NIV, CSB, NLT, NKJV, HFA, NTR
 - Red letters: BSB, MSB, KJV, WEB, AMP, NASB95, NIV, CSB, NLT, NKJV
-- Native headings: BSB, MSB, Martin, NRT, AMP, NASB95, NIV, CSB, NLT, NKJV, HFA, NTR
-- Paragraph formatting: all except OSHB, SV, Martin, NRT, ELB1905, LUT1912, NLD1939, FOB, SYNO, and ULB
+- Native headings: BSB, MSB, FMAR, NRT, AMP, NASB95, NIV, CSB, NLT, NKJV, HFA, NTR
+- Paragraph formatting: all except OSHB, SV, FMAR, NRT, ELB1905, LUT1912, NLD1939, FOB, SYNO, and ULB
 
 ## Study Data Sources
 

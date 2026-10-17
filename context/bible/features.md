@@ -55,7 +55,7 @@ Lux counts distinct active days locally. After three active days, it makes a nat
 - SV: Statenvertaling in Dutch
 - NLD1939: Petrus Canisiusvertaling 1939 in Dutch
 - FOB: Ostervald 1744 in French
-- Martin: Bible David Martin 1744 in French
+- FMAR: Bible David Martin 1744 in French
 - RVG: Reina Valera Gómez 2010 in Spanish
 - ELB1905: Unrevidierte Elberfelder 1905 in German
 - LUT1912: Lutherbibel 1912 in German
@@ -84,7 +84,7 @@ connection for fourteen days, after which Lux requires a connection to load it a
 
 ### Bible Selection and Compare Management
 
-The Bible selector shows every available Bible grouped by language, with up to five recently used Bibles at the top. The device's language comes first, followed by the other languages in alphabetical order by English name.
+The Bible selector shows every available Bible grouped by language, with up to five recently used Bibles at the top. The device's language comes first, followed by the other languages in alphabetical order by English name. Each Bible is listed by its full name and publisher, with its abbreviation in front.
 Recent Bibles can be removed from that list without removing the translation from Lux. Below the full list, a tile
 invites users to join Lux's Discord to propose a translation that isn't yet available.
 

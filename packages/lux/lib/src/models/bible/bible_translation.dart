@@ -54,9 +54,11 @@ enum BibleTranslation {
   // Tagalog
   tglulb;
 
-  String title() => switch (this) {
+  String title() => multilineTitle().replaceAll('\n', '');
+
+  String multilineTitle() => switch (this) {
     htb => 'HTB',
-    nld1939 => 'NLD1939',
+    nld1939 => 'NLD\n1939',
     sv => 'SV',
     amp => 'AMP',
     asv => 'ASV',
@@ -64,16 +66,16 @@ enum BibleTranslation {
     csb => 'CSB',
     kjv => 'KJV',
     msb => 'MSB',
-    nasb95 => 'NASB95',
+    nasb95 => 'NASB\n95',
     niv11 => 'NIV',
     nkjv => 'NKJV',
     nlt => 'NLT',
     web => 'WEB',
     fob => 'FOB',
-    martin1744 => 'Martin',
-    elb1905 => 'ELB1905',
+    martin1744 => 'FMAR',
+    elb1905 => 'ELB\n1905',
     hfa => 'HFA',
-    lut1912 => 'LUT1912',
+    lut1912 => 'LUT\n1912',
     byz => 'BYZ',
     lxx => 'LXX',
     statresgnt => 'SR',
@@ -116,6 +118,32 @@ enum BibleTranslation {
     synodal => 'Синодальный перевод 1876',
     rvg => 'Reina Valera Gómez 2010',
     tglulb => 'Tagalog Unlocked Literal Bible',
+  };
+
+  String get publisher => switch (this) {
+    htb || niv11 || hfa || ntr || nrt => 'Biblica',
+    nld1939 => 'Het Spectrum',
+    sv => 'Staten-Generaal',
+    amp || nasb95 => 'The Lockman Foundation',
+    asv => 'Thomas Nelson & Sons',
+    bsb || msb => 'Bible Hub',
+    csb => 'Holman Bible Publishers',
+    kjv => 'Cambridge University Press',
+    nkjv => 'Thomas Nelson',
+    nlt => 'Tyndale House Publishers',
+    web => 'eBible.org',
+    fob => 'Jean-Frédéric Ostervald',
+    martin1744 => 'David Martin',
+    elb1905 => 'R. Brockhaus Verlag',
+    lut1912 => 'Martin Luther',
+    byz => 'Robinson & Pierpont',
+    lxx => 'Deutsche Bibelgesellschaft',
+    statresgnt => 'Center for New Testament Restoration',
+    tr => 'Robert Estienne',
+    oshb => 'Open Scriptures',
+    synodal => 'Святейший Синод',
+    rvg => 'Humberto Gómez Caballero',
+    tglulb => 'Door43 World Missions Community',
   };
 
   BibleTranslationSource get source => switch (this) {

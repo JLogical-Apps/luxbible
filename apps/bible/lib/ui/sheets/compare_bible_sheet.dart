@@ -1,5 +1,6 @@
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/pages/compare_settings_page.dart';
+import 'package:bible/ui/widgets/bible_abbreviation.dart';
 import 'package:bible/ui/widgets/bible_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:lux/i18n/strings.g.dart';
@@ -20,8 +21,9 @@ class CompareBibleSheet {
           initialOption: initialBible,
           options: user.compareBiblesOrDefault,
           optionMapper: (option) => StyledSelectOption(
-            title: option.title().toText(),
-            subtitle: option.fullName().toText(),
+            leading: BibleAbbreviation(translation: option),
+            title: option.fullName().toText(),
+            subtitle: option.publisher.toText(),
             thirdLine: BibleTile.buildBibleChips(option),
           ),
         );

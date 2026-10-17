@@ -160,7 +160,7 @@ Source: https://eBible.org/Scriptures/''',
     );
 
     yield const LicenseEntryWithLineBreaks(
-      ['Bible David Martin 1744 (Martin)'],
+      ['Bible David Martin 1744 (FMAR)'],
       '''
 La Sainte Bible, Version David Martin 1744.
 
