@@ -81,27 +81,27 @@ void paintIosBattery(Canvas canvas, double left, double centerY) {
 }
 
 class IphoneStatusBarPainter extends CustomPainter {
-  final Rect island;
+  final Rect cutout;
 
-  IphoneStatusBarPainter({required this.island});
+  IphoneStatusBarPainter({required this.cutout});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final centerY = island.center.dy;
+    final centerY = cutout.center.dy;
 
     final time = layoutStatusText('3:16', fontSize: 17);
-    time.paint(canvas, Offset(island.left / 2 - time.width / 2, centerY - time.height / 2));
+    time.paint(canvas, Offset(cutout.left / 2 - time.width / 2, centerY - time.height / 2));
 
     final spacing = 6.0;
     final iconsWidth = iosSignalWidth + iosWifiWidth + iosBatteryWidth + spacing * 2;
-    final left = island.right + (size.width - island.right) / 2 - iconsWidth / 2;
+    final left = cutout.right + (size.width - cutout.right) / 2 - iconsWidth / 2;
     paintIosSignal(canvas, left, centerY);
     paintIosWifi(canvas, left + iosSignalWidth + spacing, centerY);
     paintIosBattery(canvas, left + iosSignalWidth + iosWifiWidth + spacing * 2, centerY);
   }
 
   @override
-  bool shouldRepaint(IphoneStatusBarPainter oldDelegate) => oldDelegate.island != island;
+  bool shouldRepaint(IphoneStatusBarPainter oldDelegate) => oldDelegate.cutout != cutout;
 }
 
 class IpadStatusBarPainter extends CustomPainter {

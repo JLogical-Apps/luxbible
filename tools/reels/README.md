@@ -129,6 +129,22 @@ Tags save to `lib/videos/<name>.media.json`, the way clips save to `clips.json`,
 Every file has two implicit tags: `start`, 10 frames in, and `end`, 10 frames before the last, which skips the janky
 frames RocketSim records at each edge. Both can be moved in the tab.
 
+Lux demos can also be recorded headlessly, with touch indicators and their tags written for you; see
+[Demo recordings for reels](../../apps/bible/tool/screenshots/README.md#demo-recordings-for-reels).
+
+A phone's own screen recording shows no touches. `bin/touches.dart` draws them on, as the same dot the app recorder
+draws, from a `touches.json` in the recorder's format: `{frame, phase, x, y}` events at 30 fps, `x` and `y` as
+fractions of the screen, each `down` followed by any `move`s and an `up`. A drag needs only its `down` and `up`; the dot
+moves linearly between them.
+
+```sh
+dart run bin/touches.dart ~/Downloads/my_video/app.MP4 ~/Downloads/my_video/app.touches.json ~/Downloads/my_video/app.touches.mp4
+```
+
+To find the touches in a recording, look for where the screen reacts: a row highlighting, a menu opening, or content
+starting to scroll. A touch lands a frame or two before. Keep the touched copy beside the original as
+`<name>.touches.mp4`, with its touches in `<name>.touches.json`, and tag the touched copy.
+
 `Play` takes the playhead to a tag, starting at a moment in its clip:
 
 ```dart
@@ -148,6 +164,7 @@ Clip('tap_annotate', modifiers: [
 - **The recording sets the pace, never slower than 1x.** A `Play` gets until the next `Play` of that file or the end of
   its run, even across a cut. If the footage fits, it plays at 1x and holds on its tag. If not, it speeds up just
   enough to reach the tag at the end of that stretch. `by:` ends the stretch sooner, and `speed:` fixes the speed.
+  `by: .beforeEnd(15)` lands on the tag half a second before the clip ends, to hold it there.
   `fit: true` slows it down too, so it reaches the tag right at the end instead of holding:
   `Media('tasks_complete.mov', play: [Play('end', fit: true)])`.
 - **Consecutive clips showing the same file are one run.** Its playhead carries across their cuts. A run with no `Play`

@@ -3,11 +3,9 @@ import 'dart:io';
 import 'package:bible/models/user/toolbar_preset.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/ui/widgets/interlinear_word_tile.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'device.dart';
 import 'harness.dart';
 import 'recording.dart';
 import 'seed.dart';
@@ -24,24 +22,6 @@ void main() {
 
   User at(String passage, {ToolbarPreset preset = .reader}) =>
       demo.withPreset(preset).copyWith(lastPosition: positionOf(passage));
-
-  void recordingTest(String name, Future<void> Function(Recording recording) body) {
-    testWidgets('iphone/$name', (tester) async {
-      debugDisableShadows = false;
-      debugDefaultTargetPlatformOverride = ScreenshotDevice.iphone.platform;
-      final screenshot = Screenshot(tester, .iphone);
-      final recording = Recording(screenshot, name);
-      try {
-        await recording.start();
-        await body(recording);
-        await recording.finish();
-        await screenshot.tearDown();
-      } finally {
-        debugDisableShadows = true;
-        debugDefaultTargetPlatformOverride = null;
-      }
-    });
-  }
 
   recordingTest('1_read', (recording) async {
     await recording.screenshot.pumpApp(at('Genesis 1'));

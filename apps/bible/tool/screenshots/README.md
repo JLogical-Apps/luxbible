@@ -9,7 +9,7 @@ flutter test tool/screenshots/screenshots_test.dart --plain-name 'ipad/'
 flutter test tool/screenshots/screenshots_test.dart --plain-name 'iphone/8_compare'
 ```
 
-Every scene renders on each `ScreenshotDevice`: an iPhone 6.9" (440×956 @3x), an iPad 13" (1032×1376 @2x, which uses the side-by-side study panel layout), and a Pixel (412×915 @3x). A full run takes about 7 minutes.
+Every scene renders on each `ScreenshotDevice`: an iPhone 6.9" (440×956 @3x), an iPad 13" (1032×1376 @2x, which uses the side-by-side study panel layout), and a Pixel (412×915 @3x). A full run takes about 7 minutes. `iphone13Pro` (390×844 @3x) is left out of the store set; it stands in for a notched iPhone's screen recording, with no notch drawn, for demo clips in reels.
 
 The iPad renders like iPadOS Display Zoom at 130%, so its content reads at a similar size to the phones in the store images. The zoom raises the pixel ratio rather than scaling with a transform, because the reader's word hit-testing doesn't account for transforms, so the frame and output size are unchanged.
 
@@ -34,6 +34,31 @@ flutter test tool/screenshots/preview_test.dart
 ```
 
 Each scene writes `build/preview/iphone/<scene>/` with its frames, an H.264 `<scene>.mp4`, and `touches.json`, the gestures by frame, which the video draws as touch indicators. The edit, copy, and music live in the Remotion `StorePreview` template; see [`videos/README.md`](../../../../videos/README.md#store-preview).
+
+## Demo recordings for reels
+
+`recordingTest` (`recording.dart`) also records Lux demos to show over a [reel](../../../../tools/reels/README.md#media). Put the scenes in a temporary test file, copy each `build/preview/iphone13Pro/<scene>/<scene>.mp4` into the reel's media folder, and delete the file.
+
+```dart
+recordingTest('commentary', (recording) async {
+  await recording.screenshot.pumpApp(user);
+  await recording.hold(0.4);
+  await recording.tapText('no condemnation', after: 0.3);
+  recording.tag('selected');
+  await recording.tap(find.byTooltip('Commentary'), after: 1.2);
+  recording.tag('opened');
+  await recording.hold(1);
+}, device: .iphone13Pro, showsTouches: true);
+```
+
+- `showsTouches` draws each touch into the frames as a translucent dot that grows in and fades out, like RocketSim's indicator. Store previews leave it off, since Remotion draws theirs from `touches.json`.
+- `.iphone13Pro` renders the screen alone, like a phone's screen recording, so the reel adds a bezel with `Media(..., mask: .bevel())`.
+- `recording.tag(name)` names the last frame recorded, and `finish` writes the tags to `tags.json`. Copy them into the reel's `lib/videos/<name>.media.json` under the video's filename, then start each step on its word with `Play('opened', at: .word('commentary'))`.
+- Record each step as a segment that starts with its touch and ends with a tag, so a `Play` at the spoken word starts the action on it. `dart run lib/videos/<name>.dart captions` gives the words' times; a segment longer than the gap to the next `Play` plays faster.
+- To start a scene mid-flow, set it up before the first frame without recording it, with `screenshot.tap` or `tester.tapAt` and `screenshot.settle`.
+- Interlinear sheets don't set the Hebrew font, so Old Testament words render as boxes; demo the interlinear on a New Testament verse.
+- Tyndale's verse notes are text only. For maps and boxes, show a Tyndale Open Bible Dictionary entry with `ArticleSheet.show`, such as Abraham, which opens with a map.
+- A commentary that has no notes for a passage shows "No Commentaries Found" (Matthew Henry skips some chapters, such as Psalm 23), and a commentary loaded mid-scene may never finish, so pick a passage every commentary covers and load its book in `setUpAll`.
 
 ## SF Pro
 

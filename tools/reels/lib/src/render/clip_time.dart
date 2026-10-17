@@ -8,7 +8,7 @@ import 'package:reels/src/render/captions.dart';
 
 int getClipFrame(ClipTime time, ResolvedClip clip, Transcript transcript, {required int fps}) => switch (time) {
   ClipFrames(:final frames) => frames,
-  ClipEnd() => clip.frameCount,
+  ClipEnd(:final framesBefore) => clip.frameCount - framesBefore,
   ClipWord(:final phrase) => getWordOnset(findPhrase(phrase, clip, transcript), frameCount: clip.frameCount, fps: fps),
 }.clamp(0, clip.frameCount);
 

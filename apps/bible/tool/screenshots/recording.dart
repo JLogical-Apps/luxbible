@@ -3,24 +3,56 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lux/lux.dart';
 
+import 'device.dart';
 import 'harness.dart';
+import 'touch_indicator.dart';
 
 final previewDirectory = Directory('build/preview');
 final previewFps = 30;
 final previewPixelRatio = 2.0;
 final frameDuration = Duration(microseconds: Duration.microsecondsPerSecond ~/ previewFps);
 
+void recordingTest(
+  String name,
+  Future<void> Function(Recording recording) body, {
+  ScreenshotDevice device = .iphone,
+  bool showsTouches = false,
+}) {
+  testWidgets('${device.name}/$name', (tester) async {
+    debugDisableShadows = false;
+    debugDefaultTargetPlatformOverride = device.platform;
+    final screenshot = Screenshot(tester, device);
+    final recording = Recording(screenshot, name, showsTouches: showsTouches);
+    try {
+      await recording.start();
+      await body(recording);
+      await recording.finish();
+      await screenshot.tearDown();
+    } finally {
+      debugDisableShadows = true;
+      debugDefaultTargetPlatformOverride = null;
+    }
+  });
+}
+
 class Recording {
   final Screenshot screenshot;
   final String name;
+
+  // Draws touches into the frames, for videos with no editor to draw them from touches.json.
+  final bool showsTouches;
+
   final touches = <Map<String, Object>>[];
+  final tags = <String, int>{};
+  ({Offset position, int downFrame, int? upFrame})? touch;
   var frameCount = 0;
 
-  Recording(this.screenshot, this.name);
+  Recording(this.screenshot, this.name, {this.showsTouches = false});
 
   WidgetTester get tester => screenshot.tester;
 
@@ -38,6 +70,7 @@ class Recording {
 
   // Each frame also gives real time to IO and isolates, so loads triggered mid-recording still land.
   Future<void> frame() async {
+    if (showsTouches) screenshot.touchIndicator.value = getTouchIndicator();
     await tester.pump(frameDuration);
     final path = '$directory/frames/${'$frameCount'.padLeft(4, '0')}.png';
     frameCount++;
@@ -60,10 +93,33 @@ class Recording {
     await hold(after);
   }
 
+  // Names the last frame recorded, for a reel's media tags.
+  void tag(String name) => tags[name] = frameCount - 1;
+
   void logTouch(String phase, Offset globalPosition) {
     final position = globalPosition - Offset(screenshot.device.bezelWidth, screenshot.device.bezelWidth);
     final size = screenshot.device.logicalScreenSize;
     touches.add({'frame': frameCount, 'phase': phase, 'x': position.dx / size.width, 'y': position.dy / size.height});
+    touch = switch (phase) {
+      'down' => (position: position, downFrame: frameCount, upFrame: null),
+      'up' => (position: position, downFrame: touch!.downFrame, upFrame: frameCount),
+      _ => (position: position, downFrame: touch!.downFrame, upFrame: null),
+    };
+  }
+
+  // Grows in over 5 frames from touch down and fades out over 6 from release, like RocketSim's.
+  TouchIndicator? getTouchIndicator() {
+    if (touch case final touch?) {
+      final grow = Curves.easeOut.transform(((frameCount - touch.downFrame) / 5).clamp(0, 1));
+      final fade = switch (touch.upFrame) {
+        final upFrame? => 1 - (frameCount - upFrame) / 6,
+        null => 1.0,
+      };
+      return fade > 0
+          ? TouchIndicator(position: touch.position, scale: 0.6 + 0.4 * grow, opacity: (0.4 + 0.6 * grow) * fade)
+          : null;
+    }
+    return null;
   }
 
   Future<TestGesture> down(Offset position) async {
@@ -143,6 +199,7 @@ class Recording {
 
   Future<void> finish() => tester.runAsync(() async {
     await File('$directory/touches.json').writeAsString(jsonEncode(touches));
+    await File('$directory/tags.json').writeAsString(jsonEncode(tags));
     final result = await Process.run('ffmpeg', [
       '-y',
       '-loglevel',

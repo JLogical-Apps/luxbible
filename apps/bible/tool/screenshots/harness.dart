@@ -45,6 +45,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
 
 import 'device.dart';
+import 'touch_indicator.dart';
 
 final outputDirectory = Directory('build/screenshots');
 
@@ -132,6 +133,7 @@ class Screenshot {
   final ScreenshotDevice device;
   final frameKey = GlobalKey();
   final screenKey = GlobalKey();
+  final touchIndicator = ValueNotifier<TouchIndicator?>(null);
 
   Screenshot(this.tester, this.device);
 
@@ -153,22 +155,28 @@ class Screenshot {
             child: DeviceFrame(
               device: device,
               screenKey: screenKey,
-              child: ToastificationWrapper(
-                child: Builder(
-                  builder: (context) => MaterialApp(
-                    navigatorKey: navigatorKey,
-                    title: 'Lux Bible',
-                    locale: AppLocale.en.flutterLocale,
-                    supportedLocales: AppLocaleUtils.instance.supportedLocales,
-                    localizationsDelegates: GlobalMaterialLocalizations.delegates,
-                    themeMode: .dark,
-                    theme: theme,
-                    darkTheme: darkTheme,
-                    scrollBehavior: BouncingScrollBehavior(),
-                    debugShowCheckedModeBanner: false,
-                    onGenerateRoute: (settings) => context.getStyledRoute(BiblePage()),
+              child: Stack(
+                fit: .expand,
+                children: [
+                  ToastificationWrapper(
+                    child: Builder(
+                      builder: (context) => MaterialApp(
+                        navigatorKey: navigatorKey,
+                        title: 'Lux Bible',
+                        locale: AppLocale.en.flutterLocale,
+                        supportedLocales: AppLocaleUtils.instance.supportedLocales,
+                        localizationsDelegates: GlobalMaterialLocalizations.delegates,
+                        themeMode: .dark,
+                        theme: theme,
+                        darkTheme: darkTheme,
+                        scrollBehavior: BouncingScrollBehavior(),
+                        debugShowCheckedModeBanner: false,
+                        onGenerateRoute: (settings) => context.getStyledRoute(BiblePage()),
+                      ),
+                    ),
                   ),
-                ),
+                  Positioned.fill(child: TouchIndicatorOverlay(indicator: touchIndicator)),
+                ],
               ),
             ),
           ),
@@ -313,7 +321,7 @@ class Screenshot {
 void screenshotTest(
   String name,
   Future<void> Function(Screenshot screenshot) body, {
-  List<ScreenshotDevice> devices = ScreenshotDevice.values,
+  List<ScreenshotDevice> devices = ScreenshotDevice.store,
 }) {
   for (final device in devices) {
     testWidgets('${device.name}/$name', (tester) async {

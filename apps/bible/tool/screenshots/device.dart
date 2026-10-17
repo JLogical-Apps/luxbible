@@ -5,10 +5,13 @@ import 'status_bar.dart';
 enum ScreenshotDevice {
   iphone,
   ipad,
-  pixel;
+  pixel,
+  iphone13Pro;
+
+  static const store = [iphone, ipad, pixel];
 
   TargetPlatform get platform => switch (this) {
-    iphone || ipad => .iOS,
+    iphone || ipad || iphone13Pro => .iOS,
     pixel => .android,
   };
 
@@ -16,10 +19,11 @@ enum ScreenshotDevice {
     iphone => Size(440, 956),
     ipad => Size(1032, 1376),
     pixel => Size(412, 915),
+    iphone13Pro => Size(390, 844),
   };
 
   double get pixelRatio => switch (this) {
-    iphone || pixel => 3,
+    iphone || pixel || iphone13Pro => 3,
     ipad => 2,
   };
 
@@ -27,6 +31,7 @@ enum ScreenshotDevice {
     iphone => .only(top: 62, bottom: 34),
     ipad => .only(top: 24, bottom: 20),
     pixel => .only(top: 40, bottom: 24),
+    iphone13Pro => .only(top: 47, bottom: 34),
   };
 
   // The frame keeps its physical size under zoom, so its point sizes shrink as the pixel ratio grows.
@@ -35,12 +40,13 @@ enum ScreenshotDevice {
         iphone => 62,
         ipad => 18,
         pixel => 36,
+        iphone13Pro => 47.33,
       } /
       zoom;
 
   double get bezelWidth =>
       switch (this) {
-        iphone => 14,
+        iphone || iphone13Pro => 14,
         ipad => 20,
         pixel => 10,
       } /
@@ -50,16 +56,25 @@ enum ScreenshotDevice {
     iphone => Rect.fromCenter(center: Offset(logicalScreenSize.width / 2, 29.5), width: 126, height: 37),
     ipad => null,
     pixel => Rect.fromCircle(center: Offset(logicalScreenSize.width / 2, 20), radius: 11),
+    // Screen recordings on a notched iPhone leave the notch out, and this device stands in for them.
+    iphone13Pro => null,
+  };
+
+  Rect? get notch => switch (this) {
+    iphone13Pro => Rect.fromCenter(center: Offset(logicalScreenSize.width / 2, 23), width: 162, height: 32),
+    iphone || ipad || pixel => null,
   };
 
   Size get homeIndicatorSize => switch (this) {
     iphone => Size(146, 5),
     ipad => Size(320, 5),
     pixel => Size(108, 4),
+    iphone13Pro => Size(134, 5),
   };
 
   CustomPainter get statusBarPainter => switch (this) {
-    iphone => IphoneStatusBarPainter(island: cameraCutout!),
+    iphone => IphoneStatusBarPainter(cutout: cameraCutout!),
+    iphone13Pro => IphoneStatusBarPainter(cutout: notch!),
     ipad => IpadStatusBarPainter(height: safeArea.top),
     pixel => AndroidStatusBarPainter(height: safeArea.top),
   };
@@ -68,7 +83,7 @@ enum ScreenshotDevice {
   // It raises the pixel ratio, since the reader's word hit-testing doesn't account for scale transforms.
   double get zoom => switch (this) {
     ipad => 1.3,
-    iphone || pixel => 1,
+    iphone || pixel || iphone13Pro => 1,
   };
 
   Size get logicalScreenSize => screenSize / zoom;

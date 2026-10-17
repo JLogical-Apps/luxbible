@@ -3,8 +3,10 @@ import 'package:bible/models/bible_plan.dart';
 import 'package:bible/models/highlight_style.dart';
 import 'package:bible/models/notebook.dart';
 import 'package:bible/models/user/migration.dart';
+import 'package:bible/models/user/onboarding_step.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/models/article_collection.dart';
+import 'package:bible/models/whats_new_highlight.dart';
 import 'package:bible/providers/articles_provider.dart';
 import 'package:bible/providers/bible_maps_provider.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
@@ -251,6 +253,9 @@ Future<User> buildDemoUser() async {
     translation: .bsb,
     theme: ThemeMode.dark,
     latestMigration: Migration.values.last,
+    // Otherwise the toolbar's overflow button shows a notification dot.
+    lastSeenWhatsNewVersion: WhatsNewHighlight.releaseVersion,
+    startedOnboardingTours: OnboardingTour.values.toSet(),
     commentaries: [.tyndale, .matthewHenry, .jamiesonFaussetBrown, .calvin],
     compareBibles: [.bsb, .kjv, .web, .asv],
     notebooks: [sundaySermons, romansStudy, prayerJournal],

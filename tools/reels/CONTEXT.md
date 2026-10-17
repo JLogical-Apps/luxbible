@@ -54,7 +54,7 @@ silently wrong footage.
 **There is exactly one timing mechanism.** Every frame number lives in the JSON. `Clip` carries no
 trim offsets. Do not reintroduce a second place where timing can live. Modifiers time themselves with `ClipTime`
 (`src/model/modifier.dart`), which is always relative to its clip: `.clipStart`, `.clipEnd`, `.frames(n)` from the
-clip's start, or `.word('absorb')`, when that word lights up in the captions. Prefer `.word`: it follows the speech
+clip's start, `.beforeEnd(n)` frames before its end, or `.word('absorb')`, when that word lights up in the captions. Prefer `.word`: it follows the speech
 when the clip is retrimmed, where a frame offset drifts.
 
 ## Current state

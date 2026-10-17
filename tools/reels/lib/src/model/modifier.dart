@@ -205,6 +205,8 @@ sealed class ClipTime {
 
   const factory ClipTime.frames(int frames) = ClipFrames;
 
+  const factory ClipTime.beforeEnd(int frames) = ClipEnd;
+
   /// When the first occurrence of [phrase], one or more words, lights up in the clip's captions.
   const factory ClipTime.word(String phrase) = ClipWord;
 }
@@ -216,7 +218,9 @@ class ClipFrames extends ClipTime {
 }
 
 class ClipEnd extends ClipTime {
-  const ClipEnd();
+  const ClipEnd([this.framesBefore = 0]);
+
+  final int framesBefore;
 }
 
 class ClipWord extends ClipTime {
