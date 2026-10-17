@@ -775,6 +775,7 @@
     "deletePlanWithHistoryConfirmation": "Möchtest du „{name}“ wirklich löschen? Der Verlauf des Plans wird ebenfalls gelöscht.",
     "unavailableWhileReadingTitle": "Hier nicht verfügbar",
     "unavailableWhileReading": "Lesepläne können nicht geöffnet werden, während du einen Tag eines Leseplans liest.",
+    "bookmarkUnavailableWhileReading": "Lesezeichen können nicht hinzugefügt oder geändert werden, während du einen Tag eines Leseplans liest.",
     "readInContext": "Im Zusammenhang lesen",
     "startNew": "Neu starten",
     "day": "Tag {day}",

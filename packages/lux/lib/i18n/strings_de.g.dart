@@ -1055,6 +1055,7 @@ class _Translations$biblePlans$de extends Translations$biblePlans$en {
 	@override String deletePlanWithHistoryConfirmation({required Object name}) => 'Möchtest du „${name}“ wirklich löschen? Der Verlauf des Plans wird ebenfalls gelöscht.';
 	@override String get unavailableWhileReadingTitle => 'Hier nicht verfügbar';
 	@override String get unavailableWhileReading => 'Lesepläne können nicht geöffnet werden, während du einen Tag eines Leseplans liest.';
+	@override String get bookmarkUnavailableWhileReading => 'Lesezeichen können nicht hinzugefügt oder geändert werden, während du einen Tag eines Leseplans liest.';
 	@override String get readInContext => 'Im Zusammenhang lesen';
 	@override String get startNew => 'Neu starten';
 	@override String day({required Object day}) => 'Tag ${day}';
@@ -3944,6 +3945,7 @@ extension on TranslationsDe {
 			'biblePlans.deletePlanWithHistoryConfirmation' => ({required Object name}) => 'Möchtest du „${name}“ wirklich löschen? Der Verlauf des Plans wird ebenfalls gelöscht.',
 			'biblePlans.unavailableWhileReadingTitle' => 'Hier nicht verfügbar',
 			'biblePlans.unavailableWhileReading' => 'Lesepläne können nicht geöffnet werden, während du einen Tag eines Leseplans liest.',
+			'biblePlans.bookmarkUnavailableWhileReading' => 'Lesezeichen können nicht hinzugefügt oder geändert werden, während du einen Tag eines Leseplans liest.',
 			'biblePlans.readInContext' => 'Im Zusammenhang lesen',
 			'biblePlans.startNew' => 'Neu starten',
 			'biblePlans.day' => ({required Object day}) => 'Tag ${day}',
@@ -4276,9 +4278,9 @@ extension on TranslationsDe {
 			'morphology.types.interrogativePronoun.examples' => 'wer?|was?|welcher?',
 			'morphology.types.indefinitePronoun.name' => 'Indefinitpronomen',
 			'morphology.types.indefinitePronoun.description' => 'Ein Pronomen, das sich auf nicht bestimmte Personen oder Dinge bezieht.',
-			'morphology.types.indefinitePronoun.examples' => 'jemand|irgendwer|nichts',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.types.indefinitePronoun.examples' => 'jemand|irgendwer|nichts',
 			'morphology.types.reciprocalPronoun.name' => 'Reziprokpronomen',
 			'morphology.types.reciprocalPronoun.description' => 'Ein Pronomen, das eine wechselseitige Handlung ausdrückt.',
 			'morphology.types.reciprocalPronoun.examples' => 'einander|gegenseitig',

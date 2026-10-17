@@ -1,3 +1,4 @@
+import 'package:bible/models/bookmark.dart';
 import 'package:bible/models/study_action.dart';
 import 'package:bible/models/study_panel.dart';
 import 'package:bible/models/user/user.dart';
@@ -60,18 +61,21 @@ enum MainAction {
     more => t.mainActions.more,
   };
 
-  String description({User? user, VerseOfTheDay? verseOfTheDay}) => switch (this) {
-    audio => t.mainActions.audioDescription,
-    bookmark =>
-      user?.currentBookmark == null ? t.mainActions.bookmarkDescription : t.mainActions.manageBookmarkDescription,
-    study => t.mainActions.studyDescription,
-    .verseOfTheDay => verseOfTheDay?.format() ?? t.mainActions.verseOfTheDayDescription,
-    studyPanel => t.mainActions.studyPanelDescription,
-    search => t.mainActions.searchDescription,
-    resources => t.mainActions.resourcesDescription,
-    plans => t.mainActions.plansDescription,
-    more => t.mainActions.moreDescription,
-  };
+  String description({User? user, VerseOfTheDay? verseOfTheDay, AudioBibleContext audioContext = .bible}) =>
+      switch (this) {
+        audio => t.mainActions.audioDescription,
+        bookmark =>
+          getCurrentBookmark(user, audioContext: audioContext) == null
+              ? t.mainActions.bookmarkDescription
+              : t.mainActions.manageBookmarkDescription,
+        study => t.mainActions.studyDescription,
+        .verseOfTheDay => verseOfTheDay?.format() ?? t.mainActions.verseOfTheDayDescription,
+        studyPanel => t.mainActions.studyPanelDescription,
+        search => t.mainActions.searchDescription,
+        resources => t.mainActions.resourcesDescription,
+        plans => t.mainActions.plansDescription,
+        more => t.mainActions.moreDescription,
+      };
 
   Widget buildIcon(BuildContext context, {User? user, AudioBibleContext audioContext = .bible}) => switch (this) {
     audio => Consumer(
@@ -104,7 +108,7 @@ enum MainAction {
       },
     ),
     bookmark => () {
-      final bookmark = user?.currentBookmark;
+      final bookmark = getCurrentBookmark(user, audioContext: audioContext);
       return bookmark == null
           ? Icon(Symbols.bookmark, fill: 0)
           : Icon(Symbols.bookmark, color: bookmark.color.toHue(context.colors).medium);
@@ -116,6 +120,12 @@ enum MainAction {
     resources => Icon(Symbols.local_library),
     plans => Icon(Symbols.calendar_month),
     more => Icon(Symbols.other_admission),
+  };
+
+  // Plan readings aren't followed by bookmarks, so the current bookmark doesn't apply there.
+  static Bookmark? getCurrentBookmark(User? user, {required AudioBibleContext audioContext}) => switch (audioContext) {
+    .bible => user?.currentBookmark,
+    .plan => null,
   };
 
   bool get isNavigation => [study, search, resources, plans, more].has(this);

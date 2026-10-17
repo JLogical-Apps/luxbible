@@ -1073,6 +1073,7 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	@override String deletePlanWithHistoryConfirmation({required Object name}) => 'Вы уверены, что хотите удалить «${name}»? Его история тоже будет удалена.';
 	@override String get unavailableWhileReadingTitle => 'Здесь недоступно';
 	@override String get unavailableWhileReading => 'Библейские планы нельзя открыть во время чтения дня плана.';
+	@override String get bookmarkUnavailableWhileReading => 'Закладки нельзя добавлять или изменять во время чтения дня плана.';
 	@override String get readInContext => 'Читать в контексте';
 	@override String get startNew => 'Начать заново';
 	@override String day({required Object day}) => 'День ${day}';
@@ -3970,6 +3971,7 @@ extension on TranslationsRu {
 			'biblePlans.deletePlanWithHistoryConfirmation' => ({required Object name}) => 'Вы уверены, что хотите удалить «${name}»? Его история тоже будет удалена.',
 			'biblePlans.unavailableWhileReadingTitle' => 'Здесь недоступно',
 			'biblePlans.unavailableWhileReading' => 'Библейские планы нельзя открыть во время чтения дня плана.',
+			'biblePlans.bookmarkUnavailableWhileReading' => 'Закладки нельзя добавлять или изменять во время чтения дня плана.',
 			'biblePlans.readInContext' => 'Читать в контексте',
 			'biblePlans.startNew' => 'Начать заново',
 			'biblePlans.day' => ({required Object day}) => 'День ${day}',
@@ -4300,9 +4302,9 @@ extension on TranslationsRu {
 			'morphology.types.interrogativePronoun.name' => 'Вопросительное местоимение',
 			'morphology.types.interrogativePronoun.description' => 'Местоимение, используемое для задания вопроса.',
 			'morphology.types.interrogativePronoun.examples' => 'кто?|что?|что?',
-			'morphology.types.indefinitePronoun.name' => 'Неопределённое местоимение',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.types.indefinitePronoun.name' => 'Неопределённое местоимение',
 			'morphology.types.indefinitePronoun.description' => 'Местоимение, обозначающее неспецифические сущности.',
 			'morphology.types.indefinitePronoun.examples' => 'кто-то|кто-то|ничего',
 			'morphology.types.reciprocalPronoun.name' => 'Взаимное местоимение',

@@ -55,7 +55,7 @@ class MainActionsSheet {
           (action) => StyledListItem(
             title: action.title(audioContext: audioContext).toText(),
             subtitle: Text(
-              action.description(user: user, verseOfTheDay: verseOfTheDay),
+              action.description(user: user, verseOfTheDay: verseOfTheDay, audioContext: audioContext),
               maxLines: 3,
               overflow: .ellipsis,
             ),

@@ -248,6 +248,13 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
           } else {
             playPassage(currentIndex);
           }
+        case .bookmark:
+          await context.showStyledDialog(
+            (_) => StyledDialog.confirm(
+              title: t.biblePlans.unavailableWhileReadingTitle.toText(),
+              body: t.biblePlans.bookmarkUnavailableWhileReading.toText(),
+            ),
+          );
         case .plans:
           await context.showStyledDialog(
             (_) => StyledDialog.confirm(

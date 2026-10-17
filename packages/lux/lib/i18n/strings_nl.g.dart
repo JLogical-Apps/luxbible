@@ -1057,6 +1057,7 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	@override String deletePlanWithHistoryConfirmation({required Object name}) => 'Weet je zeker dat je "${name}" wilt verwijderen? De geschiedenis wordt ook verwijderd.';
 	@override String get unavailableWhileReadingTitle => 'Hier niet beschikbaar';
 	@override String get unavailableWhileReading => 'Bijbelleesplannen kunnen niet worden geopend terwijl je een dag van een leesplan leest.';
+	@override String get bookmarkUnavailableWhileReading => 'Bladwijzers kunnen niet worden toegevoegd of gewijzigd terwijl je een dag van een leesplan leest.';
 	@override String get readInContext => 'In context lezen';
 	@override String get startNew => 'Nieuw starten';
 	@override String day({required Object day}) => 'Dag ${day}';
@@ -3948,6 +3949,7 @@ extension on TranslationsNl {
 			'biblePlans.deletePlanWithHistoryConfirmation' => ({required Object name}) => 'Weet je zeker dat je "${name}" wilt verwijderen? De geschiedenis wordt ook verwijderd.',
 			'biblePlans.unavailableWhileReadingTitle' => 'Hier niet beschikbaar',
 			'biblePlans.unavailableWhileReading' => 'Bijbelleesplannen kunnen niet worden geopend terwijl je een dag van een leesplan leest.',
+			'biblePlans.bookmarkUnavailableWhileReading' => 'Bladwijzers kunnen niet worden toegevoegd of gewijzigd terwijl je een dag van een leesplan leest.',
 			'biblePlans.readInContext' => 'In context lezen',
 			'biblePlans.startNew' => 'Nieuw starten',
 			'biblePlans.day' => ({required Object day}) => 'Dag ${day}',
@@ -4278,9 +4280,9 @@ extension on TranslationsNl {
 			'morphology.types.interrogativePronoun.name' => 'Vragend voornaamwoord',
 			'morphology.types.interrogativePronoun.description' => 'Een voornaamwoord waarmee een vraag wordt gesteld.',
 			'morphology.types.interrogativePronoun.examples' => 'wie?|wat?|welke?',
-			'morphology.types.indefinitePronoun.name' => 'Onbepaald voornaamwoord',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.types.indefinitePronoun.name' => 'Onbepaald voornaamwoord',
 			'morphology.types.indefinitePronoun.description' => 'Een voornaamwoord dat naar niet-specifieke zaken verwijst.',
 			'morphology.types.indefinitePronoun.examples' => 'iemand|wie dan ook|niets',
 			'morphology.types.reciprocalPronoun.name' => 'Wederkerig voornaamwoord',

@@ -2399,6 +2399,9 @@ class Translations$biblePlans$en {
 	/// en: 'Bible Plans can't be opened while you're reading a plan day.'
 	String get unavailableWhileReading => 'Bible Plans can\'t be opened while you\'re reading a plan day.';
 
+	/// en: 'Bookmarks can't be added or changed while you're reading a plan day.'
+	String get bookmarkUnavailableWhileReading => 'Bookmarks can\'t be added or changed while you\'re reading a plan day.';
+
 	/// en: 'Read In Context'
 	String get readInContext => 'Read In Context';
 
@@ -6531,6 +6534,7 @@ extension on Translations {
 			'biblePlans.deletePlanWithHistoryConfirmation' => ({required Object name}) => 'Are you sure you want to delete "${name}"? Its history will also be deleted.',
 			'biblePlans.unavailableWhileReadingTitle' => 'Not Available Here',
 			'biblePlans.unavailableWhileReading' => 'Bible Plans can\'t be opened while you\'re reading a plan day.',
+			'biblePlans.bookmarkUnavailableWhileReading' => 'Bookmarks can\'t be added or changed while you\'re reading a plan day.',
 			'biblePlans.readInContext' => 'Read In Context',
 			'biblePlans.startNew' => 'Start New',
 			'biblePlans.day' => ({required Object day}) => 'Day ${day}',
@@ -6863,9 +6867,9 @@ extension on Translations {
 			'morphology.types.interrogativePronoun.examples' => 'who?|what?|which?',
 			'morphology.types.indefinitePronoun.name' => 'Indefinite pronoun',
 			'morphology.types.indefinitePronoun.description' => 'A pronoun referring to non-specific entities.',
-			'morphology.types.indefinitePronoun.examples' => 'someone|anyone|nothing',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.types.indefinitePronoun.examples' => 'someone|anyone|nothing',
 			'morphology.types.reciprocalPronoun.name' => 'Reciprocal pronoun',
 			'morphology.types.reciprocalPronoun.description' => 'A pronoun expressing mutual action.',
 			'morphology.types.reciprocalPronoun.examples' => 'one another|each other',
