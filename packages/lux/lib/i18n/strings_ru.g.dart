@@ -1499,6 +1499,7 @@ class _Translations$creeds$ru extends Translations$creeds$en {
 	@override String get noMatchingCreeds => 'Нет подходящих исповеданий';
 	@override String get scriptureProofs => 'Подтверждения из Писания';
 	@override String get year => 'Год';
+	@override String get source => 'Источник';
 	@override String authors({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count,
 		one: 'Автор',
 		few: 'Авторы',
@@ -4194,6 +4195,7 @@ extension on TranslationsRu {
 			'creeds.noMatchingCreeds' => 'Нет подходящих исповеданий',
 			'creeds.scriptureProofs' => 'Подтверждения из Писания',
 			'creeds.year' => 'Год',
+			'creeds.source' => 'Источник',
 			'creeds.authors' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: 'Автор', few: 'Авторы', many: 'Авторы', other: 'Авторы', ), 
 			'videos.searchHint' => 'Поиск видео',
 			'videos.noMatchingVideos' => 'Нет подходящих видео',
@@ -4301,9 +4303,9 @@ extension on TranslationsRu {
 			'morphology.types.demonstrativePronoun.examples' => 'это|эти|те',
 			'morphology.types.interrogativePronoun.name' => 'Вопросительное местоимение',
 			'morphology.types.interrogativePronoun.description' => 'Местоимение, используемое для задания вопроса.',
-			'morphology.types.interrogativePronoun.examples' => 'кто?|что?|что?',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.types.interrogativePronoun.examples' => 'кто?|что?|что?',
 			'morphology.types.indefinitePronoun.name' => 'Неопределённое местоимение',
 			'morphology.types.indefinitePronoun.description' => 'Местоимение, обозначающее неспецифические сущности.',
 			'morphology.types.indefinitePronoun.examples' => 'кто-то|кто-то|ничего',

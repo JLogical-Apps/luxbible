@@ -6,26 +6,86 @@ import 'package:bible/models/rich_content.dart';
 import 'package:collection/collection.dart';
 import 'package:lux/lux_core.dart';
 import 'package:lux_content_tools/repository_paths.dart';
+import 'package:utils_core/utils_core.dart';
 
 void main() {
-  final creeds = sourceDirectory('creeds')
-      .listSync()
-      .whereType<File>()
-      .where((file) => file.path.endsWith('.json'))
-      .map(getCreed)
-      .sortedBy((creed) => creed.id)
+  final creeds = getJsonFiles(sourceDirectory('creeds')).map(getCreed).toList();
+  writeCreeds('creeds/creeds.json', creeds);
+
+  final creedById = creeds.mapToMap((creed) => MapEntry(creed.id, creed));
+  sourceDirectory('creeds/translations').listSync().whereType<Directory>().forEach(
+    (directory) => writeCreeds(
+      'creeds/creeds_${directory.uri.pathSegments.lastWhere((segment) => segment.isNotEmpty)}.json',
+      getJsonFiles(directory).map((file) => getTranslatedCreed(file, creedById: creedById)).toList(),
+    ),
+  );
+}
+
+List<File> getJsonFiles(Directory directory) => directory
+    .listSync()
+    .whereType<File>()
+    .where((file) => file.path.endsWith('.json'))
+    .sortedBy((file) => file.path)
+    .toList();
+
+void writeCreeds(String path, List<Creed> creeds) => appAssetFile(path, app: .bible)
+  ..parent.createSync(recursive: true)
+  ..writeAsStringSync(jsonEncode(creeds.map((creed) => creed.toJson()).toList()));
+
+String getId(File file) => file.uri.pathSegments.last.replaceFirst('.json', '');
+
+// A translation keeps its English document's year and type, and each translated item takes the Scripture proofs of the
+// English item in the same position, so a translation of a document with proofs must keep its numbering.
+Creed getTranslatedCreed(File file, {required Map<String, Creed> creedById}) {
+  final id = getId(file);
+  final creed = creedById[id] ?? (throw FormatException('No creed matches the translation `${file.path}`.'));
+  final json = jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
+  final chapters = (json['chapters'] as List)
+      .cast<Map<String, dynamic>>()
+      .mapIndexed(
+        (chapterIndex, chapter) => CreedChapter(
+          number: chapter['number'],
+          title: chapter['title'],
+          items: (chapter['items'] as List)
+              .cast<Map<String, dynamic>>()
+              .mapIndexed(
+                (itemIndex, item) => CreedItem(
+                  number: item['number'],
+                  title: item['title'],
+                  body: getParagraphs((item['body'] as List).join('\n')),
+                  passages:
+                      creed.chapters.elementAtOrNull(chapterIndex)?.items.elementAtOrNull(itemIndex)?.passages ?? [],
+                ),
+              )
+              .toList(),
+        ),
+      )
       .toList();
 
-  appAssetFile('creeds/creeds.json', app: .bible)
-    ..parent.createSync(recursive: true)
-    ..writeAsStringSync(jsonEncode(creeds.map((creed) => creed.toJson()).toList()));
+  final unmatchedItems = creed.chapters.expandIndexed(
+    (chapterIndex, chapter) => chapter.items.whereIndexed(
+      (itemIndex, item) =>
+          item.passages.isNotEmpty &&
+          chapters.elementAtOrNull(chapterIndex)?.items.elementAtOrNull(itemIndex)?.number != item.number,
+    ),
+  );
+  if (unmatchedItems.isNotEmpty) {
+    throw FormatException('The translation `${file.path}` has no item numbered ${unmatchedItems.first.number}.');
+  }
+
+  return creed.copyWith(
+    title: json['title'],
+    authors: (json['authors'] as List? ?? creed.authors).cast<String>(),
+    source: json['source'],
+    chapters: chapters,
+  );
 }
 
 Creed getCreed(File file) {
   final json = jsonDecode(file.readAsStringSync()) as Map<String, dynamic>;
   final metadata = json['Metadata'] as Map<String, dynamic>;
   final data = json['Data'];
-  final id = file.uri.pathSegments.last.replaceFirst('.json', '');
+  final id = getId(file);
 
   return Creed(
     id: id,

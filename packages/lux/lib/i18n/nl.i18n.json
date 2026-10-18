@@ -1057,6 +1057,7 @@
     "noMatchingCreeds": "Geen overeenkomende belijdenissen",
     "scriptureProofs": "Schriftbewijzen",
     "year": "Jaar",
+    "source": "Bron",
     "authors(param=count)": {
       "one": "Auteur",
       "other": "Auteurs"

@@ -37,6 +37,7 @@ sealed class Creed with _$Creed, LinkedResource {
     @IgnoreIfEmpty(name: 'a') @Default([]) List<String> authors,
     @JsonKey(name: 'k') required CreedType type,
     @JsonKey(name: 'c') required List<CreedChapter> chapters,
+    @JsonKey(name: 's', includeIfNull: false) String? source,
   }) = _Creed;
 
   factory Creed.fromJson(Map<String, dynamic> json) => _$CreedFromJson(json);

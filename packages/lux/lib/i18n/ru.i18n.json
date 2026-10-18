@@ -1075,6 +1075,7 @@
     "noMatchingCreeds": "Нет подходящих исповеданий",
     "scriptureProofs": "Подтверждения из Писания",
     "year": "Год",
+    "source": "Источник",
     "authors(param=count)": {
       "one": "Автор",
       "few": "Авторы",

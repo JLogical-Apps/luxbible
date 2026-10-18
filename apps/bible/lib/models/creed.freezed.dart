@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Creed {
 
-@JsonKey(name: 'i') String get id;@JsonKey(name: 't') String get title;@JsonKey(name: 'y') String get year;@IgnoreIfEmpty(name: 'a') List<String> get authors;@JsonKey(name: 'k') CreedType get type;@JsonKey(name: 'c') List<CreedChapter> get chapters;
+@JsonKey(name: 'i') String get id;@JsonKey(name: 't') String get title;@JsonKey(name: 'y') String get year;@IgnoreIfEmpty(name: 'a') List<String> get authors;@JsonKey(name: 'k') CreedType get type;@JsonKey(name: 'c') List<CreedChapter> get chapters;@JsonKey(name: 's', includeIfNull: false) String? get source;
 /// Create a copy of Creed
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $CreedCopyWith<Creed> get copyWith => _$CreedCopyWithImpl<Creed>(this as Creed, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Creed&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.year, year) || other.year == year)&&const DeepCollectionEquality().equals(other.authors, authors)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other.chapters, chapters));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Creed&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.year, year) || other.year == year)&&const DeepCollectionEquality().equals(other.authors, authors)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other.chapters, chapters)&&(identical(other.source, source) || other.source == source));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,year,const DeepCollectionEquality().hash(authors),type,const DeepCollectionEquality().hash(chapters));
+int get hashCode => Object.hash(runtimeType,id,title,year,const DeepCollectionEquality().hash(authors),type,const DeepCollectionEquality().hash(chapters),source);
 
 @override
 String toString() {
-  return 'Creed(id: $id, title: $title, year: $year, authors: $authors, type: $type, chapters: $chapters)';
+  return 'Creed(id: $id, title: $title, year: $year, authors: $authors, type: $type, chapters: $chapters, source: $source)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $CreedCopyWith<$Res>  {
   factory $CreedCopyWith(Creed value, $Res Function(Creed) _then) = _$CreedCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'i') String id,@JsonKey(name: 't') String title,@JsonKey(name: 'y') String year,@IgnoreIfEmpty(name: 'a') List<String> authors,@JsonKey(name: 'k') CreedType type,@JsonKey(name: 'c') List<CreedChapter> chapters
+@JsonKey(name: 'i') String id,@JsonKey(name: 't') String title,@JsonKey(name: 'y') String year,@IgnoreIfEmpty(name: 'a') List<String> authors,@JsonKey(name: 'k') CreedType type,@JsonKey(name: 'c') List<CreedChapter> chapters,@JsonKey(name: 's', includeIfNull: false) String? source
 });
 
 
@@ -66,7 +66,7 @@ class _$CreedCopyWithImpl<$Res>
 
 /// Create a copy of Creed
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? year = null,Object? authors = null,Object? type = null,Object? chapters = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? year = null,Object? authors = null,Object? type = null,Object? chapters = null,Object? source = freezed,}) {
   return _then(Creed(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -74,7 +74,8 @@ as String,year: null == year ? _self.year : year // ignore: cast_nullable_to_non
 as String,authors: null == authors ? _self.authors : authors // ignore: cast_nullable_to_non_nullable
 as List<String>,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as CreedType,chapters: null == chapters ? _self.chapters : chapters // ignore: cast_nullable_to_non_nullable
-as List<CreedChapter>,
+as List<CreedChapter>,source: freezed == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -156,10 +157,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'y')  String year, @IgnoreIfEmpty(name: 'a')  List<String> authors, @JsonKey(name: 'k')  CreedType type, @JsonKey(name: 'c')  List<CreedChapter> chapters)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'y')  String year, @IgnoreIfEmpty(name: 'a')  List<String> authors, @JsonKey(name: 'k')  CreedType type, @JsonKey(name: 'c')  List<CreedChapter> chapters, @JsonKey(name: 's', includeIfNull: false)  String? source)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Creed() when $default != null:
-return $default(_that.id,_that.title,_that.year,_that.authors,_that.type,_that.chapters);case _:
+return $default(_that.id,_that.title,_that.year,_that.authors,_that.type,_that.chapters,_that.source);case _:
   return orElse();
 
 }
@@ -177,10 +178,10 @@ return $default(_that.id,_that.title,_that.year,_that.authors,_that.type,_that.c
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'y')  String year, @IgnoreIfEmpty(name: 'a')  List<String> authors, @JsonKey(name: 'k')  CreedType type, @JsonKey(name: 'c')  List<CreedChapter> chapters)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'y')  String year, @IgnoreIfEmpty(name: 'a')  List<String> authors, @JsonKey(name: 'k')  CreedType type, @JsonKey(name: 'c')  List<CreedChapter> chapters, @JsonKey(name: 's', includeIfNull: false)  String? source)  $default,) {final _that = this;
 switch (_that) {
 case _Creed():
-return $default(_that.id,_that.title,_that.year,_that.authors,_that.type,_that.chapters);}
+return $default(_that.id,_that.title,_that.year,_that.authors,_that.type,_that.chapters,_that.source);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -194,10 +195,10 @@ return $default(_that.id,_that.title,_that.year,_that.authors,_that.type,_that.c
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'y')  String year, @IgnoreIfEmpty(name: 'a')  List<String> authors, @JsonKey(name: 'k')  CreedType type, @JsonKey(name: 'c')  List<CreedChapter> chapters)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'i')  String id, @JsonKey(name: 't')  String title, @JsonKey(name: 'y')  String year, @IgnoreIfEmpty(name: 'a')  List<String> authors, @JsonKey(name: 'k')  CreedType type, @JsonKey(name: 'c')  List<CreedChapter> chapters, @JsonKey(name: 's', includeIfNull: false)  String? source)?  $default,) {final _that = this;
 switch (_that) {
 case _Creed() when $default != null:
-return $default(_that.id,_that.title,_that.year,_that.authors,_that.type,_that.chapters);case _:
+return $default(_that.id,_that.title,_that.year,_that.authors,_that.type,_that.chapters,_that.source);case _:
   return null;
 
 }
@@ -209,7 +210,7 @@ return $default(_that.id,_that.title,_that.year,_that.authors,_that.type,_that.c
 @JsonSerializable()
 
 class _Creed extends Creed {
-  const _Creed({@JsonKey(name: 'i') required this.id, @JsonKey(name: 't') required this.title, @JsonKey(name: 'y') required this.year, @IgnoreIfEmpty(name: 'a')  List<String> authors = const [], @JsonKey(name: 'k') required this.type, @JsonKey(name: 'c') required  List<CreedChapter> chapters}): _authors = authors,_chapters = chapters,super._();
+  const _Creed({@JsonKey(name: 'i') required this.id, @JsonKey(name: 't') required this.title, @JsonKey(name: 'y') required this.year, @IgnoreIfEmpty(name: 'a')  List<String> authors = const [], @JsonKey(name: 'k') required this.type, @JsonKey(name: 'c') required  List<CreedChapter> chapters, @JsonKey(name: 's', includeIfNull: false) this.source}): _authors = authors,_chapters = chapters,super._();
   factory _Creed.fromJson(Map<String, dynamic> json) => _$CreedFromJson(json);
 
 @override@JsonKey(name: 'i') final  String id;
@@ -230,6 +231,7 @@ class _Creed extends Creed {
   return EqualUnmodifiableListView(_chapters);
 }
 
+@override@JsonKey(name: 's', includeIfNull: false) final  String? source;
 
 /// Create a copy of Creed
 /// with the given fields replaced by the non-null parameter values.
@@ -244,16 +246,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Creed&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.year, year) || other.year == year)&&const DeepCollectionEquality().equals(other._authors, _authors)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other._chapters, _chapters));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Creed&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.year, year) || other.year == year)&&const DeepCollectionEquality().equals(other._authors, _authors)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other._chapters, _chapters)&&(identical(other.source, source) || other.source == source));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,year,const DeepCollectionEquality().hash(_authors),type,const DeepCollectionEquality().hash(_chapters));
+int get hashCode => Object.hash(runtimeType,id,title,year,const DeepCollectionEquality().hash(_authors),type,const DeepCollectionEquality().hash(_chapters),source);
 
 @override
 String toString() {
-  return 'Creed(id: $id, title: $title, year: $year, authors: $authors, type: $type, chapters: $chapters)';
+  return 'Creed(id: $id, title: $title, year: $year, authors: $authors, type: $type, chapters: $chapters, source: $source)';
 }
 
 
@@ -264,7 +266,7 @@ abstract mixin class _$CreedCopyWith<$Res> implements $CreedCopyWith<$Res> {
   factory _$CreedCopyWith(_Creed value, $Res Function(_Creed) _then) = __$CreedCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'i') String id,@JsonKey(name: 't') String title,@JsonKey(name: 'y') String year,@IgnoreIfEmpty(name: 'a') List<String> authors,@JsonKey(name: 'k') CreedType type,@JsonKey(name: 'c') List<CreedChapter> chapters
+@JsonKey(name: 'i') String id,@JsonKey(name: 't') String title,@JsonKey(name: 'y') String year,@IgnoreIfEmpty(name: 'a') List<String> authors,@JsonKey(name: 'k') CreedType type,@JsonKey(name: 'c') List<CreedChapter> chapters,@JsonKey(name: 's', includeIfNull: false) String? source
 });
 
 
@@ -281,7 +283,7 @@ class __$CreedCopyWithImpl<$Res>
 
 /// Create a copy of Creed
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? year = null,Object? authors = null,Object? type = null,Object? chapters = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? year = null,Object? authors = null,Object? type = null,Object? chapters = null,Object? source = freezed,}) {
   return _then(_Creed(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -289,7 +291,8 @@ as String,year: null == year ? _self.year : year // ignore: cast_nullable_to_non
 as String,authors: null == authors ? _self._authors : authors // ignore: cast_nullable_to_non_nullable
 as List<String>,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as CreedType,chapters: null == chapters ? _self._chapters : chapters // ignore: cast_nullable_to_non_nullable
-as List<CreedChapter>,
+as List<CreedChapter>,source: freezed == source ? _self.source : source // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

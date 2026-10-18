@@ -1055,6 +1055,7 @@
     "noMatchingCreeds": "No matching creeds",
     "scriptureProofs": "Scripture Proofs",
     "year": "Year",
+    "source": "Source",
     "authors(param=count)": {
       "one": "Author",
       "other": "Authors"

@@ -1481,6 +1481,7 @@ class _Translations$creeds$nl extends Translations$creeds$en {
 	@override String get noMatchingCreeds => 'Geen overeenkomende belijdenissen';
 	@override String get scriptureProofs => 'Schriftbewijzen';
 	@override String get year => 'Jaar';
+	@override String get source => 'Bron';
 	@override String authors({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count,
 		one: 'Auteur',
 		other: 'Auteurs',
@@ -4172,6 +4173,7 @@ extension on TranslationsNl {
 			'creeds.noMatchingCreeds' => 'Geen overeenkomende belijdenissen',
 			'creeds.scriptureProofs' => 'Schriftbewijzen',
 			'creeds.year' => 'Jaar',
+			'creeds.source' => 'Bron',
 			'creeds.authors' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: 'Auteur', other: 'Auteurs', ), 
 			'videos.searchHint' => 'Zoek naar een video',
 			'videos.noMatchingVideos' => 'Geen overeenkomende video\'s',
@@ -4279,9 +4281,9 @@ extension on TranslationsNl {
 			'morphology.types.demonstrativePronoun.examples' => 'dit|deze|die',
 			'morphology.types.interrogativePronoun.name' => 'Vragend voornaamwoord',
 			'morphology.types.interrogativePronoun.description' => 'Een voornaamwoord waarmee een vraag wordt gesteld.',
-			'morphology.types.interrogativePronoun.examples' => 'wie?|wat?|welke?',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.types.interrogativePronoun.examples' => 'wie?|wat?|welke?',
 			'morphology.types.indefinitePronoun.name' => 'Onbepaald voornaamwoord',
 			'morphology.types.indefinitePronoun.description' => 'Een voornaamwoord dat naar niet-specifieke zaken verwijst.',
 			'morphology.types.indefinitePronoun.examples' => 'iemand|wie dan ook|niets',

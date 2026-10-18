@@ -17,6 +17,7 @@ _Creed _$CreedFromJson(Map<String, dynamic> json) => _Creed(
   chapters: (json['c'] as List<dynamic>)
       .map((e) => CreedChapter.fromJson(e as Map<String, dynamic>))
       .toList(),
+  source: json['s'] as String?,
 );
 
 Map<String, dynamic> _$CreedToJson(_Creed instance) => <String, dynamic>{
@@ -26,6 +27,7 @@ Map<String, dynamic> _$CreedToJson(_Creed instance) => <String, dynamic>{
   'a': ?nullIfEmpty(instance.authors),
   'k': _$CreedTypeEnumMap[instance.type]!,
   'c': instance.chapters.map((e) => e.toJson()).toList(),
+  's': ?instance.source,
 };
 
 const _$CreedTypeEnumMap = {

@@ -1055,6 +1055,7 @@
     "noMatchingCreeds": "Keine passenden Bekenntnisse",
     "scriptureProofs": "Schriftbelege",
     "year": "Jahr",
+    "source": "Quelle",
     "authors(param=count)": {
       "one": "Autor",
       "other": "Autoren"

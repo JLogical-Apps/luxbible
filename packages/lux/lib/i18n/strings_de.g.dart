@@ -1479,6 +1479,7 @@ class _Translations$creeds$de extends Translations$creeds$en {
 	@override String get noMatchingCreeds => 'Keine passenden Bekenntnisse';
 	@override String get scriptureProofs => 'Schriftbelege';
 	@override String get year => 'Jahr';
+	@override String get source => 'Quelle';
 	@override String authors({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count,
 		one: 'Autor',
 		other: 'Autoren',
@@ -4168,6 +4169,7 @@ extension on TranslationsDe {
 			'creeds.noMatchingCreeds' => 'Keine passenden Bekenntnisse',
 			'creeds.scriptureProofs' => 'Schriftbelege',
 			'creeds.year' => 'Jahr',
+			'creeds.source' => 'Quelle',
 			'creeds.authors' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: 'Autor', other: 'Autoren', ), 
 			'videos.searchHint' => 'Nach einem Video suchen',
 			'videos.noMatchingVideos' => 'Keine passenden Videos',
@@ -4277,9 +4279,9 @@ extension on TranslationsDe {
 			'morphology.types.interrogativePronoun.description' => 'Ein Pronomen, mit dem man eine Frage stellt.',
 			'morphology.types.interrogativePronoun.examples' => 'wer?|was?|welcher?',
 			'morphology.types.indefinitePronoun.name' => 'Indefinitpronomen',
-			'morphology.types.indefinitePronoun.description' => 'Ein Pronomen, das sich auf nicht bestimmte Personen oder Dinge bezieht.',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.types.indefinitePronoun.description' => 'Ein Pronomen, das sich auf nicht bestimmte Personen oder Dinge bezieht.',
 			'morphology.types.indefinitePronoun.examples' => 'jemand|irgendwer|nichts',
 			'morphology.types.reciprocalPronoun.name' => 'Reziprokpronomen',
 			'morphology.types.reciprocalPronoun.description' => 'Ein Pronomen, das eine wechselseitige Handlung ausdrückt.',

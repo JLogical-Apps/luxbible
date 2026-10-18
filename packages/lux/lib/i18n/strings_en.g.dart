@@ -3250,6 +3250,9 @@ class Translations$creeds$en {
 	/// en: 'Year'
 	String get year => 'Year';
 
+	/// en: 'Source'
+	String get source => 'Source';
+
 	/// en: '(one) {Author} (other) {Authors}'
 	String authors({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count,
 		one: 'Author',
@@ -6757,6 +6760,7 @@ extension on Translations {
 			'creeds.noMatchingCreeds' => 'No matching creeds',
 			'creeds.scriptureProofs' => 'Scripture Proofs',
 			'creeds.year' => 'Year',
+			'creeds.source' => 'Source',
 			'creeds.authors' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: 'Author', other: 'Authors', ), 
 			'videos.searchHint' => 'Search for a video',
 			'videos.noMatchingVideos' => 'No matching videos',
@@ -6866,9 +6870,9 @@ extension on Translations {
 			'morphology.types.interrogativePronoun.description' => 'A pronoun used to ask a question.',
 			'morphology.types.interrogativePronoun.examples' => 'who?|what?|which?',
 			'morphology.types.indefinitePronoun.name' => 'Indefinite pronoun',
-			'morphology.types.indefinitePronoun.description' => 'A pronoun referring to non-specific entities.',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.types.indefinitePronoun.description' => 'A pronoun referring to non-specific entities.',
 			'morphology.types.indefinitePronoun.examples' => 'someone|anyone|nothing',
 			'morphology.types.reciprocalPronoun.name' => 'Reciprocal pronoun',
 			'morphology.types.reciprocalPronoun.description' => 'A pronoun expressing mutual action.',

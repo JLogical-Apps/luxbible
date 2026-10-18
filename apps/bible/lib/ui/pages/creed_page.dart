@@ -159,6 +159,12 @@ class CreedPage extends HookWidget implements StyledRoute<VerseSelection> {
               title: t.creeds.authors(count: creed.authors.length).toText(),
               subtitle: creed.authors.join(', ').toText(),
             ),
+          if (creed.source case final source?)
+            StyledListItem(
+              leading: Symbols.menu_book.toIcon(),
+              title: t.creeds.source.toText(),
+              subtitle: source.toText(),
+            ),
         ],
       ),
     ),

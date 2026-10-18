@@ -56,7 +56,9 @@ rerun it only when the PDFs or the ids in `maps.json` change.
 
 `generate_creeds_json.dart` writes the creeds, confessions, and catechisms vendored from Creeds.json in
 `content/sources/creeds/` to `assets/creeds/creeds.json`. It fails on any Scripture proof that isn't a valid OSIS
-reference to an existing verse. Data fixes go in the vendored JSON files, and the source README lists them.
+reference to an existing verse. Data fixes go in the vendored JSON files, and the source README lists them. It also writes
+each language's translations in `content/sources/creeds/translations/` to `assets/creeds/creeds_<language code>.json`,
+copying the English proofs by position.
 
 BibleProject's videos are curated by hand in `content/sources/videos/bibleproject.json`: its collections in order, each
 video's bibleproject.com slug, title, length, Mux playback ID, artwork URL, and the OSIS passages it explains. The

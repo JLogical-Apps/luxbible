@@ -14,7 +14,7 @@ Lux uses a single reading area with optional study panels. Panels appear below t
 
 Lux supports English, Dutch, German, and Russian. By default, it follows the device language when that language is supported and otherwise uses English. More > Settings > Language opens the device's native app-language setting, where available. Android 13 and later opens Lux's Language screen directly; iOS opens Lux's app settings, which include its Language control.
 
-The selected language controls Lux's interface, Bible book names, reference formatting, reading-plan metadata, study terminology, and other app-authored text. It does not translate Bible text, translation names, user-created content, imported study-resource bodies, the Advent plan's study notes, or legal copy.
+The selected language controls Lux's interface, Bible book names, reference formatting, reading-plan metadata, study terminology, and other app-authored text. It does not translate Bible text, translation names, user-created content, imported study-resource bodies (apart from the few creeds Lux has in that language, described under [Creeds & Confessions](#creeds--confessions)), the Advent plan's study notes, or legal copy.
 
 ## Notifications
 
@@ -535,8 +535,15 @@ settings page. When opened from the main toolbar's Study sheet, it shows Study ‚
 
 ### Creeds & Confessions
 
-- 35 public-domain creeds, confessions, and catechisms, in English only, from the early church rules of faith and
-  ecumenical creeds through the Reformation confessions, the Westminster Standards, and Baptist catechisms
+- 35 public-domain creeds, confessions, and catechisms, from the early church rules of faith and ecumenical creeds
+  through the Reformation confessions, the Westminster Standards, and Baptist catechisms
+- A document appears in the app language when Lux has a public-domain translation from a reliable digital
+  transcription, and in English otherwise. German has Ignatius' Creed and the rules of faith of Irenaeus and Tertullian,
+  from the Bibliothek der Kirchenv√§ter. Russian has the Nicene Creed and the Chalcedonian Definition, from the Kazan
+  Theological Academy's translation of the council acts. The Russian Nicene Creed is the Eastern text, without "and the
+  Son". Dutch has the Heidelberg Catechism and the Belgic Confession in the 1774 church-book text, in its 18th-century
+  spelling. A translated document keeps the English document's Scripture proofs, and its title, authors,
+  text, and search follow the app language
 - Grouped into Creeds, Confessions, and Catechisms, each with a one-line description of that kind of document, and each
   listed in order of its year with its year and authors
 - Search where each typed word matches the start of any word in a title, in any order
@@ -549,7 +556,7 @@ settings page. When opened from the main toolbar's Study sheet, it shows Study ‚
   lists each proof's reference and the first two lines of its text, and each opens a passage preview. Like Cross
   References, proofs use the study Bible when an online Bible is active
 - A more button in the document's header opens a menu with About, which shows a dialog with its kind (with that kind's
-  description), year, and authors when known. For confessions and catechisms, the menu also has Contents, which lists
+  description), year, and authors when known, and, for a translation, its source. For confessions and catechisms, the menu also has Contents, which lists
   each chapter (or each question, article, or section when the document has no chapters), marks the one currently at
   the top, and jumps to the chosen one
 - The Apostles' Creed uses its traditional wording ("he descended into hell")

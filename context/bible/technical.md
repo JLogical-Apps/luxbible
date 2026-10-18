@@ -240,6 +240,15 @@ public-domain documents of [Creeds.json](https://github.com/NonlinearFruit/Creed
 duplicates, as one passage list per item. The generator fails on any proof reference that isn't a valid OSIS ID for a
 verse that exists. Fixes to the source data are made in the vendored files and listed in their README.
 
+Translated documents are hand-prepared in `content/sources/creeds/translations/<language code>/<creed id>.json`, with a
+title, optional authors, a `source` citation, and chapters of items in the translation's own structure. The generator
+builds each one on its English `Creed`, keeping the year and type and copying each English item's proofs onto the
+translated item in the same position. It fails when an English item with proofs has no translated item with the same
+number there. It writes only the translated documents to `assets/creeds/creeds_<language code>.json`, and
+`creedsProvider` watches `languageProvider` and, when the asset manifest lists that file, replaces the English documents
+with their translations by ID. Translations come only from public-domain texts already transcribed and proofread by a
+reliable digital edition, never from OCR, and the source README records each one's provenance.
+
 BibleProject videos are `Video` items: BibleProject's ID (its bibleproject.com slug), a title, a length, a Mux playback
 ID, an artwork URL, and passages, grouped into `VideoCollection`s that carry only a title. The stream URL
 (`stream.mux.com/<playbackId>.m3u8`), the video's bibleproject.com page, and resized artwork (ImageKit's `?tr=w-<width>`)
