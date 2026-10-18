@@ -24,13 +24,12 @@ class ReaderBottomBar extends StatelessWidget {
     final selectionToolbar = this.selectionToolbar;
 
     // Study panels below the bar already sit over the bottom safe area.
+    final targetInsets = !hasStudyPanels || isSideLayout ? MediaQuery.viewPaddingOf(context) : EdgeInsets.zero;
+
     return TweenAnimationBuilder(
       duration: Duration(milliseconds: 300),
       curve: Curves.easeInOutCubic,
-      tween: Tween(
-        begin: MediaQuery.of(context).viewPadding,
-        end: !hasStudyPanels || isSideLayout ? MediaQuery.of(context).viewPadding : EdgeInsets.zero,
-      ),
+      tween: Tween(begin: targetInsets, end: targetInsets),
       builder: (context, insets, child) => MediaQuery(
         data: MediaQuery.of(context).copyWith(padding: insets, viewPadding: insets, viewInsets: insets),
         child: child!,
