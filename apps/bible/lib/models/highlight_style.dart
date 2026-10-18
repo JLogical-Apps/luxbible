@@ -1,5 +1,7 @@
 import 'package:bible/models/color_enum.dart';
+import 'package:bible/models/highlight_icon.dart';
 import 'package:bible/models/user/language.dart';
+import 'package:bible/ui/widgets/highlight_glyph.dart';
 import 'package:bible/ui/widgets/highlight_underline.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -30,7 +32,8 @@ sealed class HighlightStyle with _$HighlightStyle {
 
   const HighlightStyle._();
 
-  const factory HighlightStyle({required ColorEnum color, required HighlightStyleType type}) = _HighlightStyle;
+  const factory HighlightStyle({required ColorEnum color, required HighlightStyleType type, HighlightIcon? icon}) =
+      _HighlightStyle;
 
   factory HighlightStyle.fromJson(Map<String, dynamic> json) => _$HighlightStyleFromJson(json);
 }
@@ -55,6 +58,7 @@ enum HighlightStyleType {
   Widget buildPreview(
     BuildContext context, {
     required ColorEnum color,
+    HighlightIcon? icon,
     ComponentSize size = .md,
     bool invertContent = false,
   }) => SizedBox(
@@ -82,20 +86,7 @@ enum HighlightStyleType {
           ),
         Padding(
           padding: this == highlight ? .only(top: 2) : .zero,
-          child: Text(
-            'A',
-            textAlign: .center,
-            style: TextStyle(
-              fontSize: switch (size) {
-                .lg => 24,
-                .md => 18,
-                .sm => 12,
-              },
-              fontWeight: .w600,
-              height: 1,
-              color: invertContent ? context.colors.contentPrimaryInverse : context.colors.contentPrimary,
-            ),
-          ),
+          child: HighlightGlyph(icon: icon, size: size, invertContent: invertContent),
         ),
         if (this != highlight)
           Positioned(

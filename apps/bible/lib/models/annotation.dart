@@ -26,6 +26,8 @@ sealed class Annotation with _$Annotation {
 
   ColorEnum get color => style.color;
 
+  bool get hasMarker => note.isNotEmpty || style.icon != null;
+
   VerseSelection? get verseSelection => selection.as<VersesAnnotationSelection>()?.verseSelection;
   BibleTextSelection? get textSelection => selection.as<TextAnnotationSelection>()?.textSelection;
 

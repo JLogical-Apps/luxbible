@@ -625,6 +625,7 @@ class _Translations$labels$nl extends Translations$labels$en {
 	@override String get footnotes => 'Voetnoten';
 	@override String get help => 'Help';
 	@override String get highlightStyles => 'Markeerstijlen';
+	@override String get icon => 'Pictogram';
 	@override String get instagram => 'Instagram';
 	@override String get facebook => 'Facebook';
 	@override String get tiktok => 'TikTok';
@@ -763,6 +764,7 @@ class _Translations$annotationUi$nl extends Translations$annotationUi$en {
 	@override String get annotate => 'Annoteren';
 	@override String get withNotes => 'Met notities';
 	@override String get withoutNotes => 'Zonder notities';
+	@override String get noNote => 'Geen notitie';
 	@override String get mostRecent => 'Meest recent';
 	@override String get location => 'Locatie';
 	@override String get deleteAnnotation => 'Annotatie verwijderen';
@@ -803,6 +805,7 @@ class _Translations$highlightStyleUi$nl extends Translations$highlightStyleUi$en
 
 	// Translations
 	@override String get yourStyles => 'Je markeerstijlen';
+	@override String get manage => 'Stijlen beheren';
 	@override String get create => 'Stijl maken';
 	@override String get edit => 'Stijl bewerken';
 	@override String get duplicate => 'Je hebt deze stijl al';
@@ -3611,6 +3614,7 @@ extension on TranslationsNl {
 			'labels.footnotes' => 'Voetnoten',
 			'labels.help' => 'Help',
 			'labels.highlightStyles' => 'Markeerstijlen',
+			'labels.icon' => 'Pictogram',
 			'labels.instagram' => 'Instagram',
 			'labels.facebook' => 'Facebook',
 			'labels.tiktok' => 'TikTok',
@@ -3713,6 +3717,7 @@ extension on TranslationsNl {
 			'annotationUi.annotate' => 'Annoteren',
 			'annotationUi.withNotes' => 'Met notities',
 			'annotationUi.withoutNotes' => 'Zonder notities',
+			'annotationUi.noNote' => 'Geen notitie',
 			'annotationUi.mostRecent' => 'Meest recent',
 			'annotationUi.location' => 'Locatie',
 			'annotationUi.deleteAnnotation' => 'Annotatie verwijderen',
@@ -3732,6 +3737,7 @@ extension on TranslationsNl {
 			'notebookUi.keepInDefault' => 'In Standaard bewaren',
 			'notebookUi.deleteAnnotations' => 'Annotaties verwijderen',
 			'highlightStyleUi.yourStyles' => 'Je markeerstijlen',
+			'highlightStyleUi.manage' => 'Stijlen beheren',
 			'highlightStyleUi.create' => 'Stijl maken',
 			'highlightStyleUi.edit' => 'Stijl bewerken',
 			'highlightStyleUi.duplicate' => 'Je hebt deze stijl al',
@@ -3764,11 +3770,11 @@ extension on TranslationsNl {
 			'toolbarSettings.expandVerseDescription' => 'Als je op een vers tikt, wordt de volledige geannoteerde versselectie geselecteerd.',
 			'toolbarSettings.rangeSelection' => 'Bereikselectie',
 			'toolbarSettings.rangeSelectionDescription' => 'Als je op een tweede vers tikt, worden alle verzen tussen het eerste en tweede vers geselecteerd.',
+			_ => null,
+		} ?? switch (path) {
 			'toolbarSettings.mainShortcut' => 'Snelkoppeling hoofdwerkbalk',
 			'toolbarSettings.verseShortcut' => 'Snelkoppeling versselectie',
 			'toolbarSettings.textShortcut' => 'Snelkoppeling tekstselectie',
-			_ => null,
-		} ?? switch (path) {
 			'themeSettings.title' => 'Thema en indeling',
 			'themeSettings.brightness' => 'Helderheid',
 			'themeSettings.font' => 'Lettertype',
@@ -4278,11 +4284,11 @@ extension on TranslationsNl {
 			'morphology.types.personalPronoun.examples' => 'ik|jij|wij',
 			'morphology.types.demonstrativePronoun.name' => 'Aanwijzend voornaamwoord',
 			'morphology.types.demonstrativePronoun.description' => 'Een voornaamwoord dat iets aanwijst.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.demonstrativePronoun.examples' => 'dit|deze|die',
 			'morphology.types.interrogativePronoun.name' => 'Vragend voornaamwoord',
 			'morphology.types.interrogativePronoun.description' => 'Een voornaamwoord waarmee een vraag wordt gesteld.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.interrogativePronoun.examples' => 'wie?|wat?|welke?',
 			'morphology.types.indefinitePronoun.name' => 'Onbepaald voornaamwoord',
 			'morphology.types.indefinitePronoun.description' => 'Een voornaamwoord dat naar niet-specifieke zaken verwijst.',

@@ -390,6 +390,7 @@
     "footnotes": "Footnotes",
     "help": "Help",
     "highlightStyles": "Highlight Styles",
+    "icon": "Icon",
     "instagram": "Instagram",
     "facebook": "Facebook",
     "tiktok": "TikTok",
@@ -500,6 +501,7 @@
     "annotate": "Annotate",
     "withNotes": "With Notes",
     "withoutNotes": "Without Notes",
+    "noNote": "No Note",
     "mostRecent": "Most Recent",
     "location": "Location",
     "deleteAnnotation": "Delete Annotation",
@@ -526,6 +528,7 @@
   },
   "highlightStyleUi": {
     "yourStyles": "Your Highlight Styles",
+    "manage": "Manage Styles",
     "create": "Create Style",
     "edit": "Edit Style",
     "duplicate": "You already have this style",

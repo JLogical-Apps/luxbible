@@ -11,5 +11,5 @@ class HighlightStyleIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) =>
-      style.type.buildPreview(context, color: style.color, size: size, invertContent: invertContent);
+      style.type.buildPreview(context, color: style.color, icon: style.icon, size: size, invertContent: invertContent);
 }

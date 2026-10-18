@@ -1328,6 +1328,9 @@ class Translations$labels$en {
 	/// en: 'Highlight Styles'
 	String get highlightStyles => 'Highlight Styles';
 
+	/// en: 'Icon'
+	String get icon => 'Icon';
+
 	/// en: 'Instagram'
 	String get instagram => 'Instagram';
 
@@ -1670,6 +1673,9 @@ class Translations$annotationUi$en {
 	/// en: 'Without Notes'
 	String get withoutNotes => 'Without Notes';
 
+	/// en: 'No Note'
+	String get noNote => 'No Note';
+
 	/// en: 'Most Recent'
 	String get mostRecent => 'Most Recent';
 
@@ -1747,6 +1753,9 @@ class Translations$highlightStyleUi$en {
 
 	/// en: 'Your Highlight Styles'
 	String get yourStyles => 'Your Highlight Styles';
+
+	/// en: 'Manage Styles'
+	String get manage => 'Manage Styles';
 
 	/// en: 'Create Style'
 	String get create => 'Create Style';
@@ -6198,6 +6207,7 @@ extension on Translations {
 			'labels.footnotes' => 'Footnotes',
 			'labels.help' => 'Help',
 			'labels.highlightStyles' => 'Highlight Styles',
+			'labels.icon' => 'Icon',
 			'labels.instagram' => 'Instagram',
 			'labels.facebook' => 'Facebook',
 			'labels.tiktok' => 'TikTok',
@@ -6300,6 +6310,7 @@ extension on Translations {
 			'annotationUi.annotate' => 'Annotate',
 			'annotationUi.withNotes' => 'With Notes',
 			'annotationUi.withoutNotes' => 'Without Notes',
+			'annotationUi.noNote' => 'No Note',
 			'annotationUi.mostRecent' => 'Most Recent',
 			'annotationUi.location' => 'Location',
 			'annotationUi.deleteAnnotation' => 'Delete Annotation',
@@ -6319,6 +6330,7 @@ extension on Translations {
 			'notebookUi.keepInDefault' => 'Keep in Default',
 			'notebookUi.deleteAnnotations' => 'Delete Annotations',
 			'highlightStyleUi.yourStyles' => 'Your Highlight Styles',
+			'highlightStyleUi.manage' => 'Manage Styles',
 			'highlightStyleUi.create' => 'Create Style',
 			'highlightStyleUi.edit' => 'Edit Style',
 			'highlightStyleUi.duplicate' => 'You already have this style',
@@ -6353,11 +6365,11 @@ extension on Translations {
 			'toolbarSettings.rangeSelectionDescription' => 'Tapping a second verse selects all verses between it and the first.',
 			'toolbarSettings.mainShortcut' => 'Main Toolbar Shortcut',
 			'toolbarSettings.verseShortcut' => 'Verse Selection Shortcut',
+			_ => null,
+		} ?? switch (path) {
 			'toolbarSettings.textShortcut' => 'Text Selection Shortcut',
 			'themeSettings.title' => 'Theme & Layout',
 			'themeSettings.brightness' => 'Brightness',
-			_ => null,
-		} ?? switch (path) {
 			'themeSettings.font' => 'Font',
 			'themeSettings.fontSizeSpacing' => 'Font Size & Spacing',
 			'themeSettings.greekFontSizeSpacing' => 'Greek Font Size & Spacing',
@@ -6867,11 +6879,11 @@ extension on Translations {
 			'morphology.types.demonstrativePronoun.description' => 'A pronoun that points to something.',
 			'morphology.types.demonstrativePronoun.examples' => 'this|these|those',
 			'morphology.types.interrogativePronoun.name' => 'Interrogative pronoun',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.interrogativePronoun.description' => 'A pronoun used to ask a question.',
 			'morphology.types.interrogativePronoun.examples' => 'who?|what?|which?',
 			'morphology.types.indefinitePronoun.name' => 'Indefinite pronoun',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.indefinitePronoun.description' => 'A pronoun referring to non-specific entities.',
 			'morphology.types.indefinitePronoun.examples' => 'someone|anyone|nothing',
 			'morphology.types.reciprocalPronoun.name' => 'Reciprocal pronoun',

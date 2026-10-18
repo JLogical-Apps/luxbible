@@ -392,6 +392,7 @@
     "footnotes": "Voetnoten",
     "help": "Help",
     "highlightStyles": "Markeerstijlen",
+    "icon": "Pictogram",
     "instagram": "Instagram",
     "facebook": "Facebook",
     "tiktok": "TikTok",
@@ -502,6 +503,7 @@
     "annotate": "Annoteren",
     "withNotes": "Met notities",
     "withoutNotes": "Zonder notities",
+    "noNote": "Geen notitie",
     "mostRecent": "Meest recent",
     "location": "Locatie",
     "deleteAnnotation": "Annotatie verwijderen",
@@ -528,6 +530,7 @@
   },
   "highlightStyleUi": {
     "yourStyles": "Je markeerstijlen",
+    "manage": "Stijlen beheren",
     "create": "Stijl maken",
     "edit": "Stijl bewerken",
     "duplicate": "Je hebt deze stijl al",

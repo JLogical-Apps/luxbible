@@ -149,11 +149,11 @@ sealed class User with _$User {
   bool isTextSelectionAnnotated(BibleTextSelection textSelection) =>
       getTextSelectionAnnotations(textSelection).isNotEmpty;
 
-  Map<int, List<Annotation>> getTextSelectionAnnotationsWithNotesByOffset({
+  Map<int, List<Annotation>> getMarkedTextSelectionAnnotationsByOffset({
     required Reference reference,
     required BibleTranslation translation,
   }) => visibleAnnotations
-      .where((annotation) => annotation.note.isNotEmpty)
+      .where((annotation) => annotation.hasMarker)
       .map((annotation) => (annotation, annotation.textSelection))
       .whereType<(Annotation, BibleTextSelection)>()
       .where(

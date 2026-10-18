@@ -625,6 +625,7 @@ class _Translations$labels$ru extends Translations$labels$en {
 	@override String get footnotes => 'Сноски';
 	@override String get help => 'Помощь';
 	@override String get highlightStyles => 'Стили выделения';
+	@override String get icon => 'Значок';
 	@override String get instagram => 'Инстаграм';
 	@override String get facebook => 'Facebook';
 	@override String get tiktok => 'TikTok';
@@ -763,6 +764,7 @@ class _Translations$annotationUi$ru extends Translations$annotationUi$en {
 	@override String get annotate => 'Аннотировать';
 	@override String get withNotes => 'С примечаниями';
 	@override String get withoutNotes => 'Без примечаний';
+	@override String get noNote => 'Без примечания';
 	@override String get mostRecent => 'Самый последний';
 	@override String get location => 'Расположение';
 	@override String get deleteAnnotation => 'Удалить аннотацию';
@@ -805,6 +807,7 @@ class _Translations$highlightStyleUi$ru extends Translations$highlightStyleUi$en
 
 	// Translations
 	@override String get yourStyles => 'Ваши стили выделения';
+	@override String get manage => 'Управление стилями';
 	@override String get create => 'Создать стиль';
 	@override String get edit => 'Редактировать стиль';
 	@override String get duplicate => 'У вас уже есть этот стиль';
@@ -3633,6 +3636,7 @@ extension on TranslationsRu {
 			'labels.footnotes' => 'Сноски',
 			'labels.help' => 'Помощь',
 			'labels.highlightStyles' => 'Стили выделения',
+			'labels.icon' => 'Значок',
 			'labels.instagram' => 'Инстаграм',
 			'labels.facebook' => 'Facebook',
 			'labels.tiktok' => 'TikTok',
@@ -3735,6 +3739,7 @@ extension on TranslationsRu {
 			'annotationUi.annotate' => 'Аннотировать',
 			'annotationUi.withNotes' => 'С примечаниями',
 			'annotationUi.withoutNotes' => 'Без примечаний',
+			'annotationUi.noNote' => 'Без примечания',
 			'annotationUi.mostRecent' => 'Самый последний',
 			'annotationUi.location' => 'Расположение',
 			'annotationUi.deleteAnnotation' => 'Удалить аннотацию',
@@ -3754,6 +3759,7 @@ extension on TranslationsRu {
 			'notebookUi.keepInDefault' => 'Оставить по умолчанию',
 			'notebookUi.deleteAnnotations' => 'Удалить аннотации',
 			'highlightStyleUi.yourStyles' => 'Ваши стили выделения',
+			'highlightStyleUi.manage' => 'Управление стилями',
 			'highlightStyleUi.create' => 'Создать стиль',
 			'highlightStyleUi.edit' => 'Редактировать стиль',
 			'highlightStyleUi.duplicate' => 'У вас уже есть этот стиль',
@@ -3786,11 +3792,11 @@ extension on TranslationsRu {
 			'toolbarSettings.expandVerseDescription' => 'Нажатие на стих выбирает полный аннотированный стих.',
 			'toolbarSettings.rangeSelection' => 'Выбор диапазона',
 			'toolbarSettings.rangeSelectionDescription' => 'Нажатие на второй стих выбирает все стихи между ним и первым.',
+			_ => null,
+		} ?? switch (path) {
 			'toolbarSettings.mainShortcut' => 'Ярлык на главной панели инструментов',
 			'toolbarSettings.verseShortcut' => 'Ярлык выбора стиха',
 			'toolbarSettings.textShortcut' => 'Ярлык выбора текста',
-			_ => null,
-		} ?? switch (path) {
 			'themeSettings.title' => 'Тема и макет',
 			'themeSettings.brightness' => 'Яркость',
 			'themeSettings.font' => 'Шрифт',
@@ -4300,11 +4306,11 @@ extension on TranslationsRu {
 			'morphology.types.personalPronoun.examples' => 'я|ты|мы',
 			'morphology.types.demonstrativePronoun.name' => 'Указательное местоимение',
 			'morphology.types.demonstrativePronoun.description' => 'Местоимение, указывающее на что-либо.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.demonstrativePronoun.examples' => 'это|эти|те',
 			'morphology.types.interrogativePronoun.name' => 'Вопросительное местоимение',
 			'morphology.types.interrogativePronoun.description' => 'Местоимение, используемое для задания вопроса.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.interrogativePronoun.examples' => 'кто?|что?|что?',
 			'morphology.types.indefinitePronoun.name' => 'Неопределённое местоимение',
 			'morphology.types.indefinitePronoun.description' => 'Местоимение, обозначающее неспецифические сущности.',

@@ -392,6 +392,7 @@
     "footnotes": "Сноски",
     "help": "Помощь",
     "highlightStyles": "Стили выделения",
+    "icon": "Значок",
     "instagram": "Инстаграм",
     "facebook": "Facebook",
     "tiktok": "TikTok",
@@ -502,6 +503,7 @@
     "annotate": "Аннотировать",
     "withNotes": "С примечаниями",
     "withoutNotes": "Без примечаний",
+    "noNote": "Без примечания",
     "mostRecent": "Самый последний",
     "location": "Расположение",
     "deleteAnnotation": "Удалить аннотацию",
@@ -530,6 +532,7 @@
   },
   "highlightStyleUi": {
     "yourStyles": "Ваши стили выделения",
+    "manage": "Управление стилями",
     "create": "Создать стиль",
     "edit": "Редактировать стиль",
     "duplicate": "У вас уже есть этот стиль",

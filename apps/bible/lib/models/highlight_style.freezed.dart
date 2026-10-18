@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HighlightStyle {
 
- ColorEnum get color; HighlightStyleType get type;
+ ColorEnum get color; HighlightStyleType get type; HighlightIcon? get icon;
 /// Create a copy of HighlightStyle
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $HighlightStyleCopyWith<HighlightStyle> get copyWith => _$HighlightStyleCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HighlightStyle&&(identical(other.color, color) || other.color == color)&&(identical(other.type, type) || other.type == type));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HighlightStyle&&(identical(other.color, color) || other.color == color)&&(identical(other.type, type) || other.type == type)&&(identical(other.icon, icon) || other.icon == icon));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,color,type);
+int get hashCode => Object.hash(runtimeType,color,type,icon);
 
 @override
 String toString() {
-  return 'HighlightStyle(color: $color, type: $type)';
+  return 'HighlightStyle(color: $color, type: $type, icon: $icon)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $HighlightStyleCopyWith<$Res>  {
   factory $HighlightStyleCopyWith(HighlightStyle value, $Res Function(HighlightStyle) _then) = _$HighlightStyleCopyWithImpl;
 @useResult
 $Res call({
- ColorEnum color, HighlightStyleType type
+ ColorEnum color, HighlightStyleType type, HighlightIcon? icon
 });
 
 
@@ -66,11 +66,12 @@ class _$HighlightStyleCopyWithImpl<$Res>
 
 /// Create a copy of HighlightStyle
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? color = null,Object? type = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? color = null,Object? type = null,Object? icon = freezed,}) {
   return _then(HighlightStyle(
 color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
 as ColorEnum,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as HighlightStyleType,
+as HighlightStyleType,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
+as HighlightIcon?,
   ));
 }
 
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ColorEnum color,  HighlightStyleType type)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( ColorEnum color,  HighlightStyleType type,  HighlightIcon? icon)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HighlightStyle() when $default != null:
-return $default(_that.color,_that.type);case _:
+return $default(_that.color,_that.type,_that.icon);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.color,_that.type);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ColorEnum color,  HighlightStyleType type)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( ColorEnum color,  HighlightStyleType type,  HighlightIcon? icon)  $default,) {final _that = this;
 switch (_that) {
 case _HighlightStyle():
-return $default(_that.color,_that.type);}
+return $default(_that.color,_that.type,_that.icon);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -190,10 +191,10 @@ return $default(_that.color,_that.type);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ColorEnum color,  HighlightStyleType type)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( ColorEnum color,  HighlightStyleType type,  HighlightIcon? icon)?  $default,) {final _that = this;
 switch (_that) {
 case _HighlightStyle() when $default != null:
-return $default(_that.color,_that.type);case _:
+return $default(_that.color,_that.type,_that.icon);case _:
   return null;
 
 }
@@ -205,11 +206,12 @@ return $default(_that.color,_that.type);case _:
 @JsonSerializable()
 
 class _HighlightStyle extends HighlightStyle {
-  const _HighlightStyle({required this.color, required this.type}): super._();
+  const _HighlightStyle({required this.color, required this.type, this.icon}): super._();
   factory _HighlightStyle.fromJson(Map<String, dynamic> json) => _$HighlightStyleFromJson(json);
 
 @override final  ColorEnum color;
 @override final  HighlightStyleType type;
+@override final  HighlightIcon? icon;
 
 /// Create a copy of HighlightStyle
 /// with the given fields replaced by the non-null parameter values.
@@ -224,16 +226,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HighlightStyle&&(identical(other.color, color) || other.color == color)&&(identical(other.type, type) || other.type == type));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HighlightStyle&&(identical(other.color, color) || other.color == color)&&(identical(other.type, type) || other.type == type)&&(identical(other.icon, icon) || other.icon == icon));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,color,type);
+int get hashCode => Object.hash(runtimeType,color,type,icon);
 
 @override
 String toString() {
-  return 'HighlightStyle(color: $color, type: $type)';
+  return 'HighlightStyle(color: $color, type: $type, icon: $icon)';
 }
 
 
@@ -244,7 +246,7 @@ abstract mixin class _$HighlightStyleCopyWith<$Res> implements $HighlightStyleCo
   factory _$HighlightStyleCopyWith(_HighlightStyle value, $Res Function(_HighlightStyle) _then) = __$HighlightStyleCopyWithImpl;
 @override @useResult
 $Res call({
- ColorEnum color, HighlightStyleType type
+ ColorEnum color, HighlightStyleType type, HighlightIcon? icon
 });
 
 
@@ -261,11 +263,12 @@ class __$HighlightStyleCopyWithImpl<$Res>
 
 /// Create a copy of HighlightStyle
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? color = null,Object? type = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? color = null,Object? type = null,Object? icon = freezed,}) {
   return _then(_HighlightStyle(
 color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
 as ColorEnum,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
-as HighlightStyleType,
+as HighlightStyleType,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
+as HighlightIcon?,
   ));
 }
 

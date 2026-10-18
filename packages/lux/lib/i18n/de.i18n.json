@@ -390,6 +390,7 @@
     "footnotes": "Fußnoten",
     "help": "Hilfe",
     "highlightStyles": "Markierungsstile",
+    "icon": "Symbol",
     "instagram": "Instagram",
     "facebook": "Facebook",
     "tiktok": "TikTok",
@@ -500,6 +501,7 @@
     "annotate": "Annotieren",
     "withNotes": "Mit Notizen",
     "withoutNotes": "Ohne Notizen",
+    "noNote": "Keine Notiz",
     "mostRecent": "Neueste",
     "location": "Bibelstelle",
     "deleteAnnotation": "Annotation löschen",
@@ -526,6 +528,7 @@
   },
   "highlightStyleUi": {
     "yourStyles": "Deine Markierungsstile",
+    "manage": "Stile verwalten",
     "create": "Stil erstellen",
     "edit": "Stil bearbeiten",
     "duplicate": "Diesen Stil hast du bereits",

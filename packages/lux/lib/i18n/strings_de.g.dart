@@ -623,6 +623,7 @@ class _Translations$labels$de extends Translations$labels$en {
 	@override String get footnotes => 'Fußnoten';
 	@override String get help => 'Hilfe';
 	@override String get highlightStyles => 'Markierungsstile';
+	@override String get icon => 'Symbol';
 	@override String get instagram => 'Instagram';
 	@override String get facebook => 'Facebook';
 	@override String get tiktok => 'TikTok';
@@ -761,6 +762,7 @@ class _Translations$annotationUi$de extends Translations$annotationUi$en {
 	@override String get annotate => 'Annotieren';
 	@override String get withNotes => 'Mit Notizen';
 	@override String get withoutNotes => 'Ohne Notizen';
+	@override String get noNote => 'Keine Notiz';
 	@override String get mostRecent => 'Neueste';
 	@override String get location => 'Bibelstelle';
 	@override String get deleteAnnotation => 'Annotation löschen';
@@ -801,6 +803,7 @@ class _Translations$highlightStyleUi$de extends Translations$highlightStyleUi$en
 
 	// Translations
 	@override String get yourStyles => 'Deine Markierungsstile';
+	@override String get manage => 'Stile verwalten';
 	@override String get create => 'Stil erstellen';
 	@override String get edit => 'Stil bearbeiten';
 	@override String get duplicate => 'Diesen Stil hast du bereits';
@@ -3607,6 +3610,7 @@ extension on TranslationsDe {
 			'labels.footnotes' => 'Fußnoten',
 			'labels.help' => 'Hilfe',
 			'labels.highlightStyles' => 'Markierungsstile',
+			'labels.icon' => 'Symbol',
 			'labels.instagram' => 'Instagram',
 			'labels.facebook' => 'Facebook',
 			'labels.tiktok' => 'TikTok',
@@ -3709,6 +3713,7 @@ extension on TranslationsDe {
 			'annotationUi.annotate' => 'Annotieren',
 			'annotationUi.withNotes' => 'Mit Notizen',
 			'annotationUi.withoutNotes' => 'Ohne Notizen',
+			'annotationUi.noNote' => 'Keine Notiz',
 			'annotationUi.mostRecent' => 'Neueste',
 			'annotationUi.location' => 'Bibelstelle',
 			'annotationUi.deleteAnnotation' => 'Annotation löschen',
@@ -3728,6 +3733,7 @@ extension on TranslationsDe {
 			'notebookUi.keepInDefault' => 'Im Standard behalten',
 			'notebookUi.deleteAnnotations' => 'Annotationen löschen',
 			'highlightStyleUi.yourStyles' => 'Deine Markierungsstile',
+			'highlightStyleUi.manage' => 'Stile verwalten',
 			'highlightStyleUi.create' => 'Stil erstellen',
 			'highlightStyleUi.edit' => 'Stil bearbeiten',
 			'highlightStyleUi.duplicate' => 'Diesen Stil hast du bereits',
@@ -3762,11 +3768,11 @@ extension on TranslationsDe {
 			'toolbarSettings.rangeSelectionDescription' => 'Tippen auf einen zweiten Vers wählt alle Verse zwischen ihm und dem ersten aus.',
 			'toolbarSettings.mainShortcut' => 'Kurzbefehl der Hauptleiste',
 			'toolbarSettings.verseShortcut' => 'Kurzbefehl der Versauswahl',
+			_ => null,
+		} ?? switch (path) {
 			'toolbarSettings.textShortcut' => 'Kurzbefehl der Textauswahl',
 			'themeSettings.title' => 'Design & Layout',
 			'themeSettings.brightness' => 'Helligkeit',
-			_ => null,
-		} ?? switch (path) {
 			'themeSettings.font' => 'Schriftart',
 			'themeSettings.fontSizeSpacing' => 'Schriftgröße & Abstand',
 			'themeSettings.greekFontSizeSpacing' => 'Griechisch: Schriftgröße & Abstand',
@@ -4276,11 +4282,11 @@ extension on TranslationsDe {
 			'morphology.types.demonstrativePronoun.description' => 'Ein Pronomen, das auf etwas hinweist.',
 			'morphology.types.demonstrativePronoun.examples' => 'dieser|diese|jene',
 			'morphology.types.interrogativePronoun.name' => 'Interrogativpronomen',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.interrogativePronoun.description' => 'Ein Pronomen, mit dem man eine Frage stellt.',
 			'morphology.types.interrogativePronoun.examples' => 'wer?|was?|welcher?',
 			'morphology.types.indefinitePronoun.name' => 'Indefinitpronomen',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.indefinitePronoun.description' => 'Ein Pronomen, das sich auf nicht bestimmte Personen oder Dinge bezieht.',
 			'morphology.types.indefinitePronoun.examples' => 'jemand|irgendwer|nichts',
 			'morphology.types.reciprocalPronoun.name' => 'Reziprokpronomen',

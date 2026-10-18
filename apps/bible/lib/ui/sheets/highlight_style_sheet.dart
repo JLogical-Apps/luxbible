@@ -1,5 +1,8 @@
 import 'package:bible/models/color_enum.dart';
+import 'package:bible/models/highlight_icon.dart';
 import 'package:bible/models/highlight_style.dart';
+import 'package:bible/ui/widgets/highlight_glyph.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
@@ -49,15 +52,47 @@ class HighlightStyleSheet {
                     (type) => Row(
                       mainAxisAlignment: .spaceBetween,
                       children: ColorEnum.values.map((color) {
-                        final style = HighlightStyle(color: color, type: type);
+                        final style = HighlightStyle(color: color, type: type, icon: selectedStyle.icon);
                         return StyledMaterial(
                           isSelected: style == selectedStyle,
                           onPressed: () => onChanged(style),
                           padding: .all(8),
                           borderRadius: .circular(8),
-                          child: type.buildPreview(context, color: color, size: .md),
+                          child: type.buildPreview(context, color: color, icon: selectedStyle.icon, size: .md),
                         );
                       }).toList(),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
+        ),
+        StyledPortFieldBuilder<HighlightStyle>(
+          fieldPath: 'style',
+          builder: (context, selectedStyle, error, onChanged) => StyledFormInput(
+            label: t.labels.icon.toText(),
+            child: Column(
+              spacing: 12,
+              children: [null, ...HighlightIcon.values]
+                  .slices(ColorEnum.values.length)
+                  .map(
+                    (icons) => Row(
+                      mainAxisAlignment: .spaceBetween,
+                      children: icons
+                          .map(
+                            (icon) => StyledMaterial(
+                              isSelected: icon == selectedStyle.icon,
+                              onPressed: () => onChanged(selectedStyle.copyWith(icon: icon)),
+                              padding: .all(8),
+                              borderRadius: .circular(8),
+                              child: SizedBox(
+                                width: 18,
+                                height: 24,
+                                child: Center(child: HighlightGlyph(icon: icon)),
+                              ),
+                            ),
+                          )
+                          .toList(),
                     ),
                   )
                   .toList(),

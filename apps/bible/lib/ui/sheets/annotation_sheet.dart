@@ -4,8 +4,8 @@ import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/viewed_bible_plan_day_provider.dart';
+import 'package:bible/ui/pages/highlight_styles_page.dart';
 import 'package:bible/ui/pages/notebook_icon.dart';
-import 'package:bible/ui/sheets/highlight_style_sheet.dart';
 import 'package:bible/ui/sheets/notebook_sheet.dart';
 import 'package:bible/ui/widgets/highlight_style_icon.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
@@ -119,13 +119,24 @@ class AnnotationSheet {
                         ),
                       ),
                       StyledTextButton(
-                        child: t.common.addNew.toText(),
-                        leading: Symbols.add.toIcon(),
+                        child: t.highlightStyleUi.manage.toText(),
+                        leading: Symbols.format_ink_highlighter.toIcon(),
                         onPressed: () async {
-                          final newStyle = await HighlightStyleSheet.show(context, otherStyles: user.highlightStyles);
-                          if (newStyle != null) {
-                            ref.updateUser((user) => user.withNewHighlightStyle(newStyle));
-                            port.setValue(path: 'style', value: newStyle.$1);
+                          final previousIndex = user.highlightStyles.indexWhereOrNull(
+                            (entry) => entry.$1 == port['style'],
+                          );
+
+                          await context.push(HighlightStylesPage());
+
+                          // Follow an edited or deleted selected style so the annotation doesn't keep a removed one.
+                          final newUser = ref.read(userProvider);
+                          if (previousIndex != null && !newUser.hasHighlightStyle(port['style'])) {
+                            port.setValue(
+                              path: 'style',
+                              value:
+                                  newUser.highlightStyles.elementAtOrNull(previousIndex)?.$1 ??
+                                  newUser.defaultAnnotationStyle,
+                            );
                           }
                         },
                       ),

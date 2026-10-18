@@ -118,28 +118,30 @@ class BibleReaderConfiguration {
     markersBuilder: (context, translation, reference, verse, verseParagraphOffset, onNavigate) {
       final leadingAnnotations = user
           .getVerseSelectionAnnotations(VerseSelection.reference(reference))
-          .where(
-            (annotation) =>
-                annotation.note.isNotEmpty && annotation.verseSelection?.references.firstOrNull == reference,
-          )
+          .where((annotation) => annotation.hasMarker && annotation.verseSelection?.references.firstOrNull == reference)
           .toList();
 
       return [
-        if (leadingAnnotations.isNotEmpty)
-          BibleInlineMarker.leading(
-            builder: (context) => buildNotesButton(context, annotations: leadingAnnotations, translation: translation),
+        ...groupByMarker(leadingAnnotations).map(
+          (annotations) => BibleInlineMarker.leading(
+            builder: (context) => buildAnnotationsButton(context, annotations: annotations, translation: translation),
           ),
+        ),
         ...user
-            .getTextSelectionAnnotationsWithNotesByOffset(reference: reference, translation: translation)
+            .getMarkedTextSelectionAnnotationsByOffset(reference: reference, translation: translation)
             .where((offset, annotations) => offset >= verseParagraphOffset)
             .mapToIterable(
-              (offset, annotations) => BibleInlineMarker(
-                offset: offset - verseParagraphOffset,
-                anchorOffset: offset,
-                isBoundInSelection: true,
-                builder: (context) => buildNotesButton(context, annotations: annotations, translation: translation),
+              (offset, annotations) => groupByMarker(annotations).map(
+                (annotations) => BibleInlineMarker(
+                  offset: offset - verseParagraphOffset,
+                  anchorOffset: offset,
+                  isBoundInSelection: true,
+                  builder: (context) =>
+                      buildAnnotationsButton(context, annotations: annotations, translation: translation),
+                ),
               ),
-            ),
+            )
+            .flattened,
         if (user.themeLayout.footnotes)
           ...(verse.footnotes ?? [])
               .groupListsBy((footnote) => footnote.offset.clamp(0, verse.text.length))
@@ -180,7 +182,10 @@ class BibleReaderConfiguration {
           );
   }
 
-  static Widget buildNotesButton(
+  static Iterable<List<Annotation>> groupByMarker(List<Annotation> annotations) =>
+      annotations.groupListsBy((annotation) => annotation.style.icon == null ? null : annotation.style).values;
+
+  static Widget buildAnnotationsButton(
     BuildContext context, {
     required List<Annotation> annotations,
     required BibleTranslation translation,
@@ -189,7 +194,8 @@ class BibleReaderConfiguration {
     child: StyledCircleButton.sm(
       onPressed: () => context.showStyledSheet(
         (context, _) => StyledSheet(
-          title: t.labels.notes.toText(),
+          title: (annotations.every((annotation) => annotation.note.isNotEmpty) ? t.labels.notes : t.labels.annotations)
+              .toText(),
           children: annotations
               .map(
                 (annotation) => Consumer(
@@ -219,7 +225,9 @@ class BibleReaderConfiguration {
                         ),
                       ],
                       child: StyledListItem(
-                        title: annotation.note.toText(),
+                        title: annotation.note.isEmpty
+                            ? Text(t.annotationUi.noNote, style: TextStyle(color: context.colors.contentTertiary))
+                            : annotation.note.toText(),
                         subtitle: StyledLoading(
                           child: annotationText == null ? null : Text(annotationText, maxLines: 1, overflow: .ellipsis),
                         ),
@@ -276,7 +284,10 @@ class BibleReaderConfiguration {
               .toList(),
         ),
       ),
-      child: Icon(Symbols.note_stack, color: context.colors.contentTertiary),
+      child: switch (annotations.first.style.icon) {
+        final icon? => Icon(icon.icon, color: annotations.first.color.toHue(context.colors).primary),
+        null => Icon(Symbols.note_stack, color: context.colors.contentTertiary),
+      },
     ),
   );
 
