@@ -1,9 +1,11 @@
 import 'package:bible/models/bible_plan.dart';
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/highlight_style.dart';
+import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
+import 'package:material_symbols_icons/symbols.dart';
 import 'package:utils_core/utils_core.dart';
 
 part 'annotation.freezed.dart';
@@ -27,6 +29,8 @@ sealed class Annotation with _$Annotation {
   ColorEnum get color => style.color;
 
   bool get hasMarker => note.isNotEmpty || style.icon != null;
+
+  IconData get markerIcon => style.icon?.icon ?? Symbols.note_stack;
 
   VerseSelection? get verseSelection => selection.as<VersesAnnotationSelection>()?.verseSelection;
   BibleTextSelection? get textSelection => selection.as<TextAnnotationSelection>()?.textSelection;

@@ -705,11 +705,11 @@ class ParagraphsBuilder extends HookWidget {
         isBoundInSelection: marker.isBoundInSelection,
         isLeading: marker.isLeading,
       ),
-      size: Size(30, bibleTextStyle.body.fontSize!),
+      size: Size(32, bibleTextStyle.body.fontSize!),
       alignment: .middle,
       child: OverflowBox(
         maxHeight: bibleTextStyle.body.totalHeight + 4,
-        maxWidth: 30,
+        maxWidth: 32,
         child: Opacity(
           opacity: opacity,
           child: Underline(

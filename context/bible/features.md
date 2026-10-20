@@ -656,7 +656,7 @@ Styles support:
 
 Users can create, edit, reorder, and remove styles. A style is its color, type, and icon together, so two styles can share a color and type as long as their icons differ. When changing any of those, or deleting a style, Lux lets the user decide how existing annotations should be handled. A style's preview shows its icon, or the letter A when it has none.
 
-In passages, an annotation with a note shows a note button before it. An annotation whose style has an icon shows that icon in the style's color instead, whether or not it has a note. Either button opens the annotations there, and one without a note reads "No Note" until the user edits it to add one.
+In passages, an annotation with a note shows a note icon before it, in its highlight color. An annotation whose style has an icon shows that icon instead, whether or not it has a note. When several annotations start at the same place, their icons share one marker: up to three tiny icons in a triangle, plus a "+X" badge for the rest. Tapping a marker lists every annotation there, and one without a note reads "No Note" until the user edits it to add one.
 
 The Annotate sheet's style row ends with Manage Styles, which opens the Highlight Styles page. If the selected style was edited or deleted there, the sheet moves the selection to the style now in its place.
 

@@ -7,6 +7,7 @@ import 'package:bible/ui/sheets/preview_passage_sheet.dart';
 import 'package:bible/ui/widgets/font_size_spacing_zoom_gesture.dart';
 import 'package:bible/ui/widgets/highlight_style_icon.dart';
 import 'package:bible/ui/widgets/highlight_underline.dart';
+import 'package:bible/ui/widgets/icon_cluster.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -122,26 +123,23 @@ class BibleReaderConfiguration {
           .toList();
 
       return [
-        ...groupByMarker(leadingAnnotations).map(
-          (annotations) => BibleInlineMarker.leading(
-            builder: (context) => buildAnnotationsButton(context, annotations: annotations, translation: translation),
+        if (leadingAnnotations.isNotEmpty)
+          BibleInlineMarker.leading(
+            builder: (context) =>
+                buildAnnotationsButton(context, annotations: leadingAnnotations, translation: translation),
           ),
-        ),
         ...user
             .getMarkedTextSelectionAnnotationsByOffset(reference: reference, translation: translation)
             .where((offset, annotations) => offset >= verseParagraphOffset)
             .mapToIterable(
-              (offset, annotations) => groupByMarker(annotations).map(
-                (annotations) => BibleInlineMarker(
-                  offset: offset - verseParagraphOffset,
-                  anchorOffset: offset,
-                  isBoundInSelection: true,
-                  builder: (context) =>
-                      buildAnnotationsButton(context, annotations: annotations, translation: translation),
-                ),
+              (offset, annotations) => BibleInlineMarker(
+                offset: offset - verseParagraphOffset,
+                anchorOffset: offset,
+                isBoundInSelection: true,
+                builder: (context) =>
+                    buildAnnotationsButton(context, annotations: annotations, translation: translation),
               ),
-            )
-            .flattened,
+            ),
         if (user.themeLayout.footnotes)
           ...(verse.footnotes ?? [])
               .groupListsBy((footnote) => footnote.offset.clamp(0, verse.text.length))
@@ -182,15 +180,12 @@ class BibleReaderConfiguration {
           );
   }
 
-  static Iterable<List<Annotation>> groupByMarker(List<Annotation> annotations) =>
-      annotations.groupListsBy((annotation) => annotation.style.icon == null ? null : annotation.style).values;
-
   static Widget buildAnnotationsButton(
     BuildContext context, {
     required List<Annotation> annotations,
     required BibleTranslation translation,
   }) => Padding(
-    padding: .only(bottom: 4),
+    padding: .only(bottom: 8),
     child: StyledCircleButton.sm(
       onPressed: () => context.showStyledSheet(
         (context, _) => StyledSheet(
@@ -284,9 +279,13 @@ class BibleReaderConfiguration {
               .toList(),
         ),
       ),
-      child: switch (annotations.first.style.icon) {
-        final icon? => Icon(icon.icon, color: annotations.first.color.toHue(context.colors).primary),
-        null => Icon(Symbols.note_stack, color: context.colors.contentTertiary),
+      child: switch (annotations) {
+        [final annotation] => Icon(annotation.markerIcon, color: annotation.color.toHue(context.colors).primary),
+        _ => IconCluster(
+          icons: annotations
+              .map((annotation) => (annotation.markerIcon, annotation.color.toHue(context.colors).primary))
+              .toList(),
+        ),
       },
     ),
   );
