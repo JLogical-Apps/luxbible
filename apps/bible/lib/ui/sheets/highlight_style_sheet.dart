@@ -52,7 +52,7 @@ class HighlightStyleSheet {
               // Covers "wept" in the BSB text.
               selection: BibleTextSelection(
                 start: .fromReference(reference: previewReference, characterOffset: 6),
-                end: .fromReference(reference: previewReference, characterOffset: 9),
+                end: .fromReference(reference: previewReference, characterOffset: 10),
                 translation: .bsb,
               ),
               padding: .only(bottom: 24),
