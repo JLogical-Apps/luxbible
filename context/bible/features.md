@@ -539,12 +539,12 @@ settings page. When opened from the main toolbar's Study sheet, it shows Study �
 - 35 public-domain creeds, confessions, and catechisms, from the early church rules of faith and ecumenical creeds
   through the Reformation confessions, the Westminster Standards, and Baptist catechisms
 - A document appears in the app language when Lux has a public-domain translation from a reliable digital
-  transcription, and in English otherwise. German has Ignatius' Creed and the rules of faith of Irenaeus and Tertullian,
-  from the Bibliothek der Kirchenväter. Russian has the Nicene Creed and the Chalcedonian Definition, from the Kazan
-  Theological Academy's translation of the council acts. The Russian Nicene Creed is the Eastern text, without "and the
-  Son". Dutch has the Heidelberg Catechism and the Belgic Confession in the 1774 church-book text, in its 18th-century
-  spelling. A translated document keeps the English document's Scripture proofs, and its title, authors,
-  text, and search follow the app language
+  transcription, and in English otherwise. German has Ignatius' Creed and the rules of faith of Irenaeus and
+  Tertullian, from the Bibliothek der Kirchenväter. Russian has the Nicene Creed and the Chalcedonian Definition, from
+  the Kazan Theological Academy's translation of the council acts. The Russian Nicene Creed is the Eastern text,
+  without "and the Son". Dutch has the Heidelberg Catechism, the Belgic Confession, the Canons of Dort, and the
+  Apostles' Creed in their traditional wording with modern spelling, from Belijdenis.nu. A translated document keeps
+  the English document's Scripture proofs, and its title, authors, text, and search follow the app language
 - Grouped into Creeds, Confessions, and Catechisms, each with a one-line description of that kind of document, and each
   listed in order of its year with its year and authors
 - Search where each typed word matches the start of any word in a title, in any order
