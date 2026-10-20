@@ -584,7 +584,10 @@
     "sectionHeadings": "Tussenkoppen",
     "verseNumbers": "Versnummers",
     "paragraphsDescription": "Geef verzen als alinea's weer.",
-    "footnotesDescription": "Toon voetnootmarkeringen in de tekst."
+    "footnotesDescription": "Toon voetnootmarkeringen in de tekst.",
+    "annotationsInMargin": "Annotaties in de marge",
+    "annotationsInMarginDescription": "Toon annotatiemarkeringen naast de tekst in plaats van erin.",
+    "previewAnnotationNote": "Jezus zoekt degene op die verstoten was."
   },
   "biblePlans": {
     "startABiblePlan": "Een Bijbelleesplan starten",

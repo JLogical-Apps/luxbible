@@ -582,7 +582,10 @@
     "sectionHeadings": "Section Headings",
     "verseNumbers": "Verse Numbers",
     "paragraphsDescription": "Format verses into paragraphs.",
-    "footnotesDescription": "Show footnote markers within the text."
+    "footnotesDescription": "Show footnote markers within the text.",
+    "annotationsInMargin": "Annotations in Margin",
+    "annotationsInMarginDescription": "Show annotation markers beside the text instead of within it.",
+    "previewAnnotationNote": "Jesus seeks out the one who was cast out."
   },
   "biblePlans": {
     "startABiblePlan": "Start A Bible Plan",

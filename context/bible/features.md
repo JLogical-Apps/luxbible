@@ -124,13 +124,14 @@ Lux supports:
 - Optional verse numbers
 - Paragraph or verse-by-verse layout
 - Optional footnote markers
+- Annotation markers within the text or in the margin
 - Psalm superscriptions and other supported section types
 
 Bible text uses the closest Lux reading size to the system accessibility text size by default. Users can override it with one of seven independent font size and spacing levels. Lux controls the final Bible text size so its layout, selection, and annotations stay aligned.
 
 Users can pinch Bible text with two fingers to change its font size and spacing.
 
-Theme & Layout pins a preview of John 9:35 in BSB below its app bar. It always uses BSB so its section heading, red letters, and footnote marker can show whichever translation is selected, and it updates as the text and layout settings change. The preview is hidden when the screen is 500 points tall or less, such as a phone in landscape, so it can't crowd out the settings.
+Theme & Layout pins a preview of John 9:35 in BSB below its app bar. It always uses BSB so its section heading, red letters, and footnote marker can show whichever translation is selected, and it updates as the text and layout settings change. Instead of the user's own annotations, it shows a sample annotation with a note on the phrase "He found the man" so Annotations in Margin has a visible effect. The preview can't be tapped, so the sample annotation can't be opened or edited. The preview is hidden when the screen is 500 points tall or less, such as a phone in landscape, so it can't crowd out the settings.
 
 KJV, ASV, and WEB can use section headings synthetically inserted from BSB. Footnote markers open their content without leaving the passage.
 
@@ -657,6 +658,8 @@ Styles support:
 Users can create, edit, reorder, and remove styles. A style is its color, type, and icon together, so two styles can share a color and type as long as their icons differ. When changing any of those, or deleting a style, Lux lets the user decide how existing annotations should be handled. A style's preview shows its icon, or the letter A when it has none.
 
 In passages, an annotation with a note shows a note icon before it, in its highlight color. An annotation whose style has an icon shows that icon instead, whether or not it has a note. When several annotations start at the same place, their icons share one marker: up to three tiny icons in a triangle, plus a "+X" badge for the rest. Tapping a marker lists every annotation there, and one without a note reads "No Note" until the user edits it to add one.
+
+Annotations in Margin, under Layout in Theme & Layout, moves annotation markers out of the text into a column on its right, including for right-to-left text, level with the line each annotation starts on. Markers on the same line or on lines too close together merge into one cluster. The setting applies everywhere passages appear, including previews, the compare sheet, and study panels. Footnote markers always stay within the text.
 
 The Annotate sheet's style row ends with Manage Styles, which opens the Highlight Styles page. If the selected style was edited or deleted there, the sheet moves the selection to the style now in its place.
 

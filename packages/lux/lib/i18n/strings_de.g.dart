@@ -872,6 +872,9 @@ class _Translations$themeSettings$de extends Translations$themeSettings$en {
 	@override String get verseNumbers => 'Versnummern';
 	@override String get paragraphsDescription => 'Verse in Absätzen darstellen.';
 	@override String get footnotesDescription => 'Fußnotenzeichen im Text anzeigen.';
+	@override String get annotationsInMargin => 'Annotationen am Rand';
+	@override String get annotationsInMarginDescription => 'Annotationszeichen neben dem Text statt im Text anzeigen.';
+	@override String get previewAnnotationNote => 'Jesus sucht den auf, der ausgestoßen wurde.';
 }
 
 // Path: biblePlans
@@ -3786,6 +3789,9 @@ extension on TranslationsDe {
 			'themeSettings.verseNumbers' => 'Versnummern',
 			'themeSettings.paragraphsDescription' => 'Verse in Absätzen darstellen.',
 			'themeSettings.footnotesDescription' => 'Fußnotenzeichen im Text anzeigen.',
+			'themeSettings.annotationsInMargin' => 'Annotationen am Rand',
+			'themeSettings.annotationsInMarginDescription' => 'Annotationszeichen neben dem Text statt im Text anzeigen.',
+			'themeSettings.previewAnnotationNote' => 'Jesus sucht den auf, der ausgestoßen wurde.',
 			'biblePlans.startABiblePlan' => 'Leseplan starten',
 			'biblePlans.includedPlans' => 'Enthaltene Pläne',
 			'biblePlans.includedPlansDescription' => 'Pläne, die in Lux enthalten sind.',
@@ -4279,11 +4285,11 @@ extension on TranslationsDe {
 			'morphology.types.personalPronoun.description' => 'Ein Pronomen, das sich auf eine bestimmte Person bezieht.',
 			'morphology.types.personalPronoun.examples' => 'ich|du|wir',
 			'morphology.types.demonstrativePronoun.name' => 'Demonstrativpronomen',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.demonstrativePronoun.description' => 'Ein Pronomen, das auf etwas hinweist.',
 			'morphology.types.demonstrativePronoun.examples' => 'dieser|diese|jene',
 			'morphology.types.interrogativePronoun.name' => 'Interrogativpronomen',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.interrogativePronoun.description' => 'Ein Pronomen, mit dem man eine Frage stellt.',
 			'morphology.types.interrogativePronoun.examples' => 'wer?|was?|welcher?',
 			'morphology.types.indefinitePronoun.name' => 'Indefinitpronomen',

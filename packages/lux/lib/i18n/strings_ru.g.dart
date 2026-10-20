@@ -876,6 +876,9 @@ class _Translations$themeSettings$ru extends Translations$themeSettings$en {
 	@override String get verseNumbers => 'Номера стихов';
 	@override String get paragraphsDescription => 'Разбейте стихи на абзацы.';
 	@override String get footnotesDescription => 'Показывать маркеры сносок внутри текста.';
+	@override String get annotationsInMargin => 'Аннотации на полях';
+	@override String get annotationsInMarginDescription => 'Показывать маркеры аннотаций рядом с текстом, а не внутри него.';
+	@override String get previewAnnotationNote => 'Иисус находит того, кого изгнали.';
 }
 
 // Path: biblePlans
@@ -3812,6 +3815,9 @@ extension on TranslationsRu {
 			'themeSettings.verseNumbers' => 'Номера стихов',
 			'themeSettings.paragraphsDescription' => 'Разбейте стихи на абзацы.',
 			'themeSettings.footnotesDescription' => 'Показывать маркеры сносок внутри текста.',
+			'themeSettings.annotationsInMargin' => 'Аннотации на полях',
+			'themeSettings.annotationsInMarginDescription' => 'Показывать маркеры аннотаций рядом с текстом, а не внутри него.',
+			'themeSettings.previewAnnotationNote' => 'Иисус находит того, кого изгнали.',
 			'biblePlans.startABiblePlan' => 'Начните библейский план',
 			'biblePlans.includedPlans' => 'Включённые планы',
 			'biblePlans.includedPlansDescription' => 'Планы, включённые в Lux.',
@@ -4303,11 +4309,11 @@ extension on TranslationsRu {
 			'morphology.types.pronoun.examples' => 'он|она|они',
 			'morphology.types.personalPronoun.name' => 'Личное местоимение',
 			'morphology.types.personalPronoun.description' => 'Местоимение, обозначающее конкретного человека.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.personalPronoun.examples' => 'я|ты|мы',
 			'morphology.types.demonstrativePronoun.name' => 'Указательное местоимение',
 			'morphology.types.demonstrativePronoun.description' => 'Местоимение, указывающее на что-либо.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.demonstrativePronoun.examples' => 'это|эти|те',
 			'morphology.types.interrogativePronoun.name' => 'Вопросительное местоимение',
 			'morphology.types.interrogativePronoun.description' => 'Местоимение, используемое для задания вопроса.',

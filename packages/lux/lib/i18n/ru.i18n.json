@@ -586,7 +586,10 @@
     "sectionHeadings": "Заголовки разделов",
     "verseNumbers": "Номера стихов",
     "paragraphsDescription": "Разбейте стихи на абзацы.",
-    "footnotesDescription": "Показывать маркеры сносок внутри текста."
+    "footnotesDescription": "Показывать маркеры сносок внутри текста.",
+    "annotationsInMargin": "Аннотации на полях",
+    "annotationsInMarginDescription": "Показывать маркеры аннотаций рядом с текстом, а не внутри него.",
+    "previewAnnotationNote": "Иисус находит того, кого изгнали."
   },
   "biblePlans": {
     "startABiblePlan": "Начните библейский план",

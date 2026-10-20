@@ -1924,6 +1924,15 @@ class Translations$themeSettings$en {
 
 	/// en: 'Show footnote markers within the text.'
 	String get footnotesDescription => 'Show footnote markers within the text.';
+
+	/// en: 'Annotations in Margin'
+	String get annotationsInMargin => 'Annotations in Margin';
+
+	/// en: 'Show annotation markers beside the text instead of within it.'
+	String get annotationsInMarginDescription => 'Show annotation markers beside the text instead of within it.';
+
+	/// en: 'Jesus seeks out the one who was cast out.'
+	String get previewAnnotationNote => 'Jesus seeks out the one who was cast out.';
 }
 
 // Path: biblePlans
@@ -6383,6 +6392,9 @@ extension on Translations {
 			'themeSettings.verseNumbers' => 'Verse Numbers',
 			'themeSettings.paragraphsDescription' => 'Format verses into paragraphs.',
 			'themeSettings.footnotesDescription' => 'Show footnote markers within the text.',
+			'themeSettings.annotationsInMargin' => 'Annotations in Margin',
+			'themeSettings.annotationsInMarginDescription' => 'Show annotation markers beside the text instead of within it.',
+			'themeSettings.previewAnnotationNote' => 'Jesus seeks out the one who was cast out.',
 			'biblePlans.startABiblePlan' => 'Start A Bible Plan',
 			'biblePlans.includedPlans' => 'Included Plans',
 			'biblePlans.includedPlansDescription' => 'Plans included with Lux.',
@@ -6876,11 +6888,11 @@ extension on Translations {
 			'morphology.types.personalPronoun.description' => 'A pronoun that refers to a specific person.',
 			'morphology.types.personalPronoun.examples' => 'I|you|we',
 			'morphology.types.demonstrativePronoun.name' => 'Demonstrative pronoun',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.demonstrativePronoun.description' => 'A pronoun that points to something.',
 			'morphology.types.demonstrativePronoun.examples' => 'this|these|those',
 			'morphology.types.interrogativePronoun.name' => 'Interrogative pronoun',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.interrogativePronoun.description' => 'A pronoun used to ask a question.',
 			'morphology.types.interrogativePronoun.examples' => 'who?|what?|which?',
 			'morphology.types.indefinitePronoun.name' => 'Indefinite pronoun',

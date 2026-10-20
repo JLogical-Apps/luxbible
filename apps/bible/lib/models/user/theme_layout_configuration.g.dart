@@ -25,6 +25,7 @@ _ThemeLayoutConfiguration _$ThemeLayoutConfigurationFromJson(
   verseNumbers: json['verseNumbers'] as bool? ?? true,
   paragraphs: json['paragraphs'] as bool? ?? true,
   footnotes: json['footnotes'] as bool? ?? true,
+  annotationsInMargin: json['annotationsInMargin'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$ThemeLayoutConfigurationToJson(
@@ -41,6 +42,7 @@ Map<String, dynamic> _$ThemeLayoutConfigurationToJson(
   'verseNumbers': instance.verseNumbers,
   'paragraphs': instance.paragraphs,
   'footnotes': instance.footnotes,
+  'annotationsInMargin': instance.annotationsInMargin,
 };
 
 const _$ThemeFontEnumMap = {

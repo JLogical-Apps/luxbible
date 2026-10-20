@@ -49,6 +49,8 @@ class LuxReaderConfiguration {
   )?
   markersBuilder;
 
+  final Widget Function(BuildContext, BibleTranslation, List<Object> values)? marginMarkerBuilder;
+
   final Widget Function(BuildContext, BibleTranslation, Widget child) chapterWrapper;
   final BibleTranslation selectedTranslation;
   final PassageSelectionConfiguration selection;
@@ -61,6 +63,7 @@ class LuxReaderConfiguration {
     BibleParagraphsConfiguration Function(BuildContext, BibleTranslation)? paragraphsConfiguration,
     List<BiblePassageDecoration> Function(BuildContext, ChapterReference, BibleTranslation)? decorationsBuilder,
     this.markersBuilder,
+    this.marginMarkerBuilder,
     Widget Function(BuildContext, BibleTranslation, Widget child)? chapterWrapper,
     this.selection = const PassageSelectionConfiguration(),
     this.fallbackTranslation,

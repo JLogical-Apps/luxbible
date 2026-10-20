@@ -874,6 +874,9 @@ class _Translations$themeSettings$nl extends Translations$themeSettings$en {
 	@override String get verseNumbers => 'Versnummers';
 	@override String get paragraphsDescription => 'Geef verzen als alinea\'s weer.';
 	@override String get footnotesDescription => 'Toon voetnootmarkeringen in de tekst.';
+	@override String get annotationsInMargin => 'Annotaties in de marge';
+	@override String get annotationsInMarginDescription => 'Toon annotatiemarkeringen naast de tekst in plaats van erin.';
+	@override String get previewAnnotationNote => 'Jezus zoekt degene op die verstoten was.';
 }
 
 // Path: biblePlans
@@ -3790,6 +3793,9 @@ extension on TranslationsNl {
 			'themeSettings.verseNumbers' => 'Versnummers',
 			'themeSettings.paragraphsDescription' => 'Geef verzen als alinea\'s weer.',
 			'themeSettings.footnotesDescription' => 'Toon voetnootmarkeringen in de tekst.',
+			'themeSettings.annotationsInMargin' => 'Annotaties in de marge',
+			'themeSettings.annotationsInMarginDescription' => 'Toon annotatiemarkeringen naast de tekst in plaats van erin.',
+			'themeSettings.previewAnnotationNote' => 'Jezus zoekt degene op die verstoten was.',
 			'biblePlans.startABiblePlan' => 'Een Bijbelleesplan starten',
 			'biblePlans.includedPlans' => 'Inbegrepen leesplannen',
 			'biblePlans.includedPlansDescription' => 'Leesplannen die met Lux worden meegeleverd.',
@@ -4281,11 +4287,11 @@ extension on TranslationsNl {
 			'morphology.types.pronoun.examples' => 'hij|zij|ze',
 			'morphology.types.personalPronoun.name' => 'Persoonlijk voornaamwoord',
 			'morphology.types.personalPronoun.description' => 'Een voornaamwoord dat naar een bepaalde persoon verwijst.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.personalPronoun.examples' => 'ik|jij|wij',
 			'morphology.types.demonstrativePronoun.name' => 'Aanwijzend voornaamwoord',
 			'morphology.types.demonstrativePronoun.description' => 'Een voornaamwoord dat iets aanwijst.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.demonstrativePronoun.examples' => 'dit|deze|die',
 			'morphology.types.interrogativePronoun.name' => 'Vragend voornaamwoord',
 			'morphology.types.interrogativePronoun.description' => 'Een voornaamwoord waarmee een vraag wordt gesteld.',

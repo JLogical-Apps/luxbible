@@ -34,20 +34,29 @@ class BibleInlineMarker {
   final bool isBoundInSelection;
   final bool isLeading;
   final WidgetBuilder builder;
+  final List<Object> marginValues;
 
   const BibleInlineMarker({
     required this.offset,
     int? anchorOffset,
     required this.builder,
     this.isBoundInSelection = false,
+    this.marginValues = const [],
   }) : anchorOffset = anchorOffset ?? offset,
        isLeading = false;
 
-  const BibleInlineMarker.leading({required this.builder})
+  const BibleInlineMarker.leading({required this.builder, this.marginValues = const []})
     : offset = 0,
       anchorOffset = 0,
       isBoundInSelection = false,
       isLeading = true;
+}
+
+class MarginMarkerSpan extends AnnotatedSizedWidgetSpan<VerseElement> {
+  final List<Object> values;
+
+  MarginMarkerSpan({required super.annotation, required this.values})
+    : super(child: SizedBox.shrink(), size: Size.zero);
 }
 
 sealed class BiblePassageDecoration {
@@ -90,13 +99,14 @@ class ParagraphsBuilder extends HookWidget {
   final BibleTextSelection? textSelection;
   final List<BiblePassageDecoration> decorations;
   final List<BibleInlineMarker> Function(Reference, Verse, int verseParagraphOffset)? markersBuilder;
+  final Widget Function(BuildContext context, List<Object> values)? marginMarkerBuilder;
 
   final Function(Reference)? onReferencePressed;
   final bool Function(BibleTextSelection)? onTextSelectionLongPressed;
   final Function(BibleTextSelection?, bool isNewSelection)? onTextSelectionUpdated;
 
   final PassageController? controller;
-  final EdgeInsetsGeometry? padding;
+  final EdgeInsets? padding;
   final bool shrinkWrap;
   final bool removeScrollbarPadding;
 
@@ -115,6 +125,7 @@ class ParagraphsBuilder extends HookWidget {
     this.textSelection,
     this.decorations = const [],
     this.markersBuilder,
+    this.marginMarkerBuilder,
     this.onReferencePressed,
     this.onTextSelectionLongPressed,
     this.onTextSelectionUpdated,
@@ -129,6 +140,11 @@ class ParagraphsBuilder extends HookWidget {
   BookType get book => chapterReference.book;
 
   static const hebrewFontFamily = 'Ezra SIL SR';
+
+  static const marginMarkerSize = 32.0;
+  static const marginWidth = 36.0;
+  static const marginPaddingOverlap = 16.0;
+  static const marginEdgePadding = 8.0;
 
   TextDirection get textDirection => translation.isRtl && book.testament == .oldTestament ? .rtl : .ltr;
   bool get isLtr => textDirection == .ltr;
@@ -179,6 +195,7 @@ class ParagraphsBuilder extends HookWidget {
         configuration.showSection,
         underlinedReferences,
         markersBuilder,
+        marginMarkerBuilder != null,
         controller?.keyBySectionReference,
         context.brightness,
         referenceOpacities,
@@ -192,6 +209,20 @@ class ParagraphsBuilder extends HookWidget {
         .map((layout) => getAnchorAt(globalPosition: globalPosition, layout: layout))
         .nonNulls
         .firstOrNull;
+
+    final padding = this.padding ?? .zero;
+
+    // The margin column extends into the right padding so the text loses less width to it.
+    final marginInset = marginMarkerBuilder == null
+        ? 0.0
+        : (padding.right - marginEdgePadding).clamp(0.0, marginPaddingOverlap);
+
+    Widget? withMarginInset(Widget? child) => child == null
+        ? null
+        : Padding(
+            padding: .only(right: marginInset),
+            child: child,
+          );
 
     final content = MediaQuery.withNoTextScaling(
       child: GestureDetector(
@@ -239,7 +270,7 @@ class ParagraphsBuilder extends HookWidget {
           listController: controller?.listController,
           physics: shrinkWrap ? NeverScrollableScrollPhysics() : AlwaysScrollableScrollPhysics(),
           primary: shrinkWrap ? false : null,
-          padding: padding ?? .zero,
+          padding: padding.copyWith(right: padding.right - marginInset),
           shrinkWrap: shrinkWrap,
           addSemanticIndexes: false,
           extentPrecalculationPolicy: extentPrecalculationPolicy,
@@ -255,8 +286,14 @@ class ParagraphsBuilder extends HookWidget {
                     textDirection: textDirection,
                     overlayBuilder: (context, layout) {
                       useRegistryItem(paragraphLayoutsRegistry, layout.textKey, layout);
-                      return buildParagraphOverlays(context, layout: layout, chapter: chapter);
+                      return buildParagraphOverlays(
+                        context,
+                        layout: layout,
+                        chapter: chapter,
+                        referenceOpacities: referenceOpacities,
+                      );
                     },
+                    marginWidth: marginMarkerBuilder == null ? 0 : marginWidth,
                   );
 
             if (index == 0 || index == paragraphSpansByParagraph.length - 1) {
@@ -264,9 +301,9 @@ class ParagraphsBuilder extends HookWidget {
                 crossAxisAlignment: .stretch,
                 spacing: 12,
                 children: [
-                  if (index == 0) ?header,
+                  if (index == 0) ?withMarginInset(header),
                   paragraphText,
-                  if (index == paragraphSpansByParagraph.length - 1) ?footer,
+                  if (index == paragraphSpansByParagraph.length - 1) ?withMarginInset(footer),
                 ],
               );
             }
@@ -290,6 +327,7 @@ class ParagraphsBuilder extends HookWidget {
     BuildContext context, {
     required ParagraphTextLayout layout,
     required Chapter chapter,
+    required Map<Reference, double> referenceOpacities,
   }) {
     final paragraph = layout.paragraph.as<VersesParagraph>();
     if (paragraph == null) return [];
@@ -320,6 +358,7 @@ class ParagraphsBuilder extends HookWidget {
         hangingIndent: layout.hangingIndent,
       ),
       ...buildActiveTextSelectionOverlays(context, layout: layout, paragraph: paragraph),
+      ...buildMarginMarkers(context, layout: layout, referenceOpacities: referenceOpacities),
     ];
   }
 
@@ -361,6 +400,69 @@ class ParagraphsBuilder extends HookWidget {
             ),
           ),
         );
+  }
+
+  Iterable<Widget> buildMarginMarkers(
+    BuildContext context, {
+    required ParagraphTextLayout layout,
+    required Map<Reference, double> referenceOpacities,
+  }) {
+    final marginMarkerBuilder = this.marginMarkerBuilder;
+    if (marginMarkerBuilder == null) return [];
+
+    var cursor = 0;
+    final positionedSpans = layout.renderSpans.spans.map((span) {
+      final position = cursor;
+      cursor += span.textLength;
+      return (span: span, position: position);
+    }).toList();
+
+    bool isWord(({InlineSpan span, int position}) entry) =>
+        entry.span is AnnotatedTextSpan<VerseElement> && entry.span.textLength > 0;
+
+    // Measure whole words, since a single Hebrew letter with its vowel points gets no box of its own.
+    List<TextBox> getWordBoxes(({InlineSpan span, int position}) word) => layout.renderSpans.getBoxesForSelection(
+      baseOffset: word.position,
+      extentOffset: word.position + word.span.textLength,
+    );
+
+    // A zero-width marker can be left at the end of the previous line, so measure the word it annotates.
+    final markers = positionedSpans.mapIndexed((index, entry) {
+      final span = entry.span;
+      if (span is! MarginMarkerSpan) return null;
+
+      final box = switch (positionedSpans.skip(index).firstWhereOrNull(isWord)) {
+        final next? => getWordBoxes(next).firstOrNull,
+        null =>
+          positionedSpans
+              .take(index)
+              .lastWhereOrNull(isWord)
+              ?.mapIfNonNull((previous) => getWordBoxes(previous).lastOrNull),
+      };
+      return box == null ? null : (span: span, centerY: (box.top + box.bottom) / 2);
+    }).nonNulls;
+
+    final groups = markers.fold(<({double centerY, List<MarginMarkerSpan> spans})>[], (groups, marker) {
+      if (groups.lastOrNull case final group? when marker.centerY - group.centerY < marginMarkerSize) {
+        group.spans.add(marker.span);
+      } else {
+        groups.add((centerY: marker.centerY, spans: [marker.span]));
+      }
+      return groups;
+    });
+
+    return groups.map(
+      (group) => Positioned(
+        top: group.centerY - marginMarkerSize / 2,
+        left: layout.maxWidth,
+        width: marginWidth,
+        height: marginMarkerSize,
+        child: Opacity(
+          opacity: referenceOpacities[group.spans.first.annotation.anchor.toReference()] ?? 1,
+          child: marginMarkerBuilder(context, group.spans.expand((span) => span.values).toList()),
+        ),
+      ),
+    );
   }
 
   Iterable<Widget> buildVerseDecorationOverlays(
@@ -698,13 +800,18 @@ class ParagraphsBuilder extends HookWidget {
     required BibleInlineMarker marker,
     required double opacity,
   }) {
+    final annotation = VerseElement(
+      anchor: BibleTextSelectionWordAnchor.fromReference(reference: reference, characterOffset: marker.anchorOffset),
+      isBoundInSelection: marker.isBoundInSelection,
+      isLeading: marker.isLeading,
+    );
+    if (marginMarkerBuilder != null && marker.marginValues.isNotEmpty) {
+      return MarginMarkerSpan(annotation: annotation, values: marker.marginValues);
+    }
+
     final bibleTextStyle = getBibleTextStyle(context);
     return AnnotatedSizedWidgetSpan<VerseElement>(
-      annotation: VerseElement(
-        anchor: BibleTextSelectionWordAnchor.fromReference(reference: reference, characterOffset: marker.anchorOffset),
-        isBoundInSelection: marker.isBoundInSelection,
-        isLeading: marker.isLeading,
-      ),
+      annotation: annotation,
       size: Size(32, bibleTextStyle.body.fontSize!),
       alignment: .middle,
       child: OverflowBox(

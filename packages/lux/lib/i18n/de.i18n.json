@@ -582,7 +582,10 @@
     "sectionHeadings": "Zwischenüberschriften",
     "verseNumbers": "Versnummern",
     "paragraphsDescription": "Verse in Absätzen darstellen.",
-    "footnotesDescription": "Fußnotenzeichen im Text anzeigen."
+    "footnotesDescription": "Fußnotenzeichen im Text anzeigen.",
+    "annotationsInMargin": "Annotationen am Rand",
+    "annotationsInMarginDescription": "Annotationszeichen neben dem Text statt im Text anzeigen.",
+    "previewAnnotationNote": "Jesus sucht den auf, der ausgestoßen wurde."
   },
   "biblePlans": {
     "startABiblePlan": "Leseplan starten",

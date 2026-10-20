@@ -1,6 +1,8 @@
+import 'package:bible/models/annotation.dart';
 import 'package:bible/models/user/theme_layout_configuration.dart';
 import 'package:bible/models/user/theme_mode.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/ui/bible_reader_configuration.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,6 +21,7 @@ class ThemeSettingsPage extends ConsumerWidget implements StyledRoute<void> {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
+    final previewReference = Reference(book: .john, chapterNum: 9, verseNum: 35);
 
     return StyledPage(
       title: t.themeSettings.title.toText(),
@@ -31,11 +34,32 @@ class ThemeSettingsPage extends ConsumerWidget implements StyledRoute<void> {
               child: SafeArea(
                 top: false,
                 bottom: false,
-                child: PassageBuilder(
-                  verseSelection: .reference(Reference(book: .john, chapterNum: 9, verseNum: 35)),
-                  translation: .bsb,
-                  padding: .all(16),
-                  shrinkWrap: true,
+                // The mock annotation's sheet could edit or delete the user's real annotations.
+                child: IgnorePointer(
+                  child: PassageBuilder(
+                    verseSelection: .reference(previewReference),
+                    translation: .bsb,
+                    padding: .all(16),
+                    shrinkWrap: true,
+                    configuration: BibleReaderConfiguration.build(
+                      user.copyWith(
+                        annotations: [
+                          Annotation(
+                            // Covers "He found the man" in the BSB text.
+                            selection: .text(
+                              textSelection: BibleTextSelection(
+                                start: .fromReference(reference: previewReference, characterOffset: 47),
+                                end: .fromReference(reference: previewReference, characterOffset: 62),
+                                translation: .bsb,
+                              ),
+                            ),
+                            note: t.themeSettings.previewAnnotationNote,
+                            createdAt: DateTime.now(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -168,6 +192,13 @@ class ThemeSettingsPage extends ConsumerWidget implements StyledRoute<void> {
                         isSelected: user.themeLayout.footnotes,
                         onSelected: (newValue) =>
                             ref.updateUser((user) => user.copyWith.themeLayout(footnotes: newValue)),
+                      ),
+                      StyledListItem.switchControl(
+                        title: t.themeSettings.annotationsInMargin.toText(),
+                        subtitle: t.themeSettings.annotationsInMarginDescription.toText(),
+                        isSelected: user.themeLayout.annotationsInMargin,
+                        onSelected: (newValue) =>
+                            ref.updateUser((user) => user.copyWith.themeLayout(annotationsInMargin: newValue)),
                       ),
                     ],
                   ),

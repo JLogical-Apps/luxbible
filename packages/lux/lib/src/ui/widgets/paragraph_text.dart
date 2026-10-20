@@ -26,6 +26,7 @@ class ParagraphText extends StatelessWidget {
   final bool useParagraphLayout;
   final TextDirection textDirection;
   final Iterable<Widget> Function(BuildContext context, ParagraphTextLayout layout)? overlayBuilder;
+  final double marginWidth;
 
   const ParagraphText({
     super.key,
@@ -34,6 +35,7 @@ class ParagraphText extends StatelessWidget {
     required this.useParagraphLayout,
     this.textDirection = .ltr,
     this.overlayBuilder,
+    this.marginWidth = 0,
   });
 
   @override
@@ -49,10 +51,11 @@ class ParagraphText extends StatelessWidget {
           builder: (context) {
             final textKey = useMemoized(() => GlobalKey(debugLabel: versesParagraph?.verses.first.verseNum.toString()));
             final textAlign = versesParagraph?.type.textAlign ?? .start;
+            final textWidth = constraints.maxWidth - marginWidth;
 
             final renderSpans = useMemoized(() {
               final spans = LaidOutInlineSpans(
-                width: constraints.maxWidth,
+                width: textWidth,
                 textAlign: textAlign,
                 textDirection: textDirection,
                 spans: originalSpans,
@@ -68,12 +71,12 @@ class ParagraphText extends StatelessWidget {
                           isLeadingSpan: (span) => span is IsAnnotatedSpan<VerseElement> && span.annotation.isLeading,
                         )
                   : spans;
-            }, [originalSpans, constraints.maxWidth, useParagraphLayout, textDirection]);
+            }, [originalSpans, textWidth, useParagraphLayout, textDirection]);
 
             final layout = ParagraphTextLayout(
               paragraph: paragraph,
               renderSpans: renderSpans,
-              maxWidth: constraints.maxWidth,
+              maxWidth: textWidth,
               hangingIndent: hangingIndent,
               textKey: textKey,
             );
@@ -83,12 +86,15 @@ class ParagraphText extends StatelessWidget {
               fit: .passthrough,
               children: [
                 ...?overlayBuilder?.call(context, layout),
-                Text.rich(
-                  key: textKey,
-                  TextSpan(children: renderSpans.spans),
-                  style: TextStyle(inherit: false),
-                  textAlign: textAlign,
-                  textDirection: textDirection,
+                Padding(
+                  padding: .only(right: marginWidth),
+                  child: Text.rich(
+                    key: textKey,
+                    TextSpan(children: renderSpans.spans),
+                    style: TextStyle(inherit: false),
+                    textAlign: textAlign,
+                    textDirection: textDirection,
+                  ),
                 ),
               ],
             );

@@ -20,7 +20,7 @@ class PassageContent extends StatelessWidget {
 
   final PassageController? controller;
 
-  final EdgeInsetsGeometry? padding;
+  final EdgeInsets? padding;
   final bool shrinkWrap;
   final bool removeScrollbarPadding;
 
@@ -91,6 +91,10 @@ class PassageContent extends StatelessWidget {
               verseParagraphOffset,
               onNavigateToVerseSelection,
             ),
+      marginMarkerBuilder: switch (configuration.marginMarkerBuilder) {
+        final marginMarkerBuilder? => (context, values) => marginMarkerBuilder(context, translation, values),
+        null => null,
+      },
       onReferencePressed: selection?.onReferencePressed,
       onTextSelectionLongPressed: selection == null || onNavigateToVerseSelection == null
           ? null

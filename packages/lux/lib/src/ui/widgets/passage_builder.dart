@@ -20,6 +20,7 @@ class PassageBuilder extends HookConsumerWidget {
   final bool shrinkWrap;
   final Function(List<Paragraph>)? onParagraphsLoaded;
   final bool showLoading;
+  final LuxReaderConfiguration? configuration;
 
   const PassageBuilder({
     super.key,
@@ -35,6 +36,7 @@ class PassageBuilder extends HookConsumerWidget {
     this.shrinkWrap = false,
     this.onParagraphsLoaded,
     this.showLoading = true,
+    this.configuration,
   });
 
   @override
@@ -42,7 +44,7 @@ class PassageBuilder extends HookConsumerWidget {
     if (verseSelection.isEmpty) return SizedBox.shrink();
 
     final chapterReference = verseSelection.references.first.toChapterReference();
-    final configuration = ref.watch(luxReaderConfigurationProvider);
+    final configuration = this.configuration ?? ref.watch(luxReaderConfigurationProvider)!;
     final translation =
         this.translation?.effectiveFor(chapterReference.book) ?? configuration.translationForChapter(chapterReference);
 

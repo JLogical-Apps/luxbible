@@ -125,8 +125,13 @@ class BibleReaderConfiguration {
       return [
         if (leadingAnnotations.isNotEmpty)
           BibleInlineMarker.leading(
-            builder: (context) =>
-                buildAnnotationsButton(context, annotations: leadingAnnotations, translation: translation),
+            builder: (context) => buildAnnotationsButton(
+              context,
+              annotations: leadingAnnotations,
+              translation: translation,
+              padding: .only(bottom: 8),
+            ),
+            marginValues: leadingAnnotations,
           ),
         ...user
             .getMarkedTextSelectionAnnotationsByOffset(reference: reference, translation: translation)
@@ -136,8 +141,13 @@ class BibleReaderConfiguration {
                 offset: offset - verseParagraphOffset,
                 anchorOffset: offset,
                 isBoundInSelection: true,
-                builder: (context) =>
-                    buildAnnotationsButton(context, annotations: annotations, translation: translation),
+                builder: (context) => buildAnnotationsButton(
+                  context,
+                  annotations: annotations,
+                  translation: translation,
+                  padding: .only(bottom: 8),
+                ),
+                marginValues: annotations,
               ),
             ),
         if (user.themeLayout.footnotes)
@@ -153,6 +163,13 @@ class BibleReaderConfiguration {
               ),
       ];
     },
+    marginMarkerBuilder: user.themeLayout.annotationsInMargin
+        ? (context, translation, values) => buildAnnotationsButton(
+            context,
+            annotations: values.whereType<Annotation>().toList(),
+            translation: translation,
+          )
+        : null,
     chapterWrapper: (context, translation, child) =>
         FontSizeSpacingZoomGesture(language: translation.bibleLanguage, child: child),
   );
@@ -184,8 +201,9 @@ class BibleReaderConfiguration {
     BuildContext context, {
     required List<Annotation> annotations,
     required BibleTranslation translation,
+    EdgeInsets padding = .zero,
   }) => Padding(
-    padding: .only(bottom: 8),
+    padding: padding,
     child: StyledCircleButton.sm(
       onPressed: () => context.showStyledSheet(
         (context, _) => StyledSheet(

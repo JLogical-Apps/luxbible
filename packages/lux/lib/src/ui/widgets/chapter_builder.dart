@@ -15,7 +15,7 @@ class ChapterBuilder extends HookConsumerWidget {
   final PassageSelectionController? selection;
   final Function(VerseSelection)? onNavigateToVerseSelection;
 
-  final EdgeInsetsGeometry? padding;
+  final EdgeInsets? padding;
   final bool shrinkWrap;
   final bool removeScrollbarPadding;
 
