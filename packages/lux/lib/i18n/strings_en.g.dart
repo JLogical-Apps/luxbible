@@ -1643,9 +1643,6 @@ class Translations$emptyStates$en {
 	/// en: 'You haven't created any bookmarks.'
 	String get noBookmarks => 'You haven\'t created any bookmarks.';
 
-	/// en: 'You haven't created any notebooks. Notebooks let you organize your annotations.'
-	String get noNotebooks => 'You haven\'t created any notebooks. Notebooks let you organize your annotations.';
-
 	/// en: 'You aren't following any reading plans yet. Start one to begin reading through the Bible.'
 	String get noPlans => 'You aren\'t following any reading plans yet. Start one to begin reading through the Bible.';
 }
@@ -1738,6 +1735,69 @@ class Translations$notebookUi$en {
 
 	/// en: 'Delete Annotations'
 	String get deleteAnnotations => 'Delete Annotations';
+
+	/// en: 'Share'
+	String get share => 'Share';
+
+	/// en: 'Share this notebook's annotations and their notes with another app or person.'
+	String get shareDescription => 'Share this notebook\'s annotations and their notes with another app or person.';
+
+	/// en: 'Download'
+	String get download => 'Download';
+
+	/// en: 'Save this notebook's annotations and their notes to your device.'
+	String get downloadDescription => 'Save this notebook\'s annotations and their notes to your device.';
+
+	/// en: 'Import Notebook'
+	String get importNotebook => 'Import Notebook';
+
+	/// en: 'Add a notebook from a .lxn file.'
+	String get importNotebookDescription => 'Add a notebook from a .lxn file.';
+
+	/// en: 'New Notebook'
+	String get newNotebook => 'New Notebook';
+
+	/// en: 'Import "{name}" as a new notebook.'
+	String newNotebookDescription({required Object name}) => 'Import "${name}" as a new notebook.';
+
+	/// en: 'Lux Notebook'
+	String get notebookFile => 'Lux Notebook';
+
+	/// en: 'Couldn't Import Notebook'
+	String get invalidFileTitle => 'Couldn\'t Import Notebook';
+
+	/// en: 'This file isn't a valid Lux notebook.'
+	String get invalidFile => 'This file isn\'t a valid Lux notebook.';
+
+	/// en: 'Import Into'
+	String get importInto => 'Import Into';
+
+	/// en: '(one) {Preview {count} Change} (other) {Preview {count} Changes}'
+	String previewChanges({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count,
+		one: 'Preview ${count} Change',
+		other: 'Preview ${count} Changes',
+	);
+
+	/// en: 'No New Changes'
+	String get noNewChanges => 'No New Changes';
+
+	/// en: 'New'
+	String get newTag => 'New';
+
+	/// en: 'Base'
+	String get baseTag => 'Base';
+
+	/// en: 'New Annotations'
+	String get newAnnotations => 'New Annotations';
+
+	/// en: 'New Highlight Styles'
+	String get newHighlightStyles => 'New Highlight Styles';
+
+	/// en: 'Import'
+	String get importAction => 'Import';
+
+	/// en: 'Imported into "{name}"'
+	String importSucceeded({required Object name}) => 'Imported into "${name}"';
 }
 
 // Path: highlightStyleUi
@@ -6309,7 +6369,6 @@ extension on Translations {
 			'emptyStates.noCommentariesAdded' => 'You haven\'t added any commentaries.',
 			'emptyStates.noAnnotations' => 'You haven\'t created any annotations.',
 			'emptyStates.noBookmarks' => 'You haven\'t created any bookmarks.',
-			'emptyStates.noNotebooks' => 'You haven\'t created any notebooks. Notebooks let you organize your annotations.',
 			'emptyStates.noPlans' => 'You aren\'t following any reading plans yet. Start one to begin reading through the Bible.',
 			'annotationUi.yourAnnotations' => 'Your Annotations',
 			'annotationUi.annotate' => 'Annotate',
@@ -6334,6 +6393,26 @@ extension on Translations {
 			'notebookUi.deleteWithAnnotations' => ({required Object name, required Object annotations}) => '"${name}" has ${annotations}. Would you like to delete them too, or keep them in the Default notebook?',
 			'notebookUi.keepInDefault' => 'Keep in Default',
 			'notebookUi.deleteAnnotations' => 'Delete Annotations',
+			'notebookUi.share' => 'Share',
+			'notebookUi.shareDescription' => 'Share this notebook\'s annotations and their notes with another app or person.',
+			'notebookUi.download' => 'Download',
+			'notebookUi.downloadDescription' => 'Save this notebook\'s annotations and their notes to your device.',
+			'notebookUi.importNotebook' => 'Import Notebook',
+			'notebookUi.importNotebookDescription' => 'Add a notebook from a .lxn file.',
+			'notebookUi.newNotebook' => 'New Notebook',
+			'notebookUi.newNotebookDescription' => ({required Object name}) => 'Import "${name}" as a new notebook.',
+			'notebookUi.notebookFile' => 'Lux Notebook',
+			'notebookUi.invalidFileTitle' => 'Couldn\'t Import Notebook',
+			'notebookUi.invalidFile' => 'This file isn\'t a valid Lux notebook.',
+			'notebookUi.importInto' => 'Import Into',
+			'notebookUi.previewChanges' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: 'Preview ${count} Change', other: 'Preview ${count} Changes', ), 
+			'notebookUi.noNewChanges' => 'No New Changes',
+			'notebookUi.newTag' => 'New',
+			'notebookUi.baseTag' => 'Base',
+			'notebookUi.newAnnotations' => 'New Annotations',
+			'notebookUi.newHighlightStyles' => 'New Highlight Styles',
+			'notebookUi.importAction' => 'Import',
+			'notebookUi.importSucceeded' => ({required Object name}) => 'Imported into "${name}"',
 			'highlightStyleUi.yourStyles' => 'Your Highlight Styles',
 			'highlightStyleUi.manage' => 'Manage Styles',
 			'highlightStyleUi.create' => 'Create Style',
@@ -6352,6 +6431,8 @@ extension on Translations {
 			'toolbarSettings.verseSelection' => 'Verse Selection',
 			'toolbarSettings.textSelection' => 'Text Selection',
 			'toolbarSettings.shownForMain' => 'Shown when nothing is selected.',
+			_ => null,
+		} ?? switch (path) {
 			'toolbarSettings.shownForVerses' => 'Shown when a verse is selected.',
 			'toolbarSettings.shownForText' => 'Shown when long-pressing text within verses.',
 			'toolbarSettings.gestures' => 'Gestures',
@@ -6371,8 +6452,6 @@ extension on Translations {
 			'toolbarSettings.mainShortcut' => 'Main Toolbar Shortcut',
 			'toolbarSettings.verseShortcut' => 'Verse Selection Shortcut',
 			'toolbarSettings.textShortcut' => 'Text Selection Shortcut',
-			_ => null,
-		} ?? switch (path) {
 			'themeSettings.title' => 'Theme & Layout',
 			'themeSettings.brightness' => 'Brightness',
 			'themeSettings.font' => 'Font',
@@ -6866,6 +6945,8 @@ extension on Translations {
 			'morphology.types.adjective.description' => 'A word that describes a noun.',
 			'morphology.types.adjective.examples' => 'great|holy|wise',
 			'morphology.types.noun.name' => 'Noun',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.noun.description' => 'A person, place, thing, or idea.',
 			'morphology.types.noun.examples' => 'city|water|love',
 			'morphology.types.properNoun.name' => 'Proper noun',
@@ -6885,8 +6966,6 @@ extension on Translations {
 			'morphology.types.personalPronoun.examples' => 'I|you|we',
 			'morphology.types.demonstrativePronoun.name' => 'Demonstrative pronoun',
 			'morphology.types.demonstrativePronoun.description' => 'A pronoun that points to something.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.demonstrativePronoun.examples' => 'this|these|those',
 			'morphology.types.interrogativePronoun.name' => 'Interrogative pronoun',
 			'morphology.types.interrogativePronoun.description' => 'A pronoun used to ask a question.',

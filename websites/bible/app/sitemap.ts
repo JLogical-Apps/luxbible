@@ -24,13 +24,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     })),
     {
-      url: `${site.domain}/plans/advent`,
+      url: `${site.domain}/resources/lxbp`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
-      priority: 0.8,
+      priority: 0.6,
     },
     {
-      url: `${site.domain}/resources/lxbp`,
+      url: `${site.domain}/resources/lxn`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.6,

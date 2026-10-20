@@ -84,6 +84,7 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
           .toList() ??
       const [],
   lastNotebookId: json['lastNotebookId'] as String?,
+  isDefaultNotebookVisible: json['isDefaultNotebookVisible'] as bool? ?? true,
   mainToolbar: json['mainToolbar'] == null
       ? const MainToolbarConfiguration()
       : MainToolbarConfiguration.fromJson(
@@ -221,6 +222,7 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'annotations': instance.annotations.map((e) => e.toJson()).toList(),
   'notebooks': instance.notebooks.map((e) => e.toJson()).toList(),
   'lastNotebookId': instance.lastNotebookId,
+  'isDefaultNotebookVisible': instance.isDefaultNotebookVisible,
   'mainToolbar': instance.mainToolbar.toJson(),
   'verseSelection': instance.verseSelection.toJson(),
   'textSelection': instance.textSelection.toJson(),

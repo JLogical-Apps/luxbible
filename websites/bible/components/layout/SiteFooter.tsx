@@ -7,7 +7,7 @@ import {
 } from '@tabler/icons-react';
 import Link from 'next/link';
 
-import { getArticleHref, noteTakingArticle, soapArticle } from '@/lib/articles';
+import { articles, getArticleHref } from '@/lib/articles';
 import { site } from '@/lib/site';
 
 const footerColumns = [
@@ -25,7 +25,7 @@ const footerColumns = [
   {
     title: 'Articles',
     href: '/articles',
-    links: [soapArticle, noteTakingArticle].map((article) => ({
+    links: articles.map((article) => ({
       name: article.shortName,
       href: getArticleHref(article),
     })),

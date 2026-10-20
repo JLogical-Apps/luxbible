@@ -7,6 +7,7 @@ import 'package:bible/models/commentary_type.dart';
 import 'package:bible/models/highlight_style.dart';
 import 'package:bible/models/hydrated_bible_plan_progress.dart';
 import 'package:bible/models/notebook.dart';
+import 'package:bible/models/notebook_file.dart';
 import 'package:bible/models/reminder.dart';
 import 'package:bible/models/resource_type.dart';
 import 'package:bible/models/study_panel.dart';
@@ -59,6 +60,7 @@ sealed class User with _$User {
     @Default([]) List<Annotation> annotations,
     @Default([]) List<Notebook> notebooks,
     String? lastNotebookId,
+    @Default(true) bool isDefaultNotebookVisible,
     @Default(MainToolbarConfiguration()) MainToolbarConfiguration mainToolbar,
     @Default(VerseSelectionConfiguration()) VerseSelectionConfiguration verseSelection,
     @Default(TextSelectionConfiguration()) TextSelectionConfiguration textSelection,
@@ -203,8 +205,14 @@ sealed class User with _$User {
 
   Notebook? get lastNotebook => getNotebookById(lastNotebookId);
 
+  bool isNotebookVisible(String? notebookId) => getNotebookById(notebookId)?.isVisible ?? isDefaultNotebookVisible;
+
   List<Annotation> get visibleAnnotations =>
-      annotations.where((annotation) => getNotebookById(annotation.notebookId)?.isVisible != false).toList();
+      annotations.where((annotation) => isNotebookVisible(annotation.notebookId)).toList();
+
+  // Annotations whose notebook was deleted belong to the Default notebook.
+  List<Annotation> getNotebookAnnotations(String? notebookId) =>
+      annotations.where((annotation) => getNotebookById(annotation.notebookId)?.id == notebookId).toList();
 
   User withNewNotebook(Notebook notebook) => copyWith(notebooks: [notebook, ...notebooks], lastNotebookId: notebook.id);
 
@@ -221,6 +229,22 @@ sealed class User with _$User {
 
   User withReorderedNotebooks(int oldIndex, int newIndex) =>
       copyWith(notebooks: notebooks.withReorder(oldIndex, newIndex));
+
+  User withNotebookVisible(String? notebookId, {required bool isVisible}) => switch (getNotebookById(notebookId)) {
+    final notebook? => withUpdatedNotebook(notebook.copyWith(isVisible: isVisible)),
+    null => copyWith(isDefaultNotebookVisible: isVisible),
+  };
+
+  User withNotebookImport(NotebookImport import) => copyWith(
+    notebooks: switch (import.target) {
+      NewNotebookImportTarget(:final notebook) => [notebook, ...notebooks],
+      ExistingNotebookImportTarget() => notebooks,
+    },
+    highlightStyleOverrides: import.highlightStyles.isEmpty
+        ? highlightStyleOverrides
+        : [...highlightStyles, ...import.highlightStyles],
+    annotations: [...annotations, ...import.annotations],
+  );
 
   bool hasHighlightStyle(HighlightStyle style) => highlightStyles.any((entry) => entry.$1 == style);
 

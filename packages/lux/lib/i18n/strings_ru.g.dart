@@ -748,7 +748,6 @@ class _Translations$emptyStates$ru extends Translations$emptyStates$en {
 	@override String get noCommentariesAdded => 'Вы не добавили ни одного комментария.';
 	@override String get noAnnotations => 'Вы не создали ни одной аннотации.';
 	@override String get noBookmarks => 'Вы не создали ни одной закладки.';
-	@override String get noNotebooks => 'Вы не создали ни одного блокнота. Блокноты позволяют систематизировать ваши аннотации.';
 	@override String get noPlans => 'Вы пока не выполняете ни одного плана чтения. Начните один, чтобы приступить к чтению Библии.';
 }
 
@@ -796,6 +795,31 @@ class _Translations$notebookUi$ru extends Translations$notebookUi$en {
 	@override String deleteWithAnnotations({required Object name, required Object annotations}) => '«${name}» имеет ${annotations}. Хотите ли вы также удалить их или оставить в блокноте по умолчанию?';
 	@override String get keepInDefault => 'Оставить по умолчанию';
 	@override String get deleteAnnotations => 'Удалить аннотации';
+	@override String get share => 'Поделиться';
+	@override String get shareDescription => 'Поделитесь аннотациями и заметками из этого блокнота с другим приложением или человеком.';
+	@override String get download => 'Скачать';
+	@override String get downloadDescription => 'Сохраните аннотации и заметки из этого блокнота на устройстве.';
+	@override String get importNotebook => 'Импортировать блокнот';
+	@override String get importNotebookDescription => 'Добавить блокнот из файла .lxn.';
+	@override String get newNotebook => 'Новый блокнот';
+	@override String newNotebookDescription({required Object name}) => 'Импортировать «${name}» как новый блокнот.';
+	@override String get notebookFile => 'Блокнот Lux';
+	@override String get invalidFileTitle => 'Не удалось импортировать блокнот';
+	@override String get invalidFile => 'Этот файл не является блокнотом Lux.';
+	@override String get importInto => 'Импортировать в';
+	@override String previewChanges({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count,
+		one: 'Просмотреть ${count} изменение',
+		few: 'Просмотреть ${count} изменения',
+		many: 'Просмотреть ${count} изменений',
+		other: 'Просмотреть ${count} изменения',
+	);
+	@override String get noNewChanges => 'Нет новых изменений';
+	@override String get newTag => 'Новый';
+	@override String get baseTag => 'Основа';
+	@override String get newAnnotations => 'Новые аннотации';
+	@override String get newHighlightStyles => 'Новые стили выделения';
+	@override String get importAction => 'Импортировать';
+	@override String importSucceeded({required Object name}) => 'Импортировано в «${name}»';
 }
 
 // Path: highlightStyleUi
@@ -3734,7 +3758,6 @@ extension on TranslationsRu {
 			'emptyStates.noCommentariesAdded' => 'Вы не добавили ни одного комментария.',
 			'emptyStates.noAnnotations' => 'Вы не создали ни одной аннотации.',
 			'emptyStates.noBookmarks' => 'Вы не создали ни одной закладки.',
-			'emptyStates.noNotebooks' => 'Вы не создали ни одного блокнота. Блокноты позволяют систематизировать ваши аннотации.',
 			'emptyStates.noPlans' => 'Вы пока не выполняете ни одного плана чтения. Начните один, чтобы приступить к чтению Библии.',
 			'annotationUi.yourAnnotations' => 'Ваши аннотации',
 			'annotationUi.annotate' => 'Аннотировать',
@@ -3759,6 +3782,26 @@ extension on TranslationsRu {
 			'notebookUi.deleteWithAnnotations' => ({required Object name, required Object annotations}) => '«${name}» имеет ${annotations}. Хотите ли вы также удалить их или оставить в блокноте по умолчанию?',
 			'notebookUi.keepInDefault' => 'Оставить по умолчанию',
 			'notebookUi.deleteAnnotations' => 'Удалить аннотации',
+			'notebookUi.share' => 'Поделиться',
+			'notebookUi.shareDescription' => 'Поделитесь аннотациями и заметками из этого блокнота с другим приложением или человеком.',
+			'notebookUi.download' => 'Скачать',
+			'notebookUi.downloadDescription' => 'Сохраните аннотации и заметки из этого блокнота на устройстве.',
+			'notebookUi.importNotebook' => 'Импортировать блокнот',
+			'notebookUi.importNotebookDescription' => 'Добавить блокнот из файла .lxn.',
+			'notebookUi.newNotebook' => 'Новый блокнот',
+			'notebookUi.newNotebookDescription' => ({required Object name}) => 'Импортировать «${name}» как новый блокнот.',
+			'notebookUi.notebookFile' => 'Блокнот Lux',
+			'notebookUi.invalidFileTitle' => 'Не удалось импортировать блокнот',
+			'notebookUi.invalidFile' => 'Этот файл не является блокнотом Lux.',
+			'notebookUi.importInto' => 'Импортировать в',
+			'notebookUi.previewChanges' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: 'Просмотреть ${count} изменение', few: 'Просмотреть ${count} изменения', many: 'Просмотреть ${count} изменений', other: 'Просмотреть ${count} изменения', ), 
+			'notebookUi.noNewChanges' => 'Нет новых изменений',
+			'notebookUi.newTag' => 'Новый',
+			'notebookUi.baseTag' => 'Основа',
+			'notebookUi.newAnnotations' => 'Новые аннотации',
+			'notebookUi.newHighlightStyles' => 'Новые стили выделения',
+			'notebookUi.importAction' => 'Импортировать',
+			'notebookUi.importSucceeded' => ({required Object name}) => 'Импортировано в «${name}»',
 			'highlightStyleUi.yourStyles' => 'Ваши стили выделения',
 			'highlightStyleUi.manage' => 'Управление стилями',
 			'highlightStyleUi.create' => 'Создать стиль',
@@ -3775,6 +3818,8 @@ extension on TranslationsRu {
 			'highlightStyleUi.label' => 'Название',
 			'toolbarSettings.mainToolbar' => 'Главная панель инструментов',
 			'toolbarSettings.verseSelection' => 'Выбор стиха',
+			_ => null,
+		} ?? switch (path) {
 			'toolbarSettings.textSelection' => 'Выбор текста',
 			'toolbarSettings.shownForMain' => 'Отображается, когда ничего не выбрано.',
 			'toolbarSettings.shownForVerses' => 'Отображается, когда выбран стих.',
@@ -3794,8 +3839,6 @@ extension on TranslationsRu {
 			'toolbarSettings.rangeSelection' => 'Выбор диапазона',
 			'toolbarSettings.rangeSelectionDescription' => 'Нажатие на второй стих выбирает все стихи между ним и первым.',
 			'toolbarSettings.mainShortcut' => 'Ярлык на главной панели инструментов',
-			_ => null,
-		} ?? switch (path) {
 			'toolbarSettings.verseShortcut' => 'Ярлык выбора стиха',
 			'toolbarSettings.textShortcut' => 'Ярлык выбора текста',
 			'themeSettings.title' => 'Тема и макет',
@@ -4289,6 +4332,8 @@ extension on TranslationsRu {
 			'morphology.types.negativeAdverb.examples' => 'нет|никогда',
 			'morphology.types.adjective.name' => 'Прилагательное',
 			'morphology.types.adjective.description' => 'Слово, описывающее существительное.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.adjective.examples' => 'великий|святой|мудрый',
 			'morphology.types.noun.name' => 'Существительное',
 			'morphology.types.noun.description' => 'Человек, место, вещь или идея.',
@@ -4308,8 +4353,6 @@ extension on TranslationsRu {
 			'morphology.types.personalPronoun.name' => 'Личное местоимение',
 			'morphology.types.personalPronoun.description' => 'Местоимение, обозначающее конкретного человека.',
 			'morphology.types.personalPronoun.examples' => 'я|ты|мы',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.demonstrativePronoun.name' => 'Указательное местоимение',
 			'morphology.types.demonstrativePronoun.description' => 'Местоимение, указывающее на что-либо.',
 			'morphology.types.demonstrativePronoun.examples' => 'это|эти|те',

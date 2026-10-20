@@ -748,7 +748,6 @@ class _Translations$emptyStates$nl extends Translations$emptyStates$en {
 	@override String get noCommentariesAdded => 'Je hebt nog geen commentaren toegevoegd.';
 	@override String get noAnnotations => 'Je hebt nog geen annotaties gemaakt.';
 	@override String get noBookmarks => 'Je hebt nog geen bladwijzers gemaakt.';
-	@override String get noNotebooks => 'Je hebt nog geen notitieboeken gemaakt. Met notitieboeken kun je je annotaties ordenen.';
 	@override String get noPlans => 'Je volgt nog geen leesplannen. Start er een om met het lezen van de Bijbel te beginnen.';
 }
 
@@ -794,6 +793,29 @@ class _Translations$notebookUi$nl extends Translations$notebookUi$en {
 	@override String deleteWithAnnotations({required Object name, required Object annotations}) => '"${name}" heeft ${annotations}. Wil je ze ook verwijderen of in het standaardnotitieboek bewaren?';
 	@override String get keepInDefault => 'In Standaard bewaren';
 	@override String get deleteAnnotations => 'Annotaties verwijderen';
+	@override String get share => 'Delen';
+	@override String get shareDescription => 'Deel de annotaties en notities uit dit notitieboek met een andere app of persoon.';
+	@override String get download => 'Downloaden';
+	@override String get downloadDescription => 'Sla de annotaties en notities uit dit notitieboek op je apparaat op.';
+	@override String get importNotebook => 'Notitieboek importeren';
+	@override String get importNotebookDescription => 'Voeg een notitieboek toe uit een .lxn-bestand.';
+	@override String get newNotebook => 'Nieuw notitieboek';
+	@override String newNotebookDescription({required Object name}) => 'Importeer "${name}" als nieuw notitieboek.';
+	@override String get notebookFile => 'Lux-notitieboek';
+	@override String get invalidFileTitle => 'Notitieboek niet geïmporteerd';
+	@override String get invalidFile => 'Dit bestand is geen geldig Lux-notitieboek.';
+	@override String get importInto => 'Importeren in';
+	@override String previewChanges({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count,
+		one: '${count} wijziging bekijken',
+		other: '${count} wijzigingen bekijken',
+	);
+	@override String get noNewChanges => 'Geen nieuwe wijzigingen';
+	@override String get newTag => 'Nieuw';
+	@override String get baseTag => 'Basis';
+	@override String get newAnnotations => 'Nieuwe annotaties';
+	@override String get newHighlightStyles => 'Nieuwe markeerstijlen';
+	@override String get importAction => 'Importeren';
+	@override String importSucceeded({required Object name}) => 'Geïmporteerd in "${name}"';
 }
 
 // Path: highlightStyleUi
@@ -3712,7 +3734,6 @@ extension on TranslationsNl {
 			'emptyStates.noCommentariesAdded' => 'Je hebt nog geen commentaren toegevoegd.',
 			'emptyStates.noAnnotations' => 'Je hebt nog geen annotaties gemaakt.',
 			'emptyStates.noBookmarks' => 'Je hebt nog geen bladwijzers gemaakt.',
-			'emptyStates.noNotebooks' => 'Je hebt nog geen notitieboeken gemaakt. Met notitieboeken kun je je annotaties ordenen.',
 			'emptyStates.noPlans' => 'Je volgt nog geen leesplannen. Start er een om met het lezen van de Bijbel te beginnen.',
 			'annotationUi.yourAnnotations' => 'Je annotaties',
 			'annotationUi.annotate' => 'Annoteren',
@@ -3737,6 +3758,26 @@ extension on TranslationsNl {
 			'notebookUi.deleteWithAnnotations' => ({required Object name, required Object annotations}) => '"${name}" heeft ${annotations}. Wil je ze ook verwijderen of in het standaardnotitieboek bewaren?',
 			'notebookUi.keepInDefault' => 'In Standaard bewaren',
 			'notebookUi.deleteAnnotations' => 'Annotaties verwijderen',
+			'notebookUi.share' => 'Delen',
+			'notebookUi.shareDescription' => 'Deel de annotaties en notities uit dit notitieboek met een andere app of persoon.',
+			'notebookUi.download' => 'Downloaden',
+			'notebookUi.downloadDescription' => 'Sla de annotaties en notities uit dit notitieboek op je apparaat op.',
+			'notebookUi.importNotebook' => 'Notitieboek importeren',
+			'notebookUi.importNotebookDescription' => 'Voeg een notitieboek toe uit een .lxn-bestand.',
+			'notebookUi.newNotebook' => 'Nieuw notitieboek',
+			'notebookUi.newNotebookDescription' => ({required Object name}) => 'Importeer "${name}" als nieuw notitieboek.',
+			'notebookUi.notebookFile' => 'Lux-notitieboek',
+			'notebookUi.invalidFileTitle' => 'Notitieboek niet geïmporteerd',
+			'notebookUi.invalidFile' => 'Dit bestand is geen geldig Lux-notitieboek.',
+			'notebookUi.importInto' => 'Importeren in',
+			'notebookUi.previewChanges' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: '${count} wijziging bekijken', other: '${count} wijzigingen bekijken', ), 
+			'notebookUi.noNewChanges' => 'Geen nieuwe wijzigingen',
+			'notebookUi.newTag' => 'Nieuw',
+			'notebookUi.baseTag' => 'Basis',
+			'notebookUi.newAnnotations' => 'Nieuwe annotaties',
+			'notebookUi.newHighlightStyles' => 'Nieuwe markeerstijlen',
+			'notebookUi.importAction' => 'Importeren',
+			'notebookUi.importSucceeded' => ({required Object name}) => 'Geïmporteerd in "${name}"',
 			'highlightStyleUi.yourStyles' => 'Je markeerstijlen',
 			'highlightStyleUi.manage' => 'Stijlen beheren',
 			'highlightStyleUi.create' => 'Stijl maken',
@@ -3753,6 +3794,8 @@ extension on TranslationsNl {
 			'highlightStyleUi.label' => 'Label',
 			'toolbarSettings.mainToolbar' => 'Hoofdwerkbalk',
 			'toolbarSettings.verseSelection' => 'Versselectie',
+			_ => null,
+		} ?? switch (path) {
 			'toolbarSettings.textSelection' => 'Tekstselectie',
 			'toolbarSettings.shownForMain' => 'Wordt getoond wanneer niets is geselecteerd.',
 			'toolbarSettings.shownForVerses' => 'Wordt getoond wanneer een vers is geselecteerd.',
@@ -3772,8 +3815,6 @@ extension on TranslationsNl {
 			'toolbarSettings.rangeSelection' => 'Bereikselectie',
 			'toolbarSettings.rangeSelectionDescription' => 'Als je op een tweede vers tikt, worden alle verzen tussen het eerste en tweede vers geselecteerd.',
 			'toolbarSettings.mainShortcut' => 'Snelkoppeling hoofdwerkbalk',
-			_ => null,
-		} ?? switch (path) {
 			'toolbarSettings.verseShortcut' => 'Snelkoppeling versselectie',
 			'toolbarSettings.textShortcut' => 'Snelkoppeling tekstselectie',
 			'themeSettings.title' => 'Thema en indeling',
@@ -4267,6 +4308,8 @@ extension on TranslationsNl {
 			'morphology.types.negativeAdverb.examples' => 'niet|nooit',
 			'morphology.types.adjective.name' => 'Bijvoeglijk naamwoord',
 			'morphology.types.adjective.description' => 'Een woord dat een zelfstandig naamwoord beschrijft.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.adjective.examples' => 'groot|heilig|wijs',
 			'morphology.types.noun.name' => 'Zelfstandig naamwoord',
 			'morphology.types.noun.description' => 'Een persoon, plaats, zaak of begrip.',
@@ -4286,8 +4329,6 @@ extension on TranslationsNl {
 			'morphology.types.personalPronoun.name' => 'Persoonlijk voornaamwoord',
 			'morphology.types.personalPronoun.description' => 'Een voornaamwoord dat naar een bepaalde persoon verwijst.',
 			'morphology.types.personalPronoun.examples' => 'ik|jij|wij',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.demonstrativePronoun.name' => 'Aanwijzend voornaamwoord',
 			'morphology.types.demonstrativePronoun.description' => 'Een voornaamwoord dat iets aanwijst.',
 			'morphology.types.demonstrativePronoun.examples' => 'dit|deze|die',

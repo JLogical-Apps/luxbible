@@ -5,7 +5,7 @@ import com.ryanheise.audioservice.AudioServiceActivity
 import io.flutter.embedding.engine.FlutterEngine
 
 class MainActivity : AudioServiceActivity() {
-    private val bridges = listOf(LuxWidgetBridge, BiblePlanOpenBridge, AppLinkBridge)
+    private val bridges = listOf(LuxWidgetBridge, BiblePlanOpenBridge, NotebookOpenBridge, AppLinkBridge)
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)

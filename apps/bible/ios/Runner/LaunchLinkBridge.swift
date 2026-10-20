@@ -111,20 +111,47 @@ final class AppLinkBridge: LaunchLinkBridge {
   }
 }
 
-/// Bible plan files opened from elsewhere on the device, delivered to Dart as their contents.
-final class BiblePlanOpenBridge: LaunchLinkBridge {
-  static let shared = BiblePlanOpenBridge()
+/// Lux files opened from elsewhere on the device, delivered to Dart as their contents.
+class FileOpenBridge: LaunchLinkBridge {
+  private let fileExtension: String
 
-  private init() {
-    super.init(channelName: "app.luxbible.app/bible-plan-open", launchMethod: "getLaunchPlan", openMethod: "openPlan")
+  init(channelName: String, launchMethod: String, openMethod: String, fileExtension: String) {
+    self.fileExtension = fileExtension
+    super.init(channelName: channelName, launchMethod: launchMethod, openMethod: openMethod)
   }
 
   override func value(for url: URL) -> String? {
-    guard url.isFileURL, url.pathExtension.lowercased() == "lxbp" else { return nil }
+    guard url.isFileURL, url.pathExtension.lowercased() == fileExtension else { return nil }
 
     let hasAccess = url.startAccessingSecurityScopedResource()
     defer { if hasAccess { url.stopAccessingSecurityScopedResource() } }
     return (try? String(contentsOf: url, encoding: .utf8)) ?? ""
+  }
+}
+
+final class BiblePlanOpenBridge: FileOpenBridge {
+  static let shared = BiblePlanOpenBridge()
+
+  private init() {
+    super.init(
+      channelName: "app.luxbible.app/bible-plan-open",
+      launchMethod: "getLaunchPlan",
+      openMethod: "openPlan",
+      fileExtension: "lxbp"
+    )
+  }
+}
+
+final class NotebookOpenBridge: FileOpenBridge {
+  static let shared = NotebookOpenBridge()
+
+  private init() {
+    super.init(
+      channelName: "app.luxbible.app/notebook-open",
+      launchMethod: "getLaunchNotebook",
+      openMethod: "openNotebook",
+      fileExtension: "lxn"
+    )
   }
 }
 

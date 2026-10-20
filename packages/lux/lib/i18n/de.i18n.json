@@ -492,7 +492,6 @@
     "noCommentariesAdded": "Du hast noch keine Kommentare hinzugefügt.",
     "noAnnotations": "Du hast noch keine Annotationen erstellt.",
     "noBookmarks": "Du hast noch keine Lesezeichen erstellt.",
-    "noNotebooks": "Du hast noch keine Notizbücher erstellt. Mit Notizbüchern kannst du deine Annotationen ordnen.",
     "noPlans": "Du folgst noch keinem Leseplan. Starte einen, um die Bibel durchzulesen."
   },
   "annotationUi": {
@@ -523,7 +522,30 @@
     "deleteNamedConfirmation": "Möchtest du „{name}“ wirklich löschen?",
     "deleteWithAnnotations": "„{name}“ enthält {annotations}. Möchtest du sie ebenfalls löschen oder im Standard-Notizbuch behalten?",
     "keepInDefault": "Im Standard behalten",
-    "deleteAnnotations": "Annotationen löschen"
+    "deleteAnnotations": "Annotationen löschen",
+    "share": "Teilen",
+    "shareDescription": "Die Annotationen und Notizen dieses Notizbuchs mit einer anderen App oder Person teilen.",
+    "download": "Herunterladen",
+    "downloadDescription": "Die Annotationen und Notizen dieses Notizbuchs auf deinem Gerät speichern.",
+    "importNotebook": "Notizbuch importieren",
+    "importNotebookDescription": "Ein Notizbuch aus einer .lxn-Datei hinzufügen.",
+    "newNotebook": "Neues Notizbuch",
+    "newNotebookDescription": "„{name}“ als neues Notizbuch importieren.",
+    "notebookFile": "Lux-Notizbuch",
+    "invalidFileTitle": "Notizbuch nicht importiert",
+    "invalidFile": "Diese Datei ist kein gültiges Lux-Notizbuch.",
+    "importInto": "Importieren in",
+    "previewChanges(param=count)": {
+      "one": "{count} Änderung ansehen",
+      "other": "{count} Änderungen ansehen"
+    },
+    "noNewChanges": "Keine neuen Änderungen",
+    "newTag": "Neu",
+    "baseTag": "Basis",
+    "newAnnotations": "Neue Annotationen",
+    "newHighlightStyles": "Neue Markierungsstile",
+    "importAction": "Importieren",
+    "importSucceeded": "In „{name}“ importiert"
   },
   "highlightStyleUi": {
     "yourStyles": "Deine Markierungsstile",

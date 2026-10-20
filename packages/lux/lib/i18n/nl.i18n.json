@@ -494,7 +494,6 @@
     "noCommentariesAdded": "Je hebt nog geen commentaren toegevoegd.",
     "noAnnotations": "Je hebt nog geen annotaties gemaakt.",
     "noBookmarks": "Je hebt nog geen bladwijzers gemaakt.",
-    "noNotebooks": "Je hebt nog geen notitieboeken gemaakt. Met notitieboeken kun je je annotaties ordenen.",
     "noPlans": "Je volgt nog geen leesplannen. Start er een om met het lezen van de Bijbel te beginnen."
   },
   "annotationUi": {
@@ -525,7 +524,30 @@
     "deleteNamedConfirmation": "Weet je zeker dat je \"{name}\" wilt verwijderen?",
     "deleteWithAnnotations": "\"{name}\" heeft {annotations}. Wil je ze ook verwijderen of in het standaardnotitieboek bewaren?",
     "keepInDefault": "In Standaard bewaren",
-    "deleteAnnotations": "Annotaties verwijderen"
+    "deleteAnnotations": "Annotaties verwijderen",
+    "share": "Delen",
+    "shareDescription": "Deel de annotaties en notities uit dit notitieboek met een andere app of persoon.",
+    "download": "Downloaden",
+    "downloadDescription": "Sla de annotaties en notities uit dit notitieboek op je apparaat op.",
+    "importNotebook": "Notitieboek importeren",
+    "importNotebookDescription": "Voeg een notitieboek toe uit een .lxn-bestand.",
+    "newNotebook": "Nieuw notitieboek",
+    "newNotebookDescription": "Importeer \"{name}\" als nieuw notitieboek.",
+    "notebookFile": "Lux-notitieboek",
+    "invalidFileTitle": "Notitieboek niet geïmporteerd",
+    "invalidFile": "Dit bestand is geen geldig Lux-notitieboek.",
+    "importInto": "Importeren in",
+    "previewChanges(param=count)": {
+      "one": "{count} wijziging bekijken",
+      "other": "{count} wijzigingen bekijken"
+    },
+    "noNewChanges": "Geen nieuwe wijzigingen",
+    "newTag": "Nieuw",
+    "baseTag": "Basis",
+    "newAnnotations": "Nieuwe annotaties",
+    "newHighlightStyles": "Nieuwe markeerstijlen",
+    "importAction": "Importeren",
+    "importSucceeded": "Geïmporteerd in \"{name}\""
   },
   "highlightStyleUi": {
     "yourStyles": "Je markeerstijlen",

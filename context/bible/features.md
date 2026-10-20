@@ -677,11 +677,17 @@ Users can:
 
 - Create named, colored notebooks
 - Reorder notebooks
-- Hide or show a notebook's annotations in the Bible
+- Hide or show a notebook's annotations in the Bible, including Default's
 - Browse the annotations in a notebook
 - Move annotations between notebooks
+- Share or download any notebook, including Default, as a portable `.lxn` file
+- Import a `.lxn` file as a new notebook or merge it into an existing one
 
-Annotations without an assigned notebook belong to the permanent Default notebook. When deleting a notebook, its annotations can be deleted or retained in Default.
+Annotations without an assigned notebook belong to the permanent Default notebook, which shows a lock beside its name and is always listed, even when the user has no other notebooks. When deleting a notebook, its annotations can be deleted or retained in Default. Default's menu offers Hide or Show, Share, and Download, while other notebooks add Edit and Delete.
+
+A `.lxn` file holds the notebook's name, color, ID, every annotation's selection, style, and note, and labels for the highlight styles those annotations use. The Share and Download descriptions say that notes are included. Default exports under its name in the exporter's language and without an ID. Exports leave out annotation times and plan days.
+
+Users import a `.lxn` file by opening it from another app, sharing it to Lux, or choosing Import Notebook from the menu at the top of Your Notebooks, its only item. The first sheet previews the file's notebook name, color, and annotation count, then lists New Notebook followed by every existing notebook and Default. When the file's ID matches an existing notebook, that notebook is selected; otherwise New Notebook is selected. The button reads Preview X Changes, where a new notebook, each new highlight style, and each new annotation count as one change, and it is disabled as No New Changes when there is nothing to add. An annotation is new unless one with the same selection, style, and note already exists in any notebook. A highlight style is new when a new annotation uses it and the user doesn't have it. The preview sheet, reached with a back button and breadcrumbs, shows the notebook tagged New or Base, any New Highlight Styles, and the incoming annotations under Annotations or New Annotations in canonical order. Import adds them and confirms with a message. Merging never changes the existing notebook's name or color. Imported annotations are dated to the import, and a new notebook keeps the file's ID unless another notebook already uses it. An invalid file fails as a whole with a short message.
 
 ### Annotation Management
 

@@ -22,6 +22,18 @@
 				<string>app.luxbible.bible-plan</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Lux Notebook</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>app.luxbible.notebook</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
@@ -133,6 +145,25 @@
 				</array>
 				<key>public.mime-type</key>
 				<string>application/vnd.luxbible.plan+json</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.json</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Lux Notebook</string>
+			<key>UTTypeIdentifier</key>
+			<string>app.luxbible.notebook</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>lxn</string>
+				</array>
+				<key>public.mime-type</key>
+				<string>application/vnd.luxbible.notebook+json</string>
 			</dict>
 		</dict>
 	</array>

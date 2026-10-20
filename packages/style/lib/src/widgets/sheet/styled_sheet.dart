@@ -16,7 +16,6 @@ import 'package:style/src/widgets/styled_circle_button.dart';
 import 'package:style/src/widgets/styled_divider.dart';
 import 'package:style/src/widgets/styled_dock.dart';
 import 'package:super_sliver_list/super_sliver_list.dart';
-import 'package:utils_core/utils_core.dart';
 
 class StyledSheet<T> extends HookConsumerWidget {
   final Widget? title;
@@ -117,18 +116,16 @@ class StyledSheet<T> extends HookConsumerWidget {
 
     final sheetNavigationContext = context.watch<SheetNavigationBreadcrumbContext?>();
 
-    final depth = (sheetNavigationContext?.breadcrumbs.length ?? 1) - 1;
-
     final scrollController = controller ?? ModalScrollController.of(context);
 
     useOnListenableChange(scrollController, () {
       if (scrollController != null && scrollController.hasClients && sheetNavigationContext != null) {
-        sheetNavigationContext.scrollOffsetByDepth[depth] = scrollController.offset;
+        sheetNavigationContext.currentBreadcrumb.scrollOffset = scrollController.offset;
       }
     });
 
     useOneTimeEffect(() {
-      final saved = sheetNavigationContext?.scrollOffsetByDepth[depth] ?? 0;
+      final saved = sheetNavigationContext?.currentBreadcrumb.scrollOffset ?? 0;
       if (saved > 0) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (scrollController != null && scrollController.hasClients) {
@@ -148,12 +145,7 @@ class StyledSheet<T> extends HookConsumerWidget {
       context.showStyledSheet(
         (context, ref) => breadcrumb.sheetBuilder(context, ref),
         wrapper: (sheetBuilder) => provider.Provider.value(
-          value: SheetNavigationBreadcrumbContext(
-            breadcrumbs: sheetNavigationContext.breadcrumbs.take(breadcrumbIndex + 1).toList(),
-            scrollOffsetByDepth: sheetNavigationContext.scrollOffsetByDepth.where(
-              (offsetDepth, _) => offsetDepth <= breadcrumbIndex,
-            ),
-          ),
+          value: sheetNavigationContext.withBreadcrumbsUpTo(breadcrumbIndex),
           child: HookConsumerBuilder(builder: sheetBuilder),
         ),
       );

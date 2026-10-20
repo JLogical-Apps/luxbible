@@ -42,6 +42,7 @@ export const focusArticle: Article = {
   thumbnail: '/media/articles/stop-getting-distracted/thumbnail.png',
 };
 
+// Newest first, since the footer, index, and sitemap all list articles in this order.
 export const articles = [focusArticle, noteTakingArticle, soapArticle];
 
 export const bibleStudyArticles = articles.filter(

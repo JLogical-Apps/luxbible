@@ -494,7 +494,6 @@
     "noCommentariesAdded": "Вы не добавили ни одного комментария.",
     "noAnnotations": "Вы не создали ни одной аннотации.",
     "noBookmarks": "Вы не создали ни одной закладки.",
-    "noNotebooks": "Вы не создали ни одного блокнота. Блокноты позволяют систематизировать ваши аннотации.",
     "noPlans": "Вы пока не выполняете ни одного плана чтения. Начните один, чтобы приступить к чтению Библии."
   },
   "annotationUi": {
@@ -527,7 +526,32 @@
     "deleteNamedConfirmation": "Вы уверены, что хотите удалить «{name}»?",
     "deleteWithAnnotations": "«{name}» имеет {annotations}. Хотите ли вы также удалить их или оставить в блокноте по умолчанию?",
     "keepInDefault": "Оставить по умолчанию",
-    "deleteAnnotations": "Удалить аннотации"
+    "deleteAnnotations": "Удалить аннотации",
+    "share": "Поделиться",
+    "shareDescription": "Поделитесь аннотациями и заметками из этого блокнота с другим приложением или человеком.",
+    "download": "Скачать",
+    "downloadDescription": "Сохраните аннотации и заметки из этого блокнота на устройстве.",
+    "importNotebook": "Импортировать блокнот",
+    "importNotebookDescription": "Добавить блокнот из файла .lxn.",
+    "newNotebook": "Новый блокнот",
+    "newNotebookDescription": "Импортировать «{name}» как новый блокнот.",
+    "notebookFile": "Блокнот Lux",
+    "invalidFileTitle": "Не удалось импортировать блокнот",
+    "invalidFile": "Этот файл не является блокнотом Lux.",
+    "importInto": "Импортировать в",
+    "previewChanges(param=count)": {
+      "one": "Просмотреть {count} изменение",
+      "few": "Просмотреть {count} изменения",
+      "many": "Просмотреть {count} изменений",
+      "other": "Просмотреть {count} изменения"
+    },
+    "noNewChanges": "Нет новых изменений",
+    "newTag": "Новый",
+    "baseTag": "Основа",
+    "newAnnotations": "Новые аннотации",
+    "newHighlightStyles": "Новые стили выделения",
+    "importAction": "Импортировать",
+    "importSucceeded": "Импортировано в «{name}»"
   },
   "highlightStyleUi": {
     "yourStyles": "Ваши стили выделения",

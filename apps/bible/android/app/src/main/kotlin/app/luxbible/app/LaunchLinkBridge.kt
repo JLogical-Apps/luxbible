@@ -64,33 +64,58 @@ object AppLinkBridge : LaunchLinkBridge("app.luxbible.app/app-link", "getLaunchL
     }
 }
 
-/** Bible plan files opened from elsewhere on the device, delivered to Dart as their contents. */
-object BiblePlanOpenBridge : LaunchLinkBridge("app.luxbible.app/bible-plan-open", "getLaunchPlan", "openPlan") {
-    const val EXTRA_CONTENTS = "app.luxbible.app.extra.BIBLE_PLAN_CONTENTS"
+/** Lux files opened from elsewhere on the device, delivered to Dart as their contents. */
+sealed class FileOpenBridge(
+    channelName: String,
+    launchMethod: String,
+    openMethod: String,
+    private val fileExtension: String,
+) : LaunchLinkBridge(channelName, launchMethod, openMethod) {
+    val extraContents = "app.luxbible.app.extra.${fileExtension.uppercase()}_CONTENTS"
 
-    override fun read(context: Context, intent: Intent): String? = intent.getStringExtra(EXTRA_CONTENTS)
+    override fun read(context: Context, intent: Intent): String? = intent.getStringExtra(extraContents)
 
-    /** The contents of the `.lxbp` file [intent] opens or shares, empty when it can't be read. */
-    fun readFile(context: Context, intent: Intent): String? {
-        val uri = when (intent.action) {
-            Intent.ACTION_VIEW -> intent.data
-            Intent.ACTION_SEND -> intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM)
-            else -> null
-        } ?: return null
-        if (uri.scheme != "content" && uri.scheme != "file") return null
+    companion object {
+        private val bridges by lazy { listOf(BiblePlanOpenBridge, NotebookOpenBridge) }
 
-        return try {
+        /**
+         * The bridge for the Lux file [intent] opens or shares, paired with the file's contents, which
+         * are empty when the file can't be read.
+         */
+        fun readFile(context: Context, intent: Intent): Pair<FileOpenBridge, String>? {
+            val uri = when (intent.action) {
+                Intent.ACTION_VIEW -> intent.data
+                Intent.ACTION_SEND -> intent.getParcelableExtra<Uri>(Intent.EXTRA_STREAM)
+                else -> null
+            } ?: return null
+            if (uri.scheme != "content" && uri.scheme != "file") return null
+
             val resolver = context.contentResolver
-            val name = resolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->
-                if (cursor.moveToFirst()) cursor.getString(0) else null
-            } ?: uri.lastPathSegment
-            if (name?.endsWith(".lxbp", ignoreCase = true) != true) return null
-            resolver.openInputStream(uri)?.bufferedReader(Charsets.UTF_8)?.use { it.readText() } ?: ""
-        } catch (_: Exception) {
-            ""
+            val name = try {
+                resolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->
+                    if (cursor.moveToFirst()) cursor.getString(0) else null
+                } ?: uri.lastPathSegment
+            } catch (_: Exception) {
+                uri.lastPathSegment
+            }
+            val bridge = bridges.firstOrNull { name?.endsWith(".${it.fileExtension}", ignoreCase = true) == true }
+                ?: return null
+
+            val contents = try {
+                resolver.openInputStream(uri)?.bufferedReader(Charsets.UTF_8)?.use { it.readText() } ?: ""
+            } catch (_: Exception) {
+                ""
+            }
+            return bridge to contents
         }
     }
 }
+
+object BiblePlanOpenBridge :
+    FileOpenBridge("app.luxbible.app/bible-plan-open", "getLaunchPlan", "openPlan", fileExtension = "lxbp")
+
+object NotebookOpenBridge :
+    FileOpenBridge("app.luxbible.app/notebook-open", "getLaunchNotebook", "openNotebook", fileExtension = "lxn")
 
 /**
  * Connects the Flutter app to the Verse of the Day widget.

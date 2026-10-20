@@ -32,3 +32,5 @@ The source code remains authoritative for implementation details. If the impleme
 - Move a roadmap item into `features.md` only after it is implemented in the working tree.
 - Update store copy separately. Product or feature documentation changes do not automatically authorize changes to the store files.
 - Prefer links between files over repeated descriptions.
+- When a change touches Bible plans or notebooks in a way their published format pages describe (file fields, validation, export or import behavior, or where those actions live in the app), update [`/resources/lxbp`](../../websites/bible/app/resources/lxbp/page.tsx) or [`/resources/lxn`](../../websites/bible/app/resources/lxn/page.tsx) in the same change.
+- When adding or removing a website article, update `articles` in [`websites/bible/lib/articles.ts`](../../websites/bible/lib/articles.ts), newest first. The site footer, the articles index, and the sitemap all read that list in its order.

@@ -492,7 +492,6 @@
     "noCommentariesAdded": "You haven't added any commentaries.",
     "noAnnotations": "You haven't created any annotations.",
     "noBookmarks": "You haven't created any bookmarks.",
-    "noNotebooks": "You haven't created any notebooks. Notebooks let you organize your annotations.",
     "noPlans": "You aren't following any reading plans yet. Start one to begin reading through the Bible."
   },
   "annotationUi": {
@@ -523,7 +522,30 @@
     "deleteNamedConfirmation": "Are you sure you want to delete \"{name}\"?",
     "deleteWithAnnotations": "\"{name}\" has {annotations}. Would you like to delete them too, or keep them in the Default notebook?",
     "keepInDefault": "Keep in Default",
-    "deleteAnnotations": "Delete Annotations"
+    "deleteAnnotations": "Delete Annotations",
+    "share": "Share",
+    "shareDescription": "Share this notebook's annotations and their notes with another app or person.",
+    "download": "Download",
+    "downloadDescription": "Save this notebook's annotations and their notes to your device.",
+    "importNotebook": "Import Notebook",
+    "importNotebookDescription": "Add a notebook from a .lxn file.",
+    "newNotebook": "New Notebook",
+    "newNotebookDescription": "Import \"{name}\" as a new notebook.",
+    "notebookFile": "Lux Notebook",
+    "invalidFileTitle": "Couldn't Import Notebook",
+    "invalidFile": "This file isn't a valid Lux notebook.",
+    "importInto": "Import Into",
+    "previewChanges(param=count)": {
+      "one": "Preview {count} Change",
+      "other": "Preview {count} Changes"
+    },
+    "noNewChanges": "No New Changes",
+    "newTag": "New",
+    "baseTag": "Base",
+    "newAnnotations": "New Annotations",
+    "newHighlightStyles": "New Highlight Styles",
+    "importAction": "Import",
+    "importSucceeded": "Imported into \"{name}\""
   },
   "highlightStyleUi": {
     "yourStyles": "Your Highlight Styles",

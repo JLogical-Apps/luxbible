@@ -30,6 +30,8 @@ sealed class Annotation with _$Annotation {
 
   ColorEnum get color => style.color;
 
+  (AnnotationSelection, HighlightStyle, String) get contentKey => (selection, style, note);
+
   bool get hasMarker => note.isNotEmpty || style.icon != null || style.type == .transparent;
 
   IconData get markerIcon => style.icon?.icon ?? noteIcon;

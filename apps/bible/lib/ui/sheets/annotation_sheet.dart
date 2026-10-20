@@ -5,7 +5,7 @@ import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/viewed_bible_plan_day_provider.dart';
 import 'package:bible/ui/pages/highlight_styles_page.dart';
-import 'package:bible/ui/pages/notebook_icon.dart';
+import 'package:bible/ui/widgets/notebook_icon.dart';
 import 'package:bible/ui/sheets/notebook_sheet.dart';
 import 'package:bible/ui/widgets/highlight_style_icon.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';

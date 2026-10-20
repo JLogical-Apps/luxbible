@@ -7,6 +7,7 @@ enum AnalyticsEventType {
   planDayCompleted('plan_day_completed'),
   planStarted('plan_started'),
   biblePlanFileOpened('bible_plan_file_opened'),
+  notebookFileOpened('notebook_file_opened'),
   search('search'),
   verseShared('verse_shared'),
   sharedPassageOpened('shared_passage_opened'),
@@ -40,6 +41,7 @@ class AnalyticsEvent {
   static final planDayCompleted = AnalyticsEvent._(.planDayCompleted);
   static final planStarted = AnalyticsEvent._(.planStarted);
   static final biblePlanFileOpened = AnalyticsEvent._(.biblePlanFileOpened);
+  static final notebookFileOpened = AnalyticsEvent._(.notebookFileOpened);
   static final search = AnalyticsEvent._(.search);
   static final verseShared = AnalyticsEvent._(.verseShared);
   static final sharedPassageOpened = AnalyticsEvent._(.sharedPassageOpened);

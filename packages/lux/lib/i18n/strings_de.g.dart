@@ -746,7 +746,6 @@ class _Translations$emptyStates$de extends Translations$emptyStates$en {
 	@override String get noCommentariesAdded => 'Du hast noch keine Kommentare hinzugefügt.';
 	@override String get noAnnotations => 'Du hast noch keine Annotationen erstellt.';
 	@override String get noBookmarks => 'Du hast noch keine Lesezeichen erstellt.';
-	@override String get noNotebooks => 'Du hast noch keine Notizbücher erstellt. Mit Notizbüchern kannst du deine Annotationen ordnen.';
 	@override String get noPlans => 'Du folgst noch keinem Leseplan. Starte einen, um die Bibel durchzulesen.';
 }
 
@@ -792,6 +791,29 @@ class _Translations$notebookUi$de extends Translations$notebookUi$en {
 	@override String deleteWithAnnotations({required Object name, required Object annotations}) => '„${name}“ enthält ${annotations}. Möchtest du sie ebenfalls löschen oder im Standard-Notizbuch behalten?';
 	@override String get keepInDefault => 'Im Standard behalten';
 	@override String get deleteAnnotations => 'Annotationen löschen';
+	@override String get share => 'Teilen';
+	@override String get shareDescription => 'Die Annotationen und Notizen dieses Notizbuchs mit einer anderen App oder Person teilen.';
+	@override String get download => 'Herunterladen';
+	@override String get downloadDescription => 'Die Annotationen und Notizen dieses Notizbuchs auf deinem Gerät speichern.';
+	@override String get importNotebook => 'Notizbuch importieren';
+	@override String get importNotebookDescription => 'Ein Notizbuch aus einer .lxn-Datei hinzufügen.';
+	@override String get newNotebook => 'Neues Notizbuch';
+	@override String newNotebookDescription({required Object name}) => '„${name}“ als neues Notizbuch importieren.';
+	@override String get notebookFile => 'Lux-Notizbuch';
+	@override String get invalidFileTitle => 'Notizbuch nicht importiert';
+	@override String get invalidFile => 'Diese Datei ist kein gültiges Lux-Notizbuch.';
+	@override String get importInto => 'Importieren in';
+	@override String previewChanges({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count,
+		one: '${count} Änderung ansehen',
+		other: '${count} Änderungen ansehen',
+	);
+	@override String get noNewChanges => 'Keine neuen Änderungen';
+	@override String get newTag => 'Neu';
+	@override String get baseTag => 'Basis';
+	@override String get newAnnotations => 'Neue Annotationen';
+	@override String get newHighlightStyles => 'Neue Markierungsstile';
+	@override String get importAction => 'Importieren';
+	@override String importSucceeded({required Object name}) => 'In „${name}“ importiert';
 }
 
 // Path: highlightStyleUi
@@ -3708,7 +3730,6 @@ extension on TranslationsDe {
 			'emptyStates.noCommentariesAdded' => 'Du hast noch keine Kommentare hinzugefügt.',
 			'emptyStates.noAnnotations' => 'Du hast noch keine Annotationen erstellt.',
 			'emptyStates.noBookmarks' => 'Du hast noch keine Lesezeichen erstellt.',
-			'emptyStates.noNotebooks' => 'Du hast noch keine Notizbücher erstellt. Mit Notizbüchern kannst du deine Annotationen ordnen.',
 			'emptyStates.noPlans' => 'Du folgst noch keinem Leseplan. Starte einen, um die Bibel durchzulesen.',
 			'annotationUi.yourAnnotations' => 'Deine Annotationen',
 			'annotationUi.annotate' => 'Annotieren',
@@ -3733,6 +3754,26 @@ extension on TranslationsDe {
 			'notebookUi.deleteWithAnnotations' => ({required Object name, required Object annotations}) => '„${name}“ enthält ${annotations}. Möchtest du sie ebenfalls löschen oder im Standard-Notizbuch behalten?',
 			'notebookUi.keepInDefault' => 'Im Standard behalten',
 			'notebookUi.deleteAnnotations' => 'Annotationen löschen',
+			'notebookUi.share' => 'Teilen',
+			'notebookUi.shareDescription' => 'Die Annotationen und Notizen dieses Notizbuchs mit einer anderen App oder Person teilen.',
+			'notebookUi.download' => 'Herunterladen',
+			'notebookUi.downloadDescription' => 'Die Annotationen und Notizen dieses Notizbuchs auf deinem Gerät speichern.',
+			'notebookUi.importNotebook' => 'Notizbuch importieren',
+			'notebookUi.importNotebookDescription' => 'Ein Notizbuch aus einer .lxn-Datei hinzufügen.',
+			'notebookUi.newNotebook' => 'Neues Notizbuch',
+			'notebookUi.newNotebookDescription' => ({required Object name}) => '„${name}“ als neues Notizbuch importieren.',
+			'notebookUi.notebookFile' => 'Lux-Notizbuch',
+			'notebookUi.invalidFileTitle' => 'Notizbuch nicht importiert',
+			'notebookUi.invalidFile' => 'Diese Datei ist kein gültiges Lux-Notizbuch.',
+			'notebookUi.importInto' => 'Importieren in',
+			'notebookUi.previewChanges' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: '${count} Änderung ansehen', other: '${count} Änderungen ansehen', ), 
+			'notebookUi.noNewChanges' => 'Keine neuen Änderungen',
+			'notebookUi.newTag' => 'Neu',
+			'notebookUi.baseTag' => 'Basis',
+			'notebookUi.newAnnotations' => 'Neue Annotationen',
+			'notebookUi.newHighlightStyles' => 'Neue Markierungsstile',
+			'notebookUi.importAction' => 'Importieren',
+			'notebookUi.importSucceeded' => ({required Object name}) => 'In „${name}“ importiert',
 			'highlightStyleUi.yourStyles' => 'Deine Markierungsstile',
 			'highlightStyleUi.manage' => 'Stile verwalten',
 			'highlightStyleUi.create' => 'Stil erstellen',
@@ -3751,6 +3792,8 @@ extension on TranslationsDe {
 			'toolbarSettings.verseSelection' => 'Versauswahl',
 			'toolbarSettings.textSelection' => 'Textauswahl',
 			'toolbarSettings.shownForMain' => 'Wird angezeigt, wenn nichts ausgewählt ist.',
+			_ => null,
+		} ?? switch (path) {
 			'toolbarSettings.shownForVerses' => 'Wird angezeigt, wenn ein Vers ausgewählt ist.',
 			'toolbarSettings.shownForText' => 'Wird angezeigt, wenn du lange auf Text in Versen drückst.',
 			'toolbarSettings.gestures' => 'Gesten',
@@ -3770,8 +3813,6 @@ extension on TranslationsDe {
 			'toolbarSettings.mainShortcut' => 'Kurzbefehl der Hauptleiste',
 			'toolbarSettings.verseShortcut' => 'Kurzbefehl der Versauswahl',
 			'toolbarSettings.textShortcut' => 'Kurzbefehl der Textauswahl',
-			_ => null,
-		} ?? switch (path) {
 			'themeSettings.title' => 'Design & Layout',
 			'themeSettings.brightness' => 'Helligkeit',
 			'themeSettings.font' => 'Schriftart',
@@ -4265,6 +4306,8 @@ extension on TranslationsDe {
 			'morphology.types.adjective.description' => 'Ein Wort, das ein Substantiv beschreibt.',
 			'morphology.types.adjective.examples' => 'groß|heilig|weise',
 			'morphology.types.noun.name' => 'Substantiv',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.noun.description' => 'Eine Person, ein Ort, eine Sache oder ein Begriff.',
 			'morphology.types.noun.examples' => 'Stadt|Wasser|Liebe',
 			'morphology.types.properNoun.name' => 'Eigenname',
@@ -4284,8 +4327,6 @@ extension on TranslationsDe {
 			'morphology.types.personalPronoun.examples' => 'ich|du|wir',
 			'morphology.types.demonstrativePronoun.name' => 'Demonstrativpronomen',
 			'morphology.types.demonstrativePronoun.description' => 'Ein Pronomen, das auf etwas hinweist.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.demonstrativePronoun.examples' => 'dieser|diese|jene',
 			'morphology.types.interrogativePronoun.name' => 'Interrogativpronomen',
 			'morphology.types.interrogativePronoun.description' => 'Ein Pronomen, mit dem man eine Frage stellt.',

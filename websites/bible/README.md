@@ -35,7 +35,7 @@ Direct messages use `direct_message` as the campaign.
 
 ## Structure
 
-- `app/` — routes (`page.tsx` = home, `privacy-policy/`, `resources/lxbp/`, `plans/advent/`).
+- `app/` — routes (`page.tsx` = home, `privacy-policy/`, `resources/lxbp/`, `resources/lxn/`, `plans/advent/`).
   Pages are composed by assembling blocks.
 - `components/blocks/` — content blocks (Hero pieces, FeatureShowcase, CtaButton,
   AppStoreButtons).

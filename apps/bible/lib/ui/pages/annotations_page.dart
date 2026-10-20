@@ -1,7 +1,7 @@
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/highlight_style.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/ui/pages/notebook_icon.dart';
+import 'package:bible/ui/widgets/notebook_icon.dart';
 import 'package:bible/ui/widgets/annotation_list_item.dart';
 import 'package:bible/ui/widgets/highlight_style_icon.dart';
 import 'package:bible/ui/widgets/search_location_button.dart';

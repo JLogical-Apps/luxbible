@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:bible/models/bible_plan.dart';
+import 'package:bible/utils/filename_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:lux/lux.dart';
-import 'package:path/path.dart' as path;
 import 'package:utils_core/utils_core.dart';
 
 class BiblePlanFileException implements Exception {
@@ -134,18 +134,6 @@ class BiblePlanFileService {
 
   static Uint8List getBytes(BiblePlanFile file) => Uint8List.fromList(utf8.encode(encode(file)));
 
-  static String getFilename(String displayName) {
-    final withoutExtension = path.extension(displayName).toLowerCase() == '.lxbp'
-        ? path.withoutExtension(displayName)
-        : displayName;
-    final sanitized = withoutExtension.withInvalidFilenameCharactersReplaced.withoutTrailingFilenameDotsOrSpaces.trim();
-    final safeName = sanitized.isEmpty ? 'Bible Plan' : String.fromCharCodes(sanitized.runes.take(100));
-    return path.setExtension(safeName, '.lxbp');
-  }
-}
-
-extension on String {
-  String get withInvalidFilenameCharactersReplaced => replaceAll(RegExp(r'[\\/:*?"<>|\x00-\x1F]'), '_');
-
-  String get withoutTrailingFilenameDotsOrSpaces => replaceAll(RegExp(r'[. ]+$'), '');
+  static String getFilename(String displayName) =>
+      getSafeFilename(displayName, extension: '.lxbp', fallback: 'Bible Plan');
 }
