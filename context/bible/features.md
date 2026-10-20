@@ -886,7 +886,7 @@ The highlights and their release version are curated by hand in `WhatsNewHighlig
 
 - No accounts
 - No cross-device sync or cloud backup
-- No user-data export
+- No export of all user data at once. Notebooks and plans export individually, but bookmarks, settings, and plan history don't export
 - No full-text search of annotation notes
 - No complete history page
 - No bookmark folders or tags

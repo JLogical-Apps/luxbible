@@ -34,7 +34,7 @@ distribution because each is reached a different way.
 | Frustrated mainstream app users | Already feel the problem | Short-form video, Reddit |
 | Readers loyal to one translation | Lux bundles their translation offline and free | Facebook groups for that translation |
 | Seminary and Bible college students | Cannot afford Logos, need interlinear and Strong's | Language professors, seminary communities |
-| Pastors, youth pastors, group leaders | Redistribute to a whole group at once | Reading plan files, direct relationships |
+| Pastors, youth pastors, group leaders | Redistribute to a whole group at once | Reading plan and notebook files, direct relationships |
 | Non-English readers (nl, de, ru) | Far less competition than English | Store search in those languages |
 | Privacy and indie software readers | No account, offline, no tracking | Hacker News, app roundups, r/androidapps |
 | Home screen and aesthetics audiences | Verse of the Day widget | Widget-focused content |
@@ -130,11 +130,35 @@ Take on one or two at a time alongside personal videos, in this order.
   daily office, and public domain devotionals such as Spurgeon's *Morning and Evening*. Avoid the
   Revised Common Lectionary, which is copyrighted, and never copy plans out of another app's licensed
   catalog.
+- **Community reading schedules.** Communities that read together on a shared schedule, such as
+  r/biblereading or a church-wide January challenge, can hand every member the same plan. Do the
+  conversion yourself and offer the finished file, since asking organizers to learn the format is
+  the same mistake as cold creator outreach. Include the target end date so everyone stays on the
+  same day as the group. With the organizers' permission, making the schedule an included plan
+  credited to them gives it a plan link that works with or without Lux installed, which fits a
+  sidebar, wiki, or bulletin far better than a file. Annual schedules are usually announced in
+  December, so reach organizers in the fall. Disclose being the developer.
+- **Notebook files for leaders and creators.** Notebooks share as `.lxn` files with every highlight
+  and note, so a small group leader, pastor, or creator can hand a whole study's notes to a group,
+  such as one notebook per sermon series. A plan with a companion notebook is a complete study kit
+  and a stronger thing to offer a creator than a plan alone. Prove it with one real group first,
+  since a working example persuades leaders more than a description.
+- **Translation publishers.** Publishers of free translations like to show where their text is used.
+  Ask the publishers behind bundled texts, such as the BSB and MSB, the WEB, the OSHB, and the ULB,
+  to list Lux. Little effort for links that last.
 - **Reddit.** Bible app recommendation threads are constant and high intent. Requires genuine
   participation rather than link drops.
+- **Confessional communities.** The creeds and confessions with Scripture proofs fit Reformed,
+  Presbyterian, and confessional Baptist communities, catechism classes, and homeschool co-ops that
+  memorize catechisms. The strongest single fit is Dutch Reformed churches: the Statenvertaling, the
+  Three Forms of Unity in Dutch, and a Dutch interface together. That includes the emigrant
+  churches in Canada and the US, which use the KJV in English and teach the Heidelberg Catechism
+  weekly. Spanish-speaking KJV-only churches using the Reina Valera Gómez and Russian-speaking
+  Orthodox readers using the Synodal are similar matches between a community and a bundled text.
 - **Seminary and Bible college language professors.** A free interlinear with Strong's and
   morphology is a gift to an instructor whose students cannot afford Logos. One syllabus mention
-  recurs annually, and reaching professors in the fall lines up with spring syllabi.
+  recurs annually, and reaching professors in the fall lines up with spring syllabi. The same pitch
+  fits Biblical language communities such as r/Koine, r/AncientGreek, and r/hebrew.
 
 ### Later
 
@@ -150,7 +174,10 @@ Ordered roughly by expected return.
 - **The Verse of the Day widget as its own hook.** Home screen aesthetics is a large audience with no
   interest in Bible study that will install for a good-looking widget.
 - **Privacy and indie software communities.** No account, fully offline, no tracking, no ads, and
-  open licenses is an unusual combination that travels in those circles.
+  open licenses is an unusual combination that travels in those circles. Venues include Show HN,
+  Product Hunt, and an AlternativeTo listing, where people search for alternatives to YouVersion. The Flutter
+  community (r/FlutterDev, Flutter's showcase) is a similar audience for a polished app built by one
+  developer.
 
 ## Store Editorial
 
