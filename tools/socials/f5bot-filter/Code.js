@@ -94,7 +94,15 @@ const parseHits = (html) =>
     .split('<h2 class="f5-hit-heading"')
     .slice(1)
     .flatMap((section) => {
-      const keyword = toText(section.match(/Keyword: ([\s\S]*?)<\/h2>/)[1]).replace(/^"|"$/g, '');
+      const heading = section.match(/^[^>]*>([\s\S]*?)<\/h2>/)?.[1];
+      // A section that can't be parsed is skipped, since throwing would retry the same email and block every later run.
+      if (heading == null) {
+        console.warn(`Skipping F5Bot section without a heading: ${section.slice(0, 300)}`);
+        return [];
+      }
+      const keyword = toText(heading)
+        .replace(/^Keyword:\s*/i, '')
+        .replace(/^"|"$/g, '');
       return [...section.matchAll(/<p class="f5-hit"[^>]*>([\s\S]*?)<\/p>/g)]
         .map(([, hit]) => parseRedditHit(hit, keyword))
         .filter((hit) => hit != null);
@@ -102,9 +110,10 @@ const parseHits = (html) =>
 
 function parseRedditHit(html, keyword) {
   const meta = html.match(/Reddit (Posts|Comments) \(\/r\/([^/]+)\/\):/);
-  if (meta == null) return null;
+  const link = html.match(/<a href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/);
+  if (meta == null || link == null) return null;
 
-  const [, href, title] = html.match(/<a href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/);
+  const [, href, title] = link;
   const excerpt = html.match(/<span class="f5-excerpt"[^>]*>([\s\S]*?)<\/span>/)?.[1] ?? '';
   return {
     keyword,
