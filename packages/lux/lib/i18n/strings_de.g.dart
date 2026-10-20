@@ -134,8 +134,6 @@ class _Translations$highlightStyles$de extends Translations$highlightStyles$en {
 	@override String get violet => 'Violett';
 	@override String get underline => 'Unterstreichen';
 	@override String get important => 'Wichtig';
-	@override String get highlight => 'Markieren';
-	@override String get squiggle => 'Wellenlinie';
 }
 
 // Path: colors
@@ -624,6 +622,7 @@ class _Translations$labels$de extends Translations$labels$en {
 	@override String get help => 'Hilfe';
 	@override String get highlightStyles => 'Markierungsstile';
 	@override String get icon => 'Symbol';
+	@override String get preview => 'Vorschau';
 	@override String get instagram => 'Instagram';
 	@override String get facebook => 'Facebook';
 	@override String get tiktok => 'TikTok';
@@ -3277,8 +3276,6 @@ extension on TranslationsDe {
 			'highlightStyles.violet' => 'Violett',
 			'highlightStyles.underline' => 'Unterstreichen',
 			'highlightStyles.important' => 'Wichtig',
-			'highlightStyles.highlight' => 'Markieren',
-			'highlightStyles.squiggle' => 'Wellenlinie',
 			'colors.red' => 'Rot',
 			'colors.orange' => 'Orange',
 			'colors.yellow' => 'Gelb',
@@ -3614,6 +3611,7 @@ extension on TranslationsDe {
 			'labels.help' => 'Hilfe',
 			'labels.highlightStyles' => 'Markierungsstile',
 			'labels.icon' => 'Symbol',
+			'labels.preview' => 'Vorschau',
 			'labels.instagram' => 'Instagram',
 			'labels.facebook' => 'Facebook',
 			'labels.tiktok' => 'TikTok',
@@ -3771,9 +3769,9 @@ extension on TranslationsDe {
 			'toolbarSettings.rangeSelectionDescription' => 'Tippen auf einen zweiten Vers wählt alle Verse zwischen ihm und dem ersten aus.',
 			'toolbarSettings.mainShortcut' => 'Kurzbefehl der Hauptleiste',
 			'toolbarSettings.verseShortcut' => 'Kurzbefehl der Versauswahl',
+			'toolbarSettings.textShortcut' => 'Kurzbefehl der Textauswahl',
 			_ => null,
 		} ?? switch (path) {
-			'toolbarSettings.textShortcut' => 'Kurzbefehl der Textauswahl',
 			'themeSettings.title' => 'Design & Layout',
 			'themeSettings.brightness' => 'Helligkeit',
 			'themeSettings.font' => 'Schriftart',
@@ -4285,9 +4283,9 @@ extension on TranslationsDe {
 			'morphology.types.personalPronoun.description' => 'Ein Pronomen, das sich auf eine bestimmte Person bezieht.',
 			'morphology.types.personalPronoun.examples' => 'ich|du|wir',
 			'morphology.types.demonstrativePronoun.name' => 'Demonstrativpronomen',
+			'morphology.types.demonstrativePronoun.description' => 'Ein Pronomen, das auf etwas hinweist.',
 			_ => null,
 		} ?? switch (path) {
-			'morphology.types.demonstrativePronoun.description' => 'Ein Pronomen, das auf etwas hinweist.',
 			'morphology.types.demonstrativePronoun.examples' => 'dieser|diese|jene',
 			'morphology.types.interrogativePronoun.name' => 'Interrogativpronomen',
 			'morphology.types.interrogativePronoun.description' => 'Ein Pronomen, mit dem man eine Frage stellt.',

@@ -1,3 +1,4 @@
+import 'package:bible/ui/widgets/animated_color_icon.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:style/style.dart';
@@ -28,7 +29,7 @@ class IconCluster extends StatelessWidget {
             ...shownIcons.mapIndexed(
               (index, entry) => Align(
                 alignment: alignments[index],
-                child: Icon(entry.$1, size: 10, color: entry.$2),
+                child: AnimatedColorIcon(entry.$1, size: 10, color: entry.$2),
               ),
             ),
             if (extraCount > 0)

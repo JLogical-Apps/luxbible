@@ -19,9 +19,7 @@
     "blue": "Синий",
     "violet": "Фиолетовый",
     "underline": "Подчёркивание",
-    "important": "Важное",
-    "highlight": "Выделение",
-    "squiggle": "Волнистая линия"
+    "important": "Важное"
   },
   "colors": {
     "red": "Красный",
@@ -393,6 +391,7 @@
     "help": "Помощь",
     "highlightStyles": "Стили выделения",
     "icon": "Значок",
+    "preview": "Предпросмотр",
     "instagram": "Инстаграм",
     "facebook": "Facebook",
     "tiktok": "TikTok",

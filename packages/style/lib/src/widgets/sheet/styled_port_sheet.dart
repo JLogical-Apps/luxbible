@@ -18,6 +18,7 @@ class StyledPortSheet<T> extends StyledSheet<T> {
     required super.title,
     super.subtitle,
     super.trailing,
+    super.aboveButtons,
     required super.childrenBuilder,
   }) : super.builder();
 
@@ -36,6 +37,7 @@ class StyledPortSheet<T> extends StyledSheet<T> {
               Column(spacing: 16, crossAxisAlignment: .start, children: childrenBuilder(context, ref)),
         ),
       ),
+      aboveButtons: aboveButtons,
       buttonsBuilder: (context) => [
         StyledRectButton.primary(
           label: t.common.save.toText(),

@@ -134,8 +134,6 @@ class _Translations$highlightStyles$ru extends Translations$highlightStyles$en {
 	@override String get violet => 'Фиолетовый';
 	@override String get underline => 'Подчёркивание';
 	@override String get important => 'Важное';
-	@override String get highlight => 'Выделение';
-	@override String get squiggle => 'Волнистая линия';
 }
 
 // Path: colors
@@ -626,6 +624,7 @@ class _Translations$labels$ru extends Translations$labels$en {
 	@override String get help => 'Помощь';
 	@override String get highlightStyles => 'Стили выделения';
 	@override String get icon => 'Значок';
+	@override String get preview => 'Предпросмотр';
 	@override String get instagram => 'Инстаграм';
 	@override String get facebook => 'Facebook';
 	@override String get tiktok => 'TikTok';
@@ -3301,8 +3300,6 @@ extension on TranslationsRu {
 			'highlightStyles.violet' => 'Фиолетовый',
 			'highlightStyles.underline' => 'Подчёркивание',
 			'highlightStyles.important' => 'Важное',
-			'highlightStyles.highlight' => 'Выделение',
-			'highlightStyles.squiggle' => 'Волнистая линия',
 			'colors.red' => 'Красный',
 			'colors.orange' => 'Оранжевый',
 			'colors.yellow' => 'Желтый',
@@ -3640,6 +3637,7 @@ extension on TranslationsRu {
 			'labels.help' => 'Помощь',
 			'labels.highlightStyles' => 'Стили выделения',
 			'labels.icon' => 'Значок',
+			'labels.preview' => 'Предпросмотр',
 			'labels.instagram' => 'Инстаграм',
 			'labels.facebook' => 'Facebook',
 			'labels.tiktok' => 'TikTok',
@@ -3795,9 +3793,9 @@ extension on TranslationsRu {
 			'toolbarSettings.expandVerseDescription' => 'Нажатие на стих выбирает полный аннотированный стих.',
 			'toolbarSettings.rangeSelection' => 'Выбор диапазона',
 			'toolbarSettings.rangeSelectionDescription' => 'Нажатие на второй стих выбирает все стихи между ним и первым.',
+			'toolbarSettings.mainShortcut' => 'Ярлык на главной панели инструментов',
 			_ => null,
 		} ?? switch (path) {
-			'toolbarSettings.mainShortcut' => 'Ярлык на главной панели инструментов',
 			'toolbarSettings.verseShortcut' => 'Ярлык выбора стиха',
 			'toolbarSettings.textShortcut' => 'Ярлык выбора текста',
 			'themeSettings.title' => 'Тема и макет',
@@ -4309,9 +4307,9 @@ extension on TranslationsRu {
 			'morphology.types.pronoun.examples' => 'он|она|они',
 			'morphology.types.personalPronoun.name' => 'Личное местоимение',
 			'morphology.types.personalPronoun.description' => 'Местоимение, обозначающее конкретного человека.',
+			'morphology.types.personalPronoun.examples' => 'я|ты|мы',
 			_ => null,
 		} ?? switch (path) {
-			'morphology.types.personalPronoun.examples' => 'я|ты|мы',
 			'morphology.types.demonstrativePronoun.name' => 'Указательное местоимение',
 			'morphology.types.demonstrativePronoun.description' => 'Местоимение, указывающее на что-либо.',
 			'morphology.types.demonstrativePronoun.examples' => 'это|эти|те',

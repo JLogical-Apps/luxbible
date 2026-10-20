@@ -19,9 +19,7 @@
     "blue": "Blau",
     "violet": "Violett",
     "underline": "Unterstreichen",
-    "important": "Wichtig",
-    "highlight": "Markieren",
-    "squiggle": "Wellenlinie"
+    "important": "Wichtig"
   },
   "colors": {
     "red": "Rot",
@@ -391,6 +389,7 @@
     "help": "Hilfe",
     "highlightStyles": "Markierungsstile",
     "icon": "Symbol",
+    "preview": "Vorschau",
     "instagram": "Instagram",
     "facebook": "Facebook",
     "tiktok": "TikTok",

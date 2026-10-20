@@ -134,8 +134,6 @@ class _Translations$highlightStyles$nl extends Translations$highlightStyles$en {
 	@override String get violet => 'Violet';
 	@override String get underline => 'Onderstrepen';
 	@override String get important => 'Belangrijk';
-	@override String get highlight => 'Markeren';
-	@override String get squiggle => 'Golflijn';
 }
 
 // Path: colors
@@ -626,6 +624,7 @@ class _Translations$labels$nl extends Translations$labels$en {
 	@override String get help => 'Help';
 	@override String get highlightStyles => 'Markeerstijlen';
 	@override String get icon => 'Pictogram';
+	@override String get preview => 'Voorbeeld';
 	@override String get instagram => 'Instagram';
 	@override String get facebook => 'Facebook';
 	@override String get tiktok => 'TikTok';
@@ -3279,8 +3278,6 @@ extension on TranslationsNl {
 			'highlightStyles.violet' => 'Violet',
 			'highlightStyles.underline' => 'Onderstrepen',
 			'highlightStyles.important' => 'Belangrijk',
-			'highlightStyles.highlight' => 'Markeren',
-			'highlightStyles.squiggle' => 'Golflijn',
 			'colors.red' => 'Rood',
 			'colors.orange' => 'Oranje',
 			'colors.yellow' => 'Geel',
@@ -3618,6 +3615,7 @@ extension on TranslationsNl {
 			'labels.help' => 'Help',
 			'labels.highlightStyles' => 'Markeerstijlen',
 			'labels.icon' => 'Pictogram',
+			'labels.preview' => 'Voorbeeld',
 			'labels.instagram' => 'Instagram',
 			'labels.facebook' => 'Facebook',
 			'labels.tiktok' => 'TikTok',
@@ -3773,9 +3771,9 @@ extension on TranslationsNl {
 			'toolbarSettings.expandVerseDescription' => 'Als je op een vers tikt, wordt de volledige geannoteerde versselectie geselecteerd.',
 			'toolbarSettings.rangeSelection' => 'Bereikselectie',
 			'toolbarSettings.rangeSelectionDescription' => 'Als je op een tweede vers tikt, worden alle verzen tussen het eerste en tweede vers geselecteerd.',
+			'toolbarSettings.mainShortcut' => 'Snelkoppeling hoofdwerkbalk',
 			_ => null,
 		} ?? switch (path) {
-			'toolbarSettings.mainShortcut' => 'Snelkoppeling hoofdwerkbalk',
 			'toolbarSettings.verseShortcut' => 'Snelkoppeling versselectie',
 			'toolbarSettings.textShortcut' => 'Snelkoppeling tekstselectie',
 			'themeSettings.title' => 'Thema en indeling',
@@ -4287,9 +4285,9 @@ extension on TranslationsNl {
 			'morphology.types.pronoun.examples' => 'hij|zij|ze',
 			'morphology.types.personalPronoun.name' => 'Persoonlijk voornaamwoord',
 			'morphology.types.personalPronoun.description' => 'Een voornaamwoord dat naar een bepaalde persoon verwijst.',
+			'morphology.types.personalPronoun.examples' => 'ik|jij|wij',
 			_ => null,
 		} ?? switch (path) {
-			'morphology.types.personalPronoun.examples' => 'ik|jij|wij',
 			'morphology.types.demonstrativePronoun.name' => 'Aanwijzend voornaamwoord',
 			'morphology.types.demonstrativePronoun.description' => 'Een voornaamwoord dat iets aanwijst.',
 			'morphology.types.demonstrativePronoun.examples' => 'dit|deze|die',

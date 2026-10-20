@@ -1,12 +1,10 @@
 import 'package:bible/models/color_enum.dart';
 import 'package:bible/models/highlight_icon.dart';
 import 'package:bible/models/user/language.dart';
+import 'package:bible/ui/widgets/highlight_decoration.dart';
 import 'package:bible/ui/widgets/highlight_glyph.dart';
-import 'package:bible/ui/widgets/highlight_underline.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:lux/i18n.dart';
-import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
 
 part 'highlight_style.freezed.dart';
@@ -40,20 +38,12 @@ sealed class HighlightStyle with _$HighlightStyle {
 
 enum HighlightStyleType {
   highlight,
+  outline,
   straightUnderline,
-  wavyUnderline;
-
-  IconData get icon => switch (this) {
-    highlight => Symbols.highlighter_size_3,
-    straightUnderline => Symbols.format_underlined,
-    wavyUnderline => Symbols.format_underlined_squiggle,
-  };
-
-  String get title => switch (this) {
-    highlight => t.highlightStyles.highlight,
-    straightUnderline => t.highlightStyles.underline,
-    wavyUnderline => t.highlightStyles.squiggle,
-  };
+  dashedUnderline,
+  doubleUnderline,
+  wavyUnderline,
+  transparent;
 
   Widget buildPreview(
     BuildContext context, {
@@ -61,46 +51,36 @@ enum HighlightStyleType {
     HighlightIcon? icon,
     ComponentSize size = .md,
     bool invertContent = false,
-  }) => SizedBox(
-    width: switch (size) {
-      .lg => 24,
-      .md => 18,
-      .sm => 12,
-    },
-    height: switch (size) {
-      .lg => 30,
-      .md => 24,
-      .sm => 16,
-    },
-    child: Stack(
-      alignment: .center,
-      children: [
-        if (this == highlight)
+  }) {
+    final hueColor = color.toHue(context.colors).primary;
+    return SizedBox(
+      width: switch (size) {
+        .lg => 24,
+        .md => 18,
+        .sm => 12,
+      },
+      height: switch (size) {
+        .lg => 30,
+        .md => 24,
+        .sm => 16,
+      },
+      child: Stack(
+        alignment: .center,
+        children: [
           Positioned.fill(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: color.toHue(context.colors).primary.withValues(alpha: 0.5),
-                borderRadius: .circular(4),
-              ),
+            child: HighlightDecoration(type: this, color: hueColor, thickness: 3),
+          ),
+          Padding(
+            padding: this == highlight || this == outline ? .only(top: 2) : .zero,
+            child: HighlightGlyph(
+              icon: icon,
+              size: size,
+              invertContent: invertContent,
+              color: this == transparent && icon != null ? hueColor : null,
             ),
           ),
-        Padding(
-          padding: this == highlight ? .only(top: 2) : .zero,
-          child: HighlightGlyph(icon: icon, size: size, invertContent: invertContent),
-        ),
-        if (this != highlight)
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            height: 4,
-            child: HighlightUnderline(
-              color: color.toHue(context.colors).primary,
-              wavy: this == wavyUnderline,
-              thickness: 3,
-            ),
-          ),
-      ],
-    ),
-  );
+        ],
+      ),
+    );
+  }
 }

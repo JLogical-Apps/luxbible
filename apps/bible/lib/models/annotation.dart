@@ -13,6 +13,8 @@ part 'annotation.g.dart';
 
 @freezed
 sealed class Annotation with _$Annotation {
+  static final noteIcon = Symbols.note_stack;
+
   const Annotation._();
 
   const factory Annotation({
@@ -28,9 +30,9 @@ sealed class Annotation with _$Annotation {
 
   ColorEnum get color => style.color;
 
-  bool get hasMarker => note.isNotEmpty || style.icon != null;
+  bool get hasMarker => note.isNotEmpty || style.icon != null || style.type == .transparent;
 
-  IconData get markerIcon => style.icon?.icon ?? Symbols.note_stack;
+  IconData get markerIcon => style.icon?.icon ?? noteIcon;
 
   VerseSelection? get verseSelection => selection.as<VersesAnnotationSelection>()?.verseSelection;
   BibleTextSelection? get textSelection => selection.as<TextAnnotationSelection>()?.textSelection;

@@ -19,9 +19,7 @@
     "blue": "Blauw",
     "violet": "Violet",
     "underline": "Onderstrepen",
-    "important": "Belangrijk",
-    "highlight": "Markeren",
-    "squiggle": "Golflijn"
+    "important": "Belangrijk"
   },
   "colors": {
     "red": "Rood",
@@ -393,6 +391,7 @@
     "help": "Help",
     "highlightStyles": "Markeerstijlen",
     "icon": "Pictogram",
+    "preview": "Voorbeeld",
     "instagram": "Instagram",
     "facebook": "Facebook",
     "tiktok": "TikTok",

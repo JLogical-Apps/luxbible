@@ -49,7 +49,7 @@ class LuxReaderConfiguration {
   )?
   markersBuilder;
 
-  final Widget Function(BuildContext, BibleTranslation, List<Object> values)? marginMarkerBuilder;
+  final Widget Function(BuildContext, BibleTranslation, List<Object> values, BibleSelectionType)? marginMarkerBuilder;
 
   final Widget Function(BuildContext, BibleTranslation, Widget child) chapterWrapper;
   final BibleTranslation selectedTranslation;

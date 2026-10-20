@@ -92,7 +92,12 @@ class PassageContent extends StatelessWidget {
               onNavigateToVerseSelection,
             ),
       marginMarkerBuilder: switch (configuration.marginMarkerBuilder) {
-        final marginMarkerBuilder? => (context, values) => marginMarkerBuilder(context, translation, values),
+        final marginMarkerBuilder? => (context, values, selectionType) => marginMarkerBuilder(
+          context,
+          translation,
+          values,
+          selectionType,
+        ),
         null => null,
       },
       onReferencePressed: selection?.onReferencePressed,

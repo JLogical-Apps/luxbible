@@ -6,8 +6,9 @@ class HighlightGlyph extends StatelessWidget {
   final HighlightIcon? icon;
   final ComponentSize size;
   final bool invertContent;
+  final Color? color;
 
-  const HighlightGlyph({super.key, required this.icon, this.size = .md, this.invertContent = false});
+  const HighlightGlyph({super.key, required this.icon, this.size = .md, this.invertContent = false, this.color});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class HighlightGlyph extends StatelessWidget {
       .sm => 12.0,
     };
 
-    final color = invertContent ? context.colors.contentPrimaryInverse : context.colors.contentPrimary;
+    final color = this.color ?? (invertContent ? context.colors.contentPrimaryInverse : context.colors.contentPrimary);
 
     return switch (icon) {
       final icon? => Icon(icon.icon, size: fontSize, color: color),

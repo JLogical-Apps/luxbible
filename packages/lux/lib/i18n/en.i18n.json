@@ -19,9 +19,7 @@
     "blue": "Blue",
     "violet": "Violet",
     "underline": "Underline",
-    "important": "Important",
-    "highlight": "Highlight",
-    "squiggle": "Squiggle"
+    "important": "Important"
   },
   "colors": {
     "red": "Red",
@@ -391,6 +389,7 @@
     "help": "Help",
     "highlightStyles": "Highlight Styles",
     "icon": "Icon",
+    "preview": "Preview",
     "instagram": "Instagram",
     "facebook": "Facebook",
     "tiktok": "TikTok",

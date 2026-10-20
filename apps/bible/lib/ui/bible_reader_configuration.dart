@@ -4,9 +4,10 @@ import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/ui/sheets/annotation_sheet.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
+import 'package:bible/ui/widgets/animated_color_icon.dart';
 import 'package:bible/ui/widgets/font_size_spacing_zoom_gesture.dart';
+import 'package:bible/ui/widgets/highlight_decoration.dart';
 import 'package:bible/ui/widgets/highlight_style_icon.dart';
-import 'package:bible/ui/widgets/highlight_underline.dart';
 import 'package:bible/ui/widgets/icon_cluster.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
@@ -125,11 +126,12 @@ class BibleReaderConfiguration {
       return [
         if (leadingAnnotations.isNotEmpty)
           BibleInlineMarker.leading(
-            builder: (context) => buildAnnotationsButton(
+            builder: (context, selectionType) => buildAnnotationsButton(
               context,
               annotations: leadingAnnotations,
               translation: translation,
-              padding: .only(bottom: 8),
+              selectionType: selectionType,
+              padding: .only(bottom: 2),
             ),
             marginValues: leadingAnnotations,
           ),
@@ -141,11 +143,12 @@ class BibleReaderConfiguration {
                 offset: offset - verseParagraphOffset,
                 anchorOffset: offset,
                 isBoundInSelection: true,
-                builder: (context) => buildAnnotationsButton(
+                builder: (context, selectionType) => buildAnnotationsButton(
                   context,
                   annotations: annotations,
                   translation: translation,
-                  padding: .only(bottom: 8),
+                  selectionType: selectionType,
+                  padding: .only(bottom: 2),
                 ),
                 marginValues: annotations,
               ),
@@ -157,17 +160,18 @@ class BibleReaderConfiguration {
                 (offset, footnotes) => BibleInlineMarker(
                   offset: offset,
                   anchorOffset: verseParagraphOffset + offset,
-                  builder: (context) =>
+                  builder: (context, _) =>
                       buildFootnotesButton(context, footnotes: footnotes, onNavigateToVerseSelection: onNavigate),
                 ),
               ),
       ];
     },
     marginMarkerBuilder: user.themeLayout.annotationsInMargin
-        ? (context, translation, values) => buildAnnotationsButton(
+        ? (context, translation, values, selectionType) => buildAnnotationsButton(
             context,
             annotations: values.whereType<Annotation>().toList(),
             translation: translation,
+            selectionType: selectionType,
           )
         : null,
     chapterWrapper: (context, translation, child) =>
@@ -179,28 +183,27 @@ class BibleReaderConfiguration {
     required Annotation annotation,
     required bool isDimmed,
     required double sizeMultiplier,
+  }) => HighlightDecoration(
+    type: annotation.style.type,
+    color: annotation.color.toHue(context.colors).primary,
+    thickness: 4 * sizeMultiplier,
+    isDimmed: isDimmed,
+  );
+
+  static Color getMarkerColor(
+    BuildContext context, {
+    required Annotation annotation,
+    required BibleSelectionType selectionType,
   }) {
-    final color = annotation.color.toHue(context.colors).primary;
-    return annotation.style.type == .highlight
-        ? AnimatedContainer(
-            duration: Duration(milliseconds: 300),
-            curve: Curves.easeInOutCubic,
-            decoration: BoxDecoration(
-              borderRadius: .circular(4),
-              color: color.withValues(alpha: isDimmed ? 0.2 : 0.5),
-            ),
-          )
-        : HighlightUnderline(
-            color: color.withValues(alpha: isDimmed ? 0.35 : 0.9),
-            wavy: annotation.style.type == .wavyUnderline,
-            thickness: 4 * sizeMultiplier,
-          );
+    final isDimmed = selectionType.isDecorationDimmed(isVerseDecoration: annotation.verseSelection != null);
+    return annotation.color.toHue(context.colors).primary.withValues(alpha: isDimmed ? 0.4 : 1);
   }
 
   static Widget buildAnnotationsButton(
     BuildContext context, {
     required List<Annotation> annotations,
     required BibleTranslation translation,
+    required BibleSelectionType selectionType,
     EdgeInsets padding = .zero,
   }) => Padding(
     padding: padding,
@@ -298,10 +301,18 @@ class BibleReaderConfiguration {
         ),
       ),
       child: switch (annotations) {
-        [final annotation] => Icon(annotation.markerIcon, color: annotation.color.toHue(context.colors).primary),
+        [final annotation] => AnimatedColorIcon(
+          annotation.markerIcon,
+          color: getMarkerColor(context, annotation: annotation, selectionType: selectionType),
+        ),
         _ => IconCluster(
           icons: annotations
-              .map((annotation) => (annotation.markerIcon, annotation.color.toHue(context.colors).primary))
+              .map(
+                (annotation) => (
+                  annotation.markerIcon,
+                  getMarkerColor(context, annotation: annotation, selectionType: selectionType),
+                ),
+              )
               .toList(),
         ),
       },

@@ -649,15 +649,21 @@ An annotation created while reading a Bible plan day, including from a passage p
 Styles support:
 
 - Color highlights
+- Outline boxes
 - Straight underlines
+- Dashed underlines
+- Double underlines
 - Squiggly underlines
+- Transparent styles, which draw nothing on the text and show only a marker
 - Custom labels
 - An optional icon
 - Reordering
 
-Users can create, edit, reorder, and remove styles. A style is its color, type, and icon together, so two styles can share a color and type as long as their icons differ. When changing any of those, or deleting a style, Lux lets the user decide how existing annotations should be handled. A style's preview shows its icon, or the letter A when it has none.
+Users can create, edit, reorder, and remove styles. A style is its color, type, and icon together, so two styles can share a color and type as long as their icons differ. When changing any of those, or deleting a style, Lux lets the user decide how existing annotations should be handled. A style's preview shows its icon, or the letter A when it has none. A transparent style's preview draws its icon in the style's color.
 
-In passages, an annotation with a note shows a note icon before it, in its highlight color. An annotation whose style has an icon shows that icon instead, whether or not it has a note. When several annotations start at the same place, their icons share one marker: up to three tiny icons in a triangle, plus a "+X" badge for the rest. Tapping a marker lists every annotation there, and one without a note reads "No Note" until the user edits it to add one.
+The Create Style and Edit Style sheet has a label, a row of colors, a row of style types shown on the letter A, and an icon grid, all tinted with the chosen color. The "no icon" choice shows the note icon, since that is the marker an annotation without an icon shows in the passage. A preview above the Save button applies the style to "wept" in John 11:35 (BSB) as an annotation with a note.
+
+In passages, an annotation with a note, or with a transparent style, shows a note icon before it, in its highlight color. An annotation whose style has an icon shows that icon instead, whether or not it has a note. When several annotations start at the same place, their icons share one marker: up to three tiny icons in a triangle, plus a "+X" badge for the rest. Tapping a marker lists every annotation there, and one without a note reads "No Note" until the user edits it to add one. While verses are selected, word and phrase annotations dim along with their marker icons, and while text is selected, verse annotations and their marker icons dim.
 
 Annotations in Margin, under Layout in Theme & Layout, moves annotation markers out of the text into a column on its right, including for right-to-left text, level with the line each annotation starts on. Markers on the same line or on lines too close together merge into one cluster. The setting applies everywhere passages appear, including previews, the compare sheet, and study panels. Footnote markers always stay within the text.
 

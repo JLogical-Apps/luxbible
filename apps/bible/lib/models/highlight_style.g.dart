@@ -32,8 +32,12 @@ const _$ColorEnumEnumMap = {
 
 const _$HighlightStyleTypeEnumMap = {
   HighlightStyleType.highlight: 'highlight',
+  HighlightStyleType.outline: 'outline',
   HighlightStyleType.straightUnderline: 'straightUnderline',
+  HighlightStyleType.dashedUnderline: 'dashedUnderline',
+  HighlightStyleType.doubleUnderline: 'doubleUnderline',
   HighlightStyleType.wavyUnderline: 'wavyUnderline',
+  HighlightStyleType.transparent: 'transparent',
 };
 
 const _$HighlightIconEnumMap = {

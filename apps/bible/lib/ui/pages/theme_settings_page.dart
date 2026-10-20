@@ -1,8 +1,7 @@
-import 'package:bible/models/annotation.dart';
 import 'package:bible/models/user/theme_layout_configuration.dart';
 import 'package:bible/models/user/theme_mode.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/ui/bible_reader_configuration.dart';
+import 'package:bible/ui/widgets/annotation_preview.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -34,31 +33,12 @@ class ThemeSettingsPage extends ConsumerWidget implements StyledRoute<void> {
               child: SafeArea(
                 top: false,
                 bottom: false,
-                // The mock annotation's sheet could edit or delete the user's real annotations.
-                child: IgnorePointer(
-                  child: PassageBuilder(
-                    verseSelection: .reference(previewReference),
+                child: AnnotationPreview(
+                  // Covers "He found the man" in the BSB text.
+                  selection: BibleTextSelection(
+                    start: .fromReference(reference: previewReference, characterOffset: 47),
+                    end: .fromReference(reference: previewReference, characterOffset: 62),
                     translation: .bsb,
-                    padding: .all(16),
-                    shrinkWrap: true,
-                    configuration: BibleReaderConfiguration.build(
-                      user.copyWith(
-                        annotations: [
-                          Annotation(
-                            // Covers "He found the man" in the BSB text.
-                            selection: .text(
-                              textSelection: BibleTextSelection(
-                                start: .fromReference(reference: previewReference, characterOffset: 47),
-                                end: .fromReference(reference: previewReference, characterOffset: 62),
-                                translation: .bsb,
-                              ),
-                            ),
-                            note: t.themeSettings.previewAnnotationNote,
-                            createdAt: DateTime.now(),
-                          ),
-                        ],
-                      ),
-                    ),
                   ),
                 ),
               ),

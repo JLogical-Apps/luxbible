@@ -28,12 +28,25 @@ class BibleParagraphsConfiguration {
   });
 }
 
+enum BibleSelectionType {
+  none,
+  verses,
+  text;
+
+  // Decorations of the kind not being selected dim, so the active selection stands out.
+  bool isDecorationDimmed({required bool isVerseDecoration}) => switch (this) {
+    none => false,
+    verses => !isVerseDecoration,
+    text => isVerseDecoration,
+  };
+}
+
 class BibleInlineMarker {
   final int offset;
   final int anchorOffset;
   final bool isBoundInSelection;
   final bool isLeading;
-  final WidgetBuilder builder;
+  final Widget Function(BuildContext context, BibleSelectionType selectionType) builder;
   final List<Object> marginValues;
 
   const BibleInlineMarker({
@@ -99,7 +112,8 @@ class ParagraphsBuilder extends HookWidget {
   final BibleTextSelection? textSelection;
   final List<BiblePassageDecoration> decorations;
   final List<BibleInlineMarker> Function(Reference, Verse, int verseParagraphOffset)? markersBuilder;
-  final Widget Function(BuildContext context, List<Object> values)? marginMarkerBuilder;
+  final Widget Function(BuildContext context, List<Object> values, BibleSelectionType selectionType)?
+  marginMarkerBuilder;
 
   final Function(Reference)? onReferencePressed;
   final bool Function(BibleTextSelection)? onTextSelectionLongPressed;
@@ -136,6 +150,12 @@ class ParagraphsBuilder extends HookWidget {
     this.header,
     this.footer,
   });
+
+  BibleSelectionType get selectionType => switch (textSelection) {
+    _? => .text,
+    null when underlinedReferences.isNotEmpty => .verses,
+    null => .none,
+  };
 
   BookType get book => chapterReference.book;
 
@@ -194,6 +214,7 @@ class ParagraphsBuilder extends HookWidget {
         configuration.showRedLetters,
         configuration.showSection,
         underlinedReferences,
+        textSelection != null,
         markersBuilder,
         marginMarkerBuilder != null,
         controller?.keyBySectionReference,
@@ -459,7 +480,7 @@ class ParagraphsBuilder extends HookWidget {
         height: marginMarkerSize,
         child: Opacity(
           opacity: referenceOpacities[group.spans.first.annotation.anchor.toReference()] ?? 1,
-          child: marginMarkerBuilder(context, group.spans.expand((span) => span.values).toList()),
+          child: marginMarkerBuilder(context, group.spans.expand((span) => span.values).toList(), selectionType),
         ),
       ),
     );
@@ -501,7 +522,7 @@ class ParagraphsBuilder extends HookWidget {
             extent: offsets.$2,
             decoration: decoration,
             toRect: (box) => box.asVerseSelection(multiplier: configuration.sizeMultiplier),
-            buildChild: () => decoration.builder(context, textSelection != null),
+            buildChild: () => decoration.builder(context, selectionType.isDecorationDimmed(isVerseDecoration: true)),
           );
         })
         .nonNulls
@@ -537,7 +558,7 @@ class ParagraphsBuilder extends HookWidget {
           extent: extent,
           decoration: decoration,
           toRect: (box) => box.asTextSelection(multiplier: configuration.sizeMultiplier),
-          buildChild: () => decoration.builder(context, underlinedReferences.isNotEmpty),
+          buildChild: () => decoration.builder(context, selectionType.isDecorationDimmed(isVerseDecoration: false)),
         );
       })
       .nonNulls
@@ -822,7 +843,7 @@ class ParagraphsBuilder extends HookWidget {
           child: Underline(
             isUnderlined: underlinedReferences.has(reference),
             style: bibleTextStyle.body,
-            child: marker.builder(context),
+            child: marker.builder(context, selectionType),
           ),
         ),
       ),
@@ -871,10 +892,14 @@ class ParagraphsBuilder extends HookWidget {
   }
 }
 
+// Lowered because centering on the line box, which includes leading, makes highlights sit high on the glyphs.
 extension on Rect {
-  Rect asVerseSelection({required double multiplier}) =>
-      .fromCenter(center: center + Offset(0, 2), width: width + 4 * multiplier, height: min(32 * multiplier, height));
+  Rect asVerseSelection({required double multiplier}) => .fromCenter(
+    center: center + Offset(0, 2 + 3.2 * multiplier),
+    width: width + 4 * multiplier,
+    height: min(32 * multiplier, height),
+  );
 
   Rect asTextSelection({required double multiplier}) =>
-      .fromCenter(center: center + Offset(0, 2), width: width + 2 * multiplier, height: min(28 * multiplier, height));
+      .fromCenter(center: center + Offset(0, 2 + 3.2 * multiplier), width: width, height: min(28 * multiplier, height));
 }

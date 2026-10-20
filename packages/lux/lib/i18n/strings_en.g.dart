@@ -166,12 +166,6 @@ class Translations$highlightStyles$en {
 
 	/// en: 'Important'
 	String get important => 'Important';
-
-	/// en: 'Highlight'
-	String get highlight => 'Highlight';
-
-	/// en: 'Squiggle'
-	String get squiggle => 'Squiggle';
 }
 
 // Path: colors
@@ -1330,6 +1324,9 @@ class Translations$labels$en {
 
 	/// en: 'Icon'
 	String get icon => 'Icon';
+
+	/// en: 'Preview'
+	String get preview => 'Preview';
 
 	/// en: 'Instagram'
 	String get instagram => 'Instagram';
@@ -5880,8 +5877,6 @@ extension on Translations {
 			'highlightStyles.violet' => 'Violet',
 			'highlightStyles.underline' => 'Underline',
 			'highlightStyles.important' => 'Important',
-			'highlightStyles.highlight' => 'Highlight',
-			'highlightStyles.squiggle' => 'Squiggle',
 			'colors.red' => 'Red',
 			'colors.orange' => 'Orange',
 			'colors.yellow' => 'Yellow',
@@ -6217,6 +6212,7 @@ extension on Translations {
 			'labels.help' => 'Help',
 			'labels.highlightStyles' => 'Highlight Styles',
 			'labels.icon' => 'Icon',
+			'labels.preview' => 'Preview',
 			'labels.instagram' => 'Instagram',
 			'labels.facebook' => 'Facebook',
 			'labels.tiktok' => 'TikTok',
@@ -6374,9 +6370,9 @@ extension on Translations {
 			'toolbarSettings.rangeSelectionDescription' => 'Tapping a second verse selects all verses between it and the first.',
 			'toolbarSettings.mainShortcut' => 'Main Toolbar Shortcut',
 			'toolbarSettings.verseShortcut' => 'Verse Selection Shortcut',
+			'toolbarSettings.textShortcut' => 'Text Selection Shortcut',
 			_ => null,
 		} ?? switch (path) {
-			'toolbarSettings.textShortcut' => 'Text Selection Shortcut',
 			'themeSettings.title' => 'Theme & Layout',
 			'themeSettings.brightness' => 'Brightness',
 			'themeSettings.font' => 'Font',
@@ -6888,9 +6884,9 @@ extension on Translations {
 			'morphology.types.personalPronoun.description' => 'A pronoun that refers to a specific person.',
 			'morphology.types.personalPronoun.examples' => 'I|you|we',
 			'morphology.types.demonstrativePronoun.name' => 'Demonstrative pronoun',
+			'morphology.types.demonstrativePronoun.description' => 'A pronoun that points to something.',
 			_ => null,
 		} ?? switch (path) {
-			'morphology.types.demonstrativePronoun.description' => 'A pronoun that points to something.',
 			'morphology.types.demonstrativePronoun.examples' => 'this|these|those',
 			'morphology.types.interrogativePronoun.name' => 'Interrogative pronoun',
 			'morphology.types.interrogativePronoun.description' => 'A pronoun used to ask a question.',
