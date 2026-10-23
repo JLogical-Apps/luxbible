@@ -210,7 +210,7 @@ sealed class User with _$User {
   List<Annotation> get visibleAnnotations =>
       annotations.where((annotation) => isNotebookVisible(annotation.notebookId)).toList();
 
-  // Annotations whose notebook was deleted belong to the Default notebook.
+  // Annotations kept from a notebook deleted before 1.11.0 still carry its ID but belong to Default.
   List<Annotation> getNotebookAnnotations(String? notebookId) =>
       annotations.where((annotation) => getNotebookById(annotation.notebookId)?.id == notebookId).toList();
 
@@ -223,7 +223,12 @@ sealed class User with _$User {
     notebooks: notebooks.where((notebook) => notebook.id != notebookId).toList(),
     annotations: deleteAnnotations
         ? annotations.where((annotation) => annotation.notebookId != notebookId).toList()
-        : annotations,
+        : annotations
+              .map(
+                (annotation) =>
+                    annotation.notebookId == notebookId ? annotation.copyWith(notebookId: null) : annotation,
+              )
+              .toList(),
     lastNotebookId: lastNotebookId == notebookId ? null : lastNotebookId,
   );
 
