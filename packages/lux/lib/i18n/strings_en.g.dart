@@ -2608,35 +2608,23 @@ class Translations$whatsNew$en {
 	/// en: 'Share them with us and others using Lux on Discord.'
 	String get discordInvitation => 'Share them with us and others using Lux on Discord.';
 
-	/// en: 'Bible Plans Like the Main Reader'
-	String get planToolbarTitle => 'Bible Plans Like the Main Reader';
+	/// en: 'New Highlight Styles'
+	String get highlightStylesTitle => 'New Highlight Styles';
 
-	/// en: 'Plan days now show your main toolbar, study panels, and audio, with a button to move to the next passage.'
-	String get planToolbarDescription => 'Plan days now show your main toolbar, study panels, and audio, with a button to move to the next passage.';
+	/// en: 'Use outline boxes, dashed and double underlines, or icon-only styles, and give any style an icon.'
+	String get highlightStylesDescription => 'Use outline boxes, dashed and double underlines, or icon-only styles, and give any style an icon.';
 
-	/// en: 'Share Plans With Progress'
-	String get planTransferTitle => 'Share Plans With Progress';
+	/// en: 'Annotations in Margin'
+	String get marginAnnotationsTitle => 'Annotations in Margin';
 
-	/// en: 'Share a plan with your progress and target end date, then continue from that progress when you import it.'
-	String get planTransferDescription => 'Share a plan with your progress and target end date, then continue from that progress when you import it.';
+	/// en: 'Turn it on in Theme & Layout to show annotation markers beside the text instead of within it.'
+	String get marginAnnotationsDescription => 'Turn it on in Theme & Layout to show annotation markers beside the text instead of within it.';
 
-	/// en: 'Catch Up in One Step'
-	String get completeThroughTitle => 'Catch Up in One Step';
+	/// en: 'Share Notebooks'
+	String get notebookFilesTitle => 'Share Notebooks';
 
-	/// en: 'Mark every day up to the one you choose as complete from a plan's menu.'
-	String get completeThroughDescription => 'Mark every day up to the one you choose as complete from a plan\'s menu.';
-
-	/// en: 'Navigation Settings'
-	String get navigationSettingsTitle => 'Navigation Settings';
-
-	/// en: 'Pick books and chapters from a list or grid, hide recents, and choose whether the keyboard opens.'
-	String get navigationSettingsDescription => 'Pick books and chapters from a list or grid, hide recents, and choose whether the keyboard opens.';
-
-	/// en: 'New Checklists'
-	String get tutorialsTitle => 'New Checklists';
-
-	/// en: 'Get Started and the Advanced Tutorial walk you through Lux. Start either one from More > Help.'
-	String get tutorialsDescription => 'Get Started and the Advanced Tutorial walk you through Lux. Start either one from More > Help.';
+	/// en: 'Share or download a notebook as a file, then import it as a new notebook or into an existing one.'
+	String get notebookFilesDescription => 'Share or download a notebook as a file, then import it as a new notebook or into an existing one.';
 }
 
 // Path: analyticsNotice
@@ -6680,16 +6668,12 @@ extension on Translations {
 			'whatsNew.rate' => 'Rate',
 			'whatsNew.haveIdeas' => 'Have feedback or ideas?',
 			'whatsNew.discordInvitation' => 'Share them with us and others using Lux on Discord.',
-			'whatsNew.planToolbarTitle' => 'Bible Plans Like the Main Reader',
-			'whatsNew.planToolbarDescription' => 'Plan days now show your main toolbar, study panels, and audio, with a button to move to the next passage.',
-			'whatsNew.planTransferTitle' => 'Share Plans With Progress',
-			'whatsNew.planTransferDescription' => 'Share a plan with your progress and target end date, then continue from that progress when you import it.',
-			'whatsNew.completeThroughTitle' => 'Catch Up in One Step',
-			'whatsNew.completeThroughDescription' => 'Mark every day up to the one you choose as complete from a plan\'s menu.',
-			'whatsNew.navigationSettingsTitle' => 'Navigation Settings',
-			'whatsNew.navigationSettingsDescription' => 'Pick books and chapters from a list or grid, hide recents, and choose whether the keyboard opens.',
-			'whatsNew.tutorialsTitle' => 'New Checklists',
-			'whatsNew.tutorialsDescription' => 'Get Started and the Advanced Tutorial walk you through Lux. Start either one from More > Help.',
+			'whatsNew.highlightStylesTitle' => 'New Highlight Styles',
+			'whatsNew.highlightStylesDescription' => 'Use outline boxes, dashed and double underlines, or icon-only styles, and give any style an icon.',
+			'whatsNew.marginAnnotationsTitle' => 'Annotations in Margin',
+			'whatsNew.marginAnnotationsDescription' => 'Turn it on in Theme & Layout to show annotation markers beside the text instead of within it.',
+			'whatsNew.notebookFilesTitle' => 'Share Notebooks',
+			'whatsNew.notebookFilesDescription' => 'Share or download a notebook as a file, then import it as a new notebook or into an existing one.',
 			'analyticsNotice.title' => 'A Note About Anonymous Analytics',
 			'analyticsNotice.description' => 'Lux now uses anonymous analytics and crash reports to understand which features are used and improve reliability.\n\nThese reports never include your notes, Bible plan names or reading details, search terms, or other private content, and they are not linked to an account.\n\nBy continuing to use Lux, you agree to this information being sent.',
 			'renamedBiblePlansNotice.title' => 'Bible Plans Have Updated',
@@ -6945,12 +6929,12 @@ extension on Translations {
 			'morphology.types.adjective.description' => 'A word that describes a noun.',
 			'morphology.types.adjective.examples' => 'great|holy|wise',
 			'morphology.types.noun.name' => 'Noun',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.noun.description' => 'A person, place, thing, or idea.',
 			'morphology.types.noun.examples' => 'city|water|love',
 			'morphology.types.properNoun.name' => 'Proper noun',
 			'morphology.types.properNoun.description' => 'A specific name of a person, place, or thing.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.properNoun.examples' => 'David|Jerusalem|Israel',
 			'morphology.types.number.name' => 'Number',
 			'morphology.types.number.description' => 'A cardinal number.',

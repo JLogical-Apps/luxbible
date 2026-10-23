@@ -1169,16 +1169,12 @@ class _Translations$whatsNew$ru extends Translations$whatsNew$en {
 	@override String get rate => 'Оценить';
 	@override String get haveIdeas => 'Есть отзывы или идеи?';
 	@override String get discordInvitation => 'Поделитесь ими с нами и другими пользователями Lux в Discord.';
-	@override String get planToolbarTitle => 'Планы как основное чтение';
-	@override String get planToolbarDescription => 'В днях плана теперь есть главная панель инструментов, панели изучения и аудио, а также кнопка перехода к следующему отрывку.';
-	@override String get planTransferTitle => 'Делитесь планами с прогрессом';
-	@override String get planTransferDescription => 'Делитесь планом с прогрессом и датой окончания и продолжайте с этого прогресса после импорта.';
-	@override String get completeThroughTitle => 'Наверстайте за один шаг';
-	@override String get completeThroughDescription => 'Отметьте в меню плана все дни до выбранного как завершённые.';
-	@override String get navigationSettingsTitle => 'Настройки навигации';
-	@override String get navigationSettingsDescription => 'Выбирайте книги и главы из списка или сетки, скрывайте недавние и решайте, открывать ли клавиатуру.';
-	@override String get tutorialsTitle => 'Новые чек-листы';
-	@override String get tutorialsDescription => '«Начать» и «Расширенное обучение» знакомят с Lux. Запустите любой из них в разделе Ещё > Помощь.';
+	@override String get highlightStylesTitle => 'Новые стили выделения';
+	@override String get highlightStylesDescription => 'Используйте рамки, пунктирное и двойное подчеркивание или стили только со значком и задавайте значок любому стилю.';
+	@override String get marginAnnotationsTitle => 'Аннотации на полях';
+	@override String get marginAnnotationsDescription => 'Включите эту настройку в разделе «Тема и макет», чтобы показывать маркеры аннотаций рядом с текстом, а не внутри него.';
+	@override String get notebookFilesTitle => 'Делитесь блокнотами';
+	@override String get notebookFilesDescription => 'Делитесь блокнотом или скачивайте его файлом, а затем импортируйте как новый блокнот или в существующий.';
 }
 
 // Path: analyticsNotice
@@ -4069,16 +4065,12 @@ extension on TranslationsRu {
 			'whatsNew.rate' => 'Оценить',
 			'whatsNew.haveIdeas' => 'Есть отзывы или идеи?',
 			'whatsNew.discordInvitation' => 'Поделитесь ими с нами и другими пользователями Lux в Discord.',
-			'whatsNew.planToolbarTitle' => 'Планы как основное чтение',
-			'whatsNew.planToolbarDescription' => 'В днях плана теперь есть главная панель инструментов, панели изучения и аудио, а также кнопка перехода к следующему отрывку.',
-			'whatsNew.planTransferTitle' => 'Делитесь планами с прогрессом',
-			'whatsNew.planTransferDescription' => 'Делитесь планом с прогрессом и датой окончания и продолжайте с этого прогресса после импорта.',
-			'whatsNew.completeThroughTitle' => 'Наверстайте за один шаг',
-			'whatsNew.completeThroughDescription' => 'Отметьте в меню плана все дни до выбранного как завершённые.',
-			'whatsNew.navigationSettingsTitle' => 'Настройки навигации',
-			'whatsNew.navigationSettingsDescription' => 'Выбирайте книги и главы из списка или сетки, скрывайте недавние и решайте, открывать ли клавиатуру.',
-			'whatsNew.tutorialsTitle' => 'Новые чек-листы',
-			'whatsNew.tutorialsDescription' => '«Начать» и «Расширенное обучение» знакомят с Lux. Запустите любой из них в разделе Ещё > Помощь.',
+			'whatsNew.highlightStylesTitle' => 'Новые стили выделения',
+			'whatsNew.highlightStylesDescription' => 'Используйте рамки, пунктирное и двойное подчеркивание или стили только со значком и задавайте значок любому стилю.',
+			'whatsNew.marginAnnotationsTitle' => 'Аннотации на полях',
+			'whatsNew.marginAnnotationsDescription' => 'Включите эту настройку в разделе «Тема и макет», чтобы показывать маркеры аннотаций рядом с текстом, а не внутри него.',
+			'whatsNew.notebookFilesTitle' => 'Делитесь блокнотами',
+			'whatsNew.notebookFilesDescription' => 'Делитесь блокнотом или скачивайте его файлом, а затем импортируйте как новый блокнот или в существующий.',
 			'analyticsNotice.title' => 'Об анонимной аналитике',
 			'analyticsNotice.description' => 'Lux теперь использует анонимную аналитику и отчёты о сбоях, чтобы понимать, какие функции востребованы, и повышать надёжность. Эти отчёты никогда не содержат ваши заметки, названия планов чтения или сведения о ходе чтения, поисковые запросы либо другой личный контент и не связаны с учётной записью. Продолжая пользоваться Lux, вы соглашаетесь на отправку этой информации.',
 			'renamedBiblePlansNotice.title' => 'Планы чтения Библии обновлены',
@@ -4332,12 +4324,12 @@ extension on TranslationsRu {
 			'morphology.types.negativeAdverb.examples' => 'нет|никогда',
 			'morphology.types.adjective.name' => 'Прилагательное',
 			'morphology.types.adjective.description' => 'Слово, описывающее существительное.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.adjective.examples' => 'великий|святой|мудрый',
 			'morphology.types.noun.name' => 'Существительное',
 			'morphology.types.noun.description' => 'Человек, место, вещь или идея.',
 			'morphology.types.noun.examples' => 'город|вода|любовь',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.properNoun.name' => 'Имя собственное',
 			'morphology.types.properNoun.description' => 'Конкретное имя человека, места или предмета.',
 			'morphology.types.properNoun.examples' => 'Давид|Иерусалим|Израиль',

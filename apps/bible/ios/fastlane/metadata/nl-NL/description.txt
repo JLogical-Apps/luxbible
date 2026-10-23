@@ -10,7 +10,7 @@ Lees de grondteksten offline met de Griekse Septuaginta, Textus Receptus, Byzant
 Luister naar de BSB of KJV met instelbare afspeelsnelheid, een slaaptimer en afspelen op de achtergrond. Begin elke dag met het Vers van de dag, ook als widget op je beginscherm, en stel dagelijkse herinneringen in voor dit vers of een actief leesplan. Kies een bestaand leesplan of maak er zelf een met passages of geselecteerde Bijbelboeken en een looptijd. Importeer en deel plannen als bestanden, volg meerdere plannen tegelijk en houd je voortgang bij.
 
 NOTITIES
-Markeer verzen, woorden of zinnen met een kleur, onderstreping of golvende lijn. Voeg notities toe, maak je eigen markeerstijlen en orden alles in notitieboeken. Filter je annotaties of verberg een notitieboek voor een rustigere leesweergave.
+Markeer verzen, woorden of zinnen met een kleur, een kader of verschillende soorten onderstreping, en geef ze een pictogram. Voeg notities toe, maak je eigen markeerstijlen en orden alles in notitieboeken die je als bestand kunt delen. Filter je annotaties of verberg een notitieboek voor een rustigere leesweergave.
 
 DE TEKST BESTUDEREN
 Tik op een woord om de Griekse of Hebreeuwse stam, het Strong-nummer, de morfologie en de woordvorm te bekijken. Lux maakt studie van de grondtalen toegankelijk zonder dat de rest van de app aanvoelt als academische software.
@@ -28,7 +28,7 @@ Open Gekoppelde bronnen bij een hoofdstuk of vers en zie wat ermee samenhangt: p
 - Zoek personen, plaatsen en onderwerpen op in de Tyndale Open Bible Dictionary
 - Zoom in op 70 bijbelkaarten van reizen, veldslagen en gebieden
 - Bekijk 264 video's van BibleProject, elk gekoppeld aan de passages die ze uitleggen
-- Lees 35 historische geloofsbelijdenissen, belijdenisgeschriften en catechismussen met hun Schriftbewijzen
+- Lees 35 historische geloofsbelijdenissen, belijdenisgeschriften en catechismussen met hun Schriftbewijzen, waaronder de Drie Formulieren van Enigheid en de Apostolische Geloofsbelijdenis in het Nederlands
 
 MAAK HET EIGEN
 Begin met de instelling Lezer, Notitiemaker of Bijbelstudent en pas daarna je werkbalken en snelkoppelingen aan. Houd parallelle Bijbels, interlineaire studie, commentaren, kruisverwijzingen en notities geopend in studiepanelen waar je tijdens het lezen doorheen kunt vegen. Op de iPad staan de panelen direct naast de tekst.

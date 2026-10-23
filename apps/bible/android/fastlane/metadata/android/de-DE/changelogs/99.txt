@@ -1,0 +1,5 @@
+• Neue Markierungsstile: Rahmen, gestrichelte und doppelte Unterstreichungen sowie reine Symbolstile. Jeder Stil kann ein Symbol haben.
+• Annotationen, die an derselben Stelle beginnen, teilen ein Zeichen. Tippe darauf, um alle zu sehen.
+• Annotationen am Rand in Design & Layout zeigt Zeichen neben dem Text.
+• Teile Notizbücher als Datei oder lade sie herunter. Importiere sie als neues Notizbuch oder in ein bestehendes.
+• Einige Bekenntnisse sind nun auf Niederländisch, Deutsch und Russisch.

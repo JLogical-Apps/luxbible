@@ -1,8 +1,7 @@
-• Reading a Bible plan day now works like the main reader. Your main toolbar sits at the bottom with your pinned shortcuts and menu, and a button before the passage moves to the next one or finishes the day. Tap the toolbar to switch Bibles.
-• Study panels now open while reading a plan, using the same panels as the main Bible, and plan audio plays in its own panel alongside them.
-• Share or download an active plan with your progress and target end date. When you import a file with progress, choose whether to continue from it or start fresh.
-• Catching up, or already partway through? Complete Through Day N in a plan's menu marks every day up to the one you choose complete.
-• New Navigation settings, also in More: show books and chapters as a list or a grid, hide recent positions, and choose whether the keyboard opens right away.
-• Navigation now groups books into the Old and New Testaments and lists up to 20 recent positions.
-• New Get Started and Advanced Tutorial checklists walk you through the basics and more advanced features. Start either one from More > Help.
-• What's New in More > About shows the highlights of the latest update.
+• New highlight styles: outline boxes, dashed and double underlines, and transparent styles that show only an icon. Give any style one of 20 icons, and see a preview as you create or edit it.
+• Annotation markers now show their style's icon. When several annotations start at the same spot, they share one marker, and tapping it lists them all.
+• Annotations in Margin, under Layout in Theme & Layout, moves annotation markers out of the text into a column beside it.
+• Share or download any notebook, including Default, as a Lux notebook file with your notes. Import one by opening it with Lux or from the menu in Your Notebooks, as a new notebook or into an existing one, and preview what will be added first.
+• Creeds and confessions now appear in your app language when Lux has a translation: the Heidelberg Catechism, Belgic Confession, Canons of Dort, and Apostles' Creed in Dutch, Ignatius' Creed and the rules of faith of Irenaeus and Tertullian in German, and the Nicene Creed and Chalcedonian Definition in Russian.
+• Manage Styles at the end of the Annotate sheet's style row opens your highlight styles.
+• Bibles are now listed by full name and publisher, with the abbreviation in front.

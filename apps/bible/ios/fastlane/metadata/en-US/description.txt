@@ -10,7 +10,7 @@ Read the original texts offline with the Greek Septuagint, Textus Receptus, Byza
 Listen to the BSB or KJV with playback speed controls, a sleep timer, and background playback. Begin each day with Verse of the Day, also available as a Home Screen widget, and set daily reminders for it or any active reading plan. Choose an included plan or create your own from passages or selected books and a duration. Import and share plans as files, follow more than one plan, and track your progress.
 
 NOTE
-Highlight verses, words, or phrases by color, underline, or squiggly line. Add notes, create your own highlight styles, and organize everything into notebooks. Filter your annotations or hide a notebook when you want a cleaner reading view.
+Highlight verses, words, or phrases with color, an outline, or one of several underlines, and mark them with icons. Add notes, create your own highlight styles, and organize everything into notebooks you can share as files. Filter your annotations or hide a notebook when you want a cleaner reading view.
 
 STUDY THE TEXT
 Tap any word to see its Greek or Hebrew root, Strong's number, morphology, and inflection. Lux makes original-language study approachable without making the rest of the app feel like academic software.

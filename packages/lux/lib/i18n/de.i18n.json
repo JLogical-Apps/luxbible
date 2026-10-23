@@ -863,16 +863,12 @@
     "rate": "Bewerten",
     "haveIdeas": "Hast du Feedback oder Ideen?",
     "discordInvitation": "Teile sie auf Discord mit uns und anderen, die Lux nutzen.",
-    "planToolbarTitle": "Lesepläne wie der normale Leser",
-    "planToolbarDescription": "Plantage zeigen jetzt deine Hauptleiste, Studienpanels und Audio, mit einer Taste zum nächsten Abschnitt.",
-    "planTransferTitle": "Pläne mit Fortschritt teilen",
-    "planTransferDescription": "Teile einen Plan mit Fortschritt und Zielenddatum und mach nach dem Import damit weiter.",
-    "completeThroughTitle": "In einem Schritt aufholen",
-    "completeThroughDescription": "Markiere im Planmenü alle Tage bis zu einem gewählten Tag als abgeschlossen.",
-    "navigationSettingsTitle": "Navigationseinstellungen",
-    "navigationSettingsDescription": "Wähle Bücher und Kapitel aus einer Liste oder einem Raster, blende zuletzt gelesene aus und lege fest, ob sich die Tastatur öffnet.",
-    "tutorialsTitle": "Neue Checklisten",
-    "tutorialsDescription": "„Erste Schritte“ und „Fortgeschrittene Einführung“ führen dich durch Lux. Starte sie unter Mehr > Hilfe."
+    "highlightStylesTitle": "Neue Markierungsstile",
+    "highlightStylesDescription": "Nutze Rahmen, gestrichelte und doppelte Unterstreichungen oder reine Symbolstile und gib jedem Stil ein Symbol.",
+    "marginAnnotationsTitle": "Annotationen am Rand",
+    "marginAnnotationsDescription": "Aktiviere es in Design & Layout, um Annotationszeichen neben dem Text statt im Text anzuzeigen.",
+    "notebookFilesTitle": "Notizbücher teilen",
+    "notebookFilesDescription": "Teile ein Notizbuch als Datei oder lade es herunter und importiere es als neues Notizbuch oder in ein bestehendes."
   },
   "analyticsNotice": {
     "title": "Ein Hinweis zu anonymen Analysen",

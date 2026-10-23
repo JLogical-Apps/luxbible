@@ -1,0 +1,5 @@
+• New highlight styles: outline boxes, dashed and double underlines, and icon-only styles. Any style can now have an icon.
+• Annotations that start at the same spot share one marker. Tap it to see them all.
+• Annotations in Margin, in Theme & Layout, shows markers beside the text.
+• Share or download notebooks as files, and import them as a new notebook or into an existing one.
+• Some creeds and confessions are now in Dutch, German, and Russian.

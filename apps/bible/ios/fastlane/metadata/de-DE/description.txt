@@ -10,7 +10,7 @@ Lies die Grundtexte offline mit der griechischen Septuaginta, dem Textus Receptu
 Hör dir die BSB oder KJV mit einstellbarer Geschwindigkeit, Schlaftimer und Wiedergabe im Hintergrund an. Beginne jeden Tag mit dem Vers des Tages, auch als Widget auf deinem Home-Bildschirm, und lege tägliche Erinnerungen dafür oder für einen aktiven Leseplan fest. Wähle einen der enthaltenen Lesepläne oder erstelle deinen eigenen aus Abschnitten oder ausgewählten Büchern und einer Dauer. Importiere und teile Pläne als Dateien, folge mehreren Plänen gleichzeitig und behalte deinen Fortschritt im Blick.
 
 NOTIZEN
-Markiere Verse, Wörter oder Sätze mit Farbe, Unterstreichung oder Wellenlinie. Füge Notizen hinzu, erstelle eigene Markierungsstile und ordne alles in Notizbüchern. Filtere deine Annotationen oder blende ein Notizbuch aus, wenn du eine ruhigere Leseansicht möchtest.
+Markiere Verse, Wörter oder Sätze mit Farbe, Rahmen, Unterstreichung oder Symbol. Füge Notizen hinzu, erstelle eigene Stile und ordne alles in Notizbüchern, die du als Datei teilen kannst. Filtere Annotationen oder blende ein Notizbuch aus, um ruhiger zu lesen.
 
 DEN TEXT STUDIEREN
 Tippe auf ein Wort, um die griechische oder hebräische Grundform, die Strong-Nummer, die Morphologie und die Flexion zu sehen. Lux macht das Studium der Grundsprachen zugänglich, ohne dass sich der Rest der App wie akademische Software anfühlt.

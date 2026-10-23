@@ -865,16 +865,12 @@
     "rate": "Beoordelen",
     "haveIdeas": "Heb je feedback of ideeën?",
     "discordInvitation": "Deel ze op Discord met ons en anderen die Lux gebruiken.",
-    "planToolbarTitle": "Leesplannen zoals de gewone lezer",
-    "planToolbarDescription": "Leesplandagen tonen nu je hoofdwerkbalk, studiepanelen en audio, met een knop om naar het volgende gedeelte te gaan.",
-    "planTransferTitle": "Leesplannen delen met voortgang",
-    "planTransferDescription": "Deel een leesplan met je voortgang en beoogde einddatum, en ga na het importeren daarmee verder.",
-    "completeThroughTitle": "Achterstand inhalen in één stap",
-    "completeThroughDescription": "Markeer via het menu van een leesplan alle dagen tot en met een gekozen dag als voltooid.",
-    "navigationSettingsTitle": "Navigatie-instellingen",
-    "navigationSettingsDescription": "Kies boeken en hoofdstukken uit een lijst of raster, verberg recente items en kies of het toetsenbord opent.",
-    "tutorialsTitle": "Nieuwe checklists",
-    "tutorialsDescription": "Aan de slag en Geavanceerde uitleg leiden je door Lux. Start ze via Meer > Help."
+    "highlightStylesTitle": "Nieuwe markeerstijlen",
+    "highlightStylesDescription": "Gebruik kaders, gestreepte en dubbele onderstreping of stijlen met alleen een pictogram, en geef elke stijl een pictogram.",
+    "marginAnnotationsTitle": "Annotaties in de marge",
+    "marginAnnotationsDescription": "Zet het aan in Thema en indeling om annotatiemarkeringen naast de tekst te tonen in plaats van erin.",
+    "notebookFilesTitle": "Notitieboeken delen",
+    "notebookFilesDescription": "Deel of download een notitieboek als bestand en importeer het als nieuw notitieboek of in een bestaand notitieboek."
   },
   "analyticsNotice": {
     "title": "Een opmerking over anonieme statistieken",

@@ -1,0 +1,5 @@
+• Nieuwe markeerstijlen: kaders, gestreepte en dubbele onderstreping, en stijlen met alleen een pictogram. Elke stijl kan nu een pictogram hebben.
+• Annotaties die op dezelfde plek beginnen, delen één markering. Tik erop om ze allemaal te zien.
+• Annotaties in de marge, in Thema en indeling, toont markeringen naast de tekst.
+• Deel of download notitieboeken als bestand en importeer ze als nieuw of in een bestaand notitieboek.
+• Enkele belijdenissen zijn nu in het Nederlands, Duits en Russisch.

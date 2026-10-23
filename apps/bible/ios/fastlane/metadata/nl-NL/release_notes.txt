@@ -1,8 +1,7 @@
-• Een leesplandag lezen werkt nu zoals de gewone lezer. Je hoofdwerkbalk staat onderaan met je vastgezette snelkoppelingen en menu, en een knop voor het gedeelte gaat naar het volgende of rondt de dag af. Tik op de werkbalk om van Bijbel te wisselen.
-• Studiepanelen openen nu ook tijdens het lezen van een leesplan, met dezelfde panelen als in de gewone Bijbel, en de audio van het leesplan speelt in een eigen paneel ernaast.
-• Deel of download een actief leesplan met je voortgang en beoogde einddatum. Importeer je een bestand met voortgang, dan kies je of je daarmee verdergaat of opnieuw begint.
-• Achterstand inhalen, of al halverwege? Met Tot en met dag N voltooien in het menu van een leesplan markeer je alle dagen tot en met de gekozen dag als voltooid.
-• Nieuwe navigatie-instellingen, ook te vinden onder Meer: toon boeken en hoofdstukken als lijst of raster, verberg recente posities en kies of het toetsenbord meteen opent.
-• De navigatie deelt de boeken nu in naar Oude en Nieuwe Testament en toont tot 20 recente posities.
-• Nieuwe checklists Aan de slag en Geavanceerde uitleg leiden je door de basis en geavanceerdere functies. Start ze via Meer > Help.
-• Wat is er nieuw onder Meer > Over toont de hoogtepunten van de laatste update.
+• Nieuwe markeerstijlen: kaders, gestreepte en dubbele onderstreping, en transparante stijlen die alleen een pictogram tonen. Geef elke stijl een van 20 pictogrammen en bekijk een voorbeeld terwijl je hem maakt of bewerkt.
+• Annotatiemarkeringen tonen nu het pictogram van hun stijl. Beginnen meerdere annotaties op dezelfde plek, dan delen ze één markering. Tik erop om ze allemaal te zien.
+• Annotaties in de marge, onder Indeling in Thema en indeling, verplaatst annotatiemarkeringen uit de tekst naar een kolom ernaast.
+• Deel of download elk notitieboek, ook Standaard, als Lux-notitieboekbestand met je notities. Importeer er een door het met Lux te openen of via het menu in Je notitieboeken, als nieuw notitieboek of in een bestaand notitieboek, en bekijk eerst wat er wordt toegevoegd.
+• Belijdenissen verschijnen nu in je app-taal als Lux er een vertaling van heeft: de Heidelbergse Catechismus, de Nederlandse Geloofsbelijdenis, de Dordtse Leerregels en de Apostolische Geloofsbelijdenis in het Nederlands, de geloofsbelijdenis van Ignatius en de geloofsregels van Irenaeus en Tertullianus in het Duits, en de Geloofsbelijdenis van Nicea en de Definitie van Chalcedon in het Russisch.
+• Stijlen beheren aan het einde van de stijlrij bij Annoteren opent je markeerstijlen.
+• Bijbels staan nu vermeld met hun volledige naam en uitgever, met de afkorting ervoor.
