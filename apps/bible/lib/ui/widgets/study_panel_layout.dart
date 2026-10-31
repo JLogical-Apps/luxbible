@@ -181,7 +181,7 @@ class StudyPanelSection extends HookConsumerWidget {
           final controller = usePassageController(chapterReference);
 
           return LinkedStudyPanel(
-            chapterReference: chapterReference,
+            passage: passage,
             passageTopReference: visibleVerseSelection.references.firstOrNull,
             scrollController: controller.scrollController,
             showDragHandle: !isSideLayout,
@@ -228,9 +228,9 @@ class StudyPanelSection extends HookConsumerWidget {
         },
       ),
       CommentaryStudyPanel(:final type) => LinkedCommentaryStudyPanel(
-        key: ValueKey((i, chapterReference, type)),
+        key: ValueKey((i, passage, type)),
         type: type,
-        chapterReference: chapterReference,
+        passage: passage,
         passageTopReference: visibleVerseSelection.references.firstOrNull,
         onScrollMainToReference: onScrollMainToReference,
         onNavigateToVerseSelection: onNavigateToVerseSelection,

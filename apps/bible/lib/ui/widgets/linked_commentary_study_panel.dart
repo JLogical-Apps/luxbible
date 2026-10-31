@@ -14,7 +14,7 @@ import 'package:super_sliver_list/super_sliver_list.dart';
 
 class LinkedCommentaryStudyPanel extends HookConsumerWidget {
   final CommentaryType type;
-  final ChapterReference chapterReference;
+  final ChapterPassage passage;
   final Reference? passageTopReference;
   final Function(Reference) onScrollMainToReference;
   final Function(VerseSelection) onNavigateToVerseSelection;
@@ -26,7 +26,7 @@ class LinkedCommentaryStudyPanel extends HookConsumerWidget {
   const LinkedCommentaryStudyPanel({
     super.key,
     required this.type,
-    required this.chapterReference,
+    required this.passage,
     required this.passageTopReference,
     required this.onScrollMainToReference,
     required this.onNavigateToVerseSelection,
@@ -38,11 +38,14 @@ class LinkedCommentaryStudyPanel extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final chapterReference = passage.chapter;
     final commentaryValue = ref.watch(commentaryProvider(type: type, book: chapterReference.book));
     final commentary = commentaryValue.value;
 
-    final blocks = commentary?.blocksByChapter[chapterReference.chapterNum] ?? [];
-    final contentByBookSection = {if (chapterReference.chapterNum == 1) ...?commentary?.contentByBookSection};
+    final blocks = commentary?.getBlocksFor(passage.verseSelection) ?? [];
+    final contentByBookSection = {
+      if (passage.verseSelection.start case Reference(chapterNum: 1, verseNum: 1)) ...?commentary?.contentByBookSection,
+    };
     final syncSelections = [
       ...contentByBookSection.keys.map((_) => null),
       ...blocks.map(
@@ -102,7 +105,7 @@ class LinkedCommentaryStudyPanel extends HookConsumerWidget {
     ];
 
     return LinkedStudyPanel(
-      chapterReference: chapterReference,
+      passage: passage,
       passageTopReference: passageTopReference,
       scrollController: controller.scrollController,
       onScrollMainToReference: (reference) {

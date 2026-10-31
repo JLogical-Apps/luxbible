@@ -597,7 +597,7 @@ Users can:
 
 On narrow layouts, panels dock below the Bible. On wide layouts, they appear to its right. The onboarding checklist and Audio Bible use the same swipeable panel area.
 
-The focused Bible plan reading page shows the same study panels, sharing their list, order, selected panel, and bottom panel height with the main Bible reader. Compare shows only the assigned passage in the other translation. The plan's audio panel takes the Audio Bible's place in the panel area, and the onboarding checklist is not shown there.
+The focused Bible plan reading page shows the same study panels, sharing their list, order, selected panel, and bottom panel height with the main Bible reader. Study panels stay within the assigned passage: Compare shows only that passage in the other translation, Commentary shows only the sections that cover it (with the book's summary and introduction only when it starts at the book's first verse), and the linked panels are titled with the passage rather than its chapter. The plan's audio panel takes the Audio Bible's place in the panel area, and the onboarding checklist is not shown there.
 
 Each onboarding checklist ends with an invitation to join the Lux Discord community, where users can ask questions, share feedback, and meet other users. Completing the last checklist step scrolls the panel to the bottom.
 
