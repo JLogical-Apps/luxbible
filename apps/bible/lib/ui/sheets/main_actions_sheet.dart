@@ -5,6 +5,7 @@ import 'package:bible/providers/verse_of_the_day_provider.dart';
 import 'package:bible/ui/pages/main_toolbar_settings_page.dart';
 import 'package:bible/ui/sheets/whats_new_sheet.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
@@ -16,6 +17,7 @@ class MainActionsSheet {
     BuildContext context, {
     AudioBibleContext audioContext = .bible,
     bool showsPendingItems = false,
+    Set<MainAction> hiddenActions = const {},
   }) => context.showStyledSheet<MainAction>((sheetContext, ref) {
     final user = ref.watch(userProvider);
     final verseOfTheDay = ref.watch(verseOfTheDayProvider).value;
@@ -51,19 +53,21 @@ class MainActionsSheet {
               },
             ),
           ),
-        ...MainAction.topLevelActions.map(
-          (action) => StyledListItem(
-            title: action.title(audioContext: audioContext).toText(),
-            subtitle: Text(
-              action.description(user: user, verseOfTheDay: verseOfTheDay, audioContext: audioContext),
-              maxLines: 3,
-              overflow: .ellipsis,
+        ...MainAction.topLevelActions
+            .whereNot(hiddenActions.has)
+            .map(
+              (action) => StyledListItem(
+                title: action.title(audioContext: audioContext).toText(),
+                subtitle: Text(
+                  action.description(user: user, verseOfTheDay: verseOfTheDay, audioContext: audioContext),
+                  maxLines: 3,
+                  overflow: .ellipsis,
+                ),
+                leading: action.buildIcon(sheetContext, user: user, audioContext: audioContext),
+                trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
+                onPressed: () => sheetContext.pop(action),
+              ),
             ),
-            leading: action.buildIcon(sheetContext, user: user, audioContext: audioContext),
-            trailing: action.isNavigation ? Icon(Symbols.chevron_right) : null,
-            onPressed: () => sheetContext.pop(action),
-          ),
-        ),
       ],
     );
   });

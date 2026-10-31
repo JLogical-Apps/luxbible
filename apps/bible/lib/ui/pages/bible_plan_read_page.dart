@@ -422,7 +422,11 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
                       onPressed: () => onShortcutPressed(.switchBible),
                       onShorcutPressed: (_, shortcut) => onShortcutPressed(shortcut),
                       onMorePressed: () async {
-                        final action = await MainActionsSheet.show(context, audioContext: .plan);
+                        final action = await MainActionsSheet.show(
+                          context,
+                          audioContext: .plan,
+                          hiddenActions: {.verseOfTheDay, .bookmark, .plans},
+                        );
                         if (action != null && context.mounted) {
                           onMainActionPressed(action);
                         }
