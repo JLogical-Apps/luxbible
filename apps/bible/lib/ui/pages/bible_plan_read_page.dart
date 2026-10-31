@@ -265,7 +265,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
         default:
           await action.onPressed(
             context,
-            reference: currentPassage.references.first.toChapterReference(),
+            passage: currentPassage,
             onNavigateToVerseSelection: navigateToVerseSelection,
             onAddStudyPanel: addStudyPanel,
             onBookmarkAdded: (_) {},
@@ -279,7 +279,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
       } else {
         shortcut.onPressed(
           context,
-          reference: currentPassage.references.first.toChapterReference(),
+          passage: currentPassage,
           onNavigateToVerseSelection: navigateToVerseSelection,
           onAddStudyPanel: addStudyPanel,
           onBookmarkAdded: (_) {},

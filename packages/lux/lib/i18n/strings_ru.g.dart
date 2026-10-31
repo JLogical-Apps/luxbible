@@ -388,6 +388,7 @@ class _Translations$regionTypes$ru extends Translations$regionTypes$en {
 
 	// Translations
 	@override String get chapter => 'эта глава';
+	@override String get passage => 'этот отрывок';
 	@override String get verses => 'эти стихи';
 	@override String get visibleVerses => 'видимые стихи';
 	@override String get text => 'этот текст';
@@ -412,9 +413,11 @@ class _Translations$mainActions$ru extends Translations$mainActions$en {
 	@override String get settings => 'Настройки';
 	@override String get more => 'Ещё';
 	@override String get audioDescription => 'Слушайте текущую главу с помощью Библии с поддержкой аудио.';
+	@override String get audioPassageDescription => 'Слушайте текущий отрывок с помощью Библии с поддержкой аудио.';
 	@override String get bookmarkDescription => 'Добавьте эту главу в закладки, чтобы легко получить к ней доступ со страницы поиска.';
 	@override String get manageBookmarkDescription => 'Управляйте этой закладкой.';
 	@override String get studyDescription => 'Просмотрите инструменты обучения для этой главы.';
+	@override String get studyPassageDescription => 'Просмотрите инструменты обучения для этого отрывка.';
 	@override String get verseOfTheDayDescription => 'Посмотрите сегодняшний стих.';
 	@override String get verseOfTheDayLoading => 'Загрузка сегодняшнего стиха…';
 	@override String get verseOfTheDayUnavailable => 'Не удалось загрузить сегодняшний стих.';
@@ -3511,6 +3514,7 @@ extension on TranslationsRu {
 			'copySheet.includeReference' => 'Указать ссылку на отрывок?',
 			'copySheet.includeTranslation' => 'Указать перевод?',
 			'regionTypes.chapter' => 'эта глава',
+			'regionTypes.passage' => 'этот отрывок',
 			'regionTypes.verses' => 'эти стихи',
 			'regionTypes.visibleVerses' => 'видимые стихи',
 			'regionTypes.text' => 'этот текст',
@@ -3526,9 +3530,11 @@ extension on TranslationsRu {
 			'mainActions.settings' => 'Настройки',
 			'mainActions.more' => 'Ещё',
 			'mainActions.audioDescription' => 'Слушайте текущую главу с помощью Библии с поддержкой аудио.',
+			'mainActions.audioPassageDescription' => 'Слушайте текущий отрывок с помощью Библии с поддержкой аудио.',
 			'mainActions.bookmarkDescription' => 'Добавьте эту главу в закладки, чтобы легко получить к ней доступ со страницы поиска.',
 			'mainActions.manageBookmarkDescription' => 'Управляйте этой закладкой.',
 			'mainActions.studyDescription' => 'Просмотрите инструменты обучения для этой главы.',
+			'mainActions.studyPassageDescription' => 'Просмотрите инструменты обучения для этого отрывка.',
 			'mainActions.verseOfTheDayDescription' => 'Посмотрите сегодняшний стих.',
 			'mainActions.verseOfTheDayLoading' => 'Загрузка сегодняшнего стиха…',
 			'mainActions.verseOfTheDayUnavailable' => 'Не удалось загрузить сегодняшний стих.',
@@ -3811,11 +3817,11 @@ extension on TranslationsRu {
 			'highlightStyleUi.updateAnnotations' => 'Обновить аннотации',
 			'highlightStyleUi.updateWithAnnotations' => ({required Object name, required Object annotations}) => '«${name}» имеет ${annotations}. Хотите обновить их, чтобы использовать новый стиль, или оставить как есть?',
 			'highlightStyleUi.leaveAsIs' => 'Оставить как есть',
+			_ => null,
+		} ?? switch (path) {
 			'highlightStyleUi.label' => 'Название',
 			'toolbarSettings.mainToolbar' => 'Главная панель инструментов',
 			'toolbarSettings.verseSelection' => 'Выбор стиха',
-			_ => null,
-		} ?? switch (path) {
 			'toolbarSettings.textSelection' => 'Выбор текста',
 			'toolbarSettings.shownForMain' => 'Отображается, когда ничего не выбрано.',
 			'toolbarSettings.shownForVerses' => 'Отображается, когда выбран стих.',
@@ -4325,11 +4331,11 @@ extension on TranslationsRu {
 			'morphology.types.adjective.name' => 'Прилагательное',
 			'morphology.types.adjective.description' => 'Слово, описывающее существительное.',
 			'morphology.types.adjective.examples' => 'великий|святой|мудрый',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.noun.name' => 'Существительное',
 			'morphology.types.noun.description' => 'Человек, место, вещь или идея.',
 			'morphology.types.noun.examples' => 'город|вода|любовь',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.properNoun.name' => 'Имя собственное',
 			'morphology.types.properNoun.description' => 'Конкретное имя человека, места или предмета.',
 			'morphology.types.properNoun.examples' => 'Давид|Иерусалим|Израиль',

@@ -803,6 +803,9 @@ class Translations$regionTypes$en {
 	/// en: 'this chapter'
 	String get chapter => 'this chapter';
 
+	/// en: 'this passage'
+	String get passage => 'this passage';
+
 	/// en: 'these verses'
 	String get verses => 'these verses';
 
@@ -857,6 +860,9 @@ class Translations$mainActions$en {
 	/// en: 'Listen to the current chapter with an audio-enabled Bible.'
 	String get audioDescription => 'Listen to the current chapter with an audio-enabled Bible.';
 
+	/// en: 'Listen to the current passage with an audio-enabled Bible.'
+	String get audioPassageDescription => 'Listen to the current passage with an audio-enabled Bible.';
+
 	/// en: 'Bookmark this chapter to easily access it from the search page.'
 	String get bookmarkDescription => 'Bookmark this chapter to easily access it from the search page.';
 
@@ -865,6 +871,9 @@ class Translations$mainActions$en {
 
 	/// en: 'View study tools for this chapter.'
 	String get studyDescription => 'View study tools for this chapter.';
+
+	/// en: 'View study tools for this passage.'
+	String get studyPassageDescription => 'View study tools for this passage.';
 
 	/// en: 'View the verse of the day.'
 	String get verseOfTheDayDescription => 'View the verse of the day.';
@@ -6116,6 +6125,7 @@ extension on Translations {
 			'copySheet.includeReference' => 'Include Reference?',
 			'copySheet.includeTranslation' => 'Include Translation?',
 			'regionTypes.chapter' => 'this chapter',
+			'regionTypes.passage' => 'this passage',
 			'regionTypes.verses' => 'these verses',
 			'regionTypes.visibleVerses' => 'visible verses',
 			'regionTypes.text' => 'this text',
@@ -6131,9 +6141,11 @@ extension on Translations {
 			'mainActions.settings' => 'Settings',
 			'mainActions.more' => 'More',
 			'mainActions.audioDescription' => 'Listen to the current chapter with an audio-enabled Bible.',
+			'mainActions.audioPassageDescription' => 'Listen to the current passage with an audio-enabled Bible.',
 			'mainActions.bookmarkDescription' => 'Bookmark this chapter to easily access it from the search page.',
 			'mainActions.manageBookmarkDescription' => 'Manage this bookmark.',
 			'mainActions.studyDescription' => 'View study tools for this chapter.',
+			'mainActions.studyPassageDescription' => 'View study tools for this passage.',
 			'mainActions.verseOfTheDayDescription' => 'View the verse of the day.',
 			'mainActions.studyPanelDescription' => 'Pin a panel beside the text that follows along and shows study tools for whatever you\'re reading.',
 			'mainActions.searchDescription' => 'Search for words across the Bible.',
@@ -6416,11 +6428,11 @@ extension on Translations {
 			'highlightStyleUi.leaveAsIs' => 'Leave As-Is',
 			'highlightStyleUi.label' => 'Label',
 			'toolbarSettings.mainToolbar' => 'Main Toolbar',
+			_ => null,
+		} ?? switch (path) {
 			'toolbarSettings.verseSelection' => 'Verse Selection',
 			'toolbarSettings.textSelection' => 'Text Selection',
 			'toolbarSettings.shownForMain' => 'Shown when nothing is selected.',
-			_ => null,
-		} ?? switch (path) {
 			'toolbarSettings.shownForVerses' => 'Shown when a verse is selected.',
 			'toolbarSettings.shownForText' => 'Shown when long-pressing text within verses.',
 			'toolbarSettings.gestures' => 'Gestures',
@@ -6930,11 +6942,11 @@ extension on Translations {
 			'morphology.types.adjective.examples' => 'great|holy|wise',
 			'morphology.types.noun.name' => 'Noun',
 			'morphology.types.noun.description' => 'A person, place, thing, or idea.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.noun.examples' => 'city|water|love',
 			'morphology.types.properNoun.name' => 'Proper noun',
 			'morphology.types.properNoun.description' => 'A specific name of a person, place, or thing.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.properNoun.examples' => 'David|Jerusalem|Israel',
 			'morphology.types.number.name' => 'Number',
 			'morphology.types.number.description' => 'A cardinal number.',

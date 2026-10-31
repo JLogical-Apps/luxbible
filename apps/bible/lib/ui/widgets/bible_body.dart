@@ -309,14 +309,14 @@ class BibleBody extends HookConsumerWidget {
       },
       onLongPressed: () => user.mainToolbar.longPressShortcut.onPressed(
         context,
-        reference: currentChapterReference,
+        passage: currentChapterReference.toVerseSelection(),
         onNavigateToVerseSelection: navigateToVerseSelection,
         onAddStudyPanel: addStudyPanel,
         onBookmarkAdded: onBookmarkAdded,
       ),
       onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
         context,
-        reference: currentChapterReference,
+        passage: currentChapterReference.toVerseSelection(),
         onNavigateToVerseSelection: navigateToVerseSelection,
         onAddStudyPanel: addStudyPanel,
         onBookmarkAdded: onBookmarkAdded,
@@ -326,7 +326,7 @@ class BibleBody extends HookConsumerWidget {
         if (action != null && context.mounted) {
           action.onPressed(
             context,
-            reference: currentChapterReference,
+            passage: currentChapterReference.toVerseSelection(),
             onNavigateToVerseSelection: navigateToVerseSelection,
             onAddStudyPanel: addStudyPanel,
             onBookmarkAdded: onBookmarkAdded,

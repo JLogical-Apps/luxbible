@@ -225,6 +225,7 @@
   },
   "regionTypes": {
     "chapter": "this chapter",
+    "passage": "this passage",
     "verses": "these verses",
     "visibleVerses": "visible verses",
     "text": "this text"
@@ -242,9 +243,11 @@
     "settings": "Settings",
     "more": "More",
     "audioDescription": "Listen to the current chapter with an audio-enabled Bible.",
+    "audioPassageDescription": "Listen to the current passage with an audio-enabled Bible.",
     "bookmarkDescription": "Bookmark this chapter to easily access it from the search page.",
     "manageBookmarkDescription": "Manage this bookmark.",
     "studyDescription": "View study tools for this chapter.",
+    "studyPassageDescription": "View study tools for this passage.",
     "verseOfTheDayDescription": "View the verse of the day.",
     "studyPanelDescription": "Pin a panel beside the text that follows along and shows study tools for whatever you're reading.",
     "searchDescription": "Search for words across the Bible.",

@@ -225,6 +225,7 @@
   },
   "regionTypes": {
     "chapter": "dit hoofdstuk",
+    "passage": "deze passage",
     "verses": "deze verzen",
     "visibleVerses": "de zichtbare verzen",
     "text": "deze tekst"
@@ -242,9 +243,11 @@
     "settings": "Instellingen",
     "more": "Meer",
     "audioDescription": "Luister naar het huidige hoofdstuk met een Bijbel met audio.",
+    "audioPassageDescription": "Luister naar de huidige passage met een Bijbel met audio.",
     "bookmarkDescription": "Voeg een bladwijzer aan dit hoofdstuk toe om het makkelijk terug te vinden via de zoekpagina.",
     "manageBookmarkDescription": "Beheer deze bladwijzer.",
     "studyDescription": "Bekijk studiehulpmiddelen voor dit hoofdstuk.",
+    "studyPassageDescription": "Bekijk studiehulpmiddelen voor deze passage.",
     "verseOfTheDayDescription": "Bekijk het vers van vandaag.",
     "verseOfTheDayLoading": "Het vers van vandaag wordt geladen…",
     "verseOfTheDayUnavailable": "Het vers van vandaag kan niet worden geladen.",

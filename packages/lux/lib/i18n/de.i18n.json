@@ -225,6 +225,7 @@
   },
   "regionTypes": {
     "chapter": "dieses Kapitel",
+    "passage": "diesen Abschnitt",
     "verses": "diese Verse",
     "visibleVerses": "die sichtbaren Verse",
     "text": "diesen Text"
@@ -242,9 +243,11 @@
     "settings": "Einstellungen",
     "more": "Mehr",
     "audioDescription": "Hör dir das aktuelle Kapitel mit einer Bibel mit Audio an.",
+    "audioPassageDescription": "Hör dir den aktuellen Abschnitt mit einer Bibel mit Audio an.",
     "bookmarkDescription": "Setze ein Lesezeichen für dieses Kapitel, um es auf der Suchseite schnell wiederzufinden.",
     "manageBookmarkDescription": "Dieses Lesezeichen verwalten.",
     "studyDescription": "Studienwerkzeuge für dieses Kapitel anzeigen.",
+    "studyPassageDescription": "Studienwerkzeuge für diesen Abschnitt anzeigen.",
     "verseOfTheDayDescription": "Den Vers des Tages anzeigen.",
     "studyPanelDescription": "Hefte ein Panel neben den Text, das mitläuft und Studienwerkzeuge für das zeigt, was du gerade liest.",
     "searchDescription": "Suche nach Wörtern in der ganzen Bibel.",

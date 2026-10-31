@@ -225,6 +225,7 @@
   },
   "regionTypes": {
     "chapter": "эта глава",
+    "passage": "этот отрывок",
     "verses": "эти стихи",
     "visibleVerses": "видимые стихи",
     "text": "этот текст"
@@ -242,9 +243,11 @@
     "settings": "Настройки",
     "more": "Ещё",
     "audioDescription": "Слушайте текущую главу с помощью Библии с поддержкой аудио.",
+    "audioPassageDescription": "Слушайте текущий отрывок с помощью Библии с поддержкой аудио.",
     "bookmarkDescription": "Добавьте эту главу в закладки, чтобы легко получить к ней доступ со страницы поиска.",
     "manageBookmarkDescription": "Управляйте этой закладкой.",
     "studyDescription": "Просмотрите инструменты обучения для этой главы.",
+    "studyPassageDescription": "Просмотрите инструменты обучения для этого отрывка.",
     "verseOfTheDayDescription": "Посмотрите сегодняшний стих.",
     "verseOfTheDayLoading": "Загрузка сегодняшнего стиха…",
     "verseOfTheDayUnavailable": "Не удалось загрузить сегодняшний стих.",

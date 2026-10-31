@@ -388,6 +388,7 @@ class _Translations$regionTypes$de extends Translations$regionTypes$en {
 
 	// Translations
 	@override String get chapter => 'dieses Kapitel';
+	@override String get passage => 'diesen Abschnitt';
 	@override String get verses => 'diese Verse';
 	@override String get visibleVerses => 'die sichtbaren Verse';
 	@override String get text => 'diesen Text';
@@ -412,9 +413,11 @@ class _Translations$mainActions$de extends Translations$mainActions$en {
 	@override String get settings => 'Einstellungen';
 	@override String get more => 'Mehr';
 	@override String get audioDescription => 'Hör dir das aktuelle Kapitel mit einer Bibel mit Audio an.';
+	@override String get audioPassageDescription => 'Hör dir den aktuellen Abschnitt mit einer Bibel mit Audio an.';
 	@override String get bookmarkDescription => 'Setze ein Lesezeichen für dieses Kapitel, um es auf der Suchseite schnell wiederzufinden.';
 	@override String get manageBookmarkDescription => 'Dieses Lesezeichen verwalten.';
 	@override String get studyDescription => 'Studienwerkzeuge für dieses Kapitel anzeigen.';
+	@override String get studyPassageDescription => 'Studienwerkzeuge für diesen Abschnitt anzeigen.';
 	@override String get verseOfTheDayDescription => 'Den Vers des Tages anzeigen.';
 	@override String get studyPanelDescription => 'Hefte ein Panel neben den Text, das mitläuft und Studienwerkzeuge für das zeigt, was du gerade liest.';
 	@override String get searchDescription => 'Suche nach Wörtern in der ganzen Bibel.';
@@ -3485,6 +3488,7 @@ extension on TranslationsDe {
 			'copySheet.includeReference' => 'Bibelstelle angeben?',
 			'copySheet.includeTranslation' => 'Übersetzung angeben?',
 			'regionTypes.chapter' => 'dieses Kapitel',
+			'regionTypes.passage' => 'diesen Abschnitt',
 			'regionTypes.verses' => 'diese Verse',
 			'regionTypes.visibleVerses' => 'die sichtbaren Verse',
 			'regionTypes.text' => 'diesen Text',
@@ -3500,9 +3504,11 @@ extension on TranslationsDe {
 			'mainActions.settings' => 'Einstellungen',
 			'mainActions.more' => 'Mehr',
 			'mainActions.audioDescription' => 'Hör dir das aktuelle Kapitel mit einer Bibel mit Audio an.',
+			'mainActions.audioPassageDescription' => 'Hör dir den aktuellen Abschnitt mit einer Bibel mit Audio an.',
 			'mainActions.bookmarkDescription' => 'Setze ein Lesezeichen für dieses Kapitel, um es auf der Suchseite schnell wiederzufinden.',
 			'mainActions.manageBookmarkDescription' => 'Dieses Lesezeichen verwalten.',
 			'mainActions.studyDescription' => 'Studienwerkzeuge für dieses Kapitel anzeigen.',
+			'mainActions.studyPassageDescription' => 'Studienwerkzeuge für diesen Abschnitt anzeigen.',
 			'mainActions.verseOfTheDayDescription' => 'Den Vers des Tages anzeigen.',
 			'mainActions.studyPanelDescription' => 'Hefte ein Panel neben den Text, das mitläuft und Studienwerkzeuge für das zeigt, was du gerade liest.',
 			'mainActions.searchDescription' => 'Suche nach Wörtern in der ganzen Bibel.',
@@ -3785,11 +3791,11 @@ extension on TranslationsDe {
 			'highlightStyleUi.leaveAsIs' => 'Unverändert lassen',
 			'highlightStyleUi.label' => 'Bezeichnung',
 			'toolbarSettings.mainToolbar' => 'Hauptleiste',
+			_ => null,
+		} ?? switch (path) {
 			'toolbarSettings.verseSelection' => 'Versauswahl',
 			'toolbarSettings.textSelection' => 'Textauswahl',
 			'toolbarSettings.shownForMain' => 'Wird angezeigt, wenn nichts ausgewählt ist.',
-			_ => null,
-		} ?? switch (path) {
 			'toolbarSettings.shownForVerses' => 'Wird angezeigt, wenn ein Vers ausgewählt ist.',
 			'toolbarSettings.shownForText' => 'Wird angezeigt, wenn du lange auf Text in Versen drückst.',
 			'toolbarSettings.gestures' => 'Gesten',
@@ -4299,11 +4305,11 @@ extension on TranslationsDe {
 			'morphology.types.adjective.examples' => 'groß|heilig|weise',
 			'morphology.types.noun.name' => 'Substantiv',
 			'morphology.types.noun.description' => 'Eine Person, ein Ort, eine Sache oder ein Begriff.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.noun.examples' => 'Stadt|Wasser|Liebe',
 			'morphology.types.properNoun.name' => 'Eigenname',
 			'morphology.types.properNoun.description' => 'Der Name einer bestimmten Person, eines Ortes oder einer Sache.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.properNoun.examples' => 'David|Jerusalem|Israel',
 			'morphology.types.number.name' => 'Kardinalzahl',
 			'morphology.types.number.description' => 'Eine Grundzahl.',

@@ -73,22 +73,22 @@ enum MainToolbarShortcut {
 
   Future<void> onPressed(
     BuildContext context, {
-    required ChapterReference reference,
+    required VerseSelection passage,
     required Function(VerseSelection) onNavigateToVerseSelection,
     required Function(StudyPanel) onAddStudyPanel,
     required Function(String bookmarkId) onBookmarkAdded,
   }) =>
       toStudyAction()?.onPressed(
         context,
-        verseSelection: reference.toVerseSelection(),
-        regionFormat: reference.format(),
+        verseSelection: passage,
+        regionFormat: passage.format(),
         onNavigateToVerseSelection: onNavigateToVerseSelection,
         onAddStudyPanel: onAddStudyPanel,
         user: ref.read(userProvider),
       ) ??
       toMainAction()?.onPressed(
         context,
-        reference: reference,
+        passage: passage,
         onNavigateToVerseSelection: onNavigateToVerseSelection,
         onAddStudyPanel: onAddStudyPanel,
         onBookmarkAdded: onBookmarkAdded,

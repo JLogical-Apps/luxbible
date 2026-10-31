@@ -388,6 +388,7 @@ class _Translations$regionTypes$nl extends Translations$regionTypes$en {
 
 	// Translations
 	@override String get chapter => 'dit hoofdstuk';
+	@override String get passage => 'deze passage';
 	@override String get verses => 'deze verzen';
 	@override String get visibleVerses => 'de zichtbare verzen';
 	@override String get text => 'deze tekst';
@@ -412,9 +413,11 @@ class _Translations$mainActions$nl extends Translations$mainActions$en {
 	@override String get settings => 'Instellingen';
 	@override String get more => 'Meer';
 	@override String get audioDescription => 'Luister naar het huidige hoofdstuk met een Bijbel met audio.';
+	@override String get audioPassageDescription => 'Luister naar de huidige passage met een Bijbel met audio.';
 	@override String get bookmarkDescription => 'Voeg een bladwijzer aan dit hoofdstuk toe om het makkelijk terug te vinden via de zoekpagina.';
 	@override String get manageBookmarkDescription => 'Beheer deze bladwijzer.';
 	@override String get studyDescription => 'Bekijk studiehulpmiddelen voor dit hoofdstuk.';
+	@override String get studyPassageDescription => 'Bekijk studiehulpmiddelen voor deze passage.';
 	@override String get verseOfTheDayDescription => 'Bekijk het vers van vandaag.';
 	@override String get verseOfTheDayLoading => 'Het vers van vandaag wordt geladen…';
 	@override String get verseOfTheDayUnavailable => 'Het vers van vandaag kan niet worden geladen.';
@@ -3487,6 +3490,7 @@ extension on TranslationsNl {
 			'copySheet.includeReference' => 'Bijbelverwijzing opnemen?',
 			'copySheet.includeTranslation' => 'Vertaling opnemen?',
 			'regionTypes.chapter' => 'dit hoofdstuk',
+			'regionTypes.passage' => 'deze passage',
 			'regionTypes.verses' => 'deze verzen',
 			'regionTypes.visibleVerses' => 'de zichtbare verzen',
 			'regionTypes.text' => 'deze tekst',
@@ -3502,9 +3506,11 @@ extension on TranslationsNl {
 			'mainActions.settings' => 'Instellingen',
 			'mainActions.more' => 'Meer',
 			'mainActions.audioDescription' => 'Luister naar het huidige hoofdstuk met een Bijbel met audio.',
+			'mainActions.audioPassageDescription' => 'Luister naar de huidige passage met een Bijbel met audio.',
 			'mainActions.bookmarkDescription' => 'Voeg een bladwijzer aan dit hoofdstuk toe om het makkelijk terug te vinden via de zoekpagina.',
 			'mainActions.manageBookmarkDescription' => 'Beheer deze bladwijzer.',
 			'mainActions.studyDescription' => 'Bekijk studiehulpmiddelen voor dit hoofdstuk.',
+			'mainActions.studyPassageDescription' => 'Bekijk studiehulpmiddelen voor deze passage.',
 			'mainActions.verseOfTheDayDescription' => 'Bekijk het vers van vandaag.',
 			'mainActions.verseOfTheDayLoading' => 'Het vers van vandaag wordt geladen…',
 			'mainActions.verseOfTheDayUnavailable' => 'Het vers van vandaag kan niet worden geladen.',
@@ -3787,11 +3793,11 @@ extension on TranslationsNl {
 			'highlightStyleUi.updateAnnotations' => 'Annotaties bijwerken',
 			'highlightStyleUi.updateWithAnnotations' => ({required Object name, required Object annotations}) => '"${name}" heeft ${annotations}. Wil je ze bijwerken met de nieuwe stijl of ongewijzigd laten?',
 			'highlightStyleUi.leaveAsIs' => 'Ongewijzigd laten',
+			_ => null,
+		} ?? switch (path) {
 			'highlightStyleUi.label' => 'Label',
 			'toolbarSettings.mainToolbar' => 'Hoofdwerkbalk',
 			'toolbarSettings.verseSelection' => 'Versselectie',
-			_ => null,
-		} ?? switch (path) {
 			'toolbarSettings.textSelection' => 'Tekstselectie',
 			'toolbarSettings.shownForMain' => 'Wordt getoond wanneer niets is geselecteerd.',
 			'toolbarSettings.shownForVerses' => 'Wordt getoond wanneer een vers is geselecteerd.',
@@ -4301,11 +4307,11 @@ extension on TranslationsNl {
 			'morphology.types.adjective.name' => 'Bijvoeglijk naamwoord',
 			'morphology.types.adjective.description' => 'Een woord dat een zelfstandig naamwoord beschrijft.',
 			'morphology.types.adjective.examples' => 'groot|heilig|wijs',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.noun.name' => 'Zelfstandig naamwoord',
 			'morphology.types.noun.description' => 'Een persoon, plaats, zaak of begrip.',
 			'morphology.types.noun.examples' => 'stad|water|liefde',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.properNoun.name' => 'Eigennaam',
 			'morphology.types.properNoun.description' => 'De specifieke naam van een persoon, plaats of zaak.',
 			'morphology.types.properNoun.examples' => 'David|Jeruzalem|Israël',
