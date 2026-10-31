@@ -20,7 +20,7 @@ class ArticleSheet {
     required ArticleCollection collection,
     required Article article,
     required Function(VerseSelection) onNavigateToVerseSelection,
-  }) => context.showStyledSheetWithBreadcrumbs(breadcrumbText: article.title, (context, ref) {
+  }) => context.showStyledSheetWithBreadcrumbs(breadcrumbText: article.title, path: '/article', (context, ref) {
     final user = ref.watch(userProvider);
     final showStudyBanner = user.translation.isOnline && !user.tutorials.has(.articlePassagesStudy);
 

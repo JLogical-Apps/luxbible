@@ -33,71 +33,78 @@ class NotebookImportSheet {
     final newNotebook = file.toNewNotebook(user);
     final matchingNotebookId = user.getNotebookById(file.id)?.id;
 
-    return context.showStyledSheetWithBreadcrumbs(breadcrumbText: t.notebookUi.importNotebook, (context, ref) {
-      final user = ref.watch(userProvider);
-      final targetState = useSheetState<NotebookImportTarget>(
-        () => matchingNotebookId == null ? .newNotebook(newNotebook) : .existing(matchingNotebookId),
-      );
-      final target = targetState.value;
-      final import = NotebookImport.of(file, target: target, user: user);
+    return context.showStyledSheetWithBreadcrumbs(
+      breadcrumbText: t.notebookUi.importNotebook,
+      path: '/notebooks/import',
+      (context, ref) {
+        final user = ref.watch(userProvider);
+        final targetState = useSheetState<NotebookImportTarget>(
+          () => matchingNotebookId == null ? .newNotebook(newNotebook) : .existing(matchingNotebookId),
+        );
+        final target = targetState.value;
+        final import = NotebookImport.of(file, target: target, user: user);
 
-      return StyledSheet(
-        title: t.notebookUi.importNotebook.toText(),
-        children: [
-          Padding(
-            padding: .all(16),
-            child: StyledTile(
-              child: StyledListItem(
-                leading: NotebookIcon(notebook: newNotebook),
-                title: file.name.toText(),
-                subtitle: t.annotationUi.annotationCount(count: file.annotations.length).toText(),
-              ),
-            ),
-          ),
-          StyledSection(
-            title: t.notebookUi.importInto.toText(),
-            padding: .only(top: 12),
-            children: [
-              StyledListItem.radio(
-                leading: Symbols.add.toIcon(),
-                title: t.notebookUi.newNotebook.toText(),
-                subtitle: t.notebookUi.newNotebookDescription(name: file.name).toText(),
-                isSelected: target is NewNotebookImportTarget,
-                onSelected: () => targetState.value = .newNotebook(newNotebook),
-              ),
-              ...[...user.notebooks, null].map(
-                (notebook) => StyledListItem.radio(
-                  leading: NotebookIcon(notebook: notebook),
-                  title: (notebook?.name ?? t.common.defaultLabel).toText(),
-                  subtitle: t.annotationUi
-                      .annotationCount(count: user.getNotebookAnnotations(notebook?.id).length)
-                      .toText(),
-                  isSelected: target == .existing(notebook?.id),
-                  onSelected: () => targetState.value = .existing(notebook?.id),
+        return StyledSheet(
+          title: t.notebookUi.importNotebook.toText(),
+          children: [
+            Padding(
+              padding: .all(16),
+              child: StyledTile(
+                child: StyledListItem(
+                  leading: NotebookIcon(notebook: newNotebook),
+                  title: file.name.toText(),
+                  subtitle: t.annotationUi.annotationCount(count: file.annotations.length).toText(),
                 ),
               ),
-            ],
-          ),
-        ],
-        buttonsBuilder: (context) => [
-          StyledRectButton.primary(
-            label:
-                (import.changeCount == 0
-                        ? t.notebookUi.noNewChanges
-                        : t.notebookUi.previewChanges(count: import.changeCount))
-                    .toText(),
-            onPressed: import.changeCount == 0 ? null : () => showPreview(context, file: file, target: target),
-          ),
-        ],
-      );
-    });
+            ),
+            StyledSection(
+              title: t.notebookUi.importInto.toText(),
+              padding: .only(top: 12),
+              children: [
+                StyledListItem.radio(
+                  leading: Symbols.add.toIcon(),
+                  title: t.notebookUi.newNotebook.toText(),
+                  subtitle: t.notebookUi.newNotebookDescription(name: file.name).toText(),
+                  isSelected: target is NewNotebookImportTarget,
+                  onSelected: () => targetState.value = .newNotebook(newNotebook),
+                ),
+                ...[...user.notebooks, null].map(
+                  (notebook) => StyledListItem.radio(
+                    leading: NotebookIcon(notebook: notebook),
+                    title: (notebook?.name ?? t.common.defaultLabel).toText(),
+                    subtitle: t.annotationUi
+                        .annotationCount(count: user.getNotebookAnnotations(notebook?.id).length)
+                        .toText(),
+                    isSelected: target == .existing(notebook?.id),
+                    onSelected: () => targetState.value = .existing(notebook?.id),
+                  ),
+                ),
+              ],
+            ),
+          ],
+          buttonsBuilder: (context) => [
+            StyledRectButton.primary(
+              label:
+                  (import.changeCount == 0
+                          ? t.notebookUi.noNewChanges
+                          : t.notebookUi.previewChanges(count: import.changeCount))
+                      .toText(),
+              onPressed: import.changeCount == 0 ? null : () => showPreview(context, file: file, target: target),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   static Future<void> showPreview(
     BuildContext context, {
     required NotebookFile file,
     required NotebookImportTarget target,
-  }) => context.showStyledSheetWithBreadcrumbs(breadcrumbText: t.labels.preview, (context, ref) {
+  }) => context.showStyledSheetWithBreadcrumbs(breadcrumbText: t.labels.preview, path: '/notebooks/import/preview', (
+    context,
+    ref,
+  ) {
     final user = ref.watch(userProvider);
     final import = NotebookImport.of(file, target: target, user: user);
     final (notebook, notebookName, tag, existingAnnotationCount) = switch (target) {

@@ -31,7 +31,7 @@ class CopySheet {
     required bool isTextSelection,
     required BibleTranslation translation,
     required VerseSelection selection,
-  }) => context.showStyledSheet((context, ref) {
+  }) => context.showStyledSheet(path: '/copy', (context, ref) {
     final configurationState = useState(ref.read(userProvider).copy);
     final configuration = configurationState.value;
 

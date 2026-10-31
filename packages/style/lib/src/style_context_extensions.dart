@@ -47,6 +47,7 @@ extension StyleContextExtensions on BuildContext {
 
   Future<T?> showStyledSheet<T>(
     StyledSheet<T> Function(BuildContext, WidgetRef) sheetBuilder, {
+    String? path,
     Widget Function(StyledSheet Function(BuildContext, WidgetRef) sheetBuilder)? wrapper,
   }) => showCustomModalBottomSheet(
     context: this,
@@ -54,6 +55,7 @@ extension StyleContextExtensions on BuildContext {
     isDismissible: true,
     enableDrag: true,
     useRootNavigator: true,
+    settings: _getSheetRouteSettings(path),
     containerWidget: _getModalContainer,
     builder: (context) {
       Localizations.localeOf(context);
@@ -73,6 +75,7 @@ extension StyleContextExtensions on BuildContext {
   Future<T?> showStyledSheetWithBreadcrumbs<T>(
     StyledSheet<T> Function(BuildContext, WidgetRef) sheetBuilder, {
     required String breadcrumbText,
+    String? path,
   }) async {
     final parentSheetContext = read<SheetNavigationBreadcrumbContext?>();
     // The new sheet carries the parent in its breadcrumbs, so keeping the parent open would duplicate it.
@@ -85,6 +88,7 @@ extension StyleContextExtensions on BuildContext {
       isDismissible: true,
       enableDrag: true,
       useRootNavigator: true,
+      settings: _getSheetRouteSettings(path),
       containerWidget: _getModalContainer,
       builder: (context) {
         Localizations.localeOf(context);
@@ -97,7 +101,7 @@ extension StyleContextExtensions on BuildContext {
             bottom: false,
             child: Provider(
               create: (_) => sheetContext.withBreadcrumb(
-                SheetNavigationBreadcrumb(text: breadcrumbText, sheetBuilder: sheetBuilder),
+                SheetNavigationBreadcrumb(text: breadcrumbText, path: path, sheetBuilder: sheetBuilder),
               ),
               child: HookConsumerBuilder(builder: sheetBuilder),
             ),
@@ -158,6 +162,8 @@ extension StyleContextExtensions on BuildContext {
       ),
     );
   }
+
+  static RouteSettings _getSheetRouteSettings(String? path) => RouteSettings(name: path == null ? null : '/sheet$path');
 
   static Widget _getModalContainer(BuildContext context, Animation<double> animation, Widget child) =>
       Material(color: Colors.transparent, child: child);

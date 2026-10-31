@@ -18,7 +18,7 @@ class MainActionsSheet {
     AudioBibleContext audioContext = .bible,
     bool showsPendingItems = false,
     Set<MainAction> hiddenActions = const {},
-  }) => context.showStyledSheet<MainAction>((sheetContext, ref) {
+  }) => context.showStyledSheet<MainAction>(path: '/actions', (sheetContext, ref) {
     final user = ref.watch(userProvider);
     final verseOfTheDay = ref.watch(verseOfTheDayProvider).value;
 

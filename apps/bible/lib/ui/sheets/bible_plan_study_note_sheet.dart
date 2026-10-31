@@ -12,7 +12,7 @@ class BiblePlanStudyNoteSheet {
     required String planName,
     required int dayIndex,
     required Function(VerseSelection) onNavigateToVerseSelection,
-  }) => context.showStyledSheetWithBreadcrumbs(breadcrumbText: note.title, (context, ref) {
+  }) => context.showStyledSheetWithBreadcrumbs(breadcrumbText: note.title, path: '/bible-plans/note', (context, ref) {
     void navigateToVerseSelection(VerseSelection verseSelection) {
       // A resource opened from here replaces this sheet in the breadcrumbs.
       if (context.mounted) context.pop();

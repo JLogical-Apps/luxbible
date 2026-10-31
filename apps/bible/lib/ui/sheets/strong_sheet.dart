@@ -39,7 +39,7 @@ class StrongSheet {
     );
 
     final breadcrumbText = word?.data?.inflection ?? strong?.id ?? '';
-    await context.showStyledSheetWithBreadcrumbs(breadcrumbText: breadcrumbText, (context, _) {
+    await context.showStyledSheetWithBreadcrumbs(breadcrumbText: breadcrumbText, path: '/strong', (context, _) {
       final selectedMorphologyCodeState = useState(morphologyCodes?.firstOrNull);
       final selectedMorphologyCode = selectedMorphologyCodeState.value;
 

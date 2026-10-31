@@ -15,7 +15,7 @@ import 'package:utils_core/utils_core.dart';
 class BibleSheet {
   static Future<BibleTranslation?> show(BuildContext context, {BibleTranslation? initialBible}) {
     if (initialBible == null) ref.markOnboardingStep(.changeBible);
-    return context.showStyledSheet<BibleTranslation>((context, ref) {
+    return context.showStyledSheet<BibleTranslation>(path: '/bibles', (context, ref) {
       final user = ref.watch(userProvider);
       return StyledSheet(
         title: t.labels.bible.toText(),

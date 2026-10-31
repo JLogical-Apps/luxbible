@@ -31,7 +31,7 @@ class BiblePlanExportSheet {
       return BiblePlanFile(plan: namedPlan, targetDate: planTargetDate);
     }
 
-    return context.showStyledSheet((context, _) {
+    return context.showStyledSheet(path: '/bible-plans/export', (context, _) {
       final includesProgressState = useState(false);
       final includesTargetDateState = useState(false);
 

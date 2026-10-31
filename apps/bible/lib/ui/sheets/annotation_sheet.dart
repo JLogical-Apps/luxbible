@@ -48,6 +48,7 @@ class AnnotationSheet {
         );
 
     return context.showStyledSheet(
+      path: '/annotation',
       (context, _) => StyledPortSheet(
         title: (annotation == null ? t.annotationUi.annotate : t.labels.annotation).toText(),
         subtitle: subtitle,

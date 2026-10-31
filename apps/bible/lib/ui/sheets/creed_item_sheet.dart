@@ -11,7 +11,7 @@ class CreedItemSheet {
     BuildContext context, {
     required CreedItemReference reference,
     required Function(VerseSelection) onNavigateToVerseSelection,
-  }) => context.showStyledSheetWithBreadcrumbs(breadcrumbText: reference.title, (context, ref) {
+  }) => context.showStyledSheetWithBreadcrumbs(breadcrumbText: reference.title, path: '/creed/item', (context, ref) {
     final item = reference.item;
     final (title, heading) = switch ((reference.chapter.heading, item.number, item.title)) {
       (final chapterHeading?, _, _) => (reference.title, chapterHeading),

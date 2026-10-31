@@ -47,6 +47,7 @@ class BiblePlanAnnotationsSheet {
     bool showsDaySections = false,
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) => context.showStyledSheet(
+    path: '/bible-plans/annotations',
     (_, _) => StyledSheet.builder(
       title: title.toText(),
       subtitle: planName.toText(),

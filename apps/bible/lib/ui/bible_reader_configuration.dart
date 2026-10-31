@@ -209,6 +209,7 @@ class BibleReaderConfiguration {
     padding: padding,
     child: StyledCircleButton.sm(
       onPressed: () => context.showStyledSheet(
+        path: '/verse-annotations',
         (context, _) => StyledSheet(
           title: (annotations.every((annotation) => annotation.note.isNotEmpty) ? t.labels.notes : t.labels.annotations)
               .toText(),
@@ -327,6 +328,7 @@ class BibleReaderConfiguration {
     padding: .only(bottom: 4),
     child: StyledCircleButton.sm(
       onPressed: () => context.showStyledSheet(
+        path: '/footnotes',
         (context, _) => StyledSheet(
           title: t.labels.footnotes.toText(),
           children: footnotes

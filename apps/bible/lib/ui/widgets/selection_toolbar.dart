@@ -49,6 +49,7 @@ class SelectionToolbar extends ConsumerWidget {
         onMorePressed: () {
           selectionController.markReferencesAction();
           context.showStyledSheet(
+            path: '/verse-selection',
             (context, _) => StyledSheet(
               title: t.toolbarSettings.verseSelection.toText(),
               subtitle: verseSelection.format().toText(),
@@ -102,6 +103,7 @@ class SelectionToolbar extends ConsumerWidget {
           if (!context.mounted) return;
 
           await context.showStyledSheet(
+            path: '/text-selection',
             (context, _) => StyledSheet(
               title: t.toolbarSettings.textSelection.toText(),
               subtitle: '"$selectionText"'.toText(),

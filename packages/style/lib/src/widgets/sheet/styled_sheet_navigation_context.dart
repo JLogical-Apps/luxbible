@@ -21,6 +21,7 @@ class SheetNavigationBreadcrumbContext {
 
 class SheetNavigationBreadcrumb {
   final String text;
+  final String? path;
   final StyledSheet Function(BuildContext, WidgetRef) sheetBuilder;
 
   double scrollOffset = 0;
@@ -29,7 +30,7 @@ class SheetNavigationBreadcrumb {
   BuildContext? stateContext;
   int nextStateIndex = 0;
 
-  SheetNavigationBreadcrumb({required this.text, required this.sheetBuilder});
+  SheetNavigationBreadcrumb({required this.text, this.path, required this.sheetBuilder});
 
   // Each mount of the sheet claims its states in call order, the same way hooks resolve.
   ValueNotifier<T> getState<T>(BuildContext context, T Function() initialValue) {

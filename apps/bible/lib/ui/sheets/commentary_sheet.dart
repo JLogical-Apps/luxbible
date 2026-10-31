@@ -16,6 +16,7 @@ class CommentarySheet {
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) => context.showStyledSheetWithBreadcrumbs(
     breadcrumbText: commentaryType.title(),
+    path: '/commentary',
     (context, ref) => StyledSheet(
       title: commentaryType.title().toText(),
       subtitle: verseSelection.format().toText(),

@@ -216,6 +216,7 @@ enum MainAction {
       case study:
         context.showStyledSheetWithBreadcrumbs(
           breadcrumbText: t.labels.study,
+          path: '/study',
           (sheetContext, _) => StyledSheet(
             title: t.labels.study.toText(),
             subtitle: passage.format().toText(),
@@ -280,6 +281,7 @@ enum MainAction {
       case studyPanel:
         await context.showStyledSheetWithBreadcrumbs(
           breadcrumbText: t.studyPanels.title,
+          path: '/study-panels',
           (context, _) => StyledSheet(
             title: t.studyPanels.title.toText(),
             children: StudyPanelType.values
@@ -326,6 +328,7 @@ enum MainAction {
         final navigatorContext = context.rootContext;
         final resourcePage = await context.showStyledSheetWithBreadcrumbs<StyledRoute<VerseSelection>>(
           breadcrumbText: t.labels.resources,
+          path: '/resources',
           (context, _) => StyledSheet(
             title: t.labels.resources.toText(),
             children: [

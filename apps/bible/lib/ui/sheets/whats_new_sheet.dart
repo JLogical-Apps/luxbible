@@ -15,6 +15,7 @@ class WhatsNewSheet {
   static Future<void> show(BuildContext context) {
     ref.read(userProvider.notifier).markWhatsNewOpened();
     return context.showStyledSheet(
+      path: '/whats-new',
       (context, _) => StyledSheet(
         title: t.whatsNew.title.toText(),
         subtitle: 'Lux ${WhatsNewHighlight.releaseVersion}'.toText(),
