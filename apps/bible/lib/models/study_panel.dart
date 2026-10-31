@@ -99,7 +99,7 @@ sealed class StudyPanel with _$StudyPanel {
         ...user
             .getTextSelectionAnnotationsInVerseSelection(
               verseSelection,
-              translation: user.getTranslationFor(verseSelection.references.first.book),
+              translation: user.getTranslationFor(verseSelection.start.book),
             )
             .map((record) => record.$1),
       ].where((annotation) => annotation.note.isNotEmpty).sortedBy((a) => a.selection);

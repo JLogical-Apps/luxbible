@@ -74,9 +74,9 @@ class BibleBody extends HookConsumerWidget {
       audioBible: audioBible,
       selection: selectionController,
       passageControllers: passageControllerRegistry,
-      getPassageControllerKey: (passage) => passage.references.first.toChapterReference(),
+      getPassageControllerKey: (passage) => passage.chapter,
       onPassageChanged: (passage) {
-        final chapterReference = passage.references.first.toChapterReference();
+        final chapterReference = passage.chapter;
         if (chapterReference != user.lastReference) {
           final position =
               positionByReferenceRef.value[chapterReference] ??
@@ -85,18 +85,18 @@ class BibleBody extends HookConsumerWidget {
         }
       },
       onCompleteAndNext: (passage) {
-        final nextChapter = passage.references.first.toChapterReference().next;
+        final nextChapter = passage.chapter.next;
         if (nextChapter != null) {
           positionByReferenceRef.value[nextChapter] = ChapterPosition(reference: nextChapter, verseNum: 1);
         }
-        return nextChapter?.toVerseSelection();
+        return nextChapter?.mapIfNonNull(ChapterPassage.chapter);
       },
     );
 
     final currentAudioTranslation = user.getTranslationFor(user.lastReference.book);
     usePostFrameEffect(() {
       final session = ref.read(audioBibleProvider(context: .bible));
-      final passage = user.lastReference.toVerseSelection();
+      final passage = ChapterPassage.chapter(user.lastReference);
       if (session != null && (session.translation != currentAudioTranslation || session.passage != passage)) {
         audioBibleController.replacePassage(context: .bible, passage: passage);
       }
@@ -159,7 +159,7 @@ class BibleBody extends HookConsumerWidget {
     }
 
     Future<void> scrollVerseSelectionIntoView(VerseSelection verseSelection) async {
-      final chapterReference = verseSelection.references.first.toChapterReference();
+      final chapterReference = verseSelection.startChapter;
       final chapter = await ref.read(
         chapterProvider(
           translation: user.getTranslationFor(chapterReference.book),
@@ -170,7 +170,7 @@ class BibleBody extends HookConsumerWidget {
 
       final controller = currentControllerPassthrough.value;
       controller?.scrollToReference(
-        verseSelection.references.first,
+        verseSelection.start,
         paragraphs: chapter.paragraphs,
         alignment: 0.2,
         duration: Duration(milliseconds: 500),
@@ -178,7 +178,7 @@ class BibleBody extends HookConsumerWidget {
     }
 
     void navigateToVerseSelection(VerseSelection verseSelection) async {
-      final chapterReference = verseSelection.references.first.toChapterReference();
+      final chapterReference = verseSelection.startChapter;
       hardNavigateTo(ChapterPosition(reference: chapterReference));
       selectionController.selectReferences(verseSelection.references);
       await scrollVerseSelectionIntoView(verseSelection);
@@ -309,14 +309,14 @@ class BibleBody extends HookConsumerWidget {
       },
       onLongPressed: () => user.mainToolbar.longPressShortcut.onPressed(
         context,
-        passage: currentChapterReference.toVerseSelection(),
+        passage: ChapterPassage.chapter(currentChapterReference),
         onNavigateToVerseSelection: navigateToVerseSelection,
         onAddStudyPanel: addStudyPanel,
         onBookmarkAdded: onBookmarkAdded,
       ),
       onShorcutPressed: (shortcutIndex, shortcut) => shortcut.onPressed(
         context,
-        passage: currentChapterReference.toVerseSelection(),
+        passage: ChapterPassage.chapter(currentChapterReference),
         onNavigateToVerseSelection: navigateToVerseSelection,
         onAddStudyPanel: addStudyPanel,
         onBookmarkAdded: onBookmarkAdded,
@@ -326,7 +326,7 @@ class BibleBody extends HookConsumerWidget {
         if (action != null && context.mounted) {
           action.onPressed(
             context,
-            passage: currentChapterReference.toVerseSelection(),
+            passage: ChapterPassage.chapter(currentChapterReference),
             onNavigateToVerseSelection: navigateToVerseSelection,
             onAddStudyPanel: addStudyPanel,
             onBookmarkAdded: onBookmarkAdded,
@@ -462,7 +462,7 @@ class BibleBody extends HookConsumerWidget {
     return StudyPanelLayout(
       carousel: studyPanelCarousel,
       isSideLayout: isSideLayout,
-      passage: currentChapterReference.toVerseSelection(),
+      passage: ChapterPassage.chapter(currentChapterReference),
       passageController: currentPassageController,
       selectionController: selectionController,
       getViewportTop: () => context.untrackedMediaQuery.padding.top + topBarHeight,

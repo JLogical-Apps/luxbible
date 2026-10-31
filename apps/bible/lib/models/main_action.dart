@@ -138,13 +138,13 @@ enum MainAction {
 
   Future<void> onPressed(
     BuildContext context, {
-    required VerseSelection passage,
+    required ChapterPassage passage,
     required Function(VerseSelection) onNavigateToVerseSelection,
     required Function(StudyPanel) onAddStudyPanel,
     required Function(String bookmarkId) onBookmarkAdded,
   }) async {
     final user = ref.read(userProvider);
-    final reference = passage.references.first.toChapterReference();
+    final reference = passage.chapter;
     switch (this) {
       case audio:
         final wasPlaying = ref.read(audioBiblePlayerProvider(context: .bible)).isPlaying;
@@ -256,7 +256,7 @@ enum MainAction {
                         onPressed: () => action.onPressed(
                           sheetContext,
                           regionFormat: passage.format(),
-                          verseSelection: passage,
+                          verseSelection: passage.verseSelection,
                           onNavigateToVerseSelection: onNavigateToVerseSelection,
                           onAddStudyPanel: onAddStudyPanel,
                           user: ref.read(userProvider),

@@ -207,7 +207,7 @@ final class AudioBibleControllerProvider
 }
 
 String _$audioBibleControllerHash() =>
-    r'9d551e0b035b2a6622139e2b853929944b6a88df';
+    r'dfafb6bf6cd209f067084cb4ac9c6733356325df';
 
 abstract class _$AudioBibleController extends $Notifier<AudioBibleState> {
   AudioBibleState build();

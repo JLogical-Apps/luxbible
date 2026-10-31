@@ -48,9 +48,7 @@ class BiblePlanFile {
   static BiblePlanDayProgress getDayProgress(Map<String, dynamic> dayJson, {required BiblePlanDay day}) {
     if (dayJson['completed'] as bool? ?? false) return .complete();
 
-    final completedPassages = (dayJson['completedPassages'] as List<dynamic>? ?? [])
-        .map((passage) => VerseSelection.fromJson(passage as String))
-        .toSet();
+    final completedPassages = ChapterPassage.setFromJson(dayJson['completedPassages'] as List<dynamic>? ?? []);
 
     return BiblePlanDayProgress.incomplete().withPassagesCompleted(
       day: day,

@@ -25,7 +25,7 @@ class StudyPanelLayout extends StatelessWidget {
   final StudyPanelCarousel carousel;
   final bool isSideLayout;
 
-  final VerseSelection passage;
+  final ChapterPassage passage;
   final PassageController? passageController;
   final PassageSelectionController selectionController;
   final double Function() getViewportTop;
@@ -96,7 +96,7 @@ class StudyPanelSection extends HookConsumerWidget {
   final StudyPanelCarousel carousel;
   final bool isSideLayout;
 
-  final VerseSelection passage;
+  final ChapterPassage passage;
   final PassageController? passageController;
   final PassageSelectionController selectionController;
   final double Function() getViewportTop;
@@ -121,7 +121,7 @@ class StudyPanelSection extends HookConsumerWidget {
     final readerConfiguration = ref.watch(luxReaderConfigurationProvider);
 
     final studyPanels = carousel.studyPanels;
-    final chapterReference = passage.references.first.toChapterReference();
+    final chapterReference = passage.chapter;
 
     final minStudyPanelHeight = 82.0;
     final maxStudyPanelHeight = max(minStudyPanelHeight, MediaQuery.sizeOf(context).height * 0.75);
@@ -218,7 +218,7 @@ class StudyPanelSection extends HookConsumerWidget {
             isActive: currentCarouselPage == i + carousel.leadingOffset,
             isContentLoaded: paragraphsState.value != null,
             child: PassageBuilder(
-              verseSelection: passage,
+              verseSelection: passage.verseSelection,
               translation: translation,
               controller: controller,
               padding: .all(16),

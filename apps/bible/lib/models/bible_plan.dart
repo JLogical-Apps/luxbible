@@ -43,7 +43,8 @@ sealed class BiblePlan with _$BiblePlan {
     if (!days.any((day) => day.passages.isNotEmpty)) return .readingRequired;
     if (days.any((day) => day.passages.toSet().length != day.passages.length)) return .duplicatePassage;
     if (days.any(
-      (day) => day.passages.any((passage) => passage.isEmpty || !VerseSelection.isOsisId(passage.osisId())),
+      (day) =>
+          day.passages.any((passage) => passage.verseSelection.isEmpty || !VerseSelection.isOsisId(passage.toJson())),
     )) {
       return .invalidPassage;
     }
@@ -65,7 +66,9 @@ sealed class BiblePlan with _$BiblePlan {
 sealed class BiblePlanDay with _$BiblePlanDay {
   const BiblePlanDay._();
 
-  const factory BiblePlanDay({@Default([]) List<VerseSelection> passages}) = _BiblePlanDay;
+  const factory BiblePlanDay({
+    @JsonKey(fromJson: ChapterPassage.listFromJson) @Default([]) List<ChapterPassage> passages,
+  }) = _BiblePlanDay;
 
   factory BiblePlanDay.fromJson(Map<String, dynamic> json) => _$BiblePlanDayFromJson(json);
 
@@ -210,14 +213,15 @@ sealed class BiblePlanDayId with _$BiblePlanDayId {
 sealed class BiblePlanDayProgress with _$BiblePlanDayProgress {
   const BiblePlanDayProgress._();
 
-  const factory BiblePlanDayProgress.incomplete({@Default({}) Set<VerseSelection> completedPassages}) =
-      IncompleteBiblePlanDayProgress;
+  const factory BiblePlanDayProgress.incomplete({
+    @JsonKey(fromJson: ChapterPassage.setFromJson) @Default({}) Set<ChapterPassage> completedPassages,
+  }) = IncompleteBiblePlanDayProgress;
 
   const factory BiblePlanDayProgress.complete() = CompleteBiblePlanDayProgress;
 
   factory BiblePlanDayProgress.fromJson(Map<String, dynamic> json) => _$BiblePlanDayProgressFromJson(json);
 
-  bool isPassageComplete(VerseSelection passage) => switch (this) {
+  bool isPassageComplete(ChapterPassage passage) => switch (this) {
     IncompleteBiblePlanDayProgress(:final completedPassages) => completedPassages.has(passage),
     CompleteBiblePlanDayProgress() => true,
   };
@@ -232,18 +236,18 @@ sealed class BiblePlanDayProgress with _$BiblePlanDayProgress {
   BiblePlanDayProgress withCompletionToggled() =>
       isComplete ? BiblePlanDayProgress.incomplete() : BiblePlanDayProgress.complete();
 
-  int? getNextIncompletePassageIndex({required List<VerseSelection> passages, required int currentIndex}) => passages
+  int? getNextIncompletePassageIndex({required List<ChapterPassage> passages, required int currentIndex}) => passages
       .asMap()
       .where((index, passage) => index != currentIndex && !isPassageComplete(passage))
       .sortedBy((index, passage) => index - currentIndex)
       .keys
       .firstOrNull;
 
-  BiblePlanDayProgress withPassageCompleted({required BiblePlanDay day, required VerseSelection passage}) =>
+  BiblePlanDayProgress withPassageCompleted({required BiblePlanDay day, required ChapterPassage passage}) =>
       withPassagesCompleted(day: day, passages: [passage]);
 
   // A Review & Reflect day has no passages, so it's only completed explicitly rather than by completing none.
-  BiblePlanDayProgress withPassagesCompleted({required BiblePlanDay day, required Iterable<VerseSelection> passages}) {
+  BiblePlanDayProgress withPassagesCompleted({required BiblePlanDay day, required Iterable<ChapterPassage> passages}) {
     final completedPassages = switch (this) {
       IncompleteBiblePlanDayProgress(:final completedPassages) => {...completedPassages, ...passages},
       CompleteBiblePlanDayProgress() => day.passages.toSet(),
@@ -253,7 +257,7 @@ sealed class BiblePlanDayProgress with _$BiblePlanDayProgress {
         : BiblePlanDayProgress.incomplete(completedPassages: completedPassages);
   }
 
-  BiblePlanDayProgress withPassageUncompleted({required BiblePlanDay day, required VerseSelection passage}) =>
+  BiblePlanDayProgress withPassageUncompleted({required BiblePlanDay day, required ChapterPassage passage}) =>
       BiblePlanDayProgress.incomplete(
         completedPassages: {
           ...switch (this) {
@@ -399,11 +403,7 @@ enum BiblePlanScope {
 
 extension BiblePlanScopeExtension on BiblePlan {
   BiblePlanScope get scope {
-    final books = days
-        .expand((day) => day.passages)
-        .expand((passage) => passage.spans)
-        .map((span) => span.start.startReference.book)
-        .distinct;
+    final books = days.expand((day) => day.passages).map((passage) => passage.chapter.book).distinct;
     if (books.containsAll(BookType.values)) return .wholeBible;
     if (books.every((book) => book.testament == .oldTestament)) return .oldTestament;
     if (books.every((book) => book.testament == .newTestament)) return .newTestament;
@@ -427,14 +427,14 @@ extension BiblePlanDayProgressesExtension on Iterable<BiblePlanDayProgress> {
 }
 
 extension BiblePlanDraftDaysExtension on List<BiblePlanDay> {
-  List<BiblePlanDay> withPassageAdded(int dayIndex, VerseSelection passage) {
+  List<BiblePlanDay> withPassageAdded(int dayIndex, ChapterPassage passage) {
     final day = this[dayIndex];
     return day.passages.contains(passage)
         ? this
         : withUpdateAt(dayIndex, (day) => day.copyWith(passages: [...day.passages, passage]));
   }
 
-  List<BiblePlanDay> withPassageRemoved(int dayIndex, VerseSelection passage) =>
+  List<BiblePlanDay> withPassageRemoved(int dayIndex, ChapterPassage passage) =>
       withUpdateAt(dayIndex, (day) => day.copyWith(passages: day.passages.withRemoved(passage)));
 
   List<BiblePlanDay> withPassageReordered(int dayIndex, int oldIndex, int newIndex) =>
@@ -443,7 +443,7 @@ extension BiblePlanDraftDaysExtension on List<BiblePlanDay> {
   List<BiblePlanDay> withPassageMoved({
     required int sourceDayIndex,
     required int destinationDayIndex,
-    required VerseSelection passage,
+    required ChapterPassage passage,
   }) => withPassageRemoved(sourceDayIndex, passage).withUpdateAt(
     destinationDayIndex,
     (day) =>

@@ -176,6 +176,5 @@ bool _isLabelRedundant(String label, VerseSelection selection) {
 }
 
 extension on VerseSelection {
-  Reference get start => references.first;
   Reference get end => references.last;
 }

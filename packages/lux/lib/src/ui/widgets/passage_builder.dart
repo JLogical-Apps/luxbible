@@ -43,7 +43,7 @@ class PassageBuilder extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     if (verseSelection.isEmpty) return SizedBox.shrink();
 
-    final chapterReference = verseSelection.references.first.toChapterReference();
+    final chapterReference = verseSelection.startChapter;
     final configuration = this.configuration ?? ref.watch(luxReaderConfigurationProvider)!;
     final translation =
         this.translation?.effectiveFor(chapterReference.book) ?? configuration.translationForChapter(chapterReference);
@@ -58,10 +58,15 @@ class PassageBuilder extends HookConsumerWidget {
         error: paragraphsValue.error,
         fallbackTranslation: configuration.fallbackTranslation,
         onSwitchToFallback: configuration.onSwitchToFallback,
-        onRetry: () => ref.invalidate(
-          chapterProvider(translation: translation, chapterReference: chapterReference),
-          asReload: true,
-        ),
+        onRetry: () => verseSelection.references
+            .map((reference) => reference.toChapterReference())
+            .toSet()
+            .forEach(
+              (chapterReference) => ref.invalidate(
+                chapterProvider(translation: translation, chapterReference: chapterReference),
+                asReload: true,
+              ),
+            ),
         padding: padding,
         shrinkWrap: shrinkWrap,
         suggestTranslationSwap: this.translation == null,

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AudioBibleContextState {
 
- BibleTranslation get translation; VerseSelection get passage; Map<Reference, AudioBibleVerseTiming> get timings;
+ BibleTranslation get translation; ChapterPassage get passage; Map<Reference, AudioBibleVerseTiming> get timings;
 /// Create a copy of AudioBibleContextState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -46,7 +46,7 @@ abstract mixin class $AudioBibleContextStateCopyWith<$Res>  {
   factory $AudioBibleContextStateCopyWith(AudioBibleContextState value, $Res Function(AudioBibleContextState) _then) = _$AudioBibleContextStateCopyWithImpl;
 @useResult
 $Res call({
- BibleTranslation translation, VerseSelection passage, Map<Reference, AudioBibleVerseTiming> timings
+ BibleTranslation translation, ChapterPassage passage, Map<Reference, AudioBibleVerseTiming> timings
 });
 
 
@@ -67,7 +67,7 @@ class _$AudioBibleContextStateCopyWithImpl<$Res>
   return _then(AudioBibleContextState(
 translation: null == translation ? _self.translation : translation // ignore: cast_nullable_to_non_nullable
 as BibleTranslation,passage: null == passage ? _self.passage : passage // ignore: cast_nullable_to_non_nullable
-as VerseSelection,timings: null == timings ? _self.timings : timings // ignore: cast_nullable_to_non_nullable
+as ChapterPassage,timings: null == timings ? _self.timings : timings // ignore: cast_nullable_to_non_nullable
 as Map<Reference, AudioBibleVerseTiming>,
   ));
 }
@@ -150,7 +150,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BibleTranslation translation,  VerseSelection passage,  Map<Reference, AudioBibleVerseTiming> timings)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( BibleTranslation translation,  ChapterPassage passage,  Map<Reference, AudioBibleVerseTiming> timings)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AudioBibleContextState() when $default != null:
 return $default(_that.translation,_that.passage,_that.timings);case _:
@@ -171,7 +171,7 @@ return $default(_that.translation,_that.passage,_that.timings);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BibleTranslation translation,  VerseSelection passage,  Map<Reference, AudioBibleVerseTiming> timings)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( BibleTranslation translation,  ChapterPassage passage,  Map<Reference, AudioBibleVerseTiming> timings)  $default,) {final _that = this;
 switch (_that) {
 case _AudioBibleContextState():
 return $default(_that.translation,_that.passage,_that.timings);}
@@ -188,7 +188,7 @@ return $default(_that.translation,_that.passage,_that.timings);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BibleTranslation translation,  VerseSelection passage,  Map<Reference, AudioBibleVerseTiming> timings)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( BibleTranslation translation,  ChapterPassage passage,  Map<Reference, AudioBibleVerseTiming> timings)?  $default,) {final _that = this;
 switch (_that) {
 case _AudioBibleContextState() when $default != null:
 return $default(_that.translation,_that.passage,_that.timings);case _:
@@ -207,7 +207,7 @@ class _AudioBibleContextState extends AudioBibleContextState {
   
 
 @override final  BibleTranslation translation;
-@override final  VerseSelection passage;
+@override final  ChapterPassage passage;
  final  Map<Reference, AudioBibleVerseTiming> _timings;
 @override Map<Reference, AudioBibleVerseTiming> get timings {
   if (_timings is EqualUnmodifiableMapView) return _timings;
@@ -246,7 +246,7 @@ abstract mixin class _$AudioBibleContextStateCopyWith<$Res> implements $AudioBib
   factory _$AudioBibleContextStateCopyWith(_AudioBibleContextState value, $Res Function(_AudioBibleContextState) _then) = __$AudioBibleContextStateCopyWithImpl;
 @override @useResult
 $Res call({
- BibleTranslation translation, VerseSelection passage, Map<Reference, AudioBibleVerseTiming> timings
+ BibleTranslation translation, ChapterPassage passage, Map<Reference, AudioBibleVerseTiming> timings
 });
 
 
@@ -267,7 +267,7 @@ class __$AudioBibleContextStateCopyWithImpl<$Res>
   return _then(_AudioBibleContextState(
 translation: null == translation ? _self.translation : translation // ignore: cast_nullable_to_non_nullable
 as BibleTranslation,passage: null == passage ? _self.passage : passage // ignore: cast_nullable_to_non_nullable
-as VerseSelection,timings: null == timings ? _self._timings : timings // ignore: cast_nullable_to_non_nullable
+as ChapterPassage,timings: null == timings ? _self._timings : timings // ignore: cast_nullable_to_non_nullable
 as Map<Reference, AudioBibleVerseTiming>,
   ));
 }

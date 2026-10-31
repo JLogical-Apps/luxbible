@@ -90,14 +90,14 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
       currentIndex: currentIndex,
     );
 
-    final passageControllerRegistry = useRegistry<VerseSelection, PassageController>();
+    final passageControllerRegistry = useRegistry<ChapterPassage, PassageController>();
     final currentPassageController = passageControllerRegistry[currentPassage];
-    final readPassages = useMemoized(() => <VerseSelection>{});
+    final readPassages = useMemoized(() => <ChapterPassage>{});
     final passageAreaKey = useMemoized(() => GlobalKey());
 
     void playPassage(int passageIndex) async {
       final passage = passages[passageIndex];
-      final translation = user.getTranslationFor(passage.references.first.book);
+      final translation = user.getTranslationFor(passage.chapter.book);
       if (!translation.hasAudioBible) {
         audioBibleController.remove(context: .plan);
 
@@ -195,10 +195,14 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
           : (showDragHandle) => AudioBiblePanel(context: .plan, showDragHandle: showDragHandle),
     );
 
-    final currentTranslation = user.getTranslationFor(currentPassage.references.first.book);
+    final currentTranslation = user.getTranslationFor(currentPassage.chapter.book);
 
-    Future<List<Paragraph>> getCurrentParagraphs() =>
-        ref.read(verseSelectionParagraphsProvider(selection: currentPassage, translation: currentTranslation).future);
+    Future<List<Paragraph>> getCurrentParagraphs() => ref.read(
+      verseSelectionParagraphsProvider(
+        selection: currentPassage.verseSelection,
+        translation: currentTranslation,
+      ).future,
+    );
 
     void scrollMainToReference(Reference reference) async {
       final paragraphs = await getCurrentParagraphs();
@@ -220,7 +224,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
         final paragraphs = await getCurrentParagraphs();
         await Future.delayed(Duration(milliseconds: 200));
         currentPassageController?.scrollToReference(
-          verseSelection.references.first,
+          verseSelection.start,
           paragraphs: paragraphs,
           alignment: 0.2,
           duration: Duration(milliseconds: 500),
@@ -287,7 +291,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
       }
     }
 
-    final bookTitle = currentPassage.references.first.book.title();
+    final bookTitle = currentPassage.chapter.book.title();
 
     return StyledPage(
       backgroundColor: .backgroundPrimary,
@@ -343,8 +347,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
                             .map(
                               (passage) => HookBuilder(
                                 builder: (context) {
-                                  final chapterReference = passage.references.first.toChapterReference();
-                                  final passageController = usePassageController(chapterReference);
+                                  final passageController = usePassageController(passage.chapter);
                                   useRegistryItem(passageControllerRegistry, passage, passageController);
 
                                   final listController = passageController.listController;
@@ -360,7 +363,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
                                     bottom: false,
                                     right: !isSideLayout || !studyPanelCarousel.hasPanels,
                                     child: PassageBuilder(
-                                      verseSelection: passage,
+                                      verseSelection: passage.verseSelection,
                                       selection: selectionController,
                                       emphasizedReference: audioBibleSync.getEmphasizedReferenceForPassage(passage),
                                       controller: passageController,
@@ -384,13 +387,13 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
                                           ),
                                       footer: StyledRectButton.secondary(
                                         label:
-                                            (passage.isChapter
+                                            (passage.isWholeChapter
                                                     ? t.biblePlans.readInContext
                                                     : t.biblePlans.readEntireChapter)
                                                 .toText(),
                                         onPressed: () => PassagePreviewPage.show(
                                           context,
-                                          verseSelection: passage,
+                                          verseSelection: passage.verseSelection,
                                           onNavigateToVerseSelection: (selection) => context.pop(selection),
                                         ),
                                       ),

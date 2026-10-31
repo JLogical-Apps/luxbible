@@ -12,7 +12,7 @@ class AudioBiblePassageSync {
   Reference? getEmphasizedReferenceForChapter(ChapterReference chapterReference) =>
       player.isPlaying && spokenReference?.toChapterReference() == chapterReference ? spokenReference : null;
 
-  Reference? getEmphasizedReferenceForPassage(VerseSelection passage) {
+  Reference? getEmphasizedReferenceForPassage(ChapterPassage passage) {
     final spokenReference = this.spokenReference;
     return player.isPlaying && spokenReference != null && passage.references.has(spokenReference)
         ? spokenReference
@@ -26,9 +26,9 @@ AudioBiblePassageSync useAudioBiblePassageSync<K>({
   required AudioBibleContextState? audioBible,
   required PassageSelectionController selection,
   required Registry<K, PassageController> passageControllers,
-  required K Function(VerseSelection) getPassageControllerKey,
-  required Function(VerseSelection) onPassageChanged,
-  required VerseSelection? Function(VerseSelection completedPassage) onCompleteAndNext,
+  required K Function(ChapterPassage) getPassageControllerKey,
+  required Function(ChapterPassage) onPassageChanged,
+  required ChapterPassage? Function(ChapterPassage completedPassage) onCompleteAndNext,
   bool removeOnDispose = false,
 }) {
   final audioBibleController = ref.read(audioBibleControllerProvider.notifier);
@@ -42,7 +42,10 @@ AudioBiblePassageSync useAudioBiblePassageSync<K>({
     }
 
     final paragraphs = await ref.read(
-      verseSelectionParagraphsProvider(selection: audioBible.passage, translation: audioBible.translation).future,
+      verseSelectionParagraphsProvider(
+        selection: audioBible.passage.verseSelection,
+        translation: audioBible.translation,
+      ).future,
     );
 
     final currentAudioBible = ref.read(audioBibleProvider(context: context));
@@ -57,7 +60,7 @@ AudioBiblePassageSync useAudioBiblePassageSync<K>({
     }
   }, [audioBible?.passage, audioBible?.translation, spokenReference, passageController]);
 
-  useOnStreamData(audioBibleController.completions(context), (VerseSelection passage) async {
+  useOnStreamData(audioBibleController.completions(context), (ChapterPassage passage) async {
     final nextPassage = onCompleteAndNext(passage);
     if (nextPassage == null || !await audioBibleController.play(context: context, passage: nextPassage)) {
       audioBibleController.remove(context: context);

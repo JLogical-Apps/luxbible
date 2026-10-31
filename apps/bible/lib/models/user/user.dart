@@ -440,7 +440,7 @@ sealed class User with _$User {
 
   bool hasStartedPlan(String planId) => planProgressById.containsKey(planId);
 
-  bool hasCompletedPassage({required String planId, required int dayIndex, required VerseSelection passage}) =>
+  bool hasCompletedPassage({required String planId, required int dayIndex, required ChapterPassage passage}) =>
       planProgressById[planId]?.days.elementAtOrNull(dayIndex)?.isPassageComplete(passage) ?? false;
 
   bool hasCompletedPlanDay({required String planId, required int dayIndex}) =>
@@ -487,7 +487,7 @@ sealed class User with _$User {
     required String planId,
     required int dayIndex,
     required BiblePlanDay day,
-    required VerseSelection passage,
+    required ChapterPassage passage,
   }) => hasCompletedPassage(planId: planId, dayIndex: dayIndex, passage: passage)
       ? withPassageUncompleted(planId: planId, dayIndex: dayIndex, day: day, passage: passage)
       : withPassageCompleted(planId: planId, dayIndex: dayIndex, day: day, passage: passage);
@@ -511,7 +511,7 @@ sealed class User with _$User {
     required String planId,
     required int dayIndex,
     required BiblePlanDay day,
-    required VerseSelection passage,
+    required ChapterPassage passage,
   }) => withProgressDayUpdated(
     planId: planId,
     dayIndex: dayIndex,
@@ -522,7 +522,7 @@ sealed class User with _$User {
     required String planId,
     required int dayIndex,
     required BiblePlanDay day,
-    required VerseSelection passage,
+    required ChapterPassage passage,
   }) => withProgressDayUpdated(
     planId: planId,
     dayIndex: dayIndex,

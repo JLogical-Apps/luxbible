@@ -25,15 +25,15 @@ sealed class AudioBibleContextState with _$AudioBibleContextState {
 
   const factory AudioBibleContextState({
     required BibleTranslation translation,
-    required VerseSelection passage,
+    required ChapterPassage passage,
     required Map<Reference, AudioBibleVerseTiming> timings,
   }) = _AudioBibleContextState;
 
-  Uri? get uri => translation.getAudioAssetUri(passage.references.first.toChapterReference());
+  Uri? get uri => translation.getAudioAssetUri(passage.chapter);
 
   Duration get startPosition => passage.getAudioStartPosition(timings);
   Duration? getEndPosition(Duration? duration) =>
-      passage.isChapter ? duration : passage.getLastAudioTiming(timings)?.end ?? duration;
+      passage.isWholeChapter ? duration : passage.getLastAudioTiming(timings)?.end ?? duration;
 
   Reference? getReferenceAtPosition(Duration position) =>
       timings.getReferenceAtPosition(passage: passage, position: position);
@@ -94,7 +94,7 @@ class AudioBibleController extends _$AudioBibleController {
     (context) => MapEntry(context, BehaviorSubject<Reference?>.seeded(null)),
   );
   final completionSubjects = AudioBibleContext.values.mapToMap(
-    (context) => MapEntry(context, PublishSubject<VerseSelection>()),
+    (context) => MapEntry(context, PublishSubject<ChapterPassage>()),
   );
   final errorSubject = BehaviorSubject<PlayerException?>.seeded(null);
 
@@ -137,20 +137,20 @@ class AudioBibleController extends _$AudioBibleController {
 
   ValueStream<Reference?> spokenReferences(AudioBibleContext context) => spokenReferenceSubjects[context]!;
 
-  Stream<VerseSelection> completions(AudioBibleContext context) => completionSubjects[context]!;
+  Stream<ChapterPassage> completions(AudioBibleContext context) => completionSubjects[context]!;
 
   ValueStream<PlayerException?> get errors => errorSubject;
   PlayerException? get error => errorSubject.value;
 
-  Future<bool> play({required AudioBibleContext context, required VerseSelection passage}) async {
+  Future<bool> play({required AudioBibleContext context, required ChapterPassage passage}) async {
     if (handler == null) return false;
 
-    final translation = ref.read(userProvider).getTranslationFor(passage.references.first.book);
+    final translation = ref.read(userProvider).getTranslationFor(passage.chapter.book);
     final timings = getTimingsFor(translation, passage);
     final session = state.getSessionFor(context);
     final isSamePassage = session?.translation == translation && session?.passage == passage;
 
-    if (translation.getAudioAssetUri(passage.references.first.toChapterReference()) == null) {
+    if (translation.getAudioAssetUri(passage.chapter) == null) {
       return false;
     }
 
@@ -179,7 +179,7 @@ class AudioBibleController extends _$AudioBibleController {
     return error == null;
   }
 
-  Future<bool> toggle({required AudioBibleContext context, required VerseSelection passage}) async {
+  Future<bool> toggle({required AudioBibleContext context, required ChapterPassage passage}) async {
     final session = state.getSessionFor(context);
     if (state.activeContext == context && session?.passage == passage && player?.playing == true) {
       await pause(context: context);
@@ -189,13 +189,13 @@ class AudioBibleController extends _$AudioBibleController {
     return play(context: context, passage: passage);
   }
 
-  Future<void> replacePassage({required AudioBibleContext context, required VerseSelection passage}) async {
+  Future<void> replacePassage({required AudioBibleContext context, required ChapterPassage passage}) async {
     final session = state.getSessionFor(context);
     if (session == null) {
       return;
     }
 
-    final translation = ref.read(userProvider).getTranslationFor(passage.references.first.book);
+    final translation = ref.read(userProvider).getTranslationFor(passage.chapter.book);
     if (session.translation == translation && session.passage == passage) {
       return;
     }
@@ -332,7 +332,7 @@ class AudioBibleController extends _$AudioBibleController {
           artUri: (await ref.read(pathServiceProvider)?.getAssetAsFile('assets/images/lux-logo-full.png'))?.uri,
         ),
         initialPosition: initialPosition,
-        clipEnd: session.passage.isChapter ? null : session.passage.getLastAudioTiming(session.timings)?.end,
+        clipEnd: session.passage.isWholeChapter ? null : session.passage.getLastAudioTiming(session.timings)?.end,
       );
       positions[context] = initialPosition;
       errorSubject.add(null);
@@ -400,7 +400,7 @@ class AudioBibleController extends _$AudioBibleController {
     subject.add(reference);
   }
 
-  Map<Reference, AudioBibleVerseTiming> getTimingsFor(BibleTranslation translation, VerseSelection passage) {
+  Map<Reference, AudioBibleVerseTiming> getTimingsFor(BibleTranslation translation, ChapterPassage passage) {
     final translationTimings = ref.read(audioBibleTimingsProvider)[translation] ?? {};
     return passage.references
         .mapToMap((reference) => MapEntry(reference, translationTimings[reference]))

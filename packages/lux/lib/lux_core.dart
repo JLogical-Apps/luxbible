@@ -12,6 +12,7 @@ export 'src/models/bible/verse.dart';
 export 'src/models/bible/word.dart';
 export 'src/models/lux_app.dart';
 export 'src/models/reference/bible_text_selection.dart';
+export 'src/models/reference/chapter_passage.dart';
 export 'src/models/reference/chapter_position.dart';
 export 'src/models/reference/chapter_reference.dart';
 export 'src/models/reference/reference.dart';

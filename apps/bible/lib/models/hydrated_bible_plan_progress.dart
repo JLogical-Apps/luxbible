@@ -14,7 +14,7 @@ class HydratedBiblePlanProgress {
 
   BiblePlanDayId getDayId(int dayIndex) => BiblePlanDayId(instanceId: instanceId, dayIndex: dayIndex);
 
-  bool isPassageComplete({required int dayIndex, required VerseSelection passage}) =>
+  bool isPassageComplete({required int dayIndex, required ChapterPassage passage}) =>
       (progress.days.elementAtOrNull(dayIndex) ?? BiblePlanDayProgress.incomplete()).isPassageComplete(passage);
 
   bool isDayComplete({required int dayIndex}) =>

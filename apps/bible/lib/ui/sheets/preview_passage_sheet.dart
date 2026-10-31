@@ -15,10 +15,10 @@ class PreviewPassageSheet {
       children: verseSelection
           .splitByChapter()
           .map<Widget>(
-            (selection) => Padding(
+            (passage) => Padding(
               padding: .all(16),
               child: PassageBuilder(
-                verseSelection: selection,
+                verseSelection: passage.verseSelection,
                 shrinkWrap: true,
                 onNavigateToVerseSelection: (selection) {
                   context.pop();

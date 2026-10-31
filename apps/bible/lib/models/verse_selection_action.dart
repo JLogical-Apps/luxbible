@@ -68,7 +68,7 @@ enum VerseSelectionAction {
         final rootContext = context.rootContext;
 
         final user = ref.read(userProvider);
-        final translation = user.getTranslationFor(selectedVerseSelection.references.first.book);
+        final translation = user.getTranslationFor(selectedVerseSelection.start.book);
         final text = await ref.read(
           verseSelectionTextProvider(selection: selectedVerseSelection, translation: translation).future,
         );

@@ -14,7 +14,7 @@ class AudioBibleVerseTiming {
 }
 
 extension AudioBibleVerseTimingsExtensions on Map<Reference, AudioBibleVerseTiming> {
-  Reference? getReferenceAtPosition({required VerseSelection passage, required Duration position}) {
+  Reference? getReferenceAtPosition({required ChapterPassage passage, required Duration position}) {
     final timedReferences = passage.references.where(containsKey).toList();
     return timedReferences.lastWhereOrNull(
           (reference) => position >= this[reference]!.start - Duration(milliseconds: 300),
@@ -23,7 +23,7 @@ extension AudioBibleVerseTimingsExtensions on Map<Reference, AudioBibleVerseTimi
   }
 }
 
-extension AudioBiblePassageTimingExtensions on VerseSelection {
+extension AudioBiblePassageTimingExtensions on ChapterPassage {
   AudioBibleVerseTiming? getFirstAudioTiming(Map<Reference, AudioBibleVerseTiming> timings) =>
       references.map((reference) => timings[reference]).nonNulls.firstOrNull;
 
@@ -36,7 +36,7 @@ extension AudioBiblePassageTimingExtensions on VerseSelection {
       : getFirstAudioTiming(timings)?.start ?? Duration.zero;
 
   bool hasReachedAudioEnd(Duration position, Map<Reference, AudioBibleVerseTiming> timings) =>
-      !isChapter &&
+      !isWholeChapter &&
       switch (getLastAudioTiming(timings)?.end) {
         final end? => position >= end,
         null => false,

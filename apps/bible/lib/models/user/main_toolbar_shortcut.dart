@@ -73,14 +73,14 @@ enum MainToolbarShortcut {
 
   Future<void> onPressed(
     BuildContext context, {
-    required VerseSelection passage,
+    required ChapterPassage passage,
     required Function(VerseSelection) onNavigateToVerseSelection,
     required Function(StudyPanel) onAddStudyPanel,
     required Function(String bookmarkId) onBookmarkAdded,
   }) =>
       toStudyAction()?.onPressed(
         context,
-        verseSelection: passage,
+        verseSelection: passage.verseSelection,
         regionFormat: passage.format(),
         onNavigateToVerseSelection: onNavigateToVerseSelection,
         onAddStudyPanel: onAddStudyPanel,

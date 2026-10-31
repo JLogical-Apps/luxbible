@@ -445,7 +445,12 @@ class CreateBiblePlanFlow extends HookConsumerWidget {
                                     selectionConfiguration: ref.watch(luxReaderConfigurationProvider).selection,
                                     title: t.biblePlans.addPassage.toText(),
                                   );
-                                  if (passage != null) daysState.value = days.withPassageAdded(dayIndex, passage);
+                                  if (passage != null) {
+                                    daysState.value = passage.splitByChapter().fold(
+                                      days,
+                                      (days, passage) => days.withPassageAdded(dayIndex, passage),
+                                    );
+                                  }
                                 },
                               ),
                             ],
@@ -475,7 +480,8 @@ class CreateBiblePlanFlow extends HookConsumerWidget {
                                     child: StyledListItem(
                                       size: .sm,
                                       title: passage.format().toText(),
-                                      onPressed: () => PassagePreviewPage.show(context, verseSelection: passage),
+                                      onPressed: () =>
+                                          PassagePreviewPage.show(context, verseSelection: passage.verseSelection),
                                       trailing: StyledCircleButton.md(
                                         child: Symbols.more_vert.toIcon(),
                                         onPressed: () => context.showStyledSheet(

@@ -42,7 +42,7 @@ class CommentarySheet {
     required Function(VerseSelection) onNavigateToVerseSelection,
     Function(int)? onNavigateToIndex,
   }) {
-    final book = verseSelection.references.first.book;
+    final book = verseSelection.start.book;
     final commentary = ref.watch(commentaryProvider(type: commentaryType, book: book)).value;
     if (commentary == null) {
       return [Padding(padding: .all(16), child: StyledLoading())];

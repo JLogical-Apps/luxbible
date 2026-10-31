@@ -285,7 +285,7 @@ as BiblePlanColor?,
 /// @nodoc
 mixin _$BiblePlanDay {
 
- List<VerseSelection> get passages;
+@JsonKey(fromJson: ChapterPassage.listFromJson) List<ChapterPassage> get passages;
 /// Create a copy of BiblePlanDay
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -318,7 +318,7 @@ abstract mixin class $BiblePlanDayCopyWith<$Res>  {
   factory $BiblePlanDayCopyWith(BiblePlanDay value, $Res Function(BiblePlanDay) _then) = _$BiblePlanDayCopyWithImpl;
 @useResult
 $Res call({
- List<VerseSelection> passages
+@JsonKey(fromJson: ChapterPassage.listFromJson) List<ChapterPassage> passages
 });
 
 
@@ -338,7 +338,7 @@ class _$BiblePlanDayCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? passages = null,}) {
   return _then(BiblePlanDay(
 passages: null == passages ? _self.passages : passages // ignore: cast_nullable_to_non_nullable
-as List<VerseSelection>,
+as List<ChapterPassage>,
   ));
 }
 
@@ -420,7 +420,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<VerseSelection> passages)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BiblePlanDay() when $default != null:
 return $default(_that.passages);case _:
@@ -441,7 +441,7 @@ return $default(_that.passages);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<VerseSelection> passages)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages)  $default,) {final _that = this;
 switch (_that) {
 case _BiblePlanDay():
 return $default(_that.passages);}
@@ -458,7 +458,7 @@ return $default(_that.passages);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<VerseSelection> passages)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages)?  $default,) {final _that = this;
 switch (_that) {
 case _BiblePlanDay() when $default != null:
 return $default(_that.passages);case _:
@@ -473,11 +473,11 @@ return $default(_that.passages);case _:
 @JsonSerializable()
 
 class _BiblePlanDay extends BiblePlanDay {
-  const _BiblePlanDay({ List<VerseSelection> passages = const []}): _passages = passages,super._();
+  const _BiblePlanDay({@JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages = const []}): _passages = passages,super._();
   factory _BiblePlanDay.fromJson(Map<String, dynamic> json) => _$BiblePlanDayFromJson(json);
 
- final  List<VerseSelection> _passages;
-@override@JsonKey() List<VerseSelection> get passages {
+ final  List<ChapterPassage> _passages;
+@override@JsonKey(fromJson: ChapterPassage.listFromJson) List<ChapterPassage> get passages {
   if (_passages is EqualUnmodifiableListView) return _passages;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_passages);
@@ -517,7 +517,7 @@ abstract mixin class _$BiblePlanDayCopyWith<$Res> implements $BiblePlanDayCopyWi
   factory _$BiblePlanDayCopyWith(_BiblePlanDay value, $Res Function(_BiblePlanDay) _then) = __$BiblePlanDayCopyWithImpl;
 @override @useResult
 $Res call({
- List<VerseSelection> passages
+@JsonKey(fromJson: ChapterPassage.listFromJson) List<ChapterPassage> passages
 });
 
 
@@ -537,7 +537,7 @@ class __$BiblePlanDayCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? passages = null,}) {
   return _then(_BiblePlanDay(
 passages: null == passages ? _self._passages : passages // ignore: cast_nullable_to_non_nullable
-as List<VerseSelection>,
+as List<ChapterPassage>,
   ));
 }
 
@@ -1834,7 +1834,7 @@ return complete(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( Set<VerseSelection> completedPassages)?  incomplete,TResult Function()?  complete,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function(@JsonKey(fromJson: ChapterPassage.setFromJson)  Set<ChapterPassage> completedPassages)?  incomplete,TResult Function()?  complete,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case IncompleteBiblePlanDayProgress() when incomplete != null:
 return incomplete(_that.completedPassages);case CompleteBiblePlanDayProgress() when complete != null:
@@ -1856,7 +1856,7 @@ return complete();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( Set<VerseSelection> completedPassages)  incomplete,required TResult Function()  complete,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function(@JsonKey(fromJson: ChapterPassage.setFromJson)  Set<ChapterPassage> completedPassages)  incomplete,required TResult Function()  complete,}) {final _that = this;
 switch (_that) {
 case IncompleteBiblePlanDayProgress():
 return incomplete(_that.completedPassages);case CompleteBiblePlanDayProgress():
@@ -1874,7 +1874,7 @@ return complete();}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( Set<VerseSelection> completedPassages)?  incomplete,TResult? Function()?  complete,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function(@JsonKey(fromJson: ChapterPassage.setFromJson)  Set<ChapterPassage> completedPassages)?  incomplete,TResult? Function()?  complete,}) {final _that = this;
 switch (_that) {
 case IncompleteBiblePlanDayProgress() when incomplete != null:
 return incomplete(_that.completedPassages);case CompleteBiblePlanDayProgress() when complete != null:
@@ -1890,11 +1890,11 @@ return complete();case _:
 @JsonSerializable()
 
 class IncompleteBiblePlanDayProgress extends BiblePlanDayProgress {
-  const IncompleteBiblePlanDayProgress({ Set<VerseSelection> completedPassages = const {},  String? $type}): _completedPassages = completedPassages,$type = $type ?? 'incomplete',super._();
+  const IncompleteBiblePlanDayProgress({@JsonKey(fromJson: ChapterPassage.setFromJson)  Set<ChapterPassage> completedPassages = const {},  String? $type}): _completedPassages = completedPassages,$type = $type ?? 'incomplete',super._();
   factory IncompleteBiblePlanDayProgress.fromJson(Map<String, dynamic> json) => _$IncompleteBiblePlanDayProgressFromJson(json);
 
- final  Set<VerseSelection> _completedPassages;
-@JsonKey() Set<VerseSelection> get completedPassages {
+ final  Set<ChapterPassage> _completedPassages;
+@JsonKey(fromJson: ChapterPassage.setFromJson) Set<ChapterPassage> get completedPassages {
   if (_completedPassages is EqualUnmodifiableSetView) return _completedPassages;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableSetView(_completedPassages);
@@ -1938,7 +1938,7 @@ abstract mixin class $IncompleteBiblePlanDayProgressCopyWith<$Res> implements $B
   factory $IncompleteBiblePlanDayProgressCopyWith(IncompleteBiblePlanDayProgress value, $Res Function(IncompleteBiblePlanDayProgress) _then) = _$IncompleteBiblePlanDayProgressCopyWithImpl;
 @useResult
 $Res call({
- Set<VerseSelection> completedPassages
+@JsonKey(fromJson: ChapterPassage.setFromJson) Set<ChapterPassage> completedPassages
 });
 
 
@@ -1958,7 +1958,7 @@ class _$IncompleteBiblePlanDayProgressCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') $Res call({Object? completedPassages = null,}) {
   return _then(IncompleteBiblePlanDayProgress(
 completedPassages: null == completedPassages ? _self._completedPassages : completedPassages // ignore: cast_nullable_to_non_nullable
-as Set<VerseSelection>,
+as Set<ChapterPassage>,
   ));
 }
 
