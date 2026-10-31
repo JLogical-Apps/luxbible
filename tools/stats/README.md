@@ -11,6 +11,13 @@ dart run bin/collect.dart --source=analytics    # rerun one source; other files 
 dart run bin/collect.dart --days 28
 ```
 
+To print weekly app usage, event users, cohort retention, and both store funnels from a snapshot:
+
+```sh
+dart run bin/summary.dart                   # newest snapshot, last 8 weeks
+dart run bin/summary.dart --date 2026-10-23 --weeks 12
+```
+
 Output goes to `stats/<yyyy-MM-dd>/` at the repository root. Running again on the same day overwrites that day's files
 for the sources collected. Sources run in parallel and fail independently, so one broken credential doesn't block the
 rest.

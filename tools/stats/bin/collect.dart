@@ -7,6 +7,7 @@ import 'package:path/path.dart' as p;
 import '../lib/analytics.dart';
 import '../lib/crashlytics.dart';
 import '../lib/google.dart';
+import '../lib/repository.dart';
 
 enum Source {
   socials,
@@ -113,14 +114,6 @@ Future<Map<String, dynamic>> useGoogle(Future<Map<String, dynamic>> Function(Goo
   } finally {
     google.close();
   }
-}
-
-Directory getRepository() {
-  final directory = File.fromUri(Platform.script).parent.parent.parent.parent;
-  if (!Directory(p.join(directory.path, 'context')).existsSync()) {
-    throw StatsException('Could not locate the repository from ${Platform.script.toFilePath()}');
-  }
-  return directory;
 }
 
 ArgParser getParser() => ArgParser()
