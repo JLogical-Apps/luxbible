@@ -13,6 +13,7 @@ class StyledStickyHeader extends StatelessWidget {
 
   final Widget? trailing;
 
+  final Key? headerKey;
   final Function()? onHeaderPressed;
   final EdgeInsets headerPadding;
 
@@ -24,6 +25,7 @@ class StyledStickyHeader extends StatelessWidget {
     required this.title,
     this.subtitle,
     this.trailing,
+    this.headerKey,
     this.onHeaderPressed,
     this.headerPadding = const .all(16),
     this.showChildren = true,
@@ -35,6 +37,7 @@ class StyledStickyHeader extends StatelessWidget {
     required this.title,
     this.subtitle,
     this.trailing,
+    this.headerKey,
     this.onHeaderPressed,
     this.headerPadding = const .all(16),
     required Widget child,
@@ -46,6 +49,7 @@ class StyledStickyHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return StickyHeaderBuilder(
       builder: (context, state) => StyledStickyHeaderBar(
+        key: headerKey,
         title: title,
         subtitle: subtitle,
         trailing: trailing,

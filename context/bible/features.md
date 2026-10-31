@@ -357,7 +357,10 @@ Users can:
 - Reorder active commentaries
 - Swipe between commentaries in the temporary sheet
 - Pin a specific commentary as a study panel
-- Keep a Commentary study panel aligned with the top visible verse while scrolling either surface
+- Keep a Commentary study panel aligned with the top visible verse while scrolling either surface. Scrolling the
+  commentary moves the Bible as soon as the next section starts pushing the pinned header up. Scrolling the Bible
+  moves the commentary to the last section covering the top verse, so a passage note gives way to the verse notes
+  inside it, while verse 1 still returns to the top of the commentary
 - Move directly between adjacent Commentary headings from each sticky header, in both the sheet and the study panel
 - Open Scripture links in commentary as passage previews
 - Select and copy commentary text, across paragraphs within a section
