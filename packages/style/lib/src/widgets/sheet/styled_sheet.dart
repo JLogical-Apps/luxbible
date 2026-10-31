@@ -151,6 +151,19 @@ class StyledSheet<T> extends HookConsumerWidget {
       );
     }
 
+    final dock = StyledDock(
+      key: childrenKey,
+      controller: scrollController,
+      listController: listController,
+      aboveButtons: aboveButtons,
+      buttonsBuilder: buttonsBuilder,
+      children: children,
+      shrinkWrap: shrinkWrap,
+      forceHeight: forceHeight,
+      activeScrollKey: activeScrollKey,
+      forceBottomShadow: forceBottomShadow,
+    );
+
     return Container(
       decoration: BoxDecoration(
         color: context.colors.surfacePrimary,
@@ -209,18 +222,9 @@ class StyledSheet<T> extends HookConsumerWidget {
               style: context.textStyle.paragraphMd,
               child: childrenWrapper(
                 context,
-                StyledDock(
-                  key: childrenKey,
-                  controller: scrollController,
-                  listController: listController,
-                  aboveButtons: aboveButtons,
-                  buttonsBuilder: buttonsBuilder,
-                  children: children,
-                  shrinkWrap: shrinkWrap,
-                  forceHeight: forceHeight,
-                  activeScrollKey: activeScrollKey,
-                  forceBottomShadow: forceBottomShadow,
-                ),
+                // Nested vertical scroll views would otherwise inherit the sheet's controller, and reading its offset
+                // with more than one attached position throws.
+                scrollController == null ? dock : PrimaryScrollController.none(child: dock),
               ),
             ),
           ),
