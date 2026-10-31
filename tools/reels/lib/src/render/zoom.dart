@@ -55,4 +55,5 @@ String getCropExpression(Crop start, List<CropChange> changes, double Function(C
 String getEasedExpression(Easing easing, String progress) => switch (easing) {
   .cubicInOut => 'if(lt($progress,0.5),4*pow($progress,3),1-pow(2-2*$progress,3)/2)',
   .quarticInOut => 'if(lt($progress,0.5),8*pow($progress,4),1-pow(2-2*$progress,4)/2)',
+  .cubicOut => '1-pow(1-$progress,3)',
 };

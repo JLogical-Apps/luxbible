@@ -57,7 +57,11 @@ List<String> getStitchArgs({
     file.path,
   ];
 
+  // Each media segment and image is its own short input, and with a decoder thread per core each, a video with many of
+  // them ran out of threads (EAGAIN while configuring the graph).
   List<String> mediaInput(MediaSegment segment) => [
+    '-threads',
+    '1',
     '-ss',
     '${max(0, (segment.from - 0.5) / fps)}',
     '-t',
@@ -70,7 +74,7 @@ List<String> getStitchArgs({
     ...clips.expand((clip) => input(clip, source)),
     ...clips.expand((clip) => input(clip, voice)),
     ...media.expand(mediaInput),
-    ...scatter.expand((image) => ['-i', image.file.path]),
+    ...scatter.expand((image) => ['-threads', '1', '-i', image.file.path]),
     if (music case final music?) ...['-ss', '${music.seek}', '-i', music.file.path],
     ...sounds.expand((sound) => ['-i', sound.file.path]),
   ];

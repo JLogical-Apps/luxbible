@@ -221,8 +221,10 @@ window never stretches across a gap. `dart run <video> media` prints every segme
   after concat makes both sides exact frame counts. It's centered and fit inside 1% to 56% of the height and the
   frame's width, larger than the Remotion `SimulatorOverlay`. The recordings bring their own rounded device frame, and
   images show with square corners unless masked.
-- **A `Slide` entrance is the overlay's `x` or `y` as an expression of `n`** (`getMediaPosition`), eased like a zoom.
-  Every segment carries its `MediaShowing`, since a slide or an effect can outlast the first segment.
+- **A `Slide` is the overlay's `x` or `y` as an expression of `n`** (`getMediaPosition`), eased like a zoom. An entrance
+  and an exit each add their own offset, so one media can do both. An exit lengthens the showing by its frames past
+  `end`, so it slides out over whatever comes in at that moment. Every segment carries its `MediaShowing`, since a slide
+  or an effect can outlast the first segment.
 - **`Pixelate` is a `geq` after the segment is stamped with its output time**, so `T` counts the showing's frames, and
   each `posterize` step's grid offset is a sine hash of the step number. Each block takes its center pixel after a
   `gblur` scaled to the block, which stands in for averaging it.
@@ -265,7 +267,10 @@ after the media and before the `ass` filter. It's built for a pile of comment sc
 - **Rotation** is `rotate` with `c=none` on RGBA, which grows the frame to fit and leaves the corners clear.
 - **Appearance times ease.** The first image appears at `start` and the last at `by`. In between, the rate smoothsteps
   up over 1 s (the whole span if it's shorter), then holds until the last image, stopping abruptly. Each image appears on the
-  first frame whose share of that curve's area reaches its share of the images (`getRampedFraction`).
+  first frame whose share of that curve's area reaches its share of the images (`getRampedFraction`). `Scatter.at`
+  skips the curve and gives each image its own moment.
+- **A pile is placed as one group.** Scatters sharing a `pile` hand `getScatterCenters` their images in order, so later
+  ones fill around earlier ones across cuts, and every image holds until the pile's last `end`.
 
 ## Music and sound effects
 
@@ -302,7 +307,7 @@ nothing drawn changed, and playback only restarts at the focused clip when the f
 
 ## Speed
 
-`Clip(speed:)` changes a clip's length on the output timeline, so `ResolvedClip.frameCount` is the sped length and
+`Clip(speed:)`, or `Video(speed:)` for every clip without one, changes a clip's length on the output timeline, so `ResolvedClip.frameCount` is the sped length and
 `take.frameCount` the recorded one. Everything on the output timeline uses the former: clip starts, `ClipTime`, and the
 transcripts, which `getTranscripts` rescales with `Transcript.atSpeed`, so captions, titles, media and zooms follow
 without knowing about speed.

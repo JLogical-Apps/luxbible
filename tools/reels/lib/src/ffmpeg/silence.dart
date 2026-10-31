@@ -9,7 +9,7 @@ const minSilenceSeconds = 1.0;
 const minPauseSeconds = 0.04;
 const minSoundSeconds = 0.06;
 const minTakeSeconds = 0.4;
-const breathingRoomSeconds = 0.1;
+const breathingRoomSeconds = 0.05;
 
 final silenceStartPattern = RegExp(r'silence_start:\s*(-?[\d.]+)');
 final silenceEndPattern = RegExp(r'silence_end:\s*([\d.]+)');

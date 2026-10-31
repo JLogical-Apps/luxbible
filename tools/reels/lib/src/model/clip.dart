@@ -9,13 +9,13 @@ import 'package:reels/src/model/modifier.dart';
 /// plays and what modifiers apply to it.
 class Clip {
   // Dart can't mix optional positional and named parameters, so modifiers are named to leave room for `framing`.
-  const Clip(this.name, {this.modifiers = const [], Framing? framing, this.speed = 1}) : declaredFraming = framing;
+  const Clip(this.name, {this.modifiers = const [], Framing? framing, this.speed}) : declaredFraming = framing;
 
   final String name;
   final List<Modifier> modifiers;
 
-  /// How much faster than recorded the clip plays, voice included.
-  final double speed;
+  /// How much faster than recorded the clip plays, voice included. Without it, the clip plays at the video's speed.
+  final double? speed;
 
   final Framing? declaredFraming;
 
@@ -31,7 +31,7 @@ class Clip {
     final arguments = [
       "'$name'",
       if (declaredFraming case final framing?) 'framing: ${framing.toDart()}',
-      if (speed != 1) 'speed: $speed',
+      if (speed case final speed?) 'speed: $speed',
     ];
     return 'Clip(${arguments.join(', ')})';
   }

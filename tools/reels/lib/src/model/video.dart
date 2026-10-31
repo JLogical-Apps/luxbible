@@ -11,6 +11,7 @@ class Video {
     this.media,
     this.headY = 0.5,
     this.isMuted = false,
+    this.speed = 1,
     this.clips = const [],
   }) : declaredName = name;
 
@@ -27,6 +28,9 @@ class Video {
 
   /// Silences the recording's own audio, leaving only music and sound effects.
   final bool isMuted;
+
+  /// How much faster than recorded every clip plays, unless a clip sets its own.
+  final double speed;
 
   final List<Clip> clips;
 
@@ -54,7 +58,7 @@ class Video {
         crop: Crop.framing(clip.framing, zoom: zoom, headY: headY),
         headY: headY,
         modifiers: clip.modifiers,
-        speed: clip.speed,
+        speed: clip.speed ?? speed,
       ),
     );
   });

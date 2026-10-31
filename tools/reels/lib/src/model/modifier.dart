@@ -36,6 +36,7 @@ class Media extends Modifier {
     this.end = .clipEnd,
     this.mask,
     this.enter,
+    this.exit,
     this.effect,
     this.scale = 1,
     this.x = 0.5,
@@ -62,14 +63,17 @@ class Media extends Modifier {
   /// How the media arrives at [start]. Without it, the media cuts in.
   final Slide? enter;
 
+  /// How the media leaves, starting at [end] and showing until it's beyond the edge. Without it, the media cuts out.
+  final Slide? exit;
+
   final Effect? effect;
 }
 
-/// Slides in from beyond the frame's [from] edge, easing into place over [frames].
+/// Slides between its place and beyond the frame's [edge], easing over [frames].
 class Slide {
-  const Slide(this.from, {this.frames = 12, this.easing = .quarticInOut});
+  const Slide(this.edge, {this.frames = 12, this.easing = .quarticInOut});
 
-  final Edge from;
+  final Edge edge;
   final int frames;
   final Easing easing;
 }
@@ -145,13 +149,24 @@ class ZoomOut extends Modifier {
 /// the last. Each lands at a random spot above the head, turned a little, and they pile up until [end]. [sound]
 /// plays as each one appears.
 class Scatter extends Modifier {
-  const Scatter(this.pattern, {this.start = .clipStart, this.by = .clipEnd, this.end = .clipEnd, this.sound});
+  const Scatter(this.pattern, {this.start = .clipStart, this.by = .clipEnd, this.end = .clipEnd, this.sound, this.pile})
+    : at = const [];
+
+  /// Each image appears at its own moment in [at], in order, instead of easing in between a start and a by.
+  const Scatter.at(this.pattern, this.at, {this.end = .clipEnd, this.sound, this.pile})
+    : start = .clipStart,
+      by = .clipEnd;
 
   final String pattern;
   final ClipTime start;
   final ClipTime by;
   final ClipTime end;
+  final List<ClipTime> at;
   final Sound? sound;
+
+  /// Scatters sharing a pile, even across clips, add to one pile: each image lands around the ones before it, and
+  /// they all stay until the last scatter's [end].
+  final String? pile;
 }
 
 /// A track from the video's `media` folder, playing under the whole video, lined up so [cue] into the track plays [at]

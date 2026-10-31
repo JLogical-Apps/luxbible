@@ -65,7 +65,7 @@ class Crop {
   String toString() => 'Crop(${zoom.toStringAsFixed(4)}, ${top.toStringAsFixed(4)}, ${left.toStringAsFixed(4)})';
 }
 
-enum Easing { cubicInOut, quarticInOut }
+enum Easing { cubicInOut, quarticInOut, cubicOut }
 
 /// The clip's crop easing into [crop] over [frames] from [at], a frame from the clip's start.
 class CropChange {
