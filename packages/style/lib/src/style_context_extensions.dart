@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart' hide Provider;
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:style/src/color_library.dart';
 import 'package:style/src/styled_text_action.dart';
@@ -10,6 +9,8 @@ import 'package:style/src/text_style_library.dart';
 import 'package:style/src/widgets/dialog/styled_dialog.dart';
 import 'package:style/src/widgets/sheet/styled_sheet.dart';
 import 'package:style/src/widgets/sheet/styled_sheet_navigation_context.dart';
+import 'package:style/src/widgets/sheet/styled_sheet_navigator.dart';
+import 'package:style/src/widgets/sheet/styled_sheet_route.dart';
 import 'package:style/src/widgets/styled_list_item.dart';
 import 'package:style/src/widgets/styled_pill_button.dart';
 import 'package:toastification/toastification.dart';
@@ -45,71 +46,49 @@ extension StyleContextExtensions on BuildContext {
     ),
   );
 
-  Future<T?> showStyledSheet<T>(
-    StyledSheet<T> Function(BuildContext, WidgetRef) sheetBuilder, {
-    String? path,
-    Widget Function(StyledSheet Function(BuildContext, WidgetRef) sheetBuilder)? wrapper,
-  }) => showCustomModalBottomSheet(
-    context: this,
-    expand: false,
-    isDismissible: true,
-    enableDrag: true,
-    useRootNavigator: true,
-    settings: _getSheetRouteSettings(path),
-    containerWidget: _getModalContainer,
-    builder: (context) {
-      Localizations.localeOf(context);
-      return ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.sizeOf(context).height - MediaQuery.viewPaddingOf(context).top - 8,
-        ),
-        child: SafeArea(
-          top: false,
-          bottom: false,
-          child: wrapper == null ? HookConsumerBuilder(builder: sheetBuilder) : wrapper(sheetBuilder),
-        ),
-      );
-    },
-  );
+  Future<T?> showStyledSheet<T>(StyledSheet<T> Function(BuildContext, WidgetRef) sheetBuilder, {String? path}) =>
+      _showSheetRoute(() => HookConsumerBuilder(builder: sheetBuilder), getPath: () => path);
 
   Future<T?> showStyledSheetWithBreadcrumbs<T>(
     StyledSheet<T> Function(BuildContext, WidgetRef) sheetBuilder, {
     required String breadcrumbText,
     String? path,
   }) async {
-    final parentSheetContext = read<SheetNavigationBreadcrumbContext?>();
-    // The new sheet carries the parent in its breadcrumbs, so keeping the parent open would duplicate it.
-    if (parentSheetContext != null) pop();
+    final breadcrumb = SheetNavigationBreadcrumb(text: breadcrumbText, path: path, sheetBuilder: sheetBuilder);
+    if (read<SheetNavigationBreadcrumbContext?>() case final parent?) {
+      parent.navigation.push(breadcrumb, above: parent.currentBreadcrumb);
+    } else {
+      final navigation = SheetNavigation(breadcrumb);
+      final result = await _showSheetRoute<Object?>(
+        () => StyledSheetNavigator(navigation: navigation),
+        getPath: () => navigation.currentBreadcrumb.path,
+      );
+      navigation.close(result);
+    }
 
-    final sheetContext = parentSheetContext ?? SheetNavigationBreadcrumbContext(breadcrumbs: []);
-    return await showCustomModalBottomSheet(
-      context: this,
-      expand: false,
-      isDismissible: true,
-      enableDrag: true,
-      useRootNavigator: true,
-      settings: _getSheetRouteSettings(path),
-      containerWidget: _getModalContainer,
-      builder: (context) {
-        Localizations.localeOf(context);
-        return ConstrainedBox(
-          constraints: BoxConstraints(
-            maxHeight: MediaQuery.sizeOf(context).height - MediaQuery.viewPaddingOf(context).top - 8,
-          ),
-          child: SafeArea(
-            top: false,
-            bottom: false,
-            child: Provider(
-              create: (_) => sheetContext.withBreadcrumb(
-                SheetNavigationBreadcrumb(text: breadcrumbText, path: path, sheetBuilder: sheetBuilder),
-              ),
-              child: HookConsumerBuilder(builder: sheetBuilder),
-            ),
-          ),
-        );
-      },
-    );
+    return await breadcrumb.result as T?;
   }
+
+  // Breadcrumbs share one route, so a sheet opened from this one may have closed it already.
+  void popIfCurrent() {
+    if (mounted && (ModalRoute.of(this)?.isCurrent ?? false)) pop();
+  }
+
+  Future<T?> _showSheetRoute<T>(Widget Function() childBuilder, {required String? Function() getPath}) =>
+      Navigator.of(this, rootNavigator: true).push(
+        StyledSheetRoute<T>(
+          getPath: getPath,
+          builder: (context) {
+            Localizations.localeOf(context);
+            return ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.sizeOf(context).height - MediaQuery.viewPaddingOf(context).top - 8,
+              ),
+              child: SafeArea(top: false, bottom: false, child: childBuilder()),
+            );
+          },
+        ),
+      );
 
   void showStyledSnackbar({
     required Widget message,
@@ -162,9 +141,4 @@ extension StyleContextExtensions on BuildContext {
       ),
     );
   }
-
-  static RouteSettings _getSheetRouteSettings(String? path) => RouteSettings(name: path == null ? null : '/sheet$path');
-
-  static Widget _getModalContainer(BuildContext context, Animation<double> animation, Widget child) =>
-      Material(color: Colors.transparent, child: child);
 }

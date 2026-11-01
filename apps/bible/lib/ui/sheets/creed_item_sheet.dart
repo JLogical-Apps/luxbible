@@ -20,8 +20,8 @@ class CreedItemSheet {
     };
 
     void navigateToVerseSelection(VerseSelection verseSelection) {
-      // An article linked from the item replaces this sheet in the breadcrumbs.
-      if (context.mounted) context.pop();
+      // An article linked from the item shares this sheet and may have closed it already.
+      context.popIfCurrent();
       onNavigateToVerseSelection(verseSelection);
     }
 

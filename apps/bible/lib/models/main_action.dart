@@ -229,7 +229,7 @@ enum MainAction {
                         subtitle: action.description().toText(),
                         leading: action.buildIcon(context),
                         onPressed: () async {
-                          // Study Panel and Resources continue these breadcrumbs and replace this sheet themselves.
+                          // Study Panel and Resources continue these breadcrumbs, so only Search closes this sheet.
                           final isBreadcrumb = action != search;
                           if (!isBreadcrumb) sheetContext.pop();
 
@@ -291,7 +291,7 @@ enum MainAction {
                     subtitle: type.description().toText(),
                     leading: type.icon.toIcon(),
                     onPressed: () async {
-                      // The option pickers replace this sheet in the breadcrumbs, so only the others close it.
+                      // The option pickers continue these breadcrumbs, so only the others close this sheet.
                       switch (type) {
                         case .compare:
                           final translation = await CompareBibleSheet.show(context);
@@ -324,7 +324,7 @@ enum MainAction {
           onNavigateToVerseSelection(result);
         }
       case resources:
-        // The Study sheet this may have replaced is gone once a resource is picked.
+        // Picking a resource closes the sheet, including any Study breadcrumb before this one.
         final navigatorContext = context.rootContext;
         final resourcePage = await context.showStyledSheetWithBreadcrumbs<StyledRoute<VerseSelection>>(
           breadcrumbText: t.labels.resources,

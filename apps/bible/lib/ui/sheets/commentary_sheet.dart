@@ -27,7 +27,7 @@ class CommentarySheet {
         commentaryType: commentaryType,
         isLink: true,
         onNavigateToVerseSelection: (selection) {
-          if (context.mounted) context.pop();
+          context.popIfCurrent();
           onNavigateToVerseSelection(selection);
         },
       ),

@@ -14,8 +14,8 @@ class BiblePlanStudyNoteSheet {
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) => context.showStyledSheetWithBreadcrumbs(breadcrumbText: note.title, path: '/bible-plans/note', (context, ref) {
     void navigateToVerseSelection(VerseSelection verseSelection) {
-      // A resource opened from here replaces this sheet in the breadcrumbs.
-      if (context.mounted) context.pop();
+      // A resource opened from here shares this sheet and may have closed it already.
+      context.popIfCurrent();
       onNavigateToVerseSelection(verseSelection);
     }
 

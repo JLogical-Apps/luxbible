@@ -9,6 +9,7 @@ import 'package:bible/ui/widgets/highlight_style_icon.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -38,8 +39,8 @@ class NotebookImportSheet {
       path: '/notebooks/import',
       (context, ref) {
         final user = ref.watch(userProvider);
-        final targetState = useSheetState<NotebookImportTarget>(
-          () => matchingNotebookId == null ? .newNotebook(newNotebook) : .existing(matchingNotebookId),
+        final targetState = useState<NotebookImportTarget>(
+          matchingNotebookId == null ? .newNotebook(newNotebook) : .existing(matchingNotebookId),
         );
         final target = targetState.value;
         final import = NotebookImport.of(file, target: target, user: user);

@@ -132,7 +132,7 @@ enum StudyAction {
           );
         });
       case .commentary:
-        // Outlives the sheet so returning from a linked article reopens the same commentary.
+        // Outlives the tab controller, which is recreated when the user changes their commentaries.
         var commentaryIndex = 0;
         await context.showStyledSheetWithBreadcrumbs(breadcrumbText: title(), path: path, (context, ref) {
           final user = ref.watch(userProvider);
@@ -200,8 +200,8 @@ enum StudyAction {
               verseSelection: verseSelection,
               commentaryType: selectedCommentary,
               onNavigateToVerseSelection: (verseSelection) {
-                // A linked article replaces this sheet in the breadcrumbs.
-                if (context.mounted) context.pop();
+                // A linked article shares this sheet and may have closed it already.
+                context.popIfCurrent();
                 onNavigateToVerseSelection(verseSelection);
               },
               onNavigateToIndex: (index) => listController.animateToItem(

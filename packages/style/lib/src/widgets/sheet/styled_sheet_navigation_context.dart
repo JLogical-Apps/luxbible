@@ -1,59 +1,65 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:lux/lux.dart';
-import 'package:provider/provider.dart' show ReadContext;
 import 'package:style/src/widgets/sheet/styled_sheet.dart';
-
-class SheetNavigationBreadcrumbContext {
-  final List<SheetNavigationBreadcrumb> breadcrumbs;
-
-  const SheetNavigationBreadcrumbContext({required this.breadcrumbs});
-
-  SheetNavigationBreadcrumb get currentBreadcrumb => breadcrumbs.last;
-
-  SheetNavigationBreadcrumbContext withBreadcrumb(SheetNavigationBreadcrumb breadcrumb) =>
-      SheetNavigationBreadcrumbContext(breadcrumbs: [...breadcrumbs, breadcrumb]);
-
-  SheetNavigationBreadcrumbContext withBreadcrumbsUpTo(int breadcrumbIndex) =>
-      SheetNavigationBreadcrumbContext(breadcrumbs: breadcrumbs.take(breadcrumbIndex + 1).toList());
-}
 
 class SheetNavigationBreadcrumb {
   final String text;
   final String? path;
   final StyledSheet Function(BuildContext, WidgetRef) sheetBuilder;
 
-  double scrollOffset = 0;
-  final List<ValueNotifier<Object?>> states = [];
-
-  BuildContext? stateContext;
-  int nextStateIndex = 0;
+  final Completer<Object?> _resultCompleter = Completer();
 
   SheetNavigationBreadcrumb({required this.text, this.path, required this.sheetBuilder});
 
-  // Each mount of the sheet claims its states in call order, the same way hooks resolve.
-  ValueNotifier<T> getState<T>(BuildContext context, T Function() initialValue) {
-    if (stateContext != context) {
-      assert(stateContext?.mounted != true, 'useSheetState can only be called from the sheet builder itself.');
-      stateContext = context;
-      nextStateIndex = 0;
-    }
+  Future<Object?> get result => _resultCompleter.future;
 
-    final index = nextStateIndex++;
-    if (index == states.length) states.add(ValueNotifier<T>(initialValue()));
-    return states[index] as ValueNotifier<T>;
+  void _complete(Object? result) {
+    if (!_resultCompleter.isCompleted) _resultCompleter.complete(result);
   }
 }
 
-// Going back through breadcrumbs rebuilds a sheet from scratch, so hook state would otherwise reset.
-ValueNotifier<T> useSheetState<T>(T Function() initialValue) {
-  final context = useContext();
-  final breadcrumb = context.read<SheetNavigationBreadcrumbContext?>()?.currentBreadcrumb;
-  return useListenable(
-    useDisposable(
-      useMemoized(() => breadcrumb?.getState(context, initialValue) ?? ValueNotifier(initialValue())),
-      (state) => breadcrumb == null ? state.dispose() : null,
-    ),
-  );
+// Breadcrumbs share one sheet route, so a breadcrumb's result arrives when it's popped or the whole sheet closes.
+class SheetNavigation extends ValueNotifier<List<SheetNavigationBreadcrumb>> {
+  bool _isClosed = false;
+
+  SheetNavigation(SheetNavigationBreadcrumb root) : super([root]);
+
+  SheetNavigationBreadcrumb get currentBreadcrumb => value.last;
+
+  void push(SheetNavigationBreadcrumb breadcrumb, {required SheetNavigationBreadcrumb above}) {
+    // A sheet can push after an await, by which time it may be covered, popped, or closed, so the push is dropped.
+    if (_isClosed || above != currentBreadcrumb) {
+      breadcrumb._complete(null);
+      return;
+    }
+
+    value = [...value, breadcrumb];
+  }
+
+  void popTo(SheetNavigationBreadcrumb breadcrumb) {
+    final index = value.indexOf(breadcrumb);
+    for (final removed in value.skip(index + 1)) {
+      removed._complete(null);
+    }
+    value = value.take(index + 1).toList();
+  }
+
+  void close(Object? result) {
+    _isClosed = true;
+    currentBreadcrumb._complete(result);
+    for (final breadcrumb in value) {
+      breadcrumb._complete(null);
+    }
+  }
+}
+
+class SheetNavigationBreadcrumbContext {
+  final SheetNavigation navigation;
+  final List<SheetNavigationBreadcrumb> breadcrumbs;
+
+  SheetNavigationBreadcrumbContext({required this.navigation, required this.breadcrumbs});
+
+  SheetNavigationBreadcrumb get currentBreadcrumb => breadcrumbs.last;
 }

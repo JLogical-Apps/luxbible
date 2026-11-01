@@ -294,9 +294,12 @@ preserve the direction or resource currently selected in the sheet. When a panel
 clears the selection and scrolls its verses into view after the panel changes the reading area. The same pin actions
 are available while reading a Bible plan.
 
-Opening a tool from the Study sheet replaces it, and breadcrumbs at the top, such as Study › Commentary, lead back to
-it. The breadcrumbs continue into sheets opened from a tool, such as a word in Interlinear or an article in Linked
-Resources or Commentary. Tools opened directly from a toolbar shortcut start their own breadcrumbs.
+Opening a tool from the Study sheet slides it in within the same sheet, which resizes to fit, and breadcrumbs at the
+top, such as Study › Commentary, lead back to it. The breadcrumbs continue into sheets opened from a tool, such as a
+word in Interlinear or an article in Linked Resources or Commentary. Tools opened directly from a toolbar shortcut start
+their own breadcrumbs. The back button, Android's back gesture, and on iOS a swipe from the sheet's left edge go back one
+step; tapping an earlier breadcrumb goes straight back to it. Earlier sheets keep their scroll position and tab, and
+tapping outside or dragging the sheet down closes all of them at once.
 
 ## Compare
 
@@ -402,8 +405,8 @@ as a Scripture proof.
   each opens a passage preview. Like Cross References, they use the study Bible when an online Bible is active, and a
   banner names it until the user dismisses its explanation. The article's text can be selected and copied across
   paragraphs, while map cards stay tappable
-- Opening a dictionary entry or related article from an article replaces the open article, and breadcrumbs at the top
-  lead back to earlier ones
+- Opening a dictionary entry or related article from an article slides it in over the open article, and breadcrumbs
+  at the top lead back to earlier ones
 - Tapping a map opens the map viewer, and tapping a video opens the video player
 - Each creed result shows the document and its citation, such as "Heidelberg Catechism Q. 1", with the question or
   the start of the section, and opens the item in a sheet with the same collapsed Scripture Proofs tile as the page.
@@ -585,8 +588,8 @@ Available panel types are:
 - Linked Resources
 - Notes from visible annotations
 
-Choosing Compare, Interlinear, or Commentary when adding a panel replaces the panel list with a picker for its Bible,
-direction, or resource, and breadcrumbs such as Study › Study Panel › Compare lead back.
+Choosing Compare, Interlinear, or Commentary when adding a panel slides in a picker for its Bible, direction, or
+resource within the same sheet, and breadcrumbs such as Study › Study Panel › Compare lead back.
 
 Users can:
 

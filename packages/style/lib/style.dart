@@ -16,6 +16,7 @@ export 'src/widgets/sheet/styled_selection_sheet.dart';
 export 'src/widgets/sheet/styled_sheet.dart';
 export 'src/widgets/sheet/styled_sheet_header.dart';
 export 'src/widgets/sheet/styled_sheet_navigation_context.dart';
+export 'src/widgets/sheet/styled_sheet_observer.dart';
 export 'src/widgets/sheet/styled_time_dial_sheet.dart';
 export 'src/widgets/sliver/styled_sliver_list.dart';
 export 'src/widgets/sliver/styled_sticky_sliver_header.dart';

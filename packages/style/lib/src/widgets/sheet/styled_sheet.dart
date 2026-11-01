@@ -1,12 +1,11 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intersperse/intersperse.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:provider/provider.dart' as provider;
+import 'package:provider/provider.dart';
 import 'package:style/src/gap.dart';
 import 'package:style/src/style_context_extensions.dart';
 import 'package:style/src/widgets/sheet/styled_sheet_header.dart';
@@ -118,40 +117,6 @@ class StyledSheet<T> extends HookConsumerWidget {
 
     final scrollController = controller ?? ModalScrollController.of(context);
 
-    useOnListenableChange(scrollController, () {
-      if (scrollController != null && scrollController.hasClients && sheetNavigationContext != null) {
-        sheetNavigationContext.currentBreadcrumb.scrollOffset = scrollController.offset;
-      }
-    });
-
-    useOneTimeEffect(() {
-      final saved = sheetNavigationContext?.currentBreadcrumb.scrollOffset ?? 0;
-      if (saved > 0) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (scrollController != null && scrollController.hasClients) {
-            scrollController.jumpTo(saved);
-          }
-        });
-      }
-    });
-
-    void navigateToBreadcrumb({required int breadcrumbIndex}) {
-      if (sheetNavigationContext == null) {
-        return;
-      }
-
-      final breadcrumb = sheetNavigationContext.breadcrumbs[breadcrumbIndex];
-      context.pop();
-      context.showStyledSheet(
-        (context, ref) => breadcrumb.sheetBuilder(context, ref),
-        path: breadcrumb.path,
-        wrapper: (sheetBuilder) => provider.Provider.value(
-          value: sheetNavigationContext.withBreadcrumbsUpTo(breadcrumbIndex),
-          child: HookConsumerBuilder(builder: sheetBuilder),
-        ),
-      );
-    }
-
     final dock = StyledDock(
       key: childrenKey,
       controller: scrollController,
@@ -185,8 +150,9 @@ class StyledSheet<T> extends HookConsumerWidget {
                     child: sheetNavigationContext != null && sheetNavigationContext.breadcrumbs.length > 1
                         ? StyledCircleButton.md(
                             child: Symbols.arrow_back.toIcon(),
-                            onPressed: () =>
-                                navigateToBreadcrumb(breadcrumbIndex: sheetNavigationContext.breadcrumbs.length - 2),
+                            onPressed: () => sheetNavigationContext.navigation.popTo(
+                              sheetNavigationContext.breadcrumbs[sheetNavigationContext.breadcrumbs.length - 2],
+                            ),
                           )
                         : StyledCircleButton.md(child: Symbols.close.toIcon(), onPressed: () => context.pop()),
                   ),
@@ -206,7 +172,7 @@ class StyledSheet<T> extends HookConsumerWidget {
                       (i, breadcrumb) => StyledChip(
                         onPressed: i + 1 == sheetNavigationContext.breadcrumbs.length
                             ? null
-                            : () => navigateToBreadcrumb(breadcrumbIndex: i),
+                            : () => sheetNavigationContext.navigation.popTo(breadcrumb),
                         child: Text(breadcrumb.text),
                       ),
                     )

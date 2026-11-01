@@ -58,6 +58,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:toastification/toastification.dart';
 import 'package:utils_core/utils_core.dart';
+import 'package:style/style.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -252,7 +253,10 @@ class BibleApp extends HookConsumerWidget {
             debugShowCheckedModeBanner: false,
             navigatorObservers: [FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance)],
             onGenerateRoute: (settings) => context.getStyledRoute(BiblePage()),
-            builder: (context, child) => SideLayoutScope(child: child!),
+            builder: (context, child) => StyledSheetObserver(
+              onScreenShown: (screenName) => FirebaseAnalytics.instance.logScreenView(screenName: screenName),
+              child: SideLayoutScope(child: child!),
+            ),
           ),
         ),
       ),

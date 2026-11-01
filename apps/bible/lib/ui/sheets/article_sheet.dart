@@ -37,8 +37,8 @@ class ArticleSheet {
         .toList();
 
     void navigateToVerseSelection(VerseSelection verseSelection) {
-      // A related or linked article opened from here replaces this sheet in the breadcrumbs.
-      if (context.mounted) context.pop();
+      // A related or linked article opened from here shares this sheet and may have closed it already.
+      context.popIfCurrent();
       onNavigateToVerseSelection(verseSelection);
     }
 

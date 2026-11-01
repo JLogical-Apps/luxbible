@@ -52,8 +52,8 @@ class LinkedResourcesSheet {
     );
 
     void navigateToVerseSelection(VerseSelection selection) {
-      // An article or creed item opened from here replaces this sheet in the breadcrumbs.
-      if (popOnAction && context.mounted) context.pop();
+      // An article or creed item opened from here shares this sheet and may have closed it already.
+      if (popOnAction) context.popIfCurrent();
       onNavigateToVerseSelection(selection);
     }
 
