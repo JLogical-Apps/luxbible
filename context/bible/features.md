@@ -629,7 +629,7 @@ It supports:
 
 Verse 1 is emphasized during chapter introductions, and each later verse receives emphasis 300 milliseconds before its recorded start.
 
-Manually scrolling the passage or selecting a verse or text pauses playback. Tapping a verse only selects it and never moves the playhead, so scrubbing is the only way to jump to a verse. Starting playback clears the current selection. Resuming from the play button restarts the emphasized verse from its beginning rather than continuing mid-verse, but never skips forward past a chapter introduction.
+Manually scrolling the passage or selecting a verse or text pauses playback. Tapping a verse only selects it and never moves the playhead, so scrubbing is the only way to jump to a verse. Starting playback clears the current selection. Resuming continues from exactly where playback was paused. Starting or resuming playback scrolls the passage back to the verse being read.
 
 When the current Bible has no audio, Lux offers to switch to the user's most recently selected audio-enabled Bible.
 

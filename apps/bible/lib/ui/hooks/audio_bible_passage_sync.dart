@@ -36,7 +36,8 @@ AudioBiblePassageSync useAudioBiblePassageSync<K>({
   final spokenReference = ref.watch(audioBibleSpokenReferenceProvider(context: context));
 
   final passageController = audioBible == null ? null : passageControllers[getPassageControllerKey(audioBible.passage)];
-  usePostFrameEffect(() async {
+
+  Future<void> scrollToSpokenReference() async {
     if (audioBible == null || spokenReference == null || passageController == null) {
       return;
     }
@@ -58,7 +59,19 @@ AudioBiblePassageSync useAudioBiblePassageSync<K>({
         currentPassageController == passageController) {
       passageController.scrollToReference(spokenReference, paragraphs: paragraphs, alignment: 0.2);
     }
-  }, [audioBible?.passage, audioBible?.translation, spokenReference, passageController]);
+  }
+
+  usePostFrameEffect(scrollToSpokenReference, [
+    audioBible?.passage,
+    audioBible?.translation,
+    spokenReference,
+    passageController,
+  ]);
+
+  // Resuming keeps the same spoken reference, so it needs its own scroll back to where the reader scrolled away from.
+  usePostFrameEffect(() {
+    if (player.isPlaying) scrollToSpokenReference();
+  }, [player.isPlaying]);
 
   useOnStreamData(audioBibleController.completions(context), (ChapterPassage passage) async {
     final nextPassage = onCompleteAndNext(passage);

@@ -37,12 +37,6 @@ sealed class AudioBibleContextState with _$AudioBibleContextState {
 
   Reference? getReferenceAtPosition(Duration position) =>
       timings.getReferenceAtPosition(passage: passage, position: position);
-
-  // Only rewinds, so resuming during a chapter introduction doesn't skip ahead to verse 1.
-  Duration getVerseStartPosition(Duration position) {
-    final start = timings[getReferenceAtPosition(position)]?.start;
-    return start != null && start < position ? start : position;
-  }
 }
 
 class AudioBibleState {
@@ -158,15 +152,13 @@ class AudioBibleController extends _$AudioBibleController {
       final position = player?.position ?? .zero;
       if (player?.processingState == .completed || session.passage.hasReachedAudioEnd(position, timings)) {
         await seekTo(context: context, position: passage.getAudioStartPosition(timings));
-      } else if (player?.playing != true) {
-        await seekTo(context: context, position: session.getVerseStartPosition(position));
       }
       await handler?.play();
       return true;
     }
 
     final initialPosition = isSamePassage && session != null
-        ? session.getVerseStartPosition(positions[context] ?? session.startPosition)
+        ? positions[context] ?? session.startPosition
         : passage.getAudioStartPosition(timings);
 
     await activate(
