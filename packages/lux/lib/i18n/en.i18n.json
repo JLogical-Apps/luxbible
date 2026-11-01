@@ -288,7 +288,7 @@
     "linkedResourcesDescription": "View people, themes, maps, and dictionary entries linked to {region}.",
     "noCrossReferences": "No Cross References Found",
     "noLinkedResources": "No Linked Resources Found",
-    "editLinkedResources": "Edit Linked Resources",
+    "customizeLinkedResources": "Customize Linked Resources",
     "crossReferencesUse": "Cross references use {translation}",
     "onlineCrossReferencesExplanation": "Because your selected translation is only available online, cross references are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app."
   },
@@ -350,7 +350,7 @@
   },
   "commentaries": {
     "addRemove": "Add & Remove Commentaries",
-    "edit": "Edit Commentaries"
+    "customize": "Customize Commentaries"
   },
   "toolbarShortcuts": {
     "switchBible": "Switch Bible",

@@ -157,7 +157,7 @@ enum StudyAction {
                       (context, _) => StyledSheet(
                         children: [
                           StyledListItem(
-                            title: t.commentaries.edit.toText(),
+                            title: t.commentaries.customize.toText(),
                             leading: Symbols.tune.toIcon(),
                             onPressed: () => context.pushReplacement(CommentariesPage()),
                           ),
@@ -275,7 +275,7 @@ enum StudyAction {
                 (context, _) => StyledSheet(
                   children: [
                     StyledListItem(
-                      title: t.studyActions.editLinkedResources.toText(),
+                      title: t.studyActions.customizeLinkedResources.toText(),
                       leading: Symbols.tune.toIcon(),
                       onPressed: () => context.pushReplacement(ResourceOrderSettingsPage()),
                     ),

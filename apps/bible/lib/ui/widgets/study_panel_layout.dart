@@ -281,7 +281,7 @@ class StudyPanelSection extends HookConsumerWidget {
             ),
           ),
           LinkedResourcesStudyPanel() => Tooltip(
-            message: t.studyActions.editLinkedResources,
+            message: t.studyActions.customizeLinkedResources,
             child: StyledCircleButton.md(
               child: Symbols.tune.toIcon(),
               onPressed: () => context.push(ResourceOrderSettingsPage()),

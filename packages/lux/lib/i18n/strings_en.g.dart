@@ -1001,8 +1001,8 @@ class Translations$studyActions$en {
 	/// en: 'No Linked Resources Found'
 	String get noLinkedResources => 'No Linked Resources Found';
 
-	/// en: 'Edit Linked Resources'
-	String get editLinkedResources => 'Edit Linked Resources';
+	/// en: 'Customize Linked Resources'
+	String get customizeLinkedResources => 'Customize Linked Resources';
 
 	/// en: 'Cross references use {translation}'
 	String crossReferencesUse({required Object translation}) => 'Cross references use ${translation}';
@@ -1202,8 +1202,8 @@ class Translations$commentaries$en {
 	/// en: 'Add & Remove Commentaries'
 	String get addRemove => 'Add & Remove Commentaries';
 
-	/// en: 'Edit Commentaries'
-	String get edit => 'Edit Commentaries';
+	/// en: 'Customize Commentaries'
+	String get customize => 'Customize Commentaries';
 }
 
 // Path: toolbarShortcuts
@@ -6182,7 +6182,7 @@ extension on Translations {
 			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'View people, themes, maps, and dictionary entries linked to ${region}.',
 			'studyActions.noCrossReferences' => 'No Cross References Found',
 			'studyActions.noLinkedResources' => 'No Linked Resources Found',
-			'studyActions.editLinkedResources' => 'Edit Linked Resources',
+			'studyActions.customizeLinkedResources' => 'Customize Linked Resources',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Cross references use ${translation}',
 			'studyActions.onlineCrossReferencesExplanation' => 'Because your selected translation is only available online, cross references are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app.',
 			'selectionActions.annotate' => 'Annotate',
@@ -6234,7 +6234,7 @@ extension on Translations {
 			'bookmarks.deleteNamedConfirmation' => ({required Object name}) => 'Are you sure you want to delete "${name}"?',
 			'bookmarkPage.title' => 'Your Bookmarks',
 			'commentaries.addRemove' => 'Add & Remove Commentaries',
-			'commentaries.edit' => 'Edit Commentaries',
+			'commentaries.customize' => 'Customize Commentaries',
 			'toolbarShortcuts.switchBible' => 'Switch Bible',
 			'toolbarShortcuts.lexicon' => 'Lexicon',
 			'toolbarShortcuts.themeAndLayout' => 'Theme & Layout',

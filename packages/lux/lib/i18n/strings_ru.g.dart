@@ -474,7 +474,7 @@ class _Translations$studyActions$ru extends Translations$studyActions$en {
 	@override String linkedResourcesDescription({required Object region}) => 'Просмотрите людей, темы, карты и статьи словаря, связанные с отрывком: ${region}.';
 	@override String get noCrossReferences => 'Перекрестных ссылок не найдено';
 	@override String get noLinkedResources => 'Связанных ресурсов не найдено';
-	@override String get editLinkedResources => 'Изменить связанные ресурсы';
+	@override String get customizeLinkedResources => 'Настроить связанные ресурсы';
 	@override String crossReferencesUse({required Object translation}) => 'В перекрестных ссылках используется ${translation}.';
 	@override String get onlineCrossReferencesExplanation => 'Поскольку выбранный вами перевод доступен только в Интернете, перекрестные ссылки показаны с использованием последней версии Учебной Библии, которую вы использовали, чтобы сэкономить на производительности и затратах. Выбранный вами перевод используется повсюду в приложении.';
 }
@@ -571,7 +571,7 @@ class _Translations$commentaries$ru extends Translations$commentaries$en {
 
 	// Translations
 	@override String get addRemove => 'Добавить и удалить комментарии';
-	@override String get edit => 'Изменить комментарии';
+	@override String get customize => 'Настроить комментарии';
 }
 
 // Path: toolbarShortcuts
@@ -3573,7 +3573,7 @@ extension on TranslationsRu {
 			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Просмотрите людей, темы, карты и статьи словаря, связанные с отрывком: ${region}.',
 			'studyActions.noCrossReferences' => 'Перекрестных ссылок не найдено',
 			'studyActions.noLinkedResources' => 'Связанных ресурсов не найдено',
-			'studyActions.editLinkedResources' => 'Изменить связанные ресурсы',
+			'studyActions.customizeLinkedResources' => 'Настроить связанные ресурсы',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'В перекрестных ссылках используется ${translation}.',
 			'studyActions.onlineCrossReferencesExplanation' => 'Поскольку выбранный вами перевод доступен только в Интернете, перекрестные ссылки показаны с использованием последней версии Учебной Библии, которую вы использовали, чтобы сэкономить на производительности и затратах. Выбранный вами перевод используется повсюду в приложении.',
 			'selectionActions.annotate' => 'Аннотировать',
@@ -3625,7 +3625,7 @@ extension on TranslationsRu {
 			'bookmarks.deleteNamedConfirmation' => ({required Object name}) => 'Вы уверены, что хотите удалить «${name}»?',
 			'bookmarkPage.title' => 'Ваши закладки',
 			'commentaries.addRemove' => 'Добавить и удалить комментарии',
-			'commentaries.edit' => 'Изменить комментарии',
+			'commentaries.customize' => 'Настроить комментарии',
 			'toolbarShortcuts.switchBible' => 'Переключить Библию',
 			'toolbarShortcuts.lexicon' => 'Лексикон',
 			'toolbarShortcuts.themeAndLayout' => 'Тема и макет',

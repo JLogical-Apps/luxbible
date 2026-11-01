@@ -413,7 +413,7 @@ as a Scripture proof.
   The sheet uses the same heading as the full page, and its header button opens the full document scrolled to that item
 - A message appears when nothing is linked
 - Linked Resources can be pinned as a study panel
-- The sheet's menu button offers Edit Linked Resources, which opens the settings page below, and Pin as Study Panel
+- The sheet's menu button offers Customize Linked Resources, which opens the settings page below, and Pin as Study Panel
   wherever pinning is available
 
 More > Customize > Linked Resources lists the six resource kinds with drag handles. Dragging one changes the order of

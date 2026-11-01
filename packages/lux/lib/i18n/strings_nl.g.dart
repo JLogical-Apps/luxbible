@@ -474,7 +474,7 @@ class _Translations$studyActions$nl extends Translations$studyActions$en {
 	@override String linkedResourcesDescription({required Object region}) => 'Bekijk personen, thema\'s, kaarten en woordenboekartikelen die bij ${region} horen.';
 	@override String get noCrossReferences => 'Geen kruisverwijzingen gevonden';
 	@override String get noLinkedResources => 'Geen gekoppelde bronnen gevonden';
-	@override String get editLinkedResources => 'Gekoppelde bronnen bewerken';
+	@override String get customizeLinkedResources => 'Gekoppelde bronnen aanpassen';
 	@override String crossReferencesUse({required Object translation}) => 'Kruisverwijzingen gebruiken ${translation}';
 	@override String get onlineCrossReferencesExplanation => 'Omdat de geselecteerde vertaling alleen online beschikbaar is, worden kruisverwijzingen getoond met de meest recent gebruikte studiebijbel om prestaties en kosten te besparen. Overal elders in de app wordt de geselecteerde vertaling gebruikt.';
 }
@@ -571,7 +571,7 @@ class _Translations$commentaries$nl extends Translations$commentaries$en {
 
 	// Translations
 	@override String get addRemove => 'Commentaren toevoegen en verwijderen';
-	@override String get edit => 'Commentaren bewerken';
+	@override String get customize => 'Commentaren aanpassen';
 }
 
 // Path: toolbarShortcuts
@@ -3549,7 +3549,7 @@ extension on TranslationsNl {
 			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Bekijk personen, thema\'s, kaarten en woordenboekartikelen die bij ${region} horen.',
 			'studyActions.noCrossReferences' => 'Geen kruisverwijzingen gevonden',
 			'studyActions.noLinkedResources' => 'Geen gekoppelde bronnen gevonden',
-			'studyActions.editLinkedResources' => 'Gekoppelde bronnen bewerken',
+			'studyActions.customizeLinkedResources' => 'Gekoppelde bronnen aanpassen',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Kruisverwijzingen gebruiken ${translation}',
 			'studyActions.onlineCrossReferencesExplanation' => 'Omdat de geselecteerde vertaling alleen online beschikbaar is, worden kruisverwijzingen getoond met de meest recent gebruikte studiebijbel om prestaties en kosten te besparen. Overal elders in de app wordt de geselecteerde vertaling gebruikt.',
 			'selectionActions.annotate' => 'Annoteren',
@@ -3601,7 +3601,7 @@ extension on TranslationsNl {
 			'bookmarks.deleteNamedConfirmation' => ({required Object name}) => 'Weet je zeker dat je "${name}" wilt verwijderen?',
 			'bookmarkPage.title' => 'Je bladwijzers',
 			'commentaries.addRemove' => 'Commentaren toevoegen en verwijderen',
-			'commentaries.edit' => 'Commentaren bewerken',
+			'commentaries.customize' => 'Commentaren aanpassen',
 			'toolbarShortcuts.switchBible' => 'Van Bijbel wisselen',
 			'toolbarShortcuts.lexicon' => 'Lexicon',
 			'toolbarShortcuts.themeAndLayout' => 'Thema en indeling',

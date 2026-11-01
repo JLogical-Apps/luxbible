@@ -288,7 +288,7 @@
     "linkedResourcesDescription": "Zeige verknüpfte Personen, Themen, Karten und Wörterbucheinträge für {region}.",
     "noCrossReferences": "Keine Querverweise gefunden",
     "noLinkedResources": "Keine verknüpften Ressourcen gefunden",
-    "editLinkedResources": "Verknüpfte Ressourcen bearbeiten",
+    "customizeLinkedResources": "Verknüpfte Ressourcen anpassen",
     "crossReferencesUse": "Querverweise aus {translation}",
     "onlineCrossReferencesExplanation": "Da deine gewählte Übersetzung nur online verfügbar ist, werden Querverweise mit der zuletzt verwendeten Studienbibel angezeigt, um Leistung und Kosten zu sparen. Überall sonst in der App wird deine gewählte Übersetzung verwendet."
   },
@@ -350,7 +350,7 @@
   },
   "commentaries": {
     "addRemove": "Kommentare hinzufügen & entfernen",
-    "edit": "Kommentare bearbeiten"
+    "customize": "Kommentare anpassen"
   },
   "toolbarShortcuts": {
     "switchBible": "Bibel wechseln",

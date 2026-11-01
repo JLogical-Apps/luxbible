@@ -472,7 +472,7 @@ class _Translations$studyActions$de extends Translations$studyActions$en {
 	@override String linkedResourcesDescription({required Object region}) => 'Zeige verknüpfte Personen, Themen, Karten und Wörterbucheinträge für ${region}.';
 	@override String get noCrossReferences => 'Keine Querverweise gefunden';
 	@override String get noLinkedResources => 'Keine verknüpften Ressourcen gefunden';
-	@override String get editLinkedResources => 'Verknüpfte Ressourcen bearbeiten';
+	@override String get customizeLinkedResources => 'Verknüpfte Ressourcen anpassen';
 	@override String crossReferencesUse({required Object translation}) => 'Querverweise aus ${translation}';
 	@override String get onlineCrossReferencesExplanation => 'Da deine gewählte Übersetzung nur online verfügbar ist, werden Querverweise mit der zuletzt verwendeten Studienbibel angezeigt, um Leistung und Kosten zu sparen. Überall sonst in der App wird deine gewählte Übersetzung verwendet.';
 }
@@ -569,7 +569,7 @@ class _Translations$commentaries$de extends Translations$commentaries$en {
 
 	// Translations
 	@override String get addRemove => 'Kommentare hinzufügen & entfernen';
-	@override String get edit => 'Kommentare bearbeiten';
+	@override String get customize => 'Kommentare anpassen';
 }
 
 // Path: toolbarShortcuts
@@ -3545,7 +3545,7 @@ extension on TranslationsDe {
 			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Zeige verknüpfte Personen, Themen, Karten und Wörterbucheinträge für ${region}.',
 			'studyActions.noCrossReferences' => 'Keine Querverweise gefunden',
 			'studyActions.noLinkedResources' => 'Keine verknüpften Ressourcen gefunden',
-			'studyActions.editLinkedResources' => 'Verknüpfte Ressourcen bearbeiten',
+			'studyActions.customizeLinkedResources' => 'Verknüpfte Ressourcen anpassen',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Querverweise aus ${translation}',
 			'studyActions.onlineCrossReferencesExplanation' => 'Da deine gewählte Übersetzung nur online verfügbar ist, werden Querverweise mit der zuletzt verwendeten Studienbibel angezeigt, um Leistung und Kosten zu sparen. Überall sonst in der App wird deine gewählte Übersetzung verwendet.',
 			'selectionActions.annotate' => 'Annotieren',
@@ -3597,7 +3597,7 @@ extension on TranslationsDe {
 			'bookmarks.deleteNamedConfirmation' => ({required Object name}) => 'Möchtest du „${name}“ wirklich löschen?',
 			'bookmarkPage.title' => 'Deine Lesezeichen',
 			'commentaries.addRemove' => 'Kommentare hinzufügen & entfernen',
-			'commentaries.edit' => 'Kommentare bearbeiten',
+			'commentaries.customize' => 'Kommentare anpassen',
 			'toolbarShortcuts.switchBible' => 'Bibel wechseln',
 			'toolbarShortcuts.lexicon' => 'Lexikon',
 			'toolbarShortcuts.themeAndLayout' => 'Design & Layout',
