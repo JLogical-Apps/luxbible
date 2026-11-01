@@ -167,20 +167,15 @@ sealed class User with _$User {
       .map((offset, records) => MapEntry(offset, records.map((record) => record.$1).toList()));
 
   List<Reference> getExpandedReferences(Reference reference) =>
-      visibleAnnotations
-          .map((annotation) => annotation.verseSelection)
-          .nonNulls
-          .where((verseSelection) => verseSelection.hasReference(reference))
-          .lastOrNull
-          ?.references ??
+      getVerseSelectionAnnotations(
+        VerseSelection.reference(reference),
+      ).where((annotation) => annotation.hasHighlight).lastOrNull?.verseSelection?.references ??
       [reference];
 
   BibleTextSelection getExpandedTextSelection(BibleTextSelection textSelection) =>
-      visibleAnnotations
-          .map((annotation) => annotation.textSelection)
-          .nonNulls
-          .where((selection) => selection.intersects(textSelection))
-          .lastOrNull ??
+      getTextSelectionAnnotations(
+        textSelection,
+      ).where((annotation) => annotation.hasHighlight).lastOrNull?.textSelection ??
       textSelection;
 
   ToolbarPreset? get toolbarPreset => ToolbarPreset.values.firstWhereOrNull((preset) => preset.matches(this));

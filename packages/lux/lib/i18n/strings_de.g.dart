@@ -864,9 +864,9 @@ class _Translations$toolbarSettings$de extends Translations$toolbarSettings$en {
 	@override String get hideToolbarDescription => 'Blende die Symbolleiste beim Herunterscrollen aus, um ungestört in der Bibel zu lesen.';
 	@override String get pinToolbar => 'Anheften';
 	@override String get pinToolbarDescription => 'Hefte die Symbolleiste unten auf der Seite an.';
-	@override String get expandToAnnotation => 'Auf Annotation erweitern';
-	@override String get expandTextDescription => 'Langes Drücken auf ein annotiertes Wort wählt den ganzen markierten Bereich aus.';
-	@override String get expandVerseDescription => 'Tippen auf einen Vers wählt die ganze annotierte Versauswahl aus.';
+	@override String get expandToAnnotation => 'Ganze Markierung auswählen';
+	@override String get expandTextDescription => 'Langes Drücken auf ein markiertes Wort wählt die ganze Markierung aus.';
+	@override String get expandVerseDescription => 'Tippen auf einen markierten Vers wählt alle Verse dieser Markierung aus.';
 	@override String get rangeSelection => 'Bereichsauswahl';
 	@override String get rangeSelectionDescription => 'Tippen auf einen zweiten Vers wählt alle Verse zwischen ihm und dem ersten aus.';
 	@override String get mainShortcut => 'Kurzbefehl der Hauptleiste';
@@ -3807,9 +3807,9 @@ extension on TranslationsDe {
 			'toolbarSettings.hideToolbarDescription' => 'Blende die Symbolleiste beim Herunterscrollen aus, um ungestört in der Bibel zu lesen.',
 			'toolbarSettings.pinToolbar' => 'Anheften',
 			'toolbarSettings.pinToolbarDescription' => 'Hefte die Symbolleiste unten auf der Seite an.',
-			'toolbarSettings.expandToAnnotation' => 'Auf Annotation erweitern',
-			'toolbarSettings.expandTextDescription' => 'Langes Drücken auf ein annotiertes Wort wählt den ganzen markierten Bereich aus.',
-			'toolbarSettings.expandVerseDescription' => 'Tippen auf einen Vers wählt die ganze annotierte Versauswahl aus.',
+			'toolbarSettings.expandToAnnotation' => 'Ganze Markierung auswählen',
+			'toolbarSettings.expandTextDescription' => 'Langes Drücken auf ein markiertes Wort wählt die ganze Markierung aus.',
+			'toolbarSettings.expandVerseDescription' => 'Tippen auf einen markierten Vers wählt alle Verse dieser Markierung aus.',
 			'toolbarSettings.rangeSelection' => 'Bereichsauswahl',
 			'toolbarSettings.rangeSelectionDescription' => 'Tippen auf einen zweiten Vers wählt alle Verse zwischen ihm und dem ersten aus.',
 			'toolbarSettings.mainShortcut' => 'Kurzbefehl der Hauptleiste',

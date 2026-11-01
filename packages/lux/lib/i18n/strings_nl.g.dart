@@ -866,9 +866,9 @@ class _Translations$toolbarSettings$nl extends Translations$toolbarSettings$en {
 	@override String get hideToolbarDescription => 'Verberg de werkbalk tijdens het omlaag scrollen voor een ongestoorde Bijbelweergave.';
 	@override String get pinToolbar => 'Vastzetten';
 	@override String get pinToolbarDescription => 'Zet de werkbalk onderaan de pagina vast.';
-	@override String get expandToAnnotation => 'Uitbreiden tot annotatie';
-	@override String get expandTextDescription => 'Als je een geannoteerd woord ingedrukt houdt, wordt het hele gemarkeerde bereik geselecteerd.';
-	@override String get expandVerseDescription => 'Als je op een vers tikt, wordt de volledige geannoteerde versselectie geselecteerd.';
+	@override String get expandToAnnotation => 'Hele markering selecteren';
+	@override String get expandTextDescription => 'Als je een gemarkeerd woord ingedrukt houdt, wordt de hele markering geselecteerd.';
+	@override String get expandVerseDescription => 'Als je op een gemarkeerd vers tikt, worden alle verzen van die markering geselecteerd.';
 	@override String get rangeSelection => 'Bereikselectie';
 	@override String get rangeSelectionDescription => 'Als je op een tweede vers tikt, worden alle verzen tussen het eerste en tweede vers geselecteerd.';
 	@override String get mainShortcut => 'Snelkoppeling hoofdwerkbalk';
@@ -3811,9 +3811,9 @@ extension on TranslationsNl {
 			'toolbarSettings.hideToolbarDescription' => 'Verberg de werkbalk tijdens het omlaag scrollen voor een ongestoorde Bijbelweergave.',
 			'toolbarSettings.pinToolbar' => 'Vastzetten',
 			'toolbarSettings.pinToolbarDescription' => 'Zet de werkbalk onderaan de pagina vast.',
-			'toolbarSettings.expandToAnnotation' => 'Uitbreiden tot annotatie',
-			'toolbarSettings.expandTextDescription' => 'Als je een geannoteerd woord ingedrukt houdt, wordt het hele gemarkeerde bereik geselecteerd.',
-			'toolbarSettings.expandVerseDescription' => 'Als je op een vers tikt, wordt de volledige geannoteerde versselectie geselecteerd.',
+			'toolbarSettings.expandToAnnotation' => 'Hele markering selecteren',
+			'toolbarSettings.expandTextDescription' => 'Als je een gemarkeerd woord ingedrukt houdt, wordt de hele markering geselecteerd.',
+			'toolbarSettings.expandVerseDescription' => 'Als je op een gemarkeerd vers tikt, worden alle verzen van die markering geselecteerd.',
 			'toolbarSettings.rangeSelection' => 'Bereikselectie',
 			'toolbarSettings.rangeSelectionDescription' => 'Als je op een tweede vers tikt, worden alle verzen tussen het eerste en tweede vers geselecteerd.',
 			'toolbarSettings.mainShortcut' => 'Snelkoppeling hoofdwerkbalk',

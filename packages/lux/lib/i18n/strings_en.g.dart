@@ -1913,14 +1913,14 @@ class Translations$toolbarSettings$en {
 	/// en: 'Pin the toolbar to the bottom of the page.'
 	String get pinToolbarDescription => 'Pin the toolbar to the bottom of the page.';
 
-	/// en: 'Expand to Annotation'
-	String get expandToAnnotation => 'Expand to Annotation';
+	/// en: 'Select Whole Highlight'
+	String get expandToAnnotation => 'Select Whole Highlight';
 
-	/// en: 'Long-pressing an annotated word selects its full highlighted range.'
-	String get expandTextDescription => 'Long-pressing an annotated word selects its full highlighted range.';
+	/// en: 'Long-pressing a highlighted word selects the entire highlight.'
+	String get expandTextDescription => 'Long-pressing a highlighted word selects the entire highlight.';
 
-	/// en: 'Tapping a verse selects its full annotated verse selection.'
-	String get expandVerseDescription => 'Tapping a verse selects its full annotated verse selection.';
+	/// en: 'Tapping a highlighted verse selects every verse in that highlight.'
+	String get expandVerseDescription => 'Tapping a highlighted verse selects every verse in that highlight.';
 
 	/// en: 'Range Selection'
 	String get rangeSelection => 'Range Selection';
@@ -6444,9 +6444,9 @@ extension on Translations {
 			'toolbarSettings.hideToolbarDescription' => 'Hide the toolbar while scrolling down for an immersive view of the Bible.',
 			'toolbarSettings.pinToolbar' => 'Pin',
 			'toolbarSettings.pinToolbarDescription' => 'Pin the toolbar to the bottom of the page.',
-			'toolbarSettings.expandToAnnotation' => 'Expand to Annotation',
-			'toolbarSettings.expandTextDescription' => 'Long-pressing an annotated word selects its full highlighted range.',
-			'toolbarSettings.expandVerseDescription' => 'Tapping a verse selects its full annotated verse selection.',
+			'toolbarSettings.expandToAnnotation' => 'Select Whole Highlight',
+			'toolbarSettings.expandTextDescription' => 'Long-pressing a highlighted word selects the entire highlight.',
+			'toolbarSettings.expandVerseDescription' => 'Tapping a highlighted verse selects every verse in that highlight.',
 			'toolbarSettings.rangeSelection' => 'Range Selection',
 			'toolbarSettings.rangeSelectionDescription' => 'Tapping a second verse selects all verses between it and the first.',
 			'toolbarSettings.mainShortcut' => 'Main Toolbar Shortcut',

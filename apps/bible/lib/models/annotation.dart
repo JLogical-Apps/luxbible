@@ -34,6 +34,8 @@ sealed class Annotation with _$Annotation {
 
   bool get hasMarker => note.isNotEmpty || style.icon != null || style.type == .transparent;
 
+  bool get hasHighlight => style.type != .transparent;
+
   IconData get markerIcon => style.icon?.icon ?? noteIcon;
 
   VerseSelection? get verseSelection => selection.as<VersesAnnotationSelection>()?.verseSelection;

@@ -870,9 +870,9 @@ class _Translations$toolbarSettings$ru extends Translations$toolbarSettings$en {
 	@override String get hideToolbarDescription => 'Скройте панель инструментов при прокрутке вниз, чтобы получить захватывающий вид Библии.';
 	@override String get pinToolbar => 'Закрепить';
 	@override String get pinToolbarDescription => 'Закрепите панель инструментов внизу страницы.';
-	@override String get expandToAnnotation => 'Развернуть до аннотации';
-	@override String get expandTextDescription => 'Длительное нажатие на аннотированное слово выделяет весь выделенный диапазон.';
-	@override String get expandVerseDescription => 'Нажатие на стих выбирает полный аннотированный стих.';
+	@override String get expandToAnnotation => 'Выбрать всё выделение';
+	@override String get expandTextDescription => 'Длительное нажатие на выделенное слово выбирает всё выделение.';
+	@override String get expandVerseDescription => 'Нажатие на выделенный стих выбирает все стихи этого выделения.';
 	@override String get rangeSelection => 'Выбор диапазона';
 	@override String get rangeSelectionDescription => 'Нажатие на второй стих выбирает все стихи между ним и первым.';
 	@override String get mainShortcut => 'Ярлык на главной панели инструментов';
@@ -3835,9 +3835,9 @@ extension on TranslationsRu {
 			'toolbarSettings.hideToolbarDescription' => 'Скройте панель инструментов при прокрутке вниз, чтобы получить захватывающий вид Библии.',
 			'toolbarSettings.pinToolbar' => 'Закрепить',
 			'toolbarSettings.pinToolbarDescription' => 'Закрепите панель инструментов внизу страницы.',
-			'toolbarSettings.expandToAnnotation' => 'Развернуть до аннотации',
-			'toolbarSettings.expandTextDescription' => 'Длительное нажатие на аннотированное слово выделяет весь выделенный диапазон.',
-			'toolbarSettings.expandVerseDescription' => 'Нажатие на стих выбирает полный аннотированный стих.',
+			'toolbarSettings.expandToAnnotation' => 'Выбрать всё выделение',
+			'toolbarSettings.expandTextDescription' => 'Длительное нажатие на выделенное слово выбирает всё выделение.',
+			'toolbarSettings.expandVerseDescription' => 'Нажатие на выделенный стих выбирает все стихи этого выделения.',
 			'toolbarSettings.rangeSelection' => 'Выбор диапазона',
 			'toolbarSettings.rangeSelectionDescription' => 'Нажатие на второй стих выбирает все стихи между ним и первым.',
 			'toolbarSettings.mainShortcut' => 'Ярлык на главной панели инструментов',
