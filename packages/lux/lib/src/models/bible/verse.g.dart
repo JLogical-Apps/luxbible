@@ -8,6 +8,7 @@ part of 'verse.dart';
 
 _Verse _$VerseFromJson(Map<String, dynamic> json) => _Verse(
   verseNum: (json['n'] as num).toInt(),
+  endVerseNum: (json['e'] as num?)?.toInt(),
   words: (json['w'] as List<dynamic>)
       .map((e) => Word.fromJson(e as Map<String, dynamic>))
       .toList(),
@@ -21,6 +22,7 @@ _Verse _$VerseFromJson(Map<String, dynamic> json) => _Verse(
 
 Map<String, dynamic> _$VerseToJson(_Verse instance) => <String, dynamic>{
   'n': instance.verseNum,
+  'e': ?instance.endVerseNum,
   'w': instance.words,
   'o': ?instance.originalVerse,
   'f': ?instance.footnotes,

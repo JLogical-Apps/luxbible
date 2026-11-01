@@ -22,11 +22,12 @@ class PassageController {
   }
 
   Future<void> scrollToReference(
-    Reference reference, {
+    Reference targetReference, {
     required List<Paragraph> paragraphs,
     double alignment = 0,
     Duration duration = const Duration(milliseconds: 200),
   }) async {
+    final reference = paragraphs.getBridgeStartReference(targetReference);
     final sectionKey = paragraphs.verseHasSection(reference.verseNum) ? keyBySectionReference[reference] : null;
     final key = sectionKey?.currentContext == null ? keyByReference[reference] : sectionKey;
     if (key?.currentContext?.mounted == true) {

@@ -57,6 +57,7 @@ FutureOr<List<Verse>> verseSelectionVerses(
 }) => selection.references
     .map((reference) => ref.watch(verseProvider(reference: reference, translation: translation)).requireValue)
     .nonNulls
+    .distinct
     .toList();
 
 @riverpod
@@ -81,7 +82,7 @@ FutureOr<List<Paragraph>> verseSelectionParagraphs(
 ) {
   final chapter = ref.watch(chapterProvider(chapterReference: chapterReference, translation: translation)).requireValue;
 
-  bool isSelected(Verse verse) => references.any((reference) => reference.verseNum == verse.verseNum);
+  bool isSelected(Verse verse) => references.any((reference) => verse.hasVerseNum(reference.verseNum));
 
   final paragraphs = chapter.paragraphs;
   final selectedIndices = paragraphs

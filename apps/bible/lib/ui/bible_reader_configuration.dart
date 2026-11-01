@@ -118,9 +118,15 @@ class BibleReaderConfiguration {
           ),
     ],
     markersBuilder: (context, translation, reference, verse, verseParagraphOffset, onNavigate) {
+      final verseReferences = verse.getReferences(reference.toChapterReference());
       final leadingAnnotations = user
-          .getVerseSelectionAnnotations(VerseSelection.reference(reference))
-          .where((annotation) => annotation.hasMarker && annotation.verseSelection?.references.firstOrNull == reference)
+          .getVerseSelectionAnnotations(VerseSelection.fromReferences(verseReferences))
+          .where(
+            (annotation) => switch (annotation.verseSelection?.references.firstOrNull) {
+              final firstReference? => annotation.hasMarker && verseReferences.has(firstReference),
+              null => false,
+            },
+          )
           .toList();
 
       return [

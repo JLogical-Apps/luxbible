@@ -100,7 +100,9 @@ class PassageContent extends StatelessWidget {
         ),
         null => null,
       },
-      onReferencePressed: selection?.onReferencePressed,
+      onReferencePressed: selection == null
+          ? null
+          : (reference) => selection.onReferencePressed(reference, paragraphs: paragraphs),
       onTextSelectionLongPressed: selection == null || onNavigateToVerseSelection == null
           ? null
           : (textSelection) => selection.onTextSelectionLongPressed(context, textSelection, onNavigateToVerseSelection),

@@ -135,6 +135,8 @@ Theme & Layout pins a preview of John 9:35 in BSB below its app bar. It always u
 
 KJV, ASV, and WEB can use section headings synthetically inserted from BSB. Footnote markers open their content without leaving the passage.
 
+Some translations, such as HFA, combine neighboring verses into one verse bridge when the original sentence can't be split naturally. Lux shows the bridge once with a range label such as 3-4. A highlight, annotation marker, passage preview, or navigation target on any verse in the bridge applies to the whole bridge, so Romans 1:4 in HFA opens and highlights its 3-4 bridge. Tapping a bridge selects every verse in it, so copying, sharing, or annotating it uses the full range, and tapping it again deselects all of it.
+
 ### Immersive Reading
 
 The Bible remains the primary screen. Toolbars move out of the way while scrolling down and return when scrolling up.

@@ -178,18 +178,14 @@ class ParagraphsBuilder extends HookWidget {
     final chapter = Chapter(paragraphs: paragraphs);
 
     final referenceOpacities = useAnimatedValues(
-      paragraphs
-          .getReferences(chapterReference)
-          .mapToMap(
-            (reference) => MapEntry(
-              reference,
-              emphasizedReference != null && emphasizedReference != reference
-                  ? 0.5
-                  : deemphasizedReferences.has(reference)
-                  ? 0.7
-                  : 1.0,
-            ),
-          ),
+      paragraphs.whereType<VersesParagraph>().expand((paragraph) => paragraph.verses).distinct.mapToMap((verse) {
+        final references = verse.getReferences(chapterReference);
+        return MapEntry(getVerseReference(verse), switch (emphasizedReference) {
+          final emphasizedReference? when !references.has(emphasizedReference) => 0.5,
+          _ when references.any(deemphasizedReferences.has) => 0.7,
+          _ => 1.0,
+        });
+      }),
       initialValue: 1.0,
     );
 
@@ -493,41 +489,41 @@ class ParagraphsBuilder extends HookWidget {
     required Chapter chapter,
     required double maxWidth,
     required double hangingIndent,
-  }) {
-    final references = paragraph.verses.map(getVerseReference).toList();
-    return decorations
-        .whereType<BibleVerseDecoration>()
-        .map((decoration) {
-          final covered = references.where((reference) => decoration.selection.hasReference(reference)).toList();
-          if (covered.isEmpty) {
-            return null;
-          }
+  }) => decorations
+      .whereType<BibleVerseDecoration>()
+      .map((decoration) {
+        final covered = paragraph.verses
+            .where((verse) => verse.getReferences(chapterReference).any(decoration.selection.hasReference))
+            .map(getVerseReference)
+            .toList();
+        if (covered.isEmpty) {
+          return null;
+        }
 
-          final offsets = referenceOffsets(
-            renderSpans: renderSpans,
-            chapter: chapter,
-            first: covered.first,
-            last: covered.last,
-          );
-          if (offsets == null) {
-            return null;
-          }
+        final offsets = referenceOffsets(
+          renderSpans: renderSpans,
+          chapter: chapter,
+          first: covered.first,
+          last: covered.last,
+        );
+        if (offsets == null) {
+          return null;
+        }
 
-          return buildOverlays(
-            renderSpans: renderSpans,
-            paragraph: paragraph,
-            maxWidth: maxWidth,
-            hangingIndent: hangingIndent,
-            base: offsets.$1,
-            extent: offsets.$2,
-            decoration: decoration,
-            toRect: (box) => box.asVerseSelection(multiplier: configuration.sizeMultiplier),
-            buildChild: () => decoration.builder(context, selectionType.isDecorationDimmed(isVerseDecoration: true)),
-          );
-        })
-        .nonNulls
-        .flattened;
-  }
+        return buildOverlays(
+          renderSpans: renderSpans,
+          paragraph: paragraph,
+          maxWidth: maxWidth,
+          hangingIndent: hangingIndent,
+          base: offsets.$1,
+          extent: offsets.$2,
+          decoration: decoration,
+          toRect: (box) => box.asVerseSelection(multiplier: configuration.sizeMultiplier),
+          buildChild: () => decoration.builder(context, selectionType.isDecorationDimmed(isVerseDecoration: true)),
+        );
+      })
+      .nonNulls
+      .flattened;
 
   Iterable<Widget> buildTextDecorationOverlays(
     BuildContext context, {
@@ -663,6 +659,7 @@ class ParagraphsBuilder extends HookWidget {
             ...verses
                 .mapIndexed((verseIndex, verse) {
                   final reference = getVerseReference(verse);
+                  final isUnderlined = verse.getReferences(chapterReference).any(underlinedReferences.has);
                   final verseParagraphOffset = verseIndex == 0 ? paragraph.firstVerseOffset : 0;
                   final lastTextWordIndex = verse.words.lastIndexWhere((word) => word.text != null);
                   final markers = markersBuilder?.call(reference, verse, verseParagraphOffset) ?? [];
@@ -673,9 +670,9 @@ class ParagraphsBuilder extends HookWidget {
                         if (configuration.showVerseNumbers)
                           buildVerseNumberSpan(
                             reference: reference,
-                            verseNumber: verse.verseNum,
+                            verseNumLabel: verse.verseNumLabel,
                             bibleTextStyle: bibleTextStyle,
-                            isUnderlined: underlinedReferences.has(reference),
+                            isUnderlined: isUnderlined,
                             textDirection: textDirection,
                             opacity: referenceOpacities[reference] ?? 1,
                           ),
@@ -767,7 +764,7 @@ class ParagraphsBuilder extends HookWidget {
                                       : bibleTextStyle.body.color)
                                   ?.withValues(alpha: referenceOpacities[reference] ?? 1),
                           fontStyle: word.italic || type.isItalic ? .italic : null,
-                          decoration: underlinedReferences.has(reference) ? .underline : null,
+                          decoration: isUnderlined ? .underline : null,
                         ),
                       ).withInjectedSpans(
                         markers

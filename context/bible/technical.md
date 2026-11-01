@@ -153,6 +153,8 @@ retain the source translation's reference in `origin`. When multiple source vers
 share the normalized reference and are combined when the chapter is read. This is used by LXX, FOB, FMAR, NLD1939,
 LUT1912, SYNO, and ULB.
 
+Verse bridges keep the bridge's first verse in `verseNum` and its last verse in the optional `endVerseNum` (`e` in JSON). The chapter's verse map is keyed by the first verse, and `Chapter.getVerseByReference` resolves any verse inside a bridge to the bridge, so passage verse lists deduplicate it. The renderer anchors the bridge at its first verse and checks all its verses for decorations, emphasis, underlines, and annotation markers. `PassageSelectionController.onReferencePressed` applies the configured press rules to each bridge as its first verse and then expands every bridge in the pressed chapter to all its verses. YouVersion marks bridges with `ev` on its verse markers; USX and API.Bible use a `3-4` style verse number. Online chapters cached before bridge support keep their old shape until the fourteen-day cache expires.
+
 Bundled translations are stored as one JSON asset per book. Ordinary reading decodes a book on demand and reuses it
 for every chapter in that book. Full-text search and Strong's concordance assemble the complete local Bible only when
 those whole-corpus features are opened.

@@ -19,8 +19,8 @@ Book parseUsxBook(
       final elements = chapter.nextElementSiblings.takeWhile((element) => element.localName != 'chapter');
       return XmlBibleParser.parse(
         elements,
-        getVerseNumber: (element) => switch ((element.localName, element.getAttribute('number'))) {
-          ('verse', final number?) => int.parse(number),
+        getVerseNumbers: (element) => switch ((element.localName, element.getAttribute('number'))) {
+          ('verse', final number?) => XmlBibleParser.parseVerseNumbers(number),
           _ => null,
         },
         shouldIgnore: shouldIgnoreElement ?? (_) => false,

@@ -41,12 +41,25 @@ class PassageSelectionController {
     clearText();
   }
 
-  void onReferencePressed(Reference reference) {
+  void onReferencePressed(Reference reference, {required List<Paragraph> paragraphs}) {
     if (textSelection != null || hasActionBeenPerformedState.value) {
       clear();
-    } else {
-      referencesState.value = configuration.referencesAfterPress(references, reference);
+      return;
     }
+
+    // Selection rules see a verse bridge as its first verse, so pressing a selected bridge deselects all of it.
+    bool isInPassage(Reference other) => other.toChapterReference() == reference.toChapterReference();
+
+    final bridgeStartReferences = references
+        .map((selected) => isInPassage(selected) ? paragraphs.getBridgeStartReference(selected) : selected)
+        .distinct
+        .toList();
+
+    referencesState.value = configuration
+        .referencesAfterPress(bridgeStartReferences, reference)
+        .expand((selected) => isInPassage(selected) ? paragraphs.getBridgeReferences(selected) : [selected])
+        .distinct
+        .toList();
   }
 
   void markReferencesAction() {

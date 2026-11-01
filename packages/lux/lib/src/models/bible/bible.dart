@@ -18,10 +18,8 @@ class Bible {
 
   late final Map<Reference, Verse> verseByReference = references
       .mapToMap(
-        (reference) => MapEntry(
-          reference,
-          getBookByType(reference.book).chapters[reference.chapterNum - 1].verses[reference.verseNum],
-        ),
+        (reference) =>
+            MapEntry(reference, getChapterByReference(reference.toChapterReference()).getVerseByReference(reference)),
       )
       .withoutNullValues;
 
@@ -52,8 +50,8 @@ class Bible {
       getPassageVerses(selection.toVerseSelection()).getTextSelectionWords(selection);
 
   List<Verse> getVersesBySpan(VerseSpanReference reference) =>
-      reference.references.map((reference) => getVerseByReference(reference)).nonNulls.toList();
+      reference.references.map((reference) => getVerseByReference(reference)).nonNulls.distinct.toList();
 
   List<Verse> getPassageVerses(VerseSelection selection) =>
-      selection.references.map((reference) => getVerseByReference(reference)).nonNulls.toList();
+      selection.references.map((reference) => getVerseByReference(reference)).nonNulls.distinct.toList();
 }
