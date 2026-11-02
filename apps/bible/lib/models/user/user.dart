@@ -97,6 +97,7 @@ sealed class User with _$User {
     book,
     oldTestamentTranslation: oldTestamentTranslation,
     newTestamentTranslation: newTestamentTranslation,
+    studyTranslation: studyTranslation,
   );
 
   (BibleTranslation, BibleTranslation, BibleTranslation, BibleTranslation) get translationsSelection =>

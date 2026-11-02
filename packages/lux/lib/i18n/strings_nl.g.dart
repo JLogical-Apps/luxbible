@@ -115,6 +115,7 @@ class _Translations$languages$nl extends Translations$languages$en {
 	@override String get french => 'Frans';
 	@override String get spanish => 'Spaans';
 	@override String get german => 'Duits';
+	@override String get indonesian => 'Indonesisch';
 	@override String get romanian => 'Roemeens';
 	@override String get tagalog => 'Tagalog';
 }
@@ -1244,6 +1245,8 @@ class _Translations$chapterUnavailable$nl extends Translations$chapterUnavailabl
 	// Translations
 	@override String title({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} bevat het ${testament} niet.';
 	@override String subtitle({required Object testament, required Object fallbackTranslation}) => 'Je meest recent gebruikte Bijbel voor het ${testament}, ${fallbackTranslation}, wordt getoond.';
+	@override String bookTitle({required Object selectedTranslation, required Object book}) => '${selectedTranslation} bevat ${book} niet.';
+	@override String bookSubtitle({required Object fallbackTranslation}) => 'Je meest recent gebruikte studiebijbel, ${fallbackTranslation}, wordt getoond.';
 }
 
 // Path: verseNumbering
@@ -3289,6 +3292,7 @@ extension on TranslationsNl {
 			'languages.french' => 'Frans',
 			'languages.spanish' => 'Spaans',
 			'languages.german' => 'Duits',
+			'languages.indonesian' => 'Indonesisch',
 			'languages.romanian' => 'Roemeens',
 			'languages.tagalog' => 'Tagalog',
 			'highlightStyles.red' => 'Rood',
@@ -3792,9 +3796,9 @@ extension on TranslationsNl {
 			'highlightStyleUi.deleteAnnotations' => 'Annotaties verwijderen',
 			'highlightStyleUi.updateAnnotations' => 'Annotaties bijwerken',
 			'highlightStyleUi.updateWithAnnotations' => ({required Object name, required Object annotations}) => '"${name}" heeft ${annotations}. Wil je ze bijwerken met de nieuwe stijl of ongewijzigd laten?',
-			'highlightStyleUi.leaveAsIs' => 'Ongewijzigd laten',
 			_ => null,
 		} ?? switch (path) {
+			'highlightStyleUi.leaveAsIs' => 'Ongewijzigd laten',
 			'highlightStyleUi.label' => 'Label',
 			'toolbarSettings.mainToolbar' => 'Hoofdwerkbalk',
 			'toolbarSettings.verseSelection' => 'Versselectie',
@@ -4085,6 +4089,8 @@ extension on TranslationsNl {
 			'interlinearUi.usingTranslation' => ({required Object translation}) => '${translation} wordt gebruikt voor interlineair',
 			'chapterUnavailable.title' => ({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} bevat het ${testament} niet.',
 			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Je meest recent gebruikte Bijbel voor het ${testament}, ${fallbackTranslation}, wordt getoond.',
+			'chapterUnavailable.bookTitle' => ({required Object selectedTranslation, required Object book}) => '${selectedTranslation} bevat ${book} niet.',
+			'chapterUnavailable.bookSubtitle' => ({required Object fallbackTranslation}) => 'Je meest recent gebruikte studiebijbel, ${fallbackTranslation}, wordt getoond.',
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => 'De hoofdstukken en verzen van de ${translation} zijn anders genummerd dan in de meeste Engelse vertalingen.\n\nDe tekst die hier bij ${reference} wordt getoond, komt uit ${originalReference} in de ${translation} en is opnieuw gekoppeld om met de andere vertalingen overeen te komen.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} bevat deze selectie niet.',
@@ -4304,11 +4310,11 @@ extension on TranslationsNl {
 			'morphology.types.negativeAdverb.name' => 'Ontkennend bijwoord',
 			'morphology.types.negativeAdverb.description' => 'Een bijwoord dat een ontkenning uitdrukt.',
 			'morphology.types.negativeAdverb.examples' => 'niet|nooit',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.adjective.name' => 'Bijvoeglijk naamwoord',
 			'morphology.types.adjective.description' => 'Een woord dat een zelfstandig naamwoord beschrijft.',
 			'morphology.types.adjective.examples' => 'groot|heilig|wijs',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.noun.name' => 'Zelfstandig naamwoord',
 			'morphology.types.noun.description' => 'Een persoon, plaats, zaak of begrip.',
 			'morphology.types.noun.examples' => 'stad|water|liefde',

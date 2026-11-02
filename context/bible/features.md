@@ -78,6 +78,9 @@ Lux counts distinct active days locally. After three active days, it makes a nat
 - HTB: Het Boek 2007 in Dutch
 - HFA: Hoffnung für alle in German
 - NTR: Noua Traducere Românească 2021 in Romanian
+- TSI: Terjemahan Sederhana Indonesia in Indonesian, which doesn't include 1 and 2 Chronicles, Jeremiah, or Ezekiel
+
+When the selected Bible doesn't include the current book, the reader shows the user's most-recent Study Bible for it with a message naming the missing book.
 
 Online chapters are cached on the device after they are loaded. A cached chapter remains available without a
 connection for fourteen days, after which Lux requires a connection to load it again.
@@ -309,7 +312,7 @@ Compare displays the selected chapter, verses, or passage in every configured Co
 on the Compare settings page.
 
 - Local and online Bibles are supported.
-- Testament-limited Bibles show an unavailable message for passages they do not contain.
+- Testament-limited Bibles and Bibles missing individual books show an unavailable message for passages they do not contain.
 - A Compare study panel pins one selected parallel Bible beside the reading text and links their chapter scrolling.
 
 ## Interlinear

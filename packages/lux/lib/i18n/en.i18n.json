@@ -8,6 +8,7 @@
     "french": "French",
     "spanish": "Spanish",
     "german": "German",
+    "indonesian": "Indonesian",
     "romanian": "Romanian",
     "tagalog": "Tagalog"
   },
@@ -915,7 +916,9 @@
   },
   "chapterUnavailable": {
     "title": "{selectedTranslation} doesn't include the {testament}.",
-    "subtitle": "Showing your most-recent {testament} Bible, {fallbackTranslation}."
+    "subtitle": "Showing your most-recent {testament} Bible, {fallbackTranslation}.",
+    "bookTitle": "{selectedTranslation} doesn't include {book}.",
+    "bookSubtitle": "Showing your most-recent Study Bible, {fallbackTranslation}."
   },
   "verseNumbering": {
     "referenceLabel": "{translation} {reference}",

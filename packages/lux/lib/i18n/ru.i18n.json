@@ -8,6 +8,7 @@
     "french": "Французский",
     "spanish": "Испанский",
     "german": "Немецкий",
+    "indonesian": "Индонезийский",
     "romanian": "Румынский",
     "tagalog": "Тагальский"
   },
@@ -937,7 +938,9 @@
   },
   "chapterUnavailable": {
     "title": "{selectedTranslation} не включает {testament}.",
-    "subtitle": "Показываем вашу последнюю {testament} Библию, {fallbackTranslation}."
+    "subtitle": "Показываем вашу последнюю {testament} Библию, {fallbackTranslation}.",
+    "bookTitle": "{selectedTranslation} не включает книгу {book}.",
+    "bookSubtitle": "Показываем вашу последнюю Учебную Библию, {fallbackTranslation}."
   },
   "verseNumbering": {
     "referenceLabel": "{translation} {reference}",

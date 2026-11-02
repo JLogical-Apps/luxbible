@@ -8,6 +8,7 @@
     "french": "Französisch",
     "spanish": "Spanisch",
     "german": "Deutsch",
+    "indonesian": "Indonesisch",
     "romanian": "Rumänisch",
     "tagalog": "Tagalog"
   },
@@ -915,7 +916,9 @@
   },
   "chapterUnavailable": {
     "title": "{selectedTranslation} enthält kein {testament}.",
-    "subtitle": "Stattdessen wird deine zuletzt verwendete Bibel für diesen Teil ({testament}) angezeigt: {fallbackTranslation}."
+    "subtitle": "Stattdessen wird deine zuletzt verwendete Bibel für diesen Teil ({testament}) angezeigt: {fallbackTranslation}.",
+    "bookTitle": "{selectedTranslation} enthält das Buch {book} nicht.",
+    "bookSubtitle": "Stattdessen wird deine zuletzt verwendete Studienbibel angezeigt: {fallbackTranslation}."
   },
   "verseNumbering": {
     "referenceLabel": "{translation} {reference}",

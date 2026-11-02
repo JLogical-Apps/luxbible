@@ -54,6 +54,7 @@ class PassageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final selection = this.selection;
     final onNavigateToVerseSelection = this.onNavigateToVerseSelection;
+    final isBookMissing = configuration.selectedTranslation.missingBooks.has(chapterReference.book);
 
     final footerChildren = [
       if (showChapterAccessories &&
@@ -114,18 +115,25 @@ class PassageContent extends StatelessWidget {
       header: showChapterAccessories && translation != configuration.selectedTranslation
           ? StyledTile.message(
               leading: Symbols.translate.toIcon(),
-              title: t.chapterUnavailable
-                  .title(
-                    selectedTranslation: configuration.selectedTranslation.fullName(),
-                    testament: chapterReference.book.testament.title(),
-                  )
-                  .toText(),
-              subtitle: t.chapterUnavailable
-                  .subtitle(
-                    testament: chapterReference.book.testament.title(),
-                    fallbackTranslation: translation.fullName(),
-                  )
-                  .toText(),
+              title:
+                  (isBookMissing
+                          ? t.chapterUnavailable.bookTitle(
+                              selectedTranslation: configuration.selectedTranslation.fullName(),
+                              book: chapterReference.book.title(),
+                            )
+                          : t.chapterUnavailable.title(
+                              selectedTranslation: configuration.selectedTranslation.fullName(),
+                              testament: chapterReference.book.testament.title(),
+                            ))
+                      .toText(),
+              subtitle:
+                  (isBookMissing
+                          ? t.chapterUnavailable.bookSubtitle(fallbackTranslation: translation.fullName())
+                          : t.chapterUnavailable.subtitle(
+                              testament: chapterReference.book.testament.title(),
+                              fallbackTranslation: translation.fullName(),
+                            ))
+                      .toText(),
             )
           : null,
       footer: footerChildren.isEmpty ? null : Column(spacing: 12, children: footerChildren),

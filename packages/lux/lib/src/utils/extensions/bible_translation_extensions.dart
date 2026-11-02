@@ -5,8 +5,11 @@ extension BibleTranslationExtensions on BibleTranslation {
     BookType book, {
     BibleTranslation oldTestamentTranslation = .oshb,
     BibleTranslation newTestamentTranslation = .statresgnt,
+    BibleTranslation studyTranslation = .bsb,
   }) => containsBook(book)
       ? this
+      : missingBooks.has(book)
+      ? studyTranslation
       : book.testament == .oldTestament
       ? oldTestamentTranslation
       : newTestamentTranslation;

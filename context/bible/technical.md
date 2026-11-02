@@ -277,6 +277,7 @@ These translations are loaded online when they are not available from the device
 - HTB through the YouVersion Platform
 - HFA through the YouVersion Platform
 - NTR through the YouVersion Platform
+- TSI through the YouVersion Platform
 - NLT through API.Bible
 - NKJV through API.Bible
 
@@ -338,6 +339,8 @@ They are standalone reading texts. They do not expose the same word-aligned inte
 
 When a testament-limited Bible does not contain the current book, Lux falls back to the user's preferred original-language Bible for that testament.
 
+`BibleTranslation.missingBooks` lists books an otherwise whole-Bible translation lacks, currently 1 and 2 Chronicles, Jeremiah, and Ezekiel in TSI. `containsBook` excludes them, and `effectiveFor` falls back to the user's Study Bible for them rather than an original-language Bible, since YouVersion returns 404 for those passages.
+
 ## Translation Capabilities
 
 Capabilities vary by translation:
@@ -345,9 +348,9 @@ Capabilities vary by translation:
 - Study and interlinear: BSB, KJV
 - Audio: BSB, KJV
 - Synthetic BSB headings: KJV, ASV, WEB
-- Footnotes: BSB, MSB, KJV, ASV, WEB, AMP, NASB95, NIV, CSB, NLT, NKJV, HFA, NTR
+- Footnotes: BSB, MSB, KJV, ASV, WEB, AMP, NASB95, NIV, CSB, NLT, NKJV, HFA, NTR, TSI
 - Red letters: BSB, MSB, KJV, WEB, AMP, NASB95, NIV, CSB, NLT, NKJV
-- Native headings: BSB, MSB, FMAR, NRT, AMP, NASB95, NIV, CSB, NLT, NKJV, HFA, NTR
+- Native headings: BSB, MSB, FMAR, NRT, AMP, NASB95, NIV, CSB, NLT, NKJV, HFA, NTR, TSI
 - Paragraph formatting: all except OSHB, SV, FMAR, NRT, ELB1905, LUT1912, NLD1939, FOB, SYNO, and ULB
 
 ## Study Data Sources

@@ -115,6 +115,7 @@ class _Translations$languages$ru extends Translations$languages$en {
 	@override String get french => 'Французский';
 	@override String get spanish => 'Испанский';
 	@override String get german => 'Немецкий';
+	@override String get indonesian => 'Индонезийский';
 	@override String get romanian => 'Румынский';
 	@override String get tagalog => 'Тагальский';
 }
@@ -1264,6 +1265,8 @@ class _Translations$chapterUnavailable$ru extends Translations$chapterUnavailabl
 	// Translations
 	@override String title({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} не включает ${testament}.';
 	@override String subtitle({required Object testament, required Object fallbackTranslation}) => 'Показываем вашу последнюю ${testament} Библию, ${fallbackTranslation}.';
+	@override String bookTitle({required Object selectedTranslation, required Object book}) => '${selectedTranslation} не включает книгу ${book}.';
+	@override String bookSubtitle({required Object fallbackTranslation}) => 'Показываем вашу последнюю Учебную Библию, ${fallbackTranslation}.';
 }
 
 // Path: verseNumbering
@@ -3313,6 +3316,7 @@ extension on TranslationsRu {
 			'languages.french' => 'Французский',
 			'languages.spanish' => 'Испанский',
 			'languages.german' => 'Немецкий',
+			'languages.indonesian' => 'Индонезийский',
 			'languages.romanian' => 'Румынский',
 			'languages.tagalog' => 'Тагальский',
 			'highlightStyles.red' => 'Красный',
@@ -3816,9 +3820,9 @@ extension on TranslationsRu {
 			'highlightStyleUi.deleteAnnotations' => 'Удалить аннотации',
 			'highlightStyleUi.updateAnnotations' => 'Обновить аннотации',
 			'highlightStyleUi.updateWithAnnotations' => ({required Object name, required Object annotations}) => '«${name}» имеет ${annotations}. Хотите обновить их, чтобы использовать новый стиль, или оставить как есть?',
-			'highlightStyleUi.leaveAsIs' => 'Оставить как есть',
 			_ => null,
 		} ?? switch (path) {
+			'highlightStyleUi.leaveAsIs' => 'Оставить как есть',
 			'highlightStyleUi.label' => 'Название',
 			'toolbarSettings.mainToolbar' => 'Главная панель инструментов',
 			'toolbarSettings.verseSelection' => 'Выбор стиха',
@@ -4109,6 +4113,8 @@ extension on TranslationsRu {
 			'interlinearUi.usingTranslation' => ({required Object translation}) => 'Использование ${translation} для подстрочного текста',
 			'chapterUnavailable.title' => ({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} не включает ${testament}.',
 			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Показываем вашу последнюю ${testament} Библию, ${fallbackTranslation}.',
+			'chapterUnavailable.bookTitle' => ({required Object selectedTranslation, required Object book}) => '${selectedTranslation} не включает книгу ${book}.',
+			'chapterUnavailable.bookSubtitle' => ({required Object fallbackTranslation}) => 'Показываем вашу последнюю Учебную Библию, ${fallbackTranslation}.',
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => '${translation} нумерует главы и стихи иначе, чем в большинстве английских переводов.\n\nТекст, показанный здесь в ${reference}, взят из ${originalReference} в ${translation} и переназначен, чтобы соответствовать другим переводам.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} не включает этот выбор.',
@@ -4328,11 +4334,11 @@ extension on TranslationsRu {
 			'morphology.types.negativeAdverb.name' => 'Отрицательное наречие',
 			'morphology.types.negativeAdverb.description' => 'Наречие, выражающее отрицание.',
 			'morphology.types.negativeAdverb.examples' => 'нет|никогда',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.adjective.name' => 'Прилагательное',
 			'morphology.types.adjective.description' => 'Слово, описывающее существительное.',
 			'morphology.types.adjective.examples' => 'великий|святой|мудрый',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.noun.name' => 'Существительное',
 			'morphology.types.noun.description' => 'Человек, место, вещь или идея.',
 			'morphology.types.noun.examples' => 'город|вода|любовь',

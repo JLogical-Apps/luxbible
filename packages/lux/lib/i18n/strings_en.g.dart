@@ -128,6 +128,9 @@ class Translations$languages$en {
 	/// en: 'German'
 	String get german => 'German';
 
+	/// en: 'Indonesian'
+	String get indonesian => 'Indonesian';
+
 	/// en: 'Romanian'
 	String get romanian => 'Romanian';
 
@@ -2784,6 +2787,12 @@ class Translations$chapterUnavailable$en {
 
 	/// en: 'Showing your most-recent {testament} Bible, {fallbackTranslation}.'
 	String subtitle({required Object testament, required Object fallbackTranslation}) => 'Showing your most-recent ${testament} Bible, ${fallbackTranslation}.';
+
+	/// en: '{selectedTranslation} doesn't include {book}.'
+	String bookTitle({required Object selectedTranslation, required Object book}) => '${selectedTranslation} doesn\'t include ${book}.';
+
+	/// en: 'Showing your most-recent Study Bible, {fallbackTranslation}.'
+	String bookSubtitle({required Object fallbackTranslation}) => 'Showing your most-recent Study Bible, ${fallbackTranslation}.';
 }
 
 // Path: verseNumbering
@@ -5924,6 +5933,7 @@ extension on Translations {
 			'languages.french' => 'French',
 			'languages.spanish' => 'Spanish',
 			'languages.german' => 'German',
+			'languages.indonesian' => 'Indonesian',
 			'languages.romanian' => 'Romanian',
 			'languages.tagalog' => 'Tagalog',
 			'highlightStyles.red' => 'Red',
@@ -6427,9 +6437,9 @@ extension on Translations {
 			'highlightStyleUi.updateWithAnnotations' => ({required Object name, required Object annotations}) => '"${name}" has ${annotations}. Would you like to update them to use the new style, or leave them as-is?',
 			'highlightStyleUi.leaveAsIs' => 'Leave As-Is',
 			'highlightStyleUi.label' => 'Label',
-			'toolbarSettings.mainToolbar' => 'Main Toolbar',
 			_ => null,
 		} ?? switch (path) {
+			'toolbarSettings.mainToolbar' => 'Main Toolbar',
 			'toolbarSettings.verseSelection' => 'Verse Selection',
 			'toolbarSettings.textSelection' => 'Text Selection',
 			'toolbarSettings.shownForMain' => 'Shown when nothing is selected.',
@@ -6718,6 +6728,8 @@ extension on Translations {
 			'interlinearUi.usingTranslation' => ({required Object translation}) => 'Using ${translation} for interlinear',
 			'chapterUnavailable.title' => ({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} doesn\'t include the ${testament}.',
 			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Showing your most-recent ${testament} Bible, ${fallbackTranslation}.',
+			'chapterUnavailable.bookTitle' => ({required Object selectedTranslation, required Object book}) => '${selectedTranslation} doesn\'t include ${book}.',
+			'chapterUnavailable.bookSubtitle' => ({required Object fallbackTranslation}) => 'Showing your most-recent Study Bible, ${fallbackTranslation}.',
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => 'The ${translation} numbers its chapters and verses differently from most English translations.\n\nThe text shown here at ${reference} comes from ${originalReference} in the ${translation}, remapped so it lines up with the other translations.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} doesn\'t include this selection.',
@@ -6939,11 +6951,11 @@ extension on Translations {
 			'morphology.types.negativeAdverb.examples' => 'not|never',
 			'morphology.types.adjective.name' => 'Adjective',
 			'morphology.types.adjective.description' => 'A word that describes a noun.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.adjective.examples' => 'great|holy|wise',
 			'morphology.types.noun.name' => 'Noun',
 			'morphology.types.noun.description' => 'A person, place, thing, or idea.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.noun.examples' => 'city|water|love',
 			'morphology.types.properNoun.name' => 'Proper noun',
 			'morphology.types.properNoun.description' => 'A specific name of a person, place, or thing.',

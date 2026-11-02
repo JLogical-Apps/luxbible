@@ -45,6 +45,7 @@ const _$BibleTranslationEnumMap = {
   BibleTranslation.statresgnt: 'statresgnt',
   BibleTranslation.tr: 'tr',
   BibleTranslation.oshb: 'oshb',
+  BibleTranslation.tsi: 'tsi',
   BibleTranslation.ntr: 'ntr',
   BibleTranslation.nrt: 'nrt',
   BibleTranslation.synodal: 'synodal',

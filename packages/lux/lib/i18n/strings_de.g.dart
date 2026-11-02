@@ -115,6 +115,7 @@ class _Translations$languages$de extends Translations$languages$en {
 	@override String get french => 'Französisch';
 	@override String get spanish => 'Spanisch';
 	@override String get german => 'Deutsch';
+	@override String get indonesian => 'Indonesisch';
 	@override String get romanian => 'Rumänisch';
 	@override String get tagalog => 'Tagalog';
 }
@@ -1242,6 +1243,8 @@ class _Translations$chapterUnavailable$de extends Translations$chapterUnavailabl
 	// Translations
 	@override String title({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} enthält kein ${testament}.';
 	@override String subtitle({required Object testament, required Object fallbackTranslation}) => 'Stattdessen wird deine zuletzt verwendete Bibel für diesen Teil (${testament}) angezeigt: ${fallbackTranslation}.';
+	@override String bookTitle({required Object selectedTranslation, required Object book}) => '${selectedTranslation} enthält das Buch ${book} nicht.';
+	@override String bookSubtitle({required Object fallbackTranslation}) => 'Stattdessen wird deine zuletzt verwendete Studienbibel angezeigt: ${fallbackTranslation}.';
 }
 
 // Path: verseNumbering
@@ -3287,6 +3290,7 @@ extension on TranslationsDe {
 			'languages.french' => 'Französisch',
 			'languages.spanish' => 'Spanisch',
 			'languages.german' => 'Deutsch',
+			'languages.indonesian' => 'Indonesisch',
 			'languages.romanian' => 'Rumänisch',
 			'languages.tagalog' => 'Tagalog',
 			'highlightStyles.red' => 'Rot',
@@ -3790,9 +3794,9 @@ extension on TranslationsDe {
 			'highlightStyleUi.updateWithAnnotations' => ({required Object name, required Object annotations}) => '„${name}“ wird von ${annotations} verwendet. Möchtest du sie auf den neuen Stil aktualisieren oder unverändert lassen?',
 			'highlightStyleUi.leaveAsIs' => 'Unverändert lassen',
 			'highlightStyleUi.label' => 'Bezeichnung',
-			'toolbarSettings.mainToolbar' => 'Hauptleiste',
 			_ => null,
 		} ?? switch (path) {
+			'toolbarSettings.mainToolbar' => 'Hauptleiste',
 			'toolbarSettings.verseSelection' => 'Versauswahl',
 			'toolbarSettings.textSelection' => 'Textauswahl',
 			'toolbarSettings.shownForMain' => 'Wird angezeigt, wenn nichts ausgewählt ist.',
@@ -4081,6 +4085,8 @@ extension on TranslationsDe {
 			'interlinearUi.usingTranslation' => ({required Object translation}) => 'Interlinear mit ${translation}',
 			'chapterUnavailable.title' => ({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} enthält kein ${testament}.',
 			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Stattdessen wird deine zuletzt verwendete Bibel für diesen Teil (${testament}) angezeigt: ${fallbackTranslation}.',
+			'chapterUnavailable.bookTitle' => ({required Object selectedTranslation, required Object book}) => '${selectedTranslation} enthält das Buch ${book} nicht.',
+			'chapterUnavailable.bookSubtitle' => ({required Object fallbackTranslation}) => 'Stattdessen wird deine zuletzt verwendete Studienbibel angezeigt: ${fallbackTranslation}.',
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => '${translation} zählt Kapitel und Verse anders als die meisten englischen Übersetzungen.\n\nDer hier bei ${reference} angezeigte Text stammt aus ${originalReference} in ${translation} und wurde so zugeordnet, dass er zu den anderen Übersetzungen passt.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} enthält diese Auswahl nicht.',
@@ -4302,11 +4308,11 @@ extension on TranslationsDe {
 			'morphology.types.negativeAdverb.examples' => 'nicht|niemals',
 			'morphology.types.adjective.name' => 'Adjektiv',
 			'morphology.types.adjective.description' => 'Ein Wort, das ein Substantiv beschreibt.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.adjective.examples' => 'groß|heilig|weise',
 			'morphology.types.noun.name' => 'Substantiv',
 			'morphology.types.noun.description' => 'Eine Person, ein Ort, eine Sache oder ein Begriff.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.noun.examples' => 'Stadt|Wasser|Liebe',
 			'morphology.types.properNoun.name' => 'Eigenname',
 			'morphology.types.properNoun.description' => 'Der Name einer bestimmten Person, eines Ortes oder einer Sache.',

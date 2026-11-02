@@ -8,6 +8,7 @@
     "french": "Frans",
     "spanish": "Spaans",
     "german": "Duits",
+    "indonesian": "Indonesisch",
     "romanian": "Roemeens",
     "tagalog": "Tagalog"
   },
@@ -917,7 +918,9 @@
   },
   "chapterUnavailable": {
     "title": "{selectedTranslation} bevat het {testament} niet.",
-    "subtitle": "Je meest recent gebruikte Bijbel voor het {testament}, {fallbackTranslation}, wordt getoond."
+    "subtitle": "Je meest recent gebruikte Bijbel voor het {testament}, {fallbackTranslation}, wordt getoond.",
+    "bookTitle": "{selectedTranslation} bevat {book} niet.",
+    "bookSubtitle": "Je meest recent gebruikte studiebijbel, {fallbackTranslation}, wordt getoond."
   },
   "verseNumbering": {
     "referenceLabel": "{translation} {reference}",
