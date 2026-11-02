@@ -315,6 +315,9 @@ without knowing about speed.
 - **The clip is sped up before its framing**: `setpts=PTS/speed,fps`, then `tpad` and `trim` to the exact frame count,
   since `fps` can leave one short. A zoom's `perspective` then counts output frames, matching its timing.
 - **The voice uses `atempo`**, which keeps the pitch and runs from 0.5x to 100x in ffmpeg 7.
+- **A sped clip's voice is padded and trimmed to its frame count.** Its exact length rarely lands on a whole frame, and
+  `atempo` runs a little long besides. concat waits for a clip's longer stream and `setpts=N` drops the video's share
+  of that wait, so the voice drifted later at every cut: 480 ms by the end of `physical_bibles_2` at 1.05x.
 - A clip at speed 1 gets no extra filters, so its command and preview key are unchanged.
 
 ## Voice

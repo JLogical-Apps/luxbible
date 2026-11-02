@@ -92,7 +92,10 @@ List<String> getStitchArgs({
   String getSpeedFilter(ResolvedClip clip) => clip.speed == 1
       ? ''
       : 'setpts=PTS/${clip.speed},fps=$fps,tpad=stop_mode=clone:stop=1,trim=end_frame=${clip.frameCount},';
-  String getTempoFilter(ResolvedClip clip) => clip.speed == 1 ? '' : ',atempo=${clip.speed}';
+  // concat waits for a clip's longer stream, and `setpts=N` then drops the video's share of that wait, so audio that
+  // outlasts the rounded frame count drifts later at every cut. Padding and trimming it to the frame count keeps sync.
+  String getTempoFilter(ResolvedClip clip) =>
+      clip.speed == 1 ? '' : ',atempo=${clip.speed},apad,atrim=duration=${clip.frameCount / fps}';
 
   final labelled = clips
       .mapIndexed(
