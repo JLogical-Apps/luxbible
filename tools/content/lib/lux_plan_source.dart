@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bible/models/article.dart';
 import 'package:bible/models/bible_plan_study_note.dart';
 import 'package:bible/models/commentary_type.dart';
+import 'package:bible/models/creed.dart';
 import 'package:bible/models/rich_content.dart';
 import 'package:collection/collection.dart';
 import 'package:lux/lux_core.dart';
@@ -51,37 +52,44 @@ class LuxPlanSource {
 
   List<Map<String, dynamic>> toStudyNotesJson() => days.map((day) => day.note.toJson()).toList();
 
-  List<String> getErrors({required Map<String, Set<String>> articleIdsByPrefix}) => days
+  List<String> getErrors({required Map<String, Set<String>> resourceIdsByPrefix}) => days
       .expand(
         (day) => [
           ...day.passages.whereNot(VerseSelection.isOsisId).map((passage) => 'Day ${day.number}: bad passage $passage'),
           ...day.note.body
               .expand((content) => content.texts)
               .expand((text) => text.linkTargets)
-              .where((link) => !isValidLink(link, articleIdsByPrefix: articleIdsByPrefix))
+              .where((link) => !isValidLink(link, resourceIdsByPrefix: resourceIdsByPrefix))
               .map((link) => 'Day ${day.number}: bad link $link'),
         ],
       )
       .toList();
 
-  static bool isValidLink(String link, {required Map<String, Set<String>> articleIdsByPrefix}) =>
-      switch (articleIdsByPrefix.entries.firstWhereOrNull((entry) => link.startsWith(entry.key))) {
+  static bool isValidLink(String link, {required Map<String, Set<String>> resourceIdsByPrefix}) =>
+      switch (resourceIdsByPrefix.entries.firstWhereOrNull((entry) => link.startsWith(entry.key))) {
         final entry? => entry.value.contains(link.substring(entry.key.length)),
         null when link.startsWith(CommentaryType.linkPrefix) => CommentaryType.parseLink(link) != null,
+        null when parseRichContentWebLink(link) != null => true,
         null => VerseSelection.isOsisId(link),
       };
 
-  static Map<String, Set<String>> loadArticleIdsByPrefix() =>
-      {
-        Article.dictionaryLinkPrefix: 'dictionary',
-        Article.peopleLinkPrefix: 'people',
-        Article.themesLinkPrefix: 'themes',
-      }.mapValues(
-        (prefix, collection) =>
-            (jsonDecode(appAssetFile('$collection/tyndale.json', app: .bible).readAsStringSync()) as List)
-                .map((article) => (article as Map<String, dynamic>)['i'] as String)
-                .toSet(),
-      );
+  static Map<String, Set<String>> loadResourceIdsByPrefix() => {
+    ...{
+      Article.dictionaryLinkPrefix: 'dictionary',
+      Article.peopleLinkPrefix: 'people',
+      Article.themesLinkPrefix: 'themes',
+    }.mapValues(
+      (prefix, collection) =>
+          (jsonDecode(appAssetFile('$collection/tyndale.json', app: .bible).readAsStringSync()) as List)
+              .map((article) => (article as Map<String, dynamic>)['i'] as String)
+              .toSet(),
+    ),
+    Creed.linkPrefix: (jsonDecode(appAssetFile('creeds/creeds.json', app: .bible).readAsStringSync()) as List)
+        .map((creed) => Creed.fromJson(creed as Map<String, dynamic>))
+        .expand((creed) => creed.itemReferences)
+        .map((reference) => reference.linkId)
+        .toSet(),
+  };
 }
 
 class LuxPlanSourceDay {

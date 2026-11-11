@@ -28,7 +28,7 @@ export const revalidate = 86400;
 const appUrl = `${site.appDomain}/plans/advent`;
 const title = 'Advent Reading Plan';
 const description =
-  'A free Advent plan in Lux Bible with a short reading and study notes for every day from the first Sunday of Advent to Christmas Day.';
+  'Study the people and promises surrounding Jesus’ birth, then explore the work of the Father, Son, and Holy Spirit in a free 27-day Advent plan.';
 
 export const metadata: Metadata = {
   title,
@@ -89,20 +89,20 @@ export default function AdventPage() {
         id="study-notes"
         align="start"
         title="Study notes for every reading"
-        subtitle="Below each day's passages is a Study Notes row. Everything in it is stored in Lux, so it works offline too."
+        subtitle="Open Study Notes below the day’s passages for short notes and optional resources. The notes and bundled texts are available offline."
       >
         <FeatureShowcase
           features={[
             {
               title: 'Start with the big picture',
               subtitle:
-                'Each day opens with what the passage says and where it sits in the story, followed by short excerpts from the commentaries in Lux, each one credited.',
+                'Follow the people who waited for the promised Savior. Each day’s Go Deeper note helps you explore a Hebrew or Greek word from the reading.',
               image: studyNotesImage,
             },
             {
-              title: 'Go deeper without leaving the plan',
+              title: 'Explore related resources',
               subtitle:
-                "Read the day's passage, then tap through to the full commentary, a person's profile, or a dictionary entry, and come right back to the day you're on.",
+                'Open related Scripture, commentaries, and historic creeds and confessions in Lux. Selected BibleProject videos are available on YouTube.',
               video: '/media/advent/day-walkthrough.webm',
             },
           ]}
@@ -146,7 +146,7 @@ export default function AdventPage() {
         id="weeks"
         align="start"
         title="Four weeks, four candles"
-        subtitle={`${adventDayCount} readings that move from the first promises in Genesis to the shepherds in Bethlehem.`}
+        subtitle={`${adventDayCount} days following the promises and witnesses of Jesus’ birth, with a final six-day study of the Trinity.`}
       >
         <div className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2">
           {adventWeeks.map((week, index) => (
