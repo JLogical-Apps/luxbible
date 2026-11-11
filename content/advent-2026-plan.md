@@ -22,6 +22,10 @@ After Abel is killed, Eve calls Seth another child God has given her. We can fol
 
 Under Go Deeper, tap the word to open its verse. To see more about the Hebrew or Greek, look up the H or G number in Lux’s Lexicon.
 
+**Reflect**
+
+How does God’s promise in the garden give you hope when you see what sin has broken?
+
 **Additional Reading**
 
 [Romans 5:12–19](https://app.luxbible.app/passage/Rom.5.12-Rom.5.19) · [Romans 16:20](https://app.luxbible.app/passage/Rom.16.20)
@@ -44,6 +48,10 @@ Paul follows that promise all the way to Jesus. The hope that began in one famil
 
 [“Seed” in Galatians 3:16](https://app.luxbible.app/passage/Gal.3.16). Greek *sperma* (G4690). A seed can mean someone’s offspring. Paul draws our eye to Jesus as the descendant through whom God keeps his promise to Abraham.
 
+**Reflect**
+
+How might God’s promise to bless every nation through Jesus shape the way you pray for people beyond your own circle?
+
 **Additional Reading**
 
 [Genesis 15:1–6](https://app.luxbible.app/passage/Gen.15.1-Gen.15.6) · [John 8:56–58](https://app.luxbible.app/passage/John.8.56-John.8.58)
@@ -64,6 +72,10 @@ Tamar’s son Perez carries that family forward. Matthew names them both in the 
 
 [“More righteous” in Genesis 38:26](https://app.luxbible.app/passage/Gen.38.26). Hebrew *tsadaq* (H6663). Here the verb means to be in the right. Judah has to admit that Tamar has the better claim. His words turn the story around.
 
+**Reflect**
+
+What does finding Tamar’s name in Jesus’ family line show you about how God works in stories marked by loss and injustice?
+
 ### Day 4 — Rahab: Hoping for rescue
 
 **Read**
@@ -77,6 +89,10 @@ Her family is spared, and Rahab finds a place among God’s people. Matthew give
 **Go Deeper**
 
 [“Kindness” in Joshua 2:12](https://app.luxbible.app/passage/Josh.2.12). Hebrew *hesed* (H2617). Rahab uses the same word for the kindness she showed the spies and the kindness she asks them to show her family. Here it is loyalty you can count on when you’re in danger.
+
+**Reflect**
+
+What had Rahab heard about God that gave her the courage to act?
 
 **Additional Reading**
 
@@ -95,6 +111,10 @@ Ruth is looking for a place to live and belong. The story ends with a family tha
 **Go Deeper**
 
 [“Take refuge” in Ruth 2:12](https://app.luxbible.app/passage/Ruth.2.12). Hebrew *chasah* (H2620). To take refuge is to look for shelter. Boaz pictures Ruth doing that under God’s wings, close enough to be protected.
+
+**Reflect**
+
+Boaz says Ruth has taken refuge under God’s wings. Where do you see that shelter take shape in her story?
 
 **Additional Reading**
 
@@ -116,6 +136,10 @@ When Gabriel tells Mary that her son will receive David’s throne, the promise 
 
 [“House” in 2 Samuel 7:11](https://app.luxbible.app/passage/2Sam.7.11). Hebrew *bayit* (H1004). A house can be a building or a family. David has a building in mind. God uses the same word to promise him a family of kings.
 
+**Reflect**
+
+What do you notice about the way David prays after hearing God’s promise?
+
 **Additional Reading**
 
 [Psalm 89:1–4](https://app.luxbible.app/passage/Ps.89.1-Ps.89.4) · [Psalm 89:19–37](https://app.luxbible.app/passage/Ps.89.19-Ps.89.37)
@@ -135,6 +159,10 @@ Matthew hears Isaiah’s words again in the story of Jesus’ birth. The hope of
 **Go Deeper**
 
 [“Immanuel” in Isaiah 7:14](https://app.luxbible.app/passage/Isa.7.14). Hebrew *Immanuel* (H6005). The name brings together the words for “with us” and “God.” In the middle of Judah’s fear, the child’s name gives people a promise they can say out loud.
+
+**Reflect**
+
+Why would the name Immanuel, “God with us,” have meant so much to people who were afraid for their future?
 
 **Additional Reading**
 
@@ -156,6 +184,10 @@ Micah pictures the king tending a flock. That is the hope Bethlehem holds out. G
 
 [“Shepherd” in Micah 5:4](https://app.luxbible.app/passage/Mic.5.4). Hebrew *raʿah* (H7462). This verb means to tend or feed a flock. Micah gives us a king doing a shepherd’s everyday work of caring for the ones in his charge.
 
+**Reflect**
+
+What does Micah’s picture of a shepherd show you about how the promised king will use his strength?
+
 **Additional Reading**
 
 [Micah 4:6–8](https://app.luxbible.app/passage/Mic.4.6-Mic.4.8)
@@ -175,6 +207,10 @@ Gabriel says John will help turn people back to God. Advent gives us time to wai
 **Go Deeper**
 
 [“Messenger” in Malachi 3:1](https://app.luxbible.app/passage/Mal.3.1). Hebrew *malakh* (H4397). A messenger is someone sent with a word. Malachi points beyond the one who prepares the road to the Lord who is coming down it.
+
+**Reflect**
+
+Why did the people need to be prepared for the Lord they were already looking for?
 
 **Additional Reading**
 
@@ -196,6 +232,10 @@ He sings of a light coming for people who sit in darkness. John will get them re
 
 [“Dawn” in Luke 1:78](https://app.luxbible.app/passage/Luke.1.78). Greek *anatolē* (G395). The word can describe the rising of the sun. Zechariah pictures God’s mercy arriving like the first light after a long night.
 
+**Reflect**
+
+What does Zechariah thank God for beyond the gift of his own son?
+
 **Additional Reading**
 
 [BibleProject · The Birth of Jesus (YouTube)](https://www.youtube.com/watch?v=_OLezoUvOEQ)
@@ -213,6 +253,10 @@ Elizabeth blesses Mary for trusting what God said before she can see it all come
 **Go Deeper**
 
 [“Believed” in Luke 1:45](https://app.luxbible.app/passage/Luke.1.45). Greek *pisteuō* (G4100). To believe here is to trust the one who spoke. Elizabeth calls Mary blessed for trusting that the Lord will keep his word.
+
+**Reflect**
+
+What does Elizabeth’s greeting help you see about who Jesus is before he’s even born?
 
 **Additional Reading**
 
@@ -232,6 +276,10 @@ Gabriel tells Mary to look beyond the birth itself. The son she is waiting for w
 
 [“Throne” in Luke 1:32](https://app.luxbible.app/passage/Luke.1.32). Greek *thronos* (G2362). A throne is the seat of a ruler. Gabriel uses it to tie the child Mary is expecting to David’s family and to the kingdom God promised.
 
+**Reflect**
+
+How does Gabriel’s mention of David’s throne help you see what God is doing through Mary’s child?
+
 ### Day 13 — Mary: Singing while she waits
 
 **Read**
@@ -245,6 +293,10 @@ Her hope makes room for people who are hungry, overlooked, or brought low. She c
 **Go Deeper**
 
 [“Magnifies” in Luke 1:46](https://app.luxbible.app/passage/Luke.1.46). Greek *megalynō* (G3170). To magnify the Lord here is to speak of his greatness. Mary’s song lets us hear how big God’s mercy looks to her.
+
+**Reflect**
+
+How does Mary connect what God is doing in her life with what he promised Abraham?
 
 **Additional Reading**
 
@@ -266,6 +318,10 @@ Joseph takes Mary and the child into his care. Later, when it is time to come ba
 
 [“Save” in Matthew 1:21](https://app.luxbible.app/passage/Matt.1.21). Greek *sōzō* (G4982). This verb means to save or rescue. The angel tells Joseph exactly what the promised child will rescue his people from.
 
+**Reflect**
+
+How does Joseph’s response to the angel change what life looks like for Mary and Jesus?
+
 **Additional Reading**
 
 [Luke 2:21–24](https://app.luxbible.app/passage/Luke.2.21-Luke.2.24)
@@ -283,6 +339,10 @@ Then he sees Jesus coming and calls him the Lamb of God. John can finally point 
 **Go Deeper**
 
 [“Lamb” in John 1:29](https://app.luxbible.app/passage/John.1.29). Greek *amnos* (G286). A lamb is a familiar picture from Israel’s sacrifices. John uses it to name the one who will take away the sin of the world.
+
+**Reflect**
+
+What does John help you see about Jesus by calling him the Lamb of God?
 
 **Additional Reading**
 
@@ -304,6 +364,10 @@ They hurry to Bethlehem and find what the angel told them they would. The promis
 
 [“Christ” in Luke 2:11](https://app.luxbible.app/passage/Luke.2.11). Greek *christos* (G5547). Christ means “anointed one,” the title of God’s chosen king. The angel gives that title to the child the shepherds are about to meet.
 
+**Reflect**
+
+What do the angel’s titles for Jesus and the sign of the manger show you about the kind of king he is?
+
 **Additional Reading**
 
 [Psalm 23](https://app.luxbible.app/passage/Ps.23) · [John 10:11–16](https://app.luxbible.app/passage/John.10.11-John.10.16)
@@ -324,6 +388,10 @@ Simeon thanks God for light reaching the nations as well as glory for Israel. He
 
 [“Consolation” in Luke 2:25](https://app.luxbible.app/passage/Luke.2.25). Greek *paraklēsis* (G3874). Here it means comfort. Simeon is waiting for God to come to Israel’s aid, like someone waiting for help they cannot bring about themselves.
 
+**Reflect**
+
+Why does it matter to you that Simeon calls Jesus a light for the nations?
+
 **Additional Reading**
 
 [Isaiah 49:5–6](https://app.luxbible.app/passage/Isa.49.5-Isa.49.6)
@@ -342,6 +410,10 @@ Isaiah gives words to that hope as he pictures a messenger announcing that God h
 
 [“Redemption” in Luke 2:38](https://app.luxbible.app/passage/Luke.2.38). Greek *lytrōsis* (G3085). Redemption here is release or rescue. Anna speaks to people who are waiting for God to set Jerusalem free.
 
+**Reflect**
+
+What could you learn from the way Anna spent her years of waiting?
+
 ### Day 19 — The chief priests and scribes: Knowing where to look
 
 **Read**
@@ -356,6 +428,10 @@ Their answer gives us a place to watch for and a picture of the king to expect. 
 
 [“Will shepherd” in Matthew 2:6](https://app.luxbible.app/passage/Matt.2.6). Greek *poimainō* (G4165). The verb means to tend a flock. The leaders’ answer tells Herod how this king will lead as well as where he will be born.
 
+**Reflect**
+
+What does the leaders’ answer tell you about how the promised king will care for his people?
+
 ### Day 20 — Herod: Fearing the king others hoped for
 
 **Read**
@@ -366,9 +442,19 @@ Herod wants to find the child for a very different reason from the visitors. A k
 
 Psalm 2 gives us words for a ruler’s resistance to God’s chosen king. In Matthew, God warns Joseph and the child escapes to Egypt. The king’s story will go on even as Matthew makes room for the families’ grief.
 
+Matthew says the grief of Bethlehem’s families fulfills Jeremiah’s words about Rachel weeping for her children. Just after those words, God gives his people hope by promising that their children will return from exile.
+
 **Go Deeper**
 
 [“Anointed One” in Psalm 2:2](https://app.luxbible.app/passage/Ps.2.2). Hebrew *mashiach* (H4899). This is the word we get “Messiah” from. In the psalm, the rulers take their stand against the king God has chosen.
+
+**Reflect**
+
+Whose grief does Matthew ask us to notice when he says Jeremiah’s words about Rachel weeping were fulfilled?
+
+**Additional Reading**
+
+[Jeremiah 31:15–17](https://app.luxbible.app/passage/Jer.31.15-Jer.31.17)
 
 ### Day 21 — The Magi: Finding the king they came to see
 
@@ -383,6 +469,10 @@ They come into the house, see Jesus with Mary, and bow down. Psalm 72 helps us s
 **Go Deeper**
 
 [“Bowed in worship” in Matthew 2:11](https://app.luxbible.app/passage/Matt.2.11). Greek *proskyneō* (G4352). This word can mean to bow down in worship or honor. The Magi let their bodies and their gifts show how they see the child.
+
+**Reflect**
+
+What do the Magi’s joy and gifts show you about what it means to worship?
 
 **Additional Reading**
 
@@ -406,6 +496,10 @@ Ephesians traces that welcome back before the world began. Galatians brings it i
 
 [“Adoption” in Galatians 4:5](https://app.luxbible.app/passage/Gal.4.5). Greek *huiothesia* (G5206). The word means adoption as a son, with a place and an inheritance in the family. In Christ we receive the welcome Paul is talking about.
 
+**Reflect**
+
+What does being welcomed into God’s family tell you about why the Father sent Jesus?
+
 **Additional Reading**
 
 [BibleProject · The Trinity Explained (YouTube)](https://www.youtube.com/watch?v=eAvYmE2YYIU)
@@ -426,6 +520,10 @@ The Father’s gift gives us hope when our own love falls short. We can love som
 
 [“Atoning sacrifice” in 1 John 4:10](https://app.luxbible.app/passage/1John.4.10). Greek *hilasmos* (G2434). John uses this word for the sacrifice that deals with our sin. The Father’s love reaches all the way to what it costs to bring us back to him.
 
+**Reflect**
+
+How does the Father sending Jesus deepen your understanding of what love costs?
+
 **Additional Reading**
 
 [Romans 5:6–11](https://app.luxbible.app/passage/Rom.5.6-Rom.5.11)
@@ -443,6 +541,10 @@ Philippians shows us what it meant for Jesus to come so close. He willingly took
 **Go Deeper**
 
 [“Made his dwelling” in John 1:14](https://app.luxbible.app/passage/John.1.14). Greek *skēnoō* (G4637). The verb can mean to pitch a tent or live somewhere. John pictures the Son making his home among us, close enough for people to see his glory.
+
+**Reflect**
+
+What do you learn about God from the way Jesus comes to live among us as a servant?
 
 **Additional Reading**
 
@@ -466,6 +568,10 @@ The child people have been waiting for will bear their sins himself. Peter says 
 
 [“Once for all” in Hebrews 10:10](https://app.luxbible.app/passage/Heb.10.10). Greek *ephapax* (G2178). The word means once and for all. Jesus’ one offering is enough to make his people holy.
 
+**Reflect**
+
+How might Jesus’ offering “once for all” change the way you carry guilt over something you’ve done?
+
 **Additional Reading**
 
 [Romans 3:21–26](https://app.luxbible.app/passage/Rom.3.21-Rom.3.26) · [Hebrews 4:14–16](https://app.luxbible.app/passage/Heb.4.14-Heb.4.16)
@@ -488,6 +594,10 @@ God gives Mary someone to share the waiting with. In time, Mary holds the child 
 
 [“Word” in Luke 1:38](https://app.luxbible.app/passage/Luke.1.38). Greek *rhēma* (G4487). Here it means what was spoken. Gabriel says God’s word will hold, and Mary entrusts what comes next to that very word.
 
+**Reflect**
+
+What does Mary’s trust in God’s word teach you about taking the next step when you can’t see what comes after it?
+
 **Additional Reading**
 
 [Isaiah 11:1–5](https://app.luxbible.app/passage/Isa.11.1-Isa.11.5) · [Luke 3:21–22](https://app.luxbible.app/passage/Luke.3.21-Luke.3.22) · [Luke 4:16–21](https://app.luxbible.app/passage/Luke.4.16-Luke.4.21)
@@ -507,6 +617,10 @@ Jesus died for our sins and rose again. You can come to him today with one real 
 **Go Deeper**
 
 [“Helps us” in Romans 8:26](https://app.luxbible.app/passage/Rom.8.26). Greek *synantilambanomai* (G4878). The word means to come to someone’s aid. Paul uses it for the Spirit’s help when we’re weak and don’t know what to pray.
+
+**Reflect**
+
+How does knowing the Holy Spirit helps you pray change the way you come to God when words fail?
 
 **Additional Reading**
 
