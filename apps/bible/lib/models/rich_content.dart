@@ -5,6 +5,11 @@ import 'package:lux/lux_core.dart';
 part 'rich_content.freezed.dart';
 part 'rich_content.g.dart';
 
+Uri? parseRichContentWebLink(String link) {
+  final uri = Uri.tryParse(link);
+  return uri != null && uri.scheme == 'https' && uri.host.isNotEmpty && uri.userInfo.isEmpty ? uri : null;
+}
+
 @Freezed(unionKey: 'r')
 sealed class RichContent with _$RichContent {
   @FreezedUnionValue('p')
