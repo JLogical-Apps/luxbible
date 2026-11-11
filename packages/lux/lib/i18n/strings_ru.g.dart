@@ -115,6 +115,7 @@ class _Translations$languages$ru extends Translations$languages$en {
 	@override String get french => 'Французский';
 	@override String get spanish => 'Испанский';
 	@override String get german => 'Немецкий';
+	@override String get indonesian => 'Индонезийский';
 	@override String get romanian => 'Румынский';
 	@override String get tagalog => 'Тагальский';
 }
@@ -388,6 +389,7 @@ class _Translations$regionTypes$ru extends Translations$regionTypes$en {
 
 	// Translations
 	@override String get chapter => 'эта глава';
+	@override String get passage => 'этот отрывок';
 	@override String get verses => 'эти стихи';
 	@override String get visibleVerses => 'видимые стихи';
 	@override String get text => 'этот текст';
@@ -412,9 +414,11 @@ class _Translations$mainActions$ru extends Translations$mainActions$en {
 	@override String get settings => 'Настройки';
 	@override String get more => 'Ещё';
 	@override String get audioDescription => 'Слушайте текущую главу с помощью Библии с поддержкой аудио.';
+	@override String get audioPassageDescription => 'Слушайте текущий отрывок с помощью Библии с поддержкой аудио.';
 	@override String get bookmarkDescription => 'Добавьте эту главу в закладки, чтобы легко получить к ней доступ со страницы поиска.';
 	@override String get manageBookmarkDescription => 'Управляйте этой закладкой.';
 	@override String get studyDescription => 'Просмотрите инструменты обучения для этой главы.';
+	@override String get studyPassageDescription => 'Просмотрите инструменты обучения для этого отрывка.';
 	@override String get verseOfTheDayDescription => 'Посмотрите сегодняшний стих.';
 	@override String get verseOfTheDayLoading => 'Загрузка сегодняшнего стиха…';
 	@override String get verseOfTheDayUnavailable => 'Не удалось загрузить сегодняшний стих.';
@@ -471,7 +475,7 @@ class _Translations$studyActions$ru extends Translations$studyActions$en {
 	@override String linkedResourcesDescription({required Object region}) => 'Просмотрите людей, темы, карты и статьи словаря, связанные с отрывком: ${region}.';
 	@override String get noCrossReferences => 'Перекрестных ссылок не найдено';
 	@override String get noLinkedResources => 'Связанных ресурсов не найдено';
-	@override String get editLinkedResources => 'Изменить связанные ресурсы';
+	@override String get customizeLinkedResources => 'Настроить связанные ресурсы';
 	@override String crossReferencesUse({required Object translation}) => 'В перекрестных ссылках используется ${translation}.';
 	@override String get onlineCrossReferencesExplanation => 'Поскольку выбранный вами перевод доступен только в Интернете, перекрестные ссылки показаны с использованием последней версии Учебной Библии, которую вы использовали, чтобы сэкономить на производительности и затратах. Выбранный вами перевод используется повсюду в приложении.';
 }
@@ -568,7 +572,7 @@ class _Translations$commentaries$ru extends Translations$commentaries$en {
 
 	// Translations
 	@override String get addRemove => 'Добавить и удалить комментарии';
-	@override String get edit => 'Изменить комментарии';
+	@override String get customize => 'Настроить комментарии';
 }
 
 // Path: toolbarShortcuts
@@ -867,9 +871,9 @@ class _Translations$toolbarSettings$ru extends Translations$toolbarSettings$en {
 	@override String get hideToolbarDescription => 'Скройте панель инструментов при прокрутке вниз, чтобы получить захватывающий вид Библии.';
 	@override String get pinToolbar => 'Закрепить';
 	@override String get pinToolbarDescription => 'Закрепите панель инструментов внизу страницы.';
-	@override String get expandToAnnotation => 'Развернуть до аннотации';
-	@override String get expandTextDescription => 'Длительное нажатие на аннотированное слово выделяет весь выделенный диапазон.';
-	@override String get expandVerseDescription => 'Нажатие на стих выбирает полный аннотированный стих.';
+	@override String get expandToAnnotation => 'Выбрать всё выделение';
+	@override String get expandTextDescription => 'Длительное нажатие на выделенное слово выбирает всё выделение.';
+	@override String get expandVerseDescription => 'Нажатие на выделенный стих выбирает все стихи этого выделения.';
 	@override String get rangeSelection => 'Выбор диапазона';
 	@override String get rangeSelectionDescription => 'Нажатие на второй стих выбирает все стихи между ним и первым.';
 	@override String get mainShortcut => 'Ярлык на главной панели инструментов';
@@ -1261,6 +1265,8 @@ class _Translations$chapterUnavailable$ru extends Translations$chapterUnavailabl
 	// Translations
 	@override String title({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} не включает ${testament}.';
 	@override String subtitle({required Object testament, required Object fallbackTranslation}) => 'Показываем вашу последнюю ${testament} Библию, ${fallbackTranslation}.';
+	@override String bookTitle({required Object selectedTranslation, required Object book}) => '${selectedTranslation} не включает книгу ${book}.';
+	@override String bookSubtitle({required Object fallbackTranslation}) => 'Показываем вашу последнюю Учебную Библию, ${fallbackTranslation}.';
 }
 
 // Path: verseNumbering
@@ -3310,6 +3316,7 @@ extension on TranslationsRu {
 			'languages.french' => 'Французский',
 			'languages.spanish' => 'Испанский',
 			'languages.german' => 'Немецкий',
+			'languages.indonesian' => 'Индонезийский',
 			'languages.romanian' => 'Румынский',
 			'languages.tagalog' => 'Тагальский',
 			'highlightStyles.red' => 'Красный',
@@ -3511,6 +3518,7 @@ extension on TranslationsRu {
 			'copySheet.includeReference' => 'Указать ссылку на отрывок?',
 			'copySheet.includeTranslation' => 'Указать перевод?',
 			'regionTypes.chapter' => 'эта глава',
+			'regionTypes.passage' => 'этот отрывок',
 			'regionTypes.verses' => 'эти стихи',
 			'regionTypes.visibleVerses' => 'видимые стихи',
 			'regionTypes.text' => 'этот текст',
@@ -3526,9 +3534,11 @@ extension on TranslationsRu {
 			'mainActions.settings' => 'Настройки',
 			'mainActions.more' => 'Ещё',
 			'mainActions.audioDescription' => 'Слушайте текущую главу с помощью Библии с поддержкой аудио.',
+			'mainActions.audioPassageDescription' => 'Слушайте текущий отрывок с помощью Библии с поддержкой аудио.',
 			'mainActions.bookmarkDescription' => 'Добавьте эту главу в закладки, чтобы легко получить к ней доступ со страницы поиска.',
 			'mainActions.manageBookmarkDescription' => 'Управляйте этой закладкой.',
 			'mainActions.studyDescription' => 'Просмотрите инструменты обучения для этой главы.',
+			'mainActions.studyPassageDescription' => 'Просмотрите инструменты обучения для этого отрывка.',
 			'mainActions.verseOfTheDayDescription' => 'Посмотрите сегодняшний стих.',
 			'mainActions.verseOfTheDayLoading' => 'Загрузка сегодняшнего стиха…',
 			'mainActions.verseOfTheDayUnavailable' => 'Не удалось загрузить сегодняшний стих.',
@@ -3567,7 +3577,7 @@ extension on TranslationsRu {
 			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Просмотрите людей, темы, карты и статьи словаря, связанные с отрывком: ${region}.',
 			'studyActions.noCrossReferences' => 'Перекрестных ссылок не найдено',
 			'studyActions.noLinkedResources' => 'Связанных ресурсов не найдено',
-			'studyActions.editLinkedResources' => 'Изменить связанные ресурсы',
+			'studyActions.customizeLinkedResources' => 'Настроить связанные ресурсы',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'В перекрестных ссылках используется ${translation}.',
 			'studyActions.onlineCrossReferencesExplanation' => 'Поскольку выбранный вами перевод доступен только в Интернете, перекрестные ссылки показаны с использованием последней версии Учебной Библии, которую вы использовали, чтобы сэкономить на производительности и затратах. Выбранный вами перевод используется повсюду в приложении.',
 			'selectionActions.annotate' => 'Аннотировать',
@@ -3619,7 +3629,7 @@ extension on TranslationsRu {
 			'bookmarks.deleteNamedConfirmation' => ({required Object name}) => 'Вы уверены, что хотите удалить «${name}»?',
 			'bookmarkPage.title' => 'Ваши закладки',
 			'commentaries.addRemove' => 'Добавить и удалить комментарии',
-			'commentaries.edit' => 'Изменить комментарии',
+			'commentaries.customize' => 'Настроить комментарии',
 			'toolbarShortcuts.switchBible' => 'Переключить Библию',
 			'toolbarShortcuts.lexicon' => 'Лексикон',
 			'toolbarShortcuts.themeAndLayout' => 'Тема и макет',
@@ -3810,12 +3820,12 @@ extension on TranslationsRu {
 			'highlightStyleUi.deleteAnnotations' => 'Удалить аннотации',
 			'highlightStyleUi.updateAnnotations' => 'Обновить аннотации',
 			'highlightStyleUi.updateWithAnnotations' => ({required Object name, required Object annotations}) => '«${name}» имеет ${annotations}. Хотите обновить их, чтобы использовать новый стиль, или оставить как есть?',
+			_ => null,
+		} ?? switch (path) {
 			'highlightStyleUi.leaveAsIs' => 'Оставить как есть',
 			'highlightStyleUi.label' => 'Название',
 			'toolbarSettings.mainToolbar' => 'Главная панель инструментов',
 			'toolbarSettings.verseSelection' => 'Выбор стиха',
-			_ => null,
-		} ?? switch (path) {
 			'toolbarSettings.textSelection' => 'Выбор текста',
 			'toolbarSettings.shownForMain' => 'Отображается, когда ничего не выбрано.',
 			'toolbarSettings.shownForVerses' => 'Отображается, когда выбран стих.',
@@ -3829,9 +3839,9 @@ extension on TranslationsRu {
 			'toolbarSettings.hideToolbarDescription' => 'Скройте панель инструментов при прокрутке вниз, чтобы получить захватывающий вид Библии.',
 			'toolbarSettings.pinToolbar' => 'Закрепить',
 			'toolbarSettings.pinToolbarDescription' => 'Закрепите панель инструментов внизу страницы.',
-			'toolbarSettings.expandToAnnotation' => 'Развернуть до аннотации',
-			'toolbarSettings.expandTextDescription' => 'Длительное нажатие на аннотированное слово выделяет весь выделенный диапазон.',
-			'toolbarSettings.expandVerseDescription' => 'Нажатие на стих выбирает полный аннотированный стих.',
+			'toolbarSettings.expandToAnnotation' => 'Выбрать всё выделение',
+			'toolbarSettings.expandTextDescription' => 'Длительное нажатие на выделенное слово выбирает всё выделение.',
+			'toolbarSettings.expandVerseDescription' => 'Нажатие на выделенный стих выбирает все стихи этого выделения.',
 			'toolbarSettings.rangeSelection' => 'Выбор диапазона',
 			'toolbarSettings.rangeSelectionDescription' => 'Нажатие на второй стих выбирает все стихи между ним и первым.',
 			'toolbarSettings.mainShortcut' => 'Ярлык на главной панели инструментов',
@@ -4103,6 +4113,8 @@ extension on TranslationsRu {
 			'interlinearUi.usingTranslation' => ({required Object translation}) => 'Использование ${translation} для подстрочного текста',
 			'chapterUnavailable.title' => ({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} не включает ${testament}.',
 			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Показываем вашу последнюю ${testament} Библию, ${fallbackTranslation}.',
+			'chapterUnavailable.bookTitle' => ({required Object selectedTranslation, required Object book}) => '${selectedTranslation} не включает книгу ${book}.',
+			'chapterUnavailable.bookSubtitle' => ({required Object fallbackTranslation}) => 'Показываем вашу последнюю Учебную Библию, ${fallbackTranslation}.',
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => '${translation} нумерует главы и стихи иначе, чем в большинстве английских переводов.\n\nТекст, показанный здесь в ${reference}, взят из ${originalReference} в ${translation} и переназначен, чтобы соответствовать другим переводам.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} не включает этот выбор.',
@@ -4322,14 +4334,14 @@ extension on TranslationsRu {
 			'morphology.types.negativeAdverb.name' => 'Отрицательное наречие',
 			'morphology.types.negativeAdverb.description' => 'Наречие, выражающее отрицание.',
 			'morphology.types.negativeAdverb.examples' => 'нет|никогда',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.adjective.name' => 'Прилагательное',
 			'morphology.types.adjective.description' => 'Слово, описывающее существительное.',
 			'morphology.types.adjective.examples' => 'великий|святой|мудрый',
 			'morphology.types.noun.name' => 'Существительное',
 			'morphology.types.noun.description' => 'Человек, место, вещь или идея.',
 			'morphology.types.noun.examples' => 'город|вода|любовь',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.properNoun.name' => 'Имя собственное',
 			'morphology.types.properNoun.description' => 'Конкретное имя человека, места или предмета.',
 			'morphology.types.properNoun.examples' => 'Давид|Иерусалим|Израиль',

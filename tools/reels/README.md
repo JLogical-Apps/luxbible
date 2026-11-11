@@ -163,7 +163,7 @@ Clip('tap_annotate', modifiers: [
 
 - **The recording sets the pace, never slower than 1x.** A `Play` gets until the next `Play` of that file or the end of
   its run, even across a cut. If the footage fits, it plays at 1x and holds on its tag. If not, it speeds up just
-  enough to reach the tag at the end of that stretch. `by:` ends the stretch sooner, and `speed:` fixes the speed.
+  enough to reach the tag 0.2 s before the end of that stretch, so every step holds a moment before the next one. `by:` ends the stretch sooner, and `speed:` fixes the speed.
   `by: .beforeEnd(15)` lands on the tag half a second before the clip ends, to hold it there.
   `fit: true` slows it down too, so it reaches the tag right at the end instead of holding:
   `Media('tasks_complete.mov', play: [Play('end', fit: true)])`.
@@ -217,6 +217,14 @@ told otherwise:
 Clip('hook', modifiers: [Media('tasks_complete.mov', start: .word('hundreds'), enter: Slide(.top))]),
 ```
 
+`exit:` slides it out towards an edge, starting at its `end` and showing until it's gone, so it overlaps whatever comes
+in at that moment. `easing: .cubicOut` starts fast and settles:
+
+```dart
+Media('reasons_card.png', end: .word('free'), exit: Slide(.left, easing: .cubicOut)),
+Media('lux_512.png', start: .word('free'), enter: Slide(.right, easing: .cubicOut)),
+```
+
 `effect:` animates a filter over the whole showing. `.pixelate()` breaks the media into softened square blocks, 6
 across (`blocks:`), on a grid that jumps to a random offset every 4 frames (`posterize:`), for teasing something before
 showing it plainly in the next clip:
@@ -232,6 +240,12 @@ Clip('solution_lux_bible', modifiers: [Media('lux_512.png')]),
 
 ```dart
 Clip('no_1', speed: 1.5, modifiers: [Media('youversion.MP4')]),
+```
+
+`Video(speed:)` sets it for every clip that doesn't set its own:
+
+```dart
+Video(sources: ['~/Downloads/my_video.MOV'], speed: 1.12, clips: [...])
 ```
 
 Everything timed inside the clip is on the sped-up clip: `.frames(30)` is a second of the finished video, and `.word`
@@ -289,6 +303,17 @@ silence in the file doesn't make it late. `volume` is in dB, -10 by default.
 Scatter('comment_*.jpg', start: .word('is'), sound: Sound('pop.mp3')),
 ```
 
+`Scatter.at` times each image to its own moment instead, one per matching image, in order. `pile:` joins scatters,
+even on different clips, into one pile: each image lands around the ones already there, and they all stay until the last
+scatter's `end`:
+
+```dart
+Clip('buy_lexicon', modifiers: [Scatter.at('lexicon_*.png', [.word('lexicon')], pile: 'materials')]),
+Clip('buy_notes', modifiers: [
+  Scatter.at('notes_*.png', [.word('highlighters'), .word('sticky'), .word('journal')], pile: 'materials'),
+]),
+```
+
 ## Music
 
 `Music` plays a track from the media folder under the whole video, lined up so its `cue` lands `at` a moment in the clip
@@ -339,7 +364,8 @@ file and renamed when finished, so an interrupted ingest resumes instead of reus
 | `subtitles_*.ass` | burned-in captions and titles, keyed by their content |
 | `preview_*.mp4` | stitched previews, keyed by the ffmpeg command that builds them |
 
-Clips are detected with `silencedetect` at −40 dB over 1.0 s, padded by 0.1 s for breathing room.
+Clips are detected with `silencedetect` at −40 dB over 1.0 s, padded by 0.05 s for breathing room, which leaves about
+0.1 s of silence at each cut.
 Each detected span becomes its own clip with a single take; grouping repeated attempts into one clip
 is still to come.
 

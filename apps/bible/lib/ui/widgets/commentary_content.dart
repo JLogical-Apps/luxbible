@@ -13,6 +13,7 @@ class CommentaryBookSectionView extends StatelessWidget {
   final List<RichContent> content;
   final Function(VerseSelection) onNavigateToVerseSelection;
   final Widget? trailing;
+  final Key? headerKey;
 
   const CommentaryBookSectionView({
     super.key,
@@ -21,6 +22,7 @@ class CommentaryBookSectionView extends StatelessWidget {
     required this.content,
     required this.onNavigateToVerseSelection,
     this.trailing,
+    this.headerKey,
   });
 
   @override
@@ -34,6 +36,7 @@ class CommentaryBookSectionView extends StatelessWidget {
       content: content,
       onNavigateToVerseSelection: onNavigateToVerseSelection,
       trailing: trailing,
+      headerKey: headerKey,
     );
   }
 }
@@ -43,6 +46,7 @@ class CommentaryBlockView extends StatelessWidget {
   final Function(VerseSelection) onNavigateToVerseSelection;
   final Function(VerseSelection)? onOutlineSelectionPressed;
   final Widget? trailing;
+  final Key? headerKey;
 
   const CommentaryBlockView({
     super.key,
@@ -50,6 +54,7 @@ class CommentaryBlockView extends StatelessWidget {
     required this.onNavigateToVerseSelection,
     this.onOutlineSelectionPressed,
     this.trailing,
+    this.headerKey,
   });
 
   @override
@@ -57,6 +62,7 @@ class CommentaryBlockView extends StatelessWidget {
     CommentaryOutline(:final items) => StyledStickyHeader.child(
       title: t.commentaryUi.chapterOutline.toText(),
       trailing: trailing,
+      headerKey: headerKey,
       childPadding: .zero,
       headerPadding: .symmetric(horizontal: 16, vertical: trailing == null ? 16 : 8),
       child: Column(
@@ -77,6 +83,7 @@ class CommentaryBlockView extends StatelessWidget {
       content: content,
       onNavigateToVerseSelection: onNavigateToVerseSelection,
       trailing: trailing,
+      headerKey: headerKey,
     ),
   };
 }
@@ -86,6 +93,7 @@ class CommentarySectionContainer extends StatelessWidget {
   final List<RichContent> content;
   final Function(VerseSelection) onNavigateToVerseSelection;
   final Widget? trailing;
+  final Key? headerKey;
 
   const CommentarySectionContainer({
     super.key,
@@ -93,12 +101,14 @@ class CommentarySectionContainer extends StatelessWidget {
     required this.content,
     required this.onNavigateToVerseSelection,
     this.trailing,
+    this.headerKey,
   });
 
   @override
   Widget build(BuildContext context) => StyledStickyHeader.child(
     title: title.toText(),
     trailing: trailing,
+    headerKey: headerKey,
     headerPadding: .symmetric(horizontal: 16, vertical: trailing == null ? 16 : 8),
     child: Padding(
       padding: .only(bottom: 16),

@@ -23,7 +23,7 @@ class PhraseSelectionBuilder extends HookConsumerWidget {
     }
 
     final passage = plan.passage;
-    final chapterReference = passage.references.first.toChapterReference();
+    final chapterReference = passage.startChapter;
     final passagePhrasesAndReferences = passage.references
         .expand((reference) => phrasesByReference[reference]!.map((phrase) => (phrase, reference)))
         .toList();

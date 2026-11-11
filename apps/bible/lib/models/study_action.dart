@@ -48,6 +48,14 @@ enum StudyAction {
     };
   }
 
+  String get path => switch (this) {
+    compare => '/study/compare',
+    interlinear => '/study/interlinear',
+    commentary => '/study/commentary',
+    crossReferences => '/study/cross-references',
+    linkedResources => '/study/linked-resources',
+  };
+
   IconData get icon => switch (this) {
     compare => Symbols.text_compare,
     interlinear => Symbols.dictionary,
@@ -72,7 +80,7 @@ enum StudyAction {
   }) async {
     switch (this) {
       case .interlinear:
-        await context.showStyledSheetWithBreadcrumbs(breadcrumbText: title(), (context, _) {
+        await context.showStyledSheetWithBreadcrumbs(breadcrumbText: title(), path: path, (context, _) {
           final user = ref.read(userProvider);
 
           final tabController = useTabController(
@@ -124,9 +132,9 @@ enum StudyAction {
           );
         });
       case .commentary:
-        // Outlives the sheet so returning from a linked article reopens the same commentary.
+        // Outlives the tab controller, which is recreated when the user changes their commentaries.
         var commentaryIndex = 0;
-        await context.showStyledSheetWithBreadcrumbs(breadcrumbText: title(), (context, ref) {
+        await context.showStyledSheetWithBreadcrumbs(breadcrumbText: title(), path: path, (context, ref) {
           final user = ref.watch(userProvider);
           final tabController = useTabController(
             initialLength: user.commentariesOrDefault.length,
@@ -149,7 +157,7 @@ enum StudyAction {
                       (context, _) => StyledSheet(
                         children: [
                           StyledListItem(
-                            title: t.commentaries.edit.toText(),
+                            title: t.commentaries.customize.toText(),
                             leading: Symbols.tune.toIcon(),
                             onPressed: () => context.pushReplacement(CommentariesPage()),
                           ),
@@ -192,8 +200,8 @@ enum StudyAction {
               verseSelection: verseSelection,
               commentaryType: selectedCommentary,
               onNavigateToVerseSelection: (verseSelection) {
-                // A linked article replaces this sheet in the breadcrumbs.
-                if (context.mounted) context.pop();
+                // A linked article shares this sheet and may have closed it already.
+                context.popIfCurrent();
                 onNavigateToVerseSelection(verseSelection);
               },
               onNavigateToIndex: (index) => listController.animateToItem(
@@ -207,7 +215,7 @@ enum StudyAction {
           );
         });
       case .compare:
-        await context.showStyledSheetWithBreadcrumbs(breadcrumbText: title(), (context, ref) {
+        await context.showStyledSheetWithBreadcrumbs(breadcrumbText: title(), path: path, (context, ref) {
           final user = ref.watch(userProvider);
           return StyledSheet(
             title: title().toText(),
@@ -228,6 +236,7 @@ enum StudyAction {
         ref.markOnboardingStep(.crossReferences);
         await context.showStyledSheetWithBreadcrumbs(
           breadcrumbText: title(),
+          path: path,
           (context, _) => StyledSheet(
             title: title().toText(),
             subtitle: SingleChildScrollView(
@@ -256,6 +265,7 @@ enum StudyAction {
       case .linkedResources:
         await context.showStyledSheetWithBreadcrumbs(
           breadcrumbText: title(),
+          path: path,
           (context, _) => StyledSheet.builder(
             title: title().toText(),
             subtitle: regionFormat.toText(),
@@ -265,7 +275,7 @@ enum StudyAction {
                 (context, _) => StyledSheet(
                   children: [
                     StyledListItem(
-                      title: t.studyActions.editLinkedResources.toText(),
+                      title: t.studyActions.customizeLinkedResources.toText(),
                       leading: Symbols.tune.toIcon(),
                       onPressed: () => context.pushReplacement(ResourceOrderSettingsPage()),
                     ),

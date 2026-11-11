@@ -97,6 +97,7 @@ sealed class User with _$User {
     book,
     oldTestamentTranslation: oldTestamentTranslation,
     newTestamentTranslation: newTestamentTranslation,
+    studyTranslation: studyTranslation,
   );
 
   (BibleTranslation, BibleTranslation, BibleTranslation, BibleTranslation) get translationsSelection =>
@@ -167,20 +168,15 @@ sealed class User with _$User {
       .map((offset, records) => MapEntry(offset, records.map((record) => record.$1).toList()));
 
   List<Reference> getExpandedReferences(Reference reference) =>
-      visibleAnnotations
-          .map((annotation) => annotation.verseSelection)
-          .nonNulls
-          .where((verseSelection) => verseSelection.hasReference(reference))
-          .lastOrNull
-          ?.references ??
+      getVerseSelectionAnnotations(
+        VerseSelection.reference(reference),
+      ).where((annotation) => annotation.hasHighlight).lastOrNull?.verseSelection?.references ??
       [reference];
 
   BibleTextSelection getExpandedTextSelection(BibleTextSelection textSelection) =>
-      visibleAnnotations
-          .map((annotation) => annotation.textSelection)
-          .nonNulls
-          .where((selection) => selection.intersects(textSelection))
-          .lastOrNull ??
+      getTextSelectionAnnotations(
+        textSelection,
+      ).where((annotation) => annotation.hasHighlight).lastOrNull?.textSelection ??
       textSelection;
 
   ToolbarPreset? get toolbarPreset => ToolbarPreset.values.firstWhereOrNull((preset) => preset.matches(this));
@@ -440,7 +436,7 @@ sealed class User with _$User {
 
   bool hasStartedPlan(String planId) => planProgressById.containsKey(planId);
 
-  bool hasCompletedPassage({required String planId, required int dayIndex, required VerseSelection passage}) =>
+  bool hasCompletedPassage({required String planId, required int dayIndex, required ChapterPassage passage}) =>
       planProgressById[planId]?.days.elementAtOrNull(dayIndex)?.isPassageComplete(passage) ?? false;
 
   bool hasCompletedPlanDay({required String planId, required int dayIndex}) =>
@@ -487,7 +483,7 @@ sealed class User with _$User {
     required String planId,
     required int dayIndex,
     required BiblePlanDay day,
-    required VerseSelection passage,
+    required ChapterPassage passage,
   }) => hasCompletedPassage(planId: planId, dayIndex: dayIndex, passage: passage)
       ? withPassageUncompleted(planId: planId, dayIndex: dayIndex, day: day, passage: passage)
       : withPassageCompleted(planId: planId, dayIndex: dayIndex, day: day, passage: passage);
@@ -511,7 +507,7 @@ sealed class User with _$User {
     required String planId,
     required int dayIndex,
     required BiblePlanDay day,
-    required VerseSelection passage,
+    required ChapterPassage passage,
   }) => withProgressDayUpdated(
     planId: planId,
     dayIndex: dayIndex,
@@ -522,7 +518,7 @@ sealed class User with _$User {
     required String planId,
     required int dayIndex,
     required BiblePlanDay day,
-    required VerseSelection passage,
+    required ChapterPassage passage,
   }) => withProgressDayUpdated(
     planId: planId,
     dayIndex: dayIndex,

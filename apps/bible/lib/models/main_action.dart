@@ -63,12 +63,18 @@ enum MainAction {
 
   String description({User? user, VerseOfTheDay? verseOfTheDay, AudioBibleContext audioContext = .bible}) =>
       switch (this) {
-        audio => t.mainActions.audioDescription,
+        audio => switch (audioContext) {
+          .bible => t.mainActions.audioDescription,
+          .plan => t.mainActions.audioPassageDescription,
+        },
         bookmark =>
           getCurrentBookmark(user, audioContext: audioContext) == null
               ? t.mainActions.bookmarkDescription
               : t.mainActions.manageBookmarkDescription,
-        study => t.mainActions.studyDescription,
+        study => switch (audioContext) {
+          .bible => t.mainActions.studyDescription,
+          .plan => t.mainActions.studyPassageDescription,
+        },
         .verseOfTheDay => verseOfTheDay?.format() ?? t.mainActions.verseOfTheDayDescription,
         studyPanel => t.mainActions.studyPanelDescription,
         search => t.mainActions.searchDescription,
@@ -132,19 +138,20 @@ enum MainAction {
 
   Future<void> onPressed(
     BuildContext context, {
-    required ChapterReference reference,
+    required ChapterPassage passage,
     required Function(VerseSelection) onNavigateToVerseSelection,
     required Function(StudyPanel) onAddStudyPanel,
     required Function(String bookmarkId) onBookmarkAdded,
   }) async {
     final user = ref.read(userProvider);
+    final reference = passage.chapter;
     switch (this) {
       case audio:
         final wasPlaying = ref.read(audioBiblePlayerProvider(context: .bible)).isPlaying;
         ref.updateUser((user) => user.copyWith.audio(isOpen: true));
         final didToggle = await ref
             .read(audioBibleControllerProvider.notifier)
-            .toggle(context: .bible, passage: reference.toVerseSelection());
+            .toggle(context: .bible, passage: passage);
         if (!wasPlaying && didToggle) AnalyticsEvent.audioPlayed.log();
       case bookmark:
         final bookmarkId = user.currentBookmarkId;
@@ -209,9 +216,10 @@ enum MainAction {
       case study:
         context.showStyledSheetWithBreadcrumbs(
           breadcrumbText: t.labels.study,
+          path: '/study',
           (sheetContext, _) => StyledSheet(
             title: t.labels.study.toText(),
-            subtitle: reference.format().toText(),
+            subtitle: passage.format().toText(),
             children: [
               StyledList(
                 children: [studyPanel, search, resources]
@@ -221,13 +229,13 @@ enum MainAction {
                         subtitle: action.description().toText(),
                         leading: action.buildIcon(context),
                         onPressed: () async {
-                          // Study Panel and Resources continue these breadcrumbs and replace this sheet themselves.
+                          // Study Panel and Resources continue these breadcrumbs, so only Search closes this sheet.
                           final isBreadcrumb = action != search;
                           if (!isBreadcrumb) sheetContext.pop();
 
                           await action.onPressed(
                             isBreadcrumb ? sheetContext : context,
-                            reference: reference,
+                            passage: passage,
                             onNavigateToVerseSelection: onNavigateToVerseSelection,
                             onAddStudyPanel: onAddStudyPanel,
                             onBookmarkAdded: onBookmarkAdded,
@@ -244,12 +252,12 @@ enum MainAction {
                     .map(
                       (action) => StyledListItem.navigation(
                         title: action.title().toText(),
-                        subtitle: action.description(regionFormat: reference.format(), regionType: .chapter).toText(),
+                        subtitle: action.description(regionFormat: passage.format(), regionType: .passage).toText(),
                         leading: action.icon.toIcon(),
                         onPressed: () => action.onPressed(
                           sheetContext,
-                          regionFormat: reference.format(),
-                          verseSelection: reference.toVerseSelection(),
+                          regionFormat: passage.format(),
+                          verseSelection: passage.verseSelection,
                           onNavigateToVerseSelection: onNavigateToVerseSelection,
                           onAddStudyPanel: onAddStudyPanel,
                           user: ref.read(userProvider),
@@ -273,6 +281,7 @@ enum MainAction {
       case studyPanel:
         await context.showStyledSheetWithBreadcrumbs(
           breadcrumbText: t.studyPanels.title,
+          path: '/study-panels',
           (context, _) => StyledSheet(
             title: t.studyPanels.title.toText(),
             children: StudyPanelType.values
@@ -282,7 +291,7 @@ enum MainAction {
                     subtitle: type.description().toText(),
                     leading: type.icon.toIcon(),
                     onPressed: () async {
-                      // The option pickers replace this sheet in the breadcrumbs, so only the others close it.
+                      // The option pickers continue these breadcrumbs, so only the others close this sheet.
                       switch (type) {
                         case .compare:
                           final translation = await CompareBibleSheet.show(context);
@@ -315,10 +324,11 @@ enum MainAction {
           onNavigateToVerseSelection(result);
         }
       case resources:
-        // The Study sheet this may have replaced is gone once a resource is picked.
+        // Picking a resource closes the sheet, including any Study breadcrumb before this one.
         final navigatorContext = context.rootContext;
         final resourcePage = await context.showStyledSheetWithBreadcrumbs<StyledRoute<VerseSelection>>(
           breadcrumbText: t.labels.resources,
+          path: '/resources',
           (context, _) => StyledSheet(
             title: t.labels.resources.toText(),
             children: [

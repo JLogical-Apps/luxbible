@@ -73,6 +73,26 @@ Slides follow the earlier carousels: a short title with its key phrase in yellow
 
 Screenshots come from the store screenshot harness in [`apps/bible/tool/screenshots`](../../apps/bible/tool/screenshots/README.md). Write the scenes in a temporary test file limited to `devices: [.iphone]`, copy the PNGs out of `build/screenshots/iphone/`, and delete the test afterward. Carousel scenes are one-offs and aren't committed.
 
+### Trial reels
+
+Instagram trial reels go to non-followers first and stay off the profile until they're shared, by
+hand or automatically when they do well. While the following is small, a regular reel already
+reaches mostly non-followers, so trial reels are less about protecting followers from weak posts.
+Their value is a read on cold audiences, which is who a boost reaches, and room to test hooks
+without filling the grid with near-copies.
+
+- Use them for evergreen reels that might be boosted. Post every hook variant at the same time so
+  the hook is the only difference, and share only the winner. Share a trial before boosting it.
+- Make variants clearly different: the first line, first frame, on-screen text, and cover. Keep the
+  caption, audio, and everything after the hook the same. Near-identical uploads risk being treated
+  as duplicates and teach nothing.
+- Read hold past the first few seconds, average watch time, and shares and saves relative to reach.
+  Likes from non-followers say little. Early distribution is noisy at current view counts, so only
+  trust a large gap.
+- Post time-bound reels as regular reels, since a trial delays sharing by one to three days.
+- Keep multi-variant tests for boost candidates. Testing every reel would mean posting
+  near-duplicates every week.
+
 ### Honest losses
 
 Comparison content is only credible if Lux sometimes loses. The current gaps are listed under
@@ -100,7 +120,7 @@ significant one and the most useful to admit openly.
   for non-English translations fit best where Lux also has an interface in that language, such as
   the Statenvertaling in Dutch, the Lutherbibel or Elberfelder in German, and the Synodal in Russian.
 - **Instagram boosts of reels that already performed well organically.** These have sent real store
-  traffic and attributed installs on both platforms.
+  traffic and attributed installs on both platforms. [Trial reels](#trial-reels) help choose which.
 - **Store listings.** Where all high-intent search demand lands, and the highest-leverage surface
   that does not depend on follower count.
 - **Marketing site.** See [`websites/bible`](../../websites/bible).
@@ -129,7 +149,8 @@ Take on one or two at a time alongside personal videos, in this order.
   is both a download and an SEO surface. Public domain sources include the M'Cheyne plan, the 1662
   daily office, and public domain devotionals such as Spurgeon's *Morning and Evening*. Avoid the
   Revised Common Lectionary, which is copyrighted, and never copy plans out of another app's licensed
-  catalog.
+  catalog. Advent 2026 is the first included seasonal plan; see
+  [Seasonal Campaigns](#seasonal-campaigns).
 - **Community reading schedules.** Communities that read together on a shared schedule, such as
   r/biblereading or a church-wide January challenge, can hand every member the same plan. Do the
   conversion yourself and offer the finished file, since asking organizers to learn the format is
@@ -179,6 +200,34 @@ Ordered roughly by expected return.
   community (r/FlutterDev, Flutter's showcase) is a similar audience for a polished app built by one
   developer.
 
+## Seasonal Campaigns
+
+A seasonal plan has a fixed start date, and people choose a plan before it begins, so the
+acquisition push belongs in the week or two before that date.
+
+- **Before the season:** persuasion and invitation reels, trial tests for the boost candidates, and
+  a boost on the strongest one that runs into the first days of the season. Ad prices rise around
+  Black Friday, which overlaps the start of Advent.
+- **During the season:** post content reels on the day the plan covers their topic. The CTA becomes
+  "it's not too late," which is accurate because a plan started late is paced to finish on time.
+  Weekly carousels recapping the Discord discussion give followers social proof that people are
+  reading together. Ask before quoting anyone, per the testimonials guardrail.
+- **Link in bio:** make the plan link the first bio link for the season, with Discord and the
+  homepage below. It opens the plan in Lux when installed and the plan's web page otherwise.
+  Instagram's in-app browser often doesn't hand off to the app, so the page's open-in-app link
+  matters. Boosts point to the same link, never the homepage.
+- **One CTA per reel, and make it the plan.** A follow doesn't get anyone into Lux, and Discord is
+  too big an ask for a stranger. Point people to Discord from inside the plan and from the plan's
+  page instead. "Follow for part 2" is the exception, for reels in a series.
+- **Keep the CTA in the video timeless,** such as "come do it with us, link in bio." Change only the
+  caption once the season starts, so a reel can keep working, or keep being boosted, across the
+  start date. Make a new reel for a different angle rather than re-cutting the same video.
+- **After the season:** keep the reels. They keep getting views, often resurface the next season,
+  show an active profile, and are next year's baseline. Fix captions that have gone out of date,
+  archive (don't delete) announcement-only posts, unpin seasonal posts, and switch the bio link
+  back. Next year, remake the best reels with refreshed footage and the new plan's CTA rather than
+  reposting the same video.
+
 ## Store Editorial
 
 Apple and Google both take featuring nominations directly, and almost nobody submits. Nominate six
@@ -186,7 +235,8 @@ to eight weeks before a target moment, tied to a meaningful release rather than 
 are featured around Christmas, Easter, and Lent.
 
 Current strengths: design quality, four localizations, no ads or purchases or account, offline
-operation, and a solo developer narrative.
+operation, and a solo developer narrative backed by the YouVersion spotlight (see
+[Recognition](#recognition)).
 
 Known gaps that would improve the odds: deeper use of platform technologies such as App Intents and
 Shortcuts, an explicit iPad story, an App Preview video on the product pages, and screen reader
@@ -194,6 +244,22 @@ support. Ratings volume and technical vitals (crash-free rate, ANRs) are also re
 signals.
 
 Lead a nomination with the narrative, not the feature list.
+
+## Recognition
+
+Third-party recognition that backs up a pitch. Use it as supporting proof in an editorial
+nomination, a curator or directory pitch, or a podcast or press ask, not as the headline of content
+for strangers (see the testimonials guardrail).
+
+- **YouVersion Platform Developer Spotlight.** Lux is
+  [edition no. 01](https://platform.youversion.com/community/spotlight/lux-bible), the first app
+  the series featured. The interview covers the origin (one app instead of three for reading, notes,
+  and study), Study Panels, and how the Platform let a solo developer offer licensed translations in
+  all four interface languages. It carries the weight of the most widely used Bible platform, and it
+  shows Lux working alongside YouVersion rather than against it, which fits the first guardrail.
+- **faith.tools.** Lux is listed in this curated Christian app directory, and users have found Lux
+  through it. Editor's Choice is a personal pick by its sole editor, Cameron Pak, with no published
+  criteria, so the way there is a direct note to him rather than anything on the listing.
 
 ## Attribution
 
@@ -203,6 +269,10 @@ short `?s=` source code to a campaign, sets `pt`, `ct`, and `mt` on App Store li
 
 This gives aggregate per-campaign install data on both platforms with no third-party SDK, which is
 enough to answer which content and which pages drive installs.
+
+A page can set a default campaign, as the Advent page does with `advent`, and a `?s=` code in the
+URL overrides it. Add `?s=ia` to boost links and `?s=ip` to the bio link so Instagram stays
+comparable with earlier campaigns. Google Analytics still shows the landing page.
 
 ### Where to read the numbers
 

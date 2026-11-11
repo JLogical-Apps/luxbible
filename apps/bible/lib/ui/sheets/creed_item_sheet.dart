@@ -11,7 +11,7 @@ class CreedItemSheet {
     BuildContext context, {
     required CreedItemReference reference,
     required Function(VerseSelection) onNavigateToVerseSelection,
-  }) => context.showStyledSheetWithBreadcrumbs(breadcrumbText: reference.title, (context, ref) {
+  }) => context.showStyledSheetWithBreadcrumbs(breadcrumbText: reference.title, path: '/creed/item', (context, ref) {
     final item = reference.item;
     final (title, heading) = switch ((reference.chapter.heading, item.number, item.title)) {
       (final chapterHeading?, _, _) => (reference.title, chapterHeading),
@@ -20,8 +20,8 @@ class CreedItemSheet {
     };
 
     void navigateToVerseSelection(VerseSelection verseSelection) {
-      // An article linked from the item replaces this sheet in the breadcrumbs.
-      if (context.mounted) context.pop();
+      // An article linked from the item shares this sheet and may have closed it already.
+      context.popIfCurrent();
       onNavigateToVerseSelection(verseSelection);
     }
 

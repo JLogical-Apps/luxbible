@@ -10,15 +10,16 @@ class PreviewPassageSheet {
     required VerseSelection verseSelection,
     Function(VerseSelection)? onNavigateToVerseSelection,
   }) => context.showStyledSheet(
+    path: '/preview-passage',
     (context, _) => StyledSheet(
       title: verseSelection.format().toText(),
       children: verseSelection
           .splitByChapter()
           .map<Widget>(
-            (selection) => Padding(
+            (passage) => Padding(
               padding: .all(16),
               child: PassageBuilder(
-                verseSelection: selection,
+                verseSelection: passage.verseSelection,
                 shrinkWrap: true,
                 onNavigateToVerseSelection: (selection) {
                   context.pop();

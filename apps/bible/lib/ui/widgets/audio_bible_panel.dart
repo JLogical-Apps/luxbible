@@ -24,10 +24,10 @@ class AudioBiblePanel extends ConsumerWidget {
     final session = ref.watch(audioBibleProvider(context: this.context));
 
     final passage = switch (this.context) {
-      .bible => (session?.passage.references.first.toChapterReference() ?? user.lastReference).toVerseSelection(),
-      .plan => session?.passage ?? user.lastReference.toVerseSelection(),
+      .bible => ChapterPassage.chapter(session?.passage.chapter ?? user.lastReference),
+      .plan => session?.passage ?? ChapterPassage.chapter(user.lastReference),
     };
-    final translation = user.getTranslationFor(passage.references.first.book);
+    final translation = user.getTranslationFor(passage.chapter.book);
 
     return StyledSheet(
       showDragHandle: showDragHandle,
@@ -67,7 +67,7 @@ class AudioBiblePanel extends ConsumerWidget {
 
 class AudioBiblePanelBody extends HookConsumerWidget {
   final AudioBibleContext context;
-  final VerseSelection? passage;
+  final ChapterPassage? passage;
   final EdgeInsets padding;
 
   const AudioBiblePanelBody({super.key, required this.context, this.passage, this.padding = const .all(16)});

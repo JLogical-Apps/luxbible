@@ -115,6 +115,7 @@ class _Translations$languages$nl extends Translations$languages$en {
 	@override String get french => 'Frans';
 	@override String get spanish => 'Spaans';
 	@override String get german => 'Duits';
+	@override String get indonesian => 'Indonesisch';
 	@override String get romanian => 'Roemeens';
 	@override String get tagalog => 'Tagalog';
 }
@@ -388,6 +389,7 @@ class _Translations$regionTypes$nl extends Translations$regionTypes$en {
 
 	// Translations
 	@override String get chapter => 'dit hoofdstuk';
+	@override String get passage => 'deze passage';
 	@override String get verses => 'deze verzen';
 	@override String get visibleVerses => 'de zichtbare verzen';
 	@override String get text => 'deze tekst';
@@ -412,9 +414,11 @@ class _Translations$mainActions$nl extends Translations$mainActions$en {
 	@override String get settings => 'Instellingen';
 	@override String get more => 'Meer';
 	@override String get audioDescription => 'Luister naar het huidige hoofdstuk met een Bijbel met audio.';
+	@override String get audioPassageDescription => 'Luister naar de huidige passage met een Bijbel met audio.';
 	@override String get bookmarkDescription => 'Voeg een bladwijzer aan dit hoofdstuk toe om het makkelijk terug te vinden via de zoekpagina.';
 	@override String get manageBookmarkDescription => 'Beheer deze bladwijzer.';
 	@override String get studyDescription => 'Bekijk studiehulpmiddelen voor dit hoofdstuk.';
+	@override String get studyPassageDescription => 'Bekijk studiehulpmiddelen voor deze passage.';
 	@override String get verseOfTheDayDescription => 'Bekijk het vers van vandaag.';
 	@override String get verseOfTheDayLoading => 'Het vers van vandaag wordt geladen…';
 	@override String get verseOfTheDayUnavailable => 'Het vers van vandaag kan niet worden geladen.';
@@ -471,7 +475,7 @@ class _Translations$studyActions$nl extends Translations$studyActions$en {
 	@override String linkedResourcesDescription({required Object region}) => 'Bekijk personen, thema\'s, kaarten en woordenboekartikelen die bij ${region} horen.';
 	@override String get noCrossReferences => 'Geen kruisverwijzingen gevonden';
 	@override String get noLinkedResources => 'Geen gekoppelde bronnen gevonden';
-	@override String get editLinkedResources => 'Gekoppelde bronnen bewerken';
+	@override String get customizeLinkedResources => 'Gekoppelde bronnen aanpassen';
 	@override String crossReferencesUse({required Object translation}) => 'Kruisverwijzingen gebruiken ${translation}';
 	@override String get onlineCrossReferencesExplanation => 'Omdat de geselecteerde vertaling alleen online beschikbaar is, worden kruisverwijzingen getoond met de meest recent gebruikte studiebijbel om prestaties en kosten te besparen. Overal elders in de app wordt de geselecteerde vertaling gebruikt.';
 }
@@ -568,7 +572,7 @@ class _Translations$commentaries$nl extends Translations$commentaries$en {
 
 	// Translations
 	@override String get addRemove => 'Commentaren toevoegen en verwijderen';
-	@override String get edit => 'Commentaren bewerken';
+	@override String get customize => 'Commentaren aanpassen';
 }
 
 // Path: toolbarShortcuts
@@ -863,9 +867,9 @@ class _Translations$toolbarSettings$nl extends Translations$toolbarSettings$en {
 	@override String get hideToolbarDescription => 'Verberg de werkbalk tijdens het omlaag scrollen voor een ongestoorde Bijbelweergave.';
 	@override String get pinToolbar => 'Vastzetten';
 	@override String get pinToolbarDescription => 'Zet de werkbalk onderaan de pagina vast.';
-	@override String get expandToAnnotation => 'Uitbreiden tot annotatie';
-	@override String get expandTextDescription => 'Als je een geannoteerd woord ingedrukt houdt, wordt het hele gemarkeerde bereik geselecteerd.';
-	@override String get expandVerseDescription => 'Als je op een vers tikt, wordt de volledige geannoteerde versselectie geselecteerd.';
+	@override String get expandToAnnotation => 'Hele markering selecteren';
+	@override String get expandTextDescription => 'Als je een gemarkeerd woord ingedrukt houdt, wordt de hele markering geselecteerd.';
+	@override String get expandVerseDescription => 'Als je op een gemarkeerd vers tikt, worden alle verzen van die markering geselecteerd.';
 	@override String get rangeSelection => 'Bereikselectie';
 	@override String get rangeSelectionDescription => 'Als je op een tweede vers tikt, worden alle verzen tussen het eerste en tweede vers geselecteerd.';
 	@override String get mainShortcut => 'Snelkoppeling hoofdwerkbalk';
@@ -1241,6 +1245,8 @@ class _Translations$chapterUnavailable$nl extends Translations$chapterUnavailabl
 	// Translations
 	@override String title({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} bevat het ${testament} niet.';
 	@override String subtitle({required Object testament, required Object fallbackTranslation}) => 'Je meest recent gebruikte Bijbel voor het ${testament}, ${fallbackTranslation}, wordt getoond.';
+	@override String bookTitle({required Object selectedTranslation, required Object book}) => '${selectedTranslation} bevat ${book} niet.';
+	@override String bookSubtitle({required Object fallbackTranslation}) => 'Je meest recent gebruikte studiebijbel, ${fallbackTranslation}, wordt getoond.';
 }
 
 // Path: verseNumbering
@@ -3286,6 +3292,7 @@ extension on TranslationsNl {
 			'languages.french' => 'Frans',
 			'languages.spanish' => 'Spaans',
 			'languages.german' => 'Duits',
+			'languages.indonesian' => 'Indonesisch',
 			'languages.romanian' => 'Roemeens',
 			'languages.tagalog' => 'Tagalog',
 			'highlightStyles.red' => 'Rood',
@@ -3487,6 +3494,7 @@ extension on TranslationsNl {
 			'copySheet.includeReference' => 'Bijbelverwijzing opnemen?',
 			'copySheet.includeTranslation' => 'Vertaling opnemen?',
 			'regionTypes.chapter' => 'dit hoofdstuk',
+			'regionTypes.passage' => 'deze passage',
 			'regionTypes.verses' => 'deze verzen',
 			'regionTypes.visibleVerses' => 'de zichtbare verzen',
 			'regionTypes.text' => 'deze tekst',
@@ -3502,9 +3510,11 @@ extension on TranslationsNl {
 			'mainActions.settings' => 'Instellingen',
 			'mainActions.more' => 'Meer',
 			'mainActions.audioDescription' => 'Luister naar het huidige hoofdstuk met een Bijbel met audio.',
+			'mainActions.audioPassageDescription' => 'Luister naar de huidige passage met een Bijbel met audio.',
 			'mainActions.bookmarkDescription' => 'Voeg een bladwijzer aan dit hoofdstuk toe om het makkelijk terug te vinden via de zoekpagina.',
 			'mainActions.manageBookmarkDescription' => 'Beheer deze bladwijzer.',
 			'mainActions.studyDescription' => 'Bekijk studiehulpmiddelen voor dit hoofdstuk.',
+			'mainActions.studyPassageDescription' => 'Bekijk studiehulpmiddelen voor deze passage.',
 			'mainActions.verseOfTheDayDescription' => 'Bekijk het vers van vandaag.',
 			'mainActions.verseOfTheDayLoading' => 'Het vers van vandaag wordt geladen…',
 			'mainActions.verseOfTheDayUnavailable' => 'Het vers van vandaag kan niet worden geladen.',
@@ -3543,7 +3553,7 @@ extension on TranslationsNl {
 			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Bekijk personen, thema\'s, kaarten en woordenboekartikelen die bij ${region} horen.',
 			'studyActions.noCrossReferences' => 'Geen kruisverwijzingen gevonden',
 			'studyActions.noLinkedResources' => 'Geen gekoppelde bronnen gevonden',
-			'studyActions.editLinkedResources' => 'Gekoppelde bronnen bewerken',
+			'studyActions.customizeLinkedResources' => 'Gekoppelde bronnen aanpassen',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Kruisverwijzingen gebruiken ${translation}',
 			'studyActions.onlineCrossReferencesExplanation' => 'Omdat de geselecteerde vertaling alleen online beschikbaar is, worden kruisverwijzingen getoond met de meest recent gebruikte studiebijbel om prestaties en kosten te besparen. Overal elders in de app wordt de geselecteerde vertaling gebruikt.',
 			'selectionActions.annotate' => 'Annoteren',
@@ -3595,7 +3605,7 @@ extension on TranslationsNl {
 			'bookmarks.deleteNamedConfirmation' => ({required Object name}) => 'Weet je zeker dat je "${name}" wilt verwijderen?',
 			'bookmarkPage.title' => 'Je bladwijzers',
 			'commentaries.addRemove' => 'Commentaren toevoegen en verwijderen',
-			'commentaries.edit' => 'Commentaren bewerken',
+			'commentaries.customize' => 'Commentaren aanpassen',
 			'toolbarShortcuts.switchBible' => 'Van Bijbel wisselen',
 			'toolbarShortcuts.lexicon' => 'Lexicon',
 			'toolbarShortcuts.themeAndLayout' => 'Thema en indeling',
@@ -3786,12 +3796,12 @@ extension on TranslationsNl {
 			'highlightStyleUi.deleteAnnotations' => 'Annotaties verwijderen',
 			'highlightStyleUi.updateAnnotations' => 'Annotaties bijwerken',
 			'highlightStyleUi.updateWithAnnotations' => ({required Object name, required Object annotations}) => '"${name}" heeft ${annotations}. Wil je ze bijwerken met de nieuwe stijl of ongewijzigd laten?',
+			_ => null,
+		} ?? switch (path) {
 			'highlightStyleUi.leaveAsIs' => 'Ongewijzigd laten',
 			'highlightStyleUi.label' => 'Label',
 			'toolbarSettings.mainToolbar' => 'Hoofdwerkbalk',
 			'toolbarSettings.verseSelection' => 'Versselectie',
-			_ => null,
-		} ?? switch (path) {
 			'toolbarSettings.textSelection' => 'Tekstselectie',
 			'toolbarSettings.shownForMain' => 'Wordt getoond wanneer niets is geselecteerd.',
 			'toolbarSettings.shownForVerses' => 'Wordt getoond wanneer een vers is geselecteerd.',
@@ -3805,9 +3815,9 @@ extension on TranslationsNl {
 			'toolbarSettings.hideToolbarDescription' => 'Verberg de werkbalk tijdens het omlaag scrollen voor een ongestoorde Bijbelweergave.',
 			'toolbarSettings.pinToolbar' => 'Vastzetten',
 			'toolbarSettings.pinToolbarDescription' => 'Zet de werkbalk onderaan de pagina vast.',
-			'toolbarSettings.expandToAnnotation' => 'Uitbreiden tot annotatie',
-			'toolbarSettings.expandTextDescription' => 'Als je een geannoteerd woord ingedrukt houdt, wordt het hele gemarkeerde bereik geselecteerd.',
-			'toolbarSettings.expandVerseDescription' => 'Als je op een vers tikt, wordt de volledige geannoteerde versselectie geselecteerd.',
+			'toolbarSettings.expandToAnnotation' => 'Hele markering selecteren',
+			'toolbarSettings.expandTextDescription' => 'Als je een gemarkeerd woord ingedrukt houdt, wordt de hele markering geselecteerd.',
+			'toolbarSettings.expandVerseDescription' => 'Als je op een gemarkeerd vers tikt, worden alle verzen van die markering geselecteerd.',
 			'toolbarSettings.rangeSelection' => 'Bereikselectie',
 			'toolbarSettings.rangeSelectionDescription' => 'Als je op een tweede vers tikt, worden alle verzen tussen het eerste en tweede vers geselecteerd.',
 			'toolbarSettings.mainShortcut' => 'Snelkoppeling hoofdwerkbalk',
@@ -4079,6 +4089,8 @@ extension on TranslationsNl {
 			'interlinearUi.usingTranslation' => ({required Object translation}) => '${translation} wordt gebruikt voor interlineair',
 			'chapterUnavailable.title' => ({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} bevat het ${testament} niet.',
 			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Je meest recent gebruikte Bijbel voor het ${testament}, ${fallbackTranslation}, wordt getoond.',
+			'chapterUnavailable.bookTitle' => ({required Object selectedTranslation, required Object book}) => '${selectedTranslation} bevat ${book} niet.',
+			'chapterUnavailable.bookSubtitle' => ({required Object fallbackTranslation}) => 'Je meest recent gebruikte studiebijbel, ${fallbackTranslation}, wordt getoond.',
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => 'De hoofdstukken en verzen van de ${translation} zijn anders genummerd dan in de meeste Engelse vertalingen.\n\nDe tekst die hier bij ${reference} wordt getoond, komt uit ${originalReference} in de ${translation} en is opnieuw gekoppeld om met de andere vertalingen overeen te komen.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} bevat deze selectie niet.',
@@ -4298,14 +4310,14 @@ extension on TranslationsNl {
 			'morphology.types.negativeAdverb.name' => 'Ontkennend bijwoord',
 			'morphology.types.negativeAdverb.description' => 'Een bijwoord dat een ontkenning uitdrukt.',
 			'morphology.types.negativeAdverb.examples' => 'niet|nooit',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.adjective.name' => 'Bijvoeglijk naamwoord',
 			'morphology.types.adjective.description' => 'Een woord dat een zelfstandig naamwoord beschrijft.',
 			'morphology.types.adjective.examples' => 'groot|heilig|wijs',
 			'morphology.types.noun.name' => 'Zelfstandig naamwoord',
 			'morphology.types.noun.description' => 'Een persoon, plaats, zaak of begrip.',
 			'morphology.types.noun.examples' => 'stad|water|liefde',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.properNoun.name' => 'Eigennaam',
 			'morphology.types.properNoun.description' => 'De specifieke naam van een persoon, plaats of zaak.',
 			'morphology.types.properNoun.examples' => 'David|Jeruzalem|Israël',

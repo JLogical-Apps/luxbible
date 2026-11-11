@@ -9,7 +9,7 @@ class LinkedStudyPanel extends HookWidget {
   final Widget? trailing;
   final Function() onClose;
 
-  final ChapterReference chapterReference;
+  final ChapterPassage passage;
   final Reference? passageTopReference;
   final ScrollController scrollController;
 
@@ -28,7 +28,7 @@ class LinkedStudyPanel extends HookWidget {
     this.subtitle,
     this.trailing,
     required this.onClose,
-    required this.chapterReference,
+    required this.passage,
     required this.passageTopReference,
     required this.scrollController,
     required this.onScrollMainToReference,
@@ -92,7 +92,7 @@ class LinkedStudyPanel extends HookWidget {
         child: Column(
           children: [
             StyledSheetHeader(
-              title: chapterReference.format().toText(),
+              title: passage.format().toText(),
               subtitle: subtitle,
               leading: StyledCircleButton.md(child: Symbols.close.toIcon(), onPressed: onClose),
               trailing: trailing,

@@ -115,6 +115,7 @@ class _Translations$languages$de extends Translations$languages$en {
 	@override String get french => 'Französisch';
 	@override String get spanish => 'Spanisch';
 	@override String get german => 'Deutsch';
+	@override String get indonesian => 'Indonesisch';
 	@override String get romanian => 'Rumänisch';
 	@override String get tagalog => 'Tagalog';
 }
@@ -388,6 +389,7 @@ class _Translations$regionTypes$de extends Translations$regionTypes$en {
 
 	// Translations
 	@override String get chapter => 'dieses Kapitel';
+	@override String get passage => 'diesen Abschnitt';
 	@override String get verses => 'diese Verse';
 	@override String get visibleVerses => 'die sichtbaren Verse';
 	@override String get text => 'diesen Text';
@@ -412,9 +414,11 @@ class _Translations$mainActions$de extends Translations$mainActions$en {
 	@override String get settings => 'Einstellungen';
 	@override String get more => 'Mehr';
 	@override String get audioDescription => 'Hör dir das aktuelle Kapitel mit einer Bibel mit Audio an.';
+	@override String get audioPassageDescription => 'Hör dir den aktuellen Abschnitt mit einer Bibel mit Audio an.';
 	@override String get bookmarkDescription => 'Setze ein Lesezeichen für dieses Kapitel, um es auf der Suchseite schnell wiederzufinden.';
 	@override String get manageBookmarkDescription => 'Dieses Lesezeichen verwalten.';
 	@override String get studyDescription => 'Studienwerkzeuge für dieses Kapitel anzeigen.';
+	@override String get studyPassageDescription => 'Studienwerkzeuge für diesen Abschnitt anzeigen.';
 	@override String get verseOfTheDayDescription => 'Den Vers des Tages anzeigen.';
 	@override String get studyPanelDescription => 'Hefte ein Panel neben den Text, das mitläuft und Studienwerkzeuge für das zeigt, was du gerade liest.';
 	@override String get searchDescription => 'Suche nach Wörtern in der ganzen Bibel.';
@@ -469,7 +473,7 @@ class _Translations$studyActions$de extends Translations$studyActions$en {
 	@override String linkedResourcesDescription({required Object region}) => 'Zeige verknüpfte Personen, Themen, Karten und Wörterbucheinträge für ${region}.';
 	@override String get noCrossReferences => 'Keine Querverweise gefunden';
 	@override String get noLinkedResources => 'Keine verknüpften Ressourcen gefunden';
-	@override String get editLinkedResources => 'Verknüpfte Ressourcen bearbeiten';
+	@override String get customizeLinkedResources => 'Verknüpfte Ressourcen anpassen';
 	@override String crossReferencesUse({required Object translation}) => 'Querverweise aus ${translation}';
 	@override String get onlineCrossReferencesExplanation => 'Da deine gewählte Übersetzung nur online verfügbar ist, werden Querverweise mit der zuletzt verwendeten Studienbibel angezeigt, um Leistung und Kosten zu sparen. Überall sonst in der App wird deine gewählte Übersetzung verwendet.';
 }
@@ -566,7 +570,7 @@ class _Translations$commentaries$de extends Translations$commentaries$en {
 
 	// Translations
 	@override String get addRemove => 'Kommentare hinzufügen & entfernen';
-	@override String get edit => 'Kommentare bearbeiten';
+	@override String get customize => 'Kommentare anpassen';
 }
 
 // Path: toolbarShortcuts
@@ -861,9 +865,9 @@ class _Translations$toolbarSettings$de extends Translations$toolbarSettings$en {
 	@override String get hideToolbarDescription => 'Blende die Symbolleiste beim Herunterscrollen aus, um ungestört in der Bibel zu lesen.';
 	@override String get pinToolbar => 'Anheften';
 	@override String get pinToolbarDescription => 'Hefte die Symbolleiste unten auf der Seite an.';
-	@override String get expandToAnnotation => 'Auf Annotation erweitern';
-	@override String get expandTextDescription => 'Langes Drücken auf ein annotiertes Wort wählt den ganzen markierten Bereich aus.';
-	@override String get expandVerseDescription => 'Tippen auf einen Vers wählt die ganze annotierte Versauswahl aus.';
+	@override String get expandToAnnotation => 'Ganze Markierung auswählen';
+	@override String get expandTextDescription => 'Langes Drücken auf ein markiertes Wort wählt die ganze Markierung aus.';
+	@override String get expandVerseDescription => 'Tippen auf einen markierten Vers wählt alle Verse dieser Markierung aus.';
 	@override String get rangeSelection => 'Bereichsauswahl';
 	@override String get rangeSelectionDescription => 'Tippen auf einen zweiten Vers wählt alle Verse zwischen ihm und dem ersten aus.';
 	@override String get mainShortcut => 'Kurzbefehl der Hauptleiste';
@@ -1239,6 +1243,8 @@ class _Translations$chapterUnavailable$de extends Translations$chapterUnavailabl
 	// Translations
 	@override String title({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} enthält kein ${testament}.';
 	@override String subtitle({required Object testament, required Object fallbackTranslation}) => 'Stattdessen wird deine zuletzt verwendete Bibel für diesen Teil (${testament}) angezeigt: ${fallbackTranslation}.';
+	@override String bookTitle({required Object selectedTranslation, required Object book}) => '${selectedTranslation} enthält das Buch ${book} nicht.';
+	@override String bookSubtitle({required Object fallbackTranslation}) => 'Stattdessen wird deine zuletzt verwendete Studienbibel angezeigt: ${fallbackTranslation}.';
 }
 
 // Path: verseNumbering
@@ -3284,6 +3290,7 @@ extension on TranslationsDe {
 			'languages.french' => 'Französisch',
 			'languages.spanish' => 'Spanisch',
 			'languages.german' => 'Deutsch',
+			'languages.indonesian' => 'Indonesisch',
 			'languages.romanian' => 'Rumänisch',
 			'languages.tagalog' => 'Tagalog',
 			'highlightStyles.red' => 'Rot',
@@ -3485,6 +3492,7 @@ extension on TranslationsDe {
 			'copySheet.includeReference' => 'Bibelstelle angeben?',
 			'copySheet.includeTranslation' => 'Übersetzung angeben?',
 			'regionTypes.chapter' => 'dieses Kapitel',
+			'regionTypes.passage' => 'diesen Abschnitt',
 			'regionTypes.verses' => 'diese Verse',
 			'regionTypes.visibleVerses' => 'die sichtbaren Verse',
 			'regionTypes.text' => 'diesen Text',
@@ -3500,9 +3508,11 @@ extension on TranslationsDe {
 			'mainActions.settings' => 'Einstellungen',
 			'mainActions.more' => 'Mehr',
 			'mainActions.audioDescription' => 'Hör dir das aktuelle Kapitel mit einer Bibel mit Audio an.',
+			'mainActions.audioPassageDescription' => 'Hör dir den aktuellen Abschnitt mit einer Bibel mit Audio an.',
 			'mainActions.bookmarkDescription' => 'Setze ein Lesezeichen für dieses Kapitel, um es auf der Suchseite schnell wiederzufinden.',
 			'mainActions.manageBookmarkDescription' => 'Dieses Lesezeichen verwalten.',
 			'mainActions.studyDescription' => 'Studienwerkzeuge für dieses Kapitel anzeigen.',
+			'mainActions.studyPassageDescription' => 'Studienwerkzeuge für diesen Abschnitt anzeigen.',
 			'mainActions.verseOfTheDayDescription' => 'Den Vers des Tages anzeigen.',
 			'mainActions.studyPanelDescription' => 'Hefte ein Panel neben den Text, das mitläuft und Studienwerkzeuge für das zeigt, was du gerade liest.',
 			'mainActions.searchDescription' => 'Suche nach Wörtern in der ganzen Bibel.',
@@ -3539,7 +3549,7 @@ extension on TranslationsDe {
 			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'Zeige verknüpfte Personen, Themen, Karten und Wörterbucheinträge für ${region}.',
 			'studyActions.noCrossReferences' => 'Keine Querverweise gefunden',
 			'studyActions.noLinkedResources' => 'Keine verknüpften Ressourcen gefunden',
-			'studyActions.editLinkedResources' => 'Verknüpfte Ressourcen bearbeiten',
+			'studyActions.customizeLinkedResources' => 'Verknüpfte Ressourcen anpassen',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Querverweise aus ${translation}',
 			'studyActions.onlineCrossReferencesExplanation' => 'Da deine gewählte Übersetzung nur online verfügbar ist, werden Querverweise mit der zuletzt verwendeten Studienbibel angezeigt, um Leistung und Kosten zu sparen. Überall sonst in der App wird deine gewählte Übersetzung verwendet.',
 			'selectionActions.annotate' => 'Annotieren',
@@ -3591,7 +3601,7 @@ extension on TranslationsDe {
 			'bookmarks.deleteNamedConfirmation' => ({required Object name}) => 'Möchtest du „${name}“ wirklich löschen?',
 			'bookmarkPage.title' => 'Deine Lesezeichen',
 			'commentaries.addRemove' => 'Kommentare hinzufügen & entfernen',
-			'commentaries.edit' => 'Kommentare bearbeiten',
+			'commentaries.customize' => 'Kommentare anpassen',
 			'toolbarShortcuts.switchBible' => 'Bibel wechseln',
 			'toolbarShortcuts.lexicon' => 'Lexikon',
 			'toolbarShortcuts.themeAndLayout' => 'Design & Layout',
@@ -3784,12 +3794,12 @@ extension on TranslationsDe {
 			'highlightStyleUi.updateWithAnnotations' => ({required Object name, required Object annotations}) => '„${name}“ wird von ${annotations} verwendet. Möchtest du sie auf den neuen Stil aktualisieren oder unverändert lassen?',
 			'highlightStyleUi.leaveAsIs' => 'Unverändert lassen',
 			'highlightStyleUi.label' => 'Bezeichnung',
+			_ => null,
+		} ?? switch (path) {
 			'toolbarSettings.mainToolbar' => 'Hauptleiste',
 			'toolbarSettings.verseSelection' => 'Versauswahl',
 			'toolbarSettings.textSelection' => 'Textauswahl',
 			'toolbarSettings.shownForMain' => 'Wird angezeigt, wenn nichts ausgewählt ist.',
-			_ => null,
-		} ?? switch (path) {
 			'toolbarSettings.shownForVerses' => 'Wird angezeigt, wenn ein Vers ausgewählt ist.',
 			'toolbarSettings.shownForText' => 'Wird angezeigt, wenn du lange auf Text in Versen drückst.',
 			'toolbarSettings.gestures' => 'Gesten',
@@ -3801,9 +3811,9 @@ extension on TranslationsDe {
 			'toolbarSettings.hideToolbarDescription' => 'Blende die Symbolleiste beim Herunterscrollen aus, um ungestört in der Bibel zu lesen.',
 			'toolbarSettings.pinToolbar' => 'Anheften',
 			'toolbarSettings.pinToolbarDescription' => 'Hefte die Symbolleiste unten auf der Seite an.',
-			'toolbarSettings.expandToAnnotation' => 'Auf Annotation erweitern',
-			'toolbarSettings.expandTextDescription' => 'Langes Drücken auf ein annotiertes Wort wählt den ganzen markierten Bereich aus.',
-			'toolbarSettings.expandVerseDescription' => 'Tippen auf einen Vers wählt die ganze annotierte Versauswahl aus.',
+			'toolbarSettings.expandToAnnotation' => 'Ganze Markierung auswählen',
+			'toolbarSettings.expandTextDescription' => 'Langes Drücken auf ein markiertes Wort wählt die ganze Markierung aus.',
+			'toolbarSettings.expandVerseDescription' => 'Tippen auf einen markierten Vers wählt alle Verse dieser Markierung aus.',
 			'toolbarSettings.rangeSelection' => 'Bereichsauswahl',
 			'toolbarSettings.rangeSelectionDescription' => 'Tippen auf einen zweiten Vers wählt alle Verse zwischen ihm und dem ersten aus.',
 			'toolbarSettings.mainShortcut' => 'Kurzbefehl der Hauptleiste',
@@ -4075,6 +4085,8 @@ extension on TranslationsDe {
 			'interlinearUi.usingTranslation' => ({required Object translation}) => 'Interlinear mit ${translation}',
 			'chapterUnavailable.title' => ({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} enthält kein ${testament}.',
 			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Stattdessen wird deine zuletzt verwendete Bibel für diesen Teil (${testament}) angezeigt: ${fallbackTranslation}.',
+			'chapterUnavailable.bookTitle' => ({required Object selectedTranslation, required Object book}) => '${selectedTranslation} enthält das Buch ${book} nicht.',
+			'chapterUnavailable.bookSubtitle' => ({required Object fallbackTranslation}) => 'Stattdessen wird deine zuletzt verwendete Studienbibel angezeigt: ${fallbackTranslation}.',
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => '${translation} zählt Kapitel und Verse anders als die meisten englischen Übersetzungen.\n\nDer hier bei ${reference} angezeigte Text stammt aus ${originalReference} in ${translation} und wurde so zugeordnet, dass er zu den anderen Übersetzungen passt.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} enthält diese Auswahl nicht.',
@@ -4296,14 +4308,14 @@ extension on TranslationsDe {
 			'morphology.types.negativeAdverb.examples' => 'nicht|niemals',
 			'morphology.types.adjective.name' => 'Adjektiv',
 			'morphology.types.adjective.description' => 'Ein Wort, das ein Substantiv beschreibt.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.adjective.examples' => 'groß|heilig|weise',
 			'morphology.types.noun.name' => 'Substantiv',
 			'morphology.types.noun.description' => 'Eine Person, ein Ort, eine Sache oder ein Begriff.',
 			'morphology.types.noun.examples' => 'Stadt|Wasser|Liebe',
 			'morphology.types.properNoun.name' => 'Eigenname',
 			'morphology.types.properNoun.description' => 'Der Name einer bestimmten Person, eines Ortes oder einer Sache.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.properNoun.examples' => 'David|Jerusalem|Israel',
 			'morphology.types.number.name' => 'Kardinalzahl',
 			'morphology.types.number.description' => 'Eine Grundzahl.',

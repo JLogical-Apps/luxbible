@@ -10,7 +10,7 @@ class FindInBibleSheet {
     BuildContext context, {
     required PassageSelectionConfiguration selectionConfiguration,
     Widget? title,
-  }) => context.showStyledSheet<VerseSelection>((context, _) {
+  }) => context.showStyledSheet<VerseSelection>(path: '/find-in-bible', (context, _) {
     final chapterPositionState = useState<ChapterPosition?>(null);
     final selectionController = usePassageSelectionController(selectionConfiguration);
 

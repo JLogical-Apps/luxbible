@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:dio/dio.dart';
 import 'package:lux/lux.dart';
+import 'package:utils_core/utils_core.dart';
 import 'package:xml/xml.dart';
 
 class YouVersion {
@@ -21,7 +22,12 @@ class YouVersion {
     final root = XmlDocument.parse(content).rootElement;
     return XmlBibleParser.parse(
       root.childElements,
-      getVerseNumber: (element) => element.classNames.has('yv-v') ? int.parse(element.getAttribute('v')!) : null,
+      getVerseNumbers: (element) => element.classNames.has('yv-v')
+          ? (
+              verseNum: int.parse(element.getAttribute('v')!),
+              endVerseNum: element.getAttribute('ev')?.mapIfNonNull(int.parse),
+            )
+          : null,
       shouldIgnore: (element) => element.classNames.has('yv-vlbl'),
       buildFootnote: (element) => element.classNames.has('yv-n') ? UsxUtils.noteToMarkdown(element) : null,
       isRedLetters: (element) => element.classNames.has('wj'),

@@ -8,6 +8,7 @@
     "french": "Frans",
     "spanish": "Spaans",
     "german": "Duits",
+    "indonesian": "Indonesisch",
     "romanian": "Roemeens",
     "tagalog": "Tagalog"
   },
@@ -225,6 +226,7 @@
   },
   "regionTypes": {
     "chapter": "dit hoofdstuk",
+    "passage": "deze passage",
     "verses": "deze verzen",
     "visibleVerses": "de zichtbare verzen",
     "text": "deze tekst"
@@ -242,9 +244,11 @@
     "settings": "Instellingen",
     "more": "Meer",
     "audioDescription": "Luister naar het huidige hoofdstuk met een Bijbel met audio.",
+    "audioPassageDescription": "Luister naar de huidige passage met een Bijbel met audio.",
     "bookmarkDescription": "Voeg een bladwijzer aan dit hoofdstuk toe om het makkelijk terug te vinden via de zoekpagina.",
     "manageBookmarkDescription": "Beheer deze bladwijzer.",
     "studyDescription": "Bekijk studiehulpmiddelen voor dit hoofdstuk.",
+    "studyPassageDescription": "Bekijk studiehulpmiddelen voor deze passage.",
     "verseOfTheDayDescription": "Bekijk het vers van vandaag.",
     "verseOfTheDayLoading": "Het vers van vandaag wordt geladen…",
     "verseOfTheDayUnavailable": "Het vers van vandaag kan niet worden geladen.",
@@ -287,7 +291,7 @@
     "linkedResourcesDescription": "Bekijk personen, thema's, kaarten en woordenboekartikelen die bij {region} horen.",
     "noCrossReferences": "Geen kruisverwijzingen gevonden",
     "noLinkedResources": "Geen gekoppelde bronnen gevonden",
-    "editLinkedResources": "Gekoppelde bronnen bewerken",
+    "customizeLinkedResources": "Gekoppelde bronnen aanpassen",
     "crossReferencesUse": "Kruisverwijzingen gebruiken {translation}",
     "onlineCrossReferencesExplanation": "Omdat de geselecteerde vertaling alleen online beschikbaar is, worden kruisverwijzingen getoond met de meest recent gebruikte studiebijbel om prestaties en kosten te besparen. Overal elders in de app wordt de geselecteerde vertaling gebruikt."
   },
@@ -349,7 +353,7 @@
   },
   "commentaries": {
     "addRemove": "Commentaren toevoegen en verwijderen",
-    "edit": "Commentaren bewerken"
+    "customize": "Commentaren aanpassen"
   },
   "toolbarShortcuts": {
     "switchBible": "Van Bijbel wisselen",
@@ -581,9 +585,9 @@
     "hideToolbarDescription": "Verberg de werkbalk tijdens het omlaag scrollen voor een ongestoorde Bijbelweergave.",
     "pinToolbar": "Vastzetten",
     "pinToolbarDescription": "Zet de werkbalk onderaan de pagina vast.",
-    "expandToAnnotation": "Uitbreiden tot annotatie",
-    "expandTextDescription": "Als je een geannoteerd woord ingedrukt houdt, wordt het hele gemarkeerde bereik geselecteerd.",
-    "expandVerseDescription": "Als je op een vers tikt, wordt de volledige geannoteerde versselectie geselecteerd.",
+    "expandToAnnotation": "Hele markering selecteren",
+    "expandTextDescription": "Als je een gemarkeerd woord ingedrukt houdt, wordt de hele markering geselecteerd.",
+    "expandVerseDescription": "Als je op een gemarkeerd vers tikt, worden alle verzen van die markering geselecteerd.",
     "rangeSelection": "Bereikselectie",
     "rangeSelectionDescription": "Als je op een tweede vers tikt, worden alle verzen tussen het eerste en tweede vers geselecteerd.",
     "mainShortcut": "Snelkoppeling hoofdwerkbalk",
@@ -914,7 +918,9 @@
   },
   "chapterUnavailable": {
     "title": "{selectedTranslation} bevat het {testament} niet.",
-    "subtitle": "Je meest recent gebruikte Bijbel voor het {testament}, {fallbackTranslation}, wordt getoond."
+    "subtitle": "Je meest recent gebruikte Bijbel voor het {testament}, {fallbackTranslation}, wordt getoond.",
+    "bookTitle": "{selectedTranslation} bevat {book} niet.",
+    "bookSubtitle": "Je meest recent gebruikte studiebijbel, {fallbackTranslation}, wordt getoond."
   },
   "verseNumbering": {
     "referenceLabel": "{translation} {reference}",

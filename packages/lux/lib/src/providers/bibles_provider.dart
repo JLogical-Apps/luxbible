@@ -57,6 +57,7 @@ FutureOr<List<Verse>> verseSelectionVerses(
 }) => selection.references
     .map((reference) => ref.watch(verseProvider(reference: reference, translation: translation)).requireValue)
     .nonNulls
+    .distinct
     .toList();
 
 @riverpod
@@ -77,11 +78,11 @@ FutureOr<List<Paragraph>> verseSelectionParagraphs(
   required BibleTranslation translation,
 }) => selection.references.groupListsBy((reference) => reference.toChapterReference()).mapToIterable<List<Paragraph>>((
   chapterReference,
-  reference,
+  references,
 ) {
   final chapter = ref.watch(chapterProvider(chapterReference: chapterReference, translation: translation)).requireValue;
 
-  bool isSelected(Verse verse) => selection.references.any((reference) => reference.verseNum == verse.verseNum);
+  bool isSelected(Verse verse) => references.any((reference) => verse.hasVerseNum(reference.verseNum));
 
   final paragraphs = chapter.paragraphs;
   final selectedIndices = paragraphs

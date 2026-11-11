@@ -45,7 +45,7 @@ class BiblePlanPaceSheet {
     required BiblePlanPace initialPace,
     required DateTime naturalEndDate,
     required String confirmLabel,
-  }) => context.showStyledSheet((context, _) {
+  }) => context.showStyledSheet(path: '/bible-plans/pace', (context, _) {
     final typeState = useState(initialPace.type);
 
     final endDateState = useState(initialPace.endDate ?? naturalEndDate);

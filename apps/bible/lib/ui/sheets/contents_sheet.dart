@@ -23,7 +23,7 @@ class ContentsSheet {
     double topPadding = 0,
   }) async {
     final currentSection = getCurrentSection(sections, topPadding: topPadding);
-    final section = await context.showStyledSheet<ContentsSection>((context, ref) {
+    final section = await context.showStyledSheet<ContentsSection>(path: '/contents', (context, ref) {
       final listController = useListController();
       usePostFrameEffect(() {
         if (currentSection == null) return;

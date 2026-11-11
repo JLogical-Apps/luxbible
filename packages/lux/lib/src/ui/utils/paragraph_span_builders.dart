@@ -43,7 +43,7 @@ List<InlineSpan> buildSectionParagraphSpans({
 
 AnnotatedSizedWidgetSpan<VerseElement> buildVerseNumberSpan({
   required Reference reference,
-  required int verseNumber,
+  required String verseNumLabel,
   required BibleTextStyle bibleTextStyle,
   required bool isUnderlined,
   required TextDirection textDirection,
@@ -54,14 +54,14 @@ AnnotatedSizedWidgetSpan<VerseElement> buildVerseNumberSpan({
     isBoundInSelection: false,
     isLeading: true,
   ),
-  size: Size(bibleTextStyle.verseNumber.getWidth(verseNumber.toString()) + 6, bibleTextStyle.body.fontSize! + 6),
+  size: Size(bibleTextStyle.verseNumber.getWidth(verseNumLabel) + 6, bibleTextStyle.body.fontSize! + 6),
   alignment: .middle,
   child: Padding(
     padding: .only(right: textDirection == .ltr ? 4 : 0, left: textDirection == .ltr ? 0 : 4),
     child: Opacity(
       opacity: opacity,
       child: Text(
-        verseNumber.toString(),
+        verseNumLabel,
         style: bibleTextStyle.verseNumber.copyWith(decoration: isUnderlined ? .underline : null),
       ),
     ),

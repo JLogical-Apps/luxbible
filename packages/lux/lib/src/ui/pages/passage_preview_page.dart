@@ -25,7 +25,7 @@ class PassagePreviewPage extends HookConsumerWidget implements StyledRoute<void>
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final initialChapterReference = verseSelection.references.first.toChapterReference();
+    final initialChapterReference = verseSelection.startChapter;
     final pageController = usePageController(initialPage: initialChapterReference.bibleChapterIndex);
     useListenableSelector(pageController, () => pageController.pageOrNull?.round());
 

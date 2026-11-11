@@ -18,6 +18,7 @@ class StudySheet {
     Function(StudyPanel)? onAddStudyPanel,
   }) => context.showStyledSheetWithBreadcrumbs(
     breadcrumbText: t.labels.study,
+    path: '/study/verses',
     (context, _) => StyledSheet(
       title: t.labels.study.toText(),
       subtitle: regionFormat.toText(),

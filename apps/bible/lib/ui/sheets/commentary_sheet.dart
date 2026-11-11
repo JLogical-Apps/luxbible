@@ -16,6 +16,7 @@ class CommentarySheet {
     required Function(VerseSelection) onNavigateToVerseSelection,
   }) => context.showStyledSheetWithBreadcrumbs(
     breadcrumbText: commentaryType.title(),
+    path: '/commentary',
     (context, ref) => StyledSheet(
       title: commentaryType.title().toText(),
       subtitle: verseSelection.format().toText(),
@@ -26,7 +27,7 @@ class CommentarySheet {
         commentaryType: commentaryType,
         isLink: true,
         onNavigateToVerseSelection: (selection) {
-          if (context.mounted) context.pop();
+          context.popIfCurrent();
           onNavigateToVerseSelection(selection);
         },
       ),
@@ -42,7 +43,7 @@ class CommentarySheet {
     required Function(VerseSelection) onNavigateToVerseSelection,
     Function(int)? onNavigateToIndex,
   }) {
-    final book = verseSelection.references.first.book;
+    final book = verseSelection.start.book;
     final commentary = ref.watch(commentaryProvider(type: commentaryType, book: book)).value;
     if (commentary == null) {
       return [Padding(padding: .all(16), child: StyledLoading())];

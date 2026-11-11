@@ -12,12 +12,21 @@ sealed class Verse with _$Verse {
 
   factory Verse({
     @JsonKey(name: 'n') required int verseNum,
+    @JsonKey(name: 'e', includeIfNull: false) int? endVerseNum,
     @JsonKey(name: 'w') required List<Word> words,
     @JsonKey(name: 'o', includeIfNull: false) Reference? originalVerse,
     @JsonKey(name: 'f', includeIfNull: false) List<Footnote>? footnotes,
   }) = _Verse;
 
   factory Verse.fromJson(Map<String, dynamic> json) => _$VerseFromJson(json);
+
+  bool get isBridge => endVerseNum != null;
+  List<int> get verseNums => Range.generate(verseNum, endVerseNum ?? verseNum).toList();
+  String get verseNumLabel => isBridge ? '$verseNum-$endVerseNum' : '$verseNum';
+
+  bool hasVerseNum(int verseNum) => verseNums.has(verseNum);
+  List<Reference> getReferences(ChapterReference chapterReference) =>
+      verseNums.map(chapterReference.getReference).toList();
 
   String get text => words.map((word) => word.text).nonNulls.join();
   List<String> get strongIds => words.map((word) => word.data?.strongId).nonNulls.toList();
@@ -30,10 +39,8 @@ sealed class Verse with _$Verse {
     final trimmedWords = words.skipWhile((word) => word.text?.isBlank == true && word.data == null).toList();
     final removedTextLength = words.take(words.length - trimmedWords.length).map((word) => word.text?.length ?? 0).sum;
 
-    return Verse(
-      verseNum: verseNum,
+    return copyWith(
       words: trimmedWords,
-      originalVerse: originalVerse,
       footnotes: footnotes
           ?.map((footnote) => footnote.copyWith(offset: (footnote.offset - removedTextLength).clampZero))
           .toList(),
@@ -101,6 +108,7 @@ extension IterableVerseExtensions on Iterable<Verse> {
         ? (verses
             ..[verses.length - 1] = Verse(
               verseNum: verse.verseNum,
+              endVerseNum: lastVerse.endVerseNum ?? verse.endVerseNum,
               words: lastVerse.words + verse.words,
               originalVerse: lastVerse.originalVerse ?? verse.originalVerse,
               footnotes: [

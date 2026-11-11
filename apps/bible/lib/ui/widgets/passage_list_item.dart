@@ -15,11 +15,11 @@ class PassageListItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
-    final book = verseSelection.references.first.book;
+    final book = verseSelection.start.book;
     final translation = user.translation.isOnline ? user.studyTranslation : user.getTranslationFor(book);
 
     // A line-limited preview never reaches past the first chapter, so a long passage only loads its first.
-    final previewSelection = maxLines == null ? verseSelection : verseSelection.splitByChapter().first;
+    final previewSelection = maxLines == null ? verseSelection : verseSelection.splitByChapter().first.verseSelection;
     final verses = ref.watch(verseSelectionVersesProvider(translation: translation, selection: previewSelection)).value;
 
     return StyledListItem.navigation(

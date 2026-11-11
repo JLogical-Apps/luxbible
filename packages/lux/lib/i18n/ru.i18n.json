@@ -8,6 +8,7 @@
     "french": "Французский",
     "spanish": "Испанский",
     "german": "Немецкий",
+    "indonesian": "Индонезийский",
     "romanian": "Румынский",
     "tagalog": "Тагальский"
   },
@@ -225,6 +226,7 @@
   },
   "regionTypes": {
     "chapter": "эта глава",
+    "passage": "этот отрывок",
     "verses": "эти стихи",
     "visibleVerses": "видимые стихи",
     "text": "этот текст"
@@ -242,9 +244,11 @@
     "settings": "Настройки",
     "more": "Ещё",
     "audioDescription": "Слушайте текущую главу с помощью Библии с поддержкой аудио.",
+    "audioPassageDescription": "Слушайте текущий отрывок с помощью Библии с поддержкой аудио.",
     "bookmarkDescription": "Добавьте эту главу в закладки, чтобы легко получить к ней доступ со страницы поиска.",
     "manageBookmarkDescription": "Управляйте этой закладкой.",
     "studyDescription": "Просмотрите инструменты обучения для этой главы.",
+    "studyPassageDescription": "Просмотрите инструменты обучения для этого отрывка.",
     "verseOfTheDayDescription": "Посмотрите сегодняшний стих.",
     "verseOfTheDayLoading": "Загрузка сегодняшнего стиха…",
     "verseOfTheDayUnavailable": "Не удалось загрузить сегодняшний стих.",
@@ -287,7 +291,7 @@
     "linkedResourcesDescription": "Просмотрите людей, темы, карты и статьи словаря, связанные с отрывком: {region}.",
     "noCrossReferences": "Перекрестных ссылок не найдено",
     "noLinkedResources": "Связанных ресурсов не найдено",
-    "editLinkedResources": "Изменить связанные ресурсы",
+    "customizeLinkedResources": "Настроить связанные ресурсы",
     "crossReferencesUse": "В перекрестных ссылках используется {translation}.",
     "onlineCrossReferencesExplanation": "Поскольку выбранный вами перевод доступен только в Интернете, перекрестные ссылки показаны с использованием последней версии Учебной Библии, которую вы использовали, чтобы сэкономить на производительности и затратах. Выбранный вами перевод используется повсюду в приложении."
   },
@@ -349,7 +353,7 @@
   },
   "commentaries": {
     "addRemove": "Добавить и удалить комментарии",
-    "edit": "Изменить комментарии"
+    "customize": "Настроить комментарии"
   },
   "toolbarShortcuts": {
     "switchBible": "Переключить Библию",
@@ -585,9 +589,9 @@
     "hideToolbarDescription": "Скройте панель инструментов при прокрутке вниз, чтобы получить захватывающий вид Библии.",
     "pinToolbar": "Закрепить",
     "pinToolbarDescription": "Закрепите панель инструментов внизу страницы.",
-    "expandToAnnotation": "Развернуть до аннотации",
-    "expandTextDescription": "Длительное нажатие на аннотированное слово выделяет весь выделенный диапазон.",
-    "expandVerseDescription": "Нажатие на стих выбирает полный аннотированный стих.",
+    "expandToAnnotation": "Выбрать всё выделение",
+    "expandTextDescription": "Длительное нажатие на выделенное слово выбирает всё выделение.",
+    "expandVerseDescription": "Нажатие на выделенный стих выбирает все стихи этого выделения.",
     "rangeSelection": "Выбор диапазона",
     "rangeSelectionDescription": "Нажатие на второй стих выбирает все стихи между ним и первым.",
     "mainShortcut": "Ярлык на главной панели инструментов",
@@ -934,7 +938,9 @@
   },
   "chapterUnavailable": {
     "title": "{selectedTranslation} не включает {testament}.",
-    "subtitle": "Показываем вашу последнюю {testament} Библию, {fallbackTranslation}."
+    "subtitle": "Показываем вашу последнюю {testament} Библию, {fallbackTranslation}.",
+    "bookTitle": "{selectedTranslation} не включает книгу {book}.",
+    "bookSubtitle": "Показываем вашу последнюю Учебную Библию, {fallbackTranslation}."
   },
   "verseNumbering": {
     "referenceLabel": "{translation} {reference}",

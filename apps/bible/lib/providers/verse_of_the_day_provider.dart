@@ -17,7 +17,7 @@ VerseSelection todayVerseOfTheDaySelection(Ref ref) =>
 FutureOr<VerseOfTheDay> verseOfTheDayForDate(Ref ref, {required DateTime date}) {
   final passage = ref.watch(verseOfTheDaySelectionsProvider)[getVerseOfTheDayIndex(date)];
   final user = ref.watch(userProvider);
-  final selectedTranslation = user.getTranslationFor(passage.references.first.book);
+  final selectedTranslation = user.getTranslationFor(passage.start.book);
 
   final (translation, text) =
       guard(

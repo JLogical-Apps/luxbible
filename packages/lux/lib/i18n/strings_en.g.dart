@@ -128,6 +128,9 @@ class Translations$languages$en {
 	/// en: 'German'
 	String get german => 'German';
 
+	/// en: 'Indonesian'
+	String get indonesian => 'Indonesian';
+
 	/// en: 'Romanian'
 	String get romanian => 'Romanian';
 
@@ -803,6 +806,9 @@ class Translations$regionTypes$en {
 	/// en: 'this chapter'
 	String get chapter => 'this chapter';
 
+	/// en: 'this passage'
+	String get passage => 'this passage';
+
 	/// en: 'these verses'
 	String get verses => 'these verses';
 
@@ -857,6 +863,9 @@ class Translations$mainActions$en {
 	/// en: 'Listen to the current chapter with an audio-enabled Bible.'
 	String get audioDescription => 'Listen to the current chapter with an audio-enabled Bible.';
 
+	/// en: 'Listen to the current passage with an audio-enabled Bible.'
+	String get audioPassageDescription => 'Listen to the current passage with an audio-enabled Bible.';
+
 	/// en: 'Bookmark this chapter to easily access it from the search page.'
 	String get bookmarkDescription => 'Bookmark this chapter to easily access it from the search page.';
 
@@ -865,6 +874,9 @@ class Translations$mainActions$en {
 
 	/// en: 'View study tools for this chapter.'
 	String get studyDescription => 'View study tools for this chapter.';
+
+	/// en: 'View study tools for this passage.'
+	String get studyPassageDescription => 'View study tools for this passage.';
 
 	/// en: 'View the verse of the day.'
 	String get verseOfTheDayDescription => 'View the verse of the day.';
@@ -992,8 +1004,8 @@ class Translations$studyActions$en {
 	/// en: 'No Linked Resources Found'
 	String get noLinkedResources => 'No Linked Resources Found';
 
-	/// en: 'Edit Linked Resources'
-	String get editLinkedResources => 'Edit Linked Resources';
+	/// en: 'Customize Linked Resources'
+	String get customizeLinkedResources => 'Customize Linked Resources';
 
 	/// en: 'Cross references use {translation}'
 	String crossReferencesUse({required Object translation}) => 'Cross references use ${translation}';
@@ -1193,8 +1205,8 @@ class Translations$commentaries$en {
 	/// en: 'Add & Remove Commentaries'
 	String get addRemove => 'Add & Remove Commentaries';
 
-	/// en: 'Edit Commentaries'
-	String get edit => 'Edit Commentaries';
+	/// en: 'Customize Commentaries'
+	String get customize => 'Customize Commentaries';
 }
 
 // Path: toolbarShortcuts
@@ -1904,14 +1916,14 @@ class Translations$toolbarSettings$en {
 	/// en: 'Pin the toolbar to the bottom of the page.'
 	String get pinToolbarDescription => 'Pin the toolbar to the bottom of the page.';
 
-	/// en: 'Expand to Annotation'
-	String get expandToAnnotation => 'Expand to Annotation';
+	/// en: 'Select Whole Highlight'
+	String get expandToAnnotation => 'Select Whole Highlight';
 
-	/// en: 'Long-pressing an annotated word selects its full highlighted range.'
-	String get expandTextDescription => 'Long-pressing an annotated word selects its full highlighted range.';
+	/// en: 'Long-pressing a highlighted word selects the entire highlight.'
+	String get expandTextDescription => 'Long-pressing a highlighted word selects the entire highlight.';
 
-	/// en: 'Tapping a verse selects its full annotated verse selection.'
-	String get expandVerseDescription => 'Tapping a verse selects its full annotated verse selection.';
+	/// en: 'Tapping a highlighted verse selects every verse in that highlight.'
+	String get expandVerseDescription => 'Tapping a highlighted verse selects every verse in that highlight.';
 
 	/// en: 'Range Selection'
 	String get rangeSelection => 'Range Selection';
@@ -2775,6 +2787,12 @@ class Translations$chapterUnavailable$en {
 
 	/// en: 'Showing your most-recent {testament} Bible, {fallbackTranslation}.'
 	String subtitle({required Object testament, required Object fallbackTranslation}) => 'Showing your most-recent ${testament} Bible, ${fallbackTranslation}.';
+
+	/// en: '{selectedTranslation} doesn't include {book}.'
+	String bookTitle({required Object selectedTranslation, required Object book}) => '${selectedTranslation} doesn\'t include ${book}.';
+
+	/// en: 'Showing your most-recent Study Bible, {fallbackTranslation}.'
+	String bookSubtitle({required Object fallbackTranslation}) => 'Showing your most-recent Study Bible, ${fallbackTranslation}.';
 }
 
 // Path: verseNumbering
@@ -5915,6 +5933,7 @@ extension on Translations {
 			'languages.french' => 'French',
 			'languages.spanish' => 'Spanish',
 			'languages.german' => 'German',
+			'languages.indonesian' => 'Indonesian',
 			'languages.romanian' => 'Romanian',
 			'languages.tagalog' => 'Tagalog',
 			'highlightStyles.red' => 'Red',
@@ -6116,6 +6135,7 @@ extension on Translations {
 			'copySheet.includeReference' => 'Include Reference?',
 			'copySheet.includeTranslation' => 'Include Translation?',
 			'regionTypes.chapter' => 'this chapter',
+			'regionTypes.passage' => 'this passage',
 			'regionTypes.verses' => 'these verses',
 			'regionTypes.visibleVerses' => 'visible verses',
 			'regionTypes.text' => 'this text',
@@ -6131,9 +6151,11 @@ extension on Translations {
 			'mainActions.settings' => 'Settings',
 			'mainActions.more' => 'More',
 			'mainActions.audioDescription' => 'Listen to the current chapter with an audio-enabled Bible.',
+			'mainActions.audioPassageDescription' => 'Listen to the current passage with an audio-enabled Bible.',
 			'mainActions.bookmarkDescription' => 'Bookmark this chapter to easily access it from the search page.',
 			'mainActions.manageBookmarkDescription' => 'Manage this bookmark.',
 			'mainActions.studyDescription' => 'View study tools for this chapter.',
+			'mainActions.studyPassageDescription' => 'View study tools for this passage.',
 			'mainActions.verseOfTheDayDescription' => 'View the verse of the day.',
 			'mainActions.studyPanelDescription' => 'Pin a panel beside the text that follows along and shows study tools for whatever you\'re reading.',
 			'mainActions.searchDescription' => 'Search for words across the Bible.',
@@ -6170,7 +6192,7 @@ extension on Translations {
 			'studyActions.linkedResourcesDescription' => ({required Object region}) => 'View people, themes, maps, and dictionary entries linked to ${region}.',
 			'studyActions.noCrossReferences' => 'No Cross References Found',
 			'studyActions.noLinkedResources' => 'No Linked Resources Found',
-			'studyActions.editLinkedResources' => 'Edit Linked Resources',
+			'studyActions.customizeLinkedResources' => 'Customize Linked Resources',
 			'studyActions.crossReferencesUse' => ({required Object translation}) => 'Cross references use ${translation}',
 			'studyActions.onlineCrossReferencesExplanation' => 'Because your selected translation is only available online, cross references are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app.',
 			'selectionActions.annotate' => 'Annotate',
@@ -6222,7 +6244,7 @@ extension on Translations {
 			'bookmarks.deleteNamedConfirmation' => ({required Object name}) => 'Are you sure you want to delete "${name}"?',
 			'bookmarkPage.title' => 'Your Bookmarks',
 			'commentaries.addRemove' => 'Add & Remove Commentaries',
-			'commentaries.edit' => 'Edit Commentaries',
+			'commentaries.customize' => 'Customize Commentaries',
 			'toolbarShortcuts.switchBible' => 'Switch Bible',
 			'toolbarShortcuts.lexicon' => 'Lexicon',
 			'toolbarShortcuts.themeAndLayout' => 'Theme & Layout',
@@ -6415,12 +6437,12 @@ extension on Translations {
 			'highlightStyleUi.updateWithAnnotations' => ({required Object name, required Object annotations}) => '"${name}" has ${annotations}. Would you like to update them to use the new style, or leave them as-is?',
 			'highlightStyleUi.leaveAsIs' => 'Leave As-Is',
 			'highlightStyleUi.label' => 'Label',
+			_ => null,
+		} ?? switch (path) {
 			'toolbarSettings.mainToolbar' => 'Main Toolbar',
 			'toolbarSettings.verseSelection' => 'Verse Selection',
 			'toolbarSettings.textSelection' => 'Text Selection',
 			'toolbarSettings.shownForMain' => 'Shown when nothing is selected.',
-			_ => null,
-		} ?? switch (path) {
 			'toolbarSettings.shownForVerses' => 'Shown when a verse is selected.',
 			'toolbarSettings.shownForText' => 'Shown when long-pressing text within verses.',
 			'toolbarSettings.gestures' => 'Gestures',
@@ -6432,9 +6454,9 @@ extension on Translations {
 			'toolbarSettings.hideToolbarDescription' => 'Hide the toolbar while scrolling down for an immersive view of the Bible.',
 			'toolbarSettings.pinToolbar' => 'Pin',
 			'toolbarSettings.pinToolbarDescription' => 'Pin the toolbar to the bottom of the page.',
-			'toolbarSettings.expandToAnnotation' => 'Expand to Annotation',
-			'toolbarSettings.expandTextDescription' => 'Long-pressing an annotated word selects its full highlighted range.',
-			'toolbarSettings.expandVerseDescription' => 'Tapping a verse selects its full annotated verse selection.',
+			'toolbarSettings.expandToAnnotation' => 'Select Whole Highlight',
+			'toolbarSettings.expandTextDescription' => 'Long-pressing a highlighted word selects the entire highlight.',
+			'toolbarSettings.expandVerseDescription' => 'Tapping a highlighted verse selects every verse in that highlight.',
 			'toolbarSettings.rangeSelection' => 'Range Selection',
 			'toolbarSettings.rangeSelectionDescription' => 'Tapping a second verse selects all verses between it and the first.',
 			'toolbarSettings.mainShortcut' => 'Main Toolbar Shortcut',
@@ -6706,6 +6728,8 @@ extension on Translations {
 			'interlinearUi.usingTranslation' => ({required Object translation}) => 'Using ${translation} for interlinear',
 			'chapterUnavailable.title' => ({required Object selectedTranslation, required Object testament}) => '${selectedTranslation} doesn\'t include the ${testament}.',
 			'chapterUnavailable.subtitle' => ({required Object testament, required Object fallbackTranslation}) => 'Showing your most-recent ${testament} Bible, ${fallbackTranslation}.',
+			'chapterUnavailable.bookTitle' => ({required Object selectedTranslation, required Object book}) => '${selectedTranslation} doesn\'t include ${book}.',
+			'chapterUnavailable.bookSubtitle' => ({required Object fallbackTranslation}) => 'Showing your most-recent Study Bible, ${fallbackTranslation}.',
 			'verseNumbering.referenceLabel' => ({required Object translation, required Object reference}) => '${translation} ${reference}',
 			'verseNumbering.explanation' => ({required Object translation, required Object reference, required Object originalReference}) => 'The ${translation} numbers its chapters and verses differently from most English translations.\n\nThe text shown here at ${reference} comes from ${originalReference} in the ${translation}, remapped so it lines up with the other translations.',
 			'compare.unavailable' => ({required Object translation}) => '${translation} doesn\'t include this selection.',
@@ -6927,14 +6951,14 @@ extension on Translations {
 			'morphology.types.negativeAdverb.examples' => 'not|never',
 			'morphology.types.adjective.name' => 'Adjective',
 			'morphology.types.adjective.description' => 'A word that describes a noun.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.adjective.examples' => 'great|holy|wise',
 			'morphology.types.noun.name' => 'Noun',
 			'morphology.types.noun.description' => 'A person, place, thing, or idea.',
 			'morphology.types.noun.examples' => 'city|water|love',
 			'morphology.types.properNoun.name' => 'Proper noun',
 			'morphology.types.properNoun.description' => 'A specific name of a person, place, or thing.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.properNoun.examples' => 'David|Jerusalem|Israel',
 			'morphology.types.number.name' => 'Number',
 			'morphology.types.number.description' => 'A cardinal number.',

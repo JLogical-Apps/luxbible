@@ -66,38 +66,74 @@ Future<List<ScatterImage>> getScatterImages(
   required int fps,
 }) async {
   final offsets = getClipStarts(clips);
-  final groups = await clips
+  final scatters = clips
       .expandIndexed(
         (index, clip) => clip.scatters.map((scatter) {
           int getFrame(ClipTime time) => offsets[index] + getClipFrame(time, clip, transcripts[index], fps: fps);
-          return getScatterGroup(
-            getScatterFiles(video, scatter.pattern),
+          final files = getScatterFiles(video, scatter.pattern);
+          final starts = getScatterStarts(
+            files,
             start: getFrame(scatter.start),
             by: getFrame(scatter.by),
-            end: getFrame(scatter.end),
+            at: scatter.at.map(getFrame).toList(),
             fps: fps,
-            sound: scatter.sound,
+          );
+          return (
+            pile: scatter.pile,
+            end: getFrame(scatter.end),
+            images: files.mapIndexed((i, file) => (file: file, start: starts[i], sound: scatter.sound)).toList(),
           );
         }),
+      )
+      .toList();
+  // A scatter without a pile is a pile of its own.
+  final piles = scatters.indexed.groupListsBy<Object>((entry) => entry.$2.pile ?? entry.$1).values;
+  final groups = await piles
+      .map(
+        (pile) => getScatterGroup(
+          pile.expand((entry) => entry.$2.images).toList(),
+          end: pile.map((entry) => entry.$2.end).max,
+        ),
       )
       .wait;
   return groups.flattened.where((image) => image.outputStart < image.outputEnd).toList();
 }
 
-Future<List<ScatterImage>> getScatterGroup(
+// The first image appears at [start] and the last at [by], easing up to speed, unless [at] gives each its own moment.
+List<int> getScatterStarts(
   List<File> files, {
   required int start,
   required int by,
-  required int end,
+  required List<int> at,
   required int fps,
-  Sound? sound,
-}) async {
-  final sizes = await files.map(getImageSize).wait;
+}) {
+  if (at.isNotEmpty) {
+    if (at.length != files.length) {
+      throw ArgumentError(
+        'Scatter.at gives ${at.length} moments for ${files.length} images: '
+        '${files.map((file) => p.basename(file.path)).join(', ')}',
+      );
+    }
+    return at;
+  }
   final spread = by - start;
   final ramp = min(spread, scatterRampSeconds * fps);
+  return files.mapIndexed((i, _) {
+    final fraction = files.length == 1 ? 0 : i / (files.length - 1);
+    return start +
+        Iterable<int>.generate(max(0, spread) + 1)
+            .firstWhere((frame) => getRampedFraction(frame, total: spread, ramp: ramp) >= fraction - 1e-9);
+  }).toList();
+}
 
-  final images = files.mapIndexed((i, file) {
-    final name = p.basename(file.path);
+Future<List<ScatterImage>> getScatterGroup(
+  List<({File file, int start, Sound? sound})> pile, {
+  required int end,
+}) async {
+  final sizes = await pile.map((image) => getImageSize(image.file)).wait;
+
+  final images = pile.mapIndexed((i, image) {
+    final name = p.basename(image.file.path);
     final (sourceWidth, sourceHeight) = sizes[i];
     final width = min(sourceWidth * scatterMaxScale, scatterMaxWidth * canvasWidth);
     final height = width * sourceHeight / sourceWidth;
@@ -113,22 +149,20 @@ Future<List<ScatterImage>> getScatterGroup(
   }).toList();
   final centers = getScatterCenters(images.map((image) => (name: image.name, bounds: image.bounds)).toList());
 
-  return files.mapIndexed((i, file) {
-    final fraction = files.length == 1 ? 0 : i / (files.length - 1);
-    return ScatterImage(
-      file: file,
-      outputStart:
-          start +
-          Iterable<int>.generate(max(0, spread) + 1)
-              .firstWhere((frame) => getRampedFraction(frame, total: spread, ramp: ramp) >= fraction - 1e-9),
-      outputEnd: end,
-      width: images[i].width / canvasWidth,
-      x: centers[i].x / canvasWidth,
-      y: centers[i].y / canvasHeight,
-      rotation: images[i].rotation,
-      sound: sound,
-    );
-  }).toList();
+  return pile
+      .mapIndexed(
+        (i, image) => ScatterImage(
+          file: image.file,
+          outputStart: image.start,
+          outputEnd: end,
+          width: images[i].width / canvasWidth,
+          x: centers[i].x / canvasWidth,
+          y: centers[i].y / canvasHeight,
+          rotation: images[i].rotation,
+          sound: image.sound,
+        ),
+      )
+      .toList();
 }
 
 // In order, each image takes whichever of its seeded spots covers the most cells of the band still showing, so the pile

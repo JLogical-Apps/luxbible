@@ -37,6 +37,7 @@ class HighlightStyleSheet {
     void clearDuplicateError() => port.clearError(path: 'type');
 
     return context.showStyledSheet(
+      path: '/highlight-style',
       (context, _) => StyledPortSheet(
         title: (initialStyle == null ? t.highlightStyleUi.create : t.highlightStyleUi.edit).toText(),
         bodyPadding: .all(16),

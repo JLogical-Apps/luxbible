@@ -5,7 +5,7 @@ import 'package:xml/xml.dart';
 abstract final class XmlBibleParser {
   static Chapter parse(
     Iterable<XmlElement> elements, {
-    required int? Function(XmlElement) getVerseNumber,
+    required ({int verseNum, int? endVerseNum})? Function(XmlElement) getVerseNumbers,
     required bool Function(XmlElement) shouldIgnore,
     required Markdown? Function(XmlElement) buildFootnote,
     required bool Function(XmlElement) isRedLetters,
@@ -17,6 +17,7 @@ abstract final class XmlBibleParser {
     required String Function(String) buildText,
   }) {
     int? lastVerseNum;
+    int? lastEndVerseNum;
 
     XmlElement sectionWithoutNotes(XmlElement element) => XmlElement(
       element.name,
@@ -41,6 +42,7 @@ abstract final class XmlBibleParser {
         ? [
             Verse(
               verseNum: lastVerseNum!,
+              endVerseNum: lastEndVerseNum,
               words: [Word(data: interlinearData, redLetters: redLetters, italic: italic)],
             ),
           ]
@@ -50,6 +52,7 @@ abstract final class XmlBibleParser {
                   XmlText(:final value) when lastVerseNum != null => [
                     Verse(
                       verseNum: lastVerseNum!,
+                      endVerseNum: lastEndVerseNum,
                       words: [
                         Word(
                           text: buildText(uppercase ? value.toUpperCase() : value),
@@ -62,14 +65,16 @@ abstract final class XmlBibleParser {
                   ],
                   XmlElement child => () {
                     if (shouldIgnore(child)) return <Verse>[];
-                    if (getVerseNumber(child) case final verseNum?) {
+                    if (getVerseNumbers(child) case (:final verseNum, :final endVerseNum)) {
                       lastVerseNum = verseNum;
+                      lastEndVerseNum = endVerseNum == verseNum ? null : endVerseNum;
                       return <Verse>[];
                     }
                     if (buildFootnote(child) case final footnote?) {
                       return [
                         Verse(
                           verseNum: lastVerseNum ?? 0,
+                          endVerseNum: lastEndVerseNum,
                           words: [],
                           footnotes: [Footnote(offset: 0, text: footnote)],
                         ),
@@ -154,6 +159,7 @@ abstract final class XmlBibleParser {
                 if (rowIndex != 0)
                   Verse(
                     verseNum: lastVerseNum ?? 0,
+                    endVerseNum: lastEndVerseNum,
                     words: [Word(text: '\n')],
                   ),
                 ...cells.expandIndexed(
@@ -161,6 +167,7 @@ abstract final class XmlBibleParser {
                     if (cellIndex != 0)
                       Verse(
                         verseNum: lastVerseNum ?? 0,
+                        endVerseNum: lastEndVerseNum,
                         words: [Word(text: '   ')],
                       ),
                     ...parseVerses(cell),
@@ -205,6 +212,11 @@ abstract final class XmlBibleParser {
     });
 
     return Chapter(paragraphs: paragraphs);
+  }
+
+  static ({int verseNum, int? endVerseNum}) parseVerseNumbers(String verseNumbers) {
+    final [verseNum, ...endVerseNums] = verseNumbers.split('-').map(int.parse).toList();
+    return (verseNum: verseNum, endVerseNum: endVerseNums.lastOrNull);
   }
 }
 

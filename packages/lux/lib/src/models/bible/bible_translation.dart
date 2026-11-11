@@ -2,6 +2,7 @@ import 'package:lux/i18n.dart';
 import 'package:lux/src/models/bible/book_type.dart';
 import 'package:lux/src/models/reference/chapter_reference.dart';
 import 'package:lux/src/models/testament.dart';
+import 'package:lux/src/utils/extensions/collection_extensions.dart';
 import 'package:lux/src/utils/serialization_utils.dart';
 
 enum BibleTranslation {
@@ -40,6 +41,9 @@ enum BibleTranslation {
 
   // Hebrew
   oshb,
+
+  // Indonesian
+  tsi,
 
   // Romanian
   ntr,
@@ -81,6 +85,7 @@ enum BibleTranslation {
     statresgnt => 'SR',
     tr => 'TR',
     oshb => 'OSHB',
+    tsi => 'TSI',
     ntr => 'NTR',
     nrt => 'NRT',
     synodal => 'SYNO',
@@ -113,6 +118,7 @@ enum BibleTranslation {
     statresgnt => 'Statistical Restoration Greek New Testament',
     tr => 'Textus Receptus (Stephens 1550)',
     oshb => 'Open Scriptures Hebrew Bible',
+    tsi => 'Terjemahan Sederhana Indonesia',
     ntr => 'Noua Traducere Românească 2021',
     nrt => 'Новый русский перевод 2010',
     synodal => 'Синодальный перевод 1876',
@@ -141,6 +147,7 @@ enum BibleTranslation {
     statresgnt => 'Center for New Testament Restoration',
     tr => 'Robert Estienne',
     oshb => 'Open Scriptures',
+    tsi => 'Yayasan Alkitab Bahasa Kita',
     synodal => 'Святейший Синод',
     rvg => 'Humberto Gómez Caballero',
     tglulb => 'Door43 World Missions Community',
@@ -173,6 +180,7 @@ enum BibleTranslation {
     niv11 => .youVersion(111),
     hfa => .youVersion(73),
     ntr => .youVersion(126),
+    tsi => .youVersion(320),
     nrt => .youVersion(143),
     nlt || nkjv => .apiBible(),
   };
@@ -184,6 +192,7 @@ enum BibleTranslation {
     hfa || elb1905 || lut1912 => .german,
     lxx || tr || byz || statresgnt => .greek,
     oshb => .hebrew,
+    tsi => .indonesian,
     ntr => .romanian,
     nrt || synodal => .russian,
     rvg => .spanish,
@@ -205,6 +214,7 @@ enum BibleTranslation {
     nrt =>
       'Святая Библия, Новый русский перевод™ НРП™\n© Biblica, Inc., 2006, 2010, 2012, 2014, 2023\nИспользуется с разрешения. Все права защищены по всему миру.\nThe Holy Bible, New Russian Translation™ NRT™\nCopyright © 2006, 2010, 2012, 2014, 2023 by Biblica, Inc.\nUsed with permission. All rights reserved worldwide.',
     rvg => 'Copyright © 2004, 2010, 2023 Dr. Humberto Gómez Caballero',
+    tsi => '©2014-2023 oleh Yayasan Alkitab Bahasa Kita dan Pioneer Bible Translators International',
     htb =>
       'Het Boek™\nCopyright © 1979, 1988, 1998, 2007 by Biblica, Inc.\nUsed by permission. All rights reserved worldwide.',
     hfa =>
@@ -237,7 +247,12 @@ enum BibleTranslation {
 
   bool get isRtl => this == oshb;
 
-  bool containsBook(BookType book) => testament == null || book.testament == testament;
+  List<BookType> get missingBooks => switch (this) {
+    tsi => [.chronicles1, .chronicles2, .jeremiah, .ezekiel],
+    _ => [],
+  };
+
+  bool containsBook(BookType book) => (testament == null || book.testament == testament) && !missingBooks.has(book);
 
   bool get isLocal => source == .local;
   bool get isOnline => !isLocal;
@@ -264,7 +279,7 @@ enum BibleTranslation {
   };
 
   bool get hasNativeHeadings => switch (this) {
-    bsb || msb || nasb95 || amp || niv11 || csb || nlt || nkjv || nrt || martin1744 || hfa || ntr => true,
+    bsb || msb || nasb95 || amp || niv11 || csb || nlt || nkjv || nrt || martin1744 || hfa || ntr || tsi => true,
     _ => false,
   };
 
@@ -274,7 +289,7 @@ enum BibleTranslation {
   };
 
   bool get hasFootnotes => switch (this) {
-    bsb || msb || kjv || nasb95 || amp || niv11 || csb || nlt || nkjv || asv || web || hfa || ntr => true,
+    bsb || msb || kjv || nasb95 || amp || niv11 || csb || nlt || nkjv || asv || web || hfa || ntr || tsi => true,
     _ => false,
   };
 
@@ -321,6 +336,7 @@ enum BibleLanguage {
   german,
   greek,
   hebrew,
+  indonesian,
   romanian,
   russian,
   spanish,
@@ -333,6 +349,7 @@ enum BibleLanguage {
     german => t.languages.german,
     greek => t.languages.greek,
     hebrew => t.languages.hebrew,
+    indonesian => t.languages.indonesian,
     romanian => t.languages.romanian,
     russian => t.languages.russian,
     spanish => t.languages.spanish,

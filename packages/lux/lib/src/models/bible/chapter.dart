@@ -29,12 +29,14 @@ sealed class Chapter with _$Chapter {
       .mapValues(
         (verseNum, verses) => Verse(
           verseNum: verseNum,
+          endVerseNum: verses.map((verse) => verse.endVerseNum).nonNulls.firstOrNull,
           words: verses.map((word) => word.words).intersperse([Word(text: ' ', data: null)]).flattenedToList,
           originalVerse: verses.map((verse) => verse.originalVerse).nonNulls.firstOrNull,
         ),
       );
 
-  Verse? getVerseByReference(Reference reference) => verses[reference.verseNum];
+  Verse? getVerseByReference(Reference reference) =>
+      verses[reference.verseNum] ?? verses.values.firstWhereOrNull((verse) => verse.hasVerseNum(reference.verseNum));
 
   BibleTextSelection getWordsSelection(BibleTextSelection selection) {
     final startVerseText = getVerseByReference(selection.start.toReference())!.text;

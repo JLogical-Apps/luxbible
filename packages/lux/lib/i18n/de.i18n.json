@@ -8,6 +8,7 @@
     "french": "Französisch",
     "spanish": "Spanisch",
     "german": "Deutsch",
+    "indonesian": "Indonesisch",
     "romanian": "Rumänisch",
     "tagalog": "Tagalog"
   },
@@ -225,6 +226,7 @@
   },
   "regionTypes": {
     "chapter": "dieses Kapitel",
+    "passage": "diesen Abschnitt",
     "verses": "diese Verse",
     "visibleVerses": "die sichtbaren Verse",
     "text": "diesen Text"
@@ -242,9 +244,11 @@
     "settings": "Einstellungen",
     "more": "Mehr",
     "audioDescription": "Hör dir das aktuelle Kapitel mit einer Bibel mit Audio an.",
+    "audioPassageDescription": "Hör dir den aktuellen Abschnitt mit einer Bibel mit Audio an.",
     "bookmarkDescription": "Setze ein Lesezeichen für dieses Kapitel, um es auf der Suchseite schnell wiederzufinden.",
     "manageBookmarkDescription": "Dieses Lesezeichen verwalten.",
     "studyDescription": "Studienwerkzeuge für dieses Kapitel anzeigen.",
+    "studyPassageDescription": "Studienwerkzeuge für diesen Abschnitt anzeigen.",
     "verseOfTheDayDescription": "Den Vers des Tages anzeigen.",
     "studyPanelDescription": "Hefte ein Panel neben den Text, das mitläuft und Studienwerkzeuge für das zeigt, was du gerade liest.",
     "searchDescription": "Suche nach Wörtern in der ganzen Bibel.",
@@ -285,7 +289,7 @@
     "linkedResourcesDescription": "Zeige verknüpfte Personen, Themen, Karten und Wörterbucheinträge für {region}.",
     "noCrossReferences": "Keine Querverweise gefunden",
     "noLinkedResources": "Keine verknüpften Ressourcen gefunden",
-    "editLinkedResources": "Verknüpfte Ressourcen bearbeiten",
+    "customizeLinkedResources": "Verknüpfte Ressourcen anpassen",
     "crossReferencesUse": "Querverweise aus {translation}",
     "onlineCrossReferencesExplanation": "Da deine gewählte Übersetzung nur online verfügbar ist, werden Querverweise mit der zuletzt verwendeten Studienbibel angezeigt, um Leistung und Kosten zu sparen. Überall sonst in der App wird deine gewählte Übersetzung verwendet."
   },
@@ -347,7 +351,7 @@
   },
   "commentaries": {
     "addRemove": "Kommentare hinzufügen & entfernen",
-    "edit": "Kommentare bearbeiten"
+    "customize": "Kommentare anpassen"
   },
   "toolbarShortcuts": {
     "switchBible": "Bibel wechseln",
@@ -579,9 +583,9 @@
     "hideToolbarDescription": "Blende die Symbolleiste beim Herunterscrollen aus, um ungestört in der Bibel zu lesen.",
     "pinToolbar": "Anheften",
     "pinToolbarDescription": "Hefte die Symbolleiste unten auf der Seite an.",
-    "expandToAnnotation": "Auf Annotation erweitern",
-    "expandTextDescription": "Langes Drücken auf ein annotiertes Wort wählt den ganzen markierten Bereich aus.",
-    "expandVerseDescription": "Tippen auf einen Vers wählt die ganze annotierte Versauswahl aus.",
+    "expandToAnnotation": "Ganze Markierung auswählen",
+    "expandTextDescription": "Langes Drücken auf ein markiertes Wort wählt die ganze Markierung aus.",
+    "expandVerseDescription": "Tippen auf einen markierten Vers wählt alle Verse dieser Markierung aus.",
     "rangeSelection": "Bereichsauswahl",
     "rangeSelectionDescription": "Tippen auf einen zweiten Vers wählt alle Verse zwischen ihm und dem ersten aus.",
     "mainShortcut": "Kurzbefehl der Hauptleiste",
@@ -912,7 +916,9 @@
   },
   "chapterUnavailable": {
     "title": "{selectedTranslation} enthält kein {testament}.",
-    "subtitle": "Stattdessen wird deine zuletzt verwendete Bibel für diesen Teil ({testament}) angezeigt: {fallbackTranslation}."
+    "subtitle": "Stattdessen wird deine zuletzt verwendete Bibel für diesen Teil ({testament}) angezeigt: {fallbackTranslation}.",
+    "bookTitle": "{selectedTranslation} enthält das Buch {book} nicht.",
+    "bookSubtitle": "Stattdessen wird deine zuletzt verwendete Studienbibel angezeigt: {fallbackTranslation}."
   },
   "verseNumbering": {
     "referenceLabel": "{translation} {reference}",

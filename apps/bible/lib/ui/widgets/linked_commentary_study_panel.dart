@@ -14,7 +14,7 @@ import 'package:super_sliver_list/super_sliver_list.dart';
 
 class LinkedCommentaryStudyPanel extends HookConsumerWidget {
   final CommentaryType type;
-  final ChapterReference chapterReference;
+  final ChapterPassage passage;
   final Reference? passageTopReference;
   final Function(Reference) onScrollMainToReference;
   final Function(VerseSelection) onNavigateToVerseSelection;
@@ -26,7 +26,7 @@ class LinkedCommentaryStudyPanel extends HookConsumerWidget {
   const LinkedCommentaryStudyPanel({
     super.key,
     required this.type,
-    required this.chapterReference,
+    required this.passage,
     required this.passageTopReference,
     required this.onScrollMainToReference,
     required this.onNavigateToVerseSelection,
@@ -38,11 +38,14 @@ class LinkedCommentaryStudyPanel extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final chapterReference = passage.chapter;
     final commentaryValue = ref.watch(commentaryProvider(type: type, book: chapterReference.book));
     final commentary = commentaryValue.value;
 
-    final blocks = commentary?.blocksByChapter[chapterReference.chapterNum] ?? [];
-    final contentByBookSection = {if (chapterReference.chapterNum == 1) ...?commentary?.contentByBookSection};
+    final blocks = commentary?.getBlocksFor(passage.verseSelection) ?? [];
+    final contentByBookSection = {
+      if (passage.verseSelection.start case Reference(chapterNum: 1, verseNum: 1)) ...?commentary?.contentByBookSection,
+    };
     final syncSelections = [
       ...contentByBookSection.keys.map((_) => null),
       ...blocks.map(
@@ -81,6 +84,7 @@ class LinkedCommentaryStudyPanel extends HookConsumerWidget {
           content: entry.value,
           onNavigateToVerseSelection: onNavigateToVerseSelection,
           trailing: CommentaryHeaderNavigation(index: index, itemCount: itemCount, onNavigateToIndex: scrollToIndex),
+          headerKey: controller.headerKeyByIndex[index],
         ),
       ),
       ...blocks.mapIndexed(
@@ -97,12 +101,13 @@ class LinkedCommentaryStudyPanel extends HookConsumerWidget {
             itemCount: itemCount,
             onNavigateToIndex: scrollToIndex,
           ),
+          headerKey: controller.headerKeyByIndex[index + contentByBookSection.length],
         ),
       ),
     ];
 
     return LinkedStudyPanel(
-      chapterReference: chapterReference,
+      passage: passage,
       passageTopReference: passageTopReference,
       scrollController: controller.scrollController,
       onScrollMainToReference: (reference) {
@@ -147,21 +152,24 @@ class CommentaryPanelController {
   final ScrollController scrollController;
   final ListController listController;
   final Map<int, GlobalKey> keyByIndex;
+  final Map<int, GlobalKey> headerKeyByIndex;
 
   CommentaryPanelController({required this.chapterReference, required this.syncSelections})
     : scrollController = ScrollController(),
       listController = ListController(),
-      keyByIndex = Map.fromEntries(syncSelections.mapIndexed((index, _) => MapEntry(index, GlobalKey())));
+      keyByIndex = Map.fromEntries(syncSelections.mapIndexed((index, _) => MapEntry(index, GlobalKey()))),
+      headerKeyByIndex = Map.fromEntries(syncSelections.mapIndexed((index, _) => MapEntry(index, GlobalKey())));
 
   void dispose() {
     scrollController.dispose();
     listController.dispose();
   }
 
-  Reference? getTopVisibleReference(double viewportTop, double viewportBottom) => keyByIndex.entries
+  Reference? getTopVisibleReference(double viewportTop, double viewportBottom) => headerKeyByIndex.entries
       .where((entry) {
         final bounds = entry.value.globalBounds;
-        return bounds != null && bounds.bottom >= viewportTop && bounds.top <= viewportBottom;
+        // A pinned header rises above the viewport once the next section starts pushing it out.
+        return bounds != null && bounds.top >= viewportTop - 1 && bounds.top <= viewportBottom;
       })
       .map((entry) => getAnchorForIndex(entry.key))
       .nonNulls
@@ -192,7 +200,7 @@ class CommentaryPanelController {
         .where((entry) => entry.selection.references.first <= reference)
         .sortedBy((entry) => entry.selection.references.first);
 
-    return linkedSelections.firstWhereOrNull((entry) => entry.selection.hasReference(reference))?.index ??
+    return linkedSelections.lastWhereOrNull((entry) => entry.selection.hasReference(reference))?.index ??
         precedingSelections.lastOrNull?.index ??
         linkedSelections.firstOrNull?.index;
   }

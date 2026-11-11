@@ -13,6 +13,9 @@ import 'package:reels/src/render/zoom.dart';
 const mediaTop = 0.01;
 const mediaBottom = 0.56;
 
+// Each play lands on its tag at least this long before the next play or the cut, so the step reads as finished.
+const minTagHoldSeconds = 0.2;
+
 typedef MediaCue = ({int at, int? by, Play play});
 
 /// Filters that fit a media frame, with its [mask], inside [width] by [height].
@@ -43,7 +46,7 @@ String getBevelFilter(Bevel bevel, {required int width, required int height}) {
 }
 
 /// The overlay's `x` and `y` for media whose top sits [top] px down the frame unless its `y` centers it, sliding in as
-/// its [showing] starts.
+/// its [showing] starts and out as it ends.
 String getMediaPosition(MediaShowing? showing, {required int top}) {
   final media = showing?.media;
   final left = '(W*${media?.x ?? 0.5}-w/2)';
@@ -51,17 +54,24 @@ String getMediaPosition(MediaShowing? showing, {required int top}) {
     final y? => '(H*$y-h/2)',
     null => '$top',
   };
-  if (showing case MediaShowing(:final start, media: Media(enter: final slide?))) {
-    // Counted from 1, so the first frame shown has already moved in a little.
-    final remaining = '(1-${getEasedExpression(slide.easing, 'clip((n-$start+1)/${slide.frames},0,1)')})';
-    return switch (slide.from) {
-      .top => "x='$left':y='$upper-($upper+h)*$remaining'",
-      .bottom => "x='$left':y='$upper+(H-$upper)*$remaining'",
-      .left => "x='$left-($left+w)*$remaining':y='$upper'",
-      .right => "x='$left+(W-$left)*$remaining':y='$upper'",
-    };
-  }
-  return "x='$left':y='$upper'";
+  // Counted from 1, so the first frame shown has already moved in a little, and the last frame shown is fully out.
+  final slides = [
+    if (showing case MediaShowing(:final start, media: Media(enter: final slide?)))
+      (slide, '(1-${getEasedExpression(slide.easing, 'clip((n-$start+1)/${slide.frames},0,1)')})'),
+    if (showing case MediaShowing(:final end, media: Media(exit: final slide?)))
+      (slide, '(${getEasedExpression(slide.easing, 'clip((n-${end - slide.frames}+1)/${slide.frames},0,1)')})'),
+  ];
+  final offsets = slides.map(
+    (entry) => switch (entry) {
+      (Slide(edge: .top), final away) => (isHorizontal: false, term: '-($upper+h)*$away'),
+      (Slide(edge: .bottom), final away) => (isHorizontal: false, term: '+(H-$upper)*$away'),
+      (Slide(edge: .left), final away) => (isHorizontal: true, term: '-($left+w)*$away'),
+      (Slide(edge: .right), final away) => (isHorizontal: true, term: '+(W-$left)*$away'),
+    },
+  );
+  String getAxis(String base, bool isHorizontal) =>
+      [base, ...offsets.where((offset) => offset.isHorizontal == isHorizontal).map((offset) => offset.term)].join();
+  return "x='${getAxis(left, true)}':y='${getAxis(upper, false)}'";
 }
 
 /// Filters for the [showing]'s effect, each led by a comma, over media already stamped with its output time and fit
@@ -96,7 +106,12 @@ List<MediaSegment> getMediaSegments(
 
   final showings = clips.expandIndexed(
     (index, clip) => clip.media.map(
-      (media) => MediaShowing(media, clip: index, start: getFrame(index, media.start), end: getFrame(index, media.end)),
+      (media) => MediaShowing(
+        media,
+        clip: index,
+        start: getFrame(index, media.start),
+        end: getFrame(index, media.end) + (media.exit?.frames ?? 0),
+      ),
     ),
   );
 
@@ -148,6 +163,7 @@ List<MediaSegment> getMediaSegments(
         runStart: runStart,
         runEnd: runEnd,
         start: position,
+        fps: fps,
       );
       position = reached;
       return visible.expand((showing) => segments.map((s) => s.clipped(showing)).nonNulls);
@@ -163,7 +179,9 @@ List<MediaSegment> getMediaSegments(
   required int runStart,
   required int runEnd,
   required int start,
+  required int fps,
 }) {
+  final minHold = (minTagHoldSeconds * fps).round();
   MediaSegment hold(int start, int end, int frame) =>
       MediaSegment(name: file.name, file: file.normalized, outputStart: start, outputEnd: end, from: frame, to: frame);
 
@@ -182,7 +200,7 @@ List<MediaSegment> getMediaSegments(
     final nextAt = cues.elementAtOrNull(index + 1)?.at ?? runEnd;
     final end = max(cue.at, min(cue.by ?? runEnd, min(nextAt, runEnd)));
     final window = end - cue.at;
-    final fitted = window == 0 || to == from ? 1.0 : (to - from) / window;
+    final fitted = window == 0 || to == from ? 1.0 : (to - from) / max(1, window - minHold);
     final speed = play.speed ?? (play.fit ? fitted : max(1.0, fitted));
     // Float error must not leave a fitted play a frame short of its tag.
     final playFrames = min(window, ((to - from) / speed - 1e-6).ceil());

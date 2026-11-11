@@ -33,8 +33,8 @@ sealed class Paragraph with _$Paragraph {
 extension ParagraphListExtensions on List<Paragraph> {
   List<Reference> getReferences(ChapterReference chapterReference) => whereType<VersesParagraph>()
       .expand((paragraph) => paragraph.verses)
+      .expand((verse) => verse.getReferences(chapterReference))
       .distinct
-      .map((verse) => chapterReference.getReference(verse.verseNum))
       .toList();
 
   Verse? getVerseIntroducedBySectionAt(int index) {
@@ -46,7 +46,7 @@ extension ParagraphListExtensions on List<Paragraph> {
 
   int? getSectionIndexForVerse(int verseNum) => indexed
       .where((entry) => entry.$2 is SectionParagraph)
-      .firstWhereOrNull((entry) => getVerseIntroducedBySectionAt(entry.$1)?.verseNum == verseNum)
+      .firstWhereOrNull((entry) => getVerseIntroducedBySectionAt(entry.$1)?.hasVerseNum(verseNum) == true)
       ?.$1;
 
   SectionType? getSectionTypeForVerse(int verseNum) =>
@@ -54,8 +54,17 @@ extension ParagraphListExtensions on List<Paragraph> {
 
   bool verseHasSection(int verseNum) => getSectionIndexForVerse(verseNum) != null;
 
+  Verse? getVerseContaining(int verseNum) => whereType<VersesParagraph>()
+      .expand((paragraph) => paragraph.verses)
+      .firstWhereOrNull((verse) => verse.hasVerseNum(verseNum));
+
+  List<Reference> getBridgeReferences(Reference reference) =>
+      getVerseContaining(reference.verseNum)?.getReferences(reference.toChapterReference()) ?? [reference];
+
+  Reference getBridgeStartReference(Reference reference) => getBridgeReferences(reference).first;
+
   int? getIndexForVerse(int verseNum) => indexWhereOrNull(
-    (paragraph) => paragraph is VersesParagraph && paragraph.verses.any((verse) => verse.verseNum == verseNum),
+    (paragraph) => paragraph is VersesParagraph && paragraph.verses.any((verse) => verse.hasVerseNum(verseNum)),
   );
 }
 

@@ -25,7 +25,7 @@ class BiblePlanProgressCard extends HookConsumerWidget {
 
   final Function(VerseSelection) onNavigateToVerseSelection;
   final Function(int dayIndex, int passageIndex)? onPassagePressed;
-  final Function(int dayIndex, VerseSelection passage)? onPassageToggled;
+  final Function(int dayIndex, ChapterPassage passage)? onPassageToggled;
   final Function(int dayIndex)? onReviewDayToggled;
 
   const BiblePlanProgressCard({

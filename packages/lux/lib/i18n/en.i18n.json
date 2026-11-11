@@ -8,6 +8,7 @@
     "french": "French",
     "spanish": "Spanish",
     "german": "German",
+    "indonesian": "Indonesian",
     "romanian": "Romanian",
     "tagalog": "Tagalog"
   },
@@ -225,6 +226,7 @@
   },
   "regionTypes": {
     "chapter": "this chapter",
+    "passage": "this passage",
     "verses": "these verses",
     "visibleVerses": "visible verses",
     "text": "this text"
@@ -242,9 +244,11 @@
     "settings": "Settings",
     "more": "More",
     "audioDescription": "Listen to the current chapter with an audio-enabled Bible.",
+    "audioPassageDescription": "Listen to the current passage with an audio-enabled Bible.",
     "bookmarkDescription": "Bookmark this chapter to easily access it from the search page.",
     "manageBookmarkDescription": "Manage this bookmark.",
     "studyDescription": "View study tools for this chapter.",
+    "studyPassageDescription": "View study tools for this passage.",
     "verseOfTheDayDescription": "View the verse of the day.",
     "studyPanelDescription": "Pin a panel beside the text that follows along and shows study tools for whatever you're reading.",
     "searchDescription": "Search for words across the Bible.",
@@ -285,7 +289,7 @@
     "linkedResourcesDescription": "View people, themes, maps, and dictionary entries linked to {region}.",
     "noCrossReferences": "No Cross References Found",
     "noLinkedResources": "No Linked Resources Found",
-    "editLinkedResources": "Edit Linked Resources",
+    "customizeLinkedResources": "Customize Linked Resources",
     "crossReferencesUse": "Cross references use {translation}",
     "onlineCrossReferencesExplanation": "Because your selected translation is only available online, cross references are shown using the latest Study Bible you used to save on performance and costs. Your selected translation is used everywhere else in the app."
   },
@@ -347,7 +351,7 @@
   },
   "commentaries": {
     "addRemove": "Add & Remove Commentaries",
-    "edit": "Edit Commentaries"
+    "customize": "Customize Commentaries"
   },
   "toolbarShortcuts": {
     "switchBible": "Switch Bible",
@@ -579,9 +583,9 @@
     "hideToolbarDescription": "Hide the toolbar while scrolling down for an immersive view of the Bible.",
     "pinToolbar": "Pin",
     "pinToolbarDescription": "Pin the toolbar to the bottom of the page.",
-    "expandToAnnotation": "Expand to Annotation",
-    "expandTextDescription": "Long-pressing an annotated word selects its full highlighted range.",
-    "expandVerseDescription": "Tapping a verse selects its full annotated verse selection.",
+    "expandToAnnotation": "Select Whole Highlight",
+    "expandTextDescription": "Long-pressing a highlighted word selects the entire highlight.",
+    "expandVerseDescription": "Tapping a highlighted verse selects every verse in that highlight.",
     "rangeSelection": "Range Selection",
     "rangeSelectionDescription": "Tapping a second verse selects all verses between it and the first.",
     "mainShortcut": "Main Toolbar Shortcut",
@@ -912,7 +916,9 @@
   },
   "chapterUnavailable": {
     "title": "{selectedTranslation} doesn't include the {testament}.",
-    "subtitle": "Showing your most-recent {testament} Bible, {fallbackTranslation}."
+    "subtitle": "Showing your most-recent {testament} Bible, {fallbackTranslation}.",
+    "bookTitle": "{selectedTranslation} doesn't include {book}.",
+    "bookSubtitle": "Showing your most-recent Study Bible, {fallbackTranslation}."
   },
   "verseNumbering": {
     "referenceLabel": "{translation} {reference}",

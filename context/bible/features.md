@@ -78,6 +78,9 @@ Lux counts distinct active days locally. After three active days, it makes a nat
 - HTB: Het Boek 2007 in Dutch
 - HFA: Hoffnung für alle in German
 - NTR: Noua Traducere Românească 2021 in Romanian
+- TSI: Terjemahan Sederhana Indonesia in Indonesian, which doesn't include 1 and 2 Chronicles, Jeremiah, or Ezekiel
+
+When the selected Bible doesn't include the current book, the reader shows the user's most-recent Study Bible for it with a message naming the missing book.
 
 Online chapters are cached on the device after they are loaded. A cached chapter remains available without a
 connection for fourteen days, after which Lux requires a connection to load it again.
@@ -134,6 +137,8 @@ Users can pinch Bible text with two fingers to change its font size and spacing.
 Theme & Layout pins a preview of John 9:35 in BSB below its app bar. It always uses BSB so its section heading, red letters, and footnote marker can show whichever translation is selected, and it updates as the text and layout settings change. Instead of the user's own annotations, it shows a sample annotation with a note on the phrase "He found the man" so Annotations in Margin has a visible effect. The preview can't be tapped, so the sample annotation can't be opened or edited. The preview is hidden when the screen is 500 points tall or less, such as a phone in landscape, so it can't crowd out the settings.
 
 KJV, ASV, and WEB can use section headings synthetically inserted from BSB. Footnote markers open their content without leaving the passage.
+
+Some translations, such as HFA, combine neighboring verses into one verse bridge when the original sentence can't be split naturally. Lux shows the bridge once with a range label such as 3-4. A highlight, annotation marker, passage preview, or navigation target on any verse in the bridge applies to the whole bridge, so Romans 1:4 in HFA opens and highlights its 3-4 bridge. Tapping a bridge selects every verse in it, so copying, sharing, or annotating it uses the full range, and tapping it again deselects all of it.
 
 ### Immersive Reading
 
@@ -294,9 +299,12 @@ preserve the direction or resource currently selected in the sheet. When a panel
 clears the selection and scrolls its verses into view after the panel changes the reading area. The same pin actions
 are available while reading a Bible plan.
 
-Opening a tool from the Study sheet replaces it, and breadcrumbs at the top, such as Study › Commentary, lead back to
-it. The breadcrumbs continue into sheets opened from a tool, such as a word in Interlinear or an article in Linked
-Resources or Commentary. Tools opened directly from a toolbar shortcut start their own breadcrumbs.
+Opening a tool from the Study sheet slides it in within the same sheet, which resizes to fit, and breadcrumbs at the
+top, such as Study › Commentary, lead back to it. The breadcrumbs continue into sheets opened from a tool, such as a
+word in Interlinear or an article in Linked Resources or Commentary. Tools opened directly from a toolbar shortcut start
+their own breadcrumbs. The back button, Android's back gesture, and on iOS a swipe from the sheet's left edge go back one
+step; tapping an earlier breadcrumb goes straight back to it. Earlier sheets keep their scroll position and tab, and
+tapping outside or dragging the sheet down closes all of them at once.
 
 ## Compare
 
@@ -304,7 +312,7 @@ Compare displays the selected chapter, verses, or passage in every configured Co
 on the Compare settings page.
 
 - Local and online Bibles are supported.
-- Testament-limited Bibles show an unavailable message for passages they do not contain.
+- Testament-limited Bibles and Bibles missing individual books show an unavailable message for passages they do not contain.
 - A Compare study panel pins one selected parallel Bible beside the reading text and links their chapter scrolling.
 
 ## Interlinear
@@ -357,7 +365,10 @@ Users can:
 - Reorder active commentaries
 - Swipe between commentaries in the temporary sheet
 - Pin a specific commentary as a study panel
-- Keep a Commentary study panel aligned with the top visible verse while scrolling either surface
+- Keep a Commentary study panel aligned with the top visible verse while scrolling either surface. Scrolling the
+  commentary moves the Bible as soon as the next section starts pushing the pinned header up. Scrolling the Bible
+  moves the commentary to the last section covering the top verse, so a passage note gives way to the verse notes
+  inside it, while verse 1 still returns to the top of the commentary
 - Move directly between adjacent Commentary headings from each sticky header, in both the sheet and the study panel
 - Open Scripture links in commentary as passage previews
 - Select and copy commentary text, across paragraphs within a section
@@ -399,15 +410,15 @@ as a Scripture proof.
   each opens a passage preview. Like Cross References, they use the study Bible when an online Bible is active, and a
   banner names it until the user dismisses its explanation. The article's text can be selected and copied across
   paragraphs, while map cards stay tappable
-- Opening a dictionary entry or related article from an article replaces the open article, and breadcrumbs at the top
-  lead back to earlier ones
+- Opening a dictionary entry or related article from an article slides it in over the open article, and breadcrumbs
+  at the top lead back to earlier ones
 - Tapping a map opens the map viewer, and tapping a video opens the video player
 - Each creed result shows the document and its citation, such as "Heidelberg Catechism Q. 1", with the question or
   the start of the section, and opens the item in a sheet with the same collapsed Scripture Proofs tile as the page.
   The sheet uses the same heading as the full page, and its header button opens the full document scrolled to that item
 - A message appears when nothing is linked
 - Linked Resources can be pinned as a study panel
-- The sheet's menu button offers Edit Linked Resources, which opens the settings page below, and Pin as Study Panel
+- The sheet's menu button offers Customize Linked Resources, which opens the settings page below, and Pin as Study Panel
   wherever pinning is available
 
 More > Customize > Linked Resources lists the six resource kinds with drag handles. Dragging one changes the order of
@@ -582,8 +593,8 @@ Available panel types are:
 - Linked Resources
 - Notes from visible annotations
 
-Choosing Compare, Interlinear, or Commentary when adding a panel replaces the panel list with a picker for its Bible,
-direction, or resource, and breadcrumbs such as Study › Study Panel › Compare lead back.
+Choosing Compare, Interlinear, or Commentary when adding a panel slides in a picker for its Bible, direction, or
+resource within the same sheet, and breadcrumbs such as Study › Study Panel › Compare lead back.
 
 Users can:
 
@@ -597,7 +608,7 @@ Users can:
 
 On narrow layouts, panels dock below the Bible. On wide layouts, they appear to its right. The onboarding checklist and Audio Bible use the same swipeable panel area.
 
-The focused Bible plan reading page shows the same study panels, sharing their list, order, selected panel, and bottom panel height with the main Bible reader. Compare shows only the assigned passage in the other translation. The plan's audio panel takes the Audio Bible's place in the panel area, and the onboarding checklist is not shown there.
+The focused Bible plan reading page shows the same study panels, sharing their list, order, selected panel, and bottom panel height with the main Bible reader. Study panels stay within the assigned passage: Compare shows only that passage in the other translation, Commentary shows only the sections that cover it (with the book's summary and introduction only when it starts at the book's first verse), and the linked panels are titled with the passage rather than its chapter. The plan's audio panel takes the Audio Bible's place in the panel area, and the onboarding checklist is not shown there.
 
 Each onboarding checklist ends with an invitation to join the Lux Discord community, where users can ask questions, share feedback, and meet other users. Completing the last checklist step scrolls the panel to the bottom.
 
@@ -623,7 +634,7 @@ It supports:
 
 Verse 1 is emphasized during chapter introductions, and each later verse receives emphasis 300 milliseconds before its recorded start.
 
-Manually scrolling the passage or selecting a verse or text pauses playback. Tapping a verse only selects it and never moves the playhead, so scrubbing is the only way to jump to a verse. Starting playback clears the current selection. Resuming from the play button restarts the emphasized verse from its beginning rather than continuing mid-verse, but never skips forward past a chapter introduction.
+Manually scrolling the passage or selecting a verse or text pauses playback. Tapping a verse only selects it and never moves the playhead, so scrubbing is the only way to jump to a verse. Starting playback clears the current selection. Resuming continues from exactly where playback was paused. Starting or resuming playback scrolls the passage back to the verse being read.
 
 When the current Bible has no audio, Lux offers to switch to the user's most recently selected audio-enabled Bible.
 
@@ -772,7 +783,7 @@ Custom-plan names must contain non-whitespace text and be exactly unique, includ
 
 When a file opened from another app is invalid or cannot be read, Lux shows the import step with an error so the user can choose another file or paste contents. The operating system controls whether Lux is offered as the default app for downloaded `.lxbp` files.
 
-The `.lxbp` format is the plan's direct portable definition with its name, optional color, and ordered passage lists for each day. Reflection days are retained as empty passage lists. Exports contain no local ID, reminders, annotations, history, or Bible text. Included plans export with their localized display name.
+The `.lxbp` format is the plan's direct portable definition with its name, optional color, and ordered passage lists for each day. Reflection days are retained as empty passage lists. Exports contain no local ID, reminders, annotations, history, or Bible text. Included plans export with their localized display name. A passage that spans more than one chapter, which an imported or AI-written file can contain, is read as one passage per chapter, and progress already recorded on it carries over to each piece. Exporting that plan writes the split passages.
 
 Sharing or downloading an active plan from its menu on Bible Plans closes the menu and opens a sheet with Include Progress and Include Target End Date switches, both off. Include Progress appears when at least one day or passage is complete, and its subtitle counts the completed days. Include Target End Date appears only for a Paced plan and shows its target date. The sheet's main button repeats the chosen action. When neither switch applies, including from Start A Bible Plan, sharing and downloading proceed directly. Advent's export always includes Christmas Day 2026 as its target end date until that day, so Include Target End Date appears for an Advent run only when it's paced to a different date, and turning it off keeps Christmas. Progress is written as completed days and the completed passages of unfinished days, without completion times.
 
@@ -791,7 +802,7 @@ A Paced plan's status compares its target end date with its natural end date, th
 An active plan's menu on Bible Plans offers Complete Through Day N for the day tab currently selected on its card. It asks for confirmation, then marks that day and every earlier day complete and every later day incomplete, including clearing passages read on later days. The confirmation mentions that later progress will be cleared only when there is some. The item is hidden when the plan is already in that state. Like imported progress, these days don't count as today's reading, so they don't suppress today's reminder, change the natural end date's start, trigger reminder discovery or the review prompt, or log a completed plan day. Completing through the last day completes the plan, which then offers Finish as usual.
 
 Daily passages open in a focused reading flow that retains access to normal Bible selection and study behavior.
-At the bottom, the reading page shows the main toolbar with the user's pinned shortcuts and overflow menu. It shows the current passage and its Bible, and it hides and reappears on scroll following the same Pin to Bottom setting. A small circle button before the passage shows a next arrow, or a check when no other passage is incomplete. Tapping it acts as Next or Done: it completes the current passage, then moves to the next incomplete tab or closes the page. Tapping anywhere else on the toolbar outside its buttons opens the Bible picker to switch translations. The toolbar's long-press shortcut and history swipes are disabled. Bible Plans and Bookmark, from a shortcut or the overflow menu, explain in a dialog that they aren't available while reading a plan day, and Bookmark always shows as unfilled there instead of the current bookmark's color. Annotations, search, and other actions behave as in the main reader, with results that navigate to a passage returning to the main Bible.
+At the bottom, the reading page shows the main toolbar with the user's pinned shortcuts and overflow menu. It shows the current passage and its Bible, and it hides and reappears on scroll following the same Pin to Bottom setting. A small circle button before the passage shows a next arrow, or a check when no other passage is incomplete. Tapping it acts as Next or Done: it completes the current passage, then moves to the next incomplete tab or closes the page. Tapping anywhere else on the toolbar outside its buttons opens the Bible picker to switch translations. The toolbar's long-press shortcut and history swipes are disabled. The overflow menu leaves out Verse of the Day, Bookmark, and Bible Plans. Pinned as shortcuts, Verse of the Day works as usual, while Bible Plans and Bookmark explain in a dialog that they aren't available while reading a plan day, and Bookmark always shows as unfilled there instead of the current bookmark's color. Study, its quick-study actions, and pinned Compare, Interlinear, Commentary, Cross References, and Linked Resources shortcuts act on the current passage rather than its whole chapter, and the overflow menu describes Study and Audio in terms of the passage. Annotations, search, and other actions behave as in the main reader, with results that navigate to a passage returning to the main Bible.
 The chapter-preview action reads "Read In Context" when the assigned passage already covers the full chapter and "Read Entire Chapter" otherwise.
 Each passage tab shows whether it is complete. Moving to another tab completes the passage being left only if its final paragraph has appeared on screen, which includes passages short enough to fit on screen. Tapping the selected tab toggles its passage between complete and incomplete, and a passage toggled this way is not completed automatically when leaving it. Next and Done always complete the current passage.
 The toolbar's Audio action plays and pauses reading-plan audio. Reading-plan audio starts at the first assigned verse, stops at the final assigned verse, marks the passage complete, and continues to the next incomplete tab. It stops after every passage for the day is complete. Manual scrolling or selecting text pauses playback. A passage whose active Bible does not support audio prompts the user to switch Bibles.

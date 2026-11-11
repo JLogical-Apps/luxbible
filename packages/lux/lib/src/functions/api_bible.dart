@@ -43,7 +43,8 @@ class ApiBible {
 
     return XmlBibleParser.parse(
       root.childElements,
-      getVerseNumber: (element) => element.classNames.has('v') ? int.parse(element.getAttribute('data-number')!) : null,
+      getVerseNumbers: (element) =>
+          element.classNames.has('v') ? XmlBibleParser.parseVerseNumbers(element.getAttribute('data-number')!) : null,
       shouldIgnore: isOnlyCrossReference,
       buildFootnote: (element) => element.classNames.has('f') ? UsxUtils.noteToMarkdown(element) : null,
       isRedLetters: (element) => element.classNames.has('wj'),

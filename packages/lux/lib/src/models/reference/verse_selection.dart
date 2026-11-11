@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:lux/lux_core.dart';
-import 'package:utils_core/utils_core.dart';
 
 class VerseSelection extends Equatable {
   final List<VerseSpanReference> spans;
@@ -117,7 +116,18 @@ class VerseSelection extends Equatable {
       .sortedBy((reference) => reference)
       .toList();
 
+  Reference get start => references.first;
+  ChapterReference get startChapter => start.toChapterReference();
+
   bool get isChapter => spans.length == 1 && spans.first.start is ChapterBiblePointer;
+
+  bool get isWithinChapter =>
+      spans
+          .expand((span) => [span.startReference, span.endReference])
+          .map((reference) => reference.toChapterReference())
+          .toSet()
+          .length <=
+      1;
 
   bool get isEmpty => spans.isEmpty;
   bool get isNotEmpty => spans.isNotEmpty;
@@ -125,18 +135,10 @@ class VerseSelection extends Equatable {
   bool hasReference(Reference reference) => spans.any((span) => span.containsReference(reference));
   bool hasAnyOf(VerseSelection verseSelection) => spans.any((span) => verseSelection.spans.any(span.overlaps));
 
-  List<VerseSelection> splitByChapter() => references
-      .groupListsBy((reference) => reference.toChapterReference())
-      .mapToIterable(
-        (chapter, references) => chapter.numVerses == references.length
-            ? chapter.toVerseSelection()
-            : VerseSelection.fromReferences(references),
-      )
-      .toList();
+  List<ChapterPassage> splitByChapter() => ChapterPassage.listFromVerseSelection(this);
 
   bool isInTranslation(BibleTranslation translation) =>
-      references.isEmpty ||
-      (translation.containsBook(references.first.book) && translation.containsBook(references.last.book));
+      references.isEmpty || (translation.containsBook(start.book) && translation.containsBook(references.last.book));
 
   String format() => spans.mapIndexed((spanIndex, span) {
     final previousSpan = spanIndex == 0 ? null : spans[spanIndex - 1];
