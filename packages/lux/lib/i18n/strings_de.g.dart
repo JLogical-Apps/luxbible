@@ -1058,6 +1058,15 @@ class _Translations$biblePlans$de extends Translations$biblePlans$en {
 	@override String get complete => 'Abschließen';
 	@override String get reviewDayAnnotations => 'Annotationen des Tages ansehen';
 	@override String get studyNotes => 'Studiennotizen';
+	@override String get reflectionQuestion => 'Reflexionsfrage';
+	@override String get reflectionQuestions => 'Reflexionsfragen';
+	@override String get reflectionAnswerHint => 'Schreib deine Gedanken auf…';
+	@override String get reflectionAnswerPrivacy => 'Deine Antwort wird nur auf diesem Gerät gespeichert.';
+	@override String get discussReflection => 'Sieh auf Discord, wie andere antworten.';
+	@override String get skipAllReflectionsQuestion => 'Alle Reflexionsfragen überspringen?';
+	@override String get skipAllReflectionsConfirmation => 'Du kannst sie im Menü des Plans wieder einschalten.';
+	@override String get skipAll => 'Alle überspringen';
+	@override String get justThisOne => 'Nur diese';
 	@override String beginsInDays({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count,
 		one: 'Beginnt in ${count} Tag',
 		other: 'Beginnt in ${count} Tagen',
@@ -1393,7 +1402,7 @@ class _Translations$planTypes$de extends Translations$planTypes$en {
 	@override String get pentateuchAndHistoryDescription => 'Geh in einem Jahr durch die fünf Bücher Mose und die Geschichte Israels.';
 	@override String get psalmsAndWisdomDescription => 'Verbringe das Jahr in den Psalmen und Weisheitsbüchern wie Sprüche, Hiob und Prediger.';
 	@override String get advent => 'Advent';
-	@override String get adventDescription => 'Lies auf Weihnachten zu, mit täglichen Abschnitten und Studiennotizen, von den Verheißungen der Propheten bis zur Geburt Jesu.';
+	@override String get adventDescription => 'Lies auf Weihnachten zu, mit täglichen Abschnitten und Studiennotizen, an der Seite der Menschen, die auf Jesus warteten und ihn aufnahmen.';
 	@override String get oldAndNewTestamentDescription => 'Lies die ganze Bibel in einem Jahr und folge dabei dem Alten und Neuen Testament gemeinsam in kanonischer Reihenfolge.';
 	@override String get historicallyBlendedDescription => 'Lies die ganze Bibel in einem Jahr, mit Büchern und Abschnitten, die um zusammenhängende Ereignisse und Epochen angeordnet sind.';
 	@override String get differentTopicsDescription => 'Lies jeden Tag einen anderen Teil der Schrift und entdecke in einem Jahr jedes Buch der Bibel.';
@@ -3981,6 +3990,15 @@ extension on TranslationsDe {
 			'biblePlans.complete' => 'Abschließen',
 			'biblePlans.reviewDayAnnotations' => 'Annotationen des Tages ansehen',
 			'biblePlans.studyNotes' => 'Studiennotizen',
+			'biblePlans.reflectionQuestion' => 'Reflexionsfrage',
+			'biblePlans.reflectionQuestions' => 'Reflexionsfragen',
+			'biblePlans.reflectionAnswerHint' => 'Schreib deine Gedanken auf…',
+			'biblePlans.reflectionAnswerPrivacy' => 'Deine Antwort wird nur auf diesem Gerät gespeichert.',
+			'biblePlans.discussReflection' => 'Sieh auf Discord, wie andere antworten.',
+			'biblePlans.skipAllReflectionsQuestion' => 'Alle Reflexionsfragen überspringen?',
+			'biblePlans.skipAllReflectionsConfirmation' => 'Du kannst sie im Menü des Plans wieder einschalten.',
+			'biblePlans.skipAll' => 'Alle überspringen',
+			'biblePlans.justThisOne' => 'Nur diese',
 			'biblePlans.beginsInDays' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: 'Beginnt in ${count} Tag', other: 'Beginnt in ${count} Tagen', ), 
 			'biblePlans.daysUntilChristmas' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('de'))(count, one: 'Noch ${count} Tag bis Weihnachten', other: 'Noch ${count} Tage bis Weihnachten', ), 
 			'biblePlans.christmasDay' => 'Erster Weihnachtstag',
@@ -4154,7 +4172,7 @@ extension on TranslationsDe {
 			'planTypes.pentateuchAndHistoryDescription' => 'Geh in einem Jahr durch die fünf Bücher Mose und die Geschichte Israels.',
 			'planTypes.psalmsAndWisdomDescription' => 'Verbringe das Jahr in den Psalmen und Weisheitsbüchern wie Sprüche, Hiob und Prediger.',
 			'planTypes.advent' => 'Advent',
-			'planTypes.adventDescription' => 'Lies auf Weihnachten zu, mit täglichen Abschnitten und Studiennotizen, von den Verheißungen der Propheten bis zur Geburt Jesu.',
+			'planTypes.adventDescription' => 'Lies auf Weihnachten zu, mit täglichen Abschnitten und Studiennotizen, an der Seite der Menschen, die auf Jesus warteten und ihn aufnahmen.',
 			'planTypes.oldAndNewTestamentDescription' => 'Lies die ganze Bibel in einem Jahr und folge dabei dem Alten und Neuen Testament gemeinsam in kanonischer Reihenfolge.',
 			'planTypes.historicallyBlendedDescription' => 'Lies die ganze Bibel in einem Jahr, mit Büchern und Abschnitten, die um zusammenhängende Ereignisse und Epochen angeordnet sind.',
 			'planTypes.differentTopicsDescription' => 'Lies jeden Tag einen anderen Teil der Schrift und entdecke in einem Jahr jedes Buch der Bibel.',
@@ -4299,6 +4317,8 @@ extension on TranslationsDe {
 			'morphology.types.conjunction.examples' => 'und|aber|denn',
 			'morphology.types.preposition.name' => 'Präposition',
 			'morphology.types.preposition.description' => 'Setzt ein Substantiv oder Pronomen in Beziehung zu anderen Wörtern.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.preposition.examples' => 'in|zu|mit',
 			'morphology.types.adverb.name' => 'Adverb',
 			'morphology.types.adverb.description' => 'Bestimmt ein Verb, Adjektiv oder anderes Adverb näher.',
@@ -4308,8 +4328,6 @@ extension on TranslationsDe {
 			'morphology.types.negativeAdverb.examples' => 'nicht|niemals',
 			'morphology.types.adjective.name' => 'Adjektiv',
 			'morphology.types.adjective.description' => 'Ein Wort, das ein Substantiv beschreibt.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.adjective.examples' => 'groß|heilig|weise',
 			'morphology.types.noun.name' => 'Substantiv',
 			'morphology.types.noun.description' => 'Eine Person, ein Ort, eine Sache oder ein Begriff.',

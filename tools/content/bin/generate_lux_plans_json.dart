@@ -5,14 +5,14 @@ import 'package:lux_content_tools/lux_plan_source.dart';
 import 'package:lux_content_tools/repository_paths.dart';
 
 void main() {
-  final resourceIdsByPrefix = LuxPlanSource.loadResourceIdsByPrefix();
+  final linkValidatorsByPrefix = LuxPlanSource.loadLinkValidatorsByPrefix();
   final files = sourceDirectory('lux_plans').listSync().whereType<File>().where((file) => file.path.endsWith('.md'));
 
   for (final file in files) {
     final id = file.uri.pathSegments.last.replaceFirst(RegExp(r'\.md$'), '');
     final plan = LuxPlanSource.parse(file.readAsStringSync());
 
-    final errors = plan.getErrors(resourceIdsByPrefix: resourceIdsByPrefix);
+    final errors = plan.getErrors(linkValidatorsByPrefix: linkValidatorsByPrefix);
     if (errors.isNotEmpty) throw StateError('$id has invalid content:\n${errors.join('\n')}');
 
     appAssetFile('bible_plans/$id.json', app: .bible).writeAsStringSync(jsonEncode(plan.toPlanJson()));

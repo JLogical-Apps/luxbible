@@ -1060,6 +1060,15 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	@override String get complete => 'Voltooien';
 	@override String get reviewDayAnnotations => 'Annotaties van de dag bekijken';
 	@override String get studyNotes => 'Studienotities';
+	@override String get reflectionQuestion => 'Reflectievraag';
+	@override String get reflectionQuestions => 'Reflectievragen';
+	@override String get reflectionAnswerHint => 'Schrijf je gedachten op…';
+	@override String get reflectionAnswerPrivacy => 'Je antwoord wordt alleen op dit apparaat bewaard.';
+	@override String get discussReflection => 'Bekijk op Discord hoe anderen antwoorden.';
+	@override String get skipAllReflectionsQuestion => 'Alle reflectievragen overslaan?';
+	@override String get skipAllReflectionsConfirmation => 'Je kunt ze weer aanzetten via het menu van het leesplan.';
+	@override String get skipAll => 'Alles overslaan';
+	@override String get justThisOne => 'Alleen deze';
 	@override String beginsInDays({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count,
 		one: 'Begint over ${count} dag',
 		other: 'Begint over ${count} dagen',
@@ -1395,7 +1404,7 @@ class _Translations$planTypes$nl extends Translations$planTypes$en {
 	@override String get pentateuchAndHistoryDescription => 'Reis in één jaar door de vijf boeken van Mozes en de geschiedenis van Israël.';
 	@override String get psalmsAndWisdomDescription => 'Breng een jaar door in de Psalmen en wijsheidsboeken zoals Spreuken, Job en Prediker.';
 	@override String get advent => 'Advent';
-	@override String get adventDescription => 'Lees naar Kerst toe met dagelijkse gedeelten en studienotities, van de beloften van de profeten tot de geboorte van Jezus.';
+	@override String get adventDescription => 'Lees naar Kerst toe met dagelijkse gedeelten en studienotities, met de mensen die op Jezus wachtten en hem verwelkomden.';
 	@override String get oldAndNewTestamentDescription => 'Lees de hele Bijbel in één jaar en volg het Oude en Nieuwe Testament samen in de gebruikelijke Bijbelvolgorde.';
 	@override String get historicallyBlendedDescription => 'Lees de hele Bijbel in één jaar, met boeken en passages gerangschikt rond verwante gebeurtenissen en historische perioden.';
 	@override String get differentTopicsDescription => 'Lees elke dag een ander gedeelte van de Bijbel en verken in één jaar elk Bijbelboek.';
@@ -3985,6 +3994,15 @@ extension on TranslationsNl {
 			'biblePlans.complete' => 'Voltooien',
 			'biblePlans.reviewDayAnnotations' => 'Annotaties van de dag bekijken',
 			'biblePlans.studyNotes' => 'Studienotities',
+			'biblePlans.reflectionQuestion' => 'Reflectievraag',
+			'biblePlans.reflectionQuestions' => 'Reflectievragen',
+			'biblePlans.reflectionAnswerHint' => 'Schrijf je gedachten op…',
+			'biblePlans.reflectionAnswerPrivacy' => 'Je antwoord wordt alleen op dit apparaat bewaard.',
+			'biblePlans.discussReflection' => 'Bekijk op Discord hoe anderen antwoorden.',
+			'biblePlans.skipAllReflectionsQuestion' => 'Alle reflectievragen overslaan?',
+			'biblePlans.skipAllReflectionsConfirmation' => 'Je kunt ze weer aanzetten via het menu van het leesplan.',
+			'biblePlans.skipAll' => 'Alles overslaan',
+			'biblePlans.justThisOne' => 'Alleen deze',
 			'biblePlans.beginsInDays' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: 'Begint over ${count} dag', other: 'Begint over ${count} dagen', ), 
 			'biblePlans.daysUntilChristmas' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('nl'))(count, one: 'Nog ${count} dag tot Kerst', other: 'Nog ${count} dagen tot Kerst', ), 
 			'biblePlans.christmasDay' => 'Eerste Kerstdag',
@@ -4158,7 +4176,7 @@ extension on TranslationsNl {
 			'planTypes.pentateuchAndHistoryDescription' => 'Reis in één jaar door de vijf boeken van Mozes en de geschiedenis van Israël.',
 			'planTypes.psalmsAndWisdomDescription' => 'Breng een jaar door in de Psalmen en wijsheidsboeken zoals Spreuken, Job en Prediker.',
 			'planTypes.advent' => 'Advent',
-			'planTypes.adventDescription' => 'Lees naar Kerst toe met dagelijkse gedeelten en studienotities, van de beloften van de profeten tot de geboorte van Jezus.',
+			'planTypes.adventDescription' => 'Lees naar Kerst toe met dagelijkse gedeelten en studienotities, met de mensen die op Jezus wachtten en hem verwelkomden.',
 			'planTypes.oldAndNewTestamentDescription' => 'Lees de hele Bijbel in één jaar en volg het Oude en Nieuwe Testament samen in de gebruikelijke Bijbelvolgorde.',
 			'planTypes.historicallyBlendedDescription' => 'Lees de hele Bijbel in één jaar, met boeken en passages gerangschikt rond verwante gebeurtenissen en historische perioden.',
 			'planTypes.differentTopicsDescription' => 'Lees elke dag een ander gedeelte van de Bijbel en verken in één jaar elk Bijbelboek.',
@@ -4301,6 +4319,8 @@ extension on TranslationsNl {
 			'morphology.types.conjunction.name' => 'Voegwoord',
 			'morphology.types.conjunction.description' => 'Een woord dat andere woorden of zinnen verbindt.',
 			'morphology.types.conjunction.examples' => 'en|maar|want',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.preposition.name' => 'Voorzetsel',
 			'morphology.types.preposition.description' => 'Verbindt een zelfstandig naamwoord of voornaamwoord met andere woorden.',
 			'morphology.types.preposition.examples' => 'in|naar|met',
@@ -4310,8 +4330,6 @@ extension on TranslationsNl {
 			'morphology.types.negativeAdverb.name' => 'Ontkennend bijwoord',
 			'morphology.types.negativeAdverb.description' => 'Een bijwoord dat een ontkenning uitdrukt.',
 			'morphology.types.negativeAdverb.examples' => 'niet|nooit',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.adjective.name' => 'Bijvoeglijk naamwoord',
 			'morphology.types.adjective.description' => 'Een woord dat een zelfstandig naamwoord beschrijft.',
 			'morphology.types.adjective.examples' => 'groot|heilig|wijs',

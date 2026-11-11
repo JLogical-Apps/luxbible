@@ -1,4 +1,5 @@
 import 'package:bible/models/linked_resource.dart';
+import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lux/lux_core.dart';
 
@@ -10,6 +11,8 @@ sealed class Video with _$Video, LinkedResource {
   const Video._();
 
   static const source = 'BibleProject';
+
+  static const linkPrefix = 'video:';
 
   const factory Video({
     @JsonKey(name: 'i') required String id,
@@ -40,4 +43,13 @@ sealed class VideoCollection with _$VideoCollection {
   }) = _VideoCollection;
 
   factory VideoCollection.fromJson(Map<String, dynamic> json) => _$VideoCollectionFromJson(json);
+}
+
+extension VideoCollectionListExtension on List<VideoCollection> {
+  // Links take the form `video:<id>`, using the video's bibleproject.com slug.
+  Video? getVideoByLink(String link) => link.startsWith(Video.linkPrefix)
+      ? expand(
+          (collection) => collection.videos,
+        ).firstWhereOrNull((video) => video.id == link.substring(Video.linkPrefix.length))
+      : null;
 }

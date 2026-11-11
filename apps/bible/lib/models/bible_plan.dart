@@ -1,10 +1,12 @@
 import 'dart:math';
 
 import 'package:bible/models/bible_plan_season.dart';
+import 'package:bible/models/bible_plan_study_note.dart';
 import 'package:bible/models/calendar_date_time.dart';
 import 'package:bible/models/hydrated_bible_plan_progress.dart';
 import 'package:bible/models/reminder.dart';
 import 'package:collection/collection.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lux/i18n.dart';
@@ -60,6 +62,8 @@ sealed class BiblePlan with _$BiblePlan {
   int get dayCount => days.length;
 
   List<int> get dayIndexes => List.generate(dayCount, (i) => i);
+
+  bool get hasReflectionQuestions => days.any((day) => day.studyNote?.reflectionQuestion != null);
 }
 
 @freezed
@@ -68,11 +72,51 @@ sealed class BiblePlanDay with _$BiblePlanDay {
 
   const factory BiblePlanDay({
     @JsonKey(fromJson: ChapterPassage.listFromJson) @Default([]) List<ChapterPassage> passages,
+    // Attached when a curated plan loads, and never written, so .lxbp exports don't carry study notes.
+    @JsonKey(includeFromJson: false, includeToJson: false) BiblePlanStudyNote? studyNote,
   }) = _BiblePlanDay;
 
   factory BiblePlanDay.fromJson(Map<String, dynamic> json) => _$BiblePlanDayFromJson(json);
 
   bool get isReviewAndReflect => passages.isEmpty;
+
+  List<BiblePlanDayItem> getItems({required bool includesReflection}) => [
+    ...passages.map(BiblePlanPassageItem.new),
+    if (studyNote != null) BiblePlanDayStep.studyNotes,
+    if (includesReflection && studyNote?.reflectionQuestion != null) BiblePlanDayStep.reflection,
+  ];
+}
+
+sealed class BiblePlanDayItem {
+  String title();
+}
+
+final class BiblePlanPassageItem extends Equatable implements BiblePlanDayItem {
+  final ChapterPassage passage;
+
+  const BiblePlanPassageItem(this.passage);
+
+  @override
+  List<Object?> get props => [passage];
+
+  @override
+  String title() => passage.format();
+}
+
+enum BiblePlanDayStep implements BiblePlanDayItem {
+  studyNotes,
+  reflection;
+
+  @override
+  String title() => switch (this) {
+    studyNotes => t.biblePlans.studyNotes,
+    reflection => t.biblePlans.reflectionQuestion,
+  };
+
+  IconData get icon => switch (this) {
+    studyNotes => Symbols.auto_stories,
+    reflection => Symbols.edit_note,
+  };
 }
 
 @freezed
@@ -85,6 +129,9 @@ sealed class BiblePlanProgress with _$BiblePlanProgress {
     Reminder? reminder,
     CalendarDateTime? lastCompletedAt,
     @Default(BiblePlanPace.relaxed()) BiblePlanPace pace,
+    @Default(false) bool isSkippingReflections,
+    @Default(false) bool hasOfferedToSkipReflections,
+    @Default({}) Map<int, String> reflectionAnswerByDayIndex,
   }) = _BiblePlanProgress;
 
   factory BiblePlanProgress.start(BiblePlan plan, {required BiblePlanPace pace, List<BiblePlanDayProgress>? days}) =>
@@ -97,6 +144,13 @@ sealed class BiblePlanProgress with _$BiblePlanProgress {
   factory BiblePlanProgress.fromJson(Map<String, dynamic> json) => _$BiblePlanProgressFromJson(json);
 
   bool get hasDailyReminder => reminder is DailyReminder;
+
+  List<BiblePlanDayItem> getDayItems(BiblePlanDay day) => day.getItems(includesReflection: !isSkippingReflections);
+
+  BiblePlanDayProgress getDayProgress(int dayIndex) =>
+      days.elementAtOrNull(dayIndex) ?? BiblePlanDayProgress.incomplete();
+
+  String? getReflectionAnswer(int dayIndex) => reflectionAnswerByDayIndex[dayIndex];
 
   bool wasCompletedOnLocalDate(DateTime date) => lastCompletedAt?.isOnSameLocalDateAs(date) ?? false;
   bool wasCompletedToday() => wasCompletedOnLocalDate(.now());
@@ -119,6 +173,26 @@ sealed class BiblePlanProgress with _$BiblePlanProgress {
     days: plan.dayIndexes
         .map((index) => index <= dayIndex ? BiblePlanDayProgress.complete() : BiblePlanDayProgress.incomplete())
         .toList(),
+  );
+
+  // Like completing in bulk, days this completes leave lastCompletedAt alone.
+  BiblePlanProgress withReflectionsSkipped(BiblePlan plan, {required bool isSkipped}) {
+    final progress = copyWith(isSkippingReflections: isSkipped);
+    return progress.copyWith(
+      days: plan.days
+          .mapIndexed(
+            (dayIndex, day) => progress
+                .getDayProgress(dayIndex)
+                .withItemsCompleted(items: progress.getDayItems(day), completedItems: []),
+          )
+          .toList(),
+    );
+  }
+
+  BiblePlanProgress withReflectionAnswer({required int dayIndex, required String answer}) => copyWith(
+    reflectionAnswerByDayIndex: answer.trim().isEmpty
+        ? ({...reflectionAnswerByDayIndex}..remove(dayIndex))
+        : {...reflectionAnswerByDayIndex, dayIndex: answer},
   );
 
   // A different instance means a run was swapped in, so its already-completed days aren't new completions.
@@ -215,57 +289,69 @@ sealed class BiblePlanDayProgress with _$BiblePlanDayProgress {
 
   const factory BiblePlanDayProgress.incomplete({
     @JsonKey(fromJson: ChapterPassage.setFromJson) @Default({}) Set<ChapterPassage> completedPassages,
+    @Default({}) Set<BiblePlanDayStep> completedSteps,
   }) = IncompleteBiblePlanDayProgress;
 
   const factory BiblePlanDayProgress.complete() = CompleteBiblePlanDayProgress;
 
   factory BiblePlanDayProgress.fromJson(Map<String, dynamic> json) => _$BiblePlanDayProgressFromJson(json);
 
-  bool isPassageComplete(ChapterPassage passage) => switch (this) {
-    IncompleteBiblePlanDayProgress(:final completedPassages) => completedPassages.has(passage),
+  // A Review & Reflect day has no items, so it's only completed explicitly rather than by completing none.
+  factory BiblePlanDayProgress.fromCompletedItems({
+    required List<BiblePlanDayItem> items,
+    required Set<BiblePlanDayItem> completedItems,
+  }) => items.isNotEmpty && items.every(completedItems.has)
+      ? BiblePlanDayProgress.complete()
+      : BiblePlanDayProgress.incomplete(
+          completedPassages: completedItems.whereType<BiblePlanPassageItem>().map((item) => item.passage).toSet(),
+          completedSteps: completedItems.whereType<BiblePlanDayStep>().toSet(),
+        );
+
+  bool isItemComplete(BiblePlanDayItem item) => switch (this) {
+    IncompleteBiblePlanDayProgress(:final completedPassages, :final completedSteps) => switch (item) {
+      BiblePlanPassageItem(:final passage) => completedPassages.has(passage),
+      BiblePlanDayStep() => completedSteps.has(item),
+    },
     CompleteBiblePlanDayProgress() => true,
   };
 
   bool get isComplete => this is CompleteBiblePlanDayProgress;
 
   bool get hasProgress => switch (this) {
-    IncompleteBiblePlanDayProgress(:final completedPassages) => completedPassages.isNotEmpty,
+    IncompleteBiblePlanDayProgress(:final completedPassages, :final completedSteps) =>
+      completedPassages.isNotEmpty || completedSteps.isNotEmpty,
     CompleteBiblePlanDayProgress() => true,
+  };
+
+  // A complete day stores no detail, so it stands for every item the day has.
+  Set<BiblePlanDayItem> getCompletedItems(List<BiblePlanDayItem> items) => switch (this) {
+    IncompleteBiblePlanDayProgress(:final completedPassages, :final completedSteps) => {
+      ...completedPassages.map(BiblePlanPassageItem.new),
+      ...completedSteps,
+    },
+    CompleteBiblePlanDayProgress() => items.toSet(),
   };
 
   BiblePlanDayProgress withCompletionToggled() =>
       isComplete ? BiblePlanDayProgress.incomplete() : BiblePlanDayProgress.complete();
 
-  int? getNextIncompletePassageIndex({required List<ChapterPassage> passages, required int currentIndex}) => passages
+  int? getNextIncompleteItemIndex({required List<BiblePlanDayItem> items, required int currentIndex}) => items
       .asMap()
-      .where((index, passage) => index != currentIndex && !isPassageComplete(passage))
-      .sortedBy((index, passage) => index - currentIndex)
+      .where((index, item) => index != currentIndex && !isItemComplete(item))
+      .sortedBy((index, item) => index - currentIndex)
       .keys
       .firstOrNull;
 
-  BiblePlanDayProgress withPassageCompleted({required BiblePlanDay day, required ChapterPassage passage}) =>
-      withPassagesCompleted(day: day, passages: [passage]);
+  BiblePlanDayProgress withItemsCompleted({
+    required List<BiblePlanDayItem> items,
+    required Iterable<BiblePlanDayItem> completedItems,
+  }) => BiblePlanDayProgress.fromCompletedItems(
+    items: items,
+    completedItems: {...getCompletedItems(items), ...completedItems},
+  );
 
-  // A Review & Reflect day has no passages, so it's only completed explicitly rather than by completing none.
-  BiblePlanDayProgress withPassagesCompleted({required BiblePlanDay day, required Iterable<ChapterPassage> passages}) {
-    final completedPassages = switch (this) {
-      IncompleteBiblePlanDayProgress(:final completedPassages) => {...completedPassages, ...passages},
-      CompleteBiblePlanDayProgress() => day.passages.toSet(),
-    };
-    return day.passages.isNotEmpty && day.passages.every(completedPassages.has)
-        ? BiblePlanDayProgress.complete()
-        : BiblePlanDayProgress.incomplete(completedPassages: completedPassages);
-  }
-
-  BiblePlanDayProgress withPassageUncompleted({required BiblePlanDay day, required ChapterPassage passage}) =>
-      BiblePlanDayProgress.incomplete(
-        completedPassages: {
-          ...switch (this) {
-            IncompleteBiblePlanDayProgress(:final completedPassages) => completedPassages,
-            CompleteBiblePlanDayProgress() => day.passages.toSet(),
-          },
-        }..remove(passage),
-      );
+  BiblePlanDayProgress withItemUncompleted({required List<BiblePlanDayItem> items, required BiblePlanDayItem item}) =>
+      BiblePlanDayProgress.fromCompletedItems(items: items, completedItems: getCompletedItems(items)..remove(item));
 }
 
 // ignore_for_file: constant_identifier_names

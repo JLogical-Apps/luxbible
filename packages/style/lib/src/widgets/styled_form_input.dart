@@ -8,6 +8,7 @@ import 'package:style/src/widgets/styled_size_and_fade.dart';
 class StyledFormInput extends StatelessWidget {
   final Widget? label;
   final Widget? description;
+  final Widget? helper;
   final Widget? error;
 
   final EdgeInsets labelPadding;
@@ -18,6 +19,7 @@ class StyledFormInput extends StatelessWidget {
     super.key,
     this.label,
     this.description,
+    this.helper,
     this.error,
     this.labelPadding = .zero,
     required this.child,
@@ -42,6 +44,11 @@ class StyledFormInput extends StatelessWidget {
           ),
         if (label != null || description != null) gapH8,
         child,
+        if (helper case final helper?)
+          Padding(
+            padding: .only(top: 8),
+            child: DefaultTextStyle(child: helper, style: context.textStyle.paragraphSm.subtle()),
+          ),
         StyledSizeAndFade(
           child: error == null
               ? SizedBox(key: ValueKey('empty'), width: double.infinity)

@@ -2,6 +2,7 @@ import 'package:bible/models/bible_plan.dart';
 import 'package:bible/providers/bible_plan_history_provider.dart';
 import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/user_provider.dart';
+import 'package:bible/ui/flows/bible_plan_reflection_flow.dart';
 import 'package:bible/ui/flows/bible_plan_reminder_flow.dart';
 import 'package:bible/ui/pages/bible_plan_history_page.dart';
 import 'package:bible/ui/pages/bible_plan_read_page.dart';
@@ -122,20 +123,27 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                       final days => t.biblePlans.daysAhead(count: days).toText(),
                     },
                     onNavigateToVerseSelection: (selection) => context.pop(selection),
-                    onPassagePressed: (dayIndex, passageIndex) async {
+                    onItemPressed: (dayIndex, itemIndex) async {
                       final result = await context.push(
-                        BiblePlanReadPage(planId: planId, dayIndex: dayIndex, initialPassageIndex: passageIndex),
+                        BiblePlanReadPage(planId: planId, dayIndex: dayIndex, initialItemIndex: itemIndex),
                       );
                       if (result != null && context.mounted) context.pop(result);
                     },
-                    onPassageToggled: (dayIndex, passage) => ref.updateUser(
-                      (user) => user.withPassageToggled(
-                        planId: planId,
-                        dayIndex: dayIndex,
-                        day: plan.days[dayIndex],
-                        passage: passage,
-                      ),
-                    ),
+                    onItemToggled: (dayIndex, item) {
+                      if (item == BiblePlanDayStep.reflection &&
+                          !progress.isItemComplete(dayIndex: dayIndex, item: item)) {
+                        BiblePlanReflectionFlow.complete(context: context, planId: planId, dayIndex: dayIndex);
+                        return;
+                      }
+                      ref.updateUser(
+                        (user) => user.withPlanItemToggled(
+                          planId: planId,
+                          dayIndex: dayIndex,
+                          day: plan.days[dayIndex],
+                          item: item,
+                        ),
+                      );
+                    },
                     onReviewDayToggled: (dayIndex) =>
                         ref.updateUser((user) => user.withPlanDayToggled(planId: planId, dayIndex: dayIndex)),
                     getMenuItems: (selectedDayIndex) => [
@@ -189,6 +197,22 @@ class BiblePlansPage extends HookConsumerWidget implements StyledRoute<VerseSele
                           }
                         },
                       ),
+                      if (plan.hasReflectionQuestions && progress.progress.hasOfferedToSkipReflections)
+                        // The menu's items are built once, so the switch watches the user to show each change.
+                        Consumer(
+                          builder: (context, ref, _) {
+                            final isSkipping =
+                                ref.watch(userProvider).planProgressById[planId]?.isSkippingReflections ?? false;
+                            return StyledListItem.switchControl(
+                              leading: BiblePlanDayStep.reflection.icon.toIcon(),
+                              title: t.biblePlans.reflectionQuestions.toText(),
+                              isSelected: !isSkipping,
+                              onSelected: (isOn) => ref.updateUser(
+                                (user) => user.withPlanReflectionsSkipped(planId: planId, plan: plan, isSkipped: !isOn),
+                              ),
+                            );
+                          },
+                        ),
                       if (!progress.isCompletedThrough(selectedDayIndex))
                         StyledListItem(
                           leading: Symbols.done_all.toIcon(),

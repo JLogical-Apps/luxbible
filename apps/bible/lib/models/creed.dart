@@ -52,6 +52,17 @@ sealed class Creed with _$Creed, LinkedResource {
       .toList();
 }
 
+extension CreedListExtension on List<Creed> {
+  // Links take the form `creed:<id>`, `creed:<id>/<question>`, or `creed:<id>/<chapter>/<section>`.
+  CreedItemReference? getItemReferenceByLink(String link) {
+    if (!link.startsWith(Creed.linkPrefix)) return null;
+    final linkId = link.substring(Creed.linkPrefix.length);
+    return firstWhereOrNull(
+      (creed) => creed.id == linkId.split('/').first,
+    )?.itemReferences.firstWhereOrNull((reference) => reference.linkId == linkId);
+  }
+}
+
 @freezed
 sealed class CreedChapter with _$CreedChapter {
   const CreedChapter._();

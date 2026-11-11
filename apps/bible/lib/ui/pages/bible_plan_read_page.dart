@@ -8,19 +8,22 @@ import 'package:bible/providers/bible_plans_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/providers/viewed_bible_plan_day_provider.dart';
 import 'package:bible/services/analytics_service.dart';
+import 'package:bible/ui/flows/bible_plan_reflection_flow.dart';
 import 'package:bible/ui/hooks/audio_bible_passage_sync.dart';
 import 'package:bible/ui/hooks/reader_bottom_bar_visibility.dart';
 import 'package:bible/ui/hooks/study_panel_carousel.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
 import 'package:bible/ui/sheets/main_actions_sheet.dart';
 import 'package:bible/ui/widgets/audio_bible_panel.dart';
+import 'package:bible/ui/widgets/bible_plan_reflection_view.dart';
+import 'package:bible/ui/widgets/bible_plan_study_notes_view.dart';
 import 'package:bible/ui/widgets/main_toolbar.dart';
 import 'package:bible/ui/widgets/reader_bottom_bar.dart';
 import 'package:bible/ui/widgets/selection_toolbar.dart';
 import 'package:bible/ui/widgets/side_layout_scope.dart';
 import 'package:bible/ui/widgets/study_panel_layout.dart';
+import 'package:bible/ui/widgets/titled_toolbar.dart';
 import 'package:bible/utils/extensions/ref_extensions.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -32,16 +35,16 @@ import 'package:style/style.dart';
 class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseSelection> {
   final String planId;
   final int dayIndex;
-  final int initialPassageIndex;
+  final int initialItemIndex;
 
-  const BiblePlanReadPage({super.key, required this.planId, required this.dayIndex, required this.initialPassageIndex});
+  const BiblePlanReadPage({super.key, required this.planId, required this.dayIndex, required this.initialItemIndex});
 
   @override
   String get path => '/bible-plans/read';
 
   List<StyledRoute<dynamic>> get pageStack => [
     BiblePlansPage(),
-    BiblePlanReadPage(planId: planId, dayIndex: dayIndex, initialPassageIndex: initialPassageIndex),
+    BiblePlanReadPage(planId: planId, dayIndex: dayIndex, initialItemIndex: initialItemIndex),
   ];
 
   @override
@@ -58,7 +61,9 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
     final user = ref.watch(userProvider);
     final readerConfiguration = ref.watch(luxReaderConfigurationProvider);
     final progress = user.getHydratedPlanProgress(planId: planId, planById: plans);
-    final currentProgress = progress?.progress.days.elementAtOrNull(dayIndex) ?? BiblePlanDayProgress.incomplete();
+    final currentProgress = user.getPlanDayProgress(planId: planId, dayIndex: dayIndex);
+    // Kept for the visit, so skipping every reflection from the reflection tab doesn't pull the tab out from under it.
+    final items = useMemoized(() => progress?.getDayItems(dayIndex) ?? day.getItems(includesReflection: false));
 
     final planDay = progress?.getDayId(dayIndex);
     useEffect(() {
@@ -78,25 +83,30 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
     void navigateToVerseSelection(VerseSelection verseSelection) => context.pop(verseSelection);
 
     final tabController = useTabController(
-      initialLength: passages.length,
-      initialIndex: initialPassageIndex.clamp(0, passages.length - 1),
+      initialLength: items.length,
+      initialIndex: initialItemIndex.clamp(0, items.length - 1),
     );
     final currentIndex = useListenableSelector(tabController, () => tabController.index);
-    final currentPassage = passages[currentIndex];
-    final nextIncompletePassageIndex = user.getNextIncompletePlanPassageIndex(
-      planId: planId,
-      dayIndex: dayIndex,
-      day: day,
+    final currentItem = items[currentIndex];
+    // Study notes and reflection tabs come after the passages, so they keep the last passage for study panels.
+    final currentPassage = switch (currentItem) {
+      BiblePlanPassageItem(:final passage) => passage,
+      BiblePlanDayStep() => passages.last,
+    };
+    final nextIncompleteItemIndex = currentProgress.getNextIncompleteItemIndex(
+      items: items,
       currentIndex: currentIndex,
     );
 
     final passageControllerRegistry = useRegistry<ChapterPassage, PassageController>();
-    final currentPassageController = passageControllerRegistry[currentPassage];
-    final readPassages = useMemoized(() => <ChapterPassage>{});
+    final currentPassageController = currentItem is BiblePlanPassageItem
+        ? passageControllerRegistry[currentPassage]
+        : null;
+    final studyNotesScrollController = useScrollController();
+    final readItems = useMemoized(() => <BiblePlanDayItem>{});
     final passageAreaKey = useMemoized(() => GlobalKey());
 
-    void playPassage(int passageIndex) async {
-      final passage = passages[passageIndex];
+    void playPassage(ChapterPassage passage) async {
       final translation = user.getTranslationFor(passage.chapter.book);
       if (!translation.hasAudioBible) {
         audioBibleController.remove(context: .plan);
@@ -137,33 +147,39 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
       passageControllers: passageControllerRegistry,
       getPassageControllerKey: (passage) => passage,
       onPassageChanged: (passage) {
-        final passageIndex = passages.indexOfOrNull(passage);
+        final passageIndex = items.indexOfOrNull(BiblePlanPassageItem(passage));
         if (passageIndex != null && passageIndex != tabController.index) {
           tabController.animateTo(passageIndex);
         }
       },
       onCompleteAndNext: (completedPassage) {
+        final completedItem = BiblePlanPassageItem(completedPassage);
         final newUser = ref.updateUser(
-          (user) => user.withPassageCompleted(planId: planId, dayIndex: dayIndex, day: day, passage: completedPassage),
+          (user) => user.withPlanItemCompleted(planId: planId, dayIndex: dayIndex, day: day, item: completedItem),
         );
 
-        final completedPassageIndex = passages.indexOfOrNull(completedPassage);
-        final nextIndex = completedPassageIndex == null
+        final completedIndex = items.indexOfOrNull(completedItem);
+        final nextIndex = completedIndex == null
             ? null
-            : newUser.getNextIncompletePlanPassageIndex(
-                planId: planId,
-                dayIndex: dayIndex,
-                day: day,
-                currentIndex: completedPassageIndex,
-              );
+            : newUser
+                  .getPlanDayProgress(planId: planId, dayIndex: dayIndex)
+                  .getNextIncompleteItemIndex(items: items, currentIndex: completedIndex);
 
-        return nextIndex == null ? null : passages[nextIndex];
+        // Audio only reads passages, so it stops before the study notes and reflection.
+        return switch (nextIndex == null ? null : items[nextIndex]) {
+          BiblePlanPassageItem(:final passage) => passage,
+          _ => null,
+        };
       },
       removeOnDispose: true,
     );
 
     final bottomBarVisibility = useReaderBottomBarVisibility(
-      scrollController: currentPassageController?.scrollController,
+      scrollController: switch (currentItem) {
+        BiblePlanPassageItem() => currentPassageController?.scrollController,
+        BiblePlanDayStep.studyNotes => studyNotesScrollController,
+        BiblePlanDayStep.reflection => null,
+      },
       isPinned: user.mainToolbar.pinToBottom,
       hasSelection: selectionController.hasSelection,
       keys: [currentIndex],
@@ -174,14 +190,18 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
         bottomBarVisibility.show();
         selectionController.clear();
         final session = ref.read(audioBibleProvider(context: .plan));
-        if (session != null && session.passage != passages[currentIndex]) {
-          await audioBibleController.pause(context: .plan);
-          await audioBibleController.replacePassage(context: .plan, passage: passages[currentIndex]);
+        if (session != null) {
+          if (items[currentIndex] case BiblePlanPassageItem(:final passage) when session.passage != passage) {
+            await audioBibleController.pause(context: .plan);
+            await audioBibleController.replacePassage(context: .plan, passage: passage);
+          } else if (items[currentIndex] is BiblePlanDayStep) {
+            await audioBibleController.pause(context: .plan);
+          }
         }
-        final oldPassage = passages[oldIndex];
-        if (readPassages.contains(oldPassage)) {
+        final oldItem = items[oldIndex];
+        if (readItems.contains(oldItem)) {
           ref.updateUser(
-            (user) => user.withPassageCompleted(planId: planId, dayIndex: dayIndex, day: day, passage: oldPassage),
+            (user) => user.withPlanItemCompleted(planId: planId, dayIndex: dayIndex, day: day, item: oldItem),
           );
         }
       });
@@ -232,13 +252,20 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
       }
     }
 
-    void completePassageAndContinue() {
-      ref.updateUser(
-        (user) => user.withPassageCompleted(planId: planId, dayIndex: dayIndex, day: day, passage: currentPassage),
-      );
+    final reflectionAnswer = progress?.progress.getReflectionAnswer(dayIndex) ?? '';
 
-      if (nextIncompletePassageIndex != null) {
-        tabController.animateTo(nextIncompletePassageIndex);
+    void completeItemAndContinue() async {
+      if (currentItem == BiblePlanDayStep.reflection) {
+        await BiblePlanReflectionFlow.complete(context: context, planId: planId, dayIndex: dayIndex);
+      } else {
+        ref.updateUser(
+          (user) => user.withPlanItemCompleted(planId: planId, dayIndex: dayIndex, day: day, item: currentItem),
+        );
+      }
+      if (!context.mounted) return;
+
+      if (nextIncompleteItemIndex != null) {
+        tabController.animateTo(nextIncompleteItemIndex);
       } else {
         context.pop();
       }
@@ -250,7 +277,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
           if (planAudioPlayer.isPlaying) {
             await audioBibleController.pause(context: .plan);
           } else {
-            playPassage(currentIndex);
+            playPassage(currentPassage);
           }
         case .bookmark:
           await context.showStyledDialog(
@@ -293,6 +320,12 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
 
     final bookTitle = currentPassage.chapter.book.title();
 
+    final nextOrDoneButton = StyledCircleButton.sm(
+      colorBuilder: .primary,
+      child: Icon(nextIncompleteItemIndex == null ? Symbols.check : Symbols.arrow_forward),
+      onPressed: completeItemAndContinue,
+    );
+
     return StyledPage(
       backgroundColor: .backgroundPrimary,
       title: t.biblePlans.day(day: dayIndex + 1).toText(),
@@ -313,17 +346,21 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
                 tabController: tabController,
                 onTabPressed: (index) {
                   if (index != currentIndex) return;
+                  if (items[index] == BiblePlanDayStep.reflection && !currentProgress.isItemComplete(items[index])) {
+                    BiblePlanReflectionFlow.complete(context: context, planId: planId, dayIndex: dayIndex);
+                    return;
+                  }
                   ref.updateUser(
                     (user) =>
-                        user.withPassageToggled(planId: planId, dayIndex: dayIndex, day: day, passage: passages[index]),
+                        user.withPlanItemToggled(planId: planId, dayIndex: dayIndex, day: day, item: items[index]),
                   );
                 },
-                tabTitles: passages.map((passage) {
-                  final isCompleted = currentProgress.isPassageComplete(passage);
+                tabTitles: items.map((item) {
+                  final isCompleted = currentProgress.isItemComplete(item);
                   return Row(
                     spacing: 8,
                     children: [
-                      passage.format().toText(),
+                      item.title().toText(),
                       Icon(
                         isCompleted ? Symbols.check_circle : Symbols.circle,
                         fill: isCompleted ? 1 : 0,
@@ -343,64 +380,93 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
                       key: passageAreaKey,
                       child: SwipeTabView(
                         controller: tabController,
-                        children: passages
+                        children: items
                             .map(
-                              (passage) => HookBuilder(
-                                builder: (context) {
-                                  final passageController = usePassageController(passage.chapter);
-                                  useRegistryItem(passageControllerRegistry, passage, passageController);
+                              (item) => switch (item) {
+                                BiblePlanPassageItem(:final passage) => HookBuilder(
+                                  builder: (context) {
+                                    final passageController = usePassageController(passage.chapter);
+                                    useRegistryItem(passageControllerRegistry, passage, passageController);
 
-                                  final listController = passageController.listController;
-                                  useOnListenableChange(listController, () {
-                                    if (listController.isAttached &&
-                                        listController.visibleRange?.$2 == listController.numberOfItems - 1) {
-                                      readPassages.add(passage);
-                                    }
-                                  });
+                                    final listController = passageController.listController;
+                                    useOnListenableChange(listController, () {
+                                      if (listController.isAttached &&
+                                          listController.visibleRange?.$2 == listController.numberOfItems - 1) {
+                                        readItems.add(item);
+                                      }
+                                    });
 
-                                  return SafeArea(
-                                    top: false,
-                                    bottom: false,
-                                    right: !isSideLayout || !studyPanelCarousel.hasPanels,
-                                    child: PassageBuilder(
-                                      verseSelection: passage.verseSelection,
-                                      selection: selectionController,
-                                      emphasizedReference: audioBibleSync.getEmphasizedReferenceForPassage(passage),
-                                      controller: passageController,
-                                      onNavigateToVerseSelection: navigateToVerseSelection,
-                                      padding: .only(
-                                        left: 24,
-                                        top: 16,
-                                        right: 24,
-                                        bottom: MediaQuery.viewPaddingOf(context).bottom + 96,
-                                      ),
-                                      showLoading: false,
-                                      contentBuilder: (context, passageContent) =>
-                                          NotificationListener<ScrollStartNotification>(
-                                            onNotification: (notification) {
-                                              if (notification.dragDetails != null && planAudioPlayer.isPlaying) {
-                                                audioBibleController.pause(context: .plan);
-                                              }
-                                              return false;
-                                            },
-                                            child: passageContent,
+                                    return SafeArea(
+                                      top: false,
+                                      bottom: false,
+                                      right: !isSideLayout || !studyPanelCarousel.hasPanels,
+                                      child: PassageBuilder(
+                                        verseSelection: passage.verseSelection,
+                                        selection: selectionController,
+                                        emphasizedReference: audioBibleSync.getEmphasizedReferenceForPassage(passage),
+                                        controller: passageController,
+                                        onNavigateToVerseSelection: navigateToVerseSelection,
+                                        padding: .only(
+                                          left: 24,
+                                          top: 16,
+                                          right: 24,
+                                          bottom: MediaQuery.viewPaddingOf(context).bottom + 96,
+                                        ),
+                                        showLoading: false,
+                                        contentBuilder: (context, passageContent) =>
+                                            NotificationListener<ScrollStartNotification>(
+                                              onNotification: (notification) {
+                                                if (notification.dragDetails != null && planAudioPlayer.isPlaying) {
+                                                  audioBibleController.pause(context: .plan);
+                                                }
+                                                return false;
+                                              },
+                                              child: passageContent,
+                                            ),
+                                        footer: StyledRectButton.secondary(
+                                          label:
+                                              (passage.isWholeChapter
+                                                      ? t.biblePlans.readInContext
+                                                      : t.biblePlans.readEntireChapter)
+                                                  .toText(),
+                                          onPressed: () => PassagePreviewPage.show(
+                                            context,
+                                            verseSelection: passage.verseSelection,
+                                            onNavigateToVerseSelection: (selection) => context.pop(selection),
                                           ),
-                                      footer: StyledRectButton.secondary(
-                                        label:
-                                            (passage.isWholeChapter
-                                                    ? t.biblePlans.readInContext
-                                                    : t.biblePlans.readEntireChapter)
-                                                .toText(),
-                                        onPressed: () => PassagePreviewPage.show(
-                                          context,
-                                          verseSelection: passage.verseSelection,
-                                          onNavigateToVerseSelection: (selection) => context.pop(selection),
                                         ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  },
+                                ),
+                                BiblePlanDayStep.studyNotes => switch (day.studyNote) {
+                                  final note? => BiblePlanStudyNotesView(
+                                    note: note,
+                                    // Follows the Bible text size setting so the notes read at the same scale.
+                                    sizeMultiplier: user.themeLayout
+                                        .getFontSizeSpacingOrSystem(context.textScaling)
+                                        .multiplier,
+                                    scrollController: studyNotesScrollController,
+                                    onReadToEnd: () => readItems.add(item),
+                                    onNavigateToVerseSelection: navigateToVerseSelection,
+                                  ),
+                                  null => SizedBox.shrink(),
                                 },
-                              ),
+                                BiblePlanDayStep.reflection => switch (day.studyNote?.reflectionQuestion) {
+                                  final question? => BiblePlanReflectionView(
+                                    question: question,
+                                    answer: reflectionAnswer,
+                                    onAnswerChanged: (answer) => ref.updateUser(
+                                      (user) => user.withPlanReflectionAnswer(
+                                        planId: planId,
+                                        dayIndex: dayIndex,
+                                        answer: answer,
+                                      ),
+                                    ),
+                                  ),
+                                  null => SizedBox.shrink(),
+                                },
+                              },
                             )
                             .toList(),
                       ),
@@ -410,32 +476,30 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
                     isToolbarVisible: bottomBarVisibility.isVisible,
                     hasStudyPanels: studyPanelCarousel.hasPanels,
                     isSideLayout: isSideLayout,
-                    toolbar: MainToolbar(
-                      bookTitle: bookTitle,
-                      location: currentPassage.format().replaceFirst('$bookTitle\u{00A0}', ''),
-                      mainToolbar: user.mainToolbar,
-                      translation: currentTranslation,
-                      user: user,
-                      audioContext: .plan,
-                      leading: StyledCircleButton.sm(
-                        colorBuilder: .primary,
-                        child: Icon(nextIncompletePassageIndex == null ? Symbols.check : Symbols.arrow_forward),
-                        onPressed: completePassageAndContinue,
-                      ),
-                      onPressed: () => onShortcutPressed(.switchBible),
-                      onShorcutPressed: (_, shortcut) => onShortcutPressed(shortcut),
-                      onMorePressed: () async {
-                        final action = await MainActionsSheet.show(
-                          context,
-                          audioContext: .plan,
-                          hiddenActions: {.verseOfTheDay, .bookmark, .plans},
-                        );
-                        if (action != null && context.mounted) {
-                          onMainActionPressed(action);
-                        }
-                      },
-                    ),
-                    selectionToolbar: selectionController.hasSelection
+                    toolbar: currentItem is BiblePlanDayStep
+                        ? TitledToolbar(leading: nextOrDoneButton, title: currentItem.title())
+                        : MainToolbar(
+                            bookTitle: bookTitle,
+                            location: currentPassage.format().replaceFirst('$bookTitle\u{00A0}', ''),
+                            mainToolbar: user.mainToolbar,
+                            translation: currentTranslation,
+                            user: user,
+                            audioContext: .plan,
+                            leading: nextOrDoneButton,
+                            onPressed: () => onShortcutPressed(.switchBible),
+                            onShorcutPressed: (_, shortcut) => onShortcutPressed(shortcut),
+                            onMorePressed: () async {
+                              final action = await MainActionsSheet.show(
+                                context,
+                                audioContext: .plan,
+                                hiddenActions: {.verseOfTheDay, .bookmark, .plans},
+                              );
+                              if (action != null && context.mounted) {
+                                onMainActionPressed(action);
+                              }
+                            },
+                          ),
+                    selectionToolbar: currentItem is BiblePlanPassageItem && selectionController.hasSelection
                         ? SelectionToolbar(
                             selectionController: selectionController,
                             onNavigateToVerseSelection: navigateToVerseSelection,

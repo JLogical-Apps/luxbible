@@ -14,11 +14,15 @@ class HydratedBiblePlanProgress {
 
   BiblePlanDayId getDayId(int dayIndex) => BiblePlanDayId(instanceId: instanceId, dayIndex: dayIndex);
 
-  bool isPassageComplete({required int dayIndex, required ChapterPassage passage}) =>
-      (progress.days.elementAtOrNull(dayIndex) ?? BiblePlanDayProgress.incomplete()).isPassageComplete(passage);
+  List<BiblePlanDayItem> getDayItems(int dayIndex) => progress.getDayItems(plan.days[dayIndex]);
 
-  bool isDayComplete({required int dayIndex}) =>
-      (progress.days.elementAtOrNull(dayIndex) ?? BiblePlanDayProgress.incomplete()).isComplete;
+  bool isItemComplete({required int dayIndex, required BiblePlanDayItem item}) =>
+      progress.getDayProgress(dayIndex).isItemComplete(item);
+
+  bool isDayComplete({required int dayIndex}) => progress.getDayProgress(dayIndex).isComplete;
+
+  int getFirstIncompleteItemIndex(int dayIndex) =>
+      getDayItems(dayIndex).indexWhereOrNull((item) => !isItemComplete(dayIndex: dayIndex, item: item)) ?? 0;
 
   int get currentDayIndex =>
       plan.dayIndexes.firstWhereOrNull((index) => !isDayComplete(dayIndex: index)) ?? (plan.days.length - 1);

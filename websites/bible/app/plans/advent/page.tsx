@@ -89,7 +89,7 @@ export default function AdventPage() {
         id="study-notes"
         align="start"
         title="Study notes for every reading"
-        subtitle="Open Study Notes below the day’s passages for short notes and optional resources. The notes and bundled texts are available offline."
+        subtitle="Each day’s passages are followed by short study notes and a question to reflect on. The notes and bundled texts are available offline."
       >
         <FeatureShowcase
           features={[
@@ -102,7 +102,7 @@ export default function AdventPage() {
             {
               title: 'Explore related resources',
               subtitle:
-                'Open related Scripture, commentaries, and historic creeds and confessions in Lux. Selected BibleProject videos are available on YouTube.',
+                'Tap a Hebrew or Greek word to see its form in the verse, or open related Scripture, commentaries, creeds, and BibleProject videos without leaving Lux.',
               video: '/media/advent/day-walkthrough.webm',
             },
           ]}
