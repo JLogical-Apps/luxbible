@@ -1064,6 +1064,7 @@ class _Translations$biblePlans$nl extends Translations$biblePlans$en {
 	@override String get reflectionQuestions => 'Reflectievragen';
 	@override String get reflectionAnswerHint => 'Schrijf je gedachten op…';
 	@override String get reflectionAnswerPrivacy => 'Je antwoord wordt alleen op dit apparaat bewaard.';
+	@override String get reflectionAnswersPrivacy => 'Je antwoorden worden alleen op dit apparaat bewaard.';
 	@override String get discussReflection => 'Bekijk op Discord hoe anderen antwoorden.';
 	@override String get skipAllReflectionsQuestion => 'Alle reflectievragen overslaan?';
 	@override String get skipAllReflectionsConfirmation => 'Je kunt ze weer aanzetten via het menu van het leesplan.';
@@ -3998,6 +3999,7 @@ extension on TranslationsNl {
 			'biblePlans.reflectionQuestions' => 'Reflectievragen',
 			'biblePlans.reflectionAnswerHint' => 'Schrijf je gedachten op…',
 			'biblePlans.reflectionAnswerPrivacy' => 'Je antwoord wordt alleen op dit apparaat bewaard.',
+			'biblePlans.reflectionAnswersPrivacy' => 'Je antwoorden worden alleen op dit apparaat bewaard.',
 			'biblePlans.discussReflection' => 'Bekijk op Discord hoe anderen antwoorden.',
 			'biblePlans.skipAllReflectionsQuestion' => 'Alle reflectievragen overslaan?',
 			'biblePlans.skipAllReflectionsConfirmation' => 'Je kunt ze weer aanzetten via het menu van het leesplan.',
@@ -4318,9 +4320,9 @@ extension on TranslationsNl {
 			'morphology.types.article.examples' => 'de koning|de Heer',
 			'morphology.types.conjunction.name' => 'Voegwoord',
 			'morphology.types.conjunction.description' => 'Een woord dat andere woorden of zinnen verbindt.',
-			'morphology.types.conjunction.examples' => 'en|maar|want',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.types.conjunction.examples' => 'en|maar|want',
 			'morphology.types.preposition.name' => 'Voorzetsel',
 			'morphology.types.preposition.description' => 'Verbindt een zelfstandig naamwoord of voornaamwoord met andere woorden.',
 			'morphology.types.preposition.examples' => 'in|naar|met',

@@ -156,7 +156,7 @@ final class VerseOfTheDayForDateProvider
 }
 
 String _$verseOfTheDayForDateHash() =>
-    r'1f1a2984bad5653d43d8ab570153fa0bcc7a883b';
+    r'b106b9aa2f6e072c2262d9e7993969f3f283afbc';
 
 final class VerseOfTheDayForDateFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<VerseOfTheDay>, DateTime> {

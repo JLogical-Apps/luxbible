@@ -22,7 +22,7 @@ class BiblePlanReflectionFlow {
       ),
     );
     final progress = user.planProgressById[planId];
-    if (progress == null || progress.getReflectionAnswer(dayIndex) != null || progress.hasOfferedToSkipReflections) {
+    if (progress == null || progress.hasReflectionAnswer(dayIndex) || progress.hasOfferedToSkipReflections) {
       return;
     }
 

@@ -1062,6 +1062,7 @@ class _Translations$biblePlans$de extends Translations$biblePlans$en {
 	@override String get reflectionQuestions => 'Reflexionsfragen';
 	@override String get reflectionAnswerHint => 'Schreib deine Gedanken auf…';
 	@override String get reflectionAnswerPrivacy => 'Deine Antwort wird nur auf diesem Gerät gespeichert.';
+	@override String get reflectionAnswersPrivacy => 'Deine Antworten werden nur auf diesem Gerät gespeichert.';
 	@override String get discussReflection => 'Sieh auf Discord, wie andere antworten.';
 	@override String get skipAllReflectionsQuestion => 'Alle Reflexionsfragen überspringen?';
 	@override String get skipAllReflectionsConfirmation => 'Du kannst sie im Menü des Plans wieder einschalten.';
@@ -3994,6 +3995,7 @@ extension on TranslationsDe {
 			'biblePlans.reflectionQuestions' => 'Reflexionsfragen',
 			'biblePlans.reflectionAnswerHint' => 'Schreib deine Gedanken auf…',
 			'biblePlans.reflectionAnswerPrivacy' => 'Deine Antwort wird nur auf diesem Gerät gespeichert.',
+			'biblePlans.reflectionAnswersPrivacy' => 'Deine Antworten werden nur auf diesem Gerät gespeichert.',
 			'biblePlans.discussReflection' => 'Sieh auf Discord, wie andere antworten.',
 			'biblePlans.skipAllReflectionsQuestion' => 'Alle Reflexionsfragen überspringen?',
 			'biblePlans.skipAllReflectionsConfirmation' => 'Du kannst sie im Menü des Plans wieder einschalten.',
@@ -4316,9 +4318,9 @@ extension on TranslationsDe {
 			'morphology.types.conjunction.description' => 'Ein Wort, das andere Wörter oder Sätze verbindet.',
 			'morphology.types.conjunction.examples' => 'und|aber|denn',
 			'morphology.types.preposition.name' => 'Präposition',
-			'morphology.types.preposition.description' => 'Setzt ein Substantiv oder Pronomen in Beziehung zu anderen Wörtern.',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.types.preposition.description' => 'Setzt ein Substantiv oder Pronomen in Beziehung zu anderen Wörtern.',
 			'morphology.types.preposition.examples' => 'in|zu|mit',
 			'morphology.types.adverb.name' => 'Adverb',
 			'morphology.types.adverb.description' => 'Bestimmt ein Verb, Adjektiv oder anderes Adverb näher.',

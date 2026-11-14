@@ -24,6 +24,7 @@ import 'package:style/style.dart';
 class StudyPanelLayout extends StatelessWidget {
   final StudyPanelCarousel carousel;
   final bool isSideLayout;
+  final bool isHidden;
 
   final ChapterPassage passage;
   final PassageController? passageController;
@@ -38,6 +39,7 @@ class StudyPanelLayout extends StatelessWidget {
     super.key,
     required this.carousel,
     required this.isSideLayout,
+    this.isHidden = false,
     required this.passage,
     required this.passageController,
     required this.selectionController,
@@ -56,6 +58,7 @@ class StudyPanelLayout extends StatelessWidget {
       child: StudyPanelSection(
         carousel: carousel,
         isSideLayout: isSideLayout,
+        isHidden: isHidden,
         passage: passage,
         passageController: passageController,
         selectionController: selectionController,
@@ -64,12 +67,13 @@ class StudyPanelLayout extends StatelessWidget {
         onNavigateToVerseSelection: onNavigateToVerseSelection,
       ),
     );
+    final isShowingPanels = carousel.hasPanels && !isHidden;
 
     return isSideLayout
         ? Row(
             children: [
               Expanded(flex: 4, child: child),
-              if (carousel.hasPanels) ...[
+              if (isShowingPanels) ...[
                 Expanded(flex: 3, child: section),
                 SizedBox(width: MediaQuery.viewPaddingOf(context).right),
               ],
@@ -81,7 +85,7 @@ class StudyPanelLayout extends StatelessWidget {
                 child: Stack(
                   children: [
                     Positioned.fill(child: child),
-                    if (carousel.panelCount > 1)
+                    if (isShowingPanels && carousel.panelCount > 1)
                       Positioned(bottom: 2, left: 0, right: 0, child: StudyPanelIndicator(carousel: carousel)),
                   ],
                 ),
@@ -95,6 +99,7 @@ class StudyPanelLayout extends StatelessWidget {
 class StudyPanelSection extends HookConsumerWidget {
   final StudyPanelCarousel carousel;
   final bool isSideLayout;
+  final bool isHidden;
 
   final ChapterPassage passage;
   final PassageController? passageController;
@@ -107,6 +112,7 @@ class StudyPanelSection extends HookConsumerWidget {
     super.key,
     required this.carousel,
     required this.isSideLayout,
+    required this.isHidden,
     required this.passage,
     required this.passageController,
     required this.selectionController,
@@ -319,8 +325,11 @@ class StudyPanelSection extends HookConsumerWidget {
       ].map((child) => KeepAliveContainer(child: child)).toList(),
     );
 
+    // Only the panels are swapped out, so the section keeps its height and the carousel its panels while hidden.
+    final isShowingPanels = carousel.hasPanels && !isHidden;
+
     if (isSideLayout) {
-      if (!carousel.hasPanels) {
+      if (!isShowingPanels) {
         return SizedBox.shrink();
       }
 
@@ -345,7 +354,7 @@ class StudyPanelSection extends HookConsumerWidget {
 
     return AnimatedGrow(
       duration: isResizingState.value ? Duration(milliseconds: 1) : Duration(milliseconds: 300),
-      child: carousel.hasPanels
+      child: isShowingPanels
           ? ResizableContainer(
               initialHeight: studyPanelHeightRef.value,
               minHeight: minStudyPanelHeight,

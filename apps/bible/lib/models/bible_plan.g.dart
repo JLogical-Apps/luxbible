@@ -37,7 +37,9 @@ _BiblePlanDay _$BiblePlanDayFromJson(Map<String, dynamic> json) =>
           ? const []
           : ChapterPassage.listFromJson(json['passages'] as List),
       studyNotes: nullIfBlank(json['studyNotes'] as String?),
-      reflectionQuestion: nullIfBlank(json['reflectionQuestion'] as String?),
+      reflectionQuestions: json['reflectionQuestions'] == null
+          ? const []
+          : withoutBlanks(json['reflectionQuestions'] as List),
     );
 
 Map<String, dynamic> _$BiblePlanDayToJson(_BiblePlanDay instance) =>
@@ -45,7 +47,7 @@ Map<String, dynamic> _$BiblePlanDayToJson(_BiblePlanDay instance) =>
       'title': ?instance.title,
       'passages': instance.passages.map((e) => e.toJson()).toList(),
       'studyNotes': ?instance.studyNotes,
-      'reflectionQuestion': ?instance.reflectionQuestion,
+      'reflectionQuestions': ?nullIfEmpty(instance.reflectionQuestions),
     };
 
 _BiblePlanProgress _$BiblePlanProgressFromJson(Map<String, dynamic> json) =>
@@ -66,9 +68,14 @@ _BiblePlanProgress _$BiblePlanProgressFromJson(Map<String, dynamic> json) =>
       isSkippingReflections: json['isSkippingReflections'] as bool? ?? false,
       hasOfferedToSkipReflections:
           json['hasOfferedToSkipReflections'] as bool? ?? false,
-      reflectionAnswerByDayIndex:
-          (json['reflectionAnswerByDayIndex'] as Map<String, dynamic>?)?.map(
-            (k, e) => MapEntry(int.parse(k), e as String),
+      reflectionAnswersByDayIndex:
+          (json['reflectionAnswersByDayIndex'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(
+              int.parse(k),
+              (e as Map<String, dynamic>).map(
+                (k, e) => MapEntry(int.parse(k), e as String),
+              ),
+            ),
           ) ??
           const {},
     );
@@ -82,8 +89,9 @@ Map<String, dynamic> _$BiblePlanProgressToJson(_BiblePlanProgress instance) =>
       'pace': instance.pace.toJson(),
       'isSkippingReflections': instance.isSkippingReflections,
       'hasOfferedToSkipReflections': instance.hasOfferedToSkipReflections,
-      'reflectionAnswerByDayIndex': instance.reflectionAnswerByDayIndex.map(
-        (k, e) => MapEntry(k.toString(), e),
+      'reflectionAnswersByDayIndex': instance.reflectionAnswersByDayIndex.map(
+        (k, e) =>
+            MapEntry(k.toString(), e.map((k, e) => MapEntry(k.toString(), e))),
       ),
     };
 

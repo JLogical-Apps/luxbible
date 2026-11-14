@@ -63,7 +63,7 @@ sealed class BiblePlan with _$BiblePlan {
 
   List<int> get dayIndexes => List.generate(dayCount, (i) => i);
 
-  bool get hasReflectionQuestions => days.any((day) => day.reflectionQuestion != null);
+  bool get hasReflectionQuestions => days.any((day) => day.reflectionQuestions.isNotEmpty);
 }
 
 @freezed
@@ -74,7 +74,7 @@ sealed class BiblePlanDay with _$BiblePlanDay {
     @nonBlankString String? title,
     @JsonKey(fromJson: ChapterPassage.listFromJson) @Default([]) List<ChapterPassage> passages,
     @nonBlankString String? studyNotes,
-    @nonBlankString String? reflectionQuestion,
+    @nonBlankStrings @Default([]) List<String> reflectionQuestions,
   }) = _BiblePlanDay;
 
   factory BiblePlanDay.fromJson(Map<String, dynamic> json) => _$BiblePlanDayFromJson(json);
@@ -93,13 +93,13 @@ sealed class BiblePlanDay with _$BiblePlanDay {
 
   BiblePlanDay withStepRemoved(BiblePlanDayStep step) => switch (step) {
     .studyNotes => copyWith(studyNotes: null),
-    .reflection => copyWith(reflectionQuestion: null),
+    .reflection => copyWith(reflectionQuestions: []),
   };
 
   List<BiblePlanDayItem> getItems({required bool includesReflection}) => [
     ...passages.map(BiblePlanPassageItem.new),
     if (studyNotes != null) BiblePlanDayStep.studyNotes,
-    if (includesReflection && reflectionQuestion != null) BiblePlanDayStep.reflection,
+    if (includesReflection && reflectionQuestions.isNotEmpty) BiblePlanDayStep.reflection,
   ];
 }
 
@@ -152,7 +152,7 @@ sealed class BiblePlanProgress with _$BiblePlanProgress {
     @Default(BiblePlanPace.relaxed()) BiblePlanPace pace,
     @Default(false) bool isSkippingReflections,
     @Default(false) bool hasOfferedToSkipReflections,
-    @Default({}) Map<int, String> reflectionAnswerByDayIndex,
+    @Default({}) Map<int, Map<int, String>> reflectionAnswersByDayIndex,
   }) = _BiblePlanProgress;
 
   factory BiblePlanProgress.start(BiblePlan plan, {required BiblePlanPace pace, List<BiblePlanDayProgress>? days}) =>
@@ -174,7 +174,9 @@ sealed class BiblePlanProgress with _$BiblePlanProgress {
   BiblePlanDayProgress getDayProgress(int dayIndex) =>
       days.elementAtOrNull(dayIndex) ?? BiblePlanDayProgress.incomplete();
 
-  String? getReflectionAnswer(int dayIndex) => reflectionAnswerByDayIndex[dayIndex];
+  Map<int, String> getReflectionAnswerByQuestionIndex(int dayIndex) => reflectionAnswersByDayIndex[dayIndex] ?? {};
+
+  bool hasReflectionAnswer(int dayIndex) => reflectionAnswersByDayIndex.containsKey(dayIndex);
 
   bool wasCompletedOnLocalDate(DateTime date) => lastCompletedAt?.isOnSameLocalDateAs(date) ?? false;
   bool wasCompletedToday() => wasCompletedOnLocalDate(.now());
@@ -213,11 +215,16 @@ sealed class BiblePlanProgress with _$BiblePlanProgress {
     );
   }
 
-  BiblePlanProgress withReflectionAnswer({required int dayIndex, required String answer}) => copyWith(
-    reflectionAnswerByDayIndex: answer.trim().isEmpty
-        ? ({...reflectionAnswerByDayIndex}..remove(dayIndex))
-        : {...reflectionAnswerByDayIndex, dayIndex: answer},
-  );
+  // Blank answers and days are dropped so a day with any entry counts as answered.
+  BiblePlanProgress withReflectionAnswer({required int dayIndex, required int questionIndex, required String answer}) {
+    final answerByQuestionIndex = {...getReflectionAnswerByQuestionIndex(dayIndex), questionIndex: answer}
+      ..removeWhere((_, answer) => answer.trim().isEmpty);
+    return copyWith(
+      reflectionAnswersByDayIndex: answerByQuestionIndex.isEmpty
+          ? ({...reflectionAnswersByDayIndex}..remove(dayIndex))
+          : {...reflectionAnswersByDayIndex, dayIndex: answerByQuestionIndex},
+    );
+  }
 
   // A different instance means a run was swapped in, so its already-completed days aren't new completions.
   bool hasCompletedDaySince(BiblePlanProgress? previous) =>

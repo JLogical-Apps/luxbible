@@ -47,13 +47,18 @@ const studyExample = `{
       "title": "Naomi comes home empty",
       "passages": ["Ruth.1"],
       "studyNotes": "Naomi leaves Moab with nothing but Ruth, and she can't yet see that Ruth is the gift.\\n\\n### Go Deeper\\n\\n> Where you go I will go.\\n\\nCompare Ruth's promise in [Ruth 1:16-17](Ruth.1.16-Ruth.1.17) with what [Matthew Henry](commentary:matthewHenry/Ruth.1.16-Ruth.1.17) says about it.",
-      "reflectionQuestion": "Where might God be providing for you in a way you haven't noticed yet?"
+      "reflectionQuestions": [
+        "Where might God be providing for you in a way you haven't noticed yet?"
+      ]
     },
     { "title": "Gleaning in Boaz's field", "passages": ["Ruth.2"] },
     {
       "title": "Looking back",
       "passages": [],
-      "reflectionQuestion": "Where have you seen Naomi's bitterness or Ruth's loyalty in your own life?"
+      "reflectionQuestions": [
+        "Where have you seen Naomi's bitterness in your own life?",
+        "Where have you seen Ruth's loyalty?"
+      ]
     }
   ]
 }`;
@@ -173,10 +178,10 @@ export default function LxbpFormatPage() {
                 day&apos;s passages, with its own checkbox.
               </li>
               <li>
-                <code>reflectionQuestion</code> (optional, on a day): one
-                question shown in a Reflection Question tab after the study
-                notes, with space for a private answer that stays on the
-                reader&apos;s device. Readers can skip these or turn them off
+                <code>reflectionQuestions</code> (optional, on a day): a list
+                of questions shown in a Reflection Question tab after the
+                study notes, each with space for a private answer that stays
+                on the reader&apos;s device. Readers can skip these or turn them off
                 for the whole plan.
               </li>
             </ul>
@@ -343,15 +348,15 @@ export default function LxbpFormatPage() {
                 <code>YYYY-MM-DD</code> form.
               </li>
               <li>
-                <code>title</code>, <code>studyNotes</code>, and{' '}
-                <code>reflectionQuestion</code> have to be text. Empty text
-                counts as leaving the field out.
+                <code>title</code> and <code>studyNotes</code> have to be
+                text, and <code>reflectionQuestions</code> a list of text.
+                Empty text counts as leaving it out.
               </li>
               <li>
                 Nothing outside <code>name</code>, <code>days</code>,{' '}
                 <code>color</code>, <code>targetDate</code>,{' '}
                 <code>title</code>, <code>passages</code>,{' '}
-                <code>studyNotes</code>, <code>reflectionQuestion</code>,{' '}
+                <code>studyNotes</code>, <code>reflectionQuestions</code>,{' '}
                 <code>completed</code>, <code>completedPassages</code>,{' '}
                 <code>completedStudyNotes</code>, and{' '}
                 <code>completedReflectionQuestion</code> is recognized; extra

@@ -447,6 +447,7 @@ class BibleBody extends HookConsumerWidget {
           isToolbarVisible: bottomBarVisibility.isVisible,
           hasStudyPanels: studyPanelCarousel.hasPanels,
           isSideLayout: isSideLayout,
+          isAvoidingKeyboard: false,
           toolbar: toolbar(),
           selectionToolbar: selectionController.hasSelection
               ? SelectionToolbar(

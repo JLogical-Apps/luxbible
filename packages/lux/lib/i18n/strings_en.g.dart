@@ -2426,6 +2426,9 @@ class Translations$biblePlans$en {
 	/// en: 'Your answer is saved only on this device.'
 	String get reflectionAnswerPrivacy => 'Your answer is saved only on this device.';
 
+	/// en: 'Your answers are saved only on this device.'
+	String get reflectionAnswersPrivacy => 'Your answers are saved only on this device.';
+
 	/// en: 'See how others are answering on Discord.'
 	String get discussReflection => 'See how others are answering on Discord.';
 
@@ -6655,6 +6658,7 @@ extension on Translations {
 			'biblePlans.reflectionQuestions' => 'Reflection Questions',
 			'biblePlans.reflectionAnswerHint' => 'Write your thoughts…',
 			'biblePlans.reflectionAnswerPrivacy' => 'Your answer is saved only on this device.',
+			'biblePlans.reflectionAnswersPrivacy' => 'Your answers are saved only on this device.',
 			'biblePlans.discussReflection' => 'See how others are answering on Discord.',
 			'biblePlans.skipAllReflectionsQuestion' => 'Skip All Reflection Questions?',
 			'biblePlans.skipAllReflectionsConfirmation' => 'You can turn them back on from the plan\'s menu.',
@@ -6977,9 +6981,9 @@ extension on Translations {
 			'morphology.types.conjunction.description' => 'A word that joins other words or clauses.',
 			'morphology.types.conjunction.examples' => 'and|but|for',
 			'morphology.types.preposition.name' => 'Preposition',
-			'morphology.types.preposition.description' => 'Relates a noun or pronoun to other words.',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.types.preposition.description' => 'Relates a noun or pronoun to other words.',
 			'morphology.types.preposition.examples' => 'in|to|with',
 			'morphology.types.adverb.name' => 'Adverb',
 			'morphology.types.adverb.description' => 'Modifies a verb, adjective, or another adverb.',

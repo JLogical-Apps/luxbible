@@ -92,11 +92,12 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
     );
     final currentIndex = useListenableSelector(tabController, () => tabController.index);
     final currentItem = items[currentIndex];
-    // Study notes and reflection tabs come after the passages, so they keep the last passage for study panels.
+    // Study notes and reflection tabs keep the last passage so the panel layout stays mounted while its panels are hidden.
     final currentPassage = switch (currentItem) {
       BiblePlanPassageItem(:final passage) => passage,
       BiblePlanDayStep() => passages.lastOrNull,
     };
+    final isShowingPassage = currentItem is BiblePlanPassageItem;
     final nextIncompleteItemIndex = currentProgress.getNextIncompleteItemIndex(
       items: items,
       currentIndex: currentIndex,
@@ -191,6 +192,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
 
     useWhenValueChanged(currentIndex, (oldIndex, currentIndex) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
+        FocusManager.instance.primaryFocus?.unfocus();
         bottomBarVisibility.show();
         selectionController.clear();
         final session = ref.read(audioBibleProvider(context: .plan));
@@ -255,8 +257,6 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
         );
       }
     }
-
-    final reflectionAnswer = progress?.progress.getReflectionAnswer(dayIndex) ?? '';
 
     void completeItemAndContinue() async {
       if (currentItem == BiblePlanDayStep.reflection) {
@@ -439,19 +439,21 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
                               onReadToEnd: () => readItems.add(item),
                               onNavigateToVerseSelection: navigateToVerseSelection,
                             ),
-                            BiblePlanDayStep.reflection => switch (day.reflectionQuestion) {
-                              final question? => BiblePlanReflectionView(
-                                question: question,
-                                answer: reflectionAnswer,
-                                // Others are only discussing it on Discord while the plan's season is underway.
-                                hasDiscussion: BiblePlanType.getById(planId)?.season?.isActiveOn(.now()) ?? false,
-                                onAnswerChanged: (answer) => ref.updateUser(
-                                  (user) =>
-                                      user.withPlanReflectionAnswer(planId: planId, dayIndex: dayIndex, answer: answer),
+                            BiblePlanDayStep.reflection => BiblePlanReflectionView(
+                              questions: day.reflectionQuestions,
+                              answerByQuestionIndex:
+                                  progress?.progress.getReflectionAnswerByQuestionIndex(dayIndex) ?? {},
+                              // Others are only discussing it on Discord while the plan's season is underway.
+                              hasDiscussion: BiblePlanType.getById(planId)?.season?.isActiveOn(.now()) ?? false,
+                              onAnswerChanged: (questionIndex, answer) => ref.updateUser(
+                                (user) => user.withPlanReflectionAnswer(
+                                  planId: planId,
+                                  dayIndex: dayIndex,
+                                  questionIndex: questionIndex,
+                                  answer: answer,
                                 ),
                               ),
-                              null => SizedBox.shrink(),
-                            },
+                            ),
                           },
                         )
                         .toList(),
@@ -460,8 +462,9 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
               ),
               ReaderBottomBar(
                 isToolbarVisible: bottomBarVisibility.isVisible,
-                hasStudyPanels: currentPassage != null && studyPanelCarousel.hasPanels,
+                hasStudyPanels: isShowingPassage && studyPanelCarousel.hasPanels,
                 isSideLayout: isSideLayout,
+                isAvoidingKeyboard: currentItem == BiblePlanDayStep.reflection,
                 toolbar: switch (currentItem) {
                   BiblePlanDayStep() => TitledToolbar(leading: nextOrDoneButton, title: currentItem.title()),
                   BiblePlanPassageItem(:final passage) => MainToolbar(
@@ -509,6 +512,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
         final passage? => StudyPanelLayout(
           carousel: studyPanelCarousel,
           isSideLayout: isSideLayout,
+          isHidden: !isShowingPassage,
           passage: passage,
           passageController: currentPassageController,
           selectionController: selectionController,

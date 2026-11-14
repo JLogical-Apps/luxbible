@@ -53,7 +53,7 @@ class LuxPlanSource {
             'title': day.title,
             'passages': day.passages,
             'studyNotes': day.studyNotes,
-            'reflectionQuestion': ?day.reflectionQuestion,
+            'reflectionQuestions': ?day.reflectionQuestion?.mapIfNonNull((question) => [question]),
           },
         )
         .toList(),

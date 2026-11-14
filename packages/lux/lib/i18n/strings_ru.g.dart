@@ -1078,6 +1078,7 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	@override String get reflectionQuestions => 'Вопросы для размышления';
 	@override String get reflectionAnswerHint => 'Запишите свои мысли…';
 	@override String get reflectionAnswerPrivacy => 'Ваш ответ сохраняется только на этом устройстве.';
+	@override String get reflectionAnswersPrivacy => 'Ваши ответы сохраняются только на этом устройстве.';
 	@override String get discussReflection => 'Узнайте в Discord, как отвечают другие.';
 	@override String get skipAllReflectionsQuestion => 'Пропустить все вопросы для размышления?';
 	@override String get skipAllReflectionsConfirmation => 'Их можно снова включить в меню плана.';
@@ -4022,6 +4023,7 @@ extension on TranslationsRu {
 			'biblePlans.reflectionQuestions' => 'Вопросы для размышления',
 			'biblePlans.reflectionAnswerHint' => 'Запишите свои мысли…',
 			'biblePlans.reflectionAnswerPrivacy' => 'Ваш ответ сохраняется только на этом устройстве.',
+			'biblePlans.reflectionAnswersPrivacy' => 'Ваши ответы сохраняются только на этом устройстве.',
 			'biblePlans.discussReflection' => 'Узнайте в Discord, как отвечают другие.',
 			'biblePlans.skipAllReflectionsQuestion' => 'Пропустить все вопросы для размышления?',
 			'biblePlans.skipAllReflectionsConfirmation' => 'Их можно снова включить в меню плана.',
@@ -4342,9 +4344,9 @@ extension on TranslationsRu {
 			'morphology.types.article.examples' => 'король | Господь',
 			'morphology.types.conjunction.name' => 'Союз',
 			'morphology.types.conjunction.description' => 'Слово, которое объединяет другие слова или предложения.',
-			'morphology.types.conjunction.examples' => 'и|но|для',
 			_ => null,
 		} ?? switch (path) {
+			'morphology.types.conjunction.examples' => 'и|но|для',
 			'morphology.types.preposition.name' => 'Предлог',
 			'morphology.types.preposition.description' => 'Связывает существительное или местоимение с другими словами.',
 			'morphology.types.preposition.examples' => 'в|в|с',

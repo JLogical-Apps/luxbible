@@ -36,6 +36,7 @@ class StyledTextField extends HookWidget {
   final FocusNode? focusNode;
 
   final TextStyle? textStyle;
+  final EdgeInsets scrollPadding;
 
   const StyledTextField({
     super.key,
@@ -59,6 +60,7 @@ class StyledTextField extends HookWidget {
     this.inputFormatters = const [],
     this.focusNode,
     this.textStyle,
+    this.scrollPadding = const EdgeInsets.all(20),
   }) : maxLines = 1;
 
   const StyledTextField.multiline({
@@ -83,6 +85,7 @@ class StyledTextField extends HookWidget {
     this.inputFormatters = const [],
     this.focusNode,
     this.textStyle,
+    this.scrollPadding = const EdgeInsets.all(20),
   }) : maxLines = 4;
 
   @override
@@ -138,6 +141,7 @@ class StyledTextField extends HookWidget {
           TextField(
             controller: controller,
             focusNode: focusNode,
+            scrollPadding: scrollPadding,
             readOnly: readOnly,
             onChanged: (text) => onChanged?.call(text),
             autocorrect: autocorrect && (textInputType == .text || textInputType == .multiline),

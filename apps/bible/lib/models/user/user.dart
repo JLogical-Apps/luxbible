@@ -525,8 +525,15 @@ sealed class User with _$User {
     ),
   );
 
-  User withPlanReflectionAnswer({required String planId, required int dayIndex, required String answer}) =>
-      withUpdatePlanProgress(planId, (progress) => progress.withReflectionAnswer(dayIndex: dayIndex, answer: answer));
+  User withPlanReflectionAnswer({
+    required String planId,
+    required int dayIndex,
+    required int questionIndex,
+    required String answer,
+  }) => withUpdatePlanProgress(
+    planId,
+    (progress) => progress.withReflectionAnswer(dayIndex: dayIndex, questionIndex: questionIndex, answer: answer),
+  );
 
   User withPlanReflectionsSkipped({required String planId, required BiblePlan plan, required bool isSkipped}) =>
       withUpdatePlanProgress(planId, (progress) => progress.withReflectionsSkipped(plan, isSkipped: isSkipped));

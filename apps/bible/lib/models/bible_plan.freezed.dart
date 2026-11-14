@@ -285,7 +285,7 @@ as BiblePlanColor?,
 /// @nodoc
 mixin _$BiblePlanDay {
 
-@nonBlankString String? get title;@JsonKey(fromJson: ChapterPassage.listFromJson) List<ChapterPassage> get passages;@nonBlankString String? get studyNotes;@nonBlankString String? get reflectionQuestion;
+@nonBlankString String? get title;@JsonKey(fromJson: ChapterPassage.listFromJson) List<ChapterPassage> get passages;@nonBlankString String? get studyNotes;@nonBlankStrings List<String> get reflectionQuestions;
 /// Create a copy of BiblePlanDay
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -298,16 +298,16 @@ $BiblePlanDayCopyWith<BiblePlanDay> get copyWith => _$BiblePlanDayCopyWithImpl<B
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlanDay&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other.passages, passages)&&(identical(other.studyNotes, studyNotes) || other.studyNotes == studyNotes)&&(identical(other.reflectionQuestion, reflectionQuestion) || other.reflectionQuestion == reflectionQuestion));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlanDay&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other.passages, passages)&&(identical(other.studyNotes, studyNotes) || other.studyNotes == studyNotes)&&const DeepCollectionEquality().equals(other.reflectionQuestions, reflectionQuestions));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,title,const DeepCollectionEquality().hash(passages),studyNotes,reflectionQuestion);
+int get hashCode => Object.hash(runtimeType,title,const DeepCollectionEquality().hash(passages),studyNotes,const DeepCollectionEquality().hash(reflectionQuestions));
 
 @override
 String toString() {
-  return 'BiblePlanDay(title: $title, passages: $passages, studyNotes: $studyNotes, reflectionQuestion: $reflectionQuestion)';
+  return 'BiblePlanDay(title: $title, passages: $passages, studyNotes: $studyNotes, reflectionQuestions: $reflectionQuestions)';
 }
 
 
@@ -318,7 +318,7 @@ abstract mixin class $BiblePlanDayCopyWith<$Res>  {
   factory $BiblePlanDayCopyWith(BiblePlanDay value, $Res Function(BiblePlanDay) _then) = _$BiblePlanDayCopyWithImpl;
 @useResult
 $Res call({
-@nonBlankString String? title,@JsonKey(fromJson: ChapterPassage.listFromJson) List<ChapterPassage> passages,@nonBlankString String? studyNotes,@nonBlankString String? reflectionQuestion
+@nonBlankString String? title,@JsonKey(fromJson: ChapterPassage.listFromJson) List<ChapterPassage> passages,@nonBlankString String? studyNotes,@nonBlankStrings List<String> reflectionQuestions
 });
 
 
@@ -335,13 +335,13 @@ class _$BiblePlanDayCopyWithImpl<$Res>
 
 /// Create a copy of BiblePlanDay
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? title = freezed,Object? passages = null,Object? studyNotes = freezed,Object? reflectionQuestion = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? title = freezed,Object? passages = null,Object? studyNotes = freezed,Object? reflectionQuestions = null,}) {
   return _then(BiblePlanDay(
 title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String?,passages: null == passages ? _self.passages : passages // ignore: cast_nullable_to_non_nullable
 as List<ChapterPassage>,studyNotes: freezed == studyNotes ? _self.studyNotes : studyNotes // ignore: cast_nullable_to_non_nullable
-as String?,reflectionQuestion: freezed == reflectionQuestion ? _self.reflectionQuestion : reflectionQuestion // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,reflectionQuestions: null == reflectionQuestions ? _self.reflectionQuestions : reflectionQuestions // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 
@@ -423,10 +423,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@nonBlankString  String? title, @JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages, @nonBlankString  String? studyNotes, @nonBlankString  String? reflectionQuestion)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@nonBlankString  String? title, @JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages, @nonBlankString  String? studyNotes, @nonBlankStrings  List<String> reflectionQuestions)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BiblePlanDay() when $default != null:
-return $default(_that.title,_that.passages,_that.studyNotes,_that.reflectionQuestion);case _:
+return $default(_that.title,_that.passages,_that.studyNotes,_that.reflectionQuestions);case _:
   return orElse();
 
 }
@@ -444,10 +444,10 @@ return $default(_that.title,_that.passages,_that.studyNotes,_that.reflectionQues
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@nonBlankString  String? title, @JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages, @nonBlankString  String? studyNotes, @nonBlankString  String? reflectionQuestion)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@nonBlankString  String? title, @JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages, @nonBlankString  String? studyNotes, @nonBlankStrings  List<String> reflectionQuestions)  $default,) {final _that = this;
 switch (_that) {
 case _BiblePlanDay():
-return $default(_that.title,_that.passages,_that.studyNotes,_that.reflectionQuestion);}
+return $default(_that.title,_that.passages,_that.studyNotes,_that.reflectionQuestions);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -461,10 +461,10 @@ return $default(_that.title,_that.passages,_that.studyNotes,_that.reflectionQues
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@nonBlankString  String? title, @JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages, @nonBlankString  String? studyNotes, @nonBlankString  String? reflectionQuestion)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@nonBlankString  String? title, @JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages, @nonBlankString  String? studyNotes, @nonBlankStrings  List<String> reflectionQuestions)?  $default,) {final _that = this;
 switch (_that) {
 case _BiblePlanDay() when $default != null:
-return $default(_that.title,_that.passages,_that.studyNotes,_that.reflectionQuestion);case _:
+return $default(_that.title,_that.passages,_that.studyNotes,_that.reflectionQuestions);case _:
   return null;
 
 }
@@ -476,7 +476,7 @@ return $default(_that.title,_that.passages,_that.studyNotes,_that.reflectionQues
 @JsonSerializable()
 
 class _BiblePlanDay extends BiblePlanDay {
-  const _BiblePlanDay({@nonBlankString this.title, @JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages = const [], @nonBlankString this.studyNotes, @nonBlankString this.reflectionQuestion}): _passages = passages,super._();
+  const _BiblePlanDay({@nonBlankString this.title, @JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages = const [], @nonBlankString this.studyNotes, @nonBlankStrings  List<String> reflectionQuestions = const []}): _passages = passages,_reflectionQuestions = reflectionQuestions,super._();
   factory _BiblePlanDay.fromJson(Map<String, dynamic> json) => _$BiblePlanDayFromJson(json);
 
 @override@nonBlankString final  String? title;
@@ -488,7 +488,13 @@ class _BiblePlanDay extends BiblePlanDay {
 }
 
 @override@nonBlankString final  String? studyNotes;
-@override@nonBlankString final  String? reflectionQuestion;
+ final  List<String> _reflectionQuestions;
+@override@nonBlankStrings List<String> get reflectionQuestions {
+  if (_reflectionQuestions is EqualUnmodifiableListView) return _reflectionQuestions;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_reflectionQuestions);
+}
+
 
 /// Create a copy of BiblePlanDay
 /// with the given fields replaced by the non-null parameter values.
@@ -503,16 +509,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BiblePlanDay&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other._passages, _passages)&&(identical(other.studyNotes, studyNotes) || other.studyNotes == studyNotes)&&(identical(other.reflectionQuestion, reflectionQuestion) || other.reflectionQuestion == reflectionQuestion));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BiblePlanDay&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other._passages, _passages)&&(identical(other.studyNotes, studyNotes) || other.studyNotes == studyNotes)&&const DeepCollectionEquality().equals(other._reflectionQuestions, _reflectionQuestions));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,title,const DeepCollectionEquality().hash(_passages),studyNotes,reflectionQuestion);
+int get hashCode => Object.hash(runtimeType,title,const DeepCollectionEquality().hash(_passages),studyNotes,const DeepCollectionEquality().hash(_reflectionQuestions));
 
 @override
 String toString() {
-  return 'BiblePlanDay(title: $title, passages: $passages, studyNotes: $studyNotes, reflectionQuestion: $reflectionQuestion)';
+  return 'BiblePlanDay(title: $title, passages: $passages, studyNotes: $studyNotes, reflectionQuestions: $reflectionQuestions)';
 }
 
 
@@ -523,7 +529,7 @@ abstract mixin class _$BiblePlanDayCopyWith<$Res> implements $BiblePlanDayCopyWi
   factory _$BiblePlanDayCopyWith(_BiblePlanDay value, $Res Function(_BiblePlanDay) _then) = __$BiblePlanDayCopyWithImpl;
 @override @useResult
 $Res call({
-@nonBlankString String? title,@JsonKey(fromJson: ChapterPassage.listFromJson) List<ChapterPassage> passages,@nonBlankString String? studyNotes,@nonBlankString String? reflectionQuestion
+@nonBlankString String? title,@JsonKey(fromJson: ChapterPassage.listFromJson) List<ChapterPassage> passages,@nonBlankString String? studyNotes,@nonBlankStrings List<String> reflectionQuestions
 });
 
 
@@ -540,13 +546,13 @@ class __$BiblePlanDayCopyWithImpl<$Res>
 
 /// Create a copy of BiblePlanDay
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? title = freezed,Object? passages = null,Object? studyNotes = freezed,Object? reflectionQuestion = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? title = freezed,Object? passages = null,Object? studyNotes = freezed,Object? reflectionQuestions = null,}) {
   return _then(_BiblePlanDay(
 title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String?,passages: null == passages ? _self._passages : passages // ignore: cast_nullable_to_non_nullable
 as List<ChapterPassage>,studyNotes: freezed == studyNotes ? _self.studyNotes : studyNotes // ignore: cast_nullable_to_non_nullable
-as String?,reflectionQuestion: freezed == reflectionQuestion ? _self.reflectionQuestion : reflectionQuestion // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,reflectionQuestions: null == reflectionQuestions ? _self._reflectionQuestions : reflectionQuestions // ignore: cast_nullable_to_non_nullable
+as List<String>,
   ));
 }
 
@@ -557,7 +563,7 @@ as String?,
 /// @nodoc
 mixin _$BiblePlanProgress {
 
- String? get instanceId; List<BiblePlanDayProgress> get days; Reminder? get reminder; CalendarDateTime? get lastCompletedAt; BiblePlanPace get pace; bool get isSkippingReflections; bool get hasOfferedToSkipReflections; Map<int, String> get reflectionAnswerByDayIndex;
+ String? get instanceId; List<BiblePlanDayProgress> get days; Reminder? get reminder; CalendarDateTime? get lastCompletedAt; BiblePlanPace get pace; bool get isSkippingReflections; bool get hasOfferedToSkipReflections; Map<int, Map<int, String>> get reflectionAnswersByDayIndex;
 /// Create a copy of BiblePlanProgress
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -570,16 +576,16 @@ $BiblePlanProgressCopyWith<BiblePlanProgress> get copyWith => _$BiblePlanProgres
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlanProgress&&(identical(other.instanceId, instanceId) || other.instanceId == instanceId)&&const DeepCollectionEquality().equals(other.days, days)&&(identical(other.reminder, reminder) || other.reminder == reminder)&&(identical(other.lastCompletedAt, lastCompletedAt) || other.lastCompletedAt == lastCompletedAt)&&(identical(other.pace, pace) || other.pace == pace)&&(identical(other.isSkippingReflections, isSkippingReflections) || other.isSkippingReflections == isSkippingReflections)&&(identical(other.hasOfferedToSkipReflections, hasOfferedToSkipReflections) || other.hasOfferedToSkipReflections == hasOfferedToSkipReflections)&&const DeepCollectionEquality().equals(other.reflectionAnswerByDayIndex, reflectionAnswerByDayIndex));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlanProgress&&(identical(other.instanceId, instanceId) || other.instanceId == instanceId)&&const DeepCollectionEquality().equals(other.days, days)&&(identical(other.reminder, reminder) || other.reminder == reminder)&&(identical(other.lastCompletedAt, lastCompletedAt) || other.lastCompletedAt == lastCompletedAt)&&(identical(other.pace, pace) || other.pace == pace)&&(identical(other.isSkippingReflections, isSkippingReflections) || other.isSkippingReflections == isSkippingReflections)&&(identical(other.hasOfferedToSkipReflections, hasOfferedToSkipReflections) || other.hasOfferedToSkipReflections == hasOfferedToSkipReflections)&&const DeepCollectionEquality().equals(other.reflectionAnswersByDayIndex, reflectionAnswersByDayIndex));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,instanceId,const DeepCollectionEquality().hash(days),reminder,lastCompletedAt,pace,isSkippingReflections,hasOfferedToSkipReflections,const DeepCollectionEquality().hash(reflectionAnswerByDayIndex));
+int get hashCode => Object.hash(runtimeType,instanceId,const DeepCollectionEquality().hash(days),reminder,lastCompletedAt,pace,isSkippingReflections,hasOfferedToSkipReflections,const DeepCollectionEquality().hash(reflectionAnswersByDayIndex));
 
 @override
 String toString() {
-  return 'BiblePlanProgress(instanceId: $instanceId, days: $days, reminder: $reminder, lastCompletedAt: $lastCompletedAt, pace: $pace, isSkippingReflections: $isSkippingReflections, hasOfferedToSkipReflections: $hasOfferedToSkipReflections, reflectionAnswerByDayIndex: $reflectionAnswerByDayIndex)';
+  return 'BiblePlanProgress(instanceId: $instanceId, days: $days, reminder: $reminder, lastCompletedAt: $lastCompletedAt, pace: $pace, isSkippingReflections: $isSkippingReflections, hasOfferedToSkipReflections: $hasOfferedToSkipReflections, reflectionAnswersByDayIndex: $reflectionAnswersByDayIndex)';
 }
 
 
@@ -590,7 +596,7 @@ abstract mixin class $BiblePlanProgressCopyWith<$Res>  {
   factory $BiblePlanProgressCopyWith(BiblePlanProgress value, $Res Function(BiblePlanProgress) _then) = _$BiblePlanProgressCopyWithImpl;
 @useResult
 $Res call({
- String? instanceId, List<BiblePlanDayProgress> days, Reminder? reminder, CalendarDateTime? lastCompletedAt, BiblePlanPace pace, bool isSkippingReflections, bool hasOfferedToSkipReflections, Map<int, String> reflectionAnswerByDayIndex
+ String? instanceId, List<BiblePlanDayProgress> days, Reminder? reminder, CalendarDateTime? lastCompletedAt, BiblePlanPace pace, bool isSkippingReflections, bool hasOfferedToSkipReflections, Map<int, Map<int, String>> reflectionAnswersByDayIndex
 });
 
 
@@ -607,7 +613,7 @@ class _$BiblePlanProgressCopyWithImpl<$Res>
 
 /// Create a copy of BiblePlanProgress
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? instanceId = freezed,Object? days = null,Object? reminder = freezed,Object? lastCompletedAt = freezed,Object? pace = null,Object? isSkippingReflections = null,Object? hasOfferedToSkipReflections = null,Object? reflectionAnswerByDayIndex = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? instanceId = freezed,Object? days = null,Object? reminder = freezed,Object? lastCompletedAt = freezed,Object? pace = null,Object? isSkippingReflections = null,Object? hasOfferedToSkipReflections = null,Object? reflectionAnswersByDayIndex = null,}) {
   return _then(BiblePlanProgress(
 instanceId: freezed == instanceId ? _self.instanceId : instanceId // ignore: cast_nullable_to_non_nullable
 as String?,days: null == days ? _self.days : days // ignore: cast_nullable_to_non_nullable
@@ -616,8 +622,8 @@ as Reminder?,lastCompletedAt: freezed == lastCompletedAt ? _self.lastCompletedAt
 as CalendarDateTime?,pace: null == pace ? _self.pace : pace // ignore: cast_nullable_to_non_nullable
 as BiblePlanPace,isSkippingReflections: null == isSkippingReflections ? _self.isSkippingReflections : isSkippingReflections // ignore: cast_nullable_to_non_nullable
 as bool,hasOfferedToSkipReflections: null == hasOfferedToSkipReflections ? _self.hasOfferedToSkipReflections : hasOfferedToSkipReflections // ignore: cast_nullable_to_non_nullable
-as bool,reflectionAnswerByDayIndex: null == reflectionAnswerByDayIndex ? _self.reflectionAnswerByDayIndex : reflectionAnswerByDayIndex // ignore: cast_nullable_to_non_nullable
-as Map<int, String>,
+as bool,reflectionAnswersByDayIndex: null == reflectionAnswersByDayIndex ? _self.reflectionAnswersByDayIndex : reflectionAnswersByDayIndex // ignore: cast_nullable_to_non_nullable
+as Map<int, Map<int, String>>,
   ));
 }
 /// Create a copy of BiblePlanProgress
@@ -720,10 +726,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? instanceId,  List<BiblePlanDayProgress> days,  Reminder? reminder,  CalendarDateTime? lastCompletedAt,  BiblePlanPace pace,  bool isSkippingReflections,  bool hasOfferedToSkipReflections,  Map<int, String> reflectionAnswerByDayIndex)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? instanceId,  List<BiblePlanDayProgress> days,  Reminder? reminder,  CalendarDateTime? lastCompletedAt,  BiblePlanPace pace,  bool isSkippingReflections,  bool hasOfferedToSkipReflections,  Map<int, Map<int, String>> reflectionAnswersByDayIndex)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BiblePlanProgress() when $default != null:
-return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt,_that.pace,_that.isSkippingReflections,_that.hasOfferedToSkipReflections,_that.reflectionAnswerByDayIndex);case _:
+return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt,_that.pace,_that.isSkippingReflections,_that.hasOfferedToSkipReflections,_that.reflectionAnswersByDayIndex);case _:
   return orElse();
 
 }
@@ -741,10 +747,10 @@ return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? instanceId,  List<BiblePlanDayProgress> days,  Reminder? reminder,  CalendarDateTime? lastCompletedAt,  BiblePlanPace pace,  bool isSkippingReflections,  bool hasOfferedToSkipReflections,  Map<int, String> reflectionAnswerByDayIndex)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? instanceId,  List<BiblePlanDayProgress> days,  Reminder? reminder,  CalendarDateTime? lastCompletedAt,  BiblePlanPace pace,  bool isSkippingReflections,  bool hasOfferedToSkipReflections,  Map<int, Map<int, String>> reflectionAnswersByDayIndex)  $default,) {final _that = this;
 switch (_that) {
 case _BiblePlanProgress():
-return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt,_that.pace,_that.isSkippingReflections,_that.hasOfferedToSkipReflections,_that.reflectionAnswerByDayIndex);}
+return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt,_that.pace,_that.isSkippingReflections,_that.hasOfferedToSkipReflections,_that.reflectionAnswersByDayIndex);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -758,10 +764,10 @@ return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? instanceId,  List<BiblePlanDayProgress> days,  Reminder? reminder,  CalendarDateTime? lastCompletedAt,  BiblePlanPace pace,  bool isSkippingReflections,  bool hasOfferedToSkipReflections,  Map<int, String> reflectionAnswerByDayIndex)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? instanceId,  List<BiblePlanDayProgress> days,  Reminder? reminder,  CalendarDateTime? lastCompletedAt,  BiblePlanPace pace,  bool isSkippingReflections,  bool hasOfferedToSkipReflections,  Map<int, Map<int, String>> reflectionAnswersByDayIndex)?  $default,) {final _that = this;
 switch (_that) {
 case _BiblePlanProgress() when $default != null:
-return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt,_that.pace,_that.isSkippingReflections,_that.hasOfferedToSkipReflections,_that.reflectionAnswerByDayIndex);case _:
+return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt,_that.pace,_that.isSkippingReflections,_that.hasOfferedToSkipReflections,_that.reflectionAnswersByDayIndex);case _:
   return null;
 
 }
@@ -773,7 +779,7 @@ return $default(_that.instanceId,_that.days,_that.reminder,_that.lastCompletedAt
 @JsonSerializable()
 
 class _BiblePlanProgress extends BiblePlanProgress {
-  const _BiblePlanProgress({this.instanceId, required  List<BiblePlanDayProgress> days, this.reminder, this.lastCompletedAt, this.pace = const BiblePlanPace.relaxed(), this.isSkippingReflections = false, this.hasOfferedToSkipReflections = false,  Map<int, String> reflectionAnswerByDayIndex = const {}}): _days = days,_reflectionAnswerByDayIndex = reflectionAnswerByDayIndex,super._();
+  const _BiblePlanProgress({this.instanceId, required  List<BiblePlanDayProgress> days, this.reminder, this.lastCompletedAt, this.pace = const BiblePlanPace.relaxed(), this.isSkippingReflections = false, this.hasOfferedToSkipReflections = false,  Map<int, Map<int, String>> reflectionAnswersByDayIndex = const {}}): _days = days,_reflectionAnswersByDayIndex = reflectionAnswersByDayIndex,super._();
   factory _BiblePlanProgress.fromJson(Map<String, dynamic> json) => _$BiblePlanProgressFromJson(json);
 
 @override final  String? instanceId;
@@ -789,11 +795,11 @@ class _BiblePlanProgress extends BiblePlanProgress {
 @override@JsonKey() final  BiblePlanPace pace;
 @override@JsonKey() final  bool isSkippingReflections;
 @override@JsonKey() final  bool hasOfferedToSkipReflections;
- final  Map<int, String> _reflectionAnswerByDayIndex;
-@override@JsonKey() Map<int, String> get reflectionAnswerByDayIndex {
-  if (_reflectionAnswerByDayIndex is EqualUnmodifiableMapView) return _reflectionAnswerByDayIndex;
+ final  Map<int, Map<int, String>> _reflectionAnswersByDayIndex;
+@override@JsonKey() Map<int, Map<int, String>> get reflectionAnswersByDayIndex {
+  if (_reflectionAnswersByDayIndex is EqualUnmodifiableMapView) return _reflectionAnswersByDayIndex;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableMapView(_reflectionAnswerByDayIndex);
+  return EqualUnmodifiableMapView(_reflectionAnswersByDayIndex);
 }
 
 
@@ -810,16 +816,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BiblePlanProgress&&(identical(other.instanceId, instanceId) || other.instanceId == instanceId)&&const DeepCollectionEquality().equals(other._days, _days)&&(identical(other.reminder, reminder) || other.reminder == reminder)&&(identical(other.lastCompletedAt, lastCompletedAt) || other.lastCompletedAt == lastCompletedAt)&&(identical(other.pace, pace) || other.pace == pace)&&(identical(other.isSkippingReflections, isSkippingReflections) || other.isSkippingReflections == isSkippingReflections)&&(identical(other.hasOfferedToSkipReflections, hasOfferedToSkipReflections) || other.hasOfferedToSkipReflections == hasOfferedToSkipReflections)&&const DeepCollectionEquality().equals(other._reflectionAnswerByDayIndex, _reflectionAnswerByDayIndex));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BiblePlanProgress&&(identical(other.instanceId, instanceId) || other.instanceId == instanceId)&&const DeepCollectionEquality().equals(other._days, _days)&&(identical(other.reminder, reminder) || other.reminder == reminder)&&(identical(other.lastCompletedAt, lastCompletedAt) || other.lastCompletedAt == lastCompletedAt)&&(identical(other.pace, pace) || other.pace == pace)&&(identical(other.isSkippingReflections, isSkippingReflections) || other.isSkippingReflections == isSkippingReflections)&&(identical(other.hasOfferedToSkipReflections, hasOfferedToSkipReflections) || other.hasOfferedToSkipReflections == hasOfferedToSkipReflections)&&const DeepCollectionEquality().equals(other._reflectionAnswersByDayIndex, _reflectionAnswersByDayIndex));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,instanceId,const DeepCollectionEquality().hash(_days),reminder,lastCompletedAt,pace,isSkippingReflections,hasOfferedToSkipReflections,const DeepCollectionEquality().hash(_reflectionAnswerByDayIndex));
+int get hashCode => Object.hash(runtimeType,instanceId,const DeepCollectionEquality().hash(_days),reminder,lastCompletedAt,pace,isSkippingReflections,hasOfferedToSkipReflections,const DeepCollectionEquality().hash(_reflectionAnswersByDayIndex));
 
 @override
 String toString() {
-  return 'BiblePlanProgress(instanceId: $instanceId, days: $days, reminder: $reminder, lastCompletedAt: $lastCompletedAt, pace: $pace, isSkippingReflections: $isSkippingReflections, hasOfferedToSkipReflections: $hasOfferedToSkipReflections, reflectionAnswerByDayIndex: $reflectionAnswerByDayIndex)';
+  return 'BiblePlanProgress(instanceId: $instanceId, days: $days, reminder: $reminder, lastCompletedAt: $lastCompletedAt, pace: $pace, isSkippingReflections: $isSkippingReflections, hasOfferedToSkipReflections: $hasOfferedToSkipReflections, reflectionAnswersByDayIndex: $reflectionAnswersByDayIndex)';
 }
 
 
@@ -830,7 +836,7 @@ abstract mixin class _$BiblePlanProgressCopyWith<$Res> implements $BiblePlanProg
   factory _$BiblePlanProgressCopyWith(_BiblePlanProgress value, $Res Function(_BiblePlanProgress) _then) = __$BiblePlanProgressCopyWithImpl;
 @override @useResult
 $Res call({
- String? instanceId, List<BiblePlanDayProgress> days, Reminder? reminder, CalendarDateTime? lastCompletedAt, BiblePlanPace pace, bool isSkippingReflections, bool hasOfferedToSkipReflections, Map<int, String> reflectionAnswerByDayIndex
+ String? instanceId, List<BiblePlanDayProgress> days, Reminder? reminder, CalendarDateTime? lastCompletedAt, BiblePlanPace pace, bool isSkippingReflections, bool hasOfferedToSkipReflections, Map<int, Map<int, String>> reflectionAnswersByDayIndex
 });
 
 
@@ -847,7 +853,7 @@ class __$BiblePlanProgressCopyWithImpl<$Res>
 
 /// Create a copy of BiblePlanProgress
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? instanceId = freezed,Object? days = null,Object? reminder = freezed,Object? lastCompletedAt = freezed,Object? pace = null,Object? isSkippingReflections = null,Object? hasOfferedToSkipReflections = null,Object? reflectionAnswerByDayIndex = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? instanceId = freezed,Object? days = null,Object? reminder = freezed,Object? lastCompletedAt = freezed,Object? pace = null,Object? isSkippingReflections = null,Object? hasOfferedToSkipReflections = null,Object? reflectionAnswersByDayIndex = null,}) {
   return _then(_BiblePlanProgress(
 instanceId: freezed == instanceId ? _self.instanceId : instanceId // ignore: cast_nullable_to_non_nullable
 as String?,days: null == days ? _self._days : days // ignore: cast_nullable_to_non_nullable
@@ -856,8 +862,8 @@ as Reminder?,lastCompletedAt: freezed == lastCompletedAt ? _self.lastCompletedAt
 as CalendarDateTime?,pace: null == pace ? _self.pace : pace // ignore: cast_nullable_to_non_nullable
 as BiblePlanPace,isSkippingReflections: null == isSkippingReflections ? _self.isSkippingReflections : isSkippingReflections // ignore: cast_nullable_to_non_nullable
 as bool,hasOfferedToSkipReflections: null == hasOfferedToSkipReflections ? _self.hasOfferedToSkipReflections : hasOfferedToSkipReflections // ignore: cast_nullable_to_non_nullable
-as bool,reflectionAnswerByDayIndex: null == reflectionAnswerByDayIndex ? _self._reflectionAnswerByDayIndex : reflectionAnswerByDayIndex // ignore: cast_nullable_to_non_nullable
-as Map<int, String>,
+as bool,reflectionAnswersByDayIndex: null == reflectionAnswersByDayIndex ? _self._reflectionAnswersByDayIndex : reflectionAnswersByDayIndex // ignore: cast_nullable_to_non_nullable
+as Map<int, Map<int, String>>,
   ));
 }
 
