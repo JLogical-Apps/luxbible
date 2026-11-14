@@ -46,18 +46,17 @@ class AdventBanner extends StatelessWidget {
                   children: [
                     gapW8,
                     SizedBox(
-                      width: 48,
-                      height: 42,
+                      width: 36,
+                      height: 36,
                       child: AdventCandles(litCandles: stage.litCandles, isComplete: stage.isComplete),
                     ),
                     gapW24,
                     Expanded(
                       child: Column(
                         crossAxisAlignment: .start,
-                        spacing: 2,
                         children: [
                           Text(plan.getDisplayName(BiblePlanType.advent.name), style: context.textStyle.displayXxxs),
-                          Text(countdown, style: context.textStyle.labelMd.copyWith(color: context.colors.yellow.dark)),
+                          Text(countdown, style: context.textStyle.labelSm.copyWith(color: context.colors.yellow.dark)),
                         ],
                       ),
                     ),
