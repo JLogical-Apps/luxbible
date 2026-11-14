@@ -1,10 +1,8 @@
 import 'package:bible/models/advent_stage.dart';
 import 'package:bible/models/bible_plan.dart';
 import 'package:bible/models/hydrated_bible_plan_progress.dart';
-import 'package:bible/providers/bible_plan_study_notes_provider.dart';
 import 'package:bible/providers/user_provider.dart';
 import 'package:bible/ui/sheets/bible_plan_annotations_sheet.dart';
-import 'package:bible/ui/sheets/bible_plan_study_note_sheet.dart';
 import 'package:bible/ui/widgets/advent_card_header.dart';
 import 'package:bible/ui/widgets/bible_plan_thumbnail.dart';
 import 'package:collection/collection.dart';
@@ -24,8 +22,8 @@ class BiblePlanProgressCard extends HookConsumerWidget {
   final Widget? footer;
 
   final Function(VerseSelection) onNavigateToVerseSelection;
-  final Function(int dayIndex, int passageIndex)? onPassagePressed;
-  final Function(int dayIndex, ChapterPassage passage)? onPassageToggled;
+  final Function(int dayIndex, int itemIndex)? onItemPressed;
+  final Function(int dayIndex, BiblePlanDayItem item)? onItemToggled;
   final Function(int dayIndex)? onReviewDayToggled;
 
   const BiblePlanProgressCard({
@@ -36,8 +34,8 @@ class BiblePlanProgressCard extends HookConsumerWidget {
     required this.getMenuItems,
     this.footer,
     required this.onNavigateToVerseSelection,
-    this.onPassagePressed,
-    this.onPassageToggled,
+    this.onItemPressed,
+    this.onItemToggled,
     this.onReviewDayToggled,
   });
 
@@ -52,8 +50,6 @@ class BiblePlanProgressCard extends HookConsumerWidget {
     final dayIndex = useListenableSelector(tabController, () => tabController.index);
     final day = plan.days[dayIndex];
     final planDay = progress.getDayId(dayIndex);
-
-    final studyNote = ref.watch(biblePlanStudyNotesProvider(planId: progress.id)).value?.elementAtOrNull(dayIndex);
 
     final header = StyledListItem(
       // The advent header already draws the scene behind the thumbnail.
@@ -94,6 +90,30 @@ class BiblePlanProgressCard extends HookConsumerWidget {
           .toList(),
     );
 
+    final itemTiles = progress
+        .getDayItems(dayIndex)
+        .mapIndexed(
+          (itemIndex, item) => StyledListItem(
+            leading: switch (item) {
+              BiblePlanDayStep(:final icon) => icon.toIcon(),
+              BiblePlanPassageItem() => null,
+            },
+            title: item.title().toText(),
+            onPressed: switch (onItemPressed) {
+              final onItemPressed? => () => onItemPressed(dayIndex, itemIndex),
+              null => null,
+            },
+            trailing: StyledCheckbox(
+              isSelected: progress.isItemComplete(dayIndex: dayIndex, item: item),
+              onChanged: switch (onItemToggled) {
+                final onItemToggled? => (_) => onItemToggled(dayIndex, item),
+                null => null,
+              },
+            ),
+          ),
+        )
+        .toList();
+
     return StyledCard(
       children: [
         ...switch (season) {
@@ -106,52 +126,23 @@ class BiblePlanProgressCard extends HookConsumerWidget {
           ],
           null => [header, tabBar],
         },
-        StyledList(
-          children: [
-            ...day.isReviewAndReflect
-                ? [
-                    StyledListItem(
-                      title: t.biblePlans.reviewAndReflect.toText(),
-                      trailing: StyledCheckbox(isSelected: progress.isDayComplete(dayIndex: dayIndex)),
-                      onPressed: switch (onReviewDayToggled) {
-                        final onReviewDayToggled? => () => onReviewDayToggled(dayIndex),
-                        null => null,
-                      },
-                    ),
-                  ]
-                : day.passages
-                      .mapIndexed(
-                        (passageIndex, passage) => StyledListItem(
-                          title: passage.format().toText(),
-                          onPressed: switch (onPassagePressed) {
-                            final onPassagePressed? => () => onPassagePressed(dayIndex, passageIndex),
-                            null => null,
-                          },
-                          trailing: StyledCheckbox(
-                            isSelected: progress.isPassageComplete(dayIndex: dayIndex, passage: passage),
-                            onChanged: switch (onPassageToggled) {
-                              final onPassageToggled? => (_) => onPassageToggled(dayIndex, passage),
-                              null => null,
-                            },
-                          ),
-                        ),
-                      )
-                      .toList(),
-            if (studyNote != null)
-              StyledListItem.navigation(
-                leading: Symbols.auto_stories.toIcon(),
-                title: t.biblePlans.studyNotes.toText(),
-                subtitle: studyNote.title.toText(),
-                onPressed: () => BiblePlanStudyNoteSheet.show(
-                  context,
-                  note: studyNote,
-                  planName: displayName,
-                  dayIndex: dayIndex,
-                  onNavigateToVerseSelection: onNavigateToVerseSelection,
-                ),
+        if (day.isReviewAndReflect)
+          StyledList(
+            children: [
+              StyledListItem(
+                title: t.biblePlans.reviewAndReflect.toText(),
+                trailing: StyledCheckbox(isSelected: progress.isDayComplete(dayIndex: dayIndex)),
+                onPressed: switch (onReviewDayToggled) {
+                  final onReviewDayToggled? => () => onReviewDayToggled(dayIndex),
+                  null => null,
+                },
               ),
-          ],
-        ),
+            ],
+          )
+        else if (day.studyNote case final studyNote?)
+          StyledStickyHeader(key: ValueKey(day), title: studyNote.title.toText(), children: itemTiles)
+        else
+          StyledList(key: ValueKey(day), children: itemTiles),
         if (user.getPlanDayAnnotations(planDay).isNotEmpty || footer != null)
           Padding(
             padding: .all(16),

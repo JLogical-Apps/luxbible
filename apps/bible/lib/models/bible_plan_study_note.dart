@@ -9,6 +9,7 @@ sealed class BiblePlanStudyNote with _$BiblePlanStudyNote {
   const factory BiblePlanStudyNote({
     @JsonKey(name: 't') required String title,
     @JsonKey(name: 'b') required List<RichContent> body,
+    @JsonKey(name: 'q', includeIfNull: false) String? reflectionQuestion,
   }) = _BiblePlanStudyNote;
 
   factory BiblePlanStudyNote.fromJson(Map<String, dynamic> json) => _$BiblePlanStudyNoteFromJson(json);

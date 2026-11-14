@@ -1,6 +1,5 @@
 import 'package:bible/models/morphology.dart';
 import 'package:bible/models/strong.dart';
-import 'package:bible/providers/app_bible_provider.dart';
 import 'package:bible/providers/root_ref.dart';
 import 'package:bible/providers/strongs_provider.dart';
 import 'package:bible/providers/user_provider.dart';
@@ -20,6 +19,7 @@ class StrongSheet {
     BuildContext context, {
     String? strongId,
     Word? word,
+    BibleTranslation? wordTranslation,
     Function(VerseSelection)? onNavigateToVerseSelection,
   }) async {
     final strongs = ref.read(strongsProvider);
@@ -31,10 +31,12 @@ class StrongSheet {
     final morphologyCodes = morphologyCode == null ? null : Morphology.splitCode(morphologyCode);
 
     final user = ref.read(userProvider);
+    final translation = wordTranslation ?? user.studyTranslation;
 
     void openStrong(BuildContext context, String strongId) => StrongSheet.showWithBreadcrumbs(
       context,
       strongId: strongId,
+      wordTranslation: wordTranslation,
       onNavigateToVerseSelection: onNavigateToVerseSelection,
     );
 
@@ -51,8 +53,7 @@ class StrongSheet {
             spacing: 8,
             children: [
               ?word?.data?.inflection?.toText() ?? strongId?.toText(),
-              if (user.translation != user.studyTranslation)
-                StyledTag.sm(child: user.studyTranslation.title().toText()),
+              if (translation != user.translation) StyledTag.sm(child: translation.title().toText()),
             ],
           ),
         ),
@@ -212,6 +213,7 @@ class StrongSheet {
               context,
               ref,
               strongId: strongId,
+              translation: translation,
               onNavigateToVerseSelection: onNavigateToVerseSelection,
             ),
           ];
@@ -276,18 +278,19 @@ class StrongSheet {
     BuildContext context,
     WidgetRef ref, {
     required String? strongId,
+    required BibleTranslation translation,
     Function(VerseSelection)? onNavigateToVerseSelection,
   }) {
     final user = ref.watch(userProvider);
-    final studyBible = ref.watch(studyBibleProvider).value;
-    if (studyBible == null) {
+    final bible = ref.watch(localBibleProvider(translation: translation)).value;
+    if (bible == null) {
       return [Padding(padding: .all(16), child: StyledLoading())];
     }
 
     final otherReferences = strongId == null
         ? null
-        : studyBible.references
-              .where((reference) => studyBible.getVerseByReference(reference)?.strongIds.has(strongId) ?? false)
+        : bible.references
+              .where((reference) => bible.getVerseByReference(reference)?.strongIds.has(strongId) ?? false)
               .toList();
 
     if (otherReferences == null || otherReferences.isEmpty || onNavigateToVerseSelection == null) {
@@ -311,7 +314,7 @@ class StrongSheet {
       ),
       children: otherReferences
           .map((reference) {
-            final verse = studyBible.getVerseByReference(reference);
+            final verse = bible.getVerseByReference(reference);
             if (verse == null) {
               return null;
             }

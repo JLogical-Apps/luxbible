@@ -1074,6 +1074,15 @@ class _Translations$biblePlans$ru extends Translations$biblePlans$en {
 	@override String get complete => 'Завершить';
 	@override String get reviewDayAnnotations => 'Просмотреть аннотации дня';
 	@override String get studyNotes => 'Учебные заметки';
+	@override String get reflectionQuestion => 'Вопрос для размышления';
+	@override String get reflectionQuestions => 'Вопросы для размышления';
+	@override String get reflectionAnswerHint => 'Запишите свои мысли…';
+	@override String get reflectionAnswerPrivacy => 'Ваш ответ сохраняется только на этом устройстве.';
+	@override String get discussReflection => 'Узнайте в Discord, как отвечают другие.';
+	@override String get skipAllReflectionsQuestion => 'Пропустить все вопросы для размышления?';
+	@override String get skipAllReflectionsConfirmation => 'Их можно снова включить в меню плана.';
+	@override String get skipAll => 'Пропустить все';
+	@override String get justThisOne => 'Только этот';
 	@override String beginsInDays({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count,
 		one: 'Начнётся через ${count} день',
 		few: 'Начнётся через ${count} дня',
@@ -1415,7 +1424,7 @@ class _Translations$planTypes$ru extends Translations$planTypes$en {
 	@override String get pentateuchAndHistoryDescription => 'Путешествие по пяти книгам Моисея и истории Израиля за год.';
 	@override String get psalmsAndWisdomDescription => 'Проведите год за чтением псалмов и книг мудрости, таких как Притчи, Иов и Экклезиаст.';
 	@override String get advent => 'Адвент';
-	@override String get adventDescription => 'Читайте в преддверии Рождества: ежедневные отрывки и учебные заметки, от обетований пророков до рождения Иисуса.';
+	@override String get adventDescription => 'Читайте в преддверии Рождества: ежедневные отрывки и учебные заметки о людях, которые ждали Иисуса и встретили его.';
 	@override String get oldAndNewTestamentDescription => 'Прочитайте всю Библию за год, читая Ветхий и Новый Заветы параллельно в каноническом порядке.';
 	@override String get historicallyBlendedDescription => 'Прочитайте всю Библию за год: книги и отрывки расположены вокруг связанных событий и исторических периодов.';
 	@override String get differentTopicsDescription => 'Каждый день просматривайте разные разделы Священного Писания, исследуя каждую книгу Библии в течение года.';
@@ -4009,6 +4018,15 @@ extension on TranslationsRu {
 			'biblePlans.complete' => 'Завершить',
 			'biblePlans.reviewDayAnnotations' => 'Просмотреть аннотации дня',
 			'biblePlans.studyNotes' => 'Учебные заметки',
+			'biblePlans.reflectionQuestion' => 'Вопрос для размышления',
+			'biblePlans.reflectionQuestions' => 'Вопросы для размышления',
+			'biblePlans.reflectionAnswerHint' => 'Запишите свои мысли…',
+			'biblePlans.reflectionAnswerPrivacy' => 'Ваш ответ сохраняется только на этом устройстве.',
+			'biblePlans.discussReflection' => 'Узнайте в Discord, как отвечают другие.',
+			'biblePlans.skipAllReflectionsQuestion' => 'Пропустить все вопросы для размышления?',
+			'biblePlans.skipAllReflectionsConfirmation' => 'Их можно снова включить в меню плана.',
+			'biblePlans.skipAll' => 'Пропустить все',
+			'biblePlans.justThisOne' => 'Только этот',
 			'biblePlans.beginsInDays' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: 'Начнётся через ${count} день', few: 'Начнётся через ${count} дня', many: 'Начнётся через ${count} дней', other: 'Начнётся через ${count} дня', ), 
 			'biblePlans.daysUntilChristmas' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('ru'))(count, one: 'До Рождества ${count} день', few: 'До Рождества ${count} дня', many: 'До Рождества ${count} дней', other: 'До Рождества ${count} дня', ), 
 			'biblePlans.christmasDay' => 'Рождество',
@@ -4182,7 +4200,7 @@ extension on TranslationsRu {
 			'planTypes.pentateuchAndHistoryDescription' => 'Путешествие по пяти книгам Моисея и истории Израиля за год.',
 			'planTypes.psalmsAndWisdomDescription' => 'Проведите год за чтением псалмов и книг мудрости, таких как Притчи, Иов и Экклезиаст.',
 			'planTypes.advent' => 'Адвент',
-			'planTypes.adventDescription' => 'Читайте в преддверии Рождества: ежедневные отрывки и учебные заметки, от обетований пророков до рождения Иисуса.',
+			'planTypes.adventDescription' => 'Читайте в преддверии Рождества: ежедневные отрывки и учебные заметки о людях, которые ждали Иисуса и встретили его.',
 			'planTypes.oldAndNewTestamentDescription' => 'Прочитайте всю Библию за год, читая Ветхий и Новый Заветы параллельно в каноническом порядке.',
 			'planTypes.historicallyBlendedDescription' => 'Прочитайте всю Библию за год: книги и отрывки расположены вокруг связанных событий и исторических периодов.',
 			'planTypes.differentTopicsDescription' => 'Каждый день просматривайте разные разделы Священного Писания, исследуя каждую книгу Библии в течение года.',
@@ -4325,6 +4343,8 @@ extension on TranslationsRu {
 			'morphology.types.conjunction.name' => 'Союз',
 			'morphology.types.conjunction.description' => 'Слово, которое объединяет другие слова или предложения.',
 			'morphology.types.conjunction.examples' => 'и|но|для',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.preposition.name' => 'Предлог',
 			'morphology.types.preposition.description' => 'Связывает существительное или местоимение с другими словами.',
 			'morphology.types.preposition.examples' => 'в|в|с',
@@ -4334,8 +4354,6 @@ extension on TranslationsRu {
 			'morphology.types.negativeAdverb.name' => 'Отрицательное наречие',
 			'morphology.types.negativeAdverb.description' => 'Наречие, выражающее отрицание.',
 			'morphology.types.negativeAdverb.examples' => 'нет|никогда',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.adjective.name' => 'Прилагательное',
 			'morphology.types.adjective.description' => 'Слово, описывающее существительное.',
 			'morphology.types.adjective.examples' => 'великий|святой|мудрый',

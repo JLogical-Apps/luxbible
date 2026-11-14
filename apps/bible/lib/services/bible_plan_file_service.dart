@@ -50,9 +50,9 @@ class BiblePlanFile {
 
     final completedPassages = ChapterPassage.setFromJson(dayJson['completedPassages'] as List<dynamic>? ?? []);
 
-    return BiblePlanDayProgress.incomplete().withPassagesCompleted(
-      day: day,
-      passages: day.passages.where(completedPassages.has),
+    return BiblePlanDayProgress.incomplete().withItemsCompleted(
+      items: day.getItems(includesReflection: true),
+      completedItems: day.passages.where(completedPassages.has).map(BiblePlanPassageItem.new),
     );
   }
 

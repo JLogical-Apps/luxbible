@@ -2414,6 +2414,33 @@ class Translations$biblePlans$en {
 	/// en: 'Study Notes'
 	String get studyNotes => 'Study Notes';
 
+	/// en: 'Reflection Question'
+	String get reflectionQuestion => 'Reflection Question';
+
+	/// en: 'Reflection Questions'
+	String get reflectionQuestions => 'Reflection Questions';
+
+	/// en: 'Write your thoughts…'
+	String get reflectionAnswerHint => 'Write your thoughts…';
+
+	/// en: 'Your answer is saved only on this device.'
+	String get reflectionAnswerPrivacy => 'Your answer is saved only on this device.';
+
+	/// en: 'See how others are answering on Discord.'
+	String get discussReflection => 'See how others are answering on Discord.';
+
+	/// en: 'Skip All Reflection Questions?'
+	String get skipAllReflectionsQuestion => 'Skip All Reflection Questions?';
+
+	/// en: 'You can turn them back on from the plan's menu.'
+	String get skipAllReflectionsConfirmation => 'You can turn them back on from the plan\'s menu.';
+
+	/// en: 'Skip All'
+	String get skipAll => 'Skip All';
+
+	/// en: 'Just This One'
+	String get justThisOne => 'Just This One';
+
 	/// en: '(one) {Begins in {count} day} (other) {Begins in {count} days}'
 	String beginsInDays({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count,
 		one: 'Begins in ${count} day',
@@ -3076,8 +3103,8 @@ class Translations$planTypes$en {
 	/// en: 'Advent'
 	String get advent => 'Advent';
 
-	/// en: 'Read toward Christmas with daily passages and study notes, from the prophets' promises to the birth of Jesus.'
-	String get adventDescription => 'Read toward Christmas with daily passages and study notes, from the prophets\' promises to the birth of Jesus.';
+	/// en: 'Read toward Christmas with daily passages and study notes, following the people who waited for and welcomed Jesus.'
+	String get adventDescription => 'Read toward Christmas with daily passages and study notes, following the people who waited for and welcomed Jesus.';
 
 	/// en: 'Read the whole Bible in one year, following the Old and New Testaments together in canonical order.'
 	String get oldAndNewTestamentDescription => 'Read the whole Bible in one year, following the Old and New Testaments together in canonical order.';
@@ -6624,6 +6651,15 @@ extension on Translations {
 			'biblePlans.complete' => 'Complete',
 			'biblePlans.reviewDayAnnotations' => 'Review Day Annotations',
 			'biblePlans.studyNotes' => 'Study Notes',
+			'biblePlans.reflectionQuestion' => 'Reflection Question',
+			'biblePlans.reflectionQuestions' => 'Reflection Questions',
+			'biblePlans.reflectionAnswerHint' => 'Write your thoughts…',
+			'biblePlans.reflectionAnswerPrivacy' => 'Your answer is saved only on this device.',
+			'biblePlans.discussReflection' => 'See how others are answering on Discord.',
+			'biblePlans.skipAllReflectionsQuestion' => 'Skip All Reflection Questions?',
+			'biblePlans.skipAllReflectionsConfirmation' => 'You can turn them back on from the plan\'s menu.',
+			'biblePlans.skipAll' => 'Skip All',
+			'biblePlans.justThisOne' => 'Just This One',
 			'biblePlans.beginsInDays' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: 'Begins in ${count} day', other: 'Begins in ${count} days', ), 
 			'biblePlans.daysUntilChristmas' => ({required num count}) => (_root.$meta.cardinalResolver ?? PluralResolvers.cardinal('en'))(count, one: '${count} day until Christmas', other: '${count} days until Christmas', ), 
 			'biblePlans.christmasDay' => 'Christmas Day',
@@ -6797,7 +6833,7 @@ extension on Translations {
 			'planTypes.pentateuchAndHistoryDescription' => 'Journey through the five books of Moses and the history of Israel over a year.',
 			'planTypes.psalmsAndWisdomDescription' => 'Spend the year in the Psalms and wisdom books like Proverbs, Job, and Ecclesiastes.',
 			'planTypes.advent' => 'Advent',
-			'planTypes.adventDescription' => 'Read toward Christmas with daily passages and study notes, from the prophets\' promises to the birth of Jesus.',
+			'planTypes.adventDescription' => 'Read toward Christmas with daily passages and study notes, following the people who waited for and welcomed Jesus.',
 			'planTypes.oldAndNewTestamentDescription' => 'Read the whole Bible in one year, following the Old and New Testaments together in canonical order.',
 			'planTypes.historicallyBlendedDescription' => 'Read the whole Bible in one year, with books and passages arranged around related events and historical periods.',
 			'planTypes.differentTopicsDescription' => 'Rotate through a different section of Scripture each day, exploring every book of the Bible over a year.',
@@ -6942,6 +6978,8 @@ extension on Translations {
 			'morphology.types.conjunction.examples' => 'and|but|for',
 			'morphology.types.preposition.name' => 'Preposition',
 			'morphology.types.preposition.description' => 'Relates a noun or pronoun to other words.',
+			_ => null,
+		} ?? switch (path) {
 			'morphology.types.preposition.examples' => 'in|to|with',
 			'morphology.types.adverb.name' => 'Adverb',
 			'morphology.types.adverb.description' => 'Modifies a verb, adjective, or another adverb.',
@@ -6951,8 +6989,6 @@ extension on Translations {
 			'morphology.types.negativeAdverb.examples' => 'not|never',
 			'morphology.types.adjective.name' => 'Adjective',
 			'morphology.types.adjective.description' => 'A word that describes a noun.',
-			_ => null,
-		} ?? switch (path) {
 			'morphology.types.adjective.examples' => 'great|holy|wise',
 			'morphology.types.noun.name' => 'Noun',
 			'morphology.types.noun.description' => 'A person, place, thing, or idea.',

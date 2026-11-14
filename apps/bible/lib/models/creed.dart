@@ -30,6 +30,8 @@ enum CreedType {
 sealed class Creed with _$Creed, LinkedResource {
   const Creed._();
 
+  static const linkPrefix = 'creed:';
+
   const factory Creed({
     @JsonKey(name: 'i') required String id,
     @JsonKey(name: 't') required String title,
@@ -48,6 +50,17 @@ sealed class Creed with _$Creed, LinkedResource {
   List<CreedItemReference> get itemReferences => chapters
       .expand((chapter) => chapter.items.map((item) => CreedItemReference(creed: this, chapter: chapter, item: item)))
       .toList();
+}
+
+extension CreedListExtension on List<Creed> {
+  // Links take the form `creed:<id>`, `creed:<id>/<question>`, or `creed:<id>/<chapter>/<section>`.
+  CreedItemReference? getItemReferenceByLink(String link) {
+    if (!link.startsWith(Creed.linkPrefix)) return null;
+    final linkId = link.substring(Creed.linkPrefix.length);
+    return firstWhereOrNull(
+      (creed) => creed.id == linkId.split('/').first,
+    )?.itemReferences.firstWhereOrNull((reference) => reference.linkId == linkId);
+  }
 }
 
 @freezed
@@ -92,6 +105,8 @@ class CreedItemReference with LinkedResource {
   final CreedItem item;
 
   CreedItemReference({required this.creed, required this.chapter, required this.item});
+
+  String get linkId => [creed.id, ?chapter.number, ?item.number].join('/');
 
   String? get citation => switch ((creed.type, chapter.number, item.number)) {
     (.catechism, _, final number?) => t.creeds.questionNumber(number: number),

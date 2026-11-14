@@ -16,7 +16,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BiblePlanStudyNote {
 
-@JsonKey(name: 't') String get title;@JsonKey(name: 'b') List<RichContent> get body;
+@JsonKey(name: 't') String get title;@JsonKey(name: 'b') List<RichContent> get body;@JsonKey(name: 'q', includeIfNull: false) String? get reflectionQuestion;
 /// Create a copy of BiblePlanStudyNote
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -29,16 +29,16 @@ $BiblePlanStudyNoteCopyWith<BiblePlanStudyNote> get copyWith => _$BiblePlanStudy
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlanStudyNote&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other.body, body));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlanStudyNote&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other.body, body)&&(identical(other.reflectionQuestion, reflectionQuestion) || other.reflectionQuestion == reflectionQuestion));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,title,const DeepCollectionEquality().hash(body));
+int get hashCode => Object.hash(runtimeType,title,const DeepCollectionEquality().hash(body),reflectionQuestion);
 
 @override
 String toString() {
-  return 'BiblePlanStudyNote(title: $title, body: $body)';
+  return 'BiblePlanStudyNote(title: $title, body: $body, reflectionQuestion: $reflectionQuestion)';
 }
 
 
@@ -49,7 +49,7 @@ abstract mixin class $BiblePlanStudyNoteCopyWith<$Res>  {
   factory $BiblePlanStudyNoteCopyWith(BiblePlanStudyNote value, $Res Function(BiblePlanStudyNote) _then) = _$BiblePlanStudyNoteCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 't') String title,@JsonKey(name: 'b') List<RichContent> body
+@JsonKey(name: 't') String title,@JsonKey(name: 'b') List<RichContent> body,@JsonKey(name: 'q', includeIfNull: false) String? reflectionQuestion
 });
 
 
@@ -66,11 +66,12 @@ class _$BiblePlanStudyNoteCopyWithImpl<$Res>
 
 /// Create a copy of BiblePlanStudyNote
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? body = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? body = null,Object? reflectionQuestion = freezed,}) {
   return _then(BiblePlanStudyNote(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
-as List<RichContent>,
+as List<RichContent>,reflectionQuestion: freezed == reflectionQuestion ? _self.reflectionQuestion : reflectionQuestion // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<RichContent> body)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<RichContent> body, @JsonKey(name: 'q', includeIfNull: false)  String? reflectionQuestion)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BiblePlanStudyNote() when $default != null:
-return $default(_that.title,_that.body);case _:
+return $default(_that.title,_that.body,_that.reflectionQuestion);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.title,_that.body);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<RichContent> body)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<RichContent> body, @JsonKey(name: 'q', includeIfNull: false)  String? reflectionQuestion)  $default,) {final _that = this;
 switch (_that) {
 case _BiblePlanStudyNote():
-return $default(_that.title,_that.body);}
+return $default(_that.title,_that.body,_that.reflectionQuestion);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -190,10 +191,10 @@ return $default(_that.title,_that.body);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<RichContent> body)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 't')  String title, @JsonKey(name: 'b')  List<RichContent> body, @JsonKey(name: 'q', includeIfNull: false)  String? reflectionQuestion)?  $default,) {final _that = this;
 switch (_that) {
 case _BiblePlanStudyNote() when $default != null:
-return $default(_that.title,_that.body);case _:
+return $default(_that.title,_that.body,_that.reflectionQuestion);case _:
   return null;
 
 }
@@ -205,7 +206,7 @@ return $default(_that.title,_that.body);case _:
 @JsonSerializable()
 
 class _BiblePlanStudyNote implements BiblePlanStudyNote {
-  const _BiblePlanStudyNote({@JsonKey(name: 't') required this.title, @JsonKey(name: 'b') required  List<RichContent> body}): _body = body;
+  const _BiblePlanStudyNote({@JsonKey(name: 't') required this.title, @JsonKey(name: 'b') required  List<RichContent> body, @JsonKey(name: 'q', includeIfNull: false) this.reflectionQuestion}): _body = body;
   factory _BiblePlanStudyNote.fromJson(Map<String, dynamic> json) => _$BiblePlanStudyNoteFromJson(json);
 
 @override@JsonKey(name: 't') final  String title;
@@ -216,6 +217,7 @@ class _BiblePlanStudyNote implements BiblePlanStudyNote {
   return EqualUnmodifiableListView(_body);
 }
 
+@override@JsonKey(name: 'q', includeIfNull: false) final  String? reflectionQuestion;
 
 /// Create a copy of BiblePlanStudyNote
 /// with the given fields replaced by the non-null parameter values.
@@ -230,16 +232,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BiblePlanStudyNote&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other._body, _body));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BiblePlanStudyNote&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other._body, _body)&&(identical(other.reflectionQuestion, reflectionQuestion) || other.reflectionQuestion == reflectionQuestion));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,title,const DeepCollectionEquality().hash(_body));
+int get hashCode => Object.hash(runtimeType,title,const DeepCollectionEquality().hash(_body),reflectionQuestion);
 
 @override
 String toString() {
-  return 'BiblePlanStudyNote(title: $title, body: $body)';
+  return 'BiblePlanStudyNote(title: $title, body: $body, reflectionQuestion: $reflectionQuestion)';
 }
 
 
@@ -250,7 +252,7 @@ abstract mixin class _$BiblePlanStudyNoteCopyWith<$Res> implements $BiblePlanStu
   factory _$BiblePlanStudyNoteCopyWith(_BiblePlanStudyNote value, $Res Function(_BiblePlanStudyNote) _then) = __$BiblePlanStudyNoteCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 't') String title,@JsonKey(name: 'b') List<RichContent> body
+@JsonKey(name: 't') String title,@JsonKey(name: 'b') List<RichContent> body,@JsonKey(name: 'q', includeIfNull: false) String? reflectionQuestion
 });
 
 
@@ -267,11 +269,12 @@ class __$BiblePlanStudyNoteCopyWithImpl<$Res>
 
 /// Create a copy of BiblePlanStudyNote
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? body = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? body = null,Object? reflectionQuestion = freezed,}) {
   return _then(_BiblePlanStudyNote(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,body: null == body ? _self._body : body // ignore: cast_nullable_to_non_nullable
-as List<RichContent>,
+as List<RichContent>,reflectionQuestion: freezed == reflectionQuestion ? _self.reflectionQuestion : reflectionQuestion // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

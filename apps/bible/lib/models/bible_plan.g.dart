@@ -57,6 +57,14 @@ _BiblePlanProgress _$BiblePlanProgressFromJson(Map<String, dynamic> json) =>
       pace: json['pace'] == null
           ? const BiblePlanPace.relaxed()
           : BiblePlanPace.fromJson(json['pace'] as Map<String, dynamic>),
+      isSkippingReflections: json['isSkippingReflections'] as bool? ?? false,
+      hasOfferedToSkipReflections:
+          json['hasOfferedToSkipReflections'] as bool? ?? false,
+      reflectionAnswerByDayIndex:
+          (json['reflectionAnswerByDayIndex'] as Map<String, dynamic>?)?.map(
+            (k, e) => MapEntry(int.parse(k), e as String),
+          ) ??
+          const {},
     );
 
 Map<String, dynamic> _$BiblePlanProgressToJson(_BiblePlanProgress instance) =>
@@ -66,6 +74,11 @@ Map<String, dynamic> _$BiblePlanProgressToJson(_BiblePlanProgress instance) =>
       'reminder': instance.reminder?.toJson(),
       'lastCompletedAt': instance.lastCompletedAt?.toJson(),
       'pace': instance.pace.toJson(),
+      'isSkippingReflections': instance.isSkippingReflections,
+      'hasOfferedToSkipReflections': instance.hasOfferedToSkipReflections,
+      'reflectionAnswerByDayIndex': instance.reflectionAnswerByDayIndex.map(
+        (k, e) => MapEntry(k.toString(), e),
+      ),
     };
 
 RelaxedBiblePlanPace _$RelaxedBiblePlanPaceFromJson(
@@ -124,6 +137,11 @@ IncompleteBiblePlanDayProgress _$IncompleteBiblePlanDayProgressFromJson(
   completedPassages: json['completedPassages'] == null
       ? const {}
       : ChapterPassage.setFromJson(json['completedPassages'] as List),
+  completedSteps:
+      (json['completedSteps'] as List<dynamic>?)
+          ?.map((e) => $enumDecode(_$BiblePlanDayStepEnumMap, e))
+          .toSet() ??
+      const {},
   $type: json['runtimeType'] as String?,
 );
 
@@ -133,7 +151,15 @@ Map<String, dynamic> _$IncompleteBiblePlanDayProgressToJson(
   'completedPassages': instance.completedPassages
       .map((e) => e.toJson())
       .toList(),
+  'completedSteps': instance.completedSteps
+      .map((e) => _$BiblePlanDayStepEnumMap[e]!)
+      .toList(),
   'runtimeType': instance.$type,
+};
+
+const _$BiblePlanDayStepEnumMap = {
+  BiblePlanDayStep.studyNotes: 'studyNotes',
+  BiblePlanDayStep.reflection: 'reflection',
 };
 
 CompleteBiblePlanDayProgress _$CompleteBiblePlanDayProgressFromJson(

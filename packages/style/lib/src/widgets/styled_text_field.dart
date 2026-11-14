@@ -15,6 +15,7 @@ class StyledTextField extends HookWidget {
   final Function(String)? onSubmit;
 
   final Widget? label;
+  final Widget? helper;
   final String? suggestedText;
   final String? hintText;
   final Widget? error;
@@ -43,6 +44,7 @@ class StyledTextField extends HookWidget {
     this.onChanged,
     this.onSubmit,
     this.label,
+    this.helper,
     this.hintText,
     this.suggestedText,
     this.error,
@@ -66,6 +68,7 @@ class StyledTextField extends HookWidget {
     this.onChanged,
     this.onSubmit,
     this.label,
+    this.helper,
     this.hintText,
     this.suggestedText,
     this.error,
@@ -119,6 +122,7 @@ class StyledTextField extends HookWidget {
 
     return StyledFormInput(
       label: label,
+      helper: helper,
       error: error,
       child: Stack(
         children: [

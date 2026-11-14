@@ -1,11 +1,19 @@
 import 'package:bible/models/article_collection.dart';
 import 'package:bible/models/commentary_type.dart';
+import 'package:bible/models/creed.dart';
 import 'package:bible/models/rich_content.dart';
+import 'package:bible/models/strong_word_link.dart';
+import 'package:bible/models/video.dart';
 import 'package:bible/providers/articles_provider.dart';
+import 'package:bible/providers/creeds_provider.dart';
 import 'package:bible/providers/root_ref.dart';
+import 'package:bible/providers/videos_provider.dart';
+import 'package:bible/ui/pages/video_page.dart';
 import 'package:bible/ui/sheets/article_sheet.dart';
 import 'package:bible/ui/sheets/commentary_sheet.dart';
+import 'package:bible/ui/sheets/creed_item_sheet.dart';
 import 'package:bible/ui/sheets/preview_passage_sheet.dart';
+import 'package:bible/ui/sheets/strong_sheet.dart';
 import 'package:bible/ui/widgets/bible_map_card.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -81,6 +89,38 @@ Future<void> openRichContentLink(
   String link, {
   required Function(VerseSelection) onNavigateToVerseSelection,
 }) async {
+  if (link.startsWith(Creed.linkPrefix)) {
+    final reference = (await ref.read(creedsProvider.future)).getItemReferenceByLink(link);
+    if (reference == null || !context.mounted) return;
+    return CreedItemSheet.show(context, reference: reference, onNavigateToVerseSelection: onNavigateToVerseSelection);
+  }
+
+  if (link.startsWith(Video.linkPrefix)) {
+    final video = (await ref.read(videoCollectionsProvider.future)).getVideoByLink(link);
+    if (video == null || !context.mounted) return;
+    final result = await context.push(VideoPage(video: video));
+    if (result != null && context.mounted) onNavigateToVerseSelection(result);
+    return;
+  }
+
+  if (StrongWordLink.parse(link) case final strongLink?) {
+    // Links pick a word by its position in the BSB verse, which another study Bible can order differently.
+    final chapter = await ref.read(
+      chapterProvider(chapterReference: strongLink.reference.toChapterReference(), translation: .bsb).future,
+    );
+
+    final verse = chapter.getVerseByReference(strongLink.reference);
+    if (!context.mounted) return;
+
+    return StrongSheet.showWithBreadcrumbs(
+      context,
+      strongId: strongLink.strongId,
+      word: verse == null ? null : strongLink.getWord(verse),
+      wordTranslation: .bsb,
+      onNavigateToVerseSelection: onNavigateToVerseSelection,
+    );
+  }
+
   if (CommentaryType.parseLink(link) case (final commentaryType, final verseSelection)) {
     return CommentarySheet.show(
       context,

@@ -426,18 +426,13 @@ sealed class User with _$User {
     required Map<String, BiblePlan> planById,
   }) => getHydratedPlanProgresses(planById).firstWhereOrNull((progress) => progress.id == planId);
 
-  int? getNextIncompletePlanPassageIndex({
-    required String planId,
-    required int dayIndex,
-    required BiblePlanDay day,
-    required int currentIndex,
-  }) => (planProgressById[planId]?.days.elementAtOrNull(dayIndex) ?? BiblePlanDayProgress.incomplete())
-      .getNextIncompletePassageIndex(passages: day.passages, currentIndex: currentIndex);
-
   bool hasStartedPlan(String planId) => planProgressById.containsKey(planId);
 
-  bool hasCompletedPassage({required String planId, required int dayIndex, required ChapterPassage passage}) =>
-      planProgressById[planId]?.days.elementAtOrNull(dayIndex)?.isPassageComplete(passage) ?? false;
+  BiblePlanDayProgress getPlanDayProgress({required String planId, required int dayIndex}) =>
+      planProgressById[planId]?.getDayProgress(dayIndex) ?? BiblePlanDayProgress.incomplete();
+
+  bool hasCompletedPlanItem({required String planId, required int dayIndex, required BiblePlanDayItem item}) =>
+      getPlanDayProgress(planId: planId, dayIndex: dayIndex).isItemComplete(item);
 
   bool hasCompletedPlanDay({required String planId, required int dayIndex}) =>
       planProgressById[planId]?.days.elementAtOrNull(dayIndex)?.isComplete ?? false;
@@ -479,14 +474,14 @@ sealed class User with _$User {
 
   User withVerseOfTheDayNotificationReminder(Reminder reminder) => copyWith(verseOfTheDayReminder: reminder);
 
-  User withPassageToggled({
+  User withPlanItemToggled({
     required String planId,
     required int dayIndex,
     required BiblePlanDay day,
-    required ChapterPassage passage,
-  }) => hasCompletedPassage(planId: planId, dayIndex: dayIndex, passage: passage)
-      ? withPassageUncompleted(planId: planId, dayIndex: dayIndex, day: day, passage: passage)
-      : withPassageCompleted(planId: planId, dayIndex: dayIndex, day: day, passage: passage);
+    required BiblePlanDayItem item,
+  }) => hasCompletedPlanItem(planId: planId, dayIndex: dayIndex, item: item)
+      ? withPlanItemUncompleted(planId: planId, dayIndex: dayIndex, day: day, item: item)
+      : withPlanItemCompleted(planId: planId, dayIndex: dayIndex, day: day, item: item);
 
   User withPlanCompletedThrough({required String planId, required BiblePlan plan, required int dayIndex}) =>
       withUpdatePlanProgress(planId, (progress) => progress.withCompletedThrough(plan, dayIndex: dayIndex));
@@ -503,27 +498,41 @@ sealed class User with _$User {
     required BiblePlanDayProgress Function(BiblePlanDayProgress) updater,
   }) => withUpdatePlanProgress(planId, (progress) => progress.withDayUpdated(dayIndex: dayIndex, updater: updater));
 
-  User withPassageCompleted({
+  User withPlanItemCompleted({
     required String planId,
     required int dayIndex,
     required BiblePlanDay day,
-    required ChapterPassage passage,
-  }) => withProgressDayUpdated(
-    planId: planId,
-    dayIndex: dayIndex,
-    updater: (dayProgress) => dayProgress.withPassageCompleted(day: day, passage: passage),
+    required BiblePlanDayItem item,
+  }) => withUpdatePlanProgress(
+    planId,
+    (progress) => progress.withDayUpdated(
+      dayIndex: dayIndex,
+      updater: (dayProgress) =>
+          dayProgress.withItemsCompleted(items: progress.getDayItems(day), completedItems: [item]),
+    ),
   );
 
-  User withPassageUncompleted({
+  User withPlanItemUncompleted({
     required String planId,
     required int dayIndex,
     required BiblePlanDay day,
-    required ChapterPassage passage,
-  }) => withProgressDayUpdated(
-    planId: planId,
-    dayIndex: dayIndex,
-    updater: (dayProgress) => dayProgress.withPassageUncompleted(day: day, passage: passage),
+    required BiblePlanDayItem item,
+  }) => withUpdatePlanProgress(
+    planId,
+    (progress) => progress.withDayUpdated(
+      dayIndex: dayIndex,
+      updater: (dayProgress) => dayProgress.withItemUncompleted(items: progress.getDayItems(day), item: item),
+    ),
   );
+
+  User withPlanReflectionAnswer({required String planId, required int dayIndex, required String answer}) =>
+      withUpdatePlanProgress(planId, (progress) => progress.withReflectionAnswer(dayIndex: dayIndex, answer: answer));
+
+  User withPlanReflectionsSkipped({required String planId, required BiblePlan plan, required bool isSkipped}) =>
+      withUpdatePlanProgress(planId, (progress) => progress.withReflectionsSkipped(plan, isSkipped: isSkipped));
+
+  User withPlanReflectionSkipOffered(String planId) =>
+      withUpdatePlanProgress(planId, (progress) => progress.copyWith(hasOfferedToSkipReflections: true));
 
   User withUpdatePlanProgress(String planId, BiblePlanProgress Function(BiblePlanProgress) update) =>
       copyWith(planProgressById: planProgressById.withUpdate(planId, update));

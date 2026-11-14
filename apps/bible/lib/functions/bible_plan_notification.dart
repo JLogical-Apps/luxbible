@@ -7,7 +7,6 @@ import 'package:bible/services/analytics_service.dart';
 import 'package:bible/services/local_notification_service.dart';
 import 'package:bible/ui/pages/bible_plan_read_page.dart';
 import 'package:bible/ui/pages/bible_plans_page.dart';
-import 'package:collection/collection.dart';
 import 'package:lux/lux.dart';
 import 'package:utils_core/utils_core.dart';
 
@@ -33,14 +32,10 @@ class BiblePlanNotification {
       return true;
     }
 
-    final dayProgress =
-        planProgress.progress.days.elementAtOrNull(planProgress.currentDayIndex) ?? BiblePlanDayProgress.incomplete();
-
     final page = BiblePlanReadPage(
       planId: planId,
       dayIndex: planProgress.currentDayIndex,
-      initialPassageIndex:
-          planProgress.currentDay.passages.indexWhereOrNull((passage) => !dayProgress.isPassageComplete(passage)) ?? 0,
+      initialItemIndex: planProgress.getFirstIncompleteItemIndex(planProgress.currentDayIndex),
     );
     context.goToRoot(pages: page.pageStack);
     return true;

@@ -31,7 +31,7 @@ List<LocalNotification> biblePlanLocalNotifications(Ref ref) {
   final horizonDays = biblePlanNotificationCapacity ~/ reminderProgresses.length;
 
   return reminderProgresses.expand((progress) {
-    final HydratedBiblePlanProgress(id: planId, :currentDay) = progress;
+    final HydratedBiblePlanProgress(id: planId, :currentDay, :currentDayIndex) = progress;
     final DailyReminder(:time) = progress.progress.reminder as DailyReminder;
 
     return time
@@ -49,7 +49,11 @@ List<LocalNotification> biblePlanLocalNotifications(Ref ref) {
             body: t.biblePlans.reminderNotificationBody(
               reading: currentDay.isReviewAndReflect
                   ? t.biblePlans.reviewAndReflect
-                  : currentDay.passages.map((passage) => passage.format()).join(', '),
+                  : progress
+                        .getDayItems(currentDayIndex)
+                        .where((item) => !progress.isItemComplete(dayIndex: currentDayIndex, item: item))
+                        .map((item) => item.title())
+                        .join(', '),
             ),
             time: DateTime(date.year, date.month, date.day, time.hour, time.minute),
             payload: BiblePlanNotification.getNotificationPrefixFor(planId),
