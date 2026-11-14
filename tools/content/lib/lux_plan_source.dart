@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:bible/models/article.dart';
-import 'package:bible/models/bible_plan_study_note.dart';
 import 'package:bible/models/commentary_type.dart';
 import 'package:bible/models/creed.dart';
 import 'package:bible/models/rich_content.dart';
@@ -13,9 +12,8 @@ import 'package:lux_content_tools/repository_paths.dart';
 import 'package:utils_core/utils_core.dart';
 
 // A Lux-curated plan is one Markdown file in content/sources/lux_plans. Each `## Day N: Title` section starts with a
-// `Passages:` line of OSIS IDs. Its body supports paragraphs, `### ` subheadings, `> ` quotes, and `::: Title` boxes
-// closed by `:::`, with the app's inline Markdown for links, bold, and italics. A `### Reflect` section holds the
-// day's Reflection Question.
+// `Passages:` line of OSIS IDs, and the rest becomes the day's study notes, in the Markdown that .lxbp files use. A
+// `### Reflect` section holds the day's Reflection Question.
 class LuxPlanSource {
   final String name;
   final String color;
@@ -49,17 +47,24 @@ class LuxPlanSource {
 
   Map<String, dynamic> toPlanJson() => {
     'name': name,
-    'days': days.map((day) => {'passages': day.passages}).toList(),
+    'days': days
+        .map(
+          (day) => {
+            'title': day.title,
+            'passages': day.passages,
+            'studyNotes': day.studyNotes,
+            'reflectionQuestion': ?day.reflectionQuestion,
+          },
+        )
+        .toList(),
     'color': color,
   };
-
-  List<Map<String, dynamic>> toStudyNotesJson() => days.map((day) => day.note.toJson()).toList();
 
   List<String> getErrors({required Map<String, bool Function(String link)> linkValidatorsByPrefix}) => days
       .expand(
         (day) => [
           ...day.passages.whereNot(VerseSelection.isOsisId).map((passage) => 'Day ${day.number}: bad passage $passage'),
-          ...day.note.body
+          ...RichContent.listFromMarkdown(day.studyNotes)
               .expand((content) => content.texts)
               .expand((text) => text.linkTargets)
               .where((link) => !isValidLink(link, linkValidatorsByPrefix: linkValidatorsByPrefix))
@@ -120,10 +125,18 @@ class LuxPlanSource {
 
 class LuxPlanSourceDay {
   final int number;
+  final String title;
   final List<String> passages;
-  final BiblePlanStudyNote note;
+  final String studyNotes;
+  final String? reflectionQuestion;
 
-  const LuxPlanSourceDay({required this.number, required this.passages, required this.note});
+  const LuxPlanSourceDay({
+    required this.number,
+    required this.title,
+    required this.passages,
+    required this.studyNotes,
+    this.reflectionQuestion,
+  });
 
   factory LuxPlanSourceDay.parse(List<String> lines, {required int dayNumber}) {
     final match = LuxPlanSource.dayHeadingPattern.firstMatch(lines.first)!;
@@ -143,18 +156,16 @@ class LuxPlanSourceDay {
 
     return LuxPlanSourceDay(
       number: dayNumber,
+      title: match.group(2)!.trim(),
       passages: lines[passagesIndex].substring(10).split(',').map((passage) => passage.trim()).toList(),
-      note: BiblePlanStudyNote(
-        title: match.group(2)!.trim(),
-        body: parseBlocks(noteLines),
-        reflectionQuestion: reflectionQuestion,
-      ),
+      studyNotes: noteLines.join('\n').replaceAll(RegExp(r'\n{3,}'), '\n\n').trim(),
+      reflectionQuestion: reflectionQuestion,
     );
   }
 
   static const reflectHeading = '### Reflect';
 
-  // The Reflect section becomes the day's separate Reflection Question, so it's left out of the note body.
+  // The Reflect section becomes the day's separate Reflection Question, so it's left out of the study notes.
   static (String, List<String>) parseReflection(List<String> lines, {required int reflectIndex}) {
     final sectionEnd = lines.indexWhere((line) => line.startsWith('### '), reflectIndex + 1);
     final sectionLines = lines.sublist(reflectIndex + 1, sectionEnd == -1 ? lines.length : sectionEnd);
@@ -163,42 +174,4 @@ class LuxPlanSourceDay {
 
     return (question, [...lines.take(reflectIndex), ...lines.skip(reflectIndex + 1 + sectionLines.length)]);
   }
-
-  static List<RichContent> parseBlocks(List<String> lines) {
-    final boxStart = lines.indexWhere((line) => line.startsWith('::: '));
-    if (boxStart == -1) return parseParagraphs(lines);
-
-    final boxEnd = lines.indexWhere((line) => line.trim() == ':::', boxStart + 1);
-    if (boxEnd == -1) throw FormatException('Unclosed box "${lines[boxStart]}"');
-
-    return [
-      ...parseParagraphs(lines.sublist(0, boxStart)),
-      RichContent.box(
-        title: lines[boxStart].substring(4).trim(),
-        content: parseParagraphs(lines.sublist(boxStart + 1, boxEnd)),
-      ),
-      ...parseBlocks(lines.sublist(boxEnd + 1)),
-    ];
-  }
-
-  static List<RichContent> parseParagraphs(List<String> lines) => lines
-      .splitBetween(
-        (first, second) =>
-            first.trim().isEmpty != second.trim().isEmpty || [first, second].any((line) => line.startsWith('### ')),
-      )
-      .where((group) => group.first.trim().isNotEmpty)
-      .map(parseParagraph)
-      .toList();
-
-  static RichContent parseParagraph(List<String> lines) => switch (lines) {
-    [final line] when line.startsWith('### ') => .paragraph(
-      text: Markdown(line.substring(4).trim()),
-      style: .subheading,
-    ),
-    _ when lines.every((line) => line.startsWith('>')) => .paragraph(
-      text: Markdown(lines.map((line) => line.replaceFirst(RegExp(r'^>\s?'), '').trim()).join(' ')),
-      style: .quote,
-    ),
-    _ => .paragraph(text: Markdown(lines.map((line) => line.trim()).join(' '))),
-  };
 }

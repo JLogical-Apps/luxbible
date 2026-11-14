@@ -8,12 +8,14 @@ import 'package:style/style.dart';
 class BiblePlanReflectionView extends StatelessWidget {
   final String question;
   final String answer;
+  final bool hasDiscussion;
   final Function(String) onAnswerChanged;
 
   const BiblePlanReflectionView({
     super.key,
     required this.question,
     required this.answer,
+    required this.hasDiscussion,
     required this.onAnswerChanged,
   });
 
@@ -35,12 +37,14 @@ class BiblePlanReflectionView extends StatelessWidget {
             helper: t.biblePlans.reflectionAnswerPrivacy.toText(),
             onChanged: onAnswerChanged,
           ),
-          gapH8,
-          StyledTile.message(
-            leading: FaIcon(FontAwesomeIcons.discord),
-            title: t.biblePlans.discussReflection.toText(),
-            action: StyledTextAction(label: t.common.join.toText(), onPressed: launchDiscord),
-          ),
+          if (hasDiscussion) ...[
+            gapH8,
+            StyledTile.message(
+              leading: FaIcon(FontAwesomeIcons.discord),
+              title: t.biblePlans.discussReflection.toText(),
+              action: StyledTextAction(label: t.common.join.toText(), onPressed: launchDiscord),
+            ),
+          ],
         ],
       ),
     ),

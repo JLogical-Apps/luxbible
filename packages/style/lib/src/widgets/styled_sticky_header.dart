@@ -102,6 +102,7 @@ class StyledStickyHeaderBar extends StatelessWidget {
         onPressed: onPressed,
         isEnabled: true,
         child: Row(
+          spacing: 16,
           children: [
             Expanded(
               child: Column(

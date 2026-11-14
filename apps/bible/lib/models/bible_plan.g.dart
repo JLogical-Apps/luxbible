@@ -32,14 +32,20 @@ const _$BiblePlanColorEnumMap = {
 
 _BiblePlanDay _$BiblePlanDayFromJson(Map<String, dynamic> json) =>
     _BiblePlanDay(
+      title: nullIfBlank(json['title'] as String?),
       passages: json['passages'] == null
           ? const []
           : ChapterPassage.listFromJson(json['passages'] as List),
+      studyNotes: nullIfBlank(json['studyNotes'] as String?),
+      reflectionQuestion: nullIfBlank(json['reflectionQuestion'] as String?),
     );
 
 Map<String, dynamic> _$BiblePlanDayToJson(_BiblePlanDay instance) =>
     <String, dynamic>{
+      'title': ?instance.title,
       'passages': instance.passages.map((e) => e.toJson()).toList(),
+      'studyNotes': ?instance.studyNotes,
+      'reflectionQuestion': ?instance.reflectionQuestion,
     };
 
 _BiblePlanProgress _$BiblePlanProgressFromJson(Map<String, dynamic> json) =>

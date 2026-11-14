@@ -433,6 +433,7 @@ class CreateBiblePlanFlow extends HookConsumerWidget {
                         ],
                         child: StyledStickyHeader(
                           title: t.biblePlans.day(day: dayIndex + 1).toText(),
+                          subtitle: day.title?.toText(),
                           headerPadding: .symmetric(horizontal: 16, vertical: 8),
                           trailing: Row(
                             children: [
@@ -480,6 +481,10 @@ class CreateBiblePlanFlow extends HookConsumerWidget {
                                     child: StyledListItem(
                                       size: .sm,
                                       title: passage.format().toText(),
+                                      // The study steps follow in their own list, so the last passage needs its divider.
+                                      showDividerOverride: passage == day.passages.last && day.steps.isNotEmpty
+                                          ? true
+                                          : null,
                                       onPressed: () =>
                                           PassagePreviewPage.show(context, verseSelection: passage.verseSelection),
                                       trailing: StyledCircleButton.md(
@@ -543,6 +548,46 @@ class CreateBiblePlanFlow extends HookConsumerWidget {
                                   );
                                 }).toList(),
                               ),
+                            StyledList(
+                              children: day.steps
+                                  .map(
+                                    (step) => StyledSwipeable(
+                                      key: ValueKey(step),
+                                      actions: [
+                                        .remove(
+                                          onPressed: () => daysState.value = days.withStepRemoved(dayIndex, step),
+                                        ),
+                                      ],
+                                      child: StyledListItem(
+                                        size: .sm,
+                                        leading: step.icon.toIcon(),
+                                        title: step.title().toText(),
+                                        trailing: StyledCircleButton.md(
+                                          child: Symbols.more_vert.toIcon(),
+                                          onPressed: () => context.showStyledSheet(
+                                            (sheetContext, _) => StyledSheet(
+                                              title: step.title().toText(),
+                                              children: [
+                                                StyledListItem(
+                                                  leading: Icon(
+                                                    Symbols.delete,
+                                                    color: sheetContext.colors.contentCritical,
+                                                  ),
+                                                  title: t.common.remove.toText(),
+                                                  onPressed: () {
+                                                    daysState.value = days.withStepRemoved(dayIndex, step);
+                                                    sheetContext.pop();
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
                           ],
                         ),
                       ),
@@ -764,7 +809,12 @@ The file contents must use exactly this Lux BiblePlan structure:
 {
   "name": "Romans in 30 Days",
   "days": [
-    {"passages": ["Rom.1", "Ps.1"]},
+    {
+      "title": "The gospel of God",
+      "passages": ["Rom.1", "Ps.1"],
+      "studyNotes": "Paul opens by calling himself a servant of Christ Jesus.\\n\\n### Go Deeper\\n\\nCompare [Romans 1:16-17](Rom.1.16-Rom.1.17) with [Habakkuk 2:4](Hab.2.4).",
+      "reflectionQuestion": "What does it look like to not be ashamed of the gospel this week?"
+    },
     {"passages": ["Rom.2.1-Rom.2.16"]},
     {"passages": []}
   ],
@@ -772,7 +822,7 @@ The file contents must use exactly this Lux BiblePlan structure:
 }
 
 Rules:
-- Use only name, days, and the optional color at the top level. Use only passages in each day.
+- Use only name, days, and the optional color at the top level. Use only passages and the optional title, studyNotes, and reflectionQuestion in each day.
 - name must contain non-whitespace text.
 - Include 1 through 365 numbered days.
 - If the request specifies a duration, create exactly that many day entries. Fill every requested day with a reading unless the request calls for reflection days. Do not shorten the plan by leaving out requested days.
@@ -785,8 +835,12 @@ Rules:
 - Every reference and range must exist, remain in canonical order, and place the complete book identifier on both sides of a range.
 - Do not put the exact same passage string in one day more than once. Repeating a passage on different days is allowed.
 - color is optional. If present, it must be exactly one of: $colorValues.
+- title, studyNotes, and reflectionQuestion are optional. Add them only when the request asks for day titles, study notes, devotional content, commentary, or reflection questions. A reflection day with no passages can't have study notes or a reflection question.
+- title is a short heading for the day. reflectionQuestion is one question for the reader to answer.
+- studyNotes is Markdown in a JSON string, with \\n for line breaks. Separate paragraphs with a blank line. Use only paragraphs, headings starting with ###, quotes starting with >, **bold**, *italic*, and links. Do not use lists, tables, images, or HTML.
+- Link to Scripture in studyNotes with an OSIS reference as the link target, such as [Romans 5:1](Rom.5.1) or [Romans 5:1-5](Rom.5.1-Rom.5.5). Do not link to websites, since Lux doesn't open web links.
 - Plans use numbered days, not dates. If the request mentions weekdays, treat Day 1 as Monday and every seventh day as Sunday, independent of the actual date the user starts the plan.
-- Do not include an ID, version, progress, reminders, Bible text, comments, or any fields outside the structure above.
+- Do not include an ID, version, progress, reminders, the text of Bible passages, comments, or any fields outside the structure above.
 
 Provide the completed plan as a downloadable .lxbp file. If you cannot create a downloadable file, return only the raw .lxbp file contents in a code block without an explanation.''';
 }

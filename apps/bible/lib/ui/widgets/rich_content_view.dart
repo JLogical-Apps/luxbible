@@ -132,6 +132,8 @@ Future<void> openRichContentLink(
 
   final collection = ArticleCollection.values.firstWhereOrNull((collection) => link.startsWith(collection.linkPrefix));
   if (collection == null) {
+    // Shared plan files carry notes written by anyone, so web links and other unknown targets do nothing.
+    if (!VerseSelection.isOsisId(link)) return;
     return PreviewPassageSheet.show(
       context,
       verseSelection: VerseSelection.fromOsisId(link),

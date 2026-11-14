@@ -134,7 +134,6 @@ flutter:
     - assets/people/
     - assets/themes/
     - assets/bible_plans/
-    - assets/bible_plan_study_notes/
     - assets/audio_bible_timings/
     - assets/images/
     - fonts/

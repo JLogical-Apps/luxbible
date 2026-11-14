@@ -285,7 +285,7 @@ as BiblePlanColor?,
 /// @nodoc
 mixin _$BiblePlanDay {
 
-@JsonKey(fromJson: ChapterPassage.listFromJson) List<ChapterPassage> get passages;@JsonKey(includeFromJson: false, includeToJson: false) BiblePlanStudyNote? get studyNote;
+@nonBlankString String? get title;@JsonKey(fromJson: ChapterPassage.listFromJson) List<ChapterPassage> get passages;@nonBlankString String? get studyNotes;@nonBlankString String? get reflectionQuestion;
 /// Create a copy of BiblePlanDay
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -298,16 +298,16 @@ $BiblePlanDayCopyWith<BiblePlanDay> get copyWith => _$BiblePlanDayCopyWithImpl<B
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlanDay&&const DeepCollectionEquality().equals(other.passages, passages)&&(identical(other.studyNote, studyNote) || other.studyNote == studyNote));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BiblePlanDay&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other.passages, passages)&&(identical(other.studyNotes, studyNotes) || other.studyNotes == studyNotes)&&(identical(other.reflectionQuestion, reflectionQuestion) || other.reflectionQuestion == reflectionQuestion));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(passages),studyNote);
+int get hashCode => Object.hash(runtimeType,title,const DeepCollectionEquality().hash(passages),studyNotes,reflectionQuestion);
 
 @override
 String toString() {
-  return 'BiblePlanDay(passages: $passages, studyNote: $studyNote)';
+  return 'BiblePlanDay(title: $title, passages: $passages, studyNotes: $studyNotes, reflectionQuestion: $reflectionQuestion)';
 }
 
 
@@ -318,11 +318,11 @@ abstract mixin class $BiblePlanDayCopyWith<$Res>  {
   factory $BiblePlanDayCopyWith(BiblePlanDay value, $Res Function(BiblePlanDay) _then) = _$BiblePlanDayCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(fromJson: ChapterPassage.listFromJson) List<ChapterPassage> passages,@JsonKey(includeFromJson: false, includeToJson: false) BiblePlanStudyNote? studyNote
+@nonBlankString String? title,@JsonKey(fromJson: ChapterPassage.listFromJson) List<ChapterPassage> passages,@nonBlankString String? studyNotes,@nonBlankString String? reflectionQuestion
 });
 
 
-$BiblePlanStudyNoteCopyWith<$Res>? get studyNote;
+
 
 }
 /// @nodoc
@@ -335,26 +335,16 @@ class _$BiblePlanDayCopyWithImpl<$Res>
 
 /// Create a copy of BiblePlanDay
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? passages = null,Object? studyNote = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? title = freezed,Object? passages = null,Object? studyNotes = freezed,Object? reflectionQuestion = freezed,}) {
   return _then(BiblePlanDay(
-passages: null == passages ? _self.passages : passages // ignore: cast_nullable_to_non_nullable
-as List<ChapterPassage>,studyNote: freezed == studyNote ? _self.studyNote : studyNote // ignore: cast_nullable_to_non_nullable
-as BiblePlanStudyNote?,
+title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String?,passages: null == passages ? _self.passages : passages // ignore: cast_nullable_to_non_nullable
+as List<ChapterPassage>,studyNotes: freezed == studyNotes ? _self.studyNotes : studyNotes // ignore: cast_nullable_to_non_nullable
+as String?,reflectionQuestion: freezed == reflectionQuestion ? _self.reflectionQuestion : reflectionQuestion // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
-/// Create a copy of BiblePlanDay
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$BiblePlanStudyNoteCopyWith<$Res>? get studyNote {
-    if (_self.studyNote == null) {
-    return null;
-  }
 
-  return $BiblePlanStudyNoteCopyWith<$Res>(_self.studyNote!, (value) {
-    return _then(_self.copyWith(studyNote: value));
-  });
-}
 }
 
 
@@ -433,10 +423,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages, @JsonKey(includeFromJson: false, includeToJson: false)  BiblePlanStudyNote? studyNote)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@nonBlankString  String? title, @JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages, @nonBlankString  String? studyNotes, @nonBlankString  String? reflectionQuestion)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _BiblePlanDay() when $default != null:
-return $default(_that.passages,_that.studyNote);case _:
+return $default(_that.title,_that.passages,_that.studyNotes,_that.reflectionQuestion);case _:
   return orElse();
 
 }
@@ -454,10 +444,10 @@ return $default(_that.passages,_that.studyNote);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages, @JsonKey(includeFromJson: false, includeToJson: false)  BiblePlanStudyNote? studyNote)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@nonBlankString  String? title, @JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages, @nonBlankString  String? studyNotes, @nonBlankString  String? reflectionQuestion)  $default,) {final _that = this;
 switch (_that) {
 case _BiblePlanDay():
-return $default(_that.passages,_that.studyNote);}
+return $default(_that.title,_that.passages,_that.studyNotes,_that.reflectionQuestion);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -471,10 +461,10 @@ return $default(_that.passages,_that.studyNote);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages, @JsonKey(includeFromJson: false, includeToJson: false)  BiblePlanStudyNote? studyNote)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@nonBlankString  String? title, @JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages, @nonBlankString  String? studyNotes, @nonBlankString  String? reflectionQuestion)?  $default,) {final _that = this;
 switch (_that) {
 case _BiblePlanDay() when $default != null:
-return $default(_that.passages,_that.studyNote);case _:
+return $default(_that.title,_that.passages,_that.studyNotes,_that.reflectionQuestion);case _:
   return null;
 
 }
@@ -486,9 +476,10 @@ return $default(_that.passages,_that.studyNote);case _:
 @JsonSerializable()
 
 class _BiblePlanDay extends BiblePlanDay {
-  const _BiblePlanDay({@JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages = const [], @JsonKey(includeFromJson: false, includeToJson: false) this.studyNote}): _passages = passages,super._();
+  const _BiblePlanDay({@nonBlankString this.title, @JsonKey(fromJson: ChapterPassage.listFromJson)  List<ChapterPassage> passages = const [], @nonBlankString this.studyNotes, @nonBlankString this.reflectionQuestion}): _passages = passages,super._();
   factory _BiblePlanDay.fromJson(Map<String, dynamic> json) => _$BiblePlanDayFromJson(json);
 
+@override@nonBlankString final  String? title;
  final  List<ChapterPassage> _passages;
 @override@JsonKey(fromJson: ChapterPassage.listFromJson) List<ChapterPassage> get passages {
   if (_passages is EqualUnmodifiableListView) return _passages;
@@ -496,7 +487,8 @@ class _BiblePlanDay extends BiblePlanDay {
   return EqualUnmodifiableListView(_passages);
 }
 
-@override@JsonKey(includeFromJson: false, includeToJson: false) final  BiblePlanStudyNote? studyNote;
+@override@nonBlankString final  String? studyNotes;
+@override@nonBlankString final  String? reflectionQuestion;
 
 /// Create a copy of BiblePlanDay
 /// with the given fields replaced by the non-null parameter values.
@@ -511,16 +503,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BiblePlanDay&&const DeepCollectionEquality().equals(other._passages, _passages)&&(identical(other.studyNote, studyNote) || other.studyNote == studyNote));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BiblePlanDay&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other._passages, _passages)&&(identical(other.studyNotes, studyNotes) || other.studyNotes == studyNotes)&&(identical(other.reflectionQuestion, reflectionQuestion) || other.reflectionQuestion == reflectionQuestion));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_passages),studyNote);
+int get hashCode => Object.hash(runtimeType,title,const DeepCollectionEquality().hash(_passages),studyNotes,reflectionQuestion);
 
 @override
 String toString() {
-  return 'BiblePlanDay(passages: $passages, studyNote: $studyNote)';
+  return 'BiblePlanDay(title: $title, passages: $passages, studyNotes: $studyNotes, reflectionQuestion: $reflectionQuestion)';
 }
 
 
@@ -531,11 +523,11 @@ abstract mixin class _$BiblePlanDayCopyWith<$Res> implements $BiblePlanDayCopyWi
   factory _$BiblePlanDayCopyWith(_BiblePlanDay value, $Res Function(_BiblePlanDay) _then) = __$BiblePlanDayCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(fromJson: ChapterPassage.listFromJson) List<ChapterPassage> passages,@JsonKey(includeFromJson: false, includeToJson: false) BiblePlanStudyNote? studyNote
+@nonBlankString String? title,@JsonKey(fromJson: ChapterPassage.listFromJson) List<ChapterPassage> passages,@nonBlankString String? studyNotes,@nonBlankString String? reflectionQuestion
 });
 
 
-@override $BiblePlanStudyNoteCopyWith<$Res>? get studyNote;
+
 
 }
 /// @nodoc
@@ -548,27 +540,17 @@ class __$BiblePlanDayCopyWithImpl<$Res>
 
 /// Create a copy of BiblePlanDay
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? passages = null,Object? studyNote = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? title = freezed,Object? passages = null,Object? studyNotes = freezed,Object? reflectionQuestion = freezed,}) {
   return _then(_BiblePlanDay(
-passages: null == passages ? _self._passages : passages // ignore: cast_nullable_to_non_nullable
-as List<ChapterPassage>,studyNote: freezed == studyNote ? _self.studyNote : studyNote // ignore: cast_nullable_to_non_nullable
-as BiblePlanStudyNote?,
+title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String?,passages: null == passages ? _self._passages : passages // ignore: cast_nullable_to_non_nullable
+as List<ChapterPassage>,studyNotes: freezed == studyNotes ? _self.studyNotes : studyNotes // ignore: cast_nullable_to_non_nullable
+as String?,reflectionQuestion: freezed == reflectionQuestion ? _self.reflectionQuestion : reflectionQuestion // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
-/// Create a copy of BiblePlanDay
-/// with the given fields replaced by the non-null parameter values.
-@override
-@pragma('vm:prefer-inline')
-$BiblePlanStudyNoteCopyWith<$Res>? get studyNote {
-    if (_self.studyNote == null) {
-    return null;
-  }
 
-  return $BiblePlanStudyNoteCopyWith<$Res>(_self.studyNote!, (value) {
-    return _then(_self.copyWith(studyNote: value));
-  });
-}
 }
 
 

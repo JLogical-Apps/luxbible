@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:bible/models/bible_plan_season.dart';
-import 'package:bible/models/bible_plan_study_note.dart';
+import 'package:bible/models/rich_content.dart';
 import 'package:bible/models/calendar_date_time.dart';
 import 'package:bible/models/hydrated_bible_plan_progress.dart';
 import 'package:bible/models/reminder.dart';
@@ -63,7 +63,7 @@ sealed class BiblePlan with _$BiblePlan {
 
   List<int> get dayIndexes => List.generate(dayCount, (i) => i);
 
-  bool get hasReflectionQuestions => days.any((day) => day.studyNote?.reflectionQuestion != null);
+  bool get hasReflectionQuestions => days.any((day) => !day.isReviewAndReflect && day.reflectionQuestion != null);
 }
 
 @freezed
@@ -71,19 +71,30 @@ sealed class BiblePlanDay with _$BiblePlanDay {
   const BiblePlanDay._();
 
   const factory BiblePlanDay({
+    @nonBlankString String? title,
     @JsonKey(fromJson: ChapterPassage.listFromJson) @Default([]) List<ChapterPassage> passages,
-    // Attached when a curated plan loads, and never written, so .lxbp exports don't carry study notes.
-    @JsonKey(includeFromJson: false, includeToJson: false) BiblePlanStudyNote? studyNote,
+    @nonBlankString String? studyNotes,
+    @nonBlankString String? reflectionQuestion,
   }) = _BiblePlanDay;
 
   factory BiblePlanDay.fromJson(Map<String, dynamic> json) => _$BiblePlanDayFromJson(json);
 
   bool get isReviewAndReflect => passages.isEmpty;
 
+  List<RichContent> get studyNotesContent => RichContent.listFromMarkdown(studyNotes ?? '');
+
+  List<BiblePlanDayStep> get steps => getItems(includesReflection: true).whereType<BiblePlanDayStep>().toList();
+
+  BiblePlanDay withStepRemoved(BiblePlanDayStep step) => switch (step) {
+    .studyNotes => copyWith(studyNotes: null),
+    .reflection => copyWith(reflectionQuestion: null),
+  };
+
+  // A Review & Reflect day stays a single checkbox, so its study notes and reflection question aren't shown.
   List<BiblePlanDayItem> getItems({required bool includesReflection}) => [
     ...passages.map(BiblePlanPassageItem.new),
-    if (studyNote != null) BiblePlanDayStep.studyNotes,
-    if (includesReflection && studyNote?.reflectionQuestion != null) BiblePlanDayStep.reflection,
+    if (!isReviewAndReflect && studyNotes != null) BiblePlanDayStep.studyNotes,
+    if (!isReviewAndReflect && includesReflection && reflectionQuestion != null) BiblePlanDayStep.reflection,
   ];
 }
 
@@ -116,6 +127,11 @@ enum BiblePlanDayStep implements BiblePlanDayItem {
   IconData get icon => switch (this) {
     studyNotes => Symbols.auto_stories,
     reflection => Symbols.edit_note,
+  };
+
+  String get completedJsonKey => switch (this) {
+    studyNotes => 'completedStudyNotes',
+    reflection => 'completedReflectionQuestion',
   };
 }
 
@@ -462,8 +478,6 @@ enum BiblePlanType {
   };
 
   DateTime? getUpcomingTargetDate(DateTime date) => season?.getUpcomingEndDate(date);
-
-  String? get studyNotesAssetPath => isCuratedByLux ? 'assets/bible_plan_study_notes/$name.json' : null;
 }
 
 enum BiblePlanScope {
@@ -522,6 +536,9 @@ extension BiblePlanDraftDaysExtension on List<BiblePlanDay> {
 
   List<BiblePlanDay> withPassageRemoved(int dayIndex, ChapterPassage passage) =>
       withUpdateAt(dayIndex, (day) => day.copyWith(passages: day.passages.withRemoved(passage)));
+
+  List<BiblePlanDay> withStepRemoved(int dayIndex, BiblePlanDayStep step) =>
+      withUpdateAt(dayIndex, (day) => day.withStepRemoved(step));
 
   List<BiblePlanDay> withPassageReordered(int dayIndex, int oldIndex, int newIndex) =>
       withUpdateAt(dayIndex, (day) => day.copyWith(passages: day.passages.withReorder(oldIndex, newIndex)));

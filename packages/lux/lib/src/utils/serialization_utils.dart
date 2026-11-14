@@ -3,6 +3,8 @@ import 'package:lux/src/utils/extensions/date_time_extensions.dart';
 
 const jsonIgnore = JsonKey(includeToJson: false, includeFromJson: false);
 const isoDate = JsonKey(fromJson: decodeIsoDate, toJson: encodeIsoDate);
+// Hand-written and AI-written files often leave optional text empty rather than out, so blank text decodes as absent.
+const nonBlankString = JsonKey(includeIfNull: false, fromJson: nullIfBlank);
 
 // A JsonKey subclass rather than a constant so it can carry a key name, since json_serializable reads only one JsonKey.
 // `toJson` is redeclared because json_serializable reads it without looking at superclass fields.
@@ -46,6 +48,8 @@ Iterable<T> decodeKnownEnums<T extends Enum>(List<T> values, List<Object?> json)
 
 // Elements are left for `jsonEncode` to serialize, as json_serializable does without `explicit_to_json`.
 List<Object?>? nullIfEmpty(List<Object?>? list) => list?.isEmpty == true ? null : list;
+
+String? nullIfBlank(String? text) => text?.trim().isEmpty ?? true ? null : text;
 
 String encodeIsoDate(DateTime date) => date.isoDate;
 

@@ -1,4 +1,4 @@
-import 'package:bible/models/bible_plan_study_note.dart';
+import 'package:bible/models/rich_content.dart';
 import 'package:bible/ui/widgets/rich_content_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -6,7 +6,8 @@ import 'package:lux/lux.dart';
 import 'package:style/style.dart';
 
 class BiblePlanStudyNotesView extends HookWidget {
-  final BiblePlanStudyNote note;
+  final String? title;
+  final List<RichContent> content;
   final double sizeMultiplier;
   final ScrollController scrollController;
   final Function() onReadToEnd;
@@ -14,7 +15,8 @@ class BiblePlanStudyNotesView extends HookWidget {
 
   const BiblePlanStudyNotesView({
     super.key,
-    required this.note,
+    this.title,
+    required this.content,
     required this.sizeMultiplier,
     required this.scrollController,
     required this.onReadToEnd,
@@ -47,8 +49,8 @@ class BiblePlanStudyNotesView extends HookWidget {
               crossAxisAlignment: .start,
               spacing: 16,
               children: [
-                Text(note.title, style: context.textStyle.headingSm),
-                RichContentList(content: note.body, onNavigateToVerseSelection: onNavigateToVerseSelection),
+                if (title case final title?) Text(title, style: context.textStyle.headingSm),
+                RichContentList(content: content, onNavigateToVerseSelection: onNavigateToVerseSelection),
               ],
             ),
           ),

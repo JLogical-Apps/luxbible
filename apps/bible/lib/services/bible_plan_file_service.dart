@@ -44,25 +44,32 @@ class BiblePlanFile {
     );
   }
 
-  // Completed passages outside the day are dropped, and a day whose passages are all read counts as complete.
+  // Completed items outside the day are dropped, and a day whose items are all done counts as complete.
   static BiblePlanDayProgress getDayProgress(Map<String, dynamic> dayJson, {required BiblePlanDay day}) {
     if (dayJson['completed'] as bool? ?? false) return .complete();
 
     final completedPassages = ChapterPassage.setFromJson(dayJson['completedPassages'] as List<dynamic>? ?? []);
+    final items = day.getItems(includesReflection: true);
 
     return BiblePlanDayProgress.incomplete().withItemsCompleted(
-      items: day.getItems(includesReflection: true),
-      completedItems: day.passages.where(completedPassages.has).map(BiblePlanPassageItem.new),
+      items: items,
+      completedItems: [
+        ...day.passages.where(completedPassages.has).map(BiblePlanPassageItem.new),
+        ...BiblePlanDayStep.values.where(
+          (step) => items.has(step) && (dayJson[step.completedJsonKey] as bool? ?? false),
+        ),
+      ],
     );
   }
 
   static Map<String, dynamic> getDayProgressJson(BiblePlanDayProgress progress, {required BiblePlanDay day}) =>
       switch (progress) {
         CompleteBiblePlanDayProgress() => {'completed': true},
-        IncompleteBiblePlanDayProgress(:final completedPassages) when completedPassages.isNotEmpty => {
-          'completedPassages': day.passages.where(completedPassages.has).map((passage) => passage.toJson()).toList(),
+        IncompleteBiblePlanDayProgress(:final completedPassages, :final completedSteps) => {
+          if (completedPassages.isNotEmpty)
+            'completedPassages': day.passages.where(completedPassages.has).map((passage) => passage.toJson()).toList(),
+          ...completedSteps.mapToMap((step) => MapEntry(step.completedJsonKey, true)),
         },
-        IncompleteBiblePlanDayProgress() => {},
       };
 
   Map<String, dynamic> toJson() => {

@@ -139,8 +139,8 @@ class BiblePlanProgressCard extends HookConsumerWidget {
               ),
             ],
           )
-        else if (day.studyNote case final studyNote?)
-          StyledStickyHeader(key: ValueKey(day), title: studyNote.title.toText(), children: itemTiles)
+        else if (day.title case final title?)
+          StyledStickyHeader(key: ValueKey(day), title: title.toText(), children: itemTiles)
         else
           StyledList(key: ValueKey(day), children: itemTiles),
         if (user.getPlanDayAnnotations(planDay).isNotEmpty || footer != null)

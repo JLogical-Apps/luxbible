@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:collection/collection.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:lux/lux_core.dart';
@@ -29,6 +31,33 @@ sealed class RichContent with _$RichContent {
   }) = RichBox;
 
   factory RichContent.fromJson(Map<String, dynamic> json) => _$RichContentFromJson(json);
+
+  static final markdownHeadingPattern = RegExp(r'^#{1,6}\s+');
+
+  // Blank lines separate paragraphs, and headings and quotes are blocks of their own. Inline Markdown stays as written.
+  static List<RichContent> listFromMarkdown(String markdown) => LineSplitter.split(markdown)
+      .map((line) => line.trim())
+      .splitBetween(
+        (first, second) =>
+            first.isEmpty != second.isEmpty ||
+            [first, second].any(markdownHeadingPattern.hasMatch) ||
+            first.startsWith('>') != second.startsWith('>'),
+      )
+      .where((lines) => lines.first.isNotEmpty)
+      .map(
+        (lines) => switch (lines) {
+          [final line] when markdownHeadingPattern.hasMatch(line) => RichContent.paragraph(
+            text: Markdown(line.replaceFirst(markdownHeadingPattern, '')),
+            style: .subheading,
+          ),
+          _ when lines.first.startsWith('>') => RichContent.paragraph(
+            text: Markdown(lines.map((line) => line.replaceFirst(RegExp(r'^>\s?'), '').trim()).join(' ')),
+            style: .quote,
+          ),
+          _ => RichContent.paragraph(text: Markdown(lines.join(' '))),
+        },
+      )
+      .toList();
 }
 
 extension RichContentExtensions on RichContent {

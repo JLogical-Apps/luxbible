@@ -16,8 +16,6 @@ void main() {
     if (errors.isNotEmpty) throw StateError('$id has invalid content:\n${errors.join('\n')}');
 
     appAssetFile('bible_plans/$id.json', app: .bible).writeAsStringSync(jsonEncode(plan.toPlanJson()));
-    final notesFile = appAssetFile('bible_plan_study_notes/$id.json', app: .bible)..parent.createSync(recursive: true);
-    notesFile.writeAsStringSync(jsonEncode(plan.toStudyNotesJson()));
     print('$id: ${plan.days.length} days');
   }
 }

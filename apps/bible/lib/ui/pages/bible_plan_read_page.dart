@@ -439,23 +439,23 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
                                     );
                                   },
                                 ),
-                                BiblePlanDayStep.studyNotes => switch (day.studyNote) {
-                                  final note? => BiblePlanStudyNotesView(
-                                    note: note,
-                                    // Follows the Bible text size setting so the notes read at the same scale.
-                                    sizeMultiplier: user.themeLayout
-                                        .getFontSizeSpacingOrSystem(context.textScaling)
-                                        .multiplier,
-                                    scrollController: studyNotesScrollController,
-                                    onReadToEnd: () => readItems.add(item),
-                                    onNavigateToVerseSelection: navigateToVerseSelection,
-                                  ),
-                                  null => SizedBox.shrink(),
-                                },
-                                BiblePlanDayStep.reflection => switch (day.studyNote?.reflectionQuestion) {
+                                BiblePlanDayStep.studyNotes => BiblePlanStudyNotesView(
+                                  title: day.title,
+                                  content: day.studyNotesContent,
+                                  // Follows the Bible text size setting so the notes read at the same scale.
+                                  sizeMultiplier: user.themeLayout
+                                      .getFontSizeSpacingOrSystem(context.textScaling)
+                                      .multiplier,
+                                  scrollController: studyNotesScrollController,
+                                  onReadToEnd: () => readItems.add(item),
+                                  onNavigateToVerseSelection: navigateToVerseSelection,
+                                ),
+                                BiblePlanDayStep.reflection => switch (day.reflectionQuestion) {
                                   final question? => BiblePlanReflectionView(
                                     question: question,
                                     answer: reflectionAnswer,
+                                    // Others are only discussing it on Discord while the plan's season is underway.
+                                    hasDiscussion: BiblePlanType.getById(planId)?.season?.isActiveOn(.now()) ?? false,
                                     onAnswerChanged: (answer) => ref.updateUser(
                                       (user) => user.withPlanReflectionAnswer(
                                         planId: planId,

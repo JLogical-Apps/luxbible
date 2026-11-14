@@ -18,6 +18,8 @@ enum BiblePlanSeason {
 
   bool isPromotedOn(DateTime date) => date.isBetween(promotionStartDate, endDate);
 
+  bool isActiveOn(DateTime date) => date.isBetween(startDate, endDate);
+
   int getDaysUntilStart(DateTime date) => date.getDaysUntil(startDate);
 
   int getDaysUntilEnd(DateTime date) => date.getDaysUntil(endDate);
