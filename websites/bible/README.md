@@ -43,6 +43,11 @@ Direct messages use `direct_message` as the campaign.
 - `components/backgrounds/` — dots / grid section backgrounds.
 - `components/ui/` — primitives (`Button`, `Carousel`).
 - `lib/site.ts` — central config (URLs, social, store links).
+- `data/advent.json` — the Advent plan's day titles, for the day shown on `/plans/advent`, taken
+  from `content/sources/lux_plans/advent.md`. Refresh it when a day's title changes.
+- `public/media/advent/` — the Advent page's phone recordings, made with the app's
+  [recording tool](../../apps/bible/tool/screenshots/README.md#demo-recordings-for-reels) and
+  encoded to 540px-wide WebM (plus MP4 for the hero loop).
 - `public/media/` — screenshots, feature demo videos, logos.
 
 ## Deploy

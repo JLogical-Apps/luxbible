@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import CtaButton from '@/components/blocks/CtaButton';
 import { trackStoreNavigation } from '@/lib/analytics';
-import { getStoreUrl } from '@/lib/campaign';
+import { Campaign, getStoreUrl } from '@/lib/campaign';
 import { getPreferredStore } from '@/lib/store';
 import { useCampaign } from '@/lib/useCampaign';
 
@@ -12,14 +12,16 @@ export default function DownloadCtaButton({
   appStoreUrl,
   appStoreProviderToken,
   googlePlayUrl,
+  defaultCampaign,
 }: {
   appStoreUrl: string;
   appStoreProviderToken?: string;
   googlePlayUrl: string;
+  defaultCampaign?: Campaign;
 }) {
   const [href, setHref] = useState('#download');
   const [store, setStore] = useState<ReturnType<typeof getPreferredStore>>();
-  const campaign = useCampaign();
+  const campaign = useCampaign() ?? defaultCampaign;
 
   useEffect(() => {
     const preferredStore = getPreferredStore(navigator);

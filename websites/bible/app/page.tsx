@@ -1,7 +1,6 @@
 import { IconBrandDiscordFilled } from '@tabler/icons-react';
 import { Metadata } from 'next';
 import Image from 'next/image';
-import { CSSProperties } from 'react';
 
 import AppStoreButtons from '@/components/blocks/AppStoreButtons';
 import AppStoreScreenshots from '@/components/blocks/AppStoreScreenshots';
@@ -12,14 +11,8 @@ import FeatureShowcase from '@/components/blocks/FeatureShowcase';
 import Testimonials from '@/components/blocks/Testimonials';
 import Page from '@/components/layout/Page';
 import Section from '@/components/layout/Section';
+import { lightButtonVars } from '@/lib/palettes';
 import { site } from '@/lib/site';
-
-const lightButtonVars = {
-  '--emphasis': '200 0% 100%',
-  '--emphasis-soft': '240 5% 96%',
-  '--on-emphasis': '240 10% 4%',
-  '--on-emphasis-soft': '240 6% 10%',
-} as CSSProperties;
 
 export const metadata: Metadata = {
   alternates: { canonical: '/' },

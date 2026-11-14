@@ -7,9 +7,11 @@ import { site } from '@/lib/site';
 
 export default function DownloadSection({
   defaultCampaign,
+  subtitle = site.description,
   children,
 }: {
   defaultCampaign?: Campaign;
+  subtitle?: ReactNode;
   children?: ReactNode;
 }) {
   return (
@@ -22,7 +24,7 @@ export default function DownloadSection({
           Download Lux for <span className="gradient-heading">Free</span>
         </>
       }
-      subtitle={site.description}
+      subtitle={subtitle}
     >
       <div className="flex flex-col gap-12">
         <AppStoreButtons

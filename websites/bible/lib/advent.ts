@@ -1,40 +1,20 @@
-import { formatPassage } from '@/lib/passage';
+import plan from '@/data/advent.json';
 
-// Mirrors apps/bible/assets/bible_plans/advent.json, one entry per day.
-const adventDays = [
-  ['Gen.3.1-Gen.3.21', 'Gen.4.25', '1John.3.8'],
-  ['Gen.12.1-Gen.12.9', 'Gal.3.6-Gal.3.16'],
-  ['Gen.38', 'Matt.1.1-Matt.1.3'],
-  ['Josh.2.1-Josh.2.21', 'Josh.6.22-Josh.6.25', 'Heb.11.31'],
-  [
-    'Ruth.1.6-Ruth.1.18',
-    'Ruth.2.8-Ruth.2.12',
-    'Ruth.4.13-Ruth.4.22',
-    'Matt.1.5-Matt.1.6',
-  ],
-  ['2Sam.7.8-2Sam.7.29'],
-  ['Isa.7.10-Isa.7.16', 'Isa.9.1-Isa.9.7'],
-  ['Mic.5.1-Mic.5.5'],
-  ['Mal.3.1-Mal.3.4', 'Mal.4.1-Mal.4.6', 'Luke.1.16-Luke.1.17'],
-  ['Luke.1.18-Luke.1.22', 'Luke.1.57-Luke.1.80'],
-  ['Luke.1.24-Luke.1.25', 'Luke.1.39-Luke.1.45'],
-  ['Luke.1.13-Luke.1.15', 'Luke.1.30-Luke.1.33'],
-  ['Luke.1.46-Luke.1.56'],
-  ['Matt.1.18-Matt.1.25', 'Matt.2.19-Matt.2.23'],
-  ['John.1.19-John.1.34'],
-  ['Luke.2.1-Luke.2.20'],
-  ['Luke.2.25-Luke.2.35'],
-  ['Luke.2.36-Luke.2.38', 'Isa.52.7-Isa.52.10'],
-  ['Matt.2.1-Matt.2.6'],
-  ['Matt.2.7-Matt.2.8', 'Matt.2.13-Matt.2.18', 'Ps.2'],
-  ['Matt.2.9-Matt.2.12', 'Ps.72.8-Ps.72.11'],
-  ['Gal.4.1-Gal.4.7', 'Eph.1.3-Eph.1.14'],
-  ['1John.4.7-1John.4.14', 'John.3.16-John.3.21'],
-  ['John.1.1-John.1.18', 'Phil.2.5-Phil.2.11'],
-  ['Heb.2.14-Heb.2.18', 'Heb.10.1-Heb.10.10', '1Pet.2.21-1Pet.2.25'],
-  ['Luke.1.34-Luke.1.38', '1Pet.1.10-1Pet.1.12'],
-  ['John.16.7-John.16.15', 'Rom.8.14-Rom.8.17', 'Rom.8.26-Rom.8.27'],
-];
+const dayLength = 24 * 60 * 60 * 1000;
+
+export type AdventDay = {
+  number: number;
+  date: number;
+  title: string;
+  person: string;
+};
+
+export type AdventStatus =
+  | { kind: 'upcoming'; daysUntil: number }
+  | { kind: 'active'; day: number }
+  | { kind: 'ended' };
+
+export const adventDayCount = plan.dayTitles.length;
 
 const weekDetails = [
   {
@@ -61,37 +41,45 @@ const weekDetails = [
 
 export const adventWeeks = weekDetails.map((details, index) => ({
   ...details,
-  passages: [...new Set(adventDays.slice(index * 7, index * 7 + 7).flat())].map(
-    (osisId) => formatPassage(osisId),
-  ),
+  firstDay: index * 7 + 1,
+  lastDay: Math.min((index + 1) * 7, adventDayCount),
 }));
 
-export const adventDayCount = adventDays.length;
-
-// Mirrors BiblePlanSeason.advent: the first Sunday of Advent always falls between Nov 27 and Dec 3.
-const getAdventStart = (year: number) => {
-  const earliestStart = new Date(Date.UTC(year, 10, 27));
-  return new Date(
-    Date.UTC(year, 10, 27 + ((7 - earliestStart.getUTCDay()) % 7)),
-  );
-};
-
-// After Christmas, the page looks ahead to next year's Advent.
+// After Christmas, the page looks ahead to next year's Advent. The plan always ends on Christmas Day.
 export const getUpcomingAdvent = (now: Date) => {
   const year =
     now.getTime() > Date.UTC(now.getUTCFullYear(), 11, 25, 23, 59)
       ? now.getUTCFullYear() + 1
       : now.getUTCFullYear();
-  return {
-    year,
-    start: getAdventStart(year),
-    end: new Date(Date.UTC(year, 11, 25)),
-  };
+  const end = Date.UTC(year, 11, 25);
+  const start = end - (adventDayCount - 1) * dayLength;
+  const days: AdventDay[] = plan.dayTitles.map((title, index) => ({
+    number: index + 1,
+    date: start + index * dayLength,
+    title,
+    person: title.split(': ')[0],
+  }));
+  return { year, start: new Date(start), end: new Date(end), days };
 };
 
-export const formatAdventDate = (date: Date) =>
-  date.toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    timeZone: 'UTC',
-  });
+// Compares calendar days in the viewer's own timezone, so "today" matches their date.
+export const getAdventStatus = (
+  now: Date,
+  start: Date | number,
+  dayCount: number,
+): AdventStatus => {
+  const offset = Math.round(
+    (Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) -
+      new Date(start).getTime()) /
+      dayLength,
+  );
+  if (offset < 0) return { kind: 'upcoming', daysUntil: -offset };
+  if (offset < dayCount) return { kind: 'active', day: offset + 1 };
+  return { kind: 'ended' };
+};
+
+export const formatAdventDate = (
+  date: Date | number,
+  options: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric' },
+) =>
+  new Date(date).toLocaleDateString('en-US', { ...options, timeZone: 'UTC' });

@@ -1,25 +1,29 @@
+import { IconBrandDiscordFilled } from '@tabler/icons-react';
 import { Metadata } from 'next';
+import { ReactNode } from 'react';
 
-import bannerImage from '@/assets/advent/banner.webp';
-import paceImage from '@/assets/advent/pace.webp';
-import planCardImage from '@/assets/advent/plan-card.webp';
-import studyNotesImage from '@/assets/advent/study-notes.webp';
-import AdventCandles from '@/components/blocks/AdventCandles';
+import AdventHeroSubtitle from '@/components/blocks/AdventHeroSubtitle';
+import AdventProvider from '@/components/blocks/AdventProvider';
+import AdventStatusLabel from '@/components/blocks/AdventStatusLabel';
 import AndroidAppRedirect from '@/components/blocks/AndroidAppRedirect';
-import AppStoreButtons from '@/components/blocks/AppStoreButtons';
+import CtaButton from '@/components/blocks/CtaButton';
+import DownloadCtaButton from '@/components/blocks/DownloadCtaButton';
 import DownloadSection from '@/components/blocks/DownloadSection';
-import FeatureShowcase from '@/components/blocks/FeatureShowcase';
 import OpenInAppLink from '@/components/blocks/OpenInAppLink';
+import StickyDownloadBar from '@/components/blocks/StickyDownloadBar';
 import Page from '@/components/layout/Page';
 import Section from '@/components/layout/Section';
 import LoopingVideo from '@/components/media/LoopingVideo';
+import PhoneFrame from '@/components/media/PhoneFrame';
+import Video from '@/components/media/Video';
 import {
   adventDayCount,
   adventWeeks,
-  formatAdventDate,
+  getAdventStatus,
   getUpcomingAdvent,
 } from '@/lib/advent';
 import { adventCampaign } from '@/lib/campaign';
+import { lightButtonVars } from '@/lib/palettes';
 import { site } from '@/lib/site';
 
 // The dates roll over to next year's Advent after Christmas.
@@ -27,8 +31,25 @@ export const revalidate = 86400;
 
 const appUrl = `${site.appDomain}/plans/advent`;
 const title = 'Advent Reading Plan';
-const description =
-  'Study the people and promises surrounding Jesus’ birth, then explore the work of the Father, Son, and Holy Spirit in a free 27-day Advent plan.';
+const description = `Study the people and promises surrounding Jesus’ birth, then explore the work of the Father, Son, and Holy Spirit in a free ${adventDayCount}-day Advent plan.`;
+const recordingAspectRatio = '540/1168';
+
+const startSteps = [
+  {
+    title: 'Download Lux',
+    description: "It's free, with no ads and no account to create.",
+  },
+  {
+    title: 'Find Advent',
+    description:
+      'Open Bible Plans and tap +. Advent is right at the top. Once Lux is installed, you can also come back here and tap Open the plan.',
+  },
+  {
+    title: 'Tap Start Plan',
+    description:
+      'The pace is already set to finish on Christmas Day. Starting late? Lux shows how many days behind you are, so you can read a little extra and catch up.',
+  },
+];
 
 export const metadata: Metadata = {
   title,
@@ -38,144 +59,200 @@ export const metadata: Metadata = {
   itunes: { appId: site.appStoreId, appArgument: appUrl },
 };
 
+function SideBySide({
+  media,
+  children,
+  isMediaFirst = false,
+}: {
+  media: ReactNode;
+  children: ReactNode;
+  isMediaFirst?: boolean;
+}) {
+  return (
+    <div className="mx-auto flex max-w-4xl flex-col items-center gap-12 px-2 md:flex-row md:gap-16">
+      <div className="w-full flex-1">{children}</div>
+      <div className={isMediaFirst ? 'md:order-first' : undefined}>{media}</div>
+    </div>
+  );
+}
+
 export default function AdventPage() {
-  const { year, start, end } = getUpcomingAdvent(new Date());
+  const { year, start, days } = getUpcomingAdvent(new Date());
 
   return (
-    <Page>
-      <Section
-        background="dots"
-        align="center"
-        titleSize="lg"
-        useH1
-        tagline={`Advent ${year}`}
-        title={
-          <>
-            Don&apos;t just read the Christmas story.{' '}
-            <span className="gradient-heading">Study it.</span>
-          </>
-        }
-        subtitle={`A free reading plan in Lux Bible, with study notes for every day of Advent, from ${formatAdventDate(
-          start,
-        )} to Christmas Day.`}
-        mediaBelow={
-          <LoopingVideo
-            webm="/media/advent/scene.webm"
-            mp4="/media/advent/scene.mp4"
-            poster="/media/advent/scene.webp"
-            ariaLabel="The Advent plan's scene: three lit candles, a star over a stable, and a night sky starting to warm toward dawn"
-            className="rounded-2xl"
-          />
-        }
-      >
-        <div className="flex flex-col items-center gap-4">
-          <AppStoreButtons
-            appStoreUrl={site.appStoreUrl}
-            appStoreProviderToken={site.appStoreProviderToken}
+    <AdventProvider
+      year={year}
+      start={start.getTime()}
+      days={days}
+      initialStatus={getAdventStatus(new Date(), start, days.length)}
+    >
+      <Page>
+        <Section
+          id="hero"
+          background="dots"
+          align="center"
+          titleSize="lg"
+          useH1
+          tagline={
+            <span className="inline-flex items-center gap-2 rounded-full bg-background-soft px-3 py-1 text-sm">
+              <span className="h-2 w-2 rounded-full bg-emphasis" />
+              <AdventStatusLabel />
+            </span>
+          }
+          title={
+            <>
+              Don&apos;t just read the Christmas story.{' '}
+              <span className="gradient-heading">Study it.</span>
+            </>
+          }
+          subtitle={<AdventHeroSubtitle />}
+          mediaBelow={
+            <PhoneFrame className="mx-auto w-64 sm:w-72">
+              <LoopingVideo
+                webm="/media/advent/advent-hero.webm"
+                mp4="/media/advent/advent-hero.mp4"
+                poster="/media/advent/advent-hero.webp"
+                aspectRatio={recordingAspectRatio}
+                ariaLabel="The Advent plan in Lux Bible, with stars twinkling and clouds drifting over its night scene"
+              />
+            </PhoneFrame>
+          }
+        >
+          <div id="hero-download" className="flex flex-col items-center gap-4">
+            <DownloadCtaButton
+              appStoreUrl={site.appStoreUrl}
+              appStoreProviderToken={site.appStoreProviderToken}
+              googlePlayUrl={site.googlePlayUrl}
+              defaultCampaign={adventCampaign}
+            />
+            <p className="text-sm text-foreground-soft/70">
+              Free · No ads · No account
+            </p>
+            <OpenInAppLink href={appUrl}>
+              Already have Lux? Open the plan
+            </OpenInAppLink>
+          </div>
+          <AndroidAppRedirect
             googlePlayUrl={site.googlePlayUrl}
             defaultCampaign={adventCampaign}
           />
-          <OpenInAppLink href={appUrl}>
-            Already have Lux? Open the plan
-          </OpenInAppLink>
-        </div>
-        <AndroidAppRedirect
-          googlePlayUrl={site.googlePlayUrl}
+        </Section>
+
+        <Section
+          id="start"
+          align="start"
+          title="How to Start"
+          subtitle="Once Lux is on your phone, Advent is a few taps away."
+        >
+          <SideBySide
+            media={
+              <PhoneFrame className="w-64">
+                <Video
+                  src="/media/advent/advent-start.webm"
+                  aspectRatio={recordingAspectRatio}
+                  ariaLabel="Starting the Advent plan from Start A Bible Plan in Lux"
+                  className="h-auto w-full"
+                />
+              </PhoneFrame>
+            }
+          >
+            <ol className="flex flex-col gap-4">
+              {startSteps.map((step, index) => (
+                <li
+                  key={step.title}
+                  className="flex gap-4 rounded-2xl bg-background-soft p-6"
+                >
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emphasis text-sm font-semibold text-on-emphasis">
+                    {index + 1}
+                  </span>
+                  <div>
+                    <p className="font-serif text-lg font-bold">{step.title}</p>
+                    <p className="mt-1 text-foreground-soft">
+                      {step.description}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </SideBySide>
+        </Section>
+
+        <Section
+          id="topics"
+          align="start"
+          title="What You'll Study"
+          subtitle="Each day has a short reading, study notes with a word from the Hebrew or Greek, and a question to reflect on."
+        >
+          <SideBySide
+            isMediaFirst
+            media={
+              <PhoneFrame className="w-64">
+                <Video
+                  src="/media/advent/advent-day.webm"
+                  aspectRatio={recordingAspectRatio}
+                  ariaLabel="Reading a day of the Advent plan in Lux, from the passage to the study notes, a Greek word, and the reflection question"
+                  className="h-auto w-full"
+                />
+              </PhoneFrame>
+            }
+          >
+            <ol className="flex flex-col gap-6">
+              {adventWeeks.map((week) => (
+                <li key={week.title}>
+                  <p className="text-sm font-semibold text-foreground-soft/70">
+                    Days {week.firstDay}–{week.lastDay}
+                  </p>
+                  <p className="mt-1 font-serif text-lg font-bold">
+                    {week.title}
+                  </p>
+                  <p className="mt-1 text-foreground-soft">
+                    {week.description}
+                  </p>
+                </li>
+              ))}
+            </ol>
+          </SideBySide>
+        </Section>
+
+        <DownloadSection
           defaultCampaign={adventCampaign}
+          subtitle="Lux is free, with no ads and no account, and the Advent plan works offline."
         />
-      </Section>
 
-      <Section
-        id="study-notes"
-        align="start"
-        title="Study notes for every reading"
-        subtitle="Each day’s passages are followed by short study notes and a question to reflect on. The notes and bundled texts are available offline."
-      >
-        <FeatureShowcase
-          features={[
-            {
-              title: 'Start with the big picture',
-              subtitle:
-                'Follow the people who waited for the promised Savior. Each day’s Go Deeper note helps you explore a Hebrew or Greek word from the reading.',
-              image: studyNotesImage,
-            },
-            {
-              title: 'Explore related resources',
-              subtitle:
-                'Tap a Hebrew or Greek word to see its form in the verse, or open related Scripture, commentaries, creeds, and BibleProject videos without leaving Lux.',
-              video: '/media/advent/day-walkthrough.webm',
-            },
-          ]}
-        />
-      </Section>
-
-      <Section
-        id="follow-along"
-        align="start"
-        title="Read along until Christmas"
-        subtitle="The plan has its own scene that changes as you read, and Lux helps you finish on Christmas Day."
-      >
-        <FeatureShowcase
-          features={[
-            {
-              title: 'Light a candle each week',
-              subtitle:
-                'The first reading of each week lights another candle, and every day you finish brings the night a little closer to dawn.',
-              image: planCardImage,
-            },
-            {
-              title: 'Finish on Christmas Day',
-              subtitle: `Start on the first Sunday of Advent, ${formatAdventDate(
-                start,
-              )}, and read a day at a time. If you start late, Lux paces the plan to finish on ${formatAdventDate(
-                end,
-              )} and shows when you're behind.`,
-              image: paceImage,
-            },
-            {
-              title: 'Counting down',
-              subtitle:
-                "In the weeks before Christmas, Advent sits at the top of Start A Bible Plan with a countdown, so it's easy to find.",
-              image: bannerImage,
-            },
-          ]}
-        />
-      </Section>
-
-      <Section
-        id="weeks"
-        align="start"
-        title="Four weeks, four candles"
-        subtitle={`${adventDayCount} days following the promises and witnesses of Jesus’ birth, with a final six-day study of the Trinity.`}
-      >
-        <div className="mx-auto grid max-w-4xl gap-6 sm:grid-cols-2">
-          {adventWeeks.map((week, index) => (
-            <div
-              key={week.title}
-              className="flex flex-col gap-4 rounded-2xl bg-background-soft p-6"
-            >
-              <AdventCandles
-                litCount={index + 1}
-                className="h-14 w-auto self-start"
-              />
-              <div>
-                <p className="text-sm font-semibold text-emphasis">
-                  Week {index + 1}
-                </p>
-                <h2 className="font-serif text-xl font-bold">{week.title}</h2>
-              </div>
-              <p className="text-foreground-soft">{week.description}</p>
-              <ul className="mt-auto flex flex-col gap-1 text-sm text-foreground-soft/70">
-                {week.passages.map((passage) => (
-                  <li key={passage}>{passage}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      <DownloadSection defaultCampaign={adventCampaign} />
-    </Page>
+        <Section
+          id="community"
+          background="dots"
+          align="responsive"
+          tagline="Join the Community"
+          title={
+            <>
+              Read together,{' '}
+              <span className="gradient-heading">reflect together</span>
+            </>
+          }
+          subtitle="Every day ends with a question to reflect on. Join the Lux Discord to read how others are answering and share your own."
+        >
+          <div className="flex flex-center gap-4">
+            <CtaButton
+              text="Join the Discord"
+              href={site.discordUrl}
+              external
+              paletteVars={lightButtonVars}
+              icon={
+                <IconBrandDiscordFilled
+                  style={{ width: '1.5em', height: '1em' }}
+                />
+              }
+            />
+          </div>
+        </Section>
+      </Page>
+      <StickyDownloadBar
+        title="Advent Reading Plan"
+        subtitle={<AdventStatusLabel />}
+        showAfterId="hero-download"
+        defaultCampaign={adventCampaign}
+      />
+    </AdventProvider>
   );
 }

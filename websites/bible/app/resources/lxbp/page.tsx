@@ -49,7 +49,12 @@ const studyExample = `{
       "studyNotes": "Naomi leaves Moab with nothing but Ruth, and she can't yet see that Ruth is the gift.\\n\\n### Go Deeper\\n\\n> Where you go I will go.\\n\\nCompare Ruth's promise in [Ruth 1:16-17](Ruth.1.16-Ruth.1.17) with what [Matthew Henry](commentary:matthewHenry/Ruth.1.16-Ruth.1.17) says about it.",
       "reflectionQuestion": "Where might God be providing for you in a way you haven't noticed yet?"
     },
-    { "title": "Gleaning in Boaz's field", "passages": ["Ruth.2"] }
+    { "title": "Gleaning in Boaz's field", "passages": ["Ruth.2"] },
+    {
+      "title": "Looking back",
+      "passages": [],
+      "reflectionQuestion": "Where have you seen Naomi's bitterness or Ruth's loyalty in your own life?"
+    }
   ]
 }`;
 
@@ -118,11 +123,12 @@ export default function LxbpFormatPage() {
             </ul>
 
             <p>
-              Each day is an object with a <code>passages</code> array. An
-              empty array marks a Review &amp; Reflect day, a built-in pause
-              with no new reading. A day can also have a title, study notes,
-              and a reflection question, covered in{' '}
+              Each day is an object with a <code>passages</code> array. A day
+              can also have a title, study notes, and a reflection question,
+              covered in{' '}
               <a href="#study-notes">Study notes and reflection questions</a>.
+              A day with an empty array and nothing else is a Review &amp;
+              Reflect day, a built-in pause with no new reading.
             </p>
 
             <pre>
@@ -177,9 +183,12 @@ export default function LxbpFormatPage() {
 
             <p>
               A day is complete once its passages, study notes, and reflection
-              question are all checked off. Review &amp; Reflect days stay a
-              single checkbox, so they don&apos;t show study notes or a
-              reflection question.
+              question are all checked off. A day can leave out passages and
+              have only study notes, a reflection question, or both, for a
+              devotional or reflection day without a new reading. If a
+              reader turns reflection questions off, a day with only a
+              reflection question becomes a single Review &amp; Reflect
+              checkbox.
             </p>
 
             <pre>

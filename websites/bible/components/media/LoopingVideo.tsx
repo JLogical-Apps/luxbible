@@ -9,12 +9,14 @@ export default function LoopingVideo({
   webm,
   mp4,
   poster,
+  aspectRatio,
   ariaLabel,
   className,
 }: {
   webm: string;
   mp4: string;
   poster: string;
+  aspectRatio: string;
   ariaLabel: string;
   className?: string;
 }) {
@@ -36,7 +38,7 @@ export default function LoopingVideo({
     <video
       ref={videoRef}
       className={cn('w-full h-auto', className)}
-      style={{ aspectRatio: '16/9' }}
+      style={{ aspectRatio }}
       poster={poster}
       autoPlay
       muted
