@@ -47,20 +47,30 @@ class StyledStickyHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    StyledStickyHeaderBar buildHeaderBar({required bool isPinned}) => StyledStickyHeaderBar(
+      key: headerKey,
+      title: title,
+      subtitle: subtitle,
+      trailing: trailing,
+      onPressed: onHeaderPressed,
+      padding: headerPadding,
+      isPinned: isPinned,
+    );
+
+    final content = StyledSizeAndFade.showHide(
+      show: showChildren,
+      child: StyledList(children: children),
+    );
+
+    // StickyHeaderBuilder throws without a Scrollable ancestor, such as when a reorderable list's drag proxy rebuilds
+    // this in the Overlay.
+    if (Scrollable.maybeOf(context) == null) {
+      return Column(children: [buildHeaderBar(isPinned: false), content]);
+    }
+
     return StickyHeaderBuilder(
-      builder: (context, state) => StyledStickyHeaderBar(
-        key: headerKey,
-        title: title,
-        subtitle: subtitle,
-        trailing: trailing,
-        onPressed: onHeaderPressed,
-        padding: headerPadding,
-        isPinned: state < 0,
-      ),
-      content: StyledSizeAndFade.showHide(
-        show: showChildren,
-        child: StyledList(children: children),
-      ),
+      builder: (context, state) => buildHeaderBar(isPinned: state < 0),
+      content: content,
     );
   }
 }
