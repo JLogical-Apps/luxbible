@@ -465,7 +465,7 @@ class CreateBiblePlanFlow extends HookConsumerWidget {
                                   title: t.biblePlans.reviewAndReflect.toText(),
                                 ),
                               )
-                            else
+                            else if (day.passages.isNotEmpty)
                               StyledReorderableList(
                                 shrinkWrap: true,
                                 onReorder: (oldIndex, newIndex) =>
@@ -507,13 +507,7 @@ class CreateBiblePlanFlow extends HookConsumerWidget {
                                                             .map(
                                                               (entry) => StyledListItem(
                                                                 title: t.biblePlans.day(day: entry.$1 + 1).toText(),
-                                                                subtitle: entry.$2.isReviewAndReflect
-                                                                    ? t.biblePlans.reviewAndReflect.toText()
-                                                                    : Text(
-                                                                        entry.$2.passages
-                                                                            .map((passage) => passage.format())
-                                                                            .join(' • '),
-                                                                      ),
+                                                                subtitle: entry.$2.getSummary().toText(),
                                                                 onPressed: () {
                                                                   daysState.value = days.withPassageMoved(
                                                                     sourceDayIndex: dayIndex,
@@ -816,6 +810,7 @@ The file contents must use exactly this Lux BiblePlan structure:
       "reflectionQuestion": "What does it look like to not be ashamed of the gospel this week?"
     },
     {"passages": ["Rom.2.1-Rom.2.16"]},
+    {"title": "Looking back", "passages": [], "reflectionQuestion": "Which verse from this week stayed with you?"},
     {"passages": []}
   ],
   "color": "blue"
@@ -827,7 +822,8 @@ Rules:
 - Include 1 through 365 numbered days.
 - If the request specifies a duration, create exactly that many day entries. Fill every requested day with a reading unless the request calls for reflection days. Do not shorten the plan by leaving out requested days.
 - Include at least one reading across the plan.
-- A reflection day is {"passages": []}.
+- A day with no passages can still have study notes and/or a reflection question, for a devotional or reflection day without a new reading.
+- A plain reflection day with nothing else to do is {"passages": []}.
 - A reading day can contain one or more passages. Put each separate passage in that day's passages array.
 - Break chapters into smaller verse ranges when that helps fill the requested duration, keeps readings manageable, or balances the reading across days.
 - passages must contain valid OSIS references. Examples: "Rom.1", "Rom.1.1", "Rom.1.1-Rom.1.17", and "Ps.1.1-Ps.1.6".
@@ -835,7 +831,7 @@ Rules:
 - Every reference and range must exist, remain in canonical order, and place the complete book identifier on both sides of a range.
 - Do not put the exact same passage string in one day more than once. Repeating a passage on different days is allowed.
 - color is optional. If present, it must be exactly one of: $colorValues.
-- title, studyNotes, and reflectionQuestion are optional. Add them only when the request asks for day titles, study notes, devotional content, commentary, or reflection questions. A reflection day with no passages can't have study notes or a reflection question.
+- title, studyNotes, and reflectionQuestion are optional. Add them only when the request asks for day titles, study notes, devotional content, commentary, or reflection questions.
 - title is a short heading for the day. reflectionQuestion is one question for the reader to answer.
 - studyNotes is Markdown in a JSON string, with \\n for line breaks. Separate paragraphs with a blank line. Use only paragraphs, headings starting with ###, quotes starting with >, **bold**, *italic*, and links. Do not use lists, tables, images, or HTML.
 - Link to Scripture in studyNotes with an OSIS reference as the link target, such as [Romans 5:1](Rom.5.1) or [Romans 5:1-5](Rom.5.1-Rom.5.5). Do not link to websites, since Lux doesn't open web links.

@@ -51,7 +51,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
   Widget build(BuildContext context, WidgetRef ref) {
     final plans = ref.watch(biblePlansProvider);
     final plan = plans[planId];
-    if (plan == null || dayIndex < 0 || dayIndex >= plan.days.length || plan.days[dayIndex].passages.isEmpty) {
+    if (plan == null || dayIndex < 0 || dayIndex >= plan.days.length) {
       return SizedBox.shrink();
     }
 
@@ -59,11 +59,15 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
     final passages = day.passages;
 
     final user = ref.watch(userProvider);
-    final readerConfiguration = ref.watch(luxReaderConfigurationProvider);
     final progress = user.getHydratedPlanProgress(planId: planId, planById: plans);
-    final currentProgress = user.getPlanDayProgress(planId: planId, dayIndex: dayIndex);
     // Kept for the visit, so skipping every reflection from the reflection tab doesn't pull the tab out from under it.
     final items = useMemoized(() => progress?.getDayItems(dayIndex) ?? day.getItems(includesReflection: false));
+    if (items.isEmpty) {
+      return SizedBox.shrink();
+    }
+
+    final readerConfiguration = ref.watch(luxReaderConfigurationProvider);
+    final currentProgress = user.getPlanDayProgress(planId: planId, dayIndex: dayIndex);
 
     final planDay = progress?.getDayId(dayIndex);
     useEffect(() {
@@ -91,7 +95,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
     // Study notes and reflection tabs come after the passages, so they keep the last passage for study panels.
     final currentPassage = switch (currentItem) {
       BiblePlanPassageItem(:final passage) => passage,
-      BiblePlanDayStep() => passages.last,
+      BiblePlanDayStep() => passages.lastOrNull,
     };
     final nextIncompleteItemIndex = currentProgress.getNextIncompleteItemIndex(
       items: items,
@@ -100,7 +104,7 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
 
     final passageControllerRegistry = useRegistry<ChapterPassage, PassageController>();
     final currentPassageController = currentItem is BiblePlanPassageItem
-        ? passageControllerRegistry[currentPassage]
+        ? passageControllerRegistry[currentItem.passage]
         : null;
     final studyNotesScrollController = useScrollController();
     final readItems = useMemoized(() => <BiblePlanDayItem>{});
@@ -215,19 +219,19 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
           : (showDragHandle) => AudioBiblePanel(context: .plan, showDragHandle: showDragHandle),
     );
 
-    final currentTranslation = user.getTranslationFor(currentPassage.chapter.book);
-
-    Future<List<Paragraph>> getCurrentParagraphs() => ref.read(
+    Future<List<Paragraph>> getParagraphs(ChapterPassage passage) => ref.read(
       verseSelectionParagraphsProvider(
-        selection: currentPassage.verseSelection,
-        translation: currentTranslation,
+        selection: passage.verseSelection,
+        translation: user.getTranslationFor(passage.chapter.book),
       ).future,
     );
 
-    void scrollMainToReference(Reference reference) async {
-      final paragraphs = await getCurrentParagraphs();
+    void scrollMainToReference(ChapterPassage passage, Reference reference) async {
+      final paragraphs = await getParagraphs(passage);
       if (!context.mounted) return;
-      final sizeMultiplier = readerConfiguration.paragraphsConfiguration(context, currentTranslation).sizeMultiplier;
+      final sizeMultiplier = readerConfiguration
+          .paragraphsConfiguration(context, user.getTranslationFor(passage.chapter.book))
+          .sizeMultiplier;
       final sectionHeight = paragraphs.getSectionTypeForVerse(reference.verseNum)?.getHeight(sizeMultiplier) ?? 0;
       currentPassageController?.scrollToReference(
         reference,
@@ -236,12 +240,12 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
       );
     }
 
-    void addStudyPanel(StudyPanel studyPanel) async {
+    void addStudyPanel(ChapterPassage passage, StudyPanel studyPanel) async {
       final verseSelection = selectionController.verseSelection;
       studyPanelCarousel.addStudyPanel(studyPanel);
       selectionController.clear();
       if (verseSelection != null) {
-        final paragraphs = await getCurrentParagraphs();
+        final paragraphs = await getParagraphs(passage);
         await Future.delayed(Duration(milliseconds: 200));
         currentPassageController?.scrollToReference(
           verseSelection.start,
@@ -271,13 +275,13 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
       }
     }
 
-    void onMainActionPressed(MainAction action) async {
+    void onMainActionPressed(ChapterPassage passage, MainAction action) async {
       switch (action) {
         case .audio:
           if (planAudioPlayer.isPlaying) {
             await audioBibleController.pause(context: .plan);
           } else {
-            playPassage(currentPassage);
+            playPassage(passage);
           }
         case .bookmark:
           await context.showStyledDialog(
@@ -296,29 +300,27 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
         default:
           await action.onPressed(
             context,
-            passage: currentPassage,
+            passage: passage,
             onNavigateToVerseSelection: navigateToVerseSelection,
-            onAddStudyPanel: addStudyPanel,
+            onAddStudyPanel: (studyPanel) => addStudyPanel(passage, studyPanel),
             onBookmarkAdded: (_) {},
           );
       }
     }
 
-    void onShortcutPressed(MainToolbarShortcut shortcut) {
+    void onShortcutPressed(ChapterPassage passage, MainToolbarShortcut shortcut) {
       if (shortcut.toMainAction() case final action?) {
-        onMainActionPressed(action);
+        onMainActionPressed(passage, action);
       } else {
         shortcut.onPressed(
           context,
-          passage: currentPassage,
+          passage: passage,
           onNavigateToVerseSelection: navigateToVerseSelection,
-          onAddStudyPanel: addStudyPanel,
+          onAddStudyPanel: (studyPanel) => addStudyPanel(passage, studyPanel),
           onBookmarkAdded: (_) {},
         );
       }
     }
-
-    final bookTitle = currentPassage.chapter.book.title();
 
     final nextOrDoneButton = StyledCircleButton.sm(
       colorBuilder: .primary,
@@ -326,193 +328,197 @@ class BiblePlanReadPage extends HookConsumerWidget implements StyledRoute<VerseS
       onPressed: completeItemAndContinue,
     );
 
-    return StyledPage(
-      backgroundColor: .backgroundPrimary,
-      title: t.biblePlans.day(day: dayIndex + 1).toText(),
-      body: StudyPanelLayout(
-        carousel: studyPanelCarousel,
-        isSideLayout: isSideLayout,
-        passage: currentPassage,
-        passageController: currentPassageController,
-        selectionController: selectionController,
-        getViewportTop: () => passageAreaKey.globalBounds?.top ?? 0,
-        onScrollMainToReference: scrollMainToReference,
-        onNavigateToVerseSelection: navigateToVerseSelection,
-        child: Column(
-          children: [
-            ColoredBox(
-              color: context.colors.surfacePrimary,
-              child: StyledTabBar.scrollable(
-                tabController: tabController,
-                onTabPressed: (index) {
-                  if (index != currentIndex) return;
-                  if (items[index] == BiblePlanDayStep.reflection && !currentProgress.isItemComplete(items[index])) {
-                    BiblePlanReflectionFlow.complete(context: context, planId: planId, dayIndex: dayIndex);
-                    return;
-                  }
-                  ref.updateUser(
-                    (user) =>
-                        user.withPlanItemToggled(planId: planId, dayIndex: dayIndex, day: day, item: items[index]),
-                  );
-                },
-                tabTitles: items.map((item) {
-                  final isCompleted = currentProgress.isItemComplete(item);
-                  return Row(
-                    spacing: 8,
-                    children: [
-                      item.title().toText(),
-                      Icon(
-                        isCompleted ? Symbols.check_circle : Symbols.circle,
-                        fill: isCompleted ? 1 : 0,
-                        color: isCompleted ? context.colors.contentPrimary : context.colors.contentSecondary,
-                        size: 16,
-                      ),
-                    ],
-                  );
-                }).toList(),
-              ),
-            ),
-            Expanded(
-              child: Stack(
+    final content = Column(
+      children: [
+        ColoredBox(
+          color: context.colors.surfacePrimary,
+          child: StyledTabBar.scrollable(
+            tabController: tabController,
+            onTabPressed: (index) {
+              if (index != currentIndex) return;
+              if (items[index] == BiblePlanDayStep.reflection && !currentProgress.isItemComplete(items[index])) {
+                BiblePlanReflectionFlow.complete(context: context, planId: planId, dayIndex: dayIndex);
+                return;
+              }
+              ref.updateUser(
+                (user) => user.withPlanItemToggled(planId: planId, dayIndex: dayIndex, day: day, item: items[index]),
+              );
+            },
+            tabTitles: items.map((item) {
+              final isCompleted = currentProgress.isItemComplete(item);
+              return Row(
+                spacing: 8,
                 children: [
-                  Positioned.fill(
-                    child: KeyedSubtree(
-                      key: passageAreaKey,
-                      child: SwipeTabView(
-                        controller: tabController,
-                        children: items
-                            .map(
-                              (item) => switch (item) {
-                                BiblePlanPassageItem(:final passage) => HookBuilder(
-                                  builder: (context) {
-                                    final passageController = usePassageController(passage.chapter);
-                                    useRegistryItem(passageControllerRegistry, passage, passageController);
+                  item.title().toText(),
+                  Icon(
+                    isCompleted ? Symbols.check_circle : Symbols.circle,
+                    fill: isCompleted ? 1 : 0,
+                    color: isCompleted ? context.colors.contentPrimary : context.colors.contentSecondary,
+                    size: 16,
+                  ),
+                ],
+              );
+            }).toList(),
+          ),
+        ),
+        Expanded(
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: KeyedSubtree(
+                  key: passageAreaKey,
+                  child: SwipeTabView(
+                    controller: tabController,
+                    children: items
+                        .map(
+                          (item) => switch (item) {
+                            BiblePlanPassageItem(:final passage) => HookBuilder(
+                              builder: (context) {
+                                final passageController = usePassageController(passage.chapter);
+                                useRegistryItem(passageControllerRegistry, passage, passageController);
 
-                                    final listController = passageController.listController;
-                                    useOnListenableChange(listController, () {
-                                      if (listController.isAttached &&
-                                          listController.visibleRange?.$2 == listController.numberOfItems - 1) {
-                                        readItems.add(item);
-                                      }
-                                    });
+                                final listController = passageController.listController;
+                                useOnListenableChange(listController, () {
+                                  if (listController.isAttached &&
+                                      listController.visibleRange?.$2 == listController.numberOfItems - 1) {
+                                    readItems.add(item);
+                                  }
+                                });
 
-                                    return SafeArea(
-                                      top: false,
-                                      bottom: false,
-                                      right: !isSideLayout || !studyPanelCarousel.hasPanels,
-                                      child: PassageBuilder(
+                                return SafeArea(
+                                  top: false,
+                                  bottom: false,
+                                  right: !isSideLayout || !studyPanelCarousel.hasPanels,
+                                  child: PassageBuilder(
+                                    verseSelection: passage.verseSelection,
+                                    selection: selectionController,
+                                    emphasizedReference: audioBibleSync.getEmphasizedReferenceForPassage(passage),
+                                    controller: passageController,
+                                    onNavigateToVerseSelection: navigateToVerseSelection,
+                                    padding: .only(
+                                      left: 24,
+                                      top: 16,
+                                      right: 24,
+                                      bottom: MediaQuery.viewPaddingOf(context).bottom + 96,
+                                    ),
+                                    showLoading: false,
+                                    contentBuilder: (context, passageContent) =>
+                                        NotificationListener<ScrollStartNotification>(
+                                          onNotification: (notification) {
+                                            if (notification.dragDetails != null && planAudioPlayer.isPlaying) {
+                                              audioBibleController.pause(context: .plan);
+                                            }
+                                            return false;
+                                          },
+                                          child: passageContent,
+                                        ),
+                                    footer: StyledRectButton.secondary(
+                                      label:
+                                          (passage.isWholeChapter
+                                                  ? t.biblePlans.readInContext
+                                                  : t.biblePlans.readEntireChapter)
+                                              .toText(),
+                                      onPressed: () => PassagePreviewPage.show(
+                                        context,
                                         verseSelection: passage.verseSelection,
-                                        selection: selectionController,
-                                        emphasizedReference: audioBibleSync.getEmphasizedReferenceForPassage(passage),
-                                        controller: passageController,
-                                        onNavigateToVerseSelection: navigateToVerseSelection,
-                                        padding: .only(
-                                          left: 24,
-                                          top: 16,
-                                          right: 24,
-                                          bottom: MediaQuery.viewPaddingOf(context).bottom + 96,
-                                        ),
-                                        showLoading: false,
-                                        contentBuilder: (context, passageContent) =>
-                                            NotificationListener<ScrollStartNotification>(
-                                              onNotification: (notification) {
-                                                if (notification.dragDetails != null && planAudioPlayer.isPlaying) {
-                                                  audioBibleController.pause(context: .plan);
-                                                }
-                                                return false;
-                                              },
-                                              child: passageContent,
-                                            ),
-                                        footer: StyledRectButton.secondary(
-                                          label:
-                                              (passage.isWholeChapter
-                                                      ? t.biblePlans.readInContext
-                                                      : t.biblePlans.readEntireChapter)
-                                                  .toText(),
-                                          onPressed: () => PassagePreviewPage.show(
-                                            context,
-                                            verseSelection: passage.verseSelection,
-                                            onNavigateToVerseSelection: (selection) => context.pop(selection),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                BiblePlanDayStep.studyNotes => BiblePlanStudyNotesView(
-                                  title: day.title,
-                                  content: day.studyNotesContent,
-                                  // Follows the Bible text size setting so the notes read at the same scale.
-                                  sizeMultiplier: user.themeLayout
-                                      .getFontSizeSpacingOrSystem(context.textScaling)
-                                      .multiplier,
-                                  scrollController: studyNotesScrollController,
-                                  onReadToEnd: () => readItems.add(item),
-                                  onNavigateToVerseSelection: navigateToVerseSelection,
-                                ),
-                                BiblePlanDayStep.reflection => switch (day.reflectionQuestion) {
-                                  final question? => BiblePlanReflectionView(
-                                    question: question,
-                                    answer: reflectionAnswer,
-                                    // Others are only discussing it on Discord while the plan's season is underway.
-                                    hasDiscussion: BiblePlanType.getById(planId)?.season?.isActiveOn(.now()) ?? false,
-                                    onAnswerChanged: (answer) => ref.updateUser(
-                                      (user) => user.withPlanReflectionAnswer(
-                                        planId: planId,
-                                        dayIndex: dayIndex,
-                                        answer: answer,
+                                        onNavigateToVerseSelection: (selection) => context.pop(selection),
                                       ),
                                     ),
                                   ),
-                                  null => SizedBox.shrink(),
-                                },
+                                );
                               },
-                            )
-                            .toList(),
-                      ),
-                    ),
-                  ),
-                  ReaderBottomBar(
-                    isToolbarVisible: bottomBarVisibility.isVisible,
-                    hasStudyPanels: studyPanelCarousel.hasPanels,
-                    isSideLayout: isSideLayout,
-                    toolbar: currentItem is BiblePlanDayStep
-                        ? TitledToolbar(leading: nextOrDoneButton, title: currentItem.title())
-                        : MainToolbar(
-                            bookTitle: bookTitle,
-                            location: currentPassage.format().replaceFirst('$bookTitle\u{00A0}', ''),
-                            mainToolbar: user.mainToolbar,
-                            translation: currentTranslation,
-                            user: user,
-                            audioContext: .plan,
-                            leading: nextOrDoneButton,
-                            onPressed: () => onShortcutPressed(.switchBible),
-                            onShorcutPressed: (_, shortcut) => onShortcutPressed(shortcut),
-                            onMorePressed: () async {
-                              final action = await MainActionsSheet.show(
-                                context,
-                                audioContext: .plan,
-                                hiddenActions: {.verseOfTheDay, .bookmark, .plans},
-                              );
-                              if (action != null && context.mounted) {
-                                onMainActionPressed(action);
-                              }
+                            ),
+                            BiblePlanDayStep.studyNotes => BiblePlanStudyNotesView(
+                              title: day.title,
+                              content: day.studyNotesContent,
+                              // Follows the Bible text size setting so the notes read at the same scale.
+                              sizeMultiplier: user.themeLayout
+                                  .getFontSizeSpacingOrSystem(context.textScaling)
+                                  .multiplier,
+                              scrollController: studyNotesScrollController,
+                              onReadToEnd: () => readItems.add(item),
+                              onNavigateToVerseSelection: navigateToVerseSelection,
+                            ),
+                            BiblePlanDayStep.reflection => switch (day.reflectionQuestion) {
+                              final question? => BiblePlanReflectionView(
+                                question: question,
+                                answer: reflectionAnswer,
+                                // Others are only discussing it on Discord while the plan's season is underway.
+                                hasDiscussion: BiblePlanType.getById(planId)?.season?.isActiveOn(.now()) ?? false,
+                                onAnswerChanged: (answer) => ref.updateUser(
+                                  (user) =>
+                                      user.withPlanReflectionAnswer(planId: planId, dayIndex: dayIndex, answer: answer),
+                                ),
+                              ),
+                              null => SizedBox.shrink(),
                             },
-                          ),
-                    selectionToolbar: currentItem is BiblePlanPassageItem && selectionController.hasSelection
-                        ? SelectionToolbar(
-                            selectionController: selectionController,
-                            onNavigateToVerseSelection: navigateToVerseSelection,
-                            onAddStudyPanel: addStudyPanel,
-                          )
-                        : null,
+                          },
+                        )
+                        .toList(),
                   ),
-                ],
+                ),
               ),
-            ),
-          ],
+              ReaderBottomBar(
+                isToolbarVisible: bottomBarVisibility.isVisible,
+                hasStudyPanels: currentPassage != null && studyPanelCarousel.hasPanels,
+                isSideLayout: isSideLayout,
+                toolbar: switch (currentItem) {
+                  BiblePlanDayStep() => TitledToolbar(leading: nextOrDoneButton, title: currentItem.title()),
+                  BiblePlanPassageItem(:final passage) => MainToolbar(
+                    bookTitle: passage.chapter.book.title(),
+                    location: passage.format().replaceFirst('${passage.chapter.book.title()}\u{00A0}', ''),
+                    mainToolbar: user.mainToolbar,
+                    translation: user.getTranslationFor(passage.chapter.book),
+                    user: user,
+                    audioContext: .plan,
+                    leading: nextOrDoneButton,
+                    onPressed: () => onShortcutPressed(passage, .switchBible),
+                    onShorcutPressed: (_, shortcut) => onShortcutPressed(passage, shortcut),
+                    onMorePressed: () async {
+                      final action = await MainActionsSheet.show(
+                        context,
+                        audioContext: .plan,
+                        hiddenActions: {.verseOfTheDay, .bookmark, .plans},
+                      );
+                      if (action != null && context.mounted) {
+                        onMainActionPressed(passage, action);
+                      }
+                    },
+                  ),
+                },
+                selectionToolbar: switch (currentItem) {
+                  BiblePlanPassageItem(:final passage) when selectionController.hasSelection => SelectionToolbar(
+                    selectionController: selectionController,
+                    onNavigateToVerseSelection: navigateToVerseSelection,
+                    onAddStudyPanel: (studyPanel) => addStudyPanel(passage, studyPanel),
+                  ),
+                  _ => null,
+                },
+              ),
+            ],
+          ),
         ),
-      ),
+      ],
+    );
+
+    return StyledPage(
+      backgroundColor: .backgroundPrimary,
+      title: t.biblePlans.day(day: dayIndex + 1).toText(),
+      // A day without passages has no verses to study, so it leaves out the study panels.
+      body: switch (currentPassage) {
+        final passage? => StudyPanelLayout(
+          carousel: studyPanelCarousel,
+          isSideLayout: isSideLayout,
+          passage: passage,
+          passageController: currentPassageController,
+          selectionController: selectionController,
+          getViewportTop: () => passageAreaKey.globalBounds?.top ?? 0,
+          onScrollMainToReference: (reference) => scrollMainToReference(passage, reference),
+          onNavigateToVerseSelection: navigateToVerseSelection,
+          child: content,
+        ),
+        null => content,
+      },
     );
   }
 }

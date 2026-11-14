@@ -16,6 +16,8 @@ class HydratedBiblePlanProgress {
 
   List<BiblePlanDayItem> getDayItems(int dayIndex) => progress.getDayItems(plan.days[dayIndex]);
 
+  bool isReviewAndReflect(int dayIndex) => progress.isReviewAndReflect(plan.days[dayIndex]);
+
   bool isItemComplete({required int dayIndex, required BiblePlanDayItem item}) =>
       progress.getDayProgress(dayIndex).isItemComplete(item);
 
@@ -26,8 +28,6 @@ class HydratedBiblePlanProgress {
 
   int get currentDayIndex =>
       plan.dayIndexes.firstWhereOrNull((index) => !isDayComplete(dayIndex: index)) ?? (plan.days.length - 1);
-
-  BiblePlanDay get currentDay => plan.days[currentDayIndex];
 
   int? get lastCompletedDayIndex => plan.dayIndexes.lastWhereOrNull((index) => isDayComplete(dayIndex: index));
 

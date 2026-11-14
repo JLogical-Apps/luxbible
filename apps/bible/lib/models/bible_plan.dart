@@ -63,7 +63,7 @@ sealed class BiblePlan with _$BiblePlan {
 
   List<int> get dayIndexes => List.generate(dayCount, (i) => i);
 
-  bool get hasReflectionQuestions => days.any((day) => !day.isReviewAndReflect && day.reflectionQuestion != null);
+  bool get hasReflectionQuestions => days.any((day) => day.reflectionQuestion != null);
 }
 
 @freezed
@@ -79,22 +79,27 @@ sealed class BiblePlanDay with _$BiblePlanDay {
 
   factory BiblePlanDay.fromJson(Map<String, dynamic> json) => _$BiblePlanDayFromJson(json);
 
-  bool get isReviewAndReflect => passages.isEmpty;
+  bool get isReviewAndReflect => getItems(includesReflection: true).isEmpty;
 
   List<RichContent> get studyNotesContent => RichContent.listFromMarkdown(studyNotes ?? '');
 
   List<BiblePlanDayStep> get steps => getItems(includesReflection: true).whereType<BiblePlanDayStep>().toList();
+
+  String getSummary() => switch ((passages, steps)) {
+    ([], []) => t.biblePlans.reviewAndReflect,
+    ([], final steps) => steps.map((step) => step.title()).join(' • '),
+    (final passages, _) => passages.map((passage) => passage.format()).join(' • '),
+  };
 
   BiblePlanDay withStepRemoved(BiblePlanDayStep step) => switch (step) {
     .studyNotes => copyWith(studyNotes: null),
     .reflection => copyWith(reflectionQuestion: null),
   };
 
-  // A Review & Reflect day stays a single checkbox, so its study notes and reflection question aren't shown.
   List<BiblePlanDayItem> getItems({required bool includesReflection}) => [
     ...passages.map(BiblePlanPassageItem.new),
-    if (!isReviewAndReflect && studyNotes != null) BiblePlanDayStep.studyNotes,
-    if (!isReviewAndReflect && includesReflection && reflectionQuestion != null) BiblePlanDayStep.reflection,
+    if (studyNotes != null) BiblePlanDayStep.studyNotes,
+    if (includesReflection && reflectionQuestion != null) BiblePlanDayStep.reflection,
   ];
 }
 
@@ -162,6 +167,9 @@ sealed class BiblePlanProgress with _$BiblePlanProgress {
   bool get hasDailyReminder => reminder is DailyReminder;
 
   List<BiblePlanDayItem> getDayItems(BiblePlanDay day) => day.getItems(includesReflection: !isSkippingReflections);
+
+  // A day with only a reflection question becomes Review & Reflect while reflections are skipped.
+  bool isReviewAndReflect(BiblePlanDay day) => getDayItems(day).isEmpty;
 
   BiblePlanDayProgress getDayProgress(int dayIndex) =>
       days.elementAtOrNull(dayIndex) ?? BiblePlanDayProgress.incomplete();
@@ -358,13 +366,16 @@ sealed class BiblePlanDayProgress with _$BiblePlanDayProgress {
       .keys
       .firstOrNull;
 
+  // A Review & Reflect day has nothing to complete, so it keeps its explicit completion, such as when reflections are skipped.
   BiblePlanDayProgress withItemsCompleted({
     required List<BiblePlanDayItem> items,
     required Iterable<BiblePlanDayItem> completedItems,
-  }) => BiblePlanDayProgress.fromCompletedItems(
-    items: items,
-    completedItems: {...getCompletedItems(items), ...completedItems},
-  );
+  }) => items.isEmpty
+      ? this
+      : BiblePlanDayProgress.fromCompletedItems(
+          items: items,
+          completedItems: {...getCompletedItems(items), ...completedItems},
+        );
 
   BiblePlanDayProgress withItemUncompleted({required List<BiblePlanDayItem> items, required BiblePlanDayItem item}) =>
       BiblePlanDayProgress.fromCompletedItems(items: items, completedItems: getCompletedItems(items)..remove(item));

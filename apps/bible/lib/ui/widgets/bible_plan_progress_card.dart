@@ -126,7 +126,7 @@ class BiblePlanProgressCard extends HookConsumerWidget {
           ],
           null => [header, tabBar],
         },
-        if (day.isReviewAndReflect)
+        if (progress.isReviewAndReflect(dayIndex))
           StyledList(
             children: [
               StyledListItem(

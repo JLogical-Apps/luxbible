@@ -136,9 +136,7 @@ class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<Stri
                   .mapIndexed<Widget>(
                     (dayIndex, day) => StyledListItem(
                       title: t.biblePlans.day(day: dayIndex + 1).toText(),
-                      subtitle: day.isReviewAndReflect
-                          ? t.biblePlans.reviewAndReflect.toText()
-                          : Text(day.passages.map((passage) => passage.format()).join(' • ')),
+                      subtitle: day.getSummary().toText(),
                     ),
                   )
                   .toList(),

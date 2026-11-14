@@ -27,7 +27,7 @@ class BiblePlanNotification {
       return true;
     }
 
-    if (planProgress.currentDay.isReviewAndReflect) {
+    if (planProgress.isReviewAndReflect(planProgress.currentDayIndex)) {
       context.goToRoot(pages: [BiblePlansPage()]);
       return true;
     }
