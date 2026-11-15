@@ -107,13 +107,14 @@ export default function AdventPage() {
           }
           subtitle={<AdventHeroSubtitle />}
           mediaBelow={
-            <PhoneFrame className="mx-auto w-64 sm:w-72">
+            <PhoneFrame className="mx-auto w-72 sm:w-80">
               <LoopingVideo
                 webm="/media/advent/advent-hero.webm"
                 mp4="/media/advent/advent-hero.mp4"
                 poster="/media/advent/advent-hero.webp"
                 aspectRatio={recordingAspectRatio}
                 ariaLabel="The Advent plan in Lux Bible, with stars twinkling and clouds drifting over its night scene"
+                className="h-full object-cover"
               />
             </PhoneFrame>
           }
@@ -146,12 +147,12 @@ export default function AdventPage() {
         >
           <SideBySide
             media={
-              <PhoneFrame className="w-64">
+              <PhoneFrame className="w-72">
                 <Video
                   src="/media/advent/advent-start.webm"
                   aspectRatio={recordingAspectRatio}
                   ariaLabel="Starting the Advent plan from Start A Bible Plan in Lux"
-                  className="h-auto w-full"
+                  className="h-full w-full"
                 />
               </PhoneFrame>
             }
@@ -186,12 +187,12 @@ export default function AdventPage() {
           <SideBySide
             isMediaFirst
             media={
-              <PhoneFrame className="w-64">
+              <PhoneFrame className="w-72">
                 <Video
                   src="/media/advent/advent-day.webm"
                   aspectRatio={recordingAspectRatio}
                   ariaLabel="Reading a day of the Advent plan in Lux, from the passage to the study notes, a Greek word, and the reflection question"
-                  className="h-auto w-full"
+                  className="h-full w-full"
                 />
               </PhoneFrame>
             }

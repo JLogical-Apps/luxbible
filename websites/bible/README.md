@@ -47,7 +47,10 @@ Direct messages use `direct_message` as the campaign.
   from `content/sources/lux_plans/advent.md`. Refresh it when a day's title changes.
 - `public/media/advent/` — the Advent page's phone recordings, made with the app's
   [recording tool](../../apps/bible/tool/screenshots/README.md#demo-recordings-for-reels) and
-  encoded to 540px-wide WebM (plus MP4 for the hero loop).
+  encoded to 540px-wide WebM (plus MP4 for the hero loop). `PhoneFrame` lays the bezel over them.
+- `public/media/iphone-frame.webp` — Xcode's iPhone 15 Pro Simulator bezel for `PhoneFrame`,
+  rendered with `swift scripts/render-iphone-frame.swift public/media/iphone-frame.webp` (needs
+  Xcode and `cwebp`). If the screen rect it prints changes, update `PhoneFrame` to match.
 - `public/media/` — screenshots, feature demo videos, logos.
 
 ## Deploy
