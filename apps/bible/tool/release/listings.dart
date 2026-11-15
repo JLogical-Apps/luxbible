@@ -303,13 +303,25 @@ Future<void> withTemporaryDirectory(Future<void> Function(String path) action) a
 Iterable<String> getLanguages(String metadataPath) =>
     Directory(metadataPath).listSync().whereType<Directory>().map((dir) => dir.path.split('/').last);
 
-// supply pushes blank release notes instead of failing when a language has no notes for the build.
+// supply pushes blank release notes instead of failing when a language has no notes, and a `<build>.txt` silently
+// takes precedence over `default.txt`.
 void requireChangelogs({required String buildNumber}) {
-  final missing = getLanguages(androidMetadataPath)
-      .map((language) => '$androidMetadataPath/$language/changelogs/$buildNumber.txt')
-      .where((path) => !File(path).existsSync());
+  final languages = getLanguages(androidMetadataPath);
+  final missing = languages
+      .map((language) => File('$androidMetadataPath/$language/changelogs/default.txt'))
+      .where((file) => !file.existsSync() || file.readAsStringSync().trim().isEmpty);
   if (missing.isNotEmpty) {
-    fail('Missing Google Play release notes for build $buildNumber:\n${missing.map((path) => '  $path').join('\n')}');
+    fail('Missing Google Play release notes:\n${missing.map((file) => '  ${file.path}').join('\n')}');
+  }
+
+  final overrides = languages
+      .map((language) => File('$androidMetadataPath/$language/changelogs/$buildNumber.txt'))
+      .where((file) => file.existsSync());
+  if (overrides.isNotEmpty) {
+    fail(
+      'These would replace default.txt for build $buildNumber. Move their notes into default.txt:\n'
+      '${overrides.map((file) => '  ${file.path}').join('\n')}',
+    );
   }
 }
 
