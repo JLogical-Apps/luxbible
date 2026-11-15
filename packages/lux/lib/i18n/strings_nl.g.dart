@@ -1163,12 +1163,12 @@ class _Translations$whatsNew$nl extends Translations$whatsNew$en {
 	@override String get rate => 'Beoordelen';
 	@override String get haveIdeas => 'Heb je feedback of ideeën?';
 	@override String get discordInvitation => 'Deel ze op Discord met ons en anderen die Lux gebruiken.';
-	@override String get highlightStylesTitle => 'Nieuwe markeerstijlen';
-	@override String get highlightStylesDescription => 'Gebruik kaders, gestreepte en dubbele onderstreping of stijlen met alleen een pictogram, en geef elke stijl een pictogram.';
-	@override String get marginAnnotationsTitle => 'Annotaties in de marge';
-	@override String get marginAnnotationsDescription => 'Zet het aan in Thema en indeling om annotatiemarkeringen naast de tekst te tonen in plaats van erin.';
-	@override String get notebookFilesTitle => 'Notitieboeken delen';
-	@override String get notebookFilesDescription => 'Deel of download een notitieboek als bestand en importeer het als nieuw notitieboek of in een bestaand notitieboek.';
+	@override String get adventTitle => 'Leesplan Advent';
+	@override String get adventDescription => 'Leef vanaf 29 november toe naar Kerst, met dagelijkse studienotities en een reflectievraag in het Engels. Te vinden onder Een Bijbelleesplan starten.';
+	@override String get planImprovementsTitle => 'Verbeterde leesplannen';
+	@override String get planImprovementsDescription => 'Dagen in een plan kunnen nu studienotities en reflectievragen hebben, ook in je eigen planbestanden. Tik voor meer informatie.';
+	@override String get polishTitle => 'Soepeler in gebruik';
+	@override String get polishDescription => 'Bijbelaudio gaat verder precies waar je pauzeerde, en studiepanelen en leesplannen zijn op kleine punten verbeterd.';
 }
 
 // Path: analyticsNotice
@@ -4071,12 +4071,12 @@ extension on TranslationsNl {
 			'whatsNew.rate' => 'Beoordelen',
 			'whatsNew.haveIdeas' => 'Heb je feedback of ideeën?',
 			'whatsNew.discordInvitation' => 'Deel ze op Discord met ons en anderen die Lux gebruiken.',
-			'whatsNew.highlightStylesTitle' => 'Nieuwe markeerstijlen',
-			'whatsNew.highlightStylesDescription' => 'Gebruik kaders, gestreepte en dubbele onderstreping of stijlen met alleen een pictogram, en geef elke stijl een pictogram.',
-			'whatsNew.marginAnnotationsTitle' => 'Annotaties in de marge',
-			'whatsNew.marginAnnotationsDescription' => 'Zet het aan in Thema en indeling om annotatiemarkeringen naast de tekst te tonen in plaats van erin.',
-			'whatsNew.notebookFilesTitle' => 'Notitieboeken delen',
-			'whatsNew.notebookFilesDescription' => 'Deel of download een notitieboek als bestand en importeer het als nieuw notitieboek of in een bestaand notitieboek.',
+			'whatsNew.adventTitle' => 'Leesplan Advent',
+			'whatsNew.adventDescription' => 'Leef vanaf 29 november toe naar Kerst, met dagelijkse studienotities en een reflectievraag in het Engels. Te vinden onder Een Bijbelleesplan starten.',
+			'whatsNew.planImprovementsTitle' => 'Verbeterde leesplannen',
+			'whatsNew.planImprovementsDescription' => 'Dagen in een plan kunnen nu studienotities en reflectievragen hebben, ook in je eigen planbestanden. Tik voor meer informatie.',
+			'whatsNew.polishTitle' => 'Soepeler in gebruik',
+			'whatsNew.polishDescription' => 'Bijbelaudio gaat verder precies waar je pauzeerde, en studiepanelen en leesplannen zijn op kleine punten verbeterd.',
 			'analyticsNotice.title' => 'Een opmerking over anonieme statistieken',
 			'analyticsNotice.description' => 'Lux gebruikt nu anonieme gebruiksstatistieken en crashrapporten om te begrijpen welke functies worden gebruikt en de betrouwbaarheid te verbeteren. Deze rapporten bevatten nooit je notities, namen of leesdetails van Bijbelplannen, zoektermen of andere privé-inhoud en zijn niet gekoppeld aan een account. Door Lux te blijven gebruiken, ga je ermee akkoord dat deze informatie wordt verzonden.',
 			'renamedBiblePlansNotice.title' => 'Bijbelplannen zijn bijgewerkt',

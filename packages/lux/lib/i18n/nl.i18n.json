@@ -879,12 +879,12 @@
     "rate": "Beoordelen",
     "haveIdeas": "Heb je feedback of ideeën?",
     "discordInvitation": "Deel ze op Discord met ons en anderen die Lux gebruiken.",
-    "highlightStylesTitle": "Nieuwe markeerstijlen",
-    "highlightStylesDescription": "Gebruik kaders, gestreepte en dubbele onderstreping of stijlen met alleen een pictogram, en geef elke stijl een pictogram.",
-    "marginAnnotationsTitle": "Annotaties in de marge",
-    "marginAnnotationsDescription": "Zet het aan in Thema en indeling om annotatiemarkeringen naast de tekst te tonen in plaats van erin.",
-    "notebookFilesTitle": "Notitieboeken delen",
-    "notebookFilesDescription": "Deel of download een notitieboek als bestand en importeer het als nieuw notitieboek of in een bestaand notitieboek."
+    "adventTitle": "Leesplan Advent",
+    "adventDescription": "Leef vanaf 29 november toe naar Kerst, met dagelijkse studienotities en een reflectievraag in het Engels. Te vinden onder Een Bijbelleesplan starten.",
+    "planImprovementsTitle": "Verbeterde leesplannen",
+    "planImprovementsDescription": "Dagen in een plan kunnen nu studienotities en reflectievragen hebben, ook in je eigen planbestanden. Tik voor meer informatie.",
+    "polishTitle": "Soepeler in gebruik",
+    "polishDescription": "Bijbelaudio gaat verder precies waar je pauzeerde, en studiepanelen en leesplannen zijn op kleine punten verbeterd."
   },
   "analyticsNotice": {
     "title": "Een opmerking over anonieme statistieken",

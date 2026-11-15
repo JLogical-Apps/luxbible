@@ -1,7 +1,6 @@
-• New highlight styles: outline boxes, dashed and double underlines, and transparent styles that show only an icon. Give any style one of 20 icons, and see a preview as you create or edit it.
-• Annotation markers now show their style's icon. When several annotations start at the same spot, they share one marker, and tapping it lists them all.
-• Annotations in Margin, under Layout in Theme & Layout, moves annotation markers out of the text into a column beside it.
-• Share or download any notebook, including Default, as a Lux notebook file with your notes. Import one by opening it with Lux or from the menu in Your Notebooks, as a new notebook or into an existing one, and preview what will be added first.
-• Creeds and confessions now appear in your app language when Lux has a translation: the Heidelberg Catechism, Belgic Confession, Canons of Dort, and Apostles' Creed in Dutch, Ignatius' Creed and the rules of faith of Irenaeus and Tertullian in German, and the Nicene Creed and Chalcedonian Definition in Russian.
-• Manage Styles at the end of the Annotate sheet's style row opens your highlight styles.
-• Bibles are now listed by full name and publisher, with the abbreviation in front.
+• Advent: a new plan from November 29 to Christmas Day that follows the people who waited for and welcomed Jesus. Each day has study notes and a reflection question, and the plan's night scene moves toward dawn as you read. Find it in Start A Bible Plan.
+• Plan improvements: plan days can now have a title, study notes, and reflection questions, shown as tabs after the day's readings. Study notes can link to Greek and Hebrew words, creeds, commentaries, and BibleProject videos. Reflection answers are saved only on your device, and you can skip a question or turn them all off from the plan's menu. Your own plan files, including ones made with Create with AI, can use all of this. Learn more at luxbible.app/resources/lxbp
+• Smoother Audio Bible, study panels, and plans. Audio resumes exactly where you paused and scrolls back to the verse being read, and study panels step aside on the study notes and reflection tabs.
+• Some translations, like Hoffnung für alle, combine neighboring verses into one. Lux now shows them once with a range like 3-4, and selecting, highlighting, or opening any of those verses uses the whole range.
+• Select Whole Highlight, formerly Expand to Annotation, now ignores transparent styles that show only an icon.
+• Also new: Terjemahan Sederhana Indonesia (TSI), an Indonesian translation available online. It doesn't include 1 and 2 Chronicles, Jeremiah, or Ezekiel, so Lux shows your Study Bible for those books.

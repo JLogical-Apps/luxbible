@@ -877,12 +877,12 @@
     "rate": "Rate",
     "haveIdeas": "Have feedback or ideas?",
     "discordInvitation": "Share them with us and others using Lux on Discord.",
-    "highlightStylesTitle": "New Highlight Styles",
-    "highlightStylesDescription": "Use outline boxes, dashed and double underlines, or icon-only styles, and give any style an icon.",
-    "marginAnnotationsTitle": "Annotations in Margin",
-    "marginAnnotationsDescription": "Turn it on in Theme & Layout to show annotation markers beside the text instead of within it.",
-    "notebookFilesTitle": "Share Notebooks",
-    "notebookFilesDescription": "Share or download a notebook as a file, then import it as a new notebook or into an existing one."
+    "adventTitle": "Advent Plan",
+    "adventDescription": "Read toward Christmas from November 29, with daily study notes and a reflection question. Find it in Start A Bible Plan.",
+    "planImprovementsTitle": "Plan Improvements",
+    "planImprovementsDescription": "Plan days can now have study notes and reflection questions, including in your own plan files. Tap to learn more.",
+    "polishTitle": "Smoother Everyday Use",
+    "polishDescription": "The Audio Bible resumes exactly where you paused, and study panels and plans got smaller improvements throughout."
   },
   "analyticsNotice": {
     "title": "A Note About Anonymous Analytics",

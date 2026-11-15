@@ -7,6 +7,8 @@ import 'package:collection/collection.dart';
 import 'package:lux/lux.dart';
 import 'package:utils_core/utils_core.dart';
 
+final biblePlanFormatUri = Uri.parse('https://www.luxbible.app/resources/lxbp');
+
 class BiblePlanFileException implements Exception {
   final BiblePlanFileError error;
 

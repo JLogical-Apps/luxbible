@@ -1,0 +1,5 @@
+• New Advent plan, Nov 29 to Christmas Day, with daily study notes and a reflection question.
+• Plan improvements: plan days can now have study notes and reflection questions, in Advent and in your own plan files. Learn more at luxbible.app/resources/lxbp
+• Smoother Audio Bible, study panels, and plans. Audio now resumes exactly where you paused.
+• Combined verses, like 3-4 in Hoffnung für alle, now show and select as one.
+• Adds the Indonesian TSI translation, online.

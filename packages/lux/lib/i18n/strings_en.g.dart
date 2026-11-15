@@ -2650,23 +2650,23 @@ class Translations$whatsNew$en {
 	/// en: 'Share them with us and others using Lux on Discord.'
 	String get discordInvitation => 'Share them with us and others using Lux on Discord.';
 
-	/// en: 'New Highlight Styles'
-	String get highlightStylesTitle => 'New Highlight Styles';
+	/// en: 'Advent Plan'
+	String get adventTitle => 'Advent Plan';
 
-	/// en: 'Use outline boxes, dashed and double underlines, or icon-only styles, and give any style an icon.'
-	String get highlightStylesDescription => 'Use outline boxes, dashed and double underlines, or icon-only styles, and give any style an icon.';
+	/// en: 'Read toward Christmas from November 29, with daily study notes and a reflection question. Find it in Start A Bible Plan.'
+	String get adventDescription => 'Read toward Christmas from November 29, with daily study notes and a reflection question. Find it in Start A Bible Plan.';
 
-	/// en: 'Annotations in Margin'
-	String get marginAnnotationsTitle => 'Annotations in Margin';
+	/// en: 'Plan Improvements'
+	String get planImprovementsTitle => 'Plan Improvements';
 
-	/// en: 'Turn it on in Theme & Layout to show annotation markers beside the text instead of within it.'
-	String get marginAnnotationsDescription => 'Turn it on in Theme & Layout to show annotation markers beside the text instead of within it.';
+	/// en: 'Plan days can now have study notes and reflection questions, including in your own plan files. Tap to learn more.'
+	String get planImprovementsDescription => 'Plan days can now have study notes and reflection questions, including in your own plan files. Tap to learn more.';
 
-	/// en: 'Share Notebooks'
-	String get notebookFilesTitle => 'Share Notebooks';
+	/// en: 'Smoother Everyday Use'
+	String get polishTitle => 'Smoother Everyday Use';
 
-	/// en: 'Share or download a notebook as a file, then import it as a new notebook or into an existing one.'
-	String get notebookFilesDescription => 'Share or download a notebook as a file, then import it as a new notebook or into an existing one.';
+	/// en: 'The Audio Bible resumes exactly where you paused, and study panels and plans got smaller improvements throughout.'
+	String get polishDescription => 'The Audio Bible resumes exactly where you paused, and study panels and plans got smaller improvements throughout.';
 }
 
 // Path: analyticsNotice
@@ -6730,12 +6730,12 @@ extension on Translations {
 			'whatsNew.rate' => 'Rate',
 			'whatsNew.haveIdeas' => 'Have feedback or ideas?',
 			'whatsNew.discordInvitation' => 'Share them with us and others using Lux on Discord.',
-			'whatsNew.highlightStylesTitle' => 'New Highlight Styles',
-			'whatsNew.highlightStylesDescription' => 'Use outline boxes, dashed and double underlines, or icon-only styles, and give any style an icon.',
-			'whatsNew.marginAnnotationsTitle' => 'Annotations in Margin',
-			'whatsNew.marginAnnotationsDescription' => 'Turn it on in Theme & Layout to show annotation markers beside the text instead of within it.',
-			'whatsNew.notebookFilesTitle' => 'Share Notebooks',
-			'whatsNew.notebookFilesDescription' => 'Share or download a notebook as a file, then import it as a new notebook or into an existing one.',
+			'whatsNew.adventTitle' => 'Advent Plan',
+			'whatsNew.adventDescription' => 'Read toward Christmas from November 29, with daily study notes and a reflection question. Find it in Start A Bible Plan.',
+			'whatsNew.planImprovementsTitle' => 'Plan Improvements',
+			'whatsNew.planImprovementsDescription' => 'Plan days can now have study notes and reflection questions, including in your own plan files. Tap to learn more.',
+			'whatsNew.polishTitle' => 'Smoother Everyday Use',
+			'whatsNew.polishDescription' => 'The Audio Bible resumes exactly where you paused, and study panels and plans got smaller improvements throughout.',
 			'analyticsNotice.title' => 'A Note About Anonymous Analytics',
 			'analyticsNotice.description' => 'Lux now uses anonymous analytics and crash reports to understand which features are used and improve reliability.\n\nThese reports never include your notes, Bible plan names or reading details, search terms, or other private content, and they are not linked to an account.\n\nBy continuing to use Lux, you agree to this information being sent.',
 			'renamedBiblePlansNotice.title' => 'Bible Plans Have Updated',

@@ -10,6 +10,7 @@ import 'package:lux/i18n.dart';
 import 'package:lux/lux.dart';
 import 'package:material_symbols_icons/symbols.dart';
 import 'package:style/style.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class WhatsNewSheet {
   static Future<void> show(BuildContext context) {
@@ -27,6 +28,11 @@ class WhatsNewSheet {
                     title: highlight.title().toText(),
                     subtitle: highlight.description().toText(),
                     leading: highlight.icon.toIcon(),
+                    trailing: highlight.learnMoreUri == null ? null : Symbols.arrow_outward.toIcon(),
+                    onPressed: switch (highlight.learnMoreUri) {
+                      final uri? => () => launchUrl(uri),
+                      null => null,
+                    },
                   ),
                 )
                 .toList(),

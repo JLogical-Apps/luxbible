@@ -1161,12 +1161,12 @@ class _Translations$whatsNew$de extends Translations$whatsNew$en {
 	@override String get rate => 'Bewerten';
 	@override String get haveIdeas => 'Hast du Feedback oder Ideen?';
 	@override String get discordInvitation => 'Teile sie auf Discord mit uns und anderen, die Lux nutzen.';
-	@override String get highlightStylesTitle => 'Neue Markierungsstile';
-	@override String get highlightStylesDescription => 'Nutze Rahmen, gestrichelte und doppelte Unterstreichungen oder reine Symbolstile und gib jedem Stil ein Symbol.';
-	@override String get marginAnnotationsTitle => 'Annotationen am Rand';
-	@override String get marginAnnotationsDescription => 'Aktiviere es in Design & Layout, um Annotationszeichen neben dem Text statt im Text anzuzeigen.';
-	@override String get notebookFilesTitle => 'Notizbücher teilen';
-	@override String get notebookFilesDescription => 'Teile ein Notizbuch als Datei oder lade es herunter und importiere es als neues Notizbuch oder in ein bestehendes.';
+	@override String get adventTitle => 'Leseplan Advent';
+	@override String get adventDescription => 'Lies ab dem 29. November auf Weihnachten zu, mit täglichen Studiennotizen und einer Reflexionsfrage auf Englisch. Zu finden unter Leseplan starten.';
+	@override String get planImprovementsTitle => 'Bessere Lesepläne';
+	@override String get planImprovementsDescription => 'Tage in einem Plan können jetzt Studiennotizen und Reflexionsfragen haben, auch in eigenen Plandateien. Tippe, um mehr zu erfahren.';
+	@override String get polishTitle => 'Flüssiger im Alltag';
+	@override String get polishDescription => 'Die Hörbibel macht genau dort weiter, wo du pausiert hast, und Studienpanels und Lesepläne wurden im Detail verbessert.';
 }
 
 // Path: analyticsNotice
@@ -4067,12 +4067,12 @@ extension on TranslationsDe {
 			'whatsNew.rate' => 'Bewerten',
 			'whatsNew.haveIdeas' => 'Hast du Feedback oder Ideen?',
 			'whatsNew.discordInvitation' => 'Teile sie auf Discord mit uns und anderen, die Lux nutzen.',
-			'whatsNew.highlightStylesTitle' => 'Neue Markierungsstile',
-			'whatsNew.highlightStylesDescription' => 'Nutze Rahmen, gestrichelte und doppelte Unterstreichungen oder reine Symbolstile und gib jedem Stil ein Symbol.',
-			'whatsNew.marginAnnotationsTitle' => 'Annotationen am Rand',
-			'whatsNew.marginAnnotationsDescription' => 'Aktiviere es in Design & Layout, um Annotationszeichen neben dem Text statt im Text anzuzeigen.',
-			'whatsNew.notebookFilesTitle' => 'Notizbücher teilen',
-			'whatsNew.notebookFilesDescription' => 'Teile ein Notizbuch als Datei oder lade es herunter und importiere es als neues Notizbuch oder in ein bestehendes.',
+			'whatsNew.adventTitle' => 'Leseplan Advent',
+			'whatsNew.adventDescription' => 'Lies ab dem 29. November auf Weihnachten zu, mit täglichen Studiennotizen und einer Reflexionsfrage auf Englisch. Zu finden unter Leseplan starten.',
+			'whatsNew.planImprovementsTitle' => 'Bessere Lesepläne',
+			'whatsNew.planImprovementsDescription' => 'Tage in einem Plan können jetzt Studiennotizen und Reflexionsfragen haben, auch in eigenen Plandateien. Tippe, um mehr zu erfahren.',
+			'whatsNew.polishTitle' => 'Flüssiger im Alltag',
+			'whatsNew.polishDescription' => 'Die Hörbibel macht genau dort weiter, wo du pausiert hast, und Studienpanels und Lesepläne wurden im Detail verbessert.',
 			'analyticsNotice.title' => 'Ein Hinweis zu anonymen Analysen',
 			'analyticsNotice.description' => 'Lux verwendet jetzt anonyme Analysen und Absturzberichte, um zu verstehen, welche Funktionen genutzt werden, und die Zuverlässigkeit zu verbessern.\n\nDiese Berichte enthalten niemals deine Notizen, Namen von Leseplänen oder Lesedetails, Suchbegriffe oder andere private Inhalte und sind nicht mit einem Konto verknüpft.\n\nWenn du Lux weiter nutzt, stimmst du der Übermittlung dieser Informationen zu.',
 			'renamedBiblePlansNotice.title' => 'Lesepläne wurden aktualisiert',

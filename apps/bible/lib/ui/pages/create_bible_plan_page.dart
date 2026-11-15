@@ -21,7 +21,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:utils_core/utils_core.dart';
 
 const biblePlanFileExtension = '.lxbp';
-final biblePlanFormatUri = Uri.parse('https://www.luxbible.app/resources/lxbp');
 
 class CreateBiblePlanPage extends HookConsumerWidget implements StyledRoute<String> {
   final BiblePlanFileImport? fileImport;

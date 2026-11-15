@@ -14,7 +14,7 @@ Lux uses a single reading area with optional study panels. Panels appear below t
 
 Lux supports English, Dutch, German, and Russian. By default, it follows the device language when that language is supported and otherwise uses English. More > Settings > Language opens the device's native app-language setting, where available. Android 13 and later opens Lux's Language screen directly; iOS opens Lux's app settings, which include its Language control.
 
-The selected language controls Lux's interface, Bible book names, reference formatting, reading-plan metadata, study terminology, and other app-authored text. It does not translate Bible text, translation names, user-created content, imported study-resource bodies (apart from the few creeds Lux has in that language, described under [Creeds & Confessions](#creeds--confessions)), the Advent plan's study notes, or legal copy.
+The selected language controls Lux's interface, Bible book names, reference formatting, reading-plan metadata, study terminology, and other app-authored text. It does not translate Bible text, translation names, user-created content, imported study-resource bodies (apart from the few creeds Lux has in that language, described under [Creeds & Confessions](#creeds--confessions)), the Advent plan's study notes and reflection questions, or legal copy.
 
 ## Notifications
 
@@ -268,6 +268,8 @@ The verse overflow menu always provides Annotate, Study, Share, and Copy. Share 
 
 Long-pressing an existing verse selection invokes the configured verse-selection long-press action.
 
+Verse selection settings offer Select Whole Highlight, which makes tapping a highlighted verse select every verse in that highlight, and Range Selection, which makes tapping a second verse select every verse between it and the first. Transparent styles draw no highlight, so Select Whole Highlight ignores them.
+
 ### Text Selection Toolbar
 
 The text toolbar appears after a word or phrase is selected. Available shortcuts are:
@@ -281,6 +283,8 @@ The text toolbar appears after a word or phrase is selected. Available shortcuts
 The Search shortcut opens search with the selected text and immediately runs it. Text-selection Interlinear is available when reading BSB or KJV.
 
 Long-pressing an existing text selection invokes the configured text-selection long-press action.
+
+The text selection setting Select Whole Highlight makes long-pressing a highlighted word select the entire highlight. Like verse selection, it ignores transparent styles.
 
 ## Study Menu
 
@@ -894,7 +898,7 @@ Users who installed Lux before this change don't get either blue dot. Each actio
 
 ## What's New
 
-After an update with a notable release, a blue dot on the main toolbar's More button leads to a What's New action at the top of the More sheet, above any pending checklist, which also has a blue dot. It opens a sheet listing a few highlights of that release, followed by two equal invitations: leave a review on the App Store or Play Store, or share feedback and ideas on Discord. There is no question before them, and the review button opens the store listing rather than the native review prompt. Opening the sheet clears the dots and removes the action from the More sheet. What's New stays available from More > About.
+After an update with a notable release, a blue dot on the main toolbar's More button leads to a What's New action at the top of the More sheet, above any pending checklist, which also has a blue dot. It opens a sheet listing a few highlights of that release, where a highlight with more to read opens its web page, followed by two equal invitations: leave a review on the App Store or Play Store, or share feedback and ideas on Discord. There is no question before them, and the review button opens the store listing rather than the native review prompt. Opening the sheet clears the dots and removes the action from the More sheet. What's New stays available from More > About.
 
 The highlights and their release version are curated by hand in `WhatsNewHighlight`, so bug-fix updates that don't change it show nothing. New installs start with the current release marked as seen. Only the latest release's highlights are kept.
 

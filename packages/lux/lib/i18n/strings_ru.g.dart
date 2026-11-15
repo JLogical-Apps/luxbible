@@ -1183,12 +1183,12 @@ class _Translations$whatsNew$ru extends Translations$whatsNew$en {
 	@override String get rate => 'Оценить';
 	@override String get haveIdeas => 'Есть отзывы или идеи?';
 	@override String get discordInvitation => 'Поделитесь ими с нами и другими пользователями Lux в Discord.';
-	@override String get highlightStylesTitle => 'Новые стили выделения';
-	@override String get highlightStylesDescription => 'Используйте рамки, пунктирное и двойное подчеркивание или стили только со значком и задавайте значок любому стилю.';
-	@override String get marginAnnotationsTitle => 'Аннотации на полях';
-	@override String get marginAnnotationsDescription => 'Включите эту настройку в разделе «Тема и макет», чтобы показывать маркеры аннотаций рядом с текстом, а не внутри него.';
-	@override String get notebookFilesTitle => 'Делитесь блокнотами';
-	@override String get notebookFilesDescription => 'Делитесь блокнотом или скачивайте его файлом, а затем импортируйте как новый блокнот или в существующий.';
+	@override String get adventTitle => 'План «Адвент»';
+	@override String get adventDescription => 'Готовьтесь к Рождеству с 29 ноября: ежедневные учебные заметки и вопрос для размышления на английском. Ищите его в разделе «Начните библейский план».';
+	@override String get planImprovementsTitle => 'Улучшенные планы';
+	@override String get planImprovementsDescription => 'У дней плана теперь могут быть учебные заметки и вопросы для размышления, в том числе в ваших файлах планов. Нажмите, чтобы узнать больше.';
+	@override String get polishTitle => 'Удобнее каждый день';
+	@override String get polishDescription => 'Аудио Библия продолжает ровно с того места, где вы остановились, а учебные панели и планы стали удобнее в мелочах.';
 }
 
 // Path: analyticsNotice
@@ -4095,12 +4095,12 @@ extension on TranslationsRu {
 			'whatsNew.rate' => 'Оценить',
 			'whatsNew.haveIdeas' => 'Есть отзывы или идеи?',
 			'whatsNew.discordInvitation' => 'Поделитесь ими с нами и другими пользователями Lux в Discord.',
-			'whatsNew.highlightStylesTitle' => 'Новые стили выделения',
-			'whatsNew.highlightStylesDescription' => 'Используйте рамки, пунктирное и двойное подчеркивание или стили только со значком и задавайте значок любому стилю.',
-			'whatsNew.marginAnnotationsTitle' => 'Аннотации на полях',
-			'whatsNew.marginAnnotationsDescription' => 'Включите эту настройку в разделе «Тема и макет», чтобы показывать маркеры аннотаций рядом с текстом, а не внутри него.',
-			'whatsNew.notebookFilesTitle' => 'Делитесь блокнотами',
-			'whatsNew.notebookFilesDescription' => 'Делитесь блокнотом или скачивайте его файлом, а затем импортируйте как новый блокнот или в существующий.',
+			'whatsNew.adventTitle' => 'План «Адвент»',
+			'whatsNew.adventDescription' => 'Готовьтесь к Рождеству с 29 ноября: ежедневные учебные заметки и вопрос для размышления на английском. Ищите его в разделе «Начните библейский план».',
+			'whatsNew.planImprovementsTitle' => 'Улучшенные планы',
+			'whatsNew.planImprovementsDescription' => 'У дней плана теперь могут быть учебные заметки и вопросы для размышления, в том числе в ваших файлах планов. Нажмите, чтобы узнать больше.',
+			'whatsNew.polishTitle' => 'Удобнее каждый день',
+			'whatsNew.polishDescription' => 'Аудио Библия продолжает ровно с того места, где вы остановились, а учебные панели и планы стали удобнее в мелочах.',
 			'analyticsNotice.title' => 'Об анонимной аналитике',
 			'analyticsNotice.description' => 'Lux теперь использует анонимную аналитику и отчёты о сбоях, чтобы понимать, какие функции востребованы, и повышать надёжность. Эти отчёты никогда не содержат ваши заметки, названия планов чтения или сведения о ходе чтения, поисковые запросы либо другой личный контент и не связаны с учётной записью. Продолжая пользоваться Lux, вы соглашаетесь на отправку этой информации.',
 			'renamedBiblePlansNotice.title' => 'Планы чтения Библии обновлены',
