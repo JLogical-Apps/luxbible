@@ -32,11 +32,35 @@ const fullExample = `{
   "name": "Ruth & Psalm 119",
   "color": "green",
   "days": [
-    { "passages": ["Ruth.1", "Ps.119.1-Ps.119.88"] },
-    { "passages": ["Ruth.2", "Ps.119.89-Ps.119.176"] },
-    { "passages": ["Ruth.3"] },
-    { "passages": ["Ruth.4"] },
-    { "passages": [] }
+    {
+      "title": "Empty in Moab",
+      "passages": ["Ruth.1", "Ps.119.1-Ps.119.88"],
+      "studyNotes": "Naomi went away full and comes home, in her words, **empty** ([Ruth 1:21](Ruth.1.21)). She can't see yet that Ruth, walking beside her, is the start of God's answer.\\n\\n### Loving devotion\\n\\nNaomi asks the LORD to show her daughters-in-law *loving devotion* ([Ruth 1:8](Ruth.1.8)), the same word the psalmist keeps returning to:\\n\\n> May Your loving devotion comfort me, I pray.\\n\\nWatch for it in [Psalm 119:41](Ps.119.41), [119:76](Ps.119.76), and [119:88](Ps.119.88).",
+      "reflectionQuestions": [
+        "When have you felt like Naomi, sure that God was against you?"
+      ]
+    },
+    {
+      "title": "Under His wings",
+      "passages": ["Ruth.2", "Ps.119.89-Ps.119.176"],
+      "studyNotes": "Boaz blesses Ruth as someone who has taken refuge under the LORD's wings ([Ruth 2:12](Ruth.2.12)), and then becomes part of the answer to his own blessing.\\n\\nWhen Naomi hears his name, she calls him one of their [kinsman-redeemers](strong:Ruth.2.20/H1350). Read what [Tyndale](commentary:tyndale/Ruth.2.20) says a redeemer was expected to do."
+    },
+    {
+      "title": "At the threshing floor",
+      "passages": ["Ruth.3"],
+      "reflectionQuestions": [
+        "What did Ruth risk by asking Boaz to redeem her?"
+      ]
+    },
+    { "title": "Full again", "passages": ["Ruth.4"] },
+    {
+      "title": "Looking back",
+      "passages": [],
+      "reflectionQuestions": [
+        "Naomi went from empty to full. Where has God restored something you thought was lost?",
+        "Which verse from Psalm 119 do you want to carry with you this week?"
+      ]
+    }
   ]
 }`;
 
@@ -270,8 +294,10 @@ export default function LxbpFormatPage() {
 
             <p>
               A five-day plan pairing the book of Ruth with Psalm 119, split
-              in half across two days. It demonstrates a day with more than one passage, a
-              verse range, and a closing Review &amp; Reflect day:
+              in half across two days. Every day has a title, and together
+              they show a day with more than one passage, a verse range, study
+              notes using each kind of link, reflection questions, and a
+              closing day of reflection questions with no new reading:
             </p>
 
             <pre>
