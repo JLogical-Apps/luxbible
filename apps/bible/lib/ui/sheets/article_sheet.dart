@@ -20,6 +20,7 @@ class ArticleSheet {
     required ArticleCollection collection,
     required Article article,
     required Function(VerseSelection) onNavigateToVerseSelection,
+    List<Article> parentArticles = const [],
   }) => context.showStyledSheetWithBreadcrumbs(breadcrumbText: article.title, path: '/article', (context, ref) {
     final user = ref.watch(userProvider);
     final showStudyBanner = user.translation.isOnline && !user.tutorials.has(.articlePassagesStudy);
@@ -58,6 +59,7 @@ class ArticleSheet {
         RelatedArticlesTile(
           collection: collection,
           article: article,
+          parentArticles: parentArticles,
           onNavigateToVerseSelection: navigateToVerseSelection,
         ),
         SelectionArea(

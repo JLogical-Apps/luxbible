@@ -415,7 +415,8 @@ as a Scripture proof.
   banner names it until the user dismisses its explanation. The article's text can be selected and copied across
   paragraphs, while map cards stay tappable
 - Opening a dictionary entry or related article from an article slides it in over the open article, and breadcrumbs
-  at the top lead back to earlier ones
+  at the top lead back to earlier ones. An article's related tile hides articles already open beneath it, so related
+  links never cycle back
 - Tapping a map opens the map viewer, and tapping a video opens the video player
 - Each creed result shows the document and its citation, such as "Heidelberg Catechism Q. 1", with the question or
   the start of the section, and opens the item in a sheet with the same collapsed Scripture Proofs tile as the page.

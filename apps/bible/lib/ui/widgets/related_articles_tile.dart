@@ -10,12 +10,15 @@ import 'package:style/style.dart';
 class RelatedArticlesTile extends ConsumerWidget {
   final ArticleCollection collection;
   final Article article;
+  // Articles already open beneath this one, hidden so related links can't cycle back through them.
+  final List<Article> parentArticles;
   final Function(VerseSelection) onNavigateToVerseSelection;
 
   const RelatedArticlesTile({
     super.key,
     required this.collection,
     required this.article,
+    required this.parentArticles,
     required this.onNavigateToVerseSelection,
   });
 
@@ -24,19 +27,22 @@ class RelatedArticlesTile extends ConsumerWidget {
     final relatedArticles = ref.watch(relatedArticlesProvider(collection: collection, article: article)).value ?? {};
     final items = relatedArticles.entries
         .expand(
-          (entry) => entry.value.map(
-            (relatedArticle) => StyledListItem.navigation(
-              leading: entry.key.icon.toIcon(),
-              title: relatedArticle.title.toText(),
-              subtitle: entry.key.relatedDescription().toText(),
-              onPressed: () => ArticleSheet.show(
-                context,
-                collection: entry.key,
-                article: relatedArticle,
-                onNavigateToVerseSelection: onNavigateToVerseSelection,
+          (entry) => entry.value
+              .where((relatedArticle) => !parentArticles.has(relatedArticle))
+              .map(
+                (relatedArticle) => StyledListItem.navigation(
+                  leading: entry.key.icon.toIcon(),
+                  title: relatedArticle.title.toText(),
+                  subtitle: entry.key.relatedDescription().toText(),
+                  onPressed: () => ArticleSheet.show(
+                    context,
+                    collection: entry.key,
+                    article: relatedArticle,
+                    parentArticles: [...parentArticles, article],
+                    onNavigateToVerseSelection: onNavigateToVerseSelection,
+                  ),
+                ),
               ),
-            ),
-          ),
         )
         .toList();
     if (items.isEmpty) return SizedBox.shrink();
