@@ -3,4 +3,10 @@
     <string name="verse_of_the_day_widget_title">Verse of the Day</string>
     <string name="verse_of_the_day_widget_description">Today\'s verse on your home screen.</string>
     <string name="verse_of_the_day_widget_empty">Open Lux to load the Verse of the Day.</string>
+    <string name="verse_of_the_day_widget_background">Background</string>
+    <string name="verse_of_the_day_widget_theme_auto">Auto</string>
+    <string name="verse_of_the_day_widget_theme_light">Light</string>
+    <string name="verse_of_the_day_widget_theme_dark">Dark</string>
+    <string name="verse_of_the_day_widget_opacity">Opacity</string>
+    <string name="verse_of_the_day_widget_done">Done</string>
 </resources>

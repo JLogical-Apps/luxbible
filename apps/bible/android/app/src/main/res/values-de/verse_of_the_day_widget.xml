@@ -3,4 +3,10 @@
     <string name="verse_of_the_day_widget_title">Vers des Tages</string>
     <string name="verse_of_the_day_widget_description">Der Vers von heute auf deinem Startbildschirm.</string>
     <string name="verse_of_the_day_widget_empty">Öffne Lux, um den Vers des Tages zu laden.</string>
+    <string name="verse_of_the_day_widget_background">Hintergrund</string>
+    <string name="verse_of_the_day_widget_theme_auto">Automatisch</string>
+    <string name="verse_of_the_day_widget_theme_light">Hell</string>
+    <string name="verse_of_the_day_widget_theme_dark">Dunkel</string>
+    <string name="verse_of_the_day_widget_opacity">Deckkraft</string>
+    <string name="verse_of_the_day_widget_done">Fertig</string>
 </resources>

@@ -1,6 +1,7 @@
 package app.luxbible.app
 
 import android.content.Context
+import android.content.SharedPreferences
 import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -13,6 +14,14 @@ data class VerseOfTheDayWidgetEntry(
     val reference: String,
     val translation: String,
     val text: String,
+)
+
+enum class VerseOfTheDayWidgetTheme { AUTO, LIGHT, DARK }
+
+data class VerseOfTheDayWidgetAppearance(
+    val theme: VerseOfTheDayWidgetTheme = VerseOfTheDayWidgetTheme.AUTO,
+    /** The background's opacity, as a percentage. */
+    val opacity: Int = 100,
 )
 
 /**
@@ -54,6 +63,45 @@ object VerseOfTheDayWidgetStore {
                 }
         }.getOrNull()
     }
+
+    fun readAppearance(context: Context, id: Int) = VerseOfTheDayWidgetAppearance().let { default ->
+        VerseOfTheDayWidgetAppearance(
+            theme = VerseOfTheDayWidgetTheme.entries
+                .firstOrNull { it.name == context.preferences.getString(themeKey(id), null) }
+                ?: default.theme,
+            opacity = context.preferences.getInt(opacityKey(id), default.opacity),
+        )
+    }
+
+    fun writeAppearance(context: Context, id: Int, appearance: VerseOfTheDayWidgetAppearance) {
+        context.preferences.edit().putAppearance(id, appearance).apply()
+    }
+
+    fun deleteAppearances(context: Context, ids: IntArray) {
+        context.preferences.edit()
+            .apply { ids.forEach { removeAppearance(it) } }
+            .apply()
+    }
+
+    /** A restored widget can be given an ID another one had before, so every old value is read before any key changes. */
+    fun restoreAppearances(context: Context, oldIds: IntArray, newIds: IntArray) {
+        val appearances = oldIds.map { readAppearance(context, it) }
+        context.preferences.edit()
+            .apply {
+                oldIds.forEach { removeAppearance(it) }
+                newIds.zip(appearances).forEach { (id, appearance) -> putAppearance(id, appearance) }
+            }
+            .apply()
+    }
+
+    private fun SharedPreferences.Editor.putAppearance(id: Int, appearance: VerseOfTheDayWidgetAppearance) =
+        putString(themeKey(id), appearance.theme.name).putInt(opacityKey(id), appearance.opacity)
+
+    private fun SharedPreferences.Editor.removeAppearance(id: Int) = remove(themeKey(id)).remove(opacityKey(id))
+
+    private fun themeKey(id: Int) = "theme.$id"
+
+    private fun opacityKey(id: Int) = "opacity.$id"
 
     private val Context.preferences
         get() = getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE)

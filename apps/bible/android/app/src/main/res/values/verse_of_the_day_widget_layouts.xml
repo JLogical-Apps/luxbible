@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A launcher redraws a widget with an unchanged layout ID in place, keeping colors an earlier
+     update set. Light and Dark widgets use this alias so switching back to Auto inflates fresh. -->
+<resources>
+    <item name="verse_of_the_day_widget_themed" type="layout">@layout/verse_of_the_day_widget</item>
+</resources>

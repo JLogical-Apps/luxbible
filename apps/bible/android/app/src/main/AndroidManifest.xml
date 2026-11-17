@@ -89,6 +89,17 @@
                 <data android:mimeType="application/octet-stream"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name="app.luxbible.app.VerseOfTheDayWidgetConfigurationActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:taskAffinity=""
+            android:label="@string/verse_of_the_day_widget_title"
+            android:theme="@style/VerseOfTheDayWidgetConfigurationTheme">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE"/>
+            </intent-filter>
+        </activity>
         <service
             android:name="com.ryanheise.audioservice.AudioService"
             android:exported="true"

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="VerseOfTheDayWidgetConfigurationBaseTheme" parent="@android:style/Theme.Material.Light.NoActionBar"/>
+
+    <!-- Shows the wallpaper behind the preview so the user sees the opacity they pick in place. -->
+    <style name="VerseOfTheDayWidgetConfigurationTheme" parent="VerseOfTheDayWidgetConfigurationBaseTheme">
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/verse_of_the_day_widget_surface</item>
+        <item name="android:colorAccent">@color/verse_of_the_day_widget_content_primary</item>
+        <item name="android:textColorPrimary">@color/verse_of_the_day_widget_content_primary</item>
+        <item name="android:textColorSecondary">@color/verse_of_the_day_widget_content_secondary</item>
+    </style>
+
+    <style name="VerseOfTheDayWidgetConfigurationLabel">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/verse_of_the_day_widget_content_secondary</item>
+    </style>
+
+    <style name="VerseOfTheDayWidgetConfigurationOption">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/verse_of_the_day_widget_content_primary</item>
+    </style>
+</resources>

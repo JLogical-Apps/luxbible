@@ -3,4 +3,10 @@
     <string name="verse_of_the_day_widget_title">Стих дня</string>
     <string name="verse_of_the_day_widget_description">Сегодняшний стих на главном экране.</string>
     <string name="verse_of_the_day_widget_empty">Откройте Lux, чтобы загрузить стих дня.</string>
+    <string name="verse_of_the_day_widget_background">Фон</string>
+    <string name="verse_of_the_day_widget_theme_auto">Авто</string>
+    <string name="verse_of_the_day_widget_theme_light">Светлый</string>
+    <string name="verse_of_the_day_widget_theme_dark">Тёмный</string>
+    <string name="verse_of_the_day_widget_opacity">Непрозрачность</string>
+    <string name="verse_of_the_day_widget_done">Готово</string>
 </resources>

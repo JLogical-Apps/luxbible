@@ -3,4 +3,10 @@
     <string name="verse_of_the_day_widget_title">Vers van de dag</string>
     <string name="verse_of_the_day_widget_description">Het vers van vandaag op je beginscherm.</string>
     <string name="verse_of_the_day_widget_empty">Open Lux om het vers van de dag te laden.</string>
+    <string name="verse_of_the_day_widget_background">Achtergrond</string>
+    <string name="verse_of_the_day_widget_theme_auto">Automatisch</string>
+    <string name="verse_of_the_day_widget_theme_light">Licht</string>
+    <string name="verse_of_the_day_widget_theme_dark">Donker</string>
+    <string name="verse_of_the_day_widget_opacity">Dekking</string>
+    <string name="verse_of_the_day_widget_done">Gereed</string>
 </resources>

@@ -32,7 +32,7 @@ Lux offers a Verse of the Day home screen widget on iOS and Android. It shows th
 
 On iOS the widget comes in the small, medium, and large Home Screen sizes, which are also the sizes StandBy displays; the larger sizes show more of the passage and label it as the Verse of the Day. On Android it is one resizable widget, four cells by two by default, whose passage grows into whatever space it is given. There is no Lock Screen widget on either platform.
 
-Lux precomputes a rolling fourteen days of verses whenever it is opened or resumed, so the widget changes on its own each day and keeps working offline. If Lux is not opened for longer than that, the widget asks to be opened rather than showing a stale verse. Adding, removing, and arranging the widget is handled by the system, not by a setting inside Lux.
+Lux precomputes a rolling fourteen days of verses whenever it is opened or resumed, so the widget changes on its own each day and keeps working offline. If Lux is not opened for longer than that, the widget asks to be opened rather than showing a stale verse. Adding, removing, and arranging the widget is handled by the system, not by a setting inside Lux. On Android each widget also has its own settings screen, offered when it is added and from the launcher's widget settings afterward, where the user picks an Auto, Light, or Dark background and its opacity from fully opaque down to fully transparent, previewed over their wallpaper. iOS has no such setting, since the system's own tinted and clear Home Screen styles cover it.
 
 ## Privacy and Analytics
 
