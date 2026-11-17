@@ -37,6 +37,13 @@ sealed class AudioBibleContextState with _$AudioBibleContextState {
 
   Reference? getReferenceAtPosition(Duration position) =>
       timings.getReferenceAtPosition(passage: passage, position: position);
+
+  // The first verse is emphasized during a chapter introduction, so its start includes the introduction.
+  Duration getVerseStartPosition(Duration position) => switch (timings[getReferenceAtPosition(position)]) {
+    null => position,
+    final timing when timing == passage.getFirstAudioTiming(timings) => startPosition,
+    final timing => timing.start,
+  };
 }
 
 class AudioBibleState {

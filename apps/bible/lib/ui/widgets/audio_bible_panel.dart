@@ -148,9 +148,10 @@ class AudioBiblePanelBody extends HookConsumerWidget {
                         ? null
                         : (value) {
                             positionOverrideState.value = null;
+                            final position = Duration(milliseconds: value.round());
                             audioBibleController.seekTo(
                               context: this.context,
-                              position: Duration(milliseconds: value.round()),
+                              position: session?.getVerseStartPosition(position) ?? position,
                             );
                           },
                   ),
