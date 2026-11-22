@@ -267,50 +267,63 @@ class SearchPage extends HookConsumerWidget implements StyledRoute<VerseSelectio
                               ],
                             )
                           else if (searchResults.isEmpty)
-                            Padding(
-                              padding: .all(16),
-                              child: StyledTile.message(
-                                title: t.emptyStates.noSearchResults.toText(),
-                                subtitle: t.emptyStates.tryAnotherSearch.toText(),
-                                leading: Symbols.search.toIcon(),
+                            SafeArea(
+                              top: false,
+                              bottom: false,
+                              child: Padding(
+                                padding: .all(16),
+                                child: StyledTile.message(
+                                  title: t.emptyStates.noSearchResults.toText(),
+                                  subtitle: t.emptyStates.tryAnotherSearch.toText(),
+                                  leading: Symbols.search.toIcon(),
+                                ),
                               ),
                             )
                           else ...[
                             if (isStrongSearch) ...[
                               if (strongs[searchState.value] case final strong?)
-                                Padding(
-                                  padding: .all(16),
-                                  child: StyledTile(
-                                    child: StyledListItem.navigation(
-                                      title: SingleChildScrollView(
-                                        scrollDirection: .horizontal,
-                                        child: Row(
-                                          spacing: 8,
-                                          children: [
-                                            StyledTag.sm(child: strong.id.toText()),
-                                            Text([strong.languageText, strong.transliteration].join('  ·  ')),
-                                          ],
+                                SafeArea(
+                                  top: false,
+                                  bottom: false,
+                                  child: Padding(
+                                    padding: .all(16),
+                                    child: StyledTile(
+                                      child: StyledListItem.navigation(
+                                        title: SingleChildScrollView(
+                                          scrollDirection: .horizontal,
+                                          child: Row(
+                                            spacing: 8,
+                                            children: [
+                                              StyledTag.sm(child: strong.id.toText()),
+                                              Text([strong.languageText, strong.transliteration].join('  ·  ')),
+                                            ],
+                                          ),
                                         ),
+                                        subtitle: MarkdownBuilder(strong.definition, maxLines: 4),
+                                        onPressed: () => StrongSheet.showWithBreadcrumbs(context, strongId: strong.id),
                                       ),
-                                      subtitle: MarkdownBuilder(strong.definition, maxLines: 4),
-                                      onPressed: () => StrongSheet.showWithBreadcrumbs(context, strongId: strong.id),
                                     ),
                                   ),
                                 ),
                             ] else if (dictionaryEntries.isNotEmpty)
-                              Padding(
-                                padding: .all(16),
-                                child: StyledTile(
-                                  child: StyledList(
-                                    children: dictionaryEntries
-                                        .map(
-                                          (article) => ArticleListItem(
-                                            collection: .dictionary,
-                                            article: article,
-                                            onNavigateToVerseSelection: (verseSelection) => context.pop(verseSelection),
-                                          ),
-                                        )
-                                        .toList(),
+                              SafeArea(
+                                top: false,
+                                bottom: false,
+                                child: Padding(
+                                  padding: .all(16),
+                                  child: StyledTile(
+                                    child: StyledList(
+                                      children: dictionaryEntries
+                                          .map(
+                                            (article) => ArticleListItem(
+                                              collection: .dictionary,
+                                              article: article,
+                                              onNavigateToVerseSelection: (verseSelection) =>
+                                                  context.pop(verseSelection),
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
                                   ),
                                 ),
                               ),

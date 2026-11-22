@@ -178,67 +178,73 @@ class BiblePlanSearchPage extends HookConsumerWidget implements StyledRoute<Stri
       body: Column(
         crossAxisAlignment: .stretch,
         children: [
-          SingleChildScrollView(
-            scrollDirection: .horizontal,
-            padding: MediaQuery.viewPaddingOf(context).onlyHorizontal + .symmetric(horizontal: 16),
-            child: Row(
-              spacing: 8,
-              children: [
-                StyledPillButton.md(
-                  colorBuilder: scope == null ? null : .surfacePrimaryInverted,
-                  leading: Symbols.book_6.toIcon(),
-                  label: (scope?.title() ?? t.labels.scope).toText(),
-                  trailing: Symbols.keyboard_arrow_down.toIcon(),
-                  onPressed: () async {
-                    final newScope = await context.showStyledSheet(
-                      (context, _) => StyledSelectionSheet<BiblePlanScope>(
-                        title: t.labels.scope.toText(),
-                        options: BiblePlanScope.values,
-                        optionMapper: (scope) =>
-                            StyledSelectOption(title: scope.title().toText(), subtitle: scope.description().toText()),
-                        initialOption: scope,
-                        trailing: scope == null
-                            ? null
-                            : StyledCircleButton.md(
-                                child: Symbols.delete.toIcon(),
-                                onPressed: () {
-                                  scopeState.value = null;
-                                  context.pop();
-                                },
-                              ),
-                      ),
-                    );
-                    if (newScope != null) scopeState.value = newScope;
-                  },
-                ),
-                StyledPillButton.md(
-                  colorBuilder: source == null ? null : .surfacePrimaryInverted,
-                  leading: Symbols.source.toIcon(),
-                  label: (source?.title() ?? t.labels.source).toText(),
-                  trailing: Symbols.keyboard_arrow_down.toIcon(),
-                  onPressed: () async {
-                    final newSource = await context.showStyledSheet(
-                      (context, _) => StyledSelectionSheet<BiblePlanSearchSource>(
-                        title: t.labels.source.toText(),
-                        options: BiblePlanSearchSource.values,
-                        optionMapper: (source) =>
-                            StyledSelectOption(title: source.title().toText(), subtitle: source.description().toText()),
-                        initialOption: source,
-                        trailing: source == null
-                            ? null
-                            : StyledCircleButton.md(
-                                child: Symbols.delete.toIcon(),
-                                onPressed: () {
-                                  sourceState.value = null;
-                                  context.pop();
-                                },
-                              ),
-                      ),
-                    );
-                    if (newSource != null) sourceState.value = newSource;
-                  },
-                ),
-              ],
+          SafeArea(
+            top: false,
+            bottom: false,
+            child: SingleChildScrollView(
+              scrollDirection: .horizontal,
+              padding: .symmetric(horizontal: 16),
+              child: Row(
+                spacing: 8,
+                children: [
+                  StyledPillButton.md(
+                    colorBuilder: scope == null ? null : .surfacePrimaryInverted,
+                    leading: Symbols.book_6.toIcon(),
+                    label: (scope?.title() ?? t.labels.scope).toText(),
+                    trailing: Symbols.keyboard_arrow_down.toIcon(),
+                    onPressed: () async {
+                      final newScope = await context.showStyledSheet(
+                        (context, _) => StyledSelectionSheet<BiblePlanScope>(
+                          title: t.labels.scope.toText(),
+                          options: BiblePlanScope.values,
+                          optionMapper: (scope) =>
+                              StyledSelectOption(title: scope.title().toText(), subtitle: scope.description().toText()),
+                          initialOption: scope,
+                          trailing: scope == null
+                              ? null
+                              : StyledCircleButton.md(
+                                  child: Symbols.delete.toIcon(),
+                                  onPressed: () {
+                                    scopeState.value = null;
+                                    context.pop();
+                                  },
+                                ),
+                        ),
+                      );
+                      if (newScope != null) scopeState.value = newScope;
+                    },
+                  ),
+                  StyledPillButton.md(
+                    colorBuilder: source == null ? null : .surfacePrimaryInverted,
+                    leading: Symbols.source.toIcon(),
+                    label: (source?.title() ?? t.labels.source).toText(),
+                    trailing: Symbols.keyboard_arrow_down.toIcon(),
+                    onPressed: () async {
+                      final newSource = await context.showStyledSheet(
+                        (context, _) => StyledSelectionSheet<BiblePlanSearchSource>(
+                          title: t.labels.source.toText(),
+                          options: BiblePlanSearchSource.values,
+                          optionMapper: (source) => StyledSelectOption(
+                            title: source.title().toText(),
+                            subtitle: source.description().toText(),
+                          ),
+                          initialOption: source,
+                          trailing: source == null
+                              ? null
+                              : StyledCircleButton.md(
+                                  child: Symbols.delete.toIcon(),
+                                  onPressed: () {
+                                    sourceState.value = null;
+                                    context.pop();
+                                  },
+                                ),
+                        ),
+                      );
+                      if (newSource != null) sourceState.value = newSource;
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
           gapH8,

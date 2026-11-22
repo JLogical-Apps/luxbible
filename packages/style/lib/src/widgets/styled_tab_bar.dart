@@ -30,24 +30,29 @@ class StyledTabBar extends StatelessWidget {
       child: Stack(
         children: [
           Positioned.fill(top: null, child: Container(height: 4, color: context.colors.borderOpaque)),
-          TabBar(
-            controller: tabController,
-            onTap: onTabPressed,
-            splashFactory: NoSplash.splashFactory,
-            overlayColor: WidgetStateProperty.resolveWith<Color?>(
-              (Set<WidgetState> states) => states.has(.focused) ? null : Colors.transparent,
+          // The divider spans the full width, while the tabs never scroll beneath side insets like iPhone Duo's status bar.
+          SafeArea(
+            top: false,
+            bottom: false,
+            child: TabBar(
+              controller: tabController,
+              onTap: onTabPressed,
+              splashFactory: NoSplash.splashFactory,
+              overlayColor: WidgetStateProperty.resolveWith<Color?>(
+                (Set<WidgetState> states) => states.has(.focused) ? null : Colors.transparent,
+              ),
+              dividerColor: context.colors.borderOpaque,
+              dividerHeight: 4,
+              tabAlignment: scrollable ? TabAlignment.start : TabAlignment.fill,
+              isScrollable: scrollable,
+              labelPadding: EdgeInsets.symmetric(horizontal: scrollable ? 16 : 7),
+              indicatorColor: context.colors.contentPrimary,
+              indicatorSize: .tab,
+              labelStyle: context.textStyle.labelMd,
+              unselectedLabelStyle: context.textStyle.labelMd,
+              indicatorWeight: 4,
+              tabs: tabTitles.mapIndexed((i, title) => Tab(height: 52, child: title)).toList(),
             ),
-            dividerColor: context.colors.borderOpaque,
-            dividerHeight: 4,
-            tabAlignment: scrollable ? TabAlignment.start : TabAlignment.fill,
-            isScrollable: scrollable,
-            labelPadding: EdgeInsets.symmetric(horizontal: scrollable ? 16 : 7),
-            indicatorColor: context.colors.contentPrimary,
-            indicatorSize: .tab,
-            labelStyle: context.textStyle.labelMd,
-            unselectedLabelStyle: context.textStyle.labelMd,
-            indicatorWeight: 4,
-            tabs: tabTitles.mapIndexed((i, title) => Tab(height: 52, child: title)).toList(),
           ),
         ],
       ),

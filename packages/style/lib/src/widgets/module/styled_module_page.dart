@@ -71,66 +71,70 @@ class StyledModulePage extends HookWidget {
       child: StyledPage(
         title: title,
         onBackPressed: (context) => context.maybePop(),
-        body: Column(
-          children: [
-            Padding(
-              padding: .symmetric(horizontal: 16),
-              child: StyledProgressBar(value: (stepIndexState.value + 1) / steps.length),
-            ),
-            Expanded(
-              child: StyledPageDock(
-                controller: pageController,
-                scrollController: scrollController,
-                onPageChanged: (page) {
-                  stepIndexState.value = page;
-                  onStepChanged?.call(page);
-                },
-                pages: steps
-                    .mapIndexed(
-                      (pageIndex, page) => StyledPageDockPage(
-                        padding: .zero,
-                        forceFillHeight: page.forceFillHeight,
-                        children: [
-                          if (page.title != null || page.subtitle != null) ...[
-                            gapH24,
-                            Padding(
-                              padding: .symmetric(horizontal: 16),
-                              child: Column(
-                                crossAxisAlignment: .start,
-                                spacing: 4,
-                                children: [
-                                  if (page.title case final title?)
-                                    DefaultTextStyle(child: title, style: context.textStyle.headingSm),
-                                  if (page.subtitle case final subtitle?)
-                                    DefaultTextStyle(child: subtitle, style: context.textStyle.paragraphMd),
-                                ],
-                              ),
-                            ),
-                          ],
-                          gapH24,
-                          if (page.forceFillHeight)
-                            Expanded(
-                              child: Padding(
-                                padding: page.bodyPadding,
-                                child: Column(children: page.childrenBuilder(context)),
-                              ),
-                            )
-                          else ...[
-                            SizedBox(height: page.bodyPadding.top),
-                            ...page
-                                .childrenBuilder(context)
-                                .map((child) => Padding(padding: page.bodyPadding.onlyHorizontal, child: child)),
-                            SizedBox(height: page.bodyPadding.bottom),
-                          ],
-                        ],
-                      ),
-                    )
-                    .toList(),
-                aboveButtons: currentStep.aboveButtons,
-                buttonsBuilder: (context) => currentStep.buttons.buildButtons(context, goNext),
+        body: SafeArea(
+          top: false,
+          bottom: false,
+          child: Column(
+            children: [
+              Padding(
+                padding: .symmetric(horizontal: 16),
+                child: StyledProgressBar(value: (stepIndexState.value + 1) / steps.length),
               ),
-            ),
-          ],
+              Expanded(
+                child: StyledPageDock(
+                  controller: pageController,
+                  scrollController: scrollController,
+                  onPageChanged: (page) {
+                    stepIndexState.value = page;
+                    onStepChanged?.call(page);
+                  },
+                  pages: steps
+                      .mapIndexed(
+                        (pageIndex, page) => StyledPageDockPage(
+                          padding: .zero,
+                          forceFillHeight: page.forceFillHeight,
+                          children: [
+                            if (page.title != null || page.subtitle != null) ...[
+                              gapH24,
+                              Padding(
+                                padding: .symmetric(horizontal: 16),
+                                child: Column(
+                                  crossAxisAlignment: .start,
+                                  spacing: 4,
+                                  children: [
+                                    if (page.title case final title?)
+                                      DefaultTextStyle(child: title, style: context.textStyle.headingSm),
+                                    if (page.subtitle case final subtitle?)
+                                      DefaultTextStyle(child: subtitle, style: context.textStyle.paragraphMd),
+                                  ],
+                                ),
+                              ),
+                            ],
+                            gapH24,
+                            if (page.forceFillHeight)
+                              Expanded(
+                                child: Padding(
+                                  padding: page.bodyPadding,
+                                  child: Column(children: page.childrenBuilder(context)),
+                                ),
+                              )
+                            else ...[
+                              SizedBox(height: page.bodyPadding.top),
+                              ...page
+                                  .childrenBuilder(context)
+                                  .map((child) => Padding(padding: page.bodyPadding.onlyHorizontal, child: child)),
+                              SizedBox(height: page.bodyPadding.bottom),
+                            ],
+                          ],
+                        ),
+                      )
+                      .toList(),
+                  aboveButtons: currentStep.aboveButtons,
+                  buttonsBuilder: (context) => currentStep.buttons.buildButtons(context, goNext),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

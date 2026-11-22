@@ -1,9 +1,9 @@
 import 'package:bible/models/annotation.dart';
 import 'package:bible/models/highlight_style.dart';
 import 'package:bible/providers/user_provider.dart';
-import 'package:bible/ui/widgets/notebook_icon.dart';
 import 'package:bible/ui/widgets/annotation_list_item.dart';
 import 'package:bible/ui/widgets/highlight_style_icon.dart';
+import 'package:bible/ui/widgets/notebook_icon.dart';
 import 'package:bible/ui/widgets/search_location_button.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -56,143 +56,148 @@ class AnnotationsPage extends HookConsumerWidget implements StyledRoute<VerseSel
       body: Column(
         crossAxisAlignment: .start,
         children: [
-          SingleChildScrollView(
-            scrollDirection: .horizontal,
-            padding: MediaQuery.viewPaddingOf(context).onlyHorizontal + .symmetric(horizontal: 16),
-            child: Row(
-              spacing: 8,
-              children: [
-                StyledPillButton.md(
-                  leading: Symbols.sort.toIcon(),
-                  label: sortState.value.title().toText(),
-                  trailing: Symbols.keyboard_arrow_down.toIcon(),
-                  onPressed: () async {
-                    final newSort = await context.showStyledSheet(
-                      (context, _) => StyledSelectionSheet(
-                        title: t.common.sort.toText(),
-                        options: AnnotationSort.values,
-                        optionMapper: (sort) => StyledSelectOption(title: sort.title().toText()),
-                        initialOption: sortState.value,
-                      ),
-                    );
-                    if (newSort != null) {
-                      sortState.value = newSort;
-                    }
-                  },
-                ),
-                if (user.notebooks.isNotEmpty)
+          SafeArea(
+            top: false,
+            bottom: false,
+            child: SingleChildScrollView(
+              scrollDirection: .horizontal,
+              padding: .symmetric(horizontal: 16),
+              child: Row(
+                spacing: 8,
+                children: [
                   StyledPillButton.md(
-                    colorBuilder: notebookId == null ? null : .primary,
-                    leading: notebookId == null
-                        ? Icon(Symbols.book_2)
-                        : NotebookIcon(notebook: notebook, isInverted: true),
-                    label: (notebookId == null ? t.labels.notebook : notebook?.name ?? t.common.defaultLabel).toText(),
+                    leading: Symbols.sort.toIcon(),
+                    label: sortState.value.title().toText(),
                     trailing: Symbols.keyboard_arrow_down.toIcon(),
                     onPressed: () async {
-                      final result = await context.showStyledSheet(
-                        (context, _) => StyledSelectionSheet<(String?,)>(
-                          title: t.labels.notebook.toText(),
-                          trailing: notebookId == null
+                      final newSort = await context.showStyledSheet(
+                        (context, _) => StyledSelectionSheet(
+                          title: t.common.sort.toText(),
+                          options: AnnotationSort.values,
+                          optionMapper: (sort) => StyledSelectOption(title: sort.title().toText()),
+                          initialOption: sortState.value,
+                        ),
+                      );
+                      if (newSort != null) {
+                        sortState.value = newSort;
+                      }
+                    },
+                  ),
+                  if (user.notebooks.isNotEmpty)
+                    StyledPillButton.md(
+                      colorBuilder: notebookId == null ? null : .primary,
+                      leading: notebookId == null
+                          ? Icon(Symbols.book_2)
+                          : NotebookIcon(notebook: notebook, isInverted: true),
+                      label: (notebookId == null ? t.labels.notebook : notebook?.name ?? t.common.defaultLabel)
+                          .toText(),
+                      trailing: Symbols.keyboard_arrow_down.toIcon(),
+                      onPressed: () async {
+                        final result = await context.showStyledSheet(
+                          (context, _) => StyledSelectionSheet<(String?,)>(
+                            title: t.labels.notebook.toText(),
+                            trailing: notebookId == null
+                                ? null
+                                : StyledCircleButton.md(
+                                    child: Symbols.delete.toIcon(),
+                                    onPressed: () {
+                                      notebookIdState.value = null;
+                                      context.pop();
+                                    },
+                                  ),
+                            options: [...user.notebooks.map((notebook) => (notebook.id,)), (null,)],
+                            optionMapper: (option) {
+                              final notebook = user.getNotebookById(option.$1);
+                              return StyledSelectOption(
+                                title: (notebook?.name ?? t.common.defaultLabel).toText(),
+                                leading: NotebookIcon(notebook: notebook),
+                              );
+                            },
+                            initialOption: notebookId,
+                          ),
+                        );
+                        if (result != null) {
+                          notebookIdState.value = result;
+                        }
+                      },
+                    ),
+                  StyledPillButton.md(
+                    colorBuilder: style == null ? null : .primary,
+                    leading: style == null
+                        ? Icon(Symbols.format_ink_highlighter)
+                        : HighlightStyleIcon(style: style, size: .sm, invertContent: true),
+                    label: (style == null ? t.labels.style : user.labelForHighlightStyle(style) ?? t.labels.style)
+                        .toText(),
+                    trailing: Symbols.keyboard_arrow_down.toIcon(),
+                    onPressed: () async {
+                      final newStyle = await context.showStyledSheet(
+                        (context, _) => StyledSelectionSheet<HighlightStyle>(
+                          title: t.labels.style.toText(),
+                          options: user.highlightStyles.map((entry) => entry.$1).toList(),
+                          optionMapper: (option) => StyledSelectOption(
+                            title: (user.labelForHighlightStyle(option) ?? '').toText(),
+                            leading: HighlightStyleIcon(style: option),
+                          ),
+                          initialOption: style,
+                          trailing: style == null
                               ? null
                               : StyledCircleButton.md(
                                   child: Symbols.delete.toIcon(),
                                   onPressed: () {
-                                    notebookIdState.value = null;
+                                    styleState.value = null;
                                     context.pop();
                                   },
                                 ),
-                          options: [...user.notebooks.map((notebook) => (notebook.id,)), (null,)],
-                          optionMapper: (option) {
-                            final notebook = user.getNotebookById(option.$1);
-                            return StyledSelectOption(
-                              title: (notebook?.name ?? t.common.defaultLabel).toText(),
-                              leading: NotebookIcon(notebook: notebook),
-                            );
-                          },
-                          initialOption: notebookId,
                         ),
                       );
-                      if (result != null) {
-                        notebookIdState.value = result;
+                      if (newStyle != null) {
+                        styleState.value = newStyle;
                       }
                     },
                   ),
-                StyledPillButton.md(
-                  colorBuilder: style == null ? null : .primary,
-                  leading: style == null
-                      ? Icon(Symbols.format_ink_highlighter)
-                      : HighlightStyleIcon(style: style, size: .sm, invertContent: true),
-                  label: (style == null ? t.labels.style : user.labelForHighlightStyle(style) ?? t.labels.style)
-                      .toText(),
-                  trailing: Symbols.keyboard_arrow_down.toIcon(),
-                  onPressed: () async {
-                    final newStyle = await context.showStyledSheet(
-                      (context, _) => StyledSelectionSheet<HighlightStyle>(
-                        title: t.labels.style.toText(),
-                        options: user.highlightStyles.map((entry) => entry.$1).toList(),
-                        optionMapper: (option) => StyledSelectOption(
-                          title: (user.labelForHighlightStyle(option) ?? '').toText(),
-                          leading: HighlightStyleIcon(style: option),
+                  StyledPillButton.md(
+                    colorBuilder: hasNoteState.value == null ? null : .primary,
+                    leading: Symbols.note.toIcon(),
+                    label: switch (hasNoteState.value) {
+                      true => t.annotationUi.withNotes,
+                      false => t.annotationUi.withoutNotes,
+                      null => t.labels.notes,
+                    }.toText(),
+                    trailing: Symbols.keyboard_arrow_down.toIcon(),
+                    onPressed: () async {
+                      final newHasNotes = await context.showStyledSheet(
+                        (context, _) => StyledSelectionSheet(
+                          title: t.labels.notes.toText(),
+                          trailing: hasNoteState.value == null
+                              ? null
+                              : StyledCircleButton.md(
+                                  child: Symbols.delete.toIcon(),
+                                  onPressed: () {
+                                    hasNoteState.value = null;
+                                    context.pop();
+                                  },
+                                ),
+                          options: [true, false],
+                          optionMapper: (option) => StyledSelectOption(
+                            title: switch (option) {
+                              true => t.annotationUi.withNotes,
+                              false => t.annotationUi.withoutNotes,
+                            }.toText(),
+                          ),
+                          initialOption: hasNoteState.value,
                         ),
-                        initialOption: style,
-                        trailing: style == null
-                            ? null
-                            : StyledCircleButton.md(
-                                child: Symbols.delete.toIcon(),
-                                onPressed: () {
-                                  styleState.value = null;
-                                  context.pop();
-                                },
-                              ),
-                      ),
-                    );
-                    if (newStyle != null) {
-                      styleState.value = newStyle;
-                    }
-                  },
-                ),
-                StyledPillButton.md(
-                  colorBuilder: hasNoteState.value == null ? null : .primary,
-                  leading: Symbols.note.toIcon(),
-                  label: switch (hasNoteState.value) {
-                    true => t.annotationUi.withNotes,
-                    false => t.annotationUi.withoutNotes,
-                    null => t.labels.notes,
-                  }.toText(),
-                  trailing: Symbols.keyboard_arrow_down.toIcon(),
-                  onPressed: () async {
-                    final newHasNotes = await context.showStyledSheet(
-                      (context, _) => StyledSelectionSheet(
-                        title: t.labels.notes.toText(),
-                        trailing: hasNoteState.value == null
-                            ? null
-                            : StyledCircleButton.md(
-                                child: Symbols.delete.toIcon(),
-                                onPressed: () {
-                                  hasNoteState.value = null;
-                                  context.pop();
-                                },
-                              ),
-                        options: [true, false],
-                        optionMapper: (option) => StyledSelectOption(
-                          title: switch (option) {
-                            true => t.annotationUi.withNotes,
-                            false => t.annotationUi.withoutNotes,
-                          }.toText(),
-                        ),
-                        initialOption: hasNoteState.value,
-                      ),
-                    );
-                    if (newHasNotes != null) {
-                      hasNoteState.value = newHasNotes;
-                    }
-                  },
-                ),
-                SearchLocationButton(
-                  selectedBooks: selectedBooksState.value,
-                  onBooksSelected: (books) => selectedBooksState.value = books,
-                ),
-              ],
+                      );
+                      if (newHasNotes != null) {
+                        hasNoteState.value = newHasNotes;
+                      }
+                    },
+                  ),
+                  SearchLocationButton(
+                    selectedBooks: selectedBooksState.value,
+                    onBooksSelected: (books) => selectedBooksState.value = books,
+                  ),
+                ],
+              ),
             ),
           ),
           gapH8,

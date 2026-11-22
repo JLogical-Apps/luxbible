@@ -9,7 +9,9 @@ flutter test tool/screenshots/screenshots_test.dart --plain-name 'ipad/'
 flutter test tool/screenshots/screenshots_test.dart --plain-name 'iphone/8_compare'
 ```
 
-Every scene renders on each `ScreenshotDevice`: an iPhone 6.9" (440×956 @3x), an iPad 13" (1032×1376 @2x, which uses the side-by-side study panel layout), and a Pixel (412×915 @3x). A full run takes about 7 minutes. `iphone13Pro` (390×844 @3x) is left out of the store set; it stands in for a notched iPhone's screen recording, with no notch drawn, for demo clips in reels.
+Every scene renders on each `ScreenshotDevice`: an iPhone 6.9" (440×956 @3x), an iPad 13" (1032×1376 @2x, which uses the side-by-side study panel layout), a Pixel (412×915 @3x), and the iPhone Duo's outer display (466×678 @3x, App Store's 1398×2034). A full run takes about 10 minutes.
+
+`iphoneDuo` keeps the status bar in a column down the trailing edge, so its safe area is 84pt on the right and nothing on top, and only the trailing screen corners are fully rounded since the hinge runs down the leading edge. Apple doesn't publish these values; they come from the iOS 27.1 simulator as reported by [safearea.info](https://safearea.info/iphone-duo). `iphone13Pro` (390×844 @3x) is left out of the store set; it stands in for a notched iPhone's screen recording, with no notch drawn, for demo clips in reels.
 
 The iPad renders like iPadOS Display Zoom at 130%, so its content reads at a similar size to the phones in the store images. The zoom raises the pixel ratio rather than scaling with a transform, because the reader's word hit-testing doesn't account for transforms, so the frame and output size are unchanged.
 

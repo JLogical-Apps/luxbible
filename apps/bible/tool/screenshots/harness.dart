@@ -10,6 +10,7 @@ import 'package:bible/functions/cross_references_importer.dart';
 import 'package:bible/functions/strong_importer.dart';
 import 'package:bible/functions/verse_of_the_day_importer.dart';
 import 'package:bible/main.dart';
+import 'package:bible/models/bible_plan.dart';
 import 'package:bible/models/user/migration.dart';
 import 'package:bible/models/user/user.dart';
 import 'package:bible/providers/audio_bible_timings_provider.dart';
@@ -43,6 +44,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toastification/toastification.dart';
+import 'package:utils_core/utils_core.dart';
 
 import 'device.dart';
 import 'touch_indicator.dart';
@@ -96,7 +98,10 @@ Future<void> setUpScreenshotApp({List<Override> overrides = const []}) async {
       audioBibleTimingsProvider.overrideWithValue(await AudioBibleTimingsImporter().import()),
       strongsProvider.overrideWithValue(await StrongImporter().import()),
       crossReferencesProvider.overrideWithValue(await CrossReferencesImporter().import()),
-      includedBiblePlansProvider.overrideWithValue(await BiblePlanImporter().import()),
+      // Seasonal plans like Advent come and go, so the store images leave them out.
+      includedBiblePlansProvider.overrideWithValue(
+        (await BiblePlanImporter().import()).where((planId, _) => BiblePlanType.getById(planId)?.season == null),
+      ),
       verseOfTheDaySelectionsProvider.overrideWithValue(await VerseOfTheDayImporter().import()),
       pathServiceProvider.overrideWithValue(Paths(applicationSupport: directory, applicationCache: directory)),
       sharedPreferencesServiceProvider.overrideWithValue(await SharedPreferences.getInstance()),

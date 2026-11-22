@@ -104,6 +104,28 @@ class IphoneStatusBarPainter extends CustomPainter {
   bool shouldRepaint(IphoneStatusBarPainter oldDelegate) => oldDelegate.cutout != cutout;
 }
 
+class IphoneDuoStatusBarPainter extends CustomPainter {
+  final Rect cutout;
+
+  IphoneDuoStatusBarPainter({required this.cutout});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final centerX = cutout.center.dx;
+
+    final time = layoutStatusText('3:16', fontSize: 15);
+    final timeCenterY = cutout.bottom + 26;
+    time.paint(canvas, Offset(centerX - time.width / 2, timeCenterY - time.height / 2));
+
+    final wifiCenterY = timeCenterY + 32;
+    paintIosWifi(canvas, centerX - iosWifiWidth / 2, wifiCenterY);
+    paintIosBattery(canvas, centerX - iosBatteryWidth / 2, wifiCenterY + 28);
+  }
+
+  @override
+  bool shouldRepaint(IphoneDuoStatusBarPainter oldDelegate) => oldDelegate.cutout != cutout;
+}
+
 class IpadStatusBarPainter extends CustomPainter {
   final double height;
 

@@ -51,9 +51,13 @@ class StyledDock extends HookWidget {
         : [
             StyledSizeAndFade(child: aboveButtons ?? SizedBox(width: double.infinity, height: 16)),
             if (buttons.isNotEmpty)
-              Padding(
-                padding: .symmetric(horizontal: 16),
-                child: Column(spacing: 8, mainAxisSize: .min, children: buttons),
+              SafeArea(
+                top: false,
+                bottom: false,
+                child: Padding(
+                  padding: .symmetric(horizontal: 16),
+                  child: Column(spacing: 8, mainAxisSize: .min, children: buttons),
+                ),
               ),
             Builder(
               builder: (context) =>

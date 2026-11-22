@@ -6,12 +6,14 @@ enum ScreenshotDevice {
   iphone,
   ipad,
   pixel,
-  iphone13Pro;
+  iphone13Pro,
+  // The outer display, which keeps the status bar in a column down the trailing edge.
+  iphoneDuo;
 
-  static const store = [iphone, ipad, pixel];
+  static const store = [iphone, ipad, pixel, iphoneDuo];
 
   TargetPlatform get platform => switch (this) {
-    iphone || ipad || iphone13Pro => .iOS,
+    iphone || ipad || iphone13Pro || iphoneDuo => .iOS,
     pixel => .android,
   };
 
@@ -20,10 +22,11 @@ enum ScreenshotDevice {
     ipad => Size(1032, 1376),
     pixel => Size(412, 915),
     iphone13Pro => Size(390, 844),
+    iphoneDuo => Size(466, 678),
   };
 
   double get pixelRatio => switch (this) {
-    iphone || pixel || iphone13Pro => 3,
+    iphone || pixel || iphone13Pro || iphoneDuo => 3,
     ipad => 2,
   };
 
@@ -32,21 +35,25 @@ enum ScreenshotDevice {
     ipad => .only(top: 24, bottom: 20),
     pixel => .only(top: 40, bottom: 24),
     iphone13Pro => .only(top: 47, bottom: 34),
+    iphoneDuo => .only(right: 84, bottom: 34),
   };
 
   // The frame keeps its physical size under zoom, so its point sizes shrink as the pixel ratio grows.
-  double get screenRadius =>
-      switch (this) {
-        iphone => 62,
-        ipad => 18,
-        pixel => 36,
-        iphone13Pro => 47.33,
-      } /
-      zoom;
+  BorderRadius get screenBorderRadius {
+    final BorderRadius radius = switch (this) {
+      iphone => .circular(62),
+      ipad => .circular(18),
+      pixel => .circular(36),
+      iphone13Pro => .circular(47.33),
+      // The hinge runs down the leading edge, so only the trailing corners are fully rounded.
+      iphoneDuo => .horizontal(left: .circular(8), right: .circular(59)),
+    };
+    return radius / zoom;
+  }
 
   double get bezelWidth =>
       switch (this) {
-        iphone || iphone13Pro => 14,
+        iphone || iphone13Pro || iphoneDuo => 14,
         ipad => 20,
         pixel => 10,
       } /
@@ -58,15 +65,16 @@ enum ScreenshotDevice {
     pixel => Rect.fromCircle(center: Offset(logicalScreenSize.width / 2, 20), radius: 11),
     // Screen recordings on a notched iPhone leave the notch out, and this device stands in for them.
     iphone13Pro => null,
+    iphoneDuo => Rect.fromCircle(center: Offset(logicalScreenSize.width - 46, 46), radius: 18),
   };
 
   Rect? get notch => switch (this) {
     iphone13Pro => Rect.fromCenter(center: Offset(logicalScreenSize.width / 2, 23), width: 162, height: 32),
-    iphone || ipad || pixel => null,
+    iphone || ipad || pixel || iphoneDuo => null,
   };
 
   Size get homeIndicatorSize => switch (this) {
-    iphone => Size(146, 5),
+    iphone || iphoneDuo => Size(146, 5),
     ipad => Size(320, 5),
     pixel => Size(108, 4),
     iphone13Pro => Size(134, 5),
@@ -75,6 +83,7 @@ enum ScreenshotDevice {
   CustomPainter get statusBarPainter => switch (this) {
     iphone => IphoneStatusBarPainter(cutout: cameraCutout!),
     iphone13Pro => IphoneStatusBarPainter(cutout: notch!),
+    iphoneDuo => IphoneDuoStatusBarPainter(cutout: cameraCutout!),
     ipad => IpadStatusBarPainter(height: safeArea.top),
     pixel => AndroidStatusBarPainter(height: safeArea.top),
   };
@@ -83,7 +92,7 @@ enum ScreenshotDevice {
   // It raises the pixel ratio, since the reader's word hit-testing doesn't account for scale transforms.
   double get zoom => switch (this) {
     ipad => 1.3,
-    iphone || pixel || iphone13Pro => 1,
+    iphone || pixel || iphone13Pro || iphoneDuo => 1,
   };
 
   Size get logicalScreenSize => screenSize / zoom;
@@ -112,14 +121,17 @@ class DeviceFrame extends StatelessWidget {
     width: device.frameSize.width,
     height: device.frameSize.height,
     padding: .all(device.bezelWidth),
-    decoration: BoxDecoration(color: Colors.black, borderRadius: .circular(device.screenRadius + device.bezelWidth)),
+    decoration: BoxDecoration(
+      color: Colors.black,
+      borderRadius: device.screenBorderRadius + .circular(device.bezelWidth),
+    ),
     // A border in the background decoration would inset the screen by its width.
     foregroundDecoration: BoxDecoration(
-      borderRadius: .circular(device.screenRadius + device.bezelWidth),
+      borderRadius: device.screenBorderRadius + .circular(device.bezelWidth),
       border: .all(color: Color(0xFF4A4A4E), width: 2.5 / device.zoom),
     ),
     child: ClipRRect(
-      borderRadius: .circular(device.screenRadius),
+      borderRadius: device.screenBorderRadius,
       child: RepaintBoundary(
         key: screenKey,
         child: DeviceScreen(device: device, child: child),
