@@ -9,7 +9,6 @@ import AndroidAppRedirect from '@/components/blocks/AndroidAppRedirect';
 import CtaButton from '@/components/blocks/CtaButton';
 import DownloadCtaButton from '@/components/blocks/DownloadCtaButton';
 import DownloadSection from '@/components/blocks/DownloadSection';
-import OpenInAppLink from '@/components/blocks/OpenInAppLink';
 import StickyDownloadBar from '@/components/blocks/StickyDownloadBar';
 import Page from '@/components/layout/Page';
 import Section from '@/components/layout/Section';
@@ -41,8 +40,7 @@ const startSteps = [
   },
   {
     title: 'Find Advent',
-    description:
-      'Open Bible Plans and tap +. Advent is right at the top. Once Lux is installed, you can also come back here and tap Open the plan.',
+    description: 'Open Bible Plans and tap +. Advent is right at the top.',
   },
   {
     title: 'Tap Start Plan',
@@ -129,9 +127,6 @@ export default function AdventPage() {
             <p className="text-sm text-foreground-soft/70">
               Free · No ads · No account
             </p>
-            <OpenInAppLink href={appUrl}>
-              Already have Lux? Open the plan
-            </OpenInAppLink>
           </div>
           <AndroidAppRedirect
             googlePlayUrl={site.googlePlayUrl}

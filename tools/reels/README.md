@@ -107,7 +107,8 @@ Clip('missing_accountability', modifiers: [
 ```
 
 Prefer `.word` over `.frames`: it stays on the word when the clip is retrimmed. `dart run lib/videos/<name>.dart captions`
-lists each clip's words.
+lists each clip's words. `offset:` moves a `.word` by some frames, so `.word('Tamar', offset: -3)` starts an animation
+just before the word.
 
 The editor's copied clip list doesn't include modifiers, so re-add titles after pasting it.
 

@@ -58,6 +58,7 @@ recordingTest('commentary', (recording) async {
 - `recording.tag(name)` names the last frame recorded, and `finish` writes the tags to `tags.json`. Copy them into the reel's `lib/videos/<name>.media.json` under the video's filename, then start each step on its word with `Play('opened', at: .word('commentary'))`.
 - Record each step as a segment that starts with its touch and ends with a tag, so a `Play` at the spoken word starts the action on it. `dart run lib/videos/<name>.dart captions` gives the words' times; a segment longer than the gap to the next `Play` plays faster.
 - To start a scene mid-flow, set it up before the first frame without recording it, with `screenshot.tap` or `tester.tapAt` and `screenshot.settle`.
+- Seasonal plans like Advent are left out unless `setUpScreenshotApp(includesSeasonalPlans: true)`.
 - Interlinear sheets don't set the Hebrew font, so Old Testament words render as boxes; demo the interlinear on a New Testament verse.
 - Tyndale's verse notes are text only. For maps and boxes, show a Tyndale Open Bible Dictionary entry with `ArticleSheet.show`, such as Abraham, which opens with a map.
 - A commentary that has no notes for a passage shows "No Commentaries Found" (Matthew Henry skips some chapters, such as Psalm 23), and a commentary loaded mid-scene may never finish, so pick a passage every commentary covers and load its book in `setUpAll`.

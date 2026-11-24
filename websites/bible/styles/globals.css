@@ -36,6 +36,9 @@
 
   body {
     @apply bg-background text-foreground;
+    /* viewport-fit=cover stops iOS insetting the page in landscape, so keep content clear of the notch. */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
   }
 
   html {

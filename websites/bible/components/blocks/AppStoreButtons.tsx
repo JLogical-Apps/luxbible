@@ -1,7 +1,6 @@
 'use client';
 
 import { IconBrandAppleFilled, IconBrandGooglePlay } from '@tabler/icons-react';
-import Link from 'next/link';
 import { ReactElement, useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/Button';
@@ -32,10 +31,10 @@ function StoreButton({
 }) {
   return (
     <Button asChild>
-      <Link href={href} onClick={() => trackStoreNavigation(store, campaign)}>
+      <a href={href} onClick={() => trackStoreNavigation(store, campaign)}>
         <span className="mr-2 h-4 w-4">{stores[store].icon}</span>
         {stores[store].title}
-      </Link>
+      </a>
     </Button>
   );
 }

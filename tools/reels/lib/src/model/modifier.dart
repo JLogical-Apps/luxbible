@@ -222,8 +222,9 @@ sealed class ClipTime {
 
   const factory ClipTime.beforeEnd(int frames) = ClipEnd;
 
-  /// When the first occurrence of [phrase], one or more words, lights up in the clip's captions.
-  const factory ClipTime.word(String phrase) = ClipWord;
+  /// When the first occurrence of [phrase], one or more words, lights up in the clip's captions, moved by [offset]
+  /// frames.
+  const factory ClipTime.word(String phrase, {int offset}) = ClipWord;
 }
 
 class ClipFrames extends ClipTime {
@@ -239,7 +240,8 @@ class ClipEnd extends ClipTime {
 }
 
 class ClipWord extends ClipTime {
-  const ClipWord(this.phrase);
+  const ClipWord(this.phrase, {this.offset = 0});
 
   final String phrase;
+  final int offset;
 }

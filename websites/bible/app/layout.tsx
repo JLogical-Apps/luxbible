@@ -22,6 +22,8 @@ const sans = Inter({
 
 export const viewport: Viewport = {
   themeColor: '#09090b',
+  // Without cover, iOS reports env(safe-area-inset-*) as 0, so the sticky download bar sits on the home indicator.
+  viewportFit: 'cover',
 };
 
 export const metadata: Metadata = {

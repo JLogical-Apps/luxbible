@@ -70,7 +70,7 @@ class FakeTimezoneService implements TimezoneService {
   dynamic noSuchMethod(Invocation invocation) => Future.value();
 }
 
-Future<void> setUpScreenshotApp({List<Override> overrides = const []}) async {
+Future<void> setUpScreenshotApp({List<Override> overrides = const [], bool includesSeasonalPlans = false}) async {
   setupFirebaseCoreMocks();
   await Firebase.initializeApp();
   FirebaseAnalyticsPlatform.instance = FakeAnalyticsPlatform();
@@ -100,7 +100,9 @@ Future<void> setUpScreenshotApp({List<Override> overrides = const []}) async {
       crossReferencesProvider.overrideWithValue(await CrossReferencesImporter().import()),
       // Seasonal plans like Advent come and go, so the store images leave them out.
       includedBiblePlansProvider.overrideWithValue(
-        (await BiblePlanImporter().import()).where((planId, _) => BiblePlanType.getById(planId)?.season == null),
+        (await BiblePlanImporter().import()).where(
+          (planId, _) => includesSeasonalPlans || BiblePlanType.getById(planId)?.season == null,
+        ),
       ),
       verseOfTheDaySelectionsProvider.overrideWithValue(await VerseOfTheDayImporter().import()),
       pathServiceProvider.overrideWithValue(Paths(applicationSupport: directory, applicationCache: directory)),
