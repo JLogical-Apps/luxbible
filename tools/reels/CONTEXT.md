@@ -323,10 +323,11 @@ without knowing about speed.
 ## Voice
 
 Ingest runs the master's audio through one fixed chain (`src/ffmpeg/voice.dart`) into
-`.cache/<name>/voice_<hash>.wav`, 48 kHz mono: FFT noise reduction, 80 Hz high-pass, −2.5 dB at 250 Hz, +2.5 dB at
-4.5 kHz, 3:1 compression, de-essing, then a fixed gain to −16 LUFS and a limiter. Jake picked it by ear over the
-Remotion chain in `videos/scripts/narration-audio.mjs`. The filename hashes the chain, so editing it rebuilds the track
-and every preview. It takes about 8 s for a 5-minute recording.
+`.cache/<name>/voice_<hash>.wav`, 48 kHz mono: FFT noise reduction, 80 Hz high-pass, 3:1 compression, de-essing, then a
+fixed gain to −16 LUFS and a limiter. Jake picked it by ear over the Remotion chain in
+`videos/scripts/narration-audio.mjs`. It once also cut 250 Hz and lifted 4.5 kHz by 2.5 dB each, which thinned the
+iPhone's own fairly balanced voice, so it leaves the tone alone now. The filename hashes the chain, so editing it
+rebuilds the track and every preview. It takes about 8 s for a 5-minute recording.
 
 - **Processed once, over the whole recording, not per cut.** Every filter only looks at the last ~100 ms, and the
   gain is a constant, so cutting after processing sounds the same as processing after cutting. Loudness is measured

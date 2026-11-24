@@ -12,8 +12,6 @@ final voiceChain = [
   // afftdn delays its output by one 1200-sample window, which would put the voice 25 ms behind the lips.
   'atrim=start_sample=1200,asetpts=N/SR/TB,apad=pad_len=1200',
   'highpass=f=80:p=2',
-  'equalizer=f=250:t=q:w=1:g=-2.5',
-  'equalizer=f=4500:t=q:w=1.2:g=2.5',
   'acompressor=threshold=0.08:ratio=3:attack=5:release=80:knee=2.82843:makeup=1',
   'deesser=i=0.35',
 ].join(',');
